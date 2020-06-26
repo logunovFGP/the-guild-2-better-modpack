@@ -1,8 +1,9 @@
 function Run()
 
+	-- AI Script
 	if IsStateDriven() then
 		local ItemName = "PoisonedCake"
-		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
+		if GetItemCount("", ItemName, INVENTORY_STD) == 0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
@@ -35,26 +36,27 @@ function Run()
 	local time1
 	local time2
 	time1 = PlayAnimationNoWait("Owner", "use_object_standing")
-	time2 = PlayAnimationNoWait("Destination","cogitate")
+	time2 = PlayAnimationNoWait("Destination", "cogitate")
 	Sleep(1)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("","Handheld_Device/Anim_cake.nif",false)
+	PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("", "Handheld_Device/Anim_cake.nif",false)
 	
 	Sleep(1)
-	CarryObject("","",false)
-	CarryObject("Destination","Handheld_Device/Anim_cake.nif",false)
-	time2 = PlayAnimationNoWait("Destination","fetch_store_obj_R")
+	CarryObject("", "", false)
+	CarryObject("Destination", "Handheld_Device/Anim_cake.nif", false)
+	time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
 	Sleep(1)
 	StopAnimation("")
-	PlaySound3D("Destination","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("Destination","",false)
+	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("Destination", "", false)
 	PlayFE("Destination", "smile", 0.5, 2, 0)
 	Sleep(1)
 	
 	--modify the skills
-	if RemoveItems("","PoisonedCake",1)>0 then
-		AddImpact("","Fighting",-skillmodify,duration)
-		AddImpact("","dexterity",-skillmodify,duration)
+	if RemoveItems("", "PoisonedCake", 1) > 0 then
+		AddImpact("", "Fighting", -skillmodify, duration)
+		AddImpact("", "dexterity", -skillmodify, duration)
+		SetMeasureRepeat(TimeOut)
 		
 		--show overhead text
 		feedback_OverheadSkill("Destination", "@L_ARTEFACTS_OVERHEAD_+1", false, 
@@ -71,8 +73,7 @@ function Run()
 	
 		--remove item from inventory and add db impact
 		
-		chr_GainXP("",GetData("BaseXP"))
-		SetMeasureRepeat(TimeOut)
+		chr_GainXP("", GetData("BaseXP"))
 		Sleep(2)
 		StopMeasure()
 	end

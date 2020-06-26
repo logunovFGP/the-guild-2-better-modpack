@@ -9,29 +9,33 @@ function Run()
 
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
 		StopMeasure()
-		return
 	end
 	
 	if GetInsideBuildingID("") ~= GetID("Hospital") then
 		if not f_MoveTo("", "Hospital", GL_MOVESPEED_RUN) then
-			StopMeasure()
+			return
 		end
 	end
 	
-	SetData("IsProductionMeasure", 0)
-	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
-	SetData("IsProductionMeasure", 1)
-	
 	local BedFree = false
 	local BedNumber = 0
+	local MyID = GetID("")
+	
+	-- check property instead of locator
 	for i=1,5 do
-		if LocatorStatus("Hospital","Bed"..i)==1 then
-			BedNumber = i
-			GetLocatorByName("Hospital","Treatment"..BedNumber,"TreatmentPos")
-			if BlockLocator("","TreatmentPos") then
+		if HasProperty("Hospital", "Locator"..i) then
+			if GetProperty("Hospital", "Locator"..i) == MyID then
 				BedFree = true
+				BedNumber = i
+				SetData("BedNumber", i)
 				break
 			end
+		else
+			SetProperty("Hospital", "Locator"..i, MyID)
+			BedFree = true
+			BedNumber = i
+			SetData("BedNumber", i)
+			break
 		end
 	end
 	
@@ -39,323 +43,310 @@ function Run()
 		StopMeasure()
 	end
 	
+	-- go to your place
+	
+	GetLocatorByName("Hospital", "Treatment"..BedNumber, "TreatmentPos")
+	if not f_BeginUseLocator("", "TreatmentPos", GL_STANCE_STAND, true) then
+		return
+	end
+	
+	SetData("IsProductionMeasure", 0)
+	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
+	SetData("IsProductionMeasure", 1)
+	
 	while true do
 		local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment==1))"
-		local NumSickSims = Find("", SickSimFilter,"SickSim", -1)
-		if NumSickSims <= 0 then
-			if BuildingGetAISetting("Hospital", "BuySell_Selection")>=0 then
-				StopMeasure()
-			end
+		local NumSickSims = Find("", SickSimFilter, "SickSim", -1)
+		if NumSickSims < 1 then
+			-- bored
+			MoveStop("")
+			PlayAnimation("", "cogitate")
 			
-			SetProperty("","Bored",1)
-			if Rand(100)>80 then
-				local BoredDocFilter = "__F((Object.GetObjectsByRadius(Sim) == 5000) AND (Object.Property.Bored==1))"
-				local NumBoredDocs = Find("", BoredDocFilter,"BoredDoc", -1)
-				if NumBoredDocs > 0 then
-					f_MoveTo("","BoredDoc",GL_MOVESPEED_WALK,100)
-					AlignTo("","BoredDoc")
-					AlignTo("BoredDoc","")
-					Sleep(1.5)
-					local AnimTime = PlayAnimationNoWait("","talk")
-					if SimGetGender("")==GL_GENDER_MALE then
-						PlaySound3DVariation("","CharacterFX/male_neutral",1)
-					else
-						PlaySound3DVariation("","CharacterFX/female_neutral",1)
-					end
-					Sleep(3)
-					if Rand(100)<50 then
-						PlayAnimationNoWait("BoredDoc","nod")
-					else
-						PlayAnimationNoWait("BoredDoc","shake_head")
-					end
-					Sleep(AnimTime-3)
+			-- AI stops measure if no patients are available to do better things
+			if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
+				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > 1 then
+					SimSetProduceItemID("", -1, -1)
+					StopMeasure()
 				end
-			else
-				MoveStop("")
-				PlayAnimation("","cogitate")
 			end
 		else
-			if HasProperty("","Bored") then
-				RemoveProperty("","Bored")
+			
+			-- block the patient
+			if not AliasExists("SickSim0") then
+				return
 			end
+			
 			SetData("Blocked", 0)
 			if not SendCommandNoWait("SickSim0", "BlockMe") then
 				break
 			end
 			
-			--all beds full
-			if BedNumber == 0 then
-				return	
-			end
-			
-			GetLocatorByName("Hospital","Treatment"..BedNumber,"TreatmentPos")
-			if not f_BeginUseLocator("","TreatmentPos",GL_STANCE_STAND,true) then
+			-- patient moves
+			Sleep(0.5)
+			if not f_MoveTo("SickSim0", "Owner", GL_MOVESPEED_WALK, 128) then
 				return
 			end
+			AlignTo("SickSim0", "")
+			AlignTo("", "SickSim0")
+			
 			Sleep(1)
-			if not f_MoveTo("SickSim0","Owner",GL_MOVESPEED_WALK,128) then
-				return
-			end
-			AlignTo("SickSim0","")
-			AlignTo("","SickSim0")
-			Sleep(2)
-			StopAllAnimations("")
-			MoveStop("")
+			MeasureSetNotRestartable()
+			SetState("",STATE_DUEL,true) -- no measure cancel
 			
-			
-			MsgSay("SickSim0","@L_MEDICUS_TREATMENT_PATIENT")
-			MsgSay("","@L_MEDICUS_TREATMENT_DOC_INTRO")
-			PlayAnimation("","manipulate_middle_twohand")
+			-- Dialog
+			MsgSay("SickSim0", "@L_MEDICUS_TREATMENT_PATIENT")
+			MsgSay("", "@L_MEDICUS_TREATMENT_DOC_INTRO")
+			PlayAnimation("", "manipulate_middle_twohand")
 			local Costs = 50
 			local Cured = false
+			local Disease = false
+			local CanHeal = false
+			local Medicine, Label
+			local FavorMod
 			
 			--SPRAIN
-			if GetImpactValue("SickSim0","Sprain")==1 then
-				Costs = diseases_GetTreatmentCost("Sprain")
-				if RemoveItems("Hospital","Bandage",1,INVENTORY_STD)>0 or RemoveItems("Hospital","Bandage",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_SPRAIN")
-						diseases_Sprain("SickSim0",false)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","Bandage",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("Bandage",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("Bandage",false))
-					end
-				end
-			
+			if GetImpactValue("SickSim0", "Sprain") == 1 then
+				Disease = "Sprain"
+				Medicine = "Bandage"
+				FavorMod = 5
+				Label = "SPRAIN"
 			--COLD	
-			elseif GetImpactValue("SickSim0","Cold")==1 then
-				Costs = diseases_GetTreatmentCost("Cold")
-				if RemoveItems("Hospital","Bandage",1,INVENTORY_STD)>0 or RemoveItems("Hospital","Bandage",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_COLD")
-						diseases_Cold("SickSim0",false)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","Bandage",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("Bandage",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("Bandage",false))
-					end
-				end
-				
+			elseif GetImpactValue("SickSim0", "Cold") == 1 then
+				Disease = "Cold"
+				Medicine = "Bandage"
+				FavorMod = 5
+				Label = "COLD"
 			--INFLUENZA
-			elseif GetImpactValue("SickSim0","Influenza")==1 then
-				Costs = diseases_GetTreatmentCost("Influenza")
-				if RemoveItems("Hospital","Medicine",1,INVENTORY_STD)>0 or RemoveItems("Hospital","Medicine",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_INFLUENZA")
-						diseases_Influenza("SickSim0",false)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","Medicine",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("Medicine",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("Medicine",false))
-					end
-				end
-				
-			--BURNWOUND	
-			elseif GetImpactValue("SickSim0","BurnWound")==1 then
-				Costs = diseases_GetTreatmentCost("BurnWound")
-				if RemoveItems("Hospital","Medicine",1,INVENTORY_STD)>0 or RemoveItems("Hospital","Medicine",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_BURNWOUND")
-						diseases_BurnWound("SickSim0",false)
-						RemoveData("LayStill")
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","Medicine",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("Medicine",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("Medicine",false))
-					end
-				end
-				
-			--POX	
-			elseif GetImpactValue("SickSim0","Pox")==1 then
-				Costs = diseases_GetTreatmentCost("Pox")
-				if RemoveItems("Hospital","Medicine",1,INVENTORY_STD)>0 or RemoveItems("Hospital","Medicine",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_POX")
-						diseases_Pox("SickSim0",false)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","Medicine",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("Medicine",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("Medicine",false))
-					end
-				end	
-			
-			--PNEUMONA
-			elseif GetImpactValue("SickSim0","Pneumonia")==1 then
-				Costs = diseases_GetTreatmentCost("Pneumonia")
-				if RemoveItems("Hospital","PainKiller",1,INVENTORY_STD)>0 or RemoveItems("Hospital","PainKiller",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_PNEUMONIA")
-						diseases_Pneumonia("SickSim0",false)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","PainKiller",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("PainKiller",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("PainKiller",false))
-					end
-				end	
-					
-			--BLACKDEATH
-			elseif GetImpactValue("SickSim0","Blackdeath")==1 then
-				Costs = diseases_GetTreatmentCost("Blackdeath")
-				if RemoveItems("Hospital","PainKiller",1,INVENTORY_STD)>0 or RemoveItems("Hospital","PainKiller",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_BLACKDEATH")
-						diseases_Blackdeath("SickSim0",false)
-						RemoveData("LayStill")
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","PainKiller",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("PainKiller",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("PainKiller",false))
-					end
-				end
-				
+			elseif GetImpactValue("SickSim0", "Influenza") == 1 then
+				Disease = "Influenza"
+				Medicine = "Medicine"
+				FavorMod = 5
+				Label = "INFLUENZA"
 			--FRACTURE
-			elseif GetImpactValue("SickSim0","Fracture")==1 then
-				Costs = diseases_GetTreatmentCost("Fracture")
-				if RemoveItems("Hospital","PainKiller",1,INVENTORY_STD)>0 or RemoveItems("Hospital","PainKiller",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_FRACTURE")
-						diseases_Fracture("SickSim0",false)
-						RemoveData("LayStill")
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","PainKiller",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("PainKiller",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("PainKiller",false))
-					end
-				end	
-					
+			elseif GetImpactValue("SickSim0", "Fracture") == 1 then
+				Disease = "Fracture"
+				Medicine = "PainKiller"
+				FavorMod = 10
+				Label = "FRACTURE"
+			--BURNWOUND	
+			elseif GetImpactValue("SickSim0", "BurnWound") == 1 then
+				Disease = "BurnWound"
+				Medicine = "PainKiller"
+				FavorMod = 10
+				Label = "BURNWOUND"
+			--POX	
+			elseif GetImpactValue("SickSim0", "Pox") == 1 then
+				Disease = "Pox"
+				Medicine = "Medicine"
+				FavorMod = 10
+				Label = "POX"
 			--CARIES					
-			elseif GetImpactValue("SickSim0","Caries")==1 then
-				Costs = diseases_GetTreatmentCost("Caries")
-				if RemoveItems("Hospital","PainKiller",1,INVENTORY_STD)>0 or RemoveItems("Hospital","PainKiller",1,INVENTORY_SELL)>0 then
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",Costs,"Offering") then
-						CreditMoney("Hospital",Costs,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_CARIES")
-						diseases_Caries("SickSim0",false)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","PainKiller",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("PainKiller",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("PainKiller",false))
-					end
-				end
-				
-			--ELSE	(HP LOSS)
+			elseif GetImpactValue("SickSim0", "Caries") == 1 then
+				Disease = "Caries"
+				Medicine = "PainKiller"
+				FavorMod = 10
+				Label = "CARIES"
+			--PNEUMONIA
+			elseif GetImpactValue("SickSim0", "Pneumonia") == 1 then
+				Disease = "Pneumonia"
+				Medicine = "PainKiller"
+				FavorMod = 15
+				Label = "PNEUMONIA"
+			--BLACKDEATH
+			elseif GetImpactValue("SickSim0", "Blackdeath") == 1 then
+				Disease = "Blackdeath"
+				Medicine = "PainKiller"
+				FavorMod = 15
+				Label = "BLACKDEATH"
+			--ELSE (HP LOSS)
 			elseif (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
-				if RemoveItems("Hospital","Bandage",1,INVENTORY_STD)>0 or RemoveItems("Hospital","Bandage",1,INVENTORY_SELL)>0 then
-					local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
-					if IsPartyMember("SickSim0")==false or SpendMoney("SickSim0",ToHeal,"Offering") then
-						CreditMoney("Hospital",ToHeal,"Offering")
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_HPLOSS")
-						ModifyHP("SickSim0",ToHeal,true)
-						Cured = true
-					else
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						AddItems("SickSim0","Bandage",1,INVENTORY_STD)
-					end
-				else
-					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel("Bandage",false))
-					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
-						AddImpact("Hospital","hospitalmessagesent",1,4)
-						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
-										"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-										GetID("Hospital"),ItemGetLabel("Bandage",false))
-					end
-				end
+				Medicine = "Bandage"
+				FavorMod = 5
+				Label = "HPLOSS"
+			-- NOTHING
 			else
 				MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOTHING")
+				Cured = true
+				SimResetBehavior("SickSim0")
+				RemoveProperty("SickSim0", "WaitingForTreatment")
+			end
+			
+			if Cured == false then
+				-- TREATMENT
+				if Disease == false then -- special case HP LOSS
+					Costs = GetMaxHP("SickSim0") - GetHP("SickSim0")
+				else
+					Costs = diseases_GetTreatmentCost(Disease)
+				end
+				
+				local NumOfMeds = 0
+				
+				if GetItemCount("Hospital",Medicine,INVENTORY_STD)>0 then
+					CanHeal = 1
+				elseif GetItemCount("Hospital",Medicine,INVENTORY_SELL)>0 then
+					CanHeal = 2
+				elseif HasProperty("Hospital",Medicine.."s") and GetProperty("Hospital",Medicine.."s")>0 then 
+					NumOfMeds = GetProperty("Hospital",Medicine.."s")
+					CanHeal = 3
+				end
+				
+				if CanHeal ~= false then
+					if DynastyIsPlayer("SickSim0") then
+						-- only Players need to pay
+						if SpendMoney("SickSim0", Costs, "Offering") then
+							-- remove medicine
+							if CanHeal == 1 then
+								RemoveItems("Hospital",Medicine,1,INVENTORY_STD)
+							elseif CanHeal == 2 then
+								RemoveItems("Hospital",Medicine,1,INVENTORY_SELL)
+							elseif CanHeal == 3 then
+								SetProperty("Hospital",Medicine.."s",(NumOfMeds-1))
+							end
+							
+							CreditMoney("Hospital", Costs, "Offering")
+							-- for the balance
+							local TotalIncome = 0
+							if HasProperty("Hospital", "TotalIncome") then
+								TotalIncome = GetProperty("Hospital", "TotalIncome")
+							end
+							local RoundIncome = 0
+							if HasProperty("Hospital", "RoundIncome") then
+								RoundIncome = GetProperty("Hospital", "RoundIncome")
+							end
+							local MedicalIncome = 0
+							if HasProperty("Hospital", "MedicalIncome") then
+								MedicalIncome = GetProperty("Hospital", "MedicalIncome")
+							end
+							SetProperty("Hospital", "TotalIncome",(TotalIncome+Costs))
+							SetProperty("Hospital", "RoundIncome",(RoundIncome+Costs))
+							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+Costs))
+							
+							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
+							
+							if Disease == "Sprain" then
+								diseases_Sprain("SickSim0",false)
+							elseif Disease == "Cold" then
+								diseases_Cold("SickSim0",false)
+							elseif Disease == "Influenza" then
+								diseases_Influenza("SickSim0",false)
+							elseif Disease == "Fracture" then
+								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+								diseases_Fracture("SickSim0",false)
+							elseif Disease == "BurnWound" then
+								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+								diseases_BurnWound("SickSim0",false)
+							elseif Disease == "Pox" then
+								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+								diseases_Pox("SickSim0",false)
+							elseif Disease == "Caries" then
+								diseases_Caries("SickSim0", false)
+							elseif Disease == "Pneumonia" then
+								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+								diseases_Pneumonia("SickSim0", false)
+							elseif Disease == "Blackdeath" then
+								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+								diseases_Blackdeath("SickSim0",false)
+								-- 120 hours immunity to stop black death
+								AddImpact("SickSim0","PlagueImmunity", 1, 120)
+							else
+								local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
+								ModifyHP("SickSim0", ToHeal, true)
+							end
+						
+							if HasData("LayStill") then
+								RemoveData("LayStill")
+							end
+							
+							-- modify the favor to the boss
+							if BuildingGetOwner("Hospital", "MyBoss") then
+								chr_ModifyFavor("SickSim0", "MyBoss", FavorMod)
+							end
+							Cured = true
+						else
+							-- no money
+							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
+						end
+					else
+						-- heal the AI
+						
+						-- remove medicine
+						if CanHeal == 1 then
+							RemoveItems("Hospital", Medicine,1,INVENTORY_STD)
+						elseif CanHeal == 2 then
+							RemoveItems("Hospital", Medicine,1,INVENTORY_SELL)
+						elseif CanHeal == 3 then
+							SetProperty("Hospital", Medicine.."s",(GetProperty("Hospital",Medicine.."s")-1))
+						end
+							
+						CreditMoney("Hospital",Costs,"Offering")
+						-- for the balance
+							local TotalIncome = 0
+							if HasProperty("Hospital", "TotalIncome") then
+								TotalIncome = GetProperty("Hospital","TotalIncome")
+							end
+							local RoundIncome = 0
+							if HasProperty("Hospital", "RoundIncome") then
+								RoundIncome = GetProperty("Hospital","RoundIncome")
+							end
+							local MedicalIncome = 0
+							if HasProperty("Hospital", "MedicalIncome") then
+								MedicalIncome = GetProperty("Hospital","MedicalIncome")
+							end
+							SetProperty("Hospital", "TotalIncome",(TotalIncome+Costs))
+							SetProperty("Hospital", "RoundIncome",(RoundIncome+Costs))
+							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+Costs))
+							
+						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
+						
+						if Disease == "Sprain" then
+							diseases_Sprain("SickSim0",false)
+						elseif Disease == "Cold" then
+							diseases_Cold("SickSim0",false)
+						elseif Disease == "Influenza" then
+							diseases_Influenza("SickSim0",false)
+						elseif Disease == "Fracture" then
+							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							diseases_Fracture("SickSim0",false)
+						elseif Disease == "BurnWound" then
+							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							diseases_BurnWound("SickSim0",false)
+						elseif Disease == "Pox" then
+							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							diseases_Pox("SickSim0",false)
+						elseif Disease == "Caries" then
+							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							diseases_Caries("SickSim0", false)
+						elseif Disease == "Pneumonia" then
+							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							diseases_Pneumonia("SickSim0", false)
+						elseif Disease == "Blackdeath" then
+							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							diseases_Blackdeath("SickSim0",false)
+						else
+							local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
+							ModifyHP("SickSim0",ToHeal,true)
+						end
+						
+						if HasData("LayStill") then
+							RemoveData("LayStill")
+						end
+						
+						-- modify the favor to the boss
+							if BuildingGetOwner("Hospital","MyBoss") then
+								chr_ModifyFavor("SickSim0","MyBoss",FavorMod)
+							end
+						Cured = true
+					end
+				else
+					--not enough mats
+					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel(Medicine,false))
+					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
+						AddImpact("Hospital","hospitalmessagesent",1,4)
+						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
+									"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
+									GetID("Hospital"),ItemGetLabel(Medicine,false))
+					end
+				end
 			end
 
 
@@ -367,67 +358,96 @@ function Run()
 				MoveSetActivity("SickSim0","")
 				AddImpact("SickSim0","Resist",1,6)
 			end
-			if HasProperty("SickSim0","WaitingForTreatment") then
-				RemoveProperty("SickSim0","WaitingForTreatment")
+			if HasProperty("SickSim0", "WaitingForTreatment") then
+				RemoveProperty("SickSim0", "WaitingForTreatment")
 			end
 			SetData("Blocked", 1)
-			Sleep(10)
+			Sleep(2)
+			SetState("", STATE_DUEL, false)
 		end
 	end
 end
 
 function BlockMe()
 	while GetData("Blocked")~=1 do
-		Sleep(0.8)
+		Sleep(1)
+		if not GetState("", STATE_DUEL) then
+			SetState("", STATE_DUEL, true)
+		end
 	end
-	Sleep(3)
+	
+	if HasProperty("", "WaitingForTreatment") then
+		RemoveProperty("", "WaitingForTreatment")
+	end
+	
+	SetState("", STATE_DUEL, false)
+	CreateScriptcall("SendHome", 0.001, "Measures/ms_MedicalTreatment.lua", "LeaveBuilding", "")
+	return
+end
+
+function LeaveBuilding()
 	f_ExitCurrentBuilding("")
 	if DynastyIsAI("") then
-		SimSetBehavior("","idle")
+		if Rand(2) == 0 then
+			f_Stroll("", 1000, 6)
+		else
+			idlelib_GoHome()
+		end
 	end
 end
 
-function LayToBed(Doc,SickSim,BedNumber)
-	GetLocatorByName("Hospital","Bed"..BedNumber,"BedPos")
-	if not f_BeginUseLocator(SickSim,"BedPos",GL_STANCE_LAY,true) then
+function LayToBed(Doc, SickSim, BedNumber)
+	GetLocatorByName("Hospital", "Bed"..BedNumber,"BedPos")
+	if not f_BeginUseLocator(SickSim, "BedPos", GL_STANCE_LAY, true) then
 		return
 	end
 	
-	if not f_BeginUseLocator(Doc,"TreatmentPos",GL_STANCE_STAND,true) then
+	if not f_BeginUseLocator(Doc,"TreatmentPos", GL_STANCE_STAND, true) then
 		return
 	end
-	Sleep(1)
-	SetData("LayStill",1)
+	
+	Sleep(0.5)
+	SetData("LayStill", 1)
 	
 	if not SendCommandNoWait(SickSim,"LayBack") then
 		return
 	end
 
-	AlignTo(Doc,SickSim)
-	Sleep(1)
-	PlayAnimation(Doc,"treatpatientinbed_01")
-	f_EndUseLocator(Doc,"TreatmentPos",GL_STANCE_STAND)
-	f_EndUseLocator(SickSim,"BedPos",GL_STANCE_LAY)
-	
+	AlignTo(Doc, SickSim)
+	Sleep(0.5)
+	PlayAnimation(Doc, "treatpatientinbed_01")
+	Sleep(0.5)
+	f_EndUseLocator(Doc, "TreatmentPos", GL_STANCE_STAND)
+	Sleep(0.5)
 end
 
 function LayBack()
-	PlayAnimation("","sickinbed_idle_in")
+	PlayAnimation("", "sickinbed_idle_in")
 	while HasData("LayStill") do
-		LoopAnimation("","sickinbed_idle_01",2)
+		LoopAnimation("", "sickinbed_idle_01", 2)
 	end
-	PlayAnimation("","sickinbed_idle_out")
-	f_EndUseLocator("","BedPos",GL_STANCE_STAND)
+	PlayAnimation("", "sickinbed_idle_out")
+	f_EndUseLocator("", "BedPos", GL_STANCE_STAND)
 end
 
 function CleanUp()
+	SetData("Blocked",1)
+	if HasData("BedNumber") then
+		RemoveProperty("Hospital","Locator"..(GetData("BedNumber")))
+		RemoveData("BedNumber")
+	end
 	RemoveData("LayStill")
 	StopAnimation("")
-	if HasProperty("","Bored") then
-		RemoveProperty("","Bored")
-	end
+	f_EndUseLocator("", "TreatmentPos", GL_STANCE_STAND)
+	
 	if HasProperty("", "BigBrother") then
-		RemoveProperty("","BigBrother")
+		RemoveProperty("", "BigBrother")
+	end
+	
+	SetState("", STATE_DUEL, false)
+	
+	if AliasExists("SickSim0") then
+		SetState("SickSim0", STATE_DUEL, false)
 	end
 end
 
