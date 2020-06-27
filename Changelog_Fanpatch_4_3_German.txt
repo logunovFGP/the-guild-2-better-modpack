@@ -1,0 +1,24 @@
+Allgemeines
+
+- Einrückungen und Leerzeichen in den Scripten korrigiert.
+- Absätze und Kommentare hinzugefügt.
+- Scripte aufgeräumt/optimiert
+- Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich)
+- Cutscene-Aufteilung in den Scripten entfernt
+- SetRepeatTimer mit SetMeasureRepeat bei allen Maßnahmen ersetzt.
+
+
+Bugfix-Liste
+
+- Falsche Itemnamen bei Artefakt-Skripten​
+- Exploit: Man konnte Items nach Start einiger Maßnahmen aus dem Inventar entfernen und dennoch ihren Effekt nutzen.​
+- Redundante Impacts entfernt​
+- Der Vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers​
+- Mehrere Probleme bei Medizinischen Behandlungen behoben​
+- Thesenpapier Script war kaputt
+
+Features
+
+- Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
+- Heiler KI verbessert
+
