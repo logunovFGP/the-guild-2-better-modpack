@@ -409,8 +409,7 @@ function Run()
 			end
 			--MsgSay("Destination", chr_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10));
 
-			-- Set the repeat timer and the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
-			SetRepeatTimer("", "MakeAPresent"..GetID("Destination"), TimeUntilRepeat)
+			SetMeasureRepeat(TimeUntilRepeat)
 			chr_ModifyFavor("Destination", "", FavorModify)
 
 		end
@@ -442,6 +441,6 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

@@ -1,6 +1,6 @@
 function Run()
 
-	SetRepeatTimer("dynasty", GetMeasureRepeatName(), 1)
+	SetRepeatTimer("dynasty", GetMeasureRepeatName(), 2)
 
 	if IsType("", "cl_Building") then
 		local SimFilter = "__F((Object.GetObjectsByRadius(Sim)==2000)AND(Object.IsInCombatWithMyDynasty()))"

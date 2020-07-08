@@ -41,7 +41,7 @@ function Normal()
 	Sleep(1)
 	PlayAnimation("Destination","appal")
 	
-	SetRepeatTimer("", GetMeasureRepeatName2("UncannyGlare"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	
 	AddImpact("Destination","rhetoric",-3,duration)
 	chr_ModifyFavor("Destination","",-favorloss)
@@ -55,7 +55,7 @@ function Normal()
 	
 	feedback_OverheadComment("Destination",	"@L$S[2006] %1n", false, false, favorloss)
 	Sleep(1)
-	chr_GainXP("",GetData("BaseXP"))
+	chr_GainXP("", GetData("BaseXP"))
 	StopMeasure()
 end
 
@@ -87,7 +87,7 @@ function Cutscene()
 --	end
 	
 	
-	SetRepeatTimer("", GetMeasureRepeatName2("UncannyGlare"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	
 	AddImpact("Destination","rhetoric",-3,duration)
 	chr_ModifyFavor("Destination","",-favorloss)

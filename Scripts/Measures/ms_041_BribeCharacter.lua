@@ -201,9 +201,7 @@ function Normal()
 	PlaySound3D("Destination","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	CarryObject("Destination","",false)	
 	
-	--set measure repat time
-	SetRepeatTimer("", GetMeasureRepeatName2("BribeCharacter"), TimeOut)
-	
+	SetMeasureRepeat(TimeOut)
 	
 	
 	--display decision message for destination
@@ -309,8 +307,7 @@ function Cutscene()
 	--do visual stuff
 	CommitAction("bribe","Owner","Owner","Destination")
 	
-	--set measure repat time
-	SetRepeatTimer("", GetMeasureRepeatName2("BribeCharacter"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	
 	--SLeep because of the "Ok i do it Soeech of your char"
 	Sleep(1)
@@ -385,6 +382,6 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

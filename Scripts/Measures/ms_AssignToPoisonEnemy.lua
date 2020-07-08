@@ -11,14 +11,13 @@ function Run()
 		TimeOut = GetGametime() + TimeOut
 	end
 
-	if GetMoney("") < 1000 then
+	if not SpendMoney("WorkBuild", 1000, "CostBribes") then
 		StopMeasure()
 	end
-	SpendMoney("WorkBuild",1000,"CostBribes")
+	
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOuti = mdata_GetTimeOut(MeasureID)
-  SetMeasureRepeat(TimeOuti)	
---SetRepeatTimer("", GetMeasureRepeatName(), 1)
+	SetMeasureRepeat(TimeOuti)	
 
 --while true do	
 	if TimeOut then
@@ -55,7 +54,7 @@ function Run()
 			if chakill > empskill then
 			  SetProperty(DestAlias,"GoToBePoisoned",1)
 				CopyAlias("Owner", "Ursupator")
-				IncrementXPQuiet("",15)
+				IncrementXPQuiet("", 15)
 		    MeasureCreate("PoisonBeer")
 		    MeasureStart("PoisonBeer", DestAlias, "Ursupator", "GetPoisonedByBeer")
 			end
@@ -70,7 +69,7 @@ end
 
 function CleanUp()
 
-  GfxDetachAllObjects()
+	GfxDetachAllObjects()
 	--MoveSetActivity("","")
 	StopAnimation("")
 
@@ -78,5 +77,5 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end

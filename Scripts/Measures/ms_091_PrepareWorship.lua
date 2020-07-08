@@ -8,11 +8,11 @@ function Run()
 	
 	-- for the ai
 	if IsPartyMember("") then
-		if not GetInsideBuilding("","CurrentBuilding") then
+		if not GetInsideBuilding("", "CurrentBuilding") then
 			StopMeasure()
 		end
-		if BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_CHURCH_CATH or BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_CHURCH_EV then
-			CopyAlias("CurrentBuilding","church")
+		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_CATH or BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_CHURCH_EV then
+			CopyAlias("CurrentBuilding", "church")
 		else
 			StopMeasure()
 		end
@@ -35,12 +35,12 @@ function Run()
 	
 	-- mass setup first-time or re-enter after sub-measure (WorshipPraise or WorshipScold)
 	--local duration = 8
-	local TimerLeft = GetRepeatTimerLeft("church",GetMeasureRepeatName())
+	local TimerLeft = GetRepeatTimerLeft("church", GetMeasureRepeatName())
 	if (TimerLeft>0) then
 		duration = duration - (TimeOut-TimerLeft)
 	else
 		if IsPartyMember("") then
-			SetRepeatTimer("", GetMeasureRepeatName(), TimeOut)
+			SetMeasureRepeat(TimeOut)
 		else
 			SetRepeatTimer("church", GetMeasureRepeatName(), TimeOut)
 		end

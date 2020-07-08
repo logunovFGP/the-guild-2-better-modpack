@@ -14,6 +14,10 @@ function Run()
 	GetScenario("scenario")
 	local mapid = GetProperty("scenario", "mapid")
 	local land = GetDatabaseValue("maps", mapid, "lordship")
+	
+	local MeasureID = GetCurrentMeasureID("")
+	local duration = mdata_GetDuration(MeasureID)
+	local TimeOut = mdata_GetTimeOut(MeasureID)
 
 	if GetData("#GlobalEventType")==1 then
 	
@@ -61,19 +65,13 @@ function Run()
 				SetProperty("WarChooser","WarRisk", val-mod)
 			end
 
-			local MeasureID = GetCurrentMeasureID("")
-			local duration = mdata_GetDuration(MeasureID)
-			local TimeOut = mdata_GetTimeOut(MeasureID)
-			SetRepeatTimer("", "AdministrateWar", TimeOut)
+			SetMeasureRepeat(TimeOut)
 
 		elseif choice==2 then
 			local val = GetProperty("WarChooser","WarRisk")
 			SetProperty("WarChooser","WarRisk", val+10)
 
-			local MeasureID = GetCurrentMeasureID("")
-			local duration = mdata_GetDuration(MeasureID)
-			local TimeOut = mdata_GetTimeOut(MeasureID)
-			SetRepeatTimer("", "AdministrateWar", TimeOut)
+			SetMeasureRepeat(TimeOut)
 		end
 	end
 
@@ -81,7 +79,7 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end

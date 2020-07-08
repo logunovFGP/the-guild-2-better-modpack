@@ -125,7 +125,7 @@ function Run()
  	
  	MeasureSetNotRestartable()
 	local WasCourtLover = 0
-	SetRepeatTimer("", GetMeasureRepeatName2("InviteToDance"), 2)
+	SetRepeatTimer(TimeUntilRepeat)
 	
 	-------------------------
 	------ Court Lover ------

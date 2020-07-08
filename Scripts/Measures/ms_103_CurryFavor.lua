@@ -36,11 +36,11 @@ function Normal()
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
 		StopMeasure()
 	end
-	SetData("CameraActive",1)
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","Destination")
-	CutsceneCameraCreate("cutscene","")		
+	SetData("CameraActive", 1)
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Destination")
+	CutsceneCameraCreate("cutscene", "")		
 	camera_CutsceneBothLock("cutscene", "")	-- irgend ein befehl um die cutscene camera zu setzen
 	
 	--look at each other
@@ -49,7 +49,7 @@ function Normal()
 	AlignTo("Destination", "")
 	Sleep(0.5)
 	
-	SetRepeatTimer("", GetMeasureRepeatName2("CurryFavor"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	
 	--combine textlabel by checking rhetoric skill for text1
 	local RhethoricType
@@ -120,7 +120,7 @@ function Cutscene()
 --		StopMeasure()
 --	end
 	
-	SetRepeatTimer("", GetMeasureRepeatName2("CurryFavor"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 
 	--combine textlabel by checking rhetoric skill and gender for text2
 	local RhethoricType

@@ -110,7 +110,7 @@ function Normal()
 	ModifyFavorToDynasty("Believer","Destination",-ModifyValue)
 	
 	-- reset the timer for this action
-	SetRepeatTimer("", GetMeasureRepeatName2("DeliverTheFalseGauntlet"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	chr_GainXP("",GetData("BaseXP"))
 	-- let the other sim be locked/waiting for a moment
 	SimLock("Believer", 1)
@@ -172,8 +172,7 @@ function Cutscene()
 		return
 	end	
 
-	-- reset the timer for this action
-	SetRepeatTimer("", GetMeasureRepeatName2("DeliverTheFalseGauntlet"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	chr_GainXP("",GetData("BaseXP"))
 	
 	MsgNewsNoWait("Believer","Destination","","intrigue",-1,
