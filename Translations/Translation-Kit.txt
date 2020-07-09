@@ -1,0 +1,7 @@
+Translate and add the following lines below:
+
+18000   "MMPversion_+0"   "MegaModPack Fanpatch 4.3"   |
+18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
+
+
+Translate and change/swap the following lines:
