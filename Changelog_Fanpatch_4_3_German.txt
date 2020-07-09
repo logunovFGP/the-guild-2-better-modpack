@@ -4,21 +4,25 @@ Allgemeines
 - Absätze und Kommentare hinzugefügt.
 - Scripte aufgeräumt/optimiert
 - Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich)
-- Cutscene-Aufteilung in den Scripten entfernt
-- SetRepeatTimer mit SetMeasureRepeat bei allen Maßnahmen ersetzt.
-
+- Cutscene-Aufteilung in mehreren Scripten entfernt (performanter und beugt Fehlern vor)
+- SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
 
 Bugfix-Liste
 
-- Falsche Itemnamen bei Artefakt-Skripten​
-- Exploit: Man konnte Items nach Start einiger Maßnahmen aus dem Inventar entfernen und dennoch ihren Effekt nutzen.​
-- Redundante Impacts entfernt​
-- Der Vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers​
-- Mehrere Probleme bei Medizinischen Behandlungen behoben​
-- Thesenpapier Script war kaputt
+- Falsche Itemnamen bei Artefakt-Skripten
+- Exploit: Man konnte Items nach Start einiger Maßnahmen aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
+- Redundante Impacts entfernt
+- Der Vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers
+- Medizinische Behandlungen konnten sich aufhängen + Scriptoptimierungen
+- Thesenpapier-Script war kaputt
+- Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig
+- Jemandem ein Geschenk machen hatte keinen Cooldown
+- Cooldown von Jemanden zum Tanzen auffordern entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
+- Cooldown bei der Maßnahme 'Reichspolitik' funktionierte nicht.
+- Cooldown beim Knochenarmreif war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
 
 Features
 
-- Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
-- Heiler KI verbessert
+- Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
+- Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt)
 

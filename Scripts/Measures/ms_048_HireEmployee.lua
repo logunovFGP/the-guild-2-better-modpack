@@ -1,13 +1,15 @@
 function Run()
 
 	local Error = SimCanBeHired("", "Destination")
-	if Error~="" then
+	if Error ~= "" then
 		chr_OutputHireError("", "Destination", Error)
 		return
 	end
 	
-	-- PATCH TODO -- Courtlovers cannot be hired anymore
-	if HasProperty("", "courted") then	
+	-- Courtlovers cannot be hired anymore
+	if HasProperty("", "courted") then
+		MsgQuick("Destination", "@L_HIRE_ERROR_COURTED", GetID(""))
+		AddImpact("", "NoRandomHire", 1, 12)
 		StopMeasure()
 	end
 
