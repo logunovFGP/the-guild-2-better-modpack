@@ -67,7 +67,7 @@ function Normal()
 			StartSingleShotParticle("particles/sparkle_talents.nif", "ParticleSpawnPos",1,5)
 		end
 		AddImpact("","fragranceofholiness",1,duration)
-		SetRepeatTimer("", GetMeasureRepeatName2("UseFragranceOfHoliness"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 
 		AddImpact("","perfume",1,duration)
 		SetState("",STATE_CONTAMINATED,true)
@@ -101,7 +101,7 @@ function Cutscene()
 			AddImpact("","EvidenceSuppression",1,duration)
 		end
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseFragranceOfHoliness"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","perfume",1,duration)
 		SetState("",STATE_CONTAMINATED,true)
 

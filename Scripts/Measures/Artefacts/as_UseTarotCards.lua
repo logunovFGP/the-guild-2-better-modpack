@@ -24,7 +24,7 @@ function Run()
 	Sleep(1)
 	
 	if RemoveItems("","TarotCards",1)>0 then	
-		SetRepeatTimer("", GetMeasureRepeatName2("UseTarotCards"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 
 		local fate
 		local tarot = Rand(3)

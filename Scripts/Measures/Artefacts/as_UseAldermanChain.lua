@@ -56,7 +56,7 @@ function Normal()
 	Sleep(1)
 	
 	if RemoveItems("","AldermanChain",1)>0 then	
-		SetRepeatTimer("", GetMeasureRepeatName2("UseAldermanChain"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","jewellery",1,duration)
 		SetState("",STATE_JEWELLERY,true)
 
@@ -104,7 +104,7 @@ function Cutscene()
 	if RemoveItems("","AldermanChain",1)>0 then
 		GetPositionOfSubobject("","Game_Head","ParticleSpawnPos")
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseAldermanChain"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","jewellery",1,duration)
 		SetState("",STATE_JEWELLERY,true)
 

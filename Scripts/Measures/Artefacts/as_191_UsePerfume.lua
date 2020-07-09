@@ -58,8 +58,8 @@ function Normal()
 	Sleep(Time-5)
 	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	CarryObject("","",false)
-	if RemoveItems("","Perfume",1)>0 then	
-		SetRepeatTimer("", GetMeasureRepeatName2("UsePerfume"), TimeOut)
+	if RemoveItems("", "Perfume", 1) > 0 then	
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","perfume",1,duration)
 		SetState("",STATE_CONTAMINATED,true)
 
@@ -112,7 +112,7 @@ function Cutscene()
 		StartSingleShotParticle("particles/perfume_sit.nif", "ParticleSpawnPos",2,5)
 		PlaySound3D("","Locations/destillery/destillery+0.wav", 1.0)
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UsePerfume"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","perfume",1,duration)
 		SetState("",STATE_CONTAMINATED,true)
 

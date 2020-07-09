@@ -103,7 +103,7 @@ function Normal()
 				"@L_ARTEFACTS_192_USEPOEM_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 		end
 	
-		SetRepeatTimer("", GetMeasureRepeatName2("UsePoem"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		chr_GainXP("",GetData("BaseXP"))
 		
 		Sleep(2)
@@ -168,7 +168,7 @@ function Cutscene()
 				"@L_ARTEFACTS_192_USEPOEM_MSG_VICTIM_HEAD_+0", GetID("Destination"), GetID(""))
 		end
 	
-		SetRepeatTimer("", GetMeasureRepeatName2("UsePoem"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		chr_GainXP("",GetData("BaseXP"))
 	end
 	

@@ -96,7 +96,7 @@ function Normal()
 				"@L_ARTEFACTS_184_USEFLOWEROFDISCORD_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID("Believer"))
 		
 		--remove item from inventory and add db impact
-		SetRepeatTimer("", GetMeasureRepeatName2("UseFlowerOfDiscord"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		
 		chr_GainXP("",GetData("BaseXP"))
 		Sleep(2)
@@ -160,7 +160,7 @@ function Cutscene()
 				"@L_ARTEFACTS_184_USEFLOWEROFDISCORD_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID("Believer"))
 		
 		--remove item from inventory and add db impact
-		SetRepeatTimer("", GetMeasureRepeatName2("UseFlowerOfDiscord"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		
 		chr_GainXP("",GetData("BaseXP"))
 		Sleep(0.52)

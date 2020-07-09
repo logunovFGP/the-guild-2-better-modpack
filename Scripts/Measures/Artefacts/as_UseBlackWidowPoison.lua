@@ -52,7 +52,7 @@ function Run()
 		CarryObject("","",false)
 		Sleep(AnimTime-1)
 
-		SetRepeatTimer("", GetMeasureRepeatName2("UseBlackWidowPoison"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("Destination","poisoned",1,duration)
 		SetProperty("Destination","poisoned",3)
 		SetState("Destination",STATE_POISONED,true)

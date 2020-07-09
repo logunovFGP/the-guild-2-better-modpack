@@ -50,7 +50,7 @@ function Run()
 		CarryObject("","",false)
 		Sleep(AnimTime-1)
 
-		SetRepeatTimer("", GetMeasureRepeatName2("UseParalysisPoison"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("Destination","MoveSpeed",0.6,duration)
 		AddImpact("Destination","poisoned",1,duration)
 		SetProperty("Destination","poisoned",2)

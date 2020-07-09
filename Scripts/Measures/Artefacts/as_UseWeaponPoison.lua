@@ -60,7 +60,7 @@ function Run()
 		CarryObject("","",false)
 		MoveSetActivity("","")
 
-		SetRepeatTimer("", GetMeasureRepeatName2("UseWeaponPoison"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("Destination","poisoned",1,duration)
 		SetProperty("Destination","poisoned",1)
 		SetState("Destination",STATE_POISONED,true)

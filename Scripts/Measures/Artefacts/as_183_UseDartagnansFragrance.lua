@@ -48,7 +48,7 @@ function Run()
 		PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 		CarryObject("","",false)
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseDartagnansFragrance"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","perfume",1,duration)
 		SetState("",STATE_CONTAMINATED,true)
 

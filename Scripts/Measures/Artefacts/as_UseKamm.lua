@@ -37,8 +37,8 @@ function Normal()
 	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	Sleep(1)
 	
-	if RemoveItems("","Kamm",1)>0 then	
-		SetRepeatTimer("", GetMeasureRepeatName2("UseKamm"), TimeOut)
+	if RemoveItems("", "Kamm", 1) > 0 then	
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","jewellery",1,duration)
 		SetState("",STATE_JEWELLERY,true)
 
@@ -86,7 +86,7 @@ function Cutscene()
 	if RemoveItems("","Kamm",1)>0 then
 		GetPositionOfSubobject("","Game_Head","ParticleSpawnPos")
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseKamm"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","jewellery",1,duration)
 		SetState("",STATE_JEWELLERY,true)
 

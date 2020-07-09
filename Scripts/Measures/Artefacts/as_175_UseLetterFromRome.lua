@@ -96,7 +96,7 @@ function Normal()
 		
 		--remove the item, add impact and decrease favor to owner
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseLetterFromRome"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		
 		chr_ModifyFavor("Destination","",-favorloss)
 		Sleep(1)
@@ -149,7 +149,7 @@ function Cutscene()
 
 
 	--get the religion of the destination
-	if RemoveItems("","LetterFromRome",1)>0 then
+	if RemoveItems("", "LetterFromRome", 1) > 0 then
 		local i
 		local count = Find("Destination","__F((Object.GetObjectsByRadius(Sim) == "..ListeningRange..") AND (Object.HasSameReligion(Destination)))","Listener", -1)
 		for i=0,count-1 do
@@ -164,7 +164,7 @@ function Cutscene()
 	
 		--remove the item, add impact and decrease favor to owner
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseLetterFromRome"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		chr_ModifyFavor("Destination","Owner",-favorloss)
 	
 		if SimGetCutscene("","cutscene") then

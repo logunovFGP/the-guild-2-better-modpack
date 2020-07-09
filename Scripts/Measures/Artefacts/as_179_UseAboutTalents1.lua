@@ -57,7 +57,7 @@ function Normal()
 				
 		--add the impacts and remove the artefact from inventory
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseAboutTalents1"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","rhetoric",1,duration)
 		AddImpact("","craftsmanship",1,duration)
 		AddImpact("","abouttalents1",1,duration)
@@ -93,7 +93,7 @@ function Cutscene()
 				
 		--add the impacts and remove the artefact from inventory
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseAboutTalents1"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","rhetoric",1,duration)
 		AddImpact("","craftsmanship",1,duration)
 		AddImpact("","abouttalents1",1,duration)

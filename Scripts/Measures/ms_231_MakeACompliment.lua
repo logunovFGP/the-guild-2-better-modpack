@@ -22,10 +22,13 @@ function Normal()
 		return
 	end
 	
-	local officetime = math.mod(GetGametime(),24)
-	if SimGetOfficeLevel("Destination")>=1 then
+	-- make sure destination is not office holder and session is about to start
+	local officetime = math.mod(GetGametime(), 24)
+	if SimGetOfficeLevel("Destination") >= 1 then
 		if officetime > 16.5 and officetime <= 17 then
-		StopMeasure()
+			SetMeasureRepeat(0.5)
+			StopMeasure()
+			return
 		end
 	end
 	

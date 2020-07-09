@@ -47,7 +47,7 @@ function Normal()
 	Sleep(1)
 	
 	if RemoveItems("","Knochenarmreif",1)>0 then	
-		SetRepeatTimer("", GetMeasureRepeatName2("UseOakwoodRing"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","jewellery",1,duration)
 		SetState("",STATE_JEWELLERY,true)
 
@@ -67,9 +67,9 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 
 function CleanUp()
@@ -95,7 +95,7 @@ function Cutscene()
 	if RemoveItems("","Knochenarmreif",1)>0 then
 		GetPositionOfSubobject("","Game_Head","ParticleSpawnPos")
 		
-		SetRepeatTimer("", GetMeasureRepeatName2("UseOakwoodRing"), TimeOut)
+		SetMeasureRepeat(TimeOut)
 		AddImpact("","jewellery",1,duration)
 		SetState("",STATE_JEWELLERY,true)
 
