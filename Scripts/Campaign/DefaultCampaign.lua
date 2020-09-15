@@ -8,7 +8,7 @@ end
 -- on error return the error message
 
 function Prepare()
-	SetTime(EN_SEASON_SPRING,1400, 8, 0)
+	SetTime(EN_SEASON_SPRING, 1400, 8, 0)
 	return true
 end
 
@@ -16,7 +16,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 
 	local PrimTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_TAVERN, -1 }
 	local	Protos = { GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_TAILORING, GL_BUILDING_TYPE_ROBBER, 
-									 GL_BUILDING_TYPE_ALCHEMIST_SHOP, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CASTLE, GL_BUILDING_TYPE_THIEF, 
+									 GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CASTLE, GL_BUILDING_TYPE_THIEF, 
 									 GL_BUILDING_TYPE_PIRAT, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_FRIEDHOF, GL_BUILDING_TYPE_GAUKLER, GL_BUILDING_TYPE_MILL, 
 									 GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_STONEMASON }
 	local	Pos
@@ -24,21 +24,21 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	local y = 0
 	local CityLevel = CityGetLevel(City)
 	
-	if CityLevel<=2 then
+	if CityLevel <= 2 then
 		y = 0
-	elseif CityLevel==3 then
+	elseif CityLevel == 3 then
 		y = 1
-	elseif CityLevel==4 then
+	elseif CityLevel == 4 then
 		y = 2
-	elseif CityLevel==5 then
+	elseif CityLevel == 5 then
 		y = 3
 	else
 		y = 3
 	end
 	
-	for x=0,y do
+	for x = 0, y do
 		if not AliasExists("WorkingHut") then
-			local Start = Rand(5)+1
+			local Start = Rand(5) + 1
 			Pos = Start
 			while PrimTypes[Pos] do
 				Count = CityGetBuildingCount(City, -1, PrimTypes[Pos], -1, -1, FILTER_HAS_DYNASTY)
