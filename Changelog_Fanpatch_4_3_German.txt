@@ -22,6 +22,7 @@ Bugfix-Liste
 - Cooldown bei der Maßnahme 'Reichspolitik' funktionierte nicht.
 - Cooldown beim Knochenarmreif war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
 - Schattendynastien konnten nicht als Alchemist starten
+- Kleinerer Fehler bei der KI der fahrenden Händler behoben.
 
 Features
 

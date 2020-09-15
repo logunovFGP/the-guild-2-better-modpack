@@ -13,6 +13,7 @@ Bug-Fixes & Workarounds:
 - "Sich umhören" konnte zu schwerwiegenden Spielproblemen (Freeze) führen (Wegen MeasureRun)
 - Die Funktionen, die in Z. 39 und 41 in HireEmployee benutzt werden, benötigen keinen Parameter.
 - Schatten-Dynastien konnten zu Spielbeginn nicht Alchemist werden (Protos: "GL_BUILDING_TYPE_ALCHEMIST_SHOP" statt "GL_BUILDING_TYPE_ALCHEMIST") 
+- Scriptfehler in state_tradercontrol: Property "BeeingPlundered" muss "BeingPlundered" heißen.
 
 Offen:
 - Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
@@ -20,7 +21,6 @@ Offen:
 - Nach einem Duell wurde die Gunst doppelt erhöht.
 - Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
 - Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
-- Scriptfehler in state_tradercontrol: Property "BeingPlundered" muss "BeeingPlundered" heißen.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
 - Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
 - In den Gildenlieferungen wurden etwas weniger Rohstoffe generiert, als eigentlich vorgesehen (Rand(10) -> Rand(10)+1).
