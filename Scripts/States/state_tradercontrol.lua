@@ -121,13 +121,13 @@ end
 
 function CheckCart(CurrentCart)
 	local PlunderCount -- update plundercount
-	if HasProperty(CurrentCart,"BeeingPlundered") then
-		PlunderCount = GetProperty(CurrentCart,"BeeingPlundered") 
+	if HasProperty(CurrentCart,"BeingPlundered") then
+		PlunderCount = GetProperty(CurrentCart,"BeingPlundered") 
 	end
 	local MainPlunderCount = GetProperty("","Plundered")
 	if PlunderCount and PlunderCount > 0 then
 		MainPlunderCount = MainPlunderCount + PlunderCount
-		SetProperty(CurrentCart,"BeeingPlundered",0)
+		SetProperty(CurrentCart,"BeingPlundered",0)
 		SetProperty("","Plundered",MainPlunderCount)
 	end
 	
