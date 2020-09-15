@@ -6,6 +6,7 @@ Allgemeines
 - Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich)
 - Cutscene-Aufteilung in mehreren Scripten entfernt (performanter und beugt Fehlern vor)
 - SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
+- Keine erzwungene Heilung von kranken Mitarbeitern beim Anheuern mehr.
 
 Bugfix-Liste
 
@@ -20,6 +21,7 @@ Bugfix-Liste
 - Cooldown von Jemanden zum Tanzen auffordern entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
 - Cooldown bei der Maßnahme 'Reichspolitik' funktionierte nicht.
 - Cooldown beim Knochenarmreif war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
+- Schattendynastien konnten nicht als Alchemist starten
 
 Features
 

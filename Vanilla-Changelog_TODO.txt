@@ -12,12 +12,12 @@ Bug-Fixes & Workarounds:
 - Script-Fehler beim Thesenpapier behoben (Eine überzählige ")" in Z. 66)
 - "Sich umhören" konnte zu schwerwiegenden Spielproblemen (Freeze) führen (Wegen MeasureRun)
 - Die Funktionen, die in Z. 39 und 41 in HireEmployee benutzt werden, benötigen keinen Parameter.
+- Schatten-Dynastien konnten zu Spielbeginn nicht Alchemist werden (Protos: "GL_BUILDING_TYPE_ALCHEMIST_SHOP" statt "GL_BUILDING_TYPE_ALCHEMIST") 
 
 Offen:
 - Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
-- Schatten-Dynastien konnten zu Spielbeginn nicht Alchemist werden (Protos: "GL_BUILDING_TYPE_ALCHEMIST_SHOP" statt "GL_BUILDING_TYPE_ALCHEMIST") 
 - Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
 - Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
 - Scriptfehler in state_tradercontrol: Property "BeingPlundered" muss "BeeingPlundered" heißen.
