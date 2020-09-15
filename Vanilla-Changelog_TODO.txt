@@ -11,9 +11,9 @@ Bug-Fixes & Workarounds:
   Kranken zurückgelegt.
 - Script-Fehler beim Thesenpapier behoben (Eine überzählige ")" in Z. 66)
 - "Sich umhören" konnte zu schwerwiegenden Spielproblemen (Freeze) führen (Wegen MeasureRun)
+- Die Funktionen, die in Z. 39 und 41 in HireEmployee benutzt werden, benötigen keinen Parameter.
 
 Offen:
-- Die Funktionen, die in Z. 39 und 41 in HireEmployee benutzt werden, benötigen keinen Parameter.
 - Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
