@@ -42,18 +42,6 @@ function Run()
 	elseif BuildingGetType("Destination") == 111 then
 		ms_048_hireemployee_CheckLeibwache()
 	end	
-
-	if GetImpactValue("", "Sickness") > 0 then
-		diseases_Sprain("", false)
-		diseases_Cold("", false)
-		diseases_Influenza("", false)
-		diseases_BurnWound("", false)
-		diseases_Pox("", false)
-		diseases_Pneumonia("", false)
-		diseases_Blackdeath("", false)
-		diseases_Fracture("", false)
-		diseases_Caries("", false)
-	end
 	
 	MoveSetActivity("", "")
 	chr_CalculateBuildingBonus("", "Destination", "hire")
