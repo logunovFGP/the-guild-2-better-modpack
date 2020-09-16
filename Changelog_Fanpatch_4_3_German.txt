@@ -5,6 +5,7 @@ Allgemeines
 - Unnötige Cutscene-Aufteilung aus mehreren Scripten entfernt.
 - SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim Anheuern mehr.
+- Es werden mehr verschiedene Musikstücke gespielt, inklusive einiger bisher nie gehörten Lieder.
 
 Bugfix-Liste
 
