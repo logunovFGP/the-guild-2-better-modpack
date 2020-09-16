@@ -6,6 +6,9 @@ Allgemeines
 - SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim Anheuern mehr.
 - Es werden mehr verschiedene Musikstücke gespielt, inklusive einiger bisher nie gehörten Lieder.
+- Es wurden die Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert)
+- Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte.
+- Die Jahre-Pro-Runde Option wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte.
 
 Bugfix-Liste
 
@@ -27,4 +30,6 @@ Features
 
 - Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt)
-
+- Größere Übersichtskarte
+- Größeres Gebäude-Upgradefenster
+- Gesichtstexturen der weiblichen Charaktere angepasst
