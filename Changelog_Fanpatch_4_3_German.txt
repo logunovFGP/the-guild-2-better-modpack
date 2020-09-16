@@ -1,10 +1,8 @@
 Allgemeines
 
-- Einrückungen und Leerzeichen in den Scripten korrigiert.
-- Absätze und Kommentare hinzugefügt.
-- Scripte aufgeräumt/optimiert
+- Scripte aufgeräumt: Einrückungen und Leerzeichen in den Scripten korrigiert. Absätze und Kommentare hinzugefügt. Funktionen + Aufbau optimiert.
 - Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich)
-- Cutscene-Aufteilung in mehreren Scripten entfernt (performanter und beugt Fehlern vor)
+- Unnötige Cutscene-Aufteilung aus mehreren Scripten entfernt.
 - SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim Anheuern mehr.
 
