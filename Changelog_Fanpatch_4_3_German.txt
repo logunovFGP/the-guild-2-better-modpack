@@ -24,6 +24,7 @@ Bugfix-Liste
 - Cooldown beim Knochenarmreif war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
 - Schattendynastien konnten nicht als Alchemist starten
 - Kleinerer Fehler bei der KI der fahrenden Händler behoben.
+- Den Gefängnistürmen war keine Musik zugewiesen. Einigen Gebäuden ohne Innenraum hatten hingegen nicht hinterlegte Musik-IDs.
 
 Features
 
