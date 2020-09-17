@@ -5,8 +5,7 @@ Allgemeines
 - Unnötige Cutscene-Aufteilung aus mehreren Scripten entfernt.
 - SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim Anheuern mehr.
-- Es werden mehr verschiedene Musikstücke gespielt, inklusive einiger bisher nie gehörten Lieder.
-- Es wurden die Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert)
+- Es wurden die original Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert)
 - Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte.
 - Die Jahre-Pro-Runde Option wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte.
 
@@ -33,3 +32,5 @@ Features
 - Größere Übersichtskarte
 - Größeres Gebäude-Upgradefenster
 - Gesichtstexturen der weiblichen Charaktere angepasst
+- Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
+  abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
