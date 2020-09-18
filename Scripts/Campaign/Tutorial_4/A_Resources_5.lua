@@ -31,16 +31,9 @@ function Start()
 	
 	ShowTutorialBoxNoWait(100, 690, 500, 150, 1, LEFTLOWER_NOARROW, "@L_TUTORIAL_CHAPTER_4_BUY_RESSOURCES_SMITHY_NAME",  "@L_TUTORIAL_CHAPTER_4_BUY_RESSOURCES_SMITHY_TASK",  "Hud/Buttons/ToggleProductionAndStock.tga")
 	
-	
-	local Slots = InventoryGetSlotCount("#Smithy")
-	local ItemId
-	local ItemCount
-	local Number
-	for Number = 0, Slots-1 do
-		ItemId, ItemCount = InventoryGetSlotInfo("#Smithy", Number)
-		if ItemId == 241 then
-			RemoveItems("#Smithy", ItemId, ItemCount)
-		end
+	local ToolCount = GetItemCount("#Smithy", "Tool", INVENTORY_STD)
+	if ToolCount > 0 then
+		RemoveItems("#Smithy", "Tool", ToolCount)
 	end	
 end
 
@@ -66,7 +59,6 @@ end
 -------------------------------------------------------------------------------
 function End()
 	StartQuest("A_Resources_6","#Player","",false)
-
 	KillQuest()
 end
 
