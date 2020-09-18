@@ -1,19 +1,12 @@
 function Weight()
 
 	local Hour = math.mod(GetGametime(), 24)
-	if Hour<8 or Hour>16 then
-		return 0
-	end
-
-	if GetImpactValue("SIM", "InspectBusiness")==0 then
-		return 0
-	end
 	
-	if GetImpactValue("dynasty","BeeingInspected")==1 then
+	if Hour < 8 or Hour >16 then
 		return 0
-	end	
+	end
 
-	if GetMeasureRepeat("SIM", "InspectBusiness")>0 then
+	if GetImpactValue("SIM", "InspectBusiness") == 0 then
 		return 0
 	end
 
@@ -22,7 +15,12 @@ function Weight()
 	end
 
 	local NumServant = CityGetServantCount("CityAlias", GL_PROFESSION_INSPECTOR)
+	
 	if not CityGetServant("CityAlias", Rand(NumServant), GL_PROFESSION_INSPECTOR, "diib_Servant") then
+		return 0
+	end
+	
+	if GetMeasureRepeat("diib_Servant", "InspectBusiness") >0 then
 		return 0
 	end
 
@@ -32,18 +30,21 @@ function Weight()
 	
 	for trys=0,5 do
 	
-		if DynastyGetRandomBuilding("VictimDynasty",2,-1,"diib_Target") then
+		if DynastyGetRandomBuilding("VictimDynasty", 2, -1, "diib_Target") then
 			if GetSettlementID("diib_Target") == GetSettlementID("SIM") then
-				return 100
+				if GetImpactValue("diib_Target", "BeeingInspected") == 1 then
+					return 0
+				else
+					return 100
+				end
 			end
 		end
-
 	end
 
 	return 0
 end
 
 function Execute()
-	MeasureRun("diib_Servant","diib_Target","InspectBusiness")
+	MeasureRun("diib_Servant", "diib_Target", "InspectBusiness")
 end
 

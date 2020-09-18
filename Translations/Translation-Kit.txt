@@ -2,6 +2,8 @@ Translate and add the following lines below:
 
 18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
 18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
+18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target already has been inspected recently. Try again later."   |
+
 
 
 Translate and change/swap the following lines:

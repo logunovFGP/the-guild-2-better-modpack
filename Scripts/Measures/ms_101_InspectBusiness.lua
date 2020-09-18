@@ -11,62 +11,75 @@
 
 function Run()
 	
+	if not AliasExists("Destination") then
+		StopMeasure()
+	end
+	
 	local Worker
-	local i
 	--time before building can be inspected again, in hours
 	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
+	local Duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	--check if building is ready to inspect
-	GetSettlement("","InspectingCity")
-	
-	if (GetImpactValue("Dynasty","BeeingInspected")==1) then
+	if (GetImpactValue("Destination", "BeeingInspected") == 1) then
+		MsgQuick("", "@L_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1")
 		StopMeasure()
 	end
 	
 	--check if destination is too far from city
-	GetPosition("InspectingCity","CityPos")
-	if not AliasExists("Destination") then
-		StopMeasure()
-	end
-	GetPosition("Destination","BuildingPos")
-	if GetDistance("BuildingPos","CityPos") > 10000 then
-		MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+23")
-		StopMeasure()
-	end
+	GetSettlement("", "InspectingCity")
+	GetPosition("InspectingCity", "CityPos")
 	
+	if GetDistance("Destination", "CityPos") > 8000 then
+		MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+23")
+		StopMeasure()
+	end
 	
 	--add impact, and move the inspector in the building
-	if not f_MoveTo("","Destination") then
+	if not f_MoveTo("", "Destination") then
 		MsgQuick("Dynasty", "@L_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+0", GetID("Building"))
 		StopMeasure()
 	end
-	AddImpact("Dynasty","BeeingInspected",1,duration)
 	
-	SimGetWorkingPlace("","Workbuilding")
-	SetRepeatTimer("Workbuilding", GetMeasureRepeatName(), TimeOut)
+	local TimeToInspectAgain = 48
 	
+	AddImpact("Destination", "BeeingInspected", 1, TimeToInspectAgain)
+	SetRepeatTimer("", GetMeasureRepeatName(), TimeOut)
+	
+	-- lose favor
+	local FavorToLose = 20
+	if GetOfficeTypeHolder("InspectingCity", 6 ,"InspectorBoss") then	-- 6 = EN_OFFICETYPE_GUILDMAN
+		if BuildingGetOwner("Destination", "EnemyBoss") then
+			ModifyFavorToSim("InspectorBoss", "EnemyBoss", -FavorToLose)
+		end
+	else
+		FavorToLose = 0
+	end
+		
 	--check workers, no workers in building, then stop it
 	WorkerCount = BuildingGetWorkerCount("Destination")
 	if WorkerCount > 0 then
 		for i=0,WorkerCount-1 do
-			if BuildingGetWorker("Destination",i,"Worker") then
-				SendCommandNoWait("Worker","StopDoingAnything")
+			if BuildingGetWorker("Destination", i, "Worker") then
+				if FavorToLose > 0 then
+					ModifyFavorToSim("InspectorBoss", "Worker", -FavorToLose)
+				end
+				SendCommandNoWait("Worker", "StopDoingAnything")
 			end
 		end
 	end
 		
 	local	Type =  BuildingGetType("Destination")	
 		
-	StartGameTimer(duration)
+	StartGameTimer(Duration)
 	
-	SetData("Time",duration)
+	SetData("Time", Duration)
 	local StartTime = GetGametime()
-	local EndTime = StartTime + duration
-	SetData("EndTime",EndTime)
-	SetProcessMaxProgress("",duration*10)
-	SendCommandNoWait("","Progress")
+	local EndTime = StartTime + Duration
+	SetData("EndTime", EndTime)
+	SetProcessMaxProgress("", Duration*10)
+	SendCommandNoWait("", "Progress")
 	
 	feedback_MessageWorkshop("Destination",
 		"@L_PRIVILEGES_101_INSPECTBUSINESS_MSG_DESTINATION_HEAD_+0",
@@ -112,11 +125,13 @@ function Run()
 							"ShelfC","watch_for_guard","ShelfD","cogitate","ShelfE","manipulate_middle_twohand",
 							"ShelfF","manipulate_top_l","ShelfG","cogitate","Desk","manipulate_middle_twohand")
 		else
+		
 			if Rand(100) < 50 then
-				PlayAnimation("","cogitate")
+				PlayAnimation("", "cogitate")
 			else
-				PlayAnimation("","watch_for_guard")
+				PlayAnimation("", "watch_for_guard")
 			end
+			
 			Sleep(2)
 		end
 		
@@ -130,9 +145,10 @@ end
 function StopDoingAnything()
 	--SimStopMeasure("")
 	ExitCurrentBuildingNoWait("")
+	f_StrollNoWait("", 300, 1)
+	
 	while true do
-		
-		Sleep(10)
+		Sleep(20)
 	end
 end
 
@@ -154,7 +170,7 @@ function Inspect(...)
 		end
 		
 		
-		GetLocatorByName("Destination",locname,"MovePos")
+		GetLocatorByName("Destination", locname, "MovePos")
 		f_MoveTo("", "MovePos")
 		PlayAnimation("", arg[pos+1])
 		
@@ -163,7 +179,6 @@ function Inspect(...)
 end
 
 function CleanUp()
-
 	ResetProcessProgress("")
 end
 

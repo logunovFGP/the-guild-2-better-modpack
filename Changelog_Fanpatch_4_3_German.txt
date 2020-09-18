@@ -1,32 +1,34 @@
 Allgemeines
 
 - Scripte aufgeräumt: Einrückungen und Leerzeichen in den Scripten korrigiert. Absätze und Kommentare hinzugefügt. Funktionen + Aufbau optimiert.
-- Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich)
+- Scripte aufgeräumt: Einige redundante Impacts entfernt.
+- Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich).
 - Unnötige Cutscene-Aufteilung aus mehreren Scripten entfernt.
 - SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
-- Keine erzwungene Heilung von kranken Mitarbeitern beim Anheuern mehr.
-- Es wurden die original Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert)
-- Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte.
+- Keine erzwungene Heilung von kranken Mitarbeitern beim manuellen Anheuern mehr.
+- Es wurden die original Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert).
+- Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte. Nutzt die Maßnahme 'Gruppe verwalten' (hinter dem Button zum Inventar öffnen).
 - Die Jahre-Pro-Runde Option wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte.
+- Das Standard-KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 
 Bugfix-Liste
 
-- Falsche Itemnamen bei diversen Artefakt-Skripten
-- Exploit: Man konnte die Items nach Start einiger Maßnahmen aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
-- Redundante Impacts entfernt
-- Der Vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers
-- Medizinische Behandlungen konnten sich aufhängen + Scriptoptimierungen
-- Thesenpapier-Script war kaputt
-- Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig
+- Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
+- Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
+- Der Vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers.
+- Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
+- Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
+- Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.
 - Jemandem ein Geschenk machen hatte keinen Cooldown
-- Cooldown von Jemanden zum Tanzen auffordern entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
-- Cooldown bei der Maßnahme 'Reichspolitik' funktionierte nicht.
-- Cooldown beim Knochenarmreif war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
-- Schattendynastien konnten nicht als Alchemist starten
+- Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
+- Cooldown bei der Maßnahme 'Reichspolitik' (Landsitz) funktionierte nicht.
+- Cooldown beim Anlegen des Knochenarmreifs war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
+- Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
 - Kleinerer Fehler bei der KI der fahrenden Händler behoben.
-- Den Gefängnistürmen war keine Musik zugewiesen. Einigen Gebäuden ohne Innenraum hatten hingegen nicht hinterlegte Musik-IDs.
-- Die KI konnte beim Becircen in der Taverne stecken bleiben
-- Einige weitere Probleme bei der Becircen-Maßnahme behoben
+- Den Gefängnistürmen war keine Musik zugewiesen. Einige Gebäude ohne Innenraum hatten hingegen unbekannte Musik-IDs.
+- Die KI konnte beim Becircen in der Taverne stecken bleiben. Zudem wurden einige weitere Probleme mit der Maßnahme behoben.
+- Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
+- Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
 
 Features
 
@@ -42,3 +44,5 @@ Balancing
 
 - Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben
 - Gunstgewinn beim Becircen leicht modifiziert.
+- Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb
+nur einmal alle 48 Ingamestunden überprüft werden. Zudem verliert man massiv an Gunst beim Betriebsleiter und bei den Angestellten.
