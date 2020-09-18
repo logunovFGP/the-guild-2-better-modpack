@@ -16,12 +16,12 @@ Bug-Fixes & Workarounds:
 - Scriptfehler in state_tradercontrol: Property "BeeingPlundered" muss "BeingPlundered" heißen.
 - Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
 - Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
+- Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
 
 Offen:
 - Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
-- Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
 - Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
 - In den Gildenlieferungen wurden etwas weniger Rohstoffe generiert, als eigentlich vorgesehen (Rand(10) -> Rand(10)+1).

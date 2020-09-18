@@ -3,6 +3,11 @@ Translate and add the following lines below:
 18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
 18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
 18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target already has been inspected recently. Try again later."   |
+18003   "_AI_NEWRIVALINTOWN_HEAD_+0"   "You have a new competitor!"   |
+18004   "_AI_NEWRIVALINTOWN_BODY_+0"   "%1SN is not pleased that your %3GG has been built in the same city as %2GG. You are now competing with one another, hopefully it remains mostly peaceful between your dynasties ..."   |
+18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN points out that %3GG is built in the same city as %2GG. Hopefully your relationship will stay peacefully."   |
+18006   "_BUYBUILDING_CREDIT_HEAD_+0"   "Credit account closed"   |
+18007   "_BUYBUILDING_CREDIT_BODY_+0"   "The credit account of %1GG was closed on sale. You received %2t from the account."   |
 
 
 
