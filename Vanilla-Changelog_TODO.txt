@@ -14,12 +14,13 @@ Bug-Fixes & Workarounds:
 - Die Funktionen, die in Z. 39 und 41 in HireEmployee benutzt werden, benötigen keinen Parameter.
 - Schatten-Dynastien konnten zu Spielbeginn nicht Alchemist werden (Protos: "GL_BUILDING_TYPE_ALCHEMIST_SHOP" statt "GL_BUILDING_TYPE_ALCHEMIST") 
 - Scriptfehler in state_tradercontrol: Property "BeeingPlundered" muss "BeingPlundered" heißen.
+- Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
+- Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
 
 Offen:
 - Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
-- Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
 - Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
 - Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
@@ -95,7 +96,6 @@ Offen:
   oder während Wunderkuren geholt werden.
 - Beim Quacksalben werden die Goldgewinne nun nur für die eigene Dynastie angezeigt
 - Fehlende Fehlermeldung beim Anheuern hinzugefügt, sollte der Arbeiter gerade umworben werden.
-- Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
 - Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
   um Patienten zu behandeln.
 - Schergen werden nicht länger von Taschendieben, dem schwarzen Brett, Quacksalberern

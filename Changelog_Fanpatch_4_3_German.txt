@@ -25,6 +25,8 @@ Bugfix-Liste
 - Schattendynastien konnten nicht als Alchemist starten
 - Kleinerer Fehler bei der KI der fahrenden Händler behoben.
 - Den Gefängnistürmen war keine Musik zugewiesen. Einigen Gebäuden ohne Innenraum hatten hingegen nicht hinterlegte Musik-IDs.
+- Die KI konnte beim Becircen in der Taverne stecken bleiben
+- Einige weitere Probleme bei der Becircen-Maßnahme behoben
 
 Features
 
@@ -35,3 +37,8 @@ Features
 - Gesichtstexturen der weiblichen Charaktere angepasst
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
+
+Balancing
+
+- Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben
+- Gunstgewinn beim Becircen leicht modifiziert.
