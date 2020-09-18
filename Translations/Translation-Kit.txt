@@ -8,7 +8,15 @@ Translate and add the following lines below:
 18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN points out that %3GG is built in the same city as %2GG. Hopefully your relationship will stay peacefully."   |
 18006   "_BUYBUILDING_CREDIT_HEAD_+0"   "Credit account closed"   |
 18007   "_BUYBUILDING_CREDIT_BODY_+0"   "The credit account of %1GG was closed on sale. You received %2t from the account."   |
+18008   "_GENERAL_ERROR_HEAD_+0"   "Measure failed"   |
+18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN already has that kind of impact! Wait until the effect wears off before you use this item again." |
+18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG already has that kind of impact! Wait until the effect wears off before you use this item again." |
+
 
 
 
 Translate and change/swap the following lines:
+7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
+7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
+
+

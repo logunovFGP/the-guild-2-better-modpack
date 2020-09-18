@@ -1,3 +1,5 @@
+MegaModPack Reforged - Lite 0.1
+
 Allgemeines
 
 - Scripte aufgeräumt: Einrückungen und Leerzeichen in den Scripten korrigiert. Absätze und Kommentare hinzugefügt. Funktionen + Aufbau optimiert.
@@ -29,6 +31,7 @@ Bugfix-Liste
 - Die KI konnte beim Becircen in der Taverne stecken bleiben. Zudem wurden einige weitere Probleme mit der Maßnahme behoben.
 - Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
 - Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
+- Es wurde kein Hexerroben-Status-Icon angezeigt.
 
 Features
 
@@ -46,3 +49,5 @@ Balancing
 - Gunstgewinn beim Becircen leicht modifiziert.
 - Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb
 nur einmal alle 48 Ingamestunden überprüft werden. Zudem verliert man massiv an Gunst beim Betriebsleiter und bei den Angestellten.
+- Die Hexerrobe verursacht keinen Malus mehr.
+

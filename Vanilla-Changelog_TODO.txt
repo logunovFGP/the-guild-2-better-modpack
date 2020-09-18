@@ -17,14 +17,15 @@ Bug-Fixes & Workarounds:
 - Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
 - Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
 - Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
+- Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
+- Die Hexerrobe zeigte kein Mini-Icon (Impact-Symbol) an.
 
 Offen:
+
 - Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
-- Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
-- In den Gildenlieferungen wurden etwas weniger Rohstoffe generiert, als eigentlich vorgesehen (Rand(10) -> Rand(10)+1).
 - Fehlerhafte Warenhaus-Upgrades repariert.
 - Man kann Sims, die man grade gefeuert hat, nicht sofort wieder umwerben.
 - Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
