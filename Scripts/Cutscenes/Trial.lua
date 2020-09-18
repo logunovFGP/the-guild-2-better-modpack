@@ -720,8 +720,7 @@ function Go()
 		FugitiveYears = 6
 	end
 
-	local Options = FindNode("\\Settings\\Options")
-	local YearsPerRound = Options:GetValueInt("YearsPerRound")
+	local YearsPerRound = ScenarioGetYearsPerRound()
 	local FugitiveHours = FugitiveYears * 24 / YearsPerRound
 
 	--judge is lost and jailed somewhere
@@ -1436,14 +1435,14 @@ function Go()
 					PlayAnimationNoWait("judge", "sit_talk")
 					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6",GetID("accused"))
 					PenaltyType = PENALTY_PRISON
-					local YearsPerRound = Options:GetValueInt("YearsPerRound")
+					local YearsPerRound = ScenarioGetYearsPerRound()
 					PenaltyValue = 96 / YearsPerRound
 				end
 			elseif SentenceLevel==5 then
 				PlayAnimationNoWait("judge", "sit_talk")
 				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6",GetID("accused"),PenaltyValue)
 				PenaltyType = PENALTY_PRISON
-				local YearsPerRound = Options:GetValueInt("YearsPerRound")
+				local YearsPerRound = ScenarioGetYearsPerRound()
 				PenaltyValue = 96 / YearsPerRound
 			elseif SentenceLevel==6 then
 				PlayAnimationNoWait("judge", "sit_talk")
