@@ -469,7 +469,7 @@ Data:
 1492   "DarfFreiHandeln"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.MinAge(16))AND(Object.GetOwnedBuildings())AND(Object.IsType(2))AND(Object.HasUpgrade(GuildNewsletter)))"   |
 1504   "IstHafenMarkt"   "__F((Object.IsClass(3))AND(Object.IsType(13)))"   |
 1507   "CanBeControlledPlusA"   "__F((Object.CanBeControlled())AND(Object.IsClass(4)))"   |
-1509   "AutoRoutenButtons"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND(Object.Type==Cart)OR(Object.Type==Building)AND(Object.BelongsToMe())OR(Object.Type==Building)AND(Object.IsClass(5)))"   |
+1509   "AutoRoutenButtons"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND NOT(Object.IsType(4))AND NOT(Object.IsType(8)))"   |
 1510   "ObjectFuerStadtAusBau"   "__F((Object.IsClass(3))OR(Object.IsClass(1))AND NOT(Object.IsType(31))AND NOT(Object.IsType(29))AND NOT(Object.IsType(28))AND NOT(Object.IsType(32))AND NOT(Object.IsType(41))AND NOT(Object.IsType(2))AND NOT(Object.IsType(105))AND NOT(Object.IsType(107)))"   |
 1513   "AutoRoutenZiel"   "__F((Object.BelongsToMe())OR(Object.IsClass(5))AND(Object.Type==Building)AND NOT(Object.IsType(2)))"   |
 1516   "CanUseDrunkGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(36))AND(Object.GetLevel()>=2))"   |
