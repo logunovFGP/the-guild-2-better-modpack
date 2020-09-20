@@ -1,0 +1,60 @@
+MegaModPack Reforged - Lite 0.1
+
+General
+
+- Script cleanup: Corrected tabs and spaces in scripts. Added sections and comments. Optimized structure and functions.
+- Script cleanup: Removed redundand impacts and other unused DB entries.
+- Seperated unused scripts inside the new 'Removed' folder (To make use of that, you must delete your original Scripts folder before applying this patch).
+- Removed unnecessary scripts seperation for cutscenes in multiple cases.
+- Script cleanup: Changed SetRepeatTimer to SetMeasureRepeat during multiple measures.
+- Newly hired workers will no longer get cured automaticly.
+- Added the original ships of Pirates of the Eastern Seas (and thus ships show their dynasty color again).
+- Removed the button 'Remove from party' inside the family tree because that button removed a character permanently. Use the measure 'Measure group' instead for adding and removing as you like.
+- The option for frequency of office sessions during game setup has been removed from multiplayer because it lead to an OOS in the second turn. Default setting is 2 now.
+- The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
+- You can no longer marry workers or guards.
+
+Bugfixes
+
+- Multiple artefact-scripts didn't use the correct item name from the DB.
+- Exploit: After starting certain artefact measures, you could remove the item from the inventory before it was deleted and still get the full effect.
+- The poisoned cake didn't lower the fighting skill.
+- The measure 'Assign for treatment' could get stuck. Also the script has been optimized.
+- The measure 'Use thesis paper' could not start properly due to a critical bug.
+- The measure 'Ask around' could lead to a freeze. Also you did not get evidence properly.
+- The measure 'Make a present' had no cooldown.
+- The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
+- The measure 'Imperial politics' had no cooldown.
+- Due to a copy and paste error the measure 'Use bone bangle' could have the wrong cooldown.
+- Shadow AI could not start the game as an alchemist.
+- Fixed multiple DB entries regarding background music in buildings.
+- AI could get stuck in taverns during the 'sweet talking' measure. Fixed multiple additional issues.
+- Removed the cooldown of the "train" measure. Fixed the pathfinding during that measure to prevent characters moving through the chimney.
+- There was a small bug inside the AI if they could control the buisness inspectors.
+- The sorcerer's robe had no state icon.
+- Improved the workaround against spinning carts (stucking forever) with a more effective solution which is also better for the overall game performance.
+- You can no longer hire workers who are currently courted (prevents bugs).
+- The automatic search for high level workers did not work.
+- High level workers no longer lose their XP if they get hired.
+- Neutral traders and ships would do nothing after a few rounds. Also fixed some script errors.
+- War happened only a few times in the beginning of the game. 
+- During war, your actions would have no effect on victory or defeat no matter how many troops you would get. 
+
+Features
+
+- Your medical treatments slightly boost the opinion of the patients to the owner of that hospital
+- Improved hospital AI: No more than 2 employees will be assigned to treat patients.
+- Added a bigger world map.
+- Added a bigger building upgrade sheet.
+- Improved some female character textures.
+- The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
+- The famous trading routes of ThreeOfMe have been added.
+
+Balancing
+
+- Sweet talking needs 300 instead of 200 Gold. Tavern keepers will get that money.
+- Favor gain of sweet talking has been altered.
+- You can now use ALL of your buisness inspectors to inspect buisnesses instead of just one at a time. However you can no longer inspect buisnesses more than once every 48 hours.
+  Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
+- Sorcerer's robe no longer will give you a malus.
+

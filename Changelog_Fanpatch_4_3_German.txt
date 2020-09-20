@@ -18,7 +18,7 @@ Bugfix-Liste
 
 - Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
-- Der vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers.
+- Der vergiftete Kuchen senkte nicht die Kampfkraft des Opfers.
 - Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
 - Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
 - Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.
@@ -27,8 +27,7 @@ Bugfix-Liste
 - Cooldown bei der Maßnahme 'Reichspolitik' (Landsitz) funktionierte nicht.
 - Cooldown beim Anlegen des Knochenarmreifs war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
-- Kleinerer Fehler bei der KI der fahrenden Händler behoben.
-- Den Gefängnistürmen war keine Musik zugewiesen. Einige Gebäude ohne Innenraum hatten hingegen unbekannte Musik-IDs.
+- Mehrere DB Einträge zu Hintergrund-Musik in Gebäuden korrigiert.
 - Die KI konnte beim Becircen in der Taverne stecken bleiben. Zudem wurden einige weitere Probleme mit der Maßnahme behoben.
 - Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
 - Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
@@ -37,7 +36,7 @@ Bugfix-Liste
 - Man kann keine Angestellten mehr anheuern, die gerade umworben werden (kann zu Fehlern führen).
 - Die automatische Suche nach höherleveligen Angestellten (Gesellen- und Meisterrang) funktionierte nicht.
 - Angestellte höheren Levels verloren ihre Erfahrung nach dem Anheuern.
-- Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen.
+- Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen und hatten darüber hinaus weitere Fehler.
 - Krieg fand nur in den ersten Spielrunden statt. 
 - Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
 
