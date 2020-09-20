@@ -1,3 +1,10 @@
+---
+--  Here is what the script does:
+-- Spawn trading carts and start measure "ms_WorldTrader" on them.
+-- Keep track of any robberies on the carts.
+-- Notify players when too many robberies have occured.
+-- Stop trading for a while if robberies don't stop.
+-- NOTE the corresponding script for ships is "state_marinecontrol.lua"
 
 function Init()
 
@@ -13,7 +20,7 @@ function Run()
 	local NearestDistance = 9999999
 	local NearestCity
 	for l=0,Count-1 do -- get nearest city
-		CityAlias = "City"..l
+    	local CityAlias = "City" .. l
 		if not CityIsKontor(CityAlias ) then
 			local Dist = CalcDistance("", CityAlias)
 			if Dist < 0 then
@@ -83,17 +90,13 @@ function Run()
 			SetProperty("","Plundered", 0)
 			SetProperty("","RobberMessageSaid", 0)			
 
-			GetLocalPlayerDynasty("dyn")
-			DynastyGetMember("dyn", 0, "player")
 			-- msg to all players;
-			MsgNewsNoWait("player","","","economie",-1, 
+			MsgNewsNoWait("All","","","economie",-1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
 				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("KontorSettlement")) 
 			
 		elseif MainPlunderCount > 2 and GetProperty("","RobberMessageSaid") ~= 1 then
-			GetLocalPlayerDynasty("dyn")
-			DynastyGetMember("dyn", 0, "player")
-			MsgNewsNoWait("player","","","economie",-1, 
+			MsgNewsNoWait("All","","","economie",-1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
 				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("KontorSettlement")) 
 			SetProperty("","RobberMessageSaid", 1)
@@ -115,23 +118,23 @@ function Run()
 			SetProperty("","LastTimeRobbed", CurrentRound)
 		end
 		
-		Sleep(Rand(10)+10)
+        	Sleep(15)
 	end
 end
 
 function CheckCart(CurrentCart)
 	local PlunderCount -- update plundercount
-	if HasProperty(CurrentCart,"BeingPlundered") then
-		PlunderCount = GetProperty(CurrentCart,"BeingPlundered") 
+	if HasProperty(CurrentCart,"BeeingPlundered") then
+		PlunderCount = GetProperty(CurrentCart,"BeeingPlundered") 
 	end
 	local MainPlunderCount = GetProperty("","Plundered")
 	if PlunderCount and PlunderCount > 0 then
 		MainPlunderCount = MainPlunderCount + PlunderCount
-		SetProperty(CurrentCart,"BeingPlundered",0)
+		SetProperty(CurrentCart,"BeeingPlundered",0)
 		SetProperty("","Plundered",MainPlunderCount)
 	end
 	
-	local CartType = CartGetType(CurrentCart)
+	-- local CartType = CartGetType(CurrentCart)
 	
 	if GetState(CurrentCart,STATE_BUILDING) then
 		return
@@ -153,9 +156,12 @@ end
 function BuyNewCart()
 	local Settlement = GetProperty("","Settlement")
 	local CityLevel = CityGetLevel(Settlement)
-	local CurrentCarts = GetProperty("","CartCount")
+	local CurrentCarts = GetProperty("","CartCount") or 0
 	local NewCartType = EN_CT_MIDDLE
 	
+    	if (HasProperty("", "WaterKontor", 1) == true) then
+        	return
+    	end
 	if CityLevel > 3 then
 		NewCartType = EN_CT_OX
 	end
@@ -181,24 +187,13 @@ function BuyNewCart()
 end
 
 function CanBuyNewCart()
-	-- 2 carts per settlement
-	local SettlementCount = ScenarioGetObjects("Settlement", 20, "City")
-	
-	local KontorCount = ScenarioGetBuildingCount(-1, 34, -1, -1, FILTER_IGNORE)
 	local Settlement = GetProperty("","Settlement")
 	local CityLevel = CityGetLevel(Settlement)	
 
-	local Diff = SettlementCount - KontorCount
+	local SettlementCount = ScenarioGetObjects("Settlement", 20, "City")
+	local KontorCount = ScenarioGetBuildingCount(-1, 34, -1, -1, FILTER_IGNORE)
 	
-	local CartCount = 2
-	
-	if CityLevel > 5 then
-		CartCount = 4
-	elseif CityLevel > 3 then
-		CartCount = 3
-	end
-	
-	CartCount = CartCount + Diff
+	local CartCount = CityLevel + (SettlementCount - KontorCount)
 	
 	if (GetProperty("","CartCount") >= CartCount) then
 		return false

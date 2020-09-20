@@ -37,6 +37,7 @@ Bugfix-Liste
 - Man kann keine Angestellten mehr anheuern, die gerade umworben werden (kann zu Fehlern führen).
 - Die automatische Suche nach höherleveligen Angestellten (Gesellen- und Meisterrang) funktionierte nicht.
 - Angestellte höheren Levels verloren ihre Erfahrung nach dem Anheuern.
+- Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen.
 
 Features
 

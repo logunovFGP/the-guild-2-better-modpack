@@ -1,28 +1,71 @@
+---
+-- Findings about this script:
+-- The trader will only buy at counting houses.
+-- The trader will only sell at markets. 
+-- The choice of items they will transport is quite limited and includes only resources.
+-- I guess the script was supposed to ensure availability of base resources in all towns. That didn't quite work though in my experience.
+-- DONE:
+-- Make the traders browse the town shops for offers in sales counter.
+-- TODO:
+-- Split into carts and ships to increase readability. Extract functions where necessary.
+-- Rethink the syntax of used properties as they seem somewhat crude. ("Source"..Type..Index..? = 1?)
+-- Enable the traders on maps without counting houses.
+-- Enable trade between towns.
+-- Possibly increase the number of traders. 
+
+
+
 function Run()	
 	GetScenario("scenario")
+	local Type
 	if not HasProperty("scenario", "static") then
 		local CartType = CartGetType("")
 	
 		if CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_MERCHANTMAN_SMALL then
-			SetData("TraderType", 0)	-- Free tradership
+			Type = 0 -- Free tradership
 		else
-			SetData("TraderType", 1)	-- Free tradercart
+			Type = 1 -- Free trader cart
 		end
+		SetData("TraderType", Type)	
 		
 		if not ms_worldtrader_SetupFreeTrader() then
 			return
 		end
-		
+		 
 		while true do
 			RemoveData("Source")
-			
+			Sleep(14)
+			-- source is always a counting house
 			ms_worldtrader_GotoSource()
-			ms_worldtrader_SetTarget()		
-			while ms_worldtrader_BuyThreeMostNeededGoods() ~= 1 do
-				Sleep(20)
-			end
+			-- TODO sell anything left in Inventory
+			-- target is selected and will always be a settlement
+			--LogMessage("::TOM::Worldtrader::Run Setting the target")
+			ms_worldtrader_SetTarget()
+			-- this will buy some items at counting house to trade with target
+			--LogMessage("::TOM::Worldtrader::Run Buying items at counting house.")
+			ms_worldtrader_BuyThreeMostNeededGoods()
+			
+			-- move to settlement
+			--LogMessage("::TOM::Worldtrader::GoToSource Returning to settlement.")
+			Sleep(12)
 			ms_worldtrader_GotoTarget()
+			-- sell items
+			--LogMessage("::TOM::Worldtrader::GoToSource Selling goods.")
 			ms_worldtrader_SellGoods()
+			Sleep(5)
+			
+			ms_worldtrader_BuyRandomGoods()
+			-- look for some random shops and buy something
+			--LogMessage("::TOM::Worldtrader::Run Let's do some local shopping.")
+			if Type == 1 then
+				local Slots = 2
+				if CartType == EN_CT_HORSE or CartType == EN_CT_OX then
+					Slots = 3
+				end
+				for i = 1, Slots do
+					ms_worldtrader_BuyRandomGoodsAtMarket()
+				end
+			end
 		end
 	end
 end
@@ -39,6 +82,7 @@ function SetupFreeTrader()
 	local LandTargetCount = 0
 	local WaterTargetCount = 0
 	
+	local Alias
 	for l=0,Count-1 do
 		Alias = "City"..l
 		if CityIsKontor(Alias) then
@@ -125,6 +169,15 @@ function GotoSource()
 	if not f_MoveTo("", Source, GL_MOVESPEED_RUN) then
 		return false
 	end
+	
+	-- remove current items
+	for Slot = 0, 2 do
+		--LogMessage("::TOM::Worldtrader::GoToSource Selling goods.")
+		local ItemId, ItemCount = InventoryGetSlotInfo("", Slot)
+		if ItemId and ItemId > 0 and ItemCount > 0 then
+			RemoveItems("", ItemId, ItemCount)		
+		end
+	end
 
 	return true
 end
@@ -153,16 +206,16 @@ function BuyThreeMostNeededGoods()
 	local MostNeededItems = {1,0,0}
 	local MostNeededValues = {0, 0, 0}
 	local Buystring = ""
-	local BoughtSomething = 0
+	local BoughtSomething = false
 	
 	-- randomize the start so all resources get bought
 	local Start = Rand(ResourceCount)+1
 	
-	MostNeededValues[1] = ms_worldtrader_CheckItem(Level, "Pinewood", 2, 4)
+	MostNeededValues[1] = ms_worldtrader_CheckItem(Level, "Pinewood", 1, 5)
 	local End = ResourceCount+Start
 	for i=Start,End do
 		local Index = math.mod(i,ResourceCount)+1
-		local ItemValue = ms_worldtrader_CheckItem(Level, Resources[Index], 10, 20)
+		local ItemValue = ms_worldtrader_CheckItem(Level, Resources[Index], 1, 5)
 		if ItemValue > MostNeededValues[1] then 
 			MostNeededItems[3] = MostNeededItems[2]
 			MostNeededItems[2] = MostNeededItems[1]
@@ -170,7 +223,7 @@ function BuyThreeMostNeededGoods()
 			MostNeededValues[3] = MostNeededValues[2]
 			MostNeededValues[2] = MostNeededValues[1]
 			MostNeededValues[1] = ItemValue
-			BoughtSomething = 1
+			BoughtSomething = true
 		elseif ItemValue > MostNeededValues[2] then
 			MostNeededItems[3] = MostNeededItems[2]
 			MostNeededItems[2] = Index
@@ -187,15 +240,13 @@ function BuyThreeMostNeededGoods()
 		
 			local index = MostNeededItems[j]
 			AddItems("", Resources[index] , MostNeededValues[j], INVENTORY_STD)
-
 		end
 	end
 	return BoughtSomething
 end
 
 function CheckItem(CityLevel, Item, MinCount, MaxCount)
-	local Wanted = 0
-	Wanted = MinCount + math.floor( (Rand(5) + MaxCount - MinCount)*(CityLevel+2)/5)
+	local Wanted = (MaxCount*CityLevel)
 	
 	local Count = GetItemCount(GetData("Target"), Item, INVENTORY_STD)
 	if Count < Wanted then
@@ -217,12 +268,39 @@ function SellGoods()
 		ItemId, ItemCount = InventoryGetSlotInfo("", Number, InventoryType)
 		if ItemId and ItemCount then
 			--Transfer("", Target, INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
-			AddItems(Target, ItemId, 1.5*ItemCount, INVENTORY_STD)
+			AddItems(Target, ItemId, (2*ItemCount), INVENTORY_STD)
 			RemoveItems("", ItemId, ItemCount, INVENTORY_STD)
 			local ItemName = GetDatabaseValue("Items", ItemId, "name")
 		end
 	end
 	Sleep(1)
+end
+
+function BuyRandomGoodsAtMarket()
+	local Target = GetData("Target")
+	if not GetSettlement(Target, "City") then
+		return
+	end
+	if not CityGetLocalMarket("City","LocalMarket") then
+		return
+	end
+	-- find random items that are over maxcount and buy them
+	local zSlots = InventoryGetSlotCount("LocalMarket", INVENTORY_STD)
+	local slotNr = Rand(zSlots)
+	local itemID, itemMen = InventoryGetSlotInfo("LocalMarket",slotNr,INVENTORY_STD)
+	local maxStock = GetDatabaseValue("Items", itemID, "max_stock")
+	if(itemID ~= nil and itemMen > maxStock) then
+		-- only fill one slot
+		local MaxItems
+		if CartGetType("") == EN_CT_OX then
+			MaxItems = 40
+		else
+			MaxItems = 20
+		end 
+		local Amount = math.min(MaxItems, itemMen)
+		AddItems("", itemID, Amount, INVENTORY_STD)
+		RemoveItems(Target, itemID, Amount, INVENTORY_STD)
+	end
 end
 
 function CleanUp()
