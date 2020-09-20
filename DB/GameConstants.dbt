@@ -2,7 +2,7 @@
 //Exported 
 
 Table Description:
-"id" INT -1 |"name" STRING  0               |"value" FLOAT  0 |"string" STRING  0             |
+"id" INT -1 |"name" STRING  0               |"value" FLOAT  0 |"string" STRING  0              |
 
 Data: 
 1            "GL_BUILDING_CLASS_WORKSHOP"    2                 ""                              | 
@@ -146,10 +146,10 @@ Data:
 159          "GL_PROFESSION_ELITEGUARD"      25                ""                              | 
 160          "GL_BUILDING_TYPE_RESOURCE"     30                ""                              | 
 162          "GL_BUILDING_TYPE_LINGERPLACE"  32                ""                              | 
-163          "GL_BUILDING_TYPE_BUILDABLERESOURCE" 33                ""                              | 
+163          "GL_BUILDING_TYPE_BUILDABLERESOURCE" 33           ""                              | 
 164          "GL_BUILDING_TYPE_CHURCH_CATH"  20                ""                              | 
 165          "GL_STANCE_SITBENCH"            7                 ""                              | 
-166          "GL_AI_WAIT_FOR_COURTING_PLAYER" 4                 ""                              | 
+166          "GL_AI_WAIT_FOR_COURTING_PLAYER" 4                ""                              | 
 168          "GL_COST_FOR_ESCORTGUY"         750               ""                              | 
 169          "GL_BUILDING_CLASS_RESOURCE"    6                 ""                              | 
 170          "GL_MAX_CITY_LEVEL"             6                 ""                              | 
@@ -157,14 +157,14 @@ Data:
 172          "GL_BUILDING_TYPE_KONTOR"       34                ""                              | 
 173          "GL_PROFESSION_INQUISITOR"      28                ""                              | 
 174          "GL_MAX_CRUSADERS"              20                ""                              | 
-175          "GL_BUILDING_TYPE_WATERRESOURCE" 39                ""                              | 
+175          "GL_BUILDING_TYPE_WATERRESOURCE" 39               ""                              | 
 176          "GL_BUILDING_CLASS_MILITARY"    7                 ""                              | 
 177          "GL_BUILDING_TYPE_FISHINGHUT"   35                ""                              | 
 178          "GL_BUILDING_TYPE_TOWER"        40                ""                              | 
 179          "GL_BUILDING_TYPE_PIRATESNEST"  36                ""                              | 
 180          "GL_BUILDING_TYPE_BLACKBOARD"   41                ""                              | 
-181          "GL_BUILDING_TYPE_WEDDINGCHAPEL"  42                ""                              | 
-182          "GL_BUILDING_TYPE_SOLDIERPLACE"  109                ""                              | 
+181          "GL_BUILDING_TYPE_WEDDINGCHAPEL" 42               ""                              | 
+182          "GL_BUILDING_TYPE_SOLDIERPLACE" 109               ""                              | 
 184          "GL_BUILDING_TYPE_MERCENARY"    21                ""                              | 
 185          "GL_WAREHOUSE_MAX_DISTANCE_HARBOR" 15000          ""                              | 
 997          "GL_FIGHT_HIT_TYPE_PISTOLE"     6                 ""                              | 
@@ -177,3 +177,4 @@ Data:
 1007         "GL_BUILDING_TYPE_STONEMASON"   110               ""                              | 
 1008         "GL_PROFESSION_STONEMASONER"    62                ""                              | 
 1009         "GL_BUILDING_TYPE_FRUITFARM"    108               ""                              |
+1010         "GL_BUILDING_TYPE_ESTATE"       111               ""                              | 

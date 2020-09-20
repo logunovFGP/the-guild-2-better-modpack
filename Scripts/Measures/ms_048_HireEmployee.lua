@@ -7,7 +7,7 @@ function Run()
 	end
 	
 	-- Courtlovers cannot be hired anymore
-	if HasProperty("", "courted") then
+	if HasProperty("", "courted") or GetState("", STATE_INLOVE) then
 		MsgQuick("Destination", "@L_HIRE_ERROR_COURTED", GetID(""))
 		AddImpact("", "NoRandomHire", 1, 12)
 		StopMeasure()
@@ -21,6 +21,8 @@ function Run()
 	local Handsel = SimGetHandsel("", "Destination")
 	local Level	= SimGetLevel("")
 	local Salary = SimGetWage("")
+	local XP        = GetDatabaseValue("CharLevels", Level-1, "xp")  -- XP which was needed for the current level
+
 
 	local result = MsgNews("Destination","","@P"..
 					"@B[O,@LJa_+0]"..
@@ -45,7 +47,8 @@ function Run()
 	
 	MoveSetActivity("", "")
 	chr_CalculateBuildingBonus("", "Destination", "hire")
-	
+	CreateScriptcall( "GiveBack", 0.001, "Measures/ms_048_HireEmployee.lua", "GiveXPBack", "", "Destination", XP) -- use scriptcall, because this function is stopped after SimHire	
+
 	local	Error = SimHire("", "Destination")
 	if Error~="" then
 		chr_OutputHireError("", "Destination", Error)
@@ -75,4 +78,10 @@ function CheckLeibwache()
 	AddItems("", "FullHelmet", 1, INVENTORY_EQUIPMENT)
 	AddItems("", "Platemail", 1, INVENTORY_EQUIPMENT)
 	AddItems("", "Longsword", 1, INVENTORY_EQUIPMENT)	
+end
+
+function GiveXPBack(params)
+	if SimGetLevel("") == 1 then  -- sometimes the level is not reduced to 1
+		IncrementXPQuiet("", params) -- after hiring, the sim looses all his XP, so we give it back
+	end
 end

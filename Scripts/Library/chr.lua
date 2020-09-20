@@ -181,13 +181,13 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 	if (Kind=="TALK") or (Kind=="COMPLIMENT") or (Kind=="DANCE") or (Kind=="MAKE_A_PRESENT") then
 		
 		if (CourtingProgress<=0) then
-			if (CourtingProgress<-5) then
+			if (CourtingProgress < -6) then
 				label = label.."_WAY_TOO_PROFOUND_"
 			else
 				label = label.."_PROFOUND_"
 			end
 		else
-			if (CourtingProgress>5) then
+			if (CourtingProgress => 15) then
 				label = label.."_VERY_WELL_RECEIVED_"
 			else			
 				label = label.."_WELL_RECEIVED_"
@@ -196,14 +196,14 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 		
 	else
 	
-		if (CourtingProgress<=0) then
-			if (CourtingProgress<-5) then
+		if (CourtingProgress <= 0) then
+			if (CourtingProgress <- 6) then
 				label = label.."_WAY_TOO_OFFENSIVE_"
 			else
 				label = label.."_OFFENSIVE_"
 			end
 		else
-			if (CourtingProgress>5) then
+			if (CourtingProgress >= 15) then
 				label = label.."_VERY_WELL_RECEIVED_"
 			else			
 				label = label.."_WELL_RECEIVED_"
@@ -547,7 +547,7 @@ end
 -- Compute Secret Knowledge
 -- -----------------------
 function ArtifactsDuration(User, duration)
-	local Value = GetSkillValue(User,SECRET_KNOWLEDGE)
+	local Value = GetSkillValue(User, SECRET_KNOWLEDGE)
 	if Value <= 1 then
 		return 0
 	else
@@ -760,8 +760,13 @@ function OutputHireError(SimAlias, BuildingAlias, Error)
 	
 	if (Error == "WrongGender") then
 		local Profession = BuildingGetProfession(BuildingAlias)
-		local Label = ProfessionGetLabel(Profession, GL_GENDER_MALE)
-		MsgQuick(BuildingAlias,"@L_GENERAL_MEASURES_FAILURES_+12", Label)
+		if SimGetGender(SimAlias) == GL_GENDER_MALE then -- can't hire Male for female only jobs
+			local Label = ProfessionGetLabel(Profession, GL_GENDER_FEMALE)
+			MsgQuick(BuildingAlias,"@L_GENERAL_MEASURES_FAILURES_+27", Label)
+		else -- can't hire Female for male only jobs
+			local Label = ProfessionGetLabel(Profession, GL_GENDER_MALE)
+			MsgQuick(BuildingAlias,"@L_GENERAL_MEASURES_FAILURES_+12", Label)
+		end
 	elseif (Error == "NoSpace") then
 		local	MaxWorker = BuildingGetMaxWorkerCount(BuildingAlias)
 		MsgQuick(BuildingAlias, "@L_GENERAL_MEASURES_FAILURES_+13", MaxWorker, GetID(BuildingAlias))
@@ -1261,6 +1266,9 @@ end
 
 function SimAddFame(SimAlias,value)
 
+	if value == nil then
+		return false
+	end
 	local upgrade = ""
 	if SimGetClass(SimAlias)==1 then
 		upgrade = "GuildSignetPatrons"
@@ -1315,7 +1323,7 @@ end
 
 function SimRemoveFame(SimAlias,value)
 
-	if value < 0 then
+	if value == nil or value < 0 then
 		return false
 	elseif not GetProperty(SimAlias,"Fame") then
 		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
@@ -1458,6 +1466,9 @@ end
 
 function SimAddImperialFame(SimAlias,value)
 
+	if value == nil then
+		return false
+	end
 	local upgrade = "ImperialSignet"
 
 	GetDynasty(SimAlias, "Dyn")

@@ -52,9 +52,9 @@ Data:
 44           "guarding"                      "states\state_guarding.lua"          | 
 45           "jewellery"                     "states\state_jewellery.lua"    | 
 46           "guild_event"                   "states\state_guild_event.lua"  | 
-47           "guildtravelling"               "states\state_guildtravelling.lua"  | 
-48           "aiguildproduce"                "states\state_aiguildproduce.lua"  | 
-49           "aiunpackrawmaterial"           "states\state_aiunpackrawmaterial.lua"  | 
+47           "donkeyteam"                    "states\state_donkeyteam.lua"  | 
+48           "checkforspinnings"             "states\state_checkforspinnings.lua"  |  
+49           "inlove"                        "states\state_inlove.lua"       |  
 50           "poisoned"                      "states\state_poisoned.lua"    | 
 51           "tradercontrol"                 "states\state_tradercontrol.lua" |
 52           "hpfz_traumland"                "states\state_hpfz_traumland.lua"        | 
@@ -69,4 +69,3 @@ Data:
 61           "global_event"                  "states\state_global_event.lua"  | 
 62           "globaltravelling"              "states\state_globaltravelling.lua"  | 
 63           "animal"                        "states\state_animal.lua"  | 
-64           "donkeyteam"                    "states\state_donkeyteam.lua"  | 

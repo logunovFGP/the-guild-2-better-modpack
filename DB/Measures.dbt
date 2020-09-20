@@ -154,12 +154,12 @@ Data:
 2300   "ms_230_MakeAPresent.lua"   "-"   "MakeAPresent"   35   "hud/buttons/btn_MakeAPresent.tga"   0   6   0   ""   ""   37   2   0   "none"   0   0   |
 2310   "ms_231_MakeACompliment.lua"   "-"   "MakeACompliment"   35   "hud/buttons/btn_MakeACompliment.tga"   0   6   0   ""   ""   35   2   0   "none"   0   0   |
 2320   "ms_232_InviteToDance.lua"   "-"   "InviteToDance"   40   "hud/buttons/btn_InviteToDance.tga"   0   5   0   ""   ""   36   2   0   "none"   0   0   |
-2800   "ms_walk.lua"   "-"   "Walk"   10   "hud/buttons/btn_Sim_WalkTo.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
-2801   "ms_run.lua"   "-"   "run"   10   "hud/buttons/btn_Sim_WalkTo.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+2800   "ms_Walk.lua"   "-"   "Walk"   10   "hud/buttons/btn_Sim_WalkTo.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+2801   "ms_Run.lua"   "-"   "run"   10   "hud/buttons/btn_Sim_WalkTo.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 2802   "ms_TriggerQuest.lua"   "-"   "TriggerQuest"   85   "hud/buttons/btn_046_StartDialog.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 2803   "ms_Babble.lua"   "-"   "Babble"   1   ""   0   13   0   ""   ""   0   0   0   "none"   0   0   |
 2804   "ms_EscapeFromPrison.lua"   "-"   "EscapeFromPrison"   86   "hud/buttons/btn_EscapeFromPrison.tga"   0   3   0   ""   ""   2   0   0   "none"   0   0   |
-2805   "ms_walkhome.lua"   "-"   "WalkHome"   10   "hud/buttons/btn_Sim_WalkTo.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+2805   "ms_Walkhome.lua"   "-"   "WalkHome"   10   "hud/buttons/btn_Sim_WalkTo.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 2806   "ms_CheckOutfit.lua"   ""   "CheckOutfit"   19   ""   0   13   0   ""   ""   0   0   0   "none"   0   0   |
 2807   "ms_CheckLocation.lua"   ""   "CheckLocation"   19   ""   0   13   0   ""   ""   0   0   0   "none"   0   0   |
 2808   "ms_AIDoNothing.lua"   ""   "AIDoNothing"   1   ""   0   11   0   ""   ""   19   0   0   "none"   0   0   |

@@ -17,6 +17,24 @@ function Run()
 		return
 	end
 	
+	if SimGetProfession("Destination") > 0 then -- don't marry workers please
+		if SimGetWorkingPlace("Destination", "MyWork") then
+			if BuildingGetOwner("MyWork", "MyBoss") then
+				MsgBoxNoWait("", "Destination",  "@L_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0", "@L_GENERAL_MEASURES_MARRY_FAILURES_+1", GetID("Destination"), GetID("MyWork"), GetID("MyBoss"), GetID(""))
+				SimReleaseCourtLover("")
+				chr_GainXP("", 250)
+				StopMeasure()
+				return
+			end
+		end
+		
+		-- something missing, send alternative message
+		MsgBoxNoWait("", "Destination",  "@L_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0", "@L_GENERAL_MEASURES_MARRY_FAILURES_+2", GetID("Destination"), GetID(""))
+		SimReleaseCourtLover("")
+		chr_GainXP("", 250)
+		StopMeasure()
+		return
+	end
 	if not(IsGUIDriven()) then
 		if not SimMarry("", "Destination") then
 			SimReleaseCourtLover("")

@@ -32,6 +32,10 @@ Bugfix-Liste
 - Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
 - Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
 - Es wurde kein Hexerroben-Status-Icon angezeigt.
+- Es wurde ein besserer und performanterer Weg gefunden, damit Karren und Sims durch die schlechte Wegfindung nicht dauerhaft in 'Knäueln' feststecken und sich im Kreis drehen.
+- Man kann keine Angestellten mehr anheuern, die gerade umworben werden (kann zu Fehlern führen).
+- Die automatische Suche nach höherleveligen Angestellten (Gesellen- und Meisterrang) funktionierte nicht.
+- Angestellte höheren Levels verloren ihre Erfahrung nach dem Anheuern.
 
 Features
 

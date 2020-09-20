@@ -149,6 +149,7 @@ function Run()
 		-- If it was allowed by the player don´t do the whole animation thing
 		if Allow == 1 then
 			SimSetCourtLover("", "Destination")
+			SetState("Destination", STATE_INLOVE, true)
 			StopMeasure()
 			return
 		else
@@ -262,6 +263,7 @@ function Run()
 		end
 		
 		SimSetCourtLover("", "Destination")
+		SetState("Destination", STATE_INLOVE, true)
 		SetData("CourtLoverSet", 1)
 		-- PATCH TODO -- adds property so that CourtLover cannot be hired
 		SetProperty("Destination", "courted", 1)

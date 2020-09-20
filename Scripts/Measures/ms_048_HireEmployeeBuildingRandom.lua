@@ -1,16 +1,21 @@
 function Run()
 
+	if GetMoney("") < 400 then
+		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0","@L_MEASURES_HIRERANDOM_NOMONEY_+0")
+		StopMeasure()
+	end
+	
 	local Button1 = "@B[B,@L_HPFZ_EINSTELLEN_+0]"
 	local Button2 = "@B[N,@L_HPFZ_EINSTELLEN_+1]"
 	local Button3 = "@B[M,@L_HPFZ_EINSTELLEN_+2]"
 	
-	local Worker2Exists = FindWorker("","worker",4)
+	local Worker2Exists = FindWorker("","worker", 3)
 	if Worker2Exists ~= "" then
 		Button2 = ""
 	end
 	
-	local Worker3Exists = FindWorker("","worker",8)
-	if Worker2Exists ~= "" then
+	local Worker3Exists = FindWorker("", "worker", 5)
+	if Worker3Exists ~= "" then
 		Button3 = ""
 	end		
 
@@ -32,21 +37,31 @@ function Run()
 	
 	local DesiredLevel = 1
 	if auswahl == "N" then
-		DesiredLevel = 4
+		DesiredLevel = 3
 	elseif auswahl == "M" then
-		DesiredLevel = 8
+		DesiredLevel = 5
 	end
 		
-  local arbeiter = FindWorker("", "RandWorker",DesiredLevel)
-  if arbeiter~="" then
-	  chr_OutputHireError("RandWorker", "", arbeiter)
-	  return
+	local arbeiter = FindWorker("", "RandWorker", DesiredLevel)
+	if arbeiter ~= "" then
+		chr_OutputHireError("RandWorker", "", arbeiter)
+		StopMeasure()
 	end
-	local Handsel = SimGetHandsel("RandWorker", "")
-	if BuildingHasUpgrade("",716) == true then
-		Handsel = Handsel + 4900
 	
-	elseif BuildingHasUpgrade("",604) == true then
+	if not AliasExists("RandWorker") then
+		StopMeasure()
+	end
+	
+	if HasProperty("RandWorker", "courted") then
+		MsgQuick("","@L_HIRE_ERROR_COURTED",GetID("RandWorker"))
+		AddImpact("RandWorker", "NoRandomHire", 1, 12)
+		StopMeasure()
+	end
+	
+	local Handsel = SimGetHandsel("RandWorker", "")
+	if BuildingHasUpgrade("", "CrossedAxes") == true then
+		Handsel = Handsel + 4900
+	elseif BuildingHasUpgrade("", "HarkingHorn) == true then
 		Handsel = Handsel + 2400
 	end
 	
@@ -55,64 +70,20 @@ function Run()
 	end
 	
 	SetData("Hands",Handsel)
-	local Level		= SimGetLevel("RandWorker")
+	local Level	= SimGetLevel("RandWorker")
 	SetData("Lvl",Level)
-	local Salary	= SimGetWage("RandWorker")
+	local Salary = SimGetWage("RandWorker")
 	SetData("Saly",Salary)
-	
-	-- PATCH TODO
-	if HasProperty("RandWorker", "courted") then
-		StopMeasure()
-	end
+	local XP = GetDatabaseValue("CharLevels", Level-1, "xp")  -- XP which was needed for the current level
+	SetData("XPP",XP)	
 	
 	ms_048_hireemployeebuildingrandom_DecideYou()
-		--[[
-        if auswahl	== "B" then
-		    if Level < 4 then
-			    ms_048_hireemployeebuildingrandom_DecideYou()
-				if GetData("Entscheid") == 1 then
-				    break
-				else
-				    suche = suche + 1
-				end
-			else
-			    suche = suche + 1
-			end
-		elseif auswahl == "N" then
-		    if Level >= 4 and Level < 8 then
-			    ms_048_hireemployeebuildingrandom_DecideYou()
-				if GetData("Entscheid") == 1 then
-				    break
-				else
-				    suche = suche + 1
-				end
-			else
-			    suche = suche + 1
-			end
-		elseif auswahl == "M" then
-		    if Level >= 8 then
-			    ms_048_hireemployeebuildingrandom_DecideYou()
-				if GetData("Entscheid") == 1 then
-				    break
-				else
-				    suche = suche + 1
-				end
-			else
-			    suche = suche + 1
-			end
-		end
-		if suche == 6 then
-		    MsgQuick("","@L_HPFZ_HIRERANDOM_FEHLER_+0")
-		    StopMeasure()
-        end
-	end]]
 	
 	if BuildingGetType("") == 2 then
-	    ms_048_hireemployeebuildingrandom_CheckSoeldner()
+		ms_048_hireemployeebuildingrandom_CheckSoeldner("")
 	elseif BuildingGetType("") == 111 then
-	    ms_048_hireemployeebuildingrandom_CheckLeibwache()
+		ms_048_hireemployeebuildingrandom_CheckLeibwache("")
 	end	
-	
 end
 		
 function DecideYou()
@@ -121,11 +92,12 @@ function DecideYou()
 	local handsels = GetData("Hands")
 	local levels = GetData("Lvl")
 	local salarys = GetData("Saly")
+	local xp = GetData("XPP")
 	
-	if BuildingGetOwner("","BOwner") then
+	if BuildingGetOwner("", "BOwner") then
 		if GetMoney("BOwner")<handsels then
 			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+14", handsels, GetID("RandWorker"))
-				StopMeasure()
+			StopMeasure()
 		end
 	end
 	
@@ -144,64 +116,65 @@ function DecideYou()
 		return
 	end
 
---	if GetDynastyID("RandWorker")>0 then
---		chr_OutputHireError("RandWorker", "", "NoWorker")
---	end
-
 	Error = SimHire("RandWorker", "", true)
 	chr_OutputHireError("RandWorker", "", Error)
-			
+	if SimGetLevel("RandWorker") == 1 then  -- sometimes the level is not reduced to 1 (I guess because he already had the right clothes)
+		IncrementXPQuiet("RandWorker",xp)	      -- XP back to previous value
+	end		
 	if Error == "" then
-		PlaySound("Effects/moneybag_to_hand+0.wav",1)
-		if BuildingHasUpgrade("",716) == true then
-			SpendMoney("BOwner",4900,"misc")
-		elseif BuildingHasUpgrade("",604) then
-			SpendMoney("BOwner",2400,"misc")
+		-- stop courting
+		if SimGetCourtLover("", "WorkerLover") then
+			SimReleaseCourtLover("")
+			if HasProperty("", "courted") then
+				RemoveProperty("", "courted")
+			end
+	
+			if HasProperty("WorkerLover", "courted") then
+				RemoveProperty("WorkerLover", "courted")
+			end
+		end	
+
+		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
+		
+		if BuildingHasUpgrade("", "CrossedAxes") == true then
+			SpendMoney("BOwner", 4900, "misc")
+		elseif BuildingHasUpgrade("", "HarkingHorn") then
+			SpendMoney("BOwner", 2400, "misc")
 		end
-		if BuildingGetType("")==111 then
-			SpendMoney("BOwner",4900,"misc")
+		
+		if BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
+			SpendMoney("BOwner", 4900, "misc")
 		end
-		SetData("Entscheid",1)
-		if DynastyIsShadow("") == true or DynastyIsAI("") == true then
-		    if BuildingGetLevel("") == 1 then
-			  local lvlset = (Rand(3)+1)
-				SetProperty("RandWorker","Level",lvlset)
+		
+		SetData("Entscheid", 1)
+		
+		if DynastyIsAI("") then
+			if BuildingGetLevel("") == 1 then
+				local lvlset = (Rand(2)+1)
+				SetProperty("RandWorker","Level", lvlset)
 			elseif BuildingGetLevel("") == 2 then
-			  local lvlset = (Rand(4)+4)
-				SetProperty("RandWorker","Level",lvlset)
+				local lvlset = (Rand(2)+3)
+				SetProperty("RandWorker", "Level", lvlset)
 			else
-			  local lvlset = (Rand(3)+8)
-				SetProperty("RandWorker","Level",lvlset)
+				local lvlset = (Rand(2)+5)
+				SetProperty("RandWorker", "Level", lvlset)
 			end
 		end
 	end
 	
-	if GetImpactValue("RandWorker","Sickness")>0 then
-		diseases_Sprain("RandWorker",false)
-		diseases_Cold("RandWorker",false)
-		diseases_Influenza("RandWorker",false)
-		diseases_BurnWound("RandWorker",false)
-		diseases_Pox("RandWorker",false)
-		diseases_Pneumonia("RandWorker",false)
-		diseases_Blackdeath("RandWorker",false)
-		diseases_Fracture("RandWorker",false)
-		diseases_Caries("RandWorker",false)
-	end
-	SetState("RandWorker",STATE_SICK,false)
-	
-	MoveSetActivity("","")
+	MoveSetActivity("", "")
 	SimGetWorkingPlace("RandWorker", "workbuilding")
-	chr_CalculateBuildingBonus("RandWorker","","hire")
+	chr_CalculateBuildingBonus("RandWorker", "", "hire")
 
 end
 
 function DecideFirst()
-    if BuildingGetLevel("") == 1 then
-	    return "B"
+	if BuildingGetLevel("") == 1 then
+		return "B"
 	elseif BuildingGetLevel("") == 2 then
-        return "N"
+		return "N"
 	else
-	    return "M"
+		return "M"
 	end
 end
 
@@ -209,29 +182,24 @@ function Decide()
 	return "O"
 end
 
-function CheckSoeldner()
-
-	if BuildingHasUpgrade("",716) == true then
-		RemoveItems("RandWorker",61,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",73,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",74,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",89,1,INVENTORY_EQUIPMENT)
---		ForbidMeasure("RandWorker", "ToggleInventory", EN_BOTH) 		
-	elseif BuildingHasUpgrade("",604) == true then
-		RemoveItems("RandWorker",61,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",70,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",71,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",69,1,INVENTORY_EQUIPMENT)
---		ForbidMeasure("RandWorker", "ToggleInventory", EN_BOTH) 
+function CheckSoeldner(Alias,Worker)
+	AddItems(Worker, "Dagger", 1, INVENTORY_EQUIPMENT)
+	if BuildingHasUpgrade(Alias, "CrossedAxes") == true then
+		RemoveItems(Worker, "Dagger",1,INVENTORY_EQUIPMENT)
+		AddItems(Worker, "FullHelmet",1,INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Platemail",1,INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Axe",1,INVENTORY_EQUIPMENT)	
+	elseif BuildingHasUpgrade(Alias, "HarkingHorn") == true then
+		RemoveItems(Worker, "Dagger",1,INVENTORY_EQUIPMENT)
+		AddItems(Worker, "IronCap",1,INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Chainmail",1,INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Longsword",1,INVENTORY_EQUIPMENT)
 	end
-
 end
 
-function CheckLeibwache()
-
-		RemoveItems("RandWorker",61,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",73,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",74,1,INVENTORY_EQUIPMENT)
-		AddItems("RandWorker",69,1,INVENTORY_EQUIPMENT)	
---		ForbidMeasure("RandWorker", "ToggleInventory", EN_BOTH) 
+function CheckLeibwache(Alias)
+	RemoveItems(Alias, "Dagger",1,INVENTORY_EQUIPMENT)
+	AddItems(Alias, "FullHelmet",1,INVENTORY_EQUIPMENT)
+	AddItems(Alias, "Platemail",1,INVENTORY_EQUIPMENT)
+	AddItems(Alias, "Longsword",1,INVENTORY_EQUIPMENT)	
 end

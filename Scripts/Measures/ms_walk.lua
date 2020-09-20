@@ -18,9 +18,5 @@ function Run()
 end
 
 function CleanUp()
-
-	if HasProperty("", "AutoRoute") then
-		RemoveProperty("", "AutoRoute")
-		
-	end
+	SetState("", STATE_CHECKFORSPINNINGS, false)
 end

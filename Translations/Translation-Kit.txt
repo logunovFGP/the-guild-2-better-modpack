@@ -11,12 +11,18 @@ Translate and add the following lines below:
 18008   "_GENERAL_ERROR_HEAD_+0"   "Measure failed"   |
 18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN already has that kind of impact! Wait until the effect wears off before you use this item again." |
 18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG already has that kind of impact! Wait until the effect wears off before you use this item again." |
+18011   "_GENERAL_MEASURES_MARRY_FAILURES_+1"   "%4SV wants to marry %1SN, but %1SV has different plans ... Because of the work in %2GG for the %3DN dynasty, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %4SN."   |
+18012   "_GENERAL_MEASURES_MARRY_FAILURES_+2"   "%2SV wants to marry %1SN, but %1SV has different plans ... Because of the work for the city, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %2SN."   |
+18013   "_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0"   "What a disaster!"   |
+18014   "_MEASURES_HIRERANDOM_NOMONEY_+0"   "You can't hire a new employee, because you are unable to pay him."   |
+18015   "_GENERAL_MEASURES_FAILURES_+27"   "Action failed - you can't hire a man for the profession %1l"   |
 
 
-
-
-Translate and change/swap the following lines:
+Translate and change the following lines:
 7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
 7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
 
+Delete the following lines:
+8449   "_HPFZ_MEASURES_HIRE_ZUSATZ_+0"   "What level of knowledge do you want the candidate to have?"   |
+8450   "_HPFZ_HIRERANDOM_FEHLER_+0"   "No such candidate available to employ!"   |
 

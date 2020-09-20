@@ -1,5 +1,8 @@
 function BeginUseLocator(Actor, LocatorName, Stance, MoveToLocator, Speed)
 	
+	if not AliasExists(Actor) or not AliasExists(LocatorName) then
+		return false
+	end
 	if not BlockLocator(Actor, LocatorName) then
 		return false
 	end
@@ -92,10 +95,10 @@ function AttendMoveTo(Owner,Destination,Speed,Hours)
 		end
 
 		if BuildingGetCutscene(Destination,"_a_cutscene") then
-			f_Stroll(Owner,250.0,1.0)
+			f_Stroll(Owner, 300.0, 2.0)
 			MsgSay(Owner,"@L_NEWSTUFF_WAITING_COMPLAINTS")
 			Sleep(15)
-			f_Stroll(Owner,250.0,1.0)
+			f_Stroll(Owner, 250.0, 2.0)
 			Sleep(15)
 		else
 			return false
@@ -147,7 +150,7 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 	StopAllAnimations("")
 
 	--workaround for spinning carts...
-	SetProperty("","MyDest",GetID(Destination))
+	SetState(Owner, STATE_CHECKFORSPINNINGS, true)
 	----------------------------------
 
 	--workaround for unreachable entry locators...
@@ -169,16 +172,16 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 		RemoveProperty(Owner, ResultName)
 		
 		if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
-			if IsType("","Sim") then
+			if IsType("", "Sim") then
 				ai_ShowMoveError(lateresult, Owner)
 			end
 			--workaround for spinning carts...
-			RemoveProperty("","MyDest")
+			SetState(Owner, STATE_CHECKFORSPINNINGS, false)
 			----------------------------------
 			return false
 		end
 		--workaround for spinning carts...
-		RemoveProperty("","MyDest")
+		SetState(Owner, STATE_CHECKFORSPINNINGS, false)
 		----------------------------------
 		return true
 	end
@@ -189,34 +192,42 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 		local locator = "Walledge1"
 		GetLocatorByName(Destination, locator, "entry")
 		
-		local ResultName2 = "__MoveToResult_"..GetID(Owner).."_"..GetID(Destination)
-		local Result2 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
-
-		if (Result2) then
-			WaitForMessage("WaitForTask")
-			local lateresult = GetProperty(Owner, ResultName2)
-			RemoveProperty(Owner, ResultName2)
+		if AliasExists("entry") then
 			
-			if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
-				local locator = "Walledge2"
-				GetLocatorByName(Destination, locator, "entry")
+			local ResultName2 = "__MoveToResult_"..GetID(Owner).."_"..GetID(Destination)
+			local Result2 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
+			
+			
+			if (Result2) then
+				WaitForMessage("WaitForTask")
+				local lateresult = GetProperty(Owner, ResultName2)
+				RemoveProperty(Owner, ResultName2)
+				
+				if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
+					local locator = "Walledge2"
+					GetLocatorByName(Destination, locator, "entry")
 
-				local Result3 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
+					local Result3 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
+				end
+
+				SetProperty(Owner, "BlockLocL", locator)
+				SetProperty(Owner, "BlockLocB", GetID(Destination))
 			end
+			--workaround for spinning carts...
+			SetState(Owner, STATE_CHECKFORSPINNINGS, false)
 
-			SetProperty(Owner, "BlockLocL", locator)
-			SetProperty(Owner, "BlockLocB", GetID(Destination))
+			SimBeamMeUp(Owner, Destination, false)
+			return true
+		else
+			return false
 		end
-		RemoveProperty(Owner,"MyDest")
 
-		SimBeamMeUp(Owner,Destination,false)
-		return true
 	end
 	----------------------------------------------
 
 	ai_ShowMoveError(GL_MOVERESULT_ERROR_TARGET_UNREACHABLE, Owner)
 	--workaround for spinning carts...
-	RemoveProperty("","MyDest")
+	SetState(Owner, STATE_CHECKFORSPINNINGS, false)
 	----------------------------------
 	return false
 end
@@ -319,6 +330,9 @@ end
 
 
 function MoveToNoWait(pOwner, pDestination, iSpeed, fRange) 
+	--workaround for spinning carts...
+	SetState(Owner, STATE_CHECKFORSPINNINGS, true)
+	----------------------------------
 	return CMoveTo(pOwner, pDestination, iSpeed, NIL, fRange, false)
 end
 
@@ -358,28 +372,32 @@ function StrollNoWait(pSource,Range,Duration)
 end
 			
 function ExitCurrentBuilding(Alias)
-	local Result = CExitCurrentBuilding(Alias)
-	if (Result) then
-		WaitForMessage("WaitForTask")
-	end
-
-	--workaround for unreachable entry locators...
-	if HasProperty(Alias,"BlockLocB") then
-    GetNearestSettlement(Alias,"TheCity")
-    CityGetNearestBuilding("TheCity",Alias,-1,-1,-1,-1,FILTER_IGNORE,"TheBuilding")
-		local l = GetProperty(Alias,"BlockLocL")
-		local b = GetProperty(Alias,"BlockLocB")
-		RemoveProperty(Alias,"BlockLocL")
-		RemoveProperty(Alias,"BlockLocB")
-
-		if GetID("TheBuilding")==b then
-			GetLocatorByName("TheBuilding", l, "entry")
-			SimBeamMeUp(Alias,"entry",false)
+	if not AliasExists(Alias) then
+		return false
+	else
+		local Result = CExitCurrentBuilding(Alias)
+		if (Result) then
+			WaitForMessage("WaitForTask")
 		end
-	end
-	----------------------------------------------
+	
+		--workaround for unreachable entry locators...
+		if HasProperty(Alias,"BlockLocB") then
+	    GetNearestSettlement(Alias,"TheCity")
+	    CityGetNearestBuilding("TheCity",Alias,-1,-1,-1,-1,FILTER_IGNORE,"TheBuilding")
+			local l = GetProperty(Alias,"BlockLocL")
+			local b = GetProperty(Alias,"BlockLocB")
+			RemoveProperty(Alias,"BlockLocL")
+			RemoveProperty(Alias,"BlockLocB")
+	
+			if GetID("TheBuilding")==b then
+				GetLocatorByName("TheBuilding", l, "entry")
+				SimBeamMeUp(Alias,"entry",false)
+			end
+		end
+		----------------------------------------------
 
-	return Result
+		return Result
+	end
 end
 
 function GetRandomPositionFromAlias(AliasName,Range)
@@ -389,4 +407,14 @@ function GetRandomPositionFromAlias(AliasName,Range)
 	Z = Z + ((Rand(Range)*2)-Range)
 	PositionModify("NewPos",X,Y,Z)
 	return "NewPos"
+end
+
+function SimIsValid(Target)
+	if (not AliasExists(Target) or
+	GetHP(Target) < 1 or 
+	GetStateImpact(Target, "no_control")) then
+		return false
+	else
+		return true
+	end
 end

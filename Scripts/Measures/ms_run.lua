@@ -20,13 +20,8 @@ function Run()
 	end
 end
 
--- added by Napi
 function CleanUp()
-
-	if HasProperty("", "AutoRoute") then
-		RemoveProperty("", "AutoRoute")
-		
-	end
+	SetState("", STATE_CHECKFORSPINNINGS, false)
 end
 
 

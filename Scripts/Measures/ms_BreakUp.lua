@@ -12,6 +12,7 @@
 function Run()
 	
 	SimGetCourtLover("", "CourtLover")
+	SetState("CourtLover", STATE_INLOVE, false)
 	RemoveProperty("CourtLover", "CourtDiff")
 	RemoveProperty("CourtLover", "courted")
 	
