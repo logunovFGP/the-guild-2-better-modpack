@@ -71,7 +71,6 @@ Neu:
 18068   "_TRADEROUTE_WARNING_OPTION_+2"   "Habt Euch nicht so und $Nwarnt mich später!"   |
 18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Warum stört Ihr mich?$NUnterlasst diese Warnung!"
 
-
 Ändern:
 7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
 7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "Dieser Charakter trägt eine Hexerrobe. Sie steigert seine geistigen Fähigkeiten ... ein unheimliches Gewand."   |
