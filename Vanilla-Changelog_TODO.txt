@@ -19,10 +19,17 @@ Bug-Fixes & Workarounds:
 - Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
 - Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
 - Die Hexerrobe zeigte kein Mini-Icon (Impact-Symbol) an.
+- Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
+- Das Behandeln-Script wurde optimiert und sollte nun nicht mehr einfrieren (flackerndes Icon)
+- Die Maßnahme "Bezirzen" hatte einen Fehler.
+- Wenn man einen Umworbenen anheuert, werden alle Liebschaften des Angestellten beendet (man sollte also
+  nicht mehr die Meldung bekommen, dass der Lieberhaber eures Angestellten sich vernachlässigt fühlt).
+- Suchte man nach einem zufälligen Angestellten mit zu geringen Bar-Reserven, bekam man die Meldung,
+  dass kein Arbeiter gefunden wurde. Stattdessen wird nun darauf hingewiesen, dass man mehr Bargeld benötigt.
+
 
 Offen:
 
-- Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
@@ -52,9 +59,7 @@ Offen:
 - Die Gildenlieferungen "Obst" und "Honig" enthielten kein Bild.
 - Bei der Maßnahme "Unkendunk" wurde die Nachricht über einen erfolgreichen Anschlag
   an das Opfer statt an den Täter verschickt.
-- Die Maßnahme "Bezirzen" hatte einen Fehler.
 - Da die Einstellung "Häufigkeit der Amtssitzungen" zu einem OOS führte, ist diese Option im Multiplayer nun nicht länger steuerbar. Der Standardwert ist nun "alle 2 Runden".
-- Das Behandeln-Script wurde optimiert und sollte nun nicht mehr einfrieren (flackerndes Icon)
 - Die "FrequencyOfficeSession"-Option bei Spielstart hatte auf Englisch und anderen Sprachen einen zu langen Namen (wurde daher nicht richtig angezeigt)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
@@ -91,7 +96,7 @@ Offen:
 - Beim Glaubenswechsel wurde die Gebühr von 100 Gold nicht abgezogen und auch der Kirche nicht gutgeschrieben
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
-- VBeim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
+- Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
   oder während Wunderkuren geholt werden.
 - Beim Quacksalben werden die Goldgewinne nun nur für die eigene Dynastie angezeigt
 - Fehlende Fehlermeldung beim Anheuern hinzugefügt, sollte der Arbeiter gerade umworben werden.
@@ -190,10 +195,6 @@ Offen:
   einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
 - Charaktere verlassen das Rathaus nicht länger, wenn sie im Warteraum stehen und zur Amtsitzung/
   zur Gerichtsverhandlung gerufen werden, sondern gehen direkt in den richtigen Raum.
-- Wenn man einen Umworbenen anheuert, werden alle Liebschaften des Angestellten beendet (man sollte also
-  nicht mehr die Meldung bekommen, dass der Lieberhaber eures Angestellten sich vernachlässigt fühlt).
-- Suchte man nach einem zufälligen Angestellten mit zu geringen Bar-Reserven, bekam man die Meldung,
-  dass kein Arbeiter gefunden wurde. Stattdessen wird nun darauf hingewiesen, dass man mehr Bargeld benötigt.
 - Es konnte vorkommen, dass Dynastie-Charaktere von der KI-Verwaltung nicht zur Arbeit eingeteilt wurden.
 - Viele kleinere Script-Fehler behoben.
 - Einige Scripte wurden optimiert, um die Performance des Spiels zu verbessern.
