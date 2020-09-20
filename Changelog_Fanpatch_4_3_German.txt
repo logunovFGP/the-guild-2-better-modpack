@@ -47,12 +47,13 @@ Features
 - Gesichtstexturen der weiblichen Charaktere angepasst
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
+- Die automatischen Handelsrouten wurden komplett überarbeitet (alle Credits gehen an ThreeOfMe)
 
 Balancing
 
 - Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben
 - Gunstgewinn beim Becircen leicht modifiziert.
 - Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb
-nur einmal alle 48 Ingamestunden überprüft werden. Zudem verliert man massiv an Gunst beim Betriebsleiter und bei den Angestellten.
+nur einmal alle 48 Ingamestunden überprüft werden. Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
 - Die Hexerrobe verursacht keinen Malus mehr.
 
