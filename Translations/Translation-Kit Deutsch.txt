@@ -1,0 +1,78 @@
+Neu:
+
+18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
+18001   "_HIRE_ERROR_COURTED_+0"   "Anheuern fehlgeschlagen: %1SN widmet sich zurzeit lieber der Liebe als für Euch zu arbeiten!"   |
+18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspizieren des Betriebes fehlgeschlagen - Diese Gebäude wurde vor Kurzem erst inspiziert. Versucht es später noch einmal."   |
+18003   "_AI_NEWRIVALINTOWN_HEAD_+0"   "Ihr habt einen neuen Konkurrenten!"   |
+18004   "_AI_NEWRIVALINTOWN_BODY_+0"   "%1SN ist nicht erfreut darüber, dass Ihr %3GG in derselben Stadt errichtet habt, in der bereits %2GG steht. Ihr steht nun in Konkurrenz zueinander, hoffentlich bleibt es weitgehend friedlich zwischen Euren Dynastien ..."   |
+18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN weist Euch darauf hin, dass %3GG in derselben Stadt steht, in der auch %2GG steht. Es bleibt zu hoffen, dass Euer Verhältnis friedlich verläuft."   |
+18006   "_BUYBUILDING_CREDIT_HEAD_+0"   "Auszahlung des Kreditkontos"   |
+18007   "_BUYBUILDING_CREDIT_BODY_+0"   "Beim Verkauf von %1GG wurde das Kreditkonto aufgelöst. Ihr erhaltet %2t zurück."   |
+18008   "_GENERAL_ERROR_HEAD_+0"   "Maßnahme fehlgeschlagen"   |
+18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN verfügt bereits über diesen Effekt! Wartet, bis der Effekt abgeklungen ist, bevor ihr diesen Gegenstand erneut benutzt." |
+18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG verfügt bereits über diesen Effekt! Wartet, bis der Effekt abgeklungen ist, bevor ihr diesen Gegenstand erneut benutzt." |
+18011   "_GENERAL_MEASURES_MARRY_FAILURES_+1"   "%4SV will %1SN heiraten, doch leider hat %1SV andere Pläne ... Durch die Arbeit in %2GG für die %3DN Familie fehlt %1SV die Zeit für eine Romanze. Eure Werbung ist damit beendet, aber immerhin war dieser Rückschlag eine Lehrreiche Erfahrung für %4SN."   |
+18012   "_GENERAL_MEASURES_MARRY_FAILURES_+2"   "%2SV will %1SN heiraten, doch leider hat %1SV andere Pläne ... Durch die Arbeit für die Stadt fehlt %1SV die Zeit für eine Romanze. Eure Werbung ist damit beendet, aber immerhin war dieser Rückschlag eine Lehrreiche Erfahrung für %2SN."   |
+18013   "_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0"   "So ein Unglück!"   |
+18014   "_MEASURES_HIRERANDOM_NOMONEY_+0"   "Eure geringen Ersparnisse erlauben Euch leider nicht, nach einem neuen Angestellten zu suchen."   |
+18015   "_GENERAL_MEASURES_FAILURES_+27"   "Anheuern nicht möglich - Ihr könnt keinen Mann als %1l anheuern"   |
+18016   "_TRADEROUTE_INITIATE_HEAD_+0"   "Vorgang wählen"   |
+18017   "_TRADEROUTE_INITIATE_HEAD_+1"   "Bitte wählen"   |
+18018   "_TRADEROUTE_INITIATE_HEAD_+2"   "Bitte wählt die gewünschte Menge"   |
+18019   "_TRADEROUTE_INITIATE_OPTION_+0"   "Einladen"   |
+18020   "_TRADEROUTE_INITIATE_OPTION_+1"   "Ausladen"   |
+18021   "_TRADEROUTE_INITIATE_OPTION_+2"   "Nächstes Gebäude"   |
+18022   "_TRADEROUTE_INITIATE_OPTION_+3"   "Aussenden"   |
+18023   "_TRADEROUTE_INITIATE_OPTION_+4"   "Abbrechen"   |
+18024   "_TRADEROUTE_NEXT_BUILDING_+0"   "Nächstes Gebäude wählen!"   |
+18025   "_TRADEROUTE_STOPED_HEAD_+0"   "Eine Handelsroute wird aufgegeben"   |
+18026   "_TRADEROUTE_STOPED_BODY_+0"   "Leider fehlen Euch die nötigen Münzen, um die Handelsroute aufrecht zu erhalten."   |
+18027   "_TRADEROUTE_ACTIONSELECT_HEAD_+0"   "Aktionen auswählen"   |
+18028   "_TRADEROUTE_ACTIONSELECT_BODY_+0"   "Wählt hier, welche Aktionen an %1GG ausgeführt werden sollen. $N Markiert Ihr den Wegpunkt als wichtig, so wird der Karren erst weiterfahren, wenn alle Aktionen erfolgreich abgeschlossen sind.$N$NAktuell ist der Wegpunkt %2l."   |
+18029   "_TRADEROUTE_ACTIONSELECT_OPTION_+0"   "Wegpunkt abschließen"   |
+18030   "_TRADEROUTE_ACTIONSELECT_OPTION_+1"   "Einladen"   |
+18031   "_TRADEROUTE_ACTIONSELECT_OPTION_+2"   "Ausladen"   |
+18032   "_TRADEROUTE_ACTIONSELECT_OPTION_+3"   "Versorgen"   |
+18033   "_TRADEROUTE_ACTIONSELECT_OPTION_+4"   "Wegpunkt ist wichtig!"   |
+18034   "_TRADEROUTE_ACTIONSELECT_OPTION_+5"   "Wegpunkt ist nicht wichtig!"   |
+18035   "_TRADEROUTE_ACTIONSELECT_BODY_+1"   "wichtig"   |
+18036   "_TRADEROUTE_ACTIONSELECT_BODY_+2"   "nicht wichtig"   |
+18037   "_TRADEROUTE_HELP_HEAD_+0"   "Handelsroute einrichten"   |
+18038   "_TRADEROUTE_HELP_BODY_+0"   "Ihr seid der Karrenverwaltung überdrüssig? Dann seid Ihr hier am richtigen Ort!$N$N Das >Einladen< und >Ausladen< von Waren ist einfach zu verwenden. Es vermag aber bisweilen Eure Lager mit Rohstoffen zu überfüllen, wenn Ihr zuviele Waren anliefert!$N$N So verwendet >Versorgen<, wann immer Ihr einen Betrieb mit Waren versorgen wollt. Dies wird stets nur soviele Waren abladen, wie nötig. Bedenkt jedoch, dass dabei häufig Waren auf dem Karren verbleiben werden!$N$N Ihr könnt einen Wegpunkt als wichtig markieren, um dem armen Burschen unnötige Wege zu ersparen. Wählt Ihr diese Option, so wartet der Karren an jedem Wegpunkt ab, bis alle Waren ein- oder ausgeladen sind. $N$N Wohlan denn, damit der Karren nicht mehr knarrt!"   |
+18039   "_TRADEROUTE_INTERVAL_HEAD_+0"   "Intervall auswählen"   |
+18040   "_TRADEROUTE_INTERVAL_BODY_+0"   "Wählt hier, wie häufig dieser Karren sich auf den Weg begeben soll. $N$N Wenn Ihr Wegpunkte als wichtig markiert habt, wird >dauerhaft< die richtige Wahl sein."   |
+18041   "_TRADEROUTE_INITIATE_BODY_+0"   "Wählt hier das nächste Gebäude aus oder sendet den Karren auf seinen Weg."   |
+18042   "_TRADEROUTE_CATEGORY_HEAD_+0"   "Kategorie auswählen"   |
+18043   "_TRADEROUTE_TYPESELECT_HEAD_+0"   "Ware auswählen"   |
+18044   "_TRADEROUTE_TYPESELECT_BODY_+0"   "Wählt die Ware aus, die bei %1GG eingeladen werden soll."   |
+18045   "_TRADEROUTE_TYPESELECT_BODY_+1"   "Wählt die Ware aus, die bei %1GG ausgeladen werden soll."   |
+18046   "_TRADEROUTE_TYPESELECT_BODY_+2"   "Wählt die Ware aus, mit der %1GG versorgt werden soll."   |
+18047   "_TRADEROUTE_COUNTSELECT_HEAD_+0"   "Menge auswählen"   |
+18048   "_TRADEROUTE_COUNTSELECT_BODY_+0"   "Wählt aus, wieviele %2l bei %1GG eingeladen werden sollen."   |
+18049   "_TRADEROUTE_COUNTSELECT_BODY_+1"   "Wählt aus, wieviele %2l nach dem Ausladen $C[255,20,20]auf dem Karren verbleiben sollen."   |
+18050   "_TRADEROUTE_COUNTSELECT_BODY_+2"   "Wählt aus, wieviele %2l Ihr stets in Eurem Lager erwartet. Es werden nicht mehr Waren abgeladen als nötig."   |
+18051   "_TRADEROUTE_INITIATE_OPTION_+5"   "Verkaufsniveau: %1i%%"   |
+18052   "_TRADEROUTE_INITIATE_INTERVAL_+0"   "Dauerhaft"   |
+18053   "_TRADEROUTE_INITIATE_INTERVAL_+1"   "Einmalig"   |
+18054   "_TRADEROUTE_INITIATE_INTERVAL_+2"   "6 Stunden"   |
+18055   "_TRADEROUTE_INITIATE_INTERVAL_+3"   "12 Stunden"   |
+18056   "_TRADEROUTE_SALETHRESHOLD_HEAD_+0"   "Verkaufsniveau der Güter auswählen"   |
+18057   "_TRADEROUTE_SALETHRESHOLD_BODY_+0"   "Wählt aus, wieviel Prozent des Basispreises der Verkauf auf dieser Route erzielen soll.$N$N Aktuelle Auswahl ist %1i%%"   |
+18058   "_TRADEROUTE_SALETHRESHOLD_+0"   "Immer verkaufen!"   |
+18059   "_TRADEROUTE_SALETHRESHOLD_+1"   "Nicht unter 75%% verkaufen!"   |
+18060   "_TRADEROUTE_SALETHRESHOLD_+2"   "Nicht unter 100%% verkaufen!"   |
+18061   "_TRADEROUTE_SALETHRESHOLD_+3"   "Nicht unter 125%% verkaufen!"   |
+18062   "_TRADEROUTE_SALETHRESHOLD_+4"   "Nicht unter 150%% verkaufen!"   |
+18063   "_TRADEROUTE_INITIATE_OPTION_+6"   "Intervall: %2l"   |
+18064   "_TRADEROUTE_WARNING_HEAD_+0"   "Eure Handelsroute stagniert!"   |
+18065   "_TRADEROUTE_WARNING_BODY_+0"   "Einer Eurer Karren wartet bereits über %1i Stunden an %2GG, aber kann seine Aufgaben dort nicht abschließen."   |
+18066   "_TRADEROUTE_WARNING_OPTION_+0"   "Ich kümmere mich darum!"   |
+18067   "_TRADEROUTE_WARNING_OPTION_+1"   "Er soll sofort weiterfahren!"   |
+18068   "_TRADEROUTE_WARNING_OPTION_+2"   "Habt Euch nicht so und $Nwarnt mich später!"   |
+18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Warum stört Ihr mich?$NUnterlasst diese Warnung!"
+
+
+Ändern:
+7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
+7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "Dieser Charakter trägt eine Hexerrobe. Sie steigert seine geistigen Fähigkeiten ... ein unheimliches Gewand."   |
+
