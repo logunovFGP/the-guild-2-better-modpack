@@ -2,10 +2,9 @@ function Run()
 
 	GetScenario("scenario")
 	if not HasProperty("scenario", "static") then
-		local	TimeToSleep = Gametime2Realtime(2)
+		local	TimeToSleep = 583
 		local	EventType
 		local currentRound
-		local currentGameTime
 		local WarRiskVal
 		
 		--------------------------
@@ -27,26 +26,18 @@ function Run()
 		while true do
 			
 			currentRound = GetRound()
-			currentGameTime = math.mod(GetGametime(),24)
 			EventType = GetData("#GlobalEventType")
 	
 			if currentRound > 0 then
 				
 				if EventType ~= 1 then
 				
-					math.randomseed(GetGametime())
 					local WarRiskChange = Rand(4)-1
-					if (currentGameTime == 6) or ((currentGameTime > 6) and (currentGameTime < 7)) then
-						gameplayformulas_ChangeWarRisk(WarRiskChange)
-					elseif (currentGameTime == 12) or ((currentGameTime > 12) and (currentGameTime < 13)) then
-						gameplayformulas_ChangeWarRisk(WarRiskChange)
-					elseif (currentGameTime == 18) or ((currentGameTime > 18) and (currentGameTime < 19)) then
-						gameplayformulas_ChangeWarRisk(WarRiskChange)
-					end
+					gameplayformulas_ChangeWarRisk(WarRiskChange)
 	
 					WarRiskVal = GetProperty("","WarRisk")
-					if (Rand(150)+15)<WarRiskVal then
-						if (GetGametime() > 4 and (GetGametime()+12) > GetProperty("","WarEndTime") and GetProperty("","WarPhase")==0) then
+					if (Rand(200)+15)<WarRiskVal then
+						if (GetProperty("","WarPhase")==0) then
 							ms_globalevent_War()
 						end
 					end
@@ -97,7 +88,7 @@ function War()
 	local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+1"
 
 	local Gametime	= 8
-	local WarTime	= Rand(9)+6
+	local WarTime	= Rand(8) + 12
 	local CurrentTime = GetGametime()
 	local StartTime  = CurrentTime + Gametime
 	local EndTime  = CurrentTime + Gametime + WarTime
@@ -293,11 +284,10 @@ function Combat()
 
 	local WarLandNo = GetProperty("","WarLandNo")
 	local WarEnemyNo = GetProperty("","WarEnemyNo")
-	local TotalWar = WarLandNo + WarEnemyNo
 
 	SetProperty("","WarPhase", 0)
 
-	if Rand(TotalWar) < WarLandNo then
+	if WarEnemyNo < WarLandNo then
 		SetProperty("","WarWon", 2)
 		return true
 	else

@@ -38,6 +38,8 @@ Bugfix-Liste
 - Die automatische Suche nach höherleveligen Angestellten (Gesellen- und Meisterrang) funktionierte nicht.
 - Angestellte höheren Levels verloren ihre Erfahrung nach dem Anheuern.
 - Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen.
+- Krieg fand nur in den ersten Spielrunden statt. 
+- Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
 
 Features
 
