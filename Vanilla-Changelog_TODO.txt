@@ -26,6 +26,7 @@ Bug-Fixes & Workarounds:
   nicht mehr die Meldung bekommen, dass der Lieberhaber eures Angestellten sich vernachlässigt fühlt).
 - Suchte man nach einem zufälligen Angestellten mit zu geringen Bar-Reserven, bekam man die Meldung,
   dass kein Arbeiter gefunden wurde. Stattdessen wird nun darauf hingewiesen, dass man mehr Bargeld benötigt.
+- Da die Einstellung "Häufigkeit der Amtssitzungen" zu einem OOS führte, ist diese Option im Multiplayer nun nicht länger steuerbar. Der Standardwert ist nun "alle 2 Runden".
 
 
 Offen:
@@ -59,7 +60,6 @@ Offen:
 - Die Gildenlieferungen "Obst" und "Honig" enthielten kein Bild.
 - Bei der Maßnahme "Unkendunk" wurde die Nachricht über einen erfolgreichen Anschlag
   an das Opfer statt an den Täter verschickt.
-- Da die Einstellung "Häufigkeit der Amtssitzungen" zu einem OOS führte, ist diese Option im Multiplayer nun nicht länger steuerbar. Der Standardwert ist nun "alle 2 Runden".
 - Die "FrequencyOfficeSession"-Option bei Spielstart hatte auf Englisch und anderen Sprachen einen zu langen Namen (wurde daher nicht richtig angezeigt)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).

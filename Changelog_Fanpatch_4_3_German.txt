@@ -10,7 +10,7 @@ Allgemeines
 - Keine erzwungene Heilung von kranken Mitarbeitern beim manuellen Anheuern mehr.
 - Es wurden die original Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert).
 - Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte. Nutzt die Maßnahme 'Gruppe verwalten' (hinter dem Button zum Inventar öffnen).
-- Die Jahre-Pro-Runde Option wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte.
+- Die Option (Häufigkeit der) Amtssitzungen wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte. Die Standardeinstellung ist: alle 2 Runden.
 - Das Standard-KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Angestellte lassen sich nicht mehr heiraten.
 

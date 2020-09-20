@@ -5,7 +5,7 @@ function Init()
 	this:AttachModule("WorldSessionCtrl", "cl_WorldSessionController")
 	this:AttachModule("TextSystem","cl_TextSystemModule")
 	
-	this:SetValueInt("GameMode",1)
+	this:SetValueInt("GameMode", 1)
 	this:SetValueString("SessionType", "LOCALHOST")
 	
 	InputCtrl = FindNode("\\Application\\Game\\InputCtrl")
@@ -29,17 +29,17 @@ function Init()
 	end
 	
 	local Options = FindNode("\\Settings\\Options")
-	Options:SetValueInt("YearsPerRound",4)
-	Options:SetValueInt("YPRNextStep",0)
+	Options:SetValueInt("YearsPerRound", 4)
+	Options:SetValueInt("YPRNextStep", 0)
 
-	Options:SetValueInt("Ambient",1)
-	Options:SetValueInt("AmbientNextStep",0)
+	Options:SetValueInt("Ambient", 1)
+	Options:SetValueInt("AmbientNextStep", 0)
 
 	Options:SetValueInt("Messages",1)
-	Options:SetValueInt("MessagesNextStep",0)
+	Options:SetValueInt("MessagesNextStep", 0)
 
-	Options:SetValueInt("FrequencyOfficeSessions",1)
-	Options:SetValueInt("FOSNextStep",0)
+	Options:SetValueInt("FrequencyOfficeSessions",2)
+	Options:SetValueInt("FOSNextStep", 0)
 
 	this:ChangeGameState("StartScreen")
 end
