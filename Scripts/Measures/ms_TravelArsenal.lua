@@ -6,7 +6,7 @@ function Run()
 		StopMeasure()
 	end
 
-	local Count = Find("", "__F((Object.GetObjectsByRadius(Building)==1100)AND(Object.IsType(27))AND(Object.Property.prewar>0))","Arsenal", -1)
+	local Count = Find("", "__F((Object.GetObjectsByRadius(Building)==2000)AND(Object.IsType(27))AND(Object.Property.prewar>0))","Arsenal", -1)
 	
 	if Count < 1 then
 		StopMeasure()
@@ -16,7 +16,7 @@ function Run()
 	GetSettlement("Arsenal", "City")
 	GetSettlement("", "settlement")
 	if not GetID("City") == GetID("settlement") then
-		MsgQuick("","@L_TRAVELARSENAL_FAILURE_+0",GetID("settlement"))
+		MsgBoxNoWait("","Arsenal","@L_GENERAL_ERROR_HEAD_+0","@L_TRAVELARSENAL_FAILURE_+0",GetID("settlement"))
 		StopMeasure()
 	end
 
@@ -35,7 +35,7 @@ function Run()
 	end
 
 	if count < 1 then
-		MsgQuick("","@L_TRAVELARSENAL_FAILURE_+2",GetID("settlement"))
+		MsgBoxNoWait("","Arsenal","@L_GENERAL_ERROR_HEAD_+0","@L_TRAVELARSENAL_FAILURE_+2",GetID("settlement"))
 		StopMeasure()
 	end
 
@@ -44,7 +44,6 @@ function Run()
 		--!!!!!!!!!!!!!!!!!!
 		
 	else
-		
 		choice = MsgBox("", "", "@P@B[1,@L_REPLACEMENTS_BUTTONS_JA_+0]"..
 							"@B[0,@L_REPLACEMENTS_BUTTONS_NEIN_+0]",
 							"@L_TRAVELARSENAL_HIRE_MAIN_HEAD_+0",
@@ -53,7 +52,7 @@ function Run()
 
 		if (choice==1) then
 			if not GetProperty("WarChooser","WarPhase")==1 then
-				MsgQuick("","@L_TRAVELARSENAL_FAILURE_+1")
+				MsgBoxNoWait("","Arsenal","@L_GENERAL_ERROR_HEAD_+0","@L_TRAVELARSENAL_FAILURE_+1")
 				StopMeasure()
 			else
 				count = 0
@@ -68,20 +67,21 @@ function Run()
 						SetState("",STATE_LOCKED,true)
 						SetState("",STATE_GLOBALTRAVELLING,true)
 						GetDynasty("", "family")
+						local power = GetSkillValue("", "rhetoric") * GetSkillValue("", "fighting") + 3*GetSkillValue("", "secret_knowledge")
 						if HasProperty("family", "WarLandNo") then
-							local familypower = GetProperty("family", "WarLandNo") + 2
+							local familypower = GetProperty("family", "WarLandNo") + power
 							SetProperty("family", "WarLandNo", familypower)
 						else
-							SetProperty("family", "WarLandNo", 2)
+							SetProperty("family", "WarLandNo", power)
 						end
-						local totalpower = GetProperty("WarChooser","WarLandNo") + 2
+						local totalpower = GetProperty("WarChooser","WarLandNo") + power
 						SetProperty("WarChooser","WarLandNo", totalpower)
-						MsgQuick("","@L_TRAVELARSENAL_MSG_+0",GetID(""),GetID("settlement"))
+						MsgBoxNoWait("","Aresnal","@L_MEASURE_TravelArsenal_NAME_+0","@L_TRAVELARSENAL_MSG_+0",GetID(""),GetID("settlement"))
 						StopMeasure()
 					end
 				end
 				if count < 1 then
-					MsgQuick("","@L_TRAVELARSENAL_FAILURE_+2",GetID("settlement"))
+					MsgBoxNoWait("","Arsenal","@L_GENERAL_ERROR_HEAD_+0","@L_TRAVELARSENAL_FAILURE_+2",GetID("settlement"))
 					StopMeasure()
 				end
 			end
