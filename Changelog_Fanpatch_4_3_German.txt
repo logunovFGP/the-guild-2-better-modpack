@@ -18,7 +18,7 @@ Bugfix-Liste
 
 - Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
-- Der Vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers.
+- Der vergiftete Kuchen (nur mittels Alchemistenmaßnahme erhältlich) senkte nicht die Kampfkraft des Opfers.
 - Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
 - Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
 - Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.

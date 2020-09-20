@@ -20,7 +20,7 @@ function Run()
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	local duration = mdata_GetDuration(MeasureID)
 	
-	local skillmodify = -2
+	local skillmodify = 2
 	
 	--run to destination and start action at MaxDistance
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
@@ -54,7 +54,7 @@ function Run()
 	
 	--modify the skills
 	if RemoveItems("", "PoisonedCake", 1) > 0 then
-		AddImpact("", "Fighting", -skillmodify, duration)
+		AddImpact("", "fighting", -skillmodify, duration)
 		AddImpact("", "dexterity", -skillmodify, duration)
 		SetMeasureRepeat(TimeOut)
 		
