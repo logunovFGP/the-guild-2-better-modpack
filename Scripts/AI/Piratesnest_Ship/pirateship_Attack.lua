@@ -7,7 +7,20 @@ function Weight()
 	
 	-- no attacks if ship is damaged
 	if GetHPRelative("SHIP") < 0.7 then
-		return 0
+		SetData("GetSupplies", 1)
+		return 100
+	end
+	
+	-- maybe upgrade crew
+	if Rand(10) > 7 then
+		local MaxCrew = GetProperty("SHIP", "ShipMenCntMax")
+		local MenCnt = GetProperty("SHIP", "ShipMenCnt")
+		
+		if MenCnt < MaxCrew then
+			SetData("RaiseMenTo", 1)
+			SetData("GetSupplies", 1)
+			return 100
+		end
 	end
 	
 	-- find a target ship
@@ -29,8 +42,7 @@ function Weight()
 	if Type == EN_CT_FISHERBOOT then
 		return 0
 	end
-	
-	
+
 	-- no attacks on friendly dynasties
 	local TargetID = GetDynastyID("MyTarget")
 
@@ -55,12 +67,7 @@ function Weight()
 		return 0
 	end
 	
-	if MenCnt < OtherMenCnt then
-		SetData("GetSupplies",1)
-		SetData("RaiseMenTo",OtherMenCnt)
-	end
-	
-	return 30 + Booty
+	return 30
 end
 
 function Execute()
@@ -70,7 +77,7 @@ function Execute()
 			MeasureAddData("Measure", "RaiseMenTo", GetData("RaiseMenTo"))
 		end
 		MeasureStart("Measure", "SHIP", "SHIP", "SailHomeAndRepair")
+	else
+		MeasureStart("Measure", "SHIP", "MyTarget", "PlunderShip")
 	end
-	
-	MeasureStart("Measure", "SHIP", "MyTarget", "PlunderShip")
 end
