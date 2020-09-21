@@ -23,51 +23,40 @@ function Run()
 	if CityIsKontor("MyCity") then
 		StopMeasure()
 	end
-
+	
+	local Difficulty = ScenarioGetDifficulty()
+	local Season
 	while true do
-		Sleep(Rand(500)+500)
-		local Choice = Rand(150)+1
-		if ScenarioGetDifficulty()<3 then 
-			if Choice ==1 then
-				ms_citycontrol_Inferno()
-			elseif Choice == 2 and Weather_GetSeason()~=3 then
-				ms_citycontrol_Heuschrecken()
-			else
-				ms_citycontrol_InfectPartyMember()
-			end
-		elseif ScenarioGetDifficulty()==3 then
-			if Choice <3 then
-				ms_citycontrol_Inferno()
-			elseif Choice >2 and Choice <5 and Weather_GetSeason()~=3 then
-				ms_citycontrol_Heuschrecken()
-			elseif Choice == 5 then
-				if GetRound() > (3+Rand(5)) then
-					ms_citycontrol_RatBoy()
-				end
-			elseif Choice == 6 then
-				if GetRound() > (5+Rand(5)) then
-					ms_citycontrol_TheBlackDeath()
-				end
-			else
-			ms_citycontrol_InfectPartyMember()
-			end
-		elseif ScenarioGetDifficulty()==4 then
-			if Choice <4 then
-				ms_citycontrol_Inferno()
-			elseif Choice >3 and Choice <6 and Weather_GetSeason()~=3 then
-				ms_citycontrol_Heuschrecken()
-			elseif Choice == 6 or Choice == 7 then
-				if GetRound() > (3+Rand(5)) then
-					ms_citycontrol_RatBoy()
-				end
-			elseif Choice == 8 or Choice == 9 then
-				if GetRound() > (5+Rand(5)) then
-					ms_citycontrol_TheBlackDeath()
-				end
-			else
-			ms_citycontrol_InfectPartyMember()
-			end
+		Sleep(Rand(120)+420)
+		Season = GetSeason() 
+		-- spring and fall
+		-- infection, Heuschrecken, inferno, black death, ratboy
+		local probs = {8, 1, 2, 1, 1}
+			
+		if Season == EN_SEASON_SUMMER then
+			-- summer
+			probs = {3, 2, 3, 2, 0}
+		elseif Season == EN_SEASON_WINTER then
+			-- winter
+			probs = {15, 0, 0, 2, 0}
 		end
+	
+		local Choice = Rand(100)+1
+		if Choice < Difficulty * probs[1] then
+			ms_citycontrol_InfectPartyMember()
+		elseif Choice < Difficulty * (probs[1] + probs[2]) then
+			ms_citycontrol_Heuschrecken()
+		elseif Choice < Difficulty * (probs[1] + probs[2] + probs[3]) then
+			ms_citycontrol_Inferno()
+		elseif Choice < Difficulty * (probs[1] + probs[2] + probs[3] + probs[4])  and GetRound() > (10 - Difficulty) then
+			ms_citycontrol_TheBlackDeath()
+--		elseif Choice < Difficulty * probs[5] then
+--			ms_citycontrol_RatBoy()
+		else 
+			-- DEBUG
+			--MsgNewsNoWait("All","","","intrigue",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
+		end
+
 	end
 end
 
@@ -94,60 +83,54 @@ function InfectPartyMember()
 	end
 	
 	if AliasExists("CurrentMember") then
-		if GetImpactValue("CurrentMember","Resist")>0 then
+		if GetImpactValue("CurrentMember","Resist")>0 then --check if you were ill or used soap or staff of aesculap
 			return 
 		end
-		GetHomeBuilding("CurrentMember","ZuHause")
-		local healLuck = Rand(10)
-		if CityGetRandomBuilding("MyCity",2,37,-1,-1,FILTER_IGNORE,"CurrentBuilding") then
-			local SickChoice = Rand(10)
-			local krankH
-			if BuildingGetLevel("CurrentBuilding") == 1 then
-				if SickChoice>4 then
-					diseases_Sprain("CurrentMember",true,true)
-					krankH = 1
-				else
-				    if GetItemCount("ZuHause", "Blanket", INVENTORY_STD)>0 and healLuck >= 4 then
-					    RemoveItems("ZuHause", "Blanket", 1, INVENTORY_STD)
-						return
-					else
-					    diseases_Cold("CurrentMember",true,true)
-					    krankH = 2
-					end
-				end
-			elseif BuildingGetLevel("CurrentBuilding") == 2 then
-				if SickChoice>4 then
-					diseases_Influenza("CurrentMember",true,true)
-					krankH = 3
-				else
-				    if GetItemCount("ZuHause", "Soap", INVENTORY_STD)>0 and healLuck >= 7 then
-					    RemoveItems("ZuHause", "Soap", 1, INVENTORY_STD)
-						return
-					else
-					    diseases_Pox("CurrentMember",true,true)
-					    krankH = 4
-					end
-				end
-			else
-				if SickChoice>4 then
-					diseases_Fracture("CurrentMember",true,true)
-					krankH = 5
-				else
-				    if GetItemCount("ZuHause", "HerbTea", INVENTORY_STD)>0 and healLuck > 5 then
-					    RemoveItems("ZuHause", "HerbTea", 1, INVENTORY_STD)
-						return
-					else
-					    diseases_Caries("CurrentMember",true,true)
-					    krankH = 6
-					end
-				end
-			end
-			ms_citycontrol_Warnung(1,"CurrentMember",krankH)
+		if GetImpactValue("CurrentMember","Sickness")>0 then -- check if you are already ill
+			return 
 		end
 	
-	RemoveAlias("CurrentMember")	
+		local SickChoice = 1+Rand(10)
+		local krankH
+		-- check the scenario difficulty
+		if ScenarioGetDifficulty()>2 then -- hard settings?
+		
+			if SickChoice<4 then -- 30%
+				diseases_Cold("CurrentMember",true, true) -- you got lucky
+				krankH = 2
+			elseif SickChoice<6 then --20%
+				diseases_Sprain("CurrentMember",true,true) -- still lucky
+				krankH = 1
+			elseif SickChoice <8 then --20%
+				diseases_Influenza("CurrentMember",true,true) -- influenza? not nice
+				krankH = 3
+			elseif SickChoice <9 then --10%
+				diseases_Pox("CurrentMember",true,true) -- damn!
+				SetState("CurrentMember",STATE_CONTAMINATED,true)
+				krankH = 4
+			elseif SickChoice <10 then --10%	
+				diseases_Fracture("CurrentMember",true,true) -- that hurts
+				krankH = 5
+			else -- 10%
+				diseases_Caries("CurrentMember",true,true) -- c'mon!
+				krankH = 6
+			end
+		else -- low settings
+			if SickChoice<6 then -- 50%
+				diseases_Cold("CurrentMember",true, true) -- you got lucky
+				krankH = 2
+			elseif SickChoice <9 then --40%
+				diseases_Sprain("CurrentMember",true,true) -- still lucky
+				krankH = 1
+			else -- 10%
+				diseases_Influenza("CurrentMember",true,true) -- influenza? not nice
+				krankH = 3
+			end
+		end
+	ms_citycontrol_Warnung(1,"CurrentMember",krankH) -- send a message to the poor guy
 	end
 	
+	RemoveAlias("CurrentMember")	-- cleanup
 end
 
 function RatBoy()
@@ -159,15 +142,28 @@ function RatBoy()
 		return
 	end
 	SimSetBehavior("RatBoy","RatBoy")
-	ms_citycontrol_Warnung(2,"MyCity")
+	ms_citycontrol_Warnung(2,"RatBoy")
 end
 
 function Inferno()
+	-- residences
 	local NumBuildings = CityGetBuildingCount("MyCity",1,-1,-1,-1,FILTER_IGNORE)
 	CityGetBuildings("MyCity",1,-1,-1,-1,FILTER_IGNORE,"Building")
+	local Severity = Rand(70)
 	for i=0,NumBuildings-1 do
-		SetState("Building"..i,STATE_BURNING,true)
-		Sleep(5)
+		if GetImpactValue("Building"..i, 7) * 100 < Severity then
+			SetState("Building"..i,STATE_BURNING,true)
+			Sleep(3)
+		end
+	end
+	-- workshops
+	local NumBuildings = CityGetBuildingCount("MyCity",2,-1,-1,-1,FILTER_IGNORE)
+	CityGetBuildings("MyCity",2,-1,-1,-1,FILTER_IGNORE,"Building")
+	for i=0,NumBuildings-1 do
+		if GetImpactValue("Building"..i, 7) * 100 < Severity then
+			SetState("Building"..i,STATE_BURNING,true)
+			Sleep(3)
+		end
 	end
 	ms_citycontrol_Warnung(3,"MyCity")
 end
@@ -186,11 +182,14 @@ function Heuschrecken()
 end
 
 function TheBlackDeath()
+	if not ReadyToRepeat("MyCity", "Pest") then
+		return
+	end
   local opfer = Rand(2)+1
-	if CityGetRandomBuilding("MyCity",opfer,-1,-1,-1,FILTER_IGNORE,"Ausbruch") then
-		if BuildingGetSim("Ausbruch",1,"ErstOpfer") then
+	if CityGetRandomBuilding("MyCity",opfer,-1,-1,-1,FILTER_HAS_DYNASTY,"Ausbruch") then
+		if BuildingGetSim("Ausbruch",0,"ErstOpfer") then
 			diseases_Blackdeath("ErstOpfer",true,true)
-			ms_citycontrol_Warnung(5,"MyCity","Ausbruch")	
+			SetRepeatTimer("MyCity", "Pest", 192)
 		end
 	end
 	
@@ -198,23 +197,19 @@ end
 
 function Warnung(danger,opfer,zusatz)
 
-  GetLocalPlayerDynasty("Chef")
   local krankNam = { "@L_HPFZ_KATASTR_KRANK_NAM_+0", "@L_HPFZ_KATASTR_KRANK_NAM_+1", "@L_HPFZ_KATASTR_KRANK_NAM_+2", "@L_HPFZ_KATASTR_KRANK_NAM_+3", "@L_HPFZ_KATASTR_KRANK_NAM_+4", "@L_HPFZ_KATASTR_KRANK_NAM_+5" }
   if danger == 1 then
 	    MsgNewsNoWait(opfer,opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_KRANK_KOPF",
 	                    "@L_HPFZ_KATASTR_KRANK_RUMPF_+0"..krankNam[zusatz].."@L_HPFZ_KATASTR_KRANK_RUMPF_+1",GetID(opfer),krankNam[zusatz])
 	elseif danger == 2 then
-	    MsgNewsNoWait("Chef",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_RATTE_KOPF",
+	    MsgNewsNoWait("All",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_RATTE_KOPF",
 	                    "@L_HPFZ_KATASTR_RATTE_RUMPF")
 	elseif danger == 3 then
-	    MsgNewsNoWait("Chef",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_FEUER_KOPF",
+	    MsgNewsNoWait("All",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_FEUER_KOPF",
 	                    "@L_HPFZ_KATASTR_FEUER_RUMPF",GetID(opfer))
 	elseif danger == 4 then
-	    MsgNewsNoWait("Chef",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_GRILLEN_KOPF",
+	    MsgNewsNoWait("All",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_GRILLEN_KOPF",
 	                    "@L_HPFZ_KATASTR_GRILLEN_RUMPF",GetID(opfer))
-	elseif danger == 5 then
-	    MsgNewsNoWait("Chef",opfer,"","intrigue",-1,"@L_HPFZ_KATASTR_STOD_KOPF",
-	                    "@L_HPFZ_KATASTR_STOD_RUMPF",GetID(opfer),zusatz)
 	end
 
 end
