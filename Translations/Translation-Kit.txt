@@ -70,12 +70,12 @@ Translate and add the following lines below:
 18067   "_TRADEROUTE_WARNING_OPTION_+1"   "Send it on rightaway!"   |
 18068   "_TRADEROUTE_WARNING_OPTION_+2"   "Never mind, $Nhe is used to that!"   |
 18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Why do you bother me?$NPlease refrain from warning me!"   |
-
-Translate and change the following lines:
-7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
-7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
+18070   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
+18071   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
 
 Delete the following lines:
+7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
+7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
 8449   "_HPFZ_MEASURES_HIRE_ZUSATZ_+0"   "What level of knowledge do you want the candidate to have?"   |
 8450   "_HPFZ_HIRERANDOM_FEHLER_+0"   "No such candidate available to employ!"   |
 
