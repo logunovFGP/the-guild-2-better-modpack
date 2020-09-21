@@ -1,15 +1,22 @@
 function Weight()
-
-	if GetState("SHIP",STATE_FIGHTING) then
+	
+	-- ship is already fighting
+	if GetState("SHIP", STATE_FIGHTING) then
 		return 0
 	end
 	
+	-- no attacks if ship is damaged
+	if GetHPRelative("SHIP") < 0.7 then
+		return 0
+	end
+	
+	-- find a target ship
 	local ShipFilter = "__F((Object.GetObjectsByRadius(Ship)==10000)AND NOT(Object.IsType(4))AND NOT(Object.BelongsToMe())AND NOT(Object.HasImpact(shipplunderedtoday)))"
-	local NumDamagedShips = Find("SHIP",ShipFilter,"MyTarget",-1)
+	local NumDamagedShips = Find("SHIP", ShipFilter, "MyTarget", -1)
 	local Found = 0
 	if NumDamagedShips > 0 then
 		Found = 1
-	elseif ScenarioGetRandomObject("cl_Ship","MyTarget") then
+	elseif ScenarioGetRandomObject("cl_Ship", "MyTarget") then
 		Found = 1
 	end
 	
@@ -17,46 +24,35 @@ function Weight()
 		return 0
 	end
 	
-	
-	
-	local TargetID = GetDynastyID("MyTarget")
-	
-	if (TargetID == GetDynastyID("SHIP")) then
+	-- Fisherboats can't fight back thus it needs to be forbidden
+	local Type = CartGetType("MyTarget")
+	if Type == EN_CT_FISHERBOOT then
 		return 0
 	end
+	
+	
+	-- no attacks on friendly dynasties
+	local TargetID = GetDynastyID("MyTarget")
 
 	if TargetID > 0 then
-		if GetDynasty("MyTarget","TargetDynasty") then
-			GetDynasty("SHIP","MyDynasty")
-			if (GetFavorToDynasty("MyDynasty","TargetDynasty")>45) then
+		if GetDynasty("MyTarget", "TargetDynasty") then
+			GetDynasty("SHIP", "MyDynasty")
+			if DynastyGetDiplomacyState("MyDynasty", "TargetDynasty") >= DIP_NAP  then
 				return 0
 			end
 		end
 	end
-	if GetImpactValue("MyTarget","shipplunderedtoday")>0 then
+	
+	-- already has been plundered
+	if GetImpactValue("MyTarget","shipplunderedtoday") > 0 then
 		return 0
 	end
 	
-	local Booty = chr_GetBootyCount("MyTarget",INVENTORY_STD)
+	local Booty = chr_GetBootyCount("MyTarget", INVENTORY_STD)
 	
-	if Booty < 100 then
-		if AliasExists("TargetDynasty") and DynastyIsPlayer("TargetDynasty") then
-			return 0
-		end 
-		Booty = Rand(100)
-	end
-	
-	local MenCnt = GetProperty("SHIP", "ShipMenCnt") * GetImpactValue("SHIP", "ShipMenMod")
-	local OtherMenCnt = GetProperty("MyTarget", "ShipMenCnt") * GetImpactValue("MyTarget", "ShipMenMod")
-	
-	if GetHPRelative("")<0.8 then
-		if GetImpactValue("","FullOfLove")==0 then
-			SetData("GetSupplies",1)
-			return -1
-		elseif GetHPRelative("")<0.5 then
-			SetData("GetSupplies",1)
-			return -1
-		end
+	-- no booty no attack
+	if Booty < 200 then
+		return 0
 	end
 	
 	if MenCnt < OtherMenCnt then
