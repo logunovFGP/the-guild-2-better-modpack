@@ -29,7 +29,7 @@ Bug-Fixes & Workarounds:
 - Da die Einstellung "Häufigkeit der Amtssitzungen" zu einem OOS führte, ist diese Option im Multiplayer nun nicht länger steuerbar. Der Standardwert ist nun "alle 2 Runden".
 - Man kann Sims, die man grade gefeuert hat, nicht sofort wieder umwerben.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
-
+- Handelsrouten wurden grundlegend überarbeitet und erweitert (ThreeOfMe ist Hauptautor)
 
 Offen:
 
@@ -228,7 +228,6 @@ Nützliche Vanilla-Features + QoL Änderungen:
 - Durch das Tragen eines Knochenarmreifs kann der Träger sich vor Hexerdokumenten schützen.
 - Schergen, die auf Patrouille sind, werden nun selbstständig Pamphlete abreißen, wenn sie sich in der Nähe des schwarzen Bretts aufhalten. Sie verlangen dafür allerdings eine 
   kleine Goldbelohnung, die mit steigendem Titel wächst - der Spieler wird über den Erfolg benachrichtigt
-- Der regelmäßige Besuch der Messe verbessert nun auch die Gesinnung ein wenig.
 - Wer in einer Taverne einen Schlafplatz mietet, wird auf jedenfall und ohne Itembedarf von Erkältungen und Grippe geheilt.
 - Wer einen Heiler via Maßnahme aufsuchen will, rennt dort nun hin, anstatt zu gehen.
 - Man kann Schattendynastien nun ihre Gebäude abkaufen, selbst, wenn sie nicht zum Verkauf stehen! Dazu braucht es eventuell nur etwas
@@ -242,4 +241,3 @@ Nützliche Vanilla-Features + QoL Änderungen:
   Es existiert nun eine Übersicht über alle Gewinne mit Kreditgeschäften.
 - Erstmals wirkt sich das Talent Feilschen auf Verkäufe am Markt aus! (Allerdings derzeit nur über Maßnahme "Karren verschicken" 
   oder über Handelsrouten)
-- Handelsrouten wurden grundlegend überarbeitet und erweitert (ThreeOfMe ist Hauptautor)
