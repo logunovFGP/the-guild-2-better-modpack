@@ -39,6 +39,7 @@ Bugfixes
 - Neutral traders and ships would do nothing after a few rounds. Also fixed some script errors.
 - War happened only a few times in the beginning of the game. 
 - During war, your actions would have no effect on victory or defeat no matter how many troops you would get. 
+- The fix against the exploit of fire and courting employees has been improved.
 
 Features
 

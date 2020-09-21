@@ -68,6 +68,17 @@ end
 -- -----------------------
 function Run()
 	
+	if HasProperty("Destination", "NoMarry") then    
+		if GetProperty("Destination", "NoMarryTime") < GetGametime() then -- if time is over, remove property
+			RemoveProperty("Destination", "NoMarryTime")
+			RemoveProperty("Destination", "NoMarry")
+		elseif GetDynastyID("") == GetProperty("Destination", "NoMarry") then -- if our dynasty recently fired the destination Sim, stop measure.
+			MsgQuick("", "@L_COURTLOVER_MSG_FAILED_QUICK")
+			StopMeasure()
+			return
+		end
+	end
+	
 	MeasureSetNotRestartable()
 	if not AliasExists("Destination") then
 		if not ms_045_courtlover_AIInit() then

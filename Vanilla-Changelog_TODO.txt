@@ -27,6 +27,8 @@ Bug-Fixes & Workarounds:
 - Suchte man nach einem zufälligen Angestellten mit zu geringen Bar-Reserven, bekam man die Meldung,
   dass kein Arbeiter gefunden wurde. Stattdessen wird nun darauf hingewiesen, dass man mehr Bargeld benötigt.
 - Da die Einstellung "Häufigkeit der Amtssitzungen" zu einem OOS führte, ist diese Option im Multiplayer nun nicht länger steuerbar. Der Standardwert ist nun "alle 2 Runden".
+- Man kann Sims, die man grade gefeuert hat, nicht sofort wieder umwerben.
+
 
 
 Offen:
@@ -35,7 +37,6 @@ Offen:
 - Nach einem Duell wurde die Gunst doppelt erhöht.
 - Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
 - Fehlerhafte Warenhaus-Upgrades repariert.
-- Man kann Sims, die man grade gefeuert hat, nicht sofort wieder umwerben.
 - Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
 - Kinder der Dynastie-KIs zu Spielbeginn sind nun nicht länger ausschließlich Mädchen.

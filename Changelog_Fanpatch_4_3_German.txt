@@ -39,6 +39,7 @@ Bugfix-Liste
 - Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen und hatten darüber hinaus weitere Fehler.
 - Krieg fand nur in den ersten Spielrunden statt. 
 - Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
+- Der Exploitfix gegen das Entlassen und Umwerben von Angestellten wurde verbessert.
 
 Features
 

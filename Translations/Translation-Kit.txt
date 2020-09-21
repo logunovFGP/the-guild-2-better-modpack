@@ -72,6 +72,8 @@ Translate and add the following lines below:
 18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Why do you bother me?$NPlease refrain from warning me!"   |
 18070   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
 18071   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
+18072   "_COURTLOVER_MSG_FAILED_QUICK"   "You fired this person not long ago. Because of that he or she will not talk to you."   |  
+
 
 Delete the following lines:
 7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |

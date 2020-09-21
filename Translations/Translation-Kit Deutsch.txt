@@ -72,4 +72,5 @@ Neu:
 18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Warum stört Ihr mich?$NUnterlasst diese Warnung!"
 18070   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
 18071   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "Dieser Charakter trägt eine Hexerrobe. Sie steigert seine geistigen Fähigkeiten ... ein unheimliches Gewand."   |
+18072   "_COURTLOVER_MSG_FAILED_QUICK"   "Ihr habt diese Person vor Kurzem entlassen. Sie möchte daher für die nächste Zeit nichts mit Euch zu tun haben."   |  
 
