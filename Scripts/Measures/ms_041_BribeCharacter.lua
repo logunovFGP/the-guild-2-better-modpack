@@ -38,7 +38,7 @@ function Init()
 	local Button3 = "@B[3,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,Hud/Buttons/btn_Money_Large.tga]"
 	
 	if GetMoney("Owner") < Money * 0.02 then
-		MsgQuick("","@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
+		MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
 		StopMeasure()
 	elseif GetMoney("") < Money * 0.06 then
 		Button2 = ""
@@ -47,10 +47,10 @@ function Init()
 		Button3 = ""
 	end
 	
-	local Skill = GetSkillValue("",BARGAINING)/100
-	local Choice1 = (0.02 * Money)*(1-Skill*2)
-	local Choice2 = (0.06 * Money)*(1-Skill*2)
-	local Choice3 = (0.12 * Money)*(1-Skill*2)
+	local Skill = GetSkillValue("", BARGAINING)/100
+	local Choice1 = (0.02 * Money)*(1-Skill * 2)
+	local Choice2 = (0.06 * Money)*(1-Skill * 2)
+	local Choice3 = (0.12 * Money)*(1-Skill * 2)
 	MsgMeasure("","")
 	local result = InitData("@P"..
 	Button1..
@@ -74,7 +74,7 @@ function AIInitBribe()
 	--AI decides how much money to spend
 	local OwnerMoney = GetMoney("Owner")
 	local DestMoney = GetMoney("Destination")
-	local Favor = GetFavorToSim("Destination","Owner")
+	local Favor = GetFavorToSim("Destination", "Owner")
 	local SpendFactor = 0
 	if OwnerMoney < DestMoney then
 		SpendFactor = SpendFactor + 1
@@ -247,7 +247,7 @@ function Normal()
 		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
 		--do the favor stuff
-		chr_ModifyFavor("Destination","",-(5+(MaxModifyFavor-ModifyFavor)))
+		chr_ModifyFavor("Destination","",-5)
 		--show message
 		MsgNewsNoWait("","Destination","","intrigue",-1,
 			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_HEAD_+0",
@@ -349,7 +349,7 @@ function Cutscene()
 		
 	else	--decline money
 		--do the favor stuff
-		chr_ModifyFavor("Destination","",-(5+(MaxModifyFavor-ModifyFavor)))		
+		chr_ModifyFavor("Destination","",-5)		
 		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
 		--show message

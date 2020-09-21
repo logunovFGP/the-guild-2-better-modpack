@@ -55,8 +55,9 @@ Features
 Balancing
 
 - Sweet talking needs 300 instead of 200 Gold. Tavern keepers will get that money.
+- Church owners will get the money from changing faith.
 - Favor gain of sweet talking has been altered.
 - You can now use ALL of your buisness inspectors to inspect buisnesses instead of just one at a time. However you can no longer inspect buisnesses more than once every 48 hours.
   Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
 - Sorcerer's robe no longer will give you a malus.
-
+- Declining a bribe will now lose you only 5 favor.

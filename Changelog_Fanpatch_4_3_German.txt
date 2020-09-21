@@ -55,9 +55,11 @@ Features
 
 Balancing
 
-- Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben
+- Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
+- Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
 - Gunstgewinn beim Becircen leicht modifiziert.
-- Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb
-nur einmal alle 48 Ingamestunden überprüft werden. Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
+- Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb nur einmal alle 48 Ingamestunden überprüft werden. 
+  Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
 - Die Hexerrobe verursacht keinen Malus mehr.
+- Bestechungsgelder abzulehnen wird nun die Gunst nur noch um 5 Punkte reduzieren.
 
