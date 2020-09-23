@@ -52,7 +52,7 @@ function KundeAuswahl()
       CreditMoney("Actor",summe,"Offering")
 			IncrementXPQuiet("Actor",5)
       if IsDynastySim("Owner") then
-            SpendMoney("Owner", summe, "Offering",true)
+		chr_SpendMoney("Owner", summe, "Offering")
       end
       ShowOverheadSymbol("Actor",false,true,0,"%1t",summe)
       RemoveItems("KarrLager", lagInhalt[einkauf], 1)

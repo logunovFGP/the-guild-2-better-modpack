@@ -117,7 +117,7 @@ function Run()
 				 
 	if result=="O" then
 		--wants to pay
-		if SpendMoney("Victim", fMoney, "CostRobbers") then
+		if chr_SpendMoney("Victim", fMoney, "CostRobbers") then
 			chr_RecieveMoney("", fMoney, "IncomeRobbers")
 			--for the mission
 			mission_ScoreCrime("",fMoney)

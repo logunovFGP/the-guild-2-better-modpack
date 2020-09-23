@@ -164,7 +164,7 @@ function Run()
 	    StopMeasure()
 	end
 		
-	SpendMoney("BankChief",invest,"Credit")
+	chr_SpendMoney("BankChief", invest, "CreditsTaken")
 
 	if HasProperty("BuildingPointer","KreditKonto") then
 		local habKonto = GetProperty("BuildingPointer","KreditKonto")

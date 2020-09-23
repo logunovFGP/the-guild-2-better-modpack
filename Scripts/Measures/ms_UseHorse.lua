@@ -27,7 +27,7 @@ function Run()
 	end
 	SetProperty("","aborted",0)
 	
-	if not SpendMoney("", costs, "travelling") then
+	if not chr_SpendMoney("", costs, "travelling") then
 		MsgQuick("", "@L_USE_HORSE_FAILURE_+1")
 		StopMeasure()
 	end

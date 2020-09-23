@@ -28,7 +28,7 @@ function Run()
 				StopMeasure()
 			end
 			local PriceToInvite = GetProperty("MyHome","PriceForInvite")
-			if not SpendMoney("",PriceToInvite,"CostSocial") then
+			if not chr_SpendMoney("", PriceToInvite, "CostSocial") then
 				StopMeasure()
 			end
 			MsgMeasure("","@L_FEAST_2_INVITE_A_INFOLINE_+1",GetID("Destination"))

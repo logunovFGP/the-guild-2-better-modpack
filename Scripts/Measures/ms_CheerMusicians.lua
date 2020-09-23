@@ -79,10 +79,10 @@ end
 function CleanUp()
 	if HasProperty("","Tips") then
 		local tips = GetProperty("","Tips")
-		if tips>0 then
+		if tips > 0 then
 			if IsPartyMember("") then
 				if GetMoney("") > tips then
-					SpendMoney("",tips,"Versengold")
+					chr_SpendMoney("", tips, "Versengold")
 				end
 			end
 			

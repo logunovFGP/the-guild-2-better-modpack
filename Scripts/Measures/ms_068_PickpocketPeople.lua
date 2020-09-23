@@ -90,7 +90,7 @@ function Run()
 							if VictimSpendValue > Value then
 								VictimSpendValue = Value
 							end
-							SpendMoney(DestAlias, VictimSpendValue, "theft")
+							chr_SpendMoney(DestAlias, VictimSpendValue, "CostThiefs")
 							
 							if VictimSpendValue>25 then
 								feedback_MessageCharacter(DestAlias,

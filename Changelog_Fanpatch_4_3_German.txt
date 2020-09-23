@@ -13,6 +13,7 @@ Allgemeines
 - Die Option (Häufigkeit der) Amtssitzungen wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte. Die Standardeinstellung ist: alle 2 Runden.
 - Das Standard-KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Angestellte lassen sich nicht mehr heiraten.
+- Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
 
 Bugfix-Liste
 

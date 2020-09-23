@@ -91,12 +91,12 @@ function Run()
 	
 			-- offices costs
 			local officecostsTotal = gameplayformulas_GetTotalOfficeIncome("")
-			if officecostsTotal>0 then
-				if GetMoney("")>officecostsTotal then
-					SpendMoney("", officecostsTotal, "OfficeIncome")				
+			if officecostsTotal > 0 then
+				if GetMoney("") > officecostsTotal then
+					chr_SpendMoney("", officecostsTotal, "OfficeIncome")				
 				else
 					local tmpcosts = GetMoney("")
-					SpendMoney("", tmpcosts, "OfficeIncome")				
+					chr_SpendMoney("", tmpcosts, "OfficeIncome")				
 				end
 			end
 			SetProperty("", "OfficeMoney", officecostsTotal)
@@ -110,7 +110,7 @@ function Run()
 	
 					if GetMoney("")>cost then
 						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
+						chr_SpendMoney("", cost, "BuildingRepairs")				
 						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
 						repairTotal = repairTotal + cost
 					end
@@ -126,7 +126,7 @@ function Run()
 	
 					if GetMoney("")>cost then
 						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
+						chr_SpendMoney("", cost, "BuildingRepairs")				
 						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
 						repairTotal = repairTotal + cost
 					end
@@ -142,7 +142,7 @@ function Run()
 	
 					if GetMoney("")>cost then
 						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
+						chr_SpendMoney("", cost, "BuildingRepairs")				
 						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
 						repairTotal = repairTotal + cost
 					end

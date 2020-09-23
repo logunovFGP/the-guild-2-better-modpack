@@ -67,11 +67,11 @@ function CheckEnd()
 		end
 		for CurrentCart=0,CartCount do
 			BuildingGetCart("#Smithy",CurrentCart,"MyCart")
-			local DistanceToMarket = GetDistance("MyCart","#Market")
+			local DistanceToMarket = GetDistance("MyCart", "#Market")
 			if (DistanceToMarket <= 1600) then
 				HideTutorialBox()
 				local Money = GetMoney("#Player")
-				SpendMoney("#Player",Money,"Tutorial")						
+				chr_SpendMoney("#Player", Money, "Tutorial")						
 				return true
 			end
 		end

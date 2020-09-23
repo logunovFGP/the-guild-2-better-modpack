@@ -93,7 +93,7 @@ function Run()
 		if GetRemainingInventorySpace("","JanesRing") < 1 then
 			MsgQuick("", "@L_MEASURE_BUYGOLDRING_FAILURE_+1", GetID(""))
 			StopMeasure()
-		elseif not SpendMoney("", Cost, "BuyGoldRing", false) then
+		elseif not chr_SpendMoney("", Cost, "BuyGoldRing") then
 			MsgQuick("", "@L_MEASURE_BUYGOLDRING_FAILURE_+0", GetID(""))
 			StopMeasure()
 		end

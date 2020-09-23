@@ -223,7 +223,7 @@ function Normal()
 		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+"..Index
 		--do the financial stuff
-		if not SpendMoney("",Money,"CostBribes") then
+		if not chr_SpendMoney("", Money, "CostBribes") then
 			MsgQuick("","@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
 			StopMeasure()
 		end
@@ -329,7 +329,7 @@ function Cutscene()
 		SetProperty("Destination","BribedBy",GetID(""))
 		
 		--do the financial stuff
-		SpendMoney("",Money,"CostBribes")
+		chr_SpendMoney("", Money,"CostBribes")
 		chr_RecieveMoney("Destination", Money, "IncomeBribes")
 		--for the mission
 		mission_ScoreCrime("Destination",Money)

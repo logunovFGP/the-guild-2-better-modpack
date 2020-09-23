@@ -193,7 +193,7 @@ function Start()
 	SetProperty("#Smithy", "NOT_ATTACKABLE", 1)	
 	
 	
-	SpendMoney("#Player",1000,"INIT");
+	chr_SpendMoney("#Player", 1000, "INIT");
 
 
 -------------------------------------------------------------------------------

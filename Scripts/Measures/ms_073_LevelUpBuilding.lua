@@ -16,7 +16,7 @@ function Run()
 	local Price			= GetDatabaseValue("Buildings", Proto, "price")
 	UpgradeMoney		= Price - OldPrice
 	
-	if not SpendMoney("Owner", UpgradeMoney, "BuildingLevelup", false) then
+	if not chr_SpendMoney("Owner", UpgradeMoney, "BuildingLevelup") then
 		MsgQuick("", "@L_GENERAL_MEASURES_073_LEVELUPBUILDING_FAILURES_+1", UpgradeMoney, GetID("Owner"))
 		return
 	end

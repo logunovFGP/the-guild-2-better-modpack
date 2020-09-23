@@ -208,12 +208,12 @@ function Run()
 		StopAnimation("GuildClerk")
 	end
 
-	if (choice==0) then
+	if (choice == 0) then
 
-		if GetRemainingInventorySpace("",Object) < 1 then
+		if GetRemainingInventorySpace("", Object) < 1 then
 			MsgQuick("", "@L_MEASURE_BUYRAWMATERIAL_FAILURE_+0", GetID(""), ObjectLabel)
 			StopMeasure()
-		elseif not SpendMoney("", money[ItemIndex], "BuyRawMaterial", false) then
+		elseif not chr_SpendMoney("", money[ItemIndex], "BuyRawMaterial") then
 			MsgQuick("", "@L_MEASURE_BUYRAWMATERIAL_FAILURE_+1", GetID(""), ObjectLabel)
 			StopMeasure()
 		end

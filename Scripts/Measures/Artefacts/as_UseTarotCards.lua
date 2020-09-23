@@ -56,7 +56,7 @@ function Run()
 			  MsgNewsNoWait("","","","default",-1,
 			  	"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+2",
 			    "@L_TAROTCARDS_FATE_NEGATIV_+3",cash)
-				SpendMoney("", cash, "CostSocial")	
+				chr_SpendMoney("", cash, "CostSocial")	
 			end
 		else
 			if tarot==0 then

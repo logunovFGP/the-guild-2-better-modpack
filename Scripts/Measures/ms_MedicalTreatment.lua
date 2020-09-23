@@ -193,7 +193,7 @@ function Run()
 				if CanHeal ~= false then
 					if DynastyIsPlayer("SickSim0") then
 						-- only Players need to pay
-						if SpendMoney("SickSim0", Costs, "Offering") then
+						if chr_SpendMoney("SickSim0", Costs, "Offering") then
 							-- remove medicine
 							if CanHeal == 1 then
 								RemoveItems("Hospital",Medicine,1,INVENTORY_STD)

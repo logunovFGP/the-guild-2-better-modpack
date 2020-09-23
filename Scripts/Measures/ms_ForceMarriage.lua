@@ -71,7 +71,7 @@ function Run()
 						cost, GetID("Destination"))
 								
 		if (BYesNo == "A") then
-			SpendMoney("", cost, "CostForceMarriage")
+			chr_SpendMoney("", cost, "CostBribes")
 			SimMarry("", "Destination")
 		end
 	end

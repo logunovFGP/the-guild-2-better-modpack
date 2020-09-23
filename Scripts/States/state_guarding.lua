@@ -20,7 +20,7 @@ function Run()
 	local EndTime = GetGametime() + duration
 	
 	local fSingleMoney = GetProperty("","TotalMoney")
-	SpendMoney("VictimBuilding", fSingleMoney, "Misc",true)
+	chr_SpendMoney("VictimBuilding", fSingleMoney, "Misc")
 	chr_RecieveMoney("", fSingleMoney, "Misc")
 	
 	while GetGametime() < EndTime do

@@ -57,7 +57,7 @@ function Run()
 										GetID("boss"), newtitle, cost)
 											
 					if (BYesNo == "A") then
-						if (SpendMoney("boss", cost, "CostAdministration")) then
+						if (chr_SpendMoney("boss", cost, "CostAdministration")) then
 							GetSettlement("", "Set")
 														
 							CreditMoney("Set", cost, "title")
@@ -119,7 +119,7 @@ function Run()
 
 			if not (chr_DynastyGetImperialFameLevel("") < famelvl) then			
 
-				if (SpendMoney("", cost, "CostAdministration")) then
+				if (chr_SpendMoney("", cost, "CostAdministration")) then
 					SetNobilityTitle("", currenttitle+1, false)
 					local XP = 10 + ((currenttitle+1) * 2)
 					IncrementXP("", XP)
@@ -290,7 +290,7 @@ function Run()
 				
 				if (buy == 1) then	
 					camera_CutsceneBothLockCam("cutscene", "Usher", "Far_HUpYRight")		
-					if (SpendMoney("", cost, "CostAdministration")) then
+					if (chr_SpendMoney("", cost, "CostAdministration")) then
 					
 						GetSettlement("Usher", "Set")
 						CreditMoney("Set", cost, "title")

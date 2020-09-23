@@ -43,8 +43,8 @@ function Init()
 	local setzen = ((cash / 100) * prSatz)
 	
 	if setzen > 0 then
-		if not SpendMoney("", setzen, "") then
-			MsgQuick("","@L_MEASURE_DICEGAME_NOMONEY_+0")
+		if not chr_SpendMoney("", setzen, "misc") then
+			MsgQuick("", "@L_MEASURE_DICEGAME_NOMONEY_+0")
 			StopMeasure()
 		end
 		
@@ -348,7 +348,7 @@ function AllEinsatz(pre,zusatz)
 	local altSatz = GetData("Prozent")
 	local neuSatz = ((zusatz / 100) * altSatz)
 	if pre == 2 then
-	  if not SpendMoney("", neuSatz, "") then
+	  if not chr_SpendMoney("", neuSatz, "misc") then
 			MsgQuick("","@L_MEASURE_DICEGAME_NOMONEY_+0")
 			StopMeasure()
 		end

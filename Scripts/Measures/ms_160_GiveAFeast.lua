@@ -95,7 +95,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if not SpendMoney("",PriceForFeast ,"CostSocial") then
+	if not chr_SpendMoney("", PriceForFeast ,"CostSocial") then
 		
 		StopMeasure()
 	end

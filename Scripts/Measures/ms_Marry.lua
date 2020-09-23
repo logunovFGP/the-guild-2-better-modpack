@@ -159,7 +159,7 @@ function Run()
 	
 		ms_marry_GotoChurch("Weddingchapel")
 		
-		if not SpendMoney("dynasty", Cost, "Wedding") then
+		if not chr_SpendMoney("dynasty", Cost, "Wedding") then
 			if not HasProperty("", "Tutorial") then
 				MsgQuick("","@L_MEASURE_WEDDING_FAILURE_+1",GetID(""))
 				StopMeasure()

@@ -32,7 +32,7 @@ function Run()
 		return
 	end
 	
-	if not SpendMoney("", Price, "CostSocial") then
+	if not chr_SpendMoney("", Price, "CostSocial") then
 		MsgQuick("","@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+0",Price)
 		StopMeasure()
 	end

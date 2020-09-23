@@ -16,8 +16,8 @@ function Run()
 		end
 		if AliasExists("MyHome") then
 			BuildingGetCity("MyHome","city")
-			if GetMoney("city")>HeadMoney then
-				SpendMoney("city", HeadMoney, "Mercenaries")
+			if GetMoney("city") > HeadMoney then
+				chr_SpendMoney("city", HeadMoney, "Mercenaries")
 				CreditMoney("MercOwner", HeadMoney, "HeadMoneyCity")
 				
 				local MercMoney = HeadMoney

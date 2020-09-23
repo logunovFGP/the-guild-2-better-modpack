@@ -96,7 +96,7 @@ function Run()
 					BuildingGetOwner("bestDest","BuildingOwner")
 					if GetMoney("BuildingOwner")>bestFee then
 						if bestFee>0 then
-							SpendMoney("BuildingOwner",bestFee,"Versengold")
+							chr_SpendMoney("BuildingOwner",bestFee,"Versengold")
 							SetProperty("bestDest","MusiciansFee",0)
 						end
 						CopyAlias("bestDest","Destination")

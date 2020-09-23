@@ -227,7 +227,7 @@ function War()
 							
 							feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
 		
-							SpendMoney("family", money, "WarMoney")
+							chr_SpendMoney("family", money, "WarMoney")
 							RemoveProperty("family", "WarLandNo")
 						else
 							local money = (Rand(1100) + 250) * 25
@@ -238,7 +238,7 @@ function War()
 							
 							feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
 		
-							SpendMoney("family", money, "WarMoney")
+							chr_SpendMoney("family", money, "WarMoney")
 						end
 					elseif GetProperty("family","WarLandNo") then
 						local money = (Rand(1100) + 250) * GetProperty("family","WarLandNo")
@@ -249,7 +249,7 @@ function War()
 						
 						feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
 	
-						SpendMoney("family", money, "WarMoney")
+						chr_SpendMoney("family", money, "WarMoney")
 						RemoveProperty("family", "WarLandNo")
 					end
 				end
@@ -267,7 +267,7 @@ function War()
 						
 						feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
 	
-						SpendMoney("family", money, "WarMoney")
+						chr_SpendMoney("family", money, "WarMoney")
 						RemoveProperty("family", "WarLandNo")
 					end
 				end

@@ -123,7 +123,7 @@ function Run()
 		if GetRemainingInventorySpace("","AldermanChain") < 1 then
 			MsgQuick("", "@L_MEASURE_BUYALDERMANCHAIN_FAILURE_+1", GetID(""))
 			StopMeasure()
-		elseif not SpendMoney("", Cost, "AldermanChain", false) then
+		elseif not chr_SpendMoney("", Cost, "AldermanChain") then
 			MsgQuick("", "@L_MEASURE_BUYALDERMANCHAIN_FAILURE_+0", GetID(""))
 			StopMeasure()
 		end

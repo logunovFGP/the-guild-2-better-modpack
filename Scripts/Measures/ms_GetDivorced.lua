@@ -57,7 +57,7 @@ function Run()
 	SetFavorToSim("Spouse", "", Factor * CurrentFavor)
 	
 	-- Weiter muss dem Geschiedenen eine Abfindung gezahlt werden
-	SpendMoney("", LooseMoney, "CostAdministration",true)
+	chr_SpendMoney("", LooseMoney, "CostBribes")
 		
 	-- Ex-spouse leaves the building
 	f_ExitCurrentBuilding("Spouse")

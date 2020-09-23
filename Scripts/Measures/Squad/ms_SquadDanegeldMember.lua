@@ -149,7 +149,7 @@ function Danegeld()
 			
 			AddImpact("Victim", "HaveBeenPickpocketed", 1, 12)
 			
-			if SpendMoney("VictimOwner", money, "CostBribes", false) then
+			if chr_SpendMoney("VictimOwner", money, "CostBribes", false) then
 				chr_ModifyFavor("VictimOwner","MercOwner",-favourloss)
 			end
 

@@ -240,8 +240,9 @@ function UseTresor()
     if BuildingGetOwner("WorkBuilding","Meister") then
 	    if GetFavorToSim("","Meister") < 30 then
 		    if Rand(20) > 16 then
-			    PlayAnimation("", "pickpocket")
-				SpendMoney("Meister", Rand(50)+10, "bank")
+				PlayAnimation("", "pickpocket")
+				local Amount = 10 + Rand(50)
+				chr_SpendMoney("Meister", Amount, "bank")
 			end
 		end
 	end

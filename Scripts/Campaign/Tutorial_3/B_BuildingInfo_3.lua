@@ -76,7 +76,7 @@ function CheckEnd()
 		HideTutorialBox()
 		HaveUpgrade = 2
 		local Money = GetMoney("#Player")
-		SpendMoney("#Player",Money,"Tutorial")		
+		chr_SpendMoney("#Player", Money, "Tutorial")		
 		return true
 	else
 		return false

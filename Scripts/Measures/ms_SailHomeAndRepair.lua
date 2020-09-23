@@ -112,7 +112,7 @@ function Run()
 				end
 				
 				if UpgradeCosts < Budget then
-					if SpendMoney("MyHarbour", UpgradeCosts, "Upgrades") then
+					if chr_SpendMoney("MyHarbour", UpgradeCosts, "BuildingLevelup") then
 						Budget = Budget - UpgradeCosts
 						AddImpact("", "ShipMenMod", 0.5, -1) -- 1 for normal, 1.50 for  cutlass, 2.00 for muskets
 						if GetImpactValue("", "UpgradedToday") == 0 then
@@ -157,7 +157,7 @@ function Run()
 					end
 					
 					if UpgradeCosts < Budget then
-						if SpendMoney("MyHarbour", UpgradeCosts, "Upgrades") then
+						if chr_SpendMoney("MyHarbour", UpgradeCosts, "BuildingLevelup") then
 							Budget = Budget - UpgradeCosts
 							AddImpact("", ImpactType, UpgradeNeed, -1) -- 1 for none, 1.25 for light, 1.50 for medium, 2.00 for heavy
 							if GetImpactValue("", "UpgradedToday") == 0 then

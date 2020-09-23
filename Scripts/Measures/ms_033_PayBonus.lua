@@ -123,7 +123,7 @@ function Run()
 	SetMeasureRepeat(TimeOut)
 	
 	-- loose money
-	SpendMoney("Dynasty", Bonus, "LaborBonus")
+	chr_SpendMoney("Dynasty", Bonus, "LaborBonus")
 	
 	-- Play a coin sound for the local player	
 	if dyn_IsLocalPlayer("") then

@@ -17,8 +17,8 @@ function Run()
 		        "@L_BUY_HORSE_BODY_+0",
 						ItemGetBasePrice("Bridle"))
 
-	if (choice==0) then
-		if not SpendMoney("", ItemGetBasePrice("Bridle"), "Horse", false) then
+	if (choice == 0) then
+		if not chr_SpendMoney("", ItemGetBasePrice("Bridle"), "Horse") then
 			MsgQuick("", "@L_BUY_HORSE_FAILURE_+0")
 			StopMeasure()
 		end

@@ -42,13 +42,13 @@ function Run()
 		
 		
 		local money = GetMoney("")
-		if (money<Cost) then
+		if (money < Cost) then
 			MsgQuick("", "@L_CHURCH_090_BUYHOLYINDULGENCE_FAILURES_+1", Cost)
 		else
-			RemoveItems("",166,1,INVENTORY_STD)
+			RemoveItems("", 166, 1, INVENTORY_STD)
 			if GetFreeLocatorByName("church","HolyIndulgence",-1,-1,"HolyIndulgencePos") then
 				f_BeginUseLocator("","HolyIndulgencePos",GL_STANCE_KNEEL,true)
-				SetData("Blocked",1)
+				SetData("Blocked", 1)
 				PlayAnimation("","knee_pray")
 				GetPosition("", "ParticleSpawnPos")
 				StartSingleShotParticle("particles/absolvesinner.nif", "ParticleSpawnPos",1.4,4)
@@ -56,8 +56,8 @@ function Run()
 				f_EndUseLocator("","HolyIndulgencePos",GL_STANCE_STAND)
 				SetData("Blocked",0)
 			end
-			SpendMoney("", Cost,"CostIndulgence")
-			CreditMoney("church",Cost*0.05,"IncomeIndulgence")
+			SpendMoney("", Cost, "CostIndulgence")
+			CreditMoney("church", (Cost*0.1), "IncomeIndulgence")
 			SetMeasureRepeat(TimeOut)
 			for i=0,ListSize("CrimeList")-1,1 do
 				ListGetElement("CrimeList",i,"tmp")
