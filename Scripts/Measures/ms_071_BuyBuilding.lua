@@ -18,16 +18,16 @@ function Run()
 	end
 	
 	-- check if building is an estate
-	if BuildingGetType("")==111 then
-		DynastyGetMember("dynasty",0,"boss")
-		if GetNobilityTitle("boss")<8 then
+	if BuildingGetType("") == 111 then
+		DynastyGetMember("dynasty", 0, "boss")
+		if GetNobilityTitle("boss") < 8 then
 			MsgQuick("dynasty", "@L_GENERAL_BUILDING_CASTLE_FAILURE_+0")
 			return
 		else
 			local	Count = DynastyGetBuildingCount2("dynasty")
-			for l=0,Count-1 do
+			for l = 0, Count-1 do
 				if DynastyGetBuilding2("dynasty", l, "Check") then
-					if BuildingGetType("Check")==111 then
+					if BuildingGetType("Check") == 111 then
 						MsgQuick("dynasty", "@L_GENERAL_BUILDING_CASTLE_FAILURE_+1")
 						return
 					end
@@ -40,12 +40,11 @@ function Run()
 	
 		local Class	= BuildingGetCharacterClass("")
 		local Count = DynastyGetMemberCount("dynasty")
-		local	Number = 0
 
-		for Number=0,Count-1 do
+		for Number = 0, Count-1 do
 			if DynastyGetMember("dynasty", Number, "Member") then
-				if Class==GL_CLASS_NONE or Class==SimGetClass("Member") then
-					if BuildingCanBeOwnedBy("","Member") then
+				if Class == GL_CLASS_NONE or Class == SimGetClass("Member") then
+					if BuildingCanBeOwnedBy("", "Member") then
 						CopyAlias("Member", "Destination")
 						break;
 					end
@@ -59,7 +58,7 @@ function Run()
 		return
 	end
 	
-	local Result = MsgNews("Destination","","@P"..
+	local Result = MsgNews("Destination", "", "@P"..
 				"@B[1,@L_REPLACEMENTS_BUTTONS_JA_+0]"..
 				"@B[C,@L_REPLACEMENTS_BUTTONS_NEIN_+0]",
 				ms_071_buybuilding_AIDecision,  --AIFunc
@@ -91,8 +90,7 @@ function Run()
 --	end
 
     SetState("", STATE_SELLFLAG, false)
-	GetLocalPlayerDynasty("LocalPlayer")
-	if GetID("LocalPlayer") == GetID("dynasty") then
+	if DynastyIsPlayer("") then
 		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.4, 1, "c4")
 	end
 end

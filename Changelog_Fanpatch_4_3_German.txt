@@ -41,6 +41,8 @@ Bugfix-Liste
 - Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
 - Der Exploitfix gegen das Entlassen und Umwerben von Angestellten wurde verbessert.
 - Piratenschiffe der KI greifen keine Fischerboote mehr an.
+- Wenn eine Bank abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
+- Exploit: Beim Abriss von Gebäuden erhält man nun nur noch den halben Gebäudewert.
 
 Features
 

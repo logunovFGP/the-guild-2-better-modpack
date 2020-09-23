@@ -4,7 +4,7 @@ end
 
 
 function Prepare()
-	SetTime(EN_SEASON_SUMMER,1400, 9, 0)
+	SetTime(EN_SEASON_SUMMER,1400, 5, 0)
 	GetScenario("World")
 	SetProperty("World", "static", 1)
 	

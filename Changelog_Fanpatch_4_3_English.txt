@@ -41,6 +41,8 @@ Bugfixes
 - During war, your actions would have no effect on victory or defeat no matter how many troops you would get. 
 - The fix against the exploit of fire and courting employees has been improved.
 - AI Pirate ships no longer attack fishing boats
+- If you tear down or sell your bank you get back your credit account money.
+- Exploit: If you tear down your building you now only get back half the value.
 
 Features
 

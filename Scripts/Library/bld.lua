@@ -22,7 +22,7 @@ function GetEmployeesInBuilding(BuildingAlias)
 end
 
 -- -----------------------
--- Pays out bank account and medicine chest when on sale/sold
+-- Pays out bank account when on sale/sold
 -- -----------------------
 function ClearBuildingStash(BldAlias, OwnerAlias)
 	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_BANKHOUSE and HasProperty(BldAlias, "BankAccount") then
