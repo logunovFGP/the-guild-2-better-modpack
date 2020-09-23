@@ -28,7 +28,7 @@ end
 
 
 function Setup()
-	worldambient_CreateAnimal("Dog","",1)
+	worldambient_CreateAnimal("Dog", "", 1)
 end
 
 

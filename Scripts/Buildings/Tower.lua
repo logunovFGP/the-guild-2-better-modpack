@@ -5,7 +5,7 @@ function CheckPosition()
 	local	MaxCount	= GetNobilityTitle("Dynasty", false) * 0.5
 	local	Have		= DynastyGetBuildingCount("Dynasty", GL_BUILDING_CLASS_MILITARY, -1)
 	
-	if MaxCount>4 then
+	if MaxCount >4 then
 		MaxCount = 4
 	end
 	
@@ -31,8 +31,8 @@ function CheckPosition()
 	for l=0,Count-1 do
 		if DynastyGetBuilding2("Dynasty", l, "Check") then
 			Type = BuildingGetClass("Check")
-			if Type==GL_BUILDING_CLASS_WORKSHOP or Type==GL_BUILDING_CLASS_LIVINGROOM then
-				if GetDistance("Check", "Position")<2000 then
+			if Type == GL_BUILDING_CLASS_WORKSHOP or Type == GL_BUILDING_CLASS_LIVINGROOM then
+				if GetDistance("Check", "Position") < 2000 then
 					return nil
 				end
 			end
@@ -64,8 +64,8 @@ function PingHour()
 	for l=0,Count-1 do
 		if DynastyGetBuilding2("Dynasty", l, "Check") then
 			Type = BuildingGetClass("Check")
-			if Type==GL_BUILDING_CLASS_WORKSHOP or Type==GL_BUILDING_CLASS_LIVINGROOM then
-				if GetDistance("Check", "")<2000 then
+			if Type == GL_BUILDING_CLASS_WORKSHOP or Type == GL_BUILDING_CLASS_LIVINGROOM then
+				if GetDistance("Check", "") < 2000 then
 					return
 				end
 			end
@@ -75,3 +75,10 @@ function PingHour()
 	ModifyHP("", -99999999, false, 0)
 end
 
+function Run()
+
+end
+
+function OnLevelUp()
+
+end

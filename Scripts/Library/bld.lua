@@ -452,6 +452,7 @@ end
 
 function ResetWorkers(BldAlias)
 	
+	Sleep(5) -- wait a few seconds before starting this cleanup.
 	local NumWorkers = BuildingGetWorkerCount(BldAlias)
 	
 	for i=0 , NumWorkers -1 do
@@ -485,7 +486,7 @@ function ResetWorkers(BldAlias)
 					end
 				end
 				
-				-- heal
+				-- heal default worker.
 				if GetImpactValue("Worker", "Sickness") > 0 then
 					diseases_Sprain("Worker", false)
 					diseases_Cold("Worker", false)
@@ -506,7 +507,7 @@ function ResetWorkers(BldAlias)
 end
 
 -- ----------------------------------------------
--- Modify AI production priorities
+-- Modify AI production priorities TODO
 -- ----------------------------------------------
 
 function SetupAI(BldAlias)
@@ -905,7 +906,7 @@ function ForceLevelUp(BldAlias)
 		BossLevel = 3
 	end
 	
-	if GetMoney("MyBoss") < (Cost + 2500) then
+	if GetMoney("MyBoss") < (Cost + 2000) then
 		SetRepeatTimer(BldAlias, "ai_ForceLevelUp", 12)
 		return
 	end

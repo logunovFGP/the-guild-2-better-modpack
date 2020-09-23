@@ -43,6 +43,11 @@ Bugfix-Liste
 - Piratenschiffe der KI greifen keine Fischerboote mehr an.
 - Wenn eine Bank abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
 - Exploit: Beim Abriss von Gebäuden erhält man nun nur noch den halben Gebäudewert.
+- Die KI repariert beschädigte Betriebe nun regelmäßig.
+- Die KI levelt ihre Betriebe nun auf, wenn sie die Voraussetzungen erfüllen.
+- Es wurde ein Sicherheitscheck eingebaut, der garantiert, dass der Standardarbeiter von Betrieben nicht krank ist und die richtige Standardausrüstung besitzt.
+- Bei aktivierter KI Verwaltung werden Rohstoffproduzenten Items, die sie nicht produzieren, auf dem Markt verkaufen (Workaround gegen ein KI-Verwaltungsproblem)
+- Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
 
 Features
 
@@ -54,6 +59,9 @@ Features
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
 - Die automatischen Handelsrouten wurden komplett überarbeitet (alle Credits gehen an ThreeOfMe)
+- Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
+- Es gibt nun 8 verschiedene Frauengesichter (vielen Dank an Jollina und broliii)
+- Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 
 Balancing
 

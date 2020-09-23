@@ -43,6 +43,11 @@ Bugfixes
 - AI Pirate ships no longer attack fishing boats
 - If you tear down or sell your bank you get back your credit account money.
 - Exploit: If you tear down your building you now only get back half the value.
+- AI repairs their buildings regulary now.
+- AI levels their buildings if they meet the conditions.
+- Added in a safety check to make sure the default worker of your buildings has no illness and the right equipment.
+- On activated AI setting your resource buildings will sell all the stuff they don't produce which they have in their store (workaround against an AI problem).
+- Fishing huts will sell fish they don't need on the local market.
 
 Features
 
@@ -53,6 +58,9 @@ Features
 - Improved some female character textures.
 - The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
 - The famous trading routes of ThreeOfMe have been added.
+- At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
+- There are 8 different female faces now (thanks to Jollina and broliii)
+- Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 
 Balancing
 

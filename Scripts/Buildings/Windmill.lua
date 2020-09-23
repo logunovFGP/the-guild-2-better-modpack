@@ -1,61 +1,138 @@
 function Run()
 end
 
-
 function OnLevelUp()
-end
-
-
-function Setup()
-	worldambient_CreateAnimal("Chicken","",2)
-	if ScenarioGetTimePlayed()>0.2 then
-		SetProperty("","CheckForSpinnings",1)
+	if BuildingGetAISetting("", "Produce_Selection") > 0 then
+	--	bld_SetupAI("")
 	end
 end
 
+function Setup()
+	-- create ambient animals
+	if Rand(2)==0 then
+		worldambient_CreateAnimal("Cat", "", 1)
+	else
+		worldambient_CreateAnimal("Chicken", "", 2)
+	end
+end
+
+function SellOtherStuff(BldAlias)
+	
+	if not GetSettlement(BldAlias, "MyCity") then
+		return
+	end
+	
+	CityGetLocalMarket("MyCity", "MyMarket")
+	if not AliasExists("MyMarket") then
+		return
+	end
+	
+	-- check all carts
+	for i=0, BuildingGetCartCount(BldAlias)-1 do
+		if BuildingGetCart(BldAlias, i, "Cart") then -- get the cart i
+			if GetDistance(BldAlias, "Cart") < 1000 then
+				if not GetState("Cart", STATE_CHECKFORSPINNINGS) then -- is not moving
+					if CanAddItems("Cart", "Salmon", 30, INVENTORY_STD) then -- enough space
+						CopyAlias("Cart", "MyCart")
+						break
+					end
+				end
+			end
+		end
+	end
+	
+	if not AliasExists("MyCart") then
+		return
+	end
+	
+	-- now check our inventory
+	local Count = InventoryGetSlotCount(BldAlias, INVENTORY_STD)
+	local ItemId
+	local ItemCount
+	local Item1 = 0
+	local Amount1 = 0
+	local Item2 = 0
+	local Amount2 = 0
+	
+	for i=0, Count-1 do
+		ItemId, ItemCount = InventoryGetSlotInfo(BldAlias, i, INVENTORY_STD)
+		if ItemId and ItemCount > 0 then
+			if ItemGetType(ItemId) == 3 or ItemGetType(ItemId) == 5 then
+				if not BuildingCanProduce(BldAlias, ItemId) then 
+					if Item1 == 0 then
+						Item1 = ItemId
+						Amount1 = ItemCount
+						if Amount1 > 20 then
+							Amount1 = 20
+						end
+					elseif Item2 == 0 then
+						Item2 = ItemId
+						Amount2 = ItemCount
+						if Amount2 > 20 then
+							Amount2 = 20
+						end
+					else
+						break
+					end
+				end
+			end
+		end
+	end
+	
+	local Market = Rand(5)+1
+	if not CityGetRandomBuilding("MyCity", 5, 14, Market ,-1, FILTER_IGNORE, "MarketPos") then
+		if not CityGetRandomBuilding("MyCity", 5, 14, -1, -1, FILTER_IGNORE, "MarketPos") then
+			return
+		end
+	end
+	
+	if Item1 + Item2 > 0 then
+		MeasureRun("MyCart", "MarketPos", "SendCartAndUnload", true)
+	end
+	
+	if Item1 > 0 then 
+		SetProperty("MyCart", "Amount", Amount1)
+		CreateScriptcall("TransferItem1", 0.15, "Buildings/farm.lua", "TransferItem", BldAlias, "MyCart", Item1)
+	end
+	
+	Sleep(0.25)
+	
+	if Item2 > 0 then
+		SetProperty("MyCart", "Amount", Amount2)
+		CreateScriptcall("TransferItem2", 0.15, "Buildings/farm.lua", "TransferItem", BldAlias, "MyCart", Item2)
+	end
+end
 
 function PingHour()
+	
 	if not GetState("", STATE_MOVING_BUILDING) and not GetState("", STATE_BUILDING) and not GetState("", STATE_LEVELINGUP) then
 		SetState("", STATE_MOVING_BUILDING, true)
 	end
-
-	if HasProperty("","CheckForSpinnings") then
-		local checks = GetProperty("","CheckForSpinnings")
-		
-		if checks < 20 then
-			if not HasProperty("","SpinningsChecked") then
-				local MovObjFilter = "__F( (Object.GetObjectsByRadius(Sim)==6000)AND(Object.HasProperty(MyDest))OR(Object.GetObjectsByRadius(Cart)==6000)AND(Object.HasProperty(MyDest))AND NOT(Object.HasProperty(AutoRoute)))"
-				local NumMovObj = Find("",MovObjFilter,"MovObj",-1)
 	
-				if NumMovObj > 0 then
-					for obj=0,NumMovObj-1 do
-						local ObjAlias = "MovObj"..obj
-						if not GetState(ObjAlias,STATE_DRIVERATTACKED) then
-							if HasProperty(ObjAlias,GetID("")) then
-								if GetProperty(ObjAlias,GetID(""))==GetProperty(ObjAlias,"MyDest") then
-									RemoveProperty(ObjAlias,GetID(""))
-									if GetCurrentMeasureName(ObjAlias)=="WorldTrader" then
-										MeasureRun(ObjAlias,nil,"WorldTrader",true)
-									else
-										SimStopMeasure(ObjAlias)
-									end
-								else
-									RemoveProperty(ObjAlias,GetID(""))
-								end
-							else
-								SetProperty(ObjAlias,GetID(""),GetProperty(ObjAlias,"MyDest"))
-							end
-						end
-					end
-				end
-				SetProperty("","SpinningsChecked",1)
-			else
-				RemoveProperty("","SpinningsChecked")
+	-- Check every worker (only once) for illness and equipment 
+	if not HasProperty("", "CheckDefaultWorkers") then
+		bld_ResetWorkers("")
+		SetProperty("", "CheckDefaultWorkers", 1)
+	end
+	
+	-- Improve AI management
+	if BuildingGetAISetting("", "Produce_Selection") > 0 then
+	--	bld_SetupAI("")
+		windmill_SellOtherStuff("")
+	end
+	
+	-- Only for AI
+	
+	if BuildingGetOwner("", "MyBoss") then
+		if GetHomeBuilding("MyBoss", "MyHome") then
+			if DynastyIsShadow("MyHome") then -- shadows shall only have 1 cart
+				bld_RemoveCart("")
 			end
-			checks = checks + 1
-			SetProperty("","CheckForSpinnings",checks)
-		else
-			RemoveProperty("","CheckForSpinnings")
+			
+			if DynastyIsAI("MyHome") then
+				bld_CheckRivals("")
+				bld_CheckRepairs("")
+			end
 		end
 	end
 end

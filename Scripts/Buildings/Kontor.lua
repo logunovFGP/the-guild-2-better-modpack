@@ -8,22 +8,22 @@
 function OnLevelUp()
 
 	local Water = 0
-	SetProperty("","WaterKontor",0)
+	SetProperty("", "WaterKontor",0)
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
 	if (BuildingFindWaterPos("Position","PositionEntry","PosWater")) then
-		if (GetOutdoorMovePosition(NIL, "", "PosGround")) then
+		if (GetOutdoorMovePosition(nil, "", "PosGround")) then
 			BuildingSetWaterPos("", "PosWater", "PosGround")
-			SetProperty("","WaterKontor",1)
+			SetProperty("", "WaterKontor", 1)
 			Water = 1
 			return true
 		end
 	end
 	
-	if Water == 1 and GetState("",STATE_MARINECONTROL)==false then
+	if Water == 1 and not GetState("", STATE_MARINECONTROL) then
 		SetState("",STATE_MARINECONTROL,true)
-	elseif Water == 0 and GetState("",STATE_TRADERCONTROL)==false then
-		SetState("",STATE_TRADERCONTROL,true)
+	elseif Water == 0 and not GetState("", STATE_TRADERCONTROL) then
+		SetState("", STATE_TRADERCONTROL,true)
 	end
 	
 	if not ScenarioFindPosition("", 2250, EN_POSTYPE_WATER, 600, nil, nil, nil, "PosWater") then
@@ -37,12 +37,12 @@ end
 -- attention: this function call is unscheduled
 --
 function Setup()
-	SetProperty("","WaterKontor",0)
+	SetProperty("", "WaterKontor", 0)
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
-	if (BuildingFindWaterPos("Position","PositionEntry","PosWater")) then
-		if (GetOutdoorMovePosition(NIL, "", "PosGround")) then
-			SetProperty("","WaterKontor",1)
+	if (BuildingFindWaterPos("Position", "PositionEntry", "PosWater")) then
+		if (GetOutdoorMovePosition(nil, "", "PosGround")) then
+			SetProperty("", "WaterKontor", 1)
 		end
 	end
 	MeasureRun("", nil, "KontorMeasure")

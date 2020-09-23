@@ -326,7 +326,7 @@ function CheckGuildMasters()
 	
 			-- PatronLabel, PatronName, ArtisanLabel, ArtisanName, ScholarLabel, ScholarName, ChiselerLabel, ChiselerName, 
 			local textArray = {"","","","","","","","","","","",""}
-			GetLocalPlayerDynasty("Player")
+	--		GetLocalPlayerDynasty("Player")
 
 			if PatronArray[PatronWinner]~=nil then
 				GetAliasByID(PatronArray[PatronWinner],"Patron")
@@ -433,7 +433,7 @@ function CheckGuildMasters()
 			end
 
 			if PlayerCity==true then
-				feedback_MessagePolitics("Player","@L_GUILDHOUSE_MASTERLIST_HEAD_+0","@L_GUILDHOUSE_MASTERLIST_BODY_+0",GetID("city"),GetYear(),textArray[0],textArray[1],textArray[2],textArray[3],textArray[4],textArray[5],textArray[6],textArray[7],textArray[8],textArray[9],textArray[10],textArray[11])
+				MsgNewsNoWait("All","","","politics",-1, "@L_GUILDHOUSE_MASTERLIST_HEAD_+0","@L_GUILDHOUSE_MASTERLIST_BODY_+0",GetID("city"),GetYear(),textArray[0],textArray[1],textArray[2],textArray[3],textArray[4],textArray[5],textArray[6],textArray[7],textArray[8],textArray[9],textArray[10],textArray[11])
 			end
 		end	
 	end
@@ -458,7 +458,7 @@ function CheckSimsInside()
 			if not GetState("Sim", STATE_TOWNNPC) then
 				f_ExitCurrentBuilding("Sim")
 			end
-		elseif (DynastyIsAI("Sim") and not(GetState("Sim", STATE_TOWNNPC)) and not(GetState("Sim", STATE_AIGUILDPRODUCE)) and not(GetState("Sim", STATE_AIUNPACKRAWMATERIAL))) then
+		elseif (DynastyIsAI("Sim") and not(GetState("Sim", STATE_TOWNNPC))) then
 			if GetCurrentMeasurePriority("Sim") < 2 then
 				f_ExitCurrentBuilding("Sim")
 			end

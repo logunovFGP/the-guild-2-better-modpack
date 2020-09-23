@@ -6,10 +6,11 @@ function Run()
 end
 
 
-function OnLevelUp()
-	
+function OnLevelUp()	
 end
 
+function Setup()
+end
 
 function PingHour()
 	weddingchapel_CheckOrphans()
@@ -17,13 +18,13 @@ end
 
 
 function CheckOrphans()
-	if not HasProperty("","Sleeping") then
-		SetProperty("","Sleeping", 0)
+	if not HasProperty("", "Sleeping") then
+		SetProperty("", "Sleeping", 0)
 	end
-	if GetProperty("", "Orphan1")==nil then
-		GetLocatorByName("","OrphanSpawnPoint","SpawnPos1")
-		SimCreate(605,"","SpawnPos1","Orphan1")
-		if SimGetGender("Orphan1")==GL_GENDER_MALE then
+	if GetProperty("", "Orphan1") == nil then
+		GetLocatorByName("", "OrphanSpawnPoint", "SpawnPos1")
+		SimCreate(605, "", "SpawnPos1", "Orphan1")
+		if SimGetGender("Orphan1") == GL_GENDER_MALE then
 			local name = GetName("Orphan1")
 			local y,z = string.find(name, " ")
 			local newlastname = string.sub(name, 1 , y)
@@ -37,14 +38,14 @@ function CheckOrphans()
 			SimSetLastname("Orphan1", newlastname)
 		end
 		SimSetAge("Orphan1", 5)
-		SetState("Orphan1",STATE_TOWNNPC,true)
-		SimSetBehavior("Orphan1","Orphan")
+		SetState("Orphan1", STATE_TOWNNPC,true)
+		SimSetBehavior("Orphan1", "Orphan")
 		SetProperty("", "Orphan1", GetID("Orphan1"))
 	end
-	if GetProperty("", "Orphan2")==nil then
-		GetLocatorByName("","OrphanSpawnPoint","SpawnPos2")
-		SimCreate(605,"","SpawnPos2","Orphan2")
-		if SimGetGender("Orphan2")==GL_GENDER_MALE then
+	if GetProperty("", "Orphan2") == nil then
+		GetLocatorByName("", "OrphanSpawnPoint", "SpawnPos2")
+		SimCreate(605, "", "SpawnPos2", "Orphan2")
+		if SimGetGender("Orphan2") == GL_GENDER_MALE then
 			local name = GetName("Orphan2")
 			local y,z = string.find(name, " ")
 			local newlastname = string.sub(name, 1 , y)
@@ -59,18 +60,18 @@ function CheckOrphans()
 		end
 		SimSetAge("Orphan2", 5)
 		SetState("Orphan2",STATE_TOWNNPC,true)
-		SimSetBehavior("Orphan2","Orphan")
+		SimSetBehavior("Orphan2", "Orphan")
 		SetProperty("", "Orphan2", GetID("Orphan2"))
 	end
 
 	-- check for sleeping time
 	local currentGameTime = math.mod(GetGametime(),24)
 	if (currentGameTime < 6) or (currentGameTime > 20) then
-		if GetProperty("", "Sleeping")==0 then
+		if GetProperty("", "Sleeping") == 0 then
 			SetProperty("", "Sleeping", 1)
 		end
 	else
-		if GetProperty("", "Sleeping")==1 then
+		if GetProperty("", "Sleeping") == 1 then
 			-- RemoveProperty("", "Sleeping")
 			SetProperty("", "Sleeping", 0)
 		end
