@@ -1,6 +1,17 @@
 MegaModPack Reforged - Lite 0.1
 
-General
+** Credits **
+
+Lead: Fajeth
+Scripting: Fajeth, ThreeOfMe, Serpens66, Napi96
+Maps: Fajeth
+GUI: MoK
+Icons: Fajeth
+Textures: Jollina, Skip, Broliii 
+Testing:
+Additional Support: McCoy! + The Guild 2 Community
+
+** General **
 
 - Script cleanup: Corrected tabs and spaces in scripts. Added sections and comments. Optimized structure and functions.
 - Script cleanup: Removed redundand impacts and other unused DB entries.
@@ -15,7 +26,7 @@ General
 - You can no longer marry workers or guards.
 - AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
 
-Bugfixes
+** Bugfixes **
 
 - Multiple artefact-scripts didn't use the correct item name from the DB.
 - Exploit: After starting certain artefact measures, you could remove the item from the inventory before it was deleted and still get the full effect.
@@ -50,7 +61,7 @@ Bugfixes
 - On activated AI setting your resource buildings will sell all the stuff they don't produce which they have in their store (workaround against an AI problem).
 - Fishing huts will sell fish they don't need on the local market.
 
-Features
+** Features **
 
 - Your medical treatments slightly boost the opinion of the patients to the owner of that hospital
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
@@ -63,7 +74,7 @@ Features
 - There are 8 different female faces now (thanks to Jollina and broliii)
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 
-Balancing
+** Balancing **
 
 - Sweet talking needs 300 instead of 200 Gold. Tavern keepers will get that money.
 - Church owners will get the money from changing faith.

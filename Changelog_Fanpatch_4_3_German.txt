@@ -1,6 +1,18 @@
 MegaModPack Reforged - Lite 0.1
 
-Allgemeines
+** Credits **
+
+Lead: Fajeth
+Scripting: Fajeth, ThreeOfMe, Serpens66, Napi96
+Maps: Fajeth
+GUI: MoK
+Icons: Fajeth
+Texturen: Jollina, Skip, Broliii 
+Testing:
+Anderer Support: McCoy! + Die Gilde 2 Community
+
+
+** Allgemeines **
 
 - Scripte aufgeräumt: Einrückungen und Leerzeichen in den Scripten korrigiert. Absätze und Kommentare hinzugefügt. Funktionen + Aufbau optimiert.
 - Scripte aufgeräumt: Einige redundante Impacts entfernt.
@@ -14,8 +26,9 @@ Allgemeines
 - Das Standard-KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Angestellte lassen sich nicht mehr heiraten.
 - Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
+- Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
 
-Bugfix-Liste
+** Bugs **
 
 - Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
@@ -50,7 +63,7 @@ Bugfix-Liste
 - Bei aktivierter KI Verwaltung werden Rohstoffproduzenten Items, die sie nicht produzieren, auf dem Markt verkaufen (Workaround gegen ein KI-Verwaltungsproblem)
 - Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
 
-Features
+** Features **
 
 - Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt)
@@ -64,7 +77,7 @@ Features
 - Es gibt nun 8 verschiedene Frauengesichter (vielen Dank an Jollina und broliii)
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 
-Balancing
+** Balancing **
 
 - Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
 - Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.

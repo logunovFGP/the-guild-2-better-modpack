@@ -562,7 +562,7 @@ end
 function RecieveMoney(ObjectAlias, val, topic)
 
 	CreditMoney(ObjectAlias, val, topic)
-	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t",val)
+	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t", val)
 	return val
 
 end
@@ -942,7 +942,7 @@ function MultiAnim(Actor1, Anim1, Actor2, Anim2, Distance, ReturnAfter, Seconds)
 	
 end
 
-function SpendMoney(SimAlias, MoneyToSpend, Reason)
+function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	
 	if not AliasExist(SimAlias) then
 		return false
@@ -950,6 +950,11 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason)
 	
 	if MoneyToSpend == nil then
 		return false
+	end
+	
+	-- if Force is true, dynasties will pay regardless if they can afford it or not and go into negatives
+	if Force == nil then
+		Force = false
 	end
 	
 	if Reason == nil or Reason == false then
@@ -966,13 +971,13 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason)
 		local Diff = ScenarioGetDifficultyLevel()
 		Multiplier = 10/(8-Diff)
 		local CorrectAmount = MoneyToSpend*Multiplier
-		if SpendMoney(SimAlias, CorrectAmount, Reason) then
+		if SpendMoney(SimAlias, CorrectAmount, Reason, Force) then
 			return true
 		else
 			return false
 		end
 	else
-		if SpendMoney(SimAlias, MoneyToSpend, Reason) then
+		if SpendMoney(SimAlias, MoneyToSpend, Reason, Force) then
 			return true
 		else
 			return false
