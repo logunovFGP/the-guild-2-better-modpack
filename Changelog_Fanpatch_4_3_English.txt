@@ -34,6 +34,7 @@ Additional Support: McCoy! + The Guild 2 Community
 - Exploit: After starting certain artefact measures, you could remove the item from the inventory before it was deleted and still get the full effect.
 - The poisoned cake didn't lower the fighting skill.
 - The measure 'Assign for treatment' could get stuck. Also the script has been optimized.
+- Healers remember 'their' bed and don't go to already occupied beds anymore when they treat patients.
 - The measure 'Use thesis paper' could not start properly due to a critical bug.
 - The measure 'Ask around' could lead to a freeze. Also you did not get evidence properly.
 - The measure 'Make a present' had no cooldown.
@@ -64,6 +65,7 @@ Additional Support: McCoy! + The Guild 2 Community
 - Fishing huts will sell fish they don't need on the local market.
 - If a duel did not happen, the relations still improved.
 - You got twice the amount of favor from duels.
+- Fixed a few minor typing/spelling errors in the German and English localizations.
 
 ** Features **
 

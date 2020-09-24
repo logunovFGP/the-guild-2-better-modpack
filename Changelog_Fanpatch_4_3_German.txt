@@ -29,6 +29,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
 - Duelle laufen etwas flüssiger nun ab.
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
+- Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
 
 ** Bugs **
 
@@ -36,6 +37,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
 - Der vergiftete Kuchen senkte nicht die Kampfkraft des Opfers.
 - Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
+- Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
+  um Patienten zu behandeln.
 - Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
 - Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.
 - Jemandem ein Geschenk machen hatte keinen Cooldown
@@ -66,6 +69,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community
 - Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
+- Kleinere (Tipp-) und Schreibfehler in den deutschen und englischen Lokalisierungen korrigiert.
 
 ** Features **
 
