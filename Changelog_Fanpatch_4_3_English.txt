@@ -25,6 +25,8 @@ Additional Support: McCoy! + The Guild 2 Community
 - The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
 - You can no longer marry workers or guards.
 - AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
+- Duels are a bit more fluent now.
+- Duels start a bit earlier and the message to attend them also happens earlier aswell.
 
 ** Bugfixes **
 
@@ -60,6 +62,8 @@ Additional Support: McCoy! + The Guild 2 Community
 - Added in a safety check to make sure the default worker of your buildings has no illness and the right equipment.
 - On activated AI setting your resource buildings will sell all the stuff they don't produce which they have in their store (workaround against an AI problem).
 - Fishing huts will sell fish they don't need on the local market.
+- If a duel did not happen, the relations still improved.
+- You got twice the amount of favor from duels.
 
 ** Features **
 
@@ -83,3 +87,6 @@ Additional Support: McCoy! + The Guild 2 Community
   Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
 - Sorcerer's robe no longer will give you a malus.
 - Declining a bribe will now lose you only 5 favor.
+- Duels are more dangerous.
+- If you don't attend a duel, you will lose favor with every sim nearby of the duel place.
+

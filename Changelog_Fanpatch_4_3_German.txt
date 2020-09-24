@@ -27,6 +27,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community
 - Angestellte lassen sich nicht mehr heiraten.
 - Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
+- Duelle laufen etwas flüssiger nun ab.
+- Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 
 ** Bugs **
 
@@ -62,6 +64,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community
 - Es wurde ein Sicherheitscheck eingebaut, der garantiert, dass der Standardarbeiter von Betrieben nicht krank ist und die richtige Standardausrüstung besitzt.
 - Bei aktivierter KI Verwaltung werden Rohstoffproduzenten Items, die sie nicht produzieren, auf dem Markt verkaufen (Workaround gegen ein KI-Verwaltungsproblem)
 - Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
+- Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
+- Nach einem Duell wurde die Gunst doppelt erhöht.
 
 ** Features **
 
@@ -86,4 +90,5 @@ Anderer Support: McCoy! + Die Gilde 2 Community
   Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
 - Die Hexerrobe verursacht keinen Malus mehr.
 - Bestechungsgelder abzulehnen wird nun die Gunst nur noch um 5 Punkte reduzieren.
-
+- Duelle sind etwas gefährlicher
+- Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.

@@ -33,8 +33,6 @@ Bug-Fixes & Workarounds:
 
 Offen:
 
-- Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
-- Nach einem Duell wurde die Gunst doppelt erhöht.
 - Fehlerhafte Warenhaus-Upgrades repariert.
 - Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
@@ -204,7 +202,6 @@ Offen:
 
 Kritische Balance-Änderungen:
 - Liebesdienst war ohne Cooldown nutzbar.
-- Duelle setzen die Gunst auf ein Normal-Niveau zurück und beenden Fehden (kein Gunst"gewinn" durch Duelle mehr).
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Geldstrafen vor Gericht erhöht.
 - Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.

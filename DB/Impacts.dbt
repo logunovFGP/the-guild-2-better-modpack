@@ -77,6 +77,7 @@ Data:
 122   1   2   0   "perfume"   0   "Hud/state/perfume.tga"   |
 123   1   2   0   "poem"   0   ""   |
 124   1   2   0   "soap"   0   ""   |
+125   1   2   0   "thesispaper"   0   ""   |
 126   1   2   0   "toadexcrements"   0   "Hud/state/toadexcrements.tga"   |
 127   1   2   0   "torch"   0   ""   |
 128   1   2   0   "walkingstick"   0   "Hud/state/walkingstick.tga"   |
@@ -220,8 +221,7 @@ Data:
 372   1   2   0   "poisoned"   0   "Hud/state/poisoned.tga"   |
 373   1   1   0   "TradingRoutePlundered"   0   "Hud/state/TradingRoutePlundered.tga"   |
 374   1   1   0   "Insulter"   0   "Hud/state/IsInsulter.tga"   |
-375   1   1   0   "CanApplyForLowestOffice"   0   "Hud/state/canapplyforloweroffice.tga"   |
-385   1   2   0   "UnterHypnose"   0   ""   |
+375   1   1   0   "CanApplyForLowestOffice"   0   ""   |
 386   1   1   0   "LevelingUp"   1050   ""   |
 387   1   4   0   "KindGelehrt"   0   "Hud/state/impacts/stoned.tga"   |
 388   1   3   0   "GebaudeVerflucht"   0   "Hud/state/impacts/Pox.tga"   |
@@ -231,5 +231,20 @@ Data:
 393   1   3   0   "luckyguy"   0   "Hud/state/luckyguy.tga"   |
 394   1   4   0   "begBonus"   0   ""   |
 395   1   3   0   "LevelUpCity"   0   ""   |
-396   1   2   0   "robe"   0   "Hud/state/Robe.tga"   |
-
+405   1   2   0   "kamm"   0   ""   |
+407   1   2   0   "spindel"   0   ""   |
+408   1   2   0   "pendel"   0   ""   |
+409   1   2   0   "recentlycaptured"   0   "Hud/state/buildingburgledtoday.tga"   |
+410   1   2   0   "recentlyrobbed"   0   ""   |
+411   1   2   0   "SuppressVoterMessage"   0   ""   |
+412   1   2   0   "SuppressDefenderMessage"   0   ""   |
+413   1   2   0   "PlagueImmunity"   0   ""   |
+414   1   2   0   "SuppressMedicalMessage"   0   ""   |
+422   1   2   0   "ToyKreisel"   0   ""   |
+423   1   2   0   "ToyFlute"   0   ""   |
+424   1   2   0   "ToyPferd"   0   ""   |
+425   1   2   0   "BootyMsg"   0   ""   |
+427   1   2   0   "TrialTimer"   0   ""   |
+428   1   2   0   "DuelTimer"   0   ""   |
+429   1   2   0   "OfficeTimer"   0   ""   |
+430   1   2   0   "robe"   0   "Hud/state/Robe.tga"   |
