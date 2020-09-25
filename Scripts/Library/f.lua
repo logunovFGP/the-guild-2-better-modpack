@@ -331,7 +331,7 @@ end
 
 function MoveToNoWait(pOwner, pDestination, iSpeed, fRange) 
 	--workaround for spinning carts...
-	SetState(Owner, STATE_CHECKFORSPINNINGS, true)
+	SetState(pOwner, STATE_CHECKFORSPINNINGS, true)
 	----------------------------------
 	return CMoveTo(pOwner, pDestination, iSpeed, NIL, fRange, false)
 end

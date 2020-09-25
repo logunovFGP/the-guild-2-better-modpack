@@ -944,7 +944,7 @@ end
 
 function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	
-	if not AliasExist(SimAlias) then
+	if not AliasExists(SimAlias) then
 		return false
 	end
 	
@@ -968,7 +968,7 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	
 	-- check if AI
 	if DynastyIsAI(SimAlias) then
-		local Diff = ScenarioGetDifficultyLevel()
+		local Diff = ScenarioGetDifficulty()
 		Multiplier = 10/(8-Diff)
 		local CorrectAmount = MoneyToSpend*Multiplier
 		if SpendMoney(SimAlias, CorrectAmount, Reason, Force) then

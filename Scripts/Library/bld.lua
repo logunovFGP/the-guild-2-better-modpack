@@ -4,7 +4,7 @@
 function Init()
  --needed for caching
 end
-
+ 
 -- -----------------------
 -- GetEmployeesInBuilding
 -- -----------------------
@@ -824,24 +824,33 @@ function CheckCarts(BldAlias)
 end
 
 function RemoveCart(BldAlias, CartAlias)
-	if not GetState("CartAlias", STATE_CHECKFORSPINNINGS) then -- means it is standing still
-		if GetDistance("CartAlias", BldAlias) < 500 then -- is the cart at home?
+	if not CartAlias then
+		-- default to third cart
+		local CartCount = BuildingGetCartCount(BldAlias)
+		if CartCount > 2 and BuildingGetCart("", 2, "CartAlias") then
+			CartAlias = "CartAlias"
+		else
+			return
+		end
+	end
+	if not GetState(CartAlias, STATE_CHECKFORSPINNINGS) then -- means it is standing still
+		if GetDistance(CartAlias, BldAlias) < 500 then -- is the cart at home?
 			-- Check for currently loaded items
 			local ItemId
 			local Found = 0
-			local Count = InventoryGetSlotCount("CartAlias", INVENTORY_STD)
+			local Count = InventoryGetSlotCount(CartAlias, INVENTORY_STD)
 			local HasItems = false
 			
 			for i=0, Count-1 do
-				ItemId, Found = InventoryGetSlotInfo("CartAlias", i, INVENTORY_STD)
+				ItemId, Found = InventoryGetSlotInfo(CartAlias, i, INVENTORY_STD)
 				if ItemId and ItemId > 0 and Found > 0 then
 					HasItems = true
 				end
 			end
 			
 			if not HasItems then -- only remove cart if it is empty
-				f_CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
-				InternalRemove("CartAlias")
+				CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
+				InternalRemove(CartAlias)
 			end
 		end
 	end

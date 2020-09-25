@@ -54,8 +54,8 @@ function Run()
 			ms_worldtrader_SellGoods()
 			Sleep(5)
 			
-			ms_worldtrader_BuyRandomGoods()
-			-- look for some random shops and buy something
+			-- look for some random shops and buy something (only TWP)
+			--ms_worldtrader_BuyRandomGoods()
 			--LogMessage("::TOM::Worldtrader::Run Let's do some local shopping.")
 			if Type == 1 then
 				local Slots = 2
