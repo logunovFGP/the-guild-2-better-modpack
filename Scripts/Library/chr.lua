@@ -187,7 +187,7 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 				label = label.."_PROFOUND_"
 			end
 		else
-			if (CourtingProgress => 15) then
+			if (CourtingProgress >= 15) then
 				label = label.."_VERY_WELL_RECEIVED_"
 			else			
 				label = label.."_WELL_RECEIVED_"
