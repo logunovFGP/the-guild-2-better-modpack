@@ -38,14 +38,14 @@ function Run()
 		end
 	end
 	
-	GetInsideBuilding("","Townhall")
-	if GetLocatorByName("Townhall","EmbezzleMoney","Result") then
-		f_MoveTo("","Result")
+	GetInsideBuilding("", "Townhall")
+	if GetLocatorByName("Townhall", "EmbezzleMoney","Result") then
+		f_MoveTo("", "Result")
 	end
 	PlayAnimation("","manipulate_middle_twohand")
 
-	SpendMoney("city",money,"EmbezzledPublicMoney")
-	CreditMoney("",money,"EmbezzledPublicMoney")
+	chr_SpendMoney("city", money, "CostThiefs")
+	CreditMoney("", money, "EmbezzledPublicMoney")
 	
 	feedback_MessageCharacter("Owner",
 		"@L_PRIVILEGES_108_EMBEZZLEPUBLICMONEY_SUCCESS_HEAD_+0",
@@ -54,7 +54,7 @@ function Run()
 	SetMeasureRepeat(TimeOut)
 
 	--for the mission
-	mission_ScoreCrime("",money)
+	mission_ScoreCrime("", money)
 	
 end
 

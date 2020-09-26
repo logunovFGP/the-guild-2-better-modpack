@@ -78,7 +78,7 @@ function Run()
 	
 	-- Pay if the tavern does not belong to the owners dynasty
 	if GetDynastyID("Tavern") ~= GetDynastyID("") then
-		if not SpendMoney("", GetData("Price"), "CostSocial") then
+		if not chr_SpendMoney("", GetData("Price"), "CostSocial") then
 			MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), GetData("Price"))
 			StopMeasure()
 			return

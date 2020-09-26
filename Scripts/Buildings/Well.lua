@@ -7,7 +7,6 @@ end
 
 
 function Setup()
-	--SetState("", STATE_MOVING_BUILDING, true)
 end
 
 

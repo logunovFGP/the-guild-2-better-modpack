@@ -292,7 +292,7 @@ function hausreaktion()
 				elseif guete == 2 then
 				    betrag = 50
 				end
-			    SpendMoney("Besitzer", betrag, "CostBribes")
+			    chr_SpendMoney("Besitzer", betrag, "CostBribes")
 				MsgNewsNoWait("Besitzer","","","default",-1,"@L_HPFZ_BETTLER_ANFRAGE_+3",
 				                                            "@L_HPFZ_BETTLER_ANFRAGE_+6",betrag)
 				local beweg = PlayAnimationNoWait("","cheer_01")

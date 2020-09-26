@@ -272,7 +272,7 @@ function hausreaktion()
 				    PlayAnimationNoWait("","talk")
 				    MsgSay("","@L_HPFZ_BETTLER_BETTELT_+0")
 			        local betrag = Rand(50)+5
-			        SpendMoney("Besitzer", betrag, "CostBribes")
+			        chr_SpendMoney("Besitzer", betrag, "CostBribes")
 				    MsgNewsNoWait("Besitzer","","","default",-1,"@L_HPFZ_BETTLER_ANFRAGE_+3","@L_HPFZ_BETTLER_ANFRAGE_+6",betrag)
 				end
 			end

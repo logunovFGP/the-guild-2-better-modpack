@@ -187,7 +187,7 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 				label = label.."_PROFOUND_"
 			end
 		else
-			if (CourtingProgress => 15) then
+			if (CourtingProgress >= 15) then
 				label = label.."_VERY_WELL_RECEIVED_"
 			else			
 				label = label.."_WELL_RECEIVED_"
@@ -562,7 +562,7 @@ end
 function RecieveMoney(ObjectAlias, val, topic)
 
 	CreditMoney(ObjectAlias, val, topic)
-	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t",val)
+	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t", val)
 	return val
 
 end
@@ -942,10 +942,53 @@ function MultiAnim(Actor1, Anim1, Actor2, Anim2, Distance, ReturnAfter, Seconds)
 	
 end
 
+function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
+	
+	if not AliasExists(SimAlias) then
+		return false
+	end
+	
+	if MoneyToSpend == nil then
+		return false
+	end
+	
+	-- if Force is true, dynasties will pay regardless if they can afford it or not and go into negatives
+	if Force == nil then
+		Force = false
+	end
+	
+	if Reason == nil or Reason == false then
+		Reason = "misc"
+	end
+	
+	-- check if Worker
+	if GetDynastyID(SimAlias) < 1 then
+		return true
+	end
+	
+	-- check if AI
+	if DynastyIsAI(SimAlias) then
+		local Diff = ScenarioGetDifficulty()
+		Multiplier = 10/(8-Diff)
+		local CorrectAmount = MoneyToSpend*Multiplier
+		if SpendMoney(SimAlias, CorrectAmount, Reason, Force) then
+			return true
+		else
+			return false
+		end
+	else
+		if SpendMoney(SimAlias, MoneyToSpend, Reason, Force) then
+			return true
+		else
+			return false
+		end
+	end
+end
+
 -- -----------------------
 -- GainXP
 -- -----------------------
-function GainXP(SimAlias,XPAmount)
+function GainXP(SimAlias, XPAmount)
 	local Multiplikator = 1
 	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplikator/5)
 	IncrementXP(SimAlias, SchoeneRundeZahl)

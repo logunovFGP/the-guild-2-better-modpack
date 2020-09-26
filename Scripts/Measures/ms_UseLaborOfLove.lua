@@ -30,7 +30,7 @@ function Run()
 		charskill = GetSkillValue("Destination",CHARISMA)
 		local MoneyToPay = 50 * charskill
 		if IsDynastySim("") then
-			if not SpendMoney("",500 ,"LaborOfLove") then
+			if not chr_SpendMoney("", 500, "LaborHansel") then
 				PlayAnimationNoWait("Destination","threat")
 				MsgSay("Destination","@L_PIRATE_LABOROFLOVE_TALK_DISAGREE")
 				StopMeasure()
@@ -76,7 +76,7 @@ function Run()
       	spend = 45 * chakill
       end
 	    if IsDynastySim("") then
-		    SpendMoney("",spend,"LaborOfLove")
+		    chr_SpendMoney("", spend, "LaborHansel")
 	    end
 	    CreditMoney("Destination",spend,"LaborOfLove")
 			IncrementXPQuiet("",15)

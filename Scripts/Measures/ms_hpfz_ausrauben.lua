@@ -119,7 +119,7 @@ function Run()
 							    if Beute > Value then
 								    Beute = Value
 							    end
-							    SpendMoney(DestAlias, Beute)
+							    chr_SpendMoney(DestAlias, Beute, "CostRobbers")
 							
 							    if Beute>25 then
 								    feedback_MessageCharacter(DestAlias,

@@ -25,10 +25,10 @@ end
 function Start()
 	
 	local Money = GetMoney("#Player")
-	SpendMoney("#Player",Money,"Tutorial")
+	chr_SpendMoney("#Player", Money, "Tutorial")
 	
 	CameraIndoorGetBuilding("MyBuilding")
-	SetData("Building",GetID("MyBuilding"))
+	SetData("Building", GetID("MyBuilding"))
 
 	SetMainQuest("Workshop")
 	SetQuestTitle("@L_TUTORIAL_CHAPTER_3_WORKSHOP_INDOOR_NAME")

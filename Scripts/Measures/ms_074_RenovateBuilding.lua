@@ -48,7 +48,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if not SpendMoney("dynasty", Cost, "BuildingRepairs") then
+	if not chr_SpendMoney("dynasty", Cost, "BuildingRepairs") then
 		MsgQuick("", "@L_GENERAL_MEASURES_074_RENOVATEBUILDING_FAILURES_+0", Cost, GetID(""))
 		return
 	end

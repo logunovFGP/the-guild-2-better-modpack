@@ -62,7 +62,7 @@ function Init()
 		StopMeasure()
 	end	
 	
-	SpendMoney("Chef", kosten, "")
+	chr_SpendMoney("Chef", kosten, "misc")
 	SetData("BestellWare",was)
 	SetData("BestellMenge",wieviel)
 	SetData("BestellOrt","Ablade")

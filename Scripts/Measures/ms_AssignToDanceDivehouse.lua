@@ -154,11 +154,13 @@ function Dance()
 	        elseif spender == 5 then
 	            spend = 30 * chakill
 	        end
-		    if IsDynastySim(DestAlias) then
-			    SpendMoney(DestAlias,spend,"LaborOfLove")
-		    end
-		    CreditMoney("",spend,"LaborOfLove")
-			AddImpact(DestAlias,"FullOfLove",1,2)
+		
+		if IsDynastySim(DestAlias) then
+			chr_SpendMoney(DestAlias, spend, "LaborOfLove")
+		end
+		
+		CreditMoney("", spend, "LaborOfLove")
+		AddImpact(DestAlias,"FullOfLove",1,2)
 		end
 	    Sleep(letsdance+2)
     --end

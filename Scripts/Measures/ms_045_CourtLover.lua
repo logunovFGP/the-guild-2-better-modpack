@@ -67,6 +67,11 @@ end
 -- Run
 -- -----------------------
 function Run()
+	if not AliasExists("Destination") then
+		if not ms_045_courtlover_AIInit() then
+			return
+		end
+	end
 	
 	if HasProperty("Destination", "NoMarry") then    
 		if GetProperty("Destination", "NoMarryTime") < GetGametime() then -- if time is over, remove property
@@ -80,12 +85,6 @@ function Run()
 	end
 	
 	MeasureSetNotRestartable()
-	if not AliasExists("Destination") then
-		if not ms_045_courtlover_AIInit() then
-			return
-		end
-	end
-	
 	
 	-- Calculate the difficulty which will be set as property to the destination and used in the following MsgBox
 	-- There are four locations where this property will be removed:

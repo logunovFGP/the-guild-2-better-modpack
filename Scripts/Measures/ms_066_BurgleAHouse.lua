@@ -203,11 +203,11 @@ function Run()
 			
 			local VicMoney = GetMoney("Victim")
 			if VicMoney > (Value + ValueBonus) then
-				SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
+				chr_SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
 				chr_RecieveMoney("Owner", Value + ValueBonus, "IncomeThiefs")
 				mission_ScoreCrime("", Value + ValueBonus)
 			else
-				SpendMoney("Destination", VicMoney, "CostThiefs")
+				chr_SpendMoney("Destination", VicMoney, "CostThiefs")
 				chr_RecieveMoney("Owner", VicMoney, "IncomeThiefs")
 				mission_ScoreCrime("", VicMoney)
 			end
@@ -279,11 +279,11 @@ function Run()
 
 				local VicMoney = GetMoney("Victim")
 				if VicMoney > (Value + ValueBonus) then
-					SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
+					chr_SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
 					chr_RecieveMoney("Owner", Value + ValueBonus, "IncomeThiefs")
 					mission_ScoreCrime("", Value + ValueBonus)
 				else
-					SpendMoney("Destination", VicMoney, "CostThiefs")
+					chr_SpendMoney("Destination", VicMoney, "CostThiefs")
 					chr_RecieveMoney("Owner", VicMoney, "IncomeThiefs")
 					mission_ScoreCrime("", VicMoney)
 				end

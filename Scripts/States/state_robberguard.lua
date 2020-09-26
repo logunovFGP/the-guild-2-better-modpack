@@ -61,7 +61,7 @@ function Run()
 	local fSingleMoney = GetProperty("","TotalMoney")
 	
 	--gold transfer, every robber on his own
-	SpendMoney("VictimBuilding", fSingleMoney, "CostRobbers",true)
+	chr_SpendMoney("VictimBuilding", fSingleMoney, "CostRobbers")
 	
 	MsgQuick("VictimBuilding","@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_ACTOR_END_HEAD_+0")
 	

@@ -146,7 +146,7 @@ function Run()
 	end
 	if SimRunForAnOffice("","destination") then
 		if DynastyIsPlayer("") then
-			SpendMoney("",ChargeCost,"CostAdministration")
+			chr_SpendMoney("", ChargeCost, "CostAdministration")
 			-- PATCH_TODO Money for city treasure?
 		end
 

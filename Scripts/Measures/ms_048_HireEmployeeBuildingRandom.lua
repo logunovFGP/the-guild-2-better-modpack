@@ -137,13 +137,13 @@ function DecideYou()
 		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
 		
 		if BuildingHasUpgrade("", "CrossedAxes") == true then
-			SpendMoney("BOwner", 4900, "misc")
+			chr_SpendMoney("BOwner", 4900, "LaborHansel")
 		elseif BuildingHasUpgrade("", "HarkingHorn") then
-			SpendMoney("BOwner", 2400, "misc")
+			chr_SpendMoney("BOwner", 2400, "LaborHansel")
 		end
 		
 		if BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
-			SpendMoney("BOwner", 4900, "misc")
+			chr_SpendMoney("BOwner", 4900, "LaborHansel")
 		end
 		
 		SetData("Entscheid", 1)

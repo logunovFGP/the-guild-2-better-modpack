@@ -46,7 +46,7 @@ function Run()
 			
 			local RepairPrice = gameplayformulas_CalcCartRepairPrice(CartType, GetHPRelative(""))
 			if AliasExists("CartDynasty") then 
-				if not SpendMoney("CartDynasty", RepairPrice, "CartRepair") then
+				if not chr_SpendMoney("CartDynasty", RepairPrice, "BuildingRepairs") then
 					MsgQuick("","@L_GENERAL_MEASURES_REPAIRCART_FAILURES_+1")
 					StopMeasure()
 					return

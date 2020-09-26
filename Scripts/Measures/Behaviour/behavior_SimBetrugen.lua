@@ -53,7 +53,7 @@ function Run()
 	    IncrementXPQuiet("Actor",10)
       ShowOverheadSymbol("Actor",false,true,0,"%1t",Betrug)
       if IsDynastySim("Owner") then
-	      SpendMoney("Owner",Betrug,"Offering")
+	      chr_SpendMoney("Owner", Betrug, "Offering")
       end
 		end
                 

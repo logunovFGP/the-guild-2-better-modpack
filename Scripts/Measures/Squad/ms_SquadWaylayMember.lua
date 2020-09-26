@@ -328,7 +328,7 @@ function Plunder()
 		chr_RecieveMoney("Dynasty",Money,"IncomeRobbers")
 		--for the mission
 		mission_ScoreCrime("Dynasty",Money)
-		SpendMoney("Victim",Money,"CostRobbers")
+		chr_SpendMoney("Victim",Money,"CostRobbers")
 		ItemValue = Plunder("", "Victim",10)
 		if ItemValue > 0 then
 		--for the mission

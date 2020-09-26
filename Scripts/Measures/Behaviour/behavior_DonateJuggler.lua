@@ -22,7 +22,7 @@ function Run()
 	CreditMoney("Actor",getbeg,"Offering")
     ShowOverheadSymbol("Actor",false,true,0,"%1t",getbeg)
     if IsDynastySim("Owner") then
-        SpendMoney("Owner",getbeg,"Offering")
+        chr_SpendMoney("Owner", getbeg, "Offering")
     end
 	AddImpact("Owner", "HaveBeenPickpocketed", 1, 4)
 

@@ -107,7 +107,7 @@ function Run()
 
 						BuildingGetCity("VictimHome","city")
 						if GetMoney("city")>VictimSpendValue then
-							SpendMoney("city", VictimSpendValue, "Mercenaries")
+							chr_SpendMoney("city", VictimSpendValue, "Mercenaries")
 							CreditMoney("MercOwner", VictimSpendValue, "HushMoneyCity")
 							
 							local MercMoney = VictimSpendValue
@@ -133,7 +133,7 @@ function Run()
 						if VictimSpendValue > Value then
 							VictimSpendValue = Value
 						end
-						SpendMoney(DestAlias, VictimSpendValue,"CostBribes")
+						chr_SpendMoney(DestAlias, VictimSpendValue,"CostBribes")
 						
 						--if VictimSpendValue>25 then
 						--	feedback_MessageCharacter(DestAlias,

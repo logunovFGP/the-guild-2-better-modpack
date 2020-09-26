@@ -93,7 +93,7 @@ function Run()
 
 	MsgSay("", "@L_HPFZ_GELAGE_SPRUCH_+0")
 	SetMeasureRepeat(TimeOut)
-	SpendMoney("Dynasty", Bonus, "LaborBonus")
+	chr_SpendMoney("Dynasty", Bonus, "LaborBonus")
 	for g=0, numFound-1 do
 		Alias = "Worker"..g
 		if SimPauseWorking(Alias) then

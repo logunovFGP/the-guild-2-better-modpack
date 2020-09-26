@@ -2,39 +2,8 @@ Patchwürdige Veränderungen des MMP 0.96b gegenüber 4.211
 
 Bug-Fixes & Workarounds:
 
-Übernommen:
-- Falscher Item-Name im Voodo-Script
-- Exploit bei Voodoo, Hexerdokument I+II, Hasstirade behoben (RemoveItem muss if-Abfrage sein!)
-- Mehrere Fehler in der englischen Text.dbt korrigiert
-- Wenn Sims das Krankenhaus besuchten, aber nicht genug Geld für eine Behandlung hatten, 
-  wurde die Medizin trotzdem entfernt und anschließend fälschlicherweise ins Inventar des 
-  Kranken zurückgelegt.
-- Script-Fehler beim Thesenpapier behoben (Eine überzählige ")" in Z. 66)
-- "Sich umhören" konnte zu schwerwiegenden Spielproblemen (Freeze) führen (Wegen MeasureRun)
-- Die Funktionen, die in Z. 39 und 41 in HireEmployee benutzt werden, benötigen keinen Parameter.
-- Schatten-Dynastien konnten zu Spielbeginn nicht Alchemist werden (Protos: "GL_BUILDING_TYPE_ALCHEMIST_SHOP" statt "GL_BUILDING_TYPE_ALCHEMIST") 
-- Scriptfehler in state_tradercontrol: Property "BeeingPlundered" muss "BeingPlundered" heißen.
-- Die KI wird nicht länger versuchen, ihr Ziel zu becircen, wenn ein entsprechendes Upgrade in der Taverne nicht vorhanden ist.
-- Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
-- Workaround: Beim Errichten/Kaufen neuer Betrieber, konnte der Default-Arbeiter krank sein; Krankheiten werden nun beim Gebäude-Setup geheilt.
-- Das Level 3 Gebäude-Rendering-Icon des Gauklers hatte einen Fehler.
-- Die Hexerrobe zeigte kein Mini-Icon (Impact-Symbol) an.
-- Nach dem Anheuern verloren Sims ihr Level (selbst, wenn man Gesellen einstellte).
-- Das Behandeln-Script wurde optimiert und sollte nun nicht mehr einfrieren (flackerndes Icon)
-- Die Maßnahme "Bezirzen" hatte einen Fehler.
-- Wenn man einen Umworbenen anheuert, werden alle Liebschaften des Angestellten beendet (man sollte also
-  nicht mehr die Meldung bekommen, dass der Lieberhaber eures Angestellten sich vernachlässigt fühlt).
-- Suchte man nach einem zufälligen Angestellten mit zu geringen Bar-Reserven, bekam man die Meldung,
-  dass kein Arbeiter gefunden wurde. Stattdessen wird nun darauf hingewiesen, dass man mehr Bargeld benötigt.
-- Da die Einstellung "Häufigkeit der Amtssitzungen" zu einem OOS führte, ist diese Option im Multiplayer nun nicht länger steuerbar. Der Standardwert ist nun "alle 2 Runden".
-- Man kann Sims, die man grade gefeuert hat, nicht sofort wieder umwerben.
-- Piratenschiffe der KI werden keine Fischerboote mehr angreifen.
-
-
 Offen:
 
-- Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
-- Nach einem Duell wurde die Gunst doppelt erhöht.
 - Fehlerhafte Warenhaus-Upgrades repariert.
 - Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
@@ -71,7 +40,6 @@ Offen:
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 - Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
 - Die Hypnose funktionierte nicht richtig.
-- Beim Hypnose-Pendel und der Dornröschenspindel fehlten Datenbankeinträge (impacts).
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
 - Das Entfernen von Pamphleten hatte einen kleinen Fehler.
 - Der Heilungsvorgang beim Schlafen in der Taverne dauerte viel zu lang und war zu schwach.
@@ -90,7 +58,6 @@ Offen:
 - Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
 - Sollte beim Tanzen in der Taverne die Tanzposition blockiert sein, so wird die Maßnahme abgebrochen. Trotzdem wurde ein Cooldown gesetzt
   und das Geld abgezogen. Dies passiert nun erst kurz vor Beginn des Tanzes.
-- Tippfehler in der deutschen Beschreibung des "Niederen Ratsdienst"-Privilegs behoben.
 - Die KI wird ihre Kinder nicht mehr als Prediger, Heiler, Entführer oder Räuber einsetzen. (Lässt sich über AI-Scripte verbieten. Aber Hauptproblem war:
   Kinder bzw. Shadows dürfen nicht ihren Betrieb als Wohnsitz haben, sondern müssen in einer Workerresidence wohnen, sonst betrachtet die KI sie als Angestellte)
 - Beim Glaubenswechsel wurde die Gebühr von 100 Gold nicht abgezogen und auch der Kirche nicht gutgeschrieben
@@ -99,14 +66,9 @@ Offen:
 - Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
   oder während Wunderkuren geholt werden.
 - Beim Quacksalben werden die Goldgewinne nun nur für die eigene Dynastie angezeigt
-- Fehlende Fehlermeldung beim Anheuern hinzugefügt, sollte der Arbeiter gerade umworben werden.
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
-- Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
-  um Patienten zu behandeln.
 - Schergen werden nicht länger von Taschendieben, dem schwarzen Brett, Quacksalberern
   und anderen Predigern unterbrochen.
-- In der deutschen Version hießen männliche Gaukler auf Level 2 "Streunerin", statt 
-  "Streuner"
 - Steinmetze, die Steinquader abbauten, liefen nach jeder Einheit zwischen Steinbruch und 
   Betrieb hin und her, so lange, bis ihr Inventar voll war, ehe sie die Steinquader abluden. Das
   Problem wurde nun behoben. (Fehler in gather.lua, fehlerhafte Destination)
@@ -122,8 +84,6 @@ Offen:
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
 - Jeden Morgen endet nun der Regen, um dem endlosen Regen-Bug ein Ende zu bereiten.
-- Überflüssiger State gelöscht (States.dbt-> "DonkeyTeam" gelöscht)
-- Die KI repariert beschädigte Gebäude nun gelegentlich.
 - Der Stadtschreiber spielt während Amtssitzungen und Gerichtsverhandlungen keine
   Rolle mehr. Sollte kein Stimmberechtigter anwesend sein, leitet die Wache die Sitzung.
 - Bei Amtssitzungen, die vom Stadtschreiber geleitet wurden, (bzw. jetzt von der Wache)
@@ -196,15 +156,12 @@ Offen:
 - Charaktere verlassen das Rathaus nicht länger, wenn sie im Warteraum stehen und zur Amtsitzung/
   zur Gerichtsverhandlung gerufen werden, sondern gehen direkt in den richtigen Raum.
 - Es konnte vorkommen, dass Dynastie-Charaktere von der KI-Verwaltung nicht zur Arbeit eingeteilt wurden.
-- Viele kleinere Script-Fehler behoben.
-- Einige Scripte wurden optimiert, um die Performance des Spiels zu verbessern.
 - Die KI wurde optimiert, um die Performance des Spiels zu verbessern.
 - Mehrere Map-Probleme (Pathfinding, fehlende Rohstoffe) behoben. (Achtung: Maps sind modspezifisch verändert!)
 
 
 Kritische Balance-Änderungen:
 - Liebesdienst war ohne Cooldown nutzbar.
-- Duelle setzen die Gunst auf ein Normal-Niveau zurück und beenden Fehden (kein Gunst"gewinn" durch Duelle mehr).
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Geldstrafen vor Gericht erhöht.
 - Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.
@@ -228,7 +185,6 @@ Nützliche Vanilla-Features + QoL Änderungen:
 - Durch das Tragen eines Knochenarmreifs kann der Träger sich vor Hexerdokumenten schützen.
 - Schergen, die auf Patrouille sind, werden nun selbstständig Pamphlete abreißen, wenn sie sich in der Nähe des schwarzen Bretts aufhalten. Sie verlangen dafür allerdings eine 
   kleine Goldbelohnung, die mit steigendem Titel wächst - der Spieler wird über den Erfolg benachrichtigt
-- Der regelmäßige Besuch der Messe verbessert nun auch die Gesinnung ein wenig.
 - Wer in einer Taverne einen Schlafplatz mietet, wird auf jedenfall und ohne Itembedarf von Erkältungen und Grippe geheilt.
 - Wer einen Heiler via Maßnahme aufsuchen will, rennt dort nun hin, anstatt zu gehen.
 - Man kann Schattendynastien nun ihre Gebäude abkaufen, selbst, wenn sie nicht zum Verkauf stehen! Dazu braucht es eventuell nur etwas
@@ -242,4 +198,3 @@ Nützliche Vanilla-Features + QoL Änderungen:
   Es existiert nun eine Übersicht über alle Gewinne mit Kreditgeschäften.
 - Erstmals wirkt sich das Talent Feilschen auf Verkäufe am Markt aus! (Allerdings derzeit nur über Maßnahme "Karren verschicken" 
   oder über Handelsrouten)
-- Handelsrouten wurden grundlegend überarbeitet und erweitert (ThreeOfMe ist Hauptautor)

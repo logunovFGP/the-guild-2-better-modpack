@@ -35,7 +35,7 @@ function Run()
 	--first time on university
 	if GetProperty("","EduLevel")==EDULEVEL_SCHOOL then
 		if not HasProperty("","Uni1Payed") then
-			if not SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
+			if not chr_SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
 				MsgQuick("", "@L_FAMILY_151_ATTENDUNIVERSITY_FAILURES_+0", GetID(""), Schoolmoney)
 				StopMeasure()
 			end
@@ -88,7 +88,7 @@ function Run()
 	--doctor			
 	elseif GetProperty("","EduLevel")==EDULEVEL_UNIVERSITY1 then
 		if not HasProperty("","Uni2Payed") then
-			if not SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
+			if not chr_SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
 				MsgQuick("", "@L_FAMILY_151_ATTENDUNIVERSITY_FAILURES_+1", GetID(""), Schoolmoney)
 				StopMeasure()
 			end

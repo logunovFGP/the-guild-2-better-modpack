@@ -25,7 +25,7 @@ end
 function Start()
 
 	local Money = GetMoney("#Player")
-	SpendMoney("#Player",Money,"Tutorial")
+	chr_SpendMoney("#Player",Money,"Tutorial")
 	
 	HudEnableElement("BuildBuilding", false)
 	

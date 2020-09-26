@@ -1,6 +1,18 @@
 MegaModPack Reforged - Lite 0.1
 
-Allgemeines
+** Credits **
+
+Lead: Fajeth
+Scripting: Fajeth, ThreeOfMe, Serpens66, Napi96
+Maps: Fajeth
+GUI: MoK
+Icons: Fajeth
+Texturen: Jollina, Skip, Broliii 
+Testing:
+Anderer Support: McCoy! + Die Gilde 2 Community
+
+
+** Allgemeines **
 
 - Scripte aufgeräumt: Einrückungen und Leerzeichen in den Scripten korrigiert. Absätze und Kommentare hinzugefügt. Funktionen + Aufbau optimiert.
 - Scripte aufgeräumt: Einige redundante Impacts entfernt.
@@ -13,13 +25,20 @@ Allgemeines
 - Die Option (Häufigkeit der) Amtssitzungen wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte. Die Standardeinstellung ist: alle 2 Runden.
 - Das Standard-KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Angestellte lassen sich nicht mehr heiraten.
+- Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
+- Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
+- Duelle laufen etwas flüssiger nun ab.
+- Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
+- Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
 
-Bugfix-Liste
+** Bugs **
 
 - Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
 - Der vergiftete Kuchen senkte nicht die Kampfkraft des Opfers.
 - Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
+- Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
+  um Patienten zu behandeln.
 - Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
 - Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.
 - Jemandem ein Geschenk machen hatte keinen Cooldown
@@ -41,8 +60,18 @@ Bugfix-Liste
 - Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
 - Der Exploitfix gegen das Entlassen und Umwerben von Angestellten wurde verbessert.
 - Piratenschiffe der KI greifen keine Fischerboote mehr an.
+- Wenn eine Bank abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
+- Exploit: Beim Abriss von Gebäuden erhält man nun nur noch den halben Gebäudewert.
+- Die KI repariert beschädigte Betriebe nun regelmäßig.
+- Die KI levelt ihre Betriebe nun auf, wenn sie die Voraussetzungen erfüllen.
+- Es wurde ein Sicherheitscheck eingebaut, der garantiert, dass der Standardarbeiter von Betrieben nicht krank ist und die richtige Standardausrüstung besitzt.
+- Bei aktivierter KI Verwaltung werden Rohstoffproduzenten Items, die sie nicht produzieren, auf dem Markt verkaufen (Workaround gegen ein KI-Verwaltungsproblem)
+- Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
+- Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
+- Nach einem Duell wurde die Gunst doppelt erhöht.
+- Kleinere (Tipp-) und Schreibfehler in den deutschen und englischen Lokalisierungen korrigiert.
 
-Features
+** Features **
 
 - Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt)
@@ -52,8 +81,11 @@ Features
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
 - Die automatischen Handelsrouten wurden komplett überarbeitet (alle Credits gehen an ThreeOfMe)
+- Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
+- Es gibt nun 8 verschiedene Frauengesichter (vielen Dank an Jollina und broliii)
+- Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 
-Balancing
+** Balancing **
 
 - Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
 - Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
@@ -62,4 +94,5 @@ Balancing
   Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
 - Die Hexerrobe verursacht keinen Malus mehr.
 - Bestechungsgelder abzulehnen wird nun die Gunst nur noch um 5 Punkte reduzieren.
-
+- Duelle sind etwas gefährlicher
+- Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.

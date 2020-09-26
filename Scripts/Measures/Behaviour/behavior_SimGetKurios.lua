@@ -37,7 +37,7 @@ function Run()
     CreditMoney("Actor",getbeg,"Offering")
     ShowOverheadSymbol("Actor",false,true,0,"%1t",getbeg)
     if IsDynastySim("Owner") then
-        SpendMoney("Owner",getbeg,"Offering")
+        chr_SpendMoney("Owner", getbeg, "Offering")
     end
 		SatisfyNeed("Owner",5,0.25)
 
@@ -94,7 +94,7 @@ function Run()
     CreditMoney("Actor",getbeg,"Offering")
     ShowOverheadSymbol("Actor",false,true,0,"%1t",getbeg)
     if IsDynastySim("Owner") then
-        SpendMoney("Owner",getbeg,"Offering")
+	chr_SpendMoney("Owner", getbeg, "Offering")
     end
 		SatisfyNeed("Owner",5,0.25)
 		Sleep(warte-1)

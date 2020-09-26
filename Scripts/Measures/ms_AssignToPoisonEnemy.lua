@@ -11,7 +11,7 @@ function Run()
 		TimeOut = GetGametime() + TimeOut
 	end
 
-	if not SpendMoney("WorkBuild", 1000, "CostBribes") then
+	if not chr_SpendMoney("WorkBuild", 1000, "WaresSeaBought") then
 		StopMeasure()
 	end
 	

@@ -34,7 +34,7 @@ function Run()
 						if GetMoney("City")<fine then
 							fine = GetMoney("City")
 						end
-						SpendMoney("City", fine, "WarFine")
+						chr_SpendMoney("City", fine, "WarFine")
 						if HasProperty("City", "Warcosts") then
 							fine = GetProperty("City", "Warcosts") + fine
 						end
@@ -112,7 +112,7 @@ function PreWar()
 
 	SetProperty("", "costs", costs)
 
-	SpendMoney("City",costs,"Warcosts")
+	chr_SpendMoney("City",costs,"Warcosts")
 	if HasProperty("City", "Warcosts") then
 		costs = costs + GetProperty("City", "Warcosts")
 	end

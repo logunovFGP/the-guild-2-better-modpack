@@ -89,7 +89,7 @@ MeasureSetNotRestartable()
 				MsgSay("", "_MERCENARY_RAZZIA_SPEECH_ATTACK_END_+0")
 				PlayAnimation("","manipulate_bottom_r")
 				CreditMoney("", money,"")
-				SpendMoney("Destination", money, "")
+				chr_SpendMoney("Destination", money, "CostRobbers")
 				feedback_MessageMilitary("",
 				"@L_MERCENARY_RAZZIA_MSG_END_HEAD_+0",
 				"@L_MERCENARY_RAZZIA_MSG_END_BODY_+0",

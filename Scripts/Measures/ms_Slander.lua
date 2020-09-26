@@ -109,7 +109,7 @@ function Run()
 		end
 	end
 	
-	if not SpendMoney("",Costs,"CostBribes") then
+	if not chr_SpendMoney("", Costs, "CostBribes") then
 		MsgSay("Bard","@L_MESSAGES_SLANDER_SPEECH_NOMONEY_+0")
 		StopMeasure()
 	end	

@@ -82,7 +82,7 @@ function RandomEventNeutral(SimAlias)
 	                    "@L_RANDOM_EVENT_NEUTRAL_MESSAGE_BODY_+3")
 
   elseif RandEvent == 4 then
-		SpendMoney("PlayerSim", cash, "CostSocial")
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEUTRAL_MESSAGE_HEAD_+2",
 	                  "@L_RANDOM_EVENT_NEUTRAL_MESSAGE_BODY_+4",cash)
 		if GetOfficeTypeHolder("HomeTown",8,"OfficeSim") then
@@ -262,12 +262,12 @@ function RandomEventNegativ(SimAlias)
 
 	if RandEvent == 0 then
     CityGetRandomBuilding("HomeTown",2,4,-1,-1,FILTER_IGNORE,"Tavern")
-		SpendMoney("PlayerSim", cash, "CostSocial")		
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")		
 	  MsgNewsNoWait("PlayerSim","Tavern","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+0",
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+0",GetID("Tavern"),cash)
 
   elseif RandEvent == 1 then
-		SpendMoney("PlayerSim", cash, "CostSocial")
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+2",
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+1",cash)
 
@@ -291,7 +291,7 @@ function RandomEventNegativ(SimAlias)
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+3",Skills[RandSkill])
 
   elseif RandEvent == 4 then
-		SpendMoney("PlayerSim", cash, "CostSocial")
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+2",
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+4",cash)
 
@@ -302,22 +302,22 @@ function RandomEventNegativ(SimAlias)
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+5",xpminus)
 
 	elseif RandEvent == 6 then
-		SpendMoney("PlayerSim", cash, "GameStart")
+		chr_SpendMoney("PlayerSim", cash, "GameStart")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+2",
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+6",cash)	
 
   elseif RandEvent == 7 then
-		SpendMoney("PlayerSim", cash, "CostSocial")
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+2",
 	                    "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+7",cash)
 
 	elseif RandEvent == 8 then
-		SpendMoney("PlayerSim", cash, "CostSocial")
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+2",
 	                "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+8",cash)
 
 	elseif RandEvent == 9 then
-		SpendMoney("PlayerSim", cash, "CostSocial")
+		chr_SpendMoney("PlayerSim", cash, "CostSocial")
 	  MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+2",
 	                "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+9",cash)
 

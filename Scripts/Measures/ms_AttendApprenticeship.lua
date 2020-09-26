@@ -138,7 +138,7 @@ function Run()
 
 	if not HasProperty("","ApprenticeshipPayed"..choice) then
 		
-		if not SpendMoney("Dynasty", Appmoney, "CostEducation") then
+		if not chr_SpendMoney("Dynasty", Appmoney, "CostEducation") then
 			MsgQuick("", "@L_FAMILY_150_ATTENDAPPRENTICESHIP_FAILURES_+0", GetID(""), Appmoney)
 			StopMeasure()
 		end

@@ -67,7 +67,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if not SpendMoney("",preis,"CostBribes") then
+	if not chr_SpendMoney("", preis, "WaresSeaBought") then
 		MsgQuick("","@L_MEASURES_DIVEGETALC_FAIL_+2")
 		StopMeasure()
 	end

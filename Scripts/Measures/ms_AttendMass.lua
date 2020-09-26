@@ -118,7 +118,7 @@ function AffectFaith()
 	SimSetFaith("",SimGetFaith("")+5)
 	local MyFaith = SimGetFaith("")
 	
-	if(SpendMoney("",GetData("MessMoney"),"MessMoney")) then
+	if (chr_SpendMoney("", GetData("MessMoney"), "MessMoney")) then
 		-- gunst steigt bei allen Dynastien deren Anführer die gleiche Religion hat 
 		GetDynasty("", "dynasty")
 		local iCount = ScenarioGetObjects("Dynasty", 99, "Dynasties")

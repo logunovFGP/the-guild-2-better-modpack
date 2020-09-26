@@ -69,12 +69,12 @@ function Run()
 						ScenarioSetImperialCapital("city")
 						SetProperty("city","ImperialCapital",1)
 						SetProperty("city","LevelUpPaid",1)
-						SpendMoney("city",CityUpgradeCost,"LevelUpPaid")
+						chr_SpendMoney("city",CityUpgradeCost,"LevelUpPaid")
 						SetMeasureRepeat(TimeOut)
 					end
 				else
 					SetProperty("city","LevelUpPaid",1)
-					SpendMoney("city",CityUpgradeCost,"LevelUpPaid")
+					chr_SpendMoney("city",CityUpgradeCost,"LevelUpPaid")
 					SetMeasureRepeat(TimeOut)
 				end
 			end

@@ -5,14 +5,14 @@
 --
 function OnLevelUp()
 
-	if GetState("",STATE_MARINECONTROL)==false then
-		SetState("",STATE_MARINECONTROL,true)
+	if GetState("", STATE_MARINECONTROL) == false then
+		SetState("", STATE_MARINECONTROL, true)
 	end
 
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
 	if (BuildingFindWaterPos("Position","PositionEntry","PosWater")) then
-		if (GetOutdoorMovePosition(NIL, "", "PosGround")) then
+		if (GetOutdoorMovePosition(nil, "", "PosGround")) then
 			BuildingSetWaterPos("", "PosWater", "PosGround")
 			return true
 		end
@@ -36,6 +36,6 @@ function PingHour()
   local CurrentTime = math.mod(GetGametime(),24)
 
   if CurrentTime == 7 or CurrentTime == 19 then
-		worldambient_CreateSailor("",3)
+		worldambient_CreateSailor("", 3)
 	end
 end

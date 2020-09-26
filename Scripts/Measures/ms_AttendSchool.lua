@@ -94,7 +94,7 @@ function Run()
 	end -- else DestPos is mapexit!
 	
 	if not HasProperty("","SchoolPayed") then	
-		if not SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
+		if not chr_SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
 			MsgQuick("", "@L_FAMILY_149_ATTENDSCHOOL_FAILURES_+0", GetID(""), Schoolmoney)
 			return
 		end

@@ -36,7 +36,7 @@ function Run()
 	    GetDynasty("Destination","kasse")
 	    CreditMoney("kasse",spend,"Offering")
         ShowOverheadSymbol("Destination",false,true,0,"%1t",spend)
-        SpendMoney("Owner",spend,"Offering")
+       chr_SpendMoney("Owner", spend, "Offering")
 		
 		local card = Rand(21)
 		
@@ -62,7 +62,7 @@ function TheDestiny(x)
 			if pay > 25 then
 				pay = 25
 			end
-		SpendMoney("Owner",pay,"Offering")
+		chr_SpendMoney("Owner", pay, "Offering")
 		return
 	
 	elseif x == 1 then

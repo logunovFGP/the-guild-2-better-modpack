@@ -1,6 +1,17 @@
 MegaModPack Reforged - Lite 0.1
 
-General
+** Credits **
+
+Lead: Fajeth
+Scripting: Fajeth, ThreeOfMe, Serpens66, Napi96
+Maps: Fajeth
+GUI: MoK
+Icons: Fajeth
+Textures: Jollina, Skip, Broliii 
+Testing:
+Additional Support: McCoy! + The Guild 2 Community
+
+** General **
 
 - Script cleanup: Corrected tabs and spaces in scripts. Added sections and comments. Optimized structure and functions.
 - Script cleanup: Removed redundand impacts and other unused DB entries.
@@ -13,13 +24,17 @@ General
 - The option for frequency of office sessions during game setup has been removed from multiplayer because it lead to an OOS in the second turn. Default setting is 2 now.
 - The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
 - You can no longer marry workers or guards.
+- AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
+- Duels are a bit more fluent now.
+- Duels start a bit earlier and the message to attend them also happens earlier aswell.
 
-Bugfixes
+** Bugfixes **
 
 - Multiple artefact-scripts didn't use the correct item name from the DB.
 - Exploit: After starting certain artefact measures, you could remove the item from the inventory before it was deleted and still get the full effect.
 - The poisoned cake didn't lower the fighting skill.
 - The measure 'Assign for treatment' could get stuck. Also the script has been optimized.
+- Healers remember 'their' bed and don't go to already occupied beds anymore when they treat patients.
 - The measure 'Use thesis paper' could not start properly due to a critical bug.
 - The measure 'Ask around' could lead to a freeze. Also you did not get evidence properly.
 - The measure 'Make a present' had no cooldown.
@@ -41,8 +56,18 @@ Bugfixes
 - During war, your actions would have no effect on victory or defeat no matter how many troops you would get. 
 - The fix against the exploit of fire and courting employees has been improved.
 - AI Pirate ships no longer attack fishing boats
+- If you tear down or sell your bank you get back your credit account money.
+- Exploit: If you tear down your building you now only get back half the value.
+- AI repairs their buildings regulary now.
+- AI levels their buildings if they meet the conditions.
+- Added in a safety check to make sure the default worker of your buildings has no illness and the right equipment.
+- On activated AI setting your resource buildings will sell all the stuff they don't produce which they have in their store (workaround against an AI problem).
+- Fishing huts will sell fish they don't need on the local market.
+- If a duel did not happen, the relations still improved.
+- You got twice the amount of favor from duels.
+- Fixed a few minor typing/spelling errors in the German and English localizations.
 
-Features
+** Features **
 
 - Your medical treatments slightly boost the opinion of the patients to the owner of that hospital
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
@@ -51,8 +76,11 @@ Features
 - Improved some female character textures.
 - The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
 - The famous trading routes of ThreeOfMe have been added.
+- At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
+- There are 8 different female faces now (thanks to Jollina and broliii)
+- Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 
-Balancing
+** Balancing **
 
 - Sweet talking needs 300 instead of 200 Gold. Tavern keepers will get that money.
 - Church owners will get the money from changing faith.
@@ -61,3 +89,6 @@ Balancing
   Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
 - Sorcerer's robe no longer will give you a malus.
 - Declining a bribe will now lose you only 5 favor.
+- Duels are more dangerous.
+- If you don't attend a duel, you will lose favor with every sim nearby of the duel place.
+

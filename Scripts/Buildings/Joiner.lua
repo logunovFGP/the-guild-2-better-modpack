@@ -1,60 +1,47 @@
 function Run()
 end
 
-
 function OnLevelUp()
+	if BuildingGetAISetting("", "Produce_Selection") > 0 then
+	--	bld_SetupAI("")
+	end
 end
 
-
 function Setup()
+	-- create ambient animals
 	if Rand(2)==0 then
-		worldambient_CreateAnimal("Cat","",1)
+		worldambient_CreateAnimal("Cat", "", 1)
 	else
-		worldambient_CreateAnimal("Dog","",1)
-	end
-	if ScenarioGetTimePlayed()>0.2 then
-		SetProperty("","CheckForSpinnings",1)
+		worldambient_CreateAnimal("Dog", "", 1)
 	end
 end
 
 function PingHour()
-	if HasProperty("","CheckForSpinnings") then
-		local checks = GetProperty("","CheckForSpinnings")
-		
-		if checks < 20 then
-			if not HasProperty("","SpinningsChecked") then
-				local MovObjFilter = "__F( (Object.GetObjectsByRadius(Sim)==6000)AND(Object.HasProperty(MyDest))OR(Object.GetObjectsByRadius(Cart)==6000)AND(Object.HasProperty(MyDest))AND NOT(Object.HasProperty(AutoRoute)))"
-				local NumMovObj = Find("",MovObjFilter,"MovObj",-1)
 	
-				if NumMovObj > 0 then
-					for obj=0,NumMovObj-1 do
-						local ObjAlias = "MovObj"..obj
-						if not GetState(ObjAlias,STATE_DRIVERATTACKED) then
-							if HasProperty(ObjAlias,GetID("")) then
-								if GetProperty(ObjAlias,GetID(""))==GetProperty(ObjAlias,"MyDest") then
-									RemoveProperty(ObjAlias,GetID(""))
-									if GetCurrentMeasureName(ObjAlias)=="WorldTrader" then
-										MeasureRun(ObjAlias,nil,"WorldTrader",true)
-									else
-										SimStopMeasure(ObjAlias)
-									end
-								else
-									RemoveProperty(ObjAlias,GetID(""))
-								end
-							else
-								SetProperty(ObjAlias,GetID(""),GetProperty(ObjAlias,"MyDest"))
-							end
-						end
-					end
-				end
-				SetProperty("","SpinningsChecked",1)
-			else
-				RemoveProperty("","SpinningsChecked")
+	-- Check every worker (only once) for illness and equipment 
+	if not HasProperty("", "CheckDefaultWorkers") then
+		bld_ResetWorkers("")
+		SetProperty("", "CheckDefaultWorkers", 1)
+	end
+	
+	-- Improve AI management
+	if BuildingGetAISetting("", "Produce_Selection") > 0 then
+	--	bld_SetupAI("")
+	end
+	
+	-- Only for AI
+	
+	if BuildingGetOwner("", "MyBoss") then
+		if GetHomeBuilding("MyBoss", "MyHome") then
+			if DynastyIsShadow("MyHome") then -- shadows shall only have 2 carts
+				bld_RemoveCart("")
 			end
-			checks = checks + 1
-			SetProperty("","CheckForSpinnings",checks)
-		else
-			RemoveProperty("","CheckForSpinnings")
+			
+			if DynastyIsAI("MyHome") then
+				bld_CheckRivals("")
+				bld_ForceLevelUp("")
+				bld_CheckRepairs("")
+			end
 		end
 	end
 end

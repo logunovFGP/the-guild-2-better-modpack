@@ -7,7 +7,7 @@
 function CheckPosition()
 
 	--direct Line check 
-	if (BuildingFindWaterPos("Position","PositionEntry","WaterPos")) then
+	if (BuildingFindWaterPos("Position", "PositionEntry", "WaterPos")) then
 		return nil
 	end
 
@@ -19,17 +19,16 @@ function CheckPosition()
 	return nil
 end
 
---
--- OnLevelUp is called everytime the building level was changed, even when the building is build the first time.
--- This function is called before Setup
--- attention: this function call is unscheduled
---
 function OnLevelUp()
-
+	
+	if BuildingGetAISetting("", "Produce_Selection") > 0 then
+	--	bld_SetupAI("")
+	end
+	
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
-	if (BuildingFindWaterPos("Position","PositionEntry","PosWater")) then
-		if (GetOutdoorMovePosition(NIL, "", "PosGround")) then
+	if (BuildingFindWaterPos("Position", "PositionEntry", "PosWater")) then
+		if (GetOutdoorMovePosition(nil, "", "PosGround")) then
 			BuildingSetWaterPos("", "PosWater", "PosGround")
 			return true
 		end
@@ -44,58 +43,119 @@ function OnLevelUp()
 	return false
 end
 
---
--- Setup is called after the building is build. The function is called after OnLevelUp
--- attention: this function call is unscheduled
---
 function Setup()
-	if ScenarioGetTimePlayed()>0.2 then
-		SetProperty("","CheckForSpinnings",1)
+end
+
+function SellFish(BldAlias, CartAlias)
+	if not GetSettlement(BldAlias, "MyCity") then
+		return
+	end
+	
+	CityGetLocalMarket("MyCity", "MyMarket")
+	if not AliasExists("MyMarket") then
+		return
+	end
+	
+	if not AliasExists(CartAlias) then
+		return
+	end
+	
+	local AddSalmon = 0
+	local AddHerring = 0
+	
+	if GetItemCount(BldAlias, "Salmon") >= 28 then
+		local RemainingSalmon = GetRemainingInventorySpace(CartAlias, "Salmon", INVENTORY_STD)
+		if RemainingSalmon >= 20 then
+			AddSalmon = 20
+		end
+	end
+	
+	if GetItemCount(BldAlias, "Herring") >= 28 then
+		local RemainingHerring = GetRemainingInventorySpace(CartAlias, "Herring", INVENTORY_STD)
+		if RemainingHerring >= 20 then
+			AddHerring = 20
+		end
+	end
+	
+	local Market = Rand(5)+1
+	if not CityGetRandomBuilding("MyCity", 5, 14, Market ,-1, FILTER_IGNORE, "MarketPos") then
+		CityGetRandomBuilding("MyCity", 5, 14, -1, -1, FILTER_IGNORE, "MarketPos")
+	end
+	
+	if AddSalmon + AddHerring > 0 then
+		MeasureRun(CartAlias, "MarketPos", "SendCartAndUnload", true)
+	end
+	
+	if AddSalmon > 0 then 
+		CreateScriptcall("TransferSalmon", 0.15, "Buildings/fishinghut.lua", "TransferSalmon", BldAlias, CartAlias)
+	end
+	
+	if AddHerring > 0 then
+		CreateScriptcall("TransferHerring", 0.15, "Buildings/fishinghut.lua", "TransferHerring", BldAlias, CartAlias)
 	end
 end
 
---
--- PingHour is called every full hour (ingame)
--- attention: this function call is unscheduled
---
+function TransferSalmon()
+	RemoveItems("", "Salmon", 20)
+	AddItems("Destination", "Salmon", 20)
+end
+
+function TransferHerring()
+	RemoveItems("", "Herring", 20)
+	AddItems("Destination", "Herring", 20)
+end
+
 function PingHour()
-	if HasProperty("","CheckForSpinnings") then
-		local checks = GetProperty("","CheckForSpinnings")
-		
-		if checks < 20 then
-			if not HasProperty("","SpinningsChecked") then
-				local MovObjFilter = "__F( (Object.GetObjectsByRadius(Sim)==6000)AND(Object.HasProperty(MyDest))OR(Object.GetObjectsByRadius(Cart)==6000)AND(Object.HasProperty(MyDest))AND NOT(Object.HasProperty(AutoRoute)))"
-				local NumMovObj = Find("",MovObjFilter,"MovObj",-1)
 	
-				if NumMovObj > 0 then
-					for obj=0,NumMovObj-1 do
-						local ObjAlias = "MovObj"..obj
-						if not GetState(ObjAlias,STATE_DRIVERATTACKED) then
-							if HasProperty(ObjAlias,GetID("")) then
-								if GetProperty(ObjAlias,GetID(""))==GetProperty(ObjAlias,"MyDest") then
-									RemoveProperty(ObjAlias,GetID(""))
-									if GetCurrentMeasureName(ObjAlias)=="WorldTrader" then
-										MeasureRun(ObjAlias,nil,"WorldTrader",true)
-									else
-										SimStopMeasure(ObjAlias)
+	if BuildingGetOwner("","MyBoss") then
+		if GetHomeBuilding("MyBoss", "MyHome") then
+			-- Improve Production
+			if BuildingGetAISetting("", "Produce_Selection") > 0 then
+			--	bld_SetupAI("")
+
+				if DynastyIsAI("MyHome") then
+					bld_CheckRivals("")
+					bld_ForceLevelUp("")
+					bld_CheckRepairs("")
+				end
+				
+				-- spawn boat and cart if needed
+				local FoundBoat = false
+				local FoundCart = false
+				for i=0, BuildingGetCartCount("")-1 do
+					if BuildingGetCart("", i, "Cart") then
+						local CartType = CartGetType("Cart")
+						if CartType == EN_CT_FISHERBOOT then
+							FoundBoat = true
+						elseif CartType == EN_CT_MIDDLE or CartType == EN_CT_OX or CartType == EN_CT_HORSE then
+							-- sell fish if needed
+							if not GetState("Cart", STATE_CHECKFORSPINNINGS) then -- is not moving
+								if CanAddItems("Cart", "Salmon", 20, INVENTORY_STD) then
+									if GetDistance("", "Cart") < 1000 then
+										fishinghut_SellFish("", "Cart")
 									end
-								else
-									RemoveProperty(ObjAlias,GetID(""))
 								end
-							else
-								SetProperty(ObjAlias,GetID(""),GetProperty(ObjAlias,"MyDest"))
 							end
+							FoundCart = true
 						end
 					end
 				end
-				SetProperty("","SpinningsChecked",1)
-			else
-				RemoveProperty("","SpinningsChecked")
+				
+				if not FoundBoat then
+					if BuildingGetWaterPos("", true, "PosWater") then
+						ScenarioCreateCart(EN_CT_FISHERBOOT, "", "PosWater", "fishingboat")
+					end
+				end
+				
+				if not FoundCart then
+					GetOutdoorMovePosition(nil, "", "Pos")
+					if BuildingGetLevel("") < 2 then
+						ScenarioCreateCart(EN_CT_MIDDLE, "", "Pos", "Cart")
+					else
+						ScenarioCreateCart(EN_CT_HORSE, "", "Pos", "Cart")
+					end
+				end
 			end
-			checks = checks + 1
-			SetProperty("","CheckForSpinnings",checks)
-		else
-			RemoveProperty("","CheckForSpinnings")
 		end
 	end
 end
@@ -105,11 +165,26 @@ end
 -- this is a scheduled call, so you can loop an sleep
 --
 function Run()
-	BuildingGetWaterPos("", true, "PosWater")
-	if not ScenarioCreateCart(EN_CT_FISHERBOOT, "", "PosWater", "Boat") then
-		return false
+	if BuildingGetWaterPos("", true, "PosWater") then
+		local Found = false
+		
+		for i=0, BuildingGetCartCount("")-1 do
+			if BuildingGetCart("", i, "Cart") then
+				if CartGetType("Cart") == EN_CT_FISHERBOOT then
+					Found = true
+					break
+				end
+			end
+		end
+		
+		if not Found then
+			if BuildingGetWaterPos("", true, "PosWater") then
+				ScenarioCreateCart(EN_CT_FISHERBOOT, "", "PosWater", "fishingboat")
+			end
+		end
+	
+		if (GetOutdoorMovePosition("fishingboat", "", "GoodPos")) then
+			SimBeamMeUp("fishingboat", "GoodPos")
+		end	
 	end
-	if (GetOutdoorMovePosition("Boat", "", "GoodPos")) then
-		SimBeamMeUp("Boat", "GoodPos")
-	end	
 end

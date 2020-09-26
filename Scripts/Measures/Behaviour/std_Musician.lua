@@ -5,11 +5,14 @@ function Run()
 		std_musician_ResetComeOver()
 		
 		if GetData("#MusicStage")>0 then
+			-- destination was selected, stop resting and start concert
 			SetData("#RestPlace",0)
 			std_musician_StartConcert()
 		elseif GetData("#RestPlace")>0 then
+			-- time to rest
 			std_musician_Rest()
 		elseif GetID("#Musician1")==GetID("") then
+			-- leader may choose new location
 			if HasProperty("","MusicStage") then
 				RemoveProperty("","MusicStage")
 			end
@@ -17,107 +20,18 @@ function Run()
 				RemoveProperty("","StartConcert")
 			end
 
-			math.randomseed(GetGametime())
-
 			local CurrentTime = math.mod(GetGametime(),24)
-			local decision = Rand(100)+1
-			local cities = ScenarioGetObjects("Settlement", 10, "City")
-			local ccx = Rand(cities)
-			local count, count2
+			local cities = ScenarioGetObjects("Settlement", 10, "city")
+			local CityIndex = Rand(cities)
 
-			if (decision>65) and (CurrentTime > 4 and CurrentTime < 14) then
-				if Rand(2)==0 then
-			    count = CityGetBuildings("city"..ccx, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HAS_DYNASTY, "obj")
-			    count2 = CityGetBuildings("city"..ccx, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRAT, -1, -1, FILTER_HAS_DYNASTY, "obj2")
-				else
-			    count = CityGetBuildings("city"..ccx, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRAT, -1, -1, FILTER_HAS_DYNASTY, "obj")
-			    count2 = CityGetBuildings("city"..ccx, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HAS_DYNASTY, "obj2")
-				end
-
-				if count > 0 or count2 > 0 then
-					local curFee = 0
-					local bestFee = 0
-					for l=0,count-1 do
-						Alias	= "obj"..l
-						if HasProperty(Alias,"MusiciansFee") then
-							curFee = GetProperty(Alias,"MusiciansFee")
-						else
-							curFee = 0
-						end
-						
-						if not AliasExists("bestDest") then
-							CopyAlias(Alias, "bestDest")
-							if HasProperty(Alias,"MusiciansFee") then
-								bestFee = GetProperty(Alias,"MusiciansFee")
-							else
-								bestFee = 0
-							end
-						elseif GetID(Alias)~=GetID("bestDest") then
-							if curFee > bestFee then
-								bestFee = curFee
-								CopyAlias(Alias, "bestDest")
-							elseif curFee == bestFee then
-								if Rand(10)<5 then
-									bestFee = curFee
-									CopyAlias(Alias, "bestDest")
-								end
-							end
-						end
-					end
-
-					for m=0,count2-1 do
-						Alias	= "obj2"..m
-						if HasProperty(Alias,"MusiciansFee") then
-							curFee = GetProperty(Alias,"MusiciansFee")
-						else
-							curFee = 0
-						end
-						
-						if not AliasExists("bestDest") then
-							CopyAlias(Alias, "bestDest")
-							if HasProperty(Alias,"MusiciansFee") then
-								bestFee = GetProperty(Alias,"MusiciansFee")
-							else
-								bestFee = 0
-							end
-						elseif GetID(Alias)~=GetID("bestDest") then
-							if curFee > bestFee then
-								bestFee = curFee
-								CopyAlias(Alias, "bestDest")
-							elseif curFee == bestFee then
-								if Rand(10)<5 then
-									bestFee = curFee
-									CopyAlias(Alias, "bestDest")
-								end
-							end
-						end
-					end
-
-					BuildingGetOwner("bestDest","BuildingOwner")
-					if GetMoney("BuildingOwner")>bestFee then
-						if bestFee>0 then
-							SpendMoney("BuildingOwner",bestFee,"Versengold")
-							SetProperty("bestDest","MusiciansFee",0)
-						end
-						CopyAlias("bestDest","Destination")
-					end
-					RemoveAlias("bestDest")
-	
-					if AliasExists("Destination") then
-						SetData("#MusicStage",GetID("Destination"))
-						feedback_MessageWorkshop("BuildingOwner",
-							"@L_MESSAGES_UPCOMING_CONCERT_OWNER_HEADER_+0",
-							"@L_MESSAGES_UPCOMING_CONCERT_OWNER_BODY_+0",
-								GetID("Destination"))
-					end
-				end
-			else
-				if CityGetRandomBuilding("city"..ccx, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
-				--if CityGetNearestBuilding("city"..ccx, "#Musician1", -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
+			if Rand(100) < 64 or CurrentTime < 4 or CurrentTime > 14 then
+				-- find a good place to rest
+				if CityGetRandomBuilding("city"..CityIndex, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
 					SetData("#RestPlace",GetID("Destination"))
 				end
+			else
+				std_musician_FindConcertDestination(CityIndex)
 			end
-			
 		else
 			if HasProperty("","MusicStage") then
 				RemoveProperty("","MusicStage")
@@ -128,6 +42,69 @@ function Run()
 	end
 end
 
+function FindConcertDestination(CityIndex)
+	-- find a destination for the next concert
+  local TavernCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HAS_DYNASTY, "tavern")
+  local DivehouseCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRAT, -1, -1, FILTER_HAS_DYNASTY, "divehouse")
+
+	if TavernCount <= 0 and DivehouseCount <= 0 then
+		return
+	end
+	
+	local curFee = 0
+	local bestFee = 0
+	std_musician_ChooseBestPlace("tavern", TavernCount, curFee, bestFee)
+	std_musician_ChooseBestPlace("divehouse", DivehouseCount, curFee, bestFee)
+
+	BuildingGetOwner("bestDest","BuildingOwner")
+	if GetMoney("BuildingOwner") > bestFee then
+		if bestFee > 0 then
+			chr_SpendMoney("BuildingOwner", bestFee, "Versengold")
+			SetProperty("bestDest", "MusiciansFee", 0)
+		end
+		CopyAlias("bestDest", "Destination")
+	end
+	RemoveAlias("bestDest")
+
+	if AliasExists("Destination") then
+		SetData("#MusicStage", GetID("Destination"))
+		feedback_MessageWorkshop("BuildingOwner",
+			"@L_MESSAGES_UPCOMING_CONCERT_OWNER_HEADER_+0",
+			"@L_MESSAGES_UPCOMING_CONCERT_OWNER_BODY_+0",
+				GetID("Destination"))
+	end
+end
+
+function ChooseBestPlace(AliasPrefix, count, curFee, bestFee)
+	local Alias
+	for l=0,count-1 do
+		Alias	= AliasPrefix..l
+		if HasProperty(Alias,"MusiciansFee") then
+			curFee = GetProperty(Alias,"MusiciansFee")
+		else
+			curFee = 0
+		end
+		
+		if not AliasExists("bestDest") then
+			CopyAlias(Alias, "bestDest")
+			if HasProperty(Alias,"MusiciansFee") then
+				bestFee = GetProperty(Alias,"MusiciansFee")
+			else
+				bestFee = 0
+			end
+		elseif GetID(Alias)~=GetID("bestDest") then
+			if curFee > bestFee then
+				bestFee = curFee
+				CopyAlias(Alias, "bestDest")
+			elseif curFee == bestFee then
+				if Rand(10)<5 then
+					bestFee = curFee
+					CopyAlias(Alias, "bestDest")
+				end
+			end
+		end
+	end
+end
 
 function Rest()
 	local season = GetSeason()
@@ -327,172 +304,172 @@ function StartConcert()
 			type = 0
 		elseif BuildingGetType("stageobj")==GL_BUILDING_TYPE_PIRAT then
 			type = 1
-		else
-			type = -1		
 		end
 	end
 
 	if type==-1 then
+		-- something went wrong with the destination, cancel concert
 		if GetID("")==GetID("#Musician1") then
 			SetData("#MusicStage",0)
 		end
 		Sleep(3)
-	else
-		SetProperty("","Moving",1)
-		if not f_MoveTo("","stageobj",GL_MOVESPEED_RUN) then
-			LogMessage(GetID("").." can't move to "..GetID("placeobj"));
-			--SimBeamMeUp("", "stageobj")
-		end
-		RemoveProperty("","Moving")
+		return
+	end
 	
-		if GetID("")==GetID("#Musician1") then
-			local CurrentTime = math.mod(GetGametime(),24)
-			local StartTime = 0
-			local TimeToWait = Rand(2)+3
-			local DestTime = 0
-			local Round = GetRound()
+	SetProperty("","Moving",1)
+	if not f_MoveTo("","stageobj",GL_MOVESPEED_RUN) then
+		LogMessage(GetID("").." can't move to "..GetID("placeobj"));
+		--SimBeamMeUp("", "stageobj")
+	end
+	RemoveProperty("","Moving")
 
-			if (CurrentTime>9 and CurrentTime<15) or (CurrentTime>0 and CurrentTime<2) then
-				StartTime = CurrentTime + TimeToWait
-				DestTime = CurrentTime + TimeToWait
-			elseif CurrentTime>2 and CurrentTime<9 then
-				StartTime = 9 + TimeToWait
-				DestTime = 9 + TimeToWait
-			else --CurrentTime>15
-				StartTime = TimeToWait
-				DestTime = 24 - CurrentTime + TimeToWait
-				Round = Round + 1			
-			end
+	if GetID("")==GetID("#Musician1") then
+		-- only the leader
+		local CurrentTime = math.mod(GetGametime(),24)
+		local StartTime = 0
+		local DestTime = 0
+		local Round = GetRound()
 
-			local ID = "Event"..GetID("")
+		if (9 < CurrentTime and CurrentTime < 15) or (0 < CurrentTime and CurrentTime < 2) then
+			StartTime = CurrentTime + 3
+			DestTime = CurrentTime + 3
+		elseif 2 < CurrentTime and CurrentTime < 9 then
+			StartTime = 12
+			DestTime = 12
+		else --CurrentTime>15, don't start until next day
+			StartTime = 3
+			DestTime = 24 - CurrentTime + 3
+			Round = Round + 1
+		end
+
+		local ID = "Event"..GetID("")
+	
+		BuildingGetCity("stageobj","City")
 		
-			BuildingGetCity("stageobj","City")
-			
-			MsgNewsNoWait("All","stageobj","@C[@L_MESSAGES_UPCOMING_CONCERT_COOLDOWN_+0,%4i,%5l]","default",-1,
-					       "@L_MESSAGES_UPCOMING_CONCERT_HEADER_+0",
-					       "@L_MESSAGES_UPCOMING_CONCERT_BODY_+0",
-					       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"),DestTime,ID)
+		MsgNewsNoWait("All","stageobj","@C[@L_MESSAGES_UPCOMING_CONCERT_COOLDOWN_+0,%4i,%5l]","default",-1,
+				       "@L_MESSAGES_UPCOMING_CONCERT_HEADER_+0",
+				       "@L_MESSAGES_UPCOMING_CONCERT_BODY_+0",
+				       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"),DestTime,ID)
 
-			SetData("#HaveFunTime",StartTime)
-			
-			SetProperty("#Musician1","HaveFun",Round)
-			SetProperty("#Musician2","HaveFun",Round)
-			SetProperty("#Musician3","HaveFun",Round)
-			SetProperty("#Musician4","HaveFun",Round)
-			SetProperty("#Musician5","HaveFun",Round)
-			
-		end
-	
-		while true do
-			if HasProperty("","HaveFun") then
-				local havefuntime = GetData("#HaveFunTime")
-				if type==0 then
-					std_musician_HaveFunInTavern("stageobj",havefuntime-0.5)
-				else
-					std_musician_HaveFunInDivehouse("stageobj",havefuntime-0.5)
-				end
-				break
+		SetData("#HaveFunTime",StartTime)
+		
+		SetProperty("#Musician1","HaveFun",Round)
+		SetProperty("#Musician2","HaveFun",Round)
+		SetProperty("#Musician3","HaveFun",Round)
+		SetProperty("#Musician4","HaveFun",Round)
+		SetProperty("#Musician5","HaveFun",Round)
+		
+	end
+
+	while true do
+		if HasProperty("","HaveFun") then
+			local havefuntime = GetData("#HaveFunTime")
+			if type==0 then
+				std_musician_HaveFunInTavern("stageobj",havefuntime-0.5)
 			else
-				Sleep(2)
+				std_musician_HaveFunInDivehouse("stageobj",havefuntime-0.5)
 			end
+			break
+		else
+			Sleep(2)
 		end
+	end
+
+	if GetID("")==GetID("#Musician1") then
+		GetLocatorByName("stageobj","Musician1","PlayPos")
+		f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
+
+	elseif GetID("")==GetID("#Musician2") then
+		GetLocatorByName("stageobj","Musician2","PlayPos")
+		f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
+
+	elseif GetID("")==GetID("#Musician3") then
+		GetLocatorByName("stageobj","Musician3","PlayPos")
+		f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
+
+	elseif GetID("")==GetID("#Musician4") then
+		GetLocatorByName("stageobj","Musician4","PlayPos")
+		f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
+
+	elseif GetID("")==GetID("#Musician5") then
+		GetLocatorByName("stageobj","Musician5","PlayPos")
+		f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
+
+	end
+
+	SetProperty("","MusicStage",stage)
 	
+	while true do
 		if GetID("")==GetID("#Musician1") then
-			GetLocatorByName("stageobj","Musician1","PlayPos")
-			f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
-	
-		elseif GetID("")==GetID("#Musician2") then
-			GetLocatorByName("stageobj","Musician2","PlayPos")
-			f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
-	
-		elseif GetID("")==GetID("#Musician3") then
-			GetLocatorByName("stageobj","Musician3","PlayPos")
-			f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
-	
-		elseif GetID("")==GetID("#Musician4") then
-			GetLocatorByName("stageobj","Musician4","PlayPos")
-			f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
-	
-		elseif GetID("")==GetID("#Musician5") then
-			GetLocatorByName("stageobj","Musician5","PlayPos")
-			f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true)
-	
-		end
-	
-		SetProperty("","MusicStage",stage)
-		
-		while true do
-			if GetID("")==GetID("#Musician1") then
-				if (HasProperty("#Musician2","MusicStage") and GetProperty("#Musician2","MusicStage")==stage) and
-					 (HasProperty("#Musician3","MusicStage") and GetProperty("#Musician3","MusicStage")==stage) and
-					 (HasProperty("#Musician4","MusicStage") and GetProperty("#Musician4","MusicStage")==stage) and
-					 (HasProperty("#Musician5","MusicStage") and GetProperty("#Musician5","MusicStage")==stage) then
-					Sleep(3)
-	
-					if not IsMultiplayerGame() then
-						if CameraIndoorGetBuilding("BuildingCam") then
-							if GetID("stageobj")==GetID("BuildingCam") then
-								ResetGamespeed()
-								gameplayformulas_BlockMusicForConcert(1)
-							end
+			if (HasProperty("#Musician2","MusicStage") and GetProperty("#Musician2","MusicStage")==stage) and
+				 (HasProperty("#Musician3","MusicStage") and GetProperty("#Musician3","MusicStage")==stage) and
+				 (HasProperty("#Musician4","MusicStage") and GetProperty("#Musician4","MusicStage")==stage) and
+				 (HasProperty("#Musician5","MusicStage") and GetProperty("#Musician5","MusicStage")==stage) then
+				Sleep(3)
+
+				if not IsMultiplayerGame() then
+					if CameraIndoorGetBuilding("BuildingCam") then
+						if GetID("stageobj")==GetID("BuildingCam") then
+							ResetGamespeed()
+							gameplayformulas_BlockMusicForConcert(1)
 						end
 					end
-
-					math.randomseed(GetGametime())
-					
-					local tmprand = Rand(100)+1
-					SetProperty("","StartConcert",tmprand) --choose a random song
-					break
 				end
-			elseif HasProperty("#Musician1","StartConcert") then
+
+				math.randomseed(GetGametime())
+				
+				local tmprand = Rand(100)+1
+				SetProperty("","StartConcert",tmprand) --choose a random song
 				break
 			end
-			Sleep(3)
+		elseif HasProperty("#Musician1","StartConcert") then
+			break
 		end
-	
-		if GetID("")==GetID("#Musician1") then
-			SetProperty("stageobj","Versengold",1)
-		end
-	
-		--play the song
-		local thesong = GetProperty("#Musician1","StartConcert")
-		if thesong<34 then
-			std_musician_Drey_Weyber()
-		elseif thesong<67 then
-			std_musician_Immer_schoen_nach_unten_treten()
-		else
-			std_musician_Ich_und_ein_Fass_voller_Wein()
-		end
-	
-		RemoveProperty("","MusicStage")
-	
-		while true do
-			if GetID("")==GetID("#Musician1") then
-				if not HasProperty("#Musician2","MusicStage") and 
-					 not HasProperty("#Musician3","MusicStage") and
-					 not HasProperty("#Musician4","MusicStage") and
-					 not HasProperty("#Musician5","MusicStage") then
-	
-					RemoveProperty("","StartConcert")
-					RemoveProperty("stageobj","Versengold")
-					break
-				end
-			elseif not HasProperty("#Musician1","StartConcert") then
-				break
-			end
-			Sleep(1)
-		end
-
-		if GetID("")==GetID("#Musician1") then
-			PlaySound3D("", "CharacterFX/applause_loop/applause_loop+0.ogg", 1.0)
-		end
-
-		PlayAnimation("","bow")
-		Sleep(1)
-		PlayAnimation("","bow")
-		
-		f_EndUseLocator("","PlayPos")
+		Sleep(3)
 	end
+
+	if GetID("")==GetID("#Musician1") then
+		SetProperty("stageobj","Versengold",1)
+	end
+
+	--play the song
+	local thesong = GetProperty("#Musician1","StartConcert")
+	if thesong<34 then
+		std_musician_Drey_Weyber()
+	elseif thesong<67 then
+		std_musician_Immer_schoen_nach_unten_treten()
+	else
+		std_musician_Ich_und_ein_Fass_voller_Wein()
+	end
+
+	RemoveProperty("","MusicStage")
+
+	while true do
+		if GetID("")==GetID("#Musician1") then
+			if not HasProperty("#Musician2","MusicStage") and 
+				 not HasProperty("#Musician3","MusicStage") and
+				 not HasProperty("#Musician4","MusicStage") and
+				 not HasProperty("#Musician5","MusicStage") then
+
+				RemoveProperty("","StartConcert")
+				RemoveProperty("stageobj","Versengold")
+				break
+			end
+		elseif not HasProperty("#Musician1","StartConcert") then
+			break
+		end
+		Sleep(1)
+	end
+
+	if GetID("")==GetID("#Musician1") then
+		PlaySound3D("", "CharacterFX/applause_loop/applause_loop+0.ogg", 1.0)
+	end
+
+	PlayAnimation("","bow")
+	Sleep(1)
+	PlayAnimation("","bow")
+	
+	f_EndUseLocator("","PlayPos")
 end
 
 function Drey_Weyber()

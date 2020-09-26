@@ -7,7 +7,7 @@
 function CheckPosition()
 
 	--direct Line check 
-	if (BuildingFindWaterPos("Position","PositionEntry","WaterPos")) then
+	if (BuildingFindWaterPos("Position", "PositionEntry", "WaterPos")) then
 		return nil
 	end
 
@@ -20,9 +20,6 @@ function CheckPosition()
 end
 
 function Setup()
-	if ScenarioGetTimePlayed()>0.2 then
-		SetProperty("","CheckForSpinnings",1)
-	end
 end
 
 --
@@ -34,8 +31,8 @@ function OnLevelUp()
  
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
-	if (BuildingFindWaterPos("Position","PositionEntry","PosWater")) then
-		if (GetOutdoorMovePosition(NIL, "", "PosGround")) then
+	if (BuildingFindWaterPos("Position", "PositionEntry", "PosWater")) then
+		if (GetOutdoorMovePosition(nil, "", "PosGround")) then
 			BuildingSetWaterPos("", "PosWater", "PosGround")
 			return true
 		end
@@ -51,43 +48,40 @@ function OnLevelUp()
 end
 
 function PingHour()
-	if HasProperty("","CheckForSpinnings") then
-		local checks = GetProperty("","CheckForSpinnings")
-		
-		if checks < 20 then
-			if not HasProperty("","SpinningsChecked") then
-				local MovObjFilter = "__F( (Object.GetObjectsByRadius(Sim)==6000)AND(Object.HasProperty(MyDest))OR(Object.GetObjectsByRadius(Cart)==6000)AND(Object.HasProperty(MyDest))AND NOT(Object.HasProperty(AutoRoute)))"
-				local NumMovObj = Find("",MovObjFilter,"MovObj",-1)
+
+	-- Check every worker (only once) for illness and equipment 
+	if not HasProperty("", "CheckDefaultWorkers") then
+		bld_ResetWorkers("")
+		SetProperty("", "CheckDefaultWorkers", 1)
+	end
 	
-				if NumMovObj > 0 then
-					for obj=0,NumMovObj-1 do
-						local ObjAlias = "MovObj"..obj
-						if not GetState(ObjAlias,STATE_DRIVERATTACKED) then
-							if HasProperty(ObjAlias,GetID("")) then
-								if GetProperty(ObjAlias,GetID(""))==GetProperty(ObjAlias,"MyDest") then
-									RemoveProperty(ObjAlias,GetID(""))
-									if GetCurrentMeasureName(ObjAlias)=="WorldTrader" then
-										MeasureRun(ObjAlias,nil,"WorldTrader",true)
-									else
-										SimStopMeasure(ObjAlias)
-									end
-								else
-									RemoveProperty(ObjAlias,GetID(""))
-								end
-							else
-								SetProperty(ObjAlias,GetID(""),GetProperty(ObjAlias,"MyDest"))
-							end
-						end
-					end
-				end
-				SetProperty("","SpinningsChecked",1)
-			else
-				RemoveProperty("","SpinningsChecked")
+	local Found = false
+	for i=0, BuildingGetCartCount("")-1 do
+		if BuildingGetCart("", i, "Cart") then
+			if CartGetType("Cart") == EN_CT_CORSAIR then
+				Found = true
 			end
-			checks = checks + 1
-			SetProperty("","CheckForSpinnings",checks)
-		else
-			RemoveProperty("","CheckForSpinnings")
+		end
+	end
+	if Found then
+		if not HasProperty("", "pirateship") then
+			SetProperty("", "pirateship", 1)
+		end
+	else
+		if HasProperty("", "pirateship") then
+			RemoveProperty("","pirateship")
+		end	
+	end
+	
+	-- Only for AI
+	
+	if BuildingGetOwner("", "MyBoss") then
+		if GetHomeBuilding("MyBoss", "MyHome") then
+			if DynastyIsAI("MyHome") then
+				bld_CheckRivals("")
+				bld_CheckRepairs("")
+				bld_ForceLevelUp("")
+			end
 		end
 	end
 end

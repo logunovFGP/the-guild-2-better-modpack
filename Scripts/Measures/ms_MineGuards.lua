@@ -24,12 +24,9 @@ function Run()
 			return
 		end
 		
-	if DynastyIsPlayer("") then	
-		if not SpendMoney("",1000,"misc") then
-			StopMeasure()
-		end
+	if not chr_SpendMoney("", 1000, "misc") then
+		StopMeasure()
 	end
-	
 	
 	local CurMeasID = GetCurrentMeasureID("")
 	SetMeasureRepeat(TimeOut)

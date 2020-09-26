@@ -1,4 +1,6 @@
 function Init()
+	BuildingGetOwner("", "FormerOwner")
+	SetData("FormerOwner", GetID("FormerOwner"))
 end
 
 function Run()
@@ -11,7 +13,7 @@ function Run()
 	GfxAttachObject("SellFlag","buildings/Verkaufsschild.nif")
 	GfxSetPosition("SellFlag",x,y-offsety,z,true)
 	while true do
-		Sleep(Rand(2)+5)
+		Sleep(2)
 		if not BuildingGetForSale("") then
 			return
 		end
@@ -19,6 +21,15 @@ function Run()
 end
 
 function CleanUp()
-	GfxSetPosition("SellFlag",0,-1000,0,false)
-	GfxDetachObject("SellFlag")
+	if AliasExists("SellFlag") then
+		GfxSetPosition("SellFlag", 0, -1000, 0, false)
+		GfxDetachObject("SellFlag")
+	end
+	
+	if BuildingGetOwner("", "NewOwner") then
+		if GetData("FormerOwner") ~= GetID("NewOwner") then
+			bld_ClearBuildingStash("", "FormerOwner")
+		end
+	end
+
 end
