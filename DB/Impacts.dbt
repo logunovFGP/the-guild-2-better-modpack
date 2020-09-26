@@ -231,6 +231,8 @@ Data:
 393   1   3   0   "luckyguy"   0   "Hud/state/luckyguy.tga"   |
 394   1   4   0   "begBonus"   0   ""   |
 395   1   3   0   "LevelUpCity"   0   ""   |
+402   1   2   0   "GoodDream"   0   "Hud/state/GoodDream.tga"   |
+403   1   2   0   "BadDream"   0   "Hud/state/BadDream.tga"   |
 405   1   2   0   "kamm"   0   ""   |
 407   1   2   0   "spindel"   0   ""   |
 408   1   2   0   "pendel"   0   ""   |
@@ -248,3 +250,12 @@ Data:
 428   1   2   0   "DuelTimer"   0   ""   |
 429   1   2   0   "OfficeTimer"   0   ""   |
 430   1   2   0   "robe"   0   "Hud/state/Robe.tga"   |
+431   1   2   0   "ManureI"   0   "Hud/state/abouttalents1.tga"   |
+432   1   2   0   "MentorI"   0   "Hud/state/abouttalents1.tga"   |
+433   1   2   0   "MarketerI"   0   "Hud/state/abouttalents2.tga"   |
+434   1   2   0   "BurglaryI"   0   "Hud/state/abouttalents2.tga"   |
+435   1   2   0   "DruidicI"   0   "Hud/state/abouttalents2.tga"   |
+436   1   2   0   "HardWorkersI"   0   "Hud/state/abouttalents2.tga"   |
+437   1   2   0   "CharmingI"   0   "Hud/state/abouttalents2.tga"   |
+438   1   2   0   "DefendersI"   0   "Hud/state/abouttalents2.tga"   |
+439   1   2   0   "ProducerI"   0   "Hud/state/abouttalents2.tga"   |
