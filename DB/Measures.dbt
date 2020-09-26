@@ -543,3 +543,4 @@ Data:
 12103   "ms_Bricklebrit.lua"   ""   "Bricklebrit"   30   ""   0   12   0   ""   ""   0   0   0   "none"   0   0   |
 12104   "ms_MineGuards.lua"   ""   "MineGuards"   45   "hud/buttons/btn_BuyCannon.tga"   0   4   0   ""   ""   0   24   0   "particles/radius.nif"   30   0   |
 12105   "Behaviour\behavior_MineGuardsDuty.lua"   ""   "MineGuardsDuty"   69   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+13086   "ms_twp_SupplyWorkshop.lua"   ""   "SupplyWorkshop"   99   "hud/buttons/btn_153_BewitchCharacter.tga"   0   2   0   ""   ""   0   0   0   "none"   0   1   |

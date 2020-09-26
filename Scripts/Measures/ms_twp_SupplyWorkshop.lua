@@ -27,16 +27,23 @@
 --
 
 function Init()
-	-- find home 
+	-- find home
 	if not GetHomeBuilding("","MyHome") then
 		return
 	end
 	local Choice
-	local ResourceCount = 0
-	local Resources = {} -- {{Item1, Min1}, {Item2, Min2}, ...}
+	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
+	local ResourceCount, Resources = ms_twp_supplyworkshop_GetResourcesForWorkshop("MyHome")
 	local SupplierCount = 0
 	local Suppliers = {} -- {Supplier1, Supplier2, ...}
-	
+	-- add local market as supplier for convenience
+	if GetSettlement("MyHome", "MyCity") then
+		if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
+			SupplierCount = 1
+			Suppliers[1] = GetID("MyMarket")
+		end
+	end 
+	 
 	repeat
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
 		local Options = "@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1,]".. -- Help
@@ -53,30 +60,85 @@ function Init()
 			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources)
 		elseif Choice == 3 then
 			SupplierCount, Suppliers = ms_twp_supplyworkshop_ChooseSuppliers(SupplierCount, Suppliers)
-		elseif vorgang == "C" then -- cancel
+		elseif Choice == nil or Choice == "C" then -- cancel
 			StopMeasure()
 		end
 	until Choice == 4 -- Start measure
 	-- TODO SetData for Run-function
 end
 
+function GetResourcesForWorkshop(BldAlias)
+	local BldId = BuildingGetProto(BldAlias)
+	local ItemsString = GetDatabaseValue("BuildingToItems", BldId, "requireditems")
+	if ItemsString == nil then
+		return 0, {}
+	end
+	local Items = {}
+	local Resources = {}
+	local Count = 0
+	for Id in string.gfind(ItemsString, "%d+") do
+		Count = Count + 1
+		Resources[Count] = { ItemGetID(Id), 0 }
+	end
+	return Count, Resources
+end
 
 function ChooseResources(ResourceCount, Resources)
-	-- TODO implement by using BuildingToItems and MeasureInit (icon dialog)
+	local ChosenItemId
+	local Buttons = ""
+	local Id, ItemTexture, ItemLabel, Subtext
+	local Tooltip = ""
+
+	local ChosenItem
+	repeat
+		Buttons = "@P"
+		for i=1, ResourceCount do
+			Id = Resources[i][1]
+			ItemTexture = "Hud/Items/Item_"..ItemGetName(Id)..".tga"
+			ItemLabel = ItemGetLabel(Id, false)
+			Subtext = Resources[i][2]
+			-- result, Tooltip, label, icon
+			Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
+		end
+
+		ChosenItem = InitData(
+			Buttons, -- PanelParam
+			0, -- AIFunc
+			"@L_MEASURE_SALESCOUNTER_HEAD_+0",-- HeaderLabel
+			"Body"
+		)
+		if ChosenItem and ChosenItem ~= "C" then
+			local Options = "@B[80,80,]@B[60,60,]@B[50,50,]@B[40,40,]@B[30,30,]@B[20,20,]@B[10,10,]@B[0,0,]"
+			local ItemId = Resources[ChosenItem][1]
+			local ChosenMinAmount = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0","_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_BODY_+0", ItemGetLabel(ItemId,false))			
+			Resources[ChosenItem][2] = ChosenMinAmount
+		end
+	until ChosenItem == nil or ChosenItem =="C"
+	
 	return ResourceCount, Resources
 end
 
 function ChooseSuppliers(SupplierCount, Suppliers)
 	local Choice
+	local LabelIds = {}
 	repeat
 		local Options = "@P"
 		-- show list of suppliers with option to add another one
 		for i=1, SupplierCount do
-			Options = Options .. "@B["..i..","..GetName(Suppliers[i])..",]"
+			GetAliasByID(Suppliers[i], "CurSupplierAlias")
+			if BuildingGetClass("CurSupplierAlias") == GL_BUILDING_CLASS_MARKET then
+				-- use city name for markets
+				Options = Options .. "@B["..i..",%"..i.."NAME,]"
+				LabelIds[i] = GetSettlementID("CurSupplierAlias")
+			else
+				-- use Building name
+				Options = Options .. "@B["..i..",%"..i.."GG,]"
+				LabelIds[i] = i
+			end
 		end
 		-- TODO could this be done as icon list with building icons?
 		Options = Options .. "@B[A,@L_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0,]" .. "@B[C,@LAbort_+0,]"
-		Choice = MsgBox("","Owner",Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", GetID("MyHome"))
+		Choice = MsgBox("","Owner",Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", ms_twp_supplyworkshop_unpackTable(LabelIds))
 	
 		if Choice == "A" then
 			-- add new Supplier
@@ -86,23 +148,20 @@ function ChooseSuppliers(SupplierCount, Suppliers)
 				Suppliers[SupplierCount] = GetID(SupplierAlias)
 			end
 		elseif Choice ~= "C" and Choice > 0 then
-			-- TODO delete this supplier from list, make sure to move other suppliers up by one or ignore empty places in list
+			-- delete this supplier from list and make sure to move other suppliers up by one
+			SupplierCount, Suppliers = ms_twp_supplyworkshop_RemoveElementFromList(SupplierCount, Suppliers, Choice)
 		end
-	until Choice == "C"
+	until Choice == nil or Choice == "C"
 	
 	return SupplierCount, Suppliers
 end
 
 function SelectSupplier(Index)
 	-- filter for waypoint selection
-	local Success = InitAlias("Supplier"..Index, MEASUREINIT_SELECTION,
+	InitAlias("Supplier"..Index, MEASUREINIT_SELECTION,
 		"__F((Object.BelongsToMe()) OR (Object.IsClass(2)) OR (Object.IsClass(5)) AND (Object.Type == Building))",
 		"@L_TRADEROUTE_NEXT_BUILDING_+0",0)
-	if Success then
-		return "Supplier"..Index
-	else 
-		return nil
-	end
+	return "Supplier"..Index
 end
 
 function Run() 
@@ -167,3 +226,23 @@ end
 
 function CleanUp()
 end
+
+
+-- TODO move these functions to lib
+-- removes element with given index from list and moves all following elements a slot up
+function RemoveElementFromList(ListCount, List, Index)
+	for i=Index, ListCount-1 do
+		List[i] = List[i+1]
+	end
+	return ListCount-1, List
+end
+
+-- to unpack an array as single arguments in a function (eg. good for msgboxes with a variable number of arguments)
+function unpackTable(t, i)
+    i = i or 1
+    if t[i] ~= nil then
+        return t[i], ms_twp_supplyworkshop_unpackTable(t, i + 1)
+    end
+end
+
+
