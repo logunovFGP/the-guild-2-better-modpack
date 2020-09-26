@@ -67,6 +67,8 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - You got twice the amount of favor from duels.
 - Fixed a few minor typing/spelling errors in the German and English localizations.
 - During game setup AI children always had the same sex
+- Mining granite was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
+- Fixed an exploit that allowed gatherers to teleport their items in their workshop.
 
 ** Features **
 

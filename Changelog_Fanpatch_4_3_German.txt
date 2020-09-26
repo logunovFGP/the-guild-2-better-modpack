@@ -71,6 +71,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Nach einem Duell wurde die Gunst doppelt erhöht.
 - Kleinere (Tipp-) und Schreibfehler in den deutschen und englischen Lokalisierungen korrigiert.
 - Bei Spielstart hatten alle KI-Kinder dasselbe Geschlecht
+- Beim Abbau von Granit lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
+- Einen Exploit behoben, mit dem man das Inventar eines Sammlers in den Betrieb teleportieren konnte.
 
 ** Features **
 

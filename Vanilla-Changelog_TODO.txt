@@ -59,7 +59,6 @@ Offen:
   und das Geld abgezogen. Dies passiert nun erst kurz vor Beginn des Tanzes.
 - Die KI wird ihre Kinder nicht mehr als Prediger, Heiler, Entführer oder Räuber einsetzen. (Lässt sich über AI-Scripte verbieten. Aber Hauptproblem war:
   Kinder bzw. Shadows dürfen nicht ihren Betrieb als Wohnsitz haben, sondern müssen in einer Workerresidence wohnen, sonst betrachtet die KI sie als Angestellte)
-- Beim Glaubenswechsel wurde die Gebühr von 100 Gold nicht abgezogen und auch der Kirche nicht gutgeschrieben
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
 - Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
@@ -68,9 +67,6 @@ Offen:
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
 - Schergen werden nicht länger von Taschendieben, dem schwarzen Brett, Quacksalberern
   und anderen Predigern unterbrochen.
-- Steinmetze, die Steinquader abbauten, liefen nach jeder Einheit zwischen Steinbruch und 
-  Betrieb hin und her, so lange, bis ihr Inventar voll war, ehe sie die Steinquader abluden. Das
-  Problem wurde nun behoben. (Fehler in gather.lua, fehlerhafte Destination)
 - Tagelöhner, die beim Bau neuer Gebäude erscheinen, sollten nun nach Beendigung der Arbeit
   wieder verschwinden (gelöscht werden).
 - Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.
@@ -105,7 +101,6 @@ Offen:
 - Ein Zufallsereignis hatte fehlende Texte.
 - Die Pest endete nach Ausbruch nie, weil sich vor allem neu generierte Arbeitslose
   innerhalb der Arbeiterhütte immer wieder von Neuem ansteckten.
-- KI-Heiler konnten bei der Behandlung von Patienten ewig feststecken.
 - Die Maßnahme "Ausruhen" wird nun bei den anderen "roten" Maßnahmen
   eingeordnet.
 - Nachdem man ein Gebäude von einer Dynastie erworben hatte, arbeiteten
