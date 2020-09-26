@@ -7,7 +7,6 @@ Offen:
 - Fehlerhafte Warenhaus-Upgrades repariert.
 - Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
 - Bei Verk‰ufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
-- Kinder der Dynastie-KIs zu Spielbeginn sind nun nicht l‰nger ausschlieﬂlich M‰dchen.
 - Es konnte vorkommen, dass einige Items ohne Effekt blieben, wenn man die Animation abbrach
 - Beim "Hexerdokument II" wurde keine Erfahrung vergeben. 
 - Bei der Maﬂnahme "Jemanden enteignen" wurde eine fehlerhafte Nachricht an den T‰ter geschickt.

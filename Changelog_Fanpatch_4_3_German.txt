@@ -9,7 +9,7 @@ GUI: MoK
 Icons: Fajeth
 Texturen: Jollina, Skip, Broliii 
 Testing:
-Anderer Support: McCoy! + Die Gilde 2 Community
+Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 
 
 ** Allgemeines **
@@ -70,6 +70,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community
 - Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
 - Nach einem Duell wurde die Gunst doppelt erhöht.
 - Kleinere (Tipp-) und Schreibfehler in den deutschen und englischen Lokalisierungen korrigiert.
+- Bei Spielstart hatten alle KI-Kinder dasselbe Geschlecht
 
 ** Features **
 

@@ -9,7 +9,7 @@ GUI: MoK
 Icons: Fajeth
 Textures: Jollina, Skip, Broliii 
 Testing:
-Additional Support: McCoy! + The Guild 2 Community
+Additional Support: McCoy! + The Guild 2 Community + Many translators!
 
 ** General **
 
@@ -66,6 +66,7 @@ Additional Support: McCoy! + The Guild 2 Community
 - If a duel did not happen, the relations still improved.
 - You got twice the amount of favor from duels.
 - Fixed a few minor typing/spelling errors in the German and English localizations.
+- During game setup AI children always had the same sex
 
 ** Features **
 

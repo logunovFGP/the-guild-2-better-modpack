@@ -8,7 +8,7 @@ end
 -- on error return the error message
 
 function Prepare()
-	SetTime(EN_SEASON_SPRING, 1400, 8, 0)
+	SetTime(EN_SEASON_SPRING, 1400, 6, 0)
 	return true
 end
 
@@ -150,23 +150,31 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			if BossCreate("WorkingHut", 1 - SimGetGender("boss"), SimGetClass("boss"), 5, "Spouse") then
 				SimMarry("boss", "Spouse")
 			end
-	-- PATCH_TODO
+	
 			DynastyAddMember(NewDynastyAlias, "Spouse")
 			IncrementXP("Spouse", XP)
 			XP = XP + OfficeGetLevel("Office")*1000
-			SimCreate(SimGetGender("boss"), "WorkingHut", "WorkingHut", "Shadowchild")
-			if SimGetGender("boss")==GL_GENDER_MALE then
-				SimSetFamily("Shadowchild", "Spouse", "")
-			else
-				SimSetFamily("Shadowchild", "", "Spouse")
+			
+			local ChildCount = 1 +Rand(3)
+			for i = 0, ChildCount-1 do
+			
+				local ChildGender = 7 + Rand(2)
+				SimCreate(ChildGender, "WorkingHut", "WorkingHut", "Shadowchild")
+				if SimGetGender("boss")==GL_GENDER_MALE then
+					SimSetFamily("Shadowchild", "Spouse", "boss")
+				else
+					SimSetFamily("Shadowchild", "boss", "Spouse")
+				end
+				
+				if GetHomeBuilding("boss", "Residence") then
+					SetHomeBuilding("Shadowchild", "Residence")
+				end
+				
+				DoNewBornStuff("Shadowchild")
+				SimSetAge("Shadowchild", 2 + (i*2))
+				SimSetBehavior("Shadowchild", "Childness")
+				SetState("Shadowchild", STATE_CHILD, true)
 			end
-			if GetHomeBuilding("boss", "Residence") then
-				SetHomeBuilding("Shadowchild", "Residence")
-			end
-			DoNewBornStuff("Shadowchild")
-			SimSetAge("Shadowchild", Rand(5)+4)
-			SimSetBehavior("Shadowchild", "Childness")
-			SetState("Shadowchild", STATE_CHILD, true)
 		end
 
 		SetNobilityTitle("boss", NobLevel, true)
@@ -174,7 +182,6 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		CreditMoney("boss", StartMoney, "GameStart")
 		chr_SimAddFame("boss",Fame)
 		chr_SimAddImperialFame("boss",ImpFame)
-
 	end
 	
 	return ""
@@ -201,7 +208,8 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 			return "unable to create player character"
 		end	
 	else
-		if not BossCreate(nil, 0, 0, -1, "boss") then
+		local RandGender = Rand(2)
+		if not BossCreate(nil, RandGender, 0, -1, "boss") then
 			return "unable to create boss of the dynasty"
 		end
 	end	
@@ -214,8 +222,8 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		CityName = ""
 	end
 	
-	local	CityAlias
-	local	Section
+	local CityAlias
+	local Section
 	local BeamPos
 	
 	Section 	= "INIT-"
