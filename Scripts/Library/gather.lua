@@ -1,6 +1,6 @@
 function Run(SimAlias, ResourceAlias, mode)
 
-	SetData("WorkMode",mode)
+	SetData("WorkMode", mode)
 
 	local Type = ResourceGetScriptFunc(ResourceAlias)
 	if not Type then
@@ -12,63 +12,69 @@ function Run(SimAlias, ResourceAlias, mode)
 	local Function_Cleanup
 	local Function_Prepare = gather_GotoResource
 
-	if Type=="Herbs" then
+	if Type == "Herbs" then
 		Function_In = gather_Herbs_In
 		Function_Out = gather_Herbs_Out
-	elseif Type=="Mine" then
- 		Function_In = gather_Mine_In
+	elseif Type == "Mine" then
+		Function_In = gather_Mine_In
 		Function_Out = gather_Mine_Out
-	elseif Type=="Harvest" then
- 		Function_In = gather_Harvest_In
- 		Function_Out = gather_Harvest_Out
-	elseif Type=="Beet" then
- 		Function_In = gather_Beet_In
- 		Function_Out = gather_Beet_Out
-	elseif Type=="Animal" then
- 		Function_In = gather_Animal_In
- 		Function_Out = gather_Animal_Out
- 	elseif Type=="Take" then
- 		Function_In = gather_Take_In
- 		Function_Out = gather_Take_Out
- 	elseif Type=="Lumber" then
- 		Function_In = gather_Lumber_In
- 		Function_Out = gather_Lumber_Out
- 	elseif Type=="well" then
- 		Function_In = gather_Well_In
- 		Function_Out = gather_Well_Out
- 	elseif Type=="Charcoal" then
- 		Function_In = gather_Charcoal_In
- 		Function_Out = gather_Charcoal_Out
- 	elseif Type=="Fungi" then
- 		Function_In = gather_Beet_In
- 		Function_Out = gather_Beet_Out
- 	elseif Type=="Ton" then
- 		Function_In = gather_Ton_In
- 		Function_Out = gather_Ton_Out
- 	elseif Type=="Fruit" then
- 		Function_In = gather_Fruit_In
- 		Function_Out = gather_Fruit_Out
- 	elseif Type=="Honey" then
- 		Function_In = gather_Honey_In
- 		Function_Out = gather_Honey_Out
- 	elseif Type=="Fishing" then
- 		return false
- 	end
+	elseif Type == "Harvest" then
+		Function_In = gather_Harvest_In
+		Function_Out = gather_Harvest_Out
+	elseif Type == "Beet" then
+		Function_In = gather_Beet_In
+		Function_Out = gather_Beet_Out
+	elseif Type == "Animal" then
+		Function_In = gather_Animal_In
+		Function_Out = gather_Animal_Out
+	elseif Type == "Take" then
+		Function_In = gather_Take_In
+		Function_Out = gather_Take_Out
+	elseif Type == "Lumber" then
+		Function_In = gather_Lumber_In
+		Function_Out = gather_Lumber_Out
+	elseif Type == "well" then
+		Function_In = gather_Well_In
+		Function_Out = gather_Well_Out
+	elseif Type == "Charcoal" then
+		Function_In = gather_Charcoal_In
+		Function_Out = gather_Charcoal_Out
+	elseif Type == "Fungi" then
+		Function_In = gather_Beet_In
+		Function_Out = gather_Beet_Out
+	elseif Type == "Ton" then
+		Function_In = gather_Ton_In
+		Function_Out = gather_Ton_Out
+	elseif Type == "Fruit" then
+		Function_In = gather_Fruit_In
+		Function_Out = gather_Fruit_Out
+	elseif Type == "Honey" then
+		Function_In = gather_Honey_In
+		Function_Out = gather_Honey_Out
+	elseif Type == "Fishing" then
+		return false
+	end
 
 	if not Function_In and not Function_Out then
 		return false
 	end
 
 	local ItemID = ResourceGetItemId(ResourceAlias)
-	if ItemID==-1 then
+	if ItemID == -1 then
 		return false
 	end
 
+
 	local Time = ItemGetProductionTime(ItemID)
+	
+	if Time == nil or Time == 0 then
+		Time = 1
+	end
+
 	local Count = ItemGetProductionAmount(ItemID)
 
 	local Value = GetImpactValue("", 34)	-- 34 = GatherBonus
-	if Value and Value>0 then
+	if Value and Value > 0 then
 		Time = Time - Time * Value * 0.01
 	end
 
@@ -80,14 +86,15 @@ function Run(SimAlias, ResourceAlias, mode)
 	    Time =  math.floor(Time + ((Time / 100) * 40)) -- bei Heuschrecken 40% langsamer
 	end
 	
-	if Count<1 then
+	if Count < 1 then
 		-- this should never happen - the item seems to be buggy in the database
-		return false
+		Count = 1
 	end
 
 	-- get the remaining progress of the last	gather action. this happend eg. at closing time
-	local Label		= ItemGetLabel(ItemID, true)
+	local Label	= ItemGetLabel(ItemID, true)
 	local	PropName	= "Gather_"..ItemID
+
 	if not GetProperty(SimAlias, PropName) then
 		SetProperty(SimAlias, PropName, 0)
 	end
@@ -101,7 +108,7 @@ function Run(SimAlias, ResourceAlias, mode)
 		end
 		
 		if Function_Prepare then
-			WorkerAlias = Function_Prepare(SimAlias, ResourceAlias, Name,ItemID)
+			WorkerAlias = Function_Prepare(SimAlias, ResourceAlias, Name, ItemID)
 		else
 			WorkerAlias = SimAlias
 		end
@@ -110,7 +117,7 @@ function Run(SimAlias, ResourceAlias, mode)
 			break
 		end
 
-		if Function_In and Function_In(WorkerAlias, ResourceAlias, Label,ItemID) then
+		if Function_In and Function_In(WorkerAlias, ResourceAlias, Label, ItemID) then
 
 			local	Diff
 			local	StartTime
@@ -131,39 +138,13 @@ function Run(SimAlias, ResourceAlias, mode)
 					break
 				end
 			end
-
-			Removed = RemoveItems(ResourceAlias, ItemID, Count)
-			if Removed>0 then
-				AddItems(SimAlias, ItemID, Removed)
-			end
-			
 		end
 
 		if AliasExists("WorkPosition") then
 			f_EndUseLocator(WorkerAlias, "WorkPosition", GL_STANCE_STAND)
 		end
-
-		if BuildingGetAISetting("WorkBuilding", "Produce_Selection")>0 then
-			local	prodid
-			local targetid
-			prodid, targetid = SimFindProduction(SimAlias)
-			
-			if not AliasExists(SimAlias) then
-				Sleep(0.1)
-				return false
-			end
-
-			if prodid and prodid~=ItemID then
-				if Function_Out then
-					Function_Out(SimAlias, ResourceAlias, Label, Removed, 1,ItemID)
-				end
-				SimSetProduceItemID(SimAlias, prodid, targetid)
-				Sleep(0.1)
-				return false
-			end
-		end
 		
-		local	Finish
+		local Finish
 
 		if GetRemainingInventorySpace(SimAlias,ItemID) < Count then
 			Finish = 1
@@ -172,13 +153,19 @@ function Run(SimAlias, ResourceAlias, mode)
 		end
 		
 		if Function_Out then
-			Function_Out(SimAlias, ResourceAlias, Label, Removed, Finish,ItemID)
+			Function_Out(SimAlias, ResourceAlias, Label, Count, Finish, ItemID)
 		end		
 
-	end
 
-	if Function_Cleanup then
-		Function_Cleanup(SimAlias, WorkerAlias)
+		if Finish == 1 and BuildingGetAISetting("WorkBuilding", "Produce_Selection")>0 then
+			if not IsPartyMember(WorkerAlias) then
+				if GetInsideBuildingID(WorkerAlias) ~= GetID("WorkBuilding") then
+					f_MoveTo(SimAlias, "WorkBuilding", GL_MOVESPEED_WALK)
+				end
+				SimSetProduceItemID(WorkerAlias, -1, -1)
+				break
+			end
+		end
 	end
 
 	return true, ItemID
@@ -188,18 +175,15 @@ function GotoResource(SimAlias, ResourceAlias, Name, theitem)
 
 	local	LocatorArray = {}
 	local	LocCount = 0
-
 	local	Level = ResourceGetLevel(ResourceAlias)
-
-	local Removed
 	local	Status
 	 	
 	if theitem == 39 then
-	    GetFreeLocatorByName("WorkBuilding","Work",1,9,"WorkPosi")
-	    f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
+	    GetFreeLocatorByName(ResourceAlias, "Work", 1, 9, "WorkPosi")
+	    f_BeginUseLocator(SimAlias, "WorkPosi", GL_STANCE_STAND, true)
     else
- 	    for g=1, Level do
- 		    for n=0, 9 do		
+ 	    for g = 1, Level do
+ 		    for n = 0, 9 do		
  			    Name = "work"..g..n
 			    Status = LocatorStatus(ResourceAlias, Name, true)
 			    if Status==-1 then
@@ -215,11 +199,11 @@ function GotoResource(SimAlias, ResourceAlias, Name, theitem)
  	
 	local Success = false
 			
- 	if LocCount>0 then
- 		for trys=0,10 do
+ 	if LocCount > 0 then
+ 		for trys = 0, 10 do
  			local LocatorName	= LocatorArray[ Rand(LocCount) ]
 			GetLocatorByName(ResourceAlias, LocatorName, "WorkPosition")
- 			Success = f_BeginUseLocator("Owner", "WorkPosition", GL_STANCE_STAND, true, GL_MOVESPEED_RUN)
+ 			Success = f_BeginUseLocator(SimAlias, "WorkPosition", GL_STANCE_STAND, true, GL_MOVESPEED_RUN)
  			if Success then
  				break
  			end
@@ -231,7 +215,7 @@ function GotoResource(SimAlias, ResourceAlias, Name, theitem)
  		-- Removed because it looks bad in some Recources (specialy the wood) when the sim go to the center of the  resource
  		--
  		-- (cs) removed the remove of the feedback, it's so much the worse that a resource cannot be collected at all
-		Success = f_MoveTo(SimAlias, ResourceAlias, GL_MOVESPEED_RUN,150)
+		Success = f_MoveTo(SimAlias, ResourceAlias, GL_MOVESPEED_RUN, 150)
 	end
 
 
