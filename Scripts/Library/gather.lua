@@ -153,22 +153,18 @@ function Run(SimAlias, ResourceAlias, mode)
 		end
 		
 		if Function_Out then
-			Function_Out(SimAlias, ResourceAlias, Label, Removed, Finish, ItemID)
+			Function_Out(SimAlias, ResourceAlias, Label, Count, Finish, ItemID)
 		end		
 
-	end
 
-	if Function_Cleanup then
-		Function_Cleanup(SimAlias, WorkerAlias)
-	end
-
-	if Finish == 1 and BuildingGetAISetting("WorkBuilding", "Produce_Selection")>0 then
-		if not IsPartyMember(WorkerAlias) then
-			if GetInsideBuildingID(WorkerAlias) ~= GetID("WorkBuilding") then
-				f_MoveTo(SimAlias, "WorkBuilding", GL_MOVESPEED_WALK)
+		if Finish == 1 and BuildingGetAISetting("WorkBuilding", "Produce_Selection")>0 then
+			if not IsPartyMember(WorkerAlias) then
+				if GetInsideBuildingID(WorkerAlias) ~= GetID("WorkBuilding") then
+					f_MoveTo(SimAlias, "WorkBuilding", GL_MOVESPEED_WALK)
+				end
+				SimSetProduceItemID(WorkerAlias, -1, -1)
+				break
 			end
-			SimSetProduceItemID(WorkerAlias, -1, -1)
-			break
 		end
 	end
 
@@ -179,10 +175,7 @@ function GotoResource(SimAlias, ResourceAlias, Name, theitem)
 
 	local	LocatorArray = {}
 	local	LocCount = 0
-
 	local	Level = ResourceGetLevel(ResourceAlias)
-
-	local Removed
 	local	Status
 	 	
 	if theitem == 39 then
