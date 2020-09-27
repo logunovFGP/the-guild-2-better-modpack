@@ -17,6 +17,9 @@ function Setup()
 end
 
 function PingHour()
+
+	-- Check every worker every hour for bonuses from employer's abilities
+	chr_CheckWorkerBonuses("")
 	
 	local currentGameTime = math.mod(GetGametime(), 24)
 	if (currentGameTime == 12) then
