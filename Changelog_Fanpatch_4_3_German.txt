@@ -87,6 +87,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
 - Es gibt nun 8 verschiedene Frauengesichter (vielen Dank an Jollina und broliii)
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
+- Schwangere sind nicht länger an ihr Bett gefesselt.
 
 ** Balancing **
 

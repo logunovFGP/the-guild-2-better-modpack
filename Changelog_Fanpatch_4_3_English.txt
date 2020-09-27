@@ -82,6 +82,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
 - There are 8 different female faces now (thanks to Jollina and broliii)
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
+- Pregnant women are no longer tied to their bed.
 
 ** Balancing **
 
