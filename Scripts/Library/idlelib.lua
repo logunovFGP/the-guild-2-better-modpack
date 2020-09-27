@@ -1321,11 +1321,14 @@ function VisitDoc(HospitalID)
 			end
 		end
 				
-		if DistanceBest==-1 then
-			if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then
-				MeasureRun("",nil,"GoToSleep")
-				return
-			end
+		if DistanceBest == -1 or (not AliasExists("Destination")) then
+			--if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then
+			--	MeasureRun("",nil,"GoToSleep")
+			--	return
+			--else
+			idlelib_GoSleep()	
+			return
+			--end
 		end
 	end
 		
@@ -2312,3 +2315,110 @@ function BuySomeCoin(SplitNumber)
 
 	SatisfyNeed("", 9, 1)
 end
+
+-- -----------------------
+-- GoSleep
+-- -----------------------
+function GoSleep()
+
+	local money = 0  --enough money for tavern?
+	local gototavern = 5  --5% chance to go to tavern just for fun
+	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
+	
+	if (GetImpactValue("", "Sickness") > 0) then  --tavern is a good place to recover from sickness
+		if (HeavySleep == true) and GetImpactValue("","Pneumonia")>0 then -- cheap 100% pheumonia cure with Deep Sleep
+			gototavern = 100
+		elseif (HeavySleep == false) and GetImpactValue("","Influenza")>0 then -- a good deal for influenza cure
+			gototavern = 80
+		else
+			gototovern = 50  -- might still get cured from something
+		end
+	end
+
+	if (Rand(100) < gototovern) and GetMoney("") > 150 then   --if sick usually priority to tavern 
+		money = 1
+	elseif (GetHomeBuilding("", "HomeBuilding")) and GetDistance("", "HomeBuilding") < 21000 and Rand(2)<1 and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then   --normally go to home if it is nearby and there is room
+			MeasureRun("", nil, "GoToSleep")
+	elseif (GetMoney("") > 160) or (GetMoney("") > 150 and GetImpactValue("", "Sickness") > 0) then  --if no home nearby then go to tavern, more checks later
+		money = 1
+	else
+		idlelib_GoToRandomPosition()   --if neither home or tavern to go then just move randomly
+	end
+	
+	if money>0 then
+
+		local DistanceBest = -1
+		local Attractivity
+		local Distance
+		local IgnoreID
+		local FavBonus = 0
+
+		if GetInsideBuilding("","CurrentBuilding") then
+			GetSettlement("CurrentBuilding","City")
+		else
+			GetNearestSettlement("", "City")
+		end
+
+		local NumTaverns = CityGetBuildings("City",2,4,-1,-1,FILTER_HAS_DYNASTY,"Tavern")
+
+		if HasProperty("","IgnoreTavern") then
+			IgnoreID = GetProperty("","IgnoreTavern")
+		end
+
+		if NumTaverns > 0 then
+			for i=0,NumTaverns-1 do			
+				if not IgnoreID or (IgnoreID and IgnoreID ~= GetID("Tavern"..i)) then
+					Attractivity = GetImpactValue("Tavern"..i,"Attractivity")
+					
+					Distance = GetDistance("","Tavern"..i)
+					
+					if Distance == -1 then
+						Distance = 60000
+					end
+					
+					-- do i like the owner? then go there instead of somewhere else
+					if BuildingGetOwner("Tavern"..i,"TheOwner") then
+						FavBonus = (GetFavorToDynasty("","TheOwner"))*10
+						if SimHasAbility("TheOwner",16) and (HeavySleep == false) then  -- Owner has the best house ability?
+							Attractivity = Attractivity + 5  -- Good dreams guaranteed :)  ... but Deep Sleep gives them too...
+						end
+					end
+					
+					Distance = Distance - FavBonus
+					
+					Distance = Distance / (0.5 + Attractivity)
+					
+					if BuildingGetLevel("Tavern"..i)==1 then
+						Distance = -1
+					end
+					
+					if DistanceBest == -1 or Distance < DistanceBest then
+						CopyAlias("Tavern"..i,"Destination")
+						DistanceBest = Distance
+					end
+				end
+			end
+		end
+
+		-- Don't move there if it is too far
+		if GetDistance("", "Destination")>15000 then
+			return
+		end	
+			
+		if not f_MoveTo("","Destination", GL_MOVESPEED_RUN) then
+			return
+		end
+		
+		if GetInsideBuilding("","InsideTavern") then
+			if GetFreeLocatorByName("Destination", "Berth", 1, 2, "SleepingBerth") then  -- sleep in tavern if possible
+				MeasureRun("", nil, "RentSleepingBerth")
+			elseif (GetHomeBuilding("", "HomeBuilding")) and GetDistance("", "HomeBuilding") < 21000 and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then --if not then go to home if possible
+				MeasureRun("", nil, "GoToSleep")
+			elseif Rand(3)<2 then  --otherwise hang around in tavern or ...
+				idlelib_GoToTavern(8)
+			else   --go somewhere else
+				idlelib_GoToRandomPosition()
+			end
+		end
+	end
+end	

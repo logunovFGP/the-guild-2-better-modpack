@@ -5,6 +5,17 @@ function Run()
 	end
 
 	local	Value = Rand(80)
+	
+	--Sleep at night?
+	local currentGameTime = math.mod(GetGametime(),24)
+	if (currentGameTime>22 or currentGameTime<4) then
+		if (Value - GetImpactValue("","SleepRecoverBonus")) < 40 then
+			idlelib_GoSleep()
+			StopMeasure()
+		else
+			Value = Rand(80)
+		end
+	end
 
 	if GetImpactValue("","Cold")==1 or GetImpactValue("","BurnWound")==1 or GetImpactValue("","Caries")==1 then
 		idlelib_Illness()
