@@ -73,6 +73,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Bei Spielstart hatten alle KI-Kinder dasselbe Geschlecht
 - Beim Abbau von Granit lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
 - Einen Exploit behoben, mit dem man das Inventar eines Sammlers in den Betrieb teleportieren konnte.
+- Mehrere Interaktionsfehler mit Bränden behoben.
 
 ** Features **
 
