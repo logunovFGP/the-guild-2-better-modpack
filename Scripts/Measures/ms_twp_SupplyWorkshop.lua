@@ -89,7 +89,6 @@ function ChooseSuppliers(SupplierCount, Suppliers)
 		local Options = "@P"
 		-- show list of suppliers with option to add another one
 		for i=1, SupplierCount do
-			-- XXX GetAliasByID(Suppliers[i], "CurSupplierAlias")
 			if BuildingGetClass(Suppliers[i]) == GL_BUILDING_CLASS_MARKET then
 				-- use city name for markets
 				Options = Options .. "@B["..i..",@L_TWP_SUPPLYWORKSHOP_MARKET_+"..i..",]"
@@ -266,12 +265,7 @@ function UnloadItems(CartSlots, CartSlotSize, HomeAlias)
 	end
 end
 
-function SortProfits(a,b) 
-	return a[2] > b[2] 
-end
-
 function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
-	local BldLevel = BuildingGetLevel(BldAlias)
 	if ResourceCount <= 0 then
 		return 0, {}
 	end 
