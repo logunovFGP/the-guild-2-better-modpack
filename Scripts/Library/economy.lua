@@ -416,7 +416,7 @@ function ChooseItemFromCounter(BldAlias, Count, Items)
 		0, -- AIFunc
 		"@L_MEASURE_SALESCOUNTER_HEAD_+0",-- HeaderLabel
 		"Body",-- BodyLabel (obsolete)
-		helpfuncs_myunpack(Prices)
+		helpfuncs_UnpackTable(Prices)
 		)-- optional variable list
 	
 	if ChosenItemId == "C" then

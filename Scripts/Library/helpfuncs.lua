@@ -47,7 +47,7 @@ end
 function UnpackTable (t, i)
     i = i or 1
     if t[i] ~= nil then
-        return t[i], helpfuncs_myunpack(t, i + 1)
+        return t[i], helpfuncs_UnpackTable(t, i + 1)
     end
 end
 
