@@ -27,44 +27,7 @@
 --
 
 function Init()
-	-- find home
-	if not GetHomeBuilding("","MyHome") then
-		return
-	end
-	local Choice
-	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
-	local ResourceCount, Resources = ms_twp_supplyworkshop_GetResourcesForWorkshop("MyHome")
-	local SupplierCount = 0
-	local Suppliers = {} -- {Supplier1, Supplier2, ...}
-	-- add local market as supplier for convenience
-	if GetSettlement("MyHome", "MyCity") then
-		if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
-			SupplierCount = 1
-			Suppliers[1] = GetID("MyMarket")
-		end
-	end 
-	 
-	repeat
-		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
-		local Options = "@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1,]".. -- Help
-			"@B[2,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2,]".. -- Choose Resources
-			"@B[3,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+3,]".. -- Choose Suppliers
-			"@B[4,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+4,]" -- Start
-			--"@B[C,@LAbort_+0,]" -- Abort by right mouse click
-		
-		Choice = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", GetID("MyHome"))
-		
-		if Choice == 1 then
-			MsgBox("", "Owner", "", "@L_TWP_SUPPLYWORKSHOP_HELP_HEAD_+0", "@L_TWP_SUPPLYWORKSHOP_HELP_BODY_+0")
-		elseif Choice == 2 then
-			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources)
-		elseif Choice == 3 then
-			SupplierCount, Suppliers = ms_twp_supplyworkshop_ChooseSuppliers(SupplierCount, Suppliers)
-		elseif Choice == nil or Choice == "C" then -- cancel
-			StopMeasure()
-		end
-	until Choice == 4 -- Start measure
-	-- TODO SetData for Run-function
+	local ResourceCount, Resources, SupplierCount, Suppliers = ms_twp_supplyworkshop_InitMeasure()
 end
 
 function GetResourcesForWorkshop(BldAlias)
@@ -86,7 +49,7 @@ end
 function ChooseResources(ResourceCount, Resources)
 	local ChosenItemId
 	local Buttons = ""
-	local Id, ItemTexture, ItemLabel, Subtext
+	local Id, ItemTexture, Subtext
 	local Tooltip = ""
 
 	local ChosenItem
@@ -95,7 +58,7 @@ function ChooseResources(ResourceCount, Resources)
 		for i=1, ResourceCount do
 			Id = Resources[i][1]
 			ItemTexture = "Hud/Items/Item_"..ItemGetName(Id)..".tga"
-			ItemLabel = ItemGetLabel(Id, false)
+			Tooltip = ItemGetLabel(Id, false)
 			Subtext = Resources[i][2]
 			-- result, Tooltip, label, icon
 			Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
@@ -104,7 +67,7 @@ function ChooseResources(ResourceCount, Resources)
 		ChosenItem = InitData(
 			Buttons, -- PanelParam
 			0, -- AIFunc
-			"@L_MEASURE_SALESCOUNTER_HEAD_+0",-- HeaderLabel
+			"@L_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0",-- HeaderLabel
 			"Body"
 		)
 		if ChosenItem and ChosenItem ~= "C" then
@@ -128,16 +91,16 @@ function ChooseSuppliers(SupplierCount, Suppliers)
 			GetAliasByID(Suppliers[i], "CurSupplierAlias")
 			if BuildingGetClass("CurSupplierAlias") == GL_BUILDING_CLASS_MARKET then
 				-- use city name for markets
-				Options = Options .. "@B["..i..",%"..i.."NAME,]"
+				Options = Options .. "@B["..i..",@L_TWP_SUPPLYWORKSHOP_MARKET_+"..i..",]"
 				LabelIds[i] = GetSettlementID("CurSupplierAlias")
 			else
 				-- use Building name
 				Options = Options .. "@B["..i..",%"..i.."GG,]"
-				LabelIds[i] = i
+				LabelIds[i] = Suppliers[i]
 			end
 		end
 		-- TODO could this be done as icon list with building icons?
-		Options = Options .. "@B[A,@L_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0,]" .. "@B[C,@LAbort_+0,]"
+		Options = Options .. "@B[A,@L_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0,]" .. "@B[C,@L_GENERAL_BUTTONS_OK_+0,]"
 		Choice = MsgBox("","Owner",Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", ms_twp_supplyworkshop_unpackTable(LabelIds))
 	
 		if Choice == "A" then
@@ -162,6 +125,49 @@ function SelectSupplier(Index)
 		"__F((Object.BelongsToMe()) OR (Object.IsClass(2)) OR (Object.IsClass(5)) AND (Object.Type == Building))",
 		"@L_TRADEROUTE_NEXT_BUILDING_+0",0)
 	return "Supplier"..Index
+end
+
+function InitMeasure()
+
+  -- find home
+	if not GetHomeBuilding("","MyHome") then
+		return
+	end
+	local Choice
+	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
+	local ResourceCount, Resources = ms_twp_supplyworkshop_GetResourcesForWorkshop("MyHome")
+	local SupplierCount = 0
+	local Suppliers = {} -- {Supplier1, Supplier2, ...}
+	-- add local market as supplier for convenience
+	if GetSettlement("MyHome", "MyCity") then
+		if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
+			SupplierCount = 1
+			Suppliers[1] = GetID("MyMarket")
+		end
+	end 
+	 
+	repeat
+		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
+		local Options = "@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help
+			"@B[2,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1,]".. -- Choose Resources
+			"@B[3,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2,]".. -- Choose Suppliers
+			"@B[4,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+3,]" -- Start
+			--"@B[C,@LAbort_+0,]" -- Abort by right mouse click
+		
+		Choice = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", GetID("MyHome"))
+		
+		if Choice == 1 then
+			MsgBox("", "Owner", "", "@L_TWP_SUPPLYWORKSHOP_HELP_HEAD_+0", "@L_TWP_SUPPLYWORKSHOP_HELP_BODY_+0")
+		elseif Choice == 2 then
+			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources)
+		elseif Choice == 3 then
+			SupplierCount, Suppliers = ms_twp_supplyworkshop_ChooseSuppliers(SupplierCount, Suppliers)
+		elseif Choice == nil or Choice == "C" then -- cancel
+			StopMeasure()
+		end
+	until Choice == 4 -- Start measure
+	
+	return ResourceCount, Resources, SupplierCount, Suppliers
 end
 
 function Run() 
