@@ -70,6 +70,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Mining granite was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
 - Fixed an exploit that allowed gatherers to teleport their items in their workshop.
 - Fixed several interactions with fire.
+- Removal of immunity had the wrong message.
 
 ** Features **
 
@@ -97,4 +98,5 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Declining a bribe will now lose you only 5 favor.
 - Duels are more dangerous.
 - If you don't attend a duel, you will lose favor with every sim nearby of the duel place.
+- If you remove someone's immunity you will lose some favor now.
 

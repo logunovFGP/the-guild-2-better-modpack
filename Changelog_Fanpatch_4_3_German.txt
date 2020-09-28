@@ -76,6 +76,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Einen Exploit behoben, mit dem man das Inventar eines Sammlers in den Betrieb teleportieren konnte.
 - Mehrere Interaktionsfehler mit Bränden behoben.
 - Bei Hexerdokumenten wurden keine EP vergeben.
+- Beim Entzug der Immunität wurde die falsche Nachricht verschickt.
 
 ** Features **
 
@@ -106,3 +107,4 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Duelle sind etwas gefährlicher
 - Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.
 - Maßnahmen, die von Talenten abhängig sind, funktionieren nun nach einer neuen Formel. Dabei gibt es 3 Erfolgs- und 2 Misserfolgsstufen. Jeder Talentcheck wird visualisiert.
+- Jemandem die Immunität zu entziehen verursacht nun einen kleinen Gunstverlust.

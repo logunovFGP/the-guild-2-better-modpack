@@ -80,9 +80,9 @@ Data:
 1103   "ms_ConfiscateGoods.lua"   ""   "ConfiscateGoods"   45   "hud/buttons/btn_ConfiscateGoods.tga"   0   4   50   ""   ""   0   24   0   "none"   0   0   |
 1104   "ms_WorkWonders.lua"   ""   "WorkWonders"   45   "hud/buttons/btn_WorkWonders.tga"   0   4   50   ""   ""   0   24   0   "particles/radius.nif"   8   0   |
 1105   "ms_RoyalGuard.lua"   ""   "RoyalGuard"   45   "hud/buttons/btn_RoyalGuard.tga"   0   4   50   ""   ""   0   24   0   "particles/radius.nif"   30   0   |
-1106   "ms_Disappropriate.lua"   ""   "Disappropriate"   45   "hud/buttons/btn_Disappropriate.tga"   0   4   50   ""   ""   0   48   0   "none"   0   0   |
+1106   "ms_Disappropriate.lua"   ""   "Disappropriate"   45   "hud/buttons/btn_Disappropriate.tga"   0   4   100   ""   ""   0   48   0   "none"   0   0   |
 1107   "ms_FlamingSpeech.lua"   ""   "FlamingSpeech"   45   "hud/buttons/btn_FlamingSpeech.tga"   0   4   50   ""   ""   0   24   4   "particles/radius.nif"   15   0   |
-1108   "ms_RepealImmunity.lua"   ""   "RepealImmunity"   45   "hud/buttons/btn_RepealImmunity.tga"   0   4   50   ""   ""   0   24   0   "none"   0   1   |
+1108   "ms_RepealImmunity.lua"   ""   "RepealImmunity"   45   "hud/buttons/btn_RepealImmunity.tga"   0   4   100   ""   ""   0   24   0   "none"   0   1   |
 1110   "ms_111_Set_TurnoverTax.lua"   ""   "Set_TurnoverTax"   45   "hud/buttons/btn_111_Set_TurnoverTax.tga"   0   4   13   ""   ""   0   24   0   "none"   0   0   |
 1111   "ms_LeadCrusade.lua"   ""   "LeadCrusade"   80   "hud/buttons/btn_LeadCrusade.tga"   0   4   50   ""   ""   0   48   24   "particles/radius.nif"   10   0   |
 1112   "ms_Rage.lua"   ""   "Rage"   45   "hud/buttons/btn_Rage.tga"   0   4   50   ""   ""   0   24   12   "none"   0   0   |

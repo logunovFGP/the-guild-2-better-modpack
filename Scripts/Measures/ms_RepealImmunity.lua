@@ -26,12 +26,14 @@ function Run()
 
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-			
+	-- Cooldown
+	SetMeasureRepeat(TimeOut)
+	
 	-- Remove the probably earlier given impact
 	if HasProperty("", "RepealedImmunity") then
 		local SimID = GetProperty("", "RepealedImmunity")
 		if GetAliasByID(SimID, "AffectedSim") then
-			RemoveImpact("AffectedSim", 345)
+			RemoveImpact("AffectedSim", "HasRepealedImmunity")
 			RemoveProperty("", "RepealedImmunity")
 			feedback_MessageCharacter("AffectedSim","@L_PRIVILEGES_REPEALIMMUNITY_MSG_LOOSE_HEAD_+0",
 								 "@L_PRIVILEGES_REPEALIMMUNITY_MSG_LOOSE_BODY_+0",GetID("AffectedSim"))
@@ -41,18 +43,20 @@ function Run()
 	-- Add the impact and remember to whose immunity was repealed in order to reset it if the sim looses the kings office or a new sim is given this impact
 	if AddImpact("Destination", "HasRepealedImmunity", 1, -1) then
 		SetProperty("", "RepealedImmunity", GetID("Destination"))
-		feedback_MessageCharacter("","@L_PRIVILEGES_REPEALIMMUNITY_MSG_ACTOR_HEAD_+0",
+		feedback_MessageCharacter("", "@L_PRIVILEGES_REPEALIMMUNITY_MSG_ACTOR_HEAD_+0",
 						"@L_PRIVILEGES_REPEALIMMUNITY_MSG_ACTOR_BODY_+0", GetID("Destination"))
 		feedback_MessageCharacter("Destination", "@L_PRIVILEGES_REPEALIMMUNITY_MSG_VICTIM_HEAD_+0",
-						"@L_PRIVILEGES_REPEALIMMUNITY_MSG_VICTIM_BODY_+0", GetID("Owner"),GetID("Destination"))
+						"@L_PRIVILEGES_REPEALIMMUNITY_MSG_VICTIM_BODY_+0", GetID("Owner"), GetID("Destination"))
 	end
 	
-	SetMeasureRepeat(TimeOut)
+	chr_GainXP("", GetData("BaseXP"))
+	Sleep(0.25)
+	chr_ModifyFavor("Destination", "", -10)
 	
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

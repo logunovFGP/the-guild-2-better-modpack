@@ -19,33 +19,33 @@ function Run()
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	BuildingGetOwner("Destination","Victim")
+	BuildingGetOwner("Destination", "Victim")
 	
-	if not GetOutdoorMovePosition("","Destination","MovePos") then
+	if not GetOutdoorMovePosition("", "Destination", "MovePos") then
 		StopMeasure()
 	end
 	
-	if not f_MoveTo("","MovePos") then
+	if not f_MoveTo("", "MovePos") then
 		StopMeasure()
 	end
 	
-	MsgSay("","@L_PRIVILEGES_DISAPPROPRIATE_SPEECH",GetID("Destination"))
+	MsgSay("", "@L_PRIVILEGES_DISAPPROPRIATE_SPEECH", GetID("Destination"))
 	
 	SetMeasureRepeat(TimeOut)
 	MeasureSetNotRestartable()
-	
-	chr_ModifyFavor("Victim","",-50)
+	chr_GainXP("", GetData("BaseXP"))
+	chr_ModifyFavor("Victim", "", -50)
+	DynastyForceCalcDiplomacy("Victim")
+	DynastyForceCalcDiplomacy("")
 	
 	BuildingBuy("Destination", "", BM_CAPTURE)
 	
 	MsgNewsNoWait("","Victim","","politics",-1,
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_ACTOR_HEAD_+0",
-				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_ACTOR_BODY_+0", GetID("Destination"),GetID("Victim"))
+				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_ACTOR_BODY_+0", GetID("Destination"), GetID("Victim"))
 	MsgNewsNoWait("Victim","","","politics",-1,
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+0",
-				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_BODY_+0", GetID(""),GetID("Destination"),GetNobilityTitleLabel(GetNobilityTitle("")))
-	
-	StopMeasure()
+				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_BODY_+0", GetID(""), GetID("Destination"), GetNobilityTitleLabel(GetNobilityTitle("")))
 	
 end
 
