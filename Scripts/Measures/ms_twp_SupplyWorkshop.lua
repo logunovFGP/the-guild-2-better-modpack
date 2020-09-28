@@ -147,7 +147,7 @@ function InitMeasure()
 	 
 	repeat
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
-		local Options = "@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help
+		local Options = --"@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help
 			"@B[2,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1,]".. -- Choose Resources
 			"@B[3,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2,]".. -- Choose Suppliers
 			"@B[4,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+3,]" -- Start
