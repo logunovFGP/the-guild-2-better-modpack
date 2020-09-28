@@ -3,10 +3,10 @@ MegaModPack Reforged - Lite 0.1
 ** Credits **
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, Serpens66, Napi96
+Scripting: Fajeth, ThreeOfMe, F-Man Serpens66, Napi96
 Maps: Fajeth
 GUI: MoK
-Icons: Fajeth
+Icons: Fajeth, F-Man
 Textures: Jollina, Skip, Broliii 
 Testing:
 Additional Support: McCoy! + The Guild 2 Community + Many translators!
@@ -84,6 +84,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - There are 8 different female faces now (thanks to Jollina and broliii)
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 - Pregnant women are no longer tied to their bed.
+- New abilities after levelup
 
 ** Balancing **
 

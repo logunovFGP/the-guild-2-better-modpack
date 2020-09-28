@@ -140,11 +140,11 @@ end
 function GetFavorWonFromBribe(TargetAlias, BribeAmount)
 	local wealth = SimGetWealth(TargetAlias)
 	 
-	if(wealth <= 1500) then 
-	  wealth=1500
+	if (wealth <= 1500) then 
+		wealth = 1500
 	end
 		
-  return ( 250 * BribeAmount / wealth)
+	return ( 250 * BribeAmount / wealth)
 end
 
 -- -----------------------
@@ -178,9 +178,9 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 		label = label.."_GOOD_RHETORIC"
 	end	
 	
-	if (Kind=="TALK") or (Kind=="COMPLIMENT") or (Kind=="DANCE") or (Kind=="MAKE_A_PRESENT") then
+	if (Kind == "TALK") or (Kind == "COMPLIMENT") or (Kind == "DANCE") or (Kind == "MAKE_A_PRESENT") then
 		
-		if (CourtingProgress<=0) then
+		if (CourtingProgress <= 0) then
 			if (CourtingProgress < -6) then
 				label = label.."_WAY_TOO_PROFOUND_"
 			else
@@ -493,8 +493,8 @@ end
 -- SetNobilityImpactList
 -- -----------------------
 function SetNobilityImpactList(TitleHolder, ... )
-	for i=1,arg.n,1 do
-		local element=arg[i]
+	for i=1, arg.n, 1 do
+		local element = arg[i]
 		if element ~= "" then
 			AddImpact(TitleHolder, element, 1, -1)
 		end
@@ -505,8 +505,8 @@ end
 -- RemoveNobilityImpactList
 -- -----------------------
 function RemoveNobilityImpactList(TitleHolder, ... )
-	for i=1,arg.n,1 do
-		local element=arg[i]
+	for i = 1, arg.n, 1 do
+		local element = arg[i]
 		if element ~= "" then
 			RemoveImpact(TitleHolder, element)
 		end
@@ -553,7 +553,6 @@ function ArtifactsDuration(User, duration)
 	else
 		return ((Value/40)*duration)
 	end
-
 end
 
 -- -----------------------
@@ -564,7 +563,6 @@ function RecieveMoney(ObjectAlias, val, topic)
 	CreditMoney(ObjectAlias, val, topic)
 	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t", val)
 	return val
-
 end
 
 -- -----------------------
@@ -573,7 +571,7 @@ end
 function ModifyFavor(source, dest, val)
 	
 	-- check if the owner has RattleTheChains impact
-	if GetImpactValue(dest,"RattleTheChains")==1 and val < 0 then
+	if GetImpactValue(dest,"RattleTheChains") == 1 and val < 0 then
 		val = val / 2
 	end
 	ModifyFavorToSim(source, dest, val)
@@ -585,25 +583,109 @@ function ModifyFavor(source, dest, val)
 			feedback_OverheadSkill("","@L$S[2006] %1n", true, val)
 		end
 	end
-
 end
 
 
 -- -----------------------
--- SkillResultValue
+-- SkillCheck
 -- -----------------------
-function SkillResultValue(target, skill, maxvalue)
+function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill, Hidden)
 
-	local CharSkill = GetSkillValue(target, skill)
-	CharSkill = (Rand(200) - 100 + CharSkill * 100) / 1000
-	if(CharSkill > 1.0) then 
-		CharSkill = 1.0
-	elseif (CharSkill < 0.0) then
-		CharSkill = 0.0
+	local TalentValue = GetSkillValue(SimAlias, Skill)*(10-Difficulty)
+	local TalentEnemy = 10
+	
+	if DestAlias then
+		TalentEnemy = GetSkillValue(DestAlias, DestSkill)*10
 	end
+	
+	local MyRoll = Rand(TalentValue)
+	local EnemyRoll = Rand(TalentEnemy)
+	local Roll = MyRoll - EnemyRoll
+	
+	local MySkillIcon = ""
+	local DestSkillIcon = ""
+	local ShowIcons = false
+	
+	if not Hidden then
+		if DynastyIsPlayer(SimAlias) or DynastyIsPlayer(DestAlias) then
+			ShowIcons = true
+		end
+	end
+	
+	if ShowIcons then -- visual feedback of the skill rolls
+	
+		-- show icon for destination
+		if DestAlias then
+			
+			if DestSkill == DEXTERITY then
+				DestSkillIcon = "$S[2016]"
+			elseif DestSkill == CONSTITUTION then
+				DestSkillIcon = "$S[2017]"
+			elseif DestSkill == FIGHTING then
+				DestSkillIcon = "$S[2018]"
+			elseif DestSkill == CRAFTSMANSHIP then
+				DestSkillIcon = "$S[2019]"
+			elseif DestSkill == SHADOW_ARTS then
+				DestSkillIcon = "$S[2020]"
+			elseif DestSkill == RHETORIC then
+				DestSkillIcon = "$S[2021]"
+			elseif DestSkill == EMPATHY then
+				DestSkillIcon = "$S[2022]"
+			elseif DestSkill == BARGAINING then
+				DestSkillIcon = "$S[2023]"
+			elseif DestSkill == SECRET_KNOWLEDGE then
+				DestSkillIcon = "$S[2024]"
+			elseif DestSkill == CHARISMA then
+				DestSkillIcon = "$S[2025]"
+			end
+			
+			feedback_OverheadSkill(DestAlias, DestSkillIcon.." %1n (%2n)", true, EnemyRoll, TalentEnemy)
+		end
 		
-	return CharSkill * maxvalue
+		-- show icon for me
+		if Skill == DEXTERITY then
+			MySkillIcon = "$S[2016]"
+		elseif Skill == CONSTITUTION then
+			MySkillIcon = "$S[2017]"
+		elseif Skill == FIGHTING then
+			MySkillIcon = "$S[2018]"
+		elseif Skill == CRAFTSMANSHIP then
+			MySkillIcon = "$S[2019]"
+		elseif Skill == SHADOW_ARTS then
+			MySkillIcon = "$S[2020]"
+		elseif MySkill == RHETORIC then
+			MySkillIcon = "$S[2021]"
+		elseif Skill == EMPATHY then
+			MySkillIcon = "$S[2022]"
+		elseif Skill == BARGAINING then
+			MySkillIcon = "$S[2023]"
+		elseif Skill == SECRET_KNOWLEDGE then
+			MySkillIcon = "$S[2024]"
+		elseif Skill == CHARISMA then
+			MySkillIcon = "$S[2025]"
+		end
+			
+		feedback_OverheadSkill(SimAlias, MySkillIcon.." %1n (%2n)", true, MyRoll, TalentValue)
+	end
 
+	
+	local SuccessLevel = 0
+	
+	if Roll > 0 then -- Success
+		if Roll >= 50 then -- Perfect roll
+			SuccessLevel = 3
+		elseif Roll >= 20 then -- good roll
+			SuccessLevel = 2
+		else -- decent roll
+			SuccessLevel = 1
+		end
+	else -- failure
+		if Roll < 30 then -- critical failure, additional consequences
+			SuccessLevel = -1
+		end
+	end
+	
+	return SuccessLevel
 end
 
 -- -----------------------

@@ -455,8 +455,8 @@ Data:
 11979   "Artefacts\as_UseHasstirade.lua"   "-"   "UseHasstirade"   55   "hud/items/item_hasstirade.tga"   0   12   100   ""   ""   0   16   0   "none"   0   0   |
 11980   "Artefacts\as_UseKamm.lua"   "-"   "UseKamm"   55   "Hud/Items/Item_kamm.tga"   0   12   0   ""   ""   0   12   5   "none"   0   0   |
 11983   "Artefacts\as_UsePendel.lua"   "-"   "UsePendel"   55   "Hud/Items/Item_Pendel.tga"   0   12   0   ""   ""   0   12   4   "none"   0   0   |
-11984   "Artefacts\as_UseHexerdokumentI.lua"   "-"   "UseHexerdokumentI"   55   "Hud/Items/Item_hexerdokumentI.tga"   0   12   0   ""   ""   0   12   0   "none"   0   0   |
-11985   "Artefacts\as_UseHexerdokumentII.lua"   "-"   "UseHexerdokumentII"   55   "Hud/Items/Item_hexerdokumentII.tga"   0   12   0   ""   ""   0   16   0   "none"   0   0   |
+11984   "Artefacts\as_UseHexerdokumentI.lua"   "-"   "UseHexerdokumentI"   55   "Hud/Items/Item_hexerdokumentI.tga"   0   12   100   ""   ""   0   12   0   "none"   0   0   |
+11985   "Artefacts\as_UseHexerdokumentII.lua"   "-"   "UseHexerdokumentII"   55   "Hud/Items/Item_hexerdokumentII.tga"   0   12   150   ""   ""   0   16   0   "none"   0   0   |
 11987   "Artefacts\as_hpfz_Useoptieisen.lua"   "-"   "Useoptieisen"   55   "Hud/buttons/btn_useoptieisen.tga"   0   12   0   ""   ""   0   12   0   "none"   0   0   |
 11988   "Artefacts\as_hpfz_Useoptigold.lua"   "-"   "Useoptigold"   55   "Hud/buttons/btn_useoptigold.tga"   0   12   0   ""   ""   0   12   0   "none"   0   0   |
 11989   "Artefacts\as_hpfz_Useoptisilber.lua"   "-"   "Useoptisilber"   55   "Hud/buttons/btn_useoptisilber.tga"   0   12   0   ""   ""   0   12   0   "none"   0   0   |

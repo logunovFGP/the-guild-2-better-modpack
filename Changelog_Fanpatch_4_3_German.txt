@@ -3,10 +3,10 @@ MegaModPack Reforged - Lite 0.1
 ** Credits **
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, Serpens66, Napi96
+Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96
 Maps: Fajeth
 GUI: MoK
-Icons: Fajeth
+Icons: Fajeth, F-Man
 Texturen: Jollina, Skip, Broliii 
 Testing:
 Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
@@ -30,6 +30,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Duelle laufen etwas flüssiger nun ab.
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
+- Hexerdokumente kreieren nun Beweise mit unterschiedlichen zufälligen Opfern.
 
 ** Bugs **
 
@@ -74,6 +75,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Beim Abbau von Granit lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
 - Einen Exploit behoben, mit dem man das Inventar eines Sammlers in den Betrieb teleportieren konnte.
 - Mehrere Interaktionsfehler mit Bränden behoben.
+- Bei Hexerdokumenten wurden keine EP vergeben.
 
 ** Features **
 
@@ -89,6 +91,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Es gibt nun 8 verschiedene Frauengesichter (vielen Dank an Jollina und broliii)
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Schwangere sind nicht länger an ihr Bett gefesselt.
+- Neue Fähigkeiten nach LevelUp.
+- Opfer von Hexerdokumenten werden nun benachrichtigt, dass etwas Seltsames passiert ist, wenn ihre Empathie groß genug ist.
 
 ** Balancing **
 
@@ -101,3 +105,4 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Bestechungsgelder abzulehnen wird nun die Gunst nur noch um 5 Punkte reduzieren.
 - Duelle sind etwas gefährlicher
 - Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.
+- Maßnahmen, die von Talenten abhängig sind, funktionieren nun nach einer neuen Formel. Dabei gibt es 3 Erfolgs- und 2 Misserfolgsstufen. Jeder Talentcheck wird visualisiert.
