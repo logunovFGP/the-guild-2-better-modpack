@@ -246,6 +246,7 @@ function InitUnload(station, isRestock, CurrentItems)
 		end
 		mengStuf = mengStuf.."@B[C,@LBack_+0,]"
 
+		local bodytext
 		if isRestock then
 			bodytext = "@L_TRADEROUTE_COUNTSELECT_BODY_+2"
 		else
