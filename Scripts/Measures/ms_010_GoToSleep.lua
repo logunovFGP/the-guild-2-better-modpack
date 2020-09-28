@@ -9,7 +9,7 @@
 function Run() 
 	
 	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
+	local duration = 6
 
 	BuildingFound = 1
 	if SimGetProfession("")==GL_PROFESSION_MYRMIDON then
@@ -23,6 +23,12 @@ function Run()
 			MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+0", GetID(""))
 			StopMeasure()
 		end
+		StopMeasure()
+	end
+	
+	-- Not sleepy?
+	if GetImpactValue("","GoodDream")>0 or GetImpactValue("","BadDream")>0 then
+		MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
 		StopMeasure()
 	end
 
@@ -74,7 +80,9 @@ function Run()
 		duration = duration * 2
 		WasSick = true
 	end
-	local EndTime = CurrentTime + duration	
+	local EndTime = CurrentTime + duration
+	local HealChance = 0 --50%
+	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
 	
 	while GetGametime()<EndTime do
 		Sleep(5)
@@ -87,15 +95,76 @@ function Run()
 	
 	if IsDynastySim("Owner") then
 		if WasSick == true then
-			diseases_Cold("",false)
-			diseases_Influenza("",false)
-			diseases_Pneumonia("",false)
+			if GetImpactValue("","Cold")>0 then
+				if (HeavySleep == true) or (Rand(6) > 4) then  -- no items with ability or if very lucky
+					diseases_Cold("",false)
+				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
+					diseases_Cold("",false)
+				end
+			end
+			if GetImpactValue("","Influenza")>0 then
+				if RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
+					if HeavySleep == true then  -- no need for tea with ability
+						HealChance = 1 --100%
+					elseif RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then
+						HealChance = 1 --100%
+					end
+					if HealChance >= Rand(2) then
+						diseases_Influenza("",false)
+					end
+				end
+			end
+			if GetImpactValue("","Pneumonia")>0 then
+				if RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
+					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then					
+						if HeavySleep == true then  -- 100% chance and no need for honey and bandage with ability
+							diseases_Pneumonia("",false)
+						elseif RemoveItems("HomeBuilding","Honey",1,INVENTORY_STD)==1 then
+							if RemoveItems("HomeBuilding","Bandage",1,INVENTORY_STD)==1 then -- you need a lot of stuff
+								if Rand(2)>0 then -- but you still need to be lucky (50%)
+									diseases_Pneumonia("",false)
+								end
+							end
+						end
+					end
+				end
+			end
 		end
 		
-		if DynastyIsPlayer("") then
+		if IsPartyMember("") then	
 			feedback_MessageCharacter("",
 				"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_HEAD",
 				"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_BODY", GetID(""))
+		end
+		Sleep (1)
+		local endtime = math.mod(GetGametime(),24)+duration
+		if HeavySleep == true or Rand(5)<3 then
+			-- Good dreamcase 0,1,2 or with ability 
+			AddImpact("","rhetoric",1,12)
+			AddImpact("","craftsmanship",1,12)
+			AddImpact("","charisma",1,12)
+			AddImpact("","constitution",1,12)
+			AddImpact("","dexterity",1,12)
+			AddImpact("","shadow_arts",1,12)
+			AddImpact("","fighting",1,12)
+			AddImpact("","secret_knowledge",1,12)
+			AddImpact("","bargaining",1,12)
+			AddImpact("","empathy",1,12)
+			AddImpact("","GoodDream",1,12)
+		else 
+			-- Bad dreamcase 3,4
+			AddImpact("","rhetoric",-1,6)
+			AddImpact("","craftsmanship",-1,6)
+			AddImpact("","charisma",-1,6)
+			AddImpact("","constitution",-1,6)
+			AddImpact("","dexterity",-1,6)
+			AddImpact("","shadow_arts",-1,6)
+			AddImpact("","fighting",-1,6)
+			AddImpact("","secret_knowledge",-1,6)
+			AddImpact("","bargaining",-1,6)
+			AddImpact("","empathy",-1,6)
+			AddImpact("","BadDream",1,6)
+			SetProperty("","BadDreamTime",endtime)
 		end
 	end
 end

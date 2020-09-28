@@ -124,6 +124,9 @@ function TransferItem(ItemId)
 end
 
 function PingHour()
+
+	-- Check every worker every hour for bonuses from employer's abilities
+	chr_CheckWorkerBonuses("")
 	
 	-- Check every worker (only once) for illness and equipment 
 	if not HasProperty("", "CheckDefaultWorkers") then

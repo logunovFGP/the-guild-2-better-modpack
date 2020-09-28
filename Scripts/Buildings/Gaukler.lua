@@ -18,6 +18,9 @@ function PingHour()
 	if not GetState("", STATE_MOVING_BUILDING) and not GetState("", STATE_BUILDING) and not GetState("", STATE_LEVELINGUP) then
 		SetState("", STATE_MOVING_BUILDING, true)
 	end
+
+	-- Check every worker every hour for bonuses from employer's abilities
+	chr_CheckWorkerBonuses("")
 	
 	-- Check every worker (only once) for illness and equipment 
 	if not HasProperty("", "CheckDefaultWorkers") then
