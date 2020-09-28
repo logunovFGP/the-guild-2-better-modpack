@@ -17,3 +17,7 @@ Include ("Library/idlelib.lua")
 Include ("Library/mdata.lua")	
 Include ("Library/mission.lua")
 Include ("Library/WorldAmbient.lua")
+Include ("Library/cart.lua")
+Include ("Library/economy.lua")
+Include ("Library/helpfuncs.lua")
+
