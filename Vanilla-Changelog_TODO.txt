@@ -20,7 +20,6 @@ Offen:
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
 - Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
 - KIs sollten nun seltener und kürzer in der Taverne auf eine Tanzpartnerin warten, die nie erscheint ...
-- Die Gildenlieferungen "Obst" und "Honig" enthielten kein Bild.
 - Bei der Maßnahme "Unkendunk" wurde die Nachricht über einen erfolgreichen Anschlag
   an das Opfer statt an den Täter verschickt.
 - Die "FrequencyOfficeSession"-Option bei Spielstart hatte auf Englisch und anderen Sprachen einen zu langen Namen (wurde daher nicht richtig angezeigt)

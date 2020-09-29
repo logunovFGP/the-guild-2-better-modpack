@@ -71,6 +71,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Fixed an exploit that allowed gatherers to teleport their items in their workshop.
 - Fixed several interactions with fire.
 - Removal of immunity had the wrong message.
+- The guild crates for Honey and Fruits had no icons.
 
 ** Features **
 
