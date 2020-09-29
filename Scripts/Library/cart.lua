@@ -65,7 +65,6 @@ function ChooseItemsToLoad(CartAlias, BldAlias)
 	return 0, 0
 end
 
-
 function UnloadAll(CartAlias, DestAlias)
 	Sleep(2) 
 	local	Slots = InventoryGetSlotCount(CartAlias, INVENTORY_STD)
@@ -74,31 +73,15 @@ function UnloadAll(CartAlias, DestAlias)
 	local	ItemId
 	local	ItemCount
 	local	Error, ItemTransfered
-	local BargainMoney = 0
-	local EstimatedMoney = 0
 	for i = 1, Slots do
 		local ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
 		
 		if ItemId and ItemCount then
-			-- Add some bargain-bonus on market sells
-			if BuildingGetClass(DestAlias) == 5 then
-				if GetHomeBuilding(CartAlias,"Business") then
-					if BuildingGetOwner("Business","MyBoss") then
-						if GetSettlement(CartAlias, "MyCity") then
-							CityGetLocalMarket("MyCity","MyMarket")
-							EstimatedMoney = ItemGetPriceSell(ItemId,"MyMarket")*ItemCount
-							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss",BARGAINING)*2)/100))
-							economy_UpdateBalance("Business", "Autoroute", math.abs(EstimatedMoney + BargainMoney))
-						end
-					end
-				end 
+			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then				
+				Transfer(CartAlias,DestAlias,INVENTORY_STD,CartAlias,INVENTORY_STD,ItemId,ItemCount)
+			else
+				Transfer(CartAlias,DestAlias,INVENTORY_SELL,CartAlias,INVENTORY_STD,ItemId,ItemCount)
 			end
-			Error, ItemTransfered = Transfer(CartAlias,DestAlias,INVENTORY_STD,CartAlias,INVENTORY_STD,ItemId,ItemCount)
-		end
-		Sleep(0.5)
-		if BargainMoney > 0 then
-			f_CreditMoney(CartAlias,BargainMoney,"Bargaining")
-			ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)",BargainMoney)
 		end
 		Sleep(0.4)
 	end

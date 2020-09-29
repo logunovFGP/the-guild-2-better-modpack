@@ -190,7 +190,7 @@ function Run()
 		StopMeasure()
 	end
 
-	ms_twp_supplyworkshop_UnloadItems(CartSlots, CartSlotSize, "MyHome")
+	cart_UnloadAll("", "MyHome")
 	
 	local NeedCount, Needs
 	while true do 
@@ -212,7 +212,7 @@ function Run()
 			StopMeasure() 
 		end
 		-- Unload at home and wait some time
-		ms_twp_supplyworkshop_UnloadItems(CartSlots, CartSlotSize, "MyHome")		
+		cart_UnloadAll("", "MyHome")		
 		Sleep(120) 
 	end
 end
@@ -255,19 +255,6 @@ function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
 		end
 	end
 	return Needs
-end
-
-function UnloadItems(CartSlots, CartSlotSize, HomeAlias)
-	for i = 1, CartSlots do
-		local ItemId, ItemCount = InventoryGetSlotInfo("", CartSlots-i)
-		if ItemId and ItemCount > 0 then
-			if CanAddItems(HomeAlias, ItemId, ItemCount, INVENTORY_STD) then				
-				Transfer("",HomeAlias,INVENTORY_STD,"",INVENTORY_STD, ItemId, ItemCount)
-			else
-				Transfer("",HomeAlias,INVENTORY_SELL,"",INVENTORY_STD, ItemId, ItemCount)
-			end
-		end 
-	end
 end
 
 function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
