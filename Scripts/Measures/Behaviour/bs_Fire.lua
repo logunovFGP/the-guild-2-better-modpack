@@ -37,6 +37,7 @@ function Run()
 			else
 				SetData("Distance", 1000)
 				return "Gape"
+			end
 		end
 	end
 	

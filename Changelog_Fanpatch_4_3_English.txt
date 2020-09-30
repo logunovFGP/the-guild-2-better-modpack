@@ -72,6 +72,10 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Fixed several interactions with fire.
 - Removal of immunity had the wrong message.
 - The guild crates for Honey and Fruits had no icons.
+- Wenches no longer run through the city to find new 'customers'
+- AI sends wenches to the market place or to pre-determined places on the maps. 
+- Children are no longer targets of wenches
+- The employee of the country estate did not gain XP / levelups
 
 ** Features **
 
@@ -87,6 +91,8 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 - Pregnant women are no longer tied to their bed.
 - New abilities after levelup
+- Multiple characters will perform additional animations to improve immersion.
+
 
 ** Balancing **
 
@@ -100,4 +106,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Duels are more dangerous.
 - If you don't attend a duel, you will lose favor with every sim nearby of the duel place.
 - If you remove someone's immunity you will lose some favor now.
+- Charisma of wenches now has an impact on how successfully they are.
+- Range of wenches has been increased.
+- Wenches work 24 Hours per day like other rogue professions.
 
