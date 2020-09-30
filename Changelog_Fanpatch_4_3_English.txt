@@ -75,6 +75,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Wenches no longer run through the city to find new 'customers'
 - AI sends wenches to the market place or to pre-determined places on the maps. 
 - Children are no longer targets of wenches
+- The employee of the country estate did not gain XP / levelups
 
 ** Features **
 

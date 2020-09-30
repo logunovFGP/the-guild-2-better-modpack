@@ -11,9 +11,6 @@ Offen:
 - Bei der Maßnahme "Jemanden enteignen" wurde eine fehlerhafte Nachricht an den Täter geschickt.
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.
-- Beim Aufheben der Immunität wurde die falsche Textnachricht verschickt.
-- Die Leibwächter (Landsitz) können nun Stufen aufsteigen.
-- Kinder reagieren nicht länger auf Dirnen.
 - Die Totengräber-Maßnahme "Gebäude verfluchen" funktionierte nicht.
 - Der Kamm funktionierte nicht.
 - Bei Amtssitzungen wird das voraussichtliche Abstimmungsergebnis nun korrekt berechnet. (Abweichung KI-Entscheidung von HUD-Anzeige)

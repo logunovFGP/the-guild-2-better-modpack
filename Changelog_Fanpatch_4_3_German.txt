@@ -81,6 +81,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
 - Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
+- Die Angestellten des Landsitzes konnten keine Stufen aufsteigen
 
 ** Features **
 
@@ -116,4 +117,4 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Das Charisma von Dirnen hat nun Einfluss darauf, wie erfolgreich sie beim 'Anlocken' von Kundschaft sind.
 - Der Einflussradius von Dirnen wurde erhöht.
 - Dirnen arbeiten nun wie andere Gauner 24 Stunden am Tag.
-
+- Erfahrungszuwachs von Angestellten etwas gesenkt.
