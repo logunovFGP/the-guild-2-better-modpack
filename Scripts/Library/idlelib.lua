@@ -2326,16 +2326,16 @@ function GoSleep()
 	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
 	
 	if (GetImpactValue("", "Sickness") > 0) then  --tavern is a good place to recover from sickness
-		if (HeavySleep == true) and GetImpactValue("","Pneumonia")>0 then -- cheap 100% pheumonia cure with Deep Sleep
+		if (HeavySleep == true) and GetImpactValue("", "Pneumonia") > 0 then -- cheap 100% pheumonia cure with Deep Sleep
 			gototavern = 100
-		elseif (HeavySleep == false) and GetImpactValue("","Influenza")>0 then -- a good deal for influenza cure
+		elseif (HeavySleep == false) and GetImpactValue("", "Influenza") > 0 then -- a good deal for influenza cure
 			gototavern = 80
 		else
-			gototovern = 50  -- might still get cured from something
+			gototavern = 50  -- might still get cured from something
 		end
 	end
 
-	if (Rand(100) < gototovern) and GetMoney("") > 150 then   --if sick usually priority to tavern 
+	if (Rand(100) < gototavern) and GetMoney("") > 150 then   --if sick usually priority to tavern 
 		money = 1
 	elseif (GetHomeBuilding("", "HomeBuilding")) and GetDistance("", "HomeBuilding") < 21000 and Rand(2)<1 and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then   --normally go to home if it is nearby and there is room
 			MeasureRun("", nil, "GoToSleep")
