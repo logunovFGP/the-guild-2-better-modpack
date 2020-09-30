@@ -75,8 +75,10 @@ function ChooseProducts(ProductCount, Products)
 											"@B[40,@L_TWP_SALESCART_CHOOSEAMOUNT_+4,]".. -- leave 40 in storage
 											"@B[80,@L_TWP_SALESCART_CHOOSEAMOUNT_+5,]"   -- leave 80 in storage
 			local ItemId = Products[ChosenItem][1]
-			local ChosenMinAmount = MsgBox("","Owner","@P"..Options,"@L_TWP_SALESCART_CHOOSEAMOUNT_HEAD_+0","_TWP_SALESCART_CHOOSEAMOUNT_BODY_+0", ItemGetLabel(ItemId,false))			
-			Products[ChosenItem][2] = ChosenMinAmount
+			local ChosenMinAmount = MsgBox("","Owner","@P"..Options,"@L_TWP_SALESCART_CHOOSEAMOUNT_HEAD_+0","_TWP_SALESCART_CHOOSEAMOUNT_BODY_+0", ItemGetLabel(ItemId,false))
+			if ChosenMinAmount and ChosenMinAmount ~= "C" then			
+				Products[ChosenItem][2] = ChosenMinAmount
+			end
 		end
 	until ChosenItem == nil or ChosenItem =="C"
 	
@@ -91,6 +93,9 @@ function InitMeasure()
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
 	local ProductCount, Products = economy_GetItemsForSale("MyHome")
+	for i = 1, ProductCount do
+		Products[i] = { Products[i], 0 }
+	end
 	 
 	repeat
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
@@ -143,35 +148,40 @@ function Run()
 		CityGetLocalMarket("MyCity","MyMarket")
 		local ProfitCount, Profits = ms_twp_salescart_CalcProfits("MyMarket", "MyHome", ProductCount, Products)
 		local CityAlias = "MyCity"
-		if ProfitCount <= 0 then
+		if ProfitCount > 0 then
 			-- go to market and sell products
 			ms_twp_salescart_LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, CityAlias)
 		else
-			-- nothing to sell right now, wait a while
-			Sleep(120)
+			Sleep(120) -- nothing to sell right now, wait a while
 		end 
 		
 		-- return home if necessary
 		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
 			-- cannot get gome, something went wrong
-			Sleep(60)
+			local ret = MsgNews("", "", 
+				"", -- Buttons 
+				0,
+				"production", 
+				1, 
+				"@L_TWP_SALESCART_ABORTWARNING_HEAD_+0", 
+				"@L_TWP_SALESCART_ABORTWARNING_BODY_+0", 
+				"MyHome")
 			StopMeasure() 
 		end
-		Sleep(60) 
+		Sleep(30) -- give me some rest
 	end
 end
 
 function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products)
-	local Profits = {} -- table of ItemId -> Profit
+	local Profits = {} -- table of {{ItemId, MinAmount}, Profit}
 	local ProfitCount = 0
 	local ItemId
 	for i = 1, ProductCount do
-		-- TODO optimize this, so that we don't iterate over the whole inventory for each item
 		ItemId = Products[i][1]
-		local Amount = bld_GetItemCount(HomeAlias, ItemId)
+		local Amount = GetItemCount(HomeAlias, ItemId)
 		Amount = Amount - Products[i][2]
-		local Profit = Amount *	ItemGetPriceSell(Products[i], MarketAlias) 
-		if Amount > 0 and Profit > 500 then
+		local Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 
+		if Amount > 0 and Profit > 250 then
 			ProfitCount = ProfitCount + 1
 			Profits[ProfitCount] = {Products[i], Profit} -- {{ItemId, MinAmount}, Profit}
 		end
@@ -186,6 +196,10 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products)
 	return ProfitCount, Profits 
 end
 
+function SortProfits(a,b) 
+	return a[2] > b[2] 
+end
+
 function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, CityAlias) 
 	local NeedCount, Needs
 	if ProfitCount > 0 then
@@ -193,7 +207,7 @@ function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, City
 		-- 5. load the cart, slot by slot
 		local CurrentItem = 1
 		for i = 1, CartSlots do
-			local ItemId = Profits[CurrentItem][1]
+			local ItemId = Profits[CurrentItem][1][1]
 			local Error, ItemTransfered = Transfer("","",INVENTORY_STD,"MyHome",INVENTORY_STD, ItemId, CartSlotSize)
 			-- 6. make sure list is repeated if slots are still available
 			CurrentItem = math.mod(CurrentItem, ProfitCount) + 1 
@@ -241,37 +255,6 @@ function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
 	return Needs
 end
 
-function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
-	if ResourceCount <= 0 then
-		return 0, {}
-	end 
-	local Needs = {}
-	local NeedCount = 0
-	for i = 1, ResourceCount do
-		local CurrentAmount = bld_GetItemCount(BldAlias, Resources[i][1])
-		local MaxNeed = Resources[i][2]
-		local ActualNeed = MaxNeed - CurrentAmount
-		-- need resources when stores down to 40%
-		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.4 then
-			NeedCount = NeedCount + 1
-			ActualNeed = math.ceil(ActualNeed/MaxNeed * 100)
-			Needs[NeedCount] = {Resources[i][1], ActualNeed}
-		end
-	end
-	-- no current needs
-	if NeedCount == 0 then
- 		return 0, {}
- 	end
- 	
- 	-- 4. sort by actual needs, highest first (SortProfits sorts highest first so it will do)
-	Needs = helpfuncs_QuickSort(Needs, 1, NeedCount, ms_twp_salescart_SortNeeds)
-	return NeedCount, Needs 
-end
-
-function SortNeeds(a,b) 
-	return a[2] > b[2] 
-end
-
 function CleanUp()
 end
 
@@ -286,7 +269,7 @@ function SetMeasureData(ProductCount, Products)
 			SetData("ProductMin"..ReducedProductCount, Products[i][2] )
 		end
 	end
-	SetData("ProductCount", ProductCount)
+	SetData("ProductCount", ReducedProductCount)
 end
 
 function GetMeasureData()

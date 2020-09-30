@@ -856,6 +856,18 @@ function RemoveCart(BldAlias, CartAlias)
 	end
 end
 
+function GetItemCountForBld(BldAlias, RequestedItemId)
+	local SlotCount = InventoryGetSlotCount(BldAlias, INVENTORY_STD)
+	local Retval = 0
+	for i=0, SlotCount-1 do
+		local ItemId, ItemCount = InventoryGetSlotInfo(BldAlias, i, INVENTORY_STD)
+		if ItemId and ItemId == RequestedItemId then
+			Retval = Retval + ItemCount
+		end
+	end
+	return Retval
+end
+
 function CheckRepairs(BldAlias)
 	local BuildHP = GetHPRelative(BldAlias) * 100
 	if BuildHP >= 90 then
@@ -961,16 +973,4 @@ function ForceLevelUp(BldAlias)
 		SetState(BldAlias, STATE_LEVELINGUP, true)
 		return
 	end
-end
-
-function GetItemCount(BldAlias, RequestedItemId)
-	local SlotCount = InventoryGetSlotCount(BldAlias, INVENTORY_STD)
-	local Retval = 0
-	for i=0, SlotCount-1 do
-		local ItemId, ItemCount = InventoryGetSlotInfo(BldAlias, i, INVENTORY_STD)
-		if ItemId and ItemId == RequestedItemId then
-			Retval = Retval + ItemCount
-		end
-	end
-	return Retval
 end
