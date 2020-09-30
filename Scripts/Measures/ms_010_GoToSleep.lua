@@ -75,14 +75,12 @@ function Run()
 	end
 	
 	local CurrentTime = GetGametime()
-	local WasSick = false
+	SetData("StartTime", CurrentTime)
 	if GetImpactValue("","Sickness")>0 then
 		duration = duration * 2
-		WasSick = true
 	end
+	SetData("Duration", duration)
 	local EndTime = CurrentTime + duration
-	local HealChance = 0 --50%
-	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
 	
 	while GetGametime()<EndTime do
 		Sleep(5)
@@ -92,9 +90,52 @@ function Run()
 			PlaySound3DVariation("","measures/gotosleep",1)
 		end
 	end
+		
+	if IsPartyMember("") then	
+		feedback_MessageCharacter("",
+		"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_HEAD",
+		"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_BODY", GetID(""))
+	end
+end
+
+-- -----------------------
+-- CleanUp
+-- -----------------------
+function CleanUp()
+	
+	if AliasExists("SleepPosition") then
+		f_EndUseLocator("", "SleepPosition", GL_STANCE_STAND)
+	end
+	
+	local Time = GetGametime()
+	local Start = Time
+	if HasData("StartTime") and GetData("StartTime")~=nil then
+		Start = GetData("StartTime")
+	else
+		return
+	end
+	local duration = 6
+	if HasData("Duration") and GetData("Duration")~=nil then
+		duration = GetData("Duration")
+	else
+		return
+	end
+	
+	local Factor = (Time - Start) / duration
+	if Factor>1 then
+		Factor = 1
+	elseif Factor<0.05 then
+		return
+	end
+	
+	Factor=Factor*Factor*100
+		
+	local HealChance = 0 --50%
+	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
 	
 	if IsDynastySim("Owner") then
-		if WasSick == true then
+	
+		if GetImpactValue("","Sickness")>0 and Factor>Rand(100) then
 			if GetImpactValue("","Cold")>0 then
 				if (HeavySleep == true) or (Rand(6) > 4) then  -- no items with ability or if very lucky
 					diseases_Cold("",false)
@@ -131,53 +172,45 @@ function Run()
 			end
 		end
 		
-		if IsPartyMember("") then	
-			feedback_MessageCharacter("",
-				"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_HEAD",
-				"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_BODY", GetID(""))
+		local SleepBonus=3
+
+		if HeavySleep == true then
+			Factor=Factor+20
+			SleepBonus=5
 		end
-		Sleep (1)
-		local endtime = math.mod(GetGametime(),24)+duration
-		if HeavySleep == true or Rand(5)<3 then
-			-- Good dreamcase 0,1,2 or with ability 
-			AddImpact("","rhetoric",1,12)
-			AddImpact("","craftsmanship",1,12)
-			AddImpact("","charisma",1,12)
-			AddImpact("","constitution",1,12)
-			AddImpact("","dexterity",1,12)
-			AddImpact("","shadow_arts",1,12)
-			AddImpact("","fighting",1,12)
-			AddImpact("","secret_knowledge",1,12)
-			AddImpact("","bargaining",1,12)
-			AddImpact("","empathy",1,12)
+		if (Factor-20)>Rand(100) then
+			if SimGetClass("")==1 then
+				AddImpact("","constitution",1,12)
+				AddImpact("","empathy",1,12)
+				AddImpact("","bargaining",1,12)
+			elseif SimGetClass("")==2 then
+				AddImpact("","constitution",1,12)
+				AddImpact("","dexterity",1,12)
+				AddImpact("","craftsmanship",1,12)
+			elseif SimGetClass("")==3 then
+				AddImpact("","charisma",1,12)
+				AddImpact("","rhetoric",1,12)
+				AddImpact("","secret_knowledge",1,12)
+			elseif SimGetClass("")==4 then
+				AddImpact("","constitution",1,12)
+				AddImpact("","fighting",1,12)
+				AddImpact("","shadow_arts",1,12)
+			end
+			if Rand(100)>96 then
+				AddImpact("","LifeExpanding",SleepBonus,-1)
+			elseif Rand(3)>1 then
+				AddImpact("","Resist",1,SleepBonus*Factor/50)
+				AddImpact("","ResistDream",1,SleepBonus*Factor/50)
+			else
+				chr_GainXP("",Factor)
+			end
 			AddImpact("","GoodDream",1,12)
 		else 
-			-- Bad dreamcase 3,4
-			AddImpact("","rhetoric",-1,6)
-			AddImpact("","craftsmanship",-1,6)
-			AddImpact("","charisma",-1,6)
-			AddImpact("","constitution",-1,6)
-			AddImpact("","dexterity",-1,6)
-			AddImpact("","shadow_arts",-1,6)
-			AddImpact("","fighting",-1,6)
-			AddImpact("","secret_knowledge",-1,6)
-			AddImpact("","bargaining",-1,6)
-			AddImpact("","empathy",-1,6)
-			AddImpact("","BadDream",1,6)
-			SetProperty("","BadDreamTime",endtime)
+			chr_GainXP("",Factor)
+			AddImpact("","BadDream",1,12)
 		end
-	end
-end
-
--- -----------------------
--- CleanUp
--- -----------------------
-function CleanUp()
-	
-	if AliasExists("SleepPosition") then
-		f_EndUseLocator("", "SleepPosition", GL_STANCE_STAND)
-	end
-end
+	end	
+end		
 
 function GetOSHData(MeasureID)
 	
