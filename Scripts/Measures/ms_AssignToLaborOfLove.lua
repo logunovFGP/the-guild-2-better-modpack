@@ -1,65 +1,65 @@
 function Run()
 
-	local	TimeOut
-	
-	if not HasProperty("", "ATLOF_TimeOut") then
-		TimeOut = GetData("TimeOut")
-		if TimeOut then
-			TimeOut = TimeOut + GetGametime()
-			SetProperty("", "ATLOF_TimeOut", TimeOut)
-		end
-	else
-		TimeOut = GetProperty("", "ATLOF_TimeOut")
-	end
-	
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_PIRAT, "WorkBuilding") then
 		StopMeasure() 
 		return
 	end 
-	MeasureSetStopMode(STOP_NOMOVE)
+
+	if not GetSettlement("WorkBuilding", "City") then
+		return
+	end
 	
+	if not BuildingGetOwner("WorkBuilding", "MyBoss") then
+		StopMeasure()
+		return
+	end
+	
+	if GetInsideBuilding("", "InsideBuilding") then
+		f_ExitCurrentBuilding("")
+	end
+
+	-- Find a good spot for AI
 	if not AliasExists("Destination") then
-		if IsStateDriven() then
-			if not GetSettlement("WorkBuilding", "City") then
-				return
-			end
+		local BestDistance = 10000
+		local Trys = 30
+		local Profession = SimGetProfession("")
 		
-			if CityFindCrowdedPlace("City", "", "Destination")==0 then
-				return
-			end
-		else
-			if HasProperty("","MyLOLPosX") then
-				if not ScenarioCreatePosition(GetProperty("","MyLOLPosX"), GetProperty("","MyLOLPosZ"), "Destination") then
-					return
+		for i = 1, trys do
+			if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
+				-- check the distance first
+				local DistanceFound = GetDistance("City", "Pos")
+				if DistanceFound < BestDistance then
+					-- Now check whether there are already more than 1 actor of that profession
+					local Count = Find("Pos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == Profession) AND (Object.BelongsToMe()))", "Result", 2)
+					if Count < 2 then
+						BestDistance = DistanceFound
+						CopyAlias("Pos", "Destination")
+						-- stop right here if it is perfect already
+						if BestDistance < 2000 then
+							break
+						end
+					end
 				end
-			else
-				return
 			end
 		end
-	else
-		if GetID("WorkBuilding")==GetID("Destination") then
-			if IsStateDriven() then
-				if not GetSettlement("WorkBuilding", "City") then
-					return
-				end
-				
-				if CityFindCrowdedPlace("City", "", "Destination")==0 then
-					return
-				end
-			else
-				if HasProperty("","MyLOLPosX") then
-					if not ScenarioCreatePosition(GetProperty("","MyLOLPosX"), GetProperty("","MyLOLPosZ"), "Destination") then
-						return
-					end
-				else
-					return
-				end
+
+		-- still no Destination? Select Market then
+		if not AliasExists("Destination") then
+			local Market = Rand(5)+1
+			if not CityGetRandomBuilding("City", 5, 14, Market, -1, FILTER_IGNORE, "Destination") then
+				StopMeasure()
+				return
 			end
 		end
 	end
 	
-	SetProperty("","CocotteHasClient",0)
-	SetProperty("","CocotteProvidesLove",1)
+	-- Move to Destination
+	local Offset = Rand(350)
+	f_MoveTo("", "Destination", GL_MOVESPEED_RUN, Offset)
+
+	MeasureSetStopMode(STOP_NOMOVE)
+	SetProperty("", "CocotteHasClient", 0)
+	SetProperty("", "CocotteProvidesLove", 1)
 	
 	-- start the labor
 	SetData("IsProductionMeasure", 0)
@@ -67,64 +67,49 @@ function Run()
 	SetData("IsProductionMeasure", 1)
 
 	while true do
-		local zielloc = Rand(300)+100
-		if not f_MoveTo("","Destination",GL_MOVESPEED_RUN,zielloc) then
-				break
-		end
-		-- Timeout
-		
-		if math.mod(GetGametime(),24) <8 then
-			StopMeasure()
-			break
+		if GetDistance("", "Destination") > 500 then
+			-- Go back to start location
+			if not f_MoveTo("", "Destination", GL_MOVESPEED_WALK) then
+				return
+			end
 		end
 		
-		-- Remember your Position
-		GetPosition("","MyPos")
-		local x,y,z = PositionGetVector("MyPos")
-		SetProperty("","MyLOLPosX",x)
-		SetProperty("","MyLOLPosZ",z)
-				
+		if Rand(10) == 0 then
+			PlayAnimation("", "cogitate")
+			f_Stroll("", 250, 3)
+		end
+		
+
+		PlayAnimation("", "watch_for_guard")
 		-- some animation stuff
-		-- random speech
-		local SimFilter = "__F( (Object.GetObjectsByRadius(Sim)==500)AND(Object.HasDifferentSex())AND(Object.GetState(idle))AND NOT(Object.GetState(townnpc))AND NOT(Object.HasImpact(FullOfLove)))"
-		local NumSims = Find("",SimFilter,"Sims",-1)
+		local SimFilter = "__F( (Object.GetObjectsByRadius(Sim)==1000)AND(Object.HasDifferentSex())AND(Object.GetState(idle))AND NOT(Object.GetState(townnpc))AND(Object.MinAge(16))AND(Object.CanBeInterrupted(UseLaborOfLove))AND NOT(Object.HasImpact(FullOfLove)))"
+		local NumSims = Find("", SimFilter, "Sims", -1)
+
+		-- Found someone?
 		if NumSims > 0 then
 			local DestAlias = "Sims"..Rand(NumSims-1)
-			AlignTo("",DestAlias)
+			AlignTo("", DestAlias)
 			Sleep(1)
-			local AnimTime = PlayAnimationNoWait("","point_at")
-			MsgSayNoWait("","@L_PIRATE_LABOROFLOVE_PROPOSE")
+			local AnimTime = PlayAnimationNoWait("", "point_at")
+			MsgSayNoWait("", "@L_PIRATE_LABOROFLOVE_PROPOSE")
 			Sleep(AnimTime)
-			if GetDynastyID(DestAlias)<1 then
-				if Rand(100)>50 then
-					MeasureRun(DestAlias,"","UseLaborOfLove")
-				else
-					AddImpact(DestAlias,"FullOfLove",1,4)
-				end
-			else
-				AddImpact(DestAlias,"FullOfLove",1,4)
-			end
 			
-			if not GetSettlement("", "City") then
-				return
-			end
-		
-			if CityFindCrowdedPlace("City", "", "Destination")==0 then
-				return
+			-- Try to attract him. Bonus for high charisma.
+			if Rand(101) > (50-GetSkillValue("", CHARISMA)) then
+				MeasureRun(DestAlias, "", "UseLaborOfLove")
+			else
+				AddImpact(DestAlias, "FullOfLove", 1, 4)
 			end
 		end
-		Sleep(5)
-	end
-	
-	StopMeasure()
+		
+		Sleep(2)
+	end	
 end
 
 function CleanUp()
-  StopAnimation("")
-  RemoveProperty("","CocotteProvidesLove")
+	StopAnimation("")
+ 	RemoveProperty("", "CocotteProvidesLove")
 end
 
 function GetOSHData(MeasureID)
 end
-
-

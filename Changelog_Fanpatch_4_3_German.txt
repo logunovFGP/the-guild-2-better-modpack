@@ -78,6 +78,9 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Bei Hexerdokumenten wurden keine EP vergeben.
 - Beim Entzug der Immunität wurde die falsche Nachricht verschickt.
 - Es fehlten Icons bei den Gildenlieferungen für Honig und Obst.
+- Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
+- Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
+- Kinder sind nun nicht länger mögliche Ziele von Dirnen.
 
 ** Features **
 
@@ -95,6 +98,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Schwangere sind nicht länger an ihr Bett gefesselt.
 - Neue Fähigkeiten nach LevelUp.
 - Opfer von Hexerdokumenten werden nun benachrichtigt, dass etwas Seltsames passiert ist, wenn ihre Empathie groß genug ist.
+- Diverse Charaktere führen zusätzliche Animationen aus, um die Immersion zu verbessern.
 
 ** Balancing **
 
@@ -109,3 +113,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.
 - Maßnahmen, die von Talenten abhängig sind, funktionieren nun nach einer neuen Formel. Dabei gibt es 3 Erfolgs- und 2 Misserfolgsstufen. Jeder Talentcheck wird visualisiert.
 - Jemandem die Immunität zu entziehen verursacht nun einen kleinen Gunstverlust.
+- Das Charisma von Dirnen hat nun Einfluss darauf, wie erfolgreich sie beim 'Anlocken' von Kundschaft sind.
+- Der Einflussradius von Dirnen wurde erhöht.
+- Dirnen arbeiten nun wie andere Gauner 24 Stunden am Tag.
+

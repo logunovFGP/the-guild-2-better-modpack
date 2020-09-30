@@ -35,7 +35,6 @@ Offen:
 - Die Hypnose funktionierte nicht richtig.
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
 - Das Entfernen von Pamphleten hatte einen kleinen Fehler.
-- Der Heilungsvorgang beim Schlafen in der Taverne dauerte viel zu lang und war zu schwach.
 - Türme haben nicht-aggressive Schiffe angegriffen.
 - Die Handwerksurkunde konnte in einigen Betrieben nicht eingesetzt werden.
 - Wer beim Gericht nur eine mündliche Verwarnung hält, beschwerte sich trotzdem über das Urteil.
@@ -127,7 +126,6 @@ Offen:
 - Unter Umständen wurde das Kassenbuch der Stadt nicht aufgezeigt.
 - Manchmal erhielten Opfer von Raub, Knochenbrechen und Mord keinen Beweis gegen den Täter.
 - Unter Umständen griffen Minenwächter die eigene Dynastie an.
-- Die Hexerrobe zeigte kein Mini-Icon (Impact-Symbol) an.
 - Das Gemeinsame Bad funktionierte als FlirtMeasure nicht.
 - Beim Schutzgelderpressen wurde im Tooltip der Maßnahme die falsche Dauer
   angezeigt.
@@ -162,14 +160,9 @@ Kritische Balance-Änderungen:
 - Lösegeldforderungen werden nun nicht immer akzeptiert, vor allem nicht, 
   wenn sie sehr hoch sind.
 - Die Höchststumme für Lösegelder liegt nun bei 50.000 Gold
-- Man kann Angestellte nicht länger heiraten.
 - Einbrechen dauerte viel zu lange.
 
 Nützliche Vanilla-Features + QoL Änderungen:
-- Bei Hexerdokumenten wird nun ein zufälliges Opfer generiert (das Opfer ist also nicht immer der Anwender
-  des Gegenstands)
-- Bei einer ausreichenden Empathie erhält das Opfer von Hexerdokumenten nun eine Nachricht, dass jemand ein Hexerdokument
-  benutzt hat.
 - Durch das Tragen eines Knochenarmreifs kann der Träger sich vor Hexerdokumenten schützen.
 - Schergen, die auf Patrouille sind, werden nun selbstständig Pamphlete abreißen, wenn sie sich in der Nähe des schwarzen Bretts aufhalten. Sie verlangen dafür allerdings eine 
   kleine Goldbelohnung, die mit steigendem Titel wächst - der Spieler wird über den Erfolg benachrichtigt

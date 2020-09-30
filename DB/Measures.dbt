@@ -182,7 +182,7 @@ Data:
 2825   "ms_Flirt.lua"   "-"   "Flirt"   35   "hud/buttons/btn_Flirt.tga"   0   6   0   ""   ""   39   2   0   "none"   0   0   |
 2826   "ms_KontorMeasure.lua"   ""   "KontorMeasure"   40   ""   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 2827   "ms_StinkOMat.lua"   ""   "StinkOMat"   1   ""   0   11   0   ""   ""   0   0   0   "none"   0   0   |
-2828   "ms_AssignToLaborOfLove.lua"   ""   "AssignToLaborOfLove"   30   "hud/buttons/btn_AssignToLaborOfLove.tga"   0   5   0   ""   ""   0   0   0   "particles/radius.nif"   6   0   |
+2828   "ms_AssignToLaborOfLove.lua"   ""   "AssignToLaborOfLove"   30   "hud/buttons/btn_AssignToLaborOfLove.tga"   0   5   0   ""   ""   0   0   0   "particles/radius.nif"   10   0   |
 2829   "ms_UseLaborOfLove.lua"   ""   "UseLaborOfLove"   55   "hud/buttons/btn_UseLaborOfLove.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
 2830   "ms_DistractGuards.lua"   ""   "DistractGuards"   60   "hud/buttons/btn_DistractGuards.tga"   0   5   0   ""   ""   0   6   1   "particles/radius.nif"   25   0   |
 2831   "ms_MultiplayerSay.lua"   ""   "MultiplayerSay"   5   "hud/buttons/btn_multiplayersay.tga"   0   14   0   ""   ""   0   0   0   "none"   0   0   |
