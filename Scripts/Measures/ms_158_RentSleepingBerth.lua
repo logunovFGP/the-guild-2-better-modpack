@@ -130,7 +130,7 @@ function Run()
 
 	f_EndUseLocator("", "SleepingBerth", GL_STANCE_STAND)
 	
-	if IsPartyMember() then
+	if IsPartyMember("") then
 		feedback_MessageCharacter("",
 			"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_HEAD",
 			"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_BODY", GetID("Owner"))
