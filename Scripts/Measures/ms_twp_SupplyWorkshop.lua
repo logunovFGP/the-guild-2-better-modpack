@@ -16,7 +16,7 @@
 -- * The places that the cart may get the resources from.  
 -- 
 -- The base algorithm will then be (see Run):
--- 
+--
 -- 1. For each supplied resource, check current amount in storage.
 -- 2. If resource amount is below minimum, add item and missing amount to a list.
 -- 3. Sort the list by amounts, highest demand first.
@@ -42,7 +42,7 @@ function GetResourcesForWorkshop(BldAlias)
 	local Count = 0
 	for Id in string.gfind(ItemsString, "%d+") do
 		Count = Count + 1
-		Resources[Count] = { ItemGetID(Id), 0 }
+		Resources[Count] = { ItemGetID(Id), 20 }
 	end
 	return Count, Resources
 end
@@ -75,7 +75,9 @@ function ChooseResources(ResourceCount, Resources)
 			local Options = "@B[80,80,]@B[60,60,]@B[50,50,]@B[40,40,]@B[30,30,]@B[20,20,]@B[10,10,]@B[0,0,]"
 			local ItemId = Resources[ChosenItem][1]
 			local ChosenMinAmount = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0","_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_BODY_+0", ItemGetLabel(ItemId,false))			
-			Resources[ChosenItem][2] = ChosenMinAmount
+			if ChosenMinAmount and ChosenMinAmount ~= "C" then
+				Resources[ChosenItem][2] = ChosenMinAmount
+			end
 		end
 	until ChosenItem == nil or ChosenItem =="C"
 	
@@ -190,7 +192,7 @@ function Run()
 		StopMeasure()
 	end
 
-	ms_twp_supplyworkshop_UnloadItems(CartSlots, CartSlotSize, "MyHome")
+	cart_UnloadAll("", "MyHome")
 	
 	local NeedCount, Needs
 	while true do 
@@ -203,23 +205,24 @@ function Run()
 					Needs = ms_twp_supplyworkshop_GoShopping(Suppliers[i], NeedCount, Needs, CartSlots, CartSlotSize)
 				end
 			end
+		else
+			Sleep(120) -- nothing to do, wait a while
 		end	
 		
 		-- return home if necessary
 		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
 			-- cannot get gome, something went wrong
-			Sleep(60)
 			StopMeasure() 
 		end
-		-- Unload at home and wait some time
-		ms_twp_supplyworkshop_UnloadItems(CartSlots, CartSlotSize, "MyHome")		
-		Sleep(120) 
+		-- Unload at home and rest
+		cart_UnloadAll("", "MyHome")		
+		Sleep(30) 
 	end
 end
 
 function CheckAvailability(BldAlias, NeedCount, Needs)
 	for i = 1, NeedCount do
-		if Needs[i][2] > 0 and bld_GetItemCount(BldAlias, Needs[i][1]) > 0 then
+		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1]) > 0 then
 			return true
 		end
 	end
@@ -257,19 +260,6 @@ function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
 	return Needs
 end
 
-function UnloadItems(CartSlots, CartSlotSize, HomeAlias)
-	for i = 1, CartSlots do
-		local ItemId, ItemCount = InventoryGetSlotInfo("", CartSlots-i)
-		if ItemId and ItemCount > 0 then
-			if CanAddItems(HomeAlias, ItemId, ItemCount, INVENTORY_STD) then				
-				Transfer("",HomeAlias,INVENTORY_STD,"",INVENTORY_STD, ItemId, ItemCount)
-			else
-				Transfer("",HomeAlias,INVENTORY_SELL,"",INVENTORY_STD, ItemId, ItemCount)
-			end
-		end 
-	end
-end
-
 function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
 	if ResourceCount <= 0 then
 		return 0, {}
@@ -277,11 +267,11 @@ function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
 	local Needs = {}
 	local NeedCount = 0
 	for i = 1, ResourceCount do
-		local CurrentAmount = bld_GetItemCount(BldAlias, Resources[i][1])
+		local CurrentAmount = GetItemCount(BldAlias, Resources[i][1])
 		local MaxNeed = Resources[i][2]
 		local ActualNeed = MaxNeed - CurrentAmount
-		-- need resources when stores down to 40%
-		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.4 then
+		-- need resources when stores down to 60%
+		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.6 then
 			NeedCount = NeedCount + 1
 			ActualNeed = math.ceil(ActualNeed/MaxNeed * 100)
 			Needs[NeedCount] = {Resources[i][1], ActualNeed}
