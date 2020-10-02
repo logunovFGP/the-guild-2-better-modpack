@@ -69,7 +69,7 @@ function Run()
 		Handsel = Handsel + 4900
 	end
 	
-	SetData("Hands",Handsel)
+	SetData("Hands", Handsel)
 	local Level	= SimGetLevel("RandWorker")
 	SetData("Lvl",Level)
 	local Salary = SimGetWage("RandWorker")
@@ -80,9 +80,9 @@ function Run()
 	ms_048_hireemployeebuildingrandom_DecideYou()
 	
 	if BuildingGetType("") == 2 then
-		ms_048_hireemployeebuildingrandom_CheckSoeldner("")
+		ms_048_hireemployeebuildingrandom_CheckSoeldner("", "RandWorker")
 	elseif BuildingGetType("") == 111 then
-		ms_048_hireemployeebuildingrandom_CheckLeibwache("")
+		ms_048_hireemployeebuildingrandom_CheckLeibwache("RandWorker")
 	end	
 end
 		
@@ -95,7 +95,7 @@ function DecideYou()
 	local xp = GetData("XPP")
 	
 	if BuildingGetOwner("", "BOwner") then
-		if GetMoney("BOwner")<handsels then
+		if GetMoney("BOwner") < handsels then
 			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+14", handsels, GetID("RandWorker"))
 			StopMeasure()
 		end
@@ -123,9 +123,9 @@ function DecideYou()
 	end		
 	if Error == "" then
 		-- stop courting
-		if SimGetCourtLover("", "WorkerLover") then
-			SimReleaseCourtLover("")
-			if HasProperty("", "courted") then
+		if SimGetCourtLover("RandWorker", "WorkerLover") then
+			SimReleaseCourtLover("RandWorker")
+			if HasProperty("RandWorker", "courted") then
 				RemoveProperty("", "courted")
 			end
 	
@@ -162,7 +162,7 @@ function DecideYou()
 		end
 	end
 	
-	MoveSetActivity("", "")
+	MoveSetActivity("RandWorker", "")
 	SimGetWorkingPlace("RandWorker", "workbuilding")
 	chr_CalculateBuildingBonus("RandWorker", "", "hire")
 
@@ -182,7 +182,7 @@ function Decide()
 	return "O"
 end
 
-function CheckSoeldner(Alias,Worker)
+function CheckSoeldner(Alias, Worker)
 	AddItems(Worker, "Dagger", 1, INVENTORY_EQUIPMENT)
 	if BuildingHasUpgrade(Alias, "CrossedAxes") == true then
 		RemoveItems(Worker, "Dagger",1,INVENTORY_EQUIPMENT)
