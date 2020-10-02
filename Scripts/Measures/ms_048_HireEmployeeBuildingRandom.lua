@@ -61,7 +61,7 @@ function Run()
 	local Handsel = SimGetHandsel("RandWorker", "")
 	if BuildingHasUpgrade("", "CrossedAxes") == true then
 		Handsel = Handsel + 4900
-	elseif BuildingHasUpgrade("", "HarkingHorn) == true then
+	elseif BuildingHasUpgrade("", "HarkingHorn") == true then
 		Handsel = Handsel + 2400
 	end
 	
