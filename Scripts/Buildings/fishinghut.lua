@@ -106,22 +106,12 @@ function TransferHerring()
 end
 
 function PingHour()
-
-	-- Check every worker every hour for bonuses from employer's abilities
-	chr_CheckWorkerBonuses("")
+	bld_HandlePingHour("")
 	
 	if BuildingGetOwner("","MyBoss") then
 		if GetHomeBuilding("MyBoss", "MyHome") then
 			-- Improve Production
 			if BuildingGetAISetting("", "Produce_Selection") > 0 then
-			--	bld_SetupAI("")
-
-				if DynastyIsAI("MyHome") then
-					bld_CheckRivals("")
-					bld_ForceLevelUp("")
-					bld_CheckRepairs("")
-				end
-				
 				-- spawn boat and cart if needed
 				local FoundBoat = false
 				local FoundCart = false

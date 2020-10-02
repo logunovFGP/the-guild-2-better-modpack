@@ -48,15 +48,7 @@ function OnLevelUp()
 end
 
 function PingHour()
-
-	-- Check every worker every hour for bonuses from employer's abilities
-	chr_CheckWorkerBonuses("")
-
-	-- Check every worker (only once) for illness and equipment 
-	if not HasProperty("", "CheckDefaultWorkers") then
-		bld_ResetWorkers("")
-		SetProperty("", "CheckDefaultWorkers", 1)
-	end
+	bld_HandlePingHour("")
 	
 	local Found = false
 	for i=0, BuildingGetCartCount("")-1 do
@@ -74,17 +66,5 @@ function PingHour()
 		if HasProperty("", "pirateship") then
 			RemoveProperty("","pirateship")
 		end	
-	end
-	
-	-- Only for AI
-	
-	if BuildingGetOwner("", "MyBoss") then
-		if GetHomeBuilding("MyBoss", "MyHome") then
-			if DynastyIsAI("MyHome") then
-				bld_CheckRivals("")
-				bld_CheckRepairs("")
-				bld_ForceLevelUp("")
-			end
-		end
 	end
 end
