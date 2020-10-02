@@ -81,14 +81,16 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
 - Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
-- Die Angestellten des Landsitzes konnten keine Stufen aufsteigen
+- Die Angestellten des Landsitzes konnten keine Stufen aufsteigen.
+- Exploit: Angestellte, die automatisch Waffen und Rüstungen bekamen (Wohnsitz-Upgrades/Landsitz) hatten ein zu geringes Handgeld.
+- Versengold kündigt nun wieder mittels eines Timers ihren Auftritt an.
 
 ** Features **
 
-- Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers
-- Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt)
-- Größere Übersichtskarte
-- Größeres Gebäude-Upgradefenster
+- Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers.
+- Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
+- Größere Übersichtskarte (GUI).
+- Größeres Gebäude-Upgradefenster (GUI).
 - Gesichtstexturen der weiblichen Charaktere angepasst
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!

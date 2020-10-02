@@ -72,17 +72,19 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Fixed several interactions with fire.
 - Removal of immunity had the wrong message.
 - The guild crates for Honey and Fruits had no icons.
-- Wenches no longer run through the city to find new 'customers'
+- Wenches no longer run through the city to find new 'customers'.
 - AI sends wenches to the market place or to pre-determined places on the maps. 
-- Children are no longer targets of wenches
-- The employee of the country estate did not gain XP / levelups
+- Children are no longer targets of wenches.
+- The employees of the country estate did not gain XP / levelups.
+- Exploit: Employees of the country estate and residence (with upgrades) who started with high level equipment now have the correct handsel.
+- The timer of Versengold's concert has been fixed.
 
 ** Features **
 
-- Your medical treatments slightly boost the opinion of the patients to the owner of that hospital
+- Your medical treatments slightly boost the opinion of the patients to the owner of that hospital.
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
-- Added a bigger world map.
-- Added a bigger building upgrade sheet.
+- Added a bigger world map (GUI).
+- Added a bigger building upgrade sheet (GUI).
 - Improved some female character textures.
 - The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
 - The famous trading routes of ThreeOfMe have been added.
