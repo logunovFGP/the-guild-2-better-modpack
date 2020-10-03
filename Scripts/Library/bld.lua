@@ -963,7 +963,7 @@ function ForceLevelUp(BldAlias)
 	end
 end
 
-function HandlePingHour(BldAlias)
+function HandlePingHour(BldAlias, ForceLevelUp)
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses(BldAlias)
 	
@@ -986,8 +986,10 @@ function HandlePingHour(BldAlias)
 			end
 			
 			if DynastyIsAI("MyHome") then
+				if ForceLevelUp then
+					bld_ForceLevelUp(BldAlias)
+				end
 				bld_CheckRivals(BldAlias)
-				bld_ForceLevelUp(BldAlias)
 				bld_CheckRepairs(BldAlias)
 			end
 		end

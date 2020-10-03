@@ -19,5 +19,5 @@ function PingHour()
 		SetState("", STATE_MOVING_BUILDING, true)
 	end
 
-	bld_HandlePingHour("")
+	bld_HandlePingHour("", true)
 end

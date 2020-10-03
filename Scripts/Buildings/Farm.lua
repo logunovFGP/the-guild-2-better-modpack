@@ -124,7 +124,7 @@ function TransferItem(ItemId)
 end
 
 function PingHour()
-	bld_HandlePingHour("")
+	bld_HandlePingHour("", true)
 	
 	if BuildingGetAISetting("", "Produce_Selection") > 0 then
 		farm_SellOtherStuff("")

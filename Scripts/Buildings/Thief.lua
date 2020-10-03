@@ -14,5 +14,5 @@ function Setup()
 end
 
 function PingHour()
-	bld_HandlePingHour("")
+	bld_HandlePingHour("", true)
 end
