@@ -138,6 +138,7 @@ function Run(SimAlias, ResourceAlias, mode)
 					break
 				end
 			end
+			AddItems(WorkerAlias, ItemID, Count)
 		end
 
 		if AliasExists("WorkPosition") then
