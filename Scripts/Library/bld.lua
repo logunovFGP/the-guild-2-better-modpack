@@ -816,7 +816,10 @@ function CheckCarts(BldAlias)
 	for i=0, CartCount - 1 do
 		if BuildingGetCart(BldAlias, i, "CartAlias") then
 			if not GetState("CartAlias", 54) then -- state_twp_autocart
-				SetState("CartAlias", 54, true)
+				local Measure = GetCurrentMeasureName("CartAlias")
+				if Measure ~= "AutoRoute" and Measure ~= "SupplyWorkshop" and Measure ~= "SalesCart" and Measure ~= "SendCartAndUnload" then
+					SetState("CartAlias", 54, true)
+				end
 			end
 		end
 	end

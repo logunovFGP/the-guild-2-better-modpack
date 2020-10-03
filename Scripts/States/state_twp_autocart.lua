@@ -161,7 +161,8 @@ function CalcResourceNeeds(BldAlias)
 		-- need resources when stores down to 40%
 		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.4 then
 			NeedCount = NeedCount + 1
-			Needs[NeedCount] = {Items[i][1], ActualNeed}
+			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
+			Needs[NeedCount] = {Items[i][1], math.min(InvSpace, ActualNeed)}
 		end
 	end
 	-- no current needs
@@ -195,11 +196,10 @@ function GetResourceNeeds(BldAlias)
 		Count = Count + 1
 		Ids[Count] = ItemGetID(Id)
 	end
-	local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
 	local i = 0
 	for Amount in string.gfind(AmountsString, "%d+") do
 		i = i + 1
-		Items[i] = { Ids[i], math.min(InvSpace, Amount) }
+		Items[i] = { Ids[i], Amount }
 	end
 	return Count, Items
 end

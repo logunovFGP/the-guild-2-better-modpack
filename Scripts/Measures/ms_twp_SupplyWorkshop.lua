@@ -262,6 +262,9 @@ function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
 					-- slot not used, keep going
 					CurrentItem = CurrentItem + 1
 				end 
+			else
+				-- invalid item, check next item
+				CurrentItem = CurrentItem + 1
 			end
 		end
 	end
@@ -281,8 +284,8 @@ function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
 		-- need resources when stores down to 60%
 		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.6 then
 			NeedCount = NeedCount + 1
-			ActualNeed = math.ceil(ActualNeed/MaxNeed * 100)
-			Needs[NeedCount] = {Resources[i][1], ActualNeed}
+			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
+			Needs[NeedCount] = {Resources[i][1], math.min(InvSpace, ActualNeed)}
 		end
 	end
 	-- no current needs
