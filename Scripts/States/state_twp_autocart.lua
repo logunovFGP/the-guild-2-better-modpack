@@ -14,7 +14,7 @@ function Run()
 	end
 	if not GetSettlement("MyHome", "MyCity") then
 		return 
-	end 
+	end
 	if not GetOutdoorMovePosition("", "MyHome", "HomePos") then
 		return
 	end
@@ -64,6 +64,9 @@ function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, City
 			RemoveItems("", "EmptySlot", CartSlotSize, INVENTORY_STD)
 			local ItemId = Profits[CurrentItem][1]
 			local Error, ItemTransfered = Transfer("","",INVENTORY_STD,"MyHome",INVENTORY_STD, ItemId, CartSlotSize)
+			if ItemTransfered < CartSlotSize then
+				local Error, ItemTransfered = Transfer("","",INVENTORY_STD,"MyHome",INVENTORY_SELL, ItemId, CartSlotSize - ItemTransfered)
+			end
 			-- 6. make sure list is repeated if slots are still available
 			CurrentItem = math.mod(CurrentItem, ProfitCount) + 1 
 		end 
@@ -126,7 +129,7 @@ function CalcProfits(MarketAlias, HomeAlias)
 
 	local Count, Items = economy_GetItemsForSale(HomeAlias)
 	for i = 1, Count do
-		local Amount = GetItemCount(HomeAlias, Items[i])
+		local Amount = GetItemCount(HomeAlias, Items[i], INVENTORY_STD) + GetItemCount(HomeAlias, Items[i], INVENTORY_SELL)
 		local Profit = Amount *	ItemGetPriceSell(Items[i], MarketAlias) 
 		if Amount > 0 and Profit > 500 then
 			ProfitCount = ProfitCount + 1

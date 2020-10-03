@@ -221,6 +221,12 @@ function Run()
 end
 
 function CheckAvailability(BldAlias, NeedCount, Needs)
+	-- can only buy from market if I have enough money
+	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or GetDynastyID("") ~= GetDynastyID(BldAlias) then
+		if GetMoney("") < 200 then
+			return false
+		end
+	end
 	for i = 1, NeedCount do
 		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1]) > 0 then
 			return true
