@@ -109,33 +109,11 @@ function PingHour()
 		SetState("", STATE_MOVING_BUILDING, true)
 	end
 
-	-- Check every worker every hour for bonuses from employer's abilities
-	chr_CheckWorkerBonuses("")
-	
-	-- Check every worker (only once) for illness and equipment 
-	if not HasProperty("", "CheckDefaultWorkers") then
-		bld_ResetWorkers("")
-		SetProperty("", "CheckDefaultWorkers", 1)
-	end
-	
+	bld_HandlePingHour("")
+		
 	-- Improve AI management
 	if BuildingGetAISetting("", "Produce_Selection") > 0 then
 	--	bld_SetupAI("")
 		windmill_SellOtherStuff("")
-	end
-	
-	-- Only for AI
-	
-	if BuildingGetOwner("", "MyBoss") then
-		if GetHomeBuilding("MyBoss", "MyHome") then
-			if DynastyIsShadow("MyHome") then -- shadows shall only have 1 cart
-				bld_RemoveCart("")
-			end
-			
-			if DynastyIsAI("MyHome") then
-				bld_CheckRivals("")
-				bld_CheckRepairs("")
-			end
-		end
 	end
 end

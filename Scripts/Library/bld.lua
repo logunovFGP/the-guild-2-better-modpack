@@ -808,49 +808,37 @@ end
 
 function CheckCarts(BldAlias)
 	local CartCount = BuildingGetCartCount(BldAlias)
-	if CartCount > 2 and BuildingGetCart("", 2, "CartAlias") then
-		bld_RemoveCart("", "CartAlias") -- remove third cart
+	if CartCount > 2 and BuildingGetCart(BldAlias, 2, "CartAlias") then
+		bld_RemoveCart(BldAlias, "CartAlias") -- remove third cart
 	end
 	
 	CartCount = BuildingGetCartCount(BldAlias)
 	for i=0, CartCount - 1 do
-		if BuildingGetCart("", i, "CartAlias") then
-			local Measure = GetCurrentMeasureName("CartAlias")
-			if Measure ~= "AutoRoute" and Measure ~= "AutoCart" and Measure ~= "SendCartAndUnload" then
-				MeasureRun("CartAlias", "CartAlias", "AutoCart", true)
+		if BuildingGetCart(BldAlias, i, "CartAlias") then
+			if not GetState("CartAlias", 54) then -- state_twp_autocart
+				SetState("CartAlias", 54, true)
 			end
 		end
 	end
 end
 
 function RemoveCart(BldAlias, CartAlias)
-	if not CartAlias then
-		-- default to third cart
-		local CartCount = BuildingGetCartCount(BldAlias)
-		if CartCount > 2 and BuildingGetCart("", 2, "CartAlias") then
-			CartAlias = "CartAlias"
-		else
-			return
-		end
-	end
-	if not GetState(CartAlias, STATE_CHECKFORSPINNINGS) then -- means it is standing still
-		if GetDistance(CartAlias, BldAlias) < 500 then -- is the cart at home?
+	if not GetState("CartAlias", STATE_CHECKFORSPINNINGS) then -- means it is standing still
+		if GetDistance("CartAlias", BldAlias) < 500 then -- is the cart at home?
 			-- Check for currently loaded items
 			local ItemId
 			local Found = 0
-			local Count = InventoryGetSlotCount(CartAlias, INVENTORY_STD)
+			local Count = InventoryGetSlotCount("CartAlias", INVENTORY_STD)
 			local HasItems = false
-			
 			for i=0, Count-1 do
-				ItemId, Found = InventoryGetSlotInfo(CartAlias, i, INVENTORY_STD)
-				if ItemId and ItemId > 0 and Found > 0 then
+				ItemId, Found = InventoryGetSlotInfo("CartAlias", i, INVENTORY_STD)
+				if ItemId and ItemId>0 and Found>0 then
 					HasItems = true
 				end
 			end
-			
 			if not HasItems then -- only remove cart if it is empty
-				CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
-				InternalRemove(CartAlias)
+				f_CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
+				InternalRemove("CartAlias")
 			end
 		end
 	end
@@ -966,11 +954,42 @@ function ForceLevelUp(BldAlias)
 	
 	local Proto = ScenarioFindBuildingProto(2, BuildType, BuildLevel+1, SubLevel)
 	
-	if chr_SpendMoney("MyBoss", Cost, "BuildingLevelUp") then
+	if Proto and chr_SpendMoney("MyBoss", Cost, "BuildingLevelUp") then
 		local RepeatTime = 132 - 12*ScenarioGetDifficulty()
 		SetRepeatTimer(BldAlias, "ai_ForceLevelUp", RepeatTime)
 		SetProperty(BldAlias, "LevelUpProto", Proto)
 		SetState(BldAlias, STATE_LEVELINGUP, true)
 		return
+	end
+end
+
+function HandlePingHour(BldAlias)
+	-- Check every worker every hour for bonuses from employer's abilities
+	chr_CheckWorkerBonuses(BldAlias)
+	
+	-- Check every worker (only once) for illness and equipment 
+	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
+		bld_ResetWorkers(BldAlias)
+		SetProperty(BldAlias, "CheckDefaultWorkers", 1)
+	end
+	
+	-- Improve AI management
+	if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
+	--	bld_SetupAI(BldAlias)
+	end
+	
+	-- Only for AI
+	if BuildingGetOwner(BldAlias, "MyBoss") then
+		if GetHomeBuilding("MyBoss", "MyHome") then
+			if DynastyIsAI("MyBoss") or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
+				bld_CheckCarts(BldAlias) 
+			end
+			
+			if DynastyIsAI("MyHome") then
+				bld_CheckRivals(BldAlias)
+				bld_ForceLevelUp(BldAlias)
+				bld_CheckRepairs(BldAlias)
+			end
+		end
 	end
 end

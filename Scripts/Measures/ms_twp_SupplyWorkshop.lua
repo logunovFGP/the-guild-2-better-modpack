@@ -238,10 +238,12 @@ function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
 	if NeedCount and NeedCount > 0 then
 		local CurrentItem = 1 
 		local OpenSlots = CartSlots
+		local ItemId, ReqAmount
 		while OpenSlots > 0 and CurrentItem <= NeedCount do
-			local ItemId = Needs[CurrentItem][1]
-			if ItemId then
-				local Error, ItemTransfered = Transfer("","",INVENTORY_STD,BldAlias, BldInv, ItemId, CartSlotSize)
+			ItemId = Needs[CurrentItem][1]
+			ReqAmount = Needs[CurrentItem][2]
+			if ItemId and ReqAmount > 0 then
+				local Error, ItemTransfered = Transfer("","",INVENTORY_STD,BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
 				-- 6. make sure list is repeated if slots are still available
 				if ItemTransfered and ItemTransfered > 0 then
 					-- update balance with estimated costs (TWP)
