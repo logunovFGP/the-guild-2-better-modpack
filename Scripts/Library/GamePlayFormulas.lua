@@ -644,7 +644,7 @@ end
 function BlockMusicForConcert(force)
 	SetData("#BlockMusicForConcert",force)
 	if force==1 then
-		StartHighPriorMusic(48, true)
+		StartHighPriorMusic(39, true)
 	end
 end
 

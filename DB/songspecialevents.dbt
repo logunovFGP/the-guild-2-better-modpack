@@ -43,5 +43,8 @@ Data:
 36 "pirate" "80_pirate.ogg" 1 "86_sailing_under_pirate_flag1.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 37 "fisherman" "81_Fisherman.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 38 "war" "200_war.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
+39 "Silence" "Silence.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 47 "graveyard" "202_crypt.ogg" 1 "47_situation_suspense3.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
-48 "concert" "Silence.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
+48 "Drey_Weiber" "Versengold_Drey_Weiber_TG2Ren_Special.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
+49 "Fass_Wein" "Versengold_Ich_und_ein_Fass_voller_Wein_TG2Ren_Special.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
+50 "Unten_Treten" "Versengold_Immer_schoen_nach_unten_treten_TG2Ren_Special.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 

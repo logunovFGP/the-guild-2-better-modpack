@@ -84,6 +84,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Die Angestellten des Landsitzes konnten keine Stufen aufsteigen.
 - Exploit: Angestellte, die automatisch Waffen und Rüstungen bekamen (Wohnsitz-Upgrades/Landsitz) hatten ein zu geringes Handgeld.
 - Versengold kündigt nun wieder mittels eines Timers ihren Auftritt an.
+- Versengolds Lied wird nicht länger beendet, wenn man die Taverne verlässt: Hat mindestens ein Spieler seinen Charakter vor Ort, wird das Lied als Hintergrundmusik abgespielt.
+  Ansonsten wird das Lied neugestartet (und vorzeitig beendet, wenn die Animation zu Ende ist).
 
 ** Features **
 

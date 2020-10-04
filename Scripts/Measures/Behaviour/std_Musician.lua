@@ -1,44 +1,52 @@
 function Run()
-	SetState("",STATE_TOWNNPC,true)
+	SetState("", STATE_TOWNNPC, true)
 
 	while true do
 		std_musician_ResetComeOver()
 		
-		if GetData("#MusicStage")>0 then
+		if GetData("#MusicStage") > 0 then
 			-- destination was selected, stop resting and start concert
-			SetData("#RestPlace",0)
+			SetData("#RestPlace", 0)
 			std_musician_StartConcert()
-		elseif GetData("#RestPlace")>0 then
+		elseif GetData("#RestPlace") > 0 then
 			-- time to rest
 			std_musician_Rest()
-		elseif GetID("#Musician1")==GetID("") then
+		elseif GetID("#Musician1") == GetID("") then
 			-- leader may choose new location
-			if HasProperty("","MusicStage") then
-				RemoveProperty("","MusicStage")
+			if HasProperty("", "MusicStage") then
+				RemoveProperty("", "MusicStage")
 			end
-			if HasProperty("","StartConcert") then
-				RemoveProperty("","StartConcert")
+			
+			if HasProperty("", "StartConcert") then
+				RemoveProperty("", "StartConcert")
 			end
 
-			local CurrentTime = math.mod(GetGametime(),24)
+			local CurrentTime = math.mod(GetGametime(), 24)
 			local cities = ScenarioGetObjects("Settlement", 10, "city")
 			local CityIndex = Rand(cities)
-
-			if Rand(100) < 64 or CurrentTime < 4 or CurrentTime > 14 then
-				-- find a good place to rest
-				if CityGetRandomBuilding("city"..CityIndex, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
-					SetData("#RestPlace",GetID("Destination"))
+			
+			if ReadyToRepeat("#Musician1", "AI_Concert") then
+				if CurrentTime < 4 or CurrentTime > 18 then
+					-- find a good place to rest
+					if CityGetRandomBuilding("city"..CityIndex, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
+						SetData("#RestPlace",GetID("Destination"))
+					end
+				else
+					std_musician_FindConcertDestination(CityIndex)
 				end
 			else
-				std_musician_FindConcertDestination(CityIndex)
+				-- find a good place to rest
+				if CityGetRandomBuilding("city"..CityIndex, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
+					SetData("#RestPlace", GetID("Destination"))
+				end
 			end
 		else
-			if HasProperty("","MusicStage") then
-				RemoveProperty("","MusicStage")
+			if HasProperty("", "MusicStage") then
+				RemoveProperty("", "MusicStage")
 			end
 		end
 		
-		Sleep(Rand(3)+1)
+		Sleep(10)
 	end
 end
 
@@ -300,37 +308,37 @@ function StartConcert()
 	local type = -1
 
 	if GetAliasByID(stage,"stageobj") then
-		if BuildingGetType("stageobj")==GL_BUILDING_TYPE_TAVERN then
+		if BuildingGetType("stageobj") == GL_BUILDING_TYPE_TAVERN then
 			type = 0
-		elseif BuildingGetType("stageobj")==GL_BUILDING_TYPE_PIRAT then
+		elseif BuildingGetType("stageobj") == GL_BUILDING_TYPE_PIRAT then
 			type = 1
 		end
 	end
 
-	if type==-1 then
+	if type == -1 then
 		-- something went wrong with the destination, cancel concert
-		if GetID("")==GetID("#Musician1") then
-			SetData("#MusicStage",0)
+		if GetID("") == GetID("#Musician1") then
+			SetData("#MusicStage", 0)
 		end
-		Sleep(3)
+		Sleep(1)
 		return
 	end
 	
-	SetProperty("","Moving",1)
-	if not f_MoveTo("","stageobj",GL_MOVESPEED_RUN) then
+	SetProperty("", "Moving", 1)
+	if not f_MoveTo("", "stageobj", GL_MOVESPEED_RUN) then
 		LogMessage(GetID("").." can't move to "..GetID("placeobj"));
 		--SimBeamMeUp("", "stageobj")
 	end
-	RemoveProperty("","Moving")
+	RemoveProperty("", "Moving")
 
-	if GetID("")==GetID("#Musician1") then
+	if GetID("") == GetID("#Musician1") then
 		-- only the leader
 		local CurrentTime = math.mod(GetGametime(),24)
 		local StartTime = 0
 		local DestTime = 0
 		local Round = GetRound()
 
-		if (9 < CurrentTime and CurrentTime < 15) or (0 < CurrentTime and CurrentTime < 2) then
+		if (9 < CurrentTime and CurrentTime < 16) or (0 < CurrentTime and CurrentTime < 2) then
 			StartTime = CurrentTime + 3
 			DestTime = CurrentTime + 3
 		elseif 2 < CurrentTime and CurrentTime < 9 then
@@ -349,7 +357,7 @@ function StartConcert()
 		MsgNewsNoWait("All","stageobj","@C[@L_MESSAGES_UPCOMING_CONCERT_COOLDOWN_+0,%4i,%5l]","default",-1,
 				       "@L_MESSAGES_UPCOMING_CONCERT_HEADER_+0",
 				       "@L_MESSAGES_UPCOMING_CONCERT_BODY_+0",
-				       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"),DestTime,ID)
+				       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"), DestTime,ID)
 
 		SetData("#HaveFunTime",StartTime)
 		
@@ -400,76 +408,97 @@ function StartConcert()
 	SetProperty("","MusicStage",stage)
 	
 	while true do
-		if GetID("")==GetID("#Musician1") then
+		if GetID("") == GetID("#Musician1") then
 			if (HasProperty("#Musician2","MusicStage") and GetProperty("#Musician2","MusicStage")==stage) and
 				 (HasProperty("#Musician3","MusicStage") and GetProperty("#Musician3","MusicStage")==stage) and
 				 (HasProperty("#Musician4","MusicStage") and GetProperty("#Musician4","MusicStage")==stage) and
 				 (HasProperty("#Musician5","MusicStage") and GetProperty("#Musician5","MusicStage")==stage) then
 				Sleep(3)
 
-				if not IsMultiplayerGame() then
-					if CameraIndoorGetBuilding("BuildingCam") then
-						if GetID("stageobj")==GetID("BuildingCam") then
+				--if not IsMultiplayerGame() then
+				--	if CameraIndoorGetBuilding("BuildingCam") then
+				--		if GetID("stageobj")==GetID("BuildingCam") then
 							ResetGamespeed()
-							gameplayformulas_BlockMusicForConcert(1)
-						end
-					end
-				end
+--							gameplayformulas_BlockMusicForConcert(1)
+				--		end
+				--	end
+				--end
 
 				math.randomseed(GetGametime())
 				
 				local tmprand = Rand(100)+1
-				SetProperty("","StartConcert",tmprand) --choose a random song
+				SetProperty("", "StartConcert",tmprand) --choose a random song
 				break
 			end
-		elseif HasProperty("#Musician1","StartConcert") then
+		elseif HasProperty("#Musician1", "StartConcert") then
 			break
 		end
 		Sleep(3)
 	end
 
-	if GetID("")==GetID("#Musician1") then
-		SetProperty("stageobj","Versengold",1)
+	if GetID("") == GetID("#Musician1") then
+		SetProperty("stageobj", "Versengold", 1)
 	end
-
+	
+	local NextConcert = 24 + Rand(72)
+	SetRepeatTimer("#Musician1", "AI_Concert", NextConcert)
+	
 	--play the song
-	local thesong = GetProperty("#Musician1","StartConcert")
-	if thesong<34 then
+	local thesong = GetProperty("#Musician1", "StartConcert")
+	if thesong < 34 then
 		std_musician_Drey_Weyber()
-	elseif thesong<67 then
+	elseif thesong < 67 then
 		std_musician_Immer_schoen_nach_unten_treten()
 	else
 		std_musician_Ich_und_ein_Fass_voller_Wein()
 	end
 
-	RemoveProperty("","MusicStage")
+	RemoveProperty("", "MusicStage")
 
 	while true do
-		if GetID("")==GetID("#Musician1") then
-			if not HasProperty("#Musician2","MusicStage") and 
-				 not HasProperty("#Musician3","MusicStage") and
-				 not HasProperty("#Musician4","MusicStage") and
-				 not HasProperty("#Musician5","MusicStage") then
+		if GetID("") == GetID("#Musician1") then
+			if not HasProperty("#Musician2", "MusicStage") and 
+				 not HasProperty("#Musician3", "MusicStage") and
+				 not HasProperty("#Musician4", "MusicStage") and
+				 not HasProperty("#Musician5", "MusicStage") then
 
-				RemoveProperty("","StartConcert")
-				RemoveProperty("stageobj","Versengold")
+				RemoveProperty("", "StartConcert")
+				RemoveProperty("stageobj", "Versengold")
 				break
 			end
-		elseif not HasProperty("#Musician1","StartConcert") then
+		elseif not HasProperty("#Musician1", "StartConcert") then
 			break
 		end
 		Sleep(1)
 	end
-
-	if GetID("")==GetID("#Musician1") then
-		PlaySound3D("", "CharacterFX/applause_loop/applause_loop+0.ogg", 1.0)
+	
+	if GetID("") == GetID("#Musician1") then
+		PlaySound3D("",  "CharacterFX/applause_loop/applause_loop+0.ogg", 1.0)
 	end
 
-	PlayAnimation("","bow")
-	Sleep(1)
-	PlayAnimation("","bow")
+	PlayAnimation("", "bow")
+	Sleep(0.4)
+	PlayAnimation("", "bow")
 	
-	f_EndUseLocator("","PlayPos")
+	f_EndUseLocator("", "PlayPos")
+end
+
+function HasHumanPartyMembers(Alias)
+	local Check = false
+	
+	if GetInsideRoom(Alias, "Tavern") then
+		RoomGetInsideSimList("Tavern", "visitor_list")
+		local num = ListSize("visitor_list")
+		for i=0, num-1 do 
+			ListGetElement("visitor_list", i, "SimToCheck")
+			if IsDynastySim("SimToCheck") and DynastyIsPlayer("SimToCheck") then
+				Check = true
+				break
+			end
+		end
+	end
+	
+	return Check
 end
 
 function Drey_Weyber()
@@ -479,15 +508,22 @@ function Drey_Weyber()
 	local stage = GetData("#MusicStage")
 	local theend = false
 
-	if GetID("")==GetID("#Musician1") then
-		PlaySound3D("", "versengold/Versengold__Drey_Weiber__TG2Ren_Special.wav", 1.0)
+	if GetID("") == GetID("#Musician1") then
+		if std_musician_HasHumanPartyMembers("") then
+			StartHighPriorMusic(48, true) -- drey weiber
+		else
+			gameplayformulas_BlockMusicForConcert(1)
+			Attach3DSound("", "versengold/Versengold__Drey_Weiber__TG2Ren_Special.wav", 1.0)
+		end
 	end
-
+	
 	while true do
-		if GetID("")==GetID("#Musician1") then
+		if GetID("") == GetID("#Musician1") then
 			if GetGametime() > EndTime then
 				gameplayformulas_BlockMusicForConcert(0)
-				SetData("#MusicStage",0)
+				StartHighPriorMusic(39, true) -- Silence
+				Detach3DSound("")
+				SetData("#MusicStage", 0)
 				break
 			elseif (GetGametime() > (StartTime + 2.48)) and (GetGametime() < (StartTime + 2.96)) then
 				--Solo
@@ -564,7 +600,7 @@ function Drey_Weyber()
 				end
 
 			else
-				PlayAnimation("","play_instrument_01_loop")
+				PlayAnimation("", "play_instrument_01_loop")
 			end
 			
 		elseif GetID("")==GetID("#Musician4") then
@@ -636,14 +672,21 @@ function Immer_schoen_nach_unten_treten()
 	local theend = false
 
 
-	if GetID("")==GetID("#Musician1") then
-		PlaySound3D("", "versengold/Versengold__Immer_schoen_nach_unten_treten__TG2Ren_Special.wav", 1.0)
+	if GetID("") == GetID("#Musician1") then
+		if std_musician_HasHumanPartyMembers("") then
+			StartHighPriorMusic(50, true) -- unten treten
+		else
+			gameplayformulas_BlockMusicForConcert(1)
+			Attach3DSound("", "versengold/Versengold__Immer_schoen_nach_unten_treten__TG2Ren_Special.wav", 1.0)
+		end
 	end
 
 	while true do
-		if GetID("")==GetID("#Musician1") then
+		if GetID("") == GetID("#Musician1") then
 			if GetGametime() > EndTime then
 				gameplayformulas_BlockMusicForConcert(0)
+				StartHighPriorMusic(39, true) -- Silence
+				Detach3DSound("")
 				SetData("#MusicStage",0)
 				break
 			elseif ((GetGametime() > (StartTime + 0.23)) and (GetGametime() < (StartTime + 0.33))) or
@@ -796,14 +839,21 @@ function Ich_und_ein_Fass_voller_Wein()
 	local stage = GetData("#MusicStage")
 	local theend = false
 
-	if GetID("")==GetID("#Musician1") then
-		PlaySound3D("", "versengold/Versengold__Ich_und_ein_Fass_voller_Wein__TG2Ren_Special.wav", 1.0)
+	if GetID("") == GetID("#Musician1") then
+		if std_musician_HasHumanPartyMembers("") then
+			StartHighPriorMusic(49, true) -- fass wein
+		else
+			gameplayformulas_BlockMusicForConcert(1)
+			Attach3DSound("", "versengold/Versengold__Ich_und_ein_Fass_voller_Wein__TG2Ren_Special.wav", 1.0)
+		end
 	end
 
 	while true do
-		if GetID("")==GetID("#Musician1") then
+		if GetID("") == GetID("#Musician1") then
 			if GetGametime() > EndTime then
 				gameplayformulas_BlockMusicForConcert(0)
+				StartHighPriorMusic(39, true) -- Silence
+				Detach3DSound("")
 				SetData("#MusicStage",0)
 				break
 			elseif (GetGametime() < (StartTime + 0.06)) or (GetGametime() > (StartTime + 3.38)) then

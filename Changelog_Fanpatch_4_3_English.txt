@@ -78,6 +78,8 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - The employees of the country estate did not gain XP / levelups.
 - Exploit: Employees of the country estate and residence (with upgrades) who started with high level equipment now have the correct handsel.
 - The timer of Versengold's concert has been fixed.
+- Versengold's song is played as background music (and thus no longer stopped if you tab out of the building) if at least one human player has a character inside the tavern.
+  If not it restarts once you enter the building's indoor scene (and ends once the animation is completed)
 
 ** Features **
 
