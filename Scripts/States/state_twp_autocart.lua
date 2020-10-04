@@ -14,7 +14,7 @@ function Run()
 	end
 	if not GetSettlement("MyHome", "MyCity") then
 		return 
-	end 
+	end
 	if not GetOutdoorMovePosition("", "MyHome", "HomePos") then
 		return
 	end
@@ -64,6 +64,9 @@ function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, City
 			RemoveItems("", "EmptySlot", CartSlotSize, INVENTORY_STD)
 			local ItemId = Profits[CurrentItem][1]
 			local Error, ItemTransfered = Transfer("","",INVENTORY_STD,"MyHome",INVENTORY_STD, ItemId, CartSlotSize)
+			if ItemTransfered < CartSlotSize then
+				local Error, ItemTransfered = Transfer("","",INVENTORY_STD,"MyHome",INVENTORY_SELL, ItemId, CartSlotSize - ItemTransfered)
+			end
 			-- 6. make sure list is repeated if slots are still available
 			CurrentItem = math.mod(CurrentItem, ProfitCount) + 1 
 		end 
@@ -126,7 +129,7 @@ function CalcProfits(MarketAlias, HomeAlias)
 
 	local Count, Items = economy_GetItemsForSale(HomeAlias)
 	for i = 1, Count do
-		local Amount = GetItemCount(HomeAlias, Items[i])
+		local Amount = GetItemCount(HomeAlias, Items[i], INVENTORY_STD) + GetItemCount(HomeAlias, Items[i], INVENTORY_SELL)
 		local Profit = Amount *	ItemGetPriceSell(Items[i], MarketAlias) 
 		if Amount > 0 and Profit > 500 then
 			ProfitCount = ProfitCount + 1
@@ -158,7 +161,8 @@ function CalcResourceNeeds(BldAlias)
 		-- need resources when stores down to 40%
 		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.4 then
 			NeedCount = NeedCount + 1
-			Needs[NeedCount] = {Items[i][1], ActualNeed}
+			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
+			Needs[NeedCount] = {Items[i][1], math.min(InvSpace, ActualNeed)}
 		end
 	end
 	-- no current needs
@@ -192,11 +196,10 @@ function GetResourceNeeds(BldAlias)
 		Count = Count + 1
 		Ids[Count] = ItemGetID(Id)
 	end
-	local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
 	local i = 0
 	for Amount in string.gfind(AmountsString, "%d+") do
 		i = i + 1
-		Items[i] = { Ids[i], math.min(InvSpace, Amount) }
+		Items[i] = { Ids[i], Amount }
 	end
 	return Count, Items
 end

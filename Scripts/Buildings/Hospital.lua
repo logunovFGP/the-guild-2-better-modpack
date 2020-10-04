@@ -90,5 +90,5 @@ function PingHour()
 		hospital_CheckForStuckedMedics("")
 	end
 
-	bld_HandlePingHour("")
+	bld_HandlePingHour("", true)
 end

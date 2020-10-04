@@ -10,7 +10,9 @@ function GameStart()
 	end
 	
 	local Level = CityGetLevel("City")
+	marketpinghour_CheckResources(Level)
 	
+	-- initialize some other items at game start
 	marketpinghour_CheckItem(Level, "FlowerOfDiscord", 1, 3)
 	marketpinghour_CheckItem(Level, "Perfume", 4, 8)
 	marketpinghour_CheckItem(Level, "CartBooster", 4, 10)
@@ -27,66 +29,63 @@ function GameStart()
 	marketpinghour_CheckItem(Level, "Dagger", 2, 4)
 	marketpinghour_CheckItem(Level, "SilverRing", 4, 8)
 	marketpinghour_CheckItem(Level, "FarmersClothes", 4, 8)
-	marketpinghour_CheckItem(Level, "Charcoal", 4, 12)
-	marketpinghour_CheckItem(Level, "Wool", 4, 12)
-	marketpinghour_CheckItem(Level, "Iron", 4, 12)
-	marketpinghour_CheckItem(Level, "Silver", 4, 12)
-	marketpinghour_CheckItem(Level, "Oakwood", 4, 12)
-	marketpinghour_CheckItem(Level, "Pinewood", 4, 12)
-	marketpinghour_CheckItem(Level, "Leather", 4, 12)
-	marketpinghour_CheckItem(Level, "Wheat", 4, 12)
-	marketpinghour_CheckItem(Level, "Barley", 4, 12)
-	marketpinghour_CheckItem(Level, "Fungi", 4, 12)
-	marketpinghour_CheckItem(Level, "Blackberry", 2, 8)
-	marketpinghour_CheckItem(Level, "Fruit", 4, 12)
-	marketpinghour_CheckItem(Level, "Honey", 4, 12)
-	marketpinghour_CheckItem(Level, "WheatFlour", 4, 12)
-	marketpinghour_CheckItem(Level, "BarleyFlour", 4, 12)
-	marketpinghour_CheckItem(Level, "Dye", 4, 12)
-
-	GetScenario("World")
-	if HasProperty("World","seamap") then
-		marketpinghour_CheckItem(Level, "Herring", 4, 12)
-		marketpinghour_CheckItem(Level, "Salmon", 2, 4)
-	else
-		marketpinghour_CheckItem(Level, "Herring", 6, 18)
-		marketpinghour_CheckItem(Level, "Salmon", 3, 6)
-	end
 end
 
 
 function PingHour()
 	marketpinghour_RemoveItemMarket()
 	
-	GetScenario("World")
-	if not HasProperty("World","seamap") then
+	if math.mod(GetGametime(), 3) == 2 then -- at 2, 5, 8, 11, ...
 		if GetSettlement("", "City") then
-			if not CityIsKontor("City") then
-				local Level = CityGetLevel("City")
-				if Rand(4)==0 then
-					marketpinghour_CheckItem(Level, "Herring", 6, 18)
-				end
-				if Rand(5)==0 then
-					marketpinghour_CheckItem(Level, "Salmon", 3, 6)
-				end
-			end
+			local Level = CityGetLevel("City")
+			marketpinghour_CheckResources(Level)
 		end
 	end
 end
 
+function CheckResources(CityLevel)
+	local Difficulty = ScenarioGetDifficulty() -- easy 0, 1, 2, 3, 4 hard
+	-- Easy, Very easy: always
+	--    Normal: 12 - 6 = 6 rounds
+	--      Hard: 12 - 9 = 3 rounds
+	-- Very hard: 12 - 12 = 0 rounds
+	local AddMissing = Difficulty < 2 or GetRound() < 12 - (3 * Difficulty)
+	
+	-- woodcutter
+	marketpinghour_CheckItem(CityLevel, "Charcoal", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Oakwood", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Pinewood", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Fungi", 4, 12, AddMissing)
+	-- mine
+	marketpinghour_CheckItem(CityLevel, "Iron", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Silver", 4, 12, AddMissing)
+	-- farm
+	marketpinghour_CheckItem(CityLevel, "Wool", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Wheat", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Barley", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Leather", 4, 12, AddMissing)
+	-- orchard
+	marketpinghour_CheckItem(CityLevel, "Fruit", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "Honey", 4, 12, AddMissing)
+	-- miller
+	marketpinghour_CheckItem(CityLevel, "WheatFlour", 4, 12, AddMissing)
+	marketpinghour_CheckItem(CityLevel, "BarleyFlour", 4, 12, AddMissing)
+	-- other	
+	marketpinghour_CheckItem(CityLevel, "Dye", 4, 12, AddMissing)
 
-function CheckItem(CityLevel, Item, MinCount, MaxCount)
-	local Wanted = 0
-	
-	if MinCount == -1 then
-		local	Value = 3 + 2*GetRound()
-		if Rand(Value)==0 then
-			Wanted = 1
-		end	
+	GetScenario("World")
+	if HasProperty("World","seamap") then
+		marketpinghour_CheckItem(CityLevel, "Herring", 4, 12, AddMissing)
+		marketpinghour_CheckItem(CityLevel, "Salmon", 2, 4, AddMissing)
 	else
-		Wanted = MinCount + math.floor( (Rand(5) + MaxCount - MinCount)*CityLevel/5)
+		marketpinghour_CheckItem(CityLevel, "Herring", 6, 18, AddMissing)
+		marketpinghour_CheckItem(CityLevel, "Salmon", 3, 6, AddMissing)
 	end
-	
+end
+
+function CheckItem(CityLevel, Item, MinCount, MaxCount, AddMissing)
+	AddMissing = AddMissing or true 
+	local Wanted = MinCount + Rand(5) + math.floor((MaxCount - MinCount)*CityLevel/5)
 	local Count = GetItemCount("", Item, INVENTORY_STD)
 	if Count < Wanted then
 		AddItems("", Item, Wanted - Count, INVENTORY_STD)

@@ -221,6 +221,12 @@ function Run()
 end
 
 function CheckAvailability(BldAlias, NeedCount, Needs)
+	-- can only buy from market if I have enough money
+	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or GetDynastyID("") ~= GetDynastyID(BldAlias) then
+		if GetMoney("") < 200 then
+			return false
+		end
+	end
 	for i = 1, NeedCount do
 		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1]) > 0 then
 			return true
@@ -256,6 +262,9 @@ function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
 					-- slot not used, keep going
 					CurrentItem = CurrentItem + 1
 				end 
+			else
+				-- invalid item, check next item
+				CurrentItem = CurrentItem + 1
 			end
 		end
 	end
@@ -275,8 +284,8 @@ function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
 		-- need resources when stores down to 60%
 		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.6 then
 			NeedCount = NeedCount + 1
-			ActualNeed = math.ceil(ActualNeed/MaxNeed * 100)
-			Needs[NeedCount] = {Resources[i][1], ActualNeed}
+			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
+			Needs[NeedCount] = {Resources[i][1], math.min(InvSpace, ActualNeed)}
 		end
 	end
 	-- no current needs

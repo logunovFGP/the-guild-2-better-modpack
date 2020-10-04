@@ -28,5 +28,5 @@ function PingHour()
 		PlaySound3D("", "locations/bell_stroke_church_loop+0.wav", 2.0)
 	end
 	
-	bld_HandlePingHour("")
+	bld_HandlePingHour("", true)
 end

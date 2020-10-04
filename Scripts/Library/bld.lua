@@ -816,7 +816,10 @@ function CheckCarts(BldAlias)
 	for i=0, CartCount - 1 do
 		if BuildingGetCart(BldAlias, i, "CartAlias") then
 			if not GetState("CartAlias", 54) then -- state_twp_autocart
-				SetState("CartAlias", 54, true)
+				local Measure = GetCurrentMeasureName("CartAlias")
+				if Measure ~= "AutoRoute" and Measure ~= "SupplyWorkshop" and Measure ~= "SalesCart" and Measure ~= "SendCartAndUnload" then
+					SetState("CartAlias", 54, true)
+				end
 			end
 		end
 	end
@@ -963,7 +966,7 @@ function ForceLevelUp(BldAlias)
 	end
 end
 
-function HandlePingHour(BldAlias)
+function HandlePingHour(BldAlias, ForceLevelUp)
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses(BldAlias)
 	
@@ -986,8 +989,10 @@ function HandlePingHour(BldAlias)
 			end
 			
 			if DynastyIsAI("MyHome") then
+				if ForceLevelUp then
+					bld_ForceLevelUp(BldAlias)
+				end
 				bld_CheckRivals(BldAlias)
-				bld_ForceLevelUp(BldAlias)
 				bld_CheckRepairs(BldAlias)
 			end
 		end

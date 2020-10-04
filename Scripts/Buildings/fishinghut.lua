@@ -106,7 +106,7 @@ function TransferHerring()
 end
 
 function PingHour()
-	bld_HandlePingHour("")
+	bld_HandlePingHour("", true)
 	
 	if BuildingGetOwner("","MyBoss") then
 		if GetHomeBuilding("MyBoss", "MyHome") then
