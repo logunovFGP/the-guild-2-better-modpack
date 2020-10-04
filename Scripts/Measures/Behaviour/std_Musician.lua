@@ -26,7 +26,7 @@ function Run()
 			local CityIndex = Rand(cities)
 			
 			if ReadyToRepeat("#Musician1", "AI_Concert") then
-				if CurrentTime < 4 or CurrentTime > 18 then
+				if CurrentTime < 4 or CurrentTime > 18 or Rand(100) > 27 then
 					-- find a good place to rest
 					if CityGetRandomBuilding("city"..CityIndex, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
 						SetData("#RestPlace",GetID("Destination"))
@@ -357,7 +357,7 @@ function StartConcert()
 		MsgNewsNoWait("All","stageobj","@C[@L_MESSAGES_UPCOMING_CONCERT_COOLDOWN_+0,%4i,%5l]","default",-1,
 				       "@L_MESSAGES_UPCOMING_CONCERT_HEADER_+0",
 				       "@L_MESSAGES_UPCOMING_CONCERT_BODY_+0",
-				       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"), DestTime,ID)
+				       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"), DestTime, ID)
 
 		SetData("#HaveFunTime",StartTime)
 		
@@ -440,7 +440,7 @@ function StartConcert()
 		SetProperty("stageobj", "Versengold", 1)
 	end
 	
-	local NextConcert = 24 + Rand(72)
+	local NextConcert = 12 + Rand(48)
 	SetRepeatTimer("#Musician1", "AI_Concert", NextConcert)
 	
 	--play the song
