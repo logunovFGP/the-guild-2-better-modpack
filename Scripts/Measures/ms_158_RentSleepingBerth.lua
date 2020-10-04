@@ -59,21 +59,22 @@ function Run()
 	
 	local	HasToSleep = 6
 	if GetImpactValue("","SleepRecoverBonus")>0 then
-		HasToSleep = 3
+		HasToSleep = HasToSleep - ((GetImpactValue("","SleepRecoverBonus")*0.01)*HasToSleep)
 	end
+	SetData("Duration", HasToSleep)
 	
-	local WasSick = false
 	if GetImpactValue("","Sickness")>0 then
-		WasSick = true
+		HasToSleep = HasToSleep * 2
 	end
 
 	local CurrentHP = GetHP("")
 	local MaxHP = GetMaxHP("")
 	local ToHeal = MaxHP - CurrentHP
 	local HealPerTic = ToHeal / (HasToSleep * 10)
-	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
 	
-	local EndTime = GetGametime() + HasToSleep
+	local CurrentTime = GetGametime()
+	SetData("StartTime", CurrentTime)
+	local EndTime = CurrentTime + HasToSleep
 	-- increase the hp due to the recover factor for the tavern
 	while GetGametime() < EndTime do
 		
@@ -86,47 +87,7 @@ function Run()
 		
 	end
 	
-	-- Cure Cold, Sprain and Influenza
-	if WasSick == true then
-		diseases_Cold("",false)
-		diseases_Sprain("",false)
-		diseases_Influenza("",false)
-		if HeavySleep == true then  -- Deep sleep ability?
-			diseases_Pneumonia("",false)
-		end
-	end
 	-- end sleeping
-	
-	BuildingGetOwner("Tavern","TheOwner")  -- Owner has the best house ability?
-	local BestHouse = SimHasAbility("TheOwner",16)
-	
-	if HeavySleep == true or BestHouse == true or Rand(5)<3 then
-		-- Good dreamcase 0,1,2 or with ability 
-		AddImpact("","rhetoric",1,12)
-		AddImpact("","craftsmanship",1,12)
-		AddImpact("","charisma",1,12)
-		AddImpact("","constitution",1,12)
-		AddImpact("","dexterity",1,12)
-		AddImpact("","shadow_arts",1,12)
-		AddImpact("","fighting",1,12)
-		AddImpact("","secret_knowledge",1,12)
-		AddImpact("","bargaining",1,12)
-		AddImpact("","empathy",1,12)
-		AddImpact("","GoodDream",1,12)
-	else 
-		-- Bad dreamcase 3,4
-		AddImpact("","rhetoric",-1,6)
-		AddImpact("","craftsmanship",-1,6)
-		AddImpact("","charisma",-1,6)
-		AddImpact("","constitution",-1,6)
-		AddImpact("","dexterity",-1,6)
-		AddImpact("","shadow_arts",-1,6)
-		AddImpact("","fighting",-1,6)
-		AddImpact("","secret_knowledge",-1,6)
-		AddImpact("","bargaining",-1,6)
-		AddImpact("","empathy",-1,6)
-		AddImpact("","BadDream",1,6)
-	end
 
 	f_EndUseLocator("", "SleepingBerth", GL_STANCE_STAND)
 	
@@ -149,6 +110,89 @@ function CleanUp()
 		f_EndUseLocator("", "SleepingBerth", GL_STANCE_STAND)
 	end
 	feedback_OverheadComment("Owner")
+	
+	-- get the tavern
+	if not GetInsideBuilding("", "Tavern") then
+		return
+	end
+	
+	local Time = GetGametime()
+	local Start = Time
+	if HasData("StartTime") and GetData("StartTime")~=nil then
+		Start = GetData("StartTime")
+	else
+		return
+	end
+	local duration = 6
+	if HasData("Duration") and GetData("Duration")~=nil then
+		duration = GetData("Duration")
+	else
+		return
+	end
+	
+	local Factor = (Time - Start) / duration
+	if Factor>1 then
+		Factor = 1
+	elseif Factor<0.05 then
+		return
+	end
+	
+	Factor=Factor*Factor*100
+		
+	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
+	
+	BuildingGetOwner("Tavern","TheOwner")  -- Owner has the best house ability?
+	local BestHouse = SimHasAbility("TheOwner",16)
+	
+	-- Cure Cold, Sprain and Influenza
+	if GetImpactValue("","Sickness")>0 and Factor>Rand(100) then
+		diseases_Cold("",false)
+		diseases_Sprain("",false)
+		diseases_Influenza("",false)
+		if HeavySleep == true then  -- Deep sleep ability?
+			diseases_Pneumonia("",false)
+		end
+	end	
+	
+	local SleepBonus=3
+
+	if HeavySleep == true then
+		Factor=Factor+20
+		SleepBonus=5
+	elseif BestHouse == true then
+		Factor=Factor+20
+	end
+	if (Factor-20)>Rand(100) then
+		if SimGetClass("")==1 then
+			AddImpact("","constitution",1,12)
+			AddImpact("","empathy",1,12)
+			AddImpact("","bargaining",1,12)
+		elseif SimGetClass("")==2 then
+			AddImpact("","constitution",1,12)
+			AddImpact("","dexterity",1,12)
+			AddImpact("","craftsmanship",1,12)
+		elseif SimGetClass("")==3 then
+			AddImpact("","charisma",1,12)
+			AddImpact("","rhetoric",1,12)
+			AddImpact("","secret_knowledge",1,12)
+		elseif SimGetClass("")==4 then
+			AddImpact("","constitution",1,12)
+			AddImpact("","fighting",1,12)
+			AddImpact("","shadow_arts",1,12)
+		end
+		if Rand(100)>96 then
+			AddImpact("","LifeExpanding",SleepBonus,-1)
+		elseif Rand(4)>2 then
+			AddImpact("","Resist",1,SleepBonus*Factor/50)
+			AddImpact("","ResistDream",1,SleepBonus*Factor/50)
+		else
+			chr_GainXP("",Factor)
+		end
+		AddImpact("","GoodDream",1,12)
+	else 
+		chr_GainXP("",Factor)
+		AddImpact("","BadDream",1,12)
+	end
 end
 
 function GetOSHData(MeasureID)
