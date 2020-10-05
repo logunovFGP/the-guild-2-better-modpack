@@ -3,7 +3,7 @@ MegaModPack Reforged - Lite 0.1
 ** Credits **
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommi
+Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
 GUI: MoK
 Icons: Fajeth, F-Man
@@ -90,6 +90,8 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
 - Größere Übersichtskarte (GUI).
 - Größeres Gebäude-Upgradefenster (GUI).
+- Wichtige Personen-Liste überarbeitet. Zur Schonung der Performance werden die Familienmitglieder von Schattendynastien nicht mehr angezeigt. Dafür kann man sich nun
+  Arbeitslose anzeigen lassen.
 - Gesichtstexturen für alle Charaktere überarbeitet/hinzugefügt (Männer, Frauen und Kinder)
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!

@@ -3,7 +3,7 @@ MegaModPack Reforged - Lite 0.1
 ** Credits **
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommi
+Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
 GUI: MoK
 Icons: Fajeth, F-Man
@@ -87,6 +87,7 @@ Additional Support: McCoy! + The Guild 2 Community + Many translators!
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
 - Added a bigger world map (GUI).
 - Added a bigger building upgrade sheet (GUI).
+- Important persons list has been reworked. To improve the performance you only see one family member of shadow dynasties. You have a list of unemployed workers now.
 - Improved and added new character faces (men, women and children).
 - The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
 - Trade routes have been reworked completely.
