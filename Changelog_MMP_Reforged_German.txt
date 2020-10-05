@@ -3,7 +3,7 @@ MegaModPack Reforged - Lite 0.1
 ** Credits **
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96
+Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommi
 Maps: Fajeth
 GUI: MoK
 Icons: Fajeth, F-Man
@@ -14,17 +14,14 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 
 ** Allgemeines **
 
-- Scripte aufgeräumt: Einrückungen und Leerzeichen in den Scripten korrigiert. Absätze und Kommentare hinzugefügt. Funktionen + Aufbau optimiert.
-- Scripte aufgeräumt: Einige redundante Impacts entfernt.
-- Ungenutzte Dateien separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich).
-- Unnötige Cutscene-Aufteilung aus mehreren Scripten entfernt.
-- SetRepeatTimer mit SetMeasureRepeat bei mehreren Maßnahmen ersetzt (performanter und beugt Fehlern vor).
+- Scripte aufgeräumt: Lesbarkeit verbessert, Funktionen + Aufbau optimiert, überflüssigen Code entfernt, Gestaltung der Scripte vereinheitlicht.
+- Ungenutzte Scripte separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim manuellen Anheuern mehr.
+- Mitarbeiter lassen sich nicht mehr heiraten.
 - Es wurden die original Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert).
 - Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte. Nutzt die Maßnahme 'Gruppe verwalten' (hinter dem Button zum Inventar öffnen).
 - Die Option (Häufigkeit der) Amtssitzungen wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte. Die Standardeinstellung ist: alle 2 Runden.
-- Das Standard-KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
-- Angestellte lassen sich nicht mehr heiraten.
+- Das KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
 - Duelle laufen etwas flüssiger nun ab.
@@ -36,7 +33,7 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 
 - Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
-- Der vergiftete Kuchen senkte nicht die Kampfkraft des Opfers.
+- Der 'vergiftete Kuchen' senkte nicht die Kampfkraft des Opfers.
 - Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
 - Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
   um Patienten zu behandeln.
@@ -93,17 +90,16 @@ Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
 - Größere Übersichtskarte (GUI).
 - Größeres Gebäude-Upgradefenster (GUI).
-- Gesichtstexturen der weiblichen Charaktere angepasst
+- Gesichtstexturen für alle Charaktere überarbeitet/hinzugefügt (Männer, Frauen und Kinder)
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
-- Die automatischen Handelsrouten wurden komplett überarbeitet (alle Credits gehen an ThreeOfMe)
+- Die automatischen Handelsrouten wurden komplett überarbeitet
+- Zusätzlich gibt es nun zwei weitere Optionen, um Betriebe noch leichter zu versorgen oder Waren zu verkaufen.
 - Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
-- Es gibt nun 8 verschiedene Frauengesichter (vielen Dank an Jollina und broliii)
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Schwangere sind nicht länger an ihr Bett gefesselt.
 - Neue Fähigkeiten nach LevelUp.
 - Opfer von Hexerdokumenten werden nun benachrichtigt, dass etwas Seltsames passiert ist, wenn ihre Empathie groß genug ist.
-- Diverse Charaktere führen zusätzliche Animationen aus, um die Immersion zu verbessern.
 
 ** Balancing **
 
