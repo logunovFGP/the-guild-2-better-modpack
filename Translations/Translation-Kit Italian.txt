@@ -1,62 +1,5 @@
 Translate and add the following lines below:
 
-18015   "_GENERAL_MEASURES_FAILURES_+27"   "Action failed - you can't hire a man for the profession %1l"   |
-18016   "_TRADEROUTE_INITIATE_HEAD_+0"   "Choose procedure"   |
-18017   "_TRADEROUTE_INITIATE_HEAD_+1"   "Please choose"   |
-18018   "_TRADEROUTE_INITIATE_HEAD_+2"   "Please choose the desired amount"   |
-18019   "_TRADEROUTE_INITIATE_OPTION_+0"   "Load"   |
-18020   "_TRADEROUTE_INITIATE_OPTION_+1"   "Unload"   |
-18021   "_TRADEROUTE_INITIATE_OPTION_+2"   "Next building"   |
-18022   "_TRADEROUTE_INITIATE_OPTION_+3"   "Send out"   |
-18023   "_TRADEROUTE_INITIATE_OPTION_+4"   "Abort"   |
-18024   "_TRADEROUTE_NEXT_BUILDING_+0"   "Choose next building!"   |
-18025   "_TRADEROUTE_STOPED_HEAD_+0"   "A trade route is given up"   |
-18026   "_TRADEROUTE_STOPED_BODY_+0"   "Unfortunately, you don't have the necessary coinage to maintain the trade route."   |
-18027   "_TRADEROUTE_ACTIONSELECT_HEAD_+0"   "Select Action"   |
-18028   "_TRADEROUTE_ACTIONSELECT_BODY_+0"   "Choose which action should be performed at %1GG. $N If you mark the waypoint as important, the cart will finish all actions before moving on.$N$NThis waypoint is currently %2l."   |
-18029   "_TRADEROUTE_ACTIONSELECT_OPTION_+0"   "Finish waypoint"   |
-18030   "_TRADEROUTE_ACTIONSELECT_OPTION_+1"   "Load"   |
-18031   "_TRADEROUTE_ACTIONSELECT_OPTION_+2"   "Unload"   |
-18032   "_TRADEROUTE_ACTIONSELECT_OPTION_+3"   "Resupply"   |
-18033   "_TRADEROUTE_ACTIONSELECT_OPTION_+4"   "Waypoint is important!"   |
-18034   "_TRADEROUTE_ACTIONSELECT_OPTION_+5"   "Waypoint is not important!"   |
-18035   "_TRADEROUTE_ACTIONSELECT_BODY_+1"   "important"   |
-18036   "_TRADEROUTE_ACTIONSELECT_BODY_+2"   "not important"   |
-18037   "_TRADEROUTE_HELP_HEAD_+0"   "Set up a trading route"   |
-18038   "_TRADEROUTE_HELP_BODY_+0"   "You are tired of commendeering your carts all the time? Then this is the right place for you!$N$N To >load< and >unload< a cart is quite simple. But your inventory space tends to overflow, when you unload too many goods!$N$N Use >Resupply< whenever you want your cart to fill up a workshop to a certain amount. But consider that some goods may remain on the cart when you do this!$N$N The cart will stay at important waypoints for as long as necessary to finish its actions. A waypoint is marked as important by default. $N$N Have fun!"   |	
-18039   "_TRADEROUTE_INTERVAL_HEAD_+0"   "Choose Interval"   |
-18040   "_TRADEROUTE_INTERVAL_BODY_+0"   "Choose how often the cart should go on this route. $N$N If you have selected any waypoint as important, >constantly< will be your best choice."   |
-18041   "_TRADEROUTE_INITIATE_BODY_+0"   "Choose the next waypoint or send the cart on its way."   |
-18042   "_TRADEROUTE_CATEGORY_HEAD_+0"   "Choose Category"   |
-18043   "_TRADEROUTE_TYPESELECT_HEAD_+0"   "Choose Item"   |
-18044   "_TRADEROUTE_TYPESELECT_BODY_+0"   "Choose the item that will be loaded at %1GG."   |
-18045   "_TRADEROUTE_TYPESELECT_BODY_+1"   "Choose the item that will be unloaded at %1GG."   |
-18046   "_TRADEROUTE_TYPESELECT_BODY_+2"   "Choose the item that will be supplied for %1GG."   |
-18047   "_TRADEROUTE_COUNTSELECT_HEAD_+0"   "Choose Amount"   |
-18048   "_TRADEROUTE_COUNTSELECT_BODY_+0"   "Choose how many %2l should be loaded onto the cart."   |
-18049   "_TRADEROUTE_COUNTSELECT_BODY_+1"   "Choose how many %2l should $C[255,20,20] remain on the cart after unloading."   |
-18050   "_TRADEROUTE_COUNTSELECT_BODY_+2"   "Choose how many %2l you will always expect in your workshop. The cart will unload just as many items as necessary."   |
-18051   "_TRADEROUTE_INITIATE_OPTION_+5"   "Sale threshold: %1i%%"   |
-18052   "_TRADEROUTE_INITIATE_INTERVAL_+0"   "Constantly"   |
-18053   "_TRADEROUTE_INITIATE_INTERVAL_+1"   "Just once"   |
-18054   "_TRADEROUTE_INITIATE_INTERVAL_+2"   "Every 6 hours"   |
-18055   "_TRADEROUTE_INITIATE_INTERVAL_+3"   "Every 12 hours"   |
-18056   "_TRADEROUTE_SALETHRESHOLD_HEAD_+0"   "Select sale threshold for your goods"   |
-18057   "_TRADEROUTE_SALETHRESHOLD_BODY_+0"   "Choose the ratio of sales price to base price for this route. The higher the ratio the higher your profit will be, but you may not be able to sell everything.$N$N Current threshold is %1i%%"   |
-18058   "_TRADEROUTE_SALETHRESHOLD_+0"   "Sell everything!"   |
-18059   "_TRADEROUTE_SALETHRESHOLD_+1"   "Don't sell below 75%%"   |
-18060   "_TRADEROUTE_SALETHRESHOLD_+2"   "Don't sell below 100%%"   |
-18061   "_TRADEROUTE_SALETHRESHOLD_+3"   "Don't sell below 125%%"   |
-18062   "_TRADEROUTE_SALETHRESHOLD_+4"   "Don't sell below 150%%"   |
-18063   "_TRADEROUTE_INITIATE_OPTION_+6"   "Interval: %2l"   |
-18064   "_TRADEROUTE_WARNING_HEAD_+0"   "Your trading route is at a standstill!"   |
-18065   "_TRADEROUTE_WARNING_BODY_+0"   "One of your carts has been waiting for over %1i hours at %2GG and is still unable to complete its tasks."   |
-18066   "_TRADEROUTE_WARNING_OPTION_+0"   "I will take care of it!"   |
-18067   "_TRADEROUTE_WARNING_OPTION_+1"   "Send it on rightaway!"   |
-18068   "_TRADEROUTE_WARNING_OPTION_+2"   "Never mind, $Nhe is used to that!"   |
-18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Why do you bother me?$NPlease refrain from warning me!"   |
-18070   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
-18071   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
 18072   "_COURTLOVER_MSG_FAILED_QUICK"   "You fired this person not long ago. Because of that he or she will not talk to you."   |  
 18073   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_TOOLTIP_+0"   "Class talents +1"   |
 18074   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_NAME_+0"   "Well-rested"   |
@@ -167,4 +110,3 @@ Translate and add the following lines below:
 18179   "_MEASURE_SalesCart_NAME"   "Sell products"   |
 18180   "_MEASURE_SalesCart_TOOLTIP"   "Assign your cart to sell products from your workshop. You can choose how many products shall remain in your storage.$N$NOnce you send out your cart your driver will check the storage himself from time to time and move when enough goods have been produced to sell. It's quite a tough task, so your driver will take breaks from time to time."   |
 18181   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0"   "This woman is pregnant and will give birth to a child very soon. It would be highly dishonorable to harm her right now."   |
-

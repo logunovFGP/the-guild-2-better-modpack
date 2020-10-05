@@ -1,0 +1,112 @@
+Translate and add the following lines below:
+
+18072   "_COURTLOVER_MSG_FAILED_QUICK"   "Ihr habt diese Person vor Kurzem entlassen. Sie möchte daher für die nächste Zeit nichts mit Euch zu tun haben."   |  
+18073   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_TOOLTIP_+0"   "Alle Klassentalente +1"   |
+18074   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_NAME_+0"   "Ausgeruht"   |
+18075   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_DESCRIPTION_+0"   "Dieser Charakter hat kürzlich gut geschlafen. Seine Klassentalente haben einen temporären Bonus."   |
+18076   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_TOOLTIP_+0"   "Nicht müde"   |
+18077   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_NAME_+0"   "Ausgeruht"   |
+18078   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_DESCRIPTION_+0"   "Dieser Charakter hat kürzlich geschlafen."   |
+18079   "_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2"   "Schlafen nicht möglich - %1SN ist noch nicht müde."   |
+18080   "_ABILITIES_BiologyKnowledge_NAME_+0"   "Druidenwissen"   |		
+18081   "_ABILITIES_BiologyKnowledge_DESCRIPTION_+0"   "Ihr habt die Lehren der Druiden genau studiert und sie an Eure Angestellten weitergegeben. Sie leben dadurch gesünder und kennen sich in der Natur aus. Eure Angestellten sammeln Kräuter 20%% schneller und ihre Werte in Konstitution und Geheimwissen steigen.$N$NAnforderungen: Gelehrter."   |		
+18082   "_ABILITIES_Handcrafter_NAME_+0"   "Handwerker"   |		
+18083   "_ABILITIES_Handcrafter_DESCRIPTION_+0"   "Als Geschäftsmann (oder Geschäftsfrau) habt Ihr Eure Produktionsabläufe stehts genau im Blick. Für jede Stufe dieses Talents wird Eure Handwerkskunst um einen Punkt erhöht.$N$NAnforderungen: Kein Gelehrter."   |		
+18084   "_ABILITIES_Combatant_NAME_+0"   "Krieger"   |		
+18085   "_ABILITIES_Combatant_DESCRIPTION_+0"   "Ihr versteht etwas vom Kämpfen. Egal ob mit Fäusten, Dolch oder Streitaxt: Euch macht niemand etwas vor. Für jede Stufe dieses Talents wird Eure Kampfkunst um einen Punkt erhöht und Ihr habt eine Chance auf kritische Treffer.$N$NAnforderungen: Kampfkunst 2."   |		
+18086   "_ABILITIES_SuperParent_NAME_+0"   "Perfekte Eltern"   |		
+18087   "_ABILITIES_SuperParent_DESCRIPTION_+0"   "Eure Fähigkeiten als Eltern sind überragend. Unter Eurem wachsamen Auge lernen Eure Kinder stets neue Fähigkeiten. Mit dem zwölften Lebensjahr erhalten Sie so einen Bonus von je einem Punkt auf 4 Talente. Allerdings is Eure Empathie durch diesen steten Fokus auf Eure Kinder beeinträchtigt und sinkt um 3 Punkte.$N$NAnforderungen: Empathie 5."   |		
+18088   "_ABILITIES_Traveler_NAME_+0"   "Reisender"   |		
+18089   "_ABILITIES_Traveler_DESCRIPTION_+0"   "Ihr seid weit gereist und habt dabei notgedrungen viele Tricks zur effizienten Fortbewegung gelernt. Für jede Stufe dieser Fähigkeit steigt Eure Geschicklichkeit um einen Punkt und Ihr bewegt Euch 15%% schneller.$N$NAnforderungen: Geschicklichkeit 2."   |		
+18090   "_ABILITIES_DefenderRogues_NAME_+0"   "Verteidiger"   |		
+18091   "_ABILITIES_DefenderRogues_DESCRIPTION_+0"   "Ihr habt Euch auf defensive Taktiken spezialisiert. Unter Eurer Führung sind Angestellte wachsamer und wissen sich besser zu verteidigen. Eure Angestellten erhalten einen Bonus auf Rüstung, Geschicklichkeit und Empathie.$N$NAnforderungen: Gauner."   |		
+18092   "_ABILITIES_CharmingRogues_NAME_+0"   "Charismatischer Gauner"   |		
+18093   "_ABILITIES_CharmingRogues_DESCRIPTION_+0"   "Ihr seid ein Vorbild für Eure Angestellten. Unter Eurer Führung verbessern Eure Angestellten ihre Kampfkunst und wissen sich besser zu verhalten.$N$NEure Angestellten erhalten einen Bonus auf Kampfkunst und Charisma sowie eine Chance auf kritische Treffer.$N$NAnforderungen: Gauner."   |		
+18094   "_ABILITIES_HardWorkers_NAME_+0"   "Fleißige Arbeiter"   |		
+18095   "_ABILITIES_HardWorkers_DESCRIPTION_+0"   "Ihr führt die fleißigsten Arbeiter der Stadt an. Eure Angestellten erhalten einen Bonus auf ihre Konstitution und Handwerkskunst sowie einen zusätzlichen Inventarslot.$N$NAnforderungen: Patron."   |		
+18096   "_ABILITIES_MasterMerchant_NAME_+0"   "Meisterhändler"   |
+18097   "_ABILITIES_MasterMerchant_DESCRIPTION_+0"   "Ihr seid ein wahrer Meister des Feilschens. Ihr erhaltet einen großen Bonus auf Euer Feilschen-Talent.$N$NAnforderungen: Handwerker"   |
+18098   "_ABILITIES_MasterCrafter_NAME_+0"   "Master Crafter"   |
+18099   "_ABILITIES_MasterCrafter_DESCRIPTION_+0"   "Ihr seid ein wahrer Meister der Handwerkskunst. Ihr erhaltet einen großen Bonus auf Euer Handwerkskunst-Talent.$N$NAnforderungen: Handwerker."   |
+18100   "_ABILITIES_MasterProducer_NAME_+0"   "Meistersammler"   |		
+18101   "_ABILITIES_MasterProducer_DESCRIPTION_+0"   "Ihr seid ein wahrer Meistersammler. Eure Angestellten sammeln Ressourcen um 35%% schneller als üblich.$N$NAnforderungen: Handwerker."   |		
+18102   "_ABILITIES_CombatMaster_NAME_+0"   "Kampfmeister"   |		
+18103   "_ABILITIES_CombatMaster_DESCRIPTION_+0"   "Ihr seid der Inbegriff eines perfekten Kriegers. Euer Rüstungswert ist gesteigert und Ihr habt eine erhöhte Chance auf kritische Treffer.$N$NAnforderungen: Gauner, Kampfkunst 6."   |		
+18104   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_DESCRIPTION_+0"   "Dieser Angestellte wurde in das Druidenwissen eingeweiht. Er sammelt Kräuter um 20%% schneller und hat erhöhte Konstitution und Geheimwissen."   |		
+18105   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_NAME_+0"   "Druidenwissen"   |		
+18106   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_TOOLTIP_+0"   "profitiert von Druidenwissen"   |		
+18107   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_DESCRIPTION_+0"   "Dieser Angestellte hat einen guten Mentor. Er erhält einen Bonus von 15%% auf seine Erfahrung."   |		
+18108   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_NAME_+0"   "Mentor"   |		
+18109   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_TOOLTIP_+0"   "wird von einem Mentor begleitet"   |		
+18110   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_DESCRIPTION_+0"   "Der Angestellte arbeitet an einem Betrieb, der eine geheime Formel für Pflanzen besitzt. Seine Feldarbeit ist 15%% effizienter."   |		
+18111   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_NAME_+0"   "Meister des Dungs"   |		
+18112   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_TOOLTIP_+0"   "verwendet geheime Formel"   |		
+18113   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_DESCRIPTION_+0"   "Dieser Angestellte arbeitet für einen wahrhaft begabten Wunderprediger. An vielen ausgedehnten Abenden und in schlaflosen Nächten wird reichlich diskutiert. Der Angestellte erhält einen Bonus auf Feilschen, Empathie und Rhetorik."   |		
+18114   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_NAME_+0"   "Wunderprediger"   |		
+18115   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_TOOLTIP_+0"   "ist ein Redekünstler"   |		
+18116   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_DESCRIPTION_+0"   |		
+18117   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_NAME_+0"   "Blitzeinbruch"   |		
+18118   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_TOOLTIP_+0"   "ist schneller Einbrecher"   |		
+18119   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_DESCRIPTION_+0"   "Dieser Angestellte wird regelmäßig motiviert und für seine Arbeit gelobt. Der Angestellte trägt gern gleichermaßen mehr Verantwortung und mehr Gegenstände. Er erhält einen Bonus auf Konstitution und Handwerk sowie mehr Platz im Inventar."   |		
+18120   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_NAME_+0"   "Fleißige Arbeiter"   |		
+18121   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_TOOLTIP_+0"   "ist ein fleißiger Arbeiter"   |		
+18122   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_DESCRIPTION_+0"   "Dieser Angestellte arbeitet unter sehr charismatischer Führung. Seine hohe Moral wirkt sich positiv auf seine Kampfkunst und Auftreten aus. Er erhält einen Bonus auf Kampfkunst und Charisma. Die Chance auf kritische Treffer ist erhöht."   |		
+18123   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_NAME_+0"   "Charismatische Gauner"   |		
+18124   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_TOOLTIP_+0"   "ist ein charismatischer Gauner"   |		
+18125   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_DESCRIPTION_+0"   "Dieser Angestellte arbeitet für einen Defensivspezialisten. Der Angestellte ist aufmerksamer und kann im Kampf mehr einstecken als üblich. Er erhält einen Bonus auf Rüstungswert, Geschicklichkeit und Empathie."   |		
+18126   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_NAME_+0"   "Verteidiger"   |		
+18127   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_TOOLTIP_+0"   "is ein guter Verteidiger"   |		
+18128   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_DESCRIPTION_+0"   "Dieser Angestellte arbeitet für einen wahren Meistersammler. Er sammelt Ressourcen 35%% schneller als üblich."   |		
+18129   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_NAME_+0"   "Meistersammler"   |		
+18130   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_TOOLTIP_+0"   "ist effizienter Sammler"   |
+18131   "_HEXERDOKUMENT_VICTIM_HEAD_+0"   "Ihr habt ein ungutes Gefühl ..."   |
+18132   "_HEXERDOKUMENT_VICTIM_BODY_+0"   "Euer rechter Zeh juckt: Jemand führt etwas gegen Euch im Schilde, Eure empathischen Sinne verraten Euch das ... Nur wer?"   |
+18133   "_HEXERDOKUMENT_VILLAIN_HEAD_+0"   "Ein Hexenwerk war erfolgreich"   |
+18134   "_HEXERDOKUMENT_VILLAIN_BODY_+0"   "Ihr habt erfolgreich unanfechtbare Beweise gegen %1SN erzeugt. Hoffentlich hat %1SV nichts bemerkt ..."   |
+18135   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_TOOLTIP_+0"   "Vor Krankheiten geschützt"   |
+18136   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_NAME_+0"   "Ausgeruht und gesund"   |
+18137   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_DESCRIPTION_+0"   "Dieser Charakter sprüht nur so vor Vitalität und wird sich für eine gewisse Zeit lang nicht mit Krankheiten anstecken."   |
+18138   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_TOOLTIP_+0"   "Bestes Haus der Stadt"   |
+18139   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_NAME_+0"   "Bestes Haus der Stadt"   |
+18140   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_DESCRIPTION_+0"   "Dieser Ort hat einen Ruf dafür, sich besonders um seine Kundschaft zu bemühen, wann auch immer und wo auch immer. Die Schlafplätze in dieser Taverne versprechen besonders erholsame Träume."   |
+18141   "_TWP_SUPPLYWORKSHOP_HELP_HEAD_+0"   "Betrieb versorgen"   |
+18142   "_TWP_SUPPLYWORKSHOP_HELP_BODY_+0"   "Beauftragt Euren Karren, die Ressourcen für Eure Produktion zu beschaffen."   |
+18143   "_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0"   "Betrieb versorgen"   |
+18144   "_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0"   "Beauftragt Euren Karren, die Ressourcen für Eure Produktion zu beschaffen."   |
+18145   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0"   "Hilfe"   |
+18146   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1"   "Ressourcen auswählen"   |
+18147   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2"   "Versorger auswählen"   |
+18148   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+3"   "Aussenden"   |
+18149   "_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0"   "Menge auswählen"   |
+18150   "_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_BODY_+0"   "Wählt die Menge von Ressourcen aus, die Ihr immer in Eurem Lager erwartet."   |
+18151   "_TWP_SUPPLYWORKSHOP_MARKET_+1"   "Markt/Kontor von %1NAME"   |
+18152   "_TWP_SUPPLYWORKSHOP_MARKET_+2"   "Markt/Kontor von %2NAME"   |
+18153   "_TWP_SUPPLYWORKSHOP_MARKET_+3"   "Markt/Kontor von %3NAME"   |
+18154   "_TWP_SUPPLYWORKSHOP_MARKET_+4"   "Markt/Kontor von %4NAME"   |
+18155   "_TWP_SUPPLYWORKSHOP_MARKET_+5"   "Markt/Kontor von %5NAME"   |
+18156   "_TWP_SUPPLYWORKSHOP_MARKET_+6"   "Markt/Kontor von %6NAME"   |
+18157   "_TWP_SUPPLYWORKSHOP_MARKET_+7"   "Markt/Kontor von %7NAME"   |
+18158   "_TWP_SUPPLYWORKSHOP_MARKET_+8"   "Markt/Kontor von %8NAME"   |
+18159   "_TWP_SUPPLYWORKSHOP_MARKET_+9"   "Markt/Kontor von %9NAME"   |
+18160   "_TWP_SUPPLYWORKSHOP_MARKET_+10"   "Markt/Kontor von %10NAME"   |
+18161   "_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0"   "Hinzufügen"   |
+18162   "_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0"   "Ressource wählen"   |
+18163   "_MEASURE_SupplyWorkshop_NAME"   "Betrieb versorgen"   |
+18164   "_MEASURE_SupplyWorkshop_TOOLTIP"   "Beauftragt Euren Karren, die Ressourcen für Eure Produktion zu beschaffen. Ihr könnt auswählen, wieviele Güter Ihr jeweils in Eurem Lager erwartet.$N$NSobald Ihr den Karren aussendet, wird Euer Fuhrmann eigenständig den Lagerbestand überprüfen und sich auf den Weg machen, wenn die Vorräte schwinden. Dies ist jedoch schwere Arbeit und Euer Fuhrmann muss zwischendurch ausruhen."   |
+18165   "_TWP_SALESCART_INITIATE_HEAD_+0"   "Produkte verkaufen"   |
+18166   "_TWP_SALESCART_INITIATE_BODY_+0"   "Beauftragt Euren Karren, Eure Produkte eigenständig zu verkaufen."   |
+18167   "_TWP_SALESCART_INITIATE_OPTION_+0"   "Produkte wählen"   |
+18168   "_TWP_SALESCART_INITIATE_OPTION_+1"   "Verkaufsniveau setzen"   |
+18169   "_TWP_SALESCART_INITIATE_OPTION_+2"   "Aussenden"   |
+18170   "_TWP_SALESCART_CHOOSEPRODUCT_HEAD_+0"   "Produkte wählen"   |
+18171   "_TWP_SALESCART_CHOOSEAMOUNT_+0"   "Nicht verkaufen"   |
+18172   "_TWP_SALESCART_CHOOSEAMOUNT_+1"   "Alles verkaufen"   |
+18173   "_TWP_SALESCART_CHOOSEAMOUNT_+2"   "10 im Lager behalten"   |
+18174   "_TWP_SALESCART_CHOOSEAMOUNT_+3"   "20 im Lager behalten"   |
+18175   "_TWP_SALESCART_CHOOSEAMOUNT_+4"   "40 im Lager behalten"   |
+18176   "_TWP_SALESCART_CHOOSEAMOUNT_+5"   "80 im Lager behalten"   |
+18177   "_TWP_SALESCART_CHOOSEAMOUNT_HEAD_+0"   "Verkaufsmenge wählen"   |
+18178   "_TWP_SALESCART_CHOOSEAMOUNT_BODY_+0"   "Wählt aus, wieviel %1l im Lager verbleiben soll."   |
+18179   "_MEASURE_SalesCart_NAME"   "Produkte verkaufen"   |
+18180   "_MEASURE_SalesCart_TOOLTIP"   "Beauftragt Euren Karren, Eure Produkte eigenständig zu verkaufen. Ihr könnt auswählen, wieviele Eurer Güter jeweils im Lager verbleiben sollen.$N$NSobald Ihr den Karren aussendet, wird Euer Fuhrmann eigenständig den Lagerbestand überprüfen und sich auf den Weg machen, wenn genügend Güter zum Verkauf produziert sind. Dies ist jedoch schwere Arbeit und Euer Fuhrmann muss zwischendurch ausruhen."   |
+18181   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0"   "Diese Frau ist schwanger. Es würde gegen jegliche Ehre verstoßen, ihr in dieser Zeit etwas anzutun."   |
