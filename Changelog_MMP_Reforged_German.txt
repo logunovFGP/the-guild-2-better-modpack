@@ -76,6 +76,8 @@ _Gelehrter_
 - Cooldown beim Anlegen des Knochenarmreifs war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
 - Wenn ein Pfandhaus abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
 - Bei 'Hexerdokumenten' wurden keine EP vergeben.
+- 'Unkendunk' konnte mehrfach gegen dasselbe Ziel eingesetzt werden.
+- Es war nicht möglich, 'Unkendunk' als Verbrechen wahrzunehmen.
 
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.

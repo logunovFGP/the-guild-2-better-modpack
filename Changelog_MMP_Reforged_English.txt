@@ -76,6 +76,8 @@ _Scholar_
 - Due to a copy and paste error the measure 'Use bone bangle' could have the wrong cooldown.
 - When you tear down or sell your bank/pawn house you get back your credit account money.
 - 'Sorcerer documents' didn't give XP.
+- 'Toad excrement' could be used multiple times against the same target.
+- 'Toad excrement' was no crime in the database.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.

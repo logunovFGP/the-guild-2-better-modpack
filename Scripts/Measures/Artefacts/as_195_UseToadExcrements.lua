@@ -8,10 +8,14 @@
 -------------------------------------------------------------------------------
 
 function Run()
+	
+	if not AliasExists("Destination") then
+		StopMeasure()
+	end
 
 	if IsStateDriven() then
 		local ItemName = "ToadExcrements"
-		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
+		if GetItemCount("", ItemName, INVENTORY_STD) == 0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
@@ -27,93 +31,92 @@ function Run()
 	--how far from the destination, the owner should stand when throwing toadexcrements
 	local ActionDistance = 800
 	
-	if BuildingGetType("Destination")==GL_BUILDING_TYPE_FARM or BuildingGetType("Destination")==GL_BUILDING_TYPE_ROBBER or BuildingGetType("Destination")==GL_BUILDING_TYPE_MINE or BuildingGetType("Destination")==GL_BUILDING_TYPE_RANGERHUT or BuildingGetType("Destination")==GL_BUILDING_TYPE_THIEF then
+	if BuildingGetType("Destination")==GL_BUILDING_TYPE_FARM or BuildingGetType("Destination") == GL_BUILDING_TYPE_ROBBER or BuildingGetType("Destination")==GL_BUILDING_TYPE_MINE or BuildingGetType("Destination")==GL_BUILDING_TYPE_RANGERHUT or BuildingGetType("Destination")==GL_BUILDING_TYPE_THIEF then
 		MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+26")
 		StopMeasure()
 	end
 	
-	if (GetImpactValue("Destination","DivineBlessing")==1) then
-		MsgQuick("","@L_CHURCH_089_PRAYFORGODSBLESSING_MESSAGES_FAILURES_+0",GetID("Destination"))
+	if (GetImpactValue("Destination","DivineBlessing") == 1) then
+		MsgQuick("", "@L_CHURCH_089_PRAYFORGODSBLESSING_MESSAGES_FAILURES_+0", GetID("Destination"))
 		StopMeasure()
 	end
 	
-	if GetImpactValue("","toadexcrements")==1 then
-		StopMeasure()
-	end
 	if not GetOutdoorMovePosition("","Destination","MovePos") then
 		StopMeasure()
 	end
+	
 	if not f_MoveTo("","MovePos",GL_MOVESPEED_RUN,1000) then
 		StopMeasure()
 	end
+	
 	MsgMeasure("","")
 
 	-- Commit the action
 	BuildingGetOwner("Destination", "Victim")
-	CommitAction("big_evil_thing", "Owner", "Owner", "Victim", "Destination")
+	CommitAction("lay_bomb", "Owner", "Victim", "Destination")
+	Sleep(2)
 
 	--throw the toadexcrements
 
 	AlignTo("", "Destination")
-	if RemoveItems("","ToadExcrements",1)>0 then
-		CarryObject("", "Handheld_Device/ANIM_perfumebottle.nif", false)
-		PlayAnimationNoWait("", "throw")
+	if GetImpactValue("Destination", "toadexcrements") < 1 then
+		if RemoveItems("", "ToadExcrements",1)>0 then
+			CarryObject("", "Handheld_Device/ANIM_perfumebottle.nif", false)
+			PlayAnimationNoWait("", "throw")
+			
+			Sleep(2.03)
+			local fDuration = ThrowObject("", "Destination", "Handheld_Device/ANIM_perfumebottle.nif",0.1,"excrements",30,150,0)
+			Sleep(0.13)
+			CarryObject("", "" ,false)
+			Sleep(fDuration)
 		
-		Sleep(2.03)
-		local fDuration = ThrowObject("", "Destination", "Handheld_Device/ANIM_perfumebottle.nif",0.1,"excrements",30,150,0)
-		Sleep(0.13)
-		CarryObject("", "" ,false)
-		Sleep(fDuration)
-	
-		GetLocatorByName("Destination", "Entry1", "ParticleSpawnPos")
-		StartSingleShotParticle("particles/toadexcrements_hit.nif", "ParticleSpawnPos",6,5)
-		PlaySound3D("Destination","measures/toadexcrements+0.wav", 1.0)
+			GetLocatorByName("Destination", "Entry1", "ParticleSpawnPos")
+			StartSingleShotParticle("particles/toadexcrements_hit.nif", "ParticleSpawnPos",6,5)
+			PlaySound3D("Destination","measures/toadexcrements+0.wav", 1.0)
+			
 		
-	
-		StopAction("big_evil_thing", "")
-	
-		Sleep(1.0)
-	
+			StopAction("lay_bomb", "")
 		
-	
-		DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
-		SetMeasureRepeat(TimeOut)
-		AddImpact("","toadexcrements",1,duration)
-	
-		feedback_MessageWorkshop("Owner",
-				"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_ACTOR_HEAD_+0",
-				"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_ACTOR_BODY_+0", GetID("Destination"))
-	
-		feedback_MessageWorkshop("Destination",
-				"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_VICTIM_HEAD_+0",
-				"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_VICTIM_BODY_+0", GetID("Destination"))
-	
-		Sleep(1)
-	
-	
-		-- get the workers out
-	
-		Evacuate("Destination")
-		SetState("Destination", STATE_CONTAMINATED, true)
-		AddImpact("Destination","toadexcrements",1,duration)
-	
-		chr_GainXP("",GetData("BaseXP"))
+			Sleep(1.0)
 		
-		-- flee from the crime scene
-		GetFleePosition("", "Destination", 1500, "Away")
-		f_MoveTo("", "Away", GL_MOVESPEED_RUN)
-		AlignTo("", "Destination")
+			DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
+			SetMeasureRepeat(TimeOut)
+		
+			feedback_MessageWorkshop("Owner",
+					"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_ACTOR_HEAD_+0",
+					"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_ACTOR_BODY_+0", GetID("Destination"))
+		
+			feedback_MessageWorkshop("Destination",
+					"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_VICTIM_HEAD_+0",
+					"@L_ARTEFACTS_195_USETOADEXCREMENTS_MSG_VICTIM_BODY_+0", GetID("Destination"))
+		
+			Sleep(1)
+		
+			-- get the workers out
+		
+			Evacuate("Destination")
+			SetState("Destination", STATE_CONTAMINATED, true)
+			AddImpact("Destination","toadexcrements",1,duration)
+		
+			chr_GainXP("",GetData("BaseXP"))
+			
+			-- flee from the crime scene
+			GetFleePosition("", "Destination", 1500, "Away")
+			f_MoveTo("", "Away", GL_MOVESPEED_RUN)
+			AlignTo("", "Destination")
+		end
+	else
+		if DynastyIsPlayer("") then
+			MsgBoxNoWait("","","@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_ARTEFACT_FAIL_+1", GetID("Destination"))
+		end
 	end
-	StopMeasure()
 end
 
 -- -----------------------
 -- CleanUp
 -- -----------------------
 function CleanUp()
-
-	StopAction("big_evil_thing", "Owner")
-
+	StopAction("lay_bomb", "Owner")
 end
 
 function GetOSHData(MeasureID)
