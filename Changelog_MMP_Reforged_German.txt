@@ -1,6 +1,6 @@
-MegaModPack Reforged - Lite 0.1
+Fajeth's MegaModPack Reforged - Lite Editon (0.1)
 
-** Credits **
+*** Credits ***
 
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
@@ -12,111 +12,155 @@ Testing:
 Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 
 
-** Allgemeines **
+*** Allgemeines ***
 
+_Technik_
 - Scripte aufgeräumt: Lesbarkeit verbessert, Funktionen + Aufbau optimiert, überflüssigen Code entfernt, Gestaltung der Scripte vereinheitlicht.
 - Ungenutzte Scripte separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim manuellen Anheuern mehr.
-- Mitarbeiter lassen sich nicht mehr heiraten.
-- Es wurden die original Schiffe aus Seeräuber der Hanse hinzugefügt (d.h Schiffe werden wieder in Spielerfarben markiert).
-- Der Button 'Aus Gruppe entfernen' im Familien-Stammbaum wurde entfernt, da er ein Familienmitglied permanent entfernte. Nutzt die Maßnahme 'Gruppe verwalten' (hinter dem Button zum Inventar öffnen).
-- Die Option (Häufigkeit der) Amtssitzungen wurde bei Mulitplayerspielen entfernt, da diese Option einen Out of Sync Fehler im zweiten Jahr provozierte. Die Standardeinstellung ist: alle 2 Runden.
 - Das KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
+- Duelle laufen etwas flüssiger ab.
+
+_Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
-- Duelle laufen etwas flüssiger nun ab.
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
-- Hexerdokumente kreieren nun Beweise mit unterschiedlichen zufälligen Opfern.
 
-** Bugs **
 
+*** Bugs ***
+
+_Allgemein_
+- Wenn man einen Charakter über den Familienstammbaum aus der Gruppe entfernte, war eine erneute Aufnahme nicht mehr möglich. Der Button wurde daher entfernt (nutzt stattdessen die Maßnahme 'Gruppe verwalten').
+- Die Option, die Häufigkeit der Amtssitzungen vor Spielstart zu verändern, verursachte einen Out Of Sync Fehler. Im Mehrspielermodus ist diese Option daher entfernt.
+- Schiffe hatten keine Dynastiefarben.
 - Diverse Artefakt-Scripte verwendeten nicht den korrekten Item-Namen.
 - Exploit: Man konnte die Items nach Start diverser Artefakt-Scripte aus dem Inventar entfernen und dennoch ihren Effekt nutzen.
+- Exploit: Beim Abriss von Gebäuden erhält man nun nur noch den halben Gebäudewert + Items.
+- Exploit: Man konnte seine Angestellten heiraten, um so an einen besonders starken Ehepartner zu kommen.
+- Exploit: Der Fix gegen das Entlassen + Umwerben von Angestellten, um einen besonders starken Ehepartner zu bekommen, wurde verbessert.
+- Man kann keine Angestellten mehr anheuern, die gerade umworben werden (kann zu Fehlern führen).
+- Die Suche nach höherleveligen Angestellten (Gesellen- und Meisterrang) bei der Maßnahme 'Zufälligen Mitarbeiter einstellen' funktionierte nicht.
+- Angestellte höheren Levels verloren ihre Erfahrung nach dem Anheuern.
+- Es wurde ein Sicherheitscheck eingebaut, der garantiert, dass der Anfangs-Angestellte von Betrieben nicht krank ist und die richtige Standardausrüstung besitzt.
+- Die Angestellten des Landsitzes konnten keine Stufen aufsteigen.
+- Exploit: Angestellte, die automatisch Waffen und Rüstungen bekamen (Wohnsitz-Upgrades/Landsitz) hatten ein zu geringes Handgeld, um die kostenlose Ausrüstung zu rechtfertigen.
+- Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.
+- 'Jemandem ein Geschenk machen' hatte keinen Cooldown.
+- Cooldown bei der Maßnahme 'Reichspolitik' (Landsitz) funktionierte nicht.
+- Mehrere Datenbank-Einträge zu Hintergrund-Musik in Gebäuden korrigiert.
+- Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
+- Es wurde ein besserer und performanterer Weg gefunden, damit Karren und Sims durch die schlechte Wegfindung nicht dauerhaft in 'Knäueln' feststecken und sich im Kreis drehen ('Spinning Carts').
+- Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen und hatten darüber hinaus weitere Fehler.
+- Krieg fand nur in den ersten Spielrunden statt. 
+- Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
+- Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
+- Nach einem Duell wurde die Gunst doppelt erhöht.
+- Kleinere (Tipp-) und Schreibfehler in den deutschen und englischen Lokalisierungen korrigiert.
+- Beim Entzug der Immunität wurde in einigen Sprachen die falsche Nachricht verschickt.
+- Es fehlten Icons bei den Gildenlieferungen aus dem Gildenhaus für Honig und Obst.
+- Versengold kündigen nun wieder mittels eines Timers ihren Auftritt an.
+- Versengolds Lied wird nicht länger beendet, wenn man die Taverne verlässt: Hat mindestens ein Spieler seinen Charakter vor Ort, wird das Lied als Hintergrundmusik abgespielt.
+  Ansonsten wird das Lied neugestartet (und vorzeitig beendet, wenn die Animation zu Ende ist).
+
+_Patron_
+- Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
+
+_Gelehrter_
 - Der 'vergiftete Kuchen' senkte nicht die Kampfkraft des Opfers.
 - Die Maßnahme 'Zur Behandlung einteilen' konnte sich aufhängen. Das Script wurde zudem optimiert.
 - Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
   um Patienten zu behandeln.
 - Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
-- Die Maßnahme 'Sich umhören' konnte zu einem Freeze führen. Sie funktionierte auch nicht richtig.
-- Jemandem ein Geschenk machen hatte keinen Cooldown
-- Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
-- Cooldown bei der Maßnahme 'Reichspolitik' (Landsitz) funktionierte nicht.
-- Cooldown beim Anlegen des Knochenarmreifs war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
-- Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
-- Mehrere DB Einträge zu Hintergrund-Musik in Gebäuden korrigiert.
-- Die KI konnte beim Becircen in der Taverne stecken bleiben. Zudem wurden einige weitere Probleme mit der Maßnahme behoben.
-- Bei der Maßnahme "Trainieren" wurde die überflüssige Abklingzeit-Anzeige entfernt. Zudem läuft der Charakter nicht länger durch den Kamin.
-- Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
 - Es wurde kein Hexerroben-Status-Icon angezeigt.
-- Es wurde ein besserer und performanterer Weg gefunden, damit Karren und Sims durch die schlechte Wegfindung nicht dauerhaft in 'Knäueln' feststecken und sich im Kreis drehen.
-- Man kann keine Angestellten mehr anheuern, die gerade umworben werden (kann zu Fehlern führen).
-- Die automatische Suche nach höherleveligen Angestellten (Gesellen- und Meisterrang) funktionierte nicht.
-- Angestellte höheren Levels verloren ihre Erfahrung nach dem Anheuern.
-- Neutrale Handelskarren und -schiffe blieben nach wenigen Runden untätig stehen und hatten darüber hinaus weitere Fehler.
-- Krieg fand nur in den ersten Spielrunden statt. 
-- Im Krieg waren Sieg oder Niederlage unabhängig von den getätigten Investitionen. 
-- Der Exploitfix gegen das Entlassen und Umwerben von Angestellten wurde verbessert.
+- Cooldown beim Anlegen des Knochenarmreifs war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
+- Wenn ein Pfandhaus abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
+- Bei 'Hexerdokumenten' wurden keine EP vergeben.
+
+_Handwerker_
+- Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
+
+_Gauner_
+- Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
+- Kinder sind nun nicht länger mögliche Ziele von Dirnen.
+
+_KI_
+- Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
+- Die KI konnte beim Becircen in der Taverne stecken bleiben. Zudem wurden einige weitere Probleme mit der Maßnahme behoben.
+- Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
 - Piratenschiffe der KI greifen keine Fischerboote mehr an.
-- Wenn eine Bank abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
-- Exploit: Beim Abriss von Gebäuden erhält man nun nur noch den halben Gebäudewert.
 - Die KI repariert beschädigte Betriebe nun regelmäßig.
 - Die KI levelt ihre Betriebe nun auf, wenn sie die Voraussetzungen erfüllen.
-- Es wurde ein Sicherheitscheck eingebaut, der garantiert, dass der Standardarbeiter von Betrieben nicht krank ist und die richtige Standardausrüstung besitzt.
-- Bei aktivierter KI Verwaltung werden Rohstoffproduzenten Items, die sie nicht produzieren, auf dem Markt verkaufen (Workaround gegen ein KI-Verwaltungsproblem)
+- Bei aktivierter KI Verwaltung werden Rohstoffproduzenten (z.B. die Mine) Items, die sie nicht produzieren, auf dem Markt verkaufen (Workaround gegen ein KI-Verwaltungsproblem).
 - Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
-- Fand ein Duell nicht statt, verbesserte sich die Gunst zwischen beiden Kontrahenten.
-- Nach einem Duell wurde die Gunst doppelt erhöht.
-- Kleinere (Tipp-) und Schreibfehler in den deutschen und englischen Lokalisierungen korrigiert.
-- Bei Spielstart hatten alle KI-Kinder dasselbe Geschlecht
-- Beim Abbau von Granit lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
-- Einen Exploit behoben, mit dem man das Inventar eines Sammlers in den Betrieb teleportieren konnte.
-- Mehrere Interaktionsfehler mit Bränden behoben.
-- Bei Hexerdokumenten wurden keine EP vergeben.
-- Beim Entzug der Immunität wurde die falsche Nachricht verschickt.
-- Es fehlten Icons bei den Gildenlieferungen für Honig und Obst.
-- Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
-- Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
-- Kinder sind nun nicht länger mögliche Ziele von Dirnen.
-- Die Angestellten des Landsitzes konnten keine Stufen aufsteigen.
-- Exploit: Angestellte, die automatisch Waffen und Rüstungen bekamen (Wohnsitz-Upgrades/Landsitz) hatten ein zu geringes Handgeld.
-- Versengold kündigt nun wieder mittels eines Timers ihren Auftritt an.
-- Versengolds Lied wird nicht länger beendet, wenn man die Taverne verlässt: Hat mindestens ein Spieler seinen Charakter vor Ort, wird das Lied als Hintergrundmusik abgespielt.
-  Ansonsten wird das Lied neugestartet (und vorzeitig beendet, wenn die Animation zu Ende ist).
+- Bei Spielstart hatten alle KI-Kinder dasselbe Geschlecht.
+- In verschiedenen Fällen reagierten Charaktere falsch auf brennende Gebäude.
 
-** Features **
 
-- Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers.
-- Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
+*** Features ***
+
+_Allgemein_
 - Größere Übersichtskarte (GUI).
 - Größeres Gebäude-Upgradefenster (GUI).
+- Alle Artefakte, Maßnahmen und Zustände (wie Krankheiten) zeigen nun Boni und Mali auf Talente über einen Mouseover-Tooltip an.
 - Wichtige Personen-Liste überarbeitet. Zur Schonung der Performance werden die Familienmitglieder von Schattendynastien nicht mehr angezeigt. Dafür kann man sich nun
   Arbeitslose anzeigen lassen.
 - Gesichtstexturen für alle Charaktere überarbeitet/hinzugefügt (Männer, Frauen und Kinder)
+- Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
   abgespielt wurden. Darüber hinaus wurden 20 Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
 - Die automatischen Handelsrouten wurden komplett überarbeitet
 - Zusätzlich gibt es nun zwei weitere Optionen, um Betriebe noch leichter zu versorgen oder Waren zu verkaufen.
-- Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
-- Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Schwangere sind nicht länger an ihr Bett gefesselt.
-- Neue Fähigkeiten nach LevelUp.
-- Opfer von Hexerdokumenten werden nun benachrichtigt, dass etwas Seltsames passiert ist, wenn ihre Empathie groß genug ist.
+- Es gibt neue und teils überarbeitete Fähigkeiten nach Stufenaufstieg.
 
-** Balancing **
+_Patron_
+-
 
-- Becircen kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
-- Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
-- Gunstgewinn beim Becircen leicht modifiziert.
+_Gelehrter_
+- Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers.
+- Opfer von 'Hexerdokumenten' werden nun benachrichtigt, dass 'etwas Seltsames passiert ist', sofern ihr Empathie-Talent groß genug ist.
+- 'Hexerdokumente' kreieren nun Beweise mit unterschiedlichen zufälligen Opfern.
+
+_Handwerker_
+-
+
+_Gauner_
+-
+
+_KI_
+- Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
+- Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
+- Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
+
+
+*** Balancing ***
+
+_Allgemein_
+- Die Art und Weise wie sich Talente auf Maßnahmen auswirken, wurde verändert. Es gibt eine neue Formel, bei der Zufall und 'Erfolgsstufen' eine größere Rolle spielen und
+  keine lineare Steigerung der Effektivität mehr. Zusätzlich gibt es ein visuelles Feedback bei Talentproben.
 - Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb nur einmal alle 48 Ingamestunden überprüft werden. 
   Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
-- Die Hexerrobe verursacht keinen Malus mehr.
 - Bestechungsgelder abzulehnen wird nun die Gunst nur noch um 5 Punkte reduzieren.
 - Duelle sind etwas gefährlicher
 - Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.
-- Maßnahmen, die von Talenten abhängig sind, funktionieren nun nach einer neuen Formel. Dabei gibt es 3 Erfolgs- und 2 Misserfolgsstufen. Jeder Talentcheck wird visualisiert.
+- Angestellte brauchen nun etwas länger, um eine Stufe aufzusteigen.
 - Jemandem die Immunität zu entziehen verursacht nun einen kleinen Gunstverlust.
+
+_Patron_
+- Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
+- Gunstgewinn beim Becircen leicht modifiziert.
+
+_Gelehrter_
+- Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
+- Die 'Hexerrobe' verursacht keinen Malus mehr.
+
+_Handwerker_
+-
+
+_Gauner_
 - Das Charisma von Dirnen hat nun Einfluss darauf, wie erfolgreich sie beim 'Anlocken' von Kundschaft sind.
 - Der Einflussradius von Dirnen wurde erhöht.
 - Dirnen arbeiten nun wie andere Gauner 24 Stunden am Tag.
-- Erfahrungszuwachs von Angestellten etwas gesenkt.
+
+

@@ -1,6 +1,6 @@
-MegaModPack Reforged - Lite 0.1
+Fajeth's MegaModPack Reforged - Lite Edition (0.1)
 
-** Credits **
+*** Credits ***
 
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
@@ -11,105 +11,154 @@ Textures: Jollina, Skip, Broliii
 Testing:
 Additional Support: McCoy! + The Guild 2 Community + Many translators!
 
-** General **
+*** General ***
 
+_Tech_
 - Script cleanup: Improved the readability, functions and structure, removed redundant code, unified the script-design.
 - Seperated unused scripts inside the new 'Removed' folder (To make use of that, you must delete your original Scripts folder before applying this patch).
 - Newly hired workers will no longer get cured automaticly.
-- You can no longer marry employees or guards.
-- Added the original ships of Pirates of the Eastern Seas (and thus ships show their dynasty color again).
-- Removed the button 'Remove from party' inside the family tree because that button removed a character permanently. Use the measure 'Measure group' instead for adding and removing as you like.
-- The option for frequency of office sessions during game setup has been removed from multiplayer because it lead to an OOS in the second turn. Default setting is 2 now.
 - The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
 - AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
-- Instead of Germany, Hungary is now a possible enemy of Austria in war.
 - Duels are a bit more fluent now.
+
+_Design_
+- Instead of Germany, Hungary is now a possible enemy of Austria in war.
 - Duels start a bit earlier and the message to attend them also happens earlier aswell.
 - The icon for 'Application for lowest level post' has been removed
-- 'Sorcerer documents' now generate a random victim (instead of always choosing the user as victim)
 
-** Bugfixes **
 
+*** Bugs ***
+
+_General_
+- If you removed a character from your active party via the family tree you could not add him again. Thus the button has been removed (instead use the measure 'Manage group').
+- The Option to change the 'Frequency of Office Sessions' during game setup produced an Out-Of-Sync error. The option has been removed from multiplayer.
+- Ships had no dynasty colours.
 - Multiple artefact-scripts didn't use the correct item name from the DB.
 - Exploit: After starting certain artefact measures, you could remove the item from the inventory before it was deleted and still get the full effect.
-- The poisoned cake didn't lower the fighting skill.
-- The measure 'Assign for treatment' could get stuck. Also the script has been optimized.
-- Healers remember 'their' bed and don't go to already occupied beds anymore when they treat patients.
-- The measure 'Use thesis paper' could not start properly due to a critical bug.
+- Exploit: When you tear down your buildings you now only get back half the value of that building, including items.
+- Exploit: You could marry your employees to get a very strong spouse.
+- Exploit: The fix against firing your employees and marry them to get a very strong spouse has been improved.
+- You can no longer hire workers who are currently courted (prevents bugs).
+- The search for high level workers via the 'Hire random worker'-measure did not work.
+- High level workers no longer lose all of their XP when they get hired.
+- Added in a safety check to make sure the default worker of your buildings has no illness and the right equipment.
+- The employees of the country estate did not gain XP / levelups.
+- Exploit: Employees of the country estate and residence (with upgrades) who started with high level equipment now have the correct handsel.
 - The measure 'Ask around' could lead to a freeze. Also you did not get evidence properly.
 - The measure 'Make a present' had no cooldown.
-- The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
 - The measure 'Imperial politics' had no cooldown.
-- Due to a copy and paste error the measure 'Use bone bangle' could have the wrong cooldown.
-- Shadow AI could not start the game as an alchemist.
 - Fixed multiple DB entries regarding background music in buildings.
-- AI could get stuck in taverns during the 'sweet talking' measure. Fixed multiple additional issues.
 - Removed the cooldown of the "train" measure. Fixed the pathfinding during that measure to prevent characters moving through the chimney.
-- There was a small bug inside the AI if they could control the buisness inspectors.
-- The sorcerer's robe had no state icon.
 - Improved the workaround against spinning carts (stucking forever) with a more effective solution which is also better for the overall game performance.
-- You can no longer hire workers who are currently courted (prevents bugs).
-- The automatic search for high level workers did not work.
-- High level workers no longer lose their XP if they get hired.
 - Neutral traders and ships would do nothing after a few rounds. Also fixed some script errors.
 - War happened only a few times in the beginning of the game. 
 - During war, your actions would have no effect on victory or defeat no matter how many troops you would get. 
-- The fix against the exploit of fire and courting employees has been improved.
-- AI Pirate ships no longer attack fishing boats
-- If you tear down or sell your bank you get back your credit account money.
-- Exploit: If you tear down your building you now only get back half the value.
-- AI repairs their buildings regulary now.
-- AI levels their buildings if they meet the conditions.
-- Added in a safety check to make sure the default worker of your buildings has no illness and the right equipment.
-- On activated AI setting your resource buildings will sell all the stuff they don't produce which they have in their store (workaround against an AI problem).
-- Fishing huts will sell fish they don't need on the local market.
 - If a duel did not happen, the relations still improved.
 - You got twice the amount of favor from duels.
 - Fixed a few minor typing/spelling errors in the German and English localizations.
-- During game setup AI children always had the same sex
-- Mining granite was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
-- Fixed an exploit that allowed gatherers to teleport their items in their workshop.
-- Fixed several interactions with fire.
-- Removal of immunity had the wrong message.
+- Removal of immunity had the wrong message in some localizations.
 - The guild crates for Honey and Fruits had no icons.
-- Wenches no longer run through the city to find new 'customers'.
-- AI sends wenches to the market place or to pre-determined places on the maps. 
-- Children are no longer targets of wenches.
-- The employees of the country estate did not gain XP / levelups.
-- Exploit: Employees of the country estate and residence (with upgrades) who started with high level equipment now have the correct handsel.
 - The timer of Versengold's concert has been fixed.
 - Versengold's song is played as background music (and thus no longer stopped if you tab out of the building) if at least one human player has a character inside the tavern.
   If not it restarts once you enter the building's indoor scene (and ends once the animation is completed)
 
-** Features **
 
-- Your medical treatments slightly boost the opinion of the patients to the owner of that hospital.
-- Improved hospital AI: No more than 2 employees will be assigned to treat patients.
+_Patron_
+- The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
+
+
+_Scholar_
+- The poisoned cake didn't lower the fighting skill.
+- The measure 'Assign for treatment' could get stuck. Also the script has been optimized.
+- Healers remember 'their' bed and don't go to already occupied beds anymore when they treat patients.
+- The measure 'Use thesis paper' could not start properly due to a critical bug.
+- The 'sorcerer's robe' had no state icon.
+- Due to a copy and paste error the measure 'Use bone bangle' could have the wrong cooldown.
+- When you tear down or sell your bank/pawn house you get back your credit account money.
+- 'Sorcerer documents' didn't give XP.
+
+_Craftsman_
+- Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
+
+
+_Rogue_
+- Wenches no longer run through the city to find new 'customers'.
+- Children are no longer targets of wenches.
+
+
+_AI_
+- Shadow AI could not start the game as an alchemist.
+- AI could get stuck in taverns during the 'sweet talking' measure. Fixed multiple additional issues.
+- There was a small bug inside the AI if they could control the buisness inspectors.
+- AI Pirate ships no longer attack fishing boats
+- AI repairs their buildings regulary now.
+- AI levels their buildings if they meet the conditions.
+- On activated AI setting your resource buildings will sell all the stuff they don't produce which they have in their store (workaround against an AI problem).
+- Fishing huts will sell fish they don't need on the local market.
+- During game setup AI children always had the same sex.
+- In several cases characters interacted wrong with burning buildings.
+
+
+*** Features ***
+
+_General_
 - Added a bigger world map (GUI).
 - Added a bigger building upgrade sheet (GUI).
+- All artefacts, measures and conditions (like illness) that temporarily effect your talents will now tell you that via a mouseover-tooltip.
 - Important persons list has been reworked. To improve the performance you only see one family member of shadow dynasties. You have a list of unemployed workers now.
 - Improved and added new character faces (men, women and children).
+- Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 - The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
 - Trade routes have been reworked completely.
 - In addition two new options for workshop-handling have been added that allow for easier supply and sale.
-- At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
-- Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 - Pregnant women are no longer tied to their bed.
-- New abilities after levelup
+- Some new and reworked abilities after levelup.
+
+_Patron_
+-
+
+_Scholar_
+- Your medical treatments slightly boost the opinion of the patients to the owner of that hospital.
+- 'Sorcerer documents' now generate a random victim (instead of always choosing the user as victim)
 - Targets of 'sorcerer documents' will get notified that they get an 'uneasy feeling' if their empathy is high enough.
 
-** Balancing **
+_Craftsman_
+-
 
-- Sweet talking needs 300 instead of 200 Gold. Tavern keepers will get that money.
-- Church owners will get the money from changing faith.
-- Favor gain of sweet talking has been altered.
+_Rogue_
+-
+
+_AI_
+- Improved hospital AI: No more than 2 employees will be assigned to treat patients.
+- AI sends wenches to the market place or to pre-determined places on the maps. 
+- At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
+
+
+*** Balancing ***
+
+_General_
+- They way talents impact your measures has been reworked completely. Instead of a linear progression there is a higher random factor and levels of succession. You will
+  also get visual feedback every time your character attempts a skillcheck.
 - You can now use ALL of your buisness inspectors to inspect buisnesses instead of just one at a time. However you can no longer inspect buisnesses more than once every 48 hours.
   Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
-- Sorcerer's robe no longer will give you a malus.
 - Declining a bribe will now lose you only 5 favor.
 - Duels are more dangerous.
 - If you don't attend a duel, you will lose favor with every sim nearby of the duel place.
 - If you remove someone's immunity you will lose some favor now.
+
+_Patron_
+- 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
+- Favor-gain of 'sweet talking' has been altered.
+
+_Scholar_
+- Church owners will get the money from changing faith.
+- Sorcerer's robe no longer will give you a malus.
+
+
+_Craftsman_
+
+
+_Rogue_
 - Charisma of wenches now has an impact on how successfully they are.
 - Range of wenches has been increased.
 - Wenches work 24 Hours per day like other rogue professions.
