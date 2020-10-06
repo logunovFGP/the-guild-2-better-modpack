@@ -7,8 +7,6 @@ Offen:
 - Fehlerhafte Warenhaus-Upgrades repariert.
 - Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
-- Es konnte vorkommen, dass einige Items ohne Effekt blieben, wenn man die Animation abbrach
-- Bei der Maßnahme "Jemanden enteignen" wurde eine fehlerhafte Nachricht an den Täter geschickt.
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.
 - Die Totengräber-Maßnahme "Gebäude verfluchen" funktionierte nicht.
@@ -16,8 +14,6 @@ Offen:
 - Bei Amtssitzungen wird das voraussichtliche Abstimmungsergebnis nun korrekt berechnet. (Abweichung KI-Entscheidung von HUD-Anzeige)
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
 - Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
-- KIs sollten nun seltener und kürzer in der Taverne auf eine Tanzpartnerin warten, die nie erscheint ...
-- Die "FrequencyOfficeSession"-Option bei Spielstart hatte auf Englisch und anderen Sprachen einen zu langen Namen (wurde daher nicht richtig angezeigt)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
 - Wer gegenwärtig nicht steuerbar ist, wird nicht mehr zu Amtssitzungen, Gericht oder Ähnlichem gerufen.
@@ -45,8 +41,6 @@ Offen:
 - Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
 - Sollte beim Tanzen in der Taverne die Tanzposition blockiert sein, so wird die Maßnahme abgebrochen. Trotzdem wurde ein Cooldown gesetzt
   und das Geld abgezogen. Dies passiert nun erst kurz vor Beginn des Tanzes.
-- Die KI wird ihre Kinder nicht mehr als Prediger, Heiler, Entführer oder Räuber einsetzen. (Lässt sich über AI-Scripte verbieten. Aber Hauptproblem war:
-  Kinder bzw. Shadows dürfen nicht ihren Betrieb als Wohnsitz haben, sondern müssen in einer Workerresidence wohnen, sonst betrachtet die KI sie als Angestellte)
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
 - Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung

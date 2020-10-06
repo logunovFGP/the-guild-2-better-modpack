@@ -17,49 +17,76 @@ function Run()
 	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
 	
 	-- the minimum favor of the destination sim to success
-	local CharismaSkill = GetSkillValue("", CHARISMA)
-	local MinimumFavor = 50 - CharismaSkill
-	local FavorWon = 5 + (CharismaSkill * 0.5)
-	local FavorLoss = Rand(4)-9
+	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
+	local DexteritySkill = (GetSkillValue("", DEXTERITY))*2
+	local MinimumFavor = 40 + TitleDifference - DexteritySkill
+	local FavorWon = 6 + (DexteritySkill/2) + Rand(5)
+	local FavorLoss = (-10) -TitleDifference
+	if FavorLoss > -5 then
+		FavorLoss = -5
+	end
 	
-	local OverallPrice = 300
+	local OverallPrice = 250
 	SetData("Price", OverallPrice)
 	
 	if IsStateDriven() then
---		if not ai_StartBuildingAction("", "Destination", -1, GL_BUILDING_TYPE_TAVERN) then
---			return
---		end
+
+		if not AliasExists("Destination") then
+		--	LogMessage("InviteToDance no Destination Alias")
+			return
+		end
 
 		if not GetSettlement("","city") then
-			StopMeasure()
+			return
 		end
+		
 		if not CityGetNearestBuilding("city", "", -1, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_IGNORE, "DestTavern") then
-			StopMeasure()
+			return
 		end
 
-		if not f_MoveToNoWait("", "DestTavern", GL_MOVESPEED_RUN) then
-			StopMeasure()
+		if not f_MoveTo("", "DestTavern", GL_MOVESPEED_RUN) then
+			return
 		end
-		if not f_MoveToNoWait("Destination", "DestTavern", GL_MOVESPEED_RUN) then
-			StopMeasure()
+		
+		--LogMessage("InviteToDance: Im here ("..GetID("").." "..GetName("")..", where are you my darling? "..GetID("Destination").." "..GetName("Destination").." ")
+		
+		local DesID = GetID("Destination")
+		if GetDistance("Destination","DestTavern") < 1000 then
+			--LogMessage("InviteToDance: My ID: "..GetID("").." . Destination ID: "..DesID.." is in range and moves to Tavern")
+			if not f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN) then
+				--LogMessage("InviteToDance: Destination ID: "..DesID.." error move")				
+				return
+			end
+			f_MoveTo("Destination","")
+		else
+			--LogMessage("InviteToDance: My ID:. "..GetID("").." . Destination ID: "..DesID.." "..GetName("Destination").." is ported")
+			GetLocatorByName("DestTavern", "Walledge1", "entry")
+			SimBeamMeUp("Destination", "entry", false)
+			f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN)
+			f_MoveTo("Destination", "")
 		end
 
 		local check = true
-		local WaitTime = GetGametime() + 3
+		local WaitTime = math.mod(GetGametime(),24)+3
 		while check do
 			Sleep(2)
-			
+
 			if not AliasExists("Destination") then
 				StopMeasure()
+				break
 			end
-			if WaitTime < GetGametime() then
+
+			if math.mod(GetGametime(),24)>WaitTime then
+				--LogMessage("I waited so long, now I go")
 				StopMeasure()
+				break
 			end
 			
 			if GetInsideBuilding("", "Building1") and GetInsideBuilding("Destination", "Building2") then
 				if (GetID("Building1")==GetID("Building2")) and (GetID("Building1")==GetID("DestTavern")) then
 					if LocatorStatus("DestTavern","Social_Dance",true)==1 then
 						check = false
+						--LogMessage("InviteToDance: Lets dance with "..GetID("").." and "..GetID("Destination").." ")
 					end
 				else
 					Sleep(5)
@@ -72,19 +99,8 @@ function Run()
 	
 	-- Get the tavern
 	if not GetInsideBuilding("", "Tavern") then
-		StopMeasure()
 		return
 	end
-	
-	-- Pay if the tavern does not belong to the owners dynasty
-	if GetDynastyID("Tavern") ~= GetDynastyID("") then
-		if not chr_SpendMoney("", GetData("Price"), "CostSocial") then
-			MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), GetData("Price"))
-			StopMeasure()
-			return
-		end
-		CreditMoney("Tavern",GetData("Price"),"Offering")
-	end	
 
 	-- the action number for the courting
 	local CourtingActionNumber = 2
@@ -103,14 +119,14 @@ function Run()
 	------ Check dancefloor free ------
 	---------------------------------------
 	if not GetLocatorByName("Tavern", "Social_Dance", "DancePos") then
+		--LogMessage("Dance locator is blocked")
 		MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_+0", GetID("Tavern"))
-		StopMeasure()
 		return
 	end
 	
 	if not GetLocatorByName("Tavern", "Social_Dance2", "DancePos2") then
+		--LogMessage("Dance locator is blocked")
 		MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_+0", GetID("Tavern"))
-		StopMeasure()
 		return
 	end
 	
@@ -125,13 +141,13 @@ function Run()
  	
  	MeasureSetNotRestartable()
 	local WasCourtLover = 0
-	SetMeasureRepeat(TimeUntilRepeat)
-	
+	--LogMessage("Dance go")
 	-------------------------
 	------ Court Lover ------
 	-------------------------
 	if SimGetCourtLover("", "CourtLover") then
 		if GetID("CourtLover")==GetID("Destination") then
+		--LogMessage("Dance with my love")
 			
 			WasCourtLover = 1
 			local ModifyFavor = FavorWon
@@ -175,6 +191,22 @@ function Run()
 						Sleep(1)
 					end
 					
+					--LogMessage("Now Pay the dance")
+					
+					-- Pay if the tavern does not belong to the owners dynasty
+					if GetDynastyID("Tavern") ~= GetDynastyID("") then
+						if not chr_SpendMoney("", 250, "CostSocial", false) then
+							MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), 250)
+							return
+						end
+						CreditMoney("Tavern",250,"Offering")
+				--		local OldBalance = 0
+				--		if HasProperty("Tavern", "BalanceDancingFee") then
+				--			OldBalance = GetProperty("Tavern", "BalanceDancingFee")
+				--		end
+				--		SetProperty("Tavern", "BalanceDancingFee", (OldBalance+250))
+					end	
+					
 					SetAvoidanceGroup("", "Destination")		
 					ms_232_invitetodance_EnterCutscene()
 --					camera_CutsceneBothLock("", "Destination")
@@ -207,6 +239,7 @@ function Run()
 	------ No Court Lover ------
 	----------------------------
 	if (WasCourtLover==0) then
+		--LogMessage("Dance with friends")
 	
 		local slap = false
 		local outraged = false
@@ -215,9 +248,17 @@ function Run()
 		if SimGetSpouse("Destination", "Spouse") then
 			if (GetID("Spouse")~=GetID("")) then
 				outraged = true
+			else
+		--		AddImpact("","LoveLevel",6,24) -- add some love for the next 24 hours
+		--		AddImpact("Destination","LoveLevel",6,24)
+		--		if GetImpactValue("Destination","LoveLevel")>=10 then
+		--			MsgNewsNoWait("","Destination","","schedule",-1,
+		--						"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+		--						"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+		--		end
 			end
 		elseif GetFavorToSim("Destination", "") < MinimumFavor then
-			if Rand(20) > 14 then
+			if Rand(20) > 10 then
 				slap = true
 			end
 		elseif Rand(10) == 5 then
@@ -233,7 +274,7 @@ function Run()
 			ms_232_invitetodance_EnterCutscene()
 --			camera_CutsceneBothLock("", "Destination")
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"))
+			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"));
 			
 		elseif outraged then
 			
@@ -244,7 +285,7 @@ function Run()
 			ms_232_invitetodance_EnterCutscene()
 			camera_CutscenePlayerLock("", "Destination")
 			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"))
+			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"));
 			
 		else
 			if AliasExists("cutscene") then
@@ -272,9 +313,25 @@ function Run()
 				Sleep(1)
 			end
 			
+			--LogMessage("Now pay the dance")
+			-- Pay if the tavern does not belong to the owners dynasty
+			if GetDynastyID("Tavern") ~= GetDynastyID("") then
+				if not SpendMoney("", 250, "CostSocial") then
+					MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), 250)
+					StopMeasure()
+					return
+				end
+				CreditMoney("Tavern",250,"Offering")
+		--		local OldBalance = 0
+		--		if HasProperty("Tavern", "BalanceDancingFee") then
+		--			OldBalance = GetProperty("Tavern", "BalanceDancingFee")
+		--		end
+		--		SetProperty("Tavern", "BalanceDancingFee", (OldBalance+250))
+			end
+			
 			SetAvoidanceGroup("", "Destination")
 			chr_MultiAnim("", "dance_social_male", "Destination", "dance_social_female", InteractionDistance)
-			MsgSay("Destination", chr_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6))
+			MsgSay("Destination", chr_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6));
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			chr_ModifyFavor("Destination", "", FavorWon)
@@ -329,7 +386,7 @@ end
 function GetOSHData(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6",300)
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 250)
 end
 
 function EnterCutscene()

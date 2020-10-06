@@ -65,6 +65,7 @@ _Allgemein_
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
+- 
 
 _Gelehrter_
 - Der 'vergiftete Kuchen' senkte nicht die Kampfkraft des Opfers.
@@ -101,6 +102,7 @@ _KI_
 - Die KI siedelte bei Spielstart fast immer in den selben Städten.
 - Die Familienmitglieder der KI (auch Kinder) konnten alle im selben Betrieb arbeiten.
 - Es kam zu Problemen im Verhalten der Kinder, wenn die KI nicht in einem richtigen Wohnhaus lebte.
+- Die KI konnte bei der Aufforderung zum Tanzen in der Taverne stecken bleiben.
 
 *** Features ***
 
@@ -160,6 +162,7 @@ _Allgemein_
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
 - Gunstgewinn beim Becircen leicht modifiziert.
+- Die Maßnahme 'Jemanden zum Tanzen auffordern' kostet nun 250 statt 300 Gold.
 
 _Gelehrter_
 - Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
