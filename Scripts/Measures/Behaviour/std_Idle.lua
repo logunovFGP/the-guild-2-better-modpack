@@ -34,17 +34,15 @@ function Run()
 		return
 	end
 	
-	if not IsDynastySim("")	then
-		if not GetHomeBuilding("", "HomeBuilding") then
-			if GetNearestSettlement("", "City") then
-				if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_WORKER_HOUSING, 1, -1, FILTER_IGNORE, "HomeBuilding") then
-					SetHomeBuilding("", "HomeBuilding")
-				end
+	if not GetHomeBuilding("", "HomeBuilding") then
+		if GetNearestSettlement("", "City") then
+			if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_WORKER_HOUSING, 1, -1, FILTER_IGNORE, "HomeBuilding") then
+				SetHomeBuilding("", "HomeBuilding")
 			end
 		end
 	end 
 
-	if not (GetImpactValue("","Sickness")>0) then
+	if GetImpactValue("", "Sickness") < 1 then
 		MoveSetActivity("","")
 	end	
 	

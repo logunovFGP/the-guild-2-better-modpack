@@ -97,7 +97,10 @@ _KI_
 - Fischereien werden Fische, die sie nicht benötigen, auf dem Markt verkaufen.
 - Bei Spielstart hatten alle KI-Kinder dasselbe Geschlecht.
 - In verschiedenen Fällen reagierten Charaktere falsch auf brennende Gebäude.
-
+- Die KI besetzte bei Spielstart fast immer dieselben Betriebe.
+- Die KI siedelte bei Spielstart fast immer in den selben Städten.
+- Die Familienmitglieder der KI (auch Kinder) konnten alle im selben Betrieb arbeiten.
+- Es kam zu Problemen im Verhalten der Kinder, wenn die KI nicht in einem richtigen Wohnhaus lebte.
 
 *** Features ***
 
@@ -148,6 +151,11 @@ _Allgemein_
 - Erscheint ein Kontrahent nicht zum Duell verliert er bei allen Sims in der Nähe des Duellplatzes Gunst.
 - Angestellte brauchen nun etwas länger, um eine Stufe aufzusteigen.
 - Jemandem die Immunität zu entziehen verursacht nun einen kleinen Gunstverlust.
+- Die Startbetriebe der KI sind nun zufälliger.
+- Farbige Dynastien starten mit dem selben Gold.
+- Man startet immer mit mindestens 5000 Gold, unabhängig vom Schwierigkeitsgrad.
+- Schattendynastien wohnen nun ebenfalls bevorzugt in Wohnhäusern.
+- Die Option mit Ehepartner/Kindern das Spiel zu beginnen (über Config.ini) wurde deaktiviert.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
