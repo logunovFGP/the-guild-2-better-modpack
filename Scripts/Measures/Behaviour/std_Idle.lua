@@ -21,7 +21,7 @@ function Run()
 	
 	if not GetHomeBuilding("", "HomeBuilding") then
 		if not GetSettlement("", "MyCity") then
-			Get NearestSettlement("", "MyCity")
+			GetNearestSettlement("", "MyCity")
 		end
 		CityGetNearestBuilding("MyCity", "", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
 		
