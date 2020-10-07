@@ -29,13 +29,13 @@ function Init()
 	end
 	
 	local Options = FindNode("\\Settings\\Options")
-	Options:SetValueInt("YearsPerRound", 4)
+	Options:SetValueInt("YearsPerRound", 3)
 	Options:SetValueInt("YPRNextStep", 0)
 
-	Options:SetValueInt("Ambient", 1)
+	Options:SetValueInt("Ambient", 0)
 	Options:SetValueInt("AmbientNextStep", 0)
 
-	Options:SetValueInt("Messages",1)
+	Options:SetValueInt("Messages",0)
 	Options:SetValueInt("MessagesNextStep", 0)
 
 	Options:SetValueInt("FrequencyOfficeSessions",2)
