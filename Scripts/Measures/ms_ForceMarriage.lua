@@ -1,8 +1,19 @@
 
 function Run()
 
-	if GetState("Destination",STATE_NPCFIGHTER) then
-		StopMeasure()
+	-- recently fired employee
+	if HasProperty("Destination", "NoMarry") then    
+		if GetProperty("Destination", "NoMarryTime") < GetGametime() then -- if time is over, remove property
+			RemoveProperty("Destination", "NoMarryTime")
+			RemoveProperty("Destination", "NoMarry")
+		elseif GetDynastyID("") == GetProperty("Destination", "NoMarry") then -- if our dynasty recently fired the destination Sim, stop measure.
+			MsgQuick("", "@L_COURTLOVER_MSG_FAILED_QUICK")
+			return
+		end
+	end
+
+	if GetState("Destination", STATE_NPCFIGHTER) then
+		return
 	end
 	
 	MeasureSetNotRestartable()
@@ -11,16 +22,15 @@ function Run()
 	SetProperty("", "LoverID", GetID("Destination"))
 	if not (MsgBox("", 0, "CourtLover", 0, 0) == "O") then
 		RemoveProperty("", "LoverID")
-		StopMeasure()
 		return
 	end
 	
 	RemoveProperty("", "LoverID")
 	local money = GetMoney("")
-  local cost = math.floor(money / 100 * 15)
+	local cost = math.floor(money / 100 * 15)
 	
 	if SimGetCourtingSim("Destination","blabla") then
-		MsgQuick("","%1SN %2l",GetID("Destination"),"@L_FILTER_IS_COURTED")
+		MsgQuick("", "%1SN %2l", GetID("Destination"),"@L_FILTER_IS_COURTED")
 		StopMeasure()
 	end
 	

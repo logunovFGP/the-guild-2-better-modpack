@@ -75,16 +75,16 @@ function Run()
 		end
 	end
 	
-    if HasProperty("Destination","NoMarry") then    
-        if GetProperty("Destination","NoMarryTime") < GetGametime() then -- if time is over, remove property
-            RemoveProperty("Destination","NoMarryTime")
-            RemoveProperty("Destination","NoMarry")
-        elseif GetDynastyID("") == GetProperty("Destination","NoMarry") then -- if our dynasty recently fired the destination Sim, stop measure.
-            MsgQuick("","@L_COURTLOVER_MSG_FAILED_QUICK")
-            StopMeasure()
-            return
-        end
-    end
+	-- recently fired employee
+	if HasProperty("Destination", "NoMarry") then    
+		if GetProperty("Destination", "NoMarryTime") < GetGametime() then -- if time is over, remove property
+			RemoveProperty("Destination", "NoMarryTime")
+			RemoveProperty("Destination", "NoMarry")
+		elseif GetDynastyID("") == GetProperty("Destination", "NoMarry") then -- if our dynasty recently fired the destination Sim, stop measure.
+			MsgQuick("", "@L_COURTLOVER_MSG_FAILED_QUICK")
+			return
+		end
+	end
 	
 	-- Calculate the difficulty which will be set as property to the destination and used in the following MsgBox
 	-- There are four locations where this property will be removed:
@@ -106,17 +106,17 @@ function Run()
 	
 	RemoveProperty("", "LoverID")
 	
-	local CharismaSkill = GetSkillValue("",CHARISMA)
-	local RhetoricSkill = GetSkillValue("",RHETORIC)
+	local CharismaSkill = GetSkillValue("", CHARISMA)
+	local RhetoricSkill = GetSkillValue("", RHETORIC)
 	local TotalSkill = CharismaSkill + RhetoricSkill	
 	
 	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill
 	local InteractionDistance = 128
 	local TimeUntilRepeat = 3
 	
-	if GetInsideBuilding("Destination","DestBuilding") then
-		GetOutdoorMovePosition("","DestBuilding","MovePos")
-		if not f_MoveTo("","MovePos",GL_MOVESPEED_RUN,800) then
+	if GetInsideBuilding("Destination", "DestBuilding") then
+		GetOutdoorMovePosition("", "DestBuilding", "MovePos")
+		if not f_MoveTo("","MovePos",GL_MOVESPEED_RUN, 800) then
 			StopMeasure()
 		end
 		BlockChar("Destination")
