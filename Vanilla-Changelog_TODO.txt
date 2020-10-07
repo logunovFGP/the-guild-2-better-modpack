@@ -5,7 +5,6 @@ Bug-Fixes & Workarounds:
 Offen:
 
 - Fehlerhafte Warenhaus-Upgrades repariert.
-- Das Kinder-Behavior ist teilweise fehlerhaft und zu performancelastig gewesen.
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.

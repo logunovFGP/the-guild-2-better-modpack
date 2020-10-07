@@ -15,6 +15,10 @@
 -- -----------------------
 function Run()
 	
+	if not GetSettlement("", "City") then
+		GetNearestSettlement("", "City")
+	end	
+	
 	-- Check if the sim is at the residence. If not let him move to.
 	if not AliasExists("Residence") then
 		if SimGetMother("","MyMother")==false or GetHomeBuilding("MyMother", "Residence")==false then
@@ -22,39 +26,38 @@ function Run()
 				GetHomeBuilding("", "Residence")
 			end
 		end
-	end	
+	end
 	
 	if not AliasExists("Residence") then
 		Sleep(100)
 		return
-	end	
-	
-	if GetInsideBuilding("", "InsideBuilding") then
-		if not GetID("Residence") == GetID("InsideBuilding") then
+	end
+
+	if BuildingGetType("Residence") == 2 then
+		if GetInsideBuilding("", "InsideBuilding") then
+			if not GetID("Residence") == GetID("InsideBuilding") then
+				f_MoveTo("", "Residence")
+			end
+		else
 			f_MoveTo("", "Residence")
 		end
 	else
-		f_MoveTo("", "Residence")
+		CityGetNearestBuilding("City", "", -1, 1, -1, -1, FILTER_IGNORE, "NewHome")
+		SetHomeBuilding("", "NewHome")
+		CopyAlias("NewHome", "Residence")
 	end
 	
 	-- Check if the sim is old enough for the grown up model
 	local Age = SimGetAge("")
-	if SimGetAge("") > GL_AGE_FOR_GROWNUP then
+	if Age > GL_AGE_FOR_GROWNUP then
 		
 		-- The SimSetAge will internally set the grown-up model for the sim
-		local Age = SimGetAge("")
 		SimSetAge("", Age)
 		
 		-- Remove the child state so that the child can be controlled
 		SetState("", STATE_CHILD, false)		
 		
-		
-		SimResetBehavior("")
-		return
-		
-	end
-	
-	if not GetSettlement("Residence","City") then
+		SimSetBehavior("","idle")
 		return
 	end
 	
@@ -109,8 +112,9 @@ function Run()
 				CarryObject("Child","",false)
 				PlayAnimationNoWait("","child_play_02_out")
 				PlayAnimation("Child","child_play_02_out")
-				chr_ModifyFavor("Child","",1)
+				chr_ModifyFavor("Child","",3)
 				SetData("Blocked",1)
+				return
 			end
 		else
 			f_ExitCurrentBuilding("")
@@ -125,8 +129,14 @@ function Run()
 			end
 		end
 	end
-	Sleep(1)
-	
+	Sleep(4)
+end
+
+function BlockMe()
+	SetData("Blocked",0)
+	while GetData("Blocked")~=1 do
+		Sleep(0.76)
+	end
 end
 
 function CleanUp()

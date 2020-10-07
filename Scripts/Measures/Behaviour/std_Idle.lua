@@ -19,28 +19,29 @@ function Run()
 		idlelib_KissMeHonza()
 	end
 	
-	if not ActiveMovement then
-		if GetHomeBuilding("", "HomeBuilding") then
-			local Distance = GetDistance("", "HomeBuilding")
-			if Distance > 100 then
-				idlelib_GoHome()
-			else
-				idlelib_DoNothing()
-			end
+	if not GetHomeBuilding("", "HomeBuilding") then
+		if not GetSettlement("", "MyCity") then
+			Get NearestSettlement("", "MyCity")
+		end
+		CityGetNearestBuilding("MyCity", "", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
+		
+		if AliasExists("NewHome") then
+			SetHomeBuilding("", "HomeBuilding")
 		end
 	end
 	
-	if SimGetAge("")<16 then
+	if not ActiveMovement then
+		local Distance = GetDistance("", "HomeBuilding")
+		if Distance > 1000 then
+			idlelib_GoHome()
+		else
+			idlelib_DoNothing()
+		end
+	end
+	
+	if SimGetAge("") <16 then
 		return
 	end
-	
-	if not GetHomeBuilding("", "HomeBuilding") then
-		if GetNearestSettlement("", "City") then
-			if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_WORKER_HOUSING, 1, -1, FILTER_IGNORE, "HomeBuilding") then
-				SetHomeBuilding("", "HomeBuilding")
-			end
-		end
-	end 
 
 	if GetImpactValue("", "Sickness") < 1 then
 		MoveSetActivity("","")
