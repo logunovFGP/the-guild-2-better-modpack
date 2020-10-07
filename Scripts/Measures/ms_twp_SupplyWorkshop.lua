@@ -48,6 +48,7 @@ function ChooseResources(ResourceCount, Resources)
 			-- result, Tooltip, label, icon
 			Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
 		end
+		Buttons = Buttons.."@B[C,@L_GENERAL_BUTTONS_OK_+0,@L_GENERAL_BUTTONS_OK_+0,Hud/Buttons/btn_Ok.tga]"
 
 		ChosenItem = InitData(
 			Buttons, -- PanelParam
