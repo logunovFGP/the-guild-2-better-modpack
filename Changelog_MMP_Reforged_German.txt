@@ -27,7 +27,6 @@ _Design_
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
 
-
 *** Bugs ***
 
 _Allgemein_
@@ -62,6 +61,7 @@ _Allgemein_
 - Versengold kündigen nun wieder mittels eines Timers ihren Auftritt an.
 - Versengolds Lied wird nicht länger beendet, wenn man die Taverne verlässt: Hat mindestens ein Spieler seinen Charakter vor Ort, wird das Lied als Hintergrundmusik abgespielt.
   Ansonsten wird das Lied neugestartet (und vorzeitig beendet, wenn die Animation zu Ende ist).
+- Es konnte passieren, dass es ewig regnete.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

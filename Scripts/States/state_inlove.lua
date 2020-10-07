@@ -4,7 +4,7 @@ end
 
 function Run()
 	while true do
-		Sleep(100)
+		Sleep(120)
 		if not HasProperty("", "courted") then
 			break
 		end

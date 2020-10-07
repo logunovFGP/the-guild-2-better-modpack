@@ -137,6 +137,7 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 	if not AliasExists(Owner) then
 		return false
 	end
+	
 	if not AliasExists(Destination) then
 		return false
 	end
@@ -172,7 +173,7 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 		RemoveProperty(Owner, ResultName)
 		
 		if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
-			if IsType("", "Sim") then
+			if IsType(Owner, "Sim") then
 				ai_ShowMoveError(lateresult, Owner)
 			end
 			--workaround for spinning carts...
@@ -294,7 +295,7 @@ function WeakMoveTo(Owner, Destination, iSpeed, fRange)
  		local lateresult = GetProperty(Owner, ResultName)
 		RemoveProperty(Owner, ResultName)
 		if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
-			if IsType("","Sim") then
+			if IsType(Owner, "Sim") then
 				ai_ShowMoveError(lateresult, Owner)
 			end
 			return false
@@ -348,7 +349,7 @@ function FollowNoWait(pOwner, pDestination, iSpeed, fRange, bFollowOnce)
 	return CFollow(pOwner, pDestination, iSpeed, NIL, fRange, bFollowOnce, false)
 end	
 
-function Fight(pSource,pDestination, Type)
+function Fight(pSource, pDestination, Type)
 	local Result=CFight(pSource,pDestination, Type)	
 	if(Result) then
 		WaitForMessage("WaitForTask")
@@ -356,18 +357,18 @@ function Fight(pSource,pDestination, Type)
 	return Result
 end
 	
-function FightNoWait(pSource,pDestination,Type)
-	return CFight(pSource,pDestination,Type)
+function FightNoWait(pSource, pDestination, Type)
+	return CFight(pSource, pDestination, Type)
 end
 
-function Stroll(pSource,Range, Duration)
+function Stroll(pSource, Range, Duration)
 	local Result = CStroll(pSource,Range,Duration)
 	if(Result) then
 		WaitForMessage("WaitForTask")
 	end
 end
   
-function StrollNoWait(pSource,Range,Duration)
+function StrollNoWait(pSource, Range, Duration)
 	return CStroll(pSource,Range,Duration)
 end
 			
@@ -382,16 +383,16 @@ function ExitCurrentBuilding(Alias)
 	
 		--workaround for unreachable entry locators...
 		if HasProperty(Alias,"BlockLocB") then
-	    GetNearestSettlement(Alias,"TheCity")
-	    CityGetNearestBuilding("TheCity",Alias,-1,-1,-1,-1,FILTER_IGNORE,"TheBuilding")
+	    	GetNearestSettlement(Alias, "TheCity")
+	    	CityGetNearestBuilding("TheCity", Alias,-1,-1,-1,-1,FILTER_IGNORE,"TheBuilding")
 			local l = GetProperty(Alias,"BlockLocL")
 			local b = GetProperty(Alias,"BlockLocB")
 			RemoveProperty(Alias,"BlockLocL")
 			RemoveProperty(Alias,"BlockLocB")
 	
-			if GetID("TheBuilding")==b then
+			if GetID("TheBuilding") == b then
 				GetLocatorByName("TheBuilding", l, "entry")
-				SimBeamMeUp(Alias,"entry",false)
+				SimBeamMeUp(Alias, "entry", false)
 			end
 		end
 		----------------------------------------------

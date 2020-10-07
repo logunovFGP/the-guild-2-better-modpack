@@ -1,7 +1,7 @@
 function Run()
 	GetScenario("World")
 	if not HasProperty("World", "static") then
-
+		
 		local Level = CityGetLevel("")
 		local DefaultID = GetID("")
 		local City0ID = GetID("City0")
@@ -10,20 +10,23 @@ function Run()
 			local CityCount = ScenarioGetObjects("Settlement", 1, "City")
 			City0ID = GetID("City0")
 		end
-	
-		if Level==1 then
-			-- kontor city - do nothing here
-			return
-		elseif Level==2 then
-			citypinghour_CheckVillage()
-		elseif Level==3 then
-			citypinghour_CheckSmallTown()
-		elseif Level==4 then
-			citypinghour_CheckTown()
-		elseif Level==5 then
-			citypinghour_CheckCapital()
-		elseif Level==6 then
-			citypinghour_CheckCapital()
+		
+		if ScenarioGetTimePlayed() > 3 then
+		
+			if Level==1 then
+				-- kontor city - do nothing here
+				return
+			elseif Level==2 then
+				citypinghour_CheckVillage()
+			elseif Level==3 then
+				citypinghour_CheckSmallTown()
+			elseif Level==4 then
+				citypinghour_CheckTown()
+			elseif Level==5 then
+				citypinghour_CheckCapital()
+			elseif Level==6 then
+				citypinghour_CheckCapital()
+			end
 		end
 	
 		if GetData("#MusiciansChooser")==nil then
@@ -60,13 +63,18 @@ function Run()
 		if GetData("#ImperialChooser")==GetID("") then
 			gameplayformulas_CheckImperialOfficer()
 		end
-	
-		citypinghour_CheckCrimes()
+		
+		if ScenarioGetTimePlayed() > 16 then
+			citypinghour_CheckCrimes()
+		end
 		
 	------------------------------------------------------------------------------
 		local currentGameTime = math.mod(GetGametime(),24)
-		if (currentGameTime == 1) or ((currentGameTime > 1) and (currentGameTime < 0)) then
-	
+		if (currentGameTime == 1) then	
+			
+			-- check weather (stop raining if it bugs!)
+			Weather_SetWeather("Fine", 4.0)
+		
 			local TaxValue = 0+ GetProperty("","TurnoverTax")
 			local Tax = 0
 			local cost = 0
@@ -79,7 +87,7 @@ function Run()
 				Alias = "Workshop"..l
 				WorkshopLvl = BuildingGetLevel(Alias)
 				if BuildingGetOwner(Alias, "Sim") then
-					Tax = Tax + ((Rand(100) + 100) * WorkshopLvl * (TaxValue/10))
+					Tax = Tax + ((Rand(125) + 125) * WorkshopLvl * (TaxValue/10))
 				end
 			end
 			SetProperty("", "Workshops", WorkshopCount)
@@ -91,12 +99,12 @@ function Run()
 	
 			-- offices costs
 			local officecostsTotal = gameplayformulas_GetTotalOfficeIncome("")
-			if officecostsTotal > 0 then
-				if GetMoney("") > officecostsTotal then
-					chr_SpendMoney("", officecostsTotal, "OfficeIncome")				
+			if officecostsTotal>0 then
+				if GetMoney("")>officecostsTotal then
+					SpendMoney("", officecostsTotal, "OfficeIncome")				
 				else
 					local tmpcosts = GetMoney("")
-					chr_SpendMoney("", tmpcosts, "OfficeIncome")				
+					SpendMoney("", tmpcosts, "OfficeIncome")				
 				end
 			end
 			SetProperty("", "OfficeMoney", officecostsTotal)
@@ -110,7 +118,7 @@ function Run()
 	
 					if GetMoney("")>cost then
 						repairedbuildings = repairedbuildings + 1
-						chr_SpendMoney("", cost, "BuildingRepairs")				
+						SpendMoney("", cost, "BuildingRepairs")				
 						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
 						repairTotal = repairTotal + cost
 					end
@@ -126,7 +134,7 @@ function Run()
 	
 					if GetMoney("")>cost then
 						repairedbuildings = repairedbuildings + 1
-						chr_SpendMoney("", cost, "BuildingRepairs")				
+						SpendMoney("", cost, "BuildingRepairs")				
 						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
 						repairTotal = repairTotal + cost
 					end
@@ -142,7 +150,7 @@ function Run()
 	
 					if GetMoney("")>cost then
 						repairedbuildings = repairedbuildings + 1
-						chr_SpendMoney("", cost, "BuildingRepairs")				
+						SpendMoney("", cost, "BuildingRepairs")				
 						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
 						repairTotal = repairTotal + cost
 					end
@@ -166,10 +174,6 @@ function Run()
 			SetProperty("", "WarcostsLY", WarMoney)
 			SetProperty("", "Warcosts", 0)
 
-		end
-		
-		if City0ID == GetID("") then
-			MeasureRun("","","RandomEvents",true)
 		end
 	end
 end
@@ -350,10 +354,14 @@ function CheckVillage()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_FARM, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_TAVERN, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
+	
+	-- for water-maps
+	GetScenario("World")
+	if HasProperty("World", "seamap") then
+		if GetProperty("World", "seamap") == 1 then
+			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
+		end
+	end
 end
 
 function CheckSmallTown()
@@ -378,13 +386,14 @@ function CheckSmallTown()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_FARM, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_TAVERN, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_BANKHOUSE, 1)
-		
-	citypinghour_CheckChurch(1)
+	
+	-- for water-maps
+	GetScenario("World")
+	if HasProperty("World", "seamap") then
+		if GetProperty("World", "seamap") == 1 then
+			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
+		end
+	end
 end
 
 function CheckTown()
@@ -410,12 +419,21 @@ function CheckTown()
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
 
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_FARM, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_TAVERN, 1)
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_ROBBER, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_BANKHOUSE, 1)
+	
+	-- for water-maps
+	GetScenario("World")
+	if HasProperty("World", "seamap") then
+		if GetProperty("World", "seamap") == 1 then
+			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
+			AICheckWorkingPlace("", GL_BUILDING_TYPE_PIRATESNEST, 1)
+		end
+	end
+	
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_THIEF, 1)
 
-	citypinghour_CheckChurch(2)
+	citypinghour_CheckChurch(1)
 	
 end
 
@@ -442,12 +460,21 @@ function CheckCapital()
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
 
---	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_WEDDINGCHAPEL, 1)
-
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_FARM, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_TAVERN, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_BANKHOUSE, 1)
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_ROBBER, 1)
+	
+	-- for water-maps
+	GetScenario("World")
+	if HasProperty("World", "seamap") then
+		if GetProperty("World", "seamap") == 1 then
+			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
+			AICheckWorkingPlace("", GL_BUILDING_TYPE_PIRATESNEST, 1)
+		end
+	end
+	
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_THIEF, 1)
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_NEKRO, 1)
 
 	citypinghour_CheckChurch(2)
 	

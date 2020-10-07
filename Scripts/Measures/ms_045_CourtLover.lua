@@ -15,7 +15,7 @@ function AIInit()
 	local BestValue = -1
 	local Partners = Find("", "__F((Object.GetObjectsFromCity(Sim))AND(Object.CanBeCourted())AND(Object.CanBeInterrupted(CourtLover)))","Partner", -1)
 
-	GetLocalPlayerDynasty("LocDyn")
+--	GetLocalPlayerDynasty("LocDyn")
 	if Partners>0 then
 		local Lauf
 		local	Value
@@ -67,24 +67,24 @@ end
 -- Run
 -- -----------------------
 function Run()
+	
+	MeasureSetNotRestartable()
 	if not AliasExists("Destination") then
 		if not ms_045_courtlover_AIInit() then
 			return
 		end
 	end
 	
-	if HasProperty("Destination", "NoMarry") then    
-		if GetProperty("Destination", "NoMarryTime") < GetGametime() then -- if time is over, remove property
-			RemoveProperty("Destination", "NoMarryTime")
-			RemoveProperty("Destination", "NoMarry")
-		elseif GetDynastyID("") == GetProperty("Destination", "NoMarry") then -- if our dynasty recently fired the destination Sim, stop measure.
-			MsgQuick("", "@L_COURTLOVER_MSG_FAILED_QUICK")
-			StopMeasure()
-			return
-		end
-	end
-	
-	MeasureSetNotRestartable()
+    if HasProperty("Destination","NoMarry") then    
+        if GetProperty("Destination","NoMarryTime") < GetGametime() then -- if time is over, remove property
+            RemoveProperty("Destination","NoMarryTime")
+            RemoveProperty("Destination","NoMarry")
+        elseif GetDynastyID("") == GetProperty("Destination","NoMarry") then -- if our dynasty recently fired the destination Sim, stop measure.
+            MsgQuick("","@L_COURTLOVER_MSG_FAILED_QUICK")
+            StopMeasure()
+            return
+        end
+    end
 	
 	-- Calculate the difficulty which will be set as property to the destination and used in the following MsgBox
 	-- There are four locations where this property will be removed:
@@ -158,9 +158,9 @@ function Run()
 		
 		-- If it was allowed by the player don´t do the whole animation thing
 		if Allow == 1 then
-			SimSetCourtLover("", "Destination")
+			SetProperty("Destination","courted",1)
 			SetState("Destination", STATE_INLOVE, true)
-			StopMeasure()
+			SimSetCourtLover("", "Destination")
 			return
 		else
 			-- Dont ask this sim on and on again
@@ -271,19 +271,18 @@ function Run()
 			Sleep(DestinationAnimationLength*0.3)
 			
 		end
-		
-		SimSetCourtLover("", "Destination")
-		SetState("Destination", STATE_INLOVE, true)
-		SetData("CourtLoverSet", 1)
 		-- PATCH TODO -- adds property so that CourtLover cannot be hired
 		SetProperty("Destination", "courted", 1)
+		SetState("Destination", STATE_INLOVE, true)
+		SetData("CourtLoverSet", 1)
 		
 		DestroyCutscene("cutscene")
 
 		feedback_MessageCharacter("", 
 			"@L_COURTLOVER_MSG_SUCCESS_HEAD_+0",
 			"@L_COURTLOVER_MSG_SUCCESS_BODY_+0", GetID("Destination"), GetID("Owner"))
-			
+		
+		SimSetCourtLover("", "Destination")		
 	else
 		
 		-- Set the repeat timer and the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again

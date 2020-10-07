@@ -182,6 +182,7 @@ Translate and add the following lines below:
 18179   "_MEASURE_SalesCart_NAME"   "Sell products"   |
 18180   "_MEASURE_SalesCart_TOOLTIP"   "Assign your cart to sell products from your workshop. You can choose how many products shall remain in your storage.$N$NOnce you send out your cart your driver will check the storage himself from time to time and move when enough goods have been produced to sell. It's quite a tough task, so your driver will take breaks from time to time."   |
 18181   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0"   "This woman is pregnant and will give birth to a child very soon. It would be highly dishonorable to harm her right now."   |
+18182   "_IMPORTANTPERSONS_AGE_+0"   "Unemployed (sorted by age)"   |
 
 
 Delete the following lines:

@@ -71,7 +71,7 @@ function EvilMeasuresBlocked(Blocked, Blocker)
 		GetDynasty(Blocker, "DestDyn")
 		if HasProperty("DestDyn", "NoEvilFrom"..GetDynastyID(Blocked)) then			
 			GetDynasty(Blocked, "DestDyn")
-			MsgQuick(Blocked, "@L_GENERAL_MEASURES_FAILURES_+17", GetID("DestDyn"))
+			MsgBoxNoWait(Blocked, Blocker, "_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_FAILURES_+17", GetID("DestDyn"))
 			return true
 		else
 			return false
@@ -79,3 +79,24 @@ function EvilMeasuresBlocked(Blocked, Blocker)
 						
 end
 
+function GetValidMember(Dynasty)
+	local Count = DynastyGetMemberCount(Dynasty)
+	for i=0, Count-1 do
+		if DynastyGetMember(Dynasty, i, "Member") then
+			if not GetState("Member", STATE_DYING) then
+				if not GetState("Member", STATE_DEAD) then
+					CopyAlias("Member", "DynastyBoss")
+					break
+				end
+			end
+		end
+	end
+	
+	if not AliasExists("DynastyBoss") and AliasExists("Member") then
+		CopyAlias("Member", "DynastyBoss")
+	end
+	
+	local BossID = GetID("DynastyBoss")
+	
+	return BossID
+end
