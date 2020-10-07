@@ -27,22 +27,6 @@ function Init()
 	ms_twp_salescart_SetMeasureData(ProductCount, Products)
 end
 
-function GetProductsForWorkshop(BldAlias)
-	local BldId = BuildingGetProto(BldAlias)
-	local ItemsString = GetDatabaseValue("BuildingToItems", BldId, "produceditems")
-	if ItemsString == nil then
-		return 0, {}
-	end
-	local Items = {}
-	local Products = {}
-	local Count = 0
-	for Id in string.gfind(ItemsString, "%d+") do
-		Count = Count + 1
-		Products[Count] = { ItemGetID(Id), 0 }
-	end
-	return Count, Products
-end
-
 function ChooseProducts(ProductCount, Products)
 	local ChosenItemId
 	local Buttons = ""
@@ -133,11 +117,11 @@ function Run()
 	-- 1. Go home.
 	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
 		-- cannot get gome, something went wrong
-		StopMeasure()
+		ms_twp_salescart_Abort()
 	end
 	local CartSlots, CartSlotSize = cart_GetCartSlotInfo("")
 	if CartSlots <= 0 then
-		StopMeasure()
+		ms_twp_salescart_Abort()
 	end
 
 	cart_UnloadAll("", "MyHome")
@@ -146,11 +130,18 @@ function Run()
 	while true do 
 		-- 3. Calculate expected profit for each item
 		CityGetLocalMarket("MyCity","MyMarket")
-		local ProfitCount, Profits = ms_twp_salescart_CalcProfits("MyMarket", "MyHome", ProductCount, Products)
-		local CityAlias = "MyCity"
+		local ProfitCount, Profits = economy_CalcProfits("MyMarket", "MyHome", ProductCount, Products, 250)
 		if ProfitCount > 0 then
-			-- go to market and sell products
-			ms_twp_salescart_LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, CityAlias)
+			-- 4. load the cart, slot by slot
+			cart_LoadItems("", "MyHome", ProfitCount, Profits) 
+			-- 5. go to the market
+			if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
+				f_MoveTo("","MarketBld", GL_MOVESPEED_RUN)
+			end
+			Sleep(3)
+			-- 6. Unload
+			cart_UnloadAll("", "MarketBld")
+			Sleep(2)
 		else
 			Sleep(120) -- nothing to sell right now, wait a while
 		end 
@@ -158,106 +149,27 @@ function Run()
 		-- return home if necessary
 		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
 			-- cannot get gome, something went wrong
-			local ret = MsgNews("", "", 
+			ms_twp_salescart_Abort()
+		end
+		Sleep(30) -- give me some rest
+	end
+end
+
+function Abort()
+	GetHomeBuilding("","MyHome")
+	local ret = MsgNews("", "", 
 				"", -- Buttons 
 				0,
 				"production", 
 				1, 
 				"@L_TWP_SALESCART_ABORTWARNING_HEAD_+0", 
 				"@L_TWP_SALESCART_ABORTWARNING_BODY_+0", 
-				"MyHome")
-			StopMeasure() 
-		end
-		Sleep(30) -- give me some rest
-	end
-end
-
-function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products)
-	local Profits = {} -- table of {{ItemId, MinAmount}, Profit}
-	local ProfitCount = 0
-	local ItemId
-	for i = 1, ProductCount do
-		ItemId = Products[i][1]
-		local Amount = GetItemCount(HomeAlias, ItemId)
-		Amount = Amount - Products[i][2]
-		local Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 
-		if Amount > 0 and Profit > 250 then
-			ProfitCount = ProfitCount + 1
-			Profits[ProfitCount] = {Products[i], Profit} -- {{ItemId, MinAmount}, Profit}
-		end
-	end
- 
- 	if ProfitCount == 0 then
- 		return 0, {}
- 	end
- 	
-	-- 4. sort by expected profit, highest first
-	Profits = helpfuncs_QuickSort(Profits, 1, ProfitCount, ms_twp_salescart_SortProfits)
-	return ProfitCount, Profits 
-end
-
-function SortProfits(a,b) 
-	return a[2] > b[2] 
-end
-
-function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, CityAlias) 
-	local NeedCount, Needs
-	if ProfitCount > 0 then
-		LogMessage("AITWP::SalesCart " .. GetName("") .. " Loading items at workshop.")
-		-- 5. load the cart, slot by slot
-		local CurrentItem = 1
-		for i = 1, CartSlots do
-			local ItemId = Profits[CurrentItem][1][1]
-			local Error, ItemTransfered = Transfer("","",INVENTORY_STD,"MyHome",INVENTORY_STD, ItemId, CartSlotSize)
-			-- 6. make sure list is repeated if slots are still available
-			CurrentItem = math.mod(CurrentItem, ProfitCount) + 1 
-		end 
-	end
-	-- 7. go to the market
-	-- get market building
-	if CityGetRandomBuilding(CityAlias, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
-		f_MoveTo("","MarketBld", GL_MOVESPEED_RUN)
-	end
-	Sleep(3)
-	-- Unload
-	cart_UnloadAll("", "MarketBld")
-	Sleep(2)
-end
-
-function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
-	local BldInv = INVENTORY_STD
-	if GetDynastyID("") ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
-		-- use sales inventory for workshops of other dynasties
-		BldInv = INVENTORY_SELL
-	end
-	if NeedCount and NeedCount > 0 then
-		local CurrentItem = 1 
-		local OpenSlots = CartSlots
-		while OpenSlots > 0 and CurrentItem <= NeedCount do
-			local ItemId = Needs[CurrentItem][1]
-			if ItemId then
-				local Error, ItemTransfered = Transfer("","",INVENTORY_STD,BldAlias, BldInv, ItemId, CartSlotSize)
-				-- 6. make sure list is repeated if slots are still available
-				if ItemTransfered and ItemTransfered > 0 then
-					-- update balance with estimated costs (TWP)
-					--local EstimatedCost = ItemGetPriceBuy(ItemId,"MarketBld")*ItemTransfered
-					--economy_UpdateBalance("MyHome", "Autoroute", -EstimatedCost)
-					CurrentItem = math.mod(CurrentItem, NeedCount) + 1
-					OpenSlots = OpenSlots - 1
-					Needs[CurrentItem][2] = Needs[CurrentItem][2] - ItemTransfered
-				else 
-					-- slot not used, keep going
-					CurrentItem = CurrentItem + 1
-				end 
-			end
-		end
-	end
-	return Needs
+				GetID("MyHome"))
+	StopMeasure()
 end
 
 function CleanUp()
 end
-
 
 function SetMeasureData(ProductCount, Products)
 	-- filter resources with a minimum of -1

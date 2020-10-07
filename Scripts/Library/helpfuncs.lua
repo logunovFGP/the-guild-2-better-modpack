@@ -84,6 +84,13 @@ function QuickSort(t, start, endi, compare)
   return helpfuncs_QuickSort(t, pivot + 1, endi, compare)
 end
 
+function SortBySecondValue(a,b) 
+	return a[2] > b[2] 
+end
+
+function SortByThirdValue(a,b) 
+	return a[3] > b[3] 
+end
 
 -- the Alias should be the sim, which started the measure, which is just ""
 function GetNameParts(Alias)  -- seperates firstname from lastname, from the charakter that is doing this measure. don't know how to give the charakter to another script function, so these functions have to be in the script from the measure

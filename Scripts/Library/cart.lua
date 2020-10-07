@@ -86,3 +86,75 @@ function UnloadAll(CartAlias, DestAlias)
 		Sleep(0.4)
 	end
 end
+
+--- debug function to notify player of current route
+function NotifyRoute(CartAlias, CurrentStop, Destination)
+	if not AliasExists(CurrentStop) then
+		return
+	end
+	local SlotCount, SlotSize = cart_GetCartSlotInfo(CartAlias)
+	local Msg = "Händler verlässt %1NAME mit Ziel %2NAME und folgender Ladung.$N"
+	local ItemId, Count
+	local Labels = {}
+	local HasItems = false
+	for i=0, SlotCount - 1 do
+		ItemId, Count = InventoryGetSlotInfo("", i)
+		if ItemId and Count > 0 then
+			Msg = Msg .. "$N"..Count.." %"..(3+i).."l" -- Texts like: (linebreak) 20 Gold
+			Labels[i+1] = ItemGetLabel(ItemId, Count==1)
+			HasItems = true
+		end
+	end
+	if not HasItems then
+		Msg = Msg .. "$N--- Nichts ---"
+	end
+	MsgNewsNoWait("All", -- recipient
+				CartAlias, -- jump to target
+				"", -- panel params (buttons)
+				"economie", -- message class
+				-1, -- TimeOut 
+				"World Trader", -- Header
+				Msg, -- Body
+				GetSettlementID(CurrentStop), GetSettlementID(Destination), helpfuncs_UnpackTable(Labels)) -- params
+end
+
+---
+-- Attempts to load as many items as possible onto the cart.
+-- shopping list must look like: {{ItemId, RequiredAmount}, {ItemId2, RequiredAmount2}, ...}
+-- returns the ShoppingList with reduced item amounts
+function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
+	if not Count or Count <= 0 then
+		-- nothing to load...
+		return ShoppingList
+	end
+	local SlotCount, CartSlotSize = cart_GetCartSlotInfo(CartAlias)
+	local BldInv = INVENTORY_STD
+	if GetDynastyID(CartAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
+		-- use sales inventory for workshops of other dynasties
+		BldInv = INVENTORY_SELL
+	end
+	-- loop through slots and try to buy items from shopping list. fills up more than one slot with the same item after finishing the list
+	local CurrentItem = 1 
+	local OpenSlots = SlotCount
+	local ItemId, ReqAmount
+	while OpenSlots > 0 and CurrentItem <= Count do
+		ItemId = ShoppingList[CurrentItem][1]
+		ReqAmount = ShoppingList[CurrentItem][2]
+		if ItemId and ReqAmount > 0 then
+			local Error, ItemTransfered = Transfer(CartAlias,CartAlias,INVENTORY_STD,BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			-- 6. make sure list is repeated if slots are still available
+			if ItemTransfered and ItemTransfered > 0 then
+				CurrentItem = math.mod(CurrentItem, Count) + 1
+				OpenSlots = OpenSlots - 1
+				ShoppingList[CurrentItem][2] = ShoppingList[CurrentItem][2] - ItemTransfered -- reduces required amount
+			else 
+				-- slot not used, check next item
+				CurrentItem = CurrentItem + 1
+			end 
+		else
+			-- invalid item, check next item (necessary to prevent endless loop)
+			CurrentItem = CurrentItem + 1
+		end
+	end
+	return ShoppingList
+end
