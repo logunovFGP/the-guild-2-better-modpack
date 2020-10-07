@@ -887,15 +887,16 @@ end
 function CalcBuildingLevelGoal(DynastyAlias)
 	local Value = 60
 	DynastyGetMemberRandom(DynastyAlias, "member")
-	GetHomeBuilding("member", "home")
-	local HomeBuildingLevel = BuildingGetLevel("home")
-	local Title = GetNobilityTitle("member")
-	local Wealth = SimGetWealth("member")
-	Value = Rand(10) + Value - HomeBuildingLevel*10 + 4*Title
-	if Wealth > 100000 then
-		Value = Value + 20
-	elseif Wealth > 40000 then
-		Value = Value + 10
+	if GetHomeBuilding("member", "home") then
+		local HomeBuildingLevel = BuildingGetLevel("home")
+		local Title = GetNobilityTitle("member")
+		local Wealth = SimGetWealth("member")
+		Value = Rand(10) + Value - HomeBuildingLevel*10 + 4*Title
+		if Wealth > 100000 then
+			Value = Value + 20
+		elseif Wealth > 40000 then
+			Value = Value + 10
+		end
 	end
 	
 	return Value
