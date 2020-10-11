@@ -34,7 +34,7 @@ function Run()
 		if not AliasExists("Destination") then
 			GetSettlement("", "City")
 			if CityFindCrowdedPlace("City", "", "Destination") == 0 then
-				break
+				return
 			end
 		end
 		
@@ -103,6 +103,7 @@ function Run()
 		Sleep(2)
 	end
 		
+	-- TODO this is never called since while-loop has no condition and no break
 	if Total == 0 then
 		if IsMonitor then
 			feedback_MessageCharacter("BuildingOwner",
@@ -115,7 +116,8 @@ function Run()
 		end
 	end
 	
-	MeasureRun("","Destination",2110)
+	-- TODO Why did this call seem necessary? Seems to lead to freeze by endless measure loop.
+	--MeasureRun("","Destination",2110)
 	
 end
 
