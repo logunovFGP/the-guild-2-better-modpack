@@ -78,7 +78,12 @@ function InitMeasure()
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
 	local ProductCount, Products = economy_GetItemsForSale("MyHome")
 	for i = 1, ProductCount do
-		Products[i] = { Products[i], 0 }
+		if Products[i] == 360 or Products[i] == 360 or Products[i] == 364 or Products[i] == 365 or Products[i] == 371 then
+			-- protect medicince required for treatment
+			Products[i] = { Products[i], 30 }
+		else
+			Products[i] = { Products[i], 0 }
+		end
 	end
 	 
 	repeat

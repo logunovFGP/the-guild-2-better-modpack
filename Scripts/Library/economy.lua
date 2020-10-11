@@ -721,8 +721,7 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThres
 	local ProfitCount = 0
 	local ItemId
 	for i = 1, ProductCount do
-		local ItemInfo = Products[i]
-		ItemId = ItemInfo [1]
+		local ItemId = Products[i][1]
 		local Amount = GetItemCount(HomeAlias, ItemId, INVENTORY_STD) + GetItemCount(HomeAlias, ItemId, INVENTORY_SELL)
 		Amount = Amount - Products[i][2]
 		local Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 

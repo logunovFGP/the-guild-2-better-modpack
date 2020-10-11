@@ -30,7 +30,11 @@ function Run()
 	end
 	local Count, Items = economy_GetItemsForSale("MyHome")
 	for i = 1, Count do
-		Items[i] = { Items[i], 0 }
+		if Items[i] == 360 or Items[i] == 360 or Items[i] == 364 or Items[i] == 365 or Items[i] == 371 then
+			Items[i] = { Items[i], 30 }
+		else
+			Items[i] = { Items[i], 0 }
+		end
 	end
 
 	state_twp_autocart_UnloadItems(CartSlots, CartSlotSize, "MyHome")
