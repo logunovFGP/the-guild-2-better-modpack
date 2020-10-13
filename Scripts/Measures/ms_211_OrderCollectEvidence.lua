@@ -32,10 +32,10 @@ function Run()
 	while true do
 		
 		if not AliasExists("Destination") then
-			GetSettlement("", "City")
-			if CityFindCrowdedPlace("City", "", "Destination") == 0 then
+	--		GetSettlement("", "City")
+	--		if CityFindCrowdedPlace("City", "", "Destination") == 0 then
 				break
-			end
+	--		end
 		end
 		
 		local NumOfObjects = Find("Owner","__F( (Object.GetObjectsByRadius(Sim)==1000) AND NOT(Object.BelongsToMe())AND(Object.CanBeInterrupted(OrderCollectEvidence))AND NOT(Object.GetState(cutscene))AND NOT(Object.HasImpact(HasBeenTalked))AND NOT(Object.GetProfession() == 25)AND NOT(Object.GetProfession() == 21)AND NOT(Object.GetProfession() == 22))","Sims",-1)
@@ -98,7 +98,8 @@ function Run()
 			if GetDistance("", "Destination") > 500 then
 				f_MoveTo("", "Destination")
 			end
-			Sleep(2)
+			PlayAnimation("", "cogitate")
+			Sleep(5)
 		end
 		Sleep(2)
 	end
@@ -115,7 +116,7 @@ function Run()
 		end
 	end
 	
-	MeasureRun("","Destination",2110)
+--	MeasureRun("","Destination",2110)
 	
 end
 
