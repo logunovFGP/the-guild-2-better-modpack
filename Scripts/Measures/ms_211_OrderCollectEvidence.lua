@@ -36,6 +36,10 @@ function Run()
 	--		if CityFindCrowdedPlace("City", "", "Destination") == 0 then
 				break
 	--		end
+			GetSettlement("", "City")
+			if CityFindCrowdedPlace("City", "", "Destination") == 0 then
+				return
+			end
 		end
 		
 		local NumOfObjects = Find("Owner","__F( (Object.GetObjectsByRadius(Sim)==1000) AND NOT(Object.BelongsToMe())AND(Object.CanBeInterrupted(OrderCollectEvidence))AND NOT(Object.GetState(cutscene))AND NOT(Object.HasImpact(HasBeenTalked))AND NOT(Object.GetProfession() == 25)AND NOT(Object.GetProfession() == 21)AND NOT(Object.GetProfession() == 22))","Sims",-1)
@@ -116,8 +120,7 @@ function Run()
 		end
 	end
 	
---	MeasureRun("","Destination",2110)
-	
+	--MeasureRun("","Destination",2110)	
 end
 
 function BlockMe()

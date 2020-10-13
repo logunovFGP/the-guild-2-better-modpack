@@ -31,22 +31,6 @@ function Init()
 	ms_twp_supplyworkshop_SetMeasureData(ResourceCount, Resources, SupplierCount, Suppliers)
 end
 
-function GetResourcesForWorkshop(BldAlias)
-	local BldId = BuildingGetProto(BldAlias)
-	local ItemsString = GetDatabaseValue("BuildingToItems", BldId, "requireditems")
-	if ItemsString == nil then
-		return 0, {}
-	end
-	local Items = {}
-	local Resources = {}
-	local Count = 0
-	for Id in string.gfind(ItemsString, "%d+") do
-		Count = Count + 1
-		Resources[Count] = { ItemGetID(Id), 20 }
-	end
-	return Count, Resources
-end
-
 function ChooseResources(ResourceCount, Resources)
 	local ChosenItemId
 	local Buttons = ""
@@ -64,6 +48,7 @@ function ChooseResources(ResourceCount, Resources)
 			-- result, Tooltip, label, icon
 			Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
 		end
+		Buttons = Buttons.."@B[C,@L_GENERAL_BUTTONS_OK_+0,@L_GENERAL_BUTTONS_OK_+0,Hud/Buttons/btn_Ok.tga]"
 
 		ChosenItem = InitData(
 			Buttons, -- PanelParam
@@ -136,7 +121,7 @@ function InitMeasure()
 	end
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
-	local ResourceCount, Resources = ms_twp_supplyworkshop_GetResourcesForWorkshop("MyHome")
+	local ResourceCount, Resources = economy_GetResourceNeeds("MyHome")
 	local SupplierCount = 0
 	local Suppliers = {} -- {Supplier1, Supplier2, ...}
 	-- add local market as supplier for convenience
@@ -196,13 +181,13 @@ function Run()
 	
 	local NeedCount, Needs
 	while true do 
-		-- 3. Calculate current demand at workshop
-		local NeedCount, Needs = ms_twp_supplyworkshop_CalcResourceNeeds("MyHome", ResourceCount, Resources)
+		-- 3. Calculate current demand at workshop (need arises when below 60% (0.6))
+		local NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.6)
 		if NeedCount and NeedCount > 0 then
 			for i = 1, SupplierCount do
-				if ms_twp_supplyworkshop_CheckAvailability(Suppliers[i], NeedCount, Needs) then
+				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
 					f_MoveTo("", Suppliers[i], GL_MOVESPEED_RUN)
-					Needs = ms_twp_supplyworkshop_GoShopping(Suppliers[i], NeedCount, Needs, CartSlots, CartSlotSize)
+					Needs = cart_LoadItems("", Suppliers[i], NeedCount, Needs)
 				end
 			end
 		else
@@ -220,91 +205,8 @@ function Run()
 	end
 end
 
-function CheckAvailability(BldAlias, NeedCount, Needs)
-	-- can only buy from market if I have enough money
-	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or GetDynastyID("") ~= GetDynastyID(BldAlias) then
-		if GetMoney("") < 200 then
-			return false
-		end
-	end
-	for i = 1, NeedCount do
-		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1]) > 0 then
-			return true
-		end
-	end
-	return false
-end
-
-function GoShopping(BldAlias, NeedCount, Needs, CartSlots, CartSlotSize)
-	local BldInv = INVENTORY_STD
-	if GetDynastyID("") ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
-		-- use sales inventory for workshops of other dynasties
-		BldInv = INVENTORY_SELL
-	end
-	if NeedCount and NeedCount > 0 then
-		local CurrentItem = 1 
-		local OpenSlots = CartSlots
-		local ItemId, ReqAmount
-		while OpenSlots > 0 and CurrentItem <= NeedCount do
-			ItemId = Needs[CurrentItem][1]
-			ReqAmount = Needs[CurrentItem][2]
-			if ItemId and ReqAmount > 0 then
-				local Error, ItemTransfered = Transfer("","",INVENTORY_STD,BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
-				-- 6. make sure list is repeated if slots are still available
-				if ItemTransfered and ItemTransfered > 0 then
-					-- update balance with estimated costs (TWP)
-					--local EstimatedCost = ItemGetPriceBuy(ItemId,"MarketBld")*ItemTransfered
-					--economy_UpdateBalance("MyHome", "Autoroute", -EstimatedCost)
-					CurrentItem = math.mod(CurrentItem, NeedCount) + 1
-					OpenSlots = OpenSlots - 1
-					Needs[CurrentItem][2] = Needs[CurrentItem][2] - ItemTransfered
-				else 
-					-- slot not used, keep going
-					CurrentItem = CurrentItem + 1
-				end 
-			else
-				-- invalid item, check next item
-				CurrentItem = CurrentItem + 1
-			end
-		end
-	end
-	return Needs
-end
-
-function CalcResourceNeeds(BldAlias, ResourceCount, Resources)
-	if ResourceCount <= 0 then
-		return 0, {}
-	end 
-	local Needs = {}
-	local NeedCount = 0
-	for i = 1, ResourceCount do
-		local CurrentAmount = GetItemCount(BldAlias, Resources[i][1])
-		local MaxNeed = Resources[i][2]
-		local ActualNeed = MaxNeed - CurrentAmount
-		-- need resources when stores down to 60%
-		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= 0.6 then
-			NeedCount = NeedCount + 1
-			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
-			Needs[NeedCount] = {Resources[i][1], math.min(InvSpace, ActualNeed)}
-		end
-	end
-	-- no current needs
-	if NeedCount == 0 then
- 		return 0, {}
- 	end
- 	
- 	-- 4. sort by actual needs, highest first (SortProfits sorts highest first so it will do)
-	Needs = helpfuncs_QuickSort(Needs, 1, NeedCount, ms_twp_supplyworkshop_SortNeeds)
-	return NeedCount, Needs 
-end
-
-function SortNeeds(a,b) 
-	return a[2] > b[2] 
-end
-
 function CleanUp()
 end
-
 
 function SetMeasureData(ResourceCount, Resources, SupplierCount, Suppliers)
 	-- filter resources with a minimum of 0

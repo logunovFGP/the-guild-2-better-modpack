@@ -634,6 +634,109 @@ function IncreaseServiceBasePrice(BldType, ItemId, BasePrice)
 	return BasePrice
 end
 
-function CalcResourceRequirements(BldAlias)
-	-- TODO implement
+function GetResourceNeeds(BldAlias)
+	if (not BldAlias or not AliasExists(BldAlias)) then
+		return 0, {} 
+	end
+	
+	local BldId = BuildingGetProto(BldAlias)
+	-- get values from DBT
+	local ItemsString = GetDatabaseValue("BuildingToItems", BldId, "requireditems")
+	if ItemsString == nil then
+		return 0, {}
+	end
+	-- initialize return list
+	local Items = {}
+	local Ids = {}
+	local Count = 0
+	for Id in string.gfind(ItemsString, "%d+") do
+		Count = Count + 1
+		Ids[Count] = ItemGetID(Id)
+	end
+	local Multiplier = BuildingGetWorkerCount(BldAlias) + 1
+	local AmountsString = GetDatabaseValue("BuildingToItems", BldId, "requireditemusages")
+	local i = 0
+	for Amount in string.gfind(AmountsString, "%d+") do
+		i = i + 1
+		-- multiply base amount by workercount or productivity
+		Items[i] = { Ids[i], Amount * Multiplier }
+	end
+	return Count, Items
 end
+
+---
+-- Given the general resource requirements, calculate the current needs.
+-- returns NeedCount, Needs
+function CalcCurrentResourceNeeds(BldAlias, ResourceCount, Resources, Threshold)
+	if ResourceCount <= 0 then
+		return 0, {}
+	end 
+	local Needs = {}
+	local NeedCount = 0
+	for i = 1, ResourceCount do
+		local CurrentAmount = GetItemCount(BldAlias, Resources[i][1])
+		local MaxNeed = Resources[i][2]
+		local ActualNeed = MaxNeed - CurrentAmount
+		-- need resources when stores down to 60%
+		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= Threshold then
+			NeedCount = NeedCount + 1
+			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
+			Needs[NeedCount] = {Resources[i][1], math.min(InvSpace, ActualNeed)}
+		end
+	end
+	-- no current needs
+	if NeedCount == 0 then
+ 		return 0, {}
+ 	end
+ 	
+ 	-- 4. sort by actual needs, highest first (SortProfits sorts highest first so it will do)
+	Needs = helpfuncs_QuickSort(Needs, 1, NeedCount, helpfuncs_SortBySecondValue)
+	return NeedCount, Needs 
+end
+
+function CheckAvailability(BldAlias, CartAlias, NeedCount, Needs)
+	-- can only buy from market if I have enough money
+	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or GetDynastyID("") ~= GetDynastyID(BldAlias) then
+		if GetMoney("") < 200 then
+			return false
+		end
+	end
+	-- use sales inventory for workshops not owned by cart dynasty
+	local BldInv = INVENTORY_STD
+	if GetDynastyID(CartAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
+		-- use sales inventory for workshops of other dynasties
+		BldInv = INVENTORY_SELL
+	end
+	-- check availability of at least one resource
+	for i = 1, NeedCount do
+		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1], BldInv) > 0 then
+			return true
+		end
+	end
+	return false
+end
+
+function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThreshold)
+	local Profits = {} -- table of {ItemId, MinAmount, Profit}
+	local ProfitCount = 0
+	local ItemId
+	for i = 1, ProductCount do
+		local ItemId = Products[i][1]
+		local Amount = GetItemCount(HomeAlias, ItemId, INVENTORY_STD) + GetItemCount(HomeAlias, ItemId, INVENTORY_SELL)
+		Amount = Amount - Products[i][2]
+		local Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 
+		if Amount > 0 and Profit > ProfitThreshold then
+			ProfitCount = ProfitCount + 1
+			Profits[ProfitCount] = {ItemId, Amount, Profit}
+		end
+	end
+ 
+ 	if ProfitCount == 0 then
+ 		return 0, {}
+ 	end
+ 	
+	-- sort by expected profit, highest first
+	Profits = helpfuncs_QuickSort(Profits, 1, ProfitCount, helpfuncs_SortByThirdValue)
+	return ProfitCount, Profits 
+end
+
