@@ -289,14 +289,14 @@ function Run()
 	
 	Sleep(1)
 	CarryObject("","",false)
-	CarryObject("Destination","Handheld_Device/ANIM_Smallsack.nif",false)
-	time2 = PlayAnimationNoWait("Destination","fetch_store_obj_R")
+	CarryObject("Destination", "Handheld_Device/ANIM_Smallsack.nif",false)
+	time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
 	Sleep(1)	
 	StopAnimation("")
-	PlaySound3D("Destination","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("Destination","",false)	
+	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("Destination", "", false)	
 
-	if RemoveItems("", ItemName[ItemIndex],1 , INVENTORY_STD) == 0 then
+	if RemoveItems("", ItemName[ItemIndex], 1, INVENTORY_STD) == 0 then
 		return
 	end
 	
