@@ -422,7 +422,7 @@ function CheckRivals(BldAlias)
 	if NumRivals > 0 then
 		for i=0, NumRivals-1 do
 			RivBld = "RivalBuilding"..i
-			RivID = GetDynastyID("RivalBuilding"..i
+			RivID = GetDynastyID("RivalBuilding"..i)
 			if RivID ~= GetDynastyID(BldAlias) then
 				if not HasProperty(BldAlias, "Rival"..RivID) then
 					if GetSettlementID(RivBld) == GetSettlementID(BldAlias) then
