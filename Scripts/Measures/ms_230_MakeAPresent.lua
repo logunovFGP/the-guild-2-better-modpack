@@ -249,11 +249,6 @@ function Run()
 			ItemValue = 5
 		end
 	end
-	
-
-	-- The time in hours until the measure can be repeated
-	local MeasureID = GetCurrentMeasureID("")
-	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
 
 	-- The minimum favor for this action to success
 	local MinimumFavor = 30 - ((2*GetSkillValue("", CHARISMA))+GetNobilityTitle("",false))
@@ -301,9 +296,12 @@ function Run()
 	PlaySound3D("Destination","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	CarryObject("Destination","",false)	
 
-	if RemoveItems("",ItemName[ItemIndex],1,INVENTORY_STD) == 0 then
-		StopMeasure()
+	if RemoveItems("", ItemName[ItemIndex],1 , INVENTORY_STD) == 0 then
+		return
 	end
+	
+	SetMeasureRepeat(TimeUntilRepeat)
+	
 	if IsPartyMember("Destination") and not PresentName == "JanesRing" then
 		if DynastyIsPlayer("Destination") then
 			if GetRemainingInventorySpace("Destination",ItemName[ItemIndex],INVENTORY_STD) then
@@ -383,7 +381,6 @@ function Run()
 		if (GetFavorToSim("Destination", "") < MinimumFavor) or (DestinationRank > ItemValue) then
 
 			-- Set the repeat timer and the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again
-			SetMeasureRepeat(TimeUntilRepeat)
 			--chr_ModifyFavor("Destination", "", FavorModify)
 
 			if (IsMale) then
@@ -409,15 +406,11 @@ function Run()
 			end
 			--MsgSay("Destination", chr_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10));
 
-			SetMeasureRepeat(TimeUntilRepeat)
 			chr_ModifyFavor("Destination", "", FavorModify)
 
 		end
 
 	end
-
-	StopMeasure()
-
 end
 
 -- -----------------------
