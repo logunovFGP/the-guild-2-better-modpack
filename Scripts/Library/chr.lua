@@ -690,7 +690,7 @@ end
 
 -- -----------------------
 -- GetMaxHaulValue 
--- berechnet den maximalen wert der beute, die ein dieb abhängig von der gebäudestufe klauen kann
+-- berechnet den maximalen wert der beute, die ein dieb abhngig von der gebudestufe klauen kann
 -- -----------------------
 
 function GetMaxHaulValue(DestAlias, DynastyID, ThiefLevel)
@@ -1873,13 +1873,13 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 	local booster
 	
 	-- master of manure
-	booster = GetImpactValue(SimAlias, "ManureI")  
-	if (not (booster == 1) and SimHasAbility(SimOwner, 5)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias, "GatherBonus", 20  * (1 - booster), -1)
-		AddImpact(SimAlias, "ManureI", 1  * (1 - booster), -1)		
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner, 5)) or hirefire == "fire" then
-		AddImpact(SimAlias, "GatherBonus", -20 * booster, -1)
-		RemoveImpact(SimAlias, "ManureI")
+	booster = GetImpactValue(SimAlias,"ManureI")  
+	if (not (booster == 1) and SimHasAbility(SimOwner,5)) and not (hirefire == "fire") then 
+		AddImpact(SimAlias,"GatherBonus",20  * (1 - booster),-1)
+		AddImpact(SimAlias,"ManureI",1       * (1 - booster),-1)		
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,5) or hirefire == "fire") then
+		AddImpact(SimAlias,"GatherBonus",-20 * booster,-1)
+		RemoveImpact(SimAlias,"ManureI")
 	end
 	
 	-- mentor
@@ -1887,7 +1887,7 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 	if (not (booster == 1) and SimHasAbility(SimOwner,8)) and not (hirefire == "fire") then 
 		AddImpact(SimAlias,"ExpGaining",15  * (1 - booster),-1)
 		AddImpact(SimAlias,"MentorI",1      * (1 - booster),-1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner,8)) or hirefire == "fire" then
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,8) or hirefire == "fire") then
 		AddImpact(SimAlias,"ExpGaining",-15 * booster,-1)
 		RemoveImpact(SimAlias,"MentorI")
 	end
@@ -1899,7 +1899,7 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 		AddImpact(SimAlias,"empathy",2     * (1 - booster),-1)
 		AddImpact(SimAlias,"bargaining",2  * (1 - booster),-1)
 		AddImpact(SimAlias,"MarketerI",1   * (1 - booster),-1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner,17)) or hirefire == "fire" then
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,17) or hirefire == "fire") then
 		AddImpact(SimAlias,"rhetoric",-2   * booster,-1)
 		AddImpact(SimAlias,"empathy",-2    * booster,-1)
 		AddImpact(SimAlias,"bargaining",-2 * booster,-1)
@@ -1913,7 +1913,7 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 		AddImpact(SimAlias,"MoveSpeed",1.2       * (1 - booster),-1)
 		AddImpact(SimAlias,"BurglaryI",1         * (1 - booster),-1)
 		AddImpact(SimAlias,"shadow_arts",2       * (1 - booster),-1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner,21)) or hirefire == "fire" then
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,21) or hirefire == "fire") then
 		AddImpact(SimAlias,"BurglarySpeedup",-25 * booster,-1)
 		AddImpact(SimAlias,"MoveSpeed",-1.2      * booster,-1)
 		AddImpact(SimAlias,"shadow_arts",-2      * booster,-1)
@@ -1927,7 +1927,7 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 		AddImpact(SimAlias,"constitution",2      * (1 - booster),-1)
 		AddImpact(SimAlias,"secret_knowledge",2  * (1 - booster),-1)
 		AddImpact(SimAlias,"DruidicI",1          * (1 - booster),-1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner,34)) or hirefire == "fire" then
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,34) or hirefire == "fire") then
 		AddImpact(SimAlias,"GatherBonus",-20     * booster,-1)
 		AddImpact(SimAlias,"constitution",-2     * booster,-1)
 		AddImpact(SimAlias,"secret_knowledge",-2 * booster,-1)
@@ -1941,7 +1941,7 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 		AddImpact(SimAlias,"constitution",2   * (1 - booster),-1)
 		AddImpact(SimAlias,"craftsmanship",2  * (1 - booster),-1)
 		AddImpact(SimAlias,"HardWorkersI",1   * (1 - booster),-1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner,36)) or hirefire == "fire" then
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,36) or hirefire == "fire") then
 		AddImpact(SimAlias,"BonusSlot",-1     * booster,-1)
 		AddImpact(SimAlias,"constitution",-2  * booster,-1)
 		AddImpact(SimAlias,"craftsmanship",-2 * booster,-1)
@@ -1950,40 +1950,40 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 	
 	-- charming rogues
 	booster = GetImpactValue(SimAlias,"CharmingI")
-	if (not (booster == 1) and SimHasAbility(SimOwner, 37)) and not (hirefire == "fire") then
-		AddImpact(SimAlias, "FightCrit", 15 * (1 - booster), -1)
-		AddImpact(SimAlias, "charisma", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "fighting", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "CharmingI", 1 * (1 - booster), -1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner, 37)) or hirefire == "fire" then
-		AddImpact(SimAlias, "FightCrit", -15 * booster, -1)
-		AddImpact(SimAlias, "charisma", -2 * booster, -1)
-		AddImpact(SimAlias, "fighting", -2 * booster, -1)
-		RemoveImpact(SimAlias, "CharmingI")
+	if (not (booster == 1) and SimHasAbility(SimOwner,37)) and not (hirefire == "fire") then
+		AddImpact(SimAlias,"FightCrit",15  * (1 - booster),-1)
+		AddImpact(SimAlias,"charisma",2    * (1 - booster),-1)
+		AddImpact(SimAlias,"fighting",2    * (1 - booster),-1)
+		AddImpact(SimAlias,"CharmingI",1   * (1 - booster),-1)
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,37) or hirefire == "fire") then
+		AddImpact(SimAlias,"FightCrit",-15 * booster,-1)
+		AddImpact(SimAlias,"charisma",-2   * booster,-1)
+		AddImpact(SimAlias,"fighting",-2   * booster,-1)
+		RemoveImpact(SimAlias,"CharmingI")
 	end
 	
 	-- defenders
-	booster = GetImpactValue(SimAlias, "DefendersI")
+	booster = GetImpactValue(SimAlias,"DefendersI")
 	if (not (booster == 1) and SimHasAbility(SimOwner,38)) and not (hirefire == "fire") then
-		AddImpact(SimAlias,"FightArmor",7  * (1 - booster), -1)
-		AddImpact(SimAlias,"dexterity",2   * (1 - booster), -1)
-		AddImpact(SimAlias,"empathy",2     * (1 - booster), -1)
-		AddImpact(SimAlias,"DefendersI",1  * (1 - booster), -1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner, 38)) or hirefire == "fire" then
-		AddImpact(SimAlias,"FightArmor",-7 * booster, -1)
-		AddImpact(SimAlias,"dexterity",-2  * booster, -1)
-		AddImpact(SimAlias,"empathy",-2    * booster, -1)
-		AddImpact(SimAlias,"DefendersI",-1 * booster, -1)
+		AddImpact(SimAlias,"FightArmor",7  * (1 - booster),-1)
+		AddImpact(SimAlias,"dexterity",2   * (1 - booster),-1)
+		AddImpact(SimAlias,"empathy",2     * (1 - booster),-1)
+		AddImpact(SimAlias,"DefendersI",1  * (1 - booster),-1)
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,38) or hirefire == "fire") then
+		AddImpact(SimAlias,"FightArmor",-7 * booster,-1)
+		AddImpact(SimAlias,"dexterity",-2  * booster,-1)
+		AddImpact(SimAlias,"empathy",-2    * booster,-1)
+		RemoveImpact(SimAlias,"DefendersI")
 	end
 	
 	-- master extractor
 	booster = GetImpactValue(SimAlias,"ProducerI")
 	if (not (booster == 1) and SimHasAbility(SimOwner,41)) and not (hirefire == "fire") then  
-		AddImpact(SimAlias, "GatherBonus", 35  * (1 - booster), -1)
-		AddImpact(SimAlias, "ProducerI", 1     * (1 - booster), -1)
-	elseif (not (booster == 0) and not SimHasAbility(SimOwner, 41)) or hirefire == "fire" then
-		AddImpact(SimAlias, "GatherBonus", -35 * booster, -1)
-		RemoveImpact(SimAlias, "ProducerI")
+		AddImpact(SimAlias,"GatherBonus",35  * (1 - booster),-1)
+		AddImpact(SimAlias,"ProducerI",1     * (1 - booster),-1)
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner,41) or hirefire == "fire") then
+		AddImpact(SimAlias,"GatherBonus",-35 * booster,-1)
+		RemoveImpact(SimAlias,"ProducerI")
 	end
 
 end
