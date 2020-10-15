@@ -11,6 +11,16 @@ Textures: Jollina, Skip, Broliii
 Testing:
 Additional Support: McCoy! + The Guild 2 Community + Many translators!
 
+Installation:
+
+Install The Guild 2 - Renaissance
+Patch it up to Version 4.211 (Patch can be found at www.gilde2.de) unless you have the Steamversion (which is automaticly patched)
+Delete the 'Scripts' folder in your main game directory
+Extract the FMMP.zip to your main game directory, overwrite everything.
+Make sure the language in your DB/text.dbt matches your language setting in your config.ini
+
+Enjoy!
+
 *** General ***
 
 _Tech_
@@ -26,8 +36,7 @@ _Design_
 - Duels start a bit earlier and the message to attend them also happens earlier aswell.
 - The icon for 'Application for lowest level post' has been removed
 
-
-*** Bugs ***
+*** Vanilla-Bugs ***
 
 _General_
 - If you removed a character from your active party via the family tree you could not add him again. Thus the button has been removed (instead use the measure 'Manage group').
@@ -61,11 +70,11 @@ _General_
 - The timer of Versengold's concert has been fixed.
 - Versengold's song is played as background music (and thus no longer stopped if you tab out of the building) if at least one human player has a character inside the tavern.
   If not it restarts once you enter the building's indoor scene (and ends once the animation is completed)
-
+- Sometimes the raining lasted forever.
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
-
+-
 
 _Scholar_
 - The poisoned cake didn't lower the fighting skill.
@@ -82,11 +91,9 @@ _Scholar_
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
 
-
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
 - Children are no longer targets of wenches.
-
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
@@ -148,18 +155,23 @@ _General_
 - Duels are more dangerous.
 - If you don't attend a duel, you will lose favor with every sim nearby of the duel place.
 - If you remove someone's immunity you will lose some favor now.
+- At gamestart workshops will be chosen random by AI.
+- All coloured dynasties start with the same amount of gold.
+- No matter how you set up the difficulty, you will start with at least 5000 gold.
+- Shadow dynasties will try to live in residences now.
+- The option to start with a family by changing the config.ini has been deactivated.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
 - Favor-gain of 'sweet talking' has been altered.
+- 'Dance with someone' now costs 250 instead of 300 Gold.
 
 _Scholar_
 - Church owners will get the money from changing faith.
 - Sorcerer's robe no longer will give you a malus.
 
-
 _Craftsman_
-
+-
 
 _Rogue_
 - Charisma of wenches now has an impact on how successfully they are.

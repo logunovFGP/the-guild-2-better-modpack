@@ -11,6 +11,13 @@ Texturen: Jollina, Skip, Broliii
 Testing:
 Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 
+Installation:
+
+Installiere Die Gilde 2 - Renaissance
+Installiere Patchversion 4.211 (z.B. von www.gilde2.de) sofern du nicht die Steamversion hast (die automatisch aktualisiert wird)
+Lösche den 'Scripts' Ordner aus dem Spielverzeichnis
+Entpacke die FMMP.zip in das Spielverzeichnis, überschreibe alles.
+Stelle sicher, dass die Sprache in der DB/text.dbt dem Eintrag 'language' in deiner config.ini entspricht.
 
 *** Allgemeines ***
 
@@ -27,7 +34,7 @@ _Design_
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
 
-*** Bugs ***
+*** Vanilla-Bugs ***
 
 _Allgemein_
 - Wenn man einen Charakter über den Familienstammbaum aus der Gruppe entfernte, war eine erneute Aufnahme nicht mehr möglich. Der Button wurde daher entfernt (nutzt stattdessen die Maßnahme 'Gruppe verwalten').
@@ -111,8 +118,7 @@ _Allgemein_
 - Größere Übersichtskarte (GUI).
 - Größeres Gebäude-Upgradefenster (GUI).
 - Alle Artefakte, Maßnahmen und Zustände (wie Krankheiten) zeigen nun Boni und Mali auf Talente über einen Mouseover-Tooltip an.
-- Wichtige Personen-Liste überarbeitet. Zur Schonung der Performance werden die Familienmitglieder von Schattendynastien nicht mehr angezeigt. Dafür kann man sich nun
-  Arbeitslose anzeigen lassen.
+- Wichtige Personen-Liste überarbeitet. Zur Schonung der Performance werden die Familienmitglieder von Schattendynastien nicht mehr angezeigt. Dafür kann man sich nun Arbeitslose anzeigen lassen.
 - Gesichtstexturen für alle Charaktere überarbeitet/hinzugefügt (Männer, Frauen und Kinder)
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Die Zuordnung von Frisuren, Bärten und Kopfbedeckungen wurde vollständig überarbeitet. 
