@@ -39,10 +39,10 @@ function ImportantPersonsDiplomacyFilter(DiplState, Section)
 
 	for dyn=0, iCount-1 do
 		Alias = "Dynasties"..dyn
-		if not (GetID(Alias)==GetID("dynasty")) then
+		if not (GetID(Alias) == GetID("dynasty")) then
 			-- am I an important dynasty?
-			if DynastyGetBuildingCount(Alias,-1,-1)>0 then
-				if DynastyGetDiplomacyState("dynasty", Alias)==DiplState then
+			if DynastyGetBuildingCount(Alias, -1, -1) > 0 then
+				if DynastyGetDiplomacyState("dynasty", Alias) == DiplState then
 					gathering_ImportantPersonsAddDynMemberToSection(Alias, Section)
 				end
 			end
@@ -255,7 +255,7 @@ function PopulateImportantPersonSection(Label, SimListFilterFunction, SimListSor
 			FilteredSimCount = FilteredSimCount + 1
 			FilteredSims[FilteredSimCount] = Alias
 			-- show 8 max by Fajeth
-			if FilteredSimCount>=8 then
+			if FilteredSimCount >= 8 then
 				break
 			end
 		end
@@ -290,27 +290,31 @@ end
 --             function(a,b) return a<=b end
 -- 
 function QuickSort(t, start, endi, compare)
-  start = start or 1
-  compare = compare or function(a,b) return a<=b end
-  -- partition w.r.t. first element
-  if(endi - start < 2) then return t end
-  local pivot = start
-  for i = start + 1, endi do
-    -- equivalent of:   if t[i] <= t[pivot] then
-    if compare(t[i], t[pivot]) then
-      local temp = t[pivot + 1]
-      t[pivot + 1] = t[pivot]
-      if(i == pivot + 1) then
-        t[pivot] = temp
-      else
-        t[pivot] = t[i]
-        t[i] = temp
-      end
-      pivot = pivot + 1
-    end
-  end
-  t = gathering_QuickSort(t, start, pivot - 1, compare)
-  return gathering_QuickSort(t, pivot + 1, endi, compare)
+	start = start or 1
+	compare = compare or function(a,b) return a<=b end
+	-- partition w.r.t. first element
+	if(endi - start < 2) then 
+		return t 
+	end
+	
+	local pivot = start
+	for i = start + 1, endi do
+	-- equivalent of:   if t[i] <= t[pivot] then
+		if compare(t[i], t[pivot]) then
+			local temp = t[pivot + 1]
+			t[pivot + 1] = t[pivot]
+			if(i == pivot + 1) then
+				t[pivot] = temp
+			else
+				t[pivot] = t[i]
+				t[i] = temp
+			end
+			pivot = pivot + 1
+		end
+	end
+	
+	t = gathering_QuickSort(t, start, pivot - 1, compare)
+	return gathering_QuickSort(t, pivot + 1, endi, compare)
 end
 -- Mod end
 
@@ -328,7 +332,7 @@ function ImportantPersonsGather_Family()
 	
 	for iIndex = 0, iCount-1 do
 		if DynastyGetFamilyMember("dynasty", iIndex, "member") then
-			if IsPartyMember("member") then
+--			if IsPartyMember("member") then
 				SetImportantPersonToSection(GetID("member"), "Family", GetDynastyID(""))
 				iChildCount = SimGetChildCount("member")
 				for iCIndex = 0, iChildCount-1 do
@@ -336,7 +340,11 @@ function ImportantPersonsGather_Family()
 						SetImportantPersonToSection(GetID("child"), "Family", GetDynastyID(""))
 					end
 				end
-			end
+				
+				if SimGetSpouse("member", "Spouse") then
+					SetImportantPersonToSection(GetID("Spouse"), "Family", GetDynastyID(""))
+				end
+--			end
 		end
 	end
 end
