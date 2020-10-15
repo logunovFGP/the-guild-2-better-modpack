@@ -51,13 +51,13 @@ function Run()
 		--LogMessage("InviteToDance: Im here ("..GetID("").." "..GetName("")..", where are you my darling? "..GetID("Destination").." "..GetName("Destination").." ")
 		
 		local DesID = GetID("Destination")
-		if GetDistance("Destination","DestTavern") < 1000 then
+		if GetDistance("Destination", "DestTavern") < 1000 then
 			--LogMessage("InviteToDance: My ID: "..GetID("").." . Destination ID: "..DesID.." is in range and moves to Tavern")
 			if not f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN) then
 				--LogMessage("InviteToDance: Destination ID: "..DesID.." error move")				
 				return
 			end
-			f_MoveTo("Destination","")
+			f_MoveTo("Destination", "")
 		else
 			--LogMessage("InviteToDance: My ID:. "..GetID("").." . Destination ID: "..DesID.." "..GetName("Destination").." is ported")
 			GetLocatorByName("DestTavern", "Walledge1", "entry")
@@ -67,7 +67,7 @@ function Run()
 		end
 
 		local check = true
-		local WaitTime = math.mod(GetGametime(),24)+3
+		local WaitTime = math.mod(GetGametime(),24) + 2
 		while check do
 			Sleep(2)
 
@@ -76,7 +76,7 @@ function Run()
 				break
 			end
 
-			if math.mod(GetGametime(),24)>WaitTime then
+			if math.mod(GetGametime(),24) > WaitTime then
 				--LogMessage("I waited so long, now I go")
 				StopMeasure()
 				break
@@ -99,7 +99,7 @@ function Run()
 	
 	-- Get the tavern
 	if not GetInsideBuilding("", "Tavern") then
-		return
+		StopMeasure()
 	end
 
 	-- the action number for the courting
@@ -199,7 +199,7 @@ function Run()
 							MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), 250)
 							return
 						end
-						CreditMoney("Tavern",250,"Offering")
+						CreditMoney("Tavern", 250, "Offering")
 				--		local OldBalance = 0
 				--		if HasProperty("Tavern", "BalanceDancingFee") then
 				--			OldBalance = GetProperty("Tavern", "BalanceDancingFee")
@@ -318,10 +318,9 @@ function Run()
 			if GetDynastyID("Tavern") ~= GetDynastyID("") then
 				if not SpendMoney("", 250, "CostSocial") then
 					MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), 250)
-					StopMeasure()
 					return
 				end
-				CreditMoney("Tavern",250,"Offering")
+				CreditMoney("Tavern", 250, "Offering")
 		--		local OldBalance = 0
 		--		if HasProperty("Tavern", "BalanceDancingFee") then
 		--			OldBalance = GetProperty("Tavern", "BalanceDancingFee")
