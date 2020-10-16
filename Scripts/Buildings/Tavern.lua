@@ -18,10 +18,4 @@ end
 
 function PingHour()
 	bld_HandlePingHour("", true)
-	
-	if SimHasAbility("MyBoss", 16) and GetImpactValue("", "BestHouse") == 0 then
-		AddImpact("", "BestHouse", 1, -1)
-	elseif not (SimHasAbility("MyBoss", 16) or (GetImpactValue("", "BestHouse") == 0)) then
-		RemoveImpact("","BestHouse")
-	end
 end

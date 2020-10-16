@@ -1360,12 +1360,15 @@ function VisitDoc(HospitalID)
 		
 		-- Send a message if no healer is working right now
 		if BuildingGetOwner("Destination", "MasterDoc") and DynastyIsPlayer("MasterDoc") then
-			if BuildingGetProducerCount("Destination", PT_MEASURE, "MedicalTreatment") == 0 then
-				if GetImpactValue("MasterDoc", "SuppressMedicalMessage")==0 then
-					MsgNewsNoWait("MasterDoc", "Destination", "", "building", -1,
-								"@L_IDLE_VISITDOC_NODOC_HEAD", "@L_IDLE_VISITDOC_NODOC_BODY",GetID(""),
-								GetID("Destination"))
-					AddImpact("MasterDoc", "SuppressMedicalMessage", 1, 1)
+			if BuildingGetProducerCount("Destination", PT_MEASURE, "MedicalTreatment") < 1 then
+				-- check the boss aswell
+				if GetCurrentMeasureName("MasterDoc") ~= "MedicalTreatment" then
+					if GetImpactValue("MasterDoc", "SuppressMedicalMessage") == 0 then
+						MsgNewsNoWait("MasterDoc", "Destination", "", "building", -1,
+									"@L_IDLE_VISITDOC_NODOC_HEAD", "@L_IDLE_VISITDOC_NODOC_BODY", GetID(""),
+									GetID("Destination"))
+						AddImpact("MasterDoc", "SuppressMedicalMessage", 1, 1)
+					end
 				end
 			end
 		end

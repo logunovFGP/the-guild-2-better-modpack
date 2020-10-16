@@ -433,7 +433,7 @@ function CheckRivals(BldAlias)
 									-- check for diplomacy
 									if DynastyGetDiplomacyState("MyBoss", "RivalBoss") < DIP_ALLIANCE then
 										SetProperty(BldAlias, "Rival"..RivID, 1) -- only one msg
-										MsgNewsNoWait("RivalBoss", BldAlias, "", "intrigue", -1,
+										MsgNewsNoWait("RivalBoss", "MyBoss", "", "intrigue", -1,
 													"@L_AI_NEWRIVALINTOWN_HEAD", "@L_AI_NEWRIVALINTOWN_BODY", GetID("MyBoss"), GetID(BldAlias), GetID(RivBld))
 										ModifyFavorToDynasty("MyBoss", "RivalBoss", -35)
 										break
@@ -969,8 +969,19 @@ function ForceLevelUp(BldAlias)
 end
 
 function HandlePingHour(BldAlias, ForceLevelUp)
+	if not BuildingGetOwner(BldAlias, "MyBoss") then
+		return
+	end
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses(BldAlias)
+	
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_TAVERN then
+		if SimHasAbility("MyBoss", 16) and GetImpactValue(BldAlias, "BestHouse") == 0 then
+			AddImpact(BldAlias, "BestHouse", 1, -1)
+		elseif not (SimHasAbility("MyBoss", 16) or GetImpactValue(BldAlias, "BestHouse") == 0) then
+			RemoveImpact(BldAlias, "BestHouse")
+		end
+	end
 	
 	-- Check every worker (only once) for illness and equipment 
 	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
@@ -984,19 +995,18 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	end
 	
 	-- Only for AI
-	if BuildingGetOwner(BldAlias, "MyBoss") then
-		if GetHomeBuilding("MyBoss", "MyHome") then
-			if DynastyIsAI("MyBoss") or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
-				bld_CheckCarts(BldAlias) 
+	if GetHomeBuilding("MyBoss", "MyHome") then
+		if DynastyIsAI("MyBoss") or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
+			bld_CheckCarts(BldAlias) 
+		end
+		
+		if DynastyIsAI("MyHome") then
+			if ForceLevelUp then
+				bld_ForceLevelUp(BldAlias)
 			end
 			
-			if DynastyIsAI("MyHome") then
-				if ForceLevelUp then
-					bld_ForceLevelUp(BldAlias)
-				end
-				bld_CheckRivals(BldAlias)
-				bld_CheckRepairs(BldAlias)
-			end
+			bld_CheckRivals(BldAlias)
+			bld_CheckRepairs(BldAlias)
 		end
 	end
 end

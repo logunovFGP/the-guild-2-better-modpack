@@ -8,7 +8,7 @@ Maps: Fajeth
 GUI: MoK
 Icons: Fajeth, F-Man
 Texturen: Jollina, Skip, Broliii 
-Testing: Jollina, VSX
+Testing: Jollina, VSX, McHedgehoghunter
 Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
 
 Installation:
