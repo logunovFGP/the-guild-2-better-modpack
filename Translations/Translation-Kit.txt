@@ -85,7 +85,7 @@ Translate and add the following lines below:
 18082   "_ABILITIES_Handcrafter_NAME_+0"   "Artisan"   |
 18083   "_ABILITIES_Handcrafter_DESCRIPTION_+0"   "You know that for businessman (or businesswoman) more the merchandise the better. Your handicraft talent increases by one for each level of this ability. This also increases your gathering speed. $N$NRequirements: Not Scholar."   |
 18084   "_ABILITIES_Combatant_NAME_+0"   "Warrior"   |
-18085   "_ABILITIES_Combatant_DESCRIPTION_+0"   "You know how to fight. Whether it is with fists, small dagger or large axe, you can fight more skillfully than your neighbours. Your maritial arts talent increases by one for each level of this ability and you have a small chance to score critical hits when you fight.$N$NRequirements: Martial Arts 2."   |
+18085   "_ABILITIES_Combatant_DESCRIPTION_+0"   "You know how to fight. Whether it is with fists, small dagger or large axe, you can fight more skillfully than your neighbours. Your martial arts talent increases by one for each level of this ability and you have a small chance to score critical hits when you fight.$N$NRequirements: Martial Arts 2."   |
 18086   "_ABILITIES_SuperParent_NAME_+0"   "Super Parent"   |
 18087   "_ABILITIES_SuperParent_DESCRIPTION_+0"   "Your parenting skills are beyond perfect. Under your always watchful eye your children keep learning new skills. 4 random talents are permanently increased by one point for your children when they turn 12 but your empathy is reduced by 3 because of your constant focus to your children.$N$NRequirements: Empathy 5."   |
 18088   "_ABILITIES_Traveler_NAME_+0"   "Traveler"   |
