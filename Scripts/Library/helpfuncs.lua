@@ -111,6 +111,40 @@ function GetEnteredString(firstname,lastname,Alias) -- gets the entered string, 
     return info
 end
 
+function SimGetFirstname(SimAlias)
+	local Name = GetName(SimAlias) -- gets the whole name
+  local Lastname = SimGetLastname(SimAlias)  
+  local Firstname = string.gsub(Name,"%b "..Lastname, "")
+  return Firstname
+end
+
+function MsgString(Alias, HeaderLabel, BodyLabel, VarArgs)
+	local NameBefore
+	if IsType(Alias, "Sim") then
+		NameBefore = helpfuncs_SimGetFirstname(Alias)
+	else
+		NameBefore = GetName(Alias)
+	end
+	-- see ms_ChangeBuildingName
+	local PanelParam = "@N".."@B[1,@L_GENERAL_BUTTONS_OK_+0]"
+	MsgBox(Alias, nil, PanelParam, HeaderLabel, BodyLabel, helpfuncs_UnpackTable(VarArgs))
+	local NewName
+	if IsType(Alias, "Sim") then
+		NewName = helpfuncs_SimGetFirstname(Alias)
+		SimSetFirstname(Alias, NameBefore)
+		return NewName
+	else
+		NewName = GetName(Alias)
+		SetName(Alias, NameBefore)
+		return NewName
+	end
+end
+
+function MsgStringMultiline(HeaderLabel, AiDecisionFunction)
+	InitData("SayPanel", AiDecisionFunction, HeaderLabel, "EmptyLabel")
+	return GetData("TF0")
+end
+
 function StringToIdList(ItemsString)
 	if ItemsString == nil or ItemsString == "" then
 		return 0, {}
