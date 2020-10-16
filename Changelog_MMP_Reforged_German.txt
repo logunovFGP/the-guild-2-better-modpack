@@ -133,7 +133,8 @@ _Patron_
 -
 
 _Gelehrter_
-- Medizinische Behandlungen steigern die Beliebtheit des Heilstubenbesitzers.
+- 'Medizinische Behandlungen' steigern die Beliebtheit des Heilstubenbesitzers.
+- Warten Patienten auf eine 'Medizinische Behandlung' und es ist kein Heiler eingeteilt, erhält der Heilstubenbesitzer darüber eine Benachrichtigung.
 - Opfer von 'Hexerdokumenten' werden nun benachrichtigt, dass 'etwas Seltsames passiert ist', sofern ihr Empathie-Talent groß genug ist.
 - 'Hexerdokumente' kreieren nun Beweise mit unterschiedlichen zufälligen Opfern.
 

@@ -1228,9 +1228,11 @@ function VisitDoc(HospitalID)
 	local DistanceBest = -1
 	local Attractivity
 	local Distance
+	local FavorBonus = 0
+	local Level
 
-	if gameplayformulas_CheckMoneyForTreatment("")==0 then
-		if GetInsideBuilding("","CurrentBuilding") then
+	if gameplayformulas_CheckMoneyForTreatment("") == 0 then
+		if GetInsideBuilding("", "CurrentBuilding") then
 			if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_HOSPITAL then
 				f_ExitCurrentBuilding("")
 			end
@@ -1238,9 +1240,9 @@ function VisitDoc(HospitalID)
 		return
 	end
 
-	if GetInsideBuilding("","CurrentBuilding") then
+	if GetInsideBuilding("", "CurrentBuilding") then
 		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_HOSPITAL then
-			if HasProperty("","WaitingForTreatment") then
+			if HasProperty("", "WaitingForTreatment") then
 				return
 			end
 		end
@@ -1255,10 +1257,18 @@ function VisitDoc(HospitalID)
 	else
 		RemoveAlias("Destination")
 	end
+	
+	local MinLevel = 1
+	
+	if GetImpactValue("", "Influenza") > 0 or GetImpactValue("", "Pox") > 0 or GetImpactValue("", "BurnWound") > 0  then
+		MinLevel = 2
+	elseif GetImpactValue("", "Pneumonia") > 0 or GetImpactValue("", "Blackdeath") > 0 or GetImpactValue("", "Caries") > 0 or GetImpactValue("", "Fracture") > 0 then
+		MinLevel = 3
+	end
 
 	if not AliasExists("Destination") then	
 
-		local NumHospitals = CityGetBuildings("City",2,37,-1,-1,FILTER_HAS_DYNASTY,"Hospital")
+		local NumHospitals = CityGetBuildings("City", 2, 37, -1, -1, FILTER_HAS_DYNASTY, "Hospital")
 		if NumHospitals == 0 then
 			return
 		end
@@ -1280,62 +1290,55 @@ function VisitDoc(HospitalID)
 			if IgnoreID and IgnoreID == GetID("Hospital"..i) then
 				Distance = -1
 			else
-				Attractivity = GetImpactValue("Hospital"..i,"Attractivity")		
-				Attractivity = Attractivity + ((BuildingGetLevel("Hospital"..i) -1) / 2)
-				Distance			= GetDistance("","Hospital"..i)
-				if Distance > 0 then
-					Distance = Distance / (0.5 + Attractivity)
+				Level = BuildingGetLevel("Hospital"..i)
+				if Level < MinLevel then
+					Distance = -1
+				else
+					Attractivity = GetImpactValue("Hospital"..i, "Attractivity")		
+					Attractivity = Attractivity + (Level*0.25)
+					if BuildingGetOwner("Hospital"..i, "LeChef") then
+						local Favor = GetFavorToDynasty("", "LeChef")
+						if Favor <= 45 then
+							FavorBonus = Favor*(-1)
+						elseif Favor >= 55 then
+							FavorBonus = Favor
+						else
+							FavorBonus = 0
+						end
+					end
+					
+					Distance = GetDistance("", "Hospital"..i)
+					if Distance > 0 then
+						Distance = Distance / (0.25 + Attractivity)
+						-- FavorBonus
+						Distance = Distance - (FavorBonus*20)
+						if Distance < 0 then
+							Distance = 0
+						end
+					end
 				end
 			end
 			
-			local MinLevel = 1
-			
-			if GetImpactValue("","Sprain")==1 then
-				MinLevel = 1
-			elseif GetImpactValue("","Cold")==1 then
-				MinLevel = 1
-			elseif GetImpactValue("","Influenza")==1 then
-				MinLevel = 2
-			elseif GetImpactValue("","BurnWound")==1 then
-				MinLevel = 2
-			elseif GetImpactValue("","Pox")==1 then
-				MinLevel = 2
-			elseif GetImpactValue("","Pneumonia")==1 then
-				MinLevel = 3
-			elseif GetImpactValue("","Blackdeath")==1 then
-				MinLevel = 3
-			elseif GetImpactValue("","Fracture")==1 then
-				MinLevel = 3
-			elseif GetImpactValue("","Caries")==1 then
-				MinLevel = 3
-			end
-			
-			if BuildingGetLevel("Hospital"..i) < MinLevel then
-				Distance = -1
-			end
-
-			
-			if Distance>=0 and (DistanceBest==-1 or Distance<DistanceBest) then
-				CopyAlias("Hospital"..i,"Destination")
+			if Distance >= 0 and (DistanceBest == -1 or Distance < DistanceBest) then
+				CopyAlias("Hospital"..i, "Destination")
 				DistanceBest = Distance
 			end
 		end
 				
 		if DistanceBest == -1 or (not AliasExists("Destination")) then
-			--if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then
-			--	MeasureRun("",nil,"GoToSleep")
-			--	return
-			--else
-			idlelib_GoSleep()	
-			return
-			--end
+			if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed", 1, 3, "SleepPosition") then
+				MeasureRun("", nil, "GoToSleep")
+				return
+			else
+				return
+			end
 		end
 	end
 		
-	if not f_MoveTo("","Destination") then
+	if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 		return
 	end
-	
+
 	--go home if there are too much sick sims
 	if not DynastyIsPlayer("") then
 		local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment==1))"
@@ -1345,37 +1348,53 @@ function VisitDoc(HospitalID)
 			return
 		end
 	end
-	
-	if GetFreeLocatorByName("Destination", "bench",1,6, "BenchPos") then
-		f_BeginUseLocator("","BenchPos",GL_STANCE_SITBENCH,true)
-	end
-	
-	if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP(""))) then
-		RemoveOverheadSymbols("")
 		
-		SetProperty("","WaitingForTreatment",1)
-		local Waittime = GetGametime() + 3
-		while GetGametime()<Waittime do
+	if GetFreeLocatorByName("Destination", "bench", 1, 6, "BenchPos") then
+		f_BeginUseLocator("", "BenchPos", GL_STANCE_SITBENCH, true)
+	end
+		
+	if ((GetImpactValue("", "Sickness") > 0) or (GetHP("") < GetMaxHP(""))) then
+		RemoveOverheadSymbols("")
+			
+		SetProperty("", "WaitingForTreatment", 1)
+		
+		-- Send a message if no healer is working right now
+		if BuildingGetOwner("Destination", "MasterDoc") and DynastyIsPlayer("MasterDoc") then
+			if BuildingGetProducerCount("Destination", PT_MEASURE, "MedicalTreatment") == 0 then
+				if GetImpactValue("MasterDoc", "SuppressMedicalMessage")==0 then
+					MsgNewsNoWait("MasterDoc", "Destination", "", "building", -1,
+								"@L_IDLE_VISITDOC_NODOC_HEAD", "@L_IDLE_VISITDOC_NODOC_BODY",GetID(""),
+								GetID("Destination"))
+					AddImpact("MasterDoc", "SuppressMedicalMessage", 1, 1)
+				end
+			end
+		end
+		
+		local Waittime = GetGametime() + 6
+		while GetGametime() < Waittime do
 			if HasProperty("", "StartTreat") then
 				Sleep(25)
 			else
 				Sleep(Rand(10)+1*5)
 				if AliasExists("BenchPos") then
 					if (LocatorGetBlocker("BenchPos") ~= GetID("")) then
-						if GetFreeLocatorByName("Destination", "bench",1,6, "BenchPos") then
-							f_BeginUseLocator("","BenchPos",GL_STANCE_SITBENCH,true)
+						if GetFreeLocatorByName("Destination", "bench", 1, 6, "BenchPos") then
+							f_BeginUseLocator("", "BenchPos", GL_STANCE_SITBENCH, true)
 						end
 					end
 				else
-					if GetFreeLocatorByName("Destination", "bench",1,6, "BenchPos") then
-						f_BeginUseLocator("","BenchPos",GL_STANCE_SITBENCH,true)
+					if GetFreeLocatorByName("Destination", "bench", 1, 6, "BenchPos") then
+						f_BeginUseLocator("", "BenchPos", GL_STANCE_SITBENCH, true)
 					end
 				end
 			end
 		end
-		RemoveProperty("","WaitingForTreatment")
+			
+		if HasProperty("", "WaitingForTreatment") then
+			RemoveProperty("", "WaitingForTreatment")
+		end
 	end
-	
+		
 	--go home if you were not treated
 	if not DynastyIsPlayer("") then
 		f_ExitCurrentBuilding("")

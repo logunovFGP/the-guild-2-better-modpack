@@ -128,7 +128,8 @@ _Patron_
 -
 
 _Scholar_
-- Your medical treatments slightly boost the opinion of the patients to the owner of that hospital.
+- Your 'medical treatments' slightly boost the opinion of the patients to the owner of that hospital.
+- If patients wait for 'medical treatments' and no healer is assigned to treat, the owner of that hospital will receive a notification.
 - 'Sorcerer documents' now generate a random victim (instead of always choosing the user as victim)
 - Targets of 'sorcerer documents' will get notified that they get an 'uneasy feeling' if their empathy is high enough.
 

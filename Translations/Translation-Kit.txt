@@ -183,6 +183,8 @@ Translate and add the following lines below:
 18180   "_MEASURE_SalesCart_TOOLTIP"   "Assign your cart to sell products from your workshop. You can choose how many products shall remain in your storage.$N$NOnce you send out your cart your driver will check the storage himself from time to time and move when enough goods have been produced to sell. It's quite a tough task, so your driver will take breaks from time to time."   |
 18181   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0"   "This woman is pregnant and will give birth to a child very soon. It would be highly dishonorable to harm her right now."   |
 18182   "_IMPORTANTPERSONS_AGE_+0"   "Unemployed (sorted by age)"   |
+18183   "_IDLE_VISITDOC_NODOC_HEAD_+0"   "A patient is waiting for treatment"   |
+18184   "_IDLE_VISITDOC_NODOC_BODY_+0"   "%1SN is waiting for medical treatment in %2GG, unfortunately none of your workers are currently assigned to treatment, you should change that immediately!"   |
 
 
 Delete the following lines:
