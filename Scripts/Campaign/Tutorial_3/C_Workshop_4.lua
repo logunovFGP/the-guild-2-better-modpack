@@ -26,16 +26,15 @@ function Start()
 
 	SetMainQuest("Workshop")
 	SetQuestTitle("@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_NAME")
-	SetQuestDescription("@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_QUESTBOOK",true)
+	SetQuestDescription("@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_QUESTBOOK", true)
 	
-	MsgQuest("#Player",0,"MB_OK","@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_NAME","@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_QUESTBOOK")
+	MsgQuest("#Player", 0, "MB_OK", "@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_NAME", "@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_QUESTBOOK")
 	
-	ShowTutorialBoxNoWait(590, 690, 450, 160, 1, RIGHTLOWER, "@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_NAME",  "@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_TASK",  "Hud/Buttons/btn_Building_Repair.tga")
+	ShowTutorialBoxNoWait(625, 690, 450, 160, 1, RIGHTLOWER, "@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_NAME",  "@L_TUTORIAL_CHAPTER_3_WORKSHOP_REPAIR_TASK",  "Hud/Buttons/btn_Building_Repair.tga")
 
 	local Count = CityGetBuildings("#Capital", GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "CitySmithys")
 	
-	local l
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		Alias	= "CitySmithys"..l
 		if BuildingGetOwner(Alias,"BuildingOwner") then
 			if GetID("BuildingOwner") == GetID("#Player") then
@@ -66,6 +65,7 @@ function CheckEnd()
 		local GiveMoney = 1500 - GetMoney("#Player")
 		CreditMoney("#Player",GiveMoney,"Buy Building Credit")
 	end
+
 	if (GetHP(GetProperty("#Player","Smithy")) > GetData("SmithyHP")) then
 		ResetGamespeed()
 		HideTutorialBox()

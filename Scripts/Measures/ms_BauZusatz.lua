@@ -70,8 +70,8 @@ function ArbeiterGen(wahl)
 	local check = 3
 	local nerv = manstuff[2]
 	for l=1, nerv do
-	  SimCreate(manstuff[check],"Destination","ArbeiterHeim","BauArbeiter"..l)
-		SetHomeBuilding("BauArbeiter"..l,"ArbeiterHeim")
+	  SimCreate(manstuff[check], "Destination", "Destination", "BauArbeiter"..l)
+		SetHomeBuilding("BauArbeiter"..l, "ArbeiterHeim")
 		local name = GetName("BauArbeiter"..l)
 		local y,z = string.find(name, " ")
 		local newlastname = string.sub(name, 1 , y)

@@ -33,6 +33,7 @@ _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
+- Dynastiefarben sind nun dunkler und besser zu unterscheiden.
 
 *** Vanilla-Bugs ***
 
@@ -69,6 +70,8 @@ _Allgemein_
 - Versengolds Lied wird nicht länger beendet, wenn man die Taverne verlässt: Hat mindestens ein Spieler seinen Charakter vor Ort, wird das Lied als Hintergrundmusik abgespielt.
   Ansonsten wird das Lied neugestartet (und vorzeitig beendet, wenn die Animation zu Ende ist).
 - Es konnte passieren, dass es ewig regnete.
+- Im dritten Tutorial zeigte der Questpfeil auf die falsche Maßnahme.
+- Es konnte vorkommen, dass die Arbeiter, die beim Gebäudebau erscheinen, nicht wieder verschwanden.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

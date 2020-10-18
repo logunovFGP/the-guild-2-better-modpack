@@ -32,7 +32,6 @@ Offen:
 - Nachrichten über Liebesdienste werden nicht länger für Angestellte und Familienmitglieder außerhalb
   der Spielergruppe verschickt, dasselbe gilt für die "Ihr seid erwacht"-Meldung.
 - Die Ausbildung von Kindern sollte nun nicht länger unterbrochen werden.
-- In der englischen Version wird nun einheitlich von "arcane knowledge" geredet und nicht wie bisweilen von "secret knowledge".
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
 - Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
 - Die Priorität von Patrouillen wurde drastisch erhöht, damit diese seltener unterbrochen werden.
@@ -48,8 +47,6 @@ Offen:
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
 - Schergen werden nicht länger von Taschendieben, dem schwarzen Brett, Quacksalberern
   und anderen Predigern unterbrochen.
-- Tagelöhner, die beim Bau neuer Gebäude erscheinen, sollten nun nach Beendigung der Arbeit
-  wieder verschwinden (gelöscht werden).
 - Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.
 - Es gab mehrere Probleme mit den Amtssitzungen, die behoben werden konnten.
 - Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 
@@ -59,7 +56,6 @@ Offen:
 - Räubernester haben nun auch von Anfang an einen Karren.
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
-- Jeden Morgen endet nun der Regen, um dem endlosen Regen-Bug ein Ende zu bereiten.
 - Der Stadtschreiber spielt während Amtssitzungen und Gerichtsverhandlungen keine
   Rolle mehr. Sollte kein Stimmberechtigter anwesend sein, leitet die Wache die Sitzung.
 - Bei Amtssitzungen, die vom Stadtschreiber geleitet wurden, (bzw. jetzt von der Wache)
@@ -100,8 +96,6 @@ Offen:
   nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
 - Forderte man die Todesstrafe bestand eine hohe Möglichkeit,
   dass die KI sich daraufhin einfach schuldig bekennen würde.
-- Zufallsereignisse (auch durch Glückssteine) wirkten sich immer nur auf das Oberhaupt
-  einer Dynastie aus.
 - Beim Aufwerten des Wohnsitzes reichte der Titel manchmal trotz vorhandener
   Voraussetzung nicht aus (z.B. Titel Edelmann für das Herrenhaus)
 - In manchen Städten konnte man sein Opfer nicht verbannen, obwohl es sich mitten in der
@@ -117,8 +111,6 @@ Offen:
 - Das Gemeinsame Bad funktionierte als FlirtMeasure nicht.
 - Beim Schutzgelderpressen wurde im Tooltip der Maßnahme die falsche Dauer
   angezeigt.
-- Im Tutorial 3 (Gebäude) zeigte der Questpfeil auf die Aktion "Zufälligen Arbeits-
-  losen einstellen", anstelle auf das "Gebäude reparieren"-Symbol.
 - Teilweise warteten KI-Dynastien vergebens auf ihren Partner, um eine "gemeinsame Nacht"
   miteinander zu verbringen.
 - Wenn die Nachricht aufkam, sich zum Gericht, Rathaus etc. zu bewegen und dort ankam,

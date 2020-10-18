@@ -35,6 +35,7 @@ _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
 - Duels start a bit earlier and the message to attend them also happens earlier aswell.
 - The icon for 'Application for lowest level post' has been removed
+- Dynasty colours have been changed to darker and more distinctive tones.
 
 *** Vanilla-Bugs ***
 
@@ -71,6 +72,8 @@ _General_
 - Versengold's song is played as background music (and thus no longer stopped if you tab out of the building) if at least one human player has a character inside the tavern.
   If not it restarts once you enter the building's indoor scene (and ends once the animation is completed)
 - Sometimes the raining lasted forever.
+- In the third tutorial the quest-arrow aimed at the wrong measure.
+- Sometimes the worker-npcs who spawned when a building was built or upgraded, did not properly despawn.
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

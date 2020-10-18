@@ -280,19 +280,28 @@ function GoHome()
 		FindNearestBuilding("Destination",1,1,-1,false,"Haia")
 		f_WeakMoveTo("","Haia",GL_MOVESPEED_RUN,20)
 	end
-
-	InternalDie("")
-	InternalRemove("")
+	
+	if not DynastyIsPlayer("") then
+		InternalDie("")
+		InternalRemove("")
+	end
 end
 
 function CleanUp()
 	if AliasExists("Destination") then
-		if GetState("Destination",STATE_BUILDING) == true then
-	    if SimGetClass("") == 2 then
-		    AddImpact("Destination",391,-2,-1)
-	    else
-		    AddImpact("Destination",391,-1,-1)
-	    end
+		if GetState("Destination", STATE_BUILDING) == true then
+	   		if SimGetClass("") == 2 then
+		    	AddImpact("Destination", "BauArbeiter", -2, -1)
+	   		else
+		   		 AddImpact("Destination", "BauArbeiter", -1, -1)
+	       	end
+		end
+	end
+	
+	if AliasExists("") then
+		if not DynastyIsPlayer("") then
+			InternalDie("")
+			InternalRemove("")
 		end
 	end
 end
