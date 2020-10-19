@@ -23,7 +23,7 @@ function Run()
 	"@B[8,@L%8l,@L%8l,Hud/Items/Item_HexerdokumentII.tga]",
 	-1,
 	"@L_MEASURE_HotTea_TITLE_+0","",
-	"Immortality","Title","Office","XP","Money","Fame","X","AI")
+	"Immortality","Title","Office","XP","Money","Fame","Age","AI")
 
 	if result==1 then
 		if SimIsMortal(Target) then
@@ -66,14 +66,9 @@ function Run()
 		chr_SimAddFame(Target,25)
 		chr_SimAddImperialFame(Target,25)
 	elseif result==7 then
-		SimCreateCompanion("", "Dog", 300)
-	
-		-- see ms_multiplayersay
-		local Text = helpfuncs_MsgStringMultiline("Enter your text here", 0)
-		MsgQuick("", Text)
-		Sleep(1)		
-		Text = helpfuncs_MsgString("", "Enter Text", "Please enter some text %2t here for %1SN.", {GetID(""), 5})
-		MsgQuick("", Text)
+		local Text = helpfuncs_MsgString("", "Change age", "Please choose the new age for %1SN.", {GetID(Target)})
+		local NewAge = Text + 0
+		SimSetAge(Target, NewAge)
 	elseif result == 8 then
 		local freeze = MsgBox("","Owner",
 				"@P@B[1,@L%1l,]@B[0,@L%2l,]",

@@ -545,3 +545,5 @@ Data:
 12105   "Behaviour\behavior_MineGuardsDuty.lua"   ""   "MineGuardsDuty"   69   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 13086   "ms_twp_SupplyWorkshop.lua"   ""   "SupplyWorkshop"   99   "hud/buttons/btn_SupplyWorkshop.tga"   0   2   0   ""   ""   0   0   0   "none"   0   1   |
 13087   "ms_twp_SalesCart.lua"   ""   "SalesCart"   99   "hud/buttons/btn_SalesCart.tga"   0   2   0   ""   ""   0   0   0   "none"   0   1   |
+14000   "HotTea.lua"   "-"   "HotTea"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |
+14001   "HotTea.lua"   "-"   "HotTeaTarget"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |
