@@ -35,10 +35,10 @@ function Init()
 	Options:SetValueInt("Ambient", 0)
 	Options:SetValueInt("AmbientNextStep", 0)
 
-	Options:SetValueInt("Messages",0)
+	Options:SetValueInt("Messages", 1)
 	Options:SetValueInt("MessagesNextStep", 0)
 
-	Options:SetValueInt("FrequencyOfficeSessions",2)
+	Options:SetValueInt("FrequencyOfficeSessions", 2)
 	Options:SetValueInt("FOSNextStep", 0)
 
 	this:ChangeGameState("StartScreen")
