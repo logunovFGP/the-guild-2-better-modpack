@@ -1,6 +1,4 @@
 function Run()
-
 	ChangeAppearance("")
-
 end
 

@@ -131,6 +131,8 @@ _Allgemein_
 - Zusätzlich gibt es nun zwei weitere Optionen, um Betriebe noch leichter zu versorgen oder Waren zu verkaufen.
 - Schwangere sind nicht länger an ihr Bett gefesselt.
 - Es gibt neue und teils überarbeitete Fähigkeiten nach Stufenaufstieg.
+- Es gibt nun eine Maßnahme, mit der man die äußere Erscheinung eines Charakters während des laufenden Spiels anpassen kann (Selbe Kategorie wie das Inventar).
+- Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
 
 _Patron_
 -

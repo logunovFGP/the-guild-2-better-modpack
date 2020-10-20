@@ -288,7 +288,7 @@ Data:
 4003   "ms_BlackDeath.lua"   "-"   "DebugBlackDeath"   40   "hud/buttons/btn_019_SlaughterAnimals.tga"   0   99   0   ""   ""   0   0   0   "none"   0   0   |
 4004   "ms_BlackDeathStop.lua"   "-"   "DebugBlackDeathStop"   40   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   0   0   0   "none"   0   0   |
 4005   "ms_SimDie.lua"   "-"   "DebugSimDie"   50   "hud/buttons/btn_Sim_Die.tga"   0   99   0   ""   ""   0   0   0   "none"   0   0   |
-4006   "ms_ChangeAppearance.lua"   "-"   "DebugChangeAppearance"   50   "hud/buttons/btn_changeAppearance.tga"   0   99   0   ""   ""   0   0   0   "none"   0   0   |
+4006   "ms_ChangeAppearance.lua"   "-"   "ChangeAppearance"   50   "hud/buttons/btn_ManageGroup.tga"   0   2   0   ""   ""   2   0   0   "none"   0   0   |
 4009   "ms_CarstenS.lua"   "-"   "DebugCarstenS"   50   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   0   0   0   "none"   0   0   |
 4010   "ms_StefanD.lua"   "-"   "DebugStefanD"   50   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   0   0   0   "none"   0   0   |
 4011   "ms_CampaignWon.lua"   "-"   "DebugCampaignWon"   50   ""   0   99   0   ""   ""   0   0   0   "none"   0   0   |
@@ -369,8 +369,8 @@ Data:
 11020   "ms_BuyAldermanChain.lua"   "-"   "BuyAldermanChain"   40   "hud/buttons/btn_BuyAldermanChain.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
 11021   "ms_GuildTrading.lua"   ""   "GuildTrading"   40   ""   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 11022   "ms_ContractGuildHouse.lua"   "-"   "ContractGuildHouse"   40   "hud/buttons/btn_ShowGuildContracts.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
-11023   "ms_ShowGuildMembership.lua"   "-"   "ShowGuildMembership"   50   "hud/buttons/btn_ShowGuildMembership.tga"   0   2   0   ""   ""   2   0   0   "none"   0   0   |
-11024   "ms_ShowGuildMembershipSim.lua"   "-"   "ShowGuildMembershipSim"   50   "hud/buttons/btn_ShowGuildMembership.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+11023   "ms_ShowGuildMembership.lua"   "-"   "ShowGuildMembership"   50   "hud/buttons/btn_ShowGuildMembership.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+11024   "ms_ShowGuildMembershipSim.lua"   "-"   "ShowGuildMembershipSim"   50   "hud/buttons/btn_ShowGuildMembership.tga"   0   2   0   ""   ""   4   0   0   "none"   0   0   |
 11025   "Artefacts\as_UseWorkingPlanPatron1.lua"   "-"   "UseWorkingPlanPatron1"   55   "hud/Items/item_WorkingPlanPatron1.tga"   0   12   25   ""   ""   0   0   0   "none"   0   0   |
 11026   "Artefacts\as_UseWorkingPlanArtisan1.lua"   "-"   "UseWorkingPlanArtisan1"   55   "hud/Items/item_WorkingPlanArtisan1.tga"   0   12   25   ""   ""   0   0   0   "none"   0   0   |
 11027   "Artefacts\as_UseWorkingPlanScholar1.lua"   "-"   "UseWorkingPlanScholar1"   55   "hud/Items/item_WorkingPlanScholar1.tga"   0   12   25   ""   ""   0   0   0   "none"   0   0   |
@@ -543,6 +543,7 @@ Data:
 12103   "ms_Bricklebrit.lua"   ""   "Bricklebrit"   30   ""   0   12   0   ""   ""   0   0   0   "none"   0   0   |
 12104   "ms_MineGuards.lua"   ""   "MineGuards"   45   "hud/buttons/btn_BuyCannon.tga"   0   4   0   ""   ""   0   24   0   "particles/radius.nif"   30   0   |
 12105   "Behaviour\behavior_MineGuardsDuty.lua"   ""   "MineGuardsDuty"   69   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+13073   "ms_SetBookmark.lua"   "-"   "SetBookmark"   50   "hud/buttons/btn_SetBookmark.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 13086   "ms_twp_SupplyWorkshop.lua"   ""   "SupplyWorkshop"   99   "hud/buttons/btn_SupplyWorkshop.tga"   0   2   0   ""   ""   0   0   0   "none"   0   1   |
 13087   "ms_twp_SalesCart.lua"   ""   "SalesCart"   99   "hud/buttons/btn_SalesCart.tga"   0   2   0   ""   ""   0   0   0   "none"   0   1   |
 14000   "HotTea.lua"   "-"   "HotTea"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |

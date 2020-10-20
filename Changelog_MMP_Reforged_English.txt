@@ -126,6 +126,8 @@ _General_
 - In addition two new options for workshop-handling have been added that allow for easier supply and sale.
 - Pregnant women are no longer tied to their bed.
 - Some new and reworked abilities after levelup.
+- Added a new measure to change your character's appearance ingame (same category as inventory-measure).
+- Added a new measure to mark a dynasty character as important (same category as inventory-measure). That character then will appear in the 'Important Persons' list.
 
 _Patron_
 -
