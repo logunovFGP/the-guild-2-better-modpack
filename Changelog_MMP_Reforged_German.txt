@@ -9,7 +9,17 @@ GUI: MoK
 Icons: Fajeth, F-Man
 Texturen: Jollina, Skip, Broliii 
 Testing: Jollina, VSX, McHedgehoghunter
-Anderer Support: McCoy! + Die Gilde 2 Community + Diverse Übersetzer
+
+Lokalisierung:
+Spanisch: Skip, FalsdasRojas, espyleonheart
+Italienisch: Marian, 
+Französisch: Rico, StalkFire, Techgenieur, Erfive
+Portugiesisch: Regismrs, BossPenguin
+Russisch:
+Polnisch:
+
+Soziale Medien: Erilambus
+Anderer Support: McCoy!, Sublogic, nirvana, Scandal, ZBombe, Jedi93 + Die Gilde 2 Community!
 
 Installation:
 

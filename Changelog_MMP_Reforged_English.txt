@@ -5,11 +5,21 @@ Fajeth's MegaModPack Reforged - Lite Edition (0.1)
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
-GUI: MoK
-Icons: Fajeth, F-Man
+GUI: MoK, Fajeth
+Icons: Fajeth, F-Man, Jollina
 Textures: Jollina, Skip, Broliii 
 Testing: Jollina, VSX, McHedgehoghunter
-Additional Support: McCoy! + The Guild 2 Community + Many translators!
+
+Localization:
+Spanish: Skip, FalsdasRojas, espyleonheart
+Italian: Marian, 
+French: Rico, StalkFire, Techgenieur, Erfive
+Portuguese: Regismrs, BossPenguin 
+Russian:
+Polish:
+
+Social Media: Erilambus
+Additional Support: McCoy!, Sublogic, nirvana, Scandal, Zbombe, jedi93 + The Guild 2 Community!
 
 Installation:
 

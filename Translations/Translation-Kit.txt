@@ -196,14 +196,26 @@ Translate and add the following lines below:
 18193   "_MEASURE_SetBookmark_REMOVED_BODY_+0"   "The mark for %1SN has been removed. You can re-mark the person again if you want." |
 18194   "_MEASURE_SetBookmark_ADDED_BODY_+0"   "%1SN has been marked as >important<. You can now use the >Important Persons< button to find %1SV!" |
 18195   "_MEASURE_SetBookmark_TARGET_+0"   "Choose a person you whish to mark!" |
+18196   "_BUILDING_Watchtower3_TOOLTIP_+0"   "The cannon tower lives up to its name. Not only does it have immense firepower; it is built from solid masonry and can even withstand attacks from large warships for a time. Like all towers it works also against attacks on land."   |
+18197   "_BUILDING_Watchtower2_TOOLTIP_+0"   "A watchtower is a good defensive position against small and medium-sized ships. However, it can hardly withstand fire from a warship. Like all towers it works also against attacks on land."   |
+18198   "_BUILDING_Watchtower1_TOOLTIP_+0"   "The look-out tower is equipped with only limited firepower, but can be quite dangerous for a small ship. Like all towers it works also against attacks on land."   |
+18199   "_MEDICUS_FAILURES_+0"   "Action not possible - you are sick already and thus can't use this item."   |
+18200   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"   "Your %1GG needs more %2l in order to continue the treatment."   |
 
 
 
 Delete the following lines:
+779   "_BUILDING_Watchtower3_TOOLTIP_+0"
+795   "_BUILDING_Watchtower2_TOOLTIP_+0"
+822   "_BUILDING_Watchtower1_TOOLTIP_+0"
+927   "_MEDICUS_FAILURES_+0"
+1022   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"
+
 7804   "Hat_+0"
-7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
-7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
-8449   "_HPFZ_MEASURES_HIRE_ZUSATZ_+0"   "What level of knowledge do you want the candidate to have?"   |
-8450   "_HPFZ_HIRERANDOM_FEHLER_+0"   "No such candidate available to employ!"   |
-12728   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0"   "This woman is pregnant, and cannot take any actions at this time."   |
+7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"  
+7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"  
+8449   "_HPFZ_MEASURES_HIRE_ZUSATZ_+0"  
+8450   "_HPFZ_HIRERANDOM_FEHLER_+0"  
+12728   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0" 
+
 
