@@ -1,8 +1,4 @@
 function Run()
-	if GetImpactValue("", "banned")==1 then
-		MeasureRun("", nil, "DynastyBanned")
-		StopMeasure()
-	end
 	
 	if not GetHomeBuilding("", "Home") then
 		if not GetSettlement("", "MyCity") then
@@ -13,6 +9,11 @@ function Run()
 		if AliasExists("NewHome") then
 			SetHomeBuilding("", "NewHome")
 		end
+	end
+	
+	if GetImpactValue("", "banned")==1 then
+		MeasureRun("", nil, "DynastyBanned")
+		StopMeasure()
 	end
 				
 

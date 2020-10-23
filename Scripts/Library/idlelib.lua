@@ -85,11 +85,12 @@ function Sleep(SleepStart, SleepEnd)
 			RemoveAlias("SleepPosition")
 			if IsDynastySim("") then
 				if GetHPRelative("")<1 then
-					GetSettlement("","MyCity")
-					if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLIC, 32, -1, -1, FILTER_IGNORE, "Destination") then
-						if f_MoveTo("","Destination") then
-							MeasureRun("","Destination","Linger",true)
-							return
+					if GetSettlement("", "MyCity") then
+						if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLIC, 32, -1, -1, FILTER_IGNORE, "Destination") then
+							if f_MoveTo("","Destination") then
+								MeasureRun("","Destination","Linger",true)
+								return
+							end
 						end
 					end
 				else
@@ -101,7 +102,7 @@ function Sleep(SleepStart, SleepEnd)
 	
 	local SleepTime = Gametime2Realtime(EN_RECOVERFACTOR_HOME/60)
 	local	ContinueSleeping = true
-	SetState("",STATE_SLEEPING,true)
+	SetState("", STATE_SLEEPING,true)
 	while ContinueSleeping do
 	
 		ContinueSleeping = false
@@ -693,8 +694,11 @@ end
 -- -----------------------
 function CheckInsideStore()
 
-  local store = Rand(5)
-	GetSettlement("", "City")
+	if not GetSettlement("", "City") then
+		return
+	end
+	
+	local store = Rand(5)
 	local Wares = {}
 
 	if store == 0 then

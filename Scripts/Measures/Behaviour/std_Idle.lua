@@ -1,4 +1,15 @@
 function Run()
+
+	if not GetHomeBuilding("", "HomeBuilding") then
+		if not GetSettlement("", "MyCity") then
+			GetNearestSettlement("", "MyCity")
+		end
+		CityGetNearestBuilding("MyCity", "", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
+		
+		if AliasExists("NewHome") then
+			SetHomeBuilding("", "HomeBuilding")
+		end
+	end
 	
 	if HasProperty("","Berserker") then
 		RemoveProperty("","Berserker")   
@@ -17,17 +28,6 @@ function Run()
 
 	if (SimGetGender("")==GL_GENDER_FEMALE) then
 		idlelib_KissMeHonza()
-	end
-	
-	if not GetHomeBuilding("", "HomeBuilding") then
-		if not GetSettlement("", "MyCity") then
-			GetNearestSettlement("", "MyCity")
-		end
-		CityGetNearestBuilding("MyCity", "", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
-		
-		if AliasExists("NewHome") then
-			SetHomeBuilding("", "HomeBuilding")
-		end
 	end
 	
 	if not ActiveMovement then

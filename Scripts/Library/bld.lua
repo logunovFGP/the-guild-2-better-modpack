@@ -435,7 +435,7 @@ function CheckRivals(BldAlias)
 										SetProperty(BldAlias, "Rival"..RivID, 1) -- only one msg
 										MsgNewsNoWait("RivalBoss", "MyBoss", "", "intrigue", -1,
 													"@L_AI_NEWRIVALINTOWN_HEAD", "@L_AI_NEWRIVALINTOWN_BODY", GetID("MyBoss"), GetID(BldAlias), GetID(RivBld))
-										ModifyFavorToDynasty("MyBoss", "RivalBoss", -35)
+										SetFavorToSim("MyBoss", "RivalBoss", 20)
 										break
 									end
 								end

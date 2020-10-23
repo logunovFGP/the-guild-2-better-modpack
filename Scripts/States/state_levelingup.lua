@@ -18,28 +18,28 @@ end
 -- Run
 -- -----------------------
 function Run()
-	local MovingBuilding = GetState("",STATE_MOVING_BUILDING)
+	local MovingBuilding = GetState("", STATE_MOVING_BUILDING)
 	
 	if MovingBuilding then
-		SetState("",STATE_MOVING_BUILDING, false)
+		SetState("", STATE_MOVING_BUILDING, false)
 	end
 
 	local	Proto = GetProperty("", "LevelUpProto")
 	if not Proto then
 		return
 	end
-	AddImpact("","LevelingUp",1,-1)		
-	local TotalTime = 0.666 * GetDatabaseValue("Buildings", Proto, "buildtime")
+	AddImpact("", "LevelingUp", 1, -1)		
+	local TotalTime = GetDatabaseValue("Buildings", Proto, "buildtime") - GetDatabaseValue("Buildings", (Proto-1), "buildtime") + 1
 	
 	local 	H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
 	if (H4x0r==1) then
 		TotalTime = 0.01 
 	end
 	Attach3DSound("", "measures/ms_BuildHouse_s_01.wav", 1.0)
-	local MaxTotalTime	= Gametime2Realtime(TotalTime)
+	local MaxTotalTime = Gametime2Realtime(TotalTime)
 	
-	SetProcessMaxProgress("",MaxTotalTime)
-	SetProcessProgress("",0)
+	SetProcessMaxProgress("", MaxTotalTime)
+	SetProcessProgress("", 0)
 	
 	RemoveProperty("", "LevelUpProto")
 	GetPosition("", "FinalPos")
@@ -47,7 +47,7 @@ function Run()
 	local xfin, yfin, zfin = PositionGetVector("FinalPos")
 
 	local ProgressAdd = 0
-	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""),(BuildingGetLevel("")+1),"")
+	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""), (BuildingGetLevel("")+1),"")
 	gebBez = gebBez + 1
 	nenner = 4
 	if type~="" then
@@ -58,10 +58,10 @@ function Run()
 	end
 
 	if not BuildingGetOwner("","Cheffe") then
-		AddImpact("",391,3,-1)
+		AddImpact("", "BauArbeiter", 3, -1)
 	else
-		AddImpact("",391,0,-1)
---		MeasureRun("","","BauZusatzMeasure",true)
+		AddImpact("", "BauArbeiter", 0, -1)
+		MeasureRun("", "", "BauZusatzMeasure", true)
 	end
 
 	if (H4x0r==0) then	
@@ -71,40 +71,41 @@ function Run()
 	local TimeToUpgrade = 0
 	local tries = 0
 	while(TimeToUpgrade < MaxTotalTime) do
-		ProgressAdd = GetImpactValue("",391)
+		ProgressAdd = GetImpactValue("", "BauArbeiter")
 		
 		if tries > 30 and ProgressAdd < 1 then
 			ProgressAdd = 1
 		end		
 		TimeToUpgrade = TimeToUpgrade + ProgressAdd
 		
+		-- attach scaffolding
 		if type~="" then
 			if TimeToUpgrade >= ((MaxTotalTime / nenner ) * 1) and TimeToUpgrade < ((MaxTotalTime / nenner ) * 2) and GetProperty("", "CurrentGeruest") ~= 2 then
 				GfxDetachObject("Geruest1")
 				GfxAttachObject("Geruest2","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-				GfxSetPosition("Geruest2",xfin,yfin,zfin,true)
+				GfxSetPosition("Geruest2", xfin, yfin, zfin, true)
 				SetProperty("", "CurrentGeruest", 2)
 				gebBez = gebBez + 1
 			elseif TimeToUpgrade >= ((MaxTotalTime / nenner ) * 2) and TimeToUpgrade < ((MaxTotalTime / nenner ) * 3) and GetProperty("", "CurrentGeruest") ~= 3 then
 				GfxDetachObject("Geruest2")
 				GfxAttachObject("Geruest3","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-				GfxSetPosition("Geruest3",xfin,yfin,zfin,true)
+				GfxSetPosition("Geruest3", xfin, yfin, zfin, true)
 				SetProperty("", "CurrentGeruest", 3)
-            end
+			end
 			
 			if nenner == 6 then
-			    gebBez = gebBez + 1
-			    if TimeToUpgrade >= ((MaxTotalTime / nenner ) * 3) and GetProperty("", "CurrentGeruest") ~= 4 then
-			        GfxDetachObject("Geruest3")
-				    GfxAttachObject("Geruest4","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-				    GfxSetPosition("Geruest4",xfin,yfin,zfin,true)
-				    SetProperty("", "CurrentGeruest", 4)
+				gebBez = gebBez + 1
+				if TimeToUpgrade >= ((MaxTotalTime / nenner ) * 3) and GetProperty("", "CurrentGeruest") ~= 4 then
+					GfxDetachObject("Geruest3")
+					GfxAttachObject("Geruest4","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
+					GfxSetPosition("Geruest4", xfin, yfin, zfin, true)
+					SetProperty("", "CurrentGeruest", 4)
 				end
 			end
 		end
 
 		Sleep(1)
-		SetProcessProgress("",TimeToUpgrade)
+		SetProcessProgress("", TimeToUpgrade)
 		tries = tries + 1
 	end
 
@@ -135,14 +136,8 @@ end
 function CleanUp()
 	ResetProcessProgress("")
 	Detach3DSound("")
-	RemoveImpact("","LevelingUp",1,-1)
-	RemoveImpact("",391)
-	
-    if BuildingGetClass("") == 7 and BuildingGetType("") == 32 then
-	    SetState("", STATE_HPFZ_STATUE, true)
-    end	
-	
+	RemoveImpact("", "LevelingUp", 1, -1)
+	RemoveImpact("", "BauArbeiter")
 	SetState("", STATE_LEVELINGUP, false)	
-	
 end
 

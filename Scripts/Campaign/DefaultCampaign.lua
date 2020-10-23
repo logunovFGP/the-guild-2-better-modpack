@@ -125,28 +125,29 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		end
 			
 		-- start with random equipment
-		local RandomWeapon = Rand(10)
-		if RandomWeapon >= 0 and RandomWeapon <3 then
-			AddItems("boss","Dagger",1,INVENTORY_EQUIPMENT)
-		elseif RandomWeapon == 3 or RandomWeapon == 4 then
-			AddItems("boss","Dagger",1,INVENTORY_EQUIPMENT)
-			AddItems("boss","LeatherArmor",1,INVENTORY_EQUIPMENT)
-		elseif RandomWeapon == 5 or RandomWeapon == 6 then
-			AddItems("boss","Mace",1,INVENTORY_EQUIPMENT)
+		local RandomWeapon = Rand(11)
+		if RandomWeapon >= 0 and RandomWeapon <4 then
+			AddItems("boss", "Dagger", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 4 then
+			AddItems("boss", "Dagger", 1, INVENTORY_EQUIPMENT)
+			AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 5 then
+			AddItems("boss", "Mace", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 6 then
+			AddItems("boss", "Mace", 1, INVENTORY_EQUIPMENT)
+			AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
 		elseif RandomWeapon == 7 then
-			AddItems("boss","Mace",1,INVENTORY_EQUIPMENT)
-			AddItems("boss","LeatherArmor",1,INVENTORY_EQUIPMENT)
-		elseif RandomWeapon == 8 then
-			AddItems("boss","Longsword",1,INVENTORY_EQUIPMENT)
-			if Rand(2) == 0 then
-				AddItems("boss","Chainmail",1,INVENTORY_EQUIPMENT)
-			else
-				AddItems("boss","LeatherArmor",1,INVENTORY_EQUIPMENT)
+			AddItems("boss","Longsword", 1, INVENTORY_EQUIPMENT)
+			local Weapon = Rand(4)
+			if Weapon == 0 then
+				AddItems("boss", "Chainmail", 1, INVENTORY_EQUIPMENT)
+			elseif Weapon == 1 then
+				AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
 			end
-		else
-			AddItems("boss","Longsword",1,INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 8 then
+			AddItems("boss","Longsword", 1, INVENTORY_EQUIPMENT)
 			if Rand(2) == 0 then
-				AddItems("boss","Platemail",1,INVENTORY_EQUIPMENT)
+				AddItems("boss", "Platemail", 1, INVENTORY_EQUIPMENT)
 			end
 		end
 	end
@@ -190,15 +191,17 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		local Age = 38 + Rand(16)
 		SimSetAge("boss", Age)
 			
-		-- get a spouse if you are in office
-		if BossCreate("SleepingHut", 1 - SimGetGender("boss"),(1+Rand(4)), 5, "Spouse") then
-			SimSetAge("Spouse", Age-10)
+		-- get a spouse
+		if BossCreate("SleepingHut", 1 - SimGetGender("boss"), (1+Rand(4)), 5, "Spouse") then
+			local AgeDiff = Rand(12)
+			SimSetAge("Spouse", Age-AgeDiff)
 			DynastyAddMember(NewDynastyAlias, "Spouse")
 			IncrementXP("Spouse", (XP-500))
 			SimMarry("boss", "Spouse")
 		end
 		
-		if OfficeLevel > 1 then
+		-- if you are in office, get a workshop for the spouse
+		if OfficeLevel > 0 then
 			if AliasExists("Spouse") then
 				if CityGetBuildingForCharacter(City, "Spouse", FILTER_NO_DYNASTY, "SpouseShop") then
 					BuildingBuy("SpouseShop", "Spouse", BM_STARTUP)
@@ -206,70 +209,37 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			end
 		end
 			
-		-- Create a child
+		-- Create childs
 		if AliasExists("boss") and AliasExists("Spouse") then
-			-- first 
-			local ChildGender = Rand(2)
-			if ChildGender == 0 then
-				ChildGender = 8
-			else
-				ChildGender = 7
-			end
+			local ChildCount = 1+Rand(5) -- how many children the dynasty can have?
+			local FirstAge = 16+Rand(8)
+			local ChildAge = FirstAge
+			local Chance = 100
 			
-			SimCreate(ChildGender, "SleepingHut", "SleepingHut", "Shadowchild")
-			
-			if SimGetGender("boss")==GL_GENDER_MALE then
-				SimSetFamily("Shadowchild", "Spouse", "boss")
-			else
-				SimSetFamily("Shadowchild", "boss", "Spouse")
-			end
-			
-			SetHomeBuilding("Shadowchild", "SleepingHut")
-			DoNewBornStuff("Shadowchild")
-			SimSetAge("Shadowchild", 15+Rand(8))
-			
-			-- maybe second:
-			if Rand(2) == 0 then
-				local ChildGender = Rand(2)
-				if ChildGender == 0 then
-					ChildGender = 8
-				else
-					ChildGender = 7
+			for i=0, ChildCount-1 do
+				ChildAge = FirstAge - 2*i
+				Chance = 100 - 10*i
+				
+				if Rand(100) < Chance then
+					local ChildGender = Rand(2)
+					if ChildGender == 0 then
+						ChildGender = 8
+					else
+						ChildGender = 7
+					end
+					
+					SimCreate(ChildGender, "SleepingHut", "SleepingHut", "Shadowchild")
+					
+					if SimGetGender("boss")==GL_GENDER_MALE then
+						SimSetFamily("Shadowchild", "Spouse", "boss")
+					else
+						SimSetFamily("Shadowchild", "boss", "Spouse")
+					end
+					
+					SetHomeBuilding("Shadowchild", "SleepingHut")
+					DoNewBornStuff("Shadowchild")
+					SimSetAge("Shadowchild", FirstAge)
 				end
-				
-				SimCreate(ChildGender, "SleepingHut", "SleepingHut", "Shadowchild")
-				
-				if SimGetGender("boss")==GL_GENDER_MALE then
-					SimSetFamily("Shadowchild", "Spouse", "boss")
-				else
-					SimSetFamily("Shadowchild", "boss", "Spouse")
-				end
-				
-				SetHomeBuilding("Shadowchild", "SleepingHut")
-				DoNewBornStuff("Shadowchild")
-				SimSetAge("Shadowchild", 10+Rand(6))
-			end
-			
-			-- maybe third
-			if Rand(4) == 0 then
-				local ChildGender = Rand(2)
-				if ChildGender == 0 then
-					ChildGender = 8
-				else
-					ChildGender = 7
-				end
-				
-				SimCreate(ChildGender, "SleepingHut", "SleepingHut", "Shadowchild")
-				
-				if SimGetGender("boss")==GL_GENDER_MALE then
-					SimSetFamily("Shadowchild", "Spouse", "boss")
-				else
-					SimSetFamily("Shadowchild", "boss", "Spouse")
-				end
-				
-				SetHomeBuilding("Shadowchild", "SleepingHut")
-				DoNewBornStuff("Shadowchild")
-				SimSetAge("Shadowchild", 5+Rand(6))
 			end
 		end
 		
@@ -283,14 +253,14 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	end
 	
 	SetNobilityTitle("boss", NobLevel, true)
-	local AgeBonus = SimGetAge("boss")*20 + Rand(250)
+	local AgeBonus = SimGetAge("boss")*10 + Rand(250)
 	IncrementXP("boss", (XP+AgeBonus))
 	StartMoney =  StartMoney + NobLevel*500
 	CreditMoney("boss", StartMoney, "GameStart")
 	
 	if Fame and ImpFame then
-		chr_SimAddFame("boss",Fame)
-		chr_SimAddImperialFame("boss",ImpFame)
+		chr_SimAddFame("boss", Fame)
+		chr_SimAddImperialFame("boss", ImpFame)
 	end
 	
 	return ""
@@ -376,7 +346,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		RandClass = 1+Rand(4)
 		
 		SimSetClass("boss", RandClass)
-		SimSetAge("boss", 18+Rand(6))
+		SimSetAge("boss", 17+Rand(6))
 		
 	end
 
@@ -661,7 +631,7 @@ function SetupDiplomacy()
 			while Friends<FriendCount do
 			
 				if Friends<FriendCount and Rand(3) == 0 then
-					Friend = defaultcampaign_FindDynasty(DIP_NAP, FriendCount, dyn+1, Count, Friends==0)
+					Friend = defaultcampaign_FindDynasty(DIP_NAP, FriendCount, dyn+1, Count, Friends == 0)
 					if Friend then
 						DynastySetDiplomacyState(Alias, Friend, DIP_NAP)
 					end
@@ -691,7 +661,7 @@ function FindDynasty(DipState, MaxState, StartNo, EndNo, FirstOfType)
 	local	Found
 	local	Count = 0
 	for DynNo=StartNo, EndNo-1 do
-		if DynastyGetDiplomacyState("Dynasties"..(StartNo-1), "Dynasties"..DynNo)==DIP_NEUTRAL then
+		if DynastyGetDiplomacyState("Dynasties"..(StartNo-1), "Dynasties"..DynNo) == DIP_NEUTRAL then
 			if defaultcampaign_GetStateCount("Dynasties"..DynNo, DipState, EndNo) < MaxState then
 				Count = Count + 1
 				if Rand(100) <= 100/Count then

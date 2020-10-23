@@ -25,9 +25,9 @@ end
 
 function Run()
 
-	if IsType("","Building") or IsType("","GuildResource")then
+	if IsType("", "Building") or IsType("", "GuildResource")then
 		state_building_BuildingLoop()
-	elseif IsType("","Cart")then
+	elseif IsType("", "Cart")then
 		state_building_CartLoop() 
 	end
 end
@@ -109,17 +109,16 @@ function BuildingLoop()
 	--------------------------
 	SetInit("")
 	ShowBuildingFlags("", false)
-	SetState("",STATE_MONITORDAMAGE,true)
+	SetState("", STATE_MONITORDAMAGE,true)
 	
-	local MovingBuilding = GetState("",STATE_MOVING_BUILDING)
+	local MovingBuilding = GetState("", STATE_MOVING_BUILDING)
 	
 	if MovingBuilding then
 		SetState("",STATE_MOVING_BUILDING, false)
 	end
 	
 	local	Played = ScenarioGetTimePlayed()
-	local 	H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
-	if (Played==0 or H4x0r==1) then
+	if (Played==0) then
 		SetData("InstaBuild", 1)
 		return
 	end
@@ -164,7 +163,7 @@ function BuildingLoop()
 	local Buildtime = GetDatabaseValue("Buildings", Proto, "buildtime")
 	-- local MaxProgress = Gametime2Realtime(GetDatabaseValue("ConstructionTime", BuildtimeID, "value"))
 	local MaxProgress = Gametime2Realtime(Buildtime)
-	local	Progress = 0
+	local Progress = 0
 	local Workers = 0
 	
 	local ProgressAdd = 0
@@ -186,71 +185,68 @@ function BuildingLoop()
 	------------------------
 	------ Buildphase ------
 	------------------------
-	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""),BuildingGetLevel(""),"")
+	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""), BuildingGetLevel(""),"")
 
 	if type~="" then
-		if GfxAttachObject("Geruest1","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif") then
-			GfxSetPosition("Geruest1",xfin,yfin,zfin,true)
+		if GfxAttachObject("Geruest1", "buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif") then
+			GfxSetPosition("Geruest1", xfin, yfin, zfin, true)
 			SetProperty("", "CurrentGeruest", 1)
 			gebBez = gebBez + 1
 		end
 	end
 
 	if not GetDynasty("", "BuildingDynasty") then
-	    -- BuildingGetCity("","BuildingDynasty")
-		AddImpact("",391,3,-1)
+		AddImpact("", "BauArbeiter", 3, -1)
 	else
-		AddImpact("",391,0,-1)
-		MeasureRun("BuildingDynasty","","BauZusatzMeasure",true)
+		AddImpact("", "BauArbeiter", 0, -1)
+		MeasureRun("BuildingDynasty", "", "BauZusatzMeasure", true)
 	end
 	
-	SetProcessMaxProgress("",MaxProgress)
+	SetProcessMaxProgress("", MaxProgress)
 	
 	local tries = 0
 	
 	while Progress < MaxProgress do
 		
-		ProgressAdd = GetImpactValue("",391)
+		ProgressAdd = GetImpactValue("", "BauArbeiter")
 		if tries > 30 and ProgressAdd < 1 then
 			ProgressAdd = 1
 		end		
 		Progress = Progress + ProgressAdd 
 
-		if type~="" then
+		if type ~= "" then
 			if Progress >= ((MaxProgress / nenner ) * 1) and Progress < ((MaxProgress / nenner ) * 2) and GetProperty("", "CurrentGeruest") ~= 2 then
 				GfxDetachObject("Geruest1")
 				GfxAttachObject("Geruest2","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-				GfxSetPosition("Geruest2",xfin,yfin,zfin,true)
+				GfxSetPosition("Geruest2", xfin, yfin, zfin, true)
 				SetProperty("", "CurrentGeruest", 2)
 				gebBez = gebBez + 1
 			elseif Progress >= ((MaxProgress / nenner ) * 2) and Progress < ((MaxProgress / nenner ) * 3) and GetProperty("", "CurrentGeruest") ~= 3 then
 				GfxDetachObject("Geruest2")
 				GfxAttachObject("Geruest3","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-				GfxSetPosition("Geruest3",xfin,yfin,zfin,true)
+				GfxSetPosition("Geruest3", xfin, yfin, zfin, true)
 				SetProperty("", "CurrentGeruest", 3)
 				gebBez = gebBez + 1
 			elseif Progress >= ((MaxProgress / nenner ) * 3) and Progress < ((MaxProgress / nenner ) * 4) and GetProperty("", "CurrentGeruest") ~= 4 then
 				GfxDetachObject("Geruest3")
 				GfxAttachObject("Geruest4","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-				GfxSetPosition("Geruest4",xfin,yfin,zfin,true)
+				GfxSetPosition("Geruest4", xfin, yfin, zfin, true)
 				SetProperty("", "CurrentGeruest", 4)
 			end
 				
 			if nenner == 6 then
-			  gebBez = gebBez + 1
-			  if Progress >= ((MaxProgress / nenner ) * 4) and GetProperty("", "CurrentGeruest") ~= 5 then
+				gebBez = gebBez + 1
+				if Progress >= ((MaxProgress / nenner ) * 4) and GetProperty("", "CurrentGeruest") ~= 5 then
 					GfxDetachObject("Geruest4")
 					GfxAttachObject("Geruest5","buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif")
-					GfxSetPosition("Geruest5",xfin,yfin,zfin,true)
+					GfxSetPosition("Geruest5", xfin, yfin, zfin, true)
 					SetProperty("", "CurrentGeruest", 5)
 				end
 			end
 			
-
-
 		end
 		Sleep(1)
-		SetProcessProgress("",Progress)
+		SetProcessProgress("", Progress)
 		tries = tries + 1
 	end
 				-- if Progress == ((MaxProgress / nenner ) * (nenner-1)) then		
@@ -280,7 +276,7 @@ function BuildingLoop()
 		"@L_BUILDING_BUILD_BODY_+0", GetID(""))
 		
 	if MovingBuilding then
-		SetState("",STATE_MOVING_BUILDING, true)
+		SetState("", STATE_MOVING_BUILDING, true)
 	end		
 end
 
@@ -290,17 +286,16 @@ end
 function CleanUp()
 	ResetProcessProgress("")
 	SetReady("")
-	RemoveImpact("",391)
-	RemoveProperty("","CurrentGeruest")
+	RemoveImpact("", "BauArbeiter")
+	RemoveProperty("", "CurrentGeruest")
+	ShowBuildingFlags("", true)
+	
 	if not HasData("InstaBuild") then
 		BuildingGetOwner("", "Builder")
 		Detach3DSound("")
 	end
+	
 	if AliasExists("FinalPos") then
 		GfxSetPositionTo("", "FinalPos")
 	end
-	ShowBuildingFlags("", true)
-    if BuildingGetClass("") == 7 and BuildingGetType("") == 32 then
-	    SetState("", STATE_HPFZ_STATUE, true)
-    end
 end

@@ -107,9 +107,13 @@ function GoInsideBuilding(SimAlias, CityObject, BuildingClass, BuildingType, Bui
 	local CityID = -1
 	
 	if AliasExists(CityObject) then
-		GetSettlement(CityObject, "__GIB_City")
+		if not GetSettlement(CityObject, "__GIB_City") then
+			return false
+		end
 	else
-		GetSettlement(SimAlias, "__GIB_City")
+		if not GetSettlement(SimAlias, "__GIB_City") then
+			return false
+		end
 	end
 	
 	IsOk, InsideAlias = ai_CheckInsideBuilding(SimAlias, BuildingClass, BuildingType, BuildingAlias)
