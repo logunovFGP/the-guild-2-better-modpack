@@ -7,14 +7,14 @@ function Run()
 	local TimeOut = -1
 	if SimGetProfession("")==GL_PROFESSION_CITYGUARD then
 		TimeOut = 5
-	SetData("Endtime"..GetID("Destination"),math.mod(GetGametime(),24)+5)
+		SetData("Endtime"..GetID("Destination"),math.mod(GetGametime(),24)+5)
 	end
 
-	local fDistance = 200
+	local fDistance = 300
 	if IsType("Destination", "Cart") then
-		fDistance = 400
+		fDistance = 500
 	elseif IsType("Destination", "Ship") then
-		fDistance = 800
+		fDistance = 1000
 	end
 	
 	local	DataValue
@@ -35,22 +35,79 @@ function Run()
 	SetProperty("Destination", DataValue, GetID(""))
 
 	if TimeOut<0 then
-		local errorcount = 0
-		while (1) do
-		    if SimIsInside("Destination") then
-		        if HasProperty("","CityBodyguard") or HasProperty("","KIbodyguard") then
-	                break
-	            end			
+		while true do
+			if GetInsideBuilding("Destination", "InsideTarget") then
+				if HasProperty("","CityBodyguard") or HasProperty("","KIbodyguard") then
+					break
+				end
+				if GetInsideBuilding("","Inside") then
+					if GetID("Inside") ~= GetID("InsideTarget") then
+						if HasProperty("", "WaitBench") then
+							RemoveProperty("", "WaitBench")
+						end
+						f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN)
+					else
+						if GetInsideRoom("", "MyRoom") and GetInsideRoom("Destination", "DesRoom") then
+							if GetID("MyRoom") == GetID("DesRoom") then
+								if BuildingGetType("Inside") == GL_BUILDING_TYPE_TOWNHALL then -- sit down in townhall
+									if BuildingGetRoom("Inside","Judge","Room") then
+										if GetID("Room") == GetID("MyRoom") then
+											if not HasProperty("", "WaitBench") then
+												if GetFreeLocatorByName("Inside","tablechair",16,11,"SitPos") then
+													if f_BeginUseLocator("","SitPos",GL_STANCE_SITBENCH,true) then
+														SetProperty("", "WaitBench", 1)
+													end
+												end
+											else
+												Sleep(2)
+											end
+										end
+									end
+								end
+							else
+								if HasProperty("", "WaitBench") then
+									f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+									RemoveProperty("", "WaitBench")
+								end
+								if not f_Follow("","Destination", GL_MOVESPEED_RUN, fDistance, true) then
+									Sleep(1)
+								end
+							end
+						else
+							if Rand(12)== 0 then
+								f_Stroll("", 400, 2)
+							end
+						end
+						Sleep(3)
+					end
+				else
+					if HasProperty("", "WaitBench") then
+						f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+						RemoveProperty("", "WaitBench")
+					end
+					f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN)
+				end
+			else
+				if HasProperty("", "WaitBench") then
+					f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+					RemoveProperty("", "WaitBench")
+				end
+				if not f_Follow("","Destination", GL_MOVESPEED_RUN, fDistance, true) then
+					Sleep(1)
+				end
 			end
-			f_Follow("","Destination", GL_MOVESPEED_RUN, fDistance)		
-			Sleep(3)
-		end		
+			Sleep(2)
+		end
+		if HasProperty("", "WaitBench") then
+			f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+			RemoveProperty("", "WaitBench")
+		end
 		return
 	end
 	
-	f_FollowNoWait("","Destination", GL_MOVESPEED_RUN, fDistance)
 --	Sleep(Gametime2Realtime(TimeOut))
 	if TimeOut==5 then
+		f_FollowNoWait("","Destination", GL_MOVESPEED_RUN, fDistance)
 		if math.mod(GetGametime(),24)>GetData("Endtime"..GetID("Destination")) then
 			StopMeasure()
 		end
@@ -63,14 +120,14 @@ function CleanUp()
 		RemoveProperty("Destination", DataValue)
 	end
 	if AliasExists("Destination") and HasProperty("Destination","KIbodyguard") then
-	    if GetProperty("Destination","KIbodyguard")>1 then
-		    SetProperty("Destination","KIbodyguard",1)
+		if GetProperty("Destination","KIbodyguard")>1 then
+			SetProperty("Destination","KIbodyguard",1)
 		else
-		    RemoveProperty("Destination","KIbodyguard")
+			RemoveProperty("Destination","KIbodyguard")
 		end
 	end
 	if HasProperty("","CityBodyguard") then
-	    RemoveProperty("","CityBodyguard")
+		RemoveProperty("","CityBodyguard")
 	end
 end
 
