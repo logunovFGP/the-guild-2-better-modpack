@@ -1,18 +1,18 @@
 function Run()
-	SetState("",STATE_TOWNNPC,true)
-	GetHomeBuilding("","home")
-	BuildingGetCity("home","homecity")
-	CityGetRandomBuilding("homecity",-1,23,-1,-1, FILTER_IGNORE,"mytownhall")
+	SetState("", STATE_TOWNNPC, true)
+	GetHomeBuilding("", "home")
+	BuildingGetCity("home", "homecity")
+	CityGetRandomBuilding("homecity", -1, 23, -1, -1, FILTER_IGNORE, "mytownhall")
 		 
 	while true do
 		-- try to walk to the townhall
-		GetInsideBuilding("","currentbuilding")
-		if GetID("mytownhall")~=-1 then
-			if GetLocatorByName("mytownhall","UsherChairPos","destpos") then
+		GetInsideBuilding("", "currentbuilding")
+		if GetID("mytownhall") ~= -1 then
+			if GetLocatorByName("mytownhall", "UsherChairPos", "destpos") then
 				--f_MoveTo("","destpos")
 				--PlayAnimationNoWait("Cogitate")
 				while true do
-					if f_BeginUseLocator("","destpos", GL_STANCE_SIT, true) then
+					if f_BeginUseLocator("", "destpos", GL_STANCE_SIT, true) then
 						break 
 					end
 					Sleep(2)
@@ -20,7 +20,7 @@ function Run()
 	
 				--f_BeginUseLocator("","destpos", GL_STANCE_SIT, true)
 				
-				SetExclusiveMeasure("", "StartDialog",EN_PASSIVE)	
+				SetExclusiveMeasure("", "StartDialog", EN_PASSIVE)	
 			end
 		end
 
@@ -39,14 +39,14 @@ function Run()
 end
 
 function CheckAge()
-	if SimGetAge("")>55 then
-		SimSetAge("", 45)
+	if SimGetAge("") > 55 then
+		SimSetAge("", 30)
 	end
 end
 
 function CleanUp()
 	if AliasExists("destpos") then
-		f_EndUseLocator("","destpos",GL_STANCE_SIT)
+		f_EndUseLocator("", "destpos", GL_STANCE_SIT)
 	end
 	AllowAllMeasures("")
 end

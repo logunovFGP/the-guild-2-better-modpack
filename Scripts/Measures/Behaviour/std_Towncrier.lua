@@ -24,8 +24,8 @@ function Run()
 	local counter = 1
 
 	SetState("", STATE_TOWNNPC, true)
-	SimSetMortal("",false)
-	AddImpact("","FinnishQuest",1,-1)
+	SimSetMortal("", false)
+	AddImpact("", "FinnishQuest", 1, -1)
 	GetHomeBuilding("", "home")
 	BuildingGetCity("home", "homecity")
 	local LastYear = 1399
@@ -42,9 +42,12 @@ function Run()
 			if not CityGetRandomBuilding("homecity", -1, GL_BUILDING_TYPE_MARKET, nil, nil, FILTER_IGNORE, "Market") then
 				f_MoveTo("", "homecity")
 			end
-			GetOutdoorMovePosition("","Market","crypos")
+			GetOutdoorMovePosition("", "Market", "crypos")
 			f_MoveTo("", "crypos")
-			AlignTo("","homecity")
+			AlignTo("", "homecity")
+			if SimGetAge("") > 30 then
+				SimSetAge("", 30)
+			end
 			
 			Sleep(10)
 			-- Check the year
