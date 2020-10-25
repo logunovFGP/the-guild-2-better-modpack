@@ -45,7 +45,7 @@ _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
 - Duels start a bit earlier and the message to attend them also happens earlier aswell.
 - The icon for 'Application for lowest level post' has been removed
-- Dynasty colours have been changed to darker and more distinctive tones.
+- Dynasty colours have been changed to darker and more distinctive tones. Badges have been adjusted aswell.
 
 *** Vanilla-Bugs ***
 
