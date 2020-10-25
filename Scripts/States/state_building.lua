@@ -288,7 +288,6 @@ function CleanUp()
 	SetReady("")
 	RemoveImpact("", "BauArbeiter")
 	RemoveProperty("", "CurrentGeruest")
-	ShowBuildingFlags("", true)
 	
 	if not HasData("InstaBuild") then
 		BuildingGetOwner("", "Builder")
@@ -298,4 +297,6 @@ function CleanUp()
 	if AliasExists("FinalPos") then
 		GfxSetPositionTo("", "FinalPos")
 	end
+	
+	ShowBuildingFlags("", true)
 end
