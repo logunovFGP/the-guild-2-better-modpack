@@ -5,8 +5,8 @@ Fajeth's MegaModPack Reforged - Lite Edition (0.1)
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
-GUI: MoK, Fajeth
-Icons: Fajeth, F-Man, Jollina
+GUI: MoK, Fajeth, Napi96
+Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Textures: Jollina, Skip, Broliii 
 Testing: Jollina, VSX, McHedgehoghunter
 
@@ -18,8 +18,8 @@ Portuguese: Regismrs, BossPenguin
 Russian:
 Polish:
 
-Social Media: Erilambus
-Additional Support: McCoy!, Sublogic, nirvana, Scandal, Zbombe, jedi93 + The Guild 2 Community!
+Social Media: Erilambus, Fajeth
+Additional Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93 + The Guild 2 Community!
 
 Installation:
 
@@ -40,12 +40,15 @@ _Tech_
 - The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
 - AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
 - Duels are a bit more fluent now.
+- Officesession script has been replaced and restructured completely.
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
 - Duels start a bit earlier and the message to attend them also happens earlier aswell.
 - The icon for 'Application for lowest level post' has been removed
 - Dynasty colours have been changed to darker and more distinctive tones. Badges have been adjusted aswell.
+- The 'thinkbreak' where you could compliment and bribe during office sessions and trials has been removed. Reasons for that are balancing, bugs and the time it added to the sessions.
+  You now have to prepare before the sessions start.
 
 *** Vanilla-Bugs ***
 
@@ -84,6 +87,9 @@ _General_
 - Sometimes the raining lasted forever.
 - In the third tutorial the quest-arrow aimed at the wrong measure.
 - Sometimes the worker-npcs who spawned when a building was built or upgraded, did not properly despawn.
+- Office session could get stuck forever.
+- If no deciders where available during office sessions the town clerk would throw the lot - in the seperate room. Now one of the guards in the meeting room will do it instead.
+- The discriptions of towers now state that they work against land units aswell.
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

@@ -10,7 +10,6 @@ Offen:
   (z.B. als Kardinal auf Feldherr) bewerben.
 - Die Totengräber-Maßnahme "Gebäude verfluchen" funktionierte nicht.
 - Der Kamm funktionierte nicht.
-- Bei Amtssitzungen wird das voraussichtliche Abstimmungsergebnis nun korrekt berechnet. (Abweichung KI-Entscheidung von HUD-Anzeige)
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
 - Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
@@ -21,7 +20,6 @@ Offen:
 - Die KI versucht nicht länger Gebäude, die sich derzeit im Bau befinden, zu plündern. Sie plündert auch
   nicht öfter als einmal alle zwei Stunden.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
-- Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
 - Die Hypnose funktionierte nicht richtig.
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
 - Das Entfernen von Pamphleten hatte einen kleinen Fehler.

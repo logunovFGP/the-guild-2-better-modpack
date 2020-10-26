@@ -55,7 +55,8 @@ function Run()
 	if TimeOut then
 		TimeOut = GetGametime() + TimeOut
 	end
-	if (GetImpactValue("WorkBuilding",126)==1) then
+
+	if (GetImpactValue("WorkBuilding", "toadexcrements") == 1) then
 		StopProduction("")
 		Sleep(5)
 		StopMeasure()
@@ -66,10 +67,10 @@ function Run()
 	while true do
 		
 		if not AliasExists("WorkBuilding") then
-				return
+			return
 		end
 		
-		if (GetImpactValue("WorkBuilding",126)==1) then
+		if (GetImpactValue("WorkBuilding", "toadexcrements") == 1) then
 			StopProduction("")
 			Sleep(5)
 			StopMeasure()
@@ -120,6 +121,25 @@ function Run()
 				GetLocatorFunction = ms_022_producebankier_GetLocator
 			end
 		end
+
+		-- check the inventory for raw material and give it to workbuilding if possible (if you are inside the building)
+		if GetInsideBuilding("", "Inside") and GetID("WorkBuilding") == GetID("Inside") then
+			local Count = InventoryGetSlotCount("", INVENTORY_STD)
+			local ItemFound, Found
+			for i=0, Count-1 do
+				ItemFound, Found = InventoryGetSlotInfo("", i, INVENTORY_STD)
+				if ItemFound and ItemFound > 0 and Found > 0 then
+					if ItemGetType(ItemFound) == ITEM_TYPE_GATHERING or ItemFound == 971 or ItemFound == 972 or ItemFound == 973 or ItemFound == 362 then
+						if ItemGetID(ItemID)~=ItemFound then
+							if CanAddItems("WorkBuilding", ItemFound, Found, INVENTORY_STD) then
+								RemoveItems("", ItemFound, Found, INVENTORY_STD)
+								AddItems("WorkBuilding", ItemFound, Found, INVENTORY_STD)
+							end
+						end
+					end
+				end
+			end
+		end
     
     -- Necromancer
 		if BuildingGetType("WorkBuilding") == 98 then
@@ -156,8 +176,10 @@ function Run()
 				return
 			end
 			Sleep(1)
-			if BuildingGetAISetting("WorkBuilding", "Produce_Selection")>0 then
-				break
+			if BuildingGetAISetting("WorkBuilding", "Produce_Selection") >0 then
+				if IsDynastySim("") and DynastyIsAI("") then
+					break
+				end
 			end
 		elseif ActiveMovement then
 			local	LocatorName = ""
@@ -198,7 +220,7 @@ function Run()
 			f_MoveTo("","WorkBuilding")
 			StartProduction("", "WorkBuilding") 
 			Sleep(Rand(10)+20)
-		end	
+		end
 	end
 end
 
@@ -227,7 +249,7 @@ function CleanUp()
 	end
 	
 	if AliasExists("WorkBuilding") then
-			ms_022_producegoods_StopRoomAni(GetData("RA_Room"),GetData("RA_Ani"),-1)
+		ms_022_producegoods_StopRoomAni(GetData("RA_Room"),GetData("RA_Ani"),-1)
 	end
 	StopAnimation("")
 	CarryObject("","",false)
@@ -269,28 +291,30 @@ function UseLocator()
 end
 
 -- GUI Listeners --
+
 function OnButtonPressed(x,y,device,key)
- -- Set the choosen Product
- Interface = FindNode("\\application\\game\\MSProducePanel")
- if(Interface) then
-	ItemID = this:GetValueInt("ItemID")
-	Interface:SetValueInt("ProduceItemId",ItemID)
- end
- -- Close the Panel
- Game = FindNode("\\application\\game")
- if(Game) then
-	Game:DetachModule("MSProducePanel")
- end
+	-- Set the choosen Product
+	Interface = FindNode("\\application\\game\\MSProducePanel")
+	if(Interface) then
+		SimStopMeasure("")
+		ItemID = this:GetValueInt("ItemID")
+		Interface:SetValueInt("ProduceItemId",ItemID)
+	end
+	-- Close the Panel
+	Game = FindNode("\\application\\game")
+	if(Game) then
+		Game:DetachModule("MSProducePanel")
+	end
 end
 
 
 function StartEffect(RunTime)
- while(1) do
-	this:SetValueInt("VISIBILITY",1)
-	Sleep(0.5)
-	this:SetValueInt("VISIBILITY",0)
-	Sleep(0.5)
- end
+	while(1) do
+		this:SetValueInt("VISIBILITY",1)
+		Sleep(0.5)
+		this:SetValueInt("VISIBILITY",0)
+		Sleep(0.5)
+	end
 end
 
 function StartRoomAni(room,ani,resettime)

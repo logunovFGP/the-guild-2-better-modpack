@@ -5,8 +5,8 @@ Fajeth's MegaModPack Reforged - Lite Editon (0.1)
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
-GUI: MoK
-Icons: Fajeth, F-Man
+GUI: MoK, Fajeth, Napi96
+Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Texturen: Jollina, Skip, Broliii 
 Testing: Jollina, VSX, McHedgehoghunter
 
@@ -18,8 +18,8 @@ Portugiesisch: Regismrs, BossPenguin
 Russisch:
 Polnisch:
 
-Soziale Medien: Erilambus
-Anderer Support: McCoy!, Sublogic, nirvana, Scandal, ZBombe, Jedi93 + Die Gilde 2 Community!
+Soziale Medien: Erilambus, Fajeth
+Anderer Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, Jedi93 + Die Gilde 2 Community!
 
 Installation:
 
@@ -38,12 +38,15 @@ _Technik_
 - Das KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
 - Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
 - Duelle laufen etwas flüssiger ab.
+- Das Amtssitzungsscript wurde komplett ersetzt und neu strukturiert.
 
 _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
 - Dynastiefarben sind nun dunkler und besser zu unterscheiden. Auch die Wappen wurden angepasst.
+- Die Möglichkeit, während Gerichts- und Ratssitzungen zu bestechen oder Komplimente zu machen, wurde entfernt. Gründe dafür sind die Buganfälligkeit, das Balancing und die Zeit, die 
+  diese Bedenkzeiten gekostet haben. Ihr müsst euch nun besser vorbereiten.
 
 *** Vanilla-Bugs ***
 
@@ -82,6 +85,9 @@ _Allgemein_
 - Es konnte passieren, dass es ewig regnete.
 - Im dritten Tutorial zeigte der Questpfeil auf die falsche Maßnahme.
 - Es konnte vorkommen, dass die Arbeiter, die beim Gebäudebau erscheinen, nicht wieder verschwanden.
+- Amtssitzungen konnten hängen bleiben.
+- Waren keine Wahlberechtigten anwesend, leitete der Stadtschreiber die Sitzung - vom Vorraum aus. Nun wird dies eine der Rathauswachen übernehmen.
+- Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
