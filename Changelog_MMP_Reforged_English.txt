@@ -90,6 +90,7 @@ _General_
 - Office session could get stuck forever.
 - If no deciders where available during office sessions the town clerk would throw the lot - in the seperate room. Now one of the guards in the meeting room will do it instead.
 - The discriptions of towers now state that they work against land units aswell.
+- During production of gathered items would remain in the inventory if you assigned them a non-gathering task. They will now unload their pockets if they are inside your building when assigning a production.
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
