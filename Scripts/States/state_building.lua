@@ -41,7 +41,7 @@ function CartLoop()
 	------ Preparations ------
 	--------------------------
 	SetInit("")
-	SetState("",STATE_MONITORDAMAGE,true)
+	SetState("", STATE_MONITORDAMAGE,true)
 	
 	local	Played = ScenarioGetTimePlayed()
 	local 	H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
@@ -55,8 +55,8 @@ function CartLoop()
 	
 	-- add particles and let them appear out of the ground
  	GfxAttachObject("ParticleDust", "particles/build.nif")
- 	GfxSetPosition("ParticleDust", 0, -200, 0, false, true)
- 	GfxMoveToPositionNoWait("ParticleDust", 0, 200, 0, 3, false)
+ 	GfxSetPosition("ParticleDust", 0, -100, 0, false, true)
+ 	GfxMoveToPositionNoWait("ParticleDust", 0, 100, 0, 4, false)
  	
 	-- Get the buildingtime (add a value to the prefpattern table)
 	local CartPrefPattern = MoveGetPrefPattern("")
@@ -86,7 +86,7 @@ function CartLoop()
 		Time = TimeToBuild / ProgressAdd
 		
 		Sleep(1)
-		SetProcessProgress("",Progress)
+		SetProcessProgress("", Progress)
 	end
 	
 	--------------------
@@ -109,7 +109,7 @@ function BuildingLoop()
 	--------------------------
 	SetInit("")
 	ShowBuildingFlags("", false)
-	SetState("", STATE_MONITORDAMAGE,true)
+	SetState("", STATE_MONITORDAMAGE, true)
 	
 	local MovingBuilding = GetState("", STATE_MOVING_BUILDING)
 	
@@ -118,7 +118,7 @@ function BuildingLoop()
 	end
 	
 	local	Played = ScenarioGetTimePlayed()
-	if (Played==0) then
+	if (Played == 0 or H4x0r == 1) then
 		SetData("InstaBuild", 1)
 		return
 	end

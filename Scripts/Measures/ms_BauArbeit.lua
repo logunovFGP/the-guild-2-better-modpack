@@ -47,7 +47,7 @@ function Meister()
 			break
 		end
 		
-		local SleepDifference = (Rand(30) + 1)*0.1
+		local SleepDifference = (Rand(35) + 1)*0.1
 		Sleep(SleepDifference)
 		
 		local BestPos = 5
@@ -82,8 +82,7 @@ function Arbeiter()
 	local doWork = { ms_bauarbeit_WorkA,
                  		ms_bauarbeit_WorkB,
                  		ms_bauarbeit_WorkC,
-                 		ms_bauarbeit_WorkD,
-                 		ms_bauarbeit_WorkE }
+                 		ms_bauarbeit_WorkD}
 	
 	if AliasExists("Destination") then
 		while GetImpactValue("Destination", "BauArbeiter") >= 1 do
@@ -95,7 +94,7 @@ function Arbeiter()
 			CarryObject("", "", false)
 			CarryObject("", "", true)
 			
-			local SleepDifference = (Rand(30) + 1)*0.1
+			local SleepDifference = (Rand(35) + 1)*0.1
 			Sleep(SleepDifference)
 		
 			local BestPos = 5
@@ -118,7 +117,7 @@ function Arbeiter()
 				BestPos = GetProperty("", "MyPos")
 			end
 		
-			doWork[(Rand(5)+1)](BestPos)
+			doWork[(Rand(4)+1)](BestPos)
 		end
 	end
 
@@ -205,7 +204,7 @@ function WorkA(Pos)
 	AlignTo("", "Destination")
 	Sleep(1)
 	PlayAnimation("", "hammer_in")
-	LoopAnimation("", "hammer_loop", 18)
+	LoopAnimation("", "hammer_loop", 20)
 	PlayAnimation("", "hammer_out")
 end
 
@@ -230,7 +229,7 @@ function WorkB(Pos)
 	AlignTo("", "Destination")
 	Sleep(1)
 	PlayAnimation("", "knee_work_in")
-	LoopAnimation("", "knee_work_loop", 15)
+	LoopAnimation("", "knee_work_loop", 10)
 	PlayAnimation("", "knee_work_out")
 	
 end
@@ -257,7 +256,7 @@ function WorkC(Pos)
 	AlignTo("", "Destination")
 	Sleep(1)
 	PlayAnimation("", "chop_in")
-	LoopAnimation("", "chop_loop", 18)
+	LoopAnimation("", "chop_loop", 20)
 	PlayAnimation("", "chop_out")
 end
 
@@ -282,38 +281,7 @@ function WorkD(Pos)
 	AlignTo("", "Destination")
 	Sleep(1)
 	PlayAnimation("", "manipulate_top_r")
-	PlayAnimation("", "manipulate_top_l")
-	Sleep(1)
-	PlayAnimation("","manipulate_middle_up_l")
-	PlayAnimation("","manipulate_middle_up_r")
-	Sleep(1)
 	PlayAnimation("", "manipulate_middle_twohand")
-end
-
-function WorkE(Pos)
-	if Pos == 5 then
-		GetLocatorByName("Destination", "Entry1", "dest")
-	end
-	
-	local platz = "Bomb"..Pos
-	
-	if not GetLocatorByName("Destination", platz, "dest") then
-		GetLocatorByName("Destination", "Entry1", "dest")
-	end
-	
-	if GetDistance("", "dest") > 100 then
-		if not f_MoveTo("", "dest", GL_MOVESPEED_WALK) then
-			SimBeamMeUp("", "dest", false)
-		end
-	end
-	
-	CarryObject("", "Handheld_Device/ANIM_Chisel.nif", false)
-	AlignTo("", "Destination")
-	Sleep(1)
-	PlayAnimation("", "manipulate_middle_up_l")
-	Sleep(0.5)
-	PlayAnimation("", "manipulate_bottom_r")
-	PlayAnimation("", "cogitate")
 end
 
 function GoHome()

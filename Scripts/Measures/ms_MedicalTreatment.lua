@@ -58,9 +58,14 @@ function Run()
 		local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment==1))"
 		local NumSickSims = Find("", SickSimFilter, "SickSim", -1)
 		if NumSickSims < 1 then
+			
 			-- bored
-			MoveStop("")
-			PlayAnimation("", "cogitate")
+			if Rand(3) == 0 then
+				MoveStop("")
+				PlayAnimation("", "cogitate")
+			else
+				Sleep(3)
+			end
 			
 			-- AI stops measure if no patients are available to do better things
 			if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
@@ -91,11 +96,12 @@ function Run()
 			
 			Sleep(1)
 			MeasureSetNotRestartable()
-			SetState("",STATE_DUEL,true) -- no measure cancel
+			SetState("", STATE_DUEL, true) -- no measure cancel
 			
 			-- Dialog
 			MsgSay("SickSim0", "@L_MEDICUS_TREATMENT_PATIENT")
 			MsgSay("", "@L_MEDICUS_TREATMENT_DOC_INTRO")
+			f_MoveTo("SickSim0", "Owner", GL_MOVESPEED_WALK, 60)
 			PlayAnimation("", "manipulate_middle_twohand")
 			local Costs = 50
 			local Cured = false
