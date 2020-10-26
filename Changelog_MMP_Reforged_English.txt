@@ -20,6 +20,7 @@ Polish:
 
 Social Media: Erilambus, Fajeth
 Additional Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93 + The Guild 2 Community!
+Network Helper: Agentmass
 
 Installation:
 
@@ -86,7 +87,8 @@ _General_
   If not it restarts once you enter the building's indoor scene (and ends once the animation is completed)
 - Sometimes the raining lasted forever.
 - In the third tutorial the quest-arrow aimed at the wrong measure.
-- Sometimes the worker-npcs who spawned when a building was built or upgraded, did not properly despawn.
+- Sometimes the builders who spawned when a building was built or upgraded, did not properly despawn.
+- The builders won't work 'in the air' far away from the building but stand more closely to it. They also won't stuck anymore during their work due to difficult pathfinding.
 - Office session could get stuck forever.
 - If no deciders where available during office sessions the town clerk would throw the lot - in the seperate room. Now one of the guards in the meeting room will do it instead.
 - The discriptions of towers now state that they work against land units aswell.
@@ -183,6 +185,7 @@ _General_
 - No matter how you set up the difficulty, you will start with at least 5000 gold.
 - Shadow dynasties will try to live in residences now.
 - The option to start with a family by changing the config.ini has been deactivated.
+- Experience needed for levelups has been increased and more evenly distributed.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

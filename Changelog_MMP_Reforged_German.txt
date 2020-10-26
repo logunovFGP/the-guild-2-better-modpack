@@ -20,6 +20,7 @@ Polnisch:
 
 Soziale Medien: Erilambus, Fajeth
 Anderer Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, Jedi93 + Die Gilde 2 Community!
+Network Helper: Agentmass
 
 Installation:
 
@@ -84,7 +85,8 @@ _Allgemein_
   Ansonsten wird das Lied neugestartet (und vorzeitig beendet, wenn die Animation zu Ende ist).
 - Es konnte passieren, dass es ewig regnete.
 - Im dritten Tutorial zeigte der Questpfeil auf die falsche Maßnahme.
-- Es konnte vorkommen, dass die Arbeiter, die beim Gebäudebau erscheinen, nicht wieder verschwanden.
+- Es konnte vorkommen, dass die Bauarbeiter, die beim Gebäudebau erscheinen, nicht wieder verschwanden.
+- Die Bauarbeiter hämmern nun nicht mehr in der Luft und bleiben auch nicht mehr aufgrund schwieriger Wegfindung hängen.
 - Amtssitzungen konnten hängen bleiben.
 - Waren keine Wahlberechtigten anwesend, leitete der Stadtschreiber die Sitzung - vom Vorraum aus. Nun wird dies eine der Rathauswachen übernehmen.
 - Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
@@ -189,6 +191,7 @@ _Allgemein_
 - Man startet immer mit mindestens 5000 Gold, unabhängig vom Schwierigkeitsgrad.
 - Schattendynastien wohnen nun ebenfalls bevorzugt in Wohnhäusern.
 - Die Option mit Ehepartner/Kindern das Spiel zu beginnen (über Config.ini) wurde deaktiviert.
+- Die Erfahrung für den Stufenaufstieg wurde erhöht und gleichmäßiger verteilt.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
