@@ -680,7 +680,10 @@ function CalcCurrentResourceNeeds(BldAlias, ResourceCount, Resources, Threshold)
 		-- need resources when stores down to 60%
 		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= Threshold then
 			NeedCount = NeedCount + 1
-			local InvSpace = GetImpactValue(BldAlias, "BonusSpace")
+			local InvSpace = GetImpactValue(BldAlias, "BonusSpace") 
+			if InvSpace <= 0 then
+				InvSpace = 500 -- in case of market
+			end
 			Needs[NeedCount] = {Resources[i][1], math.min(InvSpace, ActualNeed)}
 		end
 	end
@@ -740,3 +743,70 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThres
 	return ProfitCount, Profits 
 end
 
+---
+-- * Each market calculates the current resource needs once per day.
+--     * Based on workshops in town (aggregated CalcResourceNeed for each workshop against current stock).
+--     * Five most needed resources are written to property as list. (optional: 1 non-resource is also added to list)
+--     * Sales Prices for these resources are increased and all players are notified (see kontor event). 
+function CalcNeedsForMarket(CityAlias)
+	-- get all workshops in town
+	local WorkshopCount = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop")
+	local CityNeedCount, CityNeeds =  0, {}
+	-- iterate over workshops
+	local Alias, NeedCount, Needs  -- for use in iteration
+	for i = 0, WorkshopCount - 1 do
+		Alias = "Workshop"..i
+		NeedCount, Needs  = economy_GetResourceNeeds(Alias)
+		-- merge needs into global needs
+		CityNeedCount, CityNeeds = economy_MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
+	end
+	CityGetLocalMarket(CityAlias, "MarketAlias")
+	-- TODO check if the called GetImpact works for market alias
+	CityNeedCount, CityNeeds = economy_CalcCurrentResourceNeeds("MarketAlias", CityNeedCount, CityNeeds, 0.4)
+	return CityNeedCount, CityNeeds 
+end
+
+function MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
+	local ItemExists 
+	for j = 1, NeedCount do
+		ItemExists = false
+		for i = 1, CityNeedCount do
+			if CityNeeds[i][1] == Needs[j][1] then
+				CityNeeds[i][2] = CityNeeds[i][2] + Needs[j][2]
+				ItemExists = true
+			end
+		end
+		if not ItemExists then
+			CityNeedCount = CityNeedCount + 1
+			CityNeeds[CityNeedCount] = Needs[j]
+		end
+	end
+	return CityNeedCount, CityNeeds
+end
+
+function ChooseFromItems(ItemCount, ItemList, IncludeOK)
+	local Id, ItemTexture, Tooltip, Subtext
+	local Buttons = "@P"
+	for i=1, ItemCount do
+		Id = ItemList[i][1]
+		ItemTexture = "Hud/Items/Item_"..ItemGetName(Id)..".tga"
+		Tooltip = ItemGetLabel(Id, false)
+		Subtext = ItemList[i][2]
+		-- result, Tooltip, label, icon
+		Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
+	end
+	if IncludeOK then
+		Buttons = Buttons.."@B[C,@L_GENERAL_BUTTONS_OK_+0,@L_GENERAL_BUTTONS_OK_+0,Hud/Buttons/btn_Ok.tga]"
+	end	
+
+	local ChosenItem = InitData(
+		Buttons, -- PanelParam
+		0, -- AIFunc
+		"@L_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0",-- HeaderLabel
+		"Body"
+	)
+	if ChosenItem and ChosenItem ~= "C" then
+		return ChosenItem
+	end
+	return nil
+end
