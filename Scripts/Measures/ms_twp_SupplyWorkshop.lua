@@ -134,7 +134,7 @@ function InitMeasure()
 	 
 	repeat
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
-		local Options = --"@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help
+		local Options = "@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help
 			"@B[2,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1,]".. -- Choose Resources
 			"@B[3,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2,]".. -- Choose Suppliers
 			"@B[4,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+3,]" -- Start
@@ -143,7 +143,7 @@ function InitMeasure()
 		Choice = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", GetID("MyHome"))
 		
 		if Choice == 1 then
-			MsgBox("", "Owner", "", "@L_TWP_SUPPLYWORKSHOP_HELP_HEAD_+0", "@L_TWP_SUPPLYWORKSHOP_HELP_BODY_+0")
+			MsgBox("", "Owner", "", "@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0", "@L_TWP_SUPPLYWORKSHOP_HELP_BODY_+0")
 		elseif Choice == 2 then
 			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources)
 		elseif Choice == 3 then
@@ -201,7 +201,7 @@ function Run()
 		end
 		-- Unload at home and rest
 		cart_UnloadAll("", "MyHome")		
-		Sleep(30) 
+		Sleep(30)
 	end
 end
 

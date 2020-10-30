@@ -88,14 +88,18 @@ function InitMeasure()
 	 
 	repeat
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
-		local Options =	"@B[1,@L_TWP_SALESCART_INITIATE_OPTION_+0,]".. -- Choose Resources
-			-- "@B[2,@L_TWP_SALESCART_INITIATE_OPTION_+1,]".. -- Sales threshold (not yet implemented)
+		local Options =
+			"@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help	
+			"@B[2,@L_TWP_SALESCART_INITIATE_OPTION_+0,]".. -- Choose Resources
+			-- "@B[3,@L_TWP_SALESCART_INITIATE_OPTION_+1,]".. -- Sales threshold (not yet implemented)
 			"@B[99,@L_TWP_SALESCART_INITIATE_OPTION_+2,]" -- Start
 			--"@B[C,@LAbort_+0,]" -- Abort by right mouse click
 		
-		Choice = MsgBox("","Owner","@P"..Options,"@L_TWP_SALESCART_INITIATE_HEAD_+0","_TWP_SALESCART_INITIATE_BODY_+0", GetID("MyHome"))
+		Choice = MsgBox("","Owner","@P"..Options,"@L_TWP_SALESCART_INITIATE_HEAD_+0","_TWP_SALESCART_INITIATE_BODY_+0", GetID("MyHome"), 400)
 		
 		if Choice == 1 then
+			MsgBox("", "Owner", "", "@L_TWP_SALESCART_INITIATE_HEAD_+0", "@L_TWP_SALESCART_HELP_BODY_+0")
+		elseif Choice == 2 then
 			ProductCount, Products = ms_twp_salescart_ChooseProducts(ProductCount, Products)
 		elseif Choice == nil or Choice == "C" then -- cancel
 			StopMeasure()
