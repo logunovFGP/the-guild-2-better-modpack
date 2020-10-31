@@ -219,3 +219,14 @@ Delete the following lines:
 12728   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0" 
 
 
+for polish, change some letters, they will show correctly ingame
+
+ą - ç
+ć - è
+ę - ô
+ł - ø
+ń - ñ
+ó - exist
+ś - é
+ż - ö
+ź - ý
