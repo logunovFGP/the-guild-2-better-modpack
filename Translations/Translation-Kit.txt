@@ -81,7 +81,7 @@ Translate and add the following lines below:
 18078   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_DESCRIPTION_+0"   "This character has slept recently."   |
 18079   "_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2"   "Sleep not possible - %1SN is not tired yet."   |
 18080   "_ABILITIES_BiologyKnowledge_NAME_+0"   "Druidic Secrets"   |
-18081   "_ABILITIES_BiologyKnowledge_DESCRIPTION_+0"   "You have studied the teachings of the druids and and taught it to your employees, which keeps them more knowledgeable and healthier. In your employment they can gather ingredients 20% faster and their constitution and arcane knowledge talents increase.$N$NRequirements: Scholar."   |
+18081   "_ABILITIES_BiologyKnowledge_DESCRIPTION_+0"   "You have studied the teachings of the druids and and taught it to your employees, which keeps them more knowledgeable and healthier. In your employment they can gather ingredients 20%% faster and their constitution and arcane knowledge talents increase.$N$NRequirements: Scholar."   |
 18082   "_ABILITIES_Handcrafter_NAME_+0"   "Artisan"   |
 18083   "_ABILITIES_Handcrafter_DESCRIPTION_+0"   "You know that for businessman (or businesswoman) more the merchandise the better. Your handicraft talent increases by one for each level of this ability. This also increases your gathering speed. $N$NRequirements: Not Scholar."   |
 18084   "_ABILITIES_Combatant_NAME_+0"   "Warrior"   |
@@ -107,10 +107,10 @@ Translate and add the following lines below:
 18104   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_DESCRIPTION_+0"   "The employer of this worker knows the secrets of the druids. The worker's gathering is 20%% faster and constitution and arcane knowledge talents have increased."   |
 18105   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_NAME_+0"   "Druidic Secrets"   |
 18106   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_TOOLTIP_+0"   "benefits from druidic secrets"   |
-18107   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_DESCRIPTION_+0"   "The employer of this worker is a good teacher. The worker earns experience 15% faster."   |
+18107   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_DESCRIPTION_+0"   "The employer of this worker is a good teacher. The worker earns experience 15%% faster."   |
 18108   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_NAME_+0"   "Mentor"   |
 18109   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_TOOLTIP_+0"   "is being mentored"   |
-18110   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_DESCRIPTION_+0"   "The employer of this worker has developed a secret formula for plant growth. The worker can gather 15% faster."   |
+18110   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_DESCRIPTION_+0"   "The employer of this worker has developed a secret formula for plant growth. The worker can gather 15%% faster."   |
 18111   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_NAME_+0"   "Master of Manure"   |
 18112   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_TOOLTIP_+0"   "uses secret formula"   |
 18113   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_DESCRIPTION_+0"   "The employer of this worker is master of oratory and keeps training his employees' oratory skills. The worker's bargaining, empathy and rhetoric talents have increased."   |
