@@ -6,6 +6,25 @@ function Run()
 			RemoveImpact("Destination", "BauArbeiter")
 		end
 	end
+	
+	local SleepDifference = (Rand(10) + 1)*0.2
+	Sleep(SleepDifference)
+	
+	local BauPos = 5
+	
+	if not HasProperty("Destination", "BauPos1") then
+		BauPos = 1
+		SetProperty("Destination", "BauPos1", 1)
+	elseif not HasProperty("Destination", "BauPos2") then
+		BauPos = 2
+		SetProperty("Destination", "BauPos2", 1)
+	elseif not HasProperty("Destination", "BauPos3") then
+		BauPos = 3
+		SetProperty("Destination", "BauPos3", 1)
+	elseif not HasProperty("Destination", "BauPos4") then
+		BauPos = 4
+		SetProperty("Destination", "BauPos4", 1)
+	end
 
 	if DynastyIsPlayer("") == true then	
 		local neuwert
@@ -17,7 +36,7 @@ function Run()
 			AddImpact("Destination", "BauArbeiter", neuwert, -1)
 		end
 		SetProperty("Destination", "BauIntervall", neuwert)
-		ms_bauarbeit_Arbeiter()
+		ms_bauarbeit_Arbeiter(BauPos)
 	else
 		
 		local baufast = 1 -- fallback
@@ -30,14 +49,14 @@ function Run()
 		end
 		
 		if SimGetProfession("") == 59 or SimGetProfession("") == 60 then
-			ms_bauarbeit_Meister()
+			ms_bauarbeit_Meister(BauPos)
 		else
-			ms_bauarbeit_Arbeiter()
+			ms_bauarbeit_Arbeiter(BauPos)
 		end
 	end
 end
 
-function Meister()
+function Meister(Pos)
 
 	local doWork = { ms_bauarbeit_MasterA }
 	CarryObject("", "Handheld_Device/Anim_scroll.nif", false)				 		 
@@ -47,29 +66,7 @@ function Meister()
 			break
 		end
 		
-		local SleepDifference = (Rand(35) + 1)*0.1
-		Sleep(SleepDifference)
-		
-		local BestPos = 5
-			
-		if not HasProperty("", "MyPos") then
-			for i=1, 4 do
-				local RandomPos = Rand(4)+1
-				local Filter = "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetState(townnpc)) AND (Object.Property.MyPos == "..RandomPos.."))"
-				local Number = Find("", Filter, "Workers", 1)
-				if Number < 1 then
-					BestPos = RandomPos
-					SetProperty("", "MyPos", RandomPos)
-					break
-				end
-				
-				Sleep(SleepDifference)
-			end
-		else
-			BestPos = GetProperty("", "MyPos")
-		end
-		
-		doWork[1](BestPos)
+		doWork[1](Pos)
 	end
 
 	CarryObject("", "", false)
@@ -77,7 +74,7 @@ function Meister()
 	ms_bauarbeit_GoHome()
 end
 
-function Arbeiter()
+function Arbeiter(Pos)
 
 	local doWork = { ms_bauarbeit_WorkA,
                  		ms_bauarbeit_WorkB,
@@ -93,31 +90,8 @@ function Arbeiter()
 			
 			CarryObject("", "", false)
 			CarryObject("", "", true)
-			
-			local SleepDifference = (Rand(35) + 1)*0.1
-			Sleep(SleepDifference)
 		
-			local BestPos = 5
-			
-			if not HasProperty("", "MyPos") then
-				for i=1, 4 do
-					local RandomPos = Rand(4)+1
-					
-					local Filter = "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetState(townnpc)) AND (Object.Property.MyPos == "..RandomPos.."))"
-					local Number = Find("", Filter, "Workers", 1)
-					if Number < 1 then
-						BestPos = RandomPos
-						SetProperty("", "MyPos", RandomPos)
-						break
-					end
-					
-					Sleep(SleepDifference)
-				end
-			else
-				BestPos = GetProperty("", "MyPos")
-			end
-		
-			doWork[(Rand(4)+1)](BestPos)
+			doWork[(Rand(4)+1)](Pos)
 		end
 	end
 
@@ -300,10 +274,15 @@ function GoHome()
 end
 
 function CleanUp()
-
-	RemoveProperty("", "MyPos")
 	
 	if AliasExists("Destination") then
+		
+		for i=1, 4 do
+			if HasProperty("Destination", "BauPos"..i) then
+				RemoveProperty("Destination", "BauPos"..i)
+			end
+		end
+		
 		if GetStateImpact("Destination", "upgrading") then
 	   		if SimGetClass("") == 2 then
 				AddImpact("Destination", "BauArbeiter", -2, -1)
