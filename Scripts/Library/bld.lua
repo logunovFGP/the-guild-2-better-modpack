@@ -996,7 +996,7 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	
 	-- Only for AI
 	if GetHomeBuilding("MyBoss", "MyHome") then
-		if DynastyIsAI("MyBoss") or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
+		if DynastyIsAI("MyBoss") then -- or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
 			bld_CheckCarts(BldAlias) 
 		end
 		
