@@ -13,19 +13,11 @@ function Setup()
 		end
 	end
 	
-	if not GetState("", STATE_TRADERCONTROL) then
-		SetState("", STATE_TRADERCONTROL, true)
-	end
-
 	MeasureRun("", nil, "KontorMeasure")
 end
 
 function PingHour()
 	if GetCurrentMeasureName("") ~= "KontorMeasure" then
 		MeasureRun("", nil, "KontorMeasure")
-	end
-	
-	if not GetState("", STATE_TRADERCONTROL) then
-		SetState("", STATE_TRADERCONTROL, true)
 	end
 end

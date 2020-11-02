@@ -73,4 +73,8 @@ function PingHour()
 			end
 		end
 	end
+	
+	if not GetState("", STATE_TRADERCONTROL) then
+		SetState("", STATE_TRADERCONTROL, true)
+	end
 end

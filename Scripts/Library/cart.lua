@@ -10,7 +10,7 @@ function GetCartSlotInfo(CartAlias)
 	local Type = CartGetType(CartAlias)
 	if Type == EN_CT_SMALL then
 		return 1, 20
-	elseif Type == EN_CT_MIDDLE then 
+	elseif Type == EN_CT_MIDDLE then
 		return 2, 20
 	elseif Type == EN_CT_HORSE then
 		return 3, 20
@@ -93,14 +93,14 @@ function NotifyRoute(CartAlias, CurrentStop, Destination)
 		return
 	end
 	local SlotCount, SlotSize = cart_GetCartSlotInfo(CartAlias)
-	local Msg = "Händler verlässt %1NAME mit Ziel %2NAME und folgender Ladung.$N"
+	local Msg = "Händler %3NAME verlässt %1NAME mit Ziel %2NAME und folgender Ladung.$N"
 	local ItemId, Count
 	local Labels = {}
 	local HasItems = false
 	for i=0, SlotCount - 1 do
 		ItemId, Count = InventoryGetSlotInfo("", i)
 		if ItemId and Count > 0 then
-			Msg = Msg .. "$N"..Count.." %"..(3+i).."l" -- Texts like: (linebreak) 20 Gold
+			Msg = Msg .. "$N"..Count.." %"..(4+i).."l" -- Texts like: (linebreak) 20 Gold
 			Labels[i+1] = ItemGetLabel(ItemId, Count==1)
 			HasItems = true
 		end
@@ -108,6 +108,7 @@ function NotifyRoute(CartAlias, CurrentStop, Destination)
 	if not HasItems then
 		Msg = Msg .. "$N--- Nichts ---"
 	end
+	CartGetOperator(CartAlias, "Operator")
 	MsgNewsNoWait("All", -- recipient
 				CartAlias, -- jump to target
 				"", -- panel params (buttons)
@@ -115,7 +116,7 @@ function NotifyRoute(CartAlias, CurrentStop, Destination)
 				-1, -- TimeOut 
 				"World Trader", -- Header
 				Msg, -- Body
-				GetSettlementID(CurrentStop), GetSettlementID(Destination), helpfuncs_UnpackTable(Labels)) -- params
+				GetSettlementID(CurrentStop), GetSettlementID(Destination), GetID("Operator"), helpfuncs_UnpackTable(Labels)) -- params
 end
 
 ---
