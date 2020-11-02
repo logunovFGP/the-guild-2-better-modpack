@@ -18,42 +18,6 @@ function Run()
 		end
 	end
 
-	--die Schärpe wirkt auf die Sims (beide Geschlechter)
-	if IsType("","Sim") then
-		if GetImpactValue("","schaerpe")==2 then
-			CommitAction("schaerpe","","")
-			while GetImpactValue("","schaerpe")>1 do
-				Sleep(5)
-			end
-			SetState("",STATE_CONTAMINATED,false)
-			return
-		end
-	end
-
-	--die Hypnose zur Belustigung beider Geschlechter
-	if IsType("","Sim") then
-		if GetImpactValue("","UnterHypnose")==1 then
-			CommitAction("bard","","")
-			while GetImpactValue("","UnterHypnose")>0 do
-				Sleep(5)
-			end
-                        SetState("", STATE_CONTAMINATED, false)
-			return
-		end
-	end
-
-	--der Moschus macht mit
-	if IsType("","Sim") then
-		if GetImpactValue("","moschusduft")==1 then
-			CommitAction("moschusduft","","")
-			while GetImpactValue("","moschusduft")>0 do
-				Sleep(5)
-			end
-			SetState("",STATE_CONTAMINATED,false)
-			return
-		end
-	end
-
 	--der Kamm wirkt bei Amtskollegen
 	if IsType("","Sim") then
 		if GetImpactValue("","kamm")==1 then

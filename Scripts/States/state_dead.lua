@@ -19,6 +19,7 @@ function Init()
 	SetState("", STATE_IMPRISONED, false)
 	SetState("", STATE_WORKING, false)
 	SetState("", STATE_SICK, false)
+	SetState("", STATE_DUEL, false)
 	if GetState("", STATE_ROBBERGUARD) then
 		SetState("", STATE_ROBBERGUARD, false)
 	end
@@ -82,12 +83,13 @@ function Run()
 		
 		-- Let the sim lay on the ground or in his bed for a while
 		-- local SleepTime = Gametime2Realtime(GL_TIME_LYING_DEAD_ON_THE_GROUND)
-		local SleepTime = Gametime2Realtime(0.3)
---		Sleep(SleepTime)
+	
+		Sleep(10)
 
 		---------------------
 		------ Lay out ------
-		---------------------
+		---------------------  
+        
 		if HasProperty("", "WasDynastySim") then
 
 			-- Indicates if a sim of the local player dynasty is dead
@@ -113,19 +115,13 @@ function Run()
 				feedback_MessageCharacter("All", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""))
 			end
 
-			local Type = 0
-			if SimGetReligion("")==RELIGION_CATHOLIC then
-				Type = GL_BUILDING_TYPE_CHURCH_CATH
-			else
-				Type = GL_BUILDING_TYPE_CHURCH_EV
-			end
 			if (SimGetOfficeID("") ~= -1) then
 				GetHomeBuilding("","home")
 				BuildingGetCity("home","homecity")				
 				CityRemoveFromOffice("homecity","")
 			end
 			
-			-- Spawn the priest at the entry of the church
+			-- Spawn the priest at the graveyard
 			local MaxTries=10
 			while MaxTries > 0 do
 				GetHomeBuilding("","home")
@@ -134,7 +130,7 @@ function Run()
 					if not BuildingGetNPC("graveyard", 9, "Undertaker") then
 						Assert(false, "state_dead - no undertake found in the graveyard")
 					end
-					
+						
 					if not HasProperty("Undertaker","DeadBody") then
 						SetData("Priest",1)
 						SetProperty("Undertaker","DeadBody",GetID(""))
@@ -164,32 +160,25 @@ function Run()
 							SetData("PriestKneeing", 1)
 							MsgSay("Undertaker", "@L_FAMILY_6_DEATH_ANOINTING")
 
-							
 							Sleep(2)
 							SimResetBehavior("Undertaker")
 						end
 					
-
 						GfxMoveToPosition("", 0, -50, 0, 6, false)					
-						
 						return
-					
+						
 					end
 				else
 					GfxMoveToPosition("", 0, -50, 0, 6, false)
 					return
 				end
-				
 				Sleep(5)
 				MaxTries = MaxTries - 1
 			end
 		else
-
 			GfxMoveToPosition("", 0, -50, 0, 6, false)
 			return
-
 		end
-
 	---------------------------
 	------ Building die -------
 	---------------------------
@@ -206,12 +195,12 @@ function Run()
 		SetState("", STATE_MOVING_BUILDING, false)
 		SetState("", STATE_SELLFLAG, false)
 		
-		if GetImpactValue("","Scouted")>0 then
-			RemoveImpact("","Scouted")
+		if GetImpactValue("", "Scouted") > 0 then
+			RemoveImpact("", "Scouted")
 		end
 		
-		if BuildingGetClass("")==6 then		--resource 
-			SetState("",STATE_DEAD,false)
+		if BuildingGetClass("") == 6 then		--resource 
+			SetState("", STATE_DEAD, false)
 			return
 		end
 
@@ -429,6 +418,7 @@ function CleanUp()
 			MoveSetStance("Undertaker", GL_STANCE_STAND)
 		end
 	end
+	
 
 	-- Now let the sim rest in peace ...
 	InternalDie("")
