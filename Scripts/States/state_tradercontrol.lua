@@ -12,94 +12,54 @@ end
 
 
 function Run()
-	if not BuildingGetCity("","KontorSettlement") then
+	if not BuildingGetCity("","MyCity") then
 		return
 	end
-		
-	local Count = ScenarioGetObjects("Settlement", 20, "City")
-	local NearestDistance = 9999999
-	local NearestCity
-	for l=0,Count-1 do -- get nearest city
-    	local CityAlias = "City" .. l
-		if not CityIsKontor(CityAlias ) then
-			local Dist = CalcDistance("", CityAlias)
-			if Dist < 0 then
-				return
-			end
-			if Dist < NearestDistance then
-				NearestDistance = Dist
-				NearestCity = CityAlias
-			end
-		end
-	end
-	
-	if not HasProperty("","Settlement") then
-		SetProperty("","Settlement",NearestCity) -- needs to be testet on bigger map!
-	end
-	-- nasty way to do this
-	if not HasProperty("","Cart0") then
-		SetProperty("","Cart0",0)
-	end
-	
-	if not HasProperty("","Cart1") then
-		SetProperty("","Cart1",0)
-	end
-	
-	if not HasProperty("","Cart2") then
-		SetProperty("","Cart2",0)
-	end
-	
-	if not HasProperty("","Cart3") then
-		SetProperty("","Cart3",0)
-	end
 
-	if not HasProperty("","CartCount") then
-		SetProperty("","CartCount",0)
+	if not HasProperty("", "TradersPlundered") then
+		SetProperty("","TradersPlundered",0)
 	end
 	
-	if not HasProperty("","Plundered") then
-		SetProperty("","Plundered",0)
+	if not HasProperty("","TradersRobberMessageSaid") then
+		SetProperty("","TradersRobberMessageSaid", 0)
 	end
 	
-	if not HasProperty("","RobberMessageSaid") then
-		SetProperty("","RobberMessageSaid", 0)
+	if not HasProperty("", "TradersCartCount") then
+		SetProperty("", "TradersCartCount", 0)
 	end
 	
-	--if not HasProperty("", "KontorSettlement") then
-	--	SetProperty("", "KontorSettlement", KontorSettlement)
-	--end
-
-	while true do
-		local CurrentCarts = GetProperty("","CartCount")
-		if state_tradercontrol_CanBuyNewCart() == true then
-			state_tradercontrol_BuyNewCart()
+	while true do -- check carts
+		local CurrentCarts = GetProperty("", "TradersCartCount")
+		if state_tradercontrol_CanBuyNewCart(CurrentCarts) then
+			CurrentCarts = state_tradercontrol_BuyNewCart(CurrentCarts)
 		else
-			for i=0,CurrentCarts-1 do
-				--if BuildingGetCart("",i,"CurrentCart") then
-				local Cart = GetProperty("","Cart"..i)
-				state_tradercontrol_CheckCart(Cart)
-				--end
+			local CartID
+			for i=1, CurrentCarts do
+				CartID = GetProperty("", "TradersCart"..i)
+				if CartID and GetAliasByID(CartID, "CurrentCart") then
+					state_tradercontrol_CheckCart("CurrentCart")
+				end
 			end
 		end			
 		
-		local MainPlunderCount = GetProperty("","Plundered")
+		local MainPlunderCount = GetProperty("", "TradersPlundered")
 		if MainPlunderCount > 4 then -- Too many robberies occured, stop trade for some time
-			local Time = Rand(24)+24
-			AddImpact("","TradingRoutePlundered",1,Time) 
+			local Time = Rand(24) + 24
+			AddImpact("", "TradingRoutePlundered", 1, Time) 
 			MainPlunderCount = 0
-			SetProperty("","Plundered", 0)
-			SetProperty("","RobberMessageSaid", 0)			
+			SetProperty("", "TradersPlundered", 0)
+			SetProperty("", "TradersRobberMessageSaid", 0)			
 
 			-- msg to all players;
-			MsgNewsNoWait("All","","","economie",-1, 
+			MsgNewsNoWait("All", "", "", "economie", -1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
-				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("KontorSettlement")) 
+				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("MyCity")) 
 			
-		elseif MainPlunderCount > 2 and GetProperty("","RobberMessageSaid") ~= 1 then
-			MsgNewsNoWait("All","","","economie",-1, 
+		elseif MainPlunderCount > 2 and GetProperty("","TradersRobberMessageSaid") ~= 1 then
+			MsgNewsNoWait("All", "", "", "economie", -1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
-				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("KontorSettlement")) 
-			SetProperty("","RobberMessageSaid", 1)
+				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("MyCity")) 
+			SetProperty("", "TradersRobberMessageSaid", 1)
 		end
 		
 		
@@ -110,96 +70,72 @@ function Run()
 		
 		local LastTimeRobbed = GetProperty("","LastTimeRobbed")
 		if CurrentRound - LastTimeRobbed > 2 then
-			SetProperty("","LastTimeRobbed", CurrentRound)	
-			SetProperty("","Plundered", 0)
+			SetProperty("", "LastTimeRobbed", CurrentRound)	
+			SetProperty("", "TradersPlundered", 0)
 		end
 
 		if MainPlunderCount == 0 then
-			SetProperty("","LastTimeRobbed", CurrentRound)
+			SetProperty("", "LastTimeRobbed", CurrentRound)
 		end
-		
-        	Sleep(15)
+		Sleep(37)
 	end
 end
 
 function CheckCart(CurrentCart)
-	local PlunderCount -- update plundercount
-	if HasProperty(CurrentCart,"BeeingPlundered") then
-		PlunderCount = GetProperty(CurrentCart,"BeeingPlundered") 
-	end
-	local MainPlunderCount = GetProperty("","Plundered")
-	if PlunderCount and PlunderCount > 0 then
+	local PlunderCount = GetProperty(CurrentCart, "BeingPlundered") or 0 -- update plundercount
+	local MainPlunderCount = GetProperty("", "TradersPlundered") or 0
+	if PlunderCount > 0 then
 		MainPlunderCount = MainPlunderCount + PlunderCount
-		SetProperty(CurrentCart,"BeeingPlundered",0)
-		SetProperty("","Plundered",MainPlunderCount)
+		SetProperty(CurrentCart, "BeingPlundered", 0)
+		SetProperty("", "TradersPlundered", MainPlunderCount)
 	end
 	
-	-- local CartType = CartGetType(CurrentCart)
-	
-	if GetState(CurrentCart,STATE_BUILDING) then
+	if GetState(CurrentCart, STATE_BUILDING) then
 		return
 	end
 	
-	if GetState(CurrentCart,STATE_DRIVERATTACKED) then
+	if GetState(CurrentCart, STATE_DRIVERATTACKED) then
 		return	
 	end
 	
-	if GetCurrentMeasureName(CurrentCart)=="WorldTrader" then
+	if GetCurrentMeasureName(CurrentCart) == "WorldTrader" then
 		return
 	end
-		
-	MeasureRun(CurrentCart,nil,"WorldTrader",true)
-
-	return
+	MeasureRun(CurrentCart, "", "WorldTrader", true)
 end
 
-function BuyNewCart()
-	local Settlement = GetProperty("","Settlement")
-	local CityLevel = CityGetLevel(Settlement)
-	local CurrentCarts = GetProperty("","CartCount") or 0
+function BuyNewCart(CartCount)
+	local CityLevel = CityGetLevel("MyCity")
+
 	local NewCartType = EN_CT_MIDDLE
-	
-    	if (HasProperty("", "WaterKontor", 1) == true) then
-        	return
-    	end
-	if CityLevel > 3 then
+
+	if CityLevel > 2 then
 		NewCartType = EN_CT_OX
 	end
-	
-	if CityLevel > 5 then
+
+	if CityLevel > 4 then
 		NewCartType = EN_CT_HORSE
 	end
 	
-	if GetPosition("", "GroundPos") then
-		if ScenarioCreateCart(NewCartType, NIL, "GroundPos", "CartTrader") then
-			SetProperty("","CartCount",CurrentCarts+1)
-			SetProperty("","Cart"..CurrentCarts,"CartTrader")
+	if GetOutdoorMovePosition(nil, "", "GroundPos") then
+		if ScenarioCreateCart(NewCartType, nil, "GroundPos", "CartTrader") then
 			if (GetOutdoorMovePosition("CartTrader", "", "GoodPos")) then
 				SimBeamMeUp("CartTrader", "GoodPos", false) -- false added
 			end
 			SetEndlessMoney("CartTrader", true)
-			MeasureRun("CartTrader", nil, "WorldTrader", true)
 			SetProperty("CartTrader","BeingPlundered",0)
-			--SetProperty("CartTrader","HomeKontor",GetProperty("KontorSettlement"))
-			--SetProperty("CartTrader","NearestCity",GetProperty("Settlement"))
+			CartCount = CartCount + 1
+			SetProperty("", "TradersCartCount", CartCount)
+			SetProperty("", "TradersCart"..CartCount, GetID("CartTrader"))
+			MeasureRun("CartTrader", "", "WorldTrader", true)
 		end
 	end
+	return CartCount
 end
 
-function CanBuyNewCart()
-	local Settlement = GetProperty("","Settlement")
-	local CityLevel = CityGetLevel(Settlement)	
-
-	local SettlementCount = ScenarioGetObjects("Settlement", 20, "City")
-	local KontorCount = ScenarioGetBuildingCount(-1, 34, -1, -1, FILTER_IGNORE)
-	
-	local CartCount = CityLevel + (SettlementCount - KontorCount)
-	
-	if (GetProperty("","CartCount") >= CartCount) then
-		return false
-	end
-	
-	return true
+function CanBuyNewCart(CartCount)
+	local CityLevel = CityGetLevel("MyCity") -- 1 for kontor, 2 and higher for regular settlements
+	return (CartCount < CityLevel - 1) 
 end
 
 

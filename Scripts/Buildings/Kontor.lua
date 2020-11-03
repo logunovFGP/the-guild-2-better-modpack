@@ -22,8 +22,6 @@ function OnLevelUp()
 	
 	if Water == 1 and not GetState("", STATE_MARINECONTROL) then
 		SetState("",STATE_MARINECONTROL,true)
-	elseif Water == 0 and not GetState("", STATE_TRADERCONTROL) then
-		SetState("", STATE_TRADERCONTROL,true)
 	end
 	
 	if not ScenarioFindPosition("", 2250, EN_POSTYPE_WATER, 600, nil, nil, nil, "PosWater") then

@@ -445,7 +445,7 @@ Data:
 11099   "Artefacts\as_UseCharcoalBox1.lua"   ""   "UseCharcoalBox1"   55   "hud/buttons/btn_UseCharcoalBox.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
 11100   "Artefacts\as_UseCharcoalBox2.lua"   ""   "UseCharcoalBox2"   55   "hud/buttons/btn_UseCharcoalBox.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
 11101   "Artefacts\as_UseCharcoalBox3.lua"   ""   "UseCharcoalBox3"   55   "hud/buttons/btn_UseCharcoalBox.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
-11103   "ms_WorldTrader.lua"   ""   "WorldTrader"   2   ""   0   0   0   ""   ""   0   0   0   "none"   0   0   |
+11103   "ms_twp_WorldTrader.lua"   ""   "WorldTrader"   2   ""   0   0   0   ""   ""   0   0   0   "none"   0   0   |
 11107   "ms_UpgradeResidence.lua"   ""   "UpgradeResidence"   999   "hud/buttons/btn_Building_Upgrade.tga"   0   5   0   "_BuildingLevelTreeSheet"   ""   0   0   0   "none"   0   0   |
 11968   "Artefacts\as_Usepddv.lua"   "-"   "Usepddv"   55   "Hud/Items/Item_pddv.tga"   0   12   0   ""   ""   0   12   0   "none"   0   0   |
 11973   "Artefacts\as_UseRobe.lua"   "-"   "UseRobe"   55   "Hud/Items/Item_robe.tga"   0   12   0   ""   ""   0   12   6   "none"   0   0   |

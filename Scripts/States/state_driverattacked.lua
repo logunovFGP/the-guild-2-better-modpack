@@ -21,7 +21,7 @@ function Run()
 	 	return
 	end
 	
-	SetProperty("MyCart","BeeingPlundered",1)
+	SetProperty("MyCart","BeingPlundered",1)
 
  	f_MoveTo("", "fleepos",GL_MOVESPEED_RUN)
 	AlignTo("", "MyCart")

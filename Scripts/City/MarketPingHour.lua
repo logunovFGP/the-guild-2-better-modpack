@@ -29,6 +29,9 @@ function GameStart()
 	marketpinghour_CheckItem(Level, "Dagger", 2, 4)
 	marketpinghour_CheckItem(Level, "SilverRing", 4, 8)
 	marketpinghour_CheckItem(Level, "FarmersClothes", 4, 8)
+	
+	economy_CalcNeedsForMarket("City")
+	economy_CalcSalesForMarket("City")
 end
 
 
@@ -40,6 +43,11 @@ function PingHour()
 			local Level = CityGetLevel("City")
 			marketpinghour_CheckResources(Level)
 		end
+	end
+	
+	if math.mod(GetGametime(), 24) == 5 and GetSettlement("", "City") then -- at 5am
+		economy_CalcNeedsForMarket("City")
+		economy_CalcSalesForMarket("City")
 	end
 end
 

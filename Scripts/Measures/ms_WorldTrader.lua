@@ -144,7 +144,7 @@ function GotoTarget()
 		Sleep(10)
 	end
 
-	
+	--cart_NotifyRoute("", AltTarget, Target)
 	if not f_MoveTo("", Target, GL_MOVESPEED_RUN) then
 		return false
 	end
@@ -166,6 +166,7 @@ function GotoSource()
 
 	SetData("Source", Source)
 
+	--cart_NotifyRoute("", AltTarget, Source)
 	if not f_MoveTo("", Source, GL_MOVESPEED_RUN) then
 		return false
 	end

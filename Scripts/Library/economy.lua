@@ -761,9 +761,82 @@ function CalcNeedsForMarket(CityAlias)
 		CityNeedCount, CityNeeds = economy_MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
 	end
 	CityGetLocalMarket(CityAlias, "MarketAlias")
-	-- TODO check if the called GetImpact works for market alias
 	CityNeedCount, CityNeeds = economy_CalcCurrentResourceNeeds("MarketAlias", CityNeedCount, CityNeeds, 0.4)
+	-- save first five needs as properties
+	for i=1, 5 do
+		if i <= CityNeedCount and CityNeeds[i] then
+			SetProperty("MarketAlias", "twpNeed"..i, CityNeeds[i][1])
+			SetProperty("MarketAlias", "twpNeedAmount"..i, CityNeeds[i][2])
+		else
+			RemoveProperty("MarketAlias", "twpNeed"..i)
+			RemoveProperty("MarketAlias", "twpNeedAmount"..i)
+		end
+	end
 	return CityNeedCount, CityNeeds 
+end
+
+function GetNeedsForMarket(CityAlias)
+	-- read from properties
+	local CityNeedCount, CityNeeds = 0, {}
+	CityGetLocalMarket(CityAlias, "MarketAlias")
+	local tmp
+	for i=1, 5 do
+		tmp = GetProperty("MarketAlias", "twpNeed"..i)
+		if tmp then
+			CityNeedCount = CityNeedCount + 1
+			CityNeeds[CityNeedCount] = { tmp, GetProperty("MarketAlias", "twpNeedAmount"..i) }
+		end
+	end
+	return CityNeedCount, CityNeeds 
+end
+
+function CalcSalesForMarket(CityAlias)
+	local SalesCount, Sales = 0, {}
+	-- check all items in storage
+	if not CityGetRandomBuilding(CityAlias, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
+		return SalesCount, Sales
+	end
+		
+	local Slots = InventoryGetSlotCount("MarketBld", INVENTORY_STD)
+	local ItemId, Amount, MaxAmount, Surplus
+	for i = 0, Slots - 1 do
+		ItemId, Amount = InventoryGetSlotInfo("MarketBld", i, INVENTORY_STD)
+		MaxAmount = GetDatabaseValue("Items", ItemId, "max_stock")
+		Surplus = Amount - MaxAmount
+		if Surplus > 0 then
+			SalesCount = SalesCount + 1
+			Sales[SalesCount] = { ItemId, Surplus } -- TODO consider a relative value instead based on MaxAmount
+		end 
+	end
+	-- sort list
+	Sales = helpfuncs_QuickSort(Sales, 1, SalesCount, helpfuncs_SortBySecondValue)
+	
+	-- save first five items as properties
+	for i=1, 5 do
+		if i <= SalesCount and Sales[i] then
+			SetProperty("MarketAlias", "twpSales"..i, Sales[i][1])
+			SetProperty("MarketAlias", "twpSalesAmount"..i, Sales[i][2])
+		else
+			RemoveProperty("MarketAlias", "twpSales"..i)
+			RemoveProperty("MarketAlias", "twpSalesAmount"..i)
+		end
+	end
+	return SalesCount, Sales
+end
+
+function GetSalesForMarket(CityAlias)
+	-- read from properties
+	local SalesCount, Sales = 0, {}
+	CityGetLocalMarket(CityAlias, "MarketAlias")
+	local tmp
+	for i=1, 5 do
+		tmp = GetProperty("MarketAlias", "twpSales"..i)
+		if tmp then
+			SalesCount = SalesCount + 1
+			Sales[SalesCount] = { tmp, GetProperty("MarketAlias", "twpSalesAmount"..i) }
+		end
+	end
+	return SalesCount, Sales 
 end
 
 function MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
