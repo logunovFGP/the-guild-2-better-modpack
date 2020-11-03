@@ -48,6 +48,7 @@ _Design_
 - Dynastiefarben sind nun dunkler und besser zu unterscheiden. Auch die Wappen wurden angepasst.
 - Die Möglichkeit, während Gerichts- und Ratssitzungen zu bestechen oder Komplimente zu machen, wurde entfernt. Gründe dafür sind die Buganfälligkeit, das Balancing und die Zeit, die 
   diese Bedenkzeiten gekostet haben. Ihr müsst euch nun besser vorbereiten.
+- Das Icon für Schwangerschaft wird nun rechts unten statt links unten angezeigt, dadurch werden aktive Maßnahmen nicht länger verdeckt.
 
 *** Vanilla-Bugs ***
 

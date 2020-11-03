@@ -50,6 +50,7 @@ _Design_
 - Dynasty colours have been changed to darker and more distinctive tones. Badges have been adjusted aswell.
 - The 'thinkbreak' where you could compliment and bribe during office sessions and trials has been removed. Reasons for that are balancing, bugs and the time it added to the sessions.
   You now have to prepare before the sessions start.
+- State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
 
 *** Vanilla-Bugs ***
 
