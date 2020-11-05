@@ -530,7 +530,7 @@ Data:
 12090   "Squad\ms_SquadRazzia.lua"   ""   "SquadRazzia"   35   "hud/buttons/btn_razzia.tga"   1   11   0   ""   ""   0   0   0   "none"   0   0   |
 12091   "Squad\ms_SquadRazziaMember.lua"   ""   "SquadRazziaMember"   35   "hud/buttons/btn_razzia.tga"   1   11   0   ""   ""   0   0   0   "none"   0   0   |
 12092   "ms_EmpfangeWuerden.lua"   ""   "EmpfangeWuerden"   999   "hud/buttons/btn_ShowPersonsOverview.tga"   0   5   0   ""   ""   100   18   0   "none"   0   0   |
-12093   "ms_OfferBuildingProtection.lua"   ""   "OfferBuildingProtection"   30   "hud/buttons/btn_Protectorate.tga"   0   3   0   "-"   ""   30   6   0   "none"   0   0   |
+12093   "ms_OfferBuildingProtection.lua"   ""   "OfferBuildingProtection"   30   "hud/buttons/btn_Protectorate.tga"   0   5   0   "-"   ""   30   6   0   "none"   0   0   |
 12094   "-"   "-"   "ShowBuildingsForSale"   999   "Hud/Buttons/btn_ShowBuildingsForSale.tga"   2   0   0   "OverviewBuildingsForSaleSheet"   ""   10   0   0   "none"   0   0   |
 12095   "ms_ChangeBuildingName.lua"   ""   "ChangeBuildingName"   55   "hud/buttons/Rename.tga"   0   5   0   ""   ""   0  0   0   "none"   0   0   |
 12096   "ms_CityTreasure.lua"   ""   "CityTreasure"   55   "hud/buttons/btn_stadtkasse.tga"   0   5   0   ""   ""   0  0   0   "none"   0   0   |
