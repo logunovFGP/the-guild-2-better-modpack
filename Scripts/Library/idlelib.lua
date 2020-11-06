@@ -408,26 +408,18 @@ end
 function Graveyard()
 	MsgDebugMeasure("Cry around at the Graveyard")
 	if GetSettlement("", "City") then
-		if not CityGetRandomBuilding("City", -1, 98, -1, -1, FILTER_IGNORE, "Destination") then
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_GRAVEYARD)
+		if not f_MoveTo("","Destination", GL_MOVESPEED_RUN, Rand(40) + 120) then
 			return
 		end
-		if GetState("Destination",2) == true then
-		    return
-		end
-		if GetState("Destination",5) == true then
-		    return
-		end
-		if not f_MoveTo("","Destination", GL_MOVESPEED_RUN, Rand(40)+120) then
-		    return
-		end
 		MoveSetStance("",GL_STANCE_KNEEL)
-		Sleep(Rand(10)+5)
+		Sleep(Rand(10) + 5)
 		PlayAnimation("","knee_pray")
-		Sleep(Rand(12)+6)
+		Sleep(Rand(12) + 6)
 		MoveSetStance("",GL_STANCE_STAND)
-		SatisfyNeed("",4,0.2)
+		SatisfyNeed("", 4, 0.2)
 		if BuildingGetOwner("Destination","Sitzer") then
-			CreditMoney("Destination",Rand(5)+1,"tip")
+			CreditMoney("Destination",Rand(5) + 1,"tip")
 		end
 		Sleep(6)
 	end
@@ -439,37 +431,36 @@ end
 function GetCorn()
 	MsgDebugMeasure("Get Corn from the farm")
 	if GetSettlement("", "City") then
-		if CityGetRandomBuilding("City", -1, 3, -1, -1, FILTER_IGNORE, "Destination") then
-			if not f_MoveTo("","Destination") then
-				return
-			end
-			if not GetHomeBuilding("", "HomeBuilding") then	
-				return
-			end
-			if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID("HomeBuilding") then
-				Sleep(2)
-				
-				local ItemCount = economy_BuyRandomItems("Destination", "", 100, Rand(5)+1)				
-				if ItemCount and ItemCount > 0 then
-					MoveSetActivity("","carry")
-					Sleep(2)
-					CarryObject("","Handheld_Device/ANIM_Bag.nif",false)	
-					if not f_MoveTo("", "HomeBuilding") then
-						MoveSetActivity("","")
-					    CarryObject("","",false)
-						return
-					end
-					MoveSetActivity("","")
-					CarryObject("","",false)
-				else
-					if not f_MoveTo("", "HomeBuilding") then
-						return
-					end
-				end
-				
-			end
-			Sleep(Rand(10)+5)
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_FARM)
+		if not AliasExists("Destination") or not f_MoveTo("","Destination") then
+			return
 		end
+		if not GetHomeBuilding("", "HomeBuilding") then	
+			return
+		end
+		if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID("HomeBuilding") then
+			Sleep(2)
+			
+			local ItemCount = economy_BuyRandomItems("Destination", "", 100, Rand(5)+1)				
+			if ItemCount and ItemCount > 0 then
+				MoveSetActivity("","carry")
+				Sleep(2)
+				CarryObject("","Handheld_Device/ANIM_Bag.nif",false)	
+				if not f_MoveTo("", "HomeBuilding") then
+					MoveSetActivity("","")
+				    CarryObject("","",false)
+					return
+				end
+				MoveSetActivity("","")
+				CarryObject("","",false)
+			else
+				if not f_MoveTo("", "HomeBuilding") then
+					return
+				end
+			end
+			
+		end
+		Sleep(Rand(10)+5)
 	end
 end
 
@@ -612,7 +603,7 @@ end
 function GoTownhall()
 	MsgDebugMeasure("Watching, whats going on in the townhall")
 	if GetSettlement("", "City") then
-		if CityGetRandomBuilding("City", 3,23,-1,-1, FILTER_IGNORE, "Destination") then
+		if CityGetRandomBuilding("City", 3, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "Destination") then
 			if f_MoveTo("","Destination") then
 			    if not GetFreeLocatorByName("Destination","Wait",1,8,"SitPos") then
 				    f_Stroll("",300,10)
@@ -659,7 +650,7 @@ function Illness()
 			ItemToBuy = "Soap" -- or soap
 		end
 		
-		if ItemToBuy and CityGetRandomBuilding("City", 5,14,-1,-1, FILTER_IGNORE, "Destination") then
+		if ItemToBuy and CityGetRandomBuilding("City", 5, GL_BUILDING_TYPE_MARKET,-1,-1, FILTER_IGNORE, "Destination") then
 			f_MoveTo("","Destination", GL_MOVESPEED_RUN, 100)
 			Transfer(nil, nil, INVENTORY_STD, "Market", INVENTORY_STD, ItemToBuy,1)
 		end
@@ -771,10 +762,6 @@ end
 -- GoToTavern
 -- -----------------------
 function GoToTavern()
-	local DistanceBest = -1
-	local Attractivity
-	local Distance
-	
 	MsgDebugMeasure("Have some drink in a Tavern")
 	if GetSettlement("", "City") then
 
@@ -788,32 +775,11 @@ function GoToTavern()
 				end
 			end
 		end
-
-		local NumTaverns = CityGetBuildings("City",2,4,-1,-1,FILTER_HAS_DYNASTY,"Tavern")
-		if NumTaverns > 0 then
-			
-			for i=0,NumTaverns-1 do
-				Attractivity	= GetImpactValue("Tavern"..i,"Attractivity")
-				
-				if HasProperty("Tavern"..i,"Versengold") then
-					Attractivity = Attractivity + 1
-				end
-				
-				Distance = GetDistance("","Tavern"..i)
-				
-				if Distance == -1 then
-					Distance = 50000
-				end
-				
-				Distance = Distance / (0.5 + Attractivity)
-				if DistanceBest==-1 or Distance<DistanceBest then
-					CopyAlias("Tavern"..i,"Destination")
-					DistanceBest = Distance
-				end
-			end
-		end
 		
-		if not f_MoveTo("","Destination") then
+		-- TODO calculation of attractivity needs to be increased when versengold is giving a concert
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_TAVERN)
+		
+		if not AliasExists("Destination") or not f_MoveTo("","Destination") then
 			return
 		end
 
@@ -1048,7 +1014,7 @@ function RepairHome(Building)
 		return
 	end
 	local Market = Rand(5)+1
-	if not CityGetRandomBuilding("City", 5,14,Market,-1, FILTER_IGNORE, "Destination") then
+	if not CityGetRandomBuilding("City", 5, GL_BUILDING_TYPE_MARKET, Market, -1, FILTER_IGNORE, "Destination") then
 		return
 	end
 	if not f_MoveTo("","Destination",GL_WALKSPEED_RUN, 200) then
@@ -1174,14 +1140,12 @@ function VisitDoc(HospitalID)
 	end
 
 	if not AliasExists("Destination") then	
-
-		local NumHospitals = CityGetBuildings("City", 2, 37, -1, -1, FILTER_HAS_DYNASTY, "Hospital")
-		if NumHospitals == 0 then
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_HOSPITAL, MinLevel)
+		if not AliasExists("Destination") then
 			return
 		end
-			
-		local	IgnoreID
-	
+		
+		local IgnoreID
 		if HasProperty("", "IgnoreHospital") then
 			local Time = GetProperty("", "IgnoreHospitalTime")
 			if Time < GetGametime() then
@@ -1190,51 +1154,12 @@ function VisitDoc(HospitalID)
 			else
 				IgnoreID = GetProperty("", "IgnoreHospital")
 			end
-		end
+		end 
 		
-		for i=0,NumHospitals-1 do
-		
-			if IgnoreID and IgnoreID == GetID("Hospital"..i) then
-				Distance = -1
-			else
-				Level = BuildingGetLevel("Hospital"..i)
-				if Level < MinLevel then
-					Distance = -1
-				else
-					Attractivity = GetImpactValue("Hospital"..i, "Attractivity")		
-					Attractivity = Attractivity + (Level*0.25)
-					if BuildingGetOwner("Hospital"..i, "LeChef") then
-						local Favor = GetFavorToDynasty("", "LeChef")
-						if Favor <= 45 then
-							FavorBonus = Favor*(-1)
-						elseif Favor >= 55 then
-							FavorBonus = Favor
-						else
-							FavorBonus = 0
-						end
-					end
-					
-					Distance = GetDistance("", "Hospital"..i)
-					if Distance > 0 then
-						Distance = Distance / (0.25 + Attractivity)
-						-- FavorBonus
-						Distance = Distance - (FavorBonus*20)
-						if Distance < 0 then
-							Distance = 0
-						end
-					end
-				end
-			end
-			
-			if Distance >= 0 and (DistanceBest == -1 or Distance < DistanceBest) then
-				CopyAlias("Hospital"..i, "Destination")
-				DistanceBest = Distance
-			end
-		end
-				
-		if DistanceBest == -1 or (not AliasExists("Destination")) then
-			if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed", 1, 3, "SleepPosition") then
-				MeasureRun("", nil, "GoToSleep")
+		if IgnoreID and IgnoreID == GetID("Destination") then
+			-- go home and sleep
+			if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then
+				MeasureRun("",nil,"GoToSleep")
 				return
 			else
 				return
@@ -1360,43 +1285,13 @@ function GoToDivehouse()
 				end
 			end
 		end
-
-		local NumTaverns = CityGetBuildings("City",2,36,-1,-1,FILTER_HAS_DYNASTY,"Divehouse")
-		if NumTaverns > 0 then
-			
-			for i=0,NumTaverns-1 do
-				Attractivity	= GetImpactValue("Divehouse"..i,"Attractivity")
-
-				if HasProperty("Divehouse"..i,"Versengold") then
-					Attractivity = Attractivity + 1.5
-				end
-
-				Distance = GetDistance("","Divehouse"..i)
-				
-				if Distance == -1 then
-					Distance = 50000
-				end
-				
-				Distance = Distance / (0.5 + Attractivity)
-				if DistanceBest==-1 or Distance<DistanceBest then
-					CopyAlias("Divehouse"..i,"Destination")
-					DistanceBest = Distance
-				end
-			end
-		end
-
-		if DistanceBest==-1 then
-			-- not exist Divehouse
+		
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_DIVEHOUSE)
+		
+		if not AliasExists("Destination") or not f_MoveTo("","Destination") or GetState("Destination",STATE_BUILDING) then
+			-- no Divehouse found
 			SatisfyNeed("", 8, 0.5)
 			SatisfyNeed("", 2, 0.5)
-			return
-		end
-		
-		if not f_MoveTo("","Destination") then
-			return
-		end
-
-		if GetState("Destination",STATE_BUILDING) then
 			return
 		end
 
@@ -1632,47 +1527,24 @@ function TakeACredit()
 	local Distance
 
 	if GetSettlement("", "City") then
-		local NumBankhouses = CityGetBuildings("City",2,43,-1,-1,FILTER_HAS_DYNASTY,"Bank")
-		if NumBankhouses > 0 then
-			if HasProperty("", "IgnoreBank") then
-				local Time = GetProperty("", "IgnoreBankTime")
-				local IgnoreID
-				if Time < GetGametime() then
-					RemoveProperty("", "IgnoreBank")
-					RemoveProperty("", "IgnoreBankTime")
-				else
-					IgnoreID = GetProperty("", "IgnoreBank")
-				end
-			end
-			for i=0,NumBankhouses-1 do
-				if IgnoreID and IgnoreID == GetID("Bank"..i) then
-					Distance = -1
-				else
-					Attractivity	= GetImpactValue("Bank"..i,"Attractivity")
-					Distance	= GetDistance("","Bank"..i)
-					if Distance == -1 then
-						Distance = 50000
-					end
-					CopyAlias("Bank"..i,"TmpPointer")
-					if HasProperty("TmpPointer","OfferCreditNow") then
-						Attractivity = Attractivity + 0.15
-					end
-					if HasProperty("TmpPointer","KreditKonto") then
-						Distance = Distance / (0.5 + Attractivity)
-						if DistanceBest==-1 or Distance<DistanceBest then
-							CopyAlias("Bank"..i,"Destination")
-							DistanceBest = Distance
-						end
-					end
-					RemoveAlias("TmpPointer")
-				end
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_BANKHOUSE)
+	
+		local IgnoreID
+		if HasProperty("", "IgnoreBank") then
+			local Time = GetProperty("", "IgnoreBankTime")
+			if Time < GetGametime() then
+				RemoveProperty("", "IgnoreBank")
+				RemoveProperty("", "IgnoreBankTime")
+			else
+				IgnoreID = GetProperty("", "IgnoreBank")
 			end
 		end
-		if (DistanceBest==-1) or (AliasExists("Destination")==false) or (BuildingGetType("Destination")~=43) then
-			-- bank not exist
+		if not AliasExists("Destination") or (IgnoreID and IgnoreID == GetID("Destination")) then
+			-- no suitable bank found
 			SatisfyNeed("", 9, 1)
 			return
 		end
+		
 		if f_MoveTo("","Destination") then
 			if not GetLocatorByName("Destination","Wait4","SitPos") then
 				if not GetLocatorByName("Destination","Wait3","SitPos") then
@@ -1928,7 +1800,7 @@ end
 function BeADrunkChamp()
 
 	if GetSettlement("", "City") then
-		if CityGetRandomBuilding("City", 2,36,-1,-1, FILTER_HAS_DYNASTY, "Destination") then
+		if economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_DIVEHOUSE) then
 			if f_MoveTo("","Destination") then
 		    if not GetFreeLocatorByName("Destination","Bar",1,4,"StehPos") then
 			    f_Stroll("",300,10)
@@ -1981,7 +1853,7 @@ end
 function BeADiceChamp()
 
 	if GetSettlement("", "City") then
-		if CityGetRandomBuilding("City", 2,36,-1,-1, FILTER_HAS_DYNASTY, "Destination") then
+		if economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_DIVEHOUSE) then
 			if f_MoveTo("","Destination") then
 			    if not GetFreeLocatorByName("Destination","DiceCEO",-1,-1,"StandPos") then
 				    f_Stroll("",300,10)
@@ -2260,63 +2132,19 @@ function GoSleep()
 		idlelib_GoToRandomPosition()   --if neither home or tavern to go then just move randomly
 	end
 	
-	if money>0 then
-
-		local DistanceBest = -1
-		local Attractivity
-		local Distance
-		local IgnoreID
-		local FavBonus = 0
-
+	if money > 0 then
 		if GetInsideBuilding("","CurrentBuilding") then
 			GetSettlement("CurrentBuilding","City")
 		else
 			GetNearestSettlement("", "City")
 		end
-
-		local NumTaverns = CityGetBuildings("City",2,4,-1,-1,FILTER_HAS_DYNASTY,"Tavern")
-
-		if HasProperty("","IgnoreTavern") then
-			IgnoreID = GetProperty("","IgnoreTavern")
-		end
-
-		if NumTaverns > 0 then
-			for i=0,NumTaverns-1 do			
-				if not IgnoreID or (IgnoreID and IgnoreID ~= GetID("Tavern"..i)) then
-					Attractivity = GetImpactValue("Tavern"..i,"Attractivity")
-					
-					Distance = GetDistance("","Tavern"..i)
-					
-					if Distance == -1 then
-						Distance = 60000
-					end
-					
-					-- do i like the owner? then go there instead of somewhere else
-					if BuildingGetOwner("Tavern"..i,"TheOwner") then
-						FavBonus = (GetFavorToDynasty("","TheOwner"))*10
-						if SimHasAbility("TheOwner",16) and (HeavySleep == false) then  -- Owner has the best house ability?
-							Attractivity = Attractivity + 5  -- Good dreams guaranteed :)  ... but Deep Sleep gives them too...
-						end
-					end
-					
-					Distance = Distance - FavBonus
-					
-					Distance = Distance / (0.5 + Attractivity)
-					
-					if BuildingGetLevel("Tavern"..i)==1 then
-						Distance = -1
-					end
-					
-					if DistanceBest == -1 or Distance < DistanceBest then
-						CopyAlias("Tavern"..i,"Destination")
-						DistanceBest = Distance
-					end
-				end
-			end
+	
+		if not AliasExists("Destination") then	
+			economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_TAVERN)
 		end
 
 		-- Don't move there if it is too far
-		if GetDistance("", "Destination")>15000 then
+		if not AliasExists("Destination") or GetDistance("", "Destination") > 15000 then
 			return
 		end	
 			

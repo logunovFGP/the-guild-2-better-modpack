@@ -82,8 +82,19 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 		end
 	end
 	-- 10 points for each available item (up to 40)
-	AvailableGoods = math.min(8, AvailableGoods)
-	local RankingGoods = AvailableGoods * 10		
+	local RankingGoods = AvailableGoods * 10
+	-- hospital and bankhouse are more attractive based on available services
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_HOSPITAL then
+		local MedCount = 0
+		for Id in string.gfind("360 364 365 371", "%d+") do
+			if GetItemCount(BldAlias, Id) > 0 then
+				MedCount = MedCount + 1
+			end 
+		end
+		RankingGoods = RankingGoods/2 + MedCount * 10
+	elseif BuildingGetType(BldAlias) == GL_BUILDING_TYPE_BANKHOUSE and HasProperty(BldAlias, "KreditKonto") then
+		RankingGoods = RankingGoods/2 + 20
+	end
 	
 	-- use craftmanship or secret knowledge, depending on class 
 	local Crafty
@@ -114,17 +125,18 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 	return Ranking, RankingGoods, RankingCrafty, RankingCharisma, Attractivity
 end
 
-function GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type)
+function GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type, MinLevel)
 	Ranking = Ranking or 0
 	Type = Type or -1
+	MinLevel = MinLevel or 0
 	local Count = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, Type, -1, -1, FILTER_HAS_DYNASTY, "Result")
 	
 	-- calculated weighted choice
 	local Ranking
 	local RankingSum = 0
 	for i = 0, Count-1 do
-		if AliasExists("Result"..i) then
-			Ranking = GetProperty("Result"..i, "SalescounterRanking")
+		if AliasExists("Result"..i) and BuildingGetLevel("Result"..i) >= MinLevel then
+			Ranking = GetProperty("Result"..i, "SalescounterRanking") or 1
 			if Ranking then
 				RankingSum = RankingSum + Ranking 
 			end
@@ -230,9 +242,9 @@ function BuyItems(BldAlias, BuyerAlias, ItemId, DesiredAmount, BuyerInventory)
 	if Available > 0 and Affordable > 0 then
 		local ItemCount = math.min(Available, Affordable, DesiredAmount)
 		local TotalPrice = ItemCount * ItemPrice
-		if f_SpendMoney(BuyerAlias, TotalPrice, "WaresBought") then
+		if chr_SpendMoney(BuyerAlias, TotalPrice, "WaresBought") then
 			RemoveItems(BldAlias, ItemId, ItemCount, INVENTORY_SELL)
-			f_CreditMoney(BldAlias, TotalPrice, "WaresSold")
+			CreditMoney(BldAlias, TotalPrice, "WaresSold")
 			ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
 			economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
 			if ItemCount > 0 and BuyerInventory then
