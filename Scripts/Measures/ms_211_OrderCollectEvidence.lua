@@ -32,10 +32,6 @@ function Run()
 	while true do
 		
 		if not AliasExists("Destination") then
-	--		GetSettlement("", "City")
-	--		if CityFindCrowdedPlace("City", "", "Destination") == 0 then
-				break
-	--		end
 			GetSettlement("", "City")
 			if CityFindCrowdedPlace("City", "", "Destination") == 0 then
 				return
