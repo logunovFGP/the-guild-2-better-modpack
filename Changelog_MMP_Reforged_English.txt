@@ -19,7 +19,7 @@ Russian:
 Polish:
 
 Social Media: Erilambus, Fajeth
-Additional Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93 + The Guild 2 Community!
+Additional Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81 + The Guild 2 Community!
 Network Helper: Agentmass
 
 Installation:
@@ -50,6 +50,8 @@ _Design_
 - Dynasty colours have been changed to darker and more distinctive tones. Badges have been adjusted aswell.
 - The 'thinkbreak' where you could compliment and bribe during office sessions and trials has been removed. Reasons for that are balancing, bugs and the time it added to the sessions.
   You now have to prepare before the sessions start.
+- State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
+- The Icon for 'Offer building protection' (mercenary) has been redesigned.
 
 *** Vanilla-Bugs ***
 
@@ -147,6 +149,7 @@ _General_
 - Some new and reworked abilities after levelup.
 - Added a new measure to change your character's appearance ingame (same category as inventory-measure).
 - Added a new measure to mark a dynasty character as important (same category as inventory-measure). That character then will appear in the 'Important Persons' list.
+- Added multiple missing icons for selecting targets during certain measures.
 
 _Patron_
 -
@@ -161,7 +164,7 @@ _Craftsman_
 -
 
 _Rogue_
--
+- The mercenarys 'offer building protection' icon is now shown while your mercenary protects a building.
 
 _AI_
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.

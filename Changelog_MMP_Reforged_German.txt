@@ -19,7 +19,7 @@ Russisch:
 Polnisch:
 
 Soziale Medien: Erilambus, Fajeth
-Anderer Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, Jedi93 + Die Gilde 2 Community!
+Anderer Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, Jedi93, barra81 + Die Gilde 2 Community!
 Network Helper: Agentmass
 
 Installation:
@@ -48,6 +48,8 @@ _Design_
 - Dynastiefarben sind nun dunkler und besser zu unterscheiden. Auch die Wappen wurden angepasst.
 - Die Möglichkeit, während Gerichts- und Ratssitzungen zu bestechen oder Komplimente zu machen, wurde entfernt. Gründe dafür sind die Buganfälligkeit, das Balancing und die Zeit, die 
   diese Bedenkzeiten gekostet haben. Ihr müsst euch nun besser vorbereiten.
+- Das Icon für Schwangerschaft wird nun rechts unten statt links unten angezeigt, dadurch werden aktive Maßnahmen nicht länger verdeckt.
+- Das Icon für 'Gebäudeschutz anbieten' wurde verändert.
 
 *** Vanilla-Bugs ***
 
@@ -152,6 +154,7 @@ _Allgemein_
 - Es gibt neue und teils überarbeitete Fähigkeiten nach Stufenaufstieg.
 - Es gibt nun eine Maßnahme, mit der man die äußere Erscheinung eines Charakters während des laufenden Spiels anpassen kann (Selbe Kategorie wie das Inventar).
 - Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
+- Es wurden mehrere Mauszeiger-Icons für Maßnahmen hinzugefügt, die die Auswahl eines Ziels erfordern.
 
 _Patron_
 -
@@ -166,7 +169,7 @@ _Handwerker_
 -
 
 _Gauner_
--
+- Die Maßnahme 'Gebäudeschutz anbieten' zeigt nun ein Icon, während der Söldner ein Gebäude beschützt. Die Maßnahme wurde als grüne Maßnahme eingeordnet.
 
 _KI_
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
