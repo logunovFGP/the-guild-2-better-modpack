@@ -9,34 +9,27 @@ PREFIX_SALESCOUNTER = "Salescounter_"
 PREFIX_SALESCOUNTER_MAX = "SalescounterMax_"
 SALESCOUNTER_PRICE = "SalescounterPrice"
  
----- returns count and the list of items (by itemId) that can be sold at this workshop. See BuildingToItems.dbt
+---- returns count and the list of items (by itemId) that are being offered at this workshop. See INVENTORY_SELL
 function GetItemsForSale(BldAlias)
 	if (not BldAlias or not AliasExists(BldAlias)) then
 		return 0, {} 
 	end
 	
-	local BldId = BuildingGetProto(BldAlias)
-	local ItemsString
-	if GL_BUILDING_TYPE_WAREHOUSE == BuildingGetType(BldAlias) then
-		-- Warehouse may offer anything, check current offer 
-		ItemsString = GetProperty(BldAlias, "SalesCounterItems")
-	else
-		-- production buildings may only offer their own products
-		ItemsString = GetDatabaseValue("BuildingToItems", BldId, "produceditems")
-	end
-	if ItemsString == nil then
-		return 0, {}
-	end
-	local Items = {}
-	local Count = 0
-	for Id in string.gfind(ItemsString, "%d+") do
-		Count = Count + 1
-		Items[Count] = ItemGetID(Id)
+	local Count, Items = 0, {}
+	local SlotCount = InventoryGetSlotCount(BldAlias, INVENTORY_SELL)
+	local ItemId, Amount
+	for i = 0, SlotCount - 1 do
+		ItemId, Amount = InventoryGetSlotInfo(BldAlias, i, INVENTORY_SELL)
+		if ItemId and ItemId > 0 and Amount > 0 then
+			Count = Count + 1
+			Items[Count] = ItemId
+		end
 	end
 	return Count, Items
 end
 
 -- Count and Items should be taken from above function GetItemsForSale
+-- TODO this function is currently unused. It may be used to manage salescounter.
 function UpdateSalescounter(BldAlias, Count, Items)
 	if not Items then
 		Count, Items = economy_GetItemsForSale(BldAlias)
@@ -79,18 +72,18 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 	end
 	
 	local Ranking = 0
-	-- availablity of goods is based on a default of six slots
+	-- availablity of goods is based on a default of four slots
 	local AvailableGoods = 0
 	local Tmp
 	for i=1, Count do
-		Tmp = GetProperty(BldAlias, PREFIX_SALESCOUNTER..Items[i])
+		Tmp = GetItemCount(BldAlias, Items[i], INVENTORY_SELL) 
 		if Tmp ~= nil and Tmp > 0 then
 			AvailableGoods = AvailableGoods + 1
 		end
 	end
-	-- 5 points for each available item (up to 40)
+	-- 10 points for each available item (up to 40)
 	AvailableGoods = math.min(8, AvailableGoods)
-	local RankingGoods = AvailableGoods * 4		
+	local RankingGoods = AvailableGoods * 10		
 	
 	-- use craftmanship or secret knowledge, depending on class 
 	local Crafty
@@ -113,7 +106,7 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 	end
 	
 	-- pricing gives bonus/penalty on total ranking 
-  local Pricing = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 150 -- 100, 125, 150, 175, 200
+  local Pricing = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 100 -- 100, 125, 150, 175, 200
   local PricingBonus = 100 + (150 - Pricing)/2 -- 125, 112.5, 100, 87.5, 75
   Ranking = math.floor(Ranking * PricingBonus / 100)
 	
@@ -154,6 +147,7 @@ function GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type)
 	return false
 end
 
+-- Currently unused. Requires SalesCounter as property to work.
 FILTER_BY_ITEM = "__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(2))AND(Object.Property.Salescounter_%d >= %d))"
 function GetRandomBuildingByOfferedItem(ForAlias, ResultAlias, ItemId, Amount)
 	Amount = Amount or 0
@@ -183,20 +177,20 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 	local ItemId, Available, ItemPrice, ItemCount
 	for i=1, Count do
 		ItemId = Items[Rand(Count) + 1]
-		Available = GetProperty(BldAlias, PREFIX_SALESCOUNTER..ItemId)
+		Available = GetItemCount(BldAlias, ItemId, INVENTORY_SELL)
 		if Available and Available > 0 then
 			local MaxCount = math.min(Max, economy_ProtectSaleItems(BldAlias, ItemId, Available))
 			if MaxCount > 0 then
 				ItemPrice = economy_GetPrice(BldAlias, ItemId, BuyerAlias)
 				ItemCount = math.min(Rand(MaxCount)+1, math.floor(Budget / ItemPrice))
 				if ItemCount > 0 then
-					SetProperty(BldAlias, PREFIX_SALESCOUNTER..ItemId, Available - ItemCount)
+					ItemCount = RemoveItems(BldAlias, ItemId, ItemCount, INVENTORY_SELL)
 					local TotalPrice = ItemCount * ItemPrice 
-					f_CreditMoney(BldAlias, TotalPrice, "WaresSold")
-					ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t",TotalPrice)
+					CreditMoney(BldAlias, TotalPrice, "WaresSold")
+					ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
 					economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
 					if not IgnoreMoney then
-						f_SpendMoney(BuyerAlias, TotalPrice, "WaresBought")
+						chr_SpendMoney(BuyerAlias, TotalPrice, "WaresBought")
 					end
 					return ItemId, ItemCount, TotalPrice
 				end
@@ -207,13 +201,13 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 end
 
 --- Protects some items from outsales that are required for a building to function (Hospital)
-PROTECTED_SALE_ITEMS = ".201.202.203.204."
+PROTECTED_SALE_ITEMS = ".360.364.365.371."
 function ProtectSaleItems(BldAlias, ItemId, Available)
 	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_HOSPITAL then
 		if string.find(PROTECTED_SALE_ITEMS, "."..ItemId..".", 1, true) then
-			-- don't sell more than half the maximum stock
-			local MaxStock = GetProperty(BldAlias, PREFIX_SALESCOUNTER_MAX..ItemId) or 0
-			local Diff = Available - MaxStock/2 -- Item count above half stock
+			-- don't sell more than 20
+			local MinStock = 20
+			local Diff = Available - MinStock -- Item count above minimum
 			return math.max(0, Diff) -- return 0 if negative Diff
 		end
 	end
@@ -228,18 +222,22 @@ end
 --- Buy some items from this workshop
 -- Userful for inter-workshop trade
 -- returns ItemCount, TotalPrice
-function BuyItems(BldAlias, BuyerAlias, ItemId, DesiredAmount)
-	local Available = GetProperty(BldAlias, PREFIX_SALESCOUNTER..ItemId) or 0
+function BuyItems(BldAlias, BuyerAlias, ItemId, DesiredAmount, BuyerInventory)
+	ItemId = ItemGetID(ItemId) -- make sure it's the ID, not the name
+	local Available = GetItemCount(BldAlias, ItemId, INVENTORY_SELL)
 	local ItemPrice = economy_GetPrice(BldAlias, ItemId, BuyerAlias)
 	local Affordable = math.floor(GetMoney(BuyerAlias) / ItemPrice)
 	if Available > 0 and Affordable > 0 then
 		local ItemCount = math.min(Available, Affordable, DesiredAmount)
 		local TotalPrice = ItemCount * ItemPrice
 		if f_SpendMoney(BuyerAlias, TotalPrice, "WaresBought") then
-			SetProperty(BldAlias, PREFIX_SALESCOUNTER..ItemId, Available - ItemCount)
+			RemoveItems(BldAlias, ItemId, ItemCount, INVENTORY_SELL)
 			f_CreditMoney(BldAlias, TotalPrice, "WaresSold")
-			ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t",TotalPrice)
+			ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
 			economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
+			if ItemCount > 0 and BuyerInventory then
+				AddItems(BuyerAlias, ItemId, ItemCount, BuyerInventory)
+			end
 			return ItemCount, TotalPrice
 		end
 	end
@@ -265,7 +263,7 @@ function GetPrice(BldAlias, ItemId, Buyer)
 
 	-- get baseprice and multiply by sales ratio
 	local BasePrice = ItemGetBasePrice(ItemId)
-	local PriceRatio = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 150
+	local PriceRatio = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 100
 	BasePrice = BasePrice * (PriceRatio / 100)
 	
 	-- get difference in bargaining between Owner and Buyer
@@ -398,8 +396,8 @@ function ChooseItemFromCounter(BldAlias, Count, Items)
 		Prices[i] = economy_GetPrice(BldAlias, Id)
 		PriceLabel = "%"..i.."t"
 		-- Appending the itemID finding the items again and even enables filters on the property
-		CurrentAmount = GetProperty(BldAlias, PREFIX_SALESCOUNTER..Id) or 0
-		MaxAmount = GetProperty(BldAlias, PREFIX_SALESCOUNTER_MAX..Id) or 0
+		CurrentAmount = GetItems(BldAlias, Id, INVENTORY_SELL)
+		MaxAmount = GetImpactValue(BldAlias, "BonusSpace")
 		ItemTexture = "Hud/Items/Item_"..ItemGetName(Items[i])..".tga"
 		-- result, Tooltip, label, icon
 		ItemLabel = ItemGetLabel(Items[i], CurrentAmount == 1)
@@ -422,7 +420,7 @@ function ChooseItemFromCounter(BldAlias, Count, Items)
 	if ChosenItemId == "C" then
 		return nil, 0
 	end
-	local Amount = GetProperty(BldAlias, PREFIX_SALESCOUNTER..ChosenItemId) or 0
+	local Amount = GetItems(BldAlias, ChosenItemId, INVENTORY_SELL)
 	return ChosenItemId, Amount
 end
 
@@ -593,7 +591,7 @@ function CalcProductionPriorities(BldAlias, ProdCount, ProdItems)
 		Min = GetDatabaseValue("Items", ItemId, "min_stock")
 		Max = GetDatabaseValue("Items", ItemId, "max_stock")
 		Current = GetItemCount("MyMarket", ItemId)
-		CurrentLocal = GetProperty(BldAlias, PREFIX_SALESCOUNTER..ItemId) or 0
+		CurrentLocal = GetItemCount(BldAlias, ItemId, INVENTORY_SELL) -- production is based on need and INVENTORY_STD anyway 
 		-- normalize values
 		Min = math.max(0, Min - Current - CurrentLocal)
 		Max = math.max(1, Max - Current - CurrentLocal)

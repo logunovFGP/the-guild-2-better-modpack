@@ -449,13 +449,8 @@ function GetCorn()
 			if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID("HomeBuilding") then
 				Sleep(2)
 				
-				local Carry = 0
-				if GetItemCount("Destination","Wheat",INVENTORY_SELL)>0 then
-					--if Transfer(nil,"",INVENTORY_STD,"Destination",INVENTORY_SELL,"Wheat",1) then
-						Carry = 1
-					--end
-				end
-				if Carry == 1 then
+				local ItemCount = economy_BuyRandomItems("Destination", "", 100, Rand(5)+1)				
+				if ItemCount and ItemCount > 0 then
 					MoveSetActivity("","carry")
 					Sleep(2)
 					CarryObject("","Handheld_Device/ANIM_Bag.nif",false)	
@@ -655,36 +650,31 @@ function Illness()
 	MsgDebugMeasure("Buying HerbTea or Blanket")
 	if GetSettlement("", "City") then
 		CityGetLocalMarket("City","Market")
-		--buy herbtea
+		local ItemToBuy
 		if GetImpactValue("","Caries")==1 then
-			if CityGetRandomBuilding("City", 5,14,-1,-1, FILTER_IGNORE, "Destination") then
-				f_MoveTo("","Destination", GL_MOVESPEED_RUN, 100)
-				Transfer(nil,nil,INVENTORY_STD,"Market",INVENTORY_STD,"HerbTea",1)
-			end
-		--or blanket
+			ItemToBuy = "HerbTea" --buy herbtea
 		elseif  GetImpactValue("","Fever")==1 or GetImpactValue("","Cold")==1 then
-			if CityGetRandomBuilding("City", 5,14,-1,-1, FILTER_IGNORE, "Destination") then
-				f_MoveTo("","CampPos", GL_MOVESPEED_RUN, 100)
-				Transfer(nil,nil,INVENTORY_STD,"Market",INVENTORY_STD,"Blanket",1)
-			end
-		-- soap
-        else
-			if CityGetRandomBuilding("City", 5,14,-1,-1, FILTER_IGNORE, "Destination") then
-				f_MoveTo("","CampPos", GL_MOVESPEED_RUN, 100)
-				Transfer(nil,nil,INVENTORY_STD,"Market",INVENTORY_STD,"Soap",1)
-			end		
+			ItemToBuy = "Blanket" --or blanket
+		else
+			ItemToBuy = "Soap" -- or soap
 		end
-		PlayAnimation("","talk")
+		
+		if ItemToBuy and CityGetRandomBuilding("City", 5,14,-1,-1, FILTER_IGNORE, "Destination") then
+			f_MoveTo("","Destination", GL_MOVESPEED_RUN, 100)
+			Transfer(nil, nil, INVENTORY_STD, "Market", INVENTORY_STD, ItemToBuy,1)
+		end
+		
+		PlayAnimation("", "talk")
 		Sleep(Rand(5)+2)
-	    if Rand(100) > 60 then
-            if GetImpactValue("","Cold")==1 then
-                diseases_Cold("",false)
-	        elseif GetImpactValue("","Caries")==1 then
-	            diseases_Caries("",false)
-	        elseif GetImpactValue("","BurnWound")==1 then
-	            diseases_BurnWound("",false)
-	        end
-	    end
+		if Rand(100) > 60 then
+			if GetImpactValue("","Cold")==1 then
+				diseases_Cold("",false)
+			elseif GetImpactValue("","Caries")==1 then
+				diseases_Caries("",false)
+			elseif GetImpactValue("","BurnWound")==1 then
+				diseases_BurnWound("",false)
+			end
+		end
 		idlelib_GoHome()
 	end
 end
@@ -692,176 +682,89 @@ end
 -- -----------------------
 -- CheckInsideStore
 -- -----------------------
-function CheckInsideStore()
-
-	if not GetSettlement("", "City") then
+function CheckInsideStore(Type)
+	local Workshop = "Workshop" 
+	if not GetHomeBuilding("", "HomeBld") then
+		return
+	end
+	if not BuildingGetCity("HomeBld", "City") then
 		return
 	end
 	
-	local store = Rand(5)
-	local Wares = {}
-
-	if store == 0 then
-		Wares = {"Barleybread","Cookie","Wheatbread","Candy","BreadRoll","CreamPie"}
-		local Choice = Wares[(Rand(6)+1)]
-		if not CityGetRandomBuilding("City",2,6,-1,-1,FILTER_HAS_DYNASTY,"backerei") then
-		    return
-		end
-        --GetLocatorByName("backerei", "BreadsSale", "KaufPos")
-		if not f_MoveTo("","backerei",GL_MOVESPEED_RUN,Rand(50)) then
-		    return
-		end
-		local prodNam = ItemGetLabel(Choice,true)
-		if GetItemCount("backerei", Choice, INVENTORY_SELL)>0 then
-	    if Rand(2) == 0 then
-		    PlayAnimationNoWait("","manipulate_middle_twohand")
-		    MsgSay("","@L_HPFZ_IDLELIB_GETFOOD_SPRUCH_+0",prodNam)
-	    else
-		    MsgSayNoWait("","@L_HPFZ_IDLELIB_GETFOOD_SPRUCH_+1",prodNam)
-		    CarryObject("", "Handheld_Device/ANIM_Pretzel.nif", false)
-		    PlayAnimationNoWait("","eat_standing")
-		    Sleep(6)
-		    CarryObject("","",false)
-	    end
-			Transfer(nil,nil,INVENTORY_STD,"backerei",INVENTORY_SELL,Choice,(Rand(5)+1))
-		else
-			PlayAnimationNoWait("","propel")
-			if Rand(2) == 0 then
-				MsgSay("","@L_HPFZ_IDLELIB_GETFOOD_SPRUCH_+2",prodNam)
-			else
-				MsgSay("","@L_HPFZ_IDLELIB_GETFOOD_SPRUCH_+3",prodNam)
-			end
-			if BuildingGetOwner("backerei","Cheffi") then
-			    chr_ModifyFavor("","Cheffi",-5)
-			end
-		end
-		SatisfyNeed("", 1, 0.15)
-	elseif store == 1 then
-		Wares = {"FarmersClothes","CitizensClothes","NoblesClothes"}
-		local Choice = Wares[(Rand(3)+1)]
-		if not CityGetRandomBuilding("City",2,9,-1,-1,FILTER_HAS_DYNASTY,"schneiderei") then
-			return
-		end
-    --GetLocatorByName("schneiderei", "Hallstand_01_2", "KaufPos")
-		if not f_MoveTo("","schneiderei",GL_MOVESPEED_RUN,Rand(50)) then
-			return
-		end
-		local prodNam = ItemGetLabel(Choice,true)
-		if GetItemCount("schneiderei", Choice, INVENTORY_SELL)>0 then
-			PlayAnimationNoWait("","manipulate_middle_twohand")
-			if Rand(2) == 0 then
-			  MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+0",prodNam)
-			else
-				MsgSayNoWait("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+1",prodNam)
-			end
-			Transfer(nil,nil,INVENTORY_STD,"schneiderei",INVENTORY_SELL,Choice,(Rand(5)+1))
-		else
-			PlayAnimationNoWait("","propel")
-			if Rand(2) == 0 then
-			  MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+2",prodNam)
-			else
-				MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+3",prodNam)
-			end
-			if BuildingGetOwner("schneiderei","Cheffi") then
-				chr_ModifyFavor("","Cheffi",-5)
-			end
-		end
-		SatisfyNeed("", 7, 0.15)
-	elseif store == 2 then
-		Wares = {"Torch","BuildMaterial","WalkingStick","CrossOfProtection","RubinStaff"}
-		local Choice = Wares[(Rand(5)+1)]
-		if not CityGetRandomBuilding("City",2,8,-1,-1,FILTER_HAS_DYNASTY,"tischler") then
-		    return
-		end
-        --GetLocatorByName("tischler", "SawDust1", "KaufPos")
-		if not f_MoveTo("","tischler",GL_MOVESPEED_RUN,Rand(50)) then
-		    return
-		end
-		local prodNam = ItemGetLabel(Choice,true)
-		if GetItemCount("tischler", Choice, INVENTORY_SELL)>0 then
-			PlayAnimationNoWait("","manipulate_middle_twohand")
-			if Rand(2) == 0 then
-			    MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+0",prodNam)
-			else
-				MsgSayNoWait("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+1",prodNam)
-			end
-			Transfer(nil,nil,INVENTORY_STD,"tischler",INVENTORY_SELL,Choice,(Rand(5)+1))
-		else
-			PlayAnimationNoWait("","propel")
-			if Rand(2) == 0 then
-			    MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+2",prodNam)
-			else
-				MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+3",prodNam)
-			end
-			if BuildingGetOwner("tischler","Cheffi") then
-			    chr_ModifyFavor("","Cheffi",-5)
-			end
-		end		
-		SatisfyNeed("", 7, 0.15)
-	elseif store == 3 then
-		Wares = {"Tool","SilverRing","GoldChain","GemRing"}
-		local Choice = Wares[(Rand(4)+1)]
-		if not CityGetRandomBuilding("City",2,7,-1,-1,FILTER_HAS_DYNASTY,"schmied") then
-		    return
-		end
-        --GetLocatorByName("schmied", "Anvil", "KaufPos")
-		if not f_MoveTo("","schmied",GL_MOVESPEED_RUN,Rand(50)) then
-		    return
-		end
-		local prodNam = ItemGetLabel(Choice,true)
-		if GetItemCount("schmied", Choice, INVENTORY_SELL)>0 then
-			PlayAnimationNoWait("","manipulate_middle_twohand")
-			if Rand(2) == 0 then
-			    MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+0",prodNam)
-			else
-				MsgSayNoWait("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+1",prodNam)
-			end
-			Transfer(nil,nil,INVENTORY_STD,"schmied",INVENTORY_SELL,Choice,(Rand(5)+1))
-		else
-			PlayAnimationNoWait("","propel")
-			if Rand(2) == 0 then
-			    MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+2",prodNam)
-			else
-				MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+3",prodNam)
-			end
-			if BuildingGetOwner("schmied","Cheffi") then
-			    chr_ModifyFavor("","Cheffi",-5)
-			end
-		end		
-		SatisfyNeed("", 7, 0.15)
-	else
-		Wares = {"bust","statue"}
-		local Choice = Wares[(Rand(2)+1)]
-		if not CityGetRandomBuilding("City",2,110,-1,-1,FILTER_HAS_DYNASTY,"smetz") then
-		    return
-		end
-        --GetLocatorByName("smetz", "Propel", "KaufPos")
-		if not f_MoveTo("","smetz",GL_MOVESPEED_RUN,Rand(50)) then
-		    return
-		end
-		local prodNam = ItemGetLabel(Choice,true)
-		if GetItemCount("smetz", Choice, INVENTORY_SELL)>0 then
-			PlayAnimationNoWait("","manipulate_middle_twohand")
-			if Rand(2) == 0 then
-			    MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+0",prodNam)
-			else
-				MsgSayNoWait("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+1",prodNam)
-			end
-			Transfer(nil,nil,INVENTORY_STD,"smetz",INVENTORY_SELL,Choice,(Rand(5)+1))
-		else
-			PlayAnimationNoWait("","propel")
-			if Rand(2) == 0 then
-			    MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+2",prodNam)
-			else
-				MsgSay("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+3",prodNam)
-			end
-			if BuildingGetOwner("smetz","Cheffi") then
-			    chr_ModifyFavor("","Cheffi",-5)
-			end
-		end			
-		SatisfyNeed("", 7, 0.15)
+	-- TODO include type in filter 
+	economy_GetRandomBuildingByRanking("City", Workshop)
+	--GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type)
+	
+	-- Don't move there if it is too far
+	if not AliasExists(Workshop) or GetDistance("", Workshop) > 15000 then
+		return
 	end
-
+	
+	-- move near the shop
+	local offset = 50 + Rand(101)
+	if not f_MoveTo("", Workshop, GL_MOVESPEED_RUN, offset) then -- Move
+		return
+	end
+	
+	-- calculate available budget (up to 10% of current money)
+	local Budget
+	if IsDynastySim("") then
+		math.min(2000, math.floor(GetMoney("") / 10))
+	else
+		Budget = SimGetRank("") * 100
+	end
+	-- Buy items up to budget, but no more than 5 (prevents outsales of lower items)
+	local ItemId, ItemCount = economy_BuyRandomItems(Workshop, "", Budget, Rand(5)+1)
+	if ItemId and ItemId > 0 then
+		local ProdName = ItemGetLabel(ItemId, ItemCount == 1)
+		if ItemCount <= 0 then
+		-- nothing available for my budget -- lets shout
+			local ProdType
+			if Type == 1 then 
+				ProdType = "GETGOOD" 
+			else 
+				ProdType = "GETFOOD" 
+			end 
+			PlayAnimationNoWait("","propel")
+			if Rand(2) == 0 then
+				MsgSay("","@L_HPFZ_IDLELIB_"..ProdType.."_SPRUCH_+2",ProdName)
+			else
+				MsgSay("","@L_HPFZ_IDLELIB_"..ProdType.."_SPRUCH_+3",ProdName)
+			end
+			if GetProperty(Workshop,"MsgSell")~=0 then
+				MsgNewsNoWait("ShopOwner","","","building",-1,
+				"@L_MEASURES_BUYSTUFF_HEAD",
+				"@L_MEASURES_BUYSTUFF_FAIL",ProdName, GetID(""), GetID(Workshop))
+			end
+			Sleep(Rand(4)+1) -- cool down before you leave ;)
+			return
+		end
+		BuildingGetOwner(Workshop, "BldOwner")
+		local ProdType
+		if GL_CLASS_PATRON == SimGetClass("BldOwner") then
+			ProdType = "GETFOOD"
+			SatisfyNeed("", 1, 0.5)
+		else
+			ProdType = "GETGOOD"
+			SatisfyNeed("", 7, 0.5)
+		end
+		if Rand(2) == 0 then
+			PlayAnimationNoWait("","manipulate_middle_twohand")
+			MsgSay("","@L_HPFZ_IDLELIB_"..ProdType.."_SPRUCH_+0",ProdName)
+		else
+			if ProdType == "GETFOOD" then -- only eat food
+				MsgSayNoWait("","@L_HPFZ_IDLELIB_GETFOOD_SPRUCH_+1",ProdName)
+				CarryObject("", "Handheld_Device/ANIM_Pretzel.nif", false)
+				PlayAnimationNoWait("","eat_standing")
+				Sleep(6)
+				CarryObject("","",false)
+			else
+				MsgSayNoWait("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+1",ProdName)
+			end
+		end
+		IncrementXPQuiet("",10)
+	end
+	Sleep(Rand(4)+1)
 end
 
 -- -----------------------
@@ -1037,14 +940,14 @@ function GoToTavern()
 				end
 				
 				local Choice = Items[Rand(2)+1]	
-				if GetItemCount("Destination", Choice, INVENTORY_SELL)>0 then
-					Transfer(nil, nil, INVENTORY_STD, "Destination", INVENTORY_SELL, Choice, NumItems)
+				local ItemCount, TotalPrice = economy_BuyItems("Destination", "", Choice, NumItems, true)
+				if ItemCount > 0 then
 					SatisfyNeed("", needo, 0.3)
 					if HasProperty("Destination","ServiceActive") then
 						local TavernLevel = BuildingGetLevel("Destination")
 						local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
 						local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-						CreditMoney("Destination",Tip,"tip")
+						CreditMoney("Destination", Tip, "tip")
 					end
 				end
 			end
@@ -1153,7 +1056,7 @@ function RepairHome(Building)
 	end
 	GetOutdoorMovePosition("",Building,"WorkPos2")
 	if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID(Building) then
-	
+		-- buy some material at market		
 		if Rand(100)<50 then
 			Transfer(nil,nil,INVENTORY_STD,"Destination",INVENTORY_STD,"BuildMaterial",1)
 		else
@@ -1682,34 +1585,20 @@ function GoToDivehouse()
 			end
 			SatisfyNeed("", 8, 0.1)
 			
---			if SimGetNeed("", 8) > 0.2 then
-				local NumItems = Rand(2)+1
-				if HasProperty("Destination","DanceShow") then
-					NumItems = Rand(3)+2
-				end
-				local	Items = { "SmallBeer", "WheatBeer", "PiratenGrog", "Schadelbrand" }
-				local Choice = Items[Rand(4)+1]	
-				if GetItemCount("Destination", Choice, INVENTORY_SELL)>0 then
-					if Choice == "PiratenGrog" or Choice == "Schadelbrand" then
-						RemoveItems("Destination",Choice,NumItems,INVENTORY_SELL)
-						if Choice == "PiratenGrog" then
-							CreditMoney("Destination",20,"Offering")
-						else
-							CreditMoney("Destination",50,"Offering")
-						end
-					else
-						Transfer(nil, nil, INVENTORY_STD, "Destination", INVENTORY_SELL, Choice, NumItems)
-					end
---					SatisfyNeed("", 8, 0.3)
-					if HasProperty("Destination","ServiceActive") then
-						local TavernLevel = BuildingGetLevel("Destination")
-						local TavernAttractivity = GetImpactValue("Destination", "Attractivity")	
+			local NumItems = Rand(2)+1
+			if HasProperty("Destination","DanceShow") then
+				NumItems = Rand(3)+2
+			end
+			local BoughtItem, BoughtAmount = economy_BuyRandomItems("Destination", "", 0, NumItems)
+			if BoughtItem and BoughtItem > 0 then
+				if HasProperty("Destination","ServiceActive") then
+					local TavernLevel = BuildingGetLevel("Destination")
+					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")	
 
-						local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-						CreditMoney("Destination",Tip,"tip")
-					end
+					local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
+					CreditMoney("Destination",Tip,"tip")
 				end
---			end
+			end
 			verweile = verweile - 1
 		end
 		if lokalPos == 0 then
@@ -2309,7 +2198,8 @@ function BuySomeCoin(SplitNumber)
 				end
 			end
 			Choice=Items[Choice]
-			if GetItemCount("Destination", Choice, INVENTORY_SELL)>0 then
+			local ItemCount, TotalPrice = economy_BuyItems("Destination", "", Choice, 1)
+			if ItemCount > 0 then
 				CarryObject("Destination","Handheld_Device/ANIM_Smallsack.nif",false)
 				local playTime = PlayAnimationNoWait("","use_object_standing")
 				local prodNam = ItemGetLabel(Choice,true)
@@ -2318,7 +2208,6 @@ function BuySomeCoin(SplitNumber)
 				else
 					MsgSayNoWait("","@L_HPFZ_IDLELIB_GETGOOD_SPRUCH_+1",prodNam)
 				end
-				Transfer(nil, nil, INVENTORY_STD, "Destination", INVENTORY_SELL, Choice, 1)
 				PlaySound3D("","Effects/coins_to_moneybag+0.wav", 1.0)
 	
 				if BuildingGetOwner("Destination","Glaubiger") then
