@@ -51,7 +51,7 @@ _Design_
 - The 'thinkbreak' where you could compliment and bribe during office sessions and trials has been removed. Reasons for that are balancing, bugs and the time it added to the sessions.
   You now have to prepare before the sessions start.
 - State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
-- The Icon for 'Offer building protection' (mercenary) has been redesigned.
+- Multiple icons have been reworked.
 
 *** Vanilla-Bugs ***
 
