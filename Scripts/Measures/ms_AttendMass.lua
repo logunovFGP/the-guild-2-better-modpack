@@ -82,11 +82,11 @@ function Run()
 		Sleep(WaitStep)
 
 		if not HouselTaken then
-			if GetItemCount("Destination", "Housel", INVENTORY_SELL)>0 then
-				Transfer(nil, nil, INVENTORY_STD, "Destination", INVENTORY_SELL, "Housel", 1)
-				SatisfyNeed("", 4, -0.25)
+			local BoughtHousels = economy_BuyItems("Destination", "", ItemGetID("Housel"), 1)
+			if BoughtHousels >= 1 then
 				HouselTaken = true
 			end
+			SatisfyNeed("", 4, -0.25)
 		end
 
 		SatisfyNeed("", 4, Progress)

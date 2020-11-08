@@ -18,64 +18,11 @@ function Run()
 	MeasureSetNotRestartable()
 	
 	if not AliasExists("Destination") then
-	
-		local DistanceBest = -1
-		local Attractivity
-		local Distance
-		local NumHospitals = CityGetBuildings("City",2,37,-1,-1,FILTER_HAS_DYNASTY,"Hospital")
-		if NumHospitals == 0 then
+		-- level of hospital could be included to make sure the current disease is curable
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_HOSPITAL)
+		if not AliasExists("Destination") then
 			MsgQuick("","@L_MEDICUS_FAILURES_+1")
 			StopMeasure()
-		end
-		
-		for i=0,NumHospitals-1 do
-		
-			if IgnoreID and IgnoreID == GetID("Hospital"..i) then
-				Distance = -1
-			else
-				Attractivity = GetImpactValue("Hospital"..i,"Attractivity")		
-				Attractivity = Attractivity + ((BuildingGetLevel("Hospital"..i) -1) / 2)
-				Distance			= GetDistance("","Hospital"..i)
-				if Distance > 0 then
-					Distance = Distance / (0.5 + Attractivity)
-				end
-			end
-			
-			local MinLevel = 1
-			
-			if GetImpactValue("","Sprain")==1 then
-				MinLevel = 1
-			elseif GetImpactValue("","Cold")==1 then
-				MinLevel = 1
-			elseif GetImpactValue("","Influenza")==1 then
-				MinLevel = 2
-			elseif GetImpactValue("","BurnWound")==1 then
-				MinLevel = 2
-			elseif GetImpactValue("","Pox")==1 then
-				MinLevel = 2
-			elseif GetImpactValue("","Pneumonia")==1 then
-				MinLevel = 3
-			elseif GetImpactValue("","Blackdeath")==1 then
-				MinLevel = 3
-			elseif GetImpactValue("","Fracture")==1 then
-				MinLevel = 3
-			elseif GetImpactValue("","Caries")==1 then
-				MinLevel = 3
-			end
-			
-			if BuildingGetLevel("Hospital"..i) < MinLevel then
-				Distance = -1
-			end
-			
-			if Distance>=0 and (DistanceBest==-1 or Distance<DistanceBest) then
-				CopyAlias("Hospital"..i,"Destination")
-				DistanceBest = Distance
-			end
-		end
-		
-		if DistanceBest==-1 then
-			MsgQuick("", "@L_MEASURE_AttendDoctor_NODOC_+0", GetID(""))
-			return
 		end
 	end
 	

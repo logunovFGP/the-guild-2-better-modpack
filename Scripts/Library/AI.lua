@@ -384,18 +384,9 @@ function TransferError(ErrorNumber, BuyerAlias, SellerAlias, ItemId, ItemCount)
 end
 
 function CanBuyItem(SimAlias, Item, Count, CityAlias, PlaceAlias)
-
-	if not Count then
-		Count = 1
-	end
-	
-	if not PlaceAlias then
-		PlaceAlias = "__AI_CBI_PLACE"
-	end
-	
-	if not CityAlias then
-		CityAlias = "__AI_CBI_CITY"
-	end
+	Count = Count or 1
+	PlaceAlias = PlaceAlias or "__AI_CBI_PLACE"
+	CityAlias = CityAlias or "__AI_CBI_CITY"
 
 	if not CanAddItems(SimAlias, Item, Count, INVENTORY_STD) then
 		return -1
@@ -406,22 +397,19 @@ function CanBuyItem(SimAlias, Item, Count, CityAlias, PlaceAlias)
 	end
 	
 	local Price = CityGetSeller(CityAlias, SimAlias, Item, 1, PlaceAlias)
+	-- TODO ToM: Check if this return only markets. If so, extend to workshops. 
 
 	return Price
 end
 
 
 function BuyItem(SimAlias, Item, ItemCount)
-
-	if not ItemCount then
-		ItemCount = 1
-	end
-	
+	ItemCount = ItemCount or 1
 	local PlaceAlias 	= "__AI_CBI_PLACE"
 	local CityAlias 	= "__AI_CBI_CITY"
-	local Price 			= ai_CanBuyItem(SimAlias, Item, ItemCount, CityAlias, AliasName)
+	local Price 			= ai_CanBuyItem(SimAlias, Item, ItemCount, CityAlias, PlaceAlias)
 	
-	if Price<0 then
+	if Price < 0 then
 		return false
 	end
 	
@@ -444,7 +432,12 @@ function BuyItem(SimAlias, Item, ItemCount)
 		return false
 	end
 	
-	local Done = ai_Transfer(SimAlias, SimAlias, INVENTORY_STD, PlaceAlias, eInv, Item, ItemCount)
+	local Done
+	if eInv == INVENTORY_STD then -- market
+		Done = ai_Transfer(SimAlias, SimAlias, INVENTORY_STD, PlaceAlias, eInv, Item, ItemCount)
+	else
+		Done = economy_BuyItems(PlaceAlias, SimAlias, Item, ItemCount, INVENTORY_STD)
+	end
 	return (Done >= ItemCount)
 end
 

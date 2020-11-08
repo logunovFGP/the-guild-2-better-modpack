@@ -178,3 +178,4 @@ Data:
 1008         "GL_PROFESSION_STONEMASONER"    62                ""                              | 
 1009         "GL_BUILDING_TYPE_FRUITFARM"    108               ""                              |
 1010         "GL_BUILDING_TYPE_ESTATE"       111               ""                              | 
+1011         "GL_BUILDING_TYPE_DIVEHOUSE"     36               ""                              |

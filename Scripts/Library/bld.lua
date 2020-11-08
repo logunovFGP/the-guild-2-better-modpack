@@ -994,6 +994,10 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	--	bld_SetupAI(BldAlias)
 	end
 	
+	if math.mod(GetGametime(), 8) == 3 then
+		economy_CalculateSalesRanking(BldAlias)
+	end
+	
 	-- Only for AI
 	if GetHomeBuilding("MyBoss", "MyHome") then
 		if DynastyIsAI("MyBoss") then -- or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
