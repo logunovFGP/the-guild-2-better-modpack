@@ -3,6 +3,14 @@ function Weight()
   if not IsPartyMember("SIM") then
 		return 0
 	end
+	
+	if not SimGetWorkingPlace("SIM", "Taverne") then
+		return 0
+	end
+	
+	if not BuildingHasUpgrade("Taverne", "Regularstable") then
+		return 0
+	end
 
 	if GetMeasureRepeat("SIM", "Ausschenken") > 0 then
 		return 0
@@ -16,10 +24,6 @@ function Weight()
 		return 0
 	end
 	
-	if not SimGetWorkingPlace("SIM", "Taverne") then
-		return 0
-	end
-
 	if CityFindCrowdedPlace("City", "SIM", "betrugPlatz")==0 then
 		return 0
 	end
