@@ -93,6 +93,7 @@ _Allgemein_
 - Waren keine Wahlberechtigten anwesend, leitete der Stadtschreiber die Sitzung - vom Vorraum aus. Nun wird dies eine der Rathauswachen übernehmen.
 - Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
 - Es konnte passieren, dass gesammelte Items nicht abgeladen wurden, wenn den Sammlern eine neue Aufgabe gegeben wurde. Nun wird das Inventar geleert, wenn eine neue Production gestartet wird und sich der Charakter im Gebäude aufhält.
+- Bei der Maßnahme 'Jemanden umgarnen' wurden keine Sprachdateien abgespielt.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

@@ -9,25 +9,16 @@
 
 
 function Run()
-	if (GetState("", STATE_CUTSCENE)) then
-		SetData("FromCutscene",1)
-		ms_flirt_Cutscene()
-	else
-		SetData("FromCutscene",0)
-		ms_flirt_Normal()
-	end
-end
-
-
-function Normal()
+	
 	if not AliasExists("Destination") then
 		return
 	end
 	
-	local officetime = math.mod(GetGametime(),24)
-	if SimGetOfficeLevel("Destination")>0 then
-		if officetime > 16.5 and officetime <= 17 then
-		StopMeasure()
+	-- stop it if office session is about to begin soon
+	local officetime = math.mod(GetGametime(), 24)
+	if SimGetOfficeLevel("Destination") > 0 then
+		if officetime > 16.6 and officetime <= 17 then
+			return
 		end
 	end
 	
@@ -39,10 +30,17 @@ function Normal()
 	local DestGender = SimGetGender("Destination")
 	
 	-- The minimum favor for this action to success
-	local RhetoricSkill = GetSkillValue("", RHETORIC)
-	local MinimumFavor = 50 - RhetoricSkill
-	local FavorWon = 5 + (RhetoricSkill * 0.5)
-	local FavorLoss = Rand(4)-9
+	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
+	local RhetoricSkill = (GetSkillValue("", RHETORIC))*2
+	local MinimumFavor = 50 + TitleDifference - RhetoricSkill
+	local FavorWon = 7 + (RhetoricSkill/2)
+	local FavorLoss = -10 - TitleDifference
+	if FavorLoss > -5 then
+		FavorLoss = -5
+	end
+	
+	local FlirtBonus = GetImpactValue("", 52)		-- 52 = FlirtProfi
+	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
 	
 	-- The action number for the courting
 	local CourtingActionNumber = 0
@@ -51,7 +49,6 @@ function Normal()
 	local InteractionDistance=128
 
 	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
-		StopMeasure()
 		return
 	end	
 	
@@ -66,31 +63,14 @@ function Normal()
 	
 	-- Actually do the flirting
 	camera_CutscenePlayerLock("cutscene", "")
-	if (OwnerGender == GL_GENDER_MALE) then
-		Attach3DSound("", "CharacterFX/male_friendly/male_friendly+0.ogg", 0.5)
-	else
-		Attach3DSound("", "CharacterFX/female_friendly/female_friendly+0.ogg", 0.5)
-	end
-	SetData("AsyncTest",0)
 	MsgSay("", chr_FlirtSaying1(GetSkillValue("", RHETORIC), OwnerGender))
-	
 	camera_CutscenePlayerLock("cutscene", "Destination")
-	if (DestGender == GL_GENDER_MALE) then
-		Attach3DSound("Destination", "CharacterFX/male_neutral/male_neutral+0.ogg", 0.5)
-	else
-		Attach3DSound("Destination", "CharacterFX/female_neutral/female_neutral+0.ogg", 0.5)
-	end
-	SetData("AsyncTest",0)
 	MsgSay("Destination", chr_FlirtAnswer(GetSkillValue("Destination", RHETORIC), DestGender))
-	
 	camera_CutscenePlayerLock("cutscene", "")
-
-	SetData("AsyncTest",0)
 	MsgSay("", chr_FlirtSaying2(GetSkillValue("", RHETORIC), OwnerGender))
 	
 	local WasCourtLover = 0
-	Detach3DSound("")
-	Detach3DSound("Destination")	
+	
 	chr_BlockSocialMeasures("")
 	
 	-------------------------
@@ -111,8 +91,6 @@ function Normal()
 				Sleep(DestinationAnimationLength * 0.4)
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-
-				SetData("AsyncTest",0)
 				MsgSay("Destination", chr_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 				Sleep(DestinationAnimationLength * 0.2)
 				
@@ -131,7 +109,6 @@ function Normal()
 				end
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)				
-				SetData("AsyncTest",0)
 				MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
 				
 			end
@@ -165,7 +142,6 @@ function Normal()
 				PlayAnimationNoWait("Destination", "shake_head")
 			end
 
-			SetData("AsyncTest",0)
 			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
 			
 		else
@@ -178,7 +154,6 @@ function Normal()
 				PlayAnimationNoWait("Destination", "bow")
 			end		
 			
-			SetData("AsyncTest",0)
 			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, 10))			
 			
 			-- Set the repeat timer and the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
@@ -188,110 +163,6 @@ function Normal()
 		end
 			
 	end
-end
-
-
-function Cutscene()
-	if not AliasExists("Destination") then
-		return
-	end
-	
-	if SimGetCutscene("","cutscene") then
-		CutsceneSetMeasureLockTime("cutscene", 2.0)
-	end
-	
-	-- The time in hours until the measure can be repeated
-	local MeasureID = GetCurrentMeasureID("")
-	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
-	local DestGender = SimGetGender("Destination")
-	
-	-- The minimum favor for this action to success
-	local CharismaSkill = GetSkillValue("", CHARISMA)
-	local MinimumFavor = 45 - (CharismaSkill*3)
-	local FavorWon = 10 + CharismaSkill
-	local FavorLoss = - (10 + (CharismaSkill / 2))
-	
-	-- The action number for the courting
-	local CourtingActionNumber = 0
-
-	-- The distance between both sims to interact with each other
-	local InteractionDistance=128
-
---	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
---		MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+0", GetID("Destination"), GetID(""))
---		return
---	end	
-	
-	local WasCourtLover = 0
-	
-	Sleep(1)
-	
-	-------------------------
-	------ Court Lover ------
-	-------------------------
-	if SimGetCourtLover("", "CourtLover") then
-		if GetID("CourtLover")==GetID("Destination") then
-		
-			WasCourtLover = 1
-			local ModifyFavor = FavorWon
-		
-			EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			if (EnoughVariation == false) then
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-
-				SetData("AsyncTest",0)
-				MsgSay("Destination", chr_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
-			else
-				
-				if (CourtingProgress < -5) then
-					ModifyFavor = FavorLoss
-				elseif (CourtingProgress < 1) then
-					ModifyFavor = FavorLoss
-				end
-				
-				SetData("AsyncTest",0)
-				MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)				
-			end
-			
-			-- Add the archieved progress
-			chr_ModifyFavor("Destination", "", ModifyFavor)
-			SimAddCourtingProgress("")
-		end			
-	end
-		
-	----------------------------
-	------ No Court Lover ------
-	----------------------------
-	if (WasCourtLover==0) then
-		local IsMale = (OwnerGender == GL_GENDER_MALE)
-		if (GetFavorToSim("Destination", "") < MinimumFavor) then
-			
-			-- Set the repeat timer and the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again
-			SetRepeatTimer("Destination", GetMeasureRepeatName2("Flirt"), TimeUntilRepeat)
-			feedback_OverheadComment("Destination","@L$S[2006] %1n", false, false, FavorLoss)
-			chr_ModifyFavor("Destination", "", FavorLoss)
-			
-			SetData("AsyncTest",0)
-			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
-		else
-			-- Set the repeat timer and the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
-			SetRepeatTimer("", GetMeasureRepeatName2("Flirt"), TimeUntilRepeat)
-			feedback_OverheadComment("Destination","@L$S[2007] %1n", false, false, FavorWon)
-			chr_ModifyFavor("Destination", "", FavorWon)
-
-			SetData("AsyncTest",0)
-			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, 10))			
-		end
-	end
-	
-	if SimGetCutscene("","cutscene") then
-		CutsceneCallUnscheduled("cutscene", "UpdatePanel")
-		Sleep(0.1)
-	else
-		return
-	end	
-		
 end
 
 -- -----------------------
@@ -299,21 +170,19 @@ end
 -- -----------------------
 function CleanUp()
 	
-	if GetData("FromCutscene") == 0 then
-		DestroyCutscene("cutscene")
-		ReleaseAvoidanceGroup("")
-		MoveSetActivity("")
-		StopAnimation("")
+	DestroyCutscene("cutscene")
+	ReleaseAvoidanceGroup("")
+	MoveSetActivity("", "")
+	StopAnimation("")
 		
-		if AliasExists("Destination") then
-			MoveSetActivity("Destination")
-			SimLock("Destination", 0.25)
-		end		
-	end
+	if AliasExists("Destination") then
+		MoveSetActivity("Destination", "")
+		SimLock("Destination", 0.25)
+	end		
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 
