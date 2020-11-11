@@ -201,15 +201,36 @@ Translate and add the following lines below:
 18198   "_BUILDING_Watchtower1_TOOLTIP_+0"   "The look-out tower is equipped with only limited firepower, but can be quite dangerous for a small ship. Like all towers it works also against attacks on land."   |
 18199   "_MEDICUS_FAILURES_+0"   "Action not possible - you are sick already and thus can't use this item."   |
 18200   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"   "Your %1GG needs more %2l in order to continue the treatment."   |
+18201   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_3_+3"   "Forester"   |
+18202   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_3_+2"   "Forester"   |
+18203   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_3_+1"   "Lumberman"   |
+18204   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_3_+0"   "Lumberman"   |
+18205   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_2_+3"   "Woodworker"   |
+18206   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_2_+2"   "Woodworker"   |
+18207   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_2_+1"   "Woodchopper"   |
+18208   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_2_+0"   "Woodchopper"   |
+18209   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_1_+3"   "Woodcutter"   |
+18210   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_1_+2"   "Woodcutter"   |
+18211   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_1_+1"   "Tree feller"   |
+18212   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_1_+0"   "Tree feller"   |
+18213   "_CHARACTERS_2_PROFESSIONS_lumberjack_NAME_+1"   "Lumberjack"   |
+18214   "_CHARACTERS_2_PROFESSIONS_lumberjack_NAME_+0"   "Lumberjack"   |
+18215   "_TWP_SALESCART_HELP_BODY_+0"   "Assign your cart to sell products from your workshop.$N$NYou may choose how many products shall remain in your storage. If you do not specify that, all products will be sold.$N$NOnce you start the measure, your driver will check the storage from time to time. Once your products reach a value of %2t the cart will sell the products at the nearest market.$N$NYour driver will take a break of about half an hour after each trip to the market."   |
+18216   "$1Tincome %1t gold"   "Income: %1t"   |
+18217   "_MEASURE_Quacksalver_TOOLTIP_+0"   ">Gather round, everyone! I offer you the most wondrous and at the same time most effective cures for whatever ailment may befall you!<$NMaybe you would never fall for such bogus claims yourself. But the common people are desperately eager to buy >miracle cures< from >rhetoricly gifted< quacksalvers against all kinds of afflictions. So why not profit from their ignorance?"   |
+18218   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"   "Tooth rot is a terrible thing. You are in constant pain, unable to eat and speak properly and your breath smells quite awful ...$NThe only secure way to treat this is to have the tooth pulled and take some pain medication.$N$NYour rhetoric and charisma talents are reduced by 3. Tooth rot has no maximum duration."   |
 
 
 
 Delete the following lines:
+70   "$1Tincome %1t gold"
 779   "_BUILDING_Watchtower3_TOOLTIP_+0"
 795   "_BUILDING_Watchtower2_TOOLTIP_+0"
 822   "_BUILDING_Watchtower1_TOOLTIP_+0"
 927   "_MEDICUS_FAILURES_+0"
 1022   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"
+1038   "_MEASURE_Quacksalver_TOOLTIP_+0"
+1043   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"
 
 7804   "Hat_+0"
 7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"  
