@@ -28,6 +28,33 @@ function GetItemsForSale(BldAlias)
 	return Count, Items
 end
 
+---- returns count and the list of items (by itemId) that can be sold at this workshop. See BuildingToItems.dbt
+function GetProducedItems(BldAlias)
+	if (not BldAlias or not AliasExists(BldAlias)) then
+		return 0, {} 
+	end
+	
+	local BldId = BuildingGetProto(BldAlias)
+	local ItemsString
+	if GL_BUILDING_TYPE_WAREHOUSE == BuildingGetType(BldAlias) then
+		-- Warehouse may offer anything, check current offer 
+		ItemsString = GetProperty(BldAlias, "SalesCounterItems")
+	else
+		-- production buildings may only offer their own products
+		ItemsString = GetDatabaseValue("BuildingToItems", BldId, "produceditems")
+	end
+	if ItemsString == nil then
+		return 0, {}
+	end
+	local Items = {}
+	local Count = 0
+	for Id in string.gfind(ItemsString, "%d+") do
+		Count = Count + 1
+		Items[Count] = ItemGetID(Id)
+	end
+	return Count, Items
+end
+
 -- Count and Items should be taken from above function GetItemsForSale
 -- TODO this function is currently unused. It may be used to manage salescounter.
 function UpdateSalescounter(BldAlias, Count, Items)
@@ -329,7 +356,7 @@ end
 
 function LogProductionNeeds(BldAlias)
 	LogMessage("::TWPECONOMY:: Logging AI Settings")
-	local Count, Items = economy_GetItemsForSale(BldAlias)
+	local Count, Items = economy_GetProducedItems(BldAlias)
 	GetInventory(BldAlias, INVENTORY_STD, "Inv") 
 	
 	local Item, Need
@@ -583,7 +610,7 @@ function CalcProductionPriorities(BldAlias, ProdCount, ProdItems)
 	end
 	
 	if not ProdCount or not ProdItems then
-		ProdCount, ProdItems = economy_GetItemsForSale(BldAlias)
+		ProdCount, ProdItems = economy_GetProducedItems(BldAlias)
 	end
 	
 	-- 2. Get local market

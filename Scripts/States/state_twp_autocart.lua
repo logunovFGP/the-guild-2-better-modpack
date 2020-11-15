@@ -28,24 +28,26 @@ function Run()
 	if CartSlots <= 0 then
 		return
 	end
-	local Count, Items = economy_GetItemsForSale("MyHome")
-	for i = 1, Count do
-		if Items[i] == 360 or Items[i] == 360 or Items[i] == 364 or Items[i] == 365 or Items[i] == 371 then
-			Items[i] = { Items[i], 30 }
-		else
-			Items[i] = { Items[i], 0 }
-		end
-	end
 
 	state_twp_autocart_UnloadItems(CartSlots, CartSlotSize, "MyHome")
 	
 	while true do
+		local BuildingType = BuildingGetProto("MyHome")
+		local Count, Items = economy_GetProducedItems("MyHome")
+		for i = 1, Count do
+			if Items[i] == 360 or Items[i] == 360 or Items[i] == 364 or Items[i] == 365 or Items[i] == 371 then
+				Items[i] = { Items[i], 30 }
+			else
+				Items[i] = { Items[i], 0 }
+			end
+		end
+	
 		-- 3. Calculate expected profit for each item
 		local CityAlias = "MyCity"
 		local ProfitCount, Profits = 0, {}
 		if Count and Count > 0 then
 			CityGetLocalMarket("MyCity","MyMarket")
-			ProfitCount, Profits = economy_CalcProfits("MyMarket", "MyHome", Count, Items, 500) 
+			ProfitCount, Profits = economy_CalcProfits("MyMarket", "MyHome", Count, Items, 400) 
 			if ProfitCount <= 0 then
 				ProfitCount, Profits, CityAlias = state_twp_autocart_CalcProfitsOutside("MyHome", Count, Items)
 			end 
@@ -68,7 +70,9 @@ end
 function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, CityAlias) 
 	local NeedCount, Needs
 	if ProfitCount > 0 then
+		RemoveItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
 		cart_LoadItems("", "MyHome", ProfitCount, Profits)
+		AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD) 
 	else
 		NeedCount, Needs = state_twp_autocart_CalcResourceNeeds("MyHome")
 		if not NeedCount or NeedCount <= 0 then
