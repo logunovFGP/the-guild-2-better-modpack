@@ -36,16 +36,22 @@ end
 
 
 function PingHour()
-	marketpinghour_RemoveItemMarket()
+	if not GetSettlement("", "City") then
+		return 0
+	end
+
+	if CityIsKontor("City") then
+		return 0
+	end
+
+	marketpinghour_RemoveItemMarket("City")
 	
 	if math.mod(GetGametime(), 3) == 2 then -- at 2, 5, 8, 11, ...
-		if GetSettlement("", "City") then
-			local Level = CityGetLevel("City")
-			marketpinghour_CheckResources(Level)
-		end
+		local Level = CityGetLevel("City")
+		marketpinghour_CheckResources(Level)
 	end
 	
-	if math.mod(GetGametime(), 24) == 5 and GetSettlement("", "City") then -- at 5am
+	if math.mod(GetGametime(), 24) == 5 then -- at 5am
 		economy_CalcNeedsForMarket("City")
 		economy_CalcSalesForMarket("City")
 	end
@@ -102,14 +108,6 @@ end
 
 
 function RemoveItemMarket()
-	if not GetSettlement("", "City") then
-		return 0
-	end
-	
-	if CityIsKontor("City") then
-		return 0
-	end
-
  local chance, Name, Baseprice, Sellprice
  local Reducevalue = Rand(6)
  local item = {
@@ -134,17 +132,16 @@ function RemoveItemMarket()
 		"Voodo", "Robe", "Pddv"
 		}
  
+	local NewBaseprice
 	for i=0, 114 do
-	Name = item[i]
-
+		Name = item[i]
 		if (Name ~= nil) then
-		Baseprice = ItemGetBasePrice(Name)
-		NewBaseprice = Baseprice - math.floor((Baseprice / 100 * 10))
-		Sellprice = ItemGetPriceSell(Name, "") 
+			Baseprice = ItemGetBasePrice(Name)
+			NewBaseprice = Baseprice - math.floor((Baseprice / 100 * 10))
+			Sellprice = ItemGetPriceSell(Name, "") 
 			if Sellprice < NewBaseprice then
-			RemoveItems ("", Name, Reducevalue, INVENTORY_STD)
+				RemoveItems ("", Name, Reducevalue, INVENTORY_STD)
 			end 
-
 		end
 	end
 end
