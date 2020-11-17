@@ -8,9 +8,9 @@ Table Description:
 "id" INT -1 |"name" STRING  0     |"produceditems" STRING  0   |"requireditems" STRING  0   |"requireditemusages" STRING  0   |
 
 Data: 
-100   "Farm1"   "10 8 2 3 "   ""   ""   |
-101   "Farm2"   "10 8 2 3 11 "   ""   ""   |
-102   "Farm3"   "10 8 2 3 11 "   ""   ""   |
+100   "Farm1"   "11 8 2 3 "   ""   ""   |
+101   "Farm2"   "11 8 2 3 10 "   ""   ""   |
+102   "Farm3"   "11 8 2 3 10 "   ""   ""   |
 120   "Bakery1"   "20   21   "   "943 944 940 "   "4 4 4 "   |
 121   "Bakery2"   "20   21   22   23 "   "943 944 940 941 "   "8 8 4 4 "   |
 122   "Bakery3"   "20   21   22   23 25 26 27"   "943 944 940 941 121 "   "8 12 4 4 2 "   |
