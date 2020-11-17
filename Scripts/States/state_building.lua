@@ -118,7 +118,8 @@ function BuildingLoop()
 	end
 	
 	local	Played = ScenarioGetTimePlayed()
-	if (Played == 0 or H4x0r == 1) then
+	local H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
+	if (Played==0 or H4x0r==1) then
 		SetData("InstaBuild", 1)
 		return
 	end
