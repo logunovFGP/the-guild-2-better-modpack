@@ -52,8 +52,9 @@ function PingHour()
 	end
 	
 	if math.mod(GetGametime(), 24) == 5 then -- at 5am
-		economy_CalcNeedsForMarket("City")
+		local CityNeedCount, CityNeeds = economy_CalcNeedsForMarket("City")
 		economy_CalcSalesForMarket("City")
+		marketpinghour_SendFarTrader(CityNeedCount, CityNeeds)
 	end
 end
 
@@ -144,4 +145,63 @@ function RemoveItemMarket()
 			end 
 		end
 	end
+end
+
+function SendFarTrader(CityNeedCount, CityNeeds)
+	if CityNeedCount <= 0 then
+		return -- nothing to do
+	end
+	-- get cart or create one
+	local CartID = GetProperty("", "TWP_FarTraderCart")
+	local CartAlias = "CartAlias"
+	if not CartID or not GetAliasByID(CartID, CartAlias) then
+		if not GetSettlement("", "MyCity") then
+			LogMessage("TWP::MarketPingHour Could not create cart, settlement not found.")
+			return
+		end
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
+			LogMessage("TWP::MarketPingHour Could not create cart, market building not found.")
+			return
+		end
+	
+		if not GetOutdoorMovePosition(CartAlias, "MarketBld", "SpawnPos") then
+			LogMessage("TWP::MarketPingHour Could not create cart, no spawn position found.")
+			return
+		end
+	
+		-- create new cart and save ID as property
+		if ScenarioCreateCart(EN_CT_OX, nil, "SpawnPos", CartAlias) then
+			SetEndlessMoney(CartAlias, true)
+			SetProperty("", "TWP_FarTraderCart", GetID(CartAlias))
+			SetProperty(CartAlias, "TWP_HomeBuilding", GetID(""))
+		else
+			LogMessage("TWP::MarketPingHour Could not create cart.")
+			return
+		end
+	elseif not HasProperty(CartAlias, "TWP_HomeBuilding") then
+		-- should not happen, but the Property was lost once during testing 
+		SetProperty(CartAlias, "TWP_HomeBuilding", GetID(""))
+	end
+	
+	local CurrentMeasure = GetCurrentMeasureName(CartAlias)
+	if CurrentMeasure == "FarTrader" then
+		return
+	end
+	
+	-- weighted random decision for one of the first 5 needs
+	local Weights = {}
+	for i=1, 5 do
+		if CityNeeds[i] then
+			Weights[i] = CityNeeds[i][2]
+		else 
+			break
+		end
+	end
+	local Choice = helpfuncs_RandWeighted(Weights)
+	local ItemToBuy = CityNeeds[Choice][1]
+	-- start measure with item and budget of 10000
+	MeasureCreate("Measure")
+	MeasureAddData("Measure", "Item", ItemToBuy)
+	MeasureAddData("Measure", "Budget", 10000)
+	MeasureStart("Measure", CartAlias, nil, "FarTrader")	
 end

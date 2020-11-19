@@ -109,7 +109,7 @@ function BuyNewCart(CartCount)
 
 	local NewCartType = EN_CT_MIDDLE
 
-	if CityLevel > 2 then
+	if CityLevel > 3 then
 		NewCartType = EN_CT_OX
 	end
 
@@ -135,7 +135,7 @@ end
 
 function CanBuyNewCart(CartCount)
 	local CityLevel = CityGetLevel("MyCity") -- 1 for kontor, 2 and higher for regular settlements
-	return (CartCount < CityLevel - 1) 
+	return (CartCount < CityLevel - 2) -- villages do not trade yet
 end
 
 
