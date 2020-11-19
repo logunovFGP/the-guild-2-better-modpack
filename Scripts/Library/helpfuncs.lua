@@ -176,6 +176,26 @@ function RemoveElementFromList(List, ListCount, Index)
 	return ListCount-1, List
 end
 
+---
+-- This calculates a weighted choice. Expects a simple list with weights and returns the chosen index.
+function RandWeighted(Weights)
+	local Ranking
+	local TotalWeight = 0
+	-- sum up all the weights
+	for i, Weight in helpfuncs_myipairs(Weights) do
+		TotalWeight = TotalWeight + Weight
+	end
+	
+	-- randomize choice and then find the matching slice
+	local Choice = Rand(TotalWeight) + 1
+	for i, Weight in helpfuncs_myipairs(Weights) do
+		Choice = Choice - Weight 
+		if Choice <= 0 then -- this slice was chosen, return current index
+			return i
+		end
+	end
+	return nil -- should not happen, but who knows?
+end
 
 -- ##other useful lua functions, that does work:##
 -- string.sub("Hello Lua user", 7)  --> "Lua user"
