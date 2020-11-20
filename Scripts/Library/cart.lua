@@ -126,7 +126,7 @@ end
 function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	if not Count or Count <= 0 then
 		-- nothing to load...
-		return ShoppingList
+		return Count, ShoppingList
 	end
 	local SlotCount, CartSlotSize = cart_GetCartSlotInfo(CartAlias)
 	local BldInv = INVENTORY_STD
@@ -145,9 +145,12 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 			local Error, ItemTransfered = Transfer(CartAlias,CartAlias,INVENTORY_STD,BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
 			-- 6. make sure list is repeated if slots are still available
 			if ItemTransfered and ItemTransfered > 0 then
+				ShoppingList[CurrentItem][2] = ShoppingList[CurrentItem][2] - ItemTransfered -- reduces required amount
+				if ShoppingList[CurrentItem][2] <= 0 then
+					Count, ShoppingList = helpfuncs_RemoveElementFromList(ShoppingList, Count, CurrentItem)
+				end
 				CurrentItem = math.mod(CurrentItem, Count) + 1
 				OpenSlots = OpenSlots - 1
-				ShoppingList[CurrentItem][2] = ShoppingList[CurrentItem][2] - ItemTransfered -- reduces required amount
 			else 
 				-- slot not used, check next item
 				CurrentItem = CurrentItem + 1
@@ -157,5 +160,5 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 			CurrentItem = CurrentItem + 1
 		end
 	end
-	return ShoppingList
+	return Count, ShoppingList
 end

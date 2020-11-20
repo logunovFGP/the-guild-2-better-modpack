@@ -748,9 +748,11 @@ function CheckAvailability(BldAlias, CartAlias, NeedCount, Needs)
 		BldInv = INVENTORY_SELL
 	end
 	-- check availability of at least one resource
+	local IsProducer
 	for i = 1, NeedCount do
 		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1], BldInv) > 0 then
-			return true
+			IsProducer = BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or BuildingCanProduce(BldAlias, Needs[i][1]) or BuildingGetType(BldAlias) == GL_BUILDING_TYPE_WAREHOUSE
+			return IsProducer
 		end
 	end
 	return false

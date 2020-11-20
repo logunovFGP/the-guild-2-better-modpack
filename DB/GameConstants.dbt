@@ -179,3 +179,4 @@ Data:
 1009         "GL_BUILDING_TYPE_FRUITFARM"    108               ""                              |
 1010         "GL_BUILDING_TYPE_ESTATE"       111               ""                              | 
 1011         "GL_BUILDING_TYPE_DIVEHOUSE"     36               ""                              |
+1012         "GL_BUILDING_TYPE_WAREHOUSE"     38             ""                              |

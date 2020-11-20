@@ -92,16 +92,12 @@ function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, City
 	-- Unload
 	RemoveItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
 	cart_UnloadAll("", "MarketBld", true)
+	AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD) 
 	-- buy required resources
 	if not NeedCount then -- may not be initialized yet
 		NeedCount, Needs = state_twp_autocart_CalcResourceNeeds("MyHome")
 	end
-	if NeedCount and NeedCount > 0 then
-		cart_LoadItems("", "MarketBld", NeedCount, Needs)
-	end
-	 
-	-- fill up remaining space with dummy item
-	AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
+	state_twp_autocart_BuyResources(NeedCount, Needs, CityAlias, "MarketBld")
 	Sleep(2)
 end
 
@@ -155,6 +151,116 @@ function UnloadItems(CartSlots, CartSlotSize, HomeAlias)
 		end 
 	end
 	AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD) 
+end
+
+function BuyResources(NeedCount, Needs, CurrentCityAlias, CurrentMarketAlias)
+	if not NeedCount or NeedCount <= 0 then
+		return
+	end
+	local CartSlots, CartSlotSize = cart_GetCartSlotInfo("")
+	
+	-- check local market first if we are somewhere else
+	if GetID("MyCity") ~= GetID(CurrentCityAlias) then
+		NeedCount, Needs = state_twp_autocart_MoveAndBuyItems(CurrentMarketAlias, CartSlots, CartSlotSize, NeedCount, Needs)
+	end
+	if NeedCount <= 0 or GetItemCount("", "EmptySlot") <= 0 then
+		return
+	end
+	
+	-- check own workshops
+	GetDynasty("", "MyDyn")
+	local BldCount = DynastyGetBuildingCount("MyDyn")
+	for i=0, BldCount - 1 do
+		if DynastyGetBuilding2("MyDyn", i, "Workshop") then
+			NeedCount, Needs = state_twp_autocart_MoveAndBuyItems("Workshop", CartSlots, CartSlotSize, NeedCount, Needs)
+		end
+		if NeedCount <= 0 or GetItemCount("", "EmptySlot") <= 0 then
+			return
+		end
+	end
+	
+	-- check home market
+	if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
+		NeedCount, Needs = state_twp_autocart_MoveAndBuyItems("MyMarket", CartSlots, CartSlotSize, NeedCount, Needs)
+	end
+	if NeedCount <= 0 or GetItemCount("", "EmptySlot") <= 0 then
+		return
+	end
+	
+	-- check other workshops at home
+	local WorkshopAlias = "OtherWorkshop"
+	local WorkshopCount = CityGetBuildings("MyCity", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, WorkshopAlias)
+	for i=0, WorkshopCount - 1 do
+		WorkshopAlias = "OtherWorkshop"..i
+		if GetDynastyID(WorkshopAlias) ~= GetDynastyID("") then
+			NeedCount, Needs = state_twp_autocart_MoveAndBuyItems(WorkshopAlias, CartSlots, CartSlotSize, NeedCount, Needs)
+		end
+		if NeedCount <= 0 or GetItemCount("", "EmptySlot") <= 0 then
+			return
+		end
+	end
+
+	-- get other markets, but only if no items loaded at this point
+	if GetItemCount("", "EmptySlot") < CartSlots*CartSlotSize then
+		return
+	end	
+	local CityCount = ScenarioGetObjects("Settlement", 10, "OtherCity")
+	for i = 0, CityCount - 1 do
+		local Alias = "OtherCity"..i
+		-- home city and current city have been checked before
+		if GetID(Alias) ~= GetID(CurrentCityAlias) and GetID(Alias) ~= GetID("MyCity") then
+			local MarketAlias = "OtherMarket"
+			if not CityIsKontor(Alias) and CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, MarketAlias) then
+				NeedCount, Needs = state_twp_autocart_MoveAndBuyItems(MarketAlias, CartSlots, CartSlotSize, NeedCount, Needs)
+			end
+			if NeedCount <= 0 or GetItemCount("", "EmptySlot") <= 0 then
+				return
+			end
+		end
+	end
+end
+
+function MoveAndBuyItems(Destination, CartSlots, CartSlotSize, NeedCount, Needs)
+	if not economy_CheckAvailability(Destination, "", NeedCount, Needs) then
+		return NeedCount, Needs
+	end
+	--state_twp_autocart_NotifyCurrentResourceOrder(Destination, NeedCount, Needs)
+	
+	if IsInLoadingRange("", Destination) or f_MoveTo("", Destination, GL_MOVESPEED_RUN) then
+		RemoveItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
+		NeedCount, Needs = cart_LoadItems("", Destination, NeedCount, Needs)
+		AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
+	end
+	return NeedCount, Needs
+end
+
+function NotifyCurrentResourceOrder(Destination, NeedCount, Needs)
+	local DestinationLabel, DestinationPlaceHolder
+	if BuildingGetClass(Destination) == GL_BUILDING_CLASS_MARKET then
+		-- use city name for markets
+		DestinationLabel = GetSettlementID(Destination)
+		DestinationPlaceHolder = "%2NAME"
+	else
+		-- use Building name
+		DestinationLabel = GetID(Destination)
+		DestinationPlaceHolder = "%2NAME"
+	end
+	local Msg = "Karren %3NAME von %1NAME fährt nach ".. DestinationPlaceHolder .." um zu einzukaufen:$N$N"
+	local Labels = {}
+	for i=1, NeedCount do
+		Labels[i] = ItemGetLabel(Needs[i][1], false)
+		Msg = Msg .. "$N"..Needs[i][2].." %"..(3+i).."l" -- Texts like: (linebreak) 20 Gold
+	end
+	
+	CartGetOperator("", "Operator")
+	MsgNewsNoWait("All", -- recipient
+				"", -- jump to target
+				"", -- panel params (buttons)
+				"economie", -- message class
+				-1, -- TimeOut 
+				"Autocart", -- Header
+				Msg, -- Body
+				GetID("MyHome"), DestinationLabel, GetID("Operator"), helpfuncs_UnpackTable(Labels)) -- params
 end
 
 function CleanUp()

@@ -421,17 +421,22 @@ function SimIsValid(Target)
 end
 
 function GetNearestMapExit(Alias, RetAlias)
+	GetScenario("World")
 	local Distance
+	local ExitIndex
 	for i=1, 5 do
-		if GetOutdoorLocator("MapExit"..i, 1, "ExitLocator") then
-			local Tmp = GetDistance(Alias, "ExitLocator")
-			if Tmp and Tmp >= 0 then
-				if not Distance or Tmp < Distance then
-					Distance = Tmp
-					CopyAlias("ExitLocator", RetAlias)
+		if not HasProperty("World", "BrokenMapExit"..i) then
+			if GetOutdoorLocator("MapExit"..i, 1, "ExitLocator") then
+				local Tmp = GetDistance(Alias, "ExitLocator")
+				if Tmp and Tmp >= 0 then
+					if not Distance or Tmp < Distance then
+						Distance = Tmp
+						CopyAlias("ExitLocator", RetAlias)
+						ExitIndex = i
+					end
 				end
 			end
 		end
 	end
-	return AliasExists(RetAlias) 
+	return ExitIndex
 end

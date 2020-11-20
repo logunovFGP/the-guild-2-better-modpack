@@ -72,13 +72,16 @@ function Run()
 	while true do -- aborts on failures
 		-- 1. Find a map exit and go there. Disable cancel button for the meantime.
 		MsgDebugMeasure("Going to the map exit.")
-		if not f_GetNearestMapExit("", "NearestExit") then
+		local FoundExit = f_GetNearestMapExit("", "NearestExit")
+		if not FoundExit then
 			LogMessage("TWP::FarTrader No map exit found, aborting measure.")
 			MsgQuick("All", "TWP::FarTrader No map exit found, aborting measure.")			
 -- TODO for GUIDriven measure notify player
 			return
 		end
 		if not f_MoveTo("", "NearestExit", GL_MOVESPEED_RUN) then
+			GetScenario("World")
+			SetProperty("World", "BrokenMapExit"..FoundExit)
 			LogMessage("TWP::FarTrader Unable to reach map exit, aborting measure.")
 			MsgQuick("All", "TWP::FarTrader Unable to reach map exit, aborting measure.")
 			-- TODO for GUIDriven measure notify player
@@ -87,14 +90,14 @@ function Run()
 		
 		-- disappear
 		MsgDebugMeasure("Disappearing to shop.")
-		SetState("",STATE_LOCKED,true) 
+		SetState("", STATE_DUEL, true)
 		SetInvisible("", true)
-		AddImpact("", "Hidden", 1 , -1)
+		AddImpact("", "Hidden", 1 , -1) 
 		
-		-- 2. Sleep for some time, partly random. 4 < t < 10
-		local HoursToWait = 4 + Rand(7)
+		-- 2. Sleep for some time, partly random. 4 < t < 8
+		local HoursToWait = 4 + Rand(5)
 		-- TODO change back to: * 60
-		Sleep(HoursToWait)-- * 60)
+		Sleep(HoursToWait * 60)
 		
 		-- 3. Calculate the amount of items that can be bought with given budget
 		local Price = ItemGetBasePrice(Item) * 1.5
@@ -120,8 +123,10 @@ function Run()
 
 		-- 4. Go home.
 		MsgDebugMeasure("Returning home.")
+		SetState("",	STATE_DUEL,	false)
 		SetInvisible("", false)
-		SetState("", STATE_LOCKED, false)
+		RemoveImpact("","Hidden") 
+		
 		if not f_MoveTo("", HomePos, GL_MOVESPEED_RUN) then
 			SimBeamMeUp("", HomePos, false)
 			LogMessage("TWP::FarTrader Could not return home, aborting measure.")
@@ -144,4 +149,8 @@ function CleanUp()
 	RemoveData("Budget")
 	RemoveAlias("MyHome")
 	RemoveAlias("HomePos")
+	
+	SetState("",	STATE_DUEL,	false)
+	SetInvisible("", false)
+	RemoveImpact("","Hidden") 
 end
