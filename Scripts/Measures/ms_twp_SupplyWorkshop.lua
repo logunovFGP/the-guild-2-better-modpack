@@ -187,7 +187,10 @@ function Run()
 			for i = 1, SupplierCount do
 				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
 					f_MoveTo("", Suppliers[i], GL_MOVESPEED_RUN)
-					Needs = cart_LoadItems("", Suppliers[i], NeedCount, Needs)
+					NeedCount, Needs = cart_LoadItems("", Suppliers[i], NeedCount, Needs)
+					if NeedCount <= 0 then
+						break
+					end
 				end
 			end
 		else
