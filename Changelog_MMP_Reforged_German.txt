@@ -7,7 +7,8 @@ Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
 GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
-Texturen: Jollina, Skip, Broliii 
+Texturen: Jollina, Skip, Broliii
+3D Objects: Ictiv 
 Testing: Jollina, VSX, McHedgehoghunter
 
 Lokalisierung:
@@ -15,7 +16,7 @@ Spanisch: Skip, FalsdasRojas, espyleonheart
 Italienisch: Marian, 
 Französisch: Rico, StalkFire, Techgenieur, Erfive
 Portugiesisch: Regismrs, BossPenguin
-Russisch:
+Russisch: Mr.Bro
 Polnisch:
 
 Soziale Medien: Erilambus, Fajeth
@@ -94,6 +95,7 @@ _Allgemein_
 - Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
 - Es konnte passieren, dass gesammelte Items nicht abgeladen wurden, wenn den Sammlern eine neue Aufgabe gegeben wurde. Nun wird das Inventar geleert, wenn eine neue Production gestartet wird und sich der Charakter im Gebäude aufhält.
 - Bei der Maßnahme 'Jemanden umgarnen' wurden keine Sprachdateien abgespielt.
+- Der Flirt-Bonus durch eine der wählbaren Fähigkeiten hatte keine Auswirkungen auf das 'Umgarnen'.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

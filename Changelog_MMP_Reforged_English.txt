@@ -7,7 +7,8 @@ Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
 Maps: Fajeth
 GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
-Textures: Jollina, Skip, Broliii 
+Textures: Jollina, Skip, Broliii
+3D Objects: Ictiv 
 Testing: Jollina, VSX, McHedgehoghunter
 
 Localization:
@@ -15,7 +16,7 @@ Spanish: Skip, FalsdasRojas, espyleonheart
 Italian: Marian, 
 French: Rico, StalkFire, Techgenieur, Erfive
 Portuguese: Regismrs, BossPenguin 
-Russian:
+Russian: Mr.Bro
 Polish:
 
 Social Media: Erilambus, Fajeth
@@ -96,6 +97,7 @@ _General_
 - The discriptions of towers now state that they work against land units aswell.
 - During production of gathered items would remain in the inventory if you assigned them a non-gathering task. They will now unload their pockets if they are inside your building when assigning a production.
 - During the measure 'Flirt' no soundfiles of the dialogue have been played.
+- The flirting bonus ability had no impact on the measure 'Flirt'.
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

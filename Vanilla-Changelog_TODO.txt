@@ -54,11 +54,6 @@ Offen:
 - Räubernester haben nun auch von Anfang an einen Karren.
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
-- Der Stadtschreiber spielt während Amtssitzungen und Gerichtsverhandlungen keine
-  Rolle mehr. Sollte kein Stimmberechtigter anwesend sein, leitet die Wache die Sitzung.
-- Bei Amtssitzungen, die vom Stadtschreiber geleitet wurden, (bzw. jetzt von der Wache)
-  startete keine Cutscene und es gab auch sonst viele Fehler. Amtssitzungen werden immer dann
-  von der Wache geleitet, wenn kein Entscheidungsträger anwesend ist.
 - Die KI bewarb sich auf keine höheren Ämter, wenn sich bereits ein Bewerber auf 
   ihr aktuelles Amt beworben hatte.
 - Kinder sollten nun keine Verbrechen mehr begehen können.
@@ -109,8 +104,6 @@ Offen:
 - Das Gemeinsame Bad funktionierte als FlirtMeasure nicht.
 - Beim Schutzgelderpressen wurde im Tooltip der Maßnahme die falsche Dauer
   angezeigt.
-- Teilweise warteten KI-Dynastien vergebens auf ihren Partner, um eine "gemeinsame Nacht"
-  miteinander zu verbringen.
 - Wenn die Nachricht aufkam, sich zum Gericht, Rathaus etc. zu bewegen und dort ankam,
   konnte es passieren, dass der Charakter danach weiter produzieren wollte.
 - Sims aus Nachbarstädten konnten Verbrecher in ihrer Stadt anklagen (eigentlich
@@ -119,8 +112,6 @@ Offen:
   einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
 - Charaktere verlassen das Rathaus nicht länger, wenn sie im Warteraum stehen und zur Amtsitzung/
   zur Gerichtsverhandlung gerufen werden, sondern gehen direkt in den richtigen Raum.
-- Es konnte vorkommen, dass Dynastie-Charaktere von der KI-Verwaltung nicht zur Arbeit eingeteilt wurden.
-- Die KI wurde optimiert, um die Performance des Spiels zu verbessern.
 - Mehrere Map-Probleme (Pathfinding, fehlende Rohstoffe) behoben. (Achtung: Maps sind modspezifisch verändert!)
 
 

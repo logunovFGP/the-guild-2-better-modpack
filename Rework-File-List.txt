@@ -626,7 +626,7 @@
 551 Scripts\Measures\ms_AttendSchool.lua
 552 Scripts\Measures\ms_AttendUniversity.lua
 553 Scripts\Measures\ms_Babble.lua
-554 Scripts\Measures\ms_BauArbeit.lua
+554 Scripts\Measures\ms_BauArbeit.lua - MERGED
 555 Scripts\Measures\ms_BauZusatz.lua
 556 Scripts\Measures\ms_BeDistracted.lua
 557 Scripts\Measures\ms_Betrugen.lua
@@ -984,7 +984,7 @@
 909 Scripts\Measures\Behaviour\bs_ConcertFinished.lua
 910 Scripts\Measures\Behaviour\bs_Crusade.lua
 911 Scripts\Measures\Behaviour\bs_DonateJuggler.lua
-912 Scripts\Measures\Behaviour\bs_Dying.lua
+912 Scripts\Measures\Behaviour\bs_Dying.lua - MERGED
 913 Scripts\Measures\Behaviour\bs_Explosion.lua
 914 Scripts\Measures\Behaviour\bs_Fire.lua
 915 Scripts\Measures\Behaviour\bs_FlamingSpeech.lua
@@ -1133,7 +1133,7 @@
 1058 Scripts\States\state_contaminated.lua
 1059 Scripts\States\state_crusade.lua
 1060 Scripts\States\state_cutscene.lua
-1061 Scripts\States\state_dead.lua
+1061 Scripts\States\state_dead.lua - MERGED
 1062 Scripts\States\state_driverattacked.lua
 1063 Scripts\States\state_duel.lua
 1064 Scripts\States\state_dying.lua
