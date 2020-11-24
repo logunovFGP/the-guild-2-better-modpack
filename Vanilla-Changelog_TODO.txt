@@ -133,8 +133,6 @@ Kritische Balance-Änderungen:
 
 Nützliche Vanilla-Features + QoL Änderungen:
 - Durch das Tragen eines Knochenarmreifs kann der Träger sich vor Hexerdokumenten schützen.
-- Schergen, die auf Patrouille sind, werden nun selbstständig Pamphlete abreißen, wenn sie sich in der Nähe des schwarzen Bretts aufhalten. Sie verlangen dafür allerdings eine 
-  kleine Goldbelohnung, die mit steigendem Titel wächst - der Spieler wird über den Erfolg benachrichtigt
 - Wer in einer Taverne einen Schlafplatz mietet, wird auf jedenfall und ohne Itembedarf von Erkältungen und Grippe geheilt.
 - Wer einen Heiler via Maßnahme aufsuchen will, rennt dort nun hin, anstatt zu gehen.
 - Man kann Schattendynastien nun ihre Gebäude abkaufen, selbst, wenn sie nicht zum Verkauf stehen! Dazu braucht es eventuell nur etwas

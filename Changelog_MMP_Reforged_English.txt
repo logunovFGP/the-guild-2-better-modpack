@@ -20,7 +20,7 @@ Russian: Mr.Bro
 Polish:
 
 Social Media: Erilambus, Fajeth
-Additional Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81 + The Guild 2 Community!
+Additional Support: VSX, McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81 + The Guild 2 Community!
 Network Helper: Agentmass
 
 Installation:
@@ -153,6 +153,7 @@ _General_
 - Added a new measure to change your character's appearance ingame (same category as inventory-measure).
 - Added a new measure to mark a dynasty character as important (same category as inventory-measure). That character then will appear in the 'Important Persons' list.
 - Added multiple missing icons for selecting targets during certain measures.
+- Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
 
 _Patron_
 -

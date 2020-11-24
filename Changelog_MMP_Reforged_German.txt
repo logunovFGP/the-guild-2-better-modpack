@@ -158,6 +158,7 @@ _Allgemein_
 - Es gibt nun eine Maßnahme, mit der man die äußere Erscheinung eines Charakters während des laufenden Spiels anpassen kann (Selbe Kategorie wie das Inventar).
 - Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
 - Es wurden mehrere Mauszeiger-Icons für Maßnahmen hinzugefügt, die die Auswahl eines Ziels erfordern.
+- Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
 
 _Patron_
 -

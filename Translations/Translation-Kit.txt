@@ -219,6 +219,12 @@ Translate and add the following lines below:
 18216   "$1Tincome %1t gold"   "Income: %1t"   |
 18217   "_MEASURE_Quacksalver_TOOLTIP_+0"   ">Gather round, everyone! I offer you the most wondrous and at the same time most effective cures for whatever ailment may befall you!<$NMaybe you would never fall for such bogus claims yourself. But the common people are desperately eager to buy >miracle cures< from >rhetoricly gifted< quacksalvers against all kinds of afflictions. So why not profit from their ignorance?"   |
 18218   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"   "Tooth rot is a terrible thing. You are in constant pain, unable to eat and speak properly and your breath smells quite awful ...$NThe only secure way to treat this is to have the tooth pulled and take some pain medication.$N$NYour rhetoric and charisma talents are reduced by 3. Tooth rot has no maximum duration."   |
+18219   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+0"   "These are scandalous words! Surely, %1SN will be pleased to learn that I got rid of this pamphlet."   |
+18220   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+1"   "A hideous pamphlet which taunts the %1DN dynasty! Let's hope, noone saw this."   |
+18221   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+2"   "It's actually not that far from the truth ... But maybe %1SN will reward me if I dispose of this paper."   |
+18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It truely fits for %1SN! I think I will keep this for later ..."   |
+18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patroling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that noone can see it anymore nor does your reputation gets damaged furthermore. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
+18224   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_HEAD_+0"   "A pamphlet has been removed"   |
 
 
 
