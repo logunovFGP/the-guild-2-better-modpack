@@ -123,6 +123,7 @@ _Craftsman_
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
 - Children are no longer targets of wenches.
+- The Measure 'Rest' now has the red measure category like the icon suggests.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.

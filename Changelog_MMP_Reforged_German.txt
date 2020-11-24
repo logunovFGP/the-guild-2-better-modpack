@@ -122,6 +122,7 @@ _Handwerker_
 _Gauner_
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
+- Die Maßnahme "Ausruhen" wird nun korrekterweise bei den anderen roten Maßnahmen eingeordnet.
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
