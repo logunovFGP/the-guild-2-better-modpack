@@ -96,6 +96,7 @@ _Allgemein_
 - Es konnte passieren, dass gesammelte Items nicht abgeladen wurden, wenn den Sammlern eine neue Aufgabe gegeben wurde. Nun wird das Inventar geleert, wenn eine neue Production gestartet wird und sich der Charakter im Gebäude aufhält.
 - Bei der Maßnahme 'Jemanden umgarnen' wurden keine Sprachdateien abgespielt.
 - Der Flirt-Bonus durch eine der wählbaren Fähigkeiten hatte keine Auswirkungen auf das 'Umgarnen'.
+- Ein Fehler beim Entfernen von Pamphleten wurde behoben.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -199,6 +200,7 @@ _Allgemein_
 - Schattendynastien wohnen nun ebenfalls bevorzugt in Wohnhäusern.
 - Die Option mit Ehepartner/Kindern das Spiel zu beginnen (über Config.ini) wurde deaktiviert.
 - Die Erfahrung für den Stufenaufstieg wurde erhöht und gleichmäßiger verteilt.
+- Das Entfernen von Pamphleten bringt nun Erfahrungspunkte.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

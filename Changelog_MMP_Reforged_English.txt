@@ -98,6 +98,7 @@ _General_
 - During production of gathered items would remain in the inventory if you assigned them a non-gathering task. They will now unload their pockets if they are inside your building when assigning a production.
 - During the measure 'Flirt' no soundfiles of the dialogue have been played.
 - The flirting bonus ability had no impact on the measure 'Flirt'.
+- Fixed a bug with the removal of pamphlets.
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
@@ -193,6 +194,7 @@ _General_
 - Shadow dynasties will try to live in residences now.
 - The option to start with a family by changing the config.ini has been deactivated.
 - Experience needed for levelups has been increased and more evenly distributed.
+- Removing pamphlets is worth experience now.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
