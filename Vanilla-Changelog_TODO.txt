@@ -22,7 +22,6 @@ Offen:
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 - Die Hypnose funktionierte nicht richtig.
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
-- Das Entfernen von Pamphleten hatte einen kleinen Fehler.
 - Türme haben nicht-aggressive Schiffe angegriffen.
 - Die Handwerksurkunde konnte in einigen Betrieben nicht eingesetzt werden.
 - Wer beim Gericht nur eine mündliche Verwarnung hält, beschwerte sich trotzdem über das Urteil.

@@ -51,6 +51,7 @@ _Design_
   diese Bedenkzeiten gekostet haben. Ihr müsst euch nun besser vorbereiten.
 - Das Icon für Schwangerschaft wird nun rechts unten statt links unten angezeigt, dadurch werden aktive Maßnahmen nicht länger verdeckt.
 - Diverse Icons wurden überarbeitet.
+- Einige Charaktertexturen wurden überarbeitet.
 
 *** Vanilla-Bugs ***
 

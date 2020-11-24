@@ -53,6 +53,7 @@ _Design_
   You now have to prepare before the sessions start.
 - State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
 - Multiple icons have been reworked.
+- Some character textures have been overhauled.
 
 *** Vanilla-Bugs ***
 
