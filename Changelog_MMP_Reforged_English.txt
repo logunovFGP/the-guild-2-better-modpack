@@ -196,6 +196,7 @@ _General_
 - The option to start with a family by changing the config.ini has been deactivated.
 - Experience needed for levelups has been increased and more evenly distributed.
 - Removing pamphlets is worth experience now.
+- Requirements for nobility titles have been rebalanced and amount of buisnesses you can own has been drasticly reduced.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

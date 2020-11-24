@@ -202,6 +202,7 @@ _Allgemein_
 - Die Option mit Ehepartner/Kindern das Spiel zu beginnen (über Config.ini) wurde deaktiviert.
 - Die Erfahrung für den Stufenaufstieg wurde erhöht und gleichmäßiger verteilt.
 - Das Entfernen von Pamphleten bringt nun Erfahrungspunkte.
+- Die Anforderungen für Titel wurden neu ausbalanciert, zudem wurde die Anzahl erlaubter Betriebe deutlich gesenkt.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
