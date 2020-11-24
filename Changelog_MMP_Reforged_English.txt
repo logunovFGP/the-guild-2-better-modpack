@@ -136,6 +136,7 @@ _AI_
 - During game setup AI children always had the same sex.
 - In several cases characters interacted wrong with burning buildings.
 - Child behavior had bugs and influenced overall game performance in a negative way.
+- AI spammed 'Plunder building' measures, even while the target was still under construction.
 
 *** Features ***
 

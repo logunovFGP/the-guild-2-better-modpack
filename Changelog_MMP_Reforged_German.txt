@@ -140,6 +140,7 @@ _KI_
 - Es kam zu Problemen im Verhalten der Kinder, wenn die KI nicht in einem richtigen Wohnhaus lebte.
 - Die KI konnte bei der Aufforderung zum Tanzen in der Taverne stecken bleiben.
 - Das Kinder-Verhalten war fehlerhaft und nicht performant.
+- Die KI spammte 'Gebäude plündern', sogar bei Gebäuden, die noch im Bau waren.
 
 *** Features ***
 

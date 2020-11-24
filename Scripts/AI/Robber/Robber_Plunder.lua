@@ -1,55 +1,57 @@
 function Weight()
 	local Hour = math.mod(GetGametime(), 24)
-	if Hour > 21 and Hour < 5 then
-		return 0
+	if Hour > 6 then
+		if Hour < 20 then
+			return 0
+		end
 	end
 
 	if IsDynastySim("SIM") then
 		return 0
 	end
 	
-	for trys=0,9 do
+	if not SimGetWorkingPlace("SIM", "PlunderHome") then
+		return 0
+	end
+	
+	if not ReadyToRepeat("PlunderHome", "AI_PLUNDER") then
+		return 0
+	end
+	
+	for trys=0, 9 do
 		if robber_plunder_Check() then
+			SetRepeatTimer("PlunderHome", "AI_PLUNDER", 2)
 			return 100
 		end
 	end
+
+	SetRepeatTimer("PlunderHome", "AI_PLUNDER", 1)
 	return 0
 end
 
 function Check()
 	
-	if not DynastyGetRandomVictim("SIM", 55, "PLU_VICTIM") then
+	if not GetSettlement("SIM", "City") then
 		return false
 	end
 	
-	if DynastyGetDiplomacyState("SIM", "PLU_VICTIM") > DIP_NEUTRAL then
+	if not CityGetRandomBuilding("City", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "PLU_BUILD") then
 		return false
 	end
 	
-	if not DynastyGetRandomBuilding("PLU_VICTIM", GL_BUILDING_CLASS_WORKSHOP, -1, "PLU_BUILD") then
+	if GetState("PLU_BUILD", STATE_BUILDING) then
 		return false
 	end
 	
-	if GetImpactValue("PLU_BUILD","buildingburgledtoday")==1 then
+	if not BuildingGetOwner("PLU_BUILD", "VictimOwner") then
 		return false
 	end
 	
-	local Count = Find("PLU_BUILD", "__F((Object.GetObjectsByRadius(Building)==3000))","PLU_Found", -1)
-	
-	local	Var 	= 100
-	local	Alias
-	local Class
-	
-	for i=0, Count-1 do
-		Alias = "PLU_Found"..i
-		Class 	= BuildingGetClass(Alias)
-		
-		if Class~=GL_BUILDING_CLASS_RESOURCE and Class~=0 then
-			Var = Var - 30
-		end
+	if GetDynastyID("SIM") == GetDynastyID("VictimOwner") or DynastyGetDiplomacyState("SIM", "VictimOwner") > DIP_NEUTRAL then
+		return false
 	end
 	
-	if Rand(100) > Var then
+	if GetImpactValue("PLU_BUILD", "buildingburgledtoday") == 1 then
 		return false
 	end
 
@@ -57,7 +59,6 @@ function Check()
 end
 
 function Execute()
-	SetProperty("SIM", "SpecialMeasureDestination", GetID("PLU_BUILD"))
-	SetProperty("SIM", "SpecialMeasureId", -MeasureGetID("PlunderBuilding"))
+	MeasureRun("SIM", "PLU_BUILD", "PlunderBuilding")
 end
 
