@@ -1,5 +1,5 @@
-0 DB\abilities.dbt
-1 DB\abilitypoints.dbt
+0 DB\abilities.dbt - MERGED
+1 DB\abilitypoints.dbt - MERGED
 2 DB\Action.dbt
 3 DB\AICharacterType.dbt
 4 DB\AIScripts.dbt
@@ -45,28 +45,28 @@
 44 DB\messageclass.dbt
 45 DB\Models.dbt
 46 DB\Needs.dbt
-47 DB\NobilityTitle.dbt
+47 DB\NobilityTitle.dbt - MERGED
 48 DB\Offices.dbt
 49 DB\PathMaterials.dbt
 50 DB\PathPrefPatternNames.dbt
 51 DB\PathPrefPatterns.dbt
-52 DB\Positions.dbt
+52 DB\Positions.dbt - MERGED
 53 DB\Professions.dbt
 54 DB\Properties.dbt
 55 DB\PropertiesTypes.dbt
-56 DB\Scenes.dbt
-57 DB\Seasons.dbt
+56 DB\Scenes.dbt - MERGED
+57 DB\Seasons.dbt - MERGED
 58 DB\Sentences.dbt
 59 DB\Skills.dbt
 60 DB\SkillXpCost.dbt
 61 DB\songspecialevents.dbt - MERGED
 62 DB\songvariation.dbt - MERGED
-63 DB\Sound.dbt
-64 DB\SoundSources.dbt
+63 DB\Sound.dbt - MERGED
+64 DB\SoundSources.dbt - MERGED
 65 DB\State.dbt
 66 DB\tables.dbt
 67 DB\TemplatePropValues.dbt
-68 DB\Text.dbt
+68 DB\Text.dbt - *LOCALIZATION*
 69 DB\textcategories.dbt
 70 DB\VegetationGroups.dbt
 71 DB\Weapons.dbt
@@ -139,7 +139,7 @@
 64 Scripts\AI\BaseTree\CheckDynasty\Defend\def_BuyWeapon.lua
 65 Scripts\AI\BaseTree\CheckDynasty\Defend\def_MineGuards.lua
 66 Scripts\AI\BaseTree\CheckDynasty\Defend\def_UsePrivilege.lua
-67 Scripts\AI\BaseTree\CheckDynasty\Defend\di_RemovePamphlet.lua
+67 Scripts\AI\BaseTree\CheckDynasty\Defend\di_RemovePamphlet.lua - MERGED
 68 Scripts\AI\BaseTree\CheckDynasty\Shadow\shad_RemovePamphlet.lua
 69 Scripts\AI\BaseTree\CheckDynasty\Shadow\shad_SellWorkshop.lua
 70 Scripts\AI\BaseTree\CheckGuildHouse\AIBuyRawMaterial.lua
@@ -238,7 +238,7 @@
 163 Scripts\AI\Robber\PressProtectionMoney.lua
 164 Scripts\AI\Robber\Robber_CheckOutfit.lua
 165 Scripts\AI\Robber\Robber_JoinSquad.lua
-166 Scripts\AI\Robber\Robber_Plunder.lua
+166 Scripts\AI\Robber\Robber_Plunder.lua - MERGED
 167 Scripts\AI\Robber\WaylayForBooty.lua
 168 Scripts\AI\Tavern\tavern_arrangeconcert.lua
 169 Scripts\AI\Tavern\tavern_ausschenken.lua

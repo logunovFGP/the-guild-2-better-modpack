@@ -52,6 +52,8 @@ _Design_
 - Das Icon für Schwangerschaft wird nun rechts unten statt links unten angezeigt, dadurch werden aktive Maßnahmen nicht länger verdeckt.
 - Diverse Icons wurden überarbeitet.
 - Einige Charaktertexturen wurden überarbeitet.
+- Die Anzahl möglicher Dynastien je nach Karte wurde angepasst.
+- Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten fehlen, wurden deaktiviert.
 
 *** Vanilla-Bugs ***
 
@@ -98,6 +100,7 @@ _Allgemein_
 - Bei der Maßnahme 'Jemanden umgarnen' wurden keine Sprachdateien abgespielt.
 - Der Flirt-Bonus durch eine der wählbaren Fähigkeiten hatte keine Auswirkungen auf das 'Umgarnen'.
 - Ein Fehler beim Entfernen von Pamphleten wurde behoben.
+- Diverse Map-Fehler korrigiert.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -163,6 +166,8 @@ _Allgemein_
 - Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
 - Es wurden mehrere Mauszeiger-Icons für Maßnahmen hinzugefügt, die die Auswahl eines Ziels erfordern.
 - Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
+- Die neue Karte 'Yorkshire' wurde hinzugefügt.
+- Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 
 _Patron_
 -
@@ -205,6 +210,7 @@ _Allgemein_
 - Die Erfahrung für den Stufenaufstieg wurde erhöht und gleichmäßiger verteilt.
 - Das Entfernen von Pamphleten bringt nun Erfahrungspunkte.
 - Die Anforderungen für Titel wurden neu ausbalanciert, zudem wurde die Anzahl erlaubter Betriebe deutlich gesenkt.
+- Die Kosten für Gebäude wurden angepasst.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

@@ -17,8 +17,6 @@ Offen:
 - Wer gegenwärtig nicht steuerbar ist, wird nicht mehr zu Amtssitzungen, Gericht oder Ähnlichem gerufen.
 - Die Fähigkeit "Kamasutra-Meister" wirkte sich nicht auf alle Flirt-Maßnahmen aus.
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
-- Die KI versucht nicht länger Gebäude, die sich derzeit im Bau befinden, zu plündern. Sie plündert auch
-  nicht öfter als einmal alle zwei Stunden.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 - Die Hypnose funktionierte nicht richtig.
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
@@ -49,13 +47,11 @@ Offen:
 - Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 
   bewachten, Schergen, die königliche Garde, Kinder und Sims, die einen Kreuzzug ausrufen 
   (wodurch die KI diese Maßnahme ständig neustartete)
-- Die KI kann Zwischenprodukte und Kräuter nicht länger verkaufen.
 - Räubernester haben nun auch von Anfang an einen Karren.
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
 - Die KI bewarb sich auf keine höheren Ämter, wenn sich bereits ein Bewerber auf 
   ihr aktuelles Amt beworben hatte.
-- Kinder sollten nun keine Verbrechen mehr begehen können.
 - Die KI wird keine offensiven Maßnahmen gegen Charaktere versuchen, die sich gerade
   im Inneren eines Gebäudes aufhalten.
 - Die Maßnahme "Brief aus Rom" wird nun abgebrochen, sollte sich das Ziel
@@ -70,8 +66,6 @@ Offen:
 - Ein Zufallsereignis hatte fehlende Texte.
 - Die Pest endete nach Ausbruch nie, weil sich vor allem neu generierte Arbeitslose
   innerhalb der Arbeiterhütte immer wieder von Neuem ansteckten.
-- Die Maßnahme "Ausruhen" wird nun bei den anderen "roten" Maßnahmen
-  eingeordnet.
 - Nachdem man ein Gebäude von einer Dynastie erworben hatte, arbeiteten
   die Dynastiemitglieder der alten Besitzer dort trotzdem weiter. Nun werden
   alle Sims ihre aktuelle Aufgabe unterbrechen und ggf. das Gebäude verlassen.

@@ -225,6 +225,16 @@ Translate and add the following lines below:
 18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It truely fits for %1SN! I think I will keep this for later ..."   |
 18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patroling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that noone can see it anymore nor does your reputation gets damaged furthermore. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
 18224   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_HEAD_+0"   "A pamphlet has been removed"   |
+18225   "_NETWORK_MAP_NAME_york_+0"   "Yorkshire"   |
+18226   "_NETWORK_MAP_DESC_york_+0"   "Once it has been a roman colony, later it was called >Jórvik< as the capital of the viking settlers. 1066 norman conquerors called it >York<. The city and its surroundings have quite a history. In the late middle ages York and its surrounding settlements of the Shire have been an important trading region, despide the starting degrade of the former richness and glory of the big city."   |
+18227   "_CITY_NAME_YORK_+0"   "York"   |
+18228   "_CITY_NAME_HULL_+0"   "Hull"   |
+18229   "_CITY_NAME_SCARBOROUGH_+0"   "Scarborough"   |
+18230   "_CITY_NAME_GRIMSBY_+0"   "Grimsby"   |
+18231   "_CITY_NAME_WHITBY_+0"   "Whitby"   |
+18232   "_CITY_NAME_LEEDS_+0"   "Leeds"   |
+18233   "_CITY_NAME_SHEFFIELD_+0"   "Sheffield"   |
+18234   "_CITY_NAME_AMSTERDAMM_+0"   "Overseatrade Amsterdamm"   |
 
 
 

@@ -54,6 +54,8 @@ _Design_
 - State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
 - Multiple icons have been reworked.
 - Some character textures have been overhauled.
+- The numbers of possible dynasties per map have been adjusted.
+- Map duplicates have been removed.
 
 *** Vanilla-Bugs ***
 
@@ -100,6 +102,7 @@ _General_
 - During the measure 'Flirt' no soundfiles of the dialogue have been played.
 - The flirting bonus ability had no impact on the measure 'Flirt'.
 - Fixed a bug with the removal of pamphlets.
+- Fixed several map issues
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
@@ -158,6 +161,8 @@ _General_
 - Added a new measure to mark a dynasty character as important (same category as inventory-measure). That character then will appear in the 'Important Persons' list.
 - Added multiple missing icons for selecting targets during certain measures.
 - Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
+- Added a new map "Yorkshire".
+- Re-added the two additional building-levels for the piratehaven.
 
 _Patron_
 -
@@ -199,6 +204,7 @@ _General_
 - Experience needed for levelups has been increased and more evenly distributed.
 - Removing pamphlets is worth experience now.
 - Requirements for nobility titles have been rebalanced and amount of buisnesses you can own has been drasticly reduced.
+- Building prices have been adjusted
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
