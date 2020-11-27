@@ -7,7 +7,7 @@
 6 DB\Apprentice.dbt
 7 DB\BoneLODs.dbt
 8 DB\BuildingNPC.dbt
-9 DB\Buildings.dbt
+9 DB\Buildings.dbt - MERGED
 10 DB\BuildingToItems.dbt
 11 DB\BuildingTypes.dbt
 12 DB\BuildingUpgrades.dbt
@@ -34,7 +34,7 @@
 33 DB\Items.dbt
 34 DB\Items_.dbt
 35 DB\Lordship.dbt
-36 DB\maps.dbt
+36 DB\maps.dbt - MERGED
 37 DB\Materials.dbt
 38 DB\MeasureObjects.dbt
 39 DB\Measures.dbt
@@ -651,13 +651,13 @@
 576 Scripts\Measures\ms_CampaignLost.lua
 577 Scripts\Measures\ms_CampaignWon.lua
 578 Scripts\Measures\ms_CarstenS.lua
-579 Scripts\Measures\ms_ChangeAppearance.lua
+579 Scripts\Measures\ms_ChangeAppearance.lua - MERGED
 580 Scripts\Measures\ms_ChangeBuildingName.lua
 581 Scripts\Measures\ms_CheckLocation.lua
 582 Scripts\Measures\ms_CheckOutfit.lua
 583 Scripts\Measures\ms_CheckTheWorld.lua
 584 Scripts\Measures\ms_CheerMusicians.lua
-585 Scripts\Measures\ms_CityControl.lua
+585 Scripts\Measures\ms_CityControl.lua - MERGED
 586 Scripts\Measures\ms_CityTreasure.lua
 587 Scripts\Measures\ms_CohabitWithCharacter.lua
 588 Scripts\Measures\ms_ConfiscateGoods.lua
@@ -668,7 +668,7 @@
 593 Scripts\Measures\ms_DEBUG_OUTLAW.lua
 594 Scripts\Measures\ms_Default.lua
 595 Scripts\Measures\ms_DiceGame.lua
-596 Scripts\Measures\ms_Disappropriate.lua
+596 Scripts\Measures\ms_Disappropriate.lua - MERGED
 597 Scripts\Measures\ms_DistractGuards.lua
 598 Scripts\Measures\ms_DiveGetAlc.lua
 599 Scripts\Measures\ms_DoCourting.lua

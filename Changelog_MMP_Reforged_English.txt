@@ -205,6 +205,7 @@ _General_
 - Removing pamphlets is worth experience now.
 - Requirements for nobility titles have been rebalanced and amount of buisnesses you can own has been drasticly reduced.
 - Building prices have been adjusted
+- Chances of random city events have been adjusted
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

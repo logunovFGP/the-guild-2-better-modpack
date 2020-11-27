@@ -95,7 +95,7 @@ function CartLoop()
 
 	GetLocalPlayerDynasty("LocalPlayer")
 	GetDynasty("", "BuildingDynasty")
-	if GetID("LocalPlayer") == GetID("BuildingDynasty") then
+	if not IsMultiplayerGame() and GetID("LocalPlayer") == GetID("BuildingDynasty") then
 		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.1, 1, "c4")
 	end
 end
@@ -114,7 +114,7 @@ function BuildingLoop()
 	local MovingBuilding = GetState("", STATE_MOVING_BUILDING)
 	
 	if MovingBuilding then
-		SetState("",STATE_MOVING_BUILDING, false)
+		SetState("", STATE_MOVING_BUILDING, false)
 	end
 	
 	local	Played = ScenarioGetTimePlayed()
@@ -186,7 +186,7 @@ function BuildingLoop()
 	------------------------
 	------ Buildphase ------
 	------------------------
-	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""), BuildingGetLevel(""),"")
+	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""), BuildingGetLevel(""), "")
 
 	if type~="" then
 		if GfxAttachObject("Geruest1", "buildings/Baugerueste/"..type.."/"..level.."/"..gebBez..".nif") then
@@ -268,12 +268,12 @@ function BuildingLoop()
 	
 	GetLocalPlayerDynasty("LocalPlayer")
 	GetDynasty("", "BuildingDynasty")
-	if GetID("LocalPlayer") == GetID("BuildingDynasty") then
+	if not IsMultiplayerGame() and GetID("LocalPlayer") == GetID("BuildingDynasty") then
 		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.1, 1, "c4")
 	end
 
 	feedback_MessageWorkshop("",
-		"@L_BUILDING_BUILD_HEAD_+0",
+		"@L_BUILDING_BUILD_HEAD",
 		"@L_BUILDING_BUILD_BODY_+0", GetID(""))
 		
 	if MovingBuilding then

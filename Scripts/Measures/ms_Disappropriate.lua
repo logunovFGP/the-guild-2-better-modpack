@@ -12,21 +12,23 @@
 -- -----------------------
 function Run()
 	if not AliasExists("Destination") then
-		StopMeasure()
+		return
 	end
 	
 	local MeasureID = GetCurrentMeasureID("")
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	BuildingGetOwner("Destination", "Victim")
+	if not BuildingGetOwner("Destination", "Victim") then
+		return
+	end
 	
 	if not GetOutdoorMovePosition("", "Destination", "MovePos") then
-		StopMeasure()
+		return
 	end
 	
 	if not f_MoveTo("", "MovePos") then
-		StopMeasure()
+		return
 	end
 	
 	MsgSay("", "@L_PRIVILEGES_DISAPPROPRIATE_SPEECH", GetID("Destination"))
@@ -44,7 +46,7 @@ function Run()
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_ACTOR_HEAD_+0",
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_ACTOR_BODY_+0", GetID("Destination"), GetID("Victim"))
 	MsgNewsNoWait("Victim","","","politics",-1,
-				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+0",
+				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD",
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_BODY_+0", GetID(""), GetID("Destination"), GetNobilityTitleLabel(GetNobilityTitle("")))
 	
 end

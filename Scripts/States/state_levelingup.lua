@@ -119,13 +119,19 @@ function Run()
 		GfxDetachObject("Geruest3")
 	end	
 	
+	local label = "@L_BUILDING_LEVELUP_HEAD"
+	
+	if Rand(2) == 0 then
+		label = "@L_BUILDING_UPGRADE_BUILD_HEAD_+0"
+	end
+	
 	BuildingGetOwner("", "Builder")	
 	feedback_MessageWorkshop("",
-		"@L_BUILDING_LEVELUP_HEAD_+0",
+		label,
 		"@L_BUILDING_LEVELUP_BODY_+0", GetID(""))
 	
 	if MovingBuilding then
-		SetState("",STATE_MOVING_BUILDING, true)
+		SetState("", STATE_MOVING_BUILDING, true)
 	end		
 	
 end

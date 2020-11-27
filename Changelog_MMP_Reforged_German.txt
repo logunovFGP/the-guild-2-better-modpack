@@ -168,6 +168,7 @@ _Allgemein_
 - Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
 - Die neue Karte 'Yorkshire' wurde hinzugefügt.
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
+- Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod wurden hinzugefügt.
 
 _Patron_
 -
@@ -211,6 +212,7 @@ _Allgemein_
 - Das Entfernen von Pamphleten bringt nun Erfahrungspunkte.
 - Die Anforderungen für Titel wurden neu ausbalanciert, zudem wurde die Anzahl erlaubter Betriebe deutlich gesenkt.
 - Die Kosten für Gebäude wurden angepasst.
+- Die Chancen für Stadt-Ereignisse wurden angepasst.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

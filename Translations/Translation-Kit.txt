@@ -235,7 +235,7 @@ Translate and add the following lines below:
 18232   "_CITY_NAME_LEEDS_+0"   "Leeds"   |
 18233   "_CITY_NAME_SHEFFIELD_+0"   "Sheffield"   |
 18234   "_CITY_NAME_AMSTERDAMM_+0"   "Overseatrade Amsterdamm"   |
-
+18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+1"   "You have been disappropriated"   |
 
 
 Delete the following lines:
