@@ -163,6 +163,7 @@ _General_
 - Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.
+- If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
 
 _Patron_
 -

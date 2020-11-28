@@ -1,5 +1,14 @@
-function AIInit()
-	return "L"
+function AIInit(CostLow, CostMedium, CostHigh)
+	local MyMoney = GetMoney("")
+	if MyMoney > CostHigh*2 then
+		return "H"
+	elseif MyMoney > CostMedium*2 then
+		return "M"
+	elseif MyMoney > CostLow then
+		return "L"
+	else
+		return "C"
+	end
 end
 
 function Run()
@@ -9,11 +18,10 @@ function Run()
 	end
 	
 	local MeasureID = GetCurrentMeasureID("")
-	--local TimeOut = mdata_GetTimeOut(MeasureID)
-	local TimeOut = 24
+	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	local BardFilter = "__F((Object.GetObjectsByRadius(Sim)==1000)AND(Object.GetState(townnpc))AND(Object.Property.IsBard == 1)AND(Object.Property.BardIsFree == 1))"
-	local NumBards = Find("",BardFilter,"Bard",-1)
+	local BardFilter = "__F((Object.GetObjectsByRadius(Sim)==3000)AND(Object.Property.IsBard == 1)AND(Object.Property.BardIsFree == 1))"
+	local NumBards = Find("", BardFilter, "Bard", -1)
 	
 	if NumBards < 1 then
 		StopMeasure()
@@ -21,28 +29,29 @@ function Run()
 	
 	MoveStop("Bard")
 	MeasureSetNotRestartable()
-	SetProperty("Bard","BardIsFree",0)
+	SetProperty("Bard", "BardIsFree", 0)
 	BlockChar("Bard")
 	
-	AlignTo("","Bard")
-	AlignTo("Bard","")
+	AlignTo("", "Bard")
+	AlignTo("Bard", "")
 	Sleep(1)
 	
-	local DestCharisma = GetSkillValue("Destination",CHARISMA) --1..10
+	
 	local DestTitle = GetNobilityTitle("Destination",false) --1..10
+	local DestLevel = SimGetLevel("Destination")
 	
-	local LowPrice = 200 * DestCharisma * DestTitle
+	local LowPrice = 200 * DestLevel * DestTitle
 	local MidPrice = LowPrice * 2
-	local HighPrice = LowPrice * 4
+	local HighPrice = LowPrice * 5
 	
-	local result = MsgNews("","destination","@P"..
+	local result = MsgNews("", "Destination", "@P"..
 			"@B[L,@L_MESSAGES_SLANDER_MSG_BUTTONS_+0]"..
 			"@B[M,@L_MESSAGES_SLANDER_MSG_BUTTONS_+1]"..
 			"@B[H,@L_MESSAGES_SLANDER_MSG_BUTTONS_+2]",
-			ms_slander_AIInit(),"intrigue",1,
+			ms_slander_AIInit(LowPrice, MidPrice, HighPrice), "intrigue", 1,
 			"@L_MESSAGES_SLANDER_MSG_HEAD_+0",
 			"@L_MESSAGES_SLANDER_MSG_BODY_+0",
-			LowPrice,MidPrice,HighPrice)
+			LowPrice, MidPrice, HighPrice)
 	
 	if result == "C" then
 		StopMeasure()
@@ -81,8 +90,8 @@ function Run()
 			Evidence = 11	--poison		6
 			EvidenceLabel = "POISON"
 		elseif Choice == 2 then
-			Evidence = 7	--slugging		6
-			EvidenceLabel = "SLUGGING"
+			Evidence = 18	--attackcivilian		8
+			EvidenceLabel = "ATTACKCIVILIAN"
 		elseif Choice == 3 then
 			Evidence = 14	--marauding		7
 			EvidenceLabel = "MARAUDING"
@@ -96,7 +105,7 @@ function Run()
 	--high crimes
 	elseif result == "H" then
 		Costs = HighPrice
-		Choice = Rand(3)
+		Choice = Rand(4)
 		if Choice == 0 then
 			Evidence = 15	--abduction		8
 			EvidenceLabel = "ABDUCTION"
@@ -104,46 +113,59 @@ function Run()
 			Evidence = 16	--murder		15
 			EvidenceLabel = "MURDER"
 		else
-			Evidence = 18	--attackcivilian	8
-			EvidenceLabel = "ATTACKCIVILIAN"
+			Evidence = 7	--slugging	8
+			EvidenceLabel = "SLUGGING"
 		end
 	end
 	
 	if not chr_SpendMoney("", Costs, "CostBribes") then
-		MsgSay("Bard","@L_MESSAGES_SLANDER_SPEECH_NOMONEY_+0")
-		StopMeasure()
+		MsgSay("Bard", "@L_MESSAGES_SLANDER_SPEECH_NOMONEY_+0")
+		return
 	end	
 	
 	SetMeasureRepeat(TimeOut)
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Bard")
+	CutsceneCameraCreate("cutscene", "")	
+	camera_CutscenePlayerLock("cutscene", "Bard")	
 	
-	local SimFilter = "__F((Object.GetObjectsByRadius(Sim)==1800)AND NOT(Object.GetState(townnpc)))"
-	local NumSims = Find("",SimFilter,"Sim",-1)
-	MsgSay("Bard","@L_MESSAGES_SLANDER_SPEECH_INTRO_+0")
+	local SimFilter = "__F((Object.GetObjectsByRadius(Sim)==12000)AND(Object.IsDynastySim())AND NOT(Object.GetState(townnpc)))"
+	local NumSims = Find("", SimFilter, "Sim", 10)
+	MsgSay("Bard", "@L_MESSAGES_SLANDER_SPEECH_INTRO_+0")
 	while true do
-		ScenarioGetRandomObject("cl_Sim","CurrentRandomSim")
-		if not GetDynasty("CurrentRandomSim","CDynasty") then
-			CopyAlias("CurrentRandomSim","EvidenceVictim")
+		ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
+		if GetDynasty("CurrentRandomSim", "CDynasty") then
+			CopyAlias("CurrentRandomSim", "EvidenceVictim")
 			break
 		end
-		Sleep(2)
+		Sleep(0.1) 
 	end
-	AddEvidence("","Destination","EvidenceVictim",Evidence,"Sim0","Sim1","Sim2","Sim3","Sim4","Sim5","Sim6","Sim7","Sim8","Sim9")
-	MsgSay("Bard","@L_MESSAGES_SLANDER_SPEECH_"..EvidenceLabel.."_+0",GetID("Destination"))
-	SetProperty("Bard","BardIsFree",1)
-	StopMeasure()	
+
+	AddEvidence("", "Bard", "EvidenceVictim", Evidence, "Destination", "Sim0", "Sim1", "Sim2", "Sim3", "Sim4", "Sim5", "Sim6", "Sim7", "Sim8", "Sim9")
 	
+	MsgSay("Bard","@L_MESSAGES_SLANDER_SPEECH_"..EvidenceLabel.."_+0", GetID("Destination"))
+	SetProperty("Bard", "BardIsFree", 1)
+	chr_GainXP("", GetData("BaseXP"))
+	Sleep(0.2)
+	MsgNewsNoWait("Destination", "", "", "intrigue", -1, "@L_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_HEAD_+0",
+					"@L_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_BODY_+0", GetID("Destination"))
 end
 
 function CleanUp()
 	if AliasExists("Bard") then
-		SetProperty("Bard","BardIsFree",1)
+		SetProperty("Bard", "BardIsFree", 1)
 	end
-
+	
+	DestroyCutscene("cutscene")
+	ReleaseAvoidanceGroup("")
+	MoveSetActivity("")
+	StopAnimation("")
 
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

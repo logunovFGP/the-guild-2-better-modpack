@@ -169,6 +169,7 @@ _Allgemein_
 - Die neue Karte 'Yorkshire' wurde hinzugefügt.
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 - Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod wurden hinzugefügt.
+- Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.
 
 _Patron_
 -

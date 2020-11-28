@@ -105,7 +105,6 @@ Offen:
   einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
 - Charaktere verlassen das Rathaus nicht länger, wenn sie im Warteraum stehen und zur Amtsitzung/
   zur Gerichtsverhandlung gerufen werden, sondern gehen direkt in den richtigen Raum.
-- Mehrere Map-Probleme (Pathfinding, fehlende Rohstoffe) behoben. (Achtung: Maps sind modspezifisch verändert!)
 
 
 Kritische Balance-Änderungen:
