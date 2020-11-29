@@ -1,6 +1,6 @@
 0 DB\abilities.dbt - MERGED
 1 DB\abilitypoints.dbt - MERGED
-2 DB\Action.dbt
+2 DB\Action.dbt - MERGED
 3 DB\AICharacterType.dbt
 4 DB\AIScripts.dbt
 5 DB\AnimationEffects.dbt
@@ -732,7 +732,7 @@
 657 Scripts\Measures\ms_PlayerParty.lua
 658 Scripts\Measures\ms_PlayTarot.lua
 659 Scripts\Measures\ms_PlunderShip.lua
-660 Scripts\Measures\ms_PoisonWell.lua
+660 Scripts\Measures\ms_PoisonWell.lua - MERGED
 661 Scripts\Measures\ms_Protectorate.lua
 662 Scripts\Measures\ms_Quacksalver.lua
 663 Scripts\Measures\ms_QuestBuildPestMask.lua
@@ -771,7 +771,7 @@
 696 Scripts\Measures\ms_ShowWarFactors.lua
 697 Scripts\Measures\ms_SimDie.lua
 698 Scripts\Measures\ms_SimHide.lua
-699 Scripts\Measures\ms_Slander.lua
+699 Scripts\Measures\ms_Slander.lua - MERGED
 700 Scripts\Measures\ms_SowField.lua
 701 Scripts\Measures\ms_SowWiese.lua
 702 Scripts\Measures\ms_StartDialog.lua
@@ -1130,7 +1130,7 @@
 1055 Scripts\States\state_captured.lua
 1056 Scripts\States\state_checkforspinnings.lua
 1057 Scripts\States\state_child.lua
-1058 Scripts\States\state_contaminated.lua
+1058 Scripts\States\state_contaminated.lua - MERGED
 1059 Scripts\States\state_crusade.lua
 1060 Scripts\States\state_cutscene.lua
 1061 Scripts\States\state_dead.lua - MERGED

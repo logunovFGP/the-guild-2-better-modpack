@@ -236,6 +236,24 @@ Translate and add the following lines below:
 18233   "_CITY_NAME_SHEFFIELD_+0"   "Sheffield"   |
 18234   "_CITY_NAME_AMSTERDAMM_+0"   "Overseatrade Amsterdamm"   |
 18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+1"   "You have been disappropriated"   |
+18236   "_BUILDING_LEVELUP_HEAD_+1"   "#E[NT_NEUTRAL]Building levelup completed"   |
+18237   "_BUILDING_BUILD_HEAD_+1"   "#E[NT_NEUTRAL]Build completed"   |
+18238   "_HPFZ_KATASTR_STOD_KOPF_+1"   "Beware!"   |
+18239   "_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_HEAD_+0"   "You get slandered!"   |
+18240   "_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_BODY_+0"   "Someone tells terrible lies about %1SN! The town crier already proclaims it in the streets, soon enough the whole city will know it ... Whoever is responsible for this, your enemies could use it to bring you to court, so better be prepared."   |
+18241   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_TOOLTIP_+0"   "is suffering from tooth rot. Talents: $S[2021] -3 $S[2025] -3"   |
+18242   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_DESCRIPTION_+0"   "Bouts of fever, bloody phlegm, painful breathing ...$NThose who have come down with pneumonia are doomed to die soon, unless a skilled healer starts treating them with pain medication immediately.$N$NPneumonia decreases all talents by 5."   |
+18243   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_TOOLTIP_+0"   "has contracted pneumonia. All talents -5"   |
+18244   "_ONSCREENHELP_9_ACTION_IMPACT_Pox_DESCRIPTION_+0"   "Leprosy, while not inherently lethal, is almost as dangerous as the plague. It covers the bodies of those unfortunate enough to contract it with ugly ulcers, damaging their bodies.$NThe only known efficient treatment for leprosy is external and internal application of a >medicine bottle<. If left untreated, the patient will remain a leper forever.$N$NConstitution, Dexterity and Charisma are reduced by 6. Also people who come close to you will lose favor to you, unless you use perfume against it. Leprosy has no maximum duration."   |
+18245   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_TOOLTIP_+0"   "has contracted the plague. All talents -7"   |
+18246   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_DESCRIPTION_+0"   "The plague is extremely contagious, and lethal in most cases. Some claim that the pestilence is God's punishment for all sinners. Others think it was sent by the Unclean one, Satan himself ...$N$NBe that as it may, the Black Death will kill you fast unless you start treating it with pain medication immediately.$N$NThe Black Death decreases all talents by 7."   |
+18247   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_TOOLTIP_+0"   "has sprained an ankle. Talents: $S[2016] -2 $S[2019] -2 $S[2018] -2"   |
+18248   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_DESCRIPTION_+0"   "Without doubt, someone with a sprained ankle will suffer severe pain whenever he or she tries to move the foot.$NThe treatment of choice for a sprain is a bandage, soaked in cold water.$N$NA sprain reduces your dexterity, fighting and your handicrafts talent by 2."   |
+18249   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_TOOLTIP_+0"   "has caught a cold. All talents -1."   |
+18250   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_DESCRIPTION_+0"   "Dismissed as harmless by many people, a simple cold can quickly develop into a full-blown case of influenza. In order to prevent this, well-trained healers treat colds by wrapping the patient in warm bandages.$N$NIf a healer is too expensive or you don't trust them, you can take a hot bath in the tavern or drink lots of herb tea to get back on your feet.$N$NA cold decreases the value of all your skills by 1."   |
+18251   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_TOOLTIP_+0"   "has contracted influenza. All talents -3."   |
+18252   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   "Influenza is not to be taken lightly. Once in its grip, you will soon feel miserable, sapped, and feeble. The only thing that can help you now is a medicine bottle, dispensed by a healer, or you might develop pneumonia and die ...$N$NInfluenza decreases all talents by 3."   |
+18253   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"   "Through tireless dealing, you have reached the ranks of the upper nobility. You have shown the world what your dynasty is made of, and you have thus a higher credibility during trials."   |
 
 
 Delete the following lines:
@@ -247,6 +265,20 @@ Delete the following lines:
 1022   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"
 1038   "_MEASURE_Quacksalver_TOOLTIP_+0"
 1043   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"
+1045   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_TOOLTIP_+0"
+1047   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_DESCRIPTION_+0"
+1048   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_TOOLTIP_+0"
+1049   "_ONSCREENHELP_9_ACTION_IMPACT_Pox_DESCRIPTION_+0"
+1058   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_TOOLTIP_+0"
+1060   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_DESCRIPTION_+0"
+1061   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_TOOLTIP_+0"
+1063   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_DESCRIPTION_+0"
+1064   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_TOOLTIP_+0"  
+1066   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_DESCRIPTION_+0"
+1067   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_TOOLTIP_+0"
+1069   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   
+2195   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"
+
 
 7804   "Hat_+0"
 7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"  

@@ -112,7 +112,7 @@ _Gelehrter_
 - Heiler merken sich nun korrekt "ihr" Bett und stellen sich auch nicht mehr an bereits besetzte Betten,
   um Patienten zu behandeln.
 - Das Script der Maßnahme 'Thesenpapier nutzen' hatte einen kritischen Fehler.
-- Es wurde kein Hexerroben-Status-Icon angezeigt.
+- Es wurde kein 'Hexerroben'-Status-Icon angezeigt.
 - Cooldown beim Anlegen des Knochenarmreifs war unter Umständen falsch (Copy-and-Paste-Fehler behoben).
 - Wenn ein Pfandhaus abgerissen oder zum Verkauf gestellt wird, wird nun auch das Kreditkonto ausgezahlt.
 - Bei 'Hexerdokumenten' wurden keine EP vergeben.
@@ -121,6 +121,7 @@ _Gelehrter_
 
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
+- Der Effekt des 'Kamms' endete nicht richtig.
 
 _Gauner_
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
@@ -179,6 +180,9 @@ _Gelehrter_
 - Warten Patienten auf eine 'Medizinische Behandlung' und es ist kein Heiler eingeteilt, erhält der Heilstubenbesitzer darüber eine Benachrichtigung.
 - Opfer von 'Hexerdokumenten' werden nun benachrichtigt, dass 'etwas Seltsames passiert ist', sofern ihr Empathie-Talent groß genug ist.
 - 'Hexerdokumente' kreieren nun Beweise mit unterschiedlichen zufälligen Opfern.
+- Die Tooltips von Krankheiten weisen auf die temporären Talentabzüge hin.
+- Vergiftete Brunnen machen Sims in ihrer Nähe krank.
+- Lepra-Infizierte verlieren Gunst bei Charakteren in der Nähe.
 
 _Handwerker_
 -
@@ -231,5 +235,5 @@ _Gauner_
 - Das Charisma von Dirnen hat nun Einfluss darauf, wie erfolgreich sie beim 'Anlocken' von Kundschaft sind.
 - Der Einflussradius von Dirnen wurde erhöht.
 - Dirnen arbeiten nun wie andere Gauner 24 Stunden am Tag.
-
+- Die Sichtbarkeit von Verbrechen (z.B. für Wachen) wurde erhöht. Knochenbrechen gilt für die Wachen nun ebenfalls als Verbrechen.
 

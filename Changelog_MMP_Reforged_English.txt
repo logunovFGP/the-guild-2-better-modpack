@@ -122,6 +122,7 @@ _Scholar_
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
+- The effect of the 'comb' did not end properly.
 
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
@@ -173,6 +174,9 @@ _Scholar_
 - If patients wait for 'medical treatments' and no healer is assigned to treat, the owner of that hospital will receive a notification.
 - 'Sorcerer documents' now generate a random victim (instead of always choosing the user as victim)
 - Targets of 'sorcerer documents' will get notified that they get an 'uneasy feeling' if their empathy is high enough.
+- The tooltips of illnesses now show their effect on talent-reductions
+- Poisoned wells make all characters nearby sick.
+- Leprosy-infected now lose favor with other characters, unless they use perfume.
 
 _Craftsman_
 -
@@ -224,4 +228,5 @@ _Rogue_
 - Charisma of wenches now has an impact on how successfully they are.
 - Range of wenches has been increased.
 - Wenches work 24 Hours per day like other rogue professions.
+- The visibility of crimes (guard detection) has been increased. Breaking bones is now considered a crime for the guards aswell.
 

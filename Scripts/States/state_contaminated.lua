@@ -1,81 +1,122 @@
 function Init()
-	if IsType("","Building") then
+	-- this is needed for stink bombs
+	if IsType("", "Building") then
 		SetStateImpact("no_enter")
 	end
 end
 
 function Run()
-	--contaminated also works for perfume on sims
-	if IsType("","Sim") then
-		if GetImpactValue("","perfume")==1 then
-			CommitAction("perfume","","")
-			while GetImpactValue("","perfume")>0 do
-				Sleep(5)
+	
+	if IsType("", "Sim") then
+	
+	--perfume
+		if GetImpactValue("", "perfume") == 1 then
+			CommitAction("perfume", "", "")
+			-- stay true as long as you have the impact on you
+			while GetImpactValue("", "perfume") > 0 do
+				Sleep(10)
 			end
+			
+			-- remove everything
 			StopAction("perfume", "")
-			SetState("",STATE_CONTAMINATED,false)
+			SetState("", STATE_CONTAMINATED, false)
 			return
 		end
-	end
 
-	--der Kamm wirkt bei Amtskollegen
-	if IsType("","Sim") then
-		if GetImpactValue("","kamm")==1 then
-			CommitAction("kamm","","")
-			while GetImpactValue("","kamm")>0 do
+	--Pox
+		if GetImpactValue("", "Pox") == 1 then
+			-- perfume negates this effect
+			if GetImpactValue("", "perfume") == 1 then
+				return
+			end
+
+			CommitAction("Pox", "", "")
+			-- stay true as long as you have the impact on you
+			while GetImpactValue("", "Pox") > 0 do
+				Sleep(10)
+			end
+
+			-- remove everything
+			StopAction("Pox", "")
+			SetState("", STATE_CONTAMINATED, false)
+			return
+		end
+
+	-- Kamm (Comb)
+		if GetImpactValue("", "kamm") == 1 then
+			CommitAction("kamm", "", "")
+			while GetImpactValue("", "kamm") > 0 do
+				Sleep(10)
+			end
+
+			-- remove everything
+			StopAction("kamm", "")
+			SetState("",STATE_CONTAMINATED, false)
+			return
+		end
+	
+	-- thrown a stinking bomb at the ground?
+		if HasProperty("", "IsStinkBomb") then
+			RemoveProperty("", "IsStinkBomb")
+			GetPosition("", "ParticleSpawnPos")
+			PlaySound3D("", "measures/toadexcrements+0.wav", 1.0)
+			StartSingleShotParticle("particles/toadexcrements_hit.nif", "ParticleSpawnPos", 6, 5)
+			GfxAttachObject("stinkbomb", "Handheld_Device/ANIM_Bomb_02.nif")
+			GfxSetPositionTo("stinkbomb", "ParticleSpawnPos")
+			GfxMoveToPosition("stinkbomb", 0, 20, 0, 0.1, false)
+			GfxStartParticle("Smoke", "particles/toadexcrements.nif", "ParticleSpawnPos", 7)
+			while true do
 				Sleep(5)
 			end
-			SetState("",STATE_CONTAMINATED,false)
+
+			-- remove it
+			if AliasExists("stinkbomb") then
+				GfxDetachObject("stinkbomb")
+			end
+
+			if AliasExists("Smoke") then
+				GfxStopParticle("Smoke")
+			end
+		
 			return
 		end
-	end
+	else
 	
-	if HasProperty("","IsStinkBomb") then
-		RemoveProperty("","IsStinkBomb")
-		GetPosition("","ParticleSpawnPos")
-		PlaySound3D("","measures/toadexcrements+0.wav", 1.0)
-		StartSingleShotParticle("particles/toadexcrements_hit.nif", "ParticleSpawnPos",6,5)
-		GfxAttachObject("stinkbomb", "Handheld_Device/ANIM_Bomb_02.nif")
-		GfxSetPositionTo("stinkbomb", "ParticleSpawnPos")
-		GfxMoveToPosition("stinkbomb",0,20,0,0.1,false)
-		GfxStartParticle("Smoke", "particles/toadexcrements.nif", "ParticleSpawnPos", 7)
-		while true do
-			Sleep(4)
-		end
-		return
-	end
-	
-	-- Solange der State contaminated gesetzt ist, immer alle Leute aus dem Gebäude schmeissen
-	-- Der State wird aufgehoben, sobald der impact zurueckgesetzt wird
-	if (BuildingGetType("")==GL_BUILDING_TYPE_WELL) then
-		GetPosition("","ParticleSpawnPos")
-		GfxStartParticle("Smoke", "particles/toadexcrements.nif", "ParticleSpawnPos", 4)
-		while (GetImpactValue("","polluted")==1) do
-			if GetImpactValue("","toadexcrements")==1 then
+	-- check for contaminated buildings and evacuate them
+
+	-- polluted well
+		if (BuildingGetType("") == GL_BUILDING_TYPE_WELL) then
+			CommitAction("PollutedWell", "", "")
+			GetPosition("", "ParticleSpawnPos")
+			GfxStartParticle("Smoke", "particles/toadexcrements.nif", "ParticleSpawnPos", 4)
+			while (GetImpactValue("", "polluted") == 1) do
 				Evacuate("")
+				Sleep(10)
 			end
-			Sleep(5)
+			StopAction("PollutedWell", "")
+			SetState("", STATE_CONTAMINATED, false)
+			return
 		end
-		return
-	end
-	-- count the fire locator
-	FireLocatorCount = 1
-	while GetFreeLocatorByName("Owner", "Fire"..FireLocatorCount, -1, -1, "SmokeLocator"..FireLocatorCount) do
-		FireLocatorCount = FireLocatorCount + 1
-	end
-	FireLocatorCount = FireLocatorCount - 1
-	-- create the smoke particles, size and position them
-	SmokeCount = FireLocatorCount-1
-	while(SmokeCount > 0) do
 	
-		GfxStartParticle("Smoke"..SmokeCount, "particles/toadexcrements.nif", "SmokeLocator"..SmokeCount, 7)
-		SmokeCount = SmokeCount -1	
-	end
+	-- toadexcrements
+		-- count the fire locator
+		FireLocatorCount = 1
+		while GetFreeLocatorByName("Owner", "Fire"..FireLocatorCount, -1, -1, "SmokeLocator"..FireLocatorCount) do
+			FireLocatorCount = FireLocatorCount + 1
+		end
+		FireLocatorCount = FireLocatorCount - 1
+		-- create the smoke particles, size and position them
+		SmokeCount = FireLocatorCount-1
+		while(SmokeCount > 0) do
 	
-	while (GetImpactValue("","toadexcrements")==1)  do
-		Evacuate("Owner")
-		Sleep(2)
-	end
+			GfxStartParticle("Smoke"..SmokeCount, "particles/toadexcrements.nif", "SmokeLocator"..SmokeCount, 7)
+			SmokeCount = SmokeCount -1	
+		end
+	
+		while (GetImpactValue("", "toadexcrements") == 1)  do
+			Evacuate("Owner")
+			Sleep(8)
+		end
 end
 
 function CleanUp()
@@ -84,6 +125,5 @@ function CleanUp()
 	if HasProperty("Owner", "perfume") then
 		RemoveProperty("Owner","perfume")
 	end
-	
 end
 
