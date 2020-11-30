@@ -19,8 +19,6 @@ function Run()
 			
 			-- remove everything
 			StopAction("perfume", "")
-			SetState("", STATE_CONTAMINATED, false)
-			return
 		end
 
 	--Pox
@@ -38,8 +36,6 @@ function Run()
 
 			-- remove everything
 			StopAction("Pox", "")
-			SetState("", STATE_CONTAMINATED, false)
-			return
 		end
 
 	-- Kamm (Comb)
@@ -51,8 +47,6 @@ function Run()
 
 			-- remove everything
 			StopAction("kamm", "")
-			SetState("",STATE_CONTAMINATED, false)
-			return
 		end
 	
 	-- thrown a stinking bomb at the ground?
@@ -65,8 +59,9 @@ function Run()
 			GfxSetPositionTo("stinkbomb", "ParticleSpawnPos")
 			GfxMoveToPosition("stinkbomb", 0, 20, 0, 0.1, false)
 			GfxStartParticle("Smoke", "particles/toadexcrements.nif", "ParticleSpawnPos", 7)
+			
 			while true do
-				Sleep(5)
+				Sleep(10)
 			end
 
 			-- remove it
@@ -77,9 +72,10 @@ function Run()
 			if AliasExists("Smoke") then
 				GfxStopParticle("Smoke")
 			end
-		
-			return
 		end
+		
+		SetState("", STATE_CONTAMINATED, false)
+		return
 	else
 	
 	-- check for contaminated buildings and evacuate them
@@ -89,16 +85,18 @@ function Run()
 			CommitAction("PollutedWell", "", "")
 			GetPosition("", "ParticleSpawnPos")
 			GfxStartParticle("Smoke", "particles/toadexcrements.nif", "ParticleSpawnPos", 4)
+			
 			while (GetImpactValue("", "polluted") == 1) do
 				Evacuate("")
 				Sleep(10)
 			end
+			
 			StopAction("PollutedWell", "")
 			SetState("", STATE_CONTAMINATED, false)
 			return
 		end
 	
-	-- toadexcrements
+		-- toadexcrements
 		-- count the fire locator
 		FireLocatorCount = 1
 		while GetFreeLocatorByName("Owner", "Fire"..FireLocatorCount, -1, -1, "SmokeLocator"..FireLocatorCount) do
@@ -117,13 +115,17 @@ function Run()
 			Evacuate("Owner")
 			Sleep(8)
 		end
+		
+		SetState("", STATE_CONTAMINATED, false)
+		return
+	end
 end
 
 function CleanUp()
 	
 	SetState("Owner", STATE_CONTAMINATED, false)
 	if HasProperty("Owner", "perfume") then
-		RemoveProperty("Owner","perfume")
+		RemoveProperty("Owner", "perfume")
 	end
 end
 
