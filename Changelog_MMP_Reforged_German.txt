@@ -20,7 +20,7 @@ Russisch: Mr.Bro
 Polnisch:
 
 Soziale Medien: Erilambus, Fajeth
-Anderer Support: McCoy!, sublogic, nirvana, Scandal, Zbombe, Jedi93, barra81 + Die Gilde 2 Community!
+Anderer Support: McCoy!, sublogic, Sunpack, nirvana, Scandal, Zbombe, Jedi93, barra81 + Die Gilde 2 Community!
 Network Helper: Agentmass
 
 Installation:
@@ -171,6 +171,7 @@ _Allgemein_
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 - Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod wurden hinzugefügt.
 - Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.
+- Es finden nun bis zu zwei Gerichtsverhandlungen pro Runde statt
 
 _Patron_
 -

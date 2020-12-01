@@ -20,7 +20,7 @@ Russian: Mr.Bro
 Polish:
 
 Social Media: Erilambus, Fajeth
-Additional Support: VSX, McCoy!, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81 + The Guild 2 Community!
+Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81 + The Guild 2 Community!
 Network Helper: Agentmass
 
 Installation:
@@ -165,6 +165,7 @@ _General_
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
+- Two trials per round happen (original idea by Sunpack)
 
 _Patron_
 -
