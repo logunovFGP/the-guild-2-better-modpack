@@ -163,7 +163,7 @@ function BuyNewShip()
 	
 	for i=0,CurrentShips-1 do
 		if BuildingGetCart("",i,"CurrentShip") then
-			ShipType = CartGetType("CurrentShip")
+			local ShipType = CartGetType("CurrentShip")
 			if ShipType == EN_CT_MERCHANTMAN_SMALL or ShipType == EN_CT_MERCHANTMAN_BIG then
 				TradeshipNeeded = false
 			end

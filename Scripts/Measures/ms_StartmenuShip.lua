@@ -12,6 +12,7 @@ function Run()
 		end
 	end
 
+	local Point
 	while true do
 		Point = "Position"..Rand(PosCount)
 		f_MoveTo("", Point)

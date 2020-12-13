@@ -103,7 +103,7 @@ end
 
 
 function AIDecide()
-	NumItems = GetData("NumItems")
+	local NumItems = GetData("NumItems")
 	return "A"..NumItems
 end
 

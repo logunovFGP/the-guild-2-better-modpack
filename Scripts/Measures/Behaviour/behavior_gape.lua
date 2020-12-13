@@ -42,6 +42,7 @@ function Run()
 			break
 		end
 
+		local WaitTime
 		if ActionIsStopped("Action") then
 			if not TimeOut then
 				WaitTime = 0.25

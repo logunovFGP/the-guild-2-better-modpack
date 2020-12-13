@@ -67,6 +67,7 @@ function Normal()
 	local OwnFamilyName = SimGetLastname("")
 	
 	SimGetBeloved("", "Beloved")
+	local InLove
 	if GetID("Beloved") == GetID("Destination") then
 		InLove = true
 	else
@@ -145,6 +146,7 @@ function Cutscene()
 	local OwnFamilyName = SimGetLastname("")
 	
 	SimGetBeloved("", "Beloved")
+	local InLove
 	if GetID("Beloved") == GetID("Destination") then
 		InLove = true
 	else

@@ -43,7 +43,7 @@ function Init()
 		for l=0,TypeCount-1 do
 			local ItemID = ResourceGetTypeItem("Destination", l)
 			if (ItemID ~= -1) and BuildingCanProduce("Farm", ItemID) then
-				Texture = "Hud/Items/Item_"..ItemGetName(ItemID)..".tga"
+				local Texture = "Hud/Items/Item_"..ItemGetName(ItemID)..".tga"
 				Buttons = Buttons .. "@B[S" .. l .. ",," .. ItemGetLabel(ItemID, true) .. ","..Texture.."]"
 			end
 		end
@@ -52,7 +52,6 @@ function Init()
 		"@L_GENERAL_MEASURES_SOWFIELD_HEAD_+0",
 		"@L_GENERAL_MEASURES_SOWFIELD_BODY_+0")
 		
-		ResourceType = -1
 		for l=0,TypeCount-1 do
 			if result=="S"..l then
 				Selection = l

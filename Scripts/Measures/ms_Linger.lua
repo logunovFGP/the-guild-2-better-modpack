@@ -25,7 +25,7 @@ function Run()
 	end
 	local HPGain = 0.01 * GetMaxHP("")
 	if HPGain < 1 then
-		HPGaine = 1
+		HPGain = 1
 	end
 	while true do
 		if GetHP("") < GetMaxHP("") then

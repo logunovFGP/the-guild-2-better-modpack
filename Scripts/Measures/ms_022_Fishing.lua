@@ -72,7 +72,7 @@ function Run()
 				end
 			end
 			
-			Removed = RemoveItems("Destination", ItemID, Count)
+			local Removed = RemoveItems("Destination", ItemID, Count)
 			if Removed>0 then
 				AddItems("", ItemID, Removed)
 			end

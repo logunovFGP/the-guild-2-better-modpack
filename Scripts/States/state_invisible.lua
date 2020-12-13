@@ -10,7 +10,7 @@ end
 
 function Run()
 	if not FindNearestBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, -1, false, "InvisContainer") then
-		StopMeasure()
+		return
 	end
 	
 	SimBeamMeUp("","InvisContainer",false)

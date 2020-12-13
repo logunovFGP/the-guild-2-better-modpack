@@ -294,14 +294,14 @@ end
 
 function OnButtonPressed(x,y,device,key)
 	-- Set the choosen Product
-	Interface = FindNode("\\application\\game\\MSProducePanel")
+	local Interface = FindNode("\\application\\game\\MSProducePanel")
 	if(Interface) then
 		SimStopMeasure("")
-		ItemID = this:GetValueInt("ItemID")
+		local ItemID = this:GetValueInt("ItemID")
 		Interface:SetValueInt("ProduceItemId",ItemID)
 	end
 	-- Close the Panel
-	Game = FindNode("\\application\\game")
+	local Game = FindNode("\\application\\game")
 	if(Game) then
 		Game:DetachModule("MSProducePanel")
 	end

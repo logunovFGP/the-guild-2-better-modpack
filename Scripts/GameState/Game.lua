@@ -33,7 +33,7 @@ function Init()
 	end
 
 	this:AttachModule("Hud","cl_Hud")
-	Hud = FindNode("\\Application\\Game\\Hud")
+	local Hud = FindNode("\\Application\\Game\\Hud")
 	if(Hud) then
 		if this:IsDemo() then
 			Hud:SetValueString("InitScript", "GameHud_demo.lua")
@@ -51,7 +51,7 @@ function Init()
 	this:AttachModule("ScreenShotSaver", "cl_ScreenShotSaveCtrl")
 	this:EnableModule("ScreenShotSaver", 0)
 		
-	RenderCtrl = FindNode("\\Application\\Game\\RenderCtrl")
+	local RenderCtrl = FindNode("\\Application\\Game\\RenderCtrl")
 	
 	if(this:GetSettingInt("GAME", "CameraReplay", 0) > 0) then
 	
@@ -60,7 +60,7 @@ function Init()
 		this:AttachModule("CameraReplayCtrl", "cl_CameraPlayController")
 		this:EnableModule("CameraReplayCtrl", 0)
 		
-		ScreenSaver = FindNode("\\Application\\Game\\ScreenShotSaver")
+		local ScreenSaver = FindNode("\\Application\\Game\\ScreenShotSaver")
 		ScreenSaver:SetValueInt("SaveMovie", 1)
 	
 	elseif (this:GetSettingInt("GAME", "MeasureRendering", 0) > 0) then

@@ -42,6 +42,7 @@ function Run()
 	local ContractOrderer = GetProperty("Guildhouse", "ContractOrderer")
 	local ContractMoney = GetProperty("Guildhouse", "ContractMoney")
 	local ContractFame = GetProperty("Guildhouse", "ContractFame")
+	local tmpDuration
 
 	if Contract==1 then
 		local ItemLabel	= ItemGetLabel(ContractItem, false)

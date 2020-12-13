@@ -30,7 +30,7 @@ function mysplit(source, delimiters)
 end
 
 function myreplace(source,repl,with) -- repl has to be at least 2 characters long
-    result = string.gsub(source,"%b"..repl, with) -- to use it for one character, leave out the %b .   To replace a non-alphanumeric character like a dot, use %. for a dot
+    local result = string.gsub(source,"%b"..repl, with) -- to use it for one character, leave out the %b .   To replace a non-alphanumeric character like a dot, use %. for a dot
     return result
 end
 

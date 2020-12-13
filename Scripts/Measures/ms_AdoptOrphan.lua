@@ -115,7 +115,7 @@ function Run()
 			StopMeasure()
 		end
 
-		OrphanGender = 928 + choice
+		local OrphanGender = 928 + choice
 		if not SimCreate(OrphanGender, "Church", "OrphanStart", "Orphan") then
 			StopMeasure()
 		end

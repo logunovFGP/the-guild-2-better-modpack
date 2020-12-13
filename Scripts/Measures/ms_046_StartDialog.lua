@@ -64,7 +64,7 @@ function Run()
 			
 			camera_CutscenePlayerLock("cutscene", "Destination")
 			
-			EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
+			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
 			if (EnoughVariation == false) then
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));

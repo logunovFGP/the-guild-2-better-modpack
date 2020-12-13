@@ -126,15 +126,16 @@ function Dance()
 	end
 	
 	--while true do
-	
-	    if Gender == 0 then
-		    PlaySound3DVariation("","CharacterFX/female_joy_loop",1)
-		    letsdance = PlayAnimationNoWait("","dance_female_"..Rand(2)+1)
-		else
-		   PlaySound3DVariation("","CharacterFX/male_joy_loop",1)
-		   letsdance = PlayAnimationNoWait("","dance_male_"..Rand(2)+1)
-								
-		end
+	local letsdance
+	local Gender = SimGetGender("")
+	if Gender == 0 then
+	    PlaySound3DVariation("","CharacterFX/female_joy_loop",1)
+	    letsdance = PlayAnimationNoWait("","dance_female_"..Rand(2)+1)
+	else
+	   PlaySound3DVariation("","CharacterFX/male_joy_loop",1)
+	   letsdance = PlayAnimationNoWait("","dance_male_"..Rand(2)+1)
+							
+	end
 		
 		local SimFilter = "__F( (Object.GetObjectsByRadius(Sim)==500)AND(Object.HasDifferentSex())AND(Object.GetState(idle))AND NOT(Object.GetState(townnpc))AND NOT(Object.HasImpact(FullOfLove)))"
 		local NumSims = Find("",SimFilter,"Sims",-1)

@@ -2,7 +2,7 @@ function Init()
 end
 
 function Say(character, samplename)
-
+	local Filename, gender, id, kindofsim, TempFilename, voicevariation
 	TempFilename = "speech/"..samplename
 	
 	gender = GetValueString(character, "Gender")

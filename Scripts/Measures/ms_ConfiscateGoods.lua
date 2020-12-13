@@ -42,6 +42,7 @@ function Run()
 	
 	local Count = InventoryGetSlotCount("Destination", INVENTORY_STD)
 	local Removed = 0
+	local ItemId, Found
 	for i=0, Count-1 do
 		ItemId, Found = InventoryGetSlotInfo("Destination", i, INVENTORY_STD)
 		if ItemId and ItemId>0 and Found>0 then

@@ -58,7 +58,7 @@ function Run()
 	end
 		
 	--check workers, no workers in building, then stop it
-	WorkerCount = BuildingGetWorkerCount("Destination")
+	local WorkerCount = BuildingGetWorkerCount("Destination")
 	if WorkerCount > 0 then
 		for i=0,WorkerCount-1 do
 			if BuildingGetWorker("Destination", i, "Worker") then

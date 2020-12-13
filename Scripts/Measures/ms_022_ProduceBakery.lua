@@ -62,7 +62,7 @@ function Pretzel()
 		--pound it one time, make a small break and pound it again
 		local Time
 		Time = PlayAnimationNoWait("","manipulate_middle_twohand")		
-		SingleTime = (Time/10)
+		local SingleTime = (Time/10)
 		Sleep(2)
 		for i=0,4 do
 			PlaySound3DVariation("","Locations/dough_knead_loop")
@@ -143,7 +143,7 @@ function Cookies()
 		--pound it one time, make a small break and pound it again
 		local Time
 		Time = PlayAnimationNoWait("","manipulate_middle_twohand")		
-		SingleTime = (Time/10)
+		local SingleTime = (Time/10)
 		Sleep(2)
 		for i=0,4 do
 			PlaySound3DVariation("","Locations/dough_knead_loop")

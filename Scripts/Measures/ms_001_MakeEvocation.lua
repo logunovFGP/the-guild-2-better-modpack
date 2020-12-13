@@ -37,7 +37,7 @@ function Run()
 				
 					--create labels for replacements
 					ItemName[NumItems] = ItemId 
-					ItemTextureName = ItemGetName(ItemId)
+					local ItemTextureName = ItemGetName(ItemId)
 					ItemTexture = "Hud/Items/Item_"..ItemTextureName..".tga"
 					btn = btn.."@B[A"..NumItems..",,%"..1+NumItems.."l,"..ItemTexture.."]"
 					ItemLabel[NumItems] = ""..ItemGetLabel(ItemName[NumItems],true)
@@ -214,7 +214,7 @@ function Nothing()
 end
 
 function AIDecide()
-	NumItems = GetData("NumItems")
+	local NumItems = GetData("NumItems")
 	return "A"..NumItems
 end
 

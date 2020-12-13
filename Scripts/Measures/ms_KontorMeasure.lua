@@ -27,6 +27,7 @@ function Run()
 		local	Check = {}
 		
 		Count = ScenarioGetKontorGoodCount()
+		local CityId
 		for g=0,Count-1 do
 			Item, Demand, CityId = ScenarioGetKontorGoodInfo(g)
 			if Item~=-1 and CityId==LocalCityId then

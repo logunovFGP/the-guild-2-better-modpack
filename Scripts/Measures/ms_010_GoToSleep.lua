@@ -11,7 +11,6 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local duration = 6
 
-	BuildingFound = 1
 	if SimGetProfession("")==GL_PROFESSION_MYRMIDON then
 		if not SimGetWorkingPlace("","HomeBuilding") then
 			MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+0", GetID(""))

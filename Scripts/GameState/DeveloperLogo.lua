@@ -10,7 +10,7 @@ function Init()
 
 		this:AttachModule("MovieCtrl", "cl_MovePlayController")
 
-		Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
+		local Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
 		--Ctrl:SetValueString("FileName", "movie/DeveloperLogo.mpg")
 		Ctrl:SetValueString("FileName", "movie/RuneforgeLogo.wmv")
 		Ctrl:SetValueString("NextGameState", "GameIntro")

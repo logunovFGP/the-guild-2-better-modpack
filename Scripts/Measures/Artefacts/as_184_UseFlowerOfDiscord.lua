@@ -68,9 +68,9 @@ function Normal()
 	AlignTo("Believer", "Owner")
 	Sleep(1)
 	
-	time1 = PlayAnimationNoWait("Owner", "talk")
+	local time1 = PlayAnimationNoWait("Owner", "talk")
 	Sleep(0.7)
-	time2 = PlayAnimationNoWait("Believer", "talk")
+	local time2 = PlayAnimationNoWait("Believer", "talk")
 	time1 = math.max(time1, time2)
 	Sleep(time1)
 	if RemoveItems("","FlowerOfDiscord",1)>0 then

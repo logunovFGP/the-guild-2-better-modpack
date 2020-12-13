@@ -17,7 +17,7 @@ function Run()
 		StopMeasure()
 	end
 
-	Time = PlayAnimationNoWait("","manipulate_middle_twohand")
+	local Time = PlayAnimationNoWait("","manipulate_middle_twohand")
 	Sleep(3)
 	if RemoveItems("","CartBooster",1)>0 then
 		PlaySound3D("","Locations/papermaking+0.wav", 1.0)

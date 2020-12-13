@@ -33,7 +33,7 @@ function Run()
 
 	local TimeUntilRepeat = 4	
 	-- Loose money according to buildingcosts
-	Cost = BuildingGetRepairPrice("")
+	local Cost = BuildingGetRepairPrice("")
 	
 	local Result = MsgNews("","","@P"..
 				"@B[1,@L_REPLACEMENTS_BUTTONS_JA_+0]"..

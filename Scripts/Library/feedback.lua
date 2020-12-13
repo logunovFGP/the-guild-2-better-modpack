@@ -239,7 +239,7 @@ end
 -- -----------------------
 function PregnancySuccess(Gender, Success)
 
-	label = "@L_FAMILY_2_COHABITATION_PREGNANCY"
+	local label = "@L_FAMILY_2_COHABITATION_PREGNANCY"
 	
 	if (Success == 0) then
 		label = label.."_UNSUCCESSFUL"
@@ -261,7 +261,7 @@ end
 -- -----------------------
 function AskMarriage(Rhetoric, Gender)
 
-	label = "@L_FAMILY_1_MARRIAGE_QUESTION"
+	local label = "@L_FAMILY_1_MARRIAGE_QUESTION"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -285,7 +285,7 @@ end
 -- -----------------------
 function AnswerMarriage(Rhetoric, Gender)
 
-	label = "@L_FAMILY_1_MARRIAGE_ANSWER"
+	local label = "@L_FAMILY_1_MARRIAGE_ANSWER"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"

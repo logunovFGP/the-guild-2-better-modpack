@@ -190,10 +190,10 @@ function Run()
 			WasCourtLover = 1
 			local ModifyFavor = FavorWon
 			
-			EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
+			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
 			if (EnoughVariation == false) then
 				
-				DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
+				local DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
 				Sleep(DestinationAnimationLength * 0.4)
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)

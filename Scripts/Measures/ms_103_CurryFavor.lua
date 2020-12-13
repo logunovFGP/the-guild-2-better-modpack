@@ -67,15 +67,15 @@ function Normal()
 	--combine textlabel by checking rhetoric skill and gender for text2
 	local RhethoricType
 	if DestinationRhetoric < 4 then
-		RhethoricType2 = "_WEAK_RHETORIC"
+		RhethoricType = "_WEAK_RHETORIC"
 	elseif OwnerRhetoric < 7 then
-		RhethoricType2 = "_NORMAL_RHETORIC"
+		RhethoricType = "_NORMAL_RHETORIC"
 	else
-		RhethoricType2 = "_GOOD_RHETORIC"
+		RhethoricType = "_GOOD_RHETORIC"
 	end
 	camera_CutsceneBothLock("cutscene", "Destination")	
 	PlayAnimationNoWait("Destination","talk")
-	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType2)
+	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
 	PlayAnimation("Destination","bow")
 	chr_GainXP("",GetData("BaseXP"))
 	MsgNewsNoWait("Destination","","","intrigue",-1,
@@ -125,11 +125,11 @@ function Cutscene()
 	--combine textlabel by checking rhetoric skill and gender for text2
 	local RhethoricType
 	if DestinationRhetoric < 4 then
-		RhethoricType2 = "_WEAK_RHETORIC"
+		RhethoricType = "_WEAK_RHETORIC"
 	elseif OwnerRhetoric < 7 then
-		RhethoricType2 = "_NORMAL_RHETORIC"
+		RhethoricType = "_NORMAL_RHETORIC"
 	else
-		RhethoricType2 = "_GOOD_RHETORIC"
+		RhethoricType = "_GOOD_RHETORIC"
 	end
 	
 	MsgNewsNoWait("Destination","","","intrigue",-1,
@@ -148,7 +148,7 @@ function Cutscene()
 		return
 	end
 	
-	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType2)
+	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
 	
 	StopMeasure()		
 end

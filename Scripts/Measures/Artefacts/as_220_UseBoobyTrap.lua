@@ -28,7 +28,7 @@ function Run()
 		end
 	end
 	
-	Time = PlayAnimationNoWait("","manipulate_middle_twohand")
+	local Time = PlayAnimationNoWait("","manipulate_middle_twohand")
 	Sleep(3)
 	if RemoveItems("","BoobyTrap",1)>0 then
 		PlaySound3DVariation("","Effects/digging_shelf", 1.0)

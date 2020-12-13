@@ -28,7 +28,7 @@ function Run()
 		local OldDistance = GetDistance("","Well0")
 		for i=0,FoundWell-1 do
 			WellAlias = "Well"..i
-			CurrentDistance = GetDistance("",WellAlias)
+			local CurrentDistance = GetDistance("",WellAlias)
 			if CurrentDistance < OldDistance then
 				CopyAlias(WellAlias,"Well")
 				OldDistance = CurrentDistance

@@ -98,7 +98,7 @@ function Run()
 	end	
 
 	val = GetProperty("WarChooser","Hostility"..choice)
-	val2 = GetProperty("WarChooser","WarRisk")
+	local val2 = GetProperty("WarChooser","WarRisk")
 	laune = chr_GetEnemyMoodLevel(val)
 	local ort = "@L_DIPLOMAT_NAME_"..GetDatabaseValue("Lordship", lordid, "enemy"..choice).."_+0"
 	local moveDipi

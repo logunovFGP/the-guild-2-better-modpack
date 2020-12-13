@@ -51,7 +51,7 @@ function Run()
 	local	ItemId
 	local	ItemCount
 	local	Amount = 0
-	local	Error
+	local	Error, ItemTransfered
 	local	Found = false
 	local	CurrentSlot = Slots-1
 	for Number = 0, Slots-1 do

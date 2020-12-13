@@ -59,7 +59,7 @@ function Run()
 	CutsceneCameraCreate("cutscene","")		
 	camera_CutsceneBothLock("cutscene", "")
 	
-	time1 = PlayAnimationNoWait("Owner", "talk_short")
+	local time1 = PlayAnimationNoWait("Owner", "talk_short")
 	Sleep(time1)
 	
 	--combine textlabel by checking rhetoric skill and gender

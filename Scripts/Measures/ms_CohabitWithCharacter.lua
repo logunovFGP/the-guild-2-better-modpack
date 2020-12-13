@@ -71,6 +71,7 @@ function Run()
 					
 		-- Check the success
 		local Success = 0
+		local OwnerAnimLength, DestinationAnimLength
 		local Favor = GetFavorToSim("", "Destination")
 		if (Favor > 89) then
 			MsgSay("Destination", chr_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 1));

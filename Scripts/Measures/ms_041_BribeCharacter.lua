@@ -337,7 +337,7 @@ function Cutscene()
 		Sleep(1)
 		chr_ModifyFavor("Destination","",ModifyFavor)
 				
-		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
+		local Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+"..Index
 		
 		Sleep(1)
@@ -350,7 +350,7 @@ function Cutscene()
 	else	--decline money
 		--do the favor stuff
 		chr_ModifyFavor("Destination","",-5)		
-		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
+		local Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
 		--show message
 		MsgNewsNoWait("","Destination","","intrigue",-1,

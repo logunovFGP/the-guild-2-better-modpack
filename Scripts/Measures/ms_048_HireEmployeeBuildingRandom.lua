@@ -116,7 +116,7 @@ function DecideYou()
 		return
 	end
 
-	Error = SimHire("RandWorker", "", true)
+	local Error = SimHire("RandWorker", "", true)
 	chr_OutputHireError("RandWorker", "", Error)
 	if SimGetLevel("RandWorker") == 1 then  -- sometimes the level is not reduced to 1 (I guess because he already had the right clothes)
 		IncrementXPQuiet("RandWorker",xp)	      -- XP back to previous value

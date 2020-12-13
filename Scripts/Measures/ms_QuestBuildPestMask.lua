@@ -5,6 +5,7 @@ function Run()
 
 	local Count = CityGetBuildings("Settlement", GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_HOSPITAL, -1, -1, FILTER_IGNORE, "CityHospitals")
 	
+	local Alias
 	for l=0,Count-1 do
 		Alias	= "CityHospitals"..l
 		if BuildingGetOwner(Alias,"BuildingOwner") then

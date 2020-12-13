@@ -242,9 +242,9 @@ function CleanUp()
 	end
 	RemoveProperty("Dynasty","InquisitionRunning")
 	if HasData("NumExecutioners") then
-		NumExecutioners = GetData("NumExecutioners")
+		local	NumExecutioners = GetData("NumExecutioners")
 		for i=0,NumExecutioners do
-			ExecID = GetData("SimExecutioner"..i)
+			local	ExecID = GetData("SimExecutioner"..i)
 			ms_runinquisition_Terminate(ExecID)
 		end
 	end

@@ -346,7 +346,7 @@ function CutsceneBothLock(Cutscene, FocusSim)
 	Assert(GetID(Cutscene)~=-1, "!cutscene")		-- MMTODO: testing cutscenes
 
 	local random = GFXRand(3)
-
+	local CameraType
 	if random == 0 then
 		CameraType = "Far_HUpYRight"
 	elseif random == 1 then
@@ -369,7 +369,8 @@ function BothLock(Player, FocusSim)
 	if not camera_AllowToSwitch(Player) then
 		return
 	end
-		
+	
+	local CameraType
 	if random == 0 then
 		CameraType = "Far_HUpYRight"
 	elseif random == 1 then

@@ -129,7 +129,7 @@ function BuildingLoop()
 	
 	-- Save the final building position
 	GetPosition("", "FinalPos")
-	px, py, pz = PositionGetVector("FinalPos")
+	local px, py, pz = PositionGetVector("FinalPos")
 	
 	-- Get the proto of the building
 	local Proto = BuildingGetProto("")

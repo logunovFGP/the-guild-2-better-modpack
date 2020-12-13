@@ -115,7 +115,7 @@ function Run()
 				DanceName = "dance_male_"..Rand(2)+1
 			end
 		
-			AnimationLength = Realtime2Gametime(GetAnimationLength("", DanceName))
+			local AnimationLength = Realtime2Gametime(GetAnimationLength("", DanceName))
 			AnimationEndTime = CurrentTime + AnimationLength
 
 			if AnimationEndTime > EndTime then
@@ -141,7 +141,7 @@ function Run()
 		
 		-- Increase the amusement if the period is over
 		if CurrentTime >= ConsumePeriodStartTime  then
-			Count = BuildingGetSimCount("Tavern")
+			local Count = BuildingGetSimCount("Tavern")
 			
 			for l=0,Count do
 				if BuildingGetSim("Tavern", l, "Guest") then

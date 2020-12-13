@@ -46,10 +46,10 @@ function Run()
 				MusiciansFee,"@L_ARRANGECONCERT_BODY_+2")
 			
 			if result == "A" then
-				value1 = 50
-				value2 = 100
-				value3 = 200
-				value = MsgBox("dynasty", "",
+				local value1 = 50
+				local value2 = 100
+				local value3 = 200
+				local value = MsgBox("dynasty", "",
 					"@B[A1,@L_ARRANGECONCERT_IN_BUTTON_+0]".."@B[A2,@L_ARRANGECONCERT_IN_BUTTON_+1]".."@B[A3,@L_ARRANGECONCERT_IN_BUTTON_+2]".."@B[C,@L_GENERAL_BUTTONS_CLOSE_+0]",
 					"@L_ARRANGECONCERT_HEAD_+0",
 					"@L_ARRANGECONCERT_BODY_+0",
@@ -64,9 +64,9 @@ function Run()
 				end
 		
 			elseif result == "B" then
-				value1 = 50
-				value2 = 100
-				value = MsgBox("dynasty", "",
+				local value1 = 50
+				local value2 = 100
+				local value = MsgBox("dynasty", "",
 					"@B[B1,@L_ARRANGECONCERT_OUT_BUTTON_+0]".."@B[B2,@L_ARRANGECONCERT_OUT_BUTTON_+1]".."@B[B3,@L_ARRANGECONCERT_OUT_BUTTON_+2]".."@B[C,@L_GENERAL_BUTTONS_CLOSE_+0]",
 					"@L_ARRANGECONCERT_HEAD_+0",
 					"@L_ARRANGECONCERT_BODY_+0",

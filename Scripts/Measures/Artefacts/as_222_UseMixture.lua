@@ -43,7 +43,7 @@ function Run()
 	
 	--play the animation and start particles
 	GetPosition("Destination", "ParticleSpawnPos")
-	time2 = PlayAnimationNoWait("Destination","cogitate")
+	local time = PlayAnimationNoWait("Destination","cogitate")
 	--play animation and spawn particles
 	if RemoveItems("","Mixture",1)>0 then
 		CommitAction("poison","","","Destination")
