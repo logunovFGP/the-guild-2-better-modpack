@@ -135,7 +135,7 @@ function Run()
 	MsgSay("Bard", "@L_MESSAGES_SLANDER_SPEECH_INTRO_+0")
 	while true do
 		ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
-		if GetDynasty("CurrentRandomSim", "CDynasty") then
+		if IsDynastySim("CurrentRandomSim") then
 			CopyAlias("CurrentRandomSim", "EvidenceVictim")
 			break
 		end

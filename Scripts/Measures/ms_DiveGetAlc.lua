@@ -1,6 +1,6 @@
 function AIDecide()
 
-    if BuildingHasUpgrade("",6124) == true then
+    if BuildingHasUpgrade("", "Schadelbrand") then
 	    return "B"
 	else
 	    return "A"
@@ -12,17 +12,17 @@ function Run()
 	local Money = GetMoney("") 
 	
 	if Money < 700 then
-		MsgQuick("","@L_MEASURES_DIVEGETALC_FAIL_+2")
-		StopMeasure()
+		MsgQuick("", "@L_MEASURES_DIVEGETALC_FAIL_+2")
+		return
 	end	
 
 	local cashskill = 0
 	local secretskill = 0
-	if BuildingGetOwner("","Besitzer") then
+	if BuildingGetOwner("", "Besitzer") then
 		cashskill = GetSkillValue("Besitzer", BARGAINING)/100
 		secretskill = GetSkillValue("Besitzer", SECRET_KNOWLEDGE)
 	else
-		StopMeasure()
+		return
  	end
 
 	local menge = secretskill * 10
@@ -30,17 +30,19 @@ function Run()
 	local kostenbrand = 1200*(1-cashskill*2)
 	local wahltext = ""
 	local bodytext = ""
-  if BuildingHasUpgrade("",6124) == true then
-	  bodytext = bodytext.."@L_MEASURES_DIVEGETALC_BODY_+4"
-	  wahltext = wahltext.."@B[A,@L_MEASURES_DIVEGETALC_BODY_+2]@B[B,@L_MEASURES_DIVEGETALC_BODY_+3]"
+
+  	if BuildingHasUpgrade("", "Schadelbrand") then
+	 	bodytext = bodytext.."@L_MEASURES_DIVEGETALC_BODY_+4"
+	 	wahltext = wahltext.."@B[A,@L_MEASURES_DIVEGETALC_BODY_+2]@B[B,@L_MEASURES_DIVEGETALC_BODY_+3]"
 	else
-	  bodytext = bodytext.."@L_MEASURES_DIVEGETALC_BODY_+0"
-	  wahltext = wahltext.."@B[A,@L_MEASURES_DIVEGETALC_BODY_+2]"
+	 	bodytext = bodytext.."@L_MEASURES_DIVEGETALC_BODY_+0"
+	 	wahltext = wahltext.."@B[A,@L_MEASURES_DIVEGETALC_BODY_+2]"
 	end
-  wahltext = wahltext.."@B[C,@L_MEASURES_DIVEGETALC_BODY_+1]"
+
+ 	wahltext = wahltext.."@B[C,@L_MEASURES_DIVEGETALC_BODY_+1]"
 	
 	local sauf
-  if IsGUIDriven() then
+ 	if IsGUIDriven() then
     sauf = MsgBox("",false,"@P"..
     wahltext,
     "@L_MEASURES_DIVEGETALC_HEAD_+0",
@@ -53,10 +55,10 @@ function Run()
 	local alcId
 		
 	if sauf == "B" then
-		alcId = 936
+		alcId = "Schadelbrand"
 		preis = kostenbrand
 	elseif sauf == "A" then
-		alcId = 935
+		alcId = "PiratenGrog"
 		preis = kostengrog
 	else
 	  StopMeasure()

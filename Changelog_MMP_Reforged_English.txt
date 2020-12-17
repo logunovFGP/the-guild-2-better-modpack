@@ -20,7 +20,7 @@ Russian: Mr.Bro
 Polish:
 
 Social Media: Erilambus, Fajeth
-Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81 + The Guild 2 Community!
+Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
 Network Helper: Agentmass
 
 Installation:
@@ -128,6 +128,7 @@ _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
 - Children are no longer targets of wenches.
 - The Measure 'Rest' now has the red measure category like the icon suggests.
+- Robbercamps now have a cart.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
