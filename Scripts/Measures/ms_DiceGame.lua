@@ -260,6 +260,7 @@ function siebz(d)
 	"@L_HPFZ_WS_KOPF_+1",
 	"@L_HPFZ_WS_RUMPF_+9",GetData("Summe"))
 	
+	local werte
 	if SpielAnalyse == "Exit" then
 	    werte = ms_dicegame_Xwurf(d)
 		if werte ~= 3 then

@@ -82,7 +82,7 @@ function Run()
 			WasCourtLover = 1
 			local ModifyFavor = FavorWon
 		
-			EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
+			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
 			if (EnoughVariation == false) then
 				
 				camera_CutscenePlayerLock("cutscene", "Destination")

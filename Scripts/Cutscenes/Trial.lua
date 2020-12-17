@@ -1478,7 +1478,7 @@ function StopAllMeasures()
 end
 
 function RandomVisitorComment(comment) -- currently not used
-	lsize = ListSize("visitor_list")
+	local lsize = ListSize("visitor_list")
 	if lsize>=1 then
 		local index = Rand(lsize)
 		ListGetElement("visitor_list",index,"random_visitor")

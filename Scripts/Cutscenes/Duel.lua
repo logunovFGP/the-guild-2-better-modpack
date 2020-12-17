@@ -126,6 +126,7 @@ function Go()
 	end
 	
 	--if one duelist is missing
+	local Spoken = 0
 	if ChallengerMissing == 1 or ChallengedMissing == 1 then
 		local Spoker = 0
 		if ChallengerMissing == 1 then
@@ -493,7 +494,7 @@ function Round1Action()
 			else
 				--CameraLock("camera2")
 				--CameraLockLookAt("doctor")
-				f_MoveTo("Doctor" Defender, GL_MOVESPEED_WALK, 128)
+				f_MoveTo("Doctor", Defender, GL_MOVESPEED_WALK, 128)
 				MsgSay("Doctor","@L_DUELL_5_OUTRO_DOCTOR_HEALS_DEAD")
 			end
 			
@@ -524,7 +525,7 @@ function Round1Action()
 		
 	end
 	
-	Round = GetData("Round") + 1
+	local Round = GetData("Round") + 1
 	SetData("Round",Round)
 	
 	--final round
@@ -540,7 +541,7 @@ function Round1Action()
 		--CameraLock("camera2")
 		--CameraLockLookAt("doctor")
 		Sleep(1)
-		local i
+		local Actor
 		for i=1,2 do
 			if i==1 then
 				Actor = "challenger"

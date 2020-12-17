@@ -70,7 +70,7 @@ function Run()
 			Sleep(2)
 		end
 		
-		NextAnim = Rand(2)
+		local NextAnim = Rand(2)
 		if NextAnim == 0 then
 			PlayAnimation("", "watch_for_guard")
 		elseif NextAnim == 1 then

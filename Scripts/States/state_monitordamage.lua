@@ -200,7 +200,7 @@ function BuildingLoop()
 			end
 			
 			-- count the fire locator
-			FireLocatorCount = 1
+			local FireLocatorCount = 1
 			while GetFreeLocatorByName("", "Fire"..FireLocatorCount, -1, -1, "SmokeLocator"..FireLocatorCount, true) do
 				FireLocatorCount = FireLocatorCount + 1
 			end

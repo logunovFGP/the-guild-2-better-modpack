@@ -38,7 +38,7 @@ function Run()
 
 					--create labels for replacements
 					ItemName[NumItems] = ItemId
-					ItemTextureName = ItemGetName(ItemId)
+					local ItemTextureName = ItemGetName(ItemId)
 					ItemTexture = "Hud/Items/Item_"..ItemTextureName..".tga"
 					btn = btn.."@B[A"..NumItems..",,%"..1+NumItems.."l,"..ItemTexture.."]"
 					ItemLabel[NumItems] = ""..ItemGetLabel(ItemName[NumItems],true)
@@ -323,7 +323,7 @@ function Run()
 			WasCourtLover = 1
 			local ModifyFavor = FavorModify
 
-			EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber,ProgressModify)
+			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber,ProgressModify)
 			CourtingProgress = CourtingProgress + ProgressModify
 			if (EnoughVariation == false) then
 
@@ -340,7 +340,7 @@ function Run()
 			else
 
 				chr_AlignExact("", "Destination", InteractionDistance)
-
+				local DestinationAnimationLength
 				if (CourtingProgress < -5) then
 					camera_CutsceneBothLock("cutscene", "Destination")
 					PlayAnimationNoWait("", "got_a_slap")

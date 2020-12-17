@@ -183,7 +183,7 @@ function Run()
 							end
 						end
 
-						Distance = GetDistance("", "Destination")
+						local Distance = GetDistance("", "Destination")
 						if Distance > 80 then
 							f_MoveTo("","Destination",GL_MOVESPEED_WALK)
 							Sleep(1)

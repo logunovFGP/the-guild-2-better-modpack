@@ -16,7 +16,7 @@ function Run()
 	local skillmodify = 2
 
 
-	Time = PlayAnimationNoWait("","fetch_store_obj_R")
+	local Time = PlayAnimationNoWait("","fetch_store_obj_R")
 	Sleep(1)
 	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	Sleep(3)

@@ -58,7 +58,7 @@ function CreatePlayerDynasty()
 	CameraTerrainSetPos("boss", 1500, Rotation)
 	
 	local Workshop
-	Number = 1
+	local Number = 1
 	while true do
 	
 		Workshop = GetSettingString("ENDLESS", "Workshop"..Number, "")
@@ -101,6 +101,7 @@ function CreatePlayerDynasty()
 	end	
 	
 	--dyn2
+	local HomeAlias
 	if not CityGetRandomBuilding(CityAlias, GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, -1, -1, FILTER_IS_BUYABLE, "home") then
 		HomeAlias = "WorkingHut"
 	else

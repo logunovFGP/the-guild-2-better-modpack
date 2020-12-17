@@ -122,9 +122,9 @@ end
 -- -----------------------
 function AttemptToBribeIsSuccess(BriberAlias, TargetAlias)
 
-	Favor = GetFavorToSim(TargetAlias, BriberAlias)
-	Alignment = SimGetAlignment(TargetAlias)
-	SuccessValue = Favor + Alignment * 0.5
+	local Favor = GetFavorToSim(TargetAlias, BriberAlias)
+	local Alignment = SimGetAlignment(TargetAlias)
+	local SuccessValue = Favor + Alignment * 0.5
 	
 	if(SuccessValue >= 50) then
 		return true
@@ -151,14 +151,14 @@ end
 -- GetTradeBonus
 -- -----------------------
 function GetTradeBonus(BuyerAlias, HowMuch)
-	Chance = 3 * GetSkillValue(BuyerAlias, BARGAINING)
+	local Chance = 3 * GetSkillValue(BuyerAlias, BARGAINING)
 	
 	if(IsDynastySim(BuyerAlias)) then
 		Chance = Chance + 20
 	end
 	
 	if(Chance > Rand(199)) then	
-		Bonus2 = 0.0025 * HowMuch * (4 * GetSkillValue(BuyerAlias, RHETORIC) + 100 - SimGetAlignment(BuyerAlias))		
+		local Bonus = 0.0025 * HowMuch * (4 * GetSkillValue(BuyerAlias, RHETORIC) + 100 - SimGetAlignment(BuyerAlias))		
 		return Bonus	
 	end
 end
@@ -168,7 +168,7 @@ end
 -- -----------------------
 function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 
-	label = "@L_SOCIAL_ANSWER_"..Kind
+	local label = "@L_SOCIAL_ANSWER_"..Kind
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -221,7 +221,7 @@ end
 -- -----------------------
 function AnswerMissingVariation(Gender, Rhetoric)
 
-	label = "@L_SOCIAL_ANSWER_NO_VARIATION"
+	local label = "@L_SOCIAL_ANSWER_NO_VARIATION"
 	
 	if (Gender == GL_GENDER_MALE) then
 		label = label.."_MALE"
@@ -246,7 +246,7 @@ end
 -- -----------------------
 function AnswerBathing(Gender, Rhetoric, Success)
 
-	label = "@L_SOCIAL_ANSWER_TAKE_A_BATH"
+	local label = "@L_SOCIAL_ANSWER_TAKE_A_BATH"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -277,7 +277,7 @@ end
 -- ------------------------------
 function SocialMeasureFailedBeforeStart(Gender, Rhetoric, Kind)
 
-	label = "@L_SOCIAL_ANSWER_FAILED_BEFORE_START"
+	local label = "@L_SOCIAL_ANSWER_FAILED_BEFORE_START"
 	
 	if (Kind == "Slap") then
 		label = label.."_SLAP"
@@ -312,7 +312,7 @@ function SocialMeasureSucceeded(Gender, Rhetoric, Kind)
 	if not Kind then
 		return
 	end
-	label = "@L_SOCIAL_ANSWER_SUCCEEDED_"..Kind
+	local label = "@L_SOCIAL_ANSWER_SUCCEEDED_"..Kind
 	
 	if (Gender == GL_GENDER_MALE) then
 		label = label.."_MALE"
@@ -337,7 +337,7 @@ end
 -- -----------------------
 function AskCohabit(Rhetoric, Gender)
 
-	label = "@L_FAMILY_2_COHABITATION_QUESTION"
+	local label = "@L_FAMILY_2_COHABITATION_QUESTION"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -361,7 +361,7 @@ end
 -- -----------------------
 function AnswerCohabit(Rhetoric, Gender, Success)
 
-	label = "@L_FAMILY_2_COHABITATION"
+	local label = "@L_FAMILY_2_COHABITATION"
 	
 	if (Success == 1) then
 		label = label.."_ANSWER_POSITIVE"
@@ -387,7 +387,7 @@ end
 -- ---------------
 function MakeACompliment(Gender, Rhetoric)
 
-	label = "@L_COMPLIMENT"
+	local label = "@L_COMPLIMENT"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -412,7 +412,7 @@ end
 -- -----------------------
 function FlirtSaying1(Rhetoric, Gender)
 
-	label = "@L_FLIRT_SAYING1"
+	local label = "@L_FLIRT_SAYING1"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -436,7 +436,7 @@ end
 -- -----------------------
 function FlirtAnswer(Rhetoric, Gender)
 
-	label = "@L_FLIRT_ANSWER"
+	local label = "@L_FLIRT_ANSWER"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -460,7 +460,7 @@ end
 -- -----------------------
 function FlirtSaying2(Rhetoric, Gender)
 
-	label = "@L_FLIRT_SAYING2"
+	local label = "@L_FLIRT_SAYING2"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -774,7 +774,7 @@ end
 -- -----------------------
 function SpeakPoem(GenderDes,OwnMarried,InLove,DesFName,OwnFName)
 
-	label = "@L_GIVEAPOEM"
+	local label = "@L_GIVEAPOEM"
 	
 	if (DesFName == OwnFName) or (OwnMarried == false) or (InLove == true) then
 		label = label.."_POETRY"
@@ -1051,7 +1051,7 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	-- check if AI
 	if DynastyIsAI(SimAlias) then
 		local Diff = ScenarioGetDifficulty()
-		Multiplier = 10/(8-Diff)
+		local Multiplier = 10/(8-Diff)
 		local CorrectAmount = MoneyToSpend*Multiplier
 		if SpendMoney(SimAlias, CorrectAmount, Reason, Force) then
 			return true

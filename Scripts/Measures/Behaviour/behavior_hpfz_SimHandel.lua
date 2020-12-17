@@ -5,7 +5,7 @@ function Run()
 	    f_MoveTo("Owner", "Away", GL_MOVESPEED_WALK)
 	    AlignTo("Owner", "Actor")
 	    Sleep(1)
-		
+		local TimeLeft
 		if Rand(10) < 5 then
 			if SimGetGender("Owner")==GL_GENDER_MALE then
 				PlaySound3DVariation("","CharacterFX/male_cheer",1)

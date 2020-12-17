@@ -19,7 +19,7 @@ function Run()
 	end
 	AlignTo("","Destination")
 	Sleep(2)
-	Time = PlayAnimationNoWait("","manipulate_middle_twohand")
+	local Time = PlayAnimationNoWait("","manipulate_middle_twohand")
 	Sleep(4)
 	if RemoveItems("","HolyWater",1)>0 then
 		SetMeasureRepeat(TimeOut)

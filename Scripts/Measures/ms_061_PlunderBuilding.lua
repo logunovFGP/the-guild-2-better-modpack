@@ -85,7 +85,7 @@ function Run()
 	if (Money > 0) then
 		AddImpact("Destination","buildingburgledtoday",1,12)
 		ModifyHP("Destination",-(0.02*GetMaxHP("Destination")),false)
-		Time = MoveSetActivity("","carry")
+		local Time = MoveSetActivity("","carry")
 		Sleep(2)
 		CarryObject("","Handheld_Device/ANIM_Bag.nif",false)
 		PlaySound3DVariation("","measures/plunderbuilding",1)

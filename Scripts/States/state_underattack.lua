@@ -81,7 +81,7 @@ function Run()
 				end
 				
 				-- count the fire locator
-				FireLocatorCount = 1
+				local FireLocatorCount = 1
 				while GetFreeLocatorByName("Owner", "Fire"..FireLocatorCount, -1, -1, "SmokeLocator"..FireLocatorCount) do
 					FireLocatorCount = FireLocatorCount + 1
 				end
@@ -105,7 +105,7 @@ function Run()
 				end
 				
 				-- create the flame particles, size and position them
-				FlameCount = FireLocatorCount-1
+				local FlameCount = FireLocatorCount-1
 				while(FlameCount > 0) do
 					
 					GfxStartParticle("Flames"..FlameCount, FlameType,"SmokeLocator"..FlameCount, FlameSize)

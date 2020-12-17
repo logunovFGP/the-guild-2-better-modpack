@@ -13,13 +13,13 @@ end
 
 function Idle()
 
-	WorldReady = 0
+	local WorldReady = 0
 
 	while( WorldReady == 0) do
 
 		Sleep(1)
 
-		Controller = FindNode("\\Application\\Game\\Controller")
+		local Controller = FindNode("\\Application\\Game\\Controller")
 		if( not(Controller == nil)) then
 
 			WorldReady = Controller:GetValueInt("WorldReady")
@@ -28,7 +28,7 @@ function Idle()
 
 	end
 
-	World = FindNode("\\World")
+	local World = FindNode("\\World")
 	World:SetValueInt("Renderable", 1)
 
 	Game:ChangeGameState("Game")

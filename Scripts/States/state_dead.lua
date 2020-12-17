@@ -235,7 +235,7 @@ function Run()
 				elseif (i==3) then
 					LocatorType = "Entry"
 				end
-				LocatorCount = 1
+				local LocatorCount = 1
 				while GetLocatorByName("Owner", LocatorType..LocatorCount, LocatorType.."Locator"..LocatorCount) do
 					LocatorCount = LocatorCount + 1
 				end
@@ -245,7 +245,7 @@ function Run()
 				WreckageCount = LocatorCount-1
 				while(WreckageCount > 0) do
 	
-					WreckageValue = Rand(4)
+					local WreckageValue = Rand(4)
 					if (WreckageValue == 0) then
 						WreckageType = "buildings/Building_Ruins/Ruin_1.nif"
 					elseif (WreckageValue == 1) then
@@ -284,8 +284,8 @@ function Run()
 	
 			-- pull the building under the ground
 			-- needed fixed value to avoid possible async form GfxGetHeight
-			Height = 2500		--GfxGetHeight("")
-			Duration = Height/100
+			local Height = 2500		--GfxGetHeight("")
+			local Duration = Height/100
 			GfxMoveToPositionNoWait("", 0, -Height, 0, Duration, false)
 			Sleep(45)
 	
@@ -357,8 +357,8 @@ function Run()
 		
 		-- pull the ship under the ground
 		SetInvisible("", true) 
-		Height = GfxGetHeight("")+500
-		Duration = Height/100 
+		local Height = GfxGetHeight("")+500
+		local Duration = Height/100 
 		
 		
 		local OffsetArray = 	{150,60,200,1,

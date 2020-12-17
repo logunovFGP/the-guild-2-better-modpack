@@ -8,7 +8,7 @@ function Init()
 	this:SetValueInt("GameMode", 1)
 	this:SetValueString("SessionType", "LOCALHOST")
 	
-	InputCtrl = FindNode("\\Application\\Game\\InputCtrl")
+	local InputCtrl = FindNode("\\Application\\Game\\InputCtrl")
 	InputCtrl:LoadInputMapping("Input.ini")
 	
 	this:AttachModule("Illustrator", "cl_Illustrator")

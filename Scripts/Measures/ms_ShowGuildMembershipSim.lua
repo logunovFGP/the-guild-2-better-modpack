@@ -66,8 +66,8 @@ function Run()
 		label3 = label3.."_FEMALE_+1"
 	end
 
-	famelevelsim = "@L_GUILDHOUSE_FAME_SIM_+"..chr_SimGetFameLevel("Destination")
-	fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..chr_DynastyGetFameLevel("Destination")
+	local famelevelsim = "@L_GUILDHOUSE_FAME_SIM_+"..chr_SimGetFameLevel("Destination")
+	local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..chr_DynastyGetFameLevel("Destination")
 
 	GetScenario("scenario")
 	local mapid = GetProperty("scenario", "mapid")

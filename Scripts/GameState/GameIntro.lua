@@ -4,7 +4,7 @@ function Init()
 
 	this:AttachModule("MovieCtrl", "cl_MovePlayController")
 
-	Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
+	local Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
 	Ctrl:SetValueString("FileName", "movie/GameIntro.wmv")
 	Ctrl:SetValueString("NextGameState", "GameStartUp")
 

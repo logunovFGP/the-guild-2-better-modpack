@@ -80,6 +80,7 @@ function Run()
 			local cost = 0
 			local repairTotal = 0
 			local repairedbuildings = 0
+			local Alias, WorkshopLvl
 	
 			-- taxes (income)
 			local WorkshopCount = CityGetBuildings("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop")
@@ -627,8 +628,8 @@ function CheckAlderman()
 					end
 
 					GetSettlement("New", "settlement")
-					famelevelsim = "@L_GUILDHOUSE_FAME_SIM_+"..chr_SimGetFameLevel("New")
-					fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..chr_DynastyGetFameLevel("New")
+					local famelevelsim = "@L_GUILDHOUSE_FAME_SIM_+"..chr_SimGetFameLevel("New")
+					local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..chr_DynastyGetFameLevel("New")
 
 					MsgNewsNoWait("All","New","","politics",-1,
 							"@L_CHECKALDERMAN_HEAD_+0",

@@ -22,7 +22,7 @@ function CalcCartBuyPrice(CartType)
 end
 
 function CalcCartSellPrice(CartType,HPRelative)
-		Price = gameplayformulas_CalcCartBuyPrice(CartType)
+		local Price = gameplayformulas_CalcCartBuyPrice(CartType)
 		Price = Price * HPRelative * 0.75
 		return Price
 end
@@ -828,8 +828,8 @@ function CheckImperialOfficer()
 					local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+0"
 
 					GetSettlement("New", "settlement")
-					famelevelsim = "@L_IMPERIAL_FAME_SIM_+"..chr_SimGetImperialFameLevel("New")
-					fameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..chr_DynastyGetImperialFameLevel("New")
+					local famelevelsim = "@L_IMPERIAL_FAME_SIM_+"..chr_SimGetImperialFameLevel("New")
+					local fameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..chr_DynastyGetImperialFameLevel("New")
 
 					MsgNewsNoWait("All","New","","politics",-1,
 							"@L_IMPERIAL_OFFICER_"..gender.."_+0",

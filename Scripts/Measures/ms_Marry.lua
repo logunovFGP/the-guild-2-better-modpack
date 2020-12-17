@@ -125,7 +125,7 @@ function Run()
 			ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
 			ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
 			
-			AnimLength = chr_MultiAnim("", "kiss_male", "Destination", "kiss_female", InteractionDistance, 1.0, true)
+			local AnimLength = chr_MultiAnim("", "kiss_male", "Destination", "kiss_female", InteractionDistance, 1.0, true)
 			
 			Sleep(AnimLength * 0.5)
 			ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")

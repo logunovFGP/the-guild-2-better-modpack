@@ -24,7 +24,7 @@ function Run()
 			
 				--create labels for replacements
 				ItemName[NumItems] = ItemId 
-				ItemTextureName = ItemGetName(ItemId)
+				local	ItemTextureName = ItemGetName(ItemId)
 				ItemTexture = "Hud/Items/Item_"..ItemTextureName..".tga"
 				btn = btn.."@B[BTN"..NumItems..",,%"..1+NumItems.."l,"..ItemTexture.."]"
 				ItemLabel[NumItems] = ""..ItemGetLabel(ItemName[NumItems],true)

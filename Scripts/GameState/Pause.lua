@@ -8,7 +8,7 @@ function Init()
 
 	--set the pause state
 
-	Menu = FindNode("\\Application\\Game\\Menu")	
+	local Menu = FindNode("\\Application\\Game\\Menu")	
 	Menu:SetValueInt("State", 100)
 
 end

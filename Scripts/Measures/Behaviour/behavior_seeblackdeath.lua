@@ -1,5 +1,5 @@
 function Run()
-	Distance = GetData("Distance")
+	local Distance = GetData("Distance")
 	if not Distance then
 		Distance = 200
 	end

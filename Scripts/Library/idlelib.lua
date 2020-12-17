@@ -1764,7 +1764,7 @@ function ReturnACredit()
 			end
 			
 			if not HasProperty("Destination","KreditKonto") then
-				bankkonto = schuld + ecost
+				local bankkonto = schuld + ecost
 				CreditMoney("Destination",bankkonto,"tip")
 			else
 				local bankkonto = GetProperty("Destination","KreditKonto") + schuld

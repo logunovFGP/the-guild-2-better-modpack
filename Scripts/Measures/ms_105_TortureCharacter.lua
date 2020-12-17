@@ -59,7 +59,7 @@ function Run()
 			"@L_PRIVILEGES_105_TORTURECHARACTER_MESSAGES_VICTIM_HEAD_+0",
 			"@L_PRIVILEGES_105_TORTURECHARACTER_MESSAGES_VICTIM_BODY_+0",GetID("MrTorture"),GetID("Destination"))
 		SetData("MessageDone",1)
-		Time = PlayAnimationNoWait("", "propel")
+		local Time = PlayAnimationNoWait("", "propel")
 		local ActivityTime = MoveSetActivity("Destination","arrested")
 		
 		Sleep(Time)
@@ -144,6 +144,7 @@ function Run()
 	SetData("PositionModified",0)
 	
 	local Random = Rand(11)
+	local Evidence
 	if Random == 0 then
 		Evidence = 1
 	elseif Random == 1 then

@@ -142,7 +142,7 @@ function CheckSleep()
 		end
 	end
 
-	SleepTime = 8 - time
+	local SleepTime = 8 - time
 	SleepTime = Gametime2Realtime(SleepTime)
 	Sleep(SleepTime)
 	return

@@ -18,7 +18,7 @@ function Run()
 		end
 	end	
 	--ShowOverheadSymbol("",true,true,0,":(")
-	Runtime = GetGametime() + duration
+	local Runtime = GetGametime() + duration
 	CommitAction("disease","","")
 	SimResetBehavior("")
 	while GetGametime() < Runtime do

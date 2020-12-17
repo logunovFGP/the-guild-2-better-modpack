@@ -40,11 +40,11 @@ function Start()
 end
 
 function CheckEnd()
-	time_left = (GetData("Rounds")*24-4) - ScenarioGetTimePlayed()  -- time left in hours
+	local time_left = (GetData("Rounds")*24-4) - ScenarioGetTimePlayed()  -- time left in hours
 	--time_left = time_left/24	-- time left in rounds
 	--time_left = time_left*15*60	
-	time_left = time_left * 60
-		
+	local time_left = time_left * 60
+	local Alias
 	if time_left<=0 then		
 		if not HasProperty("World","Finito") then	
 			local Count = ScenarioGetObjects("Dynasty", 99, "Dynasties")
@@ -132,6 +132,7 @@ function End()
 			local Count = ScenarioGetObjects("Dynasty", 99, "Dynasties")
 			local BestCapital = -1
 			local BestDynasty = -1
+			local Alias
 			for dyn=0,Count-1 do
 				Alias = "Dynasties"..dyn
 				if (DynastyIsShadow(Alias)==false) then

@@ -62,6 +62,7 @@ function SetupFreeTrader()
 	local SourceCount = 0
 	local	TargetCount = 0
 	
+	local Alias
 	for l=0,Count-1 do
 		Alias = "City"..l
 		if CityIsKontor(Alias) then
@@ -114,6 +115,7 @@ function SetupDynastyShip()
 	SetData("Source0"..INVENTORY_STD,1)
 	SetData("Source0"..INVENTORY_SELL,1)
 	
+	local Alias, TargetAlias
 	for l=0,Count-1 do
 		Alias = "City"..l
 		TargetAlias = "Target"..TargetCount
@@ -164,7 +166,7 @@ function BuyGoods()
 	local	BestProfit = 0
 	
 	for no=0,TargetCount-1 do
-		Profit = ms_merchantman_DoBuyGoods("Target"..no, true)
+		local Profit = ms_merchantman_DoBuyGoods("Target"..no, true)
 		if Profit > BestProfit then
 			Target = "Target"..no
 			BestProfit = Profit
@@ -217,7 +219,7 @@ function DoBuyGoods(Target, CheckOnly)
 				ItemId, ItemCount = InventoryGetSlotInfo(Source, Number, InventoryType)
 				if ItemId and ItemCount and ItemCount>2 then
 		
-					Type = ItemGetType(ItemId)
+					local Type = ItemGetType(ItemId)
 					Trade = TradeAll or (GetData("Trade"..Type)==1)
 			
 					if Trade then
@@ -331,7 +333,7 @@ function CheckSell()
 			end
 			
 			for l=0,TargetCount-1 do
-				PriceOut = GetAccessPriceGive("Target"..l, "", ItemId, ItemCount, INVENTORY_STD)
+				local PriceOut = GetAccessPriceGive("Target"..l, "", ItemId, ItemCount, INVENTORY_STD)
 				if PriceOut>BestPrice then
 					BestPrice = PriceOut
 					SetData("Target", "Target"..l)

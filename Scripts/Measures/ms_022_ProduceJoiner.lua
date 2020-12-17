@@ -37,7 +37,7 @@ end
 function UseFile()
 	
 	--take the file from the wall
-	Time = PlayAnimationNoWait("", "manipulate_top_r")
+	local Time = PlayAnimationNoWait("", "manipulate_top_r")
 	Sleep(Time-3)
 	CarryObject("","Handheld_Device/Anim_File.nif",false)
 	

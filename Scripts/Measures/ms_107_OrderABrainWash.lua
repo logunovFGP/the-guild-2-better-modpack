@@ -61,7 +61,7 @@ function Run()
 		--BattleWeaponPresent("")
 		AlignTo("", "Destination")
 		Sleep(0.7)
-		Time = PlayAnimationNoWait("", "propel")
+		local Time = PlayAnimationNoWait("", "propel")
 		local ActivityTime = MoveSetActivity("Destination","arrested")
 		
 		Sleep(Time)

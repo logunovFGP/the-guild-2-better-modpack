@@ -98,13 +98,13 @@ function Run()
 	
 		-- toadexcrements
 		-- count the fire locator
-		FireLocatorCount = 1
+		local FireLocatorCount = 1
 		while GetFreeLocatorByName("Owner", "Fire"..FireLocatorCount, -1, -1, "SmokeLocator"..FireLocatorCount) do
 			FireLocatorCount = FireLocatorCount + 1
 		end
 		FireLocatorCount = FireLocatorCount - 1
 		-- create the smoke particles, size and position them
-		SmokeCount = FireLocatorCount-1
+		local SmokeCount = FireLocatorCount-1
 		while(SmokeCount > 0) do
 	
 			GfxStartParticle("Smoke"..SmokeCount, "particles/toadexcrements.nif", "SmokeLocator"..SmokeCount, 7)

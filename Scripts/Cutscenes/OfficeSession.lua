@@ -648,6 +648,7 @@ function VoteForOffice(Office)
 			local WinnerArray = {}
 			local WinnerArrayCount = 0
 			local MaxVote = 0		
+			local Vote
 			
 			for i=0, ApplicantCnt-1 do
 				Vote = votes[i]

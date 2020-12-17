@@ -4,10 +4,10 @@ function Run(MovieName)
 	this:AttachModule("MovieCtrl", "cl_MovePlayController")
 	
 	-- mute the menumusic
-	MusicGameModule = FindNode("\\Application\\Game\\MusicCtrl")	
+	local MusicGameModule = FindNode("\\Application\\Game\\MusicCtrl")	
 	MusicGameModule:SwapMute()
 	
-	Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
+	local Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
 	Ctrl:SetValueString("FileName", MovieName)
 	Ctrl:SetValueInt("NoSwitch", 1)
 	Ctrl:SetValueInt("Finished", 0)

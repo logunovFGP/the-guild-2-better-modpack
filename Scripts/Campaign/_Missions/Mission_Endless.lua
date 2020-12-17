@@ -37,7 +37,7 @@ end
 function End()
 	
 	if IsDemo() then
-	
+		local ShowStats = 0
 		if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_DEMO_END_HEADER", "@L_DEMO_END_BODY", LastMemberID) == "S" then
 			ShowStats = 1
 		end

@@ -28,7 +28,7 @@ function Run()
 	local	Found = 0
 	
 	-- change the check from GetInsideBuilding to SimIsWorkingTime to make it possible to use this measure on outside workers at farms/mines/etc.
-	
+	local Alias
 	if BuildingIsWorkingTime("Building") then
 		for number=0, Count-1 do
 			Alias = "Worker"..Found

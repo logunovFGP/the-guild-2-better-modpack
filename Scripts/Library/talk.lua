@@ -18,7 +18,7 @@ end
 -- -----------------------
 function ThreatCharacter(Rhetoric)
 
-	label = "@L_INTRIGUE_THREAT_CHARACTER"
+	local label = "@L_INTRIGUE_THREAT_CHARACTER"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -37,7 +37,7 @@ end
 -- -----------------------
 function AskLiaison(Rhetoric, Gender)
 
-	label = "@L_LIAISON_QUESTION"
+	local label = "@L_LIAISON_QUESTION"
 	
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
@@ -62,7 +62,7 @@ end
 -- -----------------------
 function AnswerLiaison(Rhetoric, Gender)
 
-	label = "@L_COURTLOVER_BEGIN_ANSWER"
+	local label = "@L_COURTLOVER_BEGIN_ANSWER"
 
 	if (Gender == GL_GENDER_MALE) then
 		label = label.."_SUCCESS_MALE"

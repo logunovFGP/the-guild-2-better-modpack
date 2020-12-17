@@ -322,7 +322,7 @@ function Plunder()
 	SetProperty("","DontLeave", 1)
 	CommitAction("plunder", "", "", "Victim")
 	Sleep(2)
-	
+	local ItemValue
 	if IsType("Victim","Sim") then
 		local Money = 0.1*GetMoney("Victim")
 		chr_RecieveMoney("Dynasty",Money,"IncomeRobbers")

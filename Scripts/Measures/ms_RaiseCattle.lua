@@ -55,7 +55,7 @@ function Init()
 					elseif ItemID == 11 then
 					    buttPic = 4
 					end
-					Texture = "Hud/Items/Item_"..ItemGetName(buttPic)..".tga"
+					local	Texture = "Hud/Items/Item_"..ItemGetName(buttPic)..".tga"
 					Buttons = Buttons .. "@B[S" .. l .. ",," .. ItemGetLabel(buttPic, true) .. ","..Texture.."]"
 				end
 			end
@@ -65,7 +65,6 @@ function Init()
 		"@L_GENERAL_MEASURES_RAISECATTLE_HEAD_+0",
 		"@L_GENERAL_MEASURES_RAISECATTLE_BODY_+0")
 		
-		ResourceType = -1
 		for l=0,TypeCount-1 do
 			if result=="S"..l then
 				Selection = l

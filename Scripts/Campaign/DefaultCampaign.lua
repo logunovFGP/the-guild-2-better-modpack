@@ -631,7 +631,7 @@ function SetupDiplomacy()
 			while Friends<FriendCount do
 			
 				if Friends<FriendCount and Rand(3) == 0 then
-					Friend = defaultcampaign_FindDynasty(DIP_NAP, FriendCount, dyn+1, Count, Friends == 0)
+					local Friend = defaultcampaign_FindDynasty(DIP_NAP, FriendCount, dyn+1, Count, Friends == 0)
 					if Friend then
 						DynastySetDiplomacyState(Alias, Friend, DIP_NAP)
 					end

@@ -37,6 +37,7 @@ function ImportantPersonsDiplomacyFilter(DiplState, Section)
 		return
 	end
 
+	local Alias
 	for dyn=0, iCount-1 do
 		Alias = "Dynasties"..dyn
 		if not (GetID(Alias) == GetID("dynasty")) then

@@ -60,7 +60,7 @@ function Normal()
 	AlignTo("Believer", "Owner")
 	Sleep(0.5)
 	
-	time1 = PlayAnimationNoWait("Owner", "talk_short")
+	local time1 = PlayAnimationNoWait("Owner", "talk_short")
 	Sleep(time1)
 	
 	

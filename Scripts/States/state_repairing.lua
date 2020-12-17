@@ -92,9 +92,9 @@ function BuildingStart()
 	 	-- Get the building height which should work with the flag locator 	
 	 	local Height = 0
 	 	if GetLocatorByName("", "Flag1", "Top") then
-	 		TopX, TopY, TopZ = PositionGetVector("Top")
+	 		local TopX, TopY, TopZ = PositionGetVector("Top")
 			GetLocatorByName("", "walledge4", "Pos")
-	 		BotX, BotY, BotZ = PositionGetVector("Pos")
+	 		local BotX, BotY, BotZ = PositionGetVector("Pos")
 	 		Height = TopY - BotY
 	 	end
 	 	

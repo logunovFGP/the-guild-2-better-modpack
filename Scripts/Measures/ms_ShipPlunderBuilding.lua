@@ -77,7 +77,7 @@ function Run()
 	local Money = Plunder("","Destination",99)
 	if (Money > 0) then
 		AddImpact("Destination","buildingburgledtoday",1,4)
-		Time = MoveSetActivity("","carry")
+		local Time = MoveSetActivity("","carry")
 		Sleep(2)
 		CarryObject("","Handheld_Device/ANIM_Bag.nif",false)
 		PlaySound3DVariation("","measures/plunderbuilding",1)
