@@ -47,7 +47,6 @@ Offen:
 - Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 
   bewachten, Schergen, die königliche Garde, Kinder und Sims, die einen Kreuzzug ausrufen 
   (wodurch die KI diese Maßnahme ständig neustartete)
-- Räubernester haben nun auch von Anfang an einen Karren.
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
 - Die KI bewarb sich auf keine höheren Ämter, wenn sich bereits ein Bewerber auf 
@@ -82,15 +81,10 @@ Offen:
   nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
 - Forderte man die Todesstrafe bestand eine hohe Möglichkeit,
   dass die KI sich daraufhin einfach schuldig bekennen würde.
-- Beim Aufwerten des Wohnsitzes reichte der Titel manchmal trotz vorhandener
-  Voraussetzung nicht aus (z.B. Titel Edelmann für das Herrenhaus)
 - In manchen Städten konnte man sein Opfer nicht verbannen, obwohl es sich mitten in der
   Stadt befand. Ausschlaggebend ist nun die Entfernung zum Rathaus (Der Radius wurde zudem um 20% erhöht).
 - Man konnte bei der Maßnahme "Eine Reise antreten" in der Kutsche feststecken, wenn man
   die Maßnahme mittendrin abbrach.
-- Workaround: Von der KI verwaltete Betriebe (Bauern, Müller, Holzfäller, Minenarbeiter, Obstbauern)
-  werden nun Waren, die sie "ausversehen" von eigenen Handwerkern, Patronen und Gelehrten geliefert bekommen
-  wieder verkaufen (Eure Holzfäller werden also nicht länger Schwerter und Rüstungen horten).
 - Unter Umständen wurde das Kassenbuch der Stadt nicht aufgezeigt.
 - Manchmal erhielten Opfer von Raub, Knochenbrechen und Mord keinen Beweis gegen den Täter.
 - Unter Umständen griffen Minenwächter die eigene Dynastie an.

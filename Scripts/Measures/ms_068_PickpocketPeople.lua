@@ -14,74 +14,68 @@ function Run()
 	--the time, a thief must wait to rob the same person again
 	local TimeToWait = 8
 	local Value
-	local	TimeOut
-	TimeOut = GetData("TimeOut")
-	if TimeOut then
-		TimeOut = GetGametime() + TimeOut
-	end
 	
-	if not SimGetWorkingPlace("","MyHome") then
+	if not SimGetWorkingPlace("", "MyHome") then
 		if IsPartyMember("") then
-			local NextBuilding = ai_GetNearestDynastyBuilding("",GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_THIEF)
+			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_THIEF)
 			if not NextBuilding then
-				StopMeasure()
+				return
 			end
-			CopyAlias(NextBuilding,"MyHome")
+			CopyAlias(NextBuilding, "MyHome")
 		else
-			StopMeasure()
+			return
 		end
 	end
 	while true do
-		if TimeOut then
-			if TimeOut < GetGametime() then
+	
+		if IsStateDriven() then
+			-- TimeOut
+			if math.mod(GetGametime(), 24) < 7 then
 				break
 			end
 		end
-		local NumOfObjects = Find("Owner","__F( (Object.GetObjectsByRadius(Sim)==1000) AND NOT(Object.BelongsToMe()) AND NOT(Object.HasImpact(HaveBeenPickpocketed)) AND NOT(Object.GetState(cutscene))AND NOT(Object.GetProfession() == 21)AND NOT(Object.GetProfession() == 25)AND NOT(Object.GetState(townnpc))AND(Object.MinAge(16)))","Sims",-1)
-		if NumOfObjects>0 then
+		
+		local NumOfObjects = Find("Owner","__F((Object.GetObjectsByRadius(Sim)== 1100) AND NOT(Object.BelongsToMe()) AND NOT(Object.HasImpact(HaveBeenPickpocketed)) AND NOT(Object.GetState(cutscene))AND NOT(Object.GetProfession() == 18)AND NOT(Object.GetProfession() == 21)AND NOT(Object.GetProfession() == 25)AND NOT(Object.GetState(townnpc))AND(Object.MinAge(16)))","Sims",-1)
+		if NumOfObjects >0 then
 			local DestAlias = "Sims"..Rand(NumOfObjects-1)
 			local DoIt = 1
-			if GetCurrentMeasureName(DestAlias)=="AttendMass" then 
-				DoIt = 0	
-			end
+		--	if GetCurrentMeasureName(DestAlias) == "AttendMass" then 
+		--		DoIt = 0	
+		--	end
 			if IsPartyMember(DestAlias) then
 				DoIt = 0
 			end
 			local VictimSkill		
 			if IsDynastySim(DestAlias) then 
-				VictimSkill = GetSkillValue(DestAlias,EMPATHY)
+				VictimSkill = GetSkillValue(DestAlias, EMPATHY)
 			else
 				VictimSkill = Rand(6) + 1
 			end
-			if DoIt==1 then
+			if DoIt == 1 then
 				if SendCommandNoWait(DestAlias, "BlockMe") then 
-					if CheckSkill("",2,VictimSkill) then
+					if CheckSkill("", 2, VictimSkill) then
 						SetData("Blocked", 1)
-						
-						--hide the thief
-						--bad idea. all people at the market are shouting TF
-						--SetState("",STATE_HIDDEN,true)
 							
 						f_MoveTo("", DestAlias, GL_MOVESPEED_WALK, 140)
 						AlignTo("Owner", DestAlias)
 						Sleep(0.7)
 						PlayAnimation("Owner", "pickpocket")
-						AddImpact(DestAlias,"HaveBeenPickpocketed",1,TimeToWait)
+						AddImpact(DestAlias, "HaveBeenPickpocketed", 1, TimeToWait)
 						
-						local		ThiefLevel				= SimGetLevel("")
-						local		VictimSpendValue	= Rand(40) + ThiefLevel * 20 + 25
+						local ThiefLevel = SimGetLevel("")
+						local VictimSpendValue = Rand(40) + ThiefLevel * 20 + 25
 						
-						if Rand(100 ) > (100-ThiefLevel*2) then
+						if Rand(100) > (100-ThiefLevel*2) then
 							VictimSpendValue = VictimSpendValue*3
 						end
 						
-						IncrementXPQuiet("Owner",15)
+						IncrementXPQuiet("Owner", 15)
 						chr_RecieveMoney("Owner", VictimSpendValue, "IncomeThiefs")
 						--for the mission
-						mission_ScoreCrime("",VictimSpendValue)
+						mission_ScoreCrime("", VictimSpendValue)
 						-- Play a coin sound for the local player
 						if dyn_IsLocalPlayer("") then
-							PlaySound3D("","Effects/coins_to_moneybag+0.wav", 1.0)
+							PlaySound3D("", "Effects/coins_to_moneybag+0.wav", 1.0)
 						end
 						
 						if IsPartyMember(DestAlias) then
@@ -92,24 +86,21 @@ function Run()
 							end
 							chr_SpendMoney(DestAlias, VictimSpendValue, "CostThiefs")
 							
-							if VictimSpendValue>25 then
+							if VictimSpendValue > 25 then
 								feedback_MessageCharacter(DestAlias,
 									"@L_THIEF_068_PICKPOCKETPEOPLE_MSG_VICTIM_HEAD_+0",
-									"@L_THIEF_068_PICKPOCKETPEOPLE_MSG_VICTIM_BODY_+0",GetID(DestAlias), VictimSpendValue)
+									"@L_THIEF_068_PICKPOCKETPEOPLE_MSG_VICTIM_BODY_+0", GetID(DestAlias), VictimSpendValue)
 							end
 						end
 	
 						Sleep(0.75)
 						SetData("Blocked", 0)
 					else
-						--hide the thief
-						--bad idea. all people at the market are shouting TF
-						--SetState("",STATE_HIDDEN,true)
 					
 						SetData("Blocked", 1)
 						f_MoveTo("", DestAlias, GL_MOVESPEED_WALK, 140)
 						AlignTo("Owner", DestAlias)
-						AddImpact(DestAlias,"HaveBeenPickpocketed",1,TimeToWait)
+						AddImpact(DestAlias, "HaveBeenPickpocketed", 1, TimeToWait)
 						PlayAnimationNoWait("","pickpocket")
 						Sleep(3)
 						StopAnimation("")
@@ -119,62 +110,59 @@ function Run()
 							CommitAction("pickpocket", "", "", DestAlias)
 							feedback_OverheadComment(DestAlias,
 								"@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)
-							if BuildingHasUpgrade("MyHome",543) then
+							if BuildingHasUpgrade("MyHome", 543) then
 							    if GetState("", STATE_FIGHTING) == false then
 								    ms_068_pickpocketpeople_FastHide()
 								end
 							else
-							    f_MoveTo("","MyHome",GL_MOVESPEED_RUN,0)
-							    StopAction("pickpocket","")
+							    f_MoveTo("", "MyHome", GL_MOVESPEED_RUN, 0)
+							    StopAction("pickpocket", "")
 							    Sleep(50)
 							end
-							f_MoveTo("","Destination",GL_MOVESPEED_WALK,50)
+							f_MoveTo("", "Destination", GL_MOVESPEED_WALK, 50)
 						end
 					end
 				end
 			end	
 		else
-			f_MoveTo("","Destination",GL_MOVESPEED_WALK,50)	
+			f_MoveTo("", "Destination", GL_MOVESPEED_WALK, 50)	
 		end
-		Sleep(3)
+		Sleep(2)
 	end
 end
 
 function BlockMe()
-	while GetData("Blocked")==1 do
-		Sleep(Rand(10)*0.1+0.5)
+	while GetData("Blocked") == 1 do
+		Sleep(4)
 	end
 end
 
 function FastHide()
 
-    StopAction("pickpocket","")
-    GetPosition("","standPos")
-	PlayAnimationNoWait("","crouch_down")
+    StopAction("pickpocket", "")
+    GetPosition("", "standPos")
+	PlayAnimationNoWait("", "crouch_down")
 	Sleep(1)
-	local filter ="__F((Object.GetObjectsByRadius(Building)==1000))"
-	local k = Find("",filter,"Umgebung",15)
+	local filter ="__F((Object.GetObjectsByRadius(Building) == 1300))"
+	local k = Find("", filter, "Umgebung",15)
 	if k > 0 then
 	    GfxAttachObject("tarn","Handheld_Device/barrel_new.nif")
 	else
 	    GfxAttachObject("tarn","Outdoor/Bushes/bush_08_big.nif")
 	end
-	GfxSetPositionTo("tarn","standPos")
+	GfxSetPositionTo("tarn", "standPos")
 	SetState("", STATE_INVISIBLE, true)
 	Sleep(10)
 
-	SimBeamMeUp("","standPos",false)
+	SimBeamMeUp("", "standPos", false)
 	GfxDetachAllObjects()
     SetState("", STATE_INVISIBLE, false)
-	PlayAnimationNoWait("","crouch_up")
-
+	PlayAnimationNoWait("", "crouch_up")
 end
 
 function CleanUp()
-	--stop hiding
-	--SetState("",STATE_HIDDEN,false)
 
 	StopAnimation("")
-	StopAction("pickpocket","")
+	StopAction("pickpocket", "")
 end
 

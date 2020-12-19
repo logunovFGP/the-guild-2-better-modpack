@@ -279,7 +279,7 @@
 204 Scripts\Buildings\PirateHarbor.lua
 205 Scripts\Buildings\Piratesnest.lua
 206 Scripts\Buildings\Residence.lua
-207 Scripts\Buildings\Robber.lua
+207 Scripts\Buildings\Robber.lua - MERGED
 208 Scripts\Buildings\Smith.lua
 209 Scripts\Buildings\SoldierPlace.lua
 210 Scripts\Buildings\Stonemason.lua
@@ -548,7 +548,7 @@
 473 Scripts\Measures\ms_061_PlunderBuilding.lua
 474 Scripts\Measures\ms_066_BurgleAHouse.lua
 475 Scripts\Measures\ms_067_LetAbducteeFree.lua
-476 Scripts\Measures\ms_068_PickpocketPeople.lua
+476 Scripts\Measures\ms_068_PickpocketPeople.lua - MERGED
 477 Scripts\Measures\ms_069_DemandRansom.lua
 478 Scripts\Measures\ms_070_ScoutAHouse.lua
 479 Scripts\Measures\ms_071_BuyBuilding.lua
