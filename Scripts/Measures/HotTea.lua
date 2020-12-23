@@ -1,11 +1,15 @@
 function Run()
+	GetHomeBuilding("","myhome")
+	BuildingGetCity("myhome","city")
+	local NeedCount, Needs = economy_CalcNeedsForMarket("city")
+	economy_ChooseFromItems(NeedCount, Needs)
 	-- for each building
 	--for i=100, 672 do 
 	--	local Testname = GetDatabaseValue("BuildingToItems", i, "name")
 	--	if Testname and Testname ~= "" then
 	--		hottea_PrintRequiredItems(i)
 	--	end		
-	--end 
+	--end
 
 	local Target = ""
 	if AliasExists("Destination") then
@@ -54,14 +58,8 @@ function Run()
 		LogMessage("1 < 2 but ".."2 > 1")
 		LogMessage("3 %< 4 but ".."5 %> 3")
 	elseif result==5 then
-		GetHomeBuilding(Target,"myhome")
-		BuildingGetCity("myhome","city")
-		local MoneyBefore = GetMoney("city")
-		SpendMoney("city", 500, "HotTea")
-		local MoneyAfter = GetMoney("city")
-		
-		--f_CreditMoney(Target, 120000, "HotTea")
-		MsgQuick("", "Geld, Geld, Geld! Vorher: "..MoneyBefore..", nachher: "..MoneyAfter,GetID(Target))
+		CreditMoney(Target, 120000, "HotTea")
+		MsgQuick("", "Geld, Geld, Geld!")
 	elseif result==6 then
 		chr_SimAddFame(Target,25)
 		chr_SimAddImperialFame(Target,25)

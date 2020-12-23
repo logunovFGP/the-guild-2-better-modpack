@@ -1014,3 +1014,19 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 		end
 	end
 end
+
+function HandleSetup(BldAlias)
+	bld_ResetWorkers(BldAlias)
+	economy_CalculateSalesRanking(BldAlias)
+end
+
+function HandleOnLevelUp(BldAlias)
+	economy_CalculateSalesRanking(BldAlias)
+end
+
+function HandleNewOwner(BldAlias, FormerOwner)
+	bld_ClearBuildingStash(BldAlias, FormerOwner)
+	--bld_BuildingWorkersStopWorking(BldAlias) -- this seemed necessary at some point
+	bld_ResetWorkers(BldAlias)
+	economy_ClearBalance(BldAlias)
+end

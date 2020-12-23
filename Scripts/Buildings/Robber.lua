@@ -6,10 +6,11 @@ function Run()
 end
 
 function OnLevelUp()
+	bld_HandleOnLevelUp("")
 end
 
-
 function Setup()
+	bld_HandleSetup("")
 	worldambient_CreateAnimal("Wolf", "" , 2)
 end
 

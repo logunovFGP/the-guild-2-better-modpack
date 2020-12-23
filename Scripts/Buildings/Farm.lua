@@ -2,12 +2,11 @@ function Run()
 end
 
 function OnLevelUp()
-	if BuildingGetAISetting("", "Produce_Selection") > 0 then
-	--	bld_SetupAI("")
-	end
+	bld_HandleOnLevelUp("")
 end
 
 function Setup()
+	bld_HandleSetup("")
 	-- create ambient animals
 	worldambient_CreateAnimal("Cock", "", 1)
 	worldambient_CreateAnimal("Chicken", "", 3)

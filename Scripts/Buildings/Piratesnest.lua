@@ -19,15 +19,17 @@ function CheckPosition()
 	return nil
 end
 
-function Setup()
-end
 
+function Setup()
+	bld_HandleSetup("")
+end
 --
 -- OnLevelUp is called everytime the building level was changed, even when the building is build the first time.
 -- This function is called before Setup
 -- attention: this function call is unscheduled
 --
 function OnLevelUp()
+	bld_HandleOnLevelUp("")
  
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	

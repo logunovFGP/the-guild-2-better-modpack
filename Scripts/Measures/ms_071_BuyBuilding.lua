@@ -89,7 +89,8 @@ function Run()
 --			"@L_GENERAL_MEASURES_071_BUYBUILDING_FORMER_OWNER_BODY_+0", GetID("Destination"), GetID("Owner"), Cost)
 --	end
 
-    SetState("", STATE_SELLFLAG, false)
+	bld_HandleNewOwner("", "FormerOwner") 
+	SetState("", STATE_SELLFLAG, false)
 	if DynastyIsPlayer("") then
 		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.4, 1, "c4")
 	end

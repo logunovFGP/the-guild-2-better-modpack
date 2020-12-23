@@ -2,9 +2,7 @@ function Run()
 end
 
 function OnLevelUp()
-	if BuildingGetAISetting("", "Produce_Selection") > 0 then
-	--	bld_SetupAI("")
-	end
+	bld_HandleOnLevelUp("")
 end
 
 function SellOtherStuff(BldAlias)
@@ -95,7 +93,7 @@ function SellOtherStuff(BldAlias)
 end
 
 function Setup()
-	-- create ambient animals
+	bld_HandleSetup("")	-- create ambient animals
 	if Rand(2)==0 then
 		worldambient_CreateAnimal("Stag", "" , 1)
 	else
