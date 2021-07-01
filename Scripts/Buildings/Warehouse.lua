@@ -20,6 +20,7 @@ end
 -- attention: this function call is unscheduled
 --
 function OnLevelUp()
+	bld_HandleOnLevelUp("")
 
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
@@ -42,8 +43,9 @@ end
 function Run()
 end
 
-function Setup()
-end
 
+function Setup()
+	bld_HandleSetup("")
+end
 function PingHour()
 end

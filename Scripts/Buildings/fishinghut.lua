@@ -20,10 +20,7 @@ function CheckPosition()
 end
 
 function OnLevelUp()
-	
-	if BuildingGetAISetting("", "Produce_Selection") > 0 then
-	--	bld_SetupAI("")
-	end
+	bld_HandleOnLevelUp("")
 	
 	GetPosition("", "Position")
 	GetLocatorByName("", "Entry1", "PositionEntry")	
@@ -43,7 +40,9 @@ function OnLevelUp()
 	return false
 end
 
+
 function Setup()
+	bld_HandleSetup("")
 end
 
 function SellFish(BldAlias, CartAlias)

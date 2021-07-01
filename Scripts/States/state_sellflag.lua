@@ -26,10 +26,7 @@ function CleanUp()
 		GfxDetachObject("SellFlag")
 	end
 	
-	if BuildingGetOwner("", "NewOwner") then
-		if GetData("FormerOwner") ~= GetID("NewOwner") then
-			bld_ClearBuildingStash("", "FormerOwner")
-		end
+	if BuildingGetOwner("", "NewOwner") and GetData("FormerOwner") ~= GetID("NewOwner") then
+		bld_HandleNewOwner("", "FormerOwner")
 	end
-
 end

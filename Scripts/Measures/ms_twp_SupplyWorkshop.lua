@@ -88,7 +88,7 @@ function ChooseSuppliers(SupplierCount, Suppliers)
 		end
 		-- TODO could this be done as icon list with building icons?
 		Options = Options .. "@B[A,@L_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0,]" .. "@B[C,@L_GENERAL_BUTTONS_OK_+0,]"
-		Choice = MsgBox("","Owner",Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0", helpfuncs_UnpackTable(LabelIds))
+		Choice = MsgBox("","Owner",Options,"@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0","_TWP_SUPPLYWORKSHOP_CHOOSE_SUPPLIERS_+0", helpfuncs_UnpackTable(LabelIds))
 	
 		if Choice == "A" then
 			-- add new Supplier
