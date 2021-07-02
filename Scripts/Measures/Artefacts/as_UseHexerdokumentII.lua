@@ -91,7 +91,6 @@ function Run()
 		MsgBoxNoWait("", "Destination",
 					"@L_HEXERDOKUMENT_VILLAIN_HEAD_+0",
 					"@L_HEXERDOKUMENT_VILLAIN_BODY_+0", GetID("Destination"))	
-		end
 	end
 end
 
