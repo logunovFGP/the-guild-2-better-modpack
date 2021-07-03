@@ -12,28 +12,26 @@
 -- -----------------------
 function Run()
 	if SimGetCutscene("","cutscene") then
-		SimSetBehavior("","")
-		return
-	end
-	if not GetProperty("","destination_ID") then
-		OutputDebugString("no destination pretrial")
-		SimSetBehavior("","")
-		return
-	end	
-	GetAliasByID(GetProperty("","destination_ID"),"destination")
-	if not GetProperty("destination","NextCutsceneID") then
-		OutputDebugString("no destination_ID pretrial")
-		SimSetBehavior("","")
+		SimSetBehavior("", "")
 		return
 	end
 	
-	BuildingGetRoom("destination","Judge","judgeroom")
-
-	local CutsceneID = GetProperty("destination","NextCutsceneID")
-	GetAliasByID(CutsceneID,"CutsceneAlias")
-
+	if not GetProperty("","destination_ID") then
+		LogMessage("No Destination Pretrial")
+		SimResetBehavior("")
+		return
+	end	
+	
 	if DynastyIsPlayer("") then
 		return
+	end
+	
+	GetInsideBuilding("", "Townhall")
+	BuildingGetRoom("Townhall", "Judge", "judgeroom")
+
+--[[	local CutsceneID = GetProperty("Townhall","NextCutsceneID")
+	if not GetAliasByID(CutsceneID,"CutsceneAlias") then
+		LogMessage("No Cutscene Alias from Townhall")
 	end
 
 	local judge = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","judge")
@@ -45,9 +43,10 @@ function Run()
 	if (HasProperty("","HaveCutscene") == true) then
 		RemoveProperty("","HaveCutscene")
 	end
+	]]
 	
 	while true do
-		local IsAtPlace = 0
+	--[[	local IsAtPlace = 0
 		if GetInsideRoom("","InsideRoom") then
 			if (GetID("judgeroom") == GetID("InsideRoom")) then
 				IsAtPlace = 1
@@ -89,7 +88,8 @@ function Run()
 				MoveSpeed = GL_MOVESPEED_RUN
 			end
 			f_WeakMoveTo("","judgeroom",MoveSpeed)
-		end		
+		end
+			]]
 
 		Sleep(Rand(5)+3)
 	end
@@ -104,7 +104,6 @@ end
 
 
 function ActionsForJudge()
-	BuildingGetRoom("destination","Judge","judgeroom")
 	local action = Rand(3)
 
 	if (action == 0) then
@@ -368,7 +367,6 @@ end
 
 
 function ActionsForAccuser()
-	BuildingGetRoom("destination","Judge","judgeroom")
 	local action = Rand(3)
 
 	if (action == 0) then
@@ -505,7 +503,6 @@ end
 
 
 function ActionsForAssessor()
-	BuildingGetRoom("destination","Judge","judgeroom")
 	local action = Rand(2)
 
 	if GetInsideRoom("","InsideRoom") then

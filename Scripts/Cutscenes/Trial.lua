@@ -58,7 +58,7 @@ function Start()
 	local EventTime = SettlementEventGetTime("trial_date")
 
 	local GameTime = GetGametime()*60
-	local WaitTime = EventTime - GameTime - 180
+	local WaitTime = EventTime - GameTime - 150
 	local ImpactTime = math.floor(WaitTime/60)
 
 	if (WaitTime < 0) then
@@ -1040,11 +1040,6 @@ function Go()
 				--mission_ScoreAccuse("accuser")
 			end
 			if SentenceLevel >=1 then
-				local Reward = { 500, 750, 1000, 1250, 1500, 2000 }
-				PlayAnimationNoWait("judge", "talk_sit_short")
-				MsgSay("judge","@L_LAWSUIT_REWARD",GetID("accuser"),Reward[SentenceLevel])
-				CreditMoney("accuser",Reward[SentenceLevel],"tip")
-				Sleep(0.25)
 				
 				DecisionForFinalComment = 1
 				PlayAnimationNoWait("judge", "talk_sit_short")
@@ -1336,12 +1331,12 @@ function ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue)
 end
 
 function GetSubjectiveSentence(Sim)
-	local tmpEV = GetData("TotalEvidenceValue")
-	if tmpEV==nil then
-		SetData("TotalEvidenceValue",0)
-	end
 	
 	local TotalEV = GetData("TotalEvidenceValue")
+	if TotalEV == nil then
+		SetData("TotalEvidenceValue", 0)
+		TotalEV = 0
+	end
 	local Sentence = TotalEV + trial_GetFavorModifier(Sim)
 
 	if (Sentence<0) then
@@ -1418,8 +1413,6 @@ function GetFavorModifier(Sim)
 		return 0
 	end
 	
-	local ThreatAccused = ai_DynastyCalcThreat("SimDyn", "AccDyn")
-	
 	local v = 0
 	
 	if FavorAccused > FavorAccuser then
@@ -1452,10 +1445,6 @@ function GetFavorModifier(Sim)
 		v = v + 2
 	elseif DynastyGetDiplomacyState(Sim, "accused") == DIP_ALLIANCE then
 		v = v - 4
-	end
-	
-	if ThreatAccused > 1 and DynastyGetDiplomacyState(Sim, "accused") < DIP_NAP then
-		v = v + 2
 	end
 	
 	return v
@@ -1614,16 +1603,16 @@ function AccusedDecideConfess()
 	local Jury = { "judge", "assessor1", "assessor2" }
 	local tendency = 0
 	for i = 1, 3 do
-		SetData("DecisionParam", Jury[i])
-		SetData("JudgeDecision",-1)
-		tendency = tendency + trial_ConvictionDecision()
+		tendency = tendency + trial_GetSubjectiveSentence(Jury[i])
 	end
 	
-	if tendency < 2 then -- they are going to set me free anyway
-		return 2 -- say nothing
+	tendency = tendency / 3
+	
+	if SentenceValue >= tendency*1.5 then -- judges are on my side, accuser sentence is far too high
+		return (Rand(2) + 1) -- innocent or nothing
 	else
 		
-		if GetSkillValue("accused", RHETORIC) < 5 then
+		if GetSkillValue("accused", RHETORIC) < 4 then
 			if trial_GetSubjectiveSentence("judge") < 5 then
 				return 3 -- confess
 			elseif trial_GetSubjectiveSentence("judge") > 21 then

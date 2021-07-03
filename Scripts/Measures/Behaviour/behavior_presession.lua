@@ -15,36 +15,34 @@ Include("Cutscenes/OfficeSession.lua")
 -- -----------------------
 function Run()
 	
-	if SimGetCutscene("","cutscene") then
-		SimSetBehavior("","")
+	if SimGetCutscene("", "cutscene") then
+		SimSetBehavior("", "")
 		return
 	end
+	
 	if DynastyIsAI("") then
-	BlockChar("")
-	AllowMeasure("","StartDialog",EN_PASSIVE)
-	AllowMeasure("","BribeCharacter",EN_BOTH)
-	AllowMeasure("","MakeACompliment",EN_BOTH)
-	AllowMeasure("","Flirt",EN_BOTH)
-	AllowMeasure("","UsePoem",EN_BOTH)
-	AllowMeasure("","UseCake",EN_PASSIVE)
-	AllowMeasure("","MakeAPresent",EN_PASSIVE)
+		BlockChar("")
+		AllowMeasure("","StartDialog",EN_PASSIVE)
+		AllowMeasure("","BribeCharacter",EN_BOTH)
+		AllowMeasure("","MakeACompliment",EN_BOTH)
+		AllowMeasure("","Flirt",EN_BOTH)
+		AllowMeasure("","UsePoem",EN_BOTH)
+		AllowMeasure("","UseCake",EN_PASSIVE)
+		AllowMeasure("","MakeAPresent",EN_PASSIVE)
 	end
 	
 	local currentGameTime = math.mod(GetGametime(),24)
-	if currentGameTime >19 then
+	if currentGameTime >19 or currentGameTime < 12 then
 		if DynastyIsAI("") then
 			f_ExitCurrentBuilding("")
-			SimSetBehavior("","idle")
-			StopMeasure()
+			SimResetBehavior("")
+			return
 		end
 	end
 
-	if not GetProperty("","destination_ID") then
-		OutputDebugString("no destination presession")
-		SimSetBehavior("","")
-		return
+	if not GetSettlement("", "Settlement") then
+		GetNearestSettlement("", "Settlement")
 	end
-	GetSettlement("","Settlement")
 	CityGetBuildings("Settlement", -1, 23, -1, -1, FILTER_IGNORE, "destination_tmp")
 	BuildingGetRoom("destination_tmp0", "Judge", "destination")
 	--CopyAlias("destination_tmp0","destination")	

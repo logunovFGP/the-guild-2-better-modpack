@@ -26,8 +26,9 @@ function PingHour()
 		end
 	end
 	
-	if currentGameTime == 3 then
+	if currentGameTime == 0.5 then
 		if BuildingGetCutscene("", "CutsceneAlias") then
+			LogMessage("Cutscene has been terminated")
 			EndCutscene("CutsceneAlias")
 		end
 		
@@ -45,7 +46,7 @@ function PingHour()
 					end
 					if DynastyIsAI("CutsceneSim"..i) then
 						AllowAllMeasures("CutsceneSim"..i)
-						SimSetBehavior("CutsceneSim"..i, "idle")
+						SimResetBehavior("CutsceneSim"..i)
 					end
 				end
 			end
@@ -67,7 +68,7 @@ function PingHour()
 					end
 					if DynastyIsAI("SimToCheck") then
 						AllowAllMeasures("SimToCheck")
-						SimSetBehavior("SimToCheck", "idle")
+						SimResetBehavior("SimToCheck")
 					end
 				end
 			end
