@@ -34,17 +34,19 @@ Stelle sicher, dass die Sprache in der DB/text.dbt dem Eintrag 'language' in dei
 *** Allgemeines ***
 
 _Technik_
-- Scripte aufgeräumt: Lesbarkeit verbessert, Funktionen + Aufbau optimiert, überflüssigen Code entfernt, Gestaltung der Scripte vereinheitlicht.
+- Scripte und Datenbank aufgeräumt: Lesbarkeit verbessert, Funktionen + Aufbau optimiert, überflüssigen Code entfernt, Gestaltung der Scripte vereinheitlicht.
 - Ungenutzte Scripte separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich).
 - Keine erzwungene Heilung von kranken Mitarbeitern beim manuellen Anheuern mehr.
 - Das KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
-- Die KI musste nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
+- Die KI musste (abhängig vom Schwierigkeitsgrad) nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
 - Duelle laufen etwas flüssiger ab.
 - Das Amtssitzungsscript wurde komplett ersetzt und neu strukturiert.
+- Das Gerichtsscript wurde überarbeitet.
 
 _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
 - Duelle beginnen etwas früher. Der Aufruf, zum Duell zu gehen, geschieht ebenfalls etwas früher.
+- Es gibt nun eine zweite Gerichtsverhandlung pro Runde in den frühen Morgenstunden. Der zweite Termin ist im Anschluss daran.
 - Der 'Niedere Ratsdienst' wird nun nicht mehr als Status-Icon angezeigt.
 - Dynastiefarben sind nun dunkler und besser zu unterscheiden. Auch die Wappen wurden angepasst.
 - Die Möglichkeit, während Gerichts- und Ratssitzungen zu bestechen oder Komplimente zu machen, wurde entfernt. Gründe dafür sind die Buganfälligkeit, das Balancing und die Zeit, die 
@@ -53,7 +55,7 @@ _Design_
 - Diverse Icons wurden überarbeitet.
 - Einige Charaktertexturen wurden überarbeitet.
 - Die Anzahl möglicher Dynastien je nach Karte wurde angepasst.
-- Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten fehlen, wurden deaktiviert.
+- Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten zum Bearbeiten fehlen, sind daher nicht mehr spielbar.
 
 *** Vanilla-Bugs ***
 
@@ -153,6 +155,7 @@ _KI_
 _Allgemein_
 - Größere Übersichtskarte (GUI).
 - Größeres Gebäude-Upgradefenster (GUI).
+- Die Gebäude-Upgrades aller Betriebe wurden neu angeordnet, vereinheitlicht und übersichtlicher gestaltet.
 - Alle Artefakte, Maßnahmen und Zustände (wie Krankheiten) zeigen nun Boni und Mali auf Talente über einen Mouseover-Tooltip an.
 - Wichtige Personen-Liste überarbeitet. Zur Schonung der Performance werden die Familienmitglieder von Schattendynastien nicht mehr angezeigt. Dafür kann man sich nun Arbeitslose anzeigen lassen.
 - Gesichtstexturen für alle Charaktere überarbeitet/hinzugefügt (Männer, Frauen und Kinder)
@@ -172,7 +175,6 @@ _Allgemein_
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 - Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod wurden hinzugefügt.
 - Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.
-- Es finden nun bis zu zwei Gerichtsverhandlungen pro Runde statt
 
 _Patron_
 -
@@ -219,7 +221,13 @@ _Allgemein_
 - Das Entfernen von Pamphleten bringt nun Erfahrungspunkte.
 - Die Anforderungen für Titel wurden neu ausbalanciert, zudem wurde die Anzahl erlaubter Betriebe deutlich gesenkt.
 - Die Kosten für Gebäude wurden angepasst.
+- Die Kosten für Gebäudeupgrades wurden angepasst und vereinheitlicht. Einige Betriebe sind jedoch teurer als andere.
+- Alle Betriebe können nun bis zu 16 Inventarslots bauen, jeder Betrieb startet zudem mit 6 kostenlosen Slots. Ausnahmen sind alle einstufigen Gebäude: Holzfäller, Obstbauer, Mühle, Mine.
+- Einige Betriebe haben nun Brand- bzw. Einbruchsschutz, den sie vorher nicht hatten.
+- Betriebe, die innerhalb von Städten errichtet werden, haben einen höheren Einbruchsschutz, dafür ist der Brandschutz weniger effektiv. Bei Umland-Betrieben ist es umgekehrt.
+- Alle Betriebe haben nun ein Arbeiter-Limit von 4 Angestellten, nur Gauner- und Sammlerbetriebe wie der Bauer oder die Mine haben 5. Sammler-/ Gaunerbetriebe starten mit 2 kostenlosen Angestellten, alle anderen haben nur 1.
 - Die Chancen für Stadt-Ereignisse wurden angepasst.
+- Das Warenhaus hat weniger Upgrades gegen Einbrüche, kann jedoch nun deutlich mehr Waren lagern (Bis zu 16 Slots, bis zu 400 Einheiten pro Slot)
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

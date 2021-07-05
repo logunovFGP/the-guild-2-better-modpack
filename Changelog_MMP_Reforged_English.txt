@@ -36,17 +36,19 @@ Enjoy!
 *** General ***
 
 _Tech_
-- Script cleanup: Improved the readability, functions and structure, removed redundant code, unified the script-design.
+- Script and database cleanup: Improved the readability, functions and structure, removed redundant code, unified the script-design.
 - Seperated unused scripts inside the new 'Removed' folder (To make use of that, you must delete your original Scripts folder before applying this patch).
 - Newly hired workers will no longer get cured automaticly.
 - The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
 - AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
 - Duels are a bit more fluent now.
 - Officesession script has been replaced and restructured completely.
+- Trial script has been reworked.
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
 - Duels start a bit earlier and the message to attend them also happens earlier aswell.
+- There are now 2 trials per round instead of one, beginning in the early morning hours. The second follows right after that.
 - The icon for 'Application for lowest level post' has been removed
 - Dynasty colours have been changed to darker and more distinctive tones. Badges have been adjusted aswell.
 - The 'thinkbreak' where you could compliment and bribe during office sessions and trials has been removed. Reasons for that are balancing, bugs and the time it added to the sessions.
@@ -55,7 +57,7 @@ _Design_
 - Multiple icons have been reworked.
 - Some character textures have been overhauled.
 - The numbers of possible dynasties per map have been adjusted.
-- Map duplicates have been removed.
+- Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can now longer be played on.
 
 *** Vanilla-Bugs ***
 
@@ -149,6 +151,7 @@ _AI_
 _General_
 - Added a bigger world map (GUI).
 - Added a bigger building upgrade sheet (GUI).
+- The building upgrades of all workshops have been re-arranged, unified and sorted.
 - All artefacts, measures and conditions (like illness) that temporarily effect your talents will now tell you that via a mouseover-tooltip.
 - Important persons list has been reworked. To improve the performance you only see one family member of shadow dynasties. You have a list of unemployed workers now.
 - Improved and added new character faces (men, women and children).
@@ -166,7 +169,6 @@ _General_
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
-- Two trials per round happen (original idea by Sunpack)
 
 _Patron_
 -
@@ -209,22 +211,29 @@ _General_
 - Shadow dynasties will try to live in residences now.
 - The option to start with a family by changing the config.ini has been deactivated.
 - Experience needed for levelups has been increased and more evenly distributed.
-- Removing pamphlets is worth experience now.
-- Requirements for nobility titles have been rebalanced and amount of buisnesses you can own has been drasticly reduced.
-- Building prices have been adjusted
+- If you remove pamphlets you get experience now.
+- Requirements for nobility titles have been rebalanced and amount of buisnesses you can own has been drasticly reduced to improve human-ai balance and for better lategame performance.
+- Building prices have been adjusted.
+- Building upgrade prices have been adjusted and streamlined. Some buildings are more expensive than others.
+- All workshops can have up to 16 inventory slots and start with 6 slots for free, except for level-1 buildings: Wood cutter, miller, miner, orchardist.
+- Some workshops now have protection against burglary / fire which they don't had before.
+- Workshops that are built inside the city have higher protection against burglary but less against fire. Outdoor-workshops vice versa.
+- All workshops have now 4 possible worker slots, only gatherer-professions like farmer or miner and rogue professions get up to 5 employees. Those also start with 2 free employees instead of just 1.
 - Chances of random city events have been adjusted
+- The warehouse now has less upgrades against burglary but now can store much more goods (up to 16 slots, up to 400 units per slot)
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
 - Favor-gain of 'sweet talking' has been altered.
 - 'Dance with someone' now costs 250 instead of 300 Gold.
+- farms start with higher inventory space per slot.
 
 _Scholar_
 - Church owners will get the money from changing faith.
 - Sorcerer's robe no longer will give you a malus.
 
 _Craftsman_
--
+- mine and wood cutter start with higher inventory space per slot.
 
 _Rogue_
 - Charisma of wenches now has an impact on how successfully they are.

@@ -5,7 +5,7 @@ Table Description:
 "id" INT -1 |"name" STRING  0 |"professionid" INT  0 |"charclassid" INT  0 |"standardproduct" INT  0 |
 
 Data:
-1   "worker_housing"   13   0   0   |
+1   "worker_housing"   0   0   0   |
 2   "residence"   18   0   0   |
 3   "farm"   1   1   0   |
 4   "tavern"   2   1   41   |
