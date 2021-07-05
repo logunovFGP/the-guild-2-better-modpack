@@ -549,3 +549,4 @@ Data:
 13088   "ms_twp_FarTrader.lua"   ""   "FarTrader"   99   "hud/buttons/btn_SalesCart.tga"   0   2   0   ""   ""   0   0   0   "none"   0   1   |
 14000   "HotTea.lua"   "-"   "HotTea"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |
 14001   "HotTea.lua"   "-"   "HotTeaTarget"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |
+14002   "Behaviour\std_StartUpDyn.lua"   "-"   "StartUpDyn"   1   "-"   1   13   0   ""   ""   0   0   0   "none"   0   0   |

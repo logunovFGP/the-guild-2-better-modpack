@@ -59,18 +59,44 @@ function Start()
 			break	-- return "Unable to locate the locator Start"..n.." in the startup scene"
 		end
 	
-		if not SimCreate(17, "", "Position", "NPC") then
-			break -- return "Unable to create NPC number "..n.." for the startup scene"
+		local SwitchSim = 0
+		SwitchSim = Rand(5)
+		
+		if SwitchSim == 1 then
+			if not SimCreate(3, "", "Position", "NPC") then
+				break -- return "Unable to create NPC number "..n.." for the startup scene"
+			end
+			SimSetBehavior("NPC", "apprenticeship")
+		elseif SwitchSim == 2 then
+			if not BossCreate(nil, Rand(2), 1+Rand(4), 6, "NPC") then
+				break -- return "Unable to create NPC number "..n.." for the startup scene"
+			end
+			SimBeamMeUp("NPC", "Position")
+		elseif SwitchSim == 3 then
+			if not SimCreate(15, "", "Position", "NPC") then
+				break -- return "Unable to create NPC number "..n.." for the startup scene"
+			end
+		else
+			if not SimCreate(17, "", "Position", "NPC") then
+				break -- return "Unable to create NPC number "..n.." for the startup scene"
+			end
 		end
 
 		SetProperty("NPC", "Point1", "End"..n)
 		SetProperty("NPC", "Point2", "Start"..n)
-	
-		SimSetBehavior("NPC", "Patroille")
+		
+		if SimGetAge("NPC") > 15 then
+			SimSetBehavior("NPC", "Patroille")
+		end
+		
 		SimStartIdleMeasure("NPC")
 		
 		if GetOutdoorLocator("Cart"..n, 1, "CartPos" )~=0 then
-			ScenarioCreateCart(EN_CT_HORSE, nil, "CartPos", "Cart")
+			if n == 1 then
+				ScenarioCreateCart(EN_CT_HORSE, nil, "CartPos", "Cart")
+			else
+				ScenarioCreateCart(EN_CT_MIDDLE, nil, "CartPos", "Cart")
+			end
 		end
 
 		if GetOutdoorLocator("Dog"..n, 1, "DogPos" )~=0 then
@@ -80,6 +106,23 @@ function Start()
 		if GetOutdoorLocator("Cat"..n, 1, "CatPos" )~=0 then
 			SimCreate(908, "", "CatPos", "NPC")
 			SetState("NPC", STATE_ANIMAL, true)
+		end
+	end
+	
+	if GetOutdoorLocator("Dyn1", 1, "DynPos" )~=0 then
+		if BossCreate(nil, Rand(2), 1+Rand(4), 6, "NPCDyn") then
+			SimBeamMeUp("NPCDyn", "DynPos")
+			if GetOutdoorLocator("Dyn2", 1, "FriendPos" )~=0 then
+				if BossCreate(nil, Rand(2), 1+Rand(4), 6, "NPCFriend") then
+					SimBeamMeUp("NPCFriend", "FriendPos")
+					AlignTo("NPCDyn", "NPCFriend")
+					AlignTo("NPCFriend", "NPCDyn")
+					SimSetBehavior("NPCDyn", "StartUpDyn")
+					SimStartIdleMeasure("NPCDyn")
+					SimSetBehavior("NPCFriend", "StartUpDyn")
+					SimStartIdleMeasure("NPCFriend")
+				end
+			end
 		end
 	end
 
