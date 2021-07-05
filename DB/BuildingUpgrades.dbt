@@ -1207,7 +1207,9 @@ Data:
 3846             666              "weinflaschen"              1                     0                 4                    0.25                 3845              0                 300             0          |
 3847             666              "Fenstergitter"             1                     0                 8                    0.25                 3834              0                 150             0          |
 3848             667              "wandgemalde"               1                     0                 4                    0.25                 3846              0                 300             0          |
-3844             667              "Urkunde"                   1                     0                 6                    961                  3840              0                 300             0          |
+3849             667              "Urkunde"                   1                     0                 6                    961                  3840              0                 300             0          |
+3850             667              "rosenstrauch"              1                     0                 8                    0.25                 3835              0                 150             0          |
+
 
 // Juggler (Gaukler) 670-672
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
