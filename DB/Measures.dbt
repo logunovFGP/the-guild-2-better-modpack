@@ -479,8 +479,8 @@ Data:
 12027   "ms_DiceGame.lua"   ""   "DiceGame"   35   "hud/buttons/Icon_dice.tga"   0   14   0   ""   ""   0   4   0   "none"   0   0   |
 12028   "Behaviour\std_Sailor.lua"   ""   "Sailor"   99   ""   1   13   0   ""   ""   0   0   0   "none"   0   0   |
 12030   "Behaviour\std_DiceGambler.lua"   ""   "DiceGambler"   99   ""   0   4   0   ""   ""   0   0   0   "none"   0   0   |
-12032   "ms_BauZusatz.lua"   ""   "BauZusatzMeasure"   99   ""   0   11   0   ""   ""   0   0   0   "none"   0   0   |
-12033   "ms_BauArbeit.lua"   ""   "BauArbeitMeasure"   99   ""   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+12032   "ms_BauZusatz.lua"   ""   "BauZusatzMeasure"   99   "hud/buttons/btn_GebRepar.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+12033   "ms_BauArbeit.lua"   ""   "BauArbeitMeasure"   99   "hud/buttons/btn_GebRepar.tga"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 12034   "ms_SelberBauen.lua"   ""   "SelbBauenMeasure"   35   "hud/buttons/btn_GebRepar.tga"   0   14   0   ""   ""   0   0   0   "none"   0   0   |
 12035   "ms_hpfz_RauchBombe.lua"   ""   "RauchWerfen"   99   "hud/buttons/btn_rauchbombe.tga"   0   4   15   ""   ""   0   12   1   "none"   0   0   |
 12036   "ms_hpfz_Tarnung.lua"   ""   "SichTarnen"   99   "hud/buttons/btn_verstecken.tga"   0   4   1   ""   ""   0   12   1   "none"   0   0   |

@@ -1,20 +1,20 @@
 0 DB\abilities.dbt - MERGED
 1 DB\abilitypoints.dbt - MERGED
 2 DB\Action.dbt - MERGED
-3 DB\AICharacterType.dbt
-4 DB\AIScripts.dbt
-5 DB\AnimationEffects.dbt
-6 DB\Apprentice.dbt
-7 DB\BoneLODs.dbt
-8 DB\BuildingNPC.dbt
+3 DB\AICharacterType.dbt - MERGED
+4 DB\AIScripts.dbt - MERGED
+5 DB\AnimationEffects.dbt - MERGED
+6 DB\Apprentice.dbt - MERGED
+7 DB\BoneLODs.dbt - NOT FINISHED
+8 DB\BuildingNPC.dbt - MERGED
 9 DB\Buildings.dbt - MERGED
-10 DB\BuildingToItems.dbt
-11 DB\BuildingTypes.dbt
-12 DB\BuildingUpgrades.dbt
+10 DB\BuildingToItems.dbt - NEW
+11 DB\BuildingTypes.dbt - NOT FINISHED
+12 DB\BuildingUpgrades.dbt - MERGED
 13 DB\CharLevels.dbt - MERGED
 14 DB\CharModels.dbt - MERGED
-15 DB\CharPatternGroups.dbt
-16 DB\CharPatterns.dbt
+15 DB\CharPatternGroups.dbt - MERGED
+16 DB\CharPatterns.dbt - MERGED
 17 DB\CharPropertyTemplates.dbt
 18 DB\Classes.dbt
 19 DB\ConstructionTime.dbt
