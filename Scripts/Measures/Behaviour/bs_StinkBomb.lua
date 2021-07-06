@@ -1,8 +1,4 @@
 function Run()
-	-- doesn't effect thugs
-	if SimGetProfession("") == GL_PROFESSION_MYRMIDON then
-		return ""
-	end
 	
 	if GetCurrentMeasureName("") == "UseStinkBomb" then
 		return ""

@@ -128,7 +128,6 @@ function Go()
 	--if one duelist is missing
 	local Spoken = 0
 	if ChallengerMissing == 1 or ChallengedMissing == 1 then
-		local Spoker = 0
 		if ChallengerMissing == 1 then
 			feedback_MessageCharacter("challenger",
 								"@L_DUELL_1_DIALOGMSG_TOOLATE_+0",
@@ -675,7 +674,7 @@ function Walk(SimAlias)
 	end
 	Sleep(0.2)
 	f_MoveTo(SimAlias, Position, GL_MOVESPEED_WALK, BetraySteps)
-	Sleep(0.5)
+	Sleep(0.25)
 	CutsceneSendEventTrigger("owner", "Walked")
 end
 
@@ -758,7 +757,7 @@ function Torch(x)
 	if x == 1 then
 		while(FlameCount > 0) do			
 			GfxStartParticle("Flame"..FlameCount, "particles/flame_small.nif", "Fire"..FlameCount, 1)
-			Sleep(0.3)
+			Sleep(0.25)
 			FlameCount = FlameCount -1	
 		end
 	else

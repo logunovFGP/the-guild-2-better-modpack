@@ -115,7 +115,7 @@ Data:
 229   1   3   0   "CommandMonitor"   0   "Hud/state/passive/CommandMonitor.tga"   |
 230   1   3   0   "CommandInspector"   0   "Hud/state/passive/CommandInspector.tga"   |
 231   1   3   10   "TurnoverTax"   0   ""   |
-232   1   2   0   "polluted"   0   ""   |
+232   1   2   0   "polluted"   0   "Hud/state/poisoned.tga"   |
 233   1   1   0   "spying"   0   ""   |
 234   1   2   0   "BeeingInspected"   0   ""   |
 235   1   2   0   "buildingburgledtoday"   0   "Hud/state/buildingburgledtoday.tga"   |

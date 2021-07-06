@@ -28,8 +28,18 @@ function Run()
 	if not Proto then
 		return
 	end
-	AddImpact("", "LevelingUp", 1, -1)		
-	local TotalTime = GetDatabaseValue("Buildings", Proto, "buildtime") - GetDatabaseValue("Buildings", (Proto-1), "buildtime") + 1
+	AddImpact("", "LevelingUp", 1, -1)
+	
+	local OldProto = Proto-1
+	-- In branching workshops, the old proto is different!
+	if Proto == 143 then
+		OldProto = 140
+	elseif Proto == 173 then
+		OldProto = 170
+	elseif Proto == 1001 then
+		OldProto = 654
+	end
+	local TotalTime = GetDatabaseValue("Buildings", Proto, "buildtime") - GetDatabaseValue("Buildings", OldProto, "buildtime") + 1
 	
 	local 	H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
 	if (H4x0r==1) then
@@ -57,11 +67,14 @@ function Run()
 		gebBez = gebBez + 1
 	end
 
-	if not BuildingGetOwner("","Cheffe") then
+	if not GetDynasty("", "BuildingDynasty") then
 		AddImpact("", "BauArbeiter", 3, -1)
 	else
 		AddImpact("", "BauArbeiter", 0, -1)
-		MeasureRun("", "", "BauZusatzMeasure", true)
+		CopyAlias("", "Des")
+		--MeasureRun("BuildingDynasty", "", "BauZusatzMeasure", true)
+		MeasureCreate("BauMeasure")
+		MeasureStart("BauMeasure", "BuildingDynasty", "Des", "BauZusatzMeasure", true)
 	end
 
 	if (H4x0r==0) then	

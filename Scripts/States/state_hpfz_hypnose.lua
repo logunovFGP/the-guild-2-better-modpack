@@ -7,12 +7,11 @@ function Init()
 	SetStateImpact("no_measure_attach")
 	SetStateImpact("no_action")
 	SetStateImpact("no_cancel_button")
-	StopMeasure()
 end
 
 function Run()
-	MeasureRun("","","HPFZhypnose",true)
-	while GetImpactValue("","UnterHypnose")>0 do
+	MeasureRun("", "", "HPFZhypnose", true)
+	while GetImpactValue("", "pendel") >0 do
 		Sleep(Rand(2)+5)
 	end
 end

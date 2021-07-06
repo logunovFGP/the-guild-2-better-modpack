@@ -41,7 +41,7 @@ function CartLoop()
 	------ Preparations ------
 	--------------------------
 	SetInit("")
-	SetState("", STATE_MONITORDAMAGE,true)
+	SetState("", STATE_MONITORDAMAGE, true)
 	
 	local	Played = ScenarioGetTimePlayed()
 	local 	H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
@@ -200,7 +200,10 @@ function BuildingLoop()
 		AddImpact("", "BauArbeiter", 3, -1)
 	else
 		AddImpact("", "BauArbeiter", 0, -1)
-		MeasureRun("BuildingDynasty", "", "BauZusatzMeasure", true)
+		CopyAlias("", "Des")
+		--MeasureRun("BuildingDynasty", "", "BauZusatzMeasure", true)
+		MeasureCreate("BauMeasure")
+		MeasureStart("BauMeasure", "BuildingDynasty", "Des", "BauZusatzMeasure", true)
 	end
 	
 	SetProcessMaxProgress("", MaxProgress)

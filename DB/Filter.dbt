@@ -475,7 +475,7 @@ Data:
 1516   "CanUseDrunkGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(36))AND(Object.GetLevel()>=2))"   |
 1517   "CanUseDiceGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(36))AND(Object.HasUpgrade(gablingtable)))"   |
 1518   "MeineBaustelle"   "__F((Object.BelongsToMe())AND(Object.Type==Building)AND(Object.GetState(building))OR(Object.GetState(levelingup)))"   |
-1519   "PartyMember"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==3000)AND(Object.BelongsToMe())AND(Object.GetState(building)))"   |
+1519   "PartyMember"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==5000)AND(Object.BelongsToMe())AND(Object.GetState(building))OR(Object.GetState(levelingup)))"   |
 1520   "RauchBombeNutzer"   "__F((Object.CanBeControlled())AND(Object.IsClass(4))AND(Object.HasMinNobilityTitle(2))AND NOT(Object.IsInBuilding()))"   |
 1521   "KannStadtUpgrade"   "__F((Object.PlayerHasOfficeImpact('TurnoverTax')))"   |
 1522   "CanUseKnochenarmreif"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Knochenarmreif)>0)AND NOT(Object.GetState(fighting))AND NOT(Object.HasImpact(jewellery)))"   |

@@ -59,6 +59,10 @@ function Run()
 		local NumSickSims = Find("", SickSimFilter, "SickSim", -1)
 		if NumSickSims < 1 then
 			
+			if not AliasExists("") then
+				break
+			end			
+
 			-- bored
 			if Rand(3) == 0 then
 				MoveStop("")

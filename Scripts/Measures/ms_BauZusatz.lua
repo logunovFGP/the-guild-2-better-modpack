@@ -27,7 +27,7 @@ function Run()
 	end
 	
 	return
-						  
+	
 end
 
 function AIWahl()
@@ -65,8 +65,6 @@ function ArbeiterGen(wahl)
 	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 	local baufast = manstuff[1] + manstuff[2]
 	SetProperty("Destination", "baufast", baufast)
-	
-	
 	
 	FindNearestBuilding("Destination", 1, 1, -1, false, "ArbeiterHeim")
 	local check = 3
@@ -111,7 +109,7 @@ function ArbeiterGen(wahl)
 		-- end
 		MeasureCreate("Measure"..l)
 		if not MeasureStart("Measure"..l, "BauArbeiter"..l, "Destination", "BauArbeitMeasure", true) then
-
+	
 		end
 		check = check + 1
 		Sleep(2)

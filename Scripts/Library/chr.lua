@@ -639,7 +639,7 @@ function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill, Hidden)
 				DestSkillIcon = "$S[2025]"
 			end
 			
-			feedback_OverheadSkill(DestAlias, DestSkillIcon.." %1n (%2n)", true, EnemyRoll, TalentEnemy)
+			feedback_OverheadSkill(SimAlias, "Skillcheck %3SN: "..DestSkillIcon.." %1n (%2n)", true, EnemyRoll, TalentEnemy, GetID(DestAlias))
 		end
 		
 		-- show icon for me
@@ -664,8 +664,9 @@ function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill, Hidden)
 		elseif Skill == CHARISMA then
 			MySkillIcon = "$S[2025]"
 		end
-			
-		feedback_OverheadSkill(SimAlias, MySkillIcon.." %1n (%2n)", true, MyRoll, TalentValue)
+		
+		Sleep(0.4)
+		feedback_OverheadSkill(SimAlias, "Skillcheck %3SN: "..MySkillIcon.." %1n (%2n)", true, MyRoll, TalentValue, GetID(SimAlias))
 	end
 
 	
