@@ -29,7 +29,6 @@ Offen:
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
 - Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
 - Die Priorität von Patrouillen wurde drastisch erhöht, damit diese seltener unterbrochen werden.
-- KI-Priester konnten Gläubige gewinnen, selbst wenn das Upgrade dafür gar nicht freigeschaltet war.
 - Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
 - Sollte beim Tanzen in der Taverne die Tanzposition blockiert sein, so wird die Maßnahme abgebrochen. Trotzdem wurde ein Cooldown gesetzt
   und das Geld abgezogen. Dies passiert nun erst kurz vor Beginn des Tanzes.
@@ -37,7 +36,6 @@ Offen:
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
 - Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
   oder während Wunderkuren geholt werden.
-- Beim Quacksalben werden die Goldgewinne nun nur für die eigene Dynastie angezeigt
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
 
 - Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.

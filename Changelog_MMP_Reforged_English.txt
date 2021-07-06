@@ -146,6 +146,7 @@ _AI_
 - In several cases characters interacted wrong with burning buildings.
 - Child behavior had bugs and influenced overall game performance in a negative way.
 - AI spammed 'Plunder building' measures, even while the target was still under construction.
+- AI controlled priests could 'win believers' even though they hadn't unlocked the required upgrade.
 
 *** Features ***
 

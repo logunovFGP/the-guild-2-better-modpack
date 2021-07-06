@@ -150,6 +150,7 @@ _KI_
 - Die KI konnte bei der Aufforderung zum Tanzen in der Taverne stecken bleiben.
 - Das Kinder-Verhalten war fehlerhaft und nicht performant.
 - Die KI spammte 'Gebäude plündern', sogar bei Gebäuden, die noch im Bau waren.
+- KI-Priester konnten 'Gläubige gewinnen', auch, wenn das entsprechende Upgrade noch gar nicht freigeschaltet war.
 
 *** Features ***
 

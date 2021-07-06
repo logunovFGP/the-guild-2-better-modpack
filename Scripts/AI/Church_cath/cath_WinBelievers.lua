@@ -5,13 +5,24 @@ function Weight()
 	
 	if not ReadyToRepeat("dynasty", "AI_WinBelievers") then
 		return 0
-	end	
+	end
 	
-	if not SimGetWorkingPlace("SIM", "Church") then
+	if IsDynastySim("SIM") then
+		if SimGetClass("SIM") ~=3 then
+			return 0
+		end
+
+			
+		if SimGetAge("SIM") < 16 then
+			return 0
+		end
+	end
+	
+	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_CHURCH_CATH, "Church") then
 		return 0
 	end
 	
-	if BuildingGetLevel("Church") < 2 then
+	if not BuildingHasUpgrade("Church", "Feretory") then
 		return 0
 	end
 	
@@ -20,8 +31,8 @@ function Weight()
 	end
 	
 	local Hour = math.mod(GetGametime(), 24)
-	local	Last = BuildingGetWorkingEnd("church") - 2
-	if Hour > Last or Hour<10 then
+	local Last = BuildingGetWorkingEnd("church") - 2
+	if Hour > Last or Hour < 10 then
 		return 0
 	end
 	
