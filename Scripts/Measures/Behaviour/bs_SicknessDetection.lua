@@ -1,5 +1,5 @@
 function Run()
-	if GetState("",STATE_SICK) then
+	if GetState("", STATE_SICK) then
 		return
 	end
 	local Profession = SimGetProfession("")

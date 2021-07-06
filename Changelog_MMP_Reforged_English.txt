@@ -104,6 +104,7 @@ _General_
 - During the measure 'Flirt' no soundfiles of the dialogue have been played.
 - The flirting bonus ability had no impact on the measure 'Flirt'.
 - Fixed a bug with the removal of pamphlets.
+- Thugs no longer are effected by quacks, priests etc.
 - Fixed several map issues
 
 _Patron_

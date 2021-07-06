@@ -1,21 +1,10 @@
 function Run()
-	if GetImpactValue("","spying") == 1 then
-		return ""
-	end
 	
-	if SimGetProfession("")==42 then --juggler
-		return ""
-	end
-
-	if SimGetClass("")==4 then --gauner spenden nicht
+	if SimGetClass("") == 4 then --rogues are not affected by this
 		return ""
 	end
 	
 	if not GetState("", STATE_IDLE) then
-		return ""
-	end
-	
-	if GetState("",STATE_ROBBERGUARD) then
 		return ""
 	end
 
@@ -23,13 +12,15 @@ function Run()
 		return ""
 	end
 
-    if GetImpactValue("","HaveBeenPickpocketed")>0 then
+	if GetImpactValue("", "HaveBeenPickpocketed") > 0 then
 		return ""
 	end	
 
-    if IsPartyMember("") then
-        return ""
-    end
+	if IsPartyMember("") then
+		if Rand(2) == 0 then
+			return ""
+		end
+	end
 	
 	return "DonateJuggler"
 end

@@ -102,6 +102,7 @@ _Allgemein_
 - Bei der Maßnahme 'Jemanden umgarnen' wurden keine Sprachdateien abgespielt.
 - Der Flirt-Bonus durch eine der wählbaren Fähigkeiten hatte keine Auswirkungen auf das 'Umgarnen'.
 - Ein Fehler beim Entfernen von Pamphleten wurde behoben.
+- Schergen werden nicht mehr von Quacksalbern, dem Schwarzen Brett, Priestern etc. beeinflusst.
 - Diverse Map-Fehler korrigiert.
 
 _Patron_

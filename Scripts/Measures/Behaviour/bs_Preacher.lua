@@ -1,9 +1,10 @@
 function Run()
-	if GetImpactValue("","spying") == 1 then
+	-- doesn't effect thugs
+	if SimGetProfession("") == GL_PROFESSION_MYRMIDON then
 		return ""
 	end
 	
-	if SimGetProfession("")==11 then --priest
+	if SimGetProfession("") == 11 then --priest
 		return ""
 	end
 	
@@ -11,7 +12,7 @@ function Run()
 		return ""
 	end
 	
-	if GetState("",STATE_ROBBERGUARD) then
+	if GetState("", STATE_ROBBERGUARD) then
 		return ""
 	end
 

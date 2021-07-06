@@ -1,5 +1,10 @@
 function Run()
-
+	
+	-- doesn't effect thugs
+	if SimGetProfession("") == GL_PROFESSION_MYRMIDON then
+		return ""
+	end
+		
 	local modval = 0  --other gender
 	local modval2 = 0 --same gender
 

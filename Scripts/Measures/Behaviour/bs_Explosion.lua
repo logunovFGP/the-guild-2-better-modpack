@@ -1,9 +1,12 @@
 function Run()
+
 	if GetImpactValue("","spying") == 1 then
 		return ""
 	end
+	
 	SetData("Distance", 2000)
-	if Rand(10)>5 then
+	
+	if Rand(10)>4 then
 		if SimGetGender("")==GL_GENDER_MALE then
 			PlaySound3DVariation("","CharacterFX/male_pain_short",1)
 		else
@@ -11,6 +14,7 @@ function Run()
 		end
 		diseases_BurnWound("",true)	
 	end
+	
 	return "Flee"
 end
 

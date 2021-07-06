@@ -1,5 +1,5 @@
 function Run()
-	if not GetState("",STATE_IDLE) then
+	if not GetState("", STATE_IDLE) then
 		return
 	end
 	return "Cheer"

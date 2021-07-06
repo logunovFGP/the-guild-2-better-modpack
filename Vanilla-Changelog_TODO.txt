@@ -4,7 +4,6 @@ Bug-Fixes & Workarounds:
 
 Offen:
 
-- Fehlerhafte Warenhaus-Upgrades repariert.
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.
@@ -40,8 +39,7 @@ Offen:
   oder während Wunderkuren geholt werden.
 - Beim Quacksalben werden die Goldgewinne nun nur für die eigene Dynastie angezeigt
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
-- Schergen werden nicht länger von Taschendieben, dem schwarzen Brett, Quacksalberern
-  und anderen Predigern unterbrochen.
+
 - Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.
 - Es gab mehrere Probleme mit den Amtssitzungen, die behoben werden konnten.
 - Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 

@@ -1,6 +1,11 @@
 function Run()
 	local modval = 0
 	local kamm = 0
+	
+	-- doesn't effect thugs
+	if SimGetProfession("") == GL_PROFESSION_MYRMIDON then
+		return ""
+	end
 
 	if (GetProperty("Actor", "jewellery")==nil) or (GetProperty("Actor", "jewellery")==8) then
 		modval = 3 + chr_SimGetFameLevel("Actor")

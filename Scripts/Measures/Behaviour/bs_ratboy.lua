@@ -1,13 +1,13 @@
 function Run()
-	if SimGetAge("") > 14 then
+
+	if SimGetAge("") > 12 then
 		return
 	end
 	
-	if GetImpactValue("","HaveBeenPickpocketed")>0 then
+	if GetImpactValue("", "HaveBeenPickpocketed") > 0 then
 		return
 	end
 
-	MeasureRun("","","FollowRatBoy",true)
-	Sleep(2)
+	MeasureRun("", "", "FollowRatBoy", true)
 end
 
