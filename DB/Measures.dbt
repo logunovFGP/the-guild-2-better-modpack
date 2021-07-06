@@ -550,3 +550,4 @@ Data:
 14000   "HotTea.lua"   "-"   "HotTea"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |
 14001   "HotTea.lua"   "-"   "HotTeaTarget"   55   "hud/buttons/btn_Missing.tga"   0   99   0   ""   ""   2   0   0   "none"   0   0   |
 14002   "Behaviour\std_StartUpDyn.lua"   "-"   "StartUpDyn"   1   "-"   1   13   0   ""   ""   0   0   0   "none"   0   0   |
+14003   "Behaviour\std_StartUpGuard.lua"   "-"   "StartUpGuard"   1   "-"   1   13   0   ""   ""   0   0   0   "none"   0   0   |

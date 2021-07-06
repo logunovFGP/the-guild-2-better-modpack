@@ -14,7 +14,7 @@ function Run()
 				f_MoveTo("", "Position")
 			end
 			
-			Sleep(Rand(12)+4)
+			Sleep(Rand(12)+1)
 			Number = Number + 1
 			
 		else
@@ -23,12 +23,16 @@ function Run()
 		
 		if Rand(3) == 0 then
 			if Rand(6) == 0 then
-				PlayAnimation("", "guard_object")
+				PlayAnimation("", "watch_for_guard")
 			else
-				PlayAnimation("", "cogitate")
+				if Rand(2) == 0 then
+					PlayAnimation("", "cogitate")
+				else
+					PlayAnimation("", "talk_short")
+				end
 			end
 		end
-		Sleep(3+Rand(5))
+		Sleep(1+Rand(5))
 	end
 end
 

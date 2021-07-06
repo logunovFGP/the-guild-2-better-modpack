@@ -84,6 +84,9 @@ function Start()
 
 		SetProperty("NPC", "Point1", "End"..n)
 		SetProperty("NPC", "Point2", "Start"..n)
+		if GetOutdoorLocator("Start"..n+1, 1, "Pos") then
+			SetProperty("NPC", "Point3", "Start"..n+1)
+		end
 		
 		if SimGetAge("NPC") > 15 then
 			SimSetBehavior("NPC", "Patroille")
@@ -123,6 +126,18 @@ function Start()
 					SimStartIdleMeasure("NPCFriend")
 				end
 			end
+		end
+	end
+	
+	for i = 1, 3 do
+		if GetOutdoorLocator("Guard"..i, 1, "GuardPos") then
+			SimCreate(918, "", "GuardPos", "NPC")
+			GetNearestSettlement("NPC", "City")
+			if CityGetNearestBuilding("City", "NPC", -1, GL_BUILDING_TYPE_WELL, -1, -1, FILTER_IGNORE, "Target") then
+				AlignTo("NPC", "Target")
+			end
+			SimSetBehavior("NPC", "StartUpGuard")
+			SimStartIdleMeasure("NPC")
 		end
 	end
 
