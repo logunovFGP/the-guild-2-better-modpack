@@ -56,6 +56,7 @@ _Design_
 - Einige Charaktertexturen wurden überarbeitet.
 - Die Anzahl möglicher Dynastien je nach Karte wurde angepasst.
 - Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten zum Bearbeiten fehlen, sind daher nicht mehr spielbar.
+- Die Nachricht "Jemand fühlt sich vernachlässigt" wird nicht mehr vertont und hat einen anderen Text.
 
 *** Vanilla-Bugs ***
 
@@ -103,7 +104,9 @@ _Allgemein_
 - Der Flirt-Bonus durch eine der wählbaren Fähigkeiten hatte keine Auswirkungen auf das 'Umgarnen'.
 - Ein Fehler beim Entfernen von Pamphleten wurde behoben.
 - Schergen werden nicht mehr von Quacksalbern, dem Schwarzen Brett, Priestern etc. beeinflusst.
+- Bau- und Upgradezeiten von Gebäuden korrigiert.
 - Diverse Map-Fehler korrigiert.
+
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -131,6 +134,7 @@ _Gauner_
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
 - Die Maßnahme "Ausruhen" wird nun korrekterweise bei den anderen roten Maßnahmen eingeordnet.
 - Räuberlager haben nun einen Karren.
+- Das Hypnosependel funktionierte nicht.
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
@@ -175,7 +179,7 @@ _Allgemein_
 - Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
 - Die neue Karte 'Yorkshire' wurde hinzugefügt.
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
-- Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod wurden hinzugefügt.
+- Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod und Zusammenschnitten wurde hinzugefügt.
 - Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.
 
 _Patron_

@@ -255,6 +255,9 @@ Translate and add the following lines below:
 18252   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   "Influenza is not to be taken lightly. Once in its grip, you will soon feel miserable, sapped, and feeble. The only thing that can help you now is a medicine bottle, dispensed by a healer, or you might develop pneumonia and die ...$N$NInfluenza decreases all talents by 3."   |
 18253   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"   "Through tireless dealing, you have reached the ranks of the upper nobility. You have shown the world what your dynasty is made of, and you have thus a higher credibility during trials."   |
 18254   "_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_BRIBE_+0"   "Bribery"   |
+18255   "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0"   "#E[NT_NEUTRAL]Continue courtship"   |
+18256   "_PREMARRIAGE_PROGRESS_LOSS_+0"   "%2SN should not forget the courtship of %1SA %1SN. Why don't you go ahead and visit %1SV right away to emphasize your endeavors?"   |
+
 
 Delete the following lines:
 70   "$1Tincome %1t gold"
@@ -286,7 +289,8 @@ Delete the following lines:
 8449   "_HPFZ_MEASURES_HIRE_ZUSATZ_+0"  
 8450   "_HPFZ_HIRERANDOM_FEHLER_+0"  
 12728   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0" 
-
+14699   "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0"
+14700   "_PREMARRIAGE_PROGRESS_LOSS_+0"
 
 for polish, change some letters, they will show correctly ingame
 

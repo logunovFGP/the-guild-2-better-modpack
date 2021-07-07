@@ -2319,7 +2319,6 @@ Data:
 22949        "_LIAISON_WARNING_HEAD_+0"      1                 1.8                | 
 22950        "_LIAISON_END_HEAD_+0"          1                 1.649              | 
 22951        "_PREMARRIAGE_PROGRESS_FULL_HEAD_+0" 1                 1.9                | 
-22952        "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0" 1                 1.708              | 
 22953        "_PREMARRIAGE_PROGRESS_LOOSE_HEAD_+0" 1                 1.905              | 
 22954        "_PREMARRIAGE_PROGRESS_OVER_HEAD_+0" 1                 1.677              | 
 22955        "_GIVEAPOEM_MESSAGE_SUCCESS_HEAD_+0" 1                 1.72               | 
@@ -3282,4 +3281,5 @@ Data:
 24394   "_GENERAL_MEASURES_073_LEVELUPBUILDING_FAILURES_+1"  1  4.800  |
 24395   "_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0"  1  13.000  |
 24396   "_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_HEAD_+0"  1  1.800  |
-  
+24397   "_AI_NEWRIVALINTOWN_HEAD_+0"  1  2.200  |
+24398   "_GENERAL_ERROR_HEAD_+0"  1  2.000  |

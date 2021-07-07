@@ -58,6 +58,7 @@ _Design_
 - Some character textures have been overhauled.
 - The numbers of possible dynasties per map have been adjusted.
 - Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can now longer be played on.
+- The message 'Someone feels neglected' has no voiceover anymore and the text has been changed.
 
 *** Vanilla-Bugs ***
 
@@ -105,6 +106,7 @@ _General_
 - The flirting bonus ability had no impact on the measure 'Flirt'.
 - Fixed a bug with the removal of pamphlets.
 - Thugs no longer are effected by quacks, priests etc.
+- Building- and upgrading times have been fixed.
 - Fixed several map issues
 
 _Patron_
@@ -132,6 +134,7 @@ _Rogue_
 - Children are no longer targets of wenches.
 - The Measure 'Rest' now has the red measure category like the icon suggests.
 - Robbercamps now have a cart.
+- Hypnosis pendulum didn't work.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
