@@ -15,7 +15,7 @@ Data:
 12           8              "constitution"                  "Character Constitution skill"  | 
 15           1              "Zodiac"                        "Zodiac Sign (Sternzeichen)"    | 
 21           1              "Age"                           "Age in years"                  | 
-22           1              "Gender"                        "Gender, Sex, Dingens 0-femal, 1-male" | 
+22           1              "Gender"                        "Gender, 0-female, 1-male" | 
 30           8              "fighting"                      "Character Fighting skill"      | 
 31           8              "craftsmanship"                 "Character Craftsmanship skill" | 
 32           8              "shadow_arts"                   "Character Shadow Arts skill"   | 
@@ -23,7 +23,7 @@ Data:
 34           8              "empathy"                       "Character Empathy skill"       | 
 35           8              "bargaining"                    "Character Bargaining skill"    | 
 36           8              "secret_knowledge"              "Character Secret Knowledge skill" | 
-41           1              "Alignment"                     "Characters Alignment from 0 (Evil) to 100 (True Good)" | 
+41           1              "Alignment"                     "Characters Alignment from 0 (Good) to 100 (Evil)" | 
 44           1              "Religion"                      "Characters Religion 0-Katholic, 1-Evangelic" | 
 45           9              "Thickness"                     "Character Thickness (100 = neutral)" | 
 46           9              "Beard"                         "Character Beard"               | 

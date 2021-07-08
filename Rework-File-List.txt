@@ -38,35 +38,35 @@
 40 DB\MeasureToObjects.dbt - NOT FINISHED
 41 DB\MeasureType.dbt - MERGED
 42 DB\MemoryEvent.dbt - MERGED
-43 DB\MemoryInfoQuality.dbt
-44 DB\messageclass.dbt
-45 DB\Models.dbt
-46 DB\Needs.dbt
+43 DB\MemoryInfoQuality.dbt - MERGED
+44 DB\messageclass.dbt - MERGED
+45 DB\Models.dbt - MERGED
+46 DB\Needs.dbt - MERGED
 47 DB\NobilityTitle.dbt - MERGED
-48 DB\Offices.dbt
-49 DB\PathMaterials.dbt
-50 DB\PathPrefPatternNames.dbt
-51 DB\PathPrefPatterns.dbt
+48 DB\Offices.dbt - MERGED
+49 DB\PathMaterials.dbt - MERGED
+50 DB\PathPrefPatternNames.dbt - MERGED
+51 DB\PathPrefPatterns.dbt - MERGED
 52 DB\Positions.dbt - MERGED
-53 DB\Professions.dbt
-54 DB\Properties.dbt
-55 DB\PropertiesTypes.dbt
+53 DB\Professions.dbt - NOT FINISHED
+54 DB\Properties.dbt - MERGED
+55 DB\PropertiesTypes.dbt - MERGED
 56 DB\Scenes.dbt - MERGED
 57 DB\Seasons.dbt - MERGED
-58 DB\Sentences.dbt
-59 DB\Skills.dbt
-60 DB\SkillXpCost.dbt
+58 DB\Sentences.dbt - MERGED
+59 DB\Skills.dbt - MERGED
+60 DB\SkillXpCost.dbt - NOT FINISHED
 61 DB\songspecialevents.dbt - MERGED
 62 DB\songvariation.dbt - MERGED
 63 DB\Sound.dbt - MERGED
 64 DB\SoundSources.dbt - MERGED
-65 DB\State.dbt
-66 DB\tables.dbt
-67 DB\TemplatePropValues.dbt
+65 DB\State.dbt - MERGED
+66 DB\tables.dbt - MERGED
+67 DB\TemplatePropValues.dbt - MERGED
 68 DB\Text.dbt - *LOCALIZATION*
-69 DB\textcategories.dbt
-70 DB\VegetationGroups.dbt
-71 DB\Weapons.dbt
+69 DB\textcategories.dbt - MERGED
+70 DB\VegetationGroups.dbt - MERGED
+71 DB\Weapons.dbt - MERGED
 
 
 0 Scripts\AI\Bankhouse\bank_betrugen.lua

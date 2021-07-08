@@ -229,6 +229,8 @@ _General_
 - The class-talents of all 4 classes have been rebalanced.
 - Costs of cart escorts have been reduced from 750 to 600 gold.
 - Weight of evidence, their influence on favor and deposition has been rebalanced.
+- Voters for offices have been changes to emphasise the distinction between the clerical and non-clerical 'chambers'
+- The damage sims do by attacks on buildings has been increased significantly.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

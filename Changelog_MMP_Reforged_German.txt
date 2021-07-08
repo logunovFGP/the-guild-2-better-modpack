@@ -237,6 +237,8 @@ _Allgemein_
 - Die Klassentalente aller 4 Klassen wurden neu ausbalanciert.
 - Die Kosten für Eskorten wurden von 750 auf 600 reduziert.
 - Die Gewichtung der Verbrechen und ihr Einfluss auf Gunst und Gesinnung wurden angepasst.
+- Die Wahlberechtigten für Ämter wurden angepasst, sodass die Aufteilung in Klerikal und Weltlich deutlicher wird.
+- Der Schaden, den Sims durch Angriffe an Gebäuden anrichten, wurde deutlich erhöht.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
