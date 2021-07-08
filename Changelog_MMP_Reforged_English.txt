@@ -174,7 +174,6 @@ _General_
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
-- The class-talents of all 4 classes have been rebalanced.
 
 _Patron_
 -
@@ -227,6 +226,9 @@ _General_
 - All workshops have now 4 possible worker slots, only gatherer-professions like farmer or miner and rogue professions get up to 5 employees. Those also start with 2 free employees instead of just 1.
 - Chances of random city events have been adjusted
 - The warehouse now has less upgrades against burglary but now can store much more goods (up to 16 slots, up to 400 units per slot)
+- The class-talents of all 4 classes have been rebalanced.
+- Costs of cart escorts have been reduced from 750 to 600 gold.
+- Weight of evidence, their influence on favor and deposition has been rebalanced.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

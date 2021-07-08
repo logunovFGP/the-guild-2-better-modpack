@@ -235,6 +235,8 @@ _Allgemein_
 - Die Chancen für Stadt-Ereignisse wurden angepasst.
 - Das Warenhaus hat weniger Upgrades gegen Einbrüche, kann jedoch nun deutlich mehr Waren lagern (Bis zu 16 Slots, bis zu 400 Einheiten pro Slot)
 - Die Klassentalente aller 4 Klassen wurden neu ausbalanciert.
+- Die Kosten für Eskorten wurden von 750 auf 600 reduziert.
+- Die Gewichtung der Verbrechen und ihr Einfluss auf Gunst und Gesinnung wurden angepasst.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

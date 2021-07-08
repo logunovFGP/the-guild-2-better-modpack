@@ -8,7 +8,7 @@ Translate and add the following lines below:
 18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN points out that %3GG is built in the same city as %2GG. Hopefully your relationship will stay peacefully."   |
 18006   "_BUYBUILDING_CREDIT_HEAD_+0"   "Credit account closed"   |
 18007   "_BUYBUILDING_CREDIT_BODY_+0"   "The credit account of %1GG was closed on sale. You received %2t from the account."   |
-18008   "_GENERAL_ERROR_HEAD_+0"   "Measure failed"   |
+18008   "_GENERAL_ERROR_HEAD_+0"   "Action failed"   |
 18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN already has that kind of impact! Wait until the effect wears off before you use this item again." |
 18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG already has that kind of impact! Wait until the effect wears off before you use this item again." |
 18011   "_GENERAL_MEASURES_MARRY_FAILURES_+1"   "%4SV wants to marry %1SN, but %1SV has different plans ... Because of the work in %2GG for the %3DN dynasty, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %4SN."   |
@@ -187,10 +187,10 @@ Translate and add the following lines below:
 18184   "_IDLE_VISITDOC_NODOC_BODY_+0"   "%1SN is waiting for medical treatment in %2GG, unfortunately none of your workers are currently assigned to treatment, you should change that immediately!"   |
 18185   "Hat_+0"   "Hat"   |
 18186   "_MEASURE_ChangeAppearance_NAME_+0"   "Change Appearance"   |
-18187   "_MEASURE_ChangeAppearance_TOOLTIP_+0"   "You would like to have a new haircut, a pretty hat or even some extra pounds? This measure makes it happen! With just a few simple steps you can play with the character of your dreams."   |
+18187   "_MEASURE_ChangeAppearance_TOOLTIP_+0"   "You would like to have a new haircut, a pretty hat or even some extra pounds? This action makes it happen! With just a few simple steps you can play with the character of your dreams."   |
 18188   "_IMPORTANTPERSONS_BOOKMARKS_+0"   "Marked characters"   |
 18189   "_MEASURE_SetBookmark_NAME_+0"   "Mark character" |
-18190   "_MEASURE_SetBookmark_TOOLTIP_+0"   "With this measure you can mark a character as important. He or she will appear at the >Important Persons< menu in the section >Marked characters<." |
+18190   "_MEASURE_SetBookmark_TOOLTIP_+0"   "With this action you can mark a character as important. He or she will appear at the >Important Persons< menu in the section >Marked characters<." |
 18191   "_MEASURE_SetBookmark_REMOVED_HEAD_+0"   "Mark removed" |
 18192   "_MEASURE_SetBookmark_ADDED_HEAD_+0"   "Mark added" |
 18193   "_MEASURE_SetBookmark_REMOVED_BODY_+0"   "The mark for %1SN has been removed. You can re-mark the person again if you want." |
@@ -215,7 +215,7 @@ Translate and add the following lines below:
 18212   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_1_+0"   "Tree feller"   |
 18213   "_CHARACTERS_2_PROFESSIONS_lumberjack_NAME_+1"   "Lumberjack"   |
 18214   "_CHARACTERS_2_PROFESSIONS_lumberjack_NAME_+0"   "Lumberjack"   |
-18215   "_TWP_SALESCART_HELP_BODY_+0"   "Assign your cart to sell products from your workshop.$N$NYou may choose how many products shall remain in your storage. If you do not specify that, all products will be sold.$N$NOnce you start the measure, your driver will check the storage from time to time. Once your products reach a value of %2t the cart will sell the products at the nearest market.$N$NYour driver will take a break of about half an hour after each trip to the market."   |
+18215   "_TWP_SALESCART_HELP_BODY_+0"   "Assign your cart to sell products from your workshop.$N$NYou may choose how many products shall remain in your storage. If you do not specify that, all products will be sold.$N$NOnce you start the action, your driver will check the storage from time to time. Once your products reach a value of %2t the cart will sell the products at the nearest market.$N$NYour driver will take a break of about half an hour after each trip to the market."   |
 18216   "$1Tincome %1t gold"   "Income: %1t"   |
 18217   "_MEASURE_Quacksalver_TOOLTIP_+0"   ">Gather round, everyone! I offer you the most wondrous and at the same time most effective cures for whatever ailment may befall you!<$NMaybe you would never fall for such bogus claims yourself. But the common people are desperately eager to buy >miracle cures< from >rhetoricly gifted< quacksalvers against all kinds of afflictions. So why not profit from their ignorance?"   |
 18218   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"   "Tooth rot is a terrible thing. You are in constant pain, unable to eat and speak properly and your breath smells quite awful ...$NThe only secure way to treat this is to have the tooth pulled and take some pain medication.$N$NYour rhetoric and charisma talents are reduced by 3. Tooth rot has no maximum duration."   |
@@ -234,7 +234,7 @@ Translate and add the following lines below:
 18231   "_CITY_NAME_WHITBY_+0"   "Whitby"   |
 18232   "_CITY_NAME_LEEDS_+0"   "Leeds"   |
 18233   "_CITY_NAME_SHEFFIELD_+0"   "Sheffield"   |
-18234   "_CITY_NAME_AMSTERDAMM_+0"   "Overseatrade Amsterdamm"   |
+18234   "_CITY_NAME_AMSTERDAMM_+0"   "Amsterdam"   |
 18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+1"   "You have been disappropriated"   |
 18236   "_BUILDING_LEVELUP_HEAD_+1"   "#E[NT_NEUTRAL]Building levelup completed"   |
 18237   "_BUILDING_BUILD_HEAD_+1"   "#E[NT_NEUTRAL]Build completed"   |

@@ -17,30 +17,27 @@
 16 DB\CharPatterns.dbt - MERGED
 17 DB\CharPropertyTemplates.dbt - MERGED
 18 DB\Classes.dbt - MERGED
-19 DB\ConstructionTime.dbt
-20 DB\Decorators.dbt
-21 DB\DynastyColors.dbt
-22 DB\FacialExpressions.dbt
-23 DB\Filter.dbt
-24 DB\Fonts.dbt
-25 DB\GameConstants.dbt
-26 DB\GitseConstants.dbt
-27 DB\GitseDialogtypes.dbt
-28 DB\GitsePropertys.dbt
-29 DB\GuildResource.dbt
-30 DB\Impacts.dbt
-31 DB\IndoorMapPositions.dbt
-32 DB\Items - Kopie.dbt
-33 DB\Items.dbt
-34 DB\Items_.dbt
-35 DB\Lordship.dbt
+19 DB\ConstructionTime.dbt - MERGED
+20 DB\Decorators.dbt - MERGED
+21 DB\DynastyColors.dbt - MERGED
+22 DB\FacialExpressions.dbt - MERGED
+23 DB\Filter.dbt - NOT FINISHED
+24 DB\Fonts.dbt - MERGED
+25 DB\GameConstants.dbt - MERGED
+26 DB\GitseConstants.dbt - MERGED
+27 DB\GitseDialogtypes.dbt - MERGED
+28 DB\GitsePropertys.dbt - MERGED
+29 DB\GuildResource.dbt - NOT FINISHED
+30 DB\Impacts.dbt - NOT FINISHED
+31 DB\IndoorMapPositions.dbt - MERGED
+35 DB\Lordship.dbt - MERGED
 36 DB\maps.dbt - MERGED
-37 DB\Materials.dbt
-38 DB\MeasureObjects.dbt
-39 DB\Measures.dbt
-40 DB\MeasureToObjects.dbt
-41 DB\MeasureType.dbt
-42 DB\MemoryEvent.dbt
+37 DB\Materials.dbt - MERGED
+38 DB\MeasureObjects.dbt - MERGED
+39 DB\Measures.dbt - NOT FINISHED
+40 DB\MeasureToObjects.dbt - NOT FINISHED
+41 DB\MeasureType.dbt - MERGED
+42 DB\MemoryEvent.dbt - MERGED
 43 DB\MemoryInfoQuality.dbt
 44 DB\messageclass.dbt
 45 DB\Models.dbt
