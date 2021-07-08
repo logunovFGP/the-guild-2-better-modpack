@@ -162,7 +162,7 @@ _General_
 - Improved and added new character faces (men, women and children).
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 - The choice of hairs, beards, hats and helmets for characters has been completely reworked.
-- The variance of music pieces has been boosted massivly. Also about 20 songs from the Original Europa 1400: The Guild have been added to the game!
+- The variance of music pieces has been boosted massivly. Also many songs from the Original Europa 1400: The Guild and a few pieces from The Guild 3 have been added to the game!
 - Trade routes have been reworked completely.
 - In addition two new options for workshop-handling have been added that allow for easier supply and sale.
 - Pregnant women are no longer tied to their bed.
