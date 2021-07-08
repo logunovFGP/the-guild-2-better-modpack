@@ -234,6 +234,7 @@ _Allgemein_
 - Alle Betriebe haben nun ein Arbeiter-Limit von 4 Angestellten, nur Gauner- und Sammlerbetriebe wie der Bauer oder die Mine haben 5. Sammler-/ Gaunerbetriebe starten mit 2 kostenlosen Angestellten, alle anderen haben nur 1.
 - Die Chancen für Stadt-Ereignisse wurden angepasst.
 - Das Warenhaus hat weniger Upgrades gegen Einbrüche, kann jedoch nun deutlich mehr Waren lagern (Bis zu 16 Slots, bis zu 400 Einheiten pro Slot)
+- Die Klassentalente aller 4 Klassen wurden neu ausbalanciert.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

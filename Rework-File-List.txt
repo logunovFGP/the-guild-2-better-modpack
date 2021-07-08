@@ -15,8 +15,8 @@
 14 DB\CharModels.dbt - MERGED
 15 DB\CharPatternGroups.dbt - MERGED
 16 DB\CharPatterns.dbt - MERGED
-17 DB\CharPropertyTemplates.dbt
-18 DB\Classes.dbt
+17 DB\CharPropertyTemplates.dbt - MERGED
+18 DB\Classes.dbt - MERGED
 19 DB\ConstructionTime.dbt
 20 DB\Decorators.dbt
 21 DB\DynastyColors.dbt
