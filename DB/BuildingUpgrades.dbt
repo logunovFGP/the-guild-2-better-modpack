@@ -15,7 +15,6 @@ Data:
 1005             100              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1006             100              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1007             100              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1008             100              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1009             100              "Worker"                    1                     1                 1                    2                    1000              0                 0               0          |
 1010             100              "Worker"                    1                     0                 1                    1                    1000              0                 500             0          |
 1011             101              "Worker"                    1                     0                 1                    1                    1009              0                 500             0          |
@@ -60,7 +59,6 @@ Data:
 1105             120              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1106             120              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1107             120              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1108             120              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1109             120              "Worker"                    1                     1                 1                    1                    1100              0                 0               0          |
 1110             120              "Worker"                    1                     0                 1                    1                    1100              0                 500             0          |
 1111             121              "Worker"                    1                     0                 1                    1                    1109              0                 500             0          |
@@ -167,7 +165,6 @@ Data:
 1305             140              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1306             140              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1307             140              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1308             140              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1309             140              "Worker"                    1                     1                 1                    1                    1300              0                 0               0          |
 1310             140              "Worker"                    1                     0                 1                    1                    1300              0                 500             0          |
 1311             140              "InventorySlot"             1                     1                 2                    6                    1303              0                 0               0          |
@@ -246,7 +243,6 @@ Data:
 1605             150              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1606             150              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1607             150              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1608             150              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1609             150              "Worker"                    1                     1                 1                    1                    1600              0                 0               0          |
 1610             150              "Worker"                    1                     0                 1                    1                    1600              0                 500             0          |
 1611             151              "Worker"                    1                     0                 1                    1                    1609              0                 500             0          |
@@ -299,7 +295,6 @@ Data:
 1705             160              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1706             160              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1707             160              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1708             160              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1709             160              "Worker"                    1                     1                 1                    1                    1700              0                 0               0          |
 1710             160              "Worker"                    1                     0                 1                    1                    1700              0                 500             0          |
 1711             161              "Worker"                    1                     0                 1                    1                    1709              0                 500             0          |
@@ -349,7 +344,6 @@ Data:
 1805             165              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1806             165              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1807             165              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1808             165              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1809             165              "Worker"                    1                     1                 1                    1                    1800              0                 0               0          |
 1810             165              "Worker"                    1                     0                 1                    1                    1800              0                 500             0          |
 1811             166              "Worker"                    1                     0                 1                    1                    1809              0                 500             0          |
@@ -399,7 +393,6 @@ Data:
 1905             170              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 1906             170              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 1907             170              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-1908             170              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 1909             170              "Worker"                    1                     1                 1                    1                    1900              0                 0               0          |
 1910             170              "Worker"                    1                     0                 1                    1                    1900              0                 500             0          |
 1911             170              "InventorySlot"             1                     1                 2                    6                    1903              0                 0               0          |
@@ -595,14 +588,12 @@ Data:
 // Robber 230-232
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 2400             230              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
-2401             230              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
 2402             230              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 2403             230              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 2404             230              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 2405             230              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 2406             230              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 2407             230              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-2408             230              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 2409             230              "Worker"                    1                     1                 1                    2                    2400              0                 0               0          |
 2410             230              "Worker"                    1                     0                 1                    1                    2400              0                 500             0          |
 2411             231              "Worker"                    1                     0                 1                    1                    2409              0                 500             0          |
@@ -636,14 +627,12 @@ Data:
 // Thieves 240-242
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 2500             240              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
-2501             240              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
 2502             240              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 2503             240              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 2504             240              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 2505             240              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 2506             240              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 2507             240              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-2508             240              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 2509             240              "Worker"                    1                     1                 1                    2                    2500              0                 0               0          |
 2510             240              "Worker"                    1                     0                 1                    1                    2500              0                 500             0          |
 2511             241              "Worker"                    1                     0                 1                    1                    2509              0                 500             0          |
@@ -689,7 +678,6 @@ Data:
 2605             270              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 2606             270              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 2607             270              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-2608             270              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 2609             270              "Worker"                    1                     1                 1                    2                    2600              0                 0               0          |
 2610             270              "Worker"                    1                     0                 1                    1                    2600              0                 500             0          |
 2611             270              "InventorySlot"             1                     1                 2                    6                    2603              0                 0               0          |
@@ -716,7 +704,6 @@ Data:
 2705             290              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 2706             290              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 2707             290              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-2708             290              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 2709             290              "Worker"                    1                     1                 1                    2                    2700              0                 0               0          |
 2710             290              "Worker"                    1                     0                 1                    1                    2700              0                 500             0          |
 2711             290              "InventorySlot"             1                     1                 2                    6                    2703              0                 0               0          |
@@ -735,14 +722,10 @@ Data:
 
 // Warehouse 365
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
-2801             365              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
-2802             365              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 2803             365              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 2804             365              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 2805             365              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 2806             365              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
-2807             365              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-2808             365              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 2811             365              "InventorySlot"             1                     1                 2                    12                   2803              0                 0               0          |
 2812             365              "InventorySlot"             1                     0                 2                    1                    2811              0                 500             0          |
 2813             365              "InventorySlot"             1                     0                 2                    1                    2811              0                 500             0          |
@@ -769,7 +752,6 @@ Data:
 2905             370              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 2906             370              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 2907             370              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-2908             370              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 2909             370              "Worker"                    1                     1                 1                    1                    2900              0                 0               0          |
 2910             370              "Worker"                    1                     0                 1                    1                    2900              0                 500             0          |
 2911             371              "Worker"                    1                     0                 1                    1                    2909              0                 500             0          |
@@ -918,14 +900,11 @@ Data:
 // Residence 440-444
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 3200             440              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
-3201             440              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
-3202             440              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 3203             440              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 3204             440              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 3205             440              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3206             440              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3207             440              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3208             440              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3209             440              "Worker"                    1                     1                 1                    1                    3200              0                 0               0          |
 3210             440              "Worker"                    1                     0                 1                    1                    3200              0                 500             0          |
 3211             441              "Worker"                    1                     0                 1                    1                    3209              0                 500             0          |
@@ -953,7 +932,7 @@ Data:
 3236             442              "Wachhundtraining"          1                     0                 8                    0.25                 3235              0                 150             0          |
 3237             440              "SpyGlass"                  1                     0                 15                   1450                 3207              0                 300             0          |
 3238             441              "BackRoom"                  1                     1                 0                    0                    3239              6                 0               0          |
-3239             440              "Escritoire"                1                     0                 0                    0                    0                 0                 300             0          |
+3239             440              "Escritoire"                1                     0                 0                    0                    3207              0                 300             0          |
 3240             443              "TreasureChest"             1                     0                 8                    0.25                 3236              0                 150             0          |
 3241             444              "TheWeepingCulprit"         1                     0                 8                    0.25                 3240              0                 150             0          |
 3242             443              "ProtectionFromFire"        1                     0                 7                    0.15                 3233              0                 150             0          |
@@ -983,7 +962,6 @@ Data:
 3305             490              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3306             490              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3307             490              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3308             490              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3309             490              "Worker"                    1                     1                 1                    2                    3300              0                 0               0          |
 3310             490              "Worker"                    1                     0                 1                    1                    3300              0                 500             0          |
 3311             490              "InventorySlot"             1                     1                 2                    6                    3303              0                 0               0          |
@@ -1008,7 +986,6 @@ Data:
 3405             491              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3406             491              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3407             491              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3408             491              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3409             491              "Worker"                    1                     1                 1                    2                    3400              0                 0               0          |
 3410             491              "Worker"                    1                     0                 1                    1                    3400              0                 500             0          |
 3411             491              "InventorySlot"             1                     1                 2                    6                    3403              0                 0               0          |
@@ -1027,14 +1004,11 @@ Data:
 // Mercenary 649-651
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 3500             649              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
-3501             649              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
-3502             649              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 3503             649              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 3504             649              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 3505             649              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3506             649              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3507             649              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3508             649              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3509             649              "Worker"                    1                     1                 1                    1                    3500              0                 0               0          |
 3510             649              "Worker"                    1                     0                 1                    1                    3500              0                 500             0          |
 3511             650              "Worker"                    1                     0                 1                    1                    3509              0                 500             0          |
@@ -1074,14 +1048,11 @@ Data:
 // Piratesnest 654, 1001-1002
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 3600             654              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
-3601             654              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
-3602             654              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 3603             654              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 3604             654              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 3605             654              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3606             654              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3607             654              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3608             654              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3613             654              "InventorySlot"             1                     1                 2                    6                    3603              0                 0               0          |
 3614             654              "InventorySlot"             1                     0                 2                    1                    3603              0                 150             0          |
 3615             654              "InventorySlot"             1                     0                 2                    1                    3603              0                 150             0          |
@@ -1114,7 +1085,6 @@ Data:
 3705             660              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3706             660              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3707             660              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3708             660              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3709             660              "Worker"                    1                     1                 1                    1                    3700              0                 0               0          |
 3710             660              "Worker"                    1                     0                 1                    1                    3700              0                 500             0          |
 3711             661              "Worker"                    1                     0                 1                    1                    3709              0                 500             0          |
@@ -1221,7 +1191,6 @@ Data:
 3905             670              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 3906             670              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 3907             670              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-3908             670              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 3909             670              "Worker"                    1                     1                 1                    1                    3900              0                 0               0          |
 3910             670              "Worker"                    1                     0                 1                    1                    3900              0                 500             0          |
 3911             671              "Worker"                    1                     0                 1                    1                    3909              0                 500             0          |
@@ -1264,14 +1233,11 @@ Data:
 // Estate 675-677
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 4000             675              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
-4001             675              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
-4002             675              "Produktivitaet"            1                     1                 0                    0                    0                 0                 0               0          |
 4003             675              "Lagerslot"                 1                     1                 0                    0                    0                 0                 0               0          |
 4004             675              "Lagermenge"                1                     1                 0                    0                    0                 0                 0               0          |
 4005             675              "Brandschutz"               1                     1                 0                    0                    0                 0                 0               0          |
 4006             675              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 4007             675              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
-4008             675              "Kundenattraktivitaet"      1                     1                 0                    0                    0                 0                 0               0          |
 4009             675              "Worker"                    1                     1                 1                    1                    4000              0                 0               0          |
 4010             675              "Worker"                    1                     0                 1                    1                    4000              0                 500             0          |
 4011             676              "Worker"                    1                     0                 1                    1                    4009              0                 500             0          |
