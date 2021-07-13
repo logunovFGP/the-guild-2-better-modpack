@@ -27,20 +27,20 @@ function Run()
 		local EndTime = GetGametime() + duration
 		local uprogramm = 1
 		
-		if BuildingHasUpgrade("Juggler", 813) == true then
-		    uprogramm = 2
+		if BuildingHasUpgrade("Juggler", "flote") == true then
+			uprogramm = 2
 		end
 		
-		if BuildingHasUpgrade("Juggler", 831) == true then
-		    uprogramm = 3
+		if BuildingHasUpgrade("Juggler", "leier") == true then
+			uprogramm = 3
 		end
 		
-		if BuildingHasUpgrade("Juggler", 829) == true then
-		    uprogramm = 4
+		if BuildingHasUpgrade("Juggler", "trommel") == true then
+			uprogramm = 4
 		end
 		
 		CommitAction("beg", "", "")
-    SetRepeatTimer("", GetMeasureRepeatName(), 1)
+		SetRepeatTimer("", GetMeasureRepeatName(), 1)
 		
 		while GetGametime() < EndTime do
       local modus = Rand(uprogramm)

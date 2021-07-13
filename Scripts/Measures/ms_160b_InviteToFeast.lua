@@ -119,34 +119,33 @@ function Run()
 end
 
 function CallToFeast()
-	if GetState("",STATE_CUTSCENE) then
+	if GetState("", STATE_CUTSCENE) then
 		return
 	end
-	if GetState("",STATE_LOCKED) then
+	if GetState("", STATE_LOCKED) then
 		return
 	end
-	if not HasProperty("","InvitedBy") then
-		StopMeasure()
+	if not HasProperty("", "InvitedBy") then
+		return
 	end
-	local HostID = GetProperty("","InvitedBy")
+	local HostID = GetProperty("", "InvitedBy")
 	if not GetAliasByID(HostID,"PartyHost") then
-		StopMeasure()
+		return
 	end
-	if GetFavorToDynasty("","PartyHost") < 30 then
-		StopMeasure()
+	if GetFavorToDynasty("", "PartyHost") < 30 then
+		return
 	end
-	if not GetHomeBuilding("PartyHost","PartyLocation") then
-		StopMeasure()
+	if not GetHomeBuilding("PartyHost", "PartyLocation") then
+		return
 	end
-	if not BuildingHasUpgrade("PartyLocation",531) then	--salon
-		StopMeasure()
+	if not BuildingHasUpgrade("PartyLocation", "Saloon") then	
+		return
 	end
-	if not MeasureRun("","PartyLocation","AttendFestivity") then
-		StopMeasure()
+	if not MeasureRun("", "PartyLocation", "AttendFestivity") then
+		return
 	end
 end
 
 function CleanUp()
-
 end
 

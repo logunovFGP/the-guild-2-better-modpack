@@ -32,23 +32,22 @@ end
 
 function UseLager()
 
-	GetLocatorByName("WorkBuilding","Work2","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
+	GetLocatorByName("WorkBuilding", "Work2", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
 
 	PlayAnimation("", "cogitate")
 	local animat = Rand(3)
 	if animat == 0 then
-	    if BuildingHasUpgrade("WorkBuilding",943) == true then
-	        PlayAnimation("","manipulate_bottom_r")
+		if BuildingHasUpgrade("WorkBuilding", "zutaten") then
+			PlayAnimation("", "manipulate_bottom_r")
 		else
-		    PlayAnimation("","manipulate_top_r")
+			PlayAnimation("", "manipulate_top_r")
 		end
 	elseif animat == 1 then
-	    PlayAnimation("","manipulate_middle_up_l")
+		PlayAnimation("", "manipulate_middle_up_l")
 	else
-	    PlayAnimation("","manipulate_top_r")
+		PlayAnimation("", "manipulate_top_r")
 	end	
-	
 end
 
 function UseAltar()

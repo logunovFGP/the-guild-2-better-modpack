@@ -262,11 +262,11 @@ function hausreaktion()
         if BuildingGetOwner(dasHaus,"Besitzer") then
 		    if DynastyIsPlayer("Besitzer") then
 			    local begchances = Rand(10)
-				if BuildingHasUpgrade(dasHaus,593) then
-				    begchances = Rand(40)
+				if BuildingHasUpgrade(dasHaus, "Wachhund") then
+					begchances = Rand(40)
 				end
-				if BuildingHasUpgrade(dasHaus,598) then
-				    begchances = Rand(80)
+				if BuildingHasUpgrade(dasHaus, "Wachhundtraining") then
+					begchances = Rand(80)
 				end
 				if begchances < 8 then
 				    PlayAnimationNoWait("","talk")

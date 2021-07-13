@@ -103,14 +103,14 @@ function AIInit()
 	local betrieb = GetData("WorkPlatz")
 	local weights = { 1000, 1000, 1000 }
 	
-    if BuildingHasUpgrade(betrieb,68) == true then
-	    weights[1] = 0
+	if BuildingHasUpgrade(betrieb, "Wool") == true then
+		weights[1] = 0
 	end
-	if BuildingHasUpgrade(betrieb,64) == true then
-	    weights[2] = 0
+	if BuildingHasUpgrade(betrieb, "Leather") == true then
+		weights[2] = 0
 	end
-	if BuildingHasUpgrade(betrieb,65) == true then
-	    weights[3] = 0
+	if BuildingHasUpgrade(betrieb, "Beef") == true then
+		weights[3] = 0
 	end
 	
 	BuildingGetCity("WorkPlatz","checkTown")

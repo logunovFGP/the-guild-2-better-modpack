@@ -222,11 +222,11 @@ Translate and add the following lines below:
 18219   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+0"   "These are scandalous words! Surely, %1SN will be pleased to learn that I got rid of this pamphlet."   |
 18220   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+1"   "A hideous pamphlet which taunts the %1DN dynasty! Let's hope, noone saw this."   |
 18221   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+2"   "It's actually not that far from the truth ... But maybe %1SN will reward me if I dispose of this paper."   |
-18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It truely fits for %1SN! I think I will keep this for later ..."   |
-18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patroling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that noone can see it anymore nor does your reputation gets damaged furthermore. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
+18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It truly fits for %1SN! I think I will keep this for later ..."   |
+18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patrolling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that noone can see it anymore nor does your reputation gets damaged furthermore. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
 18224   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_HEAD_+0"   "A pamphlet has been removed"   |
 18225   "_NETWORK_MAP_NAME_york_+0"   "Yorkshire"   |
-18226   "_NETWORK_MAP_DESC_york_+0"   "Once it has been a roman colony, later it was called >Jórvik< as the capital of the viking settlers. 1066 norman conquerors called it >York<. The city and its surroundings have quite a history. In the late middle ages York and its surrounding settlements of the Shire have been an important trading region, despide the starting degrade of the former richness and glory of the big city."   |
+18226   "_NETWORK_MAP_DESC_york_+0"   "Once it has been a roman colony, later it was called >Jórvik< as the capital of the viking settlers. 1066 norman conquerors called it >York<. The city and its surroundings have quite a history. In the late middle ages York and it's surrounding settlements of the Shire have been an important trading region, despite the starting degrade of the former richness and glory of the big city."   |
 18227   "_CITY_NAME_YORK_+0"   "York"   |
 18228   "_CITY_NAME_HULL_+0"   "Hull"   |
 18229   "_CITY_NAME_SCARBOROUGH_+0"   "Scarborough"   |
@@ -282,7 +282,6 @@ Delete the following lines:
 1069   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   
 2195   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"
 2597   "_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_PRIBE_+0"
-
 7804   "Hat_+0"
 7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"  
 7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"  

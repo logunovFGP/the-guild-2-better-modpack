@@ -113,14 +113,14 @@ function Run()
 end
 
 function CallToFeast()
-	if not GetHomeBuilding("","PartyLocation") then
-		StopMeasure()
+	if not GetHomeBuilding("", "PartyLocation") then
+		return
 	end
-	if not BuildingHasUpgrade("PartyLocation",531) then	--salon
-		StopMeasure()
+	if not BuildingHasUpgrade("PartyLocation", "Saloon") then
+		return
 	end
-	if not MeasureRun("","PartyLocation","AttendFestivity") then
-		StopMeasure()
+	if not MeasureRun("", "PartyLocation", "AttendFestivity") then
+		return
 	end
 end
 

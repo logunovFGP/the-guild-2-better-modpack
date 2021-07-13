@@ -131,10 +131,10 @@ end
 function Serve()
 	local Type
 	local Locator = Rand(4) +1
-	if BuildingHasUpgrade("Divehouse",5715) == true then
-	    Type = Rand(4)
+	if BuildingHasUpgrade("Divehouse", "PiratenGrog") == true then
+		Type = Rand(4)
 	else
-	    Type = Rand(3)
+		Type = Rand(3)
 	end
 
 	if Type == 0 then

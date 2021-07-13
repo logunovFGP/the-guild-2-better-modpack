@@ -23,17 +23,17 @@ function CheckStart()
 end
 
 function Start()
-	if HasProperty("#Player","Reset") then
-		RemoveProperty("#Player","Reset")
+	if HasProperty("#Player", "Reset") then
+		RemoveProperty("#Player", "Reset")
 		KillQuest()
 	end
 	HudEnableElement("BuildBuilding", false)
 
 	SetMainQuest("BuildingInfo")
 	SetQuestTitle("@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_NAME")
-	SetQuestDescription("@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_QUESTBOOK",true)
+	SetQuestDescription("@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_QUESTBOOK", true)
 
-	MsgQuest("#Player",0,"MB_OK","@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_NAME","@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_QUESTBOOK")
+	MsgQuest("#Player", 0, "MB_OK", "@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_NAME", "@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_QUESTBOOK")
 
 	ShowTutorialBoxNoWait(275, 690, 450, 160, 1, LEFTLOWER, "@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_NAME",  "@L_TUTORIAL_CHAPTER_3_RESIDENCE_INDOOR_TASK",  "Hud/Buttons/btn_showUpgrade.tga")
 

@@ -25,18 +25,18 @@ end
 function Start()
 
 	local Money = GetMoney("#Player")
-	chr_SpendMoney("#Player",Money,"Tutorial")
+	chr_SpendMoney("#Player", Money, "Tutorial")
 	
 	HudEnableElement("BuildBuilding", false)
 	
 	SetMainQuestTitle("BuildingInfo", "@L_TUTORIAL_CHAPTER_3_BUILDING_GENERAL_NAME")
-	SetMainQuestDescription("BuildingInfo","@L_TUTORIAL_CHAPTER_3_BUILDING_GENERAL_QUESTBOOK")	
+	SetMainQuestDescription("BuildingInfo", "@L_TUTORIAL_CHAPTER_3_BUILDING_GENERAL_QUESTBOOK")	
 	
 	SetMainQuest("BuildingInfo")
 	SetQuestTitle("@L_TUTORIAL_CHAPTER_3_RESIDENCE_NAME")
-	SetQuestDescription("@L_TUTORIAL_CHAPTER_3_RESIDENCE_QUESTBOOK",true)
+	SetQuestDescription("@L_TUTORIAL_CHAPTER_3_RESIDENCE_QUESTBOOK", true)
 
-	MsgQuest("#Player",0,"MB_OK","@L_TUTORIAL_CHAPTER_3_RESIDENCE_NAME","@L_TUTORIAL_CHAPTER_3_RESIDENCE_QUESTBOOK")
+	MsgQuest("#Player", 0, "MB_OK", "@L_TUTORIAL_CHAPTER_3_RESIDENCE_NAME", "@L_TUTORIAL_CHAPTER_3_RESIDENCE_QUESTBOOK")
 	ShowTutorialBoxNoWait(100, 690, 450, 135, 1, LEFTLOWER_NOARROW, "@L_TUTORIAL_CHAPTER_3_RESIDENCE_NAME",  "@L_TUTORIAL_CHAPTER_3_RESIDENCE_TASK",  "")
 		
 	SetState("#Player", STATE_CUTSCENE, false)
@@ -46,7 +46,7 @@ end
 function CheckEnd()
 	if (HudGetSelected("MySelection")) then 
 		if (GetID("MySelection") == GetID("#Residence")) then
-			StartQuest("B_BuildingInfo_1b","#Player","",false)	
+			StartQuest("B_BuildingInfo_1b", "#Player", "", false)	
 			ResetQuest()			
 		end
 	end

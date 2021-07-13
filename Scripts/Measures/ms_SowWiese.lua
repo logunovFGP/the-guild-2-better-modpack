@@ -74,11 +74,11 @@ function AIInit()
 	local betrieb = GetData("WorkPlatz")
 	local weights = { 1000, 1000 }
 	
-	if BuildingHasUpgrade(betrieb,720) == true then -- 720 = Honey
-	    weights[1] = 0
+	if BuildingHasUpgrade(betrieb, "Honey") then
+		weights[1] = 0
 	end
-	if BuildingHasUpgrade(betrieb,721) == true then -- 721 = Fruits
-	    weights[2] = 0
+	if BuildingHasUpgrade(betrieb, "Fruits") then
+		weights[2] = 0
 	end
 
 	BuildingGetCity("WorkPlatz","checkTown")

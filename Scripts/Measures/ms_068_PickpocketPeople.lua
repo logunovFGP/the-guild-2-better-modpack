@@ -110,9 +110,9 @@ function Run()
 							CommitAction("pickpocket", "", "", DestAlias)
 							feedback_OverheadComment(DestAlias,
 								"@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)
-							if BuildingHasUpgrade("MyHome", 543) then
-							    if GetState("", STATE_FIGHTING) == false then
-								    ms_068_pickpocketpeople_FastHide()
+							if BuildingHasUpgrade("MyHome", "ShadowCloak") then
+								if GetState("", STATE_FIGHTING) == false then
+									ms_068_pickpocketpeople_FastHide()
 								end
 							else
 							    f_MoveTo("", "MyHome", GL_MOVESPEED_RUN, 0)
