@@ -485,7 +485,7 @@ end
 function SetOfficeImpactList( Office, ... )
 	for i=1,arg.n,1 do
 		local blubb = arg[i]
-		AddObjectDependendImpact("",GetID(Office),blubb,1)
+		AddObjectDependendImpact("", GetID(Office), blubb, 1)
 	end
 end
 
@@ -517,9 +517,8 @@ end
 -- GeneratePrivilegeListLabels
 -- -----------------------
 function GeneratePrivilegeListLabels(... )
-	--local result = {0, 0, 0, 0, 0}
 	local Labels  = {}
-	for k=0,20 do
+	for k=0, 20 do
 		Labels[k] = ""
 	end
 	
@@ -527,17 +526,14 @@ function GeneratePrivilegeListLabels(... )
 	
 	local Counter = 0
 	
-	for i=1,arg.n,1 do
-		for j=1,7 do -- increment if you add new privileges!
+	for i=1, arg.n,1 do
+		for j=1, 7 do -- increment if you add new privileges!
 			if arg[i] == Privileges[j] then
 				Labels[Counter] = "_PRIVILEGE_"..arg[i].."_MESSAGETEXT_+0"
 				Labels[Counter+1] = "$N"
 				Counter = Counter + 2
 			end
 		end
-	
-		--result[i-1] = "_MEASURE_"..arg[i].."_NAME_+0"
-		--result = result.."@L_MEASURE_"..arg[i].."_NAME_+0$N"
 	end
 	-- quick'n dirty
 	return Labels[0], Labels[1], Labels[2], Labels[3], Labels[4], Labels[5], Labels[6], Labels[7], Labels[8], Labels[9], Labels[10], Labels[11], Labels[12], Labels[13], Labels[14], Labels[15], Labels[16], Labels[17], Labels[18], Labels[19], Labels[20]
@@ -559,7 +555,6 @@ end
 -- RecieveMoney 
 -- -----------------------
 function RecieveMoney(ObjectAlias, val, topic)
-
 	CreditMoney(ObjectAlias, val, topic)
 	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t", val)
 	return val
@@ -569,7 +564,6 @@ end
 -- ModifyFavor
 -- -----------------------
 function ModifyFavor(source, dest, val)
-	
 	-- check if the owner has RattleTheChains impact
 	if GetImpactValue(dest,"RattleTheChains") == 1 and val < 0 then
 		val = val / 2
@@ -590,7 +584,6 @@ end
 -- SkillCheck
 -- -----------------------
 function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill, Hidden)
-
 	local TalentValue = GetSkillValue(SimAlias, Skill)*(10-Difficulty)
 	local TalentEnemy = 10
 	
@@ -1076,7 +1069,7 @@ function GainXP(SimAlias, XPAmount)
 	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplikator/5)
 	IncrementXP(SimAlias, SchoeneRundeZahl)
 	if DynastyIsPlayer(SimAlias) then
-		PlaySound3D(SimAlias,"gainxp/gain_xp.ogg",1)
+		PlaySound3D(SimAlias, "gainxp/gain_xp.ogg", 1)
 	end
 end
 

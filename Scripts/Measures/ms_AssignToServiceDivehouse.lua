@@ -168,7 +168,7 @@ function Serve()
 		f_EndUseLocator("","ServePos",GL_STANCE_STAND)
 		if GetLocatorByName("Divehouse","Service"..Locator,"ServePos") then
 			f_BeginUseLocator("","ServePos",GL_STANCE_STAND,true)
-			MoveSetActivity("","")
+			MoveSetActivity("")
 			Sleep(2)
 			CarryObject("","",false)
 			f_EndUseLocator("","ServePos",GL_STANCE_STAND)

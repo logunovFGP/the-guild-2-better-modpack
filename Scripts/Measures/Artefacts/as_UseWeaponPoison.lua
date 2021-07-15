@@ -58,7 +58,7 @@ function Run()
 		ModifyHP("Destination",-(ActualHP/3),true)
 	
 		CarryObject("","",false)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 
 		SetMeasureRepeat(TimeOut)
 		AddImpact("Destination","poisoned",1,duration)

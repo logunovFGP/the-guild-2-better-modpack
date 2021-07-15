@@ -63,8 +63,7 @@ end
 
 function CleanUp()
 
-    GfxDetachAllObjects()
-	--MoveSetActivity("","")
+        GfxDetachAllObjects()
 	StopAnimation("")
 	StopAction("kurios", "")
 	RemoveProperty("","Signal")

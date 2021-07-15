@@ -255,7 +255,7 @@ function CleanUp()
 	CarryObject("","",false)
 	CarryObject("","",true)
 	MoveSetStance("",GL_STANCE_STAND)
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	StopProduction("")
 	
 	if IsDynastySim("") then

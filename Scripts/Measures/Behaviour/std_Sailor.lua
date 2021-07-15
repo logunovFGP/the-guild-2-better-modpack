@@ -29,7 +29,7 @@ function Run()
 	  CarryObject("","Handheld_Device/ANIM_Cloth.nif",false)
 	end
 	f_MoveTo("","ZielMarkt")
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	Sleep(2)
   CarryObject("","",false)
 	f_MoveTo("","HomeHafen",GL_MOVESPEED_WALK)

@@ -104,7 +104,7 @@ function MoveHome()
 		if Rand(100)>97 then
 			diseases_Sprain("",true)
 		end
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Sleep(9)
 		--PlayAnimation("","cogitate")
 		MoveSetActivity("","drunk")
@@ -182,7 +182,7 @@ end
 
 function CleanUp()
 	StopAction("bard","")
-	MoveSetActivity("","")
+	MoveSetActivity("")
 end
 
 

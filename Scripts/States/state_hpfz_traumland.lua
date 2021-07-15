@@ -48,7 +48,7 @@ function CleanUp()
 		if (currenthealth < targethealth) then
 			ModifyHP("", targethealth-currenthealth)
 		end				
-		MoveSetActivity("","")
+		MoveSetActivity("")
 	    if SimGetGender("") == GL_GENDER_MALE then
 		    PlaySound3DVariation("", "CharacterFX/gaehn/male_gaehn+0.ogg", 1)
 	    else

@@ -100,6 +100,8 @@ _General_
 - The builders won't work 'in the air' far away from the building but stand more closely to it. They also won't stuck anymore during their work due to difficult pathfinding.
 - Office session could get stuck forever.
 - If no deciders where available during office sessions the town clerk would throw the lot - in the seperate room. Now one of the guards in the meeting room will do it instead.
+- During trial if you only got a warning you would still complaining about that judgement.
+- During trial if you confessed your crimes you might still say that you were innocent.
 - The discriptions of towers now state that they work against land units aswell.
 - During production of gathered items would remain in the inventory if you assigned them a non-gathering task. They will now unload their pockets if they are inside your building when assigning a production.
 - During the measure 'Flirt' no soundfiles of the dialogue have been played.
@@ -107,6 +109,8 @@ _General_
 - Fixed a bug with the removal of pamphlets.
 - Thugs no longer are effected by quacks, priests etc.
 - Building- and upgrading times have been fixed.
+- When calling the guards, only guards and no 'bailiffs' would come and check the location.
+- Patrolling thugs got interrupted too easily.
 - Fixed several map issues
 
 _Patron_
@@ -124,6 +128,7 @@ _Scholar_
 - 'Sorcerer documents' didn't give XP.
 - 'Toad excrement' could be used multiple times against the same target.
 - 'Toad excrement' was no crime in the database.
+- The 'Certificate of Tradesmenship' didn't work in every workshop.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
@@ -162,7 +167,7 @@ _General_
 - Improved and added new character faces (men, women and children).
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
 - The choice of hairs, beards, hats and helmets for characters has been completely reworked.
-- The variance of music pieces has been boosted massivly. Also many songs from the Original Europa 1400: The Guild and a few pieces from The Guild 3 have been added to the game!
+- The variance of music pieces has been boosted massivly. Re-used many songs from the Original Europa 1400: The Guild soundtrack!
 - Trade routes have been reworked completely.
 - In addition two new options for workshop-handling have been added that allow for easier supply and sale.
 - Pregnant women are no longer tied to their bed.
@@ -174,6 +179,8 @@ _General_
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
+- Multiple measures now instantly open the important persons GUI and other windows for target selection.
+- You can now talk to other characters to improve relationships / courting progress and maybe even get (fake!) evidence against random enemies.
 
 _Patron_
 -

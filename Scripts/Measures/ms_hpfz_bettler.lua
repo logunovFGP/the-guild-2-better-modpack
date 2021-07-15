@@ -333,6 +333,6 @@ function aidecide()
 end
 
 function CleanUp()
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	FadeOutFE("","sad",1.0,-1)
 end

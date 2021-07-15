@@ -172,11 +172,11 @@ function CleanUp()
 	
 	DestroyCutscene("cutscene")
 	ReleaseAvoidanceGroup("")
-	MoveSetActivity("", "")
+	MoveSetActivity("")
 	StopAnimation("")
 		
 	if AliasExists("Destination") then
-		MoveSetActivity("Destination", "")
+		MoveSetActivity("Destination")
 		SimLock("Destination", 0.25)
 	end		
 end

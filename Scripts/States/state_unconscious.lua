@@ -81,7 +81,7 @@ function CleanUp()
 			ModifyHP("", targethealth-currenthealth)
 		end				
 		--PlayAnimation("","crouch_up")
-		MoveSetActivity("","")
+		MoveSetActivity("")
 	end
 end
 

@@ -98,6 +98,8 @@ _Allgemein_
 - Die Bauarbeiter hämmern nun nicht mehr in der Luft und bleiben auch nicht mehr aufgrund schwieriger Wegfindung hängen.
 - Amtssitzungen konnten hängen bleiben.
 - Waren keine Wahlberechtigten anwesend, leitete der Stadtschreiber die Sitzung - vom Vorraum aus. Nun wird dies eine der Rathauswachen übernehmen.
+- Wer beim Gericht nur eine mündliche Verwarnung hält, beschwerte sich trotzdem über das Urteil.
+- Wer beim Gericht seine Taten gesteht, sagte unter Umständen trotzdem "Ich bin unschuldig".
 - Türme weisen in ihrer Beschreibung nun darauf hin, dass sie auch gegen Landeinheiten eingesetzt werden können.
 - Es konnte passieren, dass gesammelte Items nicht abgeladen wurden, wenn den Sammlern eine neue Aufgabe gegeben wurde. Nun wird das Inventar geleert, wenn eine neue Production gestartet wird und sich der Charakter im Gebäude aufhält.
 - Bei der Maßnahme 'Jemanden umgarnen' wurden keine Sprachdateien abgespielt.
@@ -105,6 +107,8 @@ _Allgemein_
 - Ein Fehler beim Entfernen von Pamphleten wurde behoben.
 - Schergen werden nicht mehr von Quacksalbern, dem Schwarzen Brett, Priestern etc. beeinflusst.
 - Bau- und Upgradezeiten von Gebäuden korrigiert.
+- Rief man die Wachen, kamen nur Gardisten und keine Stadtbüttel, um nach dem Rechten zu sehen.
+- Patrouillen von Schergen wurden zu leicht unterbrochen.
 - Diverse Map-Fehler korrigiert.
 
 
@@ -124,6 +128,7 @@ _Gelehrter_
 - Bei 'Hexerdokumenten' wurden keine EP vergeben.
 - 'Unkendunk' konnte mehrfach gegen dasselbe Ziel eingesetzt werden.
 - Es war nicht möglich, 'Unkendunk' als Verbrechen wahrzunehmen.
+- Die 'Handwerksurkunde' funktionierte in einigen Betrieben nicht.
 
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
@@ -168,7 +173,7 @@ _Allgemein_
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Die Zuordnung von Frisuren, Bärten und Kopfbedeckungen wurde vollständig überarbeitet. 
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
-  abgespielt wurden. Darüber hinaus wurden viele Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' und eine kleine Auswahl aus "Die Gilde 3" eingebaut!
+  abgespielt wurden. Darüber hinaus wurden viele Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
 - Die automatischen Handelsrouten wurden komplett überarbeitet
 - Zusätzlich gibt es nun zwei weitere Optionen, um Betriebe noch leichter zu versorgen oder Waren zu verkaufen.
 - Schwangere sind nicht länger an ihr Bett gefesselt.
@@ -181,6 +186,8 @@ _Allgemein_
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 - Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod und Zusammenschnitten wurde hinzugefügt.
 - Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.
+- Mehrere Maßnahmen öffnen nun direkt die entsprechenden Menüs wie 'Wichtige Personen', um ein Ziel auszuwählen (Mehr Komfort bei der Bedienung!)
+- Man kann nun mit beliebigen Charakteren reden, um ggf. die Gunst oder den Werbungsfortschritt zu erhöhen oder an gefälschte Beweise zu kommen.
 
 _Patron_
 -

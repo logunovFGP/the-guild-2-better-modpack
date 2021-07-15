@@ -69,7 +69,7 @@ end
 
 
 function CleanUp()
-	MoveSetActivity("","")
+	MoveSetActivity("")
 
 	SquadRemoveMember("", true)
 	if AliasExists("Squad") then

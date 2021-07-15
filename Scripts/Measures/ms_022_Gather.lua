@@ -113,7 +113,7 @@ function ReturnItems(SimAlias, BuildingAlias)
 		end
 	end
 
-	MoveSetActivity(SimAlias,"")
+	MoveSetActivity(SimAlias)
 	Sleep(2)
 	CarryObject(SimAlias,"", false)
 

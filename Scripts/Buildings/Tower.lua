@@ -2,10 +2,11 @@ function CheckPosition()
 	if not AliasExists("Dynasty") then
 		return nil
 	end
+
 	local	MaxCount	= GetNobilityTitle("Dynasty", false) * 0.5
 	local	Have		= DynastyGetBuildingCount("Dynasty", GL_BUILDING_CLASS_MILITARY, -1)
 	
-	if MaxCount >4 then
+	if MaxCount > 4 then
 		MaxCount = 4
 	end
 	
@@ -25,10 +26,10 @@ function CheckPosition()
 		end
 	end
 
-	local	Count = DynastyGetBuildingCount2("Dynasty")
+	local Count = DynastyGetBuildingCount2("Dynasty")
 	local Type
 	
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if DynastyGetBuilding2("Dynasty", l, "Check") then
 			Type = BuildingGetClass("Check")
 			if Type == GL_BUILDING_CLASS_WORKSHOP or Type == GL_BUILDING_CLASS_LIVINGROOM then
@@ -61,7 +62,7 @@ function PingHour()
 	local	Count = DynastyGetBuildingCount2("Dynasty")
 	local Type
 	
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if DynastyGetBuilding2("Dynasty", l, "Check") then
 			Type = BuildingGetClass("Check")
 			if Type == GL_BUILDING_CLASS_WORKSHOP or Type == GL_BUILDING_CLASS_LIVINGROOM then

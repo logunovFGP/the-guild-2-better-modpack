@@ -82,7 +82,7 @@ function Run()
 		end
 		
 		f_MoveTo("", "Prison", GL_MOVESPEED_WALK, "MoveResult")
-		ActivityTime = MoveSetActivity("Destination","")
+		ActivityTime = MoveSetActivity("Destination")
 		Sleep(ActivityTime)
 		
 	else
@@ -200,7 +200,7 @@ function CleanUp()
 			end
 			ReleaseLocator("Destination","Chairpos")
 		end
-		MoveSetActivity("Destination","")
+		MoveSetActivity("Destination")
 		SetState("Destination", STATE_CAPTURED, false)
 	end
 end

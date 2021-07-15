@@ -9,6 +9,6 @@ function Run()
 end
 
 function CleanUp()
-	MoveSetActivity("","")
+	MoveSetActivity("")
 end
 

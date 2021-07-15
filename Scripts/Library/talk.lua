@@ -20,9 +20,9 @@ function ThreatCharacter(Rhetoric)
 
 	local label = "@L_INTRIGUE_THREAT_CHARACTER"
 	
-	if (Rhetoric < 3) then
+	if (Rhetoric < 4) then
 		label = label.."_WEAK_RHETORIC"
-	elseif (Rhetoric < 6) then
+	elseif (Rhetoric < 7) then
 		label = label.."_NORMAL_RHETORIC"
 	else
 		label = label.."_GOOD_RHETORIC"
@@ -39,9 +39,9 @@ function AskLiaison(Rhetoric, Gender)
 
 	local label = "@L_LIAISON_QUESTION"
 	
-	if (Rhetoric < 3) then
+	if (Rhetoric < 4) then
 		label = label.."_WEAK_RHETORIC"
-	elseif (Rhetoric < 6) then
+	elseif (Rhetoric < 7) then
 		label = label.."_NORMAL_RHETORIC"
 	else
 		label = label.."_GOOD_RHETORIC"
@@ -70,9 +70,9 @@ function AnswerLiaison(Rhetoric, Gender)
 		label = label.."_SUCCESS_FEMALE"
 	end
 	
-	if (Rhetoric < 3) then
+	if (Rhetoric < 4) then
 		label = label.."_WEAK_RHETORIC"
-	elseif (Rhetoric < 6) then
+	elseif (Rhetoric < 7) then
 		label = label.."_NORMAL_RHETORIC"
 	else
 		label = label.."_GOOD_RHETORIC"

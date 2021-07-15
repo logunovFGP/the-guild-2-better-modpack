@@ -31,11 +31,11 @@ function rundgang()
 			end
 		end
 	end
-    MoveSetActivity("","")
+    MoveSetActivity("")
 end
 
 function CleanUp()
 	StopAction("bard","")
-    CarryObject("","", false)
-	MoveSetActivity("","")
+	CarryObject("","", false)
+	MoveSetActivity("")
 end

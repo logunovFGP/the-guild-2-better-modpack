@@ -109,6 +109,6 @@ function CleanUp()
 	CarryObject("","",false)
 	CarryObject("","",true)
 	MoveSetStance("",GL_STANCE_STAND)
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	f_EndUseLocator("","ChiefPos",GL_STACE_STAND)
 end

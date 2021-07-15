@@ -55,9 +55,9 @@ function CohabitWithCharacter(Owner, ChildCount)
 end
 
 -- ------------------
--- CourttingSuccess
+-- CourtingSuccess
 -- ------------------
-function CourttingSuccess(Owner, Difficulty, Ceremony)
+function CourtingSuccess(Owner, Difficulty, Ceremony)
 	if AliasExists(Owner) then
 		if Difficulty < 4 then
 			if Ceremony == 1 then

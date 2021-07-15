@@ -70,7 +70,7 @@ end
 function CleanUp()
 	if HasProperty("","aborted") and GetProperty("","aborted") == 0 then
 		Sleep(1)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Unmount("")
 		SetState("", STATE_RIDING, false)
 		local refunds = 0.25 * GetDistance("","Destination")

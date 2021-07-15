@@ -77,7 +77,7 @@ function Run()
 				return
 			end		
 		end
-		ActivityTime = MoveSetActivity("Destination","")
+		ActivityTime = MoveSetActivity("Destination")
 		Sleep(ActivityTime)
 		f_MoveTo("", "Prison", GL_MOVESPEED_WALK, "MoveResult")
 	else
@@ -212,7 +212,7 @@ function CleanUp()
 	end
 	StopAnimation("")
 	if AliasExists("Destination") then
-		MoveSetActivity("Destination","")
+		MoveSetActivity("Destination")
 		StopAnimation("Destination")
 		if HasData("WasImprisoned") then
 			SetState("Destination",STATE_IMPRISONED,true)

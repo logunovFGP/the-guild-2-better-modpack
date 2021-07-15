@@ -191,7 +191,7 @@ function Hijack()
 	SetData("VictimThere",1)
 	SetState("Victim",STATE_DUEL,false)
 	SetState("Victim", STATE_HIJACKED, true)
-	ActivityTime = MoveSetActivity("","")
+	ActivityTime = MoveSetActivity("")
 	Sleep(1.5)
 	CarryObject("","",false)
 	
@@ -221,7 +221,7 @@ function Captured()
 end
 
 function CleanUp()
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	if GetID("")==GetProperty("Victim","LeaderID") then
 		RemoveProperty("Victim","LeaderID")
 	end

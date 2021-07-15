@@ -44,7 +44,7 @@ function Run()
 	end
 
 	if GetImpactValue("", "Sickness") < 1 then
-		MoveSetActivity("","")
+		MoveSetActivity("")
 	end	
 	
 	local DoNothing = GetProperty("", "_DO_NOTHING_TIME")
@@ -210,14 +210,14 @@ function Run()
 			if time >= 8 and time <= 18 then
 				if Rand(2) == 0 then
 			  	idlelib_BuySomethingAtTheMarket(1)
-					MoveSetActivity("","")
+					MoveSetActivity("")
 					CarryObject("","",false)
 			  else
 			  	idlelib_CheckInsideStore()
 				end
 			else
 			  idlelib_BuySomethingAtTheMarket(1)
-				MoveSetActivity("","")
+				MoveSetActivity("")
 				CarryObject("","",false)
 			end
 			return
@@ -233,14 +233,14 @@ function Run()
 			if time >= 8 and time <= 18 then
 				if Rand(3) == 0 then
 			  	idlelib_BuySomethingAtTheMarket(2)
-					MoveSetActivity("","")
+					MoveSetActivity("")
 					CarryObject("","",false)
 			  else
 			    idlelib_CheckInsideStore()
 				end
 			else
 			  idlelib_BuySomethingAtTheMarket(2)
-				MoveSetActivity("","")
+				MoveSetActivity("")
 				CarryObject("","",false)
 			end
 			return
@@ -493,7 +493,7 @@ function CleanUp()
 	StopAnimation("")
 	MoveSetStance("",GL_STANCE_STAND)
 	if not (GetImpactValue("","Sickness")>0) then
-		MoveSetActivity("","")
+		MoveSetActivity("")
 	end
 	CarryObject("","",true)
 	CarryObject("","",false)

@@ -499,7 +499,7 @@ function ResetWorkers(BldAlias)
 					diseases_Blackdeath("Worker", false)
 					diseases_Fracture("Worker", false)
 					diseases_Caries("Worker", false)
-					MoveSetActivity("","")
+					MoveSetActivity("")
 				end
 				
 				SetProperty("Worker", "ResetWorker", 1)

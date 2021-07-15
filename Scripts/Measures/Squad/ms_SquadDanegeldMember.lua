@@ -255,7 +255,7 @@ end
 function CleanUp()
 	RemoveProperty("", "DanegeldReady")
 	StopAnimation("")
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	if not HasProperty("","DontLeave") then
 		SquadRemoveMember("", true)
 		if AliasExists("Squad") then

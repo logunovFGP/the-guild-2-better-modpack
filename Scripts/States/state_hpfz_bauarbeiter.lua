@@ -60,7 +60,7 @@ function Run()
 		end
 	    AlignTo("",ArbeitsPlatz)
 		Sleep(0.7)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Sleep(2)
         CarryObject("","",false)	
 	end

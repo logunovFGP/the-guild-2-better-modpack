@@ -365,8 +365,8 @@ function Run()
 			 	SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
 			 	SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
 			else
-				MoveSetActivity("SickSim0","")
-				AddImpact("SickSim0","Resist",1,6)
+				MoveSetActivity("SickSim0")
+				AddImpact("SickSim0", "Resist", 1, 6)
 			end
 			if HasProperty("SickSim0", "WaitingForTreatment") then
 				RemoveProperty("SickSim0", "WaitingForTreatment")

@@ -13,7 +13,6 @@ function Run()
 		
 	-- Get the court lover and call it "Destination" because the older version of the measure worked with a selection
 	if not SimGetCourtLover("", "Destination") then
-		StopMeasure()
 		return
 	end
 	
@@ -140,8 +139,8 @@ function Run()
 			end
 			
 			local Difficulty = (GetProperty("Destination", "CourtDiff") / 2)
-			xp_CourttingSuccess("Owner", Difficulty)
-			xp_CourttingSuccess("Destination", Difficulty)
+			xp_CourtingSuccess("Owner", Difficulty)
+			xp_CourtingSuccess("Destination", Difficulty)
 			RemoveProperty("Destination", "CourtDiff")
 	
 			MeasureSetNotRestartable()
@@ -260,8 +259,8 @@ function Run()
 			end
 			
 			local Difficulty = GetProperty("Destination", "CourtDiff")
-			xp_CourttingSuccess("Owner", Difficulty, 1)
-			xp_CourttingSuccess("Destination", Difficulty, 1)
+			xp_CourtingSuccess("Owner", Difficulty, 1)
+			xp_CourtingSuccess("Destination", Difficulty, 1)
 			RemoveProperty("Destination", "CourtDiff")
 	
 			MeasureSetNotRestartable()

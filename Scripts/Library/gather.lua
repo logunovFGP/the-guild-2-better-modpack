@@ -646,7 +646,7 @@ end
 function Charcoal_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
 
 	if (Finish == 1) then
-	    MoveSetActivity(SimAlias,"")
+	    MoveSetActivity(SimAlias)
 		CarryObject(SimAlias,"", false)
 	
 		if Removed > 0 then

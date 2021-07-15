@@ -279,7 +279,7 @@ function MoveBakedBread()
 		Sleep(1.6)
 		CarryObject("","",true)
 		Sleep(Time-1.6)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 	end
 	CarryObject("","",true)
 end
@@ -303,14 +303,14 @@ function CheckBreads()
 	if GetLocatorByName("WorkBuilding","Peel", "PeelPos") then
 		f_MoveTo("","PeelPos")
 		Sleep(2.9)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Sleep(1.9)
 --		ShowObject("", "Bread_pusher")
 		CarryObject("","",false)
 		PlayAnimation("","cogitate")
 	end
 	CarryObject("","",false)
-	MoveSetActivity("","")
+	MoveSetActivity("")
 end
 
 
@@ -334,7 +334,7 @@ function PutBreadsOutOfOven()
 	if GetLocatorByName("WorkBuilding", "Peel", "PeelPos") then
 		f_MoveTo("","PeelPos")
 		Sleep(1)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Sleep(1.9)
 --		ShowObject("", "Bread_pusher")
 		CarryObject("","",false)

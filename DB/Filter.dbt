@@ -302,9 +302,6 @@ Data:
 419   "CanUseStaffOfAesculap"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(StaffOfAesculap)>0)AND NOT(Object.GetState(fighting)))"   |
 420   "IsDamagedHostileShip"   "__F(NOT(Object.BelongsToMe())AND NOT(Object.IsType(4))AND(Object.CompareHPRelative()<30))"   |
 421   "BelongsToMeRealShip"   "__F((Object.BelongsToMe())AND NOT(Object.IsType(4)))"   |
-422   "QuestCanDive"   "__F((Object.CanBeControlled())AND (Object.GetHome())AND (Object.Property.QuestCanDive==1))"   |
-423   "QuestCanBuildPestMask"   "__F((Object.Property.QuestCanBuildPestMask==1)AND (Object.GetInsideBuilding())AND (Object.BelongsToMe())AND (Object.IsType(37)))"   |
-424   "QuestCanusePestMask"   "__F((Object.Property.QuestCanBuildUseMask==1))"   |
 425   "CanUseStinkBomb"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(StinkBomb)>0)AND NOT(Object.GetState(fighting)))"   |
 427   "IsMyCocotte"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND(Object.MinAge(16))AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(36)))"   |
 428   "CanUseCocotte"   "__F((Object.CanBeControlled())AND (Object.GetObjectsByRadius(Sim)==300)AND (Object.GetProfession()== 30)AND(Object.Property.CocotteProvidesLove == 1)AND(Object.Property.CocotteHasClient == 0)AND(Object.HasDifferentSex()))"   |

@@ -61,7 +61,7 @@ function Run()
 		ms_048_hireemployee_CheckLeibwache()
 	end	
 	
-	MoveSetActivity("", "")
+	MoveSetActivity("")
 	chr_CalculateBuildingBonus("", "Destination", "hire")
 	CreateScriptcall( "GiveBack", 0.001, "Measures/ms_048_HireEmployee.lua", "GiveXPBack", "", "Destination", XP) -- use scriptcall, because this function is stopped after SimHire	
 

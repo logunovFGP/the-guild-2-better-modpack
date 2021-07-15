@@ -240,7 +240,7 @@ function ReturnToBase()
 				RemoveItems("",ItemId, Found, INVENTORY_STD) --4
 				RemoveItems("",ItemId, Found, INVENTORY_STD) --5
 				
-				TransitionTime = MoveSetActivity("","")
+				TransitionTime = MoveSetActivity("")
 				Sleep(2)
 				CarryObject("","",false)
 				Sleep(TransitionTime - 2)
@@ -255,7 +255,7 @@ function ReturnToBase()
 			
 		end
 	end
-	TransitionTime = MoveSetActivity("","")
+	TransitionTime = MoveSetActivity("")
 	Sleep(2)
 	CarryObject("","",false)
 	Sleep(TransitionTime - 2)
@@ -445,7 +445,7 @@ function CleanUp()
 	GfxDetachAllObjects()
 	SetState("", STATE_HIDDEN, false)
 	StopAnimation("")
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	if not HasProperty("","DontLeave") then
 		SquadRemoveMember("", true)
 		if AliasExists("Squad") then

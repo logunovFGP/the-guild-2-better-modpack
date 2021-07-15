@@ -486,23 +486,23 @@ function ImportantPersonsGather_ProcessMember()
 			local idx = 0
 			local PeopleTbl = {}	   
 
-			if CopyAliasFromCutscene("accuser","cutscene","sim") then
+			if CopyAliasFromCutscene("accuser", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end
-			if CopyAliasFromCutscene("accused","cutscene","sim") then
+			if CopyAliasFromCutscene("accused", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end
-			if CopyAliasFromCutscene("judge","cutscene","sim") then
+			if CopyAliasFromCutscene("judge", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end
-			if CopyAliasFromCutscene("assessor1","cutscene","sim") then
+			if CopyAliasFromCutscene("assessor1", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end
-			if CopyAliasFromCutscene("assessor2","cutscene","sim") then
+			if CopyAliasFromCutscene("assessor2", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end
@@ -535,13 +535,13 @@ function ImportantPersonsGather_DuellGegner()
 
 	GetDynasty("", "dynasty")
 	local Members = DynastyGetMemberCount("dynasty")
-	if (Members>=1) and DynastyGetMember("dynasty",0,"member")~=-1 then
+	if (Members>=1) and DynastyGetMember("dynasty", 0, "member")~=-1 then
 		PSimID0 = GetID("member")
 	end
-	if (Members>=2) and DynastyGetMember("dynasty",1,"member")~=-1 then
+	if (Members>=2) and DynastyGetMember("dynasty", 1, "member")~=-1 then
 		PSimID1 = GetID("member")
 	end
-	if (Members>=3) and DynastyGetMember("dynasty",2,"member")~=-1 then
+	if (Members>=3) and DynastyGetMember("dynasty", 2, "member")~=-1 then
 		PSimID2 = GetID("member")
 	end
 
@@ -554,11 +554,11 @@ function ImportantPersonsGather_DuellGegner()
 			local idx = 0
 			local PeopleTbl = {}	   
 
-			if CopyAliasFromCutscene("challenger","cutscene","sim") then
+			if CopyAliasFromCutscene("challenger", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end
-			if CopyAliasFromCutscene("challenged","cutscene","sim") then
+			if CopyAliasFromCutscene("challenged", "cutscene", "sim") then
 				idx = idx + 1 
 				PeopleTbl[idx] = GetID("sim")
 			end

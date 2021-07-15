@@ -110,7 +110,6 @@ end
 function CleanUp()
 	CarryObject("", "", false)
 	CarryObject("","",true)
-	--MoveSetActivity("","")
 	StopAnimation("")
 	StopAction("beg", "")
 end

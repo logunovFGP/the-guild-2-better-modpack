@@ -54,7 +54,7 @@ function Run()
 				end
 			end
 			if HasProperty("","Executed") then
-				MoveSetActivity("","")
+				MoveSetActivity("")
 			end
 		end
 		

@@ -8,7 +8,6 @@ Offen:
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.
 - Die Totengräber-Maßnahme "Gebäude verfluchen" funktionierte nicht.
-- Der Kamm funktionierte nicht.
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
 - Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
@@ -19,16 +18,12 @@ Offen:
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
 - Türme haben nicht-aggressive Schiffe angegriffen.
-- Die Handwerksurkunde konnte in einigen Betrieben nicht eingesetzt werden.
-- Wer beim Gericht nur eine mündliche Verwarnung hält, beschwerte sich trotzdem über das Urteil.
-- Wer beim Gericht seine Taten gesteht, sagte unter Umständen trotzdem "Ich bin unschuldig".
 - Nachrichten über Liebesdienste werden nicht länger für Angestellte und Familienmitglieder außerhalb
   der Spielergruppe verschickt, dasselbe gilt für die "Ihr seid erwacht"-Meldung.
 - Die Ausbildung von Kindern sollte nun nicht länger unterbrochen werden.
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
 - Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
-- Die Priorität von Patrouillen wurde drastisch erhöht, damit diese seltener unterbrochen werden.
-- Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
+ Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
 - Sollte beim Tanzen in der Taverne die Tanzposition blockiert sein, so wird die Maßnahme abgebrochen. Trotzdem wurde ein Cooldown gesetzt
   und das Geld abgezogen. Dies passiert nun erst kurz vor Beginn des Tanzes.
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
@@ -38,7 +33,6 @@ Offen:
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
 
 - Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.
-- Es gab mehrere Probleme mit den Amtssitzungen, die behoben werden konnten.
 - Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 
   bewachten, Schergen, die königliche Garde, Kinder und Sims, die einen Kreuzzug ausrufen 
   (wodurch die KI diese Maßnahme ständig neustartete)
@@ -99,7 +93,6 @@ Offen:
 Kritische Balance-Änderungen:
 - Liebesdienst war ohne Cooldown nutzbar.
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
-- Geldstrafen vor Gericht erhöht.
 - Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.
 - Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.
 - Unter seltenen Umständen, konnte es zu einem Animationsfehler beim gleichzeitigen Einsatz mehrerer Steinkreisel kommen.

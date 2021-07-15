@@ -4,7 +4,7 @@
 -- attention: this function call is unscheduled
 --
 function OnLevelUp()
-	-- there different models for residences, choose a random model each time
+	-- there's different models for residences, choose a random model each time
 	
 	local Check 
 	local Proto
@@ -16,6 +16,7 @@ function OnLevelUp()
 		else
 			Proto = 681
 		end	
+
 	elseif CurrentLevel == 2 then -- low
 		Check = Rand(5)
 		if Check == 0 then
@@ -29,6 +30,7 @@ function OnLevelUp()
 		else
 			Proto = 682
 		end
+
 	elseif CurrentLevel == 3 then -- lowmed
 		Check = Rand(3)
 		if Check == 0 then
@@ -38,6 +40,7 @@ function OnLevelUp()
 		else
 			Proto = 659
 		end
+
 	elseif CurrentLevel == 4 then -- med
 		Check = Rand(3)
 		if Check == 0 then

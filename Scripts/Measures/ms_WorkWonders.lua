@@ -50,8 +50,8 @@ function Run()
 				diseases_Blackdeath("Sim"..i,false)
 				diseases_Fracture("Sim"..i,false)
 				diseases_Caries("Sim"..i,false)
-				MoveSetActivity("Sim"..i,"")
-				if GetCurrentMeasureName("Sim"..i)=="idle" then
+				MoveSetActivity("Sim"..i)
+				if GetCurrentMeasureName("Sim"..i) == "idle" then
 					StopMeasure("Sim"..i)
 				end
 			end

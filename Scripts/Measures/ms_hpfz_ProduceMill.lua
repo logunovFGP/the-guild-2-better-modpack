@@ -35,7 +35,7 @@ function Brunnen()
         CarryObject("","",false)
         CarryObject("","",true)
         TransferItems("","WorkBuilding")
-        MoveSetActivity("","")
+        MoveSetActivity("")
 		Sleep(2)
     end
 
@@ -75,10 +75,10 @@ function Muehle()
 		else
 		    MsgSay("","_HPFZ_PRODUCEMILL_SPRUCH_+3")
 		end
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Sleep(2)
         CarryObject("","",false)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		if i < 6 then
 		    if i > 1 then
 			    GfxDetachObject("mehlsack"..(i-1))
@@ -99,17 +99,18 @@ function Muehle()
 end
 
 function CleanUp()
-  local check = GetData("Cleaner")
-  if check == "Muehle" then
-	GfxDetachAllObjects()
-	if GetState("",39) == true then
-        SimBeamMeUp("","WorkBuilding",false)
-        SetState("", STATE_INVISIBLE, false)
+	local check = GetData("Cleaner")
+	if check == "Muehle" then
+		GfxDetachAllObjects()
+		if GetState("", 39) == true then
+			SimBeamMeUp("", "WorkBuilding", false)
+			SetState("", STATE_INVISIBLE, false)
+		end
+		RemoveAlias("GehPunkt")
 	end
-	RemoveAlias("GehPunkt")
-  end
-  	MoveSetActivity("","")
-    CarryObject("","",false)
-    CarryObject("","",true)
+	
+	MoveSetActivity("")
+	CarryObject("", "", false)
+	CarryObject("", "", true)
 end
 

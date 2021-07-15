@@ -89,7 +89,7 @@ function Run()
 				return
 			end
 		end
-		MoveSetActivity("Destination","")
+		MoveSetActivity("Destination")
 		if not GetInsideBuilding("Destination","CurrentBuilding") then
 			StopMeasure()
 		end
@@ -124,7 +124,7 @@ function Run()
 			
 		f_MoveTo("","Destination",GL_MOVESPEED_WALK,100)
 		BattleWeaponStore("")
-		MoveSetActivity("Destination","")
+		MoveSetActivity("Destination")
 		Sleep(3)
 	
 		SetProperty("Destination", "penalty_city", GetID("CityAlias"))
@@ -156,7 +156,6 @@ function Run()
 		
 		f_MoveTo("","Destination",GL_MOVESPEED_WALK,300)
 		--BattleWeaponStore("")
-		--MoveSetActivity("Destination","")
 		CommitAction("pillory","Destination","Destination")
 		SetData("Action_Started", "Pillory")
 		SetProperty("Destination","NoEscape",1)
@@ -201,7 +200,6 @@ function Run()
 		PlaySound3DVariation("Destination","combat/pain",1)
 		SetProperty("Destination","Executed",1)
 		--Time = PlayAnimationNoWait("Destination","execute_out")
---		Time = MoveSetActivity("","")
 --		MeasureSetNotRestartable()
 		
 		Sleep(0.5)

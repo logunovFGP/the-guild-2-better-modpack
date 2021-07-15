@@ -66,7 +66,7 @@ function Run()
 	PenaltyFinish("Penalty")
 	--MoveSetStance("",GL_STANCE_STAND)
 	StopAction("pillory", "")
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	Sleep(AnimTime)
 	feedback_MessageCharacter("",
 			"@L_PENALTY_FREE_HEAD_+0",
@@ -80,7 +80,7 @@ end
 
 function CleanUp()
 	SetState("", STATE_CUTSCENE, false)
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	ResetProcessProgress("")
 	StopAction("pillory", "")
 end

@@ -210,7 +210,7 @@ function CleanUp()
 		end
 	end
 	
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	CarryObject("","",false)
 end
 

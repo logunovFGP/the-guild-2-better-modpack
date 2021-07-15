@@ -3,12 +3,11 @@ end
 
 
 function OnLevelUp()
-	
 end
 
 
 function Setup()
-  SetState("",  STATE_MOVING_BUILDING, true)
+  SetState("", STATE_MOVING_BUILDING, true)
 	-- War Chooser
 	if GetData("#WarChooser") == nil then
 		SetData("#WarChooser", GetID(""))

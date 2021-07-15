@@ -162,7 +162,7 @@ function DecideYou()
 		end
 	end
 	
-	MoveSetActivity("RandWorker", "")
+	MoveSetActivity("RandWorker")
 	SimGetWorkingPlace("RandWorker", "workbuilding")
 	chr_CalculateBuildingBonus("RandWorker", "", "hire")
 

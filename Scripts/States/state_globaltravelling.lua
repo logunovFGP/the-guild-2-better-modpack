@@ -77,7 +77,7 @@ function Run()
 	else
 		f_WeakMoveTo("","Position",GL_MOVESPEED_WALK,distance)
 	end
-	MoveSetActivity("","")
+	MoveSetActivity("")
 	
 	local x,y,z =  PositionGetVector("Position")
 	if HasProperty("", "officer") and HasProperty("", "captain") then

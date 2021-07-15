@@ -70,9 +70,7 @@ end
 function CleanUp()
 
 	GfxDetachAllObjects()
-	--MoveSetActivity("","")
 	StopAnimation("")
-
 end
 
 function GetOSHData(MeasureID)

@@ -210,14 +210,14 @@ end
 function BlockMe()
 	SetData("TLBlocked"..GetID("VictimSim"), 0)
 	local Fcount = 0
-	while GetData("TLBlocked"..GetID("VictimSim"))~=1 do
+	while GetData("TLBlocked"..GetID("VictimSim")) ~= 1 do
 		Fcount = Fcount +1
 		if Fcount > 250 then
-			SetData("TLBlocked"..GetID("VictimSim"),1)
+			SetData("TLBlocked"..GetID("VictimSim"), 1)
 		end
 		Sleep(0.5)
 	end
-	MoveSetActivity("VictimSim","")
+	MoveSetActivity("VictimSim")
 end
 
 function CleanUp()

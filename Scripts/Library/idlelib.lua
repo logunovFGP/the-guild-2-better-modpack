@@ -447,11 +447,11 @@ function GetCorn()
 				Sleep(2)
 				CarryObject("","Handheld_Device/ANIM_Bag.nif",false)	
 				if not f_MoveTo("", "HomeBuilding") then
-					MoveSetActivity("","")
+					MoveSetActivity("")
 				    CarryObject("","",false)
 					return
 				end
-				MoveSetActivity("","")
+				MoveSetActivity("")
 				CarryObject("","",false)
 			else
 				if not f_MoveTo("", "HomeBuilding") then
@@ -554,11 +554,11 @@ function BuySomethingAtTheMarket(art)
 				PlaySound3DVariation("","Effects/digging_box",1)
 				CarryObject("",Ware,false)	
 				if not f_MoveTo("", "HomeBuilding") then
-				    MoveSetActivity("","")
+				    MoveSetActivity("")
 				    CarryObject("","",false)
 					return
 				end
-				MoveSetActivity("","")
+				MoveSetActivity("")
 				CarryObject("","",false)
 				
 			end
@@ -1036,7 +1036,7 @@ function RepairHome(Building)
 		if not f_MoveTo("", "WorkPos2",GL_WALKSPEED_RUN, 200) then
 			return
 		end
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Sleep(2)
 		CarryObject("","",false)
 	end
