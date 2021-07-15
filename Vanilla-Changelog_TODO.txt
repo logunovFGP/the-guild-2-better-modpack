@@ -13,13 +13,10 @@ Offen:
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
 - Wer gegenwärtig nicht steuerbar ist, wird nicht mehr zu Amtssitzungen, Gericht oder Ähnlichem gerufen.
-- Die Fähigkeit "Kamasutra-Meister" wirkte sich nicht auf alle Flirt-Maßnahmen aus.
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 - Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
 - Türme haben nicht-aggressive Schiffe angegriffen.
-- Nachrichten über Liebesdienste werden nicht länger für Angestellte und Familienmitglieder außerhalb
-  der Spielergruppe verschickt, dasselbe gilt für die "Ihr seid erwacht"-Meldung.
 - Die Ausbildung von Kindern sollte nun nicht länger unterbrochen werden.
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
 - Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
@@ -91,7 +88,6 @@ Offen:
 
 
 Kritische Balance-Änderungen:
-- Liebesdienst war ohne Cooldown nutzbar.
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.
 - Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.

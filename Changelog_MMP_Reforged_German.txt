@@ -57,6 +57,8 @@ _Design_
 - Die Anzahl möglicher Dynastien je nach Karte wurde angepasst.
 - Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten zum Bearbeiten fehlen, sind daher nicht mehr spielbar.
 - Die Nachricht "Jemand fühlt sich vernachlässigt" wird nicht mehr vertont und hat einen anderen Text.
+- Um eine Liebschaft einzugehen, ist der Wohnsitz nun irrelevant, stattdessen benötigt man nur den Titel 'Freibürger'
+- Die Fähigkeit "Kama-Sutra-Meister" wurde umbenannt in "Unwiderstehlich"
 
 *** Vanilla-Bugs ***
 
@@ -136,6 +138,7 @@ _Handwerker_
 
 _Gauner_
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
+- Es werden keine Nachrichten über Liebesdienste mehr an Charaktere verschickt, die nicht in der aktiven Spielergruppe sind.
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
 - Die Maßnahme "Ausruhen" wird nun korrekterweise bei den anderen roten Maßnahmen eingeordnet.
 - Räuberlager haben nun einen Karren.
@@ -188,6 +191,8 @@ _Allgemein_
 - Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.
 - Mehrere Maßnahmen öffnen nun direkt die entsprechenden Menüs wie 'Wichtige Personen', um ein Ziel auszuwählen (Mehr Komfort bei der Bedienung!)
 - Man kann nun mit beliebigen Charakteren reden, um ggf. die Gunst oder den Werbungsfortschritt zu erhöhen oder an gefälschte Beweise zu kommen.
+- Man kann nun auch Charaktere umwerben, wenn man bereits verheiratet ist. Um sie zu heiraten, muss man sich aber vorher von seinem ehemaligen Ehepartner trennen.
+  Allerdings könnt ihr nun auch Liebschaften eingehen, wenn ihr bereits verheiratet seid (aber nur mit unverheirateten Charakteren).
 
 _Patron_
 -
@@ -263,5 +268,8 @@ _Gauner_
 - Das Charisma von Dirnen hat nun Einfluss darauf, wie erfolgreich sie beim 'Anlocken' von Kundschaft sind.
 - Der Einflussradius von Dirnen wurde erhöht.
 - Dirnen arbeiten nun wie andere Gauner 24 Stunden am Tag.
+- Liebesdienste bringen nun immer mindestens 100, maximal jedoch höchstens 300 Erfahrungspunkte.
+- Es gibt nun eine Abklingzeit von 1 Stunde für das Nutzen der Liebesdienste.
+- Die Gewinne der Liebesdienste wurden geändert.
 - Die Sichtbarkeit von Verbrechen (z.B. für Wachen) wurde erhöht. Knochenbrechen gilt für die Wachen nun ebenfalls als Verbrechen.
 

@@ -39,7 +39,7 @@ function Run()
 		FavorLoss = -5
 	end
 	
-	local FlirtBonus = GetImpactValue("", 52)		-- 52 = FlirtProfi
+	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52 = FlirtProfi
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
 	
 	-- The action number for the courting
@@ -113,7 +113,7 @@ function Run()
 				
 			end
 			
-			-- Add the archieved progress
+			-- Add the achieved progress
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			SimAddCourtingProgress("")
 			
@@ -145,6 +145,18 @@ function Run()
 			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
 			
 		else
+			-- ToDo: Make this feature optional
+			if SimGetSpouse("Destination", "Spouse") then
+				if (GetID("Spouse") == GetID("")) then
+					AddImpact("","LoveLevel", 3, 24) -- add some love for the next 24 hours
+					AddImpact("Destination", "LoveLevel", 3, 24)
+					if GetImpactValue("Destination","LoveLevel") >= 10 then
+						MsgNewsNoWait("", "Destination", "", "schedule", -1,
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+					end
+				end
+			end
 			
 			camera_CutscenePlayerLock("cutscene", "Destination")
 			

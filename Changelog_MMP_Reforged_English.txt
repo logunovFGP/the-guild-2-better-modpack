@@ -59,6 +59,7 @@ _Design_
 - The numbers of possible dynasties per map have been adjusted.
 - Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can now longer be played on.
 - The message 'Someone feels neglected' has no voiceover anymore and the text has been changed.
+- To start an affair your residence doesn't matter anymore, instead you simply need the title "Free citizen"
 
 *** Vanilla-Bugs ***
 
@@ -136,6 +137,7 @@ _Craftsman_
 
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
+- You no longer get messages for characters outside of your active party about the usage of 'salacious services'
 - Children are no longer targets of wenches.
 - The Measure 'Rest' now has the red measure category like the icon suggests.
 - Robbercamps now have a cart.
@@ -181,6 +183,8 @@ _General_
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
 - Multiple measures now instantly open the important persons GUI and other windows for target selection.
 - You can now talk to other characters to improve relationships / courting progress and maybe even get (fake!) evidence against random enemies.
+- You can now start courting another character while beeing married. However you can only marry that character once you get divorced to your spouse or if you want to
+  start an affair. You can now have affairs while beeing married (however atm only with unmarried characters).
 
 _Patron_
 -
@@ -255,6 +259,9 @@ _Craftsman_
 _Rogue_
 - Charisma of wenches now has an impact on how successfully they are.
 - Range of wenches has been increased.
+- The usage of 'salacious services' now always awards you with 100 xp (but 300 instead of 500 max).
+- The income of wenches has been changed.
+- There now is a cooldown for the usage of 'salacious services' of 1 hour.
 - Wenches work 24 Hours per day like other rogue professions.
 - The visibility of crimes (guard detection) has been increased. Breaking bones is now considered a crime for the guards aswell.
 

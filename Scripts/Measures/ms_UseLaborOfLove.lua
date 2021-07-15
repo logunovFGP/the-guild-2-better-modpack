@@ -16,29 +16,29 @@ function Run()
 		StopMeasure("")
 	end
 
-	chr_AlignExact("","Destination",50,1)
+	chr_AlignExact("", "Destination", 50, 1)
 	if (GetDynastyID("") == GetDynastyID("Destination")) then
 		MsgSay("","@L_PIRATE_LABOROFLOVE_VISIT_EMPLOYER")
 		MsgSay("Destination","@L_PIRATE_LABOROFLOVE_VISIT_COCOTTE")
 	else	
-		-- Todo Cutscene Speech and Animation
 		MsgSay("","@L_PIRATE_LABOROFLOVE_TALK_VICTIM")
 		MsgSay("Destination","@L_PIRATE_LABOROFLOVE_TALK_AGREED")
 	
 		-- calc price depending on the charisma of the cocotte and pay it
 		local charskill = 2
 		charskill = GetSkillValue("Destination",CHARISMA)
-		local MoneyToPay = 50 * charskill
+		local MoneyToPay = 25 + 25*charskill
+
 		if IsDynastySim("") then
 			if not chr_SpendMoney("", 500, "LaborHansel") then
 				PlayAnimationNoWait("Destination","threat")
 				MsgSay("Destination","@L_PIRATE_LABOROFLOVE_TALK_DISAGREE")
 				StopMeasure()
 			end
+			ShowOverheadSymbol("", false, false, 0, "%1t", -500)
 		end
-		ShowOverheadSymbol("",false,false,0,"%1t",-500)
+
 		CreditMoney("Destination", MoneyToPay , "LaborOfLove")
-		
 	end
 	MsgSay("","@L_PIRATE_LABOROFLOVE_TALK_START")
 	
@@ -53,79 +53,95 @@ function Run()
 	PlayAnimation("destination","seduce_f_out")
 	
 	if HasProperty("Destination","ThiefOfLove") then
-	  local empskill = GetSkillValue("",EMPATHY)
-		local chakill = GetSkillValue("Destination",CHARISMA)
-		if chakill < empskill then
-		  ai_GetWorkBuilding("Destination", GL_BUILDING_TYPE_PIRATESNEST, "WorkBuilding")
-			chr_ModifyFavor("","WorkBuilding",-10)
-			SetProperty("Destination","UnterVerdacht",1)
-			feedback_OverheadComment("","@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)
-      StopMeasure()
-		else
-      local spender = SimGetRank("")
-      local spend
-      if spender == 0 or spender == 1 then
-      	spend = 5
-      elseif spender == 2 then
-      	spend = 15
-      elseif spender == 3 then
-      	spend = 20 * chakill
-      elseif spender == 4 then
-      	spend = 35 * chakill
-      elseif spender == 5 then
-      	spend = 45 * chakill
-      end
-	    if IsDynastySim("") then
-		    chr_SpendMoney("", spend, "LaborHansel")
+	  	
+		local empskill = GetSkillValue("", EMPATHY)
+		local chakill = GetSkillValue("Destination", CHARISMA)
+     	local spender = SimGetRank("")
+      	local spend
+
+	    if spender == 0 or spender == 1 then
+	     	spend = 25 * chakill
+	    elseif spender == 2 then
+	    	spend = 30 * chakill
+	    elseif spender == 3 then
+	     	spend = 35 * chakill
+	    elseif spender == 4 then
+	     	spend = 40 * chakill
+	    elseif spender == 5 then
+	     	spend = 50 * chakill
 	    end
-	    CreditMoney("Destination",spend,"LaborOfLove")
-			IncrementXPQuiet("",15)
+
+		if IsDynastySim("") then
+			 chr_SpendMoney("", spend, "LaborHansel")
 		end
+
+		CreditMoney("Destination", spend, "LaborOfLove")
+		IncrementXPQuiet("", 15)
 	end
 
 	-- process the boost 
 	local HeaderLabel = "@L_PIRATE_LABOROFLOVE_MSG_HEAD_+0"
 	local Idx = Rand(8)
 	if(Idx == 0) then
-    -- + 50 Hitpoints
-	  ModifyHP("",50)	 
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+0")
+		-- + 50 Hitpoints
+		ModifyHP("", 50)
+		if IsPartyMember("") then	 
+	  		feedback_MessageCharacter("", HeaderLabel, "@L_PIRATE_LABOROFLOVE_MSG_BODY_+0")
+		end
 	elseif(Idx == 1) then
-    -- - 50 Hitpoints
-	  ModifyHP("",-50,true,10)
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+1")
+		-- - 50 Hitpoints
+		ModifyHP("", -50, true, 10)
+		if IsPartyMember("") then
+			feedback_MessageCharacter("", HeaderLabel, "@L_PIRATE_LABOROFLOVE_MSG_BODY_+1")
+		end
 	elseif(Idx == 2) then
-    -- + 2 Random Skill
-	  local Skill = Rand(10) + 20
-	  AddImpact("",Skill,2,2)
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+2")
+		-- + 2 Random Skill
+		local Skill = Rand(10) + 20
+	 	AddImpact("", Skill, 2, 2)
+		if IsPartyMember("") then
+			feedback_MessageCharacter("", HeaderLabel, "@L_PIRATE_LABOROFLOVE_MSG_BODY_+2")
+		end
 	elseif(Idx == 3) then
-	  -- - 2 Random Skill
- 	  local Skill = Rand(10) + 20
-	  AddImpact("",Skill,-2,2)
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+3")
+	 	-- - 2 Random Skill
+ 	 	local Skill = Rand(10) + 20
+	 	AddImpact("", Skill, -2, 2)
+		if IsPartyMember("") then
+	  		feedback_MessageCharacter("", HeaderLabel, "@L_PIRATE_LABOROFLOVE_MSG_BODY_+3")
+		end
 	elseif(Idx == 4) then
-	  -- Influenza infection
-	  diseases_Influenza("",true,true)
+		-- Influenza infection
+	  	diseases_Influenza("", true)
 	elseif(Idx == 5)  then
-	  -- decreaset movespeed
-	  AddImpact("","MoveSpeed",0.8,2)
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+4")
+	 	-- decreaset movespeed
+	  	AddImpact("", "MoveSpeed", 0.8, 3)
+		if IsPartyMember("") then
+	  		feedback_MessageCharacter("", HeaderLabel, "@L_PIRATE_LABOROFLOVE_MSG_BODY_+4")
+		end
 	elseif(Idx == 6) then
-	  -- increase movespeed
-    AddImpact("","MoveSpeed",1.2,2)
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+5")
+	  	-- increase movespeed
+    	AddImpact("", "MoveSpeed", 1.2, 3)
+		if IsPartyMember("") then
+	  		feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+5")
+		end
 	elseif(Idx == 7) then
-	  -- increase XP
-	  IncrementXP("",500)
-	  feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+6")
+	  	-- increase XP
+		if IsPartyMember("") then
+	  		feedback_MessageCharacter("",HeaderLabel,"@L_PIRATE_LABOROFLOVE_MSG_BODY_+6")
+		end
+	end
+
+	Sleep(0.25)
+	if IdX == 7 then
+		chr_GainXP("", GetData("BaseXP")*3)
+	else
+		chr_GainXP("", GetData("BaseXP"))
 	end
 
 	-- satisfy the pleasure need
 	SatisfyNeed("", 2, 0.5)
 
-	MsgSay("Destination","@L_PIRATE_LABOROFLOVE_TALK_END")
-	AddImpact("","FullOfLove",1,4)
+	MsgSay("Destination", "@L_PIRATE_LABOROFLOVE_TALK_END")
+	AddImpact("", "FullOfLove", 1, 4)
 	--DestroyCutscene("cutscene")
 	StopMeasure()
 end
@@ -136,12 +152,14 @@ function CleanUp()
 	if AliasExists("Destination") then
 		--MoveSetStance("Destination",GL_STANCE_STAND)
 		StopAnimation("Destination")
-	  	SetProperty("Destination","CocotteHasClient",0)
+	  	SetProperty("Destination", "CocotteHasClient", 0)
 	end	
 end
 
 function GetOSHData(MeasureID)
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6",500)
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 500)
+	--can be used again in:
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 
 

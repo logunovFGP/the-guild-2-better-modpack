@@ -59,7 +59,7 @@ function Run()
 	local TitleDiffMod = owntitle - 1
 	local TitleFactor = owntitle - desttitle
 	local Age = SimGetAge("Destination")
-	local MinFavor = 20 
+	local MinFavor = 30 - TitleFactor*2 
 
 	SetProperty("", "InTalk", 1)
 	SetProperty("Destination", "InTalk", 1)
@@ -150,7 +150,7 @@ function Run()
 
 	--		camera_CutscenePlayerLock("cutscene", "Destination")
 
-			EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
+			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
 			if (EnoughVariation == false) then
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
@@ -161,7 +161,7 @@ function Run()
 
 			Sleep(3.0)
 			
-			-- Add the archieved progress
+			-- Add the achieved progress
 			SimAddCourtingProgress("")
 		end
 		return
@@ -177,6 +177,8 @@ function Run()
 
 	if ((GetSkillValue("", RHETORIC)) + TitleDiffMod >= (GetSkillValue("Destination", RHETORIC) + desttitle)) then
 		local favormodify = (GetSkillValue("", RHETORIC)+Rand(5))
+		local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52 = FlirtProfi
+		favormodify = math.floor(favormodify + favormodify * FlirtBonus * 0.01)
 		chr_ModifyFavor("Destination", "", favormodify)
 
         	if Age < 16 then
@@ -187,7 +189,7 @@ function Run()
 
 		-- Zufällige Person aus der Umgebung auswählen
 		if IsDynastySim("") and IsDynastySim("Destination") then
-			local NumOfObjects = Find("","__F((Object.GetObjectsByRadius(Sim)==3000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
+			local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim)==3000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
 
 			if NumOfObjects > 0 then
 				local DestAlias = "Sims"..Rand(NumOfObjects)
