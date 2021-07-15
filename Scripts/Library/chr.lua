@@ -522,19 +522,17 @@ function GeneratePrivilegeListLabels(... )
 		Labels[k] = ""
 	end
 	
-	local Privileges = {"CanApplyForLowestOffice", "RunForAnOffice", "DuelWithOpponent", "PoliticalAttention", "SendApplicant", "BeFromNobleBlood", "GoldenSpoon", "CanApplyForEpicOffice"} -- add new privileges here!
-	
 	local Counter = 0
 	
 	for i=1, arg.n,1 do
-		for j=1, 7 do -- increment if you add new privileges!
-			if arg[i] == Privileges[j] then
-				Labels[Counter] = "_PRIVILEGE_"..arg[i].."_MESSAGETEXT_+0"
-				Labels[Counter+1] = "$N"
-				Counter = Counter + 2
-			end
+		local element = arg[i]
+		if element ~= "" then
+			Labels[Counter] = "_PRIVILEGE_"..arg[i].."_MESSAGETEXT_+0"
+			Labels[Counter+1] = "$N"
+			Counter = Counter + 2
 		end
 	end
+	
 	-- quick'n dirty
 	return Labels[0], Labels[1], Labels[2], Labels[3], Labels[4], Labels[5], Labels[6], Labels[7], Labels[8], Labels[9], Labels[10], Labels[11], Labels[12], Labels[13], Labels[14], Labels[15], Labels[16], Labels[17], Labels[18], Labels[19], Labels[20]
 end

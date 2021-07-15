@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return "CanApplyForLowestOffice"
 end
 
+function GetOldPrivilegeList()
+	return ""
+end
+
 function GetCompletePrivilegeList()
-	return ps_04_beisasse_GetPrivilegeList(), ps_03_freisasse_GetCompletePrivilegeList()
+	return ps_04_beisasse_GetPrivilegeList(), ps_04_beisasse_GetOldPrivilegeList()
 end
 
 function TakeTitle()

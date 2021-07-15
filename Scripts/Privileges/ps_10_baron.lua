@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return "GoldenSpoon"
 end
 
+function GetOldPrivilegeList()
+	return "DuelWithOpponent", "CanArrangeLiaison", "RunForAnOffice", "PoliticalAttention", "SendApplicant", "BeFromNobleBlood"
+end
+
 function GetCompletePrivilegeList()
-	return ps_10_baron_GetPrivilegeList(), ps_09_freiherr_GetCompletePrivilegeList()
+	return ps_10_baron_GetPrivilegeList(), ps_10_baron_GetOldPrivilegeList()
 end
 
 function TakeTitle()

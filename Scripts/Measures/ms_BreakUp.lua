@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_Divorce"
+----	OVERVIEW "ms_BreakUp"
 ----
 ----	with this measure the player can get rid of the court lover
 ----
@@ -11,14 +11,15 @@
 -- -----------------------
 function Run()
 	
-	SimGetCourtLover("", "CourtLover")
-	SetState("CourtLover", STATE_INLOVE, false)
-	RemoveProperty("CourtLover", "CourtDiff")
-	RemoveProperty("CourtLover", "courted")
-	
-	SimReleaseCourtLover("")
-	StopMeasure()
-	return
-	
+	if SimGetCourtLover("", "CourtLover")
+		SetState("CourtLover", STATE_INLOVE, false)
+		RemoveProperty("CourtLover", "CourtDiff")
+		RemoveProperty("CourtLover", "courted")
+		SimReleaseCourtLover("")
+		return
+	elseif SimGetLiaison("", "Liaison")
+		-- todo
+		return
+	end
 end
 

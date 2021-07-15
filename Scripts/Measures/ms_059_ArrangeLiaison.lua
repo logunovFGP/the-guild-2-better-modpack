@@ -36,10 +36,10 @@ function Run()
 	----------
 	-- Propose
 	----------	
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","destination")
-	CutsceneCameraCreate("cutscene","")			
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "destination")
+	CutsceneCameraCreate("cutscene", "")			
 	
 	camera_CutsceneBothLock("cutscene", "")
 	local OwnerAnimLength = PlayAnimationNoWait("", "proposal_male")
@@ -58,11 +58,18 @@ function Run()
 	camera_CutscenePlayerLock("cutscene", "Destination")
 	MsgSay("Destination", talk_AnswerLiaison(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination")));		
 	
-	SimArrangeLiaison("", "Destination")
 	local Difficulty = GetProperty("Destination", "CourtDiff")
 	xp_CourtingSuccess("", Difficulty, 1)
 	xp_CourtingSuccess("Destination", Difficulty)
 	RemoveProperty("Destination", "CourtDiff")
+	
+	if AliasExists("Destination") then
+		MoveSetActivity("Destination")
+		feedback_OverheadActionName("Destination")
+		SimLock("Destination", 0.25)
+	end	
+	SimArrangeLiaison("", "Destination")
+	SimArrangeLiaison("Destination", "")
 end
 
 -- -----------------------
@@ -74,12 +81,5 @@ function CleanUp()
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
 	StopAnimation("")
-	
-	if AliasExists("Destination") then
-		MoveSetActivity("Destination")
-		feedback_OverheadActionName("Destination")
-		SimLock("Destination", 0.25)
-	end	
-	
 end
 

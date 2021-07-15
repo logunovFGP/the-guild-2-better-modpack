@@ -62,7 +62,7 @@ function ImportantPersonsSetupSections()
 	-- family
 	CreateImportantPersonSection("Family", "@L_IMPORTANTPERSONS_TOPICS_+0")
 	CreateImportantPersonSection("CourtLover", "@L_IMPORTANTPERSONS_TOPICS_+1")
-	CreateImportantPersonSection("Liaison", "@L_IMPORTANTPERSONS_TOPICS_+2")
+	CreateImportantPersonSection("Liaisons", "@L_IMPORTANTPERSONS_TOPICS_+2")
 	
 	 -- Fajeth_Mod: unemployed List by Nommy
 	CreateImportantPersonSection("UnemployedByAge", "@L_IMPORTANTPERSONS_AGE_+0")
@@ -103,6 +103,16 @@ function IsCreditorSim(Alias)
 	return IsCreditor
 end
 
+function IsLiaison(Alias)
+	if SimGetLiaison(Alias, "Lover") then
+		if GetID("") == GetID("Lover") then
+			return true
+		end
+	end
+	
+	return false
+end
+
 function IsBookmarked(Alias)
 	local dyn = GetDynastyID("")
 	local prop = "bm"..dyn
@@ -133,7 +143,7 @@ function ImportantPersonsGather_CreditorSearch()
 	gathering_PopulateImportantPersonSection("CreditorSearch", SimListFilterFunction, SimListSortCompareFunction, Debug)
 end
 
--- Called by game to populate the "Creditors" section... at the moment sorted by level and age 
+-- Called by game to populate the "Bookmarks" section... at the moment sorted by level and age 
 function ImportantPersonsGather_Bookmarks()
 	-- Set Debug = true to show messages in game e.g number of people which matched etc.
 	local Debug = false
@@ -150,6 +160,25 @@ function ImportantPersonsGather_Bookmarks()
 	  
 	  -- Find, sort and add the sims.
 	  gathering_PopulateImportantPersonSection("Bookmarks", SimListFilterFunction, SimListSortCompareFunction, Debug)
+end
+
+-- Called by game to populate the "Liaisons" section... at the moment sorted by level and age 
+function ImportantPersonsGather_Liaisons()
+	-- Set Debug = true to show messages in game e.g number of people which matched etc.
+	local Debug = false
+	if Debug then MsgQuick("", "ImportantPersonsGather_Liaisons)") end
+	  
+		-- Define the criteria sims must meet to be included.
+		local SimListFilterFunction = gathering_IsLiaison
+	  
+		-- Define the sims list sort order.
+		local SimListSortCompareFunction = 
+		function(a,b) 
+		return SimGetAge(a) <= SimGetAge(b) 
+	end
+	  
+	  -- Find, sort and add the sims.
+	  gathering_PopulateImportantPersonSection("Liaisons", SimListFilterFunction, SimListSortCompareFunction, Debug)
 end
 
 -- By Nommy: http://forum.runeforge-games.net/index.php/topic,840.0.html
@@ -261,7 +290,9 @@ function PopulateImportantPersonSection(Label, SimListFilterFunction, SimListSor
 			end
 		end
 	end
-	if Debug then MsgQuick("", "FilteredSimCount="..FilteredSimCount) end
+	if Debug then 
+		MsgQuick("", "FilteredSimCount="..FilteredSimCount) 
+	end
 	
 	-- Sort the list of sims (by age by default).
 	-- Note: table.sort() and other table functions don't seem to work so the quicksort function defined below is used instead.
@@ -274,7 +305,9 @@ function PopulateImportantPersonSection(Label, SimListFilterFunction, SimListSor
 		SetImportantPersonToSection(GetID(Alias), Label, GetDynastyID(""))
 		Classes = Classes.." "..SimGetClass(Alias)
 	end
-	if Debug then MsgQuick("", "Classes="..Classes) end
+	if Debug then 
+		MsgQuick("", "Classes="..Classes) 
+	end
 end
 
 

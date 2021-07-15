@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return ""
 end
 
+function GetOldPrivilegeList()
+	return ""
+end
+
 function GetCompletePrivilegeList()
-	return ps_03_freisasse_GetPrivilegeList() --, ps_02_gemeiner_GetPrivilegeList() -- don't know where the problem is, I can't go that deep :/
+	return ps_03_freisasse_GetPrivilegeList(), ps_03_freisasse_GetOldPrivilegeList()
 end
 
 function TakeTitle()

@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return ""
 end
 
+function GetOldPrivilegeList()
+	return "DuelWithOpponent", "CanArrangeLiaison", "RunForAnOffice", "PoliticalAttention", "SendApplicant", "BeFromNobleBlood", "GoldenSpoon", "CanApplyForEpicOffice"
+end
+
 function GetCompletePrivilegeList()
-	return ps_14_reichsfuerst_GetPrivilegeList(), ps_13_fuerst_GetCompletePrivilegeList()
+	return ps_14_reichsfuerst_GetPrivilegeList(), ps_14_reichsfuerst_GetOldPrivilegeList()
 end
 
 function TakeTitle()

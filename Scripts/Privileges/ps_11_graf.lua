@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return "CanApplyForEpicOffice"
 end
 
+function GetOldPrivilegeList()
+	return "DuelWithOpponent", "CanArrangeLiaison", "RunForAnOffice", "PoliticalAttention", "SendApplicant", "BeFromNobleBlood", "GoldenSpoon"
+end
+
 function GetCompletePrivilegeList()
-	return ps_11_graf_GetPrivilegeList(), ps_10_baron_GetCompletePrivilegeList()
+	return ps_11_graf_GetPrivilegeList(), ps_11_graf_GetOldPrivilegeList()
 end
 
 function TakeTitle()

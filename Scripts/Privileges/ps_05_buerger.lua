@@ -2,9 +2,13 @@ function GetPrivilegeList()
 	return "RunForAnOffice"
 end
 
+function GetOldPrivilegeList()
+	return ""
+end
+
 function GetCompletePrivilegeList()
-	-- the beisasse privileges are commented out because the canapplyforlowestoffice-privilegue mustn't copied
-	return ps_05_buerger_GetPrivilegeList() -- , ps_04_beisasse_GetCompletePrivilegeList() 
+	-- the old privileges are commented out because the canapplyforlowestoffice-privilegue mustn't copied
+	return ps_05_buerger_GetPrivilegeList() -- , ps_05_buerger_GetOldPrivilegeList() 
 end
 
 function TakeTitle()

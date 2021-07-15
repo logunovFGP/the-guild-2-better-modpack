@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return ""
 end
 
+function GetOldPrivilegeList()
+	return ""
+end
+
 function GetCompletePrivilegeList()
-	return ps_02_gemeiner_GetPrivilegeList()
+	return ps_02_gemeiner_GetPrivilegeList(), ps_02_gemeiner_GetOldPrivilegeList()
 end
 
 function TakeTitle()

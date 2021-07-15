@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return "SendApplicant"
 end
 
+function GetOldPrivilegeList()
+	return "DuelWithOpponent", "CanArrangeLiaison", "RunForAnOffice", "PoliticalAttention"
+end
+	
 function GetCompletePrivilegeList()
-	return ps_08_edelmann_GetPrivilegeList(), ps_07_patrizier_GetCompletePrivilegeList()
+	return ps_08_edelmann_GetPrivilegeList(), ps_08_edelmann_GetOldPrivilegeList()
 end
 
 function TakeTitle()

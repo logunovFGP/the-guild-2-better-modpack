@@ -1,9 +1,15 @@
 function GetPrivilegeList()
-	return "DuelWithOpponent"
+	local Priv1 = "DuelWithOpponent"
+	local Priv2 = "CanArrangeLiaison"
+	return Priv1, Priv2
+end
+
+function GetOldPrivilegeList()
+	return "RunForAnOffice", "CanArrangeLiaison" -- don't ask why ... for some reason the second new privilege has to be added here aswell.
 end
 
 function GetCompletePrivilegeList()
-	return ps_06_freibuerger_GetPrivilegeList(), ps_05_buerger_GetCompletePrivilegeList()
+	return ps_06_freibuerger_GetPrivilegeList(), ps_06_freibuerger_GetOldPrivilegeList()
 end
 
 function TakeTitle()

@@ -2,8 +2,12 @@ function GetPrivilegeList()
 	return "PoliticalAttention"
 end
 
+function GetOldPrivilegeList()
+	return "DuelWithOpponent", "CanArrangeLiaison", "RunForAnOffice"
+end
+
 function GetCompletePrivilegeList()
-	return ps_07_patrizier_GetPrivilegeList(), ps_06_freibuerger_GetCompletePrivilegeList()
+	return ps_07_patrizier_GetPrivilegeList(), ps_07_patrizier_GetOldPrivilegeList()
 end
 
 function TakeTitle()
