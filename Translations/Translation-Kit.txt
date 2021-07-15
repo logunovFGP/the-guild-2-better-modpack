@@ -257,7 +257,7 @@ Translate and add the following lines below:
 18254   "_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_BRIBE_+0"   "Bribery"   |
 18255   "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0"   "#E[NT_NEUTRAL]Continue courtship"   |
 18256   "_PREMARRIAGE_PROGRESS_LOSS_+0"   "%2SN should not forget the courtship of %1SA %1SN. Why don't you go ahead and visit %1SV right away to emphasize your endeavors?"   |
-
+18257   "_PRIVILEGE_CanArrangeLiaison_MESSAGETEXT_+0"   "Start an affair"   |
 
 Delete the following lines:
 70   "$1Tincome %1t gold"
