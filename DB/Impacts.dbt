@@ -231,6 +231,8 @@ Data:
 393   1   3   0   "luckyguy"   0   "Hud/state/luckyguy.tga"   |
 394   1   4   0   "begBonus"   0   ""   |
 395   1   3   0   "LevelUpCity"   0   ""   |
+400   1   2   0   "LoveLevel"   0   ""   |
+401   1   1   0   "CanArrangeLiaison"   0   ""   |
 402   1   2   0   "GoodDream"   0   "Hud/state/GoodDream.tga"   |
 403   1   2   0   "BadDream"   0   "Hud/state/BadDream.tga"   |
 405   1   2   0   "kamm"   0   ""   |

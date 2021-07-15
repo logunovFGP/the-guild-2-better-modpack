@@ -55,8 +55,8 @@ Data:
 125   "CanGather"   "__F((Object.CanBeControlled())AND(Object.CanGatherResource())AND(Object.MinAge(16)))"   |
 126   "IsSingle"   "__F((Object.CanBeControlled())AND(Object.CanCourt()))"   |
 127   "CanBeCourted"   "__F((Object.CanBeCourted())AND NOT(Object.GetState(animal)) AND NOT (Object.GetState(npcfighter))AND NOT (Object.GetState(inlove)) AND NOT (Object.HasProperty(Guarding)))"   |
-128   "HasCourtLover"   "__F((Object.CanBeControlled())AND(Object.HasCourtLover()))"   |
-129   "HasNoCourtLover"   "__F((Object.BelongsToMe())AND NOT(Object.HasCourtLover()))"   |
+128   "HasCourtLover"   "__F((Object.CanBeControlled())AND(Object.HasCourtLover())OR(Object.HasLiaison()))"   |
+129   "HasNoCourtLover"   "__F((Object.CanBeControlled())AND(Object.MinAge(16))AND NOT(Object.HasCourtLover())AND NOT(Object.HasLiaison()))"   |
 130   "IsNotMarketBuilding"   "__F(NOT(Object.IsClass(5)))"   |
 131   "IsInventoryVisible"   "__F((Object.IsInventoryVisible())AND NOT(Object.HudIsInCutscene()))"   |
 132   "IsInsideBank"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
@@ -192,7 +192,7 @@ Data:
 271   "ValidDynastySimTargetForEvilMeasure"   "__F(NOT(Object.BelongsToMe())AND(Object.IsDynastySim())AND(Object.ActionAdmissible()))"   |
 272   "CanCollectEvidence"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 18)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(2))AND(Object.HasUpgrade(Commode)))"   |
 273   "CanOrderAShadowing"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 18)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(2))AND(Object.HasUpgrade(DarkCorner)))"   |
-274   "HasFullLoverProgressAndNoLiaisonAndCanHaveLiaison"   "__F((Object.CanBeControlled())AND(Object.HasFullLoverProgress())AND NOT(Object.HasLiaison())AND(Object.GetHome())AND(Object.IsType(2))AND(Object.HasUpgrade(AmatoryCorner)))"   |
+274   "HasFullLoverProgressAndNoLiaisonAndCanHaveLiaison"   "__F((Object.CanBeControlled())AND(Object.HasFullLoverProgress())AND NOT(Object.HasLiaison())AND(Object.HasMinNobilityTitle(6)))"   |
 275   "CanPropitiateEnemies"   "__F((Object.CanBeControlled())AND (Object.HasImpact(PropitiateEnemies)))"   |
 276   "CanHijack"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 26)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.HasUpgrade(PrisonDoor)))"   |
 277   "CanEscapeFromArrest"   "__F((Object.BelongsToMe())AND NOT(Object.CanBeControlled())AND(Object.CompareHPRelative()>30)AND(Object.GetState(captured))AND NOT(Object.IsInBuilding())AND NOT(Object.HasImpact(Unantastbar))AND NOT(Object.Property.NoEscape==1))"   |
