@@ -44,6 +44,7 @@ _Tech_
 - Duels are a bit more fluent now.
 - Officesession script has been replaced and restructured completely.
 - Trial script has been reworked.
+- Building Upgrade database has been reworked.
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
@@ -141,7 +142,8 @@ _Rogue_
 - Children are no longer targets of wenches.
 - The Measure 'Rest' now has the red measure category like the icon suggests.
 - Robbercamps now have a cart.
-- Hypnosis pendulum didn't work.
+- 'Hypnosis pendulum' didn't work.
+- One curse of the 'voodoo doll' didn't work. Also there was no error msg when the victim had enough empathy to counter the measure.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.

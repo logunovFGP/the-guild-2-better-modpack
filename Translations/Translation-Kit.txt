@@ -258,6 +258,13 @@ Translate and add the following lines below:
 18255   "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0"   "#E[NT_NEUTRAL]Continue courtship"   |
 18256   "_PREMARRIAGE_PROGRESS_LOSS_+0"   "%2SN should not forget the courtship of %1SA %1SN. Why don't you go ahead and visit %1SV right away to emphasize your endeavors?"   |
 18257   "_PRIVILEGE_CanArrangeLiaison_MESSAGETEXT_+0"   "Start an affair"   |
+18258   "_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_KOPF_+0"   "Your spell has failed!"   |
+18259   "_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_RUMPF_+0"   "You did not succeed with your dark spell on %1SN! He paid too much attention to every move you've made and looked right through your shabby attempts to disguise your evil plans!"   |
+18260   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_KOPF_+0"   "You have counteracted an enemy's spell!"   |
+18261   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0"   "%1SN has tried to put a dark spell on your soul but he failed miserably thanks to your remarkable empathic skills. It's time for revenge, accuse him now!"   |
+18262   "_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0"   "You are irresistible!"   |
+18263   "_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0"   "Are you a heartbreaker or do you really mean it? Anyway, %1SV is completely under your spell and wishes nothing more than to spend some hours with you alone ..."   |
+
 
 Delete the following lines:
 70   "$1Tincome %1t gold"

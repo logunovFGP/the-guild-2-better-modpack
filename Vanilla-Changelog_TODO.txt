@@ -15,7 +15,6 @@ Offen:
 - Wer gegenwärtig nicht steuerbar ist, wird nicht mehr zu Amtssitzungen, Gericht oder Ähnlichem gerufen.
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
-- Einer der Flüche der Voodoo-Puppe funktionierte nicht richtig.
 - Türme haben nicht-aggressive Schiffe angegriffen.
 - Die Ausbildung von Kindern sollte nun nicht länger unterbrochen werden.
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
@@ -65,8 +64,6 @@ Offen:
   Waffe / Rüstung, wenn sie einen vorhandenen Gegenstand austauschen wollte.
 - KI-Sims, die in einem Betrieb Waren produzierten, haben diese Arbeit 
   nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
-- Forderte man die Todesstrafe bestand eine hohe Möglichkeit,
-  dass die KI sich daraufhin einfach schuldig bekennen würde.
 - In manchen Städten konnte man sein Opfer nicht verbannen, obwohl es sich mitten in der
   Stadt befand. Ausschlaggebend ist nun die Entfernung zum Rathaus (Der Radius wurde zudem um 20% erhöht).
 - Man konnte bei der Maßnahme "Eine Reise antreten" in der Kutsche feststecken, wenn man

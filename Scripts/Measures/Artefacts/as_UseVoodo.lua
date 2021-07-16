@@ -26,7 +26,7 @@ function Run()
 	
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
 		MsgQuick("", "_HPFZ_ARTEFAKT_ALLGEMEIN_FEHLER_+0")
-		StopMeasure()
+		return
 	end
 
 	if RemoveItems("", "Voodo", 1) == 1 then
@@ -56,7 +56,7 @@ function Run()
 		MsgSay("Destination", "_HPFZ_ARTEFAKT_VODOO_SPRUCH_+0")
 		
 		-- skillcheck
-		if (GetSkillValue("", SHADOW_ARTS) > GetSkillValue("Destination", EMPATHY)) then
+		if (GetSkillValue("", SHADOW_ARTS) > GetSkillValue("Destination", EMPATHY)) then -- success
 			local DerFluch = Rand(10)
 			GetPosition("Destination", "ParticleSpawnPos")
 			PlayAnimationNoWait("Destination", "watch_for_guard")
@@ -71,43 +71,43 @@ function Run()
 				AddImpact("Destination", "totallydrunk", 1, 6)
 				AddImpact("Destination", "MoveSpeed", 0.7, 6)
 				SetState("Destination", STATE_TOTALLYDRUNK, true)
-				StopMeasure()
+				return
 			elseif DerFluch < 7 then
-				-- force sickness
+				-- make sick
 				local SickChoice = Rand(8)+1
 				if SickChoice == 1 then
-					diseases_Sprain("Destination", true, true)
+					diseases_Sprain("Destination", true, false)
 				elseif SickChoice == 2 then
-					diseases_Cold("Destination", true, true)
+					diseases_Cold("Destination", true, false)
 				elseif SickChoice == 3 then
-					diseases_Influenza("Destination", true, true)
+					diseases_Influenza("Destination", true, false)
 				elseif SickChoice == 5 then
-					diseases_Pox("Destination", true, true)
+					diseases_Pox("Destination", true, false)
 				elseif SickChoice == 7 then
-					diseases_Fracture("Destination", true, true)
+					diseases_Fracture("Destination", true, false)
 				elseif SickChoice == 8 then
-					diseases_Caries("Destination", true, true)
+					diseases_Caries("Destination", true, false)
 				end
 				SetState("Destination", STATE_SICK, true)
 			else
-				-- force a fight
-				local FightPartners = Find("Destination", "__F((Object.GetObjectsByRadius(Sim)==3000)AND NOT(Object.HasDynasty())AND NOT(Object.GetState(unconscious))AND NOT(Object.GetState(dead))AND(Object.CompareHP()>30))","FightPartner", -1)
+				-- force a fight with random npc
+				local FightPartners = Find("Destination", "__F((Object.GetObjectsByRadius(Sim)==2000)AND NOT(Object.HasDynasty())AND NOT(Object.GetState(unconscious))AND NOT(Object.GetState(dead))AND(Object.CompareHP()>30))","FightPartner", -1)
 				if FightPartners > 0 then
 					if not BattleIsFighting(FightPartner) then
 						MsgDebugMeasure("Force a Fight")
-						SimStopMeasure(FightPartner)
-						StopAnimation(FightPartner) 
-						MoveStop(FightPartner)
-						AlignTo("Destination", FightPartner)
+						SimStopMeasure("FightPartner0")
+						StopAnimation("FightPartner0") 
+						MoveStop("FightPartner0")
+						AlignTo("Destination", "FightPartner0")
 						AlignTo(FightPartner, "Destination")
 						Sleep(1)
 						PlayAnimationNoWait("Destination", "threat")
-						PlayAnimation(FightPartner, "insult_character")
-						SetProperty(FightPartner, "Berserker", 1)
+						PlayAnimation("FightPartner0", "insult_character")
+						SetProperty("FightPartner0", "Berserker", 1)
 						SetProperty("Destination", "Berserker", 1)
-						BattleJoin("Destination", FightPartner, false, false)
+						BattleJoin("Destination", "FightPartner0", false, false)
 					end
-				else
+				else -- no random person found, attack user
 					BattleJoin("Destination", "", false, false)
 				end
 			end
@@ -119,18 +119,30 @@ function Run()
 					"@L_HPFZ_ARTEFAKT_VODOO_OPFER_KOPF_+0",
 					"@L_HPFZ_ARTEFAKT_VODOO_OPFER_RUMPF_+0", GetID(""))
 					
+		else
+			PlayAnimation("Destination", "shake_head")
+			PlayAnimationNoWait("Destination", "threat")
+			MsgSay("Destination", "_HPFZ_ARTEFAKT_FAIL_SPRUCH")
+			
+			MsgBoxNoWait("","Destination",
+						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_KOPF_+0",
+						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_RUMPF_+0", GetID("Destination"))
+			MsgNewsNoWait("Destination", "", "", "intrigue", -1,
+						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_KOPF_+0",
+						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0", GetID(""))
+			chr_ModifyFavor("Destination", "", -10)
+			AddEvidence("Destination", "Owner", "Destination", 11) -- poison
 		end
 	end
-	
-	StopMeasure()
-
 end
 
 function CleanUp()
+
 	CarryObject("", "", false)
 	CarryObject("Destination", "", false)
 end
 
 function GetOSHData(MeasureID)
+
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end

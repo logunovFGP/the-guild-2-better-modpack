@@ -532,7 +532,7 @@
 460 Scripts\Measures\ms_041_BribeCharacter.lua
 461 Scripts\Measures\ms_043_CaptureBuilding.lua
 462 Scripts\Measures\ms_045_CourtLover.lua
-463 Scripts\Measures\ms_046_StartDialog.lua
+463 Scripts\Measures\ms_046_StartDialog.lua - MERGED
 464 Scripts\Measures\ms_048_HireEmployee.lua
 465 Scripts\Measures\ms_048_HireEmployeeBuildingRandom.lua
 466 Scripts\Measures\ms_049_FireEmployee.lua
@@ -600,7 +600,7 @@
 528 Scripts\Measures\ms_220_TrainCharacter.lua
 529 Scripts\Measures\ms_230_MakeAPresent.lua
 530 Scripts\Measures\ms_231_MakeACompliment.lua
-531 Scripts\Measures\ms_232_InviteToDance.lua
+531 Scripts\Measures\ms_232_InviteToDance.lua - MERGED
 532 Scripts\Measures\ms_AddPamphlet.lua
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
@@ -684,11 +684,11 @@
 612 Scripts\Measures\ms_FightRoughUp.lua
 613 Scripts\Measures\ms_FindCourtLover.lua
 614 Scripts\Measures\ms_FlamingSpeech.lua
-615 Scripts\Measures\ms_Flirt.lua
+615 Scripts\Measures\ms_Flirt.lua - MERGED
 616 Scripts\Measures\ms_FollowRatBoy.lua
 617 Scripts\Measures\ms_ForceMarriage.lua
 618 Scripts\Measures\ms_GeneralPardon.lua
-619 Scripts\Measures\ms_GetDivorced.lua
+619 Scripts\Measures\ms_GetDivorced.lua - MERGED
 620 Scripts\Measures\ms_GetPoisonedByBeer.lua
 621 Scripts\Measures\ms_GlobalEvent.lua
 622 Scripts\Measures\ms_GuildTrading.lua
@@ -771,7 +771,7 @@
 699 Scripts\Measures\ms_Slander.lua - MERGED
 700 Scripts\Measures\ms_SowField.lua
 701 Scripts\Measures\ms_SowWiese.lua
-702 Scripts\Measures\ms_StartDialog.lua
+702 Scripts\Measures\ms_StartDialog.lua - REMOVED
 703 Scripts\Measures\ms_StartmenuShip.lua
 704 Scripts\Measures\ms_StefanD.lua
 705 Scripts\Measures\ms_StepAside.lua
@@ -789,7 +789,7 @@
 717 Scripts\Measures\ms_twp_SupplyWorkshop.lua
 718 Scripts\Measures\ms_UpgradeResidence.lua
 719 Scripts\Measures\ms_UseHorse.lua
-720 Scripts\Measures\ms_UseLaborOfLove.lua
+720 Scripts\Measures\ms_UseLaborOfLove.lua - MERGED
 721 Scripts\Measures\ms_Verfluchen.lua
 722 Scripts\Measures\ms_walk.lua
 723 Scripts\Measures\ms_walkhome.lua
@@ -919,7 +919,7 @@
 847 Scripts\Measures\Artefacts\as_UseSugarBeetBox2.lua
 848 Scripts\Measures\Artefacts\as_UseSugarBeetBox3.lua
 849 Scripts\Measures\Artefacts\as_UseTarotCards.lua
-850 Scripts\Measures\Artefacts\as_UseVoodo.lua
+850 Scripts\Measures\Artefacts\as_UseVoodo.lua - MERGED
 851 Scripts\Measures\Artefacts\as_UseWeaponPoison.lua
 852 Scripts\Measures\Artefacts\as_UseWeaponsBox1.lua
 853 Scripts\Measures\Artefacts\as_UseWeaponsBox2.lua
