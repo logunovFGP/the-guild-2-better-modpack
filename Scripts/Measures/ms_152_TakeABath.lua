@@ -20,20 +20,20 @@ function Run()
 	SetData("Price", OverallPrice)
 	
 	-- The minimum favor of the destination sim to success
-	local EmpathySkill = GetSkillValue("", CHARISMA)*2
-	local MinimumFavor = 50 - EmpathySkill
-	local FavorWon = 5 + (EmpathySkill * 0.5)
-	local FavorLoss = Rand(4)-9
+	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
+	local CharismaSkill = GetSkillValue("", CHARISMA)*2
+	local MinimumFavor = 65 + TitleDifference - CharismaSkill
+	local FavorWon = 15 + (CharismaSkill * 0.5)+ Rand(6)
+	local FavorLoss = -10 - TitleDifference
+	if FavorLoss > -5 then
+		FavorLoss = -5
+	end
 	
 	local FlirtBonus = GetImpactValue("", 52)		-- 52 = FlirtProfi
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
 	
 	-- the action number for the courting
 	local CourtingActionNumber = 7
-	
---	if not ai_StartBuildingAction("", "Destination", -1, GL_BUILDING_TYPE_TAVERN) then
---		return
---	end
 
 	if IsStateDriven() then
 		if not GetSettlement("","city") then
@@ -42,31 +42,53 @@ function Run()
 		if not CityGetNearestBuilding("city", "", -1, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HASBATHINGROOM, "DestTavern") then
 			StopMeasure()
 		end
-	
+
+		if GetState("DestTavern", STATE_BUILDING) then
+			StopMeasure()
+		end
 		
-		--f_MoveTo("", "DestTavern", GL_MOVESPEED_RUN)
+		if BuildingGetLevel("DestTavern") < 2 then
+			StopMeasure()
+		end
+		
+		if not AliasExists("Destination") then
+			StopMeasure()
+		end
+	
 		if not f_MoveTo("", "DestTavern", GL_MOVESPEED_RUN) then
 			StopMeasure()
 		end
+
+		local DesID = GetID("Destination")
 	
 		
-		f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN)
-		if not f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN) then
-			StopMeasure()
-			
+		if GetDistance("Destination", "DestTavern") < 1500 then
+			if not f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN) then
+				return
+			end
+			f_MoveTo("Destination", "")
+		else
+		-- teleport for AI
+			GetLocatorByName("DestTavern", "Walledge1", "entry")
+			SimBeamMeUp("Destination", "entry", false)
+			f_MoveTo("Destination", "DestTavern", GL_MOVESPEED_RUN)
+			f_MoveTo("Destination", "")
 		end
 
 		local check = true
-		local WaitTime = GetGametime() + 3
+		local WaitTime = GetGametime() + 2
+
 		while check do
 			Sleep(2)
 
 			if not AliasExists("Destination") then
 				StopMeasure()
+				break
 			end
 
-			if WaitTime < GetGametime() then
+			if GetGametime() > WaitTime then
 				StopMeasure()
+				break
 			end
 
 			if GetInsideBuilding("", "Building1") and GetInsideBuilding("Destination", "Building2") then
@@ -146,8 +168,7 @@ function Run()
 			local ModifyFavor = FavorWon
 			
 			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			local DestinationAnimationLength
-			if (EnoughVariation == false) then
+			if (EnoughVariation == false) and (GetFavorToSim("Destination", "") > MinimumFavor) then
 				
 				DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
 				Sleep(DestinationAnimationLength * 0.4)
@@ -158,7 +179,7 @@ function Run()
 				
 			else
 				
-				if (CourtingProgress < -5) then
+				if (CourtingProgress < -5) or (GetFavorToSim("Destination", "") < MinimumFavor) then
 					PlayAnimationNoWait("", "got_a_slap")
 					DestinationAnimationLength = PlayAnimationNoWait("Destination", "give_a_slap")
 					Sleep(DestinationAnimationLength * 0.4)
@@ -200,8 +221,6 @@ function Run()
 						end
 					end
 					
-							
-								
 					if HasProperty("", "Ready") and HasProperty("", "YourTurn") then
 						f_BeginUseLocator("", "BathPosition1", GL_STANCE_STAND, true)
 						SetData("BathPosition1InUse", 1)
@@ -219,7 +238,7 @@ function Run()
 					if HasProperty("", "Here") and HasProperty("Destination", "Here") then				
 						GfxStartParticle("Steam", "particles/bath_steam.nif", "BathPosition1", 2.5)
 						local iCount = 0
-						for iCount=0, 8 do
+						for iCount =0, 8 do
 							PlaySound3DVariation("", "measures/takeabath", 2)
 							if Rand(10) > 5 then
 								PlaySound3DVariation("", "CharacterFX/female_joy_loop", 1)
@@ -242,34 +261,29 @@ function Run()
 						if GetLocatorByName("Tavern", "PreBathStand", "PreBathPosStand") then
 							
 							if SimGetGender("") == GL_GENDER_MALE then
-								f_MoveToNoWait("", "PreBathPosStand")
-								if not f_BeginUseLocator("Destination", "PreBathPosSit", GL_STANCE_SIT, true) then
-									StopMeasure()
-									return
+									f_MoveToNoWait("", "PreBathPosStand")
+									f_BeginUseLocator("Destination", "PreBathPosSit", GL_STANCE_SIT, true)
+									SetData("PreBathPosSitInUse", 1)
+									SetData("WhoUsesPreBathPosSit", GetID("Destination"))
+									f_BeginUseLocator("", "PreBathPosStand", GL_STANCE_STAND, true)
+									SetData("PreBathPosStandInUse", 1)
+									SetData("WhoUsesPreBathPosStand", GetID(""))
+								else
+									f_MoveToNoWait("", "PreBathPosSit")
+									f_BeginUseLocator("Destination", "PreBathPosStand", GL_STANCE_STAND, true)
+									SetData("PreBathPosStandInUse", 1)
+									SetData("WhoUsesPreBathPosStand", GetID("Destination"))
+									f_BeginUseLocator("", "PreBathPosSit", GL_STANCE_SIT, true)
+									SetData("PreBathPosSitInUse", 1)
+									SetData("WhoUsesPreBathPosSit", GetID(""))
 								end
-								SetData("PreBathPosSitInUse", 1)
-								SetData("WhoUsesPreBathPosSit", GetID("Destination"))
-								f_BeginUseLocator("", "PreBathPosStand", GL_STANCE_STAND, true)
-								SetData("PreBathPosStandInUse", 1)
-								SetData("WhoUsesPreBathPosStand", GetID(""))
-							else
-								f_MoveToNoWait("", "PreBathPosSit")
-								if not f_BeginUseLocator("Destination", "PreBathPosStand", GL_STANCE_STAND, true) then
-									StopMeasure()
-									return
-								end
-								SetData("PreBathPosStandInUse", 1)
-								SetData("WhoUsesPreBathPosStand", GetID("Destination"))
-								f_BeginUseLocator("", "PreBathPosSit", GL_STANCE_SIT, true)
-								SetData("PreBathPosSitInUse", 1)
-								SetData("WhoUsesPreBathPosSit", GetID(""))
 							end
-							
 						end
-					end					
+					end
 					
+					RemoveProperty("", "PreBath")
+					RemoveProperty("Destination", "PreBath")
 				end
-			end
 			
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)					
 				MsgSay("Destination", chr_AnswerCourtingMeasure("TAKE_A_BATH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
@@ -291,6 +305,18 @@ function Run()
 		-- Check if the favor is high enough for bathing
 		local success = (GetFavorToSim("Destination", "") > MinimumFavor)
 		if success then
+			
+			if SimGetSpouse("Destination", "Spouse") then
+				if (GetID("Spouse") == GetID("")) then
+					AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
+					AddImpact("Destination","LoveLevel", 10, 24)
+					if GetImpactValue("Destination", "LoveLevel") >= 10 then
+						MsgNewsNoWait("", "Destination", "", "schedule", -1,
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+					end
+				end
+			end
 			
 			-- Pay if the tavern does not belong to the owners dynasty
 			if GetDynastyID("Tavern") ~= GetDynastyID("") then
@@ -348,21 +374,22 @@ function Run()
 					
 
 			if HasProperty("", "Here") and HasProperty("Destination", "Here") then				
-						GfxStartParticle("Steam", "particles/bath_steam.nif", "BathPosition1", 2.5)
-						local iCount = 0
-						for iCount=0, 8 do
-							PlaySound3DVariation("", "measures/takeabath", 2)
-							if Rand(10) > 5 then
-								PlaySound3DVariation("", "CharacterFX/female_joy_loop", 1)
-							end
-							Sleep(4)
-						end
-						GfxStopParticle("Steam")
-						RemoveProperty("", "Here")
-						RemoveProperty("Destination", "Here")
-						SetProperty("", "PreBath")
-						SetProperty("Destination", "PreBath")
+				GfxStartParticle("Steam", "particles/bath_steam.nif", "BathPosition1", 2.5)
+				local iCount = 0
+				for iCount=0, 8 do
+					PlaySound3DVariation("", "measures/takeabath", 2)
+					if Rand(10) > 5 then
+						PlaySound3DVariation("", "CharacterFX/female_joy_loop", 1)
 					end
+					Sleep(4)
+				end
+
+				GfxStopParticle("Steam")
+				RemoveProperty("", "Here")
+				RemoveProperty("Destination", "Here")
+				SetProperty("", "PreBath")
+				SetProperty("Destination", "PreBath")
+			end
 			
 			---------------------
 			------ PreBath ------
@@ -397,8 +424,8 @@ function Run()
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			chr_ModifyFavor("Destination", "", FavorWon)
-			ModifyHP("",5,true)
-			ModifyHP("Destination",5,true)
+			ModifyHP("", 5, true)
+			ModifyHP("Destination", 5, true)
 			
 			MsgSay("Destination", chr_AnswerBathing(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), true))
 			feedback_MessageCharacter("",
@@ -411,8 +438,8 @@ function Run()
 		
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination", "", FavorLoss)
-			ModifyHP("",5,true)
-			ModifyHP("Destination",5,true)
+			ModifyHP("", 5, true)
+			ModifyHP("Destination", 5, true)
 			
 			MsgSay("Destination", chr_AnswerBathing(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), false))
 			feedback_MessageCharacter("",
@@ -443,6 +470,10 @@ function CleanUp()
 	
 	if HasData("BathpartnerBlocked") then
 		StopAnimation("Destination")
+	end
+	
+	if AliasExists("Steam") then
+		GfxStopParticle("Steam")
 	end
 	
 	-- Free Locators

@@ -53,7 +53,7 @@ _Design_
 - Die Möglichkeit, während Gerichts- und Ratssitzungen zu bestechen oder Komplimente zu machen, wurde entfernt. Gründe dafür sind die Buganfälligkeit, das Balancing und die Zeit, die 
   diese Bedenkzeiten gekostet haben. Ihr müsst euch nun besser vorbereiten.
 - Das Icon für Schwangerschaft wird nun rechts unten statt links unten angezeigt, dadurch werden aktive Maßnahmen nicht länger verdeckt.
-- Diverse Icons wurden überarbeitet.
+- Diverse Icons wurden überarbeitet oder hinzugefügt.
 - Einige Charaktertexturen wurden überarbeitet.
 - Die Anzahl möglicher Dynastien je nach Karte wurde angepasst.
 - Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten zum Bearbeiten fehlen, sind daher nicht mehr spielbar.
@@ -122,6 +122,7 @@ _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
 - Cookdown und Bezahlung beim Tanzen wurden zu früh gesetzt; war die Tanzfläche blockiert, oder die Maßnahme aus anderen Gründen abgebrochen, musste man dennoch
   zahlen und den Cooldown hinnehmen.
+- Unter Umständen endete der Dampf-Effekt beim Nehmen eines Einzelbades nie.
 
 _Gelehrter_
 - Der 'vergiftete Kuchen' senkte nicht die Kampfkraft des Opfers.
@@ -156,7 +157,7 @@ _Gauner_
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
-- Die KI konnte beim Becircen in der Taverne stecken bleiben. Zudem wurden einige weitere Probleme mit der Maßnahme behoben.
+- Die KI hatte Probleme bei Flirt-Maßnahmen wie 'Jemanden zum Tanz auffordern', "Becircen" oder 'Gemeinsames Bad nehmen'
 - Es gab einen kleinen Fehler bei der KI, wenn diese Betriebsprüfer befehligen konnte.
 - Piratenschiffe der KI greifen keine Fischerboote mehr an.
 - Die KI repariert beschädigte Betriebe nun regelmäßig.
@@ -173,6 +174,7 @@ _KI_
 - Das Kinder-Verhalten war fehlerhaft und nicht performant.
 - Die KI spammte 'Gebäude plündern', sogar bei Gebäuden, die noch im Bau waren.
 - KI-Priester konnten 'Gläubige gewinnen', auch, wenn das entsprechende Upgrade noch gar nicht freigeschaltet war.
+- KI Charaktere erhielten beim Kauf neuer Rüstungen/Waffen ein zusätzliches Item in ihr Inventar.
 
 *** Features ***
 
@@ -193,7 +195,6 @@ _Allgemein_
 - Es gibt neue und teils überarbeitete Fähigkeiten nach Stufenaufstieg.
 - Es gibt nun eine Maßnahme, mit der man die äußere Erscheinung eines Charakters während des laufenden Spiels anpassen kann (Selbe Kategorie wie das Inventar).
 - Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
-- Es wurden mehrere Mauszeiger-Icons für Maßnahmen hinzugefügt, die die Auswahl eines Ziels erfordern.
 - Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
 - Die neue Karte 'Yorkshire' wurde hinzugefügt.
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
@@ -205,7 +206,7 @@ _Allgemein_
   Allerdings könnt ihr nun auch Liebschaften eingehen, wenn ihr bereits verheiratet seid (aber nur mit unverheirateten Charakteren).
 
 _Patron_
--
+- In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
 
 _Gelehrter_
 - 'Medizinische Behandlungen' steigern die Beliebtheit des Heilstubenbesitzers.

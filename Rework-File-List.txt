@@ -589,11 +589,11 @@
 517 Scripts\Measures\ms_145_OrderASpying.lua
 518 Scripts\Measures\ms_146_AlertTheGuard.lua
 519 Scripts\Measures\ms_147_PatrolTheTown.lua - MERGED
-520 Scripts\Measures\ms_152b_TakeABathAlone.lua
-521 Scripts\Measures\ms_152_TakeABath.lua
+520 Scripts\Measures\ms_152b_TakeABathAlone.lua - MERGED
+521 Scripts\Measures\ms_152_TakeABath.lua - MERGED
 522 Scripts\Measures\ms_155_ArrangeDanceShow.lua
 523 Scripts\Measures\ms_157_AssignEmployeeToService.lua
-524 Scripts\Measures\ms_158_RentSleepingBerth.lua
+524 Scripts\Measures\ms_158_RentSleepingBerth.lua - MERGED
 525 Scripts\Measures\ms_160b_InviteToFeast.lua
 526 Scripts\Measures\ms_160_GiveAFeast.lua
 527 Scripts\Measures\ms_211_OrderCollectEvidence.lua

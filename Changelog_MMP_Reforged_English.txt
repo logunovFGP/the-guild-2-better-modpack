@@ -55,7 +55,7 @@ _Design_
 - The 'thinkbreak' where you could compliment and bribe during office sessions and trials has been removed. Reasons for that are balancing, bugs and the time it added to the sessions.
   You now have to prepare before the sessions start.
 - State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
-- Multiple icons have been reworked.
+- Multiple icons have been reworked or added.
 - Some character textures have been overhauled.
 - The numbers of possible dynasties per map have been adjusted.
 - Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can now longer be played on.
@@ -121,7 +121,8 @@ _General_
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
 - If you wanted to dance with somebody and the dance floor was blocked already, you still would lose your money and cooldown time would begin.
-
+- You can cure some diseases if you sleep in a tavern, especially if you have the 'deep sleep' ability.
+- Under circumstances the steam-effect of the action 'take a bath alone' would never end.
 
 _Scholar_
 - The poisoned cake didn't lower the fighting skill.
@@ -154,7 +155,7 @@ _Rogue_
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
-- AI could get stuck in taverns during the 'sweet talking' measure. Fixed multiple additional issues.
+- AI had problems during certain flirting actions such as 'dancing with someone', 'sweet talking' or 'taking a bath together'.
 - There was a small bug inside the AI if they could control the buisness inspectors.
 - AI Pirate ships no longer attack fishing boats
 - AI repairs their buildings regulary now.
@@ -166,6 +167,7 @@ _AI_
 - Child behavior had bugs and influenced overall game performance in a negative way.
 - AI spammed 'Plunder building' measures, even while the target was still under construction.
 - AI controlled priests could 'win believers' even though they hadn't unlocked the required upgrade.
+- AI characters got an additional item in their inventory when they bought a new weapon/armor.
 
 *** Features ***
 
@@ -185,7 +187,6 @@ _General_
 - Some new and reworked abilities after levelup.
 - Added a new measure to change your character's appearance ingame (same category as inventory-measure).
 - Added a new measure to mark a dynasty character as important (same category as inventory-measure). That character then will appear in the 'Important Persons' list.
-- Added multiple missing icons for selecting targets during certain measures.
 - Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.

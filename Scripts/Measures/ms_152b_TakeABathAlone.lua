@@ -3,13 +3,30 @@
 -- -----------------------
 function Run()
 
+	if IsStateDriven() then
+	--	local ItemName = "Phiole"
+	--	if GetItemCount("", ItemName, INVENTORY_STD)==0 then
+	--		if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
+	--			return
+	--		end
+	--	end
+		
+		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
+			return
+		end
+		
+		if GetInsideBuilding("", "Tavern") then
+			if not (GetID("Destination") == GetID("Tavern")) then
+				return
+			end
+		else
+			return
+		end
+	end
 	-- hier muss noch der Preis anhand der Taverne und dem Sozialstatus des sims berechnet werden
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-	local Price = SimGetRank("Owner")
-	local BasicPrice = 20
-	local RankPrice = 25
-	local OverallPrice = BasicPrice + (Price * RankPrice)
+	local OverallPrice = 350
 	SetData("Price", OverallPrice)
 	
 	-- Stop a possibly following courtlover from following
@@ -19,7 +36,7 @@ function Run()
 	
 	local Money = GetMoney("")
 	if Money < OverallPrice then
-		MsgQuick("", "_TAVERN_152_TAKEABATH_FAILURES_+1", OverallPrice)
+		MsgBox("", "", "","@L_GENERAL_ERROR_HEAD_+0", "@L_TAVERN_152_TAKEABATH_FAILURES_+1", OverallPrice)
 		return false
 	end
 	
@@ -51,7 +68,8 @@ function Run()
 	SetData("Bathing", 1)
 
 	local MaxHP = GetMaxHP("")
-	local ToHeal = 0.02 * MaxHP
+	local ToHeal = 0.15 * MaxHP
+	local Progress = 0
 	
 	SetMeasureRepeat(TimeOut)
 	
@@ -61,7 +79,12 @@ function Run()
 			MsgQuick("", "_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 			return
 		end
-		CreditMoney("Tavern",GetData("Price"),"Offering")
+		CreditMoney("Tavern", GetData("Price"), "Offering")
+	--	local OldBalance = 0
+	--	if HasProperty("Tavern", "BalanceBathingFee") then
+	--		OldBalance = GetProperty("Tavern", "BalanceBathingFee")
+	--	end
+	--	SetProperty("Tavern", "BalanceBathingFee", (OldBalance+OverallPrice))
 	end
 
 	-- Bathing
@@ -70,14 +93,18 @@ function Run()
 	PlaySound3DVariation("", "measures/takeabath_alone", 1)
 	Sleep(2)
 	
-	while(GetHP("") < MaxHP) do
+	while(Progress < 5) do
 		PlaySound3DVariation("", "measures/takeabath_alone", 1)
 		Sleep(2)
-		ModifyHP("", ToHeal)
+		if GetHP("") < MaxHP then
+			ModifyHP("", ToHeal)
+		end
+		Progress = Progress +1
+		Sleep(0.5)
 	end
-	
+
 	GfxStopParticle("Steam")
-	Sleep(4)
+	end
 	
 	if GetFreeLocatorByName("Tavern", "Stroll", 1, 5, "EndPos") then
 		f_MoveTo("", "EndPos")
@@ -90,21 +117,22 @@ end
 -- -----------------------
 function CleanUp()
 
-	RemoveProperty("Tavern", "BathInUse")
+	if AliasExists("Tavern") then
+		RemoveProperty("Tavern", "BathInUse")
+	end
+
+	if AliasExists("Steam") then
+		GfxStopParticle("Steam")
+	end
 	StopAnimation("")
-	
 end
 
 -- -----------------------
 -- GetOSHData
 -- -----------------------
 function GetOSHData(MeasureID)
-	local Price = SimGetRank("Owner")
-	local BasicPrice = 20
-	local RankPrice = 25
-	local OverallPrice = BasicPrice + (Price * RankPrice)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6",OverallPrice)
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 350)
 end
 
