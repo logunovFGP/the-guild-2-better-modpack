@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_LeadCrusade"
+----	OVERVIEW "ms_126_LeadCrusade"
 ----
 ----	With this measure the player can lead a crusade
 -------------------------------------------------------------------------------
@@ -36,22 +36,23 @@ function Run()
 --		StopMeasure()
 --	end	
 	
-	GetSettlement("","DestCity")
+	GetSettlement("", "DestCity")
 
-	if not GetOutdoorLocator("MapExit1",1,"CrusadeDestination") then
-		if not GetOutdoorLocator("MapExit2",1,"CrusadeDestination") then
-		    if not GetOutdoorLocator("MapExit3",1,"CrusadeDestination") then	
-            end
+	if not GetOutdoorLocator("MapExit1", 1, "CrusadeDestination") then
+		if not GetOutdoorLocator("MapExit2", 1, "CrusadeDestination") then
+			if not GetOutdoorLocator("MapExit3", 1, "CrusadeDestination") then
+				return
+			end
 		end
 	end
 	
-	if not CityGetRandomBuilding("DestCity",0,GL_BUILDING_TYPE_DUELPLACE,-1,-1,FILTER_IGNORE,"CrusadeContainer") then
+	if not CityGetRandomBuilding("DestCity", 0, GL_BUILDING_TYPE_DUELPLACE, -1, -1, FILTER_IGNORE, "CrusadeContainer") then
 		if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_SOLDIERPLACE, -1, false, "CrusadeContainer") then
 			StopMeasure()
 		end
 	end
 	
-	SetProperty("","CrusadeContainerID",GetID("CrusadeContainer"))
+	SetProperty("","CrusadeContainerID", GetID("CrusadeContainer"))
 	
 	
 	MsgNewsNoWait("All","","","politics",-1,
@@ -64,9 +65,7 @@ function Run()
 		StopMeasure()
 	end
 
-	--debug
 	SetMeasureRepeat(TimeOut)
-	--SetMeasureRepeat(1)
 	MeasureSetNotRestartable()
 	SetExclusiveMeasure("", "LeadCrusade", EN_BOTH)
 	
@@ -81,26 +80,26 @@ function Run()
 	
 	local CrusadeRecruitTime = GetGametime() + 4
 	
-	SetProperty("","NumCrusaders",0)
+	SetProperty("", "NumCrusaders", 0)
 	
-	CommitAction("crusade","","")
+	CommitAction("crusade", "", "")
 	
-	CarryObject("","Handheld_Device/ANIM_crossofprotection.nif",false)
-	CarryObject("","Handheld_Device/ANIM_Book_L.nif",true)
+	CarryObject("", "Handheld_Device/ANIM_crossofprotection.nif", false)
+	CarryObject("", "Handheld_Device/ANIM_Book_L.nif", true)
 	
 	
 	--do the progress bar stuff
 	local Time = GetGametime()
 	local EndTime = Time + 4
-	SetData("Time",4)
-	SetData("EndTime",EndTime)
-	SetProcessMaxProgress("",4*10)
-	SendCommandNoWait("","Progress")
+	SetData("Time", 4)
+	SetData("EndTime", EndTime)
+	SetProcessMaxProgress("", 4*10)
+	SendCommandNoWait("", "Progress")
 	
 	while (GetGametime() < CrusadeRecruitTime) and (GetProperty("","NumCrusaders")<GL_MAX_CRUSADERS) do
 		MsgSay("","@L_PRIVILEGES_LEADCRUSADE_SPEECH_RECRUITING")
 		--PlayAnimation("","pray_standing")
-		PlayAnimation("","preach")
+		PlayAnimation("", "preach")
 		Sleep(2)
 	end
 	
@@ -112,7 +111,7 @@ function Run()
 	local ReadyPeopleFilter = "__F((Object.GetObjectsByRadius(Sim)==5000)AND(Object.GetState(crusade)))"
 	local NumReadyPeople = Find("",ReadyPeopleFilter,"ReadySim",-1)
 	for i=0,NumReadyPeople-1 do
-		SendCommandNoWait("ReadySim"..i,"AttackThem")
+		SendCommandNoWait("ReadySim"..i, "AttackThem")
 	end
 	
 	ResetProcessProgress("")
@@ -120,25 +119,23 @@ function Run()
 	Sleep(4)
 	
 	--time is up, or enough crusaders joined
-	SetProperty("","CrusadeDestinationID",1)
+	SetProperty("", "CrusadeDestinationID",1)
 	
-	if not f_MoveTo("","CrusadeDestination",GL_MOVESPEED_WALK) then
+	if not f_MoveTo("", "CrusadeDestination", GL_MOVESPEED_WALK) then
 		StopMeasure()
 	end
 	
 	local CrusadeDuration = duration
-	--debug
-	--local CrusadeDuration = 1
 	
-	SetState("",STATE_LOCKED,true) 
+	SetState("", STATE_LOCKED, true) 
 	SetInvisible("", true)
 	AddImpact("", "Hidden", 1 , -1)
-	SimBeamMeUp("","CrusadeContainer",false)
+	SimBeamMeUp("", "CrusadeContainer",false)
 	
-	AddImpact("","IsOnCrusade",1,CrusadeDuration)
+	AddImpact("", "IsOnCrusade", 1, CrusadeDuration)
 	
 	--create the reward
-	local Skill = GetSkillValue("",FIGHTING)
+	local Skill = GetSkillValue("", FIGHTING)
 	local Reward = (Rand(GetProperty("","NumCrusaders") * 100)*Skill)+GetProperty("","NumCrusaders")*(100*Skill)
 	SimSetFaith("",SimGetFaith("")+5)
 	local MyFaith = SimGetFaith("")
@@ -157,15 +154,16 @@ function Run()
 			end
 		end	
 	
-	while GetImpactValue("","IsOnCrusade")>0 do
+	while GetImpactValue("", "IsOnCrusade") > 0 do
 		Sleep(1)
 	end
 	
-	SimBeamMeUp("","CrusadeDestination",false)
+	SimBeamMeUp("","CrusadeDestination", false)
 	SetInvisible("", false)
-	SetState("",STATE_LOCKED,true)
+	SetState("", STATE_LOCKED, true)
 	RemoveProperty("","NumCrusaders")
 	
+	-- Rewards if you are lucky
 	local RewardArray = {"EpicBracers","EpicHelmet","WarCuirass","Excalibur","EpicAxe","OrientalCarpet","OrientalStatues","OrientalTobacco"}
 	local NumItems = 8
 
@@ -173,19 +171,18 @@ function Run()
 	
 	feedback_MessagePolitics("","@L_PRIVILEGES_LEADCRUSADE_MSG_CRUSADE_END_HEAD_+0",
 					"@L_PRIVILEGES_LEADCRUSADE_MSG_CRUSADE_END_BODY_+1",Reward,ItemGetLabel(ItemReward))
-	AddItems("",ItemReward,1,INVENTORY_STD)
-	CreditMoney("",Reward, "IncomeOther")
+	AddItems("", ItemReward, 1, INVENTORY_STD)
+	CreditMoney("", Reward, "IncomeOther")
 	
 	local xp = GetData("BaseXP")+25*Skill
-	chr_GainXP("",xp)
+	chr_GainXP("", xp)
 	
-	if not f_MoveTo("","Destination",GL_MOVESPEED_WALK) then
+	if not f_MoveTo("", "Destination", GL_MOVESPEED_WALK) then
 		StopMeasure()
 	end
-	SetState("",STATE_LOCKED,false)
 	
+	SetState("", STATE_LOCKED, false)
 	StopMeasure()
-	
 end
 
 -- -----------------------
@@ -220,20 +217,20 @@ end
 -- -----------------------
 function CleanUp()
 	AllowAllMeasures("")
-	RemoveProperty("","CrusadeContainerID")
-	SetState("",STATE_LOCKED,false)
+	RemoveProperty("", "CrusadeContainerID")
+	SetState("", STATE_LOCKED, false)
 	SetInvisible("", false)
-	RemoveImpact("","Hidden")
+	RemoveImpact("", "Hidden")
 	ResetProcessProgress("")
-	if HasProperty("","NumCrusaders") then
-		RemoveProperty("","NumCrusaders")
+	if HasProperty("", "NumCrusaders") then
+		RemoveProperty("", "NumCrusaders")
 	end
-	if HasProperty("","CrusadeDestinationID") then
-		RemoveProperty("","CrusadeDestinationID")
+	if HasProperty("", "CrusadeDestinationID") then
+		RemoveProperty("", "CrusadeDestinationID")
 	end
-	CarryObject("","",false)
-	CarryObject("","",true)
-	StopAction("crusade","")
+	CarryObject("", "", false)
+	CarryObject("", "", true)
+	StopAction("crusade", "")
 end
 
 -- -----------------------

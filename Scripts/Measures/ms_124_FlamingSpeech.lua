@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_FlamingSpeech"
+----	OVERVIEW "ms_124_FlamingSpeech"
 ----
 ----	With this measure the player can deliver a flaming speech and influence
 ----  the peoples favor
@@ -15,8 +15,8 @@
 -- -----------------------
 function Run()
 
-	if not f_MoveTo("","Destination") then
-		StopMeasure()
+	if not f_MoveTo("", "Destination") then
+		return
 	end
 	
 	local MeasureID = GetCurrentMeasureID("")
@@ -26,22 +26,22 @@ function Run()
 	--do the progress bar stuff
 	local Time = GetGametime()
 	local EndTime = Time + duration
-	SetData("Time",duration)
-	SetData("EndTime",EndTime)
-	SetProcessMaxProgress("",duration*10)
-	SendCommandNoWait("","Progress")
+	SetData("Time", duration)
+	SetData("EndTime", EndTime)
+	SetProcessMaxProgress("", duration*10)
+	SendCommandNoWait("", "Progress")
 	
-	CommitAction("flamingspeech","","")
+	CommitAction("flamingspeech", "", "")
 	
 	SetMeasureRepeat(TimeOut)
 	MeasureSetNotRestartable()
 	
 	while GetGametime() < EndTime do
-		MsgSay("","@L_PRIVILEGES_FLAMINGSPEECH")
+		MsgSay("", "@L_PRIVILEGES_FLAMINGSPEECH")
 		Sleep(5)
 	end
 	
-	StopMeasure()
+	StopMeasure() -- force cleanup
 end
 
 function Progress()
@@ -51,7 +51,7 @@ function Progress()
 		local CurrentTime = GetGametime() 
 		CurrentTime = EndTime - CurrentTime 
 		CurrentTime = Time - CurrentTime 
-		SetProcessProgress("",CurrentTime*10)
+		SetProcessProgress("", CurrentTime*10)
 		Sleep(3)
 	end
 end
@@ -64,8 +64,8 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 

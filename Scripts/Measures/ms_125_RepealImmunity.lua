@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_RepealImmunity"
+----	OVERVIEW "ms_125_RepealImmunity"
 ----
 ----	With this measure the player can repeal the immunity of a sim
 ----  

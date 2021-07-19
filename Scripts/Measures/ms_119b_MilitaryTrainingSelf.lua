@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_111b_MilitaryTrainingSelf"
+----	OVERVIEW "ms_119b_MilitaryTrainingSelf"
 ----
 ----	With this measure the player can change its character class to chiseler
 ----	
@@ -243,9 +243,8 @@ function Run()
 	StartSingleShotParticle("particles/change_effect.nif", "ParticleSpawnPos", 1, 2.0)
 	
 	SimSetClass("", GL_CLASS_CHISELER)
-	ms_111b_militarytrainingself_Terminate(TrainerID)
+	ms_119b_militarytrainingself_Terminate(TrainerID)
 	StopMeasure()
-	
 end
 
 -- -----------------------
@@ -294,7 +293,7 @@ function CleanUp()
 	
 	if AliasExists("PersonalTrainer") then
 		local TrainerID = GetID("PersonalTrainer")
-		ms_111b_militarytrainingself_Terminate(TrainerID)
+		ms_119b_militarytrainingself_Terminate(TrainerID)
 		MoveSetStance("PersonalTrainer", "GL_STANCE_STAND") 
 		ResetProcessProgress("PersonalTrainer")
 		MoveSetActivity("PersonalTrainer")

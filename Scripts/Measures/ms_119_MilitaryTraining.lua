@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_111_MilitaryTraining"
+----	OVERVIEW "ms_119_MilitaryTraining"
 ----
 ----	With this measure the player can change the character class of one of his
 ----  dynasty members to chiseler

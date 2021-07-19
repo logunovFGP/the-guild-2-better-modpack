@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_Rage"
+----	OVERVIEW "ms_127_Rage"
 ----
 ----	With this measure the player can get a bonus on the fighting skill of
 ----  himselfe and his fellows

@@ -1,5 +1,5 @@
 function Run()
-	SetState("", STATE_NPCKILL, true)
+	SetState("", STATE_NPC, true)
 	GetSettlement("", "MyCity")
 	SetProperty("", "ImYourDestiny", 1)
 	SetProperty("", "Berserker", 1)

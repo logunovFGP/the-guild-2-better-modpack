@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_RoyalGuard"
+----	OVERVIEW "ms_122_RoyalGuard"
 ----
 ----	With this measure the player can send out the royal guard
 ----  
@@ -10,9 +10,6 @@
 ----  4. Danach verschwindet die Garde wieder
 -------------------------------------------------------------------------------
 
--- -----------------------
--- Run
--- -----------------------
 function Run()
 		
 	local MeasureID = GetCurrentMeasureID("")
@@ -20,42 +17,34 @@ function Run()
 	
 	-- Get the residence of the king
 	if not GetHomeBuilding("", "HomeBuilding") then
-		StopMeasure()
+		return
 	end
 	
 	local CurMeasID = GetCurrentMeasureID("")
 	
 	-- Spawn the guards at the home building
-	GetLocatorByName("HomeBuilding", "Entry1", "GuardSpawnPos")
-	for i=0, 4 do
-	local i = 0
-		if not SimCreate(50, "HomeBuilding", "GuardSpawnPos", "Guard"..i) then
-			StopMeasure()
-		else			
-			local PosX, PosY, PosZ = GetWorldPositionXYZ("Destination")
-			SetProperty("Guard"..i, "DestX", Rand(500)+PosX)
-			SetProperty("Guard"..i, "DestZ", Rand(500)+PosZ)
-			SetProperty("Guard"..i, "CurMeasID", CurMeasID)
-			SetProperty("Guard"..i, "DynID", GetDynastyID(""))
-			SimSetBehavior("Guard"..i, "RoyalGuardDuty")
+	if GetLocatorByName("HomeBuilding", "Entry1", "GuardSpawnPos") then
+		SetMeasureRepeat(TimeOut)
+		for i=0, 4 do
+			
+			if not SimCreate(50, "HomeBuilding", "GuardSpawnPos", "Guard"..i) then
+				StopMeasure()
+			else			
+				local PosX, PosY, PosZ = GetWorldPositionXYZ("Destination")
+				SetProperty("Guard"..i, "DestX", Rand(500)+PosX)
+				SetProperty("Guard"..i, "DestZ", Rand(500)+PosZ)
+				SetProperty("Guard"..i, "CurMeasID", CurMeasID)
+				SetProperty("Guard"..i, "DynID", GetDynastyID(""))
+				SimSetBehavior("Guard"..i, "RoyalGuardDuty")
+			end
 		end
-	end
-	
-	SetMeasureRepeat(TimeOut)
-	
 end
 
--- -----------------------
--- GetOSHData
--- -----------------------
 function GetOSHData(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 
--- -----------------------
--- CleanUp
--- -----------------------
 function CleanUp()
 end
 

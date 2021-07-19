@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_RepairCart"
+----	OVERVIEW "ms_148_RepairCart"
 ----
 ----	With this measure the player can repair one of his carts
 ----
@@ -15,23 +15,21 @@ function Run()
 		StopMeasure()
 		return
 	else
-		
 			
-		SetState("operator", STATE_LOCKEDALT, true)
-		if not IsType("","Ship") then
-			if not ExitCurrentVehicle("") then
-				MsgQuick("", "@L_GENERAL_MEASURES_REPAIRCART_FAILURES_+0")
-				StopMeasure()
-				return
-			end
+	SetState("operator", STATE_LOCKEDALT, true)
+	if not IsType("", "Ship") then
+		if not ExitCurrentVehicle("") then
+			MsgQuick("", "@L_GENERAL_MEASURES_REPAIRCART_FAILURES_+0")
+			StopMeasure()
+			return
 		end
+	end
 		
-			
-			local DirX = 0
-			local DirY = 0
-			local DirZ = 0
-			DirX, DirY, DirZ = GetRotationTo("operator", "")
-			GfxSetRotation("operator", 0, DirY, 0, true)
+	local DirX = 0
+	local DirY = 0
+	local DirZ = 0
+	DirX, DirY, DirZ = GetRotationTo("operator", "")
+	GfxSetRotation("operator", 0, DirY, 0, true)
 			
 			local CartType = CartGetType("")
 			GetDynasty("", "CartDynasty")
