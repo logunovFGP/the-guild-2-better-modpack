@@ -1,6 +1,6 @@
 function Run()
 
-	if SimGetAge("") > 12 then
+	if SimGetAge("") > 13 then
 		return
 	end
 	

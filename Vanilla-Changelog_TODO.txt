@@ -37,7 +37,6 @@ Offen:
 - Die Maßnahme "Brief aus Rom" wird nun abgebrochen, sollte sich das Ziel
   im Inneren eines Gebäudes aufhalten. Es wird eine Fehlermeldung verschickt, die darauf
   hinweist.
-- Es konnte zu Fehlern kommen, wenn der Rattenfänger verschwand, bevor ein Kind starb.
 - Beim Würfelspiel wird die KI nicht permanent höhere Rekorde erzielen,
   das Maximum, das sie erreichen kann ist nun wie beim Spieler 40.000 -> Die KI spielt nicht richtig, sondern
   übertrifft den Spieler immer mit Random. Sollte theoretisch komplett redesignt werden.

@@ -115,6 +115,7 @@ _General_
 - Patrolling thugs got interrupted too easily.
 - Fixed possible animation issues when using the stone top on children.
 - Fixed multiple wrong text labels in several languages.
+- Fixed a possible issue with the ratboy.
 - Fixed several map issues
 
 _Patron_

@@ -114,6 +114,7 @@ _Allgemein_
 - Patrouillen von Schergen wurden zu leicht unterbrochen.
 - Einen möglichen Animationsfehler beim Nutzen des Steinkreisels behoben.
 - Mehrere fehlerhafte Text-Label in allen Sprachen korrigiert (Bsp: Doppelter Vorname).
+- Einen möglichen Fehler beim Rattenfänger behoben.
 - Diverse Map-Fehler korrigiert.
 
 

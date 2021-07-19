@@ -264,6 +264,8 @@ Translate and add the following lines below:
 18261   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0"   "%1SN has tried to put a dark spell on your soul but he failed miserably thanks to your remarkable empathic skills. It's time for revenge, accuse him now!"   |
 18262   "_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0"   "You are irresistible!"   |
 18263   "_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0"   "Are you a heartbreaker or do you really mean it? Anyway, %1SV is completely under your spell and wishes nothing more than to spend some hours with you alone ..."   |
+18264   "_RATBOY_MSGMEASURE_+0"   "I like this flute playing!"   |
+18265   "_RATBOY_MSGMEASURE_+1"   "This is sooo exciting! An adventure ..."   |
 
 
 Delete the following lines:

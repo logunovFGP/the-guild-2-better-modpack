@@ -685,7 +685,7 @@
 613 Scripts\Measures\ms_FindCourtLover.lua
 614 Scripts\Measures\ms_FlamingSpeech.lua
 615 Scripts\Measures\ms_Flirt.lua - MERGED
-616 Scripts\Measures\ms_FollowRatBoy.lua
+616 Scripts\Measures\ms_FollowRatBoy.lua - MERGED
 617 Scripts\Measures\ms_ForceMarriage.lua
 618 Scripts\Measures\ms_GeneralPardon.lua
 619 Scripts\Measures\ms_GetDivorced.lua - MERGED
@@ -1001,7 +1001,7 @@
 929 Scripts\Measures\Behaviour\bs_Poison.lua
 930 Scripts\Measures\Behaviour\bs_Preacher.lua
 931 Scripts\Measures\Behaviour\bs_Quacksalver.lua
-932 Scripts\Measures\Behaviour\bs_ratboy.lua
+932 Scripts\Measures\Behaviour\bs_ratboy.lua - MERGED
 933 Scripts\Measures\Behaviour\bs_revolt.lua
 934 Scripts\Measures\Behaviour\bs_SicknessDetection.lua
 935 Scripts\Measures\Behaviour\bs_SimGetKurios.lua
@@ -1038,7 +1038,7 @@
 966 Scripts\Measures\Behaviour\std_QuestNPC.lua
 967 Scripts\Measures\Behaviour\std_QuestNPCDeliverDocs.lua
 968 Scripts\Measures\Behaviour\std_QuestNPCStrollMarket.lua
-969 Scripts\Measures\Behaviour\std_RatBoy.lua
+969 Scripts\Measures\Behaviour\std_RatBoy.lua - MERGED
 970 Scripts\Measures\Behaviour\std_Sailor.lua
 971 Scripts\Measures\Behaviour\std_Sekundant1.lua
 972 Scripts\Measures\Behaviour\std_Sekundant2.lua
