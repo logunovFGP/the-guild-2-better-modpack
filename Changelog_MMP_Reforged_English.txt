@@ -149,6 +149,7 @@ _Rogue_
 - Robbercamps now have a cart.
 - 'Hypnosis pendulum' didn't work.
 - One curse of the 'voodoo doll' didn't work. Also there was no error msg when the victim had enough empathy to counter the measure.
+- Protectionmoney rackets showed the wrong duration in the tooltip.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
@@ -215,7 +216,7 @@ _AI_
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
 - AI sends wenches to the market place or to pre-determined places on the maps. 
 - At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
-
+- AI now better thinks about if it should accept protection money rackets or not.
 
 *** Balancing ***
 

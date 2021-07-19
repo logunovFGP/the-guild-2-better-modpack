@@ -22,10 +22,6 @@ function Execute()
 	if not CopyAlias("MEMBER"..random, "SIM") then
 		return 0
 	end
-	
-	name	= GetName("SIM")
-	str		= "CheckMyrmidon: Selected "..name
-	LogMessage(str);
 
 	return 1
 end

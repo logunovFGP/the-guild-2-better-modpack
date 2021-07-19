@@ -232,7 +232,7 @@
 160 Scripts\AI\Piratesnest_Ship\pirateship_UnloadCargo.lua
 161 Scripts\AI\Piratesnest_Ship\ship_PlunderBuilding.lua
 162 Scripts\AI\Robber\GetCured.lua
-163 Scripts\AI\Robber\PressProtectionMoney.lua
+163 Scripts\AI\Robber\PressProtectionMoney.lua - MERGED
 164 Scripts\AI\Robber\Robber_CheckOutfit.lua
 165 Scripts\AI\Robber\Robber_JoinSquad.lua
 166 Scripts\AI\Robber\Robber_Plunder.lua - MERGED

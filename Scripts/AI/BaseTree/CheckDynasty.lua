@@ -23,9 +23,5 @@ function Execute()
 		return 0
 	end
 	
-	name	= GetName("SIM")
-	str		= "CheckDynastyChar: Selected "..name
-	LogMessage(str);
-	
 	return 1
 end

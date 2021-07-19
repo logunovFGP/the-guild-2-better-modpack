@@ -151,6 +151,7 @@ _Gauner_
 - Das 'Hypnosependel' funktionierte nicht.
 - Einer der Flüche der 'Voodoo-Puppe' funktionierte nicht richtig. Es gab auch keine Fehlermeldung, wenn das Opfer genug Empathie hatte, um den Angriff
   abzuwehren.
+- Bei Schutzgelderpressungen wurde die falsche Dauer im Tooltip angezeigt.
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
@@ -224,7 +225,7 @@ _KI_
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
 - Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
 - Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
-
+- Die KI überlegt sich nun besser, ob sie Schutzgelderpressungen annehmen sollte oder nicht.
 
 *** Balancing ***
 

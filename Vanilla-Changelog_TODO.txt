@@ -66,8 +66,6 @@ Offen:
 - Unter Umst‰nden wurde das Kassenbuch der Stadt nicht aufgezeigt.
 - Manchmal erhielten Opfer von Raub, Knochenbrechen und Mord keinen Beweis gegen den T‰ter.
 - Das Gemeinsame Bad funktionierte als FlirtMeasure nicht.
-- Beim Schutzgelderpressen wurde im Tooltip der Maﬂnahme die falsche Dauer
-  angezeigt.
 - Wenn die Nachricht aufkam, sich zum Gericht, Rathaus etc. zu bewegen und dort ankam,
   konnte es passieren, dass der Charakter danach weiter produzieren wollte.
 - Sims aus Nachbarst‰dten konnten Verbrecher in ihrer Stadt anklagen (eigentlich
