@@ -20,15 +20,11 @@ Offen:
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
 - Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
  Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
-- Sollte beim Tanzen in der Taverne die Tanzposition blockiert sein, so wird die Maßnahme abgebrochen. Trotzdem wurde ein Cooldown gesetzt
-  und das Geld abgezogen. Dies passiert nun erst kurz vor Beginn des Tanzes.
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
 - Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
   oder während Wunderkuren geholt werden.
 - Die KI versucht nicht länger in Tavernen, die gerade erst ausgebaut werden, ein Bad zu nehmen oder zu becircen.
-
-- Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.
 - Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 
   bewachten, Schergen, die königliche Garde, Kinder und Sims, die einen Kreuzzug ausrufen 
   (wodurch die KI diese Maßnahme ständig neustartete)
@@ -42,7 +38,6 @@ Offen:
   im Inneren eines Gebäudes aufhalten. Es wird eine Fehlermeldung verschickt, die darauf
   hinweist.
 - Es konnte zu Fehlern kommen, wenn der Rattenfänger verschwand, bevor ein Kind starb.
-- In allen Sprachen wurden doppelte Vornamen in Benachrichtigungen gelöscht. (SV SN -Kombination bei hpfz-Texten)
 - Beim Würfelspiel wird die KI nicht permanent höhere Rekorde erzielen,
   das Maximum, das sie erreichen kann ist nun wie beim Spieler 40.000 -> Die KI spielt nicht richtig, sondern
   übertrifft den Spieler immer mit Random. Sollte theoretisch komplett redesignt werden.
@@ -70,7 +65,6 @@ Offen:
   die Maßnahme mittendrin abbrach.
 - Unter Umständen wurde das Kassenbuch der Stadt nicht aufgezeigt.
 - Manchmal erhielten Opfer von Raub, Knochenbrechen und Mord keinen Beweis gegen den Täter.
-- Unter Umständen griffen Minenwächter die eigene Dynastie an.
 - Das Gemeinsame Bad funktionierte als FlirtMeasure nicht.
 - Beim Schutzgelderpressen wurde im Tooltip der Maßnahme die falsche Dauer
   angezeigt.
@@ -88,7 +82,6 @@ Kritische Balance-Änderungen:
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.
 - Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.
-- Unter seltenen Umständen, konnte es zu einem Animationsfehler beim gleichzeitigen Einsatz mehrerer Steinkreisel kommen.
 - Spieler und KI konnten zu Gerichts-, Amtsitzungen, Festen oder Duellen gerufen werden, selbst, wenn sie gerade eingekerkert oder
   anderweitig behindert waren.
 - Die Produkt-KI aller Betriebe wurde signifikant verbessert (dynamischen Prio-System)
@@ -101,7 +94,6 @@ Kritische Balance-Änderungen:
 Nützliche Vanilla-Features + QoL Änderungen:
 - Durch das Tragen eines Knochenarmreifs kann der Träger sich vor Hexerdokumenten schützen.
 - Wer in einer Taverne einen Schlafplatz mietet, wird auf jedenfall und ohne Itembedarf von Erkältungen und Grippe geheilt.
-- Wer einen Heiler via Maßnahme aufsuchen will, rennt dort nun hin, anstatt zu gehen.
 - Man kann Schattendynastien nun ihre Gebäude abkaufen, selbst, wenn sie nicht zum Verkauf stehen! Dazu braucht es eventuell nur etwas
   "Verhandlungsgeschick" (Knochen brechen!) - und viel Geld.
 - Bänker:

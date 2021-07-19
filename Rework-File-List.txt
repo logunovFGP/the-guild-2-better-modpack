@@ -618,7 +618,7 @@
 546 Scripts\Measures\ms_AssignToServiceDivehouse.lua
 547 Scripts\Measures\ms_AssignToThiefOfLove.lua
 548 Scripts\Measures\ms_AttendApprenticeship.lua
-549 Scripts\Measures\ms_AttendDoctor.lua
+549 Scripts\Measures\ms_AttendDoctor.lua - MERGED
 550 Scripts\Measures\ms_AttendMass.lua
 551 Scripts\Measures\ms_AttendSchool.lua
 552 Scripts\Measures\ms_AttendUniversity.lua
@@ -718,7 +718,7 @@
 646 Scripts\Measures\ms_Merchantman.lua
 647 Scripts\Measures\ms_MilitaryTraining.lua
 648 Scripts\Measures\ms_MilitaryTrainingSelf.lua
-649 Scripts\Measures\ms_MineGuards.lua
+649 Scripts\Measures\ms_MineGuards.lua - MERGED
 650 Scripts\Measures\ms_mmdebug0.lua
 651 Scripts\Measures\ms_mmdebug1.lua
 652 Scripts\Measures\ms_mmdebug2.lua
@@ -914,7 +914,7 @@
 842 Scripts\Measures\Artefacts\as_UseSilverRing.lua
 843 Scripts\Measures\Artefacts\as_UseSpindel.lua
 844 Scripts\Measures\Artefacts\as_UseStinkBomb.lua
-845 Scripts\Measures\Artefacts\as_UseStonerotary.lua
+845 Scripts\Measures\Artefacts\as_UseStonerotary.lua - MERGED
 846 Scripts\Measures\Artefacts\as_UseSugarBeetBox1.lua
 847 Scripts\Measures\Artefacts\as_UseSugarBeetBox2.lua
 848 Scripts\Measures\Artefacts\as_UseSugarBeetBox3.lua
@@ -961,7 +961,7 @@
 889 Scripts\Measures\Behaviour\behavior_ListenPreacher.lua
 890 Scripts\Measures\Behaviour\behavior_ListenQuacksalver.lua
 891 Scripts\Measures\Behaviour\behavior_MercAttack.lua
-892 Scripts\Measures\Behaviour\behavior_MineGuardsDuty.lua
+892 Scripts\Measures\Behaviour\behavior_MineGuardsDuty.lua - MERGED
 893 Scripts\Measures\Behaviour\behavior_playing.lua
 894 Scripts\Measures\Behaviour\behavior_presession.lua
 895 Scripts\Measures\Behaviour\behavior_pretrial.lua

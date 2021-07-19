@@ -113,11 +113,14 @@ _General_
 - Building- and upgrading times have been fixed.
 - When calling the guards, only guards and no 'bailiffs' would come and check the location.
 - Patrolling thugs got interrupted too easily.
+- Fixed possible animation issues when using the stone top on children.
+- Fixed multiple wrong text labels in several languages.
 - Fixed several map issues
 
 _Patron_
 - The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
--
+- If you wanted to dance with somebody and the dance floor was blocked already, you still would lose your money and cooldown time would begin.
+
 
 _Scholar_
 - The poisoned cake didn't lower the fighting skill.
@@ -135,6 +138,8 @@ _Scholar_
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
 - The effect of the 'comb' did not end properly.
+- Mine guards no longer block the mine's worker-slots.
+- Mine guards sometimes ignored certain hostile action against the mine they are supposed to defend.
 
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
@@ -244,6 +249,7 @@ _General_
 - Weight of evidence, their influence on favor and deposition has been rebalanced.
 - Voters for offices have been changes to emphasise the distinction between the clerical and non-clerical 'chambers'
 - The damage sims do by attacks on buildings has been increased significantly.
+- Reduced the base amount of XP children would get from stone tops.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

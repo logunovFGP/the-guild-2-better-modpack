@@ -112,12 +112,15 @@ _Allgemein_
 - Bau- und Upgradezeiten von Gebäuden korrigiert.
 - Rief man die Wachen, kamen nur Gardisten und keine Stadtbüttel, um nach dem Rechten zu sehen.
 - Patrouillen von Schergen wurden zu leicht unterbrochen.
+- Einen möglichen Animationsfehler beim Nutzen des Steinkreisels behoben.
+- Mehrere fehlerhafte Text-Label in allen Sprachen korrigiert (Bsp: Doppelter Vorname).
 - Diverse Map-Fehler korrigiert.
 
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
-- 
+- Cookdown und Bezahlung beim Tanzen wurden zu früh gesetzt; war die Tanzfläche blockiert, oder die Maßnahme aus anderen Gründen abgebrochen, musste man dennoch
+  zahlen und den Cooldown hinnehmen.
 
 _Gelehrter_
 - Der 'vergiftete Kuchen' senkte nicht die Kampfkraft des Opfers.
@@ -136,6 +139,8 @@ _Gelehrter_
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
 - Der Effekt des 'Kamms' endete nicht richtig.
+- Minenwächter blockieren nicht länger Arbeiter-Slots der Mine.
+- Minenwächter ignorierten bisweilen feindselige Aktionen gegen die Mine, die sie eigentlich beschützen sollten.
 
 _Gauner_
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
@@ -254,6 +259,7 @@ _Allgemein_
 - Die Gewichtung der Verbrechen und ihr Einfluss auf Gunst und Gesinnung wurden angepasst.
 - Die Wahlberechtigten für Ämter wurden angepasst, sodass die Aufteilung in Klerikal und Weltlich deutlicher wird.
 - Der Schaden, den Sims durch Angriffe an Gebäuden anrichten, wurde deutlich erhöht.
+- Die Basis EP reduziert, die Kinder durch einen Steinkreisel erhielten.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

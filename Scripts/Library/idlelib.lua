@@ -88,7 +88,7 @@ function Sleep(SleepStart, SleepEnd)
 					if GetSettlement("", "MyCity") then
 						if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLIC, 32, -1, -1, FILTER_IGNORE, "Destination") then
 							if f_MoveTo("","Destination") then
-								MeasureRun("","Destination","Linger",true)
+								MeasureRun("", "Destination", "Linger", true)
 								return
 							end
 						end
@@ -418,8 +418,8 @@ function Graveyard()
 		Sleep(Rand(12) + 6)
 		MoveSetStance("",GL_STANCE_STAND)
 		SatisfyNeed("", 4, 0.2)
-		if BuildingGetOwner("Destination","Sitzer") then
-			CreditMoney("Destination",Rand(5) + 1,"tip")
+		if BuildingGetOwner("Destination", "Sitzer") then
+			CreditMoney("Destination", Rand(5)+1, "tip")
 		end
 		Sleep(6)
 	end
@@ -1119,14 +1119,14 @@ function VisitDoc(HospitalID)
 				return
 			end
 		end
-		GetSettlement("CurrentBuilding","City")
+		GetSettlement("CurrentBuilding", "City")
 
 	elseif not GetNearestSettlement("", "City") then
 		return
 	end
 	
 	if HospitalID then
-		GetAliasByID(HospitalID,"Destination")
+		GetAliasByID(HospitalID, "Destination")
 	else
 		RemoveAlias("Destination")
 	end
@@ -1159,7 +1159,7 @@ function VisitDoc(HospitalID)
 		if IgnoreID and IgnoreID == GetID("Destination") then
 			-- go home and sleep
 			if GetHomeBuilding("", "HomeBuilding") and GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then
-				MeasureRun("",nil,"GoToSleep")
+				MeasureRun("", nil, "GoToSleep")
 				return
 			else
 				return
@@ -1173,7 +1173,7 @@ function VisitDoc(HospitalID)
 
 	--go home if there are too much sick sims
 	if not DynastyIsPlayer("") then
-		local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment==1))"
+		local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment == 1))"
 		local NumSickSims = Find("", SickSimFilter,"SickSim", -1)
 		if NumSickSims > 10 then
 			f_ExitCurrentBuilding("")
