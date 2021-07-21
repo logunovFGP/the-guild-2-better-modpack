@@ -21,8 +21,6 @@ Offen:
 - Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
-- Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
-  oder während Wunderkuren geholt werden.
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
 - Die KI bewarb sich auf keine höheren Ämter, wenn sich bereits ein Bewerber auf 
@@ -58,7 +56,6 @@ Offen:
 
 Kritische Balance-Änderungen:
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
-- Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.
 - Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.
 - Die Produkt-KI aller Betriebe wurde signifikant verbessert (dynamischen Prio-System)
 - Die Gewinne des Würfelspiels wurden drastisch gesenkt (maximal 10.000 Einsatz)

@@ -147,6 +147,8 @@ _Gelehrter_
 - 'Unkendunk' konnte mehrfach gegen dasselbe Ziel eingesetzt werden.
 - Es war nicht möglich, 'Unkendunk' als Verbrechen wahrzunehmen.
 - Die 'Handwerksurkunde' funktionierte in einigen Betrieben nicht.
+- Lavendel konnte verloren gehen, wenn dieses sich im Inventar eines Angestellten befand, der zum Quacksalben ausgesandt wurde und das Inventar des Hospitals bereits voll war.
+- Es gab einen möglichen Exploit beim Quacksalben, bei dem man Gold nach Abbruch der Maßnahme erhielt.
 
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
@@ -226,6 +228,7 @@ _Gelehrter_
 - Die Tooltips von Krankheiten weisen auf die temporären Talentabzüge hin.
 - Vergiftete Brunnen machen Sims in ihrer Nähe krank.
 - Lepra-Infizierte verlieren Gunst bei Charakteren in der Nähe.
+- Kunden von Quacksalbern werden nun kommentieren, ob sie eine Wunderkur kaufen oder nicht.
 
 _Handwerker_
 -

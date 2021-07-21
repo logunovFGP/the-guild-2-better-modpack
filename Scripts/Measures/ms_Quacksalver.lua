@@ -4,6 +4,16 @@ function Run()
 		StopMeasure() 
 		return
 	end
+
+	local Producer = BuildingGetProducerCount("Hospital", PT_MEASURE, "Quacksalver")
+	
+	if IsStateDriven() then
+		if Producer >1 then
+			StopMeasure()
+			return
+		end
+	end
+
 	MeasureSetStopMode(STOP_NOMOVE)
 
 	if not AliasExists("Destination") then
@@ -93,17 +103,18 @@ end
 
 function GetPlacebo()
 
-	-- added by Napi
 	local ItemCount = GetItemCount("", "Lavender", INVENTORY_STD) 
 		
-		-- lavender is deleted from the inventory of the doctor and added to the inventory of the hospital
-	if GetItemCount("", "Lavender", INVENTORY_STD)>=1 then
-		RemoveItems("", "Lavender", ItemCount)
-		AddItems("Hospital", "Lavender", ItemCount)
+	-- lavender is deleted from the inventory of the doctor and added to the inventory of the hospital
+	if ItemCount("", "Lavender", INVENTORY_STD) >= 1 then
+		if CanAddItems("Hospital", "Lavender", Count, INVENTORY_STD) then
+			RemoveItems("", "Lavender", ItemCount)
+			AddItems("Hospital", "Lavender", ItemCount)
+		end
 	end
 		
 
-	if GetItemCount("", "MiracleCure")>0 then
+	if GetItemCount("", "MiracleCure") > 0 then
 		return true
 	end
 	
@@ -130,6 +141,7 @@ function GetPlacebo()
 end
 
 function CleanUp()
+
 	StopAnimation("")
 	StopAction("quacksalver", "")
 end

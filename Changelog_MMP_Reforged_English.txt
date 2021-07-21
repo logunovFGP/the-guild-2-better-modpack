@@ -148,6 +148,8 @@ _Scholar_
 - 'Toad excrement' was no crime in the database.
 - The 'Certificate of Tradesmenship' didn't work in every workshop.
 - The pawn broker got too much xp for production.
+- lavender could get lost if your employees had some in their inventory when assigned to quacksalve and the Hospital had no space for the lavender.
+- There was a possible exploit with quacksalvery where you would get a lot of gold after cancelling the action.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
@@ -221,6 +223,7 @@ _Scholar_
 - The tooltips of illnesses now show their effect on talent-reductions
 - Poisoned wells make all characters nearby sick.
 - Leprosy-infected now lose favor with other characters, unless they use perfume.
+- During Quacksalvery customers will now comment on whether they buy miracle cures or not.
 
 _Craftsman_
 -

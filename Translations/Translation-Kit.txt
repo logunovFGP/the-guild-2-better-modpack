@@ -269,6 +269,26 @@ Translate and add the following lines below:
 18266   "_GENERAL_MSGMEASURE_COHABIT_+0"   "I am expected at home"   |
 18267   "_FAMILY_2_COHABITATION_FAIL_HEAD_+0"   "Your spouse despises you"   |
 18268   "_FAMILY_2_COHABITATION_FAIL_BODY_+0"   "Oh dear! %1SV seems to be far less irresistable than you might have thought. Maybe you have to bring %2SV into a romantic mood before? ... Visit a tavern together and make some compliments like in good old times, that might help!"   |
+18269   "_MEASURE_LISTENQUACKSALVER_YES_+0"   "Give me your ointment, my toe is itching the whole day ..."   |
+18270   "_MEASURE_LISTENQUACKSALVER_YES_+1"   "I need one of this wonderful cures!"   |
+18271   "_MEASURE_LISTENQUACKSALVER_YES_+2"   "If only I can sleep through the night again ..."   |
+18272   "_MEASURE_LISTENQUACKSALVER_YES_+3"   "A nice bargain, thanks!"   |
+18273   "_MEASURE_LISTENQUACKSALVER_YES_+4"   "I don't care if it works, I just need my old mother to stop moaning."   |
+18274   "_MEASURE_LISTENQUACKSALVER_YES_+5"   "I take one!"   |
+18275   "_MEASURE_LISTENQUACKSALVER_YES_+6"   "Do you have one for me?"   |
+18276   "_MEASURE_LISTENQUACKSALVER_YES_+7"   "Don't push, it's my turn now!"   |
+18277   "_MEASURE_LISTENQUACKSALVER_YES_+8"   "There is nothing better!"   |
+18278   "_MEASURE_LISTENQUACKSALVER_YES_+9"   "I can't resist ..."   |
+18279   "_MEASURE_LISTENQUACKSALVER_NO_+0"   "Humbug ..."   |
+18280   "_MEASURE_LISTENQUACKSALVER_NO_+1"   "Are you actualy a real healer?"   |
+18281   "_MEASURE_LISTENQUACKSALVER_NO_+2"   "Far to expensive."   |
+18282   "_MEASURE_LISTENQUACKSALVER_NO_+3"   "You are just a show-off!"   |
+18283   "_MEASURE_LISTENQUACKSALVER_NO_+4"   "Your tinctures are giving me a rash!"   |
+18284   "_MEASURE_LISTENQUACKSALVER_NO_+5"   "Your >cures< make me sick."   |
+18285   "_MEASURE_LISTENQUACKSALVER_NO_+6"   "Who needs something like this ..."   |
+18286   "_MEASURE_LISTENQUACKSALVER_NO_+7"   "You are quite a talker ..."   |
+18287   "_MEASURE_LISTENQUACKSALVER_NO_+8"   "You are a swindler!"   |
+18288   "_MEASURE_LISTENQUACKSALVER_NO_+9"   "Please spare me ..."   |
 
 
 Delete the following lines:
