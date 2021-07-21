@@ -4,83 +4,67 @@ end
 function Run()
 	local Incubate = true
 	if IsPartyMember("") then
-		feedback_MessageCharacter("","@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_HEAD_+0",
-						"@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_BODY_+0",GetID(""))
+		feedback_MessageCharacter("", "@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_HEAD_+0",
+									"@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_BODY_+0",GetID(""))
 	end
 	
 	while Incubate == true do
-		StopAction("sickness","")
+		StopAction("sickness", "")
 		RemoveOverheadSymbols("")
 		
 		------------------------------------------------------
 		-- increase the number of infections
 		-- this is only done twice because incubate is only true if
 		-- the disease changed to a higher level
-		if GetSettlement("","City") then
+		if GetSettlement("", "City") then
 			if GetImpactValue("","Sprain")==1 then
 				chr_incrementInfectionCount("SprainInfected", "City")
+				Incubate = state_sick_SprainBehaviour()
 			elseif GetImpactValue("","Cold")==1 then
 				chr_incrementInfectionCount("ColdInfected", "City")
+				Incubate = state_sick_ColdBehaviour()
 			elseif GetImpactValue("","Influenza")==1 then
 				chr_incrementInfectionCount("InfluenzaInfected", "City")
+				Incubate = state_sick_InfluenzaBehaviour()
 			elseif GetImpactValue("","BurnWound")==1 then
 				chr_incrementInfectionCount("BurnWoundInfected", "City")
+				Incubate = state_sick_BurnWoundBehaviour()
 			elseif GetImpactValue("","Pox")==1 then
 				chr_incrementInfectionCount("PoxInfected", "City")
+				Incubate = state_sick_PoxBehaviour()
 			elseif GetImpactValue("","Pneumonia")==1 then
 				chr_incrementInfectionCount("PneumoniaInfected", "City")
+				Incubate = state_sick_PneumoniaBehaviour()
 			elseif GetImpactValue("","Blackdeath")==1 then
 				chr_incrementInfectionCount("BlackdeathInfected", "City")
+				Incubate = state_sick_BlackdeathBehaviour()
 			elseif GetImpactValue("","Fracture")==1 then
 				chr_incrementInfectionCount("FractureInfected", "City")
+				Incubate = state_sick_FractureBehaviour()
 			elseif GetImpactValue("","Caries")==1 then
 				chr_incrementInfectionCount("CariesInfected", "City")
+				Incubate = state_sick_CariesBehaviour()
+			elseif GetState("", STATE_BLACKDEATH) then
+				return
 			else
-				StopMeasure()
+				SetState("", STATE_SICK, false)
+				return
 			end
 		end
 		------------------------------------------------------
-		
-		
-		if GetImpactValue("","Sprain")==1 then
-			Incubate = state_sick_SprainBehaviour()
-		elseif GetImpactValue("","Cold")==1 then
-			Incubate = state_sick_ColdBehaviour()
-		elseif GetImpactValue("","Influenza")==1 then
-			Incubate = state_sick_InfluenzaBehaviour()
-		elseif GetImpactValue("","BurnWound")==1 then
-			Incubate = state_sick_BurnWoundBehaviour()
-		elseif GetImpactValue("","Pox")==1 then
-			Incubate = state_sick_PoxBehaviour()
-		elseif GetImpactValue("","Pneumonia")==1 then
-			Incubate = state_sick_PneumoniaBehaviour()
-		elseif GetImpactValue("","Blackdeath")==1 then
-			Incubate = state_sick_BlackdeathBehaviour()
-		elseif GetImpactValue("","Fracture")==1 then
-			Incubate = state_sick_FractureBehaviour()
-		elseif GetImpactValue("","Caries")==1 then
-			Incubate = state_sick_CariesBehaviour()
-		else
-			StopMeasure()
-		end
-		Sleep(1)
 	end
-	StopMeasure()
 end
 
 function SprainBehaviour()
-	--ShowOverheadSymbol("",true,true,0,"Scheisse, ich hab mir den Fuss verstaucht!")
-	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","hobble")
-		end
-	end
-	while GetImpactValue("","Sprain")==1 do
-		Sleep(Rand(20)+10)
+
+	MoveSetActivity("", "hobble")
+
+	while GetImpactValue("", "Sprain") == 1 do
+		Sleep(20)
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
+	if GetSettlement("", "City") then
 		chr_decrementInfectionCount("SprainInfected", "City")
 	end
 	
@@ -88,36 +72,30 @@ function SprainBehaviour()
 end
 
 function ColdBehaviour()
-	--ShowOverheadSymbol("",true,true,0,"Scheisse, ich hab ne Erkältung")
-	CommitAction("sickness","","")
-	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","sick")
-		end
-	end
-	while GetImpactValue("","Cold")==1 do
-		Sleep(Rand(20)+10)
-		if (GetState("", STATE_IDLE) and MoveGetStance("")==GL_STANCE_STAND) then
+	
+	CommitAction("sickness", "", "") -- it's contagious
+	MoveSetActivity("", "sick")
+		
+	while GetImpactValue("", "Cold") == 1 do
+		Sleep(30)
+		if (GetState("", STATE_IDLE) and MoveGetStance("") == GL_STANCE_STAND) then
 			local AnimTime
-			local Gender = SimGetGender("")
 			if Rand(10)>4 then
-				AnimTime = PlayAnimationNoWait("","sneeze")
+				AnimTime = PlayAnimationNoWait("", "sneeze")
 				Sleep(0.5)
-				PlaySound3DVariation("","CharacterFX/sneeze",1)
+				PlaySound3DVariation("", "CharacterFX/sneeze", 1)
 				Sleep(AnimTime-0.5)
 			else
-				AnimTime = PlayAnimationNoWait("","cough")
+				AnimTime = PlayAnimationNoWait("", "cough")
 				Sleep(1)
-				PlaySound3DVariation("","CharacterFX/disease_light_cough",1)
-				
+				PlaySound3DVariation("", "CharacterFX/disease_light_cough", 1)
 				Sleep(AnimTime-1)
-				
 			end
 		end
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
+	if GetSettlement("", "City") then
 		chr_decrementInfectionCount("ColdInfected", "City")
 	end
 	

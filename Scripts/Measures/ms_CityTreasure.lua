@@ -1,21 +1,36 @@
 function Run()
 
-	if not BuildingGetCity("", "city") then
-		StopMeasure()
+	if not GetSettlement("", "city") then
+		return
 	end
-	if not GetLocalPlayerDynasty("Player") then
-		StopMeasure()
+
+	-- get data for citizen and city level
+	local LevelID = CityGetLevel("city")
+	local Level = CityLevel2Label(LevelID) 
+	local citizens = citylevel_GetValue(LevelID)
+	local CurrentCitizens	= CityGetCitizenCount("city")
+	local lvluptext = "_MEASURE_CITYTREASURE_LVLUP_+1"
+	local nomorelvlup = false
+	local ImperialId = ScenarioGetImperialCapitalId()
+	
+	if (ImperialId >0 and ImperialId ~= nil) then
+		nomorelvlup = true
+	end
+	
+	if Level == 6 or nomorelvlup then
+		lvluptext = "_MEASURE_CITYTREASURE_LVLUP_+2"
 	end
 
 	local officebearer = false
-	local Count = DynastyGetMemberCount("Player")
-	for l=0,Count-1 do
-		if DynastyGetMember("Player", l, "Member") then
+	local Count = DynastyGetMemberCount("dynasty")
+
+	for l=0, Count-1 do
+		if DynastyGetMember("dynasty", l, "Member") then
 			if IsPartyMember("Member") then
 				if GetHomeBuilding("Member", "Home") then
 					BuildingGetCity("Home", "PlayerCity")
-					if GetID("city")==GetID("PlayerCity") then
-						if SimGetOfficeLevel("Member")>0 then
+					if GetID("city") == GetID("PlayerCity") then
+						if SimGetOfficeLevel("Member") >=0 then
 							officebearer = true
 						end
 					end
@@ -24,9 +39,9 @@ function Run()
 		end
 	end
 
-	if officebearer==true then
+	if officebearer then
 
-		if GetRound()>0 then
+		if GetRound() > 0 then
 			local TaxMoney = 0
 			if HasProperty("city", "TaxMoney") then
 				TaxMoney = GetProperty("city", "TaxMoney")
@@ -80,32 +95,34 @@ function Run()
 				Warcosts = Warcosts * (-1)
 			end
 	
-			MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+0",GetID("city"),TaxMoney,TaxValue,Workshops,NobilityMoney,OfficeMoney,repairedbuildings,BuildingRepairs,wartext,Warcosts,GetMoney("city"),MercMoney)
+			if LevelID < 6 then
+				lvluptext = "_MEASURE_CITYTREASURE_LVLUP_+0"
+			end
+
+			MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+0", GetID("city"), TaxMoney, TaxValue, Workshops, NobilityMoney, OfficeMoney, repairedbuildings, BuildingRepairs, wartext, Warcosts, GetMoney("city"), MercMoney, Level, CurrentCitizens, lvluptext, citizens)
 		else
-			MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+1",GetID("city"),GetMoney("city"))
+			MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+1", GetID("city"), GetMoney("city"), Level, CurrentCitizens, lvluptext, citizens)
 		end
 	
 	else
 	
 		local citytreasure = GetMoney("city")
 		local replacement = ""
-		if citytreasure < 300 then
+		if citytreasure < 5000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+0"
-		elseif citytreasure < 2000 then
+		elseif citytreasure < 15000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+1"
-		elseif citytreasure < 10000 then
+		elseif citytreasure < 35000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+2"
-		elseif citytreasure < 25000 then
+		elseif citytreasure < 100000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+3"
 		else
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+4"
 		end		
 	
-		MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+2",GetID("city"),replacement)
+		MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+2", GetID("city"), replacement, Level, CurrentCitizens, lvluptext, citizens)
 	end
-
 end
 
-function CleanUp()
-	
+function CleanUp()	
 end

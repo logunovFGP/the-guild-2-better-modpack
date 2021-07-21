@@ -12,7 +12,6 @@ Offen:
 - Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
-- Wer gegenwärtig nicht steuerbar ist, wird nicht mehr zu Amtssitzungen, Gericht oder Ähnlichem gerufen.
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 - Türme haben nicht-aggressive Schiffe angegriffen.
@@ -24,9 +23,6 @@ Offen:
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
 - Beim Quacksalben werden nur noch dann Wunderkuren verkauft, wenn die Verkaufsaktion läuft, nicht nach Beendigung
   oder während Wunderkuren geholt werden.
-- Die Maßnahme "Flammende Rede halten" hatte auch Einfluss auf Söldner, die Gebäude 
-  bewachten, Schergen, die königliche Garde, Kinder und Sims, die einen Kreuzzug ausrufen 
-  (wodurch die KI diese Maßnahme ständig neustartete)
 - Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
   ob diese Gelehrte sind oder nicht.
 - Die KI bewarb sich auf keine höheren Ämter, wenn sich bereits ein Bewerber auf 
@@ -39,7 +35,6 @@ Offen:
 - Beim Würfelspiel wird die KI nicht permanent höhere Rekorde erzielen,
   das Maximum, das sie erreichen kann ist nun wie beim Spieler 40.000 -> Die KI spielt nicht richtig, sondern
   übertrifft den Spieler immer mit Random. Sollte theoretisch komplett redesignt werden.
-- Bei der Titelvergabe-Nachricht wurden Türme als Betriebe mitgezählt.  
 - Ein Zufallsereignis hatte fehlende Texte.
 - Die Pest endete nach Ausbruch nie, weil sich vor allem neu generierte Arbeitslose
   innerhalb der Arbeiterhütte immer wieder von Neuem ansteckten.
@@ -55,28 +50,16 @@ Offen:
   dieses Problem zu umgehen.
 - KI-Sims, die in einem Betrieb Waren produzierten, haben diese Arbeit 
   nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
-- In manchen Städten konnte man sein Opfer nicht verbannen, obwohl es sich mitten in der
-  Stadt befand. Ausschlaggebend ist nun die Entfernung zum Rathaus (Der Radius wurde zudem um 20% erhöht).
-- Man konnte bei der Maßnahme "Eine Reise antreten" in der Kutsche feststecken, wenn man
-  die Maßnahme mittendrin abbrach.
-- Unter Umständen wurde das Kassenbuch der Stadt nicht aufgezeigt.
 - Manchmal erhielten Opfer von Raub, Knochenbrechen und Mord keinen Beweis gegen den Täter.
-- Wenn die Nachricht aufkam, sich zum Gericht, Rathaus etc. zu bewegen und dort ankam,
-  konnte es passieren, dass der Charakter danach weiter produzieren wollte.
-- Sims aus Nachbarstädten konnten Verbrecher in ihrer Stadt anklagen (eigentlich
-  geht das nur, wenn Angeklagter und Ankläger in derselben Stadt wohnen).
 - Es konnte vorkommen, dass nicht alle eingestellten Dynastien auch tatsächlich zu Spielstart
   einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
-- Charaktere verlassen das Rathaus nicht länger, wenn sie im Warteraum stehen und zur Amtsitzung/
-  zur Gerichtsverhandlung gerufen werden, sondern gehen direkt in den richtigen Raum.
+
 
 
 Kritische Balance-Änderungen:
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Einige der neuen Renaissance-Berufe haben bei der Produktion mehr EP bekommen als der Rest.
 - Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.
-- Spieler und KI konnten zu Gerichts-, Amtsitzungen, Festen oder Duellen gerufen werden, selbst, wenn sie gerade eingekerkert oder
-  anderweitig behindert waren.
 - Die Produkt-KI aller Betriebe wurde signifikant verbessert (dynamischen Prio-System)
 - Die Gewinne des Würfelspiels wurden drastisch gesenkt (maximal 10.000 Einsatz)
 - Lösegeldforderungen werden nun nicht immer akzeptiert, vor allem nicht, 

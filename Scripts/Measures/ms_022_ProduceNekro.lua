@@ -1,42 +1,40 @@
 function GetLocator()
 
 	local LocatorArray = {
-	  "Work1", ms_022_producenekro_UseSargA,"",
-		"Work2", ms_022_producenekro_UseLager,"",
-		"Work3", ms_022_producenekro_UseAltar,"",
-		"Work4", ms_022_producenekro_UseKessel,"",
-		"Work5", ms_022_producenekro_UseSargB,"",
-		"Work6", ms_022_producenekro_UseWerktisch,"",
-		"Work7", ms_022_producenekro_UseWerkhilfe,"werkhilfe",
-	}
+	 	"Work1", ms_022_producenekro_UseSargA, "",
+		"Work2", ms_022_producenekro_UseLager, "",
+		"Work3", ms_022_producenekro_UseAltar, "",
+		"Work4", ms_022_producenekro_UseKessel, "",
+		"Work5", ms_022_producenekro_UseSargB, "",
+		"Work6", ms_022_producenekro_UseWerktisch, "",
+		"Work7", ms_022_producenekro_UseWerkhilfe, "werkhilfe",
+		}
+
 	local	LocatorCount = 7
 
 	local Position = (Rand(LocatorCount))*3+1
-	return	LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
+	return LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
 end
 
 function UseSargA()
 
-	GetLocatorByName("WorkBuilding","Work1","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
-		
-	CarryObject("","Handheld_Device/ANIM_spatula.nif", false)
+	GetLocatorByName("WorkBuilding", "Work1", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
+	CarryObject("", "Handheld_Device/ANIM_spatula.nif", false)
 	Sleep(0.5)
-	PlayAnimation("","manipulate_middle_twohand")
+	PlayAnimation("", "manipulate_middle_twohand")
 	Sleep(2)
-	PlayAnimation("","manipulate_middle_up_l")
-
-	CarryObject("","",false)
-	
+	PlayAnimation("", "manipulate_middle_up_l")
+	CarryObject("", "", false)
 end
 
 function UseLager()
 
 	GetLocatorByName("WorkBuilding", "Work2", "WorkPosi")
 	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
-
 	PlayAnimation("", "cogitate")
 	local animat = Rand(3)
+	
 	if animat == 0 then
 		if BuildingHasUpgrade("WorkBuilding", "zutaten") then
 			PlayAnimation("", "manipulate_bottom_r")
@@ -52,117 +50,116 @@ end
 
 function UseAltar()
 
-	GetLocatorByName("WorkBuilding","Work3","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
-	
-	CarryObject("","Handheld_Device/ANIM_fishknife.nif", false)
+	GetLocatorByName("WorkBuilding", "Work3", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
+	CarryObject("", "Handheld_Device/ANIM_fishknife.nif", false)
 	PlayAnimation("", "manipulate_middle_twohand")
-	CarryObject("","",false)
+	CarryObject("", "", false)
 	PlayAnimation("", "cogitate")
+	
 	if Rand(2) == 0 then
-	    CarryObject("","Handheld_Device/ANIM_metahammer.nif", false)
+	    CarryObject("", "Handheld_Device/ANIM_metahammer.nif", false)
 	    Sleep(0.5)
-	    PlayAnimation("","hammer_in")
-	    for i=0,5 do
-		    local waite = PlayAnimationNoWait("","hammer_loop")
+	    PlayAnimation("", "hammer_in")
+	    
+		for i=0,5 do
+		    local waite = PlayAnimationNoWait("", "hammer_loop")
 		    Sleep(1)
-		    PlaySound3DVariation("","Locations/hammer_stone",1.0)
+		    PlaySound3DVariation("", "Locations/hammer_stone", 1.0)
 		    Sleep(waite-1)
 	    end
-	    PlayAnimation("","hammer_out")
-	    CarryObject("","",false)
+
+	    PlayAnimation("", "hammer_out")
+	    CarryObject("", "", false)
 	else
 	    local Time = PlayAnimationNoWait("", "saw")
-	    CarryObject("","Handheld_Device/Anim_handsaw.nif",false)
+	    CarryObject("", "Handheld_Device/Anim_handsaw.nif", false)
 	    Sleep(3)
-	    for i=0,5 do
-		    PlaySound3DVariation("","Locations/handsaw",1.0)
+
+	    for i=0, 5 do
+		    PlaySound3DVariation("", "Locations/handsaw", 1.0)
 		    Sleep(1)
 	    end
+
 	    Sleep(Time-12)
-	    CarryObject("","",false)
+	    CarryObject("", "", false)
 	end
-	
 end
 
 function UseKessel()
 
-	GetLocatorByName("WorkBuilding","Work4","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
-
+	GetLocatorByName("WorkBuilding", "Work4", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
 	PlayAnimation("", "cogitate")
+
 	if Rand(2) == 0 then
 	    PlayAnimation("", "manipulate_middle_twohand")
 	else
-	    PlayAnimation("","manipulate_middle_low_r")
+	    PlayAnimation("", "manipulate_middle_low_r")
 	end
-	CarryObject("","Handheld_Device/ANIM_scoop.nif",false)
+
+	CarryObject("", "Handheld_Device/ANIM_scoop.nif", false)
 	PlayAnimation("", "stir_in")
 	LoopAnimation("", "stir_loop", 10)
 	PlayAnimation("", "stir_out")
-	CarryObject("","",false)	
-	
+	CarryObject("", "", false)	
 end
 
 function UseSargB()
 
-	GetLocatorByName("WorkBuilding","Work5","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
+	GetLocatorByName("WorkBuilding", "Work5", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
 
     if Rand(2) == 0 then
-	    PlayAnimation("","manipulate_middle_low_l")
+	    PlayAnimation("", "manipulate_middle_low_l")
 	else
-	    PlayAnimation("","manipulate_middle_low_r")
+	    PlayAnimation("", "manipulate_middle_low_r")
 	end
-	
 end
 
 function UseWerktisch()
 
-	GetLocatorByName("WorkBuilding","Work6","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
-
-	CarryObject("","Handheld_Device/ANIM_fishknife.nif", false)
+	GetLocatorByName("WorkBuilding", "Work6", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
+	CarryObject("", "Handheld_Device/ANIM_fishknife.nif", false)
 	PlayAnimation("", "manipulate_middle_twohand")
-	CarryObject("","",false)
+	CarryObject("", "", false)
 	
 end
 
 function UseWerkhilfe()
 
-	GetLocatorByName("WorkBuilding","Work7","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
-
-   PlayAnimation("","manipulate_bottom_r")
-
+	GetLocatorByName("WorkBuilding", "Work7", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
+   	PlayAnimation("", "manipulate_bottom_r")
 end
 
 function KnochenGraben()
 
-  while true do
-	local ItemID = SimGetProduceItemID("")
-	local platzSim = 0
-    local platzGeb = 0
-	if ItemID == 973 then
-	    platzSim = GetRemainingInventorySpace("",973,INVENTORY_STD)
-        platzGeb = GetRemainingInventorySpace("WorkBuilding",973,INVENTORY_STD)
-	elseif ItemID == 972 then
-	    platzSim = GetRemainingInventorySpace("",972,INVENTORY_STD)
-        platzGeb = GetRemainingInventorySpace("WorkBuilding",972,INVENTORY_STD)
-	elseif ItemID == 971 then
-	    platzSim = GetRemainingInventorySpace("",971,INVENTORY_STD)
-        platzGeb = GetRemainingInventorySpace("WorkBuilding",971,INVENTORY_STD)
-	end
+ 	while true do
+		local ItemID = SimGetProduceItemID("")
+		local platzSim = 0
+		local platzGeb = 0
+		if ItemID == 973 then
+	   		platzSim = GetRemainingInventorySpace("", 973, INVENTORY_STD)
+        	platzGeb = GetRemainingInventorySpace("WorkBuilding", 973, INVENTORY_STD)
+		elseif ItemID == 972 then
+	   		platzSim = GetRemainingInventorySpace("", 972, INVENTORY_STD)
+        	platzGeb = GetRemainingInventorySpace("WorkBuilding", 972, INVENTORY_STD)
+		elseif ItemID == 971 then
+	    	platzSim = GetRemainingInventorySpace("", 971, INVENTORY_STD)
+        	platzGeb = GetRemainingInventorySpace("WorkBuilding", 971, INVENTORY_STD)
+		end
 	
-	if platzSim < 5 and platzGeb < 5 then
-		MsgQuick("","_HPFZ_PRODUCENEKRO_FEHLER_+0")
-		return false
-	elseif platzSim < 5 then
-		TransferItems("","WorkBuilding")
+		if platzSim < 5 and platzGeb < 5 then
+			MsgQuick("", "_HPFZ_PRODUCENEKRO_FEHLER_+0")
+			return false
+		elseif platzSim < 5 then
+		TransferItems("", "WorkBuilding")
 	end 
 	
-	CarryObject("","Handheld_Device/ANIM_torchparticles.nif", false)
-	GetFreeLocatorByName("WorkBuilding","bomb",1,3,"GehPunkt")
+	CarryObject("", "Handheld_Device/ANIM_torchparticles.nif", false)
+	GetFreeLocatorByName("WorkBuilding", "bomb", 1, 3, "GehPunkt")
 	--GetPosition("WorkBuilding","GehPunkt")
 	local range = 300
 	local x,y,z = PositionGetVector("GehPunkt")
@@ -208,15 +205,28 @@ function KnochenGraben()
 		SimBeamMeUp("","LagerPos",false)
 		--return false
 	end
-    TransferItems("","WorkBuilding")
+    TransferItems("", "WorkBuilding")
 	MoveSetActivity("")
 	Sleep(2)
-    CarryObject("","",false)
+    CarryObject("", "", false)
 	end
 end
 
 function CleanUp()
-	if AliasExists("WorkBuilding") and DynastyIsAI("WorkBuilding") then
-		ms_022_gather_ReturnItems("", "WorkBuilding")
+
+	if AliasExists("WorkBuilding") and DynastyIsAI("") then
+		local ItemId, Found
+		local Count = InventoryGetSlotCount("", INVENTORY_STD)
+
+		for i=0,Count-1 do
+			ItemId, Found = InventoryGetSlotInfo("", i, INVENTORY_STD)
+
+			if ItemId and ItemId>0 and Found>0 then
+				if CanAddItems("WorkBuilding", ItemId, Found, INVENTORY_STD) then
+					RemoveItems("", ItemId, Found)
+					AddItems("WorkBuilding", ItemId, Found)
+				end
+			end
+		end
 	end
 end

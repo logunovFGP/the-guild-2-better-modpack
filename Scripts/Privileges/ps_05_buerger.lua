@@ -20,18 +20,7 @@ function TakeTitle()
 	local maxworkshops = GetDatabaseValue("NobilityTitle", currenttitle, "maxworkshops")
 	local BuildLabel = "_BUILDING_Residence"..buildinglevel.."_NAME_+0"
 	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..(currenttitle * 2) - 1
-
-	local buildingcount = 0
-	local Count = DynastyGetBuildingCount2("TitleHolder")
-	local Type
-	for l=0,Count-1 do
-		if DynastyGetBuilding2("TitleHolder", l, "Check") then
-			Type = BuildingGetClass("Check")
-			if Type~=GL_BUILDING_CLASS_LIVINGROOM and Type~=GL_BUILDING_CLASS_RESOURCE then
-				buildingcount = buildingcount + 1
-			end
-		end
-	end
+	local buildingcount = dyn_GetWorkshopCount("TitleHolder")
 	
 	RemoveImpact("TitleHolder", "CanApplyForLowestOffice") -- remove the canapplyforlowestoffice-impact
 

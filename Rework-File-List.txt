@@ -573,7 +573,7 @@
 501 Scripts\Measures\ms_110_Set_ChurchTithe.lua
 502 Scripts\Measures\ms_111_Set_TurnoverTax.lua
 503 Scripts\Measures\ms_112_DetainCharacter.lua
-504 Scripts\Measures\ms_114_BanCharacter.lua
+504 Scripts\Measures\ms_114_BanCharacter.lua - MERGED
 505 Scripts\Measures\ms_115_ImposeASalesFreeze.lua
 506 Scripts\Measures\ms_115_ImposeASalesFreezeAlderman.lua
 507 Scripts\Measures\ms_116_PropitiateEnemies.lua
@@ -655,7 +655,7 @@
 583 Scripts\Measures\ms_CheckTheWorld.lua
 584 Scripts\Measures\ms_CheerMusicians.lua
 585 Scripts\Measures\ms_CityControl.lua - MERGED
-586 Scripts\Measures\ms_CityTreasure.lua
+586 Scripts\Measures\ms_CityTreasure.lua - MERGED
 587 Scripts\Measures\ms_CohabitWithCharacter.lua
 588 Scripts\Measures\ms_ConfiscateGoods.lua
 589 Scripts\Measures\ms_ContractArsenal.lua
@@ -788,7 +788,7 @@
 716 Scripts\Measures\ms_twp_SalesCart.lua
 717 Scripts\Measures\ms_twp_SupplyWorkshop.lua
 718 Scripts\Measures\ms_UpgradeResidence.lua
-719 Scripts\Measures\ms_UseHorse.lua
+719 Scripts\Measures\ms_UseHorse.lua - MERGED
 720 Scripts\Measures\ms_UseLaborOfLove.lua - MERGED
 721 Scripts\Measures\ms_Verfluchen.lua
 722 Scripts\Measures\ms_walk.lua
@@ -984,7 +984,7 @@
 912 Scripts\Measures\Behaviour\bs_Dying.lua - MERGED
 913 Scripts\Measures\Behaviour\bs_Explosion.lua
 914 Scripts\Measures\Behaviour\bs_Fire.lua
-915 Scripts\Measures\Behaviour\bs_FlamingSpeech.lua
+915 Scripts\Measures\Behaviour\bs_FlamingSpeech.lua - MERGED
 916 Scripts\Measures\Behaviour\bs_Gauntlet.lua
 917 Scripts\Measures\Behaviour\bs_hpfz_Ausschenken.lua
 918 Scripts\Measures\Behaviour\bs_hpfz_Betrugen.lua
@@ -1074,19 +1074,19 @@
 1002 Scripts\Measures\Squad\ms_SquadWarMember.lua
 1003 Scripts\Measures\Squad\ms_SquadWaylayForBooty.lua
 1004 Scripts\Measures\Squad\ms_SquadWaylayMember.lua
-1005 Scripts\Privileges\ps_02_gemeiner.lua
-1006 Scripts\Privileges\ps_03_freisasse.lua
-1007 Scripts\Privileges\ps_04_beisasse.lua
-1008 Scripts\Privileges\ps_05_buerger.lua
-1009 Scripts\Privileges\ps_06_freibuerger.lua
-1010 Scripts\Privileges\ps_07_patrizier.lua
-1011 Scripts\Privileges\ps_08_edelmann.lua
-1012 Scripts\Privileges\ps_09_freiherr.lua
-1013 Scripts\Privileges\ps_10_baron.lua
-1014 Scripts\Privileges\ps_11_graf.lua
-1015 Scripts\Privileges\ps_12_markgraf.lua
-1016 Scripts\Privileges\ps_13_fuerst.lua
-1017 Scripts\Privileges\ps_14_reichsfuerst.lua
+1005 Scripts\Privileges\ps_02_gemeiner.lua - MERGED
+1006 Scripts\Privileges\ps_03_freisasse.lua - MERGED
+1007 Scripts\Privileges\ps_04_beisasse.lua - MERGED
+1008 Scripts\Privileges\ps_05_buerger.lua - MERGED
+1009 Scripts\Privileges\ps_06_freibuerger.lua - MERGED
+1010 Scripts\Privileges\ps_07_patrizier.lua - MERGED
+1011 Scripts\Privileges\ps_08_edelmann.lua - MERGED
+1012 Scripts\Privileges\ps_09_freiherr.lua - MERGED
+1013 Scripts\Privileges\ps_10_baron.lua - MERGED
+1014 Scripts\Privileges\ps_11_graf.lua - MERGED
+1015 Scripts\Privileges\ps_12_markgraf.lua - MERGED
+1016 Scripts\Privileges\ps_13_fuerst.lua - MERGED
+1017 Scripts\Privileges\ps_14_reichsfuerst.lua - MERGED
 1018 Scripts\Privileges\ps_bischof.lua
 1019 Scripts\Privileges\ps_buergermeister.lua
 1020 Scripts\Privileges\ps_dorfschulze.lua

@@ -1,21 +1,20 @@
 function GetLocator()
 
 	local    LocatorArray = {
-	  "Work1", ms_022_producebankier_UsePultA,"",
-		"Work2", ms_022_producebankier_UsePultB,"",
-		"Work4", ms_022_producebankier_UseThresenA,"",
-		"Work5", ms_022_producebankier_UseThresenB,"",
-		"Work6", ms_022_producebankier_UseThresenC,"",
-		"Work7", ms_022_producebankier_UseThresenD,"",
-		"Work8", ms_022_producebankier_UseRegal,"",
-		"Work9", ms_022_producebankier_UseTresor,"",
-		"Work10", ms_022_producebankier_UsePultC,"",
-		"Work11", ms_022_producebankier_UsePultD,"",
-	    }
+		"Work1", ms_022_producebankier_UsePultA, "",
+		"Work2", ms_022_producebankier_UsePultB, "",
+		"Work4", ms_022_producebankier_UseThresenA, "",
+		"Work5", ms_022_producebankier_UseThresenB, "",
+		"Work6", ms_022_producebankier_UseThresenC, "",
+		"Work7", ms_022_producebankier_UseThresenD, "",
+		"Work8", ms_022_producebankier_UseRegal, "",
+		"Work9", ms_022_producebankier_UseTresor, "",
+		"Work10", ms_022_producebankier_UsePultC, "",
+		"Work11", ms_022_producebankier_UsePultD, "",
+		}
 	
 	local LocatorCount = 10
-  local Position = (Rand(LocatorCount))*3+1
-	IncrementXPQuiet("",5)
+	local Position = (Rand(LocatorCount))*3+1
 	
 	return	LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
 end

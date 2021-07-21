@@ -17,25 +17,29 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	local OwnerRhetoric = (GetSkillValue("",RHETORIC))
-	local DestinationRhetoric = (GetSkillValue("Destination",RHETORIC))
+	local OwnerRhetoric = (GetSkillValue("", RHETORIC))
+	local DestinationRhetoric = (GetSkillValue("Destination", RHETORIC))
 	local OwnerGender = (SimGetGender(""))
 	local DestinationGender = (SimGetGender("Destination"))
-		
-	GetSettlement("","CityAlias")
+	GetSettlement("", "CityAlias")
+
+	if not CityGetRandomBuilding("CityAlias", 3, 23, -1, -1, FILTER_IGNORE, "TownHall") then
+		StopMeasure()
+	end
 	
 	--check if destination is too far from city
-	GetPosition("CityAlias","CityPos")
-	if GetInsideBuilding("Destination","CurrentBuilding") then
-		GetPosition("CurrentBuilding","BuildingPos")
-		if GetDistance("BuildingPos","CityPos") > 10000 then
-			MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+23")
+	GetPosition("TownHall", "CityPos")
+
+	if GetInsideBuilding("Destination", "CurrentBuilding") then
+		GetPosition("CurrentBuilding", "BuildingPos")
+		if GetDistance("BuildingPos", "CityPos") > 12000 then
+			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+23")
 			StopMeasure()
 		end
 	else
-		GetPosition("Destination","DestPos")
-		if GetDistance("CityPos","DestPos") > 10000 then
-			MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+23")
+		GetPosition("Destination", "DestPos")
+		if GetDistance("CityPos", "DestPos") > 12000 then
+			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+23")
 			StopMeasure()
 		end
 	end
@@ -43,15 +47,16 @@ function Run()
 	--how long the ban will be 
 	local duration
 	local OfficeType = SimGetOfficeLevel("")
+
 	if OfficeType == 3 then
 		--if office holder is dorfschulze
-		duration = 16
+		duration = 24
 	elseif OfficeType == 4 then
 		--if officeholder is buergemeister
-		duration = 20
+		duration = 36
 	else
 		--then officeholder must be landesherr
-		duration = 24
+		duration = 48
 	end
 	
 	--run to destination and start action at MaxDistance
@@ -63,10 +68,10 @@ function Run()
 	feedback_OverheadActionName("Destination")
 	
 	
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","Destination")
-	CutsceneCameraCreate("cutscene","")		
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Destination")
+	CutsceneCameraCreate("cutscene", "")		
 	camera_CutsceneBothLock("cutscene", "")
 	
 	AlignTo("", "Destination")
@@ -76,9 +81,9 @@ function Run()
 	SetMeasureRepeat(TimeOut)
 	
 	--send message to destination, that he will be banned
-	MsgNewsNoWait("Destination","","","intrigue",-1,
-		"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_BEGIN_HEADLINE_+0",
-		"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_BEGIN_BODY_+0",GetID(""),GetID("Destination"),duration,GetID("CityAlias"))
+	MsgNewsNoWait("Destination", "", "", "intrigue", -1,
+					"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_BEGIN_HEADLINE_+0",
+					"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_BEGIN_BODY_+0", GetID(""), GetID("Destination"), duration, GetID("CityAlias"))
 	
 	--combine textlabel by checking the destinations gender
 	local GenderType
@@ -88,62 +93,67 @@ function Run()
 		GenderType = "_TOMALE"
 	end
 	
-	PlayAnimationNoWait("","threat")
+	PlayAnimationNoWait("", "threat")
 	local Elapse = 60*(GetGametime() + duration)
-	MsgSay("","@L_PRIVILEGES_114_BANCHARACTER_BANISHMENT"..GenderType,GetID("CityAlias"),Elapse,GetID("Destination"))
+	MsgSay("", "@L_PRIVILEGES_114_BANCHARACTER_BANISHMENT"..GenderType, GetID("CityAlias"), Elapse, GetID("Destination"))
 	
 	--remove the victim from his office
 	if not (SimGetOfficeLevel("Destination") == -1) then
-		CityRemoveFromOffice("CityAlias","Destination")
+		CityRemoveFromOffice("CityAlias", "Destination")
 	end
 	
 	-- remove the victim from office applicants
-	CityRemoveApplicant("CityAlias","Destination")
+	CityRemoveApplicant("CityAlias", "Destination")
 	
 	-- set pre banned impact
 	--AddImpact("Destination","prebanned",1,4)
-	AddImpact("Destination","banned",1,duration)
+	AddImpact("Destination", "banned", 1, duration)
 	
 	--modify the favor
 	local favormodify = GetFavorToSim("Destination","") - 5
-	chr_ModifyFavor("Destination","",-favormodify)
+	chr_ModifyFavor("Destination", "", -favormodify)
 	feedback_OverheadComment("Destination", "@L$S[2006] %1n", false, false, favormodify)
 
-	CreateScriptcall("BanCharacter_Ban_Start",4,"Measures/ms_114_BanCharacter.lua","JailTime","Owner","Destination",duration)
-	CreateScriptcall("BanCharacter_Ban_End",duration,"Measures/ms_114_BanCharacter.lua","BanIsOver","Owner","Destination",0)
-	chr_GainXP("",GetData("BaseXP"))
+	CreateScriptcall("BanCharacter_Ban_Start", 4, "Measures/ms_114_BanCharacter.lua", "JailTime", "Owner", "Destination", duration)
+	CreateScriptcall("BanCharacter_Ban_End", duration, "Measures/ms_114_BanCharacter.lua", "BanIsOver", "Owner", "Destination", 0)
+	chr_GainXP("", GetData("BaseXP"))
 	StopMeasure()
 end
 
 function JailTime(duration)
-	GetSettlement("","CityAlias")
-	if GetInsideBuilding("Destination","Inside") then
+
+	GetSettlement("", "CityAlias")
+
+	if GetInsideBuilding("Destination", "Inside") then
 		f_ExitCurrentBuilding("Destination")
 	end
+
 	--local impacttime = duration - 4
 	--AddImpact("Destination","banned",1,impacttime)
-	CityAddPenalty("CityAlias","Destination",PENALTY_PRISON,duration)
+	CityAddPenalty("CityAlias", "Destination", PENALTY_PRISON, duration)
 end
 
 function BanIsOver()
-	if GetSettlement("","CityAlias") then
-		if CityGetPenalty("CityAlias","Destination",PENALTY_PRISON,true,"Penalty") then
+
+	if GetSettlement("", "CityAlias") then
+		if CityGetPenalty("CityAlias", "Destination", PENALTY_PRISON, true, "Penalty") then
 			PenaltyFinish("Penalty")
 		end
 	end
-	RemoveImpact("Destination","banned")	
+	RemoveImpact("Destination", "banned")	
 	
 	--send message to destination, that ban is over
 	feedback_MessageCharacter("Destination",
-		"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_END_HEADLINE",
-		"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_END_BODY",GetID("Destination"),GetID("CityAlias"))
+							"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_END_HEADLINE",
+							"@L_PRIVILEGES_114_BANCHARACTER_MSG_VICTIM_END_BODY", GetID("Destination"), GetID("CityAlias"))
 	--send message to owner, that ban is over
 	feedback_MessageCharacter("",
-		"@L_PRIVILEGES_114_BANCHARACTER_MSG_ACTOR_END_HEADLINE",
-		"@L_PRIVILEGES_114_BANCHARACTER_MSG_ACTOR_END_BODY",GetID("Destination"),GetID("CityAlias"))
+							"@L_PRIVILEGES_114_BANCHARACTER_MSG_ACTOR_END_HEADLINE",
+							"@L_PRIVILEGES_114_BANCHARACTER_MSG_ACTOR_END_BODY", GetID("Destination"), GetID("CityAlias"))
 end
 
 function CleanUp()
+
 	DestroyCutscene("cutscene")
 end
 

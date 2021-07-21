@@ -14,7 +14,6 @@ function GetLocator()
 	local	LocatorCount = 7
 
 	local Position = (Rand(LocatorCount))*3+1
-	IncrementXPQuiet("",5)
 	return	LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
 end
 

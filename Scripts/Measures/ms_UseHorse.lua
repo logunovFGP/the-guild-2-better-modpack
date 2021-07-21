@@ -3,11 +3,13 @@ end
 
 function Run()		
 	local IsBuilding = false
-	if IsType("Destination","Building") and BuildingCanBeEntered("Destination","") then
+	if IsType("Destination", "Building") and BuildingCanBeEntered("Destination", "") then
 		IsBuilding = true
 	end
 	
-	local costs = 0.5 * GetDistance("","Destination")
+	local distance = math.floor(GetDistance("", "Destination")/4000)
+	local costs = 500 + 250*distance
+	SetData("costs", costs)
 	
 	local DecisionBtns = "@B[1,@L_USE_HORSE_DECISION_BUTTON_+0]@B[0,@L_USE_HORSE_DECISION_BUTTON_+1]"
 	
@@ -15,17 +17,18 @@ function Run()
 		DecisionBtns = "@B[0,@L_USE_HORSE_DECISION_BUTTON_+2]"
 	end
 	
-	local Result = MsgBox("","", "@P"..
+	local Result = MsgBox("", "", "@P"..
 		DecisionBtns,
 		"@L_USE_HORSE_DECISION_HEAD_+0",
 		"@L_USE_HORSE_DECISION_BODY_+0",
 		GetID(""), costs)
 		
 	if Result ~= 1 then
-		SetProperty("","aborted",1)
 		StopMeasure()
 	end
-	SetProperty("","aborted",0)
+
+	SetProperty("", "aborted", 0)
+	SetData("Distance", distance)
 	
 	if not chr_SpendMoney("", costs, "travelling") then
 		MsgQuick("", "@L_USE_HORSE_FAILURE_+1")
@@ -39,10 +42,11 @@ function Run()
 	Mount("")
 	-- MoveSetActivity("","ride")
 	SetState("", STATE_RIDING, true)
+	SetState("", STATE_DUEL, true)
 	
-	GetVehicle("","Horse")
+	GetVehicle("", "Horse")
 
-	PlaySound3DVariation("","Animals/Horse/whinny",1)
+	PlaySound3DVariation("", "Animals/Horse/whinny", 1)
 	
 	if IsBuilding then 
 		if not GetOutdoorMovePosition("", "Destination", "Target") then
@@ -52,10 +56,13 @@ function Run()
 		CopyAlias("Destination","Target")
 	end
 	
-	if not f_MoveTo("Horse", "Target", GL_MOVESPEED_RUN, 15) then
-	--if not f_MoveTo("", "Target", GL_MOVESPEED_RUN, 15) then
+	if not f_MoveTo("Horse", "Target", GL_MOVESPEED_RUN, 50) then
+		SetProperty("", "aborted", 1)
 		StopMeasure()
+	else
+		RemoveProperty("", "aborted")
 	end
+
 	Sleep(5)
 	
 	-- MoveSetActivity("","")
@@ -63,22 +70,31 @@ function Run()
 	SetState("", STATE_RIDING, false)
 	
 	if IsBuilding then
-		f_MoveTo("","Destination")
+		f_MoveTo("", "Destination")
 	end
 end
 
 function CleanUp()
-	if HasProperty("","aborted") and GetProperty("","aborted") == 0 then
+
+	if HasProperty("", "aborted") and GetProperty("", "aborted") == 1 then
 		Sleep(1)
-		MoveSetActivity("")
+		MoveSetActivity("","")
 		Unmount("")
 		SetState("", STATE_RIDING, false)
-		local refunds = 0.25 * GetDistance("","Destination")
-		if refunds > 1000 then
-			CreditMoney("", refunds, "")
-			MsgQuick("","@L_USE_HORSE_CANCEL_+0",GetID(""),refunds)
+		SetState("", STATE_DUEL, false)
+
+		if AliasExists("Destination") then
+			local NewDistance = math.floor(GetDistance("", "Destination")/4000)
+			local refunds = GetData("costs") - 250 - 250*NewDistance
+			if refunds > 0 then
+				CreditMoney("", refunds, "")
+				MsgQuick("","@L_USE_HORSE_CANCEL_+0", GetID(""), refunds)
+			end
 		end
-		RemoveProperty("","aborted")
+	end
+	
+	if HasProperty("", "aborted") then
+		RemoveProperty("", "aborted")
 	end
 end
 

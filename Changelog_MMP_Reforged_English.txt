@@ -40,7 +40,7 @@ _Tech_
 - Seperated unused scripts inside the new 'Removed' folder (To make use of that, you must delete your original Scripts folder before applying this patch).
 - Newly hired workers will no longer get cured automaticly.
 - The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
-- AI only needed to pay 40 zu 80 percent of the money players had to pay during certain measures. To fix this SpendMoney has been replaced by chr_SpendMoney
+- AI only needed to pay 40 zu 80 percent of the money players had to pay during certain actions. To fix this SpendMoney has been replaced by chr_SpendMoney
 - Duels are a bit more fluent now.
 - Officesession script has been replaced and restructured completely.
 - Trial script has been reworked.
@@ -61,29 +61,31 @@ _Design_
 - Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can now longer be played on.
 - The message 'Someone feels neglected' has no voiceover anymore and the text has been changed.
 - To start an affair your residence doesn't matter anymore, instead you simply need the title "Free citizen"
+- The Action 'Diplomacy' is now a building action instead of a character action.
+- The city's cashbook infos are now more useful with more money in the treasury.
 
 *** Vanilla-Bugs ***
 
 _General_
-- If you removed a character from your active party via the family tree you could not add him again. Thus the button has been removed (instead use the measure 'Manage group').
+- If you removed a character from your active party via the family tree you could not add him again. Thus the button has been removed (instead use the action 'Manage group').
 - The Option to change the 'Frequency of Office Sessions' during game setup produced an Out-Of-Sync error. The option has been removed from multiplayer.
 - Ships had no dynasty colours.
 - Multiple artefact-scripts didn't use the correct item name from the DB.
-- Exploit: After starting certain artefact measures, you could remove the item from the inventory before it was deleted and still get the full effect.
+- Exploit: After starting certain artefact actions, you could remove the item from the inventory before it was deleted and still get the full effect.
 - Exploit: When you tear down your buildings you now only get back half the value of that building, including items.
 - Exploit: You could marry your employees to get a very strong spouse.
 - Exploit: The fix against firing your employees and marry them to get a very strong spouse has been improved.
 - You can no longer hire workers who are currently courted (prevents bugs).
-- The search for high level workers via the 'Hire random worker'-measure did not work.
+- The search for high level workers via the 'Hire random worker'-action did not work.
 - High level workers no longer lose all of their XP when they get hired.
 - Added in a safety check to make sure the default worker of your buildings has no illness and the right equipment.
 - The employees of the country estate did not gain XP / levelups.
 - Exploit: Employees of the country estate and residence (with upgrades) who started with high level equipment now have the correct handsel.
-- The measure 'Ask around' could lead to a freeze. Also you did not get evidence properly.
-- The measure 'Make a present' had no cooldown.
-- The measure 'Imperial politics' had no cooldown.
+- The action 'Ask around' could lead to a freeze. Also you did not get evidence properly.
+- The action 'Make a present' had no cooldown.
+- The action 'Imperial politics' had no cooldown.
 - Fixed multiple DB entries regarding background music in buildings.
-- Removed the cooldown of the "train" measure. Fixed the pathfinding during that measure to prevent characters moving through the chimney.
+- Removed the cooldown of the "train" action. Fixed the pathfinding during that action to prevent characters moving through the chimney.
 - Improved the workaround against spinning carts (stucking forever) with a more effective solution which is also better for the overall game performance.
 - Neutral traders and ships would do nothing after a few rounds. Also fixed some script errors.
 - War happened only a few times in the beginning of the game. 
@@ -97,7 +99,7 @@ _General_
 - Versengold's song is played as background music (and thus no longer stopped if you tab out of the building) if at least one human player has a character inside the tavern.
   If not it restarts once you enter the building's indoor scene (and ends once the animation is completed)
 - Sometimes the raining lasted forever.
-- In the third tutorial the quest-arrow aimed at the wrong measure.
+- In the third tutorial the quest-arrow aimed at the wrong action in the action-bar.
 - Sometimes the builders who spawned when a building was built or upgraded, did not properly despawn.
 - The builders won't work 'in the air' far away from the building but stand more closely to it. They also won't stuck anymore during their work due to difficult pathfinding.
 - Office session could get stuck forever.
@@ -106,8 +108,8 @@ _General_
 - During trial if you confessed your crimes you might still say that you were innocent.
 - The discriptions of towers now state that they work against land units aswell.
 - During production of gathered items would remain in the inventory if you assigned them a non-gathering task. They will now unload their pockets if they are inside your building when assigning a production.
-- During the measure 'Flirt' no soundfiles of the dialogue have been played.
-- The flirting bonus ability had no impact on the measure 'Flirt'.
+- During the action 'Flirt' no soundfiles of the dialogue have been played.
+- The flirting bonus ability had no impact on the action 'Flirt'.
 - Fixed a bug with the removal of pamphlets.
 - Thugs no longer are effected by quacks, priests etc.
 - Building- and upgrading times have been fixed.
@@ -116,42 +118,54 @@ _General_
 - Fixed possible animation issues when using the stone top on children.
 - Fixed multiple wrong text labels in several languages.
 - Fixed a possible issue with the ratboy.
+- When invited to a feast, it could happen that you could not enter the residence you were invited to.
+- Unusable characters will no longer get summoned to trials, duels or other meetings.
+- When summoned to trials, duels or other meetings while producing items, it could happen that characters would want to continue production after arrival.
+- When summoned to trials or office meetings, characters who are already inside of the council building will not leave the building but instead directly move into the correct room.
+- Towers are no longer counted when the new-title-message pops up and lists the number of your workshops.
+- The action 'fiery speech' also affected robbers, mercenaries and people on crusades.
+- In some cities you could not ban characters because you would be 'too far away' although beeing inside the city. The distance calculation is now different and measures the distance to the the town hall.
+- You could get stuck in the carriage during the action 'set out on a journey' if you cancelled that action before its completion.
+- As low level office holders you would not be able to see into the city's cash book.
 - Fixed several map issues
 
 _Patron_
-- The measure 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
+- The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
 - If you wanted to dance with somebody and the dance floor was blocked already, you still would lose your money and cooldown time would begin.
 - You can cure some diseases if you sleep in a tavern, especially if you have the 'deep sleep' ability.
 - Under circumstances the steam-effect of the action 'take a bath alone' would never end.
 
 _Scholar_
 - The poisoned cake didn't lower the fighting skill.
-- The measure 'Assign for treatment' could get stuck. Also the script has been optimized.
+- The action 'Assign for treatment' could get stuck. Also the script has been optimized.
 - Healers remember 'their' bed and don't go to already occupied beds anymore when they treat patients.
-- The measure 'Use thesis paper' could not start properly due to a critical bug.
+- The action 'Use thesis paper' could not start properly due to a critical bug.
 - The 'sorcerer's robe' had no state icon.
-- Due to a copy and paste error the measure 'Use bone bangle' could have the wrong cooldown.
+- Due to a copy and paste error the action 'Use bone bangle' could have the wrong cooldown.
 - When you tear down or sell your bank/pawn house you get back your credit account money.
 - 'Sorcerer documents' didn't give XP.
 - 'Toad excrement' could be used multiple times against the same target.
 - 'Toad excrement' was no crime in the database.
 - The 'Certificate of Tradesmenship' didn't work in every workshop.
+- The pawn broker got too much xp for production.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
 - The effect of the 'comb' did not end properly.
 - Mine guards no longer block the mine's worker-slots.
 - Mine guards sometimes ignored certain hostile action against the mine they are supposed to defend.
+- The Stonemason got too much xp for production.
 
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
 - You no longer get messages for characters outside of your active party about the usage of 'salacious services'
 - Children are no longer targets of wenches.
-- The Measure 'Rest' now has the red measure category like the icon suggests.
+- The action 'Rest' now has the red action category like the icon suggests.
 - Robbercamps now have a cart.
 - 'Hypnosis pendulum' didn't work.
-- One curse of the 'voodoo doll' didn't work. Also there was no error msg when the victim had enough empathy to counter the measure.
+- One curse of the 'voodoo doll' didn't work. Also there was no error msg when the victim had enough empathy to counter the action.
 - Protectionmoney rackets showed the wrong duration in the tooltip.
+- Jugglers got too much xp for production.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
@@ -165,7 +179,7 @@ _AI_
 - During game setup AI children always had the same sex.
 - In several cases characters interacted wrong with burning buildings.
 - Child behavior had bugs and influenced overall game performance in a negative way.
-- AI spammed 'Plunder building' measures, even while the target was still under construction.
+- AI spammed 'Plunder building' actions, even while the target was still under construction.
 - AI controlled priests could 'win believers' even though they hadn't unlocked the required upgrade.
 - AI characters got an additional item in their inventory when they bought a new weapon/armor.
 
@@ -175,7 +189,7 @@ _General_
 - Added a bigger world map (GUI).
 - Added a bigger building upgrade sheet (GUI).
 - The building upgrades of all workshops have been re-arranged, unified and sorted.
-- All artefacts, measures and conditions (like illness) that temporarily effect your talents will now tell you that via a mouseover-tooltip.
+- All artefacts, actions and conditions (like illness) that temporarily effect your talents will now tell you that via a mouseover-tooltip.
 - Important persons list has been reworked. To improve the performance you only see one family member of shadow dynasties. You have a list of unemployed workers now.
 - Improved and added new character faces (men, women and children).
 - Patrons, Craftsmen and Scholars now all have visible armor if they wear leather, chainmail or platemail!
@@ -185,13 +199,13 @@ _General_
 - In addition two new options for workshop-handling have been added that allow for easier supply and sale.
 - Pregnant women are no longer tied to their bed.
 - Some new and reworked abilities after levelup.
-- Added a new measure to change your character's appearance ingame (same category as inventory-measure).
-- Added a new measure to mark a dynasty character as important (same category as inventory-measure). That character then will appear in the 'Important Persons' list.
+- Added a new actions to change your character's appearance ingame (same category as inventory-action).
+- Added a new action to mark a dynasty character as important (same category as inventory-action). That character then will appear in the 'Important Persons' list.
 - Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
 - Added a new map "Yorkshire".
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
-- Multiple measures now instantly open the important persons GUI and other windows for target selection.
+- Multiple actions now instantly open the important persons GUI and other windows for target selection.
 - You can now talk to other characters to improve relationships / courting progress and maybe even get (fake!) evidence against random enemies.
 - You can now start courting another character while beeing married. However you can only marry that character once you get divorced to your spouse or if you want to
   start an affair. You can now have affairs while beeing married (however atm only with unmarried characters).
@@ -223,7 +237,7 @@ _AI_
 *** Balancing ***
 
 _General_
-- They way talents impact your measures has been reworked completely. Instead of a linear progression there is a higher random factor and levels of succession. You will
+- They way talents impact your actions has been reworked completely. Instead of a linear progression there is a higher random factor and levels of succession. You will
   also get visual feedback every time your character attempts a skillcheck.
 - You can now use ALL of your buisness inspectors to inspect buisnesses instead of just one at a time. However you can no longer inspect buisnesses more than once every 48 hours.
   Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
@@ -252,6 +266,7 @@ _General_
 - Weight of evidence, their influence on favor and deposition has been rebalanced.
 - Voters for offices have been changes to emphasise the distinction between the clerical and non-clerical 'chambers'
 - The damage sims do by attacks on buildings has been increased significantly.
+- The costs for 'set out on a journey' have been reduced drasticly on shorter trips.
 - Reduced the base amount of XP children would get from stone tops.
 
 _Patron_

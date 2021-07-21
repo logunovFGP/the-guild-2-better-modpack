@@ -79,8 +79,13 @@ function EvilMeasuresBlocked(Blocked, Blocker)
 						
 end
 
+-- -----------------------
+-- GetValidMember
+-- -----------------------
 function GetValidMember(Dynasty)
+
 	local Count = DynastyGetMemberCount(Dynasty)
+	
 	for i=0, Count-1 do
 		if DynastyGetMember(Dynasty, i, "Member") then
 			if not GetState("Member", STATE_DYING) then
@@ -97,6 +102,26 @@ function GetValidMember(Dynasty)
 	end
 	
 	local BossID = GetID("DynastyBoss")
-	
 	return BossID
+end
+
+-- -----------------------
+-- GetWorkshopCount
+-- -----------------------
+function GetWorkshopCount(SimAlias)
+
+	local buildingcount = 0
+	local Count = DynastyGetBuildingCount2(SimAlias)
+	local Class
+	
+	for l=0, Count-1 do
+		if DynastyGetBuilding2(SimAlias, l, "Check") then
+			Class = BuildingGetClass("Check")
+			if Class == GL_BUILDING_CLASS_WORKSHOP then
+				buildingcount = buildingcount + 1
+			end
+		end
+	end
+	
+	return buildingcount
 end

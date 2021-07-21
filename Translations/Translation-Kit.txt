@@ -266,6 +266,9 @@ Translate and add the following lines below:
 18263   "_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0"   "Are you a heartbreaker or do you really mean it? Anyway, %1SV is completely under your spell and wishes nothing more than to spend some hours with you alone ..."   |
 18264   "_RATBOY_MSGMEASURE_+0"   "I like this flute playing!"   |
 18265   "_RATBOY_MSGMEASURE_+1"   "This is sooo exciting! An adventure ..."   |
+18266   "_GENERAL_MSGMEASURE_COHABIT_+0"   "I am expected at home"   |
+18267   "_FAMILY_2_COHABITATION_FAIL_HEAD_+0"   "Your spouse despises you"   |
+18268   "_FAMILY_2_COHABITATION_FAIL_BODY_+0"   "Oh dear! %1SV seems to be far less irresistable than you might have thought. Maybe you have to bring %2SV into a romantic mood before? ... Visit a tavern together and make some compliments like in good old times, that might help!"   |
 
 
 Delete the following lines:

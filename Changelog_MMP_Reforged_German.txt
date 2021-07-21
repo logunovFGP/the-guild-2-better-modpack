@@ -60,6 +60,8 @@ _Design_
 - Die Nachricht "Jemand fühlt sich vernachlässigt" wird nicht mehr vertont und hat einen anderen Text.
 - Um eine Liebschaft einzugehen, ist der Wohnsitz nun irrelevant, stattdessen benötigt man nur den Titel 'Freibürger'
 - Die Fähigkeit "Kama-Sutra-Meister" wurde umbenannt in "Unwiderstehlich"
+- Die Maßnahme "Diplomatie" erfordert nun keinen Charakter mehr, sondern ist eine Gebäude-Maßnahme.
+- Das Kassenbuch der Stadt bietet nun auch dann nützlichere Informationen, wenn die Stadtkasse etwas voller ist.
 
 *** Vanilla-Bugs ***
 
@@ -115,8 +117,16 @@ _Allgemein_
 - Einen möglichen Animationsfehler beim Nutzen des Steinkreisels behoben.
 - Mehrere fehlerhafte Text-Label in allen Sprachen korrigiert (Bsp: Doppelter Vorname).
 - Einen möglichen Fehler beim Rattenfänger behoben.
+- Wer zu einem Fest eingeladen war, konnte unter Umständen die Residenz des Gastgebers nicht betreten.
+- Wer vorübergehend nicht steuerbar ist, wird nun nicht länger zum Gericht, Duell oder anderen Treffen gerufen.
+- Wer gerade einen Gegenstand produzierte, wenn er zum Gericht, Duell oder anderen Treffen gerufen wurde, wollte diese Produktion nach Ankunft fortsetzen.
+- Wer zum Gericht oder zu einer Amtssitzung gerufen wird und sich bereits im Rathaus befindet, verlässt nun nicht mehr erst das Rathaus, sondern geht direkt in den richtigen Raum.
+- Türme werden nicht länger mitgezählt, wenn die Neuer-Titel-Nachricht erscheint und die Zahl der gegenwärtigen Betriebe genannt wird.
+- Die Maßnahme "Flammende Rede" beeinflusste auch Räuber und Gardisten sowie Teilnehmer von Kreuzzügen.
+- In einigen Städten war es nicht möglich, jemanden zu verbannen, obwohl man noch innerhalb der Stadtmauern stand. Die Berechnung ist nun anders und erfolgt anhand der Distanz zum Rathaus.
+- Bei der Maßnahme "Eine Reise antreten" konnte man in der Kutsche steckenbleiben, wenn die Maßnahme vorzeitig abgebrochen wurde.
+- Wer ein Amt auf der untersten Ebene innehatte, konnte dennoch nicht in die Stadtkasse sehen.
 - Diverse Map-Fehler korrigiert.
-
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -263,6 +273,7 @@ _Allgemein_
 - Die Wahlberechtigten für Ämter wurden angepasst, sodass die Aufteilung in Klerikal und Weltlich deutlicher wird.
 - Der Schaden, den Sims durch Angriffe an Gebäuden anrichten, wurde deutlich erhöht.
 - Die Basis EP reduziert, die Kinder durch einen Steinkreisel erhielten.
+- Die Maßnahme "Eine Reise antreten" ist nun deutlich günstiger als vorher, vor allem auf kürzeren Strecken.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
