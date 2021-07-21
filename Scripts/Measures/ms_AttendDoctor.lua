@@ -49,7 +49,7 @@ function Run()
 		elseif GetImpactValue("", "Caries") == 1 then
 			Costs = diseases_GetTreatmentCost("Caries")
 		elseif GetHPRelative("") < 0.99 then
-			Costs = GetMaxHP("")-GetHP("")
+			Costs = GetMaxHP("") -GetHP("")
 		else
 			return
 		end
@@ -69,8 +69,8 @@ function AIDecide()
 end
 
 function CleanUp()
-	if HasProperty("","WaitingForTreatment") then
-		RemoveProperty("","WaitingForTreatment")
+	if HasProperty("", "WaitingForTreatment") then
+		RemoveProperty("", "WaitingForTreatment")
 	end
 end
 

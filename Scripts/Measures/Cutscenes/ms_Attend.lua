@@ -5,6 +5,6 @@ function Run()
 	--	end
 	--end
 
-	f_MoveTo("","destination")
-	Sleep(100000)
+	f_MoveTo("", "destination")
+	Sleep(1000)
 end

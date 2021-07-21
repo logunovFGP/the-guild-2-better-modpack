@@ -1,8 +1,17 @@
 function Run()
-	if not GetState("", STATE_FIGHTING) then
-		GetOutdoorMovePosition("","destination","MovePos")
-		f_MoveTo("","MovePos",GL_MOVESPEED_RUN)
+	SimSetProduceItemID("", -1, -1)
 	
-	Sleep(100000)
+	if GetState("", STATE_FIGHTING) then
+		return
 	end
+	
+	if not f_SimIsValid("") then
+		return
+	end
+	
+	if GetOutdoorMovePosition("", "destination", "MovePos") then
+		f_MoveTo("", "MovePos", GL_MOVESPEED_RUN)
+	end
+	
+	Sleep(1000)
 end
