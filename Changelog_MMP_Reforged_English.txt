@@ -129,6 +129,7 @@ _General_
 - As low level office holders you would not be able to see into the city's cash book.
 - Raising (or lowering) your handicraft talent had no effect on the productivity of employees until the next work day started. 
 - The Handicraft talent of employees had no effect on production speed at all.
+- At the notice board speech bubbles with broken text labels could appear, when someone removed a pamphlet.
 - Fixed several map issues
 
 _Patron_
@@ -275,7 +276,8 @@ _General_
 - Reduced the base amount of XP children would get from stone tops.
 - Handicraft now boosts the productivity of employees for 5% per point instead of 20% per point. To compensate a bit, the employees talent now also gives a bonus 
   of 5% per point and also changes will be noticeable within 1 ingame hour.
-
+- Talents of all employees have been rebalanced and overall slightly reduced.
+- Pamphlets no longer lower the opinion of sims who really like or already really dislike you.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

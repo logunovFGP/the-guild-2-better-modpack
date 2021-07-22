@@ -128,6 +128,7 @@ _Allgemein_
 - Wer ein Amt auf der untersten Ebene innehatte, konnte dennoch nicht in die Stadtkasse sehen.
 - Das Erhöhen des eigenen Handwerkskunst-Talents wirkte sich erst am darauffolgenden Arbeitstag auf die Angestellten eines Charakters aus.
 - Der Handwerkskunst-Talentwert von Angestellten hatte überhaupt keine Auswirkungen.
+- Es konnte zu fehlerhaften Sprechblasen beim Schwarzen Brett kommen, wenn ein Pamphlet entfernt wurde.
 - Diverse Map-Fehler korrigiert.
 
 _Patron_
@@ -281,6 +282,8 @@ _Allgemein_
 - Die Maßnahme "Eine Reise antreten" ist nun deutlich günstiger als vorher, vor allem auf kürzeren Strecken.
 - Der Einfluss des Handwerkskunst-Talents auf die Produktivität der eigenen Angestellten wurde von 20% pro Talentstufe auf 5% reduziert. Dafür wirken sich nun
   auch die Talente der Angestellten selbst auf die Produktivität aus und die Erhöhung ist spätestens nach einer Ingame-Stunde bemerkbar.
+- Die Talente aller Angestellten wurden neu ausbalanciert und tendenziell verringert.
+- Pamphlete am Schwarzen Brett wurden etwas entschärft, sodass sie keinen Gunstverlust bei Sims beeinflussen, die eine sehr schlechte oder sehr hohe Meinung vom Opfer haben.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
