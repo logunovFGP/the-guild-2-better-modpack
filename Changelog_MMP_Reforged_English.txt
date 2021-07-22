@@ -127,6 +127,8 @@ _General_
 - In some cities you could not ban characters because you would be 'too far away' although beeing inside the city. The distance calculation is now different and measures the distance to the the town hall.
 - You could get stuck in the carriage during the action 'set out on a journey' if you cancelled that action before its completion.
 - As low level office holders you would not be able to see into the city's cash book.
+- Raising (or lowering) your handicraft talent had no effect on the productivity of employees until the next work day started. 
+- The Handicraft talent of employees had no effect on production speed at all.
 - Fixed several map issues
 
 _Patron_
@@ -271,6 +273,9 @@ _General_
 - The damage sims do by attacks on buildings has been increased significantly.
 - The costs for 'set out on a journey' have been reduced drasticly on shorter trips.
 - Reduced the base amount of XP children would get from stone tops.
+- Handicraft now boosts the productivity of employees for 5% per point instead of 20% per point. To compensate a bit, the employees talent now also gives a bonus 
+  of 5% per point and also changes will be noticeable within 1 ingame hour.
+
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
@@ -281,6 +286,7 @@ _Patron_
 _Scholar_
 - Church owners will get the money from changing faith.
 - Sorcerer's robe no longer will give you a malus.
+- The Arcane Knowledge talent no longer effects producitivity of employees: instead, like all other classes, handicraft is used.
 
 _Craftsman_
 - mine and wood cutter start with higher inventory space per slot.

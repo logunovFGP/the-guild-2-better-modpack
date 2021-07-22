@@ -126,6 +126,8 @@ _Allgemein_
 - In einigen Städten war es nicht möglich, jemanden zu verbannen, obwohl man noch innerhalb der Stadtmauern stand. Die Berechnung ist nun anders und erfolgt anhand der Distanz zum Rathaus.
 - Bei der Maßnahme "Eine Reise antreten" konnte man in der Kutsche steckenbleiben, wenn die Maßnahme vorzeitig abgebrochen wurde.
 - Wer ein Amt auf der untersten Ebene innehatte, konnte dennoch nicht in die Stadtkasse sehen.
+- Das Erhöhen des eigenen Handwerkskunst-Talents wirkte sich erst am darauffolgenden Arbeitstag auf die Angestellten eines Charakters aus.
+- Der Handwerkskunst-Talentwert von Angestellten hatte überhaupt keine Auswirkungen.
 - Diverse Map-Fehler korrigiert.
 
 _Patron_
@@ -270,13 +272,15 @@ _Allgemein_
 - Alle Betriebe haben nun ein Arbeiter-Limit von 4 Angestellten, nur Gauner- und Sammlerbetriebe wie der Bauer oder die Mine haben 5. Sammler-/ Gaunerbetriebe starten mit 2 kostenlosen Angestellten, alle anderen haben nur 1.
 - Die Chancen für Stadt-Ereignisse wurden angepasst.
 - Das Warenhaus hat weniger Upgrades gegen Einbrüche, kann jedoch nun deutlich mehr Waren lagern (Bis zu 16 Slots, bis zu 400 Einheiten pro Slot)
-- Die Klassentalente aller 4 Klassen wurden neu ausbalanciert.
+- Die Klassentalente aller 4 Klassen wurden neu ausbalanciert (welche Talente sie besonders günstig oder teuer erlernen können).
 - Die Kosten für Eskorten wurden von 750 auf 600 reduziert.
 - Die Gewichtung der Verbrechen und ihr Einfluss auf Gunst und Gesinnung wurden angepasst.
 - Die Wahlberechtigten für Ämter wurden angepasst, sodass die Aufteilung in Klerikal und Weltlich deutlicher wird.
 - Der Schaden, den Sims durch Angriffe an Gebäuden anrichten, wurde deutlich erhöht.
 - Die Basis EP reduziert, die Kinder durch einen Steinkreisel erhielten.
 - Die Maßnahme "Eine Reise antreten" ist nun deutlich günstiger als vorher, vor allem auf kürzeren Strecken.
+- Der Einfluss des Handwerkskunst-Talents auf die Produktivität der eigenen Angestellten wurde von 20% pro Talentstufe auf 5% reduziert. Dafür wirken sich nun
+  auch die Talente der Angestellten selbst auf die Produktivität aus und die Erhöhung ist spätestens nach einer Ingame-Stunde bemerkbar.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
@@ -286,6 +290,7 @@ _Patron_
 _Gelehrter_
 - Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
 - Die 'Hexerrobe' verursacht keinen Malus mehr.
+- Gelehrte nutzen nun wieder Handwerkskunst und nicht Geheimwissen, um die Produktivität ihrer Angestellten zu erhöhen.
 
 _Handwerker_
 -

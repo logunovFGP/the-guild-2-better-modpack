@@ -1,23 +1,29 @@
 function Run()
-	SimGetWorkingPlace("","WorkingPlace")
-	if BuildingGetOwner("WorkingPlace", "boss") and GetID("")~=GetID("boss") then	
-		local ProdSkillBonus = 0
-		if SimGetClass("")==1 or SimGetClass("")==2 then
-			ProdSkillBonus = GetSkillValue("boss",CRAFTSMANSHIP)
-		elseif SimGetClass("")==3 then
-			ProdSkillBonus = GetSkillValue("boss",SECRET_KNOWLEDGE)
-		elseif SimGetClass("")==4 then
-			ProdSkillBonus = GetSkillValue("boss",CRAFTSMANSHIP)
-		end
-
-		ProdSkillBonus = ProdSkillBonus / 5
-		AddImpact("","Productivity",ProdSkillBonus,-1)
-	end
 
 	SetProperty("", "StartWorkingTime", 1)
 	
 	while true do
-		Sleep(Rand(40)+40)
+		-- boost the productivity of employees. Check stats every 60 seconds.
+		if not IsDynastySim("") then
+			if SimGetWorkingPlace("", "WorkingPlace") then
+				local ProdSkillBonus = 0
+				
+				-- remove old boost
+				RemoveImpact("", "Productivity")
+			
+				-- get Boss' stats
+				if BuildingGetOwner("WorkingPlace", "Boss") then	
+					ProdSkillBonus = (GetSkillValue("Boss", CRAFTSMANSHIP) - 1)*0.05
+				end
+				
+				-- get own stats
+				ProdSkillBonus = ProdSkillBonus + (GetSkillValue("", CRAFTSMANSHIP) - 1)*0.05
+				
+				-- add the boost
+				AddImpact("", "Productivity", ProdSkillBonus, -1)
+			end
+		end	
+		Sleep(60)
 	end
 end
 
@@ -26,6 +32,9 @@ function CleanUp()
 	if HasProperty("", "StartWorkingTime") then
 		RemoveProperty("", "StartWorkingTime")
 	end
-	RemoveImpact("","Productivity")
-
+	
+	if not IsDynastySim("") then
+		-- remove boost when work is over
+		RemoveImpact("", "Productivity")
+	end
 end
