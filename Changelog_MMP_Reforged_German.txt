@@ -284,6 +284,7 @@ _Allgemein_
   auch die Talente der Angestellten selbst auf die Produktivität aus und die Erhöhung ist spätestens nach einer Ingame-Stunde bemerkbar.
 - Die Talente aller Angestellten wurden neu ausbalanciert und tendenziell verringert.
 - Pamphlete am Schwarzen Brett wurden etwas entschärft, sodass sie keinen Gunstverlust bei Sims beeinflussen, die eine sehr schlechte oder sehr hohe Meinung vom Opfer haben.
+- Die Arbeitszeiten aller Professionen wurden angepasst und tendenziell verkürzt. Einige Berufe haben besondere Arbeitszeiten (Totengräber arbeiten vor allem nachts)
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

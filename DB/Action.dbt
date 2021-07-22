@@ -6,7 +6,6 @@ Table Description:
 
 Data: 
 0            "None"                          0                         0                     0                            0                       0                          0                       ""                              0                        | 
-1            "propel"                        2                         0                     0                            0                       0                          0                       ""                              1                        | 
 2            "attack"                        3                         3                     0                            0                       0                          1500                    "bs_IllegalDetection.lua"       0                        | 
 3            "attackcivilian"                3                         18                    0                            0                       0                          2000                    "bs_IllegalDetection.lua"       0                        | 
 4            "fire"                          3                         0                     0                            0                       0                          1000                    "bs_Fire.lua"                   0                        | 
