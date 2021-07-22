@@ -3,7 +3,7 @@
 ----	OVERVIEW "ms_032_PropelEmployees"
 ----
 ----	with this measure the player can propel the employees in one of his
-----	workshops. The employee's productivity is increased while their loyalty
+----	workshops. The employee's handicraft-talent is increased while their loyalty
 ----	is lowed.
 ----
 -------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ function Run()
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	-- get the value of the character's skill RHETORIC
-	local		LoyaltyLoss
+	local	LoyaltyLoss
 
 	if not GetInsideBuilding("", "Building") then
 		MsgDebugMeasure("PropelEmployees - only available inside a building")
@@ -47,11 +47,12 @@ function Run()
 
 	-- move player character to propel position
 	if GetLocatorByName("Building", "Propel", "PropelPosition") then
-		f_MoveTo("","PropelPosition")
+		f_MoveTo("", "PropelPosition")
 	end
+	
 	MeasureSetNotRestartable()
 	
-	local		Rhetoric = GetSkillValue("",RHETORIC) * 10
+	local	Rhetoric = GetSkillValue("", RHETORIC) * 10
 	if (Rhetoric < 20) then
 		LoyaltyLoss = -15
 	elseif (Rhetoric < 40) then
@@ -67,17 +68,12 @@ function Run()
 	for number=0, Found-1 do
 		Alias = "Worker"..number
 		if SimPauseWorking(Alias) then
-			SendCommandNoWait(Alias,"Listen")
+			SendCommandNoWait(Alias, "Listen")
 		end
 	end
 	
-	AlignTo("","Worker0")
+	AlignTo("", "Worker0")
 	Sleep(1)
-	
-	-- play the speech sample as a 3DSample	
-	if dyn_IsLocalPlayer("") then
-		PlaySound3D("", "Measures/Measure_PropelEmployees", 1.0)
-	end
 
 	-- play the animation for the player character
 	PlayAnimationNoWait("", "propel")
@@ -108,41 +104,34 @@ function Run()
 		LoyaltyLoss = -3
 	end
 
-	-- get the skill, which is necessary for this workshop	
-	local		Skill = CRAFTSMANSHIP
-
-	-- player character's skill value, nessecary for the employees skill boost
-	local		Talent = GetSkillValue("",Skill)*7.5
-
 	-- boost the productivity
-	local	Boost = 0.25 + Talent / 100
+	local	Boost = GetSkillValue("", CRAFTSMANSHIP)
 	local AnimTime = 1
 	local	BoostDuration = duration * GetImpactValue("", 35)*0.01 -- 35 -> PropelSpeedupTime
 	LoyaltyLoss = LoyaltyLoss * 0.01 * GetImpactValue("", 41) -- 41 -> PropelFavorMalus
 	
 	for number=0, Found-1 do
 		Alias = "Worker"..number
-		if LoyaltyLoss~=0 then
+		if LoyaltyLoss ~= 0 then
 			AnimTime = PlayAnimationNoWait(Alias, "devotion")
 			chr_ModifyFavor(Alias, "Owner", LoyaltyLoss)
 		end
-		AddImpact(Alias, 4, Boost, BoostDuration)		-- 4 -> Productivity
-		-- include the event in the memory of the worker
-		CommitAction("propel", Alias, Alias, "Owner")
+		
+		AddImpact(Alias, "craftsmanship", Boost, BoostDuration)		
 	end
 	
 	SetMeasureRepeat(TimeOut)
 	Sleep(0.5)
 	local XPAmount = GetData("BaseXP")
 	XPAmount = XPAmount * Count
-	chr_GainXP("",XPAmount)
+	chr_GainXP("", XPAmount)
 	Sleep(AnimTime)
 	StopMeasure()
 end
 
 function Listen()
-  -- simplified this logic to make it possible to propel on farms or alchemist huts if the workers are outside building
-	AlignTo("","Owner")
+	-- simplified this logic to make it possible to propel on farms or alchemist huts if the workers are outside building
+	AlignTo("", "Owner")
 	while true do
 		Sleep(42)
 	end
@@ -154,8 +143,8 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 
