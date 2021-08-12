@@ -63,6 +63,8 @@ _Design_
 - To start an affair your residence doesn't matter anymore, instead you simply need the title "Free citizen"
 - The Action 'Diplomacy' is now a building action instead of a character action.
 - The city's cashbook infos are now more useful with more money in the treasury.
+- Only dynasty characters can now use the killing blow (and no longer employees)
+- All rogue characters, including employees, can now use the 'break bones' action.
 
 *** Vanilla-Bugs ***
 
@@ -130,6 +132,7 @@ _General_
 - Raising (or lowering) your handicraft talent had no effect on the productivity of employees until the next work day started. 
 - The Handicraft talent of employees had no effect on production speed at all.
 - At the notice board speech bubbles with broken text labels could appear, when someone removed a pamphlet.
+- Fixed a bug when revolting against imprisoning.
 - Fixed several map issues
 
 _Patron_

@@ -102,7 +102,7 @@ function Run()
 		end
 	end
 	
-	ms_attendmass_AffectFaith()
+	ms_084_attendmass_AffectFaith()
 end
 
 function CleanUp()

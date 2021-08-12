@@ -62,6 +62,8 @@ _Design_
 - Die Fähigkeit "Kama-Sutra-Meister" wurde umbenannt in "Unwiderstehlich"
 - Die Maßnahme "Diplomatie" erfordert nun keinen Charakter mehr, sondern ist eine Gebäude-Maßnahme.
 - Das Kassenbuch der Stadt bietet nun auch dann nützlichere Informationen, wenn die Stadtkasse etwas voller ist.
+- Nur Dynastie-Charaktere, d.h keine Angestellten, können bewusstlose Charaktere umbringen.
+- Alle Gauner-Charaktere, d.h. auch Angestellte, können die Maßnahme 'Knochen brechen' nutzen.
 
 *** Vanilla-Bugs ***
 
@@ -129,6 +131,7 @@ _Allgemein_
 - Das Erhöhen des eigenen Handwerkskunst-Talents wirkte sich erst am darauffolgenden Arbeitstag auf die Angestellten eines Charakters aus.
 - Der Handwerkskunst-Talentwert von Angestellten hatte überhaupt keine Auswirkungen.
 - Es konnte zu fehlerhaften Sprechblasen beim Schwarzen Brett kommen, wenn ein Pamphlet entfernt wurde.
+- Einen Fehler beim Widersetzen gegen eine Verhaftung behoben.
 - Diverse Map-Fehler korrigiert.
 
 _Patron_

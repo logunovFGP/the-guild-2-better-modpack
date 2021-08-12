@@ -13,20 +13,7 @@ function Run()
 		StopMeasure()
 	end
 
-	if (GetState("", STATE_CUTSCENE)) then
-		as_usefarmersclothes_Cutscene()
-	else
-		as_usefarmersclothes_Normal()
-	end
-end
-
-
-function Normal()
-
 	if IsStateDriven() then
-		if (HasProperty("","HaveCutscene") == true) then
-			return
-		end		
 		local ItemName = "FarmersClothes"
 		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
@@ -55,14 +42,6 @@ function Normal()
 
 		chr_GainXP("",GetData("BaseXP"))
 	end
-	StopMeasure()
-end
-
-function Snuffle()
-	Sleep(0.5)
-	AlignTo("", "Owner")
-	Sleep(2)
-	PlayAnimation("", "cogitate")
 end
 
 function GetOSHData(MeasureID)
@@ -72,38 +51,8 @@ function GetOSHData(MeasureID)
 	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 
-function CleanUp()
-	
+function CleanUp()	
 end
 
-
-
--- -----------------------------
---
--- This Part is for cutscenes 
---
--- -----------------------------
-
-function Cutscene()
-
-	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-
-	--show particles
-	GetPosition("Owner", "ParticleSpawnPos")
-	if RemoveItems("","FarmersClothes",1)>0 then
-		GetPositionOfSubobject("","Game_Head","ParticleSpawnPos")
-		
-		SetMeasureRepeat(TimeOut)
-		AddImpact("","jewellery",1,duration)
-		SetState("",STATE_JEWELLERY,true)
-
-		SetProperty("","jewellery",1)
-		
-		chr_GainXP("",GetData("BaseXP"))
-	end
-	StopMeasure()
-end
 
 

@@ -1,61 +1,59 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "as_215_UseArgusEyeglasses"
+----	OVERVIEW "as_UseCamouflageCloak"
 ----
-----	with this artifact, the player can increase his empathy by "modifier"
-----
+----	with this artifact, the player can increase the talent shadow arts by 3
 -------------------------------------------------------------------------------
 
 function Run()
 
 	if IsStateDriven() then
-		local ItemName = "ArgusEyeglasses"
+		local ItemName = "CamouflageCloak"
 		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
 		end
 	end
-	
-	local MeasureID = GetCurrentMeasureID("")
+
+	local MeasureID = GetCurrentMeasureID("") 
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
+
+	local modifier = 3
+
+	local count = 0
 	
-	--how much empathy is increased
-	local modifier = 2
-	
-	--eat something
+	-- boost shadow arts of all own employees in range
+
 	local Time = PlayAnimationNoWait("","use_object_standing")
-	Sleep(0.5)
+	Sleep(1)
 	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	Sleep(Time)
-	
-	if RemoveItems("","ArgusEyeglasses",1)>0 then
+
+
+	if RemoveItems("","CamouflageCloak",1)>0 then
 		--show overhead text
 		feedback_OverheadSkill("", "@L_ARTEFACTS_OVERHEAD_+0", false, 
-			"@L_TALENTS_empathy_ICON_+0", "@L_TALENTS_empathy_NAME_+0", modifier)
-	
+			"@L_TALENTS_shadow_arts_ICON_+0", "@L_TALENTS_shadow_arts_NAME_+0", modifier)
 		GetPosition("", "ParticleSpawnPos")
 		StartSingleShotParticle("particles/sparkle_talents.nif", "ParticleSpawnPos",1,5)	
 		PlaySound3D("","Effects/mystic_gift+0.wav", 1.0)
-		--add the impacts and remove the artefact from inventory
 		SetMeasureRepeat(TimeOut)
-		AddImpact("","empathy",modifier,duration)
-		AddImpact("","ArgusEyeglasses",1,duration)
+		AddImpact("","camouflagecloak",1,duration)
+		AddImpact("","shadow_arts",modifier,duration)
+		
 		Sleep(1)
 		chr_GainXP("",GetData("BaseXP"))
 	end
 	StopMeasure()
-				
-	
 end
+
 
 -- -----------------------
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	CarryObject("","",false)
-	Sleep(1)
 end
 
 function GetOSHData(MeasureID)

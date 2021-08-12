@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_GetDivorced"
+----	OVERVIEW "ms_127_GetDivorced"
 ----
 ----	with this measure the player can divorce from the spouse
 ----
@@ -36,7 +36,7 @@ function Run()
 	local LooseMoney = math.ceil(Wealth*0.05)
 	
 	local result = MsgNews("", 0, "@B[A, @L_REPLACEMENTS_BUTTONS_JA]@B[C, @L_REPLACEMENTS_BUTTONS_NEIN]@P",  
-					ms_GetDivorced_AI, "default", -1, "@L_GENERAL_MEASURES_GETDIVORCED_HEAD_+0", 
+					ms_127_GetDivorced_AI, "default", -1, "@L_GENERAL_MEASURES_GETDIVORCED_HEAD_+0", 
 					"@L_GENERAL_MEASURES_GETDIVORCED_BODY_+0", GetID("Spouse"), LooseMoney)
 	
 	if (result ~= "A") then

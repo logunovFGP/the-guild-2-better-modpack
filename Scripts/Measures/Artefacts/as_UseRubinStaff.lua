@@ -13,16 +13,6 @@ function Run()
 		StopMeasure()
 	end
 
-	if (GetState("", STATE_CUTSCENE)) then
-		as_userubinstaff_Cutscene()
-	else
-		as_userubinstaff_Normal()
-	end
-end
-
-
-function Normal()
-
 	if IsStateDriven() then
 		if (HasProperty("","HaveCutscene") == true) then
 			return
@@ -55,14 +45,6 @@ function Normal()
 		
 		chr_GainXP("",GetData("BaseXP"))
 	end
-	StopMeasure()
-end
-
-function Snuffle()
-	Sleep(0.5)
-	AlignTo("", "Owner")
-	Sleep(2)
-	PlayAnimation("", "cogitate")
 end
 
 function GetOSHData(MeasureID)
@@ -73,37 +55,4 @@ function GetOSHData(MeasureID)
 end
 
 function CleanUp()
-	
 end
-
-
-
--- -----------------------------
---
--- This Part is for cutscenes 
---
--- -----------------------------
-
-function Cutscene()
-
-	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-
-	--show particles
-	GetPosition("Owner", "ParticleSpawnPos")
-	if RemoveItems("","RubinStaff",1)>0 then
-		GetPositionOfSubobject("","Game_Head","ParticleSpawnPos")
-		
-		SetMeasureRepeat(TimeOut)
-		AddImpact("","jewellery",1,duration)
-		SetState("",STATE_JEWELLERY,true)
-
-		SetProperty("","jewellery",5)
-		
-		chr_GainXP("",GetData("BaseXP"))
-	end
-	StopMeasure()
-end
-
-

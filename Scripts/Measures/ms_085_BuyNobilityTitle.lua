@@ -166,7 +166,7 @@ function Run()
 		-- Check if a grant is in progress
 		if GetNobilityTitle("", true) == true then
 		
-			PlayAnimationNoWait("Usher", ms_buynobilitytitle_getRandomTalk())
+			PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 			MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_0")
 			StopAnimation("Usher")
 			
@@ -180,7 +180,7 @@ function Run()
 			local season = GetSeason()
 			local time = math.mod(GetGametime(), 24)
 			
-			PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+			PlayAnimationNoWait("Usher",ms_085_buynobilitytitle_getRandomTalk())
 			
 			if (time < 11) then
 				if (season == EN_SEASON_SPRING) then
@@ -216,7 +216,7 @@ function Run()
 			
 			StopAnimation("Usher")
 			
-			PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+			PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 			camera_CutsceneBothLockCam("cutscene", "Usher", "Far_HUpYRight")
 			MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_2")
 			StopAnimation("Usher")
@@ -225,7 +225,7 @@ function Run()
 			local currenttitle = GetNobilityTitle("")
 			if (currenttitle == GL_HIGHEST_NOBILITY_TITLE) then
 			
-				PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+				PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 				MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_IMPOSSIBLE")
 				StopMeasure()
 				return
@@ -246,7 +246,7 @@ function Run()
 				local buy = 0
 				local Icant = false
 				
-				PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+				PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 									
 				if chr_DynastyGetImperialFameLevel("") < famelvl then
 
@@ -254,7 +254,7 @@ function Run()
 
 					MsgSayInteraction("","Usher","",
 						"@B[A, @L_BUYTITLE_IMPERIALFAME_NO_BUTTON_+0]",
-						ms_buynobilitytitle_AIDecide,  --AIFunc
+						ms_085_buynobilitytitle_AIDecide,  --AIFunc
 						"@L_BUYTITLE_IMPERIALFAME_NO_TALK_+0",
 						newtitle, impfameleveldyn, chr_GetImperialFameLevelPoints(famelvl))
 						
@@ -265,7 +265,7 @@ function Run()
 					MsgSayInteraction("","Usher","",
 						"@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+1]"..
 						"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]",
-						ms_buynobilitytitle_AIDecide,  --AIFunc
+						ms_085_buynobilitytitle_AIDecide,  --AIFunc
 						"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
 						GetID(""), newtitle, cost)
 						
@@ -275,7 +275,7 @@ function Run()
 					local BYesNo = MsgSayInteraction("","Usher","",
 							"@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+0]"..
 							"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]",
-							ms_buynobilitytitle_AIDecide,  --AIFunc
+							ms_085_buynobilitytitle_AIDecide,  --AIFunc
 							"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
 							GetID(""), newtitle, cost)
 											
@@ -306,7 +306,7 @@ function Run()
 						local XP = 10 + ((currenttitle+1) * 2)
 						IncrementXP("", XP)
 
-						PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+						PlayAnimationNoWait("Usher",ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID(""))
 						GetDynasty("","dyn")
 						if HasProperty("dyn", "Priority1") then
@@ -314,7 +314,7 @@ function Run()
 						end						
 					else
 						
-						PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+						PlayAnimationNoWait("Usher",ms_085_buynobilitytitle_getRandomTalk())
 						MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+1")
 						
 					end
@@ -322,7 +322,7 @@ function Run()
 				
 					if (Icant == false) then
 						camera_CutsceneBothLockCam("cutscene", "Usher", "Far_HUpYRight")
-						PlayAnimationNoWait("Usher",ms_buynobilitytitle_getRandomTalk())
+						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_NO")
 					end
 

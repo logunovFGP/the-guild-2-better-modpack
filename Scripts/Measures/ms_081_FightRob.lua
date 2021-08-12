@@ -11,8 +11,6 @@ function Run()
 		StopMeasure()
 	end
 	
-	
-	
 	feedback_OverheadActionName("Destination")
 	PlayAnimation("","watch_for_guard")
 	if GetImpactValue("Destination","REVOLT")==0 then

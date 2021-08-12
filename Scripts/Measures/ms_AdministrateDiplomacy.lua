@@ -1,11 +1,16 @@
 function Init()
-	local CState = DynastyGetDiplomacyState("Destination","Owner")
+
+	if not BuildingGetOwner("", "Boss") then
+		return
+	end
+	
+	local CState = DynastyGetDiplomacyState("Destination", "Boss")
 	local Buttons = ""
 	
-	local MinState = DynastyGetMinDiplomacyState("", "Destination")
-	local MaxState = DynastyGetMaxDiplomacyState("", "Destination")
+	local MinState = DynastyGetMinDiplomacyState("Boss", "Destination")
+	local MaxState = DynastyGetMaxDiplomacyState("Boss", "Destination")
 	
-	if MinState<0 or MaxState<0 then
+	if MinState < 0 or MaxState < 0 then
 		return false
 	end
 	
@@ -29,20 +34,21 @@ function Init()
 		end
 	end
 	
-	if Count<2 then
+	if Count < 2 then
 		-- error und raus
 		return false
 	end
 
 	local result = InitData("@P"..Buttons,
-		ms_administratediplomacy_AIInitDipl,
-		"@LAdministrateDiplomacySheet",
-		"")
+					ms_administratediplomacy_AIInitDipl,
+					"@LAdministrateDiplomacySheet",
+					"")
 	SetData("InitResult",result)
 end
 
 function AIInitDipl()
-	local CurrentFavor = GetFavorToDynasty("Destination","Owner")
+
+	local CurrentFavor = GetFavorToDynasty("Destination", "Boss")
 	if CurrentFavor > 79 then
 		return 3
 	elseif CurrentFavor > 62 then
@@ -55,6 +61,7 @@ function AIInitDipl()
 end
 
 function AIDecision()
+
 	local Indicator = 0
 	local Factor = 1
 	
@@ -62,14 +69,14 @@ function AIDecision()
 	if SimGetFaith("Destination") > 50 then
 		Factor = 2
 	end
-	if SimGetReligion("Owner") == SimGetReligion("Destination") then
+	if SimGetReligion("Boss") == SimGetReligion("Destination") then
 		Indicator = Indicator + Factor
 	else
 		Indicator = Indicator - Factor
 	end
 	
 	--check if rogue -3 .. 2
-	if SimGetClass("Owner")==4 then
+	if SimGetClass("Boss") == 4 then
 		if SimGetClass("Destination")==4 then
 			Indicator = Indicator + 2
 		else
@@ -80,24 +87,24 @@ function AIDecision()
 	end
 	
 	--check for nobility title
-	if GetNobilityTitle("Destination") > GetNobilityTitle("Owner") then
-		Indicator = Indicator - (GetNobilityTitle("Destination")-GetNobilityTitle("Owner"))
+	if GetNobilityTitle("Destination") > GetNobilityTitle("Boss") then
+		Indicator = Indicator - (GetNobilityTitle("Destination") - GetNobilityTitle("Boss"))
 	else
 		Indicator = Indicator + 2
 	end
 	
 	--check for money 
-	if SimGetWealth("Destination") > SimGetWealth("Owner") then
+	if SimGetWealth("Destination") > SimGetWealth("Boss") then
 		Indicator = Indicator - 2
 	else
 		Indicator = Indicator + 2
 	end
 	
 	--check current state
-	local CurrentDIPState = DynastyGetDiplomacyState("Destination","Owner")
+	local CurrentDIPState = DynastyGetDiplomacyState("Destination", "Boss")
 	local PropState = GetData("InitResult")
 	
-	if PropState > (CurrentDIPState+1) then
+	if PropState > (CurrentDIPState + 1) then
 		Indicator = Indicator - 2
 	end
 	
@@ -106,8 +113,8 @@ function AIDecision()
 	end
 	
 	--check charisma and rhetoric
-	local RhetoricSkill = GetSkillValue("Owner",RHETORIC)
-	local CharismaSkill = GetSkillValue("Owner",CHARISMA)
+	local RhetoricSkill = GetSkillValue("Boss", RHETORIC)
+	local CharismaSkill = GetSkillValue("Boss", CHARISMA)
 	if RhetoricSkill > 4 then
 		Indicator = Indicator + 1
 	else
@@ -121,7 +128,7 @@ function AIDecision()
 	end
 	
 	--check currentfavor
-	local CurrentFavor = GetFavorToDynasty("Destination","Owner")
+	local CurrentFavor = GetFavorToDynasty("Destination", "Boss")
 	if CurrentFavor > 79 then
 		Indicator = Indicator + 4
 	elseif CurrentFavor > 62 then
@@ -138,25 +145,28 @@ function AIDecision()
 	else
 		return "C"
 	end
-	
 end
 
 function Run()
+
 	if not HasData("InitResult") then
-		StopMeasure()
+		return
 	end
+	
 	if not AliasExists("Destination") then
-		StopMeasure()
+		return
 	end
 	
 	local InitResult = GetData("InitResult")
+	
 	if InitResult == "C" then
-		StopMeasure()
+		return
 	end
 	
 	local StatusLabel = "@LHostility"
 	local Favor = 0
 	local Status = DIP_FOE
+	
 	if InitResult == 1 then
 		StatusLabel = "@LNeutral"
 		Favor = 50
@@ -171,15 +181,15 @@ function Run()
 		Status = DIP_ALLIANCE
 	end
 	
-	if DynastyGetTeam("") == DynastyGetTeam("Destination") and DynastyGetTeam("") > 0 then
+	if DynastyGetTeam("Boss") == DynastyGetTeam("Destination") and DynastyGetTeam("Boss") > 0 then
 		MsgQuick("", "@L_MEASURE_AdministrateDiplomacy_FAILURE_TEAM_+0")
-		StopMeasure()
+		return
 	end
 	
-	local CurrentState = DynastyGetDiplomacyState("Destination","")
+	local CurrentState = DynastyGetDiplomacyState("Destination", "Boss")
 	local CurrentLabel = "@LHostility"
 	if CurrentState == InitResult then
-		StopMeasure()
+		return
 	elseif InitResult < CurrentState then
 		if CurrentState == 1 then
 			CurrentLabel = "@LNeutral"
@@ -189,62 +199,57 @@ function Run()
 			CurrentLabel = "@LAlliance"
 		end
 		
-		DynastySetDiplomacyState("Destination","",Status)
-		DynastyForceCalcDiplomacy("")
-		SetFavorToDynasty("Destination","",Favor)
-		MsgNewsNoWait("","Destination","","politics",-1,
-			"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-			"@LDIPLOMATIC_STATE_CHANGED",GetID("Destination"),StatusLabel,CurrentLabel)
-		MsgNewsNoWait("Destination","","","politics",-1,
-			"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-			"@LDIPLOMATIC_STATE_CHANGED",GetID(""),StatusLabel,CurrentLabel)
+		DynastySetDiplomacyState("Destination", "Boss", Status)
+		DynastyForceCalcDiplomacy("Boss")
+		SetFavorToDynasty("Destination", "Boss", Favor)
+		MsgNewsNoWait("Boss", "Destination", "Boss", "politics", -1,
+					"@LDIPLOMATIC_STATE_CHANGED_HEAD",
+					"@LDIPLOMATIC_STATE_CHANGED", GetID("Destination"), StatusLabel, CurrentLabel)
+		MsgNewsNoWait("Destination", "Boss", "Boss", "politics",-1,
+					"@LDIPLOMATIC_STATE_CHANGED_HEAD",
+					"@LDIPLOMATIC_STATE_CHANGED", GetID("Boss"), StatusLabel, CurrentLabel)
 		
 		SetRepeatTimer("Dynasty", GetMeasureRepeatName(), 8)
-		StopMeasure()
+		return
 	end
 	
 	
 	local MsgTimeOut = 0.5 --30sek
-	local DestResult = MsgNews("Destination","",
-				"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
-				"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
-				ms_administratediplomacy_AIDecision,  --AIFunc
-				"politics", --MessageClass
-				MsgTimeOut, --TimeOut
-				"@LAdministrateDiplomacySheet",
-				"@LDIPLOMATIC_REQUEST_QUESTION",
-				GetID(""),StatusLabel)
+	local DestResult = MsgNews("Destination","Boss",
+						"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
+						"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
+						ms_administratediplomacy_AIDecision,  --AIFunc
+						"politics", --MessageClass
+						MsgTimeOut, --TimeOut
+						"@LAdministrateDiplomacySheet",
+						"@LDIPLOMATIC_REQUEST_QUESTION",
+						GetID(""), StatusLabel)
 				
 	SetRepeatTimer("Dynasty", GetMeasureRepeatName(), 8)
 	
 	if DestResult == "C" then
 		--decline
-		ModifyFavorToDynasty("Destination","",-15)
-		MsgNewsNoWait("","Destination","","politics",-1,
-				"@LAdministrateDiplomacySheet",
-				"%4l %2l$N$N%1DN: %>%3l%<",GetID("Destination"),StatusLabel,"@L_CHURCH_087_CHANGEFAITH_CATHOLIC_BTN_+1","@LStatus:")
-		StopMeasure()
+		ModifyFavorToDynasty("Destination", "Boss", -15)
+		MsgNewsNoWait("Boss", "Destination", "Boss", "politics",-1,
+					"@LAdministrateDiplomacySheet",
+					"%4l %2l$N$N%1DN: %>%3l%<", GetID("Destination"), StatusLabel, "@L_CHURCH_087_CHANGEFAITH_CATHOLIC_BTN_+1", "@LStatus:")
+		return
 	end
 	
 	--accepted
-	MsgNewsNoWait("","Destination","","politics",-1,
-			"@LAdministrateDiplomacySheet",
-			"@LDIPLOMATIC_REQUEST_ACCEPT",GetID("Destination"),StatusLabel)
+	MsgNewsNoWait("Boss", "Destination", "Boss", "politics", -1,
+				"@LAdministrateDiplomacySheet",
+				"@LDIPLOMATIC_REQUEST_ACCEPT", GetID("Destination"), StatusLabel)
 	
 	--SetFavorToDynasty("Destination","",Favor)
-	DynastySetDiplomacyState("Destination","",Status)
-	DynastyForceCalcDiplomacy("")
+	DynastySetDiplomacyState("Destination", "Boss", Status)
+	DynastyForceCalcDiplomacy("Boss")
 
-	if GetFavorToDynasty("Destination","")<Favor then
-		SetFavorToDynasty("Destination","",Favor)
+	if GetFavorToDynasty("Destination", "Boss") < Favor then
+		SetFavorToDynasty("Destination", "Boss", Favor)
 	end
-
-	Sleep(1)
-	StopMeasure()
-	
 end
 
 function CleanUp()
-
 end
 

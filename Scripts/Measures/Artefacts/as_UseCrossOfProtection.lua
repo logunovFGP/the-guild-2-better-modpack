@@ -1,48 +1,58 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "as_UseCitizensClothes"
+----	OVERVIEW "as_UseCrossOfProtection"
 ----
-----	with this artifact, the player can increase the favour to other characters
-----	in range
+----	with this artifact, the player is protected by beeing attacked 
 ----
 -------------------------------------------------------------------------------
 
 function Run()
-	if GetImpactValue("","jewellery")>0 then
-		MsgQuick("", "@L_GENERAL_MEASURES_JEWELLERY_FAILURES_+0", GetID(""))
-		StopMeasure()
-	end
 
 	if IsStateDriven() then
-		local ItemName = "CitizensClothes"
+		local ItemName = "CrossOfProtection"
 		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
 		end
 	end
-
+	
 	local MeasureID = GetCurrentMeasureID("")
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-
-	--play animation
-	local Time
-	Time = PlayAnimationNoWait("","use_object_standing")
-	Sleep(1)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	Sleep(1)
 	
-	if RemoveItems("","CitizensClothes",1)>0 then	
+	
+
+	--play anims, and show overhead text
+	local Time = PlayAnimationNoWait("","use_object_standing")
+	Sleep(0.5)
+	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	Sleep(0.5)
+	CarryObject("","Handheld_Device/ANIM_crossofprotection.nif",false)
+	Sleep(Time-2)
+	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("","",false)
+	if RemoveItems("","CrossOfProtection",1)>0 then
+		--show particles
+		GetPosition("Owner", "ParticleSpawnPos")
+		StartSingleShotParticle("particles/pray_glow.nif", "ParticleSpawnPos",2,5)
+		PlaySound3D("","Effects/mystic_gift+0.wav", 1.0)
+		--remove item, add impacts
+		
 		SetMeasureRepeat(TimeOut)
-		AddImpact("","jewellery",1,duration)
-		SetState("",STATE_JEWELLERY,true)
-
-		SetProperty("","jewellery",3)
-
+		AddImpact("","Unantastbar",1,duration)
+		AddImpact("","crossofprotection",1,duration)
 		chr_GainXP("",GetData("BaseXP"))
 	end
 	StopMeasure()
+	
+end
+
+-- -----------------------
+-- CleanUp
+-- -----------------------
+function CleanUp()
+	CarryObject("","",false)
 end
 
 function GetOSHData(MeasureID)
@@ -52,5 +62,3 @@ function GetOSHData(MeasureID)
 	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 
-function CleanUp()
-end

@@ -9,33 +9,10 @@
 
 function Run()
 
---	-- animal test
---	GetHomeBuilding("", "Residence")
---	GetPosition("","MovePos")
---	SimCreate(999, "Residence", "MovePos", "Dog")
---	--VehicleChangeModel("Dog", "Characters/Dog.nif")
---	SetState("Dog",STATE_TOWNNPC,true)
---	SimSetFirstname("Dog", "Hund")
---	SimSetLastname("Dog", " ")
---	MeasureRun("Dog", "", "FollowSim", true)
---	StopMeasure()
---	-- animal test
-
-
 	if GetImpactValue("","jewellery")>0 then
 		MsgQuick("", "@L_GENERAL_MEASURES_JEWELLERY_FAILURES_+0", GetID(""))
 		StopMeasure()
 	end
-
-	if (GetState("", STATE_CUTSCENE)) then
-		as_usepearlchain_Cutscene()
-	else
-		as_usepearlchain_Normal()
-	end
-end
-
-
-function Normal()
 
 	if IsStateDriven() then
 		if (HasProperty("","HaveCutscene") == true) then
@@ -69,14 +46,6 @@ function Normal()
 		
 		chr_GainXP("",GetData("BaseXP"))
 	end
-	StopMeasure()
-end
-
-function Snuffle()
-	Sleep(0.5)
-	AlignTo("", "Owner")
-	Sleep(2)
-	PlayAnimation("", "cogitate")
 end
 
 function GetOSHData(MeasureID)
@@ -87,37 +56,4 @@ function GetOSHData(MeasureID)
 end
 
 function CleanUp()
-	
 end
-
-
-
--- -----------------------------
---
--- This Part is for cutscenes 
---
--- -----------------------------
-
-function Cutscene()
-
-	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-
-	--show particles
-	GetPosition("Owner", "ParticleSpawnPos")
-	if RemoveItems("","Pearlchain",1)>0 then
-		GetPositionOfSubobject("","Game_Head","ParticleSpawnPos")
-		
-		SetMeasureRepeat(TimeOut)
-		AddImpact("","jewellery",1,duration)
-		SetState("",STATE_JEWELLERY,true)
-
-		SetProperty("","jewellery",3)
-		
-		chr_GainXP("",GetData("BaseXP"))
-	end
-	StopMeasure()
-end
-
-

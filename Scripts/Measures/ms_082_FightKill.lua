@@ -67,6 +67,7 @@ function Run()
 		RemoveProperty("Destination","KillAction_start")
 	end
 end
+
 function CleanUp()
 	if AliasExists("Destination") then
 		RemoveProperty("Destination","KillAction_start")

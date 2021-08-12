@@ -61,7 +61,7 @@ Data:
 131   "IsInventoryVisible"   "__F((Object.IsInventoryVisible())AND NOT(Object.HudIsInCutscene()))"   |
 132   "IsInsideBank"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
 133   "IsMySimInTownHall"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
-135   "CanAdministrateDiplomacy"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.HasUpgrade(Escritoire)))"   |
+135   "CanAdministrateDiplomacy"   "__F((Object.CanBeControlled())AND (Object.IsClass(1))AND(Object.HasUpgrade(Escritoire)))"   |
 136   "HasNoLiaison"   "__F((Object.CanBeControlled())AND NOT(Object.HasLiaison())AND(Object.MinAge(16)))"   |
 137   "FreeForLiaison"   "__F((Object.HasDifferentSex())AND NOT(Object.BelongsToMe())AND(Object.MinAge(16)))"   |
 138   "CanBeBlackmailed"   "__F(NOT(Object.BelongsToMe())AND(Object.MaxAlignment(79))AND(Object.ActionAdmissible()))"   |
@@ -201,7 +201,6 @@ Data:
 282   "CanUseFragranceOfHoliness"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 283   "IsResourceMeasure"   "__F((Object.BelongsToMe())AND(Object.IsResourceMeasure()))"   |
 284   "CanLinger"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==400)AND(Object.IsType(32)))"   |
-285   "CanUseCutsceneBribeCharacter"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneBribeCharacter)))"   |
 286   "CanUseCutsceneFragranceOfHoliness"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneFragranceOfHoliness))AND (Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 287   "CanUseCutsceneLetterFromRome"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneLetterFromRome))AND(Object.GetItemCnt(LetterFromRome)>0)AND NOT(Object.GetState(fighting)))"   |
 288   "CanUseCutsceneAboutTalents1"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneAboutTalents1))AND(Object.GetItemCnt(AboutTalents1)>0)AND NOT(Object.GetState(fighting)))"   |
@@ -232,7 +231,6 @@ Data:
 313   "CanTakeCreditAndIsAtHome"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.IsType(2)))"   |
 314   "CanTakeCreditAndIsInsideBank"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
 315   "CanThreatCharacter"   "__F((Object.CanBeControlled())AND(Object.IsClass(3))OR(Object.IsClass(4)))"   |
-316   "CanThreatCharacterInCutscene"   "__F((Object.CanBeControlledInCutscene())AND (Object.IsClass(3))OR(Object.IsClass(4))AND (Object.HasProperty(CutsceneThreatCharacter)))"   |
 317   "CanRoughUp"   "__F((Object.CanBeControlled())AND(Object.IsClass(4)))"   |
 318   "CanBeGathered"   "__F((Object.CanBeGathered()))"   |
 319   "ValidBuildingTargetForEvilMeasures"   "__F(NOT(Object.BelongsToMe())AND(Object.IsClass(1))OR(Object.IsClass(2))AND(Object.ActionAdmissible()))"   |
@@ -246,7 +244,6 @@ Data:
 358   "IsMyWorkingBuilding"   "__F((Object.CanBeControlled())AND (Object.IsClass(2)))"   |
 359   "CanBuyNobilityTitle"   "__F((Object.CanBeControlled())AND NOT(Object.GrantInProgress())AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
 360   "NotInsideBuilding"   "__F(NOT(Object.IsInBuilding()))"   |
-361   "CanUseWeatherRocket"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(WeatherRocket)>0)AND NOT(Object.GetState(fighting)))"   |
 363   "CanBeAssignedToHome"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.IsClass(1))AND NOT(Object.IsBuildingMyHome()))"   |
 364   "CanBewitchCharacter"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND(Object.HasUpgrade(Divanbed)))"   |
 365   "CanBeBribed"   "__F(NOT(Object.BelongsToMe())AND(Object.MinAge(16)))"   |
@@ -523,4 +520,5 @@ Data:
 1567   "CanArrangeConcert"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(4))OR(Object.IsType(36)))"   |
 1568   "CanUseMineGuards"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(12))AND NOT Object.GetState(building))"   |
 2000   "PATCH_TODO"   "__F((Object.BelongsToMe())AND(Object.IsDynastySim()))"   |
+2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  
