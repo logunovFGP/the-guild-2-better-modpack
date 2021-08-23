@@ -17,13 +17,11 @@ Data:
 12   "mine"   13   2   0   |
 13   "harbor"   0   0   0   |
 14   "market"   1   0   0   |
-15   "robber"   15   4   0   |
 16   "alchemist_shop"   9   3   123   |
 18   "rangerhut"   16   2   0   |
 19   "church_ev"   11   3   162   |
 20   "church_cath"   11   3   162   |
 21   "castle"   17   4   0   |
-22   "thief"   26   4   0   |
 23   "townhall"   17   0   0   |
 24   "well"   17   0   0   |
 25   "prison"   17   0   0   |
@@ -47,6 +45,8 @@ Data:
 43   "bankhouse"   41   3   959   |
 97   "none"   1   0   0   |
 98   "Friedhof"   40   3   966   |
+100   "robber"   15   4   0   |
+101   "thief"   26   4   0   |
 102   "gaukler"   42   4   571   |
 104   "Mill"   66   1   943   |
 108   "Fruitfarm"   1   1   0   |

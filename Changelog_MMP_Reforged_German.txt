@@ -167,7 +167,7 @@ _Gauner_
 - Es werden keine Nachrichten über 'Liebesdienste' mehr an Charaktere verschickt, die nicht in der aktiven Spielergruppe sind.
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
 - Die Maßnahme 'Ausruhen' wird nun korrekterweise bei den anderen roten Maßnahmen eingeordnet.
-- Räuberlager haben nun einen Karren.
+- Räuberlager und Diebesgilden haben nun von Beginn an einen Karren.
 - Das 'Hypnosependel' funktionierte nicht.
 - Einer der Flüche der 'Voodoo-Puppe' funktionierte nicht richtig. Es gab auch keine Fehlermeldung, wenn das Opfer genug Empathie hatte, um den Angriff
   abzuwehren.
@@ -193,6 +193,7 @@ _KI_
 - Die KI spammte 'Gebäude plündern', sogar bei Gebäuden, die noch im Bau waren.
 - KI-Priester konnten 'Gläubige gewinnen', auch, wenn das entsprechende Upgrade noch gar nicht freigeschaltet war.
 - KI Charaktere erhielten beim Kauf neuer Rüstungen/Waffen ein zusätzliches Item in ihr Inventar.
+- Die KI-Verwaltung von zu Spieler-Dynastien gehörenden Räuberlagern und Diebesgilden funktionierte nicht.
 
 *** Features ***
 

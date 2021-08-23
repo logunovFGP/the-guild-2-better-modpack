@@ -169,7 +169,7 @@ _Rogue_
 - You no longer get messages for characters outside of your active party about the usage of 'salacious services'
 - Children are no longer targets of wenches.
 - The action 'Rest' now has the red action category like the icon suggests.
-- Robbercamps now have a cart.
+- Robbercamps and thief-guilds now start with a cart.
 - 'Hypnosis pendulum' didn't work.
 - One curse of the 'voodoo doll' didn't work. Also there was no error msg when the victim had enough empathy to counter the action.
 - Protectionmoney rackets showed the wrong duration in the tooltip.
@@ -190,6 +190,7 @@ _AI_
 - AI spammed 'Plunder building' actions, even while the target was still under construction.
 - AI controlled priests could 'win believers' even though they hadn't unlocked the required upgrade.
 - AI characters got an additional item in their inventory when they bought a new weapon/armor.
+- AI management of player-dynasty's robbers and thieves was broken.
 
 *** Features ***
 
