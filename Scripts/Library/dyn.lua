@@ -30,17 +30,15 @@ end
 -- -----------------------
 function BlockEvilMeasures(BlockerDynAlias, BlockerDynID, Duration)
 
-		if HasProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID) then
-			local ref = GetProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID)
-			SetProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID, ref+1)
-		else
-			SetProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID, 1)
-		end
+	if HasProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID) then
+		local ref = GetProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID)
+		SetProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID, ref+1)
+	else
+		SetProperty(BlockerDynAlias, "NoEvilFrom"..BlockerDynID, 1)
+	end
 		
-		-- This scriptcall will reset the effect
-		
-		CreateScriptcall("RemoveBlockEvilMeasures", Duration, "Library/dyn.lua", "RemoveBlockEvilMeasures", BlockerDynAlias, nil, BlockerDynID)
-			
+	-- This scriptcall will reset the effect
+	CreateScriptcall("RemoveBlockEvilMeasures", Duration, "Library/dyn.lua", "RemoveBlockEvilMeasures", BlockerDynAlias, nil, BlockerDynID)
 end
 
 -- -----------------------
@@ -48,19 +46,19 @@ end
 -- -----------------------
 function RemoveBlockEvilMeasures(BlockerDynID)
 
-		if HasProperty("", "NoEvilFrom"..BlockerDynID) then
+	if HasProperty("", "NoEvilFrom"..BlockerDynID) then
 		
-			local ref = GetProperty("", "NoEvilFrom"..BlockerDynID)
+		local ref = GetProperty("", "NoEvilFrom"..BlockerDynID)
 			
-			if (ref == 1) then
-				RemoveProperty("", "NoEvilFrom"..BlockerDynID)
-			else
-				SetProperty("", "NoEvilFrom"..BlockerDynID, ref-1)
-				return true
-			end
+		if (ref == 1) then
+			RemoveProperty("", "NoEvilFrom"..BlockerDynID)
+		else
+			SetProperty("", "NoEvilFrom"..BlockerDynID, ref-1)
+			return true
 		end
+	end
 		
-		return false
+	return false
 end
 
 -- -----------------------
@@ -68,30 +66,36 @@ end
 -- -----------------------
 function EvilMeasuresBlocked(Blocked, Blocker)
 
-		GetDynasty(Blocker, "DestDyn")
-		if HasProperty("DestDyn", "NoEvilFrom"..GetDynastyID(Blocked)) then			
-			GetDynasty(Blocked, "DestDyn")
-			MsgBoxNoWait(Blocked, Blocker, "_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_FAILURES_+17", GetID("DestDyn"))
-			return true
-		else
-			return false
-		end
-						
+	GetDynasty(Blocker, "DestDyn")
+	if HasProperty("DestDyn", "NoEvilFrom"..GetDynastyID(Blocked)) then			
+		GetDynasty(Blocked, "DestDyn")
+		MsgBoxNoWait(Blocked, Blocker, "_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_FAILURES_+17", GetID("DestDyn"))
+		return true
+	else
+		return false
+	end						
 end
 
 -- -----------------------
--- GetValidMember
+-- GetValidMember (return: ID)
 -- -----------------------
 function GetValidMember(Dynasty)
 
-	local Count = DynastyGetMemberCount(Dynasty)
+	local Count = DynastyGetFamilyMemberCount(Dynasty)
+	local BossID = -1
 	
 	for i=0, Count-1 do
-		if DynastyGetMember(Dynasty, i, "Member") then
-			if not GetState("Member", STATE_DYING) then
-				if not GetState("Member", STATE_DEAD) then
-					CopyAlias("Member", "DynastyBoss")
-					break
+		if DynastyGetFamilyMember(Dynasty, i, "Member") then
+			if AliasExists("Member") then
+				if GetDynastyID(Dynasty) == GetDynastyID("Member") then
+					if not GetState("Member", STATE_DYING) then
+						if not GetState("Member", STATE_DEAD) then
+							if SimGetAge("Member") >= 16 then
+								CopyAlias("Member", "DynastyBoss")
+								break
+							end
+						end
+					end
 				end
 			end
 		end
@@ -101,7 +105,7 @@ function GetValidMember(Dynasty)
 		CopyAlias("Member", "DynastyBoss")
 	end
 	
-	local BossID = GetID("DynastyBoss")
+	BossID = GetID("DynastyBoss")
 	return BossID
 end
 
