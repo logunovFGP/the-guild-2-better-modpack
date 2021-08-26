@@ -35,7 +35,7 @@ function Run()
 	SetProperty("","CocotteProvidesLove",1)
 
 	GetPosition("","CurrentPosition")
-  local x,y,z = PositionGetVector("CurrentPosition")
+	local x,y,z = PositionGetVector("CurrentPosition")
 	SetProperty("","MyPosX",x)
 	SetProperty("","MyPosZ",z)
 

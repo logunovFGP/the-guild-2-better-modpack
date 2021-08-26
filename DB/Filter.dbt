@@ -301,7 +301,7 @@ Data:
 421   "BelongsToMeRealShip"   "__F((Object.BelongsToMe())AND NOT(Object.IsType(4)))"   |
 425   "CanUseStinkBomb"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(StinkBomb)>0)AND NOT(Object.GetState(fighting)))"   |
 427   "IsMyCocotte"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND(Object.MinAge(16))AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(36)))"   |
-428   "CanUseCocotte"   "__F((Object.CanBeControlled())AND (Object.GetObjectsByRadius(Sim)==300)AND (Object.GetProfession()== 30)AND(Object.Property.CocotteProvidesLove == 1)AND(Object.Property.CocotteHasClient == 0)AND(Object.HasDifferentSex()))"   |
+428   "CanUseCocotte"   "__F((Object.CanBeControlled())AND (Object.GetObjectsByRadius(Sim)==500)AND (Object.GetProfession()== 30)AND(Object.Property.CocotteProvidesLove == 1)AND(Object.Property.CocotteHasClient == 0)AND(Object.HasDifferentSex()))"   |
 429   "CanUseCocotteTarget"   "__F((Object.GetProfession()== 30)AND (Object.Property.CocotteProvidesLove == 1)AND (Object.Property.CocotteHasClient == 0)AND (Object.HasDifferentSex()))"   |
 430   "CanShipPlunderBuilding"   "__F((Object.CanBeControlled())AND(Object.CompareHPRelative()>30)AND(Object.IsType(8)))"   |
 432   "CanBePlunderedByShip1"   "__F(NOT(Object.BelongsToMe())AND(Object.IsType(11))OR(Object.IsType(34))AND(Object.ActionAdmissible())AND NOT(Object.HasImpact(Unantastbar))AND NOT(Object.HasImpact(buildingburgledtoday))AND NOT(Object.GetState(building)))"   |
