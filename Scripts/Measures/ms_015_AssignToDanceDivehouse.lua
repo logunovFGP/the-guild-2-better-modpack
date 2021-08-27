@@ -3,10 +3,6 @@
 -- -----------------------
 -- ******** THANKS TO KINVER ********
 function Run()
-
-	
-
-
 	if not SimGetWorkingPlace("","Divehouse") then
 		if IsPartyMember("") then
 			--if not SimGetGender("") == GENDER_MALE then
@@ -85,9 +81,9 @@ function Run()
 		end
 	
 		if NumGuests == 0 then
-			ms_assigntodancedivehouse_Waiting()
+			ms_015_assigntodancedivehouse_Waiting()
 		else
-			ms_assigntodancedivehouse_Dance()
+			ms_015_assigntodancedivehouse_Dance()
 		end
 
 		IncrementXPQuiet("",15)

@@ -9,10 +9,10 @@ GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Textures: Jollina, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter
+Testing: Jollina, VSX, McHedgehoghunter, Yaay
 
 Localization:
-Spanish: Skip, FalsdasRojas, espyleonheart
+Spanish: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador
 Italian: Marian, 
 French: Rico, StalkFire, Techgenieur, Erfive
 Portuguese: Regismrs, BossPenguin 
