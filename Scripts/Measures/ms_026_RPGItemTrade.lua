@@ -38,7 +38,7 @@ function Run()
 	
 	if Slots > 0 and NumItems > 0 then
 		Result = InitData("@P"..btn,
-				ms_rpgitemtrade_AIDecide,  --AIFunc
+				ms_026_rpgitemtrade_AIDecide,  --AIFunc
 				"@L_MESSAGES_RPGItemTrade_TEXT_+0",
 				"",
 				ItemLabel[0],ItemLabel[1],

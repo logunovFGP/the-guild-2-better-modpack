@@ -53,7 +53,7 @@ function Run()
 		local Guard = Find("", "__F((Object.GetObjectsByRadius(Sim)==2500)AND(Object.GetProfession()==21)OR(Object.GetProfession()==25))", "Guard", -1)
 		if Guard > 0 then
 			for i=0,Guard-1 do
-				if GetCurrentMeasureID("Guard"..i) ~= 2830 then
+				if GetCurrentMeasureName("Guard"..i) ~= "DistractGuards" then
 					if GetCurrentMeasurePriority("Guard"..i) <= 50 then
 						CopyAlias("Guard"..i, "DistGuard"..Counter)
 						Counter = Counter + 1

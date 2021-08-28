@@ -178,7 +178,7 @@ function Run()
 end
 
 function CleanUp()
-    f_EndUseLocator("Owner","DicePlayer",GL_STANCE_STAND)
+	f_EndUseLocator("Owner","DicePlayer",GL_STANCE_STAND)
 end
 
 function GetOSHData(MeasureID)

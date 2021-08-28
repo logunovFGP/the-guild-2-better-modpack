@@ -23,19 +23,19 @@ function Run()
 		return ""
 	end
 	
-	if GetCurrentMeasureID("")==660 then  --burglary
+	if GetCurrentMeasureName("") == "BurgleAHouse"  then
 		return ""
 	end
 	
-	if GetCurrentMeasureID("")==680 then  --pickpocketing
+	if GetCurrentMeasureName("")== "PickpocketPeople" then
 		return ""
 	end
 	
-	if GetCurrentMeasureID("")==360 then  --attackenemy
+	if GetCurrentMeasureName("") == "AttackEnemy" then
 		return ""
 	end
 	
-	if GetCurrentMeasureID("")==3505 then  --SquadWaylayMember
+	if GetCurrentMeasureName("") == "SquadWaylayMember" then 
 		SetProperty("","DontLeave",1)
 	end
 

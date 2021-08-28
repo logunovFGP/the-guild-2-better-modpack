@@ -44,7 +44,7 @@ function Run()
 			end
 			PlaySound3DVariation("","Locations/tavern_people",1)
 			if AnimCount == 0 then
-				ms_rpgsitaround_PayTavern(CostToDrink, "CurrentBuilding")
+				ms_025_rpgsitaround_PayTavern(CostToDrink, "CurrentBuilding")
 				AnimTime = PlayAnimationNoWait("","sit_drink")
 				Sleep(1)
 				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false)

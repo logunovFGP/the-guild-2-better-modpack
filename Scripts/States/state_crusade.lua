@@ -29,8 +29,8 @@ function Run()
 	CarryObject("","weapons/mace_02.nif",false)
 	
 	while not HasProperty("CrusadeLeader","CrusadeDestinationID") do	
-		if (GetCurrentMeasureID("CrusadeLeader")~=1111) then
-			SetState("",STATE_CRUSADE,false)
+		if (GetCurrentMeasureName("CrusadeLeader") ~= "LeadCrusade") then
+			SetState("", STATE_CRUSADE, false)
 		end
 		Sleep(1)
 	end
