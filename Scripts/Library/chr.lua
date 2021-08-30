@@ -1063,8 +1063,14 @@ end
 -- GainXP
 -- -----------------------
 function GainXP(SimAlias, XPAmount)
-	local Multiplikator = 1
-	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplikator/5)
+	local Options = FindNode("\\Settings\\Options")
+	local YPR = Options:GetValueInt("YearsPerRound")
+	local Multiplicator = 1
+	
+	Multiplicator = 0.5*YPR
+	
+	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplicator/5)
+	
 	IncrementXP(SimAlias, SchoeneRundeZahl)
 	if DynastyIsPlayer(SimAlias) then
 		PlaySound3D(SimAlias, "gainxp/gain_xp.ogg", 1)
@@ -1073,17 +1079,17 @@ end
 
 function CheckSell()
 
-	if BuildingGetType("")~=GL_BUILDING_TYPE_RESIDENCE then
+	if BuildingGetType("") ~= GL_BUILDING_TYPE_RESIDENCE then
 		return true
 	end
 
 	local	Ok = false
 	
 	local	Count = DynastyGetBuildingCount2("")
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if DynastyGetBuilding2("", l, "Check") then
-			if BuildingGetType("Check")==GL_BUILDING_TYPE_RESIDENCE then
-				if GetID("Check")~=GetID("") then
+			if BuildingGetType("Check") == GL_BUILDING_TYPE_RESIDENCE then
+				if GetID("Check") ~= GetID("") then
 					if not BuildingGetForSale("Check") then
 						Ok = true
 					end
@@ -1098,11 +1104,11 @@ function CheckSell()
 	end
 	
 	Count = DynastyGetMemberCount("")
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if DynastyGetMember("", l, "Member") then
-			if GetHomeBuildingId("Member")==GetID("") then
+			if GetHomeBuildingId("Member") == GetID("") then
 			
-				if SimGetOfficeID("Member")~=-1 then
+				if SimGetOfficeID("Member") ~= -1 then
 					MsgQuick("", "@L_GENERAL_MEASURES_075_SELLBUILDING_FAILURES_+1")
 					return false
 				end
@@ -1120,14 +1126,14 @@ end
 
 function CheckDestroy()
 
-	if BuildingGetType("")~=GL_BUILDING_TYPE_RESIDENCE then
+	if BuildingGetType("") ~= GL_BUILDING_TYPE_RESIDENCE then
 		return true
 	end
 
 	local	Ok = false
 	
 	local	Count = DynastyGetBuildingCount2("")
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if DynastyGetBuilding2("", l, "Check") then
 			if BuildingGetType("Check")==GL_BUILDING_TYPE_RESIDENCE then
 				if GetID("Check")~=GetID("") then
@@ -1145,11 +1151,11 @@ function CheckDestroy()
 	end
 	
 	Count = DynastyGetMemberCount("")
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if DynastyGetMember("", l, "Member") then
-			if GetHomeBuildingId("Member")==GetID("") then
+			if GetHomeBuildingId("Member") == GetID("") then
 			
-				if SimGetOfficeID("Member")~=-1 then
+				if SimGetOfficeID("Member") ~= -1 then
 					MsgQuick("", "@L_INTERFACE_TEARDOWN_FAILURES_+1")
 					return false
 				end
