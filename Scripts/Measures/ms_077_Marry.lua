@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_Marry"
+----	OVERVIEW "ms_077_Marry"
 ----
 ----	with this measure the player can marry a courted sim
 ----
@@ -156,7 +156,7 @@ function Run()
 	-- church
 	elseif choice == 1 then
 	
-		ms_marry_GotoChurch("Weddingchapel")
+		ms_077_marry_GotoChurch("Weddingchapel")
 		
 		if not chr_SpendMoney("dynasty", Cost, "Wedding") then
 			if not HasProperty("", "Tutorial") then
