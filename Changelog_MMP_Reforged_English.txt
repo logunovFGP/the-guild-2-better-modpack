@@ -9,7 +9,7 @@ GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Textures: Jollina, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y
+Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237
 
 Localization:
 Spanish: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador
@@ -156,6 +156,7 @@ _Scholar_
 - The pawn broker got too much xp for production.
 - lavender could get lost if your employees had some in their inventory when assigned to quacksalve and the Hospital had no space for the lavender.
 - There was a possible exploit with quacksalvery where you would get a lot of gold after cancelling the action.
+- The 'Curse building' action didn't work properly.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.

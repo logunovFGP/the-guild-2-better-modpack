@@ -9,7 +9,7 @@ GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Texturen: Jollina, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y
+Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237
 
 Lokalisierung:
 Spanisch: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador
@@ -155,6 +155,7 @@ _Gelehrter_
 - Die 'Handwerksurkunde' funktionierte in einigen Betrieben nicht.
 - Lavendel konnte verloren gehen, wenn dieses sich im Inventar eines Angestellten befand, der zum Quacksalben ausgesandt wurde und das Inventar des Hospitals bereits voll war.
 - Es gab einen möglichen Exploit beim Quacksalben, bei dem man Gold nach Abbruch der Maßnahme erhielt.
+- Das 'Verfluchen' funktionierte nicht richtig.
 
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
