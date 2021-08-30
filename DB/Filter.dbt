@@ -105,7 +105,6 @@ Data:
 177   "IsVacantOffice"   "__F((Object.IsVacantOffice()))"   |
 178   "IsEnemyOfficeBearer"   "__F(NOT(Object.BelongsToMe())AND(Object.IsOfficeBearer()))"   |
 179   "IsOwnOfficeBearer"   "__F((Object.BelongsToMe())AND(Object.IsOfficeBearer()))"   |
-180   "CanProduceJanesRing"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.GetItemCnt(JanesGem)>0)AND(Object.GetItemCnt(Iron)>0)AND(Object.IsType(7))AND(Object.CanBeControlled()))"   |
 181   "IsTownHall"   "__F((Object.IsType(23)))"   |
 182   "CanUseElixirOfPurgation"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(ElixirOfPurgation)>0)AND NOT(Object.GetState(fighting)))"   |
 183   "IsMySpouse"   "__F((Object.IsMySpouse()))"   |
@@ -157,7 +156,6 @@ Data:
 231   "IsUniversity"   "__F((Object.IsType(27))AND (Object.GetLevel()==2))"   |
 232   "CanBeUsedForApprenticeship"   "__F((Object.CompareHPRelative()>30)AND(Object.IsClass(2))AND NOT(Object.IsHostile())AND NOT(Object.IsType(38))AND(Object.HasDynasty()))"   |
 233   "IsMySimInTownHallHasOffice"   "__F((Object.CanBeControlled())AND (Object.HasOfficeAccess('leave'))AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
-234   "CanUseVitaeOfEarth"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(VitaeOfEarth)>0))"   |
 235   "IsMySimInChurch"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.GetReligion()>=0))"   |
 236   "CanCreateSquad"   "__F((Object.BelongsToMe())AND NOT(Object.HasSquad())AND(Object.MinAge(16)))"   |
 237   "CanJoinSquad"   "__F((Object.BelongsToMe())AND(Object.CanJoinSquad())AND(Object.MinAge(16)))"   |
@@ -208,8 +206,6 @@ Data:
 290   "CanUseCutscenePerfume"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutscenePerfume))AND(Object.GetItemCnt(Perfume)>0)AND NOT(Object.GetState(fighting)))"   |
 291   "CanUseCutscenePoem"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutscenePoem))AND(Object.GetItemCnt(Poem)>0)AND NOT(Object.GetState(fighting)))"   |
 292   "CanUseCutsceneThesisPaper"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneThesisPaper))AND(Object.GetItemCnt(ThesisPaper)>0)AND NOT(Object.GetState(fighting)))"   |
-293   "CanUseCutsceneCurryFavor"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneCurryFavor))AND (Object.HasImpact('CurryFavor')))"   |
-294   "CanUseCutsceneDeliverTheFalseGauntlet"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneDeliverTheFalseGauntlet))AND (Object.HasImpact(DeliverTheFalseGauntlet)))"   |
 295   "CanUseCutsceneHaveAStabbingGaze"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneHaveAStabbingGaze))AND(Object.HasImpact(UncannyGlare)))"   |
 296   "CanUseCutsceneMakeACompliment"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneMakeACompliment)))"   |
 297   "CanUseCutsceneFlirt"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneFlirt)))"   |
@@ -461,7 +457,6 @@ Data:
 1490   "DarfLehren"   "__F((Object.CanBeControlled())AND(Object.IsClass(3))AND(Object.MinAge(16))AND(Object.HasProperty(IsADoctor)))"   |
 1491   "DarfVerfluchen"   "__F((Object.CanBeControlled())AND(Object.IsClass(3))AND(Object.MinAge(16))AND(Object.GetOwnedBuildings())AND(Object.HasUpgrade(steinkreis))AND(Object.BelongsToMe()))"   |
 1492   "DarfFreiHandeln"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.MinAge(16))AND(Object.GetOwnedBuildings())AND(Object.IsType(2))AND(Object.HasUpgrade(GuildNewsletter)))"   |
-1504   "IstHafenMarkt"   "__F((Object.IsClass(3))AND(Object.IsType(13)))"   |
 1507   "CanBeControlledPlusA"   "__F((Object.CanBeControlled())AND(Object.IsClass(4)))"   |
 1509   "AutoRoutenButtons"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND NOT(Object.IsType(4))AND NOT(Object.IsType(8)))"   |
 1510   "ObjectFuerStadtAusBau"   "__F((Object.IsClass(3))OR(Object.IsClass(1))AND NOT(Object.IsType(31))AND NOT(Object.IsType(29))AND NOT(Object.IsType(28))AND NOT(Object.IsType(32))AND NOT(Object.IsType(41))AND NOT(Object.IsType(2))AND NOT(Object.IsType(105))AND NOT(Object.IsType(107)))"   |
