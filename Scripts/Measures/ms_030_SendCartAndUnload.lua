@@ -5,7 +5,7 @@ function Init()
 	"@B[A,,@L_GENERAL_MEASURES_SENDCARTANDUNLOAD_TEXT_+1,Hud/Buttons/Unload.tga]"..
 	"@B[B,,@L_GENERAL_MEASURES_SENDCARTANDUNLOAD_TEXT_+2,Hud/Buttons/UnloadAndSendBack.tga]"..
 	"@B[D,,@L_GENERAL_MEASURES_SENDCART_TEXT_+0,Hud/Buttons/SendCartAndUnload.tga]",
-	ms_sendcartandunload_AIInit,
+	ms_030_sendcartandunload_AIInit,
 	"@L_GENERAL_MEASURES_SENDCARTANDUNLOAD_TEXT_+0",
 	"")
 	

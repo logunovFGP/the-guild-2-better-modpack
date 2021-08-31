@@ -7,48 +7,60 @@ Offen:
 - Bei Verkäufen aus dem Inventar von Tavernen (CheckInsideStore) wurde das Item nicht korrekt entfernt.
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.
-- Die Totengräber-Maßnahme "Gebäude verfluchen" funktionierte nicht.
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
 - Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
+
 - Türme haben nicht-aggressive Schiffe angegriffen.
-- Die Ausbildung von Kindern sollte nun nicht länger unterbrochen werden.
+
 - Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
 - Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
+
 - Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
+
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
   sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
-- Die KI konnte ihre Familienmitglieder eine Messe halten lassen, unabhängig davon
-  ob diese Gelehrte sind oder nicht.
+
 - Die KI bewarb sich auf keine höheren Ämter, wenn sich bereits ein Bewerber auf 
   ihr aktuelles Amt beworben hatte.
+
 - Die KI wird keine offensiven Maßnahmen gegen Charaktere versuchen, die sich gerade
   im Inneren eines Gebäudes aufhalten.
+
 - Die Maßnahme "Brief aus Rom" wird nun abgebrochen, sollte sich das Ziel
   im Inneren eines Gebäudes aufhalten. Es wird eine Fehlermeldung verschickt, die darauf
   hinweist.
+
 - Beim Würfelspiel wird die KI nicht permanent höhere Rekorde erzielen,
   das Maximum, das sie erreichen kann ist nun wie beim Spieler 40.000 -> Die KI spielt nicht richtig, sondern
   übertrifft den Spieler immer mit Random. Sollte theoretisch komplett redesignt werden.
+
 - Ein Zufallsereignis hatte fehlende Texte.
+
 - Die Pest endete nach Ausbruch nie, weil sich vor allem neu generierte Arbeitslose
   innerhalb der Arbeiterhütte immer wieder von Neuem ansteckten.
+
 - Nachdem man ein Gebäude von einer Dynastie erworben hatte, arbeiteten
   die Dynastiemitglieder der alten Besitzer dort trotzdem weiter. Nun werden
   alle Sims ihre aktuelle Aufgabe unterbrechen und ggf. das Gebäude verlassen.
+
 - Das Bau/Levelup-Verhalten der KI war fehlerhaft/ nicht nachvollziehbar (Spar-Priorities nicht ausgereift)
+
 - Diverse Bugs beim Wegelagern wurden behoben.
+
 - Die Pinten-KI schmuggelt nun wieder Alkohol.
+
 - KI-Sims, die sich in der ersten Runde vor 14 Uhr auf ein Amt bewarben, wurden
   um Punkt 14 Uhr von der Liste gestrichen - ins Rathaus sind sie dann aber trotzdem 
   gekommen. KI-Sims werden sich nun am ersten Tag vor 14 Uhr nicht mehr bewerben, um 
   dieses Problem zu umgehen.
+
 - KI-Sims, die in einem Betrieb Waren produzierten, haben diese Arbeit 
   nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
-- Manchmal erhielten Opfer von Raub, Knochenbrechen und Mord keinen Beweis gegen den Täter.
+
 - Es konnte vorkommen, dass nicht alle eingestellten Dynastien auch tatsächlich zu Spielstart
   einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
 
