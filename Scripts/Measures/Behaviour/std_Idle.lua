@@ -7,7 +7,7 @@ function Run()
 		CityGetNearestBuilding("MyCity", "", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
 		
 		if AliasExists("NewHome") then
-			SetHomeBuilding("", "HomeBuilding")
+			SetHomeBuilding("", "NewHome")
 		end
 	end
 	
