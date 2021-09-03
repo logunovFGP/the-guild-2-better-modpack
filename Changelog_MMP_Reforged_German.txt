@@ -65,6 +65,7 @@ _Design_
 - Nur Dynastie-Charaktere, d.h keine Angestellten, können bewusstlose Charaktere umbringen.
 - Alle Gauner-Charaktere, d.h. auch Angestellte, können die Maßnahme 'Knochen brechen' nutzen.
 - Sogenannte 'Godmeasures', also Aktionen wie das Kaufen eines Titels ohne die Anwesenheit eines Charakters, sind nun auch im Mehrspielermodus möglich.
+- Sims, die im Rathaus darauf warten, sich auf ein Amt zu bewerben, setzen sich nun auf die Rathausbank.
 
 *** Vanilla-Bugs ***
 

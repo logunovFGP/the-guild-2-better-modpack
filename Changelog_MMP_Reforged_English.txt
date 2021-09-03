@@ -66,6 +66,7 @@ _Design_
 - Only dynasty characters can now use the killing blow (and no longer employees)
 - All rogue characters, including employees, can now use the 'break bones' action.
 - So called 'Godmeasures', actions like buying new title without present player characters, are now also possible in multiplayer mode.
+- Sims who wait to apply for an office inside the council building now sit down on the waiting room's bench.
 
 *** Vanilla-Bugs ***
 

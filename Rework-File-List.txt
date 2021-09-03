@@ -577,7 +577,7 @@
 505 Scripts\Measures\ms_115_ImposeASalesFreeze.lua
 506 Scripts\Measures\ms_115_ImposeASalesFreezeAlderman.lua
 507 Scripts\Measures\ms_116_PropitiateEnemies.lua
-508 Scripts\Measures\ms_118_RunForAnOffice.lua
+508 Scripts\Measures\ms_118_RunForAnOffice.lua - MERGED
 509 Scripts\Measures\ms_128_HaveAStabbingGaze.lua
 510 Scripts\Measures\ms_131_ApplyDeposition.lua
 511 Scripts\Measures\ms_132_ChargeCharacter.lua
