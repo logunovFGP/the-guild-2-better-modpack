@@ -135,7 +135,7 @@ function CleanUp()
 
 	local start
 	
-	if HasData("StartTime") and GetData("StartTime) ~= nil then
+	if HasData("StartTime") and GetData("StartTime") ~= nil then
 		start = GetData("StartTime")
 	end
 	
