@@ -10,7 +10,6 @@
 -- Run
 -- -----------------------
 function Run()	
-
 	
 	if not AliasExists("Destination") then
 		StopMeasure()
@@ -23,24 +22,32 @@ function Run()
 		return
 	end
 	
-	if not f_MoveTo("","Destination") then
-		GetOutdoorMovePosition("","Destination","MovePos")
-		if not f_MoveTo("","Destination") then
+	if not f_MoveTo("", "Destination") then
+		GetOutdoorMovePosition("", "Destination", "MovePos")
+		if not f_MoveTo("", "Destination") then
 			StopMeasure()
 		end
 	end
 	
-	CopyAlias("Destination","InsideBuilding")
+	if GetImpactValue("Destination", "BoobyTrap") > 0 then
+		RemoveImpact("Destination", "BoobyTrap")
+		GetPosition("", "ParticleSpawnPos")
+		PlaySound3D("", "fire/Explosion_01.wav", 1.0)
+		StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1,5)
+		ModifyHP("", -300, true)
+		CommitAction("explosion", "", "Destination", "Destination")
+		StopMeasure()
+	end
 	
+	CopyAlias("Destination", "InsideBuilding")
 	SetData("Success", "0")
-	--SetData("Target", "InsideBuilding")
 	
-	if not (SimGetWorkingPlace("","WorkBuilding")) then
+	if not (SimGetWorkingPlace("", "WorkBuilding")) then
 		MsgQuick("", "@L_BATTLE_043_CAPTUREBUILDING_FAILURES_+0")
 		return	
 	end
 	
-	if not (BuildingGetOwner("WorkBuilding","AttackerOwner")) then
+	if not (BuildingGetOwner("WorkBuilding", "AttackerOwner")) then
 		MsgQuick("", "@L_BATTLE_043_CAPTUREBUILDING_FAILURES_+1")
 		return	
 	end
@@ -53,7 +60,8 @@ function Run()
 	if not SendCommandNoWait("", "ChangeFlags") then
 		MsgQuick("", "@L_BATTLE_043_CAPTUREBUILDING_FAILURES_+2")
 	end
-	CommitAction("attackbuilding","","","OldBuildingOwner","InsideBuilding")
+
+	CommitAction("attackbuilding", "", "OldBuildingOwner", "OldBuildingOwner")
 	CarryObject("", "Handheld_Device/ANIM_Flag.nif",false)
 	
 	LoopAnimation("", "capture_building",31)
@@ -66,17 +74,18 @@ function Run()
 		return
 	end
 	
+	AddImpact("InsideBuilding", "recentlycaptured", 1, 48)
 	SetRepeatTimer("Dynasty", GetMeasureRepeatName2("CaptureBuilding"), TimeOut)
 	
-	if GetImpactValue("Destination","messagesent")==0 then
+	if GetImpactValue("Destination", "messagesent") == 0 then
 		SetData("Success", "1")
-		AddImpact("Destination","messagesent",1,1)
+		AddImpact("Destination","messagesent", 1, 1)
 	
-		MsgNewsNoWait("OldBuildingOwner","","","military",-1,
+		MsgNewsNoWait("OldBuildingOwner", "", "", "military", -1,
 			"@L_BATTLE_043_CAPTUREBUILDING_MSG_VICTIM_HEAD_+0",
 			"@L_BATTLE_043_CAPTUREBUILDING_MSG_VICTIM_BODY_+0", GetID(""), GetID("InsideBuilding"))
 		
-		MsgNewsNoWait("","","","military",-1,
+		MsgNewsNoWait("", "", "", "military", -1,
 			"@L_BATTLE_043_CAPTUREBUILDING_MSG_ACTOR_HEAD_+0",
 			"@L_BATTLE_043_CAPTUREBUILDING_MSG_ACTOR_BODY_+0", GetID("InsideBuilding"))
 		
@@ -85,7 +94,7 @@ function Run()
 		--for the mission
 		local MissionMoney = chr_GetBootyCount("InsideBuilding",INVENTORY_STD) + chr_GetBootyCount("InsideBuilding",INVENTORY_SELL)
 		MissionMoney = MissionMoney + BuildingGetValue("InsideBuilding")
-		mission_ScoreCrime("",MissionMoney)
+		mission_ScoreCrime("", MissionMoney)
 		
 		-- Add xp
 		SimGetWorkingPlace("", "WorkingPlace")
@@ -93,7 +102,6 @@ function Run()
 		xp_CaptureBuilding("SimOwner", GetData("BaseXP"), BuildingGetLevel("InsideBuilding"))
 		Evacuate("InsideBuilding", true)
 	end
-	
 	StopMeasure()
 end
 
@@ -101,7 +109,7 @@ end
 -- ChangeFlags
 -- -----------------------
 function ChangeFlags()
-	StopAction("attackbuilding","")
+	StopAction("attackbuilding", "")
 	if (BuildingGetFlag("InsideBuilding", "FlagObject", 1)) then
 		local bFlag2 = BuildingGetFlag("InsideBuilding", "FlagObject2", 2)
 		local bFlag3 = BuildingGetFlag("InsideBuilding", "FlagObject3", 3)
@@ -148,6 +156,7 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
+	StopAction("explosion", "")
 	local bSuccess	= GetData("Success")
 	if not (bSuccess == 1) then
 		if AliasExists("OldBuildingOwner") then

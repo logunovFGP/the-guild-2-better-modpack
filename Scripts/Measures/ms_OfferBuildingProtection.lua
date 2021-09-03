@@ -1,9 +1,17 @@
 function AIInitPressProtMoneyVictim()
 
     GetDynasty("Destination", "VictimDyn")
-	local w = BuildingGetLevel("Destination")
+	local v = BuildingGetLevel("Destination")
 	local p = 500 * w
 	local kivermog = GetMoney("VictimDyn")
+
+	if DynastyGetDiplomacyState("", "VictimDyn") > DIP_NEUTRAL  then
+        if DynastyGetDiplomacyState("", "VictimDyn") == DIP_NAP then
+            p = 400 * v -- low price for not attack
+        elseif DynastyGetDiplomacyState("", "VictimDyn") == DIP_ALLIANCE then
+            p = 250 * v -- lower price for allied
+        end
+	end
     if ((kivermog / 100) * 50) < p then
 	    return "C"
 	end
@@ -22,17 +30,17 @@ function Run()
 		StopMeasure()
 	end
 
-    if DynastyGetDiplomacyState("","VictimDyn")<DIP_NEUTRAL then
+    if DynastyGetDiplomacyState("","VictimDyn") < DIP_NEUTRAL then
 	    MsgQuick("","@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+0")
 	    StopMeasure()
 	end
 	
 	if HasProperty("Destination", "RobberProtected") then
-		MsgQuick("","@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+1")
+		MsgQuick("", "@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+1")
 		StopMeasure()
 	end
 	
-	if not SimGetWorkingPlace("","MyRobberCamp") then
+	if not SimGetWorkingPlace("", "MyRobberCamp") then
 		StopMeasure()
 	end
 	
@@ -40,11 +48,19 @@ function Run()
 		StopMeasure()
 	end
 		
-	local wert = BuildingGetLevel("Destination")
-	local preis = 500 * wert
+	local value = BuildingGetLevel("Destination")
+	local price = 500 * value
 	
-	if GetMoney("VictimDyn") < preis then
-	    MsgQuick("","@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+2")
+	if DynastyGetDiplomacyState("", "VictimDyn") > DIP_NEUTRAL  then
+        if DynastyGetDiplomacyState("", "VictimDyn") == DIP_NAP then
+            price = 400 * value -- low price for not attack
+        elseif DynastyGetDiplomacyState("", "VictimDyn") == DIP_ALLIANCE then
+            price = 250 * value -- lower price for allied
+        end
+	end
+	
+	if GetMoney("VictimDyn") < price then
+	    MsgQuick("", "@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+2")
 	    StopMeasure()
 	end
 	
@@ -63,10 +79,12 @@ function Run()
 	SetProperty("Destination", "RobberProtected", iMyDynID)
 
 
-		BuildingGetOwner("MyRobbercamp","MrRobber")
-		BuildingGetOwner("Destination","MrProtectionMoney")
-		local OwnerID = GetID("MrRobber")
-
+	BuildingGetOwner("MyRobbercamp","MrRobber")
+	BuildingGetOwner("Destination","MrProtectionMoney")
+	local OwnerID = GetID("MrRobber")
+		
+	if GetDynastyID("Destination") ~= GetDynastyID("") then -- message to the victim, if the "victim" is not our own dynasty
+       
 		--waits for 1 hour
 		local result = MsgNews("Destination","Destination","@P"..
 				"@B[O,@L_MEASURE_OFFERBUILDINGPROTECTION_SAY_+0]"..
@@ -75,17 +93,18 @@ function Run()
 				"@L_MEASURE_OFFERBUILDINGPROTECTION_HEAD_+0",
 				"@L_MEASURE_OFFERBUILDINGPROTECTION_BODY_+0", 
 				GetID("MrRobber"),GetID("Destination"), preis)
+		
 		if result=="O" then
 			--wants to pay
 			feedback_MessageCharacter("",
 				"@L_MEASURE_OFFERBUILDINGPROTECTION_HEAD_+1",
 				"@L_MEASURE_OFFERBUILDINGPROTECTION_BODY_+1",
-				GetID("Destination"), preis)
-      	    SetMeasureRepeat(TimeOut)
-			SetProperty("","TotalMoney",preis)
+				GetID("Destination"), price)
+      	    
+			SetMeasureRepeat(TimeOut)
+			SetProperty("", "TotalMoney", price)
 			SetProperty("", "RobberProtecting", iVictimID)
-			SetState("", 44, true)
-			--MeasureRun("","Destination","ProtectBuilding")
+			SetState("", STATE_GUARDING, true)
 			StopMeasure()
 		else
 			--doesnt wanna pay
@@ -93,12 +112,18 @@ function Run()
 				"@L_MEASURE_OFFERBUILDINGPROTECTION_HEAD_+2",
 				"@L_MEASURE_OFFERBUILDINGPROTECTION_BODY_+2",
 				GetID("MrProtectionMoney"), GetID("Destination"))
+			
 			-- cancel measure
 			RemoveProperty("Destination","RobberProtected")
 			SetMeasureRepeat(TimeOut)
 			StopMeasure()
 		end
-
+	else   -- if it is our own dynasty, we want to protect our building for free without getting a notification
+        SetMeasureRepeat(TimeOut)
+        SetProperty("", "TotalMoney", price)
+        SetProperty("", "RobberProtecting", iVictimID)
+       	SetState("", STATE_GUARDING, true)
+    end
 end
 
 function CleanUp()
@@ -107,6 +132,8 @@ end
 
 function GetOSHData(MeasureID)
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",12)
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", 12)
+	--can be used again in:
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

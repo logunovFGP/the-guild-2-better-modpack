@@ -158,7 +158,7 @@
 86 Scripts\AI\Castle\HushMoney.lua
 87 Scripts\AI\Castle\Merc_CheckOutfit.lua
 88 Scripts\AI\Castle\Merc_JoinSquad.lua
-89 Scripts\AI\Castle\OfferBuildingProtection.lua
+89 Scripts\AI\Castle\OfferBuildingProtection.lua - MERGED
 90 Scripts\AI\Castle\Razzia.lua
 91 Scripts\AI\Church_cath\cath_PrepareWorship.lua
 92 Scripts\AI\Church_cath\cath_WinBelievers.lua
@@ -530,7 +530,7 @@
 458 Scripts\Measures\ms_036_AttackEnemy.lua
 459 Scripts\Measures\ms_039_BlackmailCharacter.lua
 460 Scripts\Measures\ms_041_BribeCharacter.lua
-461 Scripts\Measures\ms_043_CaptureBuilding.lua
+461 Scripts\Measures\ms_043_CaptureBuilding.lua - MERGED
 462 Scripts\Measures\ms_045_CourtLover.lua
 463 Scripts\Measures\ms_046_StartDialog.lua - MERGED
 464 Scripts\Measures\ms_048_HireEmployee.lua
@@ -638,7 +638,7 @@
 566 Scripts\Measures\ms_BuyCannon.lua
 567 Scripts\Measures\ms_BuyGoldRing.lua
 568 Scripts\Measures\ms_BuyHorse.lua
-569 Scripts\Measures\ms_BuyNobilityTitle.lua
+569 Scripts\Measures\ms_BuyNobilityTitle.lua - MERGED
 570 Scripts\Measures\ms_BuyRawMaterialArtisan.lua
 571 Scripts\Measures\ms_BuyRawMaterialChiseler.lua
 572 Scripts\Measures\ms_BuyRawMaterialPatron.lua

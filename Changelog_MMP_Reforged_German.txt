@@ -66,6 +66,7 @@ _Design_
 - Alle Gauner-Charaktere, d.h. auch Angestellte, können die Maßnahme 'Knochen brechen' nutzen.
 - Sogenannte 'Godmeasures', also Aktionen wie das Kaufen eines Titels ohne die Anwesenheit eines Charakters, sind nun auch im Mehrspielermodus möglich.
 - Sims, die im Rathaus auf den Stadtschreiber warten, setzen sich nun auf die Rathausbank.
+- Die Maßnahmen 'Knochen brechen' und 'Bedrohen' stehen nun allen Charakteren zur Verfügung, unabhängig ihrer Klasse.
 
 *** Vanilla-Bugs ***
 
@@ -135,12 +136,14 @@ _Allgemein_
 - Es konnte zu fehlerhaften Sprechblasen beim Schwarzen Brett kommen, wenn ein Pamphlet entfernt wurde.
 - Einen Fehler beim Widersetzen gegen eine Verhaftung behoben.
 - Diverse Map-Fehler korrigiert.
+- Exploit: Man konnte Gebäude immer wieder erobern, verkaufen und erobern. Nun kann ein Gebäude nur alle zwei Runden erobert / verkauft werden.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
 - Cookdown und Bezahlung beim Tanzen wurden zu früh gesetzt; war die Tanzfläche blockiert, oder die Maßnahme aus anderen Gründen abgebrochen, musste man dennoch
   zahlen und den Cooldown hinnehmen.
 - Unter Umständen endete der Dampf-Effekt beim Nehmen eines Einzelbades nie.
+- Man bekommt in Tavernen keine 'Baden'/'Tanzen' Maßnahmen, wenn die Taverne keiner Dynastie zugeordnet ist.
 
 _Gelehrter_
 - Der 'vergiftete Kuchen' senkte nicht die Kampfkraft des Opfers.
@@ -175,6 +178,7 @@ _Gauner_
 - Einer der Flüche der 'Voodoo-Puppe' funktionierte nicht richtig. Es gab auch keine Fehlermeldung, wenn das Opfer genug Empathie hatte, um den Angriff
   abzuwehren.
 - Bei Schutzgelderpressungen wurde die falsche Dauer im Tooltip angezeigt.
+- Bei der Söldnermaßnahme 'Gebäudeschutz anbieten' wurde kein Cooldown im Tooltip angezeigt.
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
@@ -245,6 +249,7 @@ _Handwerker_
 
 _Gauner_
 - Die Maßnahme 'Gebäudeschutz anbieten' zeigt nun ein Icon, während der Söldner ein Gebäude beschützt. Die Maßnahme wurde als grüne Maßnahme eingeordnet.
+- Söldner können ihren 'Gebäudeschutz anbieten' nun auch auf eigene Gebäude anwenden.
 
 _KI_
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).

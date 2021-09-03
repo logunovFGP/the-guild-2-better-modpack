@@ -1,9 +1,11 @@
 function Run()
 
-    -- local plage = GetImpactValue("", 379)
-	-- if plage and plage>0.1 then
-	    -- return
-	-- end
+    if GetImpactValue("", "recentlycaptured") >0 then
+		MsgBoxNoWait("","","@L_SELLBUILDING_FAIL_HEAD_+0",
+					"@L_SELLBUILDING_FAIL_BODY_+0", GetID(""))
+		StopMeasure()
+		return
+	end
 		
 	if BuildingGetForSale("") then
 		BuildingSetForSale("", false)

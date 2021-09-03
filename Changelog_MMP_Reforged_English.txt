@@ -67,6 +67,7 @@ _Design_
 - All rogue characters, including employees, can now use the 'break bones' action.
 - So called 'Godmeasures', actions like buying new title without present player characters, are now also possible in multiplayer mode.
 - Sims who need to wait inside the council building for the clerk now sit down on the waiting room's bench.
+- The actions 'threat' and 'break bones' can now be used by all characters, no matter the class.
 
 *** Vanilla-Bugs ***
 
@@ -136,12 +137,14 @@ _General_
 - At the notice board speech bubbles with broken text labels could appear, when someone removed a pamphlet.
 - Fixed a bug when revolting against imprisoning.
 - Fixed several map issues
+- Exploit: You could capture, sell and re capture a building indefinetly. Now you have to wait for 2 rounds before you can capture / sell the building again.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
 - If you wanted to dance with somebody and the dance floor was blocked already, you still would lose your money and cooldown time would begin.
 - You can cure some diseases if you sleep in a tavern, especially if you have the 'deep sleep' ability.
 - Under circumstances the steam-effect of the action 'take a bath alone' would never end.
+- You no longer get the action for dancing/ bathing etc. in unowned taverns.
 
 _Scholar_
 - The poisoned cake didn't lower the fighting skill.
@@ -177,6 +180,7 @@ _Rogue_
 - One curse of the 'voodoo doll' didn't work. Also there was no error msg when the victim had enough empathy to counter the action.
 - Protectionmoney rackets showed the wrong duration in the tooltip.
 - Jugglers got too much xp for production.
+- mercenaries 'offer building protection' action showed no cooldown in the tooltip
 
 _AI_
 - Shadow AI could not start the game as an alchemist.
@@ -240,6 +244,7 @@ _Craftsman_
 
 _Rogue_
 - The mercenarys 'offer building protection' icon is now shown while your mercenary protects a building.
+- Mercenarys can protect own buildings.
 
 _AI_
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
