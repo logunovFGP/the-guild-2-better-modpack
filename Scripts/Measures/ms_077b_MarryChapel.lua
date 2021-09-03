@@ -189,6 +189,8 @@ function Run()
 		
 		if DynastyGetDiplomacyState("", "CommentSim") == DIP_FOE or GetFavorToDynasty("", "CommentSim") < 40 then -- enemy
 			TextLabel = TextLabel.."_NEGATIVE"
+		elseif SimGetAlignment("") >= 70 then -- bad guy
+			TextLabel = TextLabel.."_NEGATIVE"
 		elseif GetFavorToDynasty("", "CommentSim") <= 55 and DynastyGetDiplomacyState("", "CommentSim") < DIP_ALLIANCE then -- indifferent
 			if Rand(2) == 0 then
 				TextLabel = TextLabel.."_NEGATIVE"
@@ -260,11 +262,33 @@ function Run()
 end
 
 function AIInitAnswer()
-
+	
+	local Timer = 0
+	if GetImpactValue("GuestAlias", "OfficeTimer") > 0 then
+		Timer = ImpactGetMaxTimeleft("GuestAlias", "OfficeTimer")
+		if Timer <= 4 then
+			return "C"
+		end
+	end
+	
+	if GetImpactValue("GuestAlias", "TrialTimer") > 0 then
+		Timer = ImpactGetMaxTimeleft("GuestAlias", "TrialTimer")
+		if Timer <= 4 then
+			return "C"
+		end
+	end
+	
+	if GetImpactValue("GuestAlias", "DuelTimer") > 0 then
+		Timer = ImpactGetMaxTimeleft("GuestAlias", "DuelTimer")
+		if Timer <= 4 then
+			return "C"
+		end
+	end
+		
 	if DynastyGetDiplomacyState("GuestAlias", "") < DIP_ALLIANCE or GetFavorToDynasty("", "GuestAlias") >= 60 or SimGetOfficeLevel("") > 0 then
 		return "O"
 	else
-		if Rand(2) == 0 then
+		if Rand(3) == 0 then
 			return "O"
 		else
 			return "C"
