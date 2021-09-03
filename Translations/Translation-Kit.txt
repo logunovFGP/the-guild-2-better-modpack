@@ -292,6 +292,14 @@ Translate and add the following lines below:
 18289   "_MEASURE_MARRY_CEREMONY_HEAD_+0"   "The Wedding of %1SN"   |
 18290   "_MEASURE_MARRY_CEREMONY_ASK_BODY_+0"   "%1SN and %2SN are about to marry inside of %3GG! Shall %4SN visit the ceremony?"   |
 18291   "_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0"   "%1ST %1SN and %2ST %2SN have just given their marriage vows! For the festive ceremony in %3GG a total of %4i reputable guests have visited the couple. The guild fame of the %1DN dynasty raises accordingly."   |
+18292   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_TOOLTIP_+0"   "Has been captured recently"   |
+18293   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_NAME_+0"   "Captured"   |
+18294   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_DESCRIPTION_+0"   "This building has been captured by another dynasty recently and thus can not be sold in the next hours."   |
+18295   "_SELLBUILDING_FAIL_HEAD_+0"   "Sale failed"   |
+18296   "_SELLBUILDING_FAIL_BODY_+0"   "%1GG has been captured recently and thus can not be sold in the next hours."   |
+
+
+
 
 Delete the following lines:
 70   "$1Tincome %1t gold"
