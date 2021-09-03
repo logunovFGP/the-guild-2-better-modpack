@@ -5,14 +5,10 @@
 function Run()
 	-- divide into God-Measure and Character-Measure
 	if IsType("", "Building") then
-		if BuildingGetType("")==GL_BUILDING_TYPE_TOWNHALL then
-			-- GetLocalPlayerDynasty("Player")
-			-- GetDynasty("Player", "dynasty")
-			GetLocalPlayerDynasty("LocalPlayerDynasty")
-			if not GetID("LocalPlayerDynasty") == GetID("Actor") then
-				StopMeasure()
-			end
-			DynastyGetMember("LocalPlayerDynasty",0,"boss")
+		if BuildingGetType("") == GL_BUILDING_TYPE_TOWNHALL then
+			
+			local BossID = dyn_GetValidMember("dynasty")
+			GetAliasByID(BossID, "boss")
 			if GetNobilityTitle("boss", true) == true then
 				MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_GODM_+0")
 				StopMeasure()
@@ -91,27 +87,16 @@ function Run()
 			return
 		end
 	end
-
-	if not ai_GoInsideBuilding("", "", -1, GL_BUILDING_TYPE_TOWNHALL) then
-		return
-	end
-
-	local MsgTimeOut = 1
-	-- Check if the sim is inside the townhall
-	if not GetInsideBuilding("", "councilbuilding") then
-		StopMeasure()
-		return
-	end
 	
-	if not IsGUIDriven() and Rand(100)>25 then
+	if not IsGUIDriven() and DynastyIsShadow("") then
 		if GetNobilityTitle("", true) == true then
 			StopMeasure()
 		else
 			local currenttitle = GetNobilityTitle("")
 
 			local cost = GetDatabaseValue("NobilityTitle", currenttitle+1, "price")
-			if cost=="" then
-				MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+2")
+			
+			if cost == "" then
 				StopMeasure()
 			end
 
@@ -121,8 +106,6 @@ function Run()
 
 				if (chr_SpendMoney("", cost, "CostAdministration")) then
 					SetNobilityTitle("", currenttitle+1, false)
-					local XP = 10 + ((currenttitle+1) * 2)
-					IncrementXP("", XP)
 				else
 					StopMeasure()
 				end
@@ -131,7 +114,17 @@ function Run()
 			end
 		end
 	else
+		if not ai_GoInsideBuilding("", "", -1, GL_BUILDING_TYPE_TOWNHALL) then
+			return
+		end
 	
+		local MsgTimeOut = 1
+		-- Check if the sim is inside the townhall
+		if not GetInsideBuilding("", "councilbuilding") then
+			StopMeasure()
+			return
+		end
+		
 		-- Check if the desk is busy
 		if not GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos") then
 			MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+0")
@@ -140,11 +133,23 @@ function Run()
 		end
 		
 		while true do
-			-- try to Go to the desk
-			if f_BeginUseLocator("", "destpos", GL_STANCE_STAND, true) then
+			if f_BeginUseLocator("","destpos", GL_STANCE_STAND, true) then
 				break
 			end
-			Sleep(2)
+		
+			if not HasProperty("", "WaitBench") then
+				if GetFreeLocatorByName("councilbuilding", "Wait", 1, 8, "SitPos") then
+					if f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true) then
+						SetProperty("", "WaitBench", 1)
+					end
+				end
+			end
+			
+			Sleep(3)
+		end
+		
+		if HasProperty("", "WaitBench") then
+			RemoveProperty("", "WaitBench")
 		end
 		
 		SetData("CutsceneCleared", 0)
@@ -180,7 +185,7 @@ function Run()
 			local season = GetSeason()
 			local time = math.mod(GetGametime(), 24)
 			
-			PlayAnimationNoWait("Usher",ms_085_buynobilitytitle_getRandomTalk())
+			PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 			
 			if (time < 11) then
 				if (season == EN_SEASON_SPRING) then
@@ -235,8 +240,8 @@ function Run()
 				local money = GetMoney("")
 
 				local cost = GetDatabaseValue("NobilityTitle", currenttitle+1, "price")
-				if cost=="" then
-					MsgQuick("boss", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+2")
+				if cost == "" then
+					MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+2")
 					StopMeasure()
 				end
 
@@ -303,10 +308,8 @@ function Run()
 						end
 
 						SetNobilityTitle("", currenttitle+1, false)
-						local XP = 10 + ((currenttitle+1) * 2)
-						IncrementXP("", XP)
 
-						PlayAnimationNoWait("Usher",ms_085_buynobilitytitle_getRandomTalk())
+						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID(""))
 						GetDynasty("","dyn")
 						if HasProperty("dyn", "Priority1") then
@@ -314,7 +317,7 @@ function Run()
 						end						
 					else
 						
-						PlayAnimationNoWait("Usher",ms_085_buynobilitytitle_getRandomTalk())
+						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+1")
 						
 					end
@@ -338,9 +341,9 @@ function Run()
 		StopAnimation("")
 
 		if(GetLocatorByName("councilbuilding", "LookAtBoardPos", "LookAtBoardPos")) then
-			f_MoveTo("","LookAtBoardPos")
+			f_MoveTo("", "LookAtBoardPos")
 		end			
-		f_StrollNoWait("",250,1)
+		f_StrollNoWait("", 350, 2)
 	end
 end
 
@@ -349,7 +352,7 @@ function AIDecide()
 end
 
 function getRandomTalk()	
-	local TargetArray = {"sit_talk_short","sit_talk","sit_talk_02"}
+	local TargetArray = {"sit_talk_short", "sit_talk", "sit_talk_02"}
 	local TargetCount = 3
 	return TargetArray[Rand(TargetCount)+1]
 end
@@ -358,7 +361,7 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	if GetData("CutsceneCleared")~=1 then
+	if GetData("CutsceneCleared") ~= 1 then
 		DestroyCutscene("cutscene")
 	end
 	StopAnimation("Owner")
@@ -371,7 +374,7 @@ function CleanUp()
 		end
 	end
 
-	if GetData("ReleaseLocator")==1 then
+	if GetData("ReleaseLocator") == 1 then
 		f_EndUseLocatorNoWait("","destpos", GL_STANCE_STAND)
 	end
 end
