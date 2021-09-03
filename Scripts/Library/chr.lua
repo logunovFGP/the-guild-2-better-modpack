@@ -1075,7 +1075,7 @@ function GainXP(SimAlias, XPAmount)
 		IncrementXP(SimAlias, SchoeneRundeZahl)
 		PlaySound3D(SimAlias, "gainxp/gain_xp.ogg", 1)
 	else
-		IncrementXPQuiet(SimAlias)
+		IncrementXPQuiet(SimAlias, SchoeneRundeZahl)
 	end
 end
 
