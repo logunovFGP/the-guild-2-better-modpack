@@ -1071,9 +1071,11 @@ function GainXP(SimAlias, XPAmount)
 	
 	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplicator/5)
 	
-	IncrementXP(SimAlias, SchoeneRundeZahl)
 	if DynastyIsPlayer(SimAlias) then
+		IncrementXP(SimAlias, SchoeneRundeZahl)
 		PlaySound3D(SimAlias, "gainxp/gain_xp.ogg", 1)
+	else
+		IncrementXPQuiet(SimAlias)
 	end
 end
 
