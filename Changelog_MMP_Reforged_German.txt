@@ -64,6 +64,7 @@ _Design_
 - Das Kassenbuch der Stadt bietet nun auch dann nützlichere Informationen, wenn die Stadtkasse etwas voller ist.
 - Nur Dynastie-Charaktere, d.h keine Angestellten, können bewusstlose Charaktere umbringen.
 - Alle Gauner-Charaktere, d.h. auch Angestellte, können die Maßnahme 'Knochen brechen' nutzen.
+- Sogenannte 'Godmeasures', also Aktionen wie das Kaufen eines Titels ohne die Anwesenheit eines Charakters, sind nun auch im Mehrspielermodus möglich.
 
 *** Vanilla-Bugs ***
 

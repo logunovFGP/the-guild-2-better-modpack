@@ -24,7 +24,7 @@ function Weight()
 	end
 	
 	if not AliasExists("SIM") then
-		SetRepeatTimer("dynasty", "AI_CheckPartyMember", 0.75)
+		SetRepeatTimer("dynasty", "AI_CheckPartyMember", 1)
 		return 0
 	end
 	
@@ -32,13 +32,13 @@ function Weight()
 end
 
 function CheckMember(SimAlias)
-	if GetState(SimAlias, STATE_DEAD) or GetState(SimAlias, STATE_DYING) then
+	if GetState(SimAlias, STATE_DEAD) or GetState(SimAlias, STATE_DYING) or HasProperty(SimAlias, "Wedding") then
 		return -1
 	end
 	
 	local Age = SimGetAge(SimAlias)
 	
-	if Age>68 or Age<18 then
+	if Age <16 then
 		return -1
 	end
 	
@@ -47,7 +47,7 @@ function CheckMember(SimAlias)
 	end
 	
 	local Weight
-	Weight = 2*(68 - (Age - 18)) + SimGetLevel(SimAlias) * 10
+	Weight = 2*(68 - (Age - 16)) + SimGetLevel(SimAlias) * 10
 	
 	return Weight
 end

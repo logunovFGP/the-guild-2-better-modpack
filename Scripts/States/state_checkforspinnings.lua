@@ -16,6 +16,11 @@ function Run()
 			return
 		end
 		
+		if GetState("", STATE_LOCKED) then
+			SetState("", STATE_CHECKFORSPINNINGS, false)
+			return
+		end
+		
 		if GetState("", STATE_ANIMAL) then
 			SetState("", STATE_CHECKFORSPINNINGS, false)
 			return
@@ -27,11 +32,6 @@ function Run()
 		end
 		
 		if not f_SimIsValid("") then -- check for states
-			SetState("", STATE_CHECKFORSPINNINGS, false)
-			return
-		end
-		
-		if GetImpactValue("", 360) > 0 then -- totallydrunk
 			SetState("", STATE_CHECKFORSPINNINGS, false)
 			return
 		end

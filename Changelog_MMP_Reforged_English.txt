@@ -65,6 +65,7 @@ _Design_
 - The city's cashbook infos are now more useful with more money in the treasury.
 - Only dynasty characters can now use the killing blow (and no longer employees)
 - All rogue characters, including employees, can now use the 'break bones' action.
+- So called 'Godmeasures', actions like buying new title without present player characters, are now also possible in multiplayer mode.
 
 *** Vanilla-Bugs ***
 
