@@ -235,7 +235,7 @@ Translate and add the following lines below:
 18232   "_CITY_NAME_LEEDS_+0"   "Leeds"   |
 18233   "_CITY_NAME_SHEFFIELD_+0"   "Sheffield"   |
 18234   "_CITY_NAME_AMSTERDAMM_+0"   "Amsterdam"   |
-18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+1"   "You have been disappropriated"   |
+18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+0"   "You have been disappropriated"   |
 18236   "_BUILDING_LEVELUP_HEAD_+1"   "#E[NT_NEUTRAL]Building levelup completed"   |
 18237   "_BUILDING_BUILD_HEAD_+1"   "#E[NT_NEUTRAL]Build completed"   |
 18238   "_HPFZ_KATASTR_STOD_KOPF_+1"   "Beware!"   |

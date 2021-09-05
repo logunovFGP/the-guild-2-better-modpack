@@ -292,105 +292,105 @@
 220 Scripts\Buildings\Windmill.lua - MERGED
 221 Scripts\Buildings\WoodcutterHut.lua - MERGED
 222 Scripts\Campaign\DefaultCampaign.lua
-223 Scripts\Campaign\Tutorial_1\A_CamControl.lua
-224 Scripts\Campaign\Tutorial_1\B_CharControl.lua
-225 Scripts\Campaign\Tutorial_1\C_Hud_1.lua
-226 Scripts\Campaign\Tutorial_1\C_Hud_1_b.lua
-227 Scripts\Campaign\Tutorial_1\C_Hud_2.lua
-228 Scripts\Campaign\Tutorial_1\C_Hud_2_b.lua
-229 Scripts\Campaign\Tutorial_1\C_Hud_3.lua
-230 Scripts\Campaign\Tutorial_1\C_Hud_3_b.lua
-231 Scripts\Campaign\Tutorial_1\C_Hud_4.lua
-232 Scripts\Campaign\Tutorial_1\C_Hud_4_b.lua
-233 Scripts\Campaign\Tutorial_1\C_Hud_5.lua
-234 Scripts\Campaign\Tutorial_1\C_Hud_5_b.lua
-235 Scripts\Campaign\Tutorial_1\Intro1.lua
-236 Scripts\Campaign\Tutorial_1\Tutorial_1.lua
-237 Scripts\Campaign\Tutorial_2\A_Character_1.lua
-238 Scripts\Campaign\Tutorial_2\A_Character_2.lua
-239 Scripts\Campaign\Tutorial_2\A_Character_3.lua
-240 Scripts\Campaign\Tutorial_2\A_Character_4.lua
-241 Scripts\Campaign\Tutorial_2\A_Character_4_b.lua
-242 Scripts\Campaign\Tutorial_2\A_Character_5.lua
-243 Scripts\Campaign\Tutorial_2\A_Character_5_b.lua
-244 Scripts\Campaign\Tutorial_2\B_Classes_1.lua
-245 Scripts\Campaign\Tutorial_2\B_Classes_2.lua
-246 Scripts\Campaign\Tutorial_2\B_Classes_3.lua
-247 Scripts\Campaign\Tutorial_2\B_Classes_4.lua
-248 Scripts\Campaign\Tutorial_2\B_Classes_5.lua
-249 Scripts\Campaign\Tutorial_2\Intro2.lua
-250 Scripts\Campaign\Tutorial_2\Tutorial_2.lua
-251 Scripts\Campaign\Tutorial_3\A_Build_1.lua
-252 Scripts\Campaign\Tutorial_3\A_Build_2.lua
-253 Scripts\Campaign\Tutorial_3\A_Build_3.lua
-254 Scripts\Campaign\Tutorial_3\B_BuildingInfo_1.lua
-255 Scripts\Campaign\Tutorial_3\B_BuildingInfo_1b.lua
-256 Scripts\Campaign\Tutorial_3\B_BuildingInfo_2.lua
-257 Scripts\Campaign\Tutorial_3\B_BuildingInfo_3.lua
-258 Scripts\Campaign\Tutorial_3\B_BuildingInfo_4.lua
-259 Scripts\Campaign\Tutorial_3\C_Workshop_1.lua
-260 Scripts\Campaign\Tutorial_3\C_Workshop_2.lua
-261 Scripts\Campaign\Tutorial_3\C_Workshop_3.lua
-262 Scripts\Campaign\Tutorial_3\C_Workshop_4.lua
-263 Scripts\Campaign\Tutorial_3\D_Buy_1.lua
-264 Scripts\Campaign\Tutorial_3\D_Buy_1b.lua
-265 Scripts\Campaign\Tutorial_3\Intro3.lua
-266 Scripts\Campaign\Tutorial_3\Tutorial_3.lua
-267 Scripts\Campaign\Tutorial_4\A_Resources_1.lua
-268 Scripts\Campaign\Tutorial_4\A_Resources_2.lua
-269 Scripts\Campaign\Tutorial_4\A_Resources_3.lua
-270 Scripts\Campaign\Tutorial_4\A_Resources_3b.lua
-271 Scripts\Campaign\Tutorial_4\A_Resources_4.lua
-272 Scripts\Campaign\Tutorial_4\A_Resources_5.lua
-273 Scripts\Campaign\Tutorial_4\A_Resources_6.lua
-274 Scripts\Campaign\Tutorial_4\B_Production_1.lua
-275 Scripts\Campaign\Tutorial_4\C_Sell_1.lua
-276 Scripts\Campaign\Tutorial_4\C_Sell_2.lua
-277 Scripts\Campaign\Tutorial_4\C_Sell_3.lua
-278 Scripts\Campaign\Tutorial_4\C_Sell_4.lua
-279 Scripts\Campaign\Tutorial_4\C_Sell_5.lua
-280 Scripts\Campaign\Tutorial_4\Intro4.lua
-281 Scripts\Campaign\Tutorial_4\Tutorial_4.lua
-282 Scripts\Campaign\Tutorial_5\A_Favor_1.lua
-283 Scripts\Campaign\Tutorial_5\A_Favor_2.lua
-284 Scripts\Campaign\Tutorial_5\A_Favor_3.lua
-285 Scripts\Campaign\Tutorial_5\A_Favor_4.lua
-286 Scripts\Campaign\Tutorial_5\B_Marriage_1.lua
-287 Scripts\Campaign\Tutorial_5\B_Marriage_1b.lua
-288 Scripts\Campaign\Tutorial_5\B_Marriage_2.lua
-289 Scripts\Campaign\Tutorial_5\B_Marriage_3.lua
-290 Scripts\Campaign\Tutorial_5\C_Children_1.lua
-291 Scripts\Campaign\Tutorial_5\C_Children_2.lua
-292 Scripts\Campaign\Tutorial_5\Intro5.lua
-293 Scripts\Campaign\Tutorial_5\Tutorial_5.lua
-294 Scripts\Campaign\Tutorial_6\A_Title_1.lua
-295 Scripts\Campaign\Tutorial_6\A_Title_2.lua
-296 Scripts\Campaign\Tutorial_6\B_Office_1.lua
-297 Scripts\Campaign\Tutorial_6\B_Office_2.lua
-298 Scripts\Campaign\Tutorial_6\B_Office_3.lua
-299 Scripts\Campaign\Tutorial_6\B_Office_4.lua
-300 Scripts\Campaign\Tutorial_6\B_Office_4b.lua
-301 Scripts\Campaign\Tutorial_6\End6.lua
-302 Scripts\Campaign\Tutorial_6\Intro6.lua
-303 Scripts\Campaign\Tutorial_6\Tutorial_6.lua
-304 Scripts\Campaign\Tutorial_7\A_Myrmidons_1a.lua
-305 Scripts\Campaign\Tutorial_7\A_Myrmidons_1b.lua
-306 Scripts\Campaign\Tutorial_7\A_Myrmidons_1c.lua
-307 Scripts\Campaign\Tutorial_7\C_GoodEvil_1.lua
-308 Scripts\Campaign\Tutorial_7\Intro7.lua
-309 Scripts\Campaign\Tutorial_7\Tutorial_7.lua
-310 Scripts\Campaign\_Battleground\_Battleground.lua
-311 Scripts\Campaign\_Endless\_Endless.lua
-312 Scripts\Campaign\_Missions\Mission_Acuss.lua
-313 Scripts\Campaign\_Missions\Mission_Criminal.lua
-314 Scripts\Campaign\_Missions\Mission_DeathMatch.lua
-315 Scripts\Campaign\_Missions\Mission_Endless.lua
-316 Scripts\Campaign\_Missions\Mission_MakeMoney.lua
-317 Scripts\Campaign\_Missions\Mission_Office.lua
-318 Scripts\Campaign\_Missions\Mission_TimeLimit.lua
-319 Scripts\Campaign\_Network\_Network.lua
+223 Scripts\Campaign\Tutorial_1\A_CamControl.lua - MERGED
+224 Scripts\Campaign\Tutorial_1\B_CharControl.lua - MERGED
+225 Scripts\Campaign\Tutorial_1\C_Hud_1.lua - MERGED
+226 Scripts\Campaign\Tutorial_1\C_Hud_1_b.lua - MERGED
+227 Scripts\Campaign\Tutorial_1\C_Hud_2.lua - MERGED
+228 Scripts\Campaign\Tutorial_1\C_Hud_2_b.lua - MERGED
+229 Scripts\Campaign\Tutorial_1\C_Hud_3.lua - MERGED
+230 Scripts\Campaign\Tutorial_1\C_Hud_3_b.lua - MERGED
+231 Scripts\Campaign\Tutorial_1\C_Hud_4.lua - MERGED
+232 Scripts\Campaign\Tutorial_1\C_Hud_4_b.lua - MERGED
+233 Scripts\Campaign\Tutorial_1\C_Hud_5.lua - MERGED
+234 Scripts\Campaign\Tutorial_1\C_Hud_5_b.lua - MERGED
+235 Scripts\Campaign\Tutorial_1\Intro1.lua - MERGED
+236 Scripts\Campaign\Tutorial_1\Tutorial_1.lua - MERGED
+237 Scripts\Campaign\Tutorial_2\A_Character_1.lua - MERGED
+238 Scripts\Campaign\Tutorial_2\A_Character_2.lua - MERGED
+239 Scripts\Campaign\Tutorial_2\A_Character_3.lua - MERGED
+240 Scripts\Campaign\Tutorial_2\A_Character_4.lua - MERGED
+241 Scripts\Campaign\Tutorial_2\A_Character_4_b.lua - MERGED
+242 Scripts\Campaign\Tutorial_2\A_Character_5.lua - MERGED
+243 Scripts\Campaign\Tutorial_2\A_Character_5_b.lua - MERGED
+244 Scripts\Campaign\Tutorial_2\B_Classes_1.lua - MERGED
+245 Scripts\Campaign\Tutorial_2\B_Classes_2.lua - MERGED
+246 Scripts\Campaign\Tutorial_2\B_Classes_3.lua - MERGED
+247 Scripts\Campaign\Tutorial_2\B_Classes_4.lua - MERGED
+248 Scripts\Campaign\Tutorial_2\B_Classes_5.lua - MERGED
+249 Scripts\Campaign\Tutorial_2\Intro2.lua - MERGED
+250 Scripts\Campaign\Tutorial_2\Tutorial_2.lua - MERGED
+251 Scripts\Campaign\Tutorial_3\A_Build_1.lua - MERGED
+252 Scripts\Campaign\Tutorial_3\A_Build_2.lua - MERGED
+253 Scripts\Campaign\Tutorial_3\A_Build_3.lua - MERGED
+254 Scripts\Campaign\Tutorial_3\B_BuildingInfo_1.lua - MERGED
+255 Scripts\Campaign\Tutorial_3\B_BuildingInfo_1b.lua - MERGED
+256 Scripts\Campaign\Tutorial_3\B_BuildingInfo_2.lua - MERGED
+257 Scripts\Campaign\Tutorial_3\B_BuildingInfo_3.lua -  MERGED
+258 Scripts\Campaign\Tutorial_3\B_BuildingInfo_4.lua - MERGED
+259 Scripts\Campaign\Tutorial_3\C_Workshop_1.lua - MERGED
+260 Scripts\Campaign\Tutorial_3\C_Workshop_2.lua - MERGED
+261 Scripts\Campaign\Tutorial_3\C_Workshop_3.lua - MERGED
+262 Scripts\Campaign\Tutorial_3\C_Workshop_4.lua - MERGED
+263 Scripts\Campaign\Tutorial_3\D_Buy_1.lua - MERGED
+264 Scripts\Campaign\Tutorial_3\D_Buy_1b.lua - MERGED
+265 Scripts\Campaign\Tutorial_3\Intro3.lua - MERGED
+266 Scripts\Campaign\Tutorial_3\Tutorial_3.lua - MERGED
+267 Scripts\Campaign\Tutorial_4\A_Resources_1.lua - MERGED
+268 Scripts\Campaign\Tutorial_4\A_Resources_2.lua - MERGED
+269 Scripts\Campaign\Tutorial_4\A_Resources_3.lua - MERGED
+270 Scripts\Campaign\Tutorial_4\A_Resources_3b.lua - MERGED
+271 Scripts\Campaign\Tutorial_4\A_Resources_4.lua - MERGED
+272 Scripts\Campaign\Tutorial_4\A_Resources_5.lua - MERGED
+273 Scripts\Campaign\Tutorial_4\A_Resources_6.lua - MERGED
+274 Scripts\Campaign\Tutorial_4\B_Production_1.lua - MERGED
+275 Scripts\Campaign\Tutorial_4\C_Sell_1.lua - MERGED
+276 Scripts\Campaign\Tutorial_4\C_Sell_2.lua - UNFINISHED
+277 Scripts\Campaign\Tutorial_4\C_Sell_3.lua - MERGED
+278 Scripts\Campaign\Tutorial_4\C_Sell_4.lua - MERGED
+279 Scripts\Campaign\Tutorial_4\C_Sell_5.lua - MERGED
+280 Scripts\Campaign\Tutorial_4\Intro4.lua - MERGED
+281 Scripts\Campaign\Tutorial_4\Tutorial_4.lua - MERGED
+282 Scripts\Campaign\Tutorial_5\A_Favor_1.lua - MERGED
+283 Scripts\Campaign\Tutorial_5\A_Favor_2.lua - MERGED
+284 Scripts\Campaign\Tutorial_5\A_Favor_3.lua - MERGED
+285 Scripts\Campaign\Tutorial_5\A_Favor_4.lua - MERGED
+286 Scripts\Campaign\Tutorial_5\B_Marriage_1.lua - MERGED
+287 Scripts\Campaign\Tutorial_5\B_Marriage_1b.lua - MERGED
+288 Scripts\Campaign\Tutorial_5\B_Marriage_2.lua - MERGED
+289 Scripts\Campaign\Tutorial_5\B_Marriage_3.lua - MERGED
+290 Scripts\Campaign\Tutorial_5\C_Children_1.lua - MERGED
+291 Scripts\Campaign\Tutorial_5\C_Children_2.lua - MERGED
+292 Scripts\Campaign\Tutorial_5\Intro5.lua - MERGED
+293 Scripts\Campaign\Tutorial_5\Tutorial_5.lua - MERGED
+294 Scripts\Campaign\Tutorial_6\A_Title_1.lua - MERGED
+295 Scripts\Campaign\Tutorial_6\A_Title_2.lua - MERGED
+296 Scripts\Campaign\Tutorial_6\B_Office_1.lua - MERGED
+297 Scripts\Campaign\Tutorial_6\B_Office_2.lua - MERGED
+298 Scripts\Campaign\Tutorial_6\B_Office_3.lua - MERGED
+299 Scripts\Campaign\Tutorial_6\B_Office_4.lua - MERGED
+300 Scripts\Campaign\Tutorial_6\B_Office_4b.lua - MERGED
+301 Scripts\Campaign\Tutorial_6\End6.lua - MERGED
+302 Scripts\Campaign\Tutorial_6\Intro6.lua - MERGED
+303 Scripts\Campaign\Tutorial_6\Tutorial_6.lua - MERGED
+304 Scripts\Campaign\Tutorial_7\A_Myrmidons_1a.lua - MERGED
+305 Scripts\Campaign\Tutorial_7\A_Myrmidons_1b.lua - MERGED
+306 Scripts\Campaign\Tutorial_7\A_Myrmidons_1c.lua - MERGED
+307 Scripts\Campaign\Tutorial_7\C_GoodEvil_1.lua - MERGED
+308 Scripts\Campaign\Tutorial_7\Intro7.lua - MERGED
+309 Scripts\Campaign\Tutorial_7\Tutorial_7.lua - MERGED
+310 Scripts\Campaign\_Battleground\_Battleground.lua - MERGED
+311 Scripts\Campaign\_Endless\_Endless.lua - MERGED
+312 Scripts\Campaign\_Missions\Mission_Acuss.lua - MERGED
+313 Scripts\Campaign\_Missions\Mission_Criminal.lua - MERGED
+314 Scripts\Campaign\_Missions\Mission_DeathMatch.lua - MERGED
+315 Scripts\Campaign\_Missions\Mission_Endless.lua - MERGED
+316 Scripts\Campaign\_Missions\Mission_MakeMoney.lua - MERGED
+317 Scripts\Campaign\_Missions\Mission_Office.lua - MERGED
+318 Scripts\Campaign\_Missions\Mission_TimeLimit.lua - MERGED
+319 Scripts\Campaign\_Network\_Network.lua - MERGED
 320 Scripts\Campaign\_Startup\_Startup.lua - MERGED
-321 Scripts\City\CityLevel.lua
+321 Scripts\City\CityLevel.lua - MERGED
 322 Scripts\City\CityPingHour.lua
 323 Scripts\City\MarketPingHour.lua
 324 Scripts\Cutscenes\Default.lua
@@ -792,7 +792,7 @@
 720 Scripts\Measures\ms_UseLaborOfLove.lua - MERGED
 721 Scripts\Measures\ms_Verfluchen.lua
 722 Scripts\Measures\ms_walk.lua
-723 Scripts\Measures\ms_walkhome.lua
+723 Scripts\Measures\ms_walkhome.lua - MERGED
 724 Scripts\Measures\ms_WaylayForBooty.lua
 725 Scripts\Measures\ms_WorkWonders.lua
 726 Scripts\Measures\ms_WorldTrader.lua

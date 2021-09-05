@@ -12,6 +12,12 @@ function Prepare()
 	local StartYear	= GetSettingNumber("ENDLESS", "StartYear", 1400)
 	SetTime(StartSeason, StartYear, Time, 0)
 
+	-- set world animals
+	WorldAnimals = 0
+
+	-- Vorbereitung der KarrenSpeicher
+	hpfzFreierHandelKarrenID = 0
+
 	return true
 end
 

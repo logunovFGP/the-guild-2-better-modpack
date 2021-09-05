@@ -1,4 +1,11 @@
 function Weight()
+	
+	local Time = math.mod(GetGametime(),24)
+	
+	if Time < 6 or Time > 21 then
+		return 0
+	end
+
 	return 100
 end
 

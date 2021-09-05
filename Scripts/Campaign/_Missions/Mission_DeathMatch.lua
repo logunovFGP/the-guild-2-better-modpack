@@ -36,15 +36,19 @@ function CheckEnd()
 	
 	local FriendCount = 0
 	
-	local dyn
 	local CountActiveEnemies = 0
+	local Team = DynastyGetTeam("Actor")
+	 
 	for dyn=0,Count-1 do
 	
 		local Alias = "Dynasties"..dyn
 		if (DynastyIsShadow(Alias)==false) then
 			if not DynastyIsDead(Alias) then
 				if (GetID(Alias)~=GetID("Actor")) then
-					CountActiveEnemies = CountActiveEnemies + 1
+					local DynTeam = DynastyGetTeam(Alias)
+					if DynTeam == 0 or DynTeam ~= Team then
+						CountActiveEnemies = CountActiveEnemies + 1
+					end
 				end
 			end
 		end

@@ -36,9 +36,9 @@ function Start()
 end
 
 function CheckEnd()
-	local MinMoney = 2000
+	local MinMoney = 7500
 	if GetMoney("#Player") < MinMoney then
-		local GiveMoney = 2000 - GetMoney("#Player")
+		local GiveMoney = 7500 - GetMoney("#Player")
 		CreditMoney("#Player",GiveMoney,"Money for Title Buy")
 	end
 	

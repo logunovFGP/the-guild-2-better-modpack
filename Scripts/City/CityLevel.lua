@@ -4,15 +4,15 @@ Include("Campaign/DefaultCampaign.lua")
 
 function GetValue(Level)
 	if Level==2 then
-		return {0, 80}
+		return 100
 	elseif Level==3 then
-		return {90, 130}
+		return 200
 	elseif Level==4 then
-		return {140, 200}
+		return 300
 	elseif Level==5 then
-		return {200, 300}
-	elseif Level==6 then
-		return {260, 99999}
+		return 400
+	elseif Level==6 then -- this never happens
+		return 9999
 	end
 end
 
@@ -36,13 +36,13 @@ function CalcStartupLevel()
 --	Count = Count + 50 -- initbuffer
 
 	local Level = citylevel_GetMinLevel()
-	while Level < GL_MAX_CITY_LEVEL and citylevel_GetValue(Level)[2] < Count do
+	while Level < GL_MAX_CITY_LEVEL and citylevel_GetValue(Level) < Count do
 		Level = Level + 1
 	end
 
 	if worldambient_CheckAmbient()==true then
-		worldambient_CreateCityAnimals("",true)
-		worldambient_CreateCityBettler("",Level)
+		worldambient_CreateCityAnimals("", true)
+		--worldambient_CreateCityBettler("", Level)
 		if not AliasExists("#Eseltreiber") or not AliasExists("#Packo") then
 			worldambient_CreateTeamDonkey("")
 		end
@@ -81,8 +81,8 @@ function CalcNewLevel()
 	end
 
 	local Level = CityGetLevel("")
-	local Count	= CityGetCitizenCount("")
-	local Bounds = citylevel_GetValue(Level)
+	local CurrentCitizens = CityGetCitizenCount("")
+	local MinCitizens = citylevel_GetValue(Level)
 	local CurrentYear = GetYear()
 	if not HasData("#LastUpdateYear") then
 		SetData("#LastUpdateYear", CurrentYear) -- no updates in first round
@@ -91,29 +91,25 @@ function CalcNewLevel()
 	CityGetRandomBuilding("",GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"Townhall")
 	
 	local LastUpdateYear = GetData("#LastUpdateYear")
-	if not HasProperty("Townhall","CityLevelUpAhead") and CurrentYear <= LastUpdateYear then
-		SetProperty("","LevelUpCity",0)
-		return Level
-	end
-		
+	if AliasExists("Townhall") then
+		if not HasProperty("Townhall","CityLevelUpAhead") and CurrentYear <= LastUpdateYear then
+			SetProperty("","LevelUpCity",0)
+			return Level
+		end
+	
 --	if a cutscene is running in the townhall do not upgrade the city
 --	!!! otherwise the townhall could be blocked with a never ending cutscene !!!
 	
-	if (BuildingGetCutscene("Townhall", "cutscene") == false) then
-		if Bounds[2] < Count then
-			if HasProperty("","LevelUpPaid") and GetProperty("","LevelUpPaid")==1 and HasProperty("","LevelUpCity") and GetProperty("","LevelUpCity")==1 then
-			--	if Level==5 then
-			--		local	ImperialId = ScenarioGetImperialCapitalId()
-			--		if ImperialId~=GetID("") then
-			--			return Level
-			--		end
-			--	end
-				SetProperty("","LevelUpCity",0)
-				SetData("#LastUpdateYear", CurrentYear)
-				return (Level + 1)
-			else
-				SetProperty("","LevelUpCity",1)
-				return Level
+		if (BuildingGetCutscene("Townhall", "cutscene") == false) then
+			if CurrentCitizens >= MinCitizens then -- enough people for levelup
+				if HasProperty("","LevelUpPaid") and GetProperty("","LevelUpPaid")==1 and HasProperty("","LevelUpCity") and GetProperty("","LevelUpCity")==1 then
+					SetProperty("","LevelUpCity",0)
+					SetData("#LastUpdateYear", CurrentYear)
+					return (Level + 1)
+				else
+					SetProperty("","LevelUpCity",1)
+					return Level
+				end
 			end
 		end
 	end
@@ -128,26 +124,25 @@ function SetNewLevel(OldLevel, NewLevel)
 	-- output a message
 	if NewLevel>0 and NewLevel<=GL_MAX_CITY_LEVEL and ScenarioGetTimePlayed()>0.1 then
 		-- only output messages, when the game is running, not at gamestart
-		GetLocalPlayerDynasty("Player")
 		local Attribute = "@L_GENERAL_INFORMATION_CITY_LEVEL_MSG_PLUS_ATTRIBUTE_+"..(OldLevel-1)
 		GetScenario("scenario")
 		local mapid = GetProperty("scenario", "mapid")
 		local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+1"
-		MsgNewsNoWait("Player", "", nil, "default", -1, 
+		MsgNewsNoWait("All", "", nil, "default", -1, 
 			"@L_GENERAL_INFORMATION_CITY_LEVEL_MSG_PLUS_HEAD_+0",
 			"@L_GENERAL_INFORMATION_CITY_LEVEL_MSG_PLUS_BODY_+0", CityLevel2Label(OldLevel), GetID(""), Attribute, CityLevel2Label(NewLevel), lordlabel )
 
-		if HasProperty("","LevelUpPaid") and GetProperty("","LevelUpPaid")==1 then
-			SetProperty("","LevelUpPaid",0)
+		if HasProperty("", "LevelUpPaid") and GetProperty("", "LevelUpPaid")==1 then
+			SetProperty("", "LevelUpPaid", 0)
 		end
 	end
 
-	if worldambient_CheckAmbient()==true then
-		worldambient_CreateCityAnimals("",false)
-		worldambient_CreateCityBettler("",1)
+	if worldambient_CheckAmbient() == true then
+		worldambient_CreateCityAnimals("", false)
+		worldambient_CreateCityBettler("", 1)
 	end
 	
-	if NewLevel==6 then
+	if NewLevel == 6 then
 		citylevel_CheckForKing()
 	end
 end
@@ -178,7 +173,7 @@ function CheckForKing()
 					if GetProperty(DynAlias,"ImperialFame") then
 						fame = GetProperty(DynAlias,"ImperialFame")
 					end
-					Points = (GetNobilityTitle(DynAlias) * 10000) + (fame * 1000) + GetMoney(DynAlias)
+					Points = (GetNobilityTitle(DynAlias) * 20000) + (fame * 2000) + GetMoney(DynAlias)
 					if not Candidate or Points>BestPoints then
 						Candidate = "DynList"..dyn
 						BestPoints  = Points
@@ -206,6 +201,6 @@ function CheckForKing()
 		SetNobilityTitle("Boss", 8)
 	end
 	
-	SimSetOffice("Boss", "Office")
+	SimSetOffice("Boss", "OFFICE")
 end
 

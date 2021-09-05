@@ -44,7 +44,8 @@ function Start()
 	SetExclusiveMeasure("#Spoose", "UsePerfume", EN_PASSIVE)
 	SetExclusiveMeasure("#Spoose", "MakeAPresent", EN_PASSIVE)
 	SetExclusiveMeasure("#Spoose", "MakeACompliment", EN_PASSIVE)
-	SetExclusiveMeasure("#Spoose", "Flirt", EN_PASSIVE)	
+	SetExclusiveMeasure("#Spoose", "Flirt", EN_PASSIVE)
+	SetExclusiveMeasure("#Spoose", "StartDialog", EN_PASSIVE)
 	
 	SimSetProgress("#Player",50)
 end
@@ -61,13 +62,15 @@ function CheckEnd()
 			ForbidMeasure("#Player", "MakeAPresent", EN_BOTH)
 			ForbidMeasure("#Player", "MakeACompliment", EN_BOTH)
 			ForbidMeasure("#Player", "Flirt", EN_BOTH)
+			ForbidMeasure("#Player", "StartDialog", EN_BOTH)
 			
 			ForbidMeasure("#Spoose", "HugCharacter", EN_BOTH)
 			ForbidMeasure("#Spoose", "KissCharacter", EN_BOTH)
 			ForbidMeasure("#Spoose", "UsePerfume", EN_BOTH)
 			ForbidMeasure("#Spoose", "MakeAPresent", EN_BOTH)
 			ForbidMeasure("#Spoose", "MakeACompliment", EN_BOTH)
-			ForbidMeasure("#Spoose", "Flirt", EN_BOTH)				
+			ForbidMeasure("#Spoose", "Flirt", EN_BOTH)
+			ForbidMeasure("#Spoose", "StartDialog", EN_BOTH)				
 			
 			HideTutorialBox()
 			return true

@@ -137,6 +137,7 @@ _Allgemein_
 - Einen Fehler beim Widersetzen gegen eine Verhaftung behoben.
 - Diverse Map-Fehler korrigiert.
 - Exploit: Man konnte Gebäude immer wieder erobern, verkaufen und erobern. Nun kann ein Gebäude nur alle zwei Runden erobert / verkauft werden.
+- Im 'Auslöschungsmodus' wurden die Siegbedingungen nicht erreicht, wenn man im Team spielte.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

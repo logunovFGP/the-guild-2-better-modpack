@@ -80,8 +80,7 @@ function End()
 				Sleep(20.0)
 			end
 		
-			GetLocalPlayerDynasty("LocalPlayerDynasty")	
-			if(GetID("LocalPlayerDynasty") == GetID("Actor")) then
+			if DynastyIsPlayer("Actor") then
 				CampaignExit(true)
 			end
 			
