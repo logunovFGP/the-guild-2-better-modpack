@@ -1,62 +1,48 @@
 function Weight()
-	if not SimGetWorkingPlace("SIM","MyBank") then
+
+	if IsDynastySim("SIM") then
 		return 0
 	end
-
-	if not SimCanWorkHere("SIM", "MyBank") then
+	
+	if not SimGetWorkingPlace("SIM", "MyBank") then
 		return 0
-	end		
+	end
+	
+	local Producer = BuildingGetProducerCount("MyBank", PT_MEASURE, "OfferCredit")
+	if Producer >0 then
+		return 0
+	end
+	
+	if GetCurrentMeasureName("SIM") == "CollectDebts" then
+		return 0
+	end
 
 	if GetInsideBuildingID("SIM") ~= GetID("MyBank") then
 		return 0
 	end
-
-	if not GetSettlement("SIM","City") then
+	
+	if not HasProperty("MyBank", "BankAccount") then
 		return 0
 	end
 	
-	if not HasProperty("MyBank", "KreditKonto") then
+	if GetProperty("MyBank", "BankAccount") < 100 then
 		return 0
-	else
-		local Kredit = GetProperty("MyBank", "KreditKonto")
-		if Kredit < 0 then
-			return 0
-		end
-	end
-	
-	local count = BuildingGetWorkerCount("MyBank")
-	if count < 2 then
-		return 0
-	end
-
-	local TryTime
-	if HasProperty("MyBank", "OfferStartTime") then
-		TryTime = GetProperty("MyBank", "OfferStartTime") + 4
-		if TryTime < GetGametime() then
-			return 0
-		end
 	end
 
 	local Hour = math.mod(GetGametime(), 24)
-	if IsDynastySim("SIM")  then
-		if (Hour < 3) or (Hour > 20) then
-			return -1
-		else
-			return 0
-		end
-	else
-		if not HasProperty("MyBank", "OfferCreditNow") and (Rand(20) > 15) then
-			return -1
-		else
-			return 0
-		end
+	if (Hour < 6) or (Hour >= 22) then
+		return 0
 	end
-
-
+	
+	local CreditSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForCredit)))"
+	local NumCreditSims = Find("SIM", CreditSimFilter,"CreditSim", -1)
+	if NumCreditSims < 1 then
+		return 0
+	end
+	
+	return 100
 end
 
 function Execute()
-	MeasureCreate("Measure")
-	MeasureAddData("Measure", "TimeOut", Rand(4)+4)
-	MeasureStart("Measure", "SIM", "MyBank", "OfferCredit")
+	MeasureRun("SIM", "MyBank", "OfferCredit", false)
 end

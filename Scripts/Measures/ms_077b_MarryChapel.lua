@@ -335,6 +335,8 @@ function InviteGuests(Church, Sim1, Sim2)
 																	"@B[O, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+0]"..
 																	"@B[C, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+1]", 
 																	ms_077b_marrychapel_AIInitAnswer, "politics", 2, 
+																	"@L_MEASURE_MARRY_CEREMONY_HEAD_+0",
+																	"@L_MEASURE_MARRY_CEREMONY_ASK_BODY_+0",
 																	GetID(Sim1), GetID(Sim2), GetID(Church), GetID("GuestAlias"))
 											if Invitation == "O" then	
 												FamilyGuests = FamilyGuests + 1

@@ -71,6 +71,7 @@ Data:
 96           "messageclass"                  | 
 97           "SoundSources"                  | 
 98           "BoneLODs"                      | 
+99           "AIPersonality"                 |
 100          "songvariation"                 | 
 101          "songspecialevents"             | 
 102          "Lordship"                      | 

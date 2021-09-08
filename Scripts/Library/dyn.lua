@@ -129,3 +129,29 @@ function GetWorkshopCount(SimAlias)
 	
 	return buildingcount
 end
+
+-- -----------------------
+-- MakeDecision
+-- -----------------------
+function MakeDecision(DynastyAlias, Trait, Random)
+	-- Trait must match the columns in AIPersonality.dbt
+	
+	if not HasProperty(DynastyAlias, "Personality") then
+		-- choose personality if you have none
+		SetProperty(DynastyAlias, "Personality", (Rand(6)+1))
+	end
+	
+	local PersonalityID = GetProperty(DynastyAlias, "Personality")
+	
+	-- get the needed trait
+	local TraitValue = 0
+	TraitValue = GetDatabaseValue("AIPersonality", PersonalityID, Trait)
+	
+	-- random check
+	local CheckValue = Rand(Random) 
+	if TraitValue >= CheckValue then
+		return (TraitValue - CheckValue) -- if positive return how much the dynasty wants this decision
+	else
+		return 0
+	end
+end
