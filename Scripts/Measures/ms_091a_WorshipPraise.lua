@@ -7,7 +7,7 @@ function Run()
 	SetRepeatTimer("", GetMeasureRepeatName2("WorshipPraise"), TimeOut)
 	SetRepeatTimer("", GetMeasureRepeatName2("WorshipScold"), TimeOut)
 	
-	if (GetInsideBuilding("","church")) then
+	if (GetInsideBuilding("", "church")) then
 		if GetImpactValue("church","MassInProgress")==0 then
 			AddImpact("church","MassInProgress",1,1)
 		end
@@ -21,23 +21,16 @@ function Run()
 		ListRemove("sims_in_church", "MrChurch")
 		feedback_MessageCharacter("Destination","@L_CHURCH_091_PREPAREWORSHIP_PRAISE_HEAD_+0",
 							"@L_CHURCH_091_PREPAREWORSHIP_PRAISE_BODY_+0",GetID("Destination"),GetID("church"),GetID("MrChurch"))
-		for i=0,ListSize("sims_in_church")-1,1 do
-			ListGetElement("sims_in_church",i,"receiver")
+		
+		local PreacherSkill = GetSkillValue("", RHETORIC)
+		for i=0,ListSize("sims_in_church")-1, 1 do
+			ListGetElement("sims_in_church", i, "receiver")
 			
-			if GetID("destination")~=GetID("receiver") then
-			
-				if CheckSkill("",7,GetSkillValue("",7,GetFavorToSim("receiver","")/10)) then
-					chr_ModifyFavor("receiver","Destination",5)
-					chr_ModifyFavor("receiver","MrChurch",10)
-
-				else
-					chr_ModifyFavor("receiver","MrChurch",-5)
-				end
-				
-			else
-				chr_ModifyFavor("destination","MrChurch",20)
+			if GetID("Destination") ~= GetID("receiver") then
+				chr_ModifyFavor("receiver", "Destination", (2+PreacherSkill))
 			end
 		end
+		chr_ModifyFavor("destination", "MrChurch", (2+PreacherSkill))
 	end
 end
 
@@ -45,9 +38,9 @@ function CleanUp()
 	StopAnimation("")
 	if GetID("church")~=-1 then
 		RemoveProperty("church", "MassInProgress")
-		RemoveImpact("church","MassInProgress")
+		RemoveImpact("church", "MassInProgress")
 	end
-	MeasureRun("", 0, "PrepareWorship",true)
+	MeasureRun("", 0, "PrepareWorship", true)
 end
 
 function GetOSHData(MeasureID)
