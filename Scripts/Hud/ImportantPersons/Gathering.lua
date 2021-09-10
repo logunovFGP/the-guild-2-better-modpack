@@ -196,7 +196,7 @@ function IsUnemployedSim(Alias)
 		and not DynastyIsShadow(Alias) -- no shadows
 		and GetDynastyID(Alias) < 1
 		and (SimGetProfession(Alias) == 0)                      -- Is unemployed
-		and (SimGetAge(Alias) >= 20)                            -- Is old enough to work
+		and (SimGetAge(Alias) >= 17)                            -- Is old enough to work
 		and (GetSettlementID(Alias) == GetSettlementID(""))     -- Lives in same settlement
 		and not SimGetCourtLover(Alias, "MyLover")
 		and not SimGetSpouse(Alias, "MyLoverr")
@@ -288,7 +288,7 @@ function PopulateImportantPersonSection(Label, SimListFilterFunction, SimListSor
 			FilteredSimCount = FilteredSimCount + 1
 			FilteredSims[FilteredSimCount] = Alias
 			-- show 8 max by Fajeth
-			if FilteredSimCount >= 8 then
+			if FilteredSimCount >= 12 then
 				break
 			end
 		end
