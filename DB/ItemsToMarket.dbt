@@ -1,0 +1,14 @@
+// Additional Table by Fajeth
+// The table lists all tradeable items. You can allow/disallow them to spawn at gamestart (and in what number per town-level) 
+// the list refers to the ID and name of Items.dbt.
+
+Table Description:
+"id" INT -1 |"itemid" INT  0 |"name" STRING  0 |"spawn_gamestart" INT  0 |
+
+Data: 
+0            2                "Wheat"           20                       |
+1            3                "Barley"          20                       |
+2            8                "Wool"            20                       |
+3            10               "Beef"            10                       |
+4            11               "Leather"         20                       |
+5            20               "Barleybread"     6                        |

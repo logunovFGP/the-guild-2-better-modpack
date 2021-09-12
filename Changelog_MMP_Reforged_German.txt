@@ -162,6 +162,7 @@ _Gelehrter_
 - Lavendel konnte verloren gehen, wenn dieses sich im Inventar eines Angestellten befand, der zum Quacksalben ausgesandt wurde und das Inventar des Hospitals bereits voll war.
 - Es gab einen möglichen Exploit beim Quacksalben, bei dem man Gold nach Abbruch der Maßnahme erhielt.
 - Das 'Verfluchen' funktionierte nicht richtig.
+- Eine Messe zu halten als Dynastiecharakter hatte einen eigenen Cooldown gegenüber dem Halten mit Angestellten.
 
 _Handwerker_
 - Beim Abbau von 'Steinquadern' lief der Charakter immer zwischen Betrieb und Abbaustelle hin und her, bis sein Inventar voll war und lud erst dann sein Inventar ab.
@@ -202,6 +203,7 @@ _KI_
 - KI-Priester konnten 'Gläubige gewinnen', auch, wenn das entsprechende Upgrade noch gar nicht freigeschaltet war.
 - KI Charaktere erhielten beim Kauf neuer Rüstungen/Waffen ein zusätzliches Item in ihr Inventar.
 - Die KI-Verwaltung von zu Spieler-Dynastien gehörenden Räuberlagern und Diebesgilden funktionierte nicht.
+- Vor dem Halten einer Messe werden die Priester nun gesammeltes Weihwasser ins Gebäudelager packen.
 
 *** Features ***
 

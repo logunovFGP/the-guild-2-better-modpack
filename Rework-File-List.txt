@@ -70,7 +70,7 @@
 
 
 0 Scripts\AI\Bankhouse\bank_betrugen.lua
-1 Scripts\AI\Bankhouse\bank_SetOfferCredit.lua
+1 Scripts\AI\Bankhouse\bank_SetOfferCredit.lua - MERGED
 2 Scripts\AI\Bankhouse\bank_SetOrderCredit.lua
 3 Scripts\AI\BaseTree\CheckChilds.lua
 4 Scripts\AI\BaseTree\CheckDynasty.lua
@@ -556,9 +556,9 @@
 484 Scripts\Measures\ms_087_ChangeFaith.lua
 485 Scripts\Measures\ms_089_PrayForGodsBlessing.lua
 486 Scripts\Measures\ms_090_BuyHolyIndulgence.lua
-487 Scripts\Measures\ms_091a_WorshipPraise.lua
-488 Scripts\Measures\ms_091b_WorshipScold.lua
-489 Scripts\Measures\ms_091_PrepareWorship.lua
+487 Scripts\Measures\ms_091a_WorshipPraise.lua - MERGED
+488 Scripts\Measures\ms_091b_WorshipScold.lua - MERGED
+489 Scripts\Measures\ms_091_PrepareWorship.lua - MERGED
 490 Scripts\Measures\ms_092_SingForPeacefulness.lua
 491 Scripts\Measures\ms_093_WinBelievers.lua
 492 Scripts\Measures\ms_098_AbsolveSinner.lua

@@ -163,6 +163,7 @@ _Scholar_
 - lavender could get lost if your employees had some in their inventory when assigned to quacksalve and the Hospital had no space for the lavender.
 - There was a possible exploit with quacksalvery where you would get a lot of gold after cancelling the action.
 - The 'Curse building' action didn't work properly.
+- Holding a mass as a dynasty character and as employees had seperate cooldowns.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
@@ -199,6 +200,7 @@ _AI_
 - AI controlled priests could 'win believers' even though they hadn't unlocked the required upgrade.
 - AI characters got an additional item in their inventory when they bought a new weapon/armor.
 - AI management of player-dynasty's robbers and thieves was broken.
+- Before holding a mass priests will now put gathered holy water to the church's storage.
 
 *** Features ***
 
