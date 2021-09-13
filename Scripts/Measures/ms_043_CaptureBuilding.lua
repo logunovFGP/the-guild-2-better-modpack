@@ -34,7 +34,7 @@ function Run()
 		GetPosition("", "ParticleSpawnPos")
 		PlaySound3D("", "fire/Explosion_01.wav", 1.0)
 		StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1,5)
-		ModifyHP("", -300, true)
+		ModifyHP("",-(0.5*GetMaxHP("")), true)
 		CommitAction("explosion", "", "Destination", "Destination")
 		StopMeasure()
 	end
@@ -62,10 +62,10 @@ function Run()
 	end
 
 	CommitAction("attackbuilding", "", "OldBuildingOwner", "OldBuildingOwner")
-	CarryObject("", "Handheld_Device/ANIM_Flag.nif",false)
+	CarryObject("", "Handheld_Device/ANIM_Flag.nif", false)
 	
-	LoopAnimation("", "capture_building",31)
-	CarryObject("","",false)
+	LoopAnimation("", "capture_building", 31)
+	CarryObject("", "", false)
 	
 	Sleep (5)
 	

@@ -205,6 +205,7 @@ _KI_
 - Die KI-Verwaltung von zu Spieler-Dynastien gehörenden Räuberlagern und Diebesgilden funktionierte nicht.
 - Vor dem Halten einer Messe werden die Priester nun gesammeltes Weihwasser ins Gebäudelager packen.
 - Die KI spammte 'Schutzgelderpressungen' auch gegen Gebäude, die bereits beschützt wurden.
+- Es war möglich, dass nicht-Gelehrte Dynastie Charaktere eine Messe in KI-kontrollierten Kirchen hielten.
 
 *** Features ***
 
@@ -260,6 +261,8 @@ _KI_
 - Die KI schickt Dirnen nun entweder zum Marktplatz oder zu auf den Karten vordefinierten Plätzen.
 - Ab einem bestimmten Zeitpunkt und Schwierigkeitsgrad wird das Errichten neuer Betriebe den ansässigen Dynastien mit dem selben Gebäudetyp missfallen.
 - Die KI überlegt sich nun besser, ob sie Schutzgelderpressungen annehmen sollte oder nicht.
+- Die KI der Kirchen überprüft nun nicht nur die Uhrzeit, sondern auch, ob bereits Sims vor der Tür stehen und auf eine Messe warten, bevor sie einen Priester
+  anweist, eine Messe zu starten.
 
 *** Balancing ***
 

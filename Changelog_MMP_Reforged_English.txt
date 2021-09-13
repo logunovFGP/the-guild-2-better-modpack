@@ -202,6 +202,7 @@ _AI_
 - AI management of player-dynasty's robbers and thieves was broken.
 - Before holding a mass priests will now put gathered holy water to the church's storage.
 - AI spammed protection money rackets and also used it on buildings that were protected.
+- It was possible that non-scholar dynasty sims could hold a mass in AI controlled buildings.
 
 *** Features ***
 
@@ -255,6 +256,7 @@ _AI_
 - AI sends wenches to the market place or to pre-determined places on the maps. 
 - At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
 - AI now better thinks about if it should accept protection money rackets or not.
+- AI will now check for time and waiting sims in front of their churches before assigning workers to hold a mass.
 
 *** Balancing ***
 

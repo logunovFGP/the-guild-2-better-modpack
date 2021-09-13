@@ -69,9 +69,9 @@
 71 DB\Weapons.dbt - MERGED
 
 
-0 Scripts\AI\Bankhouse\bank_betrugen.lua
+0 Scripts\AI\Bankhouse\bank_betrugen.lua - REMOVED
 1 Scripts\AI\Bankhouse\bank_SetOfferCredit.lua - MERGED
-2 Scripts\AI\Bankhouse\bank_SetOrderCredit.lua
+2 Scripts\AI\Bankhouse\bank_SetOrderCredit.lua - MERGED
 3 Scripts\AI\BaseTree\CheckChilds.lua
 4 Scripts\AI\BaseTree\CheckDynasty.lua
 5 Scripts\AI\BaseTree\CheckGuildHouse.lua
@@ -153,16 +153,16 @@
 81 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\OrderCollectEvidence.lua
 82 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\Patrol.lua
 83 Scripts\AI\BaseTree\CheckSquad\SquadJoin.lua
-84 Scripts\AI\Castle\Danegeld.lua
-85 Scripts\AI\Castle\GetCured.lua
-86 Scripts\AI\Castle\HushMoney.lua
-87 Scripts\AI\Castle\Merc_CheckOutfit.lua
-88 Scripts\AI\Castle\Merc_JoinSquad.lua
+84 Scripts\AI\Castle\Danegeld.lua - MERGED
+85 Scripts\AI\Castle\GetCured.lua - MERGED
+86 Scripts\AI\Castle\HushMoney.lua  - MERGED
+87 Scripts\AI\Castle\Merc_CheckOutfit.lua - MERGED
+88 Scripts\AI\Castle\Merc_JoinSquad.lua - MERGED
 89 Scripts\AI\Castle\OfferBuildingProtection.lua - MERGED
-90 Scripts\AI\Castle\Razzia.lua
-91 Scripts\AI\Church_cath\cath_PrepareWorship.lua
+90 Scripts\AI\Castle\Razzia.lua - MERGED
+91 Scripts\AI\Church_cath\cath_PrepareWorship.lua - MERGED
 92 Scripts\AI\Church_cath\cath_WinBelievers.lua
-93 Scripts\AI\Church_ev\ev_PrepareWorship.lua
+93 Scripts\AI\Church_ev\ev_PrepareWorship.lua - MERGED
 94 Scripts\AI\Church_ev\ev_WinBelievers.lua
 95 Scripts\AI\CityGuard\cityguard_CheckCrimeSpot.lua
 96 Scripts\AI\CityGuard\cityguard_CheckHP.lua

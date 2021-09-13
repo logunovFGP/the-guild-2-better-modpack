@@ -20,11 +20,10 @@ function Init()
 	SetState("", STATE_WORKING, false)
 	SetState("", STATE_SICK, false)
 	SetState("", STATE_DUEL, false)
+	
 	if GetState("", STATE_ROBBERGUARD) then
 		SetState("", STATE_ROBBERGUARD, false)
 	end
- 
-	StopMeasure()
 end
 
 function Run()
@@ -46,37 +45,38 @@ function Run()
 			if not (HasProperty("", "SenilDecay") or HasProperty("","Executed")) then
 				PlayAnimation("", "fight_die")
 				if HasProperty("","WasSick") then
-					PlayAnimation("","die_sick_idle_in")
-					PlayAnimation("","die_sick_idle_loop")
+					PlayAnimation("", "die_sick_idle_in")
+					PlayAnimation("", "die_sick_idle_loop")
 					Sleep(1)
-					PlayAnimation("","die_sick_idle_loop")
+					PlayAnimation("", "die_sick_idle_loop")
 					Sleep(1)
 				end
 			end
-			if HasProperty("","Executed") then
-				MoveSetActivity("")
+
+			if HasProperty("", "Executed") then
+				MoveSetActivity("", "")
 			end
 		end
 		
 		-- decrement sicksimcounter if some sick sim dies
-		if GetSettlement("","City") then
-			if GetImpactValue("","Sprain")==1 then
+		if GetSettlement("", "City") then
+			if GetImpactValue("", "Sprain") == 1 then
 				chr_decrementInfectionCount("SprainInfected", "City")
-			elseif GetImpactValue("","Cold")==1 then
+			elseif GetImpactValue("", "Cold") == 1 then
 				chr_decrementInfectionCount("ColdInfected", "City")
-			elseif GetImpactValue("","Influenza")==1 then
+			elseif GetImpactValue("", "Influenza") == 1 then
 				chr_decrementInfectionCount("InfluenzaInfected", "City")
-			elseif GetImpactValue("","BurnWound")==1 then
+			elseif GetImpactValue("","BurnWound") == 1 then
 				chr_decrementInfectionCount("BurnWoundInfected", "City")
-			elseif GetImpactValue("","Pox")==1 then
+			elseif GetImpactValue("","Pox") == 1 then
 				chr_decrementInfectionCount("PoxInfected", "City")
-			elseif GetImpactValue("","Pneumonia")==1 then
+			elseif GetImpactValue("","Pneumonia") == 1 then
 				chr_decrementInfectionCount("PneumoniaInfected", "City")
-			elseif GetImpactValue("","Blackdeath")==1 then
+			elseif GetImpactValue("","Blackdeath") == 1 then
 				chr_decrementInfectionCount("BlackdeathInfected", "City")
-			elseif GetImpactValue("","Fracture")==1 then
+			elseif GetImpactValue("","Fracture") == 1 then
 				chr_decrementInfectionCount("FractureInfected", "City")
-			elseif GetImpactValue("","Caries")==1 then
+			elseif GetImpactValue("","Caries") == 1 then
 				chr_decrementInfectionCount("CariesInfected", "City")
 			end
 		end
@@ -283,8 +283,7 @@ function Run()
 	
 	
 			-- pull the building under the ground
-			-- needed fixed value to avoid possible async form GfxGetHeight
-			local Height = 2500		--GfxGetHeight("")
+			local Height = 2500 -- needed fixed value to avoid possible async form GfxGetHeight
 			local Duration = Height/100
 			GfxMoveToPositionNoWait("", 0, -Height, 0, Duration, false)
 			Sleep(45)
@@ -357,7 +356,7 @@ function Run()
 		
 		-- pull the ship under the ground
 		SetInvisible("", true) 
-		local Height = GfxGetHeight("")+500
+		local Height = 1500
 		local Duration = Height/100 
 		
 		
@@ -375,7 +374,7 @@ function Run()
 		
 		GfxMoveToPositionNoWait("", 0, -Height, 0, Duration, false)
 		
-		PlaySound3DVariation("","ship/ShipDrown/"..ShipSize,1)
+		PlaySound3DVariation("", "ship/ShipDrown/"..ShipSize, 1)
 		
 			
 			
@@ -405,12 +404,12 @@ function Run()
 end
 
 function CleanUp()	
+	
 	-- remove the object from the world
 	if not IsType("", "Sim") then
 		InternalRemove("")
 		return
 	end
-
 
 	-- Get rid of the priest
 	if HasData("Priest") then
@@ -419,12 +418,10 @@ function CleanUp()
 		end
 	end
 	
-
 	-- Now let the sim rest in peace ...
 	InternalDie("")
 
 	-- Remove the sim from the world
 	InternalRemove("")
-
 end
 
