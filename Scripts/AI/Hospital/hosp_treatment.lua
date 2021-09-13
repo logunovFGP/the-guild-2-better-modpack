@@ -1,20 +1,14 @@
 function Weight()
 	
-	if DynastyIsAI("SIM") then
-		if SimGetOfficeLevel("SIM")>=1 then
-			return 0
-		end
-	end
-	
 	if IsDynastySim("SIM") then
-		if not GetInsideBuilding("SIM", "Hospital") then
+		if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
 			return 0
 		end
-		if BuildingGetType("Hospital")~=GL_BUILDING_TYPE_HOSPITAL then
-			return 0
-		end
-		if not SimCanWorkHere("SIM", "Hospital") then
-			return 0
+		
+		if IsDynastySim("SIM") then
+			if SimGetClass("SIM")~=3 then
+				return 0
+			end
 		end
 	else
 		if not SimGetWorkingPlace("SIM", "Hospital") then
@@ -22,26 +16,11 @@ function Weight()
 		end
 	end
 
-	if GetState("SIM",STATE_DUEL) then
-		return 0
+	if bld_CalcTreatmentNeed("Hospital", "SIM") > 0 then
+		return 100
 	end
 	
-	if GetInsideBuildingID("SIM") ~= GetID("Hospital") then
-		return 0
-	end
-
-	local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment==1))"
-	local NumSickSims = Find("SIM", SickSimFilter,"SickSim", -1)
-	if NumSickSims < 1 then
-		return 0
-	end
-
-	local Producer = BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment")
-	if NumSickSims <= 3*Producer then
-		return 0
-	end
-
-	return 100
+	return 0
 end
 
 function Execute()

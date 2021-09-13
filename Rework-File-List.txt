@@ -214,8 +214,8 @@
 142 Scripts\AI\Gaukler\Juggler_JugglerBeg.lua
 143 Scripts\AI\Gaukler\Juggler_LayTarot.lua
 144 Scripts\AI\Gaukler\Juggler_TellFortune.lua
-145 Scripts\AI\Hospital\hosp_quacksalver.lua
-146 Scripts\AI\Hospital\hosp_treatment.lua
+145 Scripts\AI\Hospital\hosp_quacksalver.lua - MERGED
+146 Scripts\AI\Hospital\hosp_treatment.lua - MERGED
 147 Scripts\AI\OfficeSession\OfficeSession_CheckCandidate.lua
 148 Scripts\AI\OfficeSession\_OfficeSession_CheckJury.lua
 149 Scripts\AI\OfficeSession\OfficeSession_CheckCandidate\CheckCandidate_DifferentGender.lua

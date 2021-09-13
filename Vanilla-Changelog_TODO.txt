@@ -16,11 +16,6 @@ Offen:
 
 - Türme haben nicht-aggressive Schiffe angegriffen.
 
-- Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
-
-- Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses
-  sind (z.B. um Lavendel zu sammeln). In dem Fall laufen sie zurück zum Krankenhaus, um die Maßnahme zu starten.
-
 - Die KI wird keine offensiven Maßnahmen gegen Charaktere versuchen, die sich gerade
   im Inneren eines Gebäudes aufhalten.
 

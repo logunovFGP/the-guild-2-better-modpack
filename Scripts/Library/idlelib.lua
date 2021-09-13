@@ -220,33 +220,19 @@ end
 function GoHome()
 	MsgDebugMeasure("Going Home")
 	if not GetHomeBuilding("", "HomeBuilding") then
-		Sleep(Gametime2Realtime(1))
-		return
-	end
-	
-	if SimIsCourting("") and not GetState("",STATE_BLACKDEATH) then
+		Sleep(6)
 		return
 	end
 
-	if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID("HomeBuilding") then
-		if GetImpactValue("","Sickness")>0 then
-			f_MoveTo("", "HomeBuilding", GL_MOVESPEED_WALK)
-		else
-			f_MoveTo("", "HomeBuilding", GL_MOVESPEED_RUN)
-		end
+	if not GetInsideBuilding("", "Inside") or GetID("Inside")~= GetID("HomeBuilding") then
+		f_MoveTo("", "HomeBuilding", GL_MOVESPEED_WALK)
 	end
-	Sleep(Rand(15)+30)
+
+	Sleep(Rand(30)+60)
 	
-	if Rand(300)==37 then
-		if BuildingGetLevel("HomeBuilding") < 3 then
-			SetState("HomeBuilding",STATE_BURNING,true)
-		elseif Rand(100)<10 then
-			SetState("HomeBuilding",STATE_BURNING,true)
-		end
-	end
-	
-	while GetState("",STATE_BLACKDEATH) do
-		Sleep(5)
+	-- random fire
+	if Rand(400) == 1 then
+		SetState("HomeBuilding", STATE_BURNING, true)
 	end
 end
 
@@ -255,36 +241,70 @@ end
 -- -----------------------
 function DoNothing()
 	MsgDebugMeasure("I'm really bored")
-	local ThingsToDo = Rand(4)
+	if GetInsideBuildingID("") ~= -1 then
+		if Rand(12) == 0 then
+			CarryObject("", "Handheld_Device/ANIM_besen.nif", false)
+			PlayAnimation("", "hoe_in")	
+			for i=0, 5 do
+				local waite = PlayAnimationNoWait("", "hoe_loop")
+				Sleep(0.5)
+				PlaySound3DVariation("", "Locations/herbs", 1.0)
+				Sleep(waite-0.5)
+			end
+			PlayAnimation("", "hoe_out")
+			CarryObject("", "", false)
+			Sleep((Rand(10)+5))
+		else
+			Sleep((Rand(20)+10))
+		end
+	end
+	
+	local ThingsToDo = Rand(5)
 	if ThingsToDo == 0 then
-		PlayAnimation("","cogitate")
+		PlayAnimation("", "cogitate")
+		Sleep(5)
 	elseif ThingsToDo == 1 then
 		CarryObject("", "Handheld_Device/ANIM_Pretzel.nif", false)
-		PlayAnimationNoWait("","eat_standing")
-		Sleep(6)
-		CarryObject("","",false)
-		Sleep(Rand(5)+3)
+		PlayAnimationNoWait("", "eat_standing")
+		Sleep(5)
+		CarryObject("", "", false)
+		Sleep(Rand(8)+3)
 	elseif ThingsToDo == 2 then
 		CarryObject("", "Handheld_Device/ANIM_beaker.nif", false)
-		PlayAnimationNoWait("","use_potion_standing")
-		Sleep(6)
-		CarryObject("","",false)
-		Sleep(Rand(5)+3)
+		PlayAnimationNoWait("", "use_potion_standing")
+		Sleep(5)
+		CarryObject("", "", false)
+		Sleep(Rand(8)+3)
+	elseif ThingsToDo == 3 then
+		if IsDynastySim("") and not GetInsideBuilding("", "inside") then
+			-- talk to someone
+			Sleep(5)
+			local TalkPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1500)AND NOT(Object.GetStateImpact(no_idle))AND(Object.IsDynastySim())AND(Object.CanBeInterrupted(StartDialog))AND NOT(Object.HasImpact(Hidden))AND NOT(Object.GetInsideBuilding()))","TalkPartner", -1)
+			if TalkPartners >0 then
+				MeasureRun("", "TalkPartner"..Rand(TalkPartners), "StartDialog" )
+				return
+			else
+				Sleep(6)
+				if Rand(3) == 0 then
+					local RandAnim = Rand(4)
+					if RandAnim == 0 then
+						PlayAnimation("", "cogitate")
+					elseif RandAnim == 1 then
+						PlayAnimation("", "cough")
+					elseif RandAnim == 2 then
+						PlayAnimation("", "guard_object")
+					elseif RandAnim == 3 then
+						PlayAnimation("", "talk_short")
+					else
+						PlayAnimation("", "nod")
+					end
+				end
+				Sleep(4)
+			end
+		end
 	else
-	    if GetInsideBuilding("","drinne") == false then
-	        CarryObject("","Handheld_Device/ANIM_besen.nif", false)
-	        PlayAnimation("","hoe_in")	
-	        for i=0,5 do
-		        local waite = PlayAnimationNoWait("","hoe_loop")
-		        Sleep(0.5)
-		        PlaySound3DVariation("","Locations/herbs",1.0)
-		        Sleep(waite-0.5)
-	        end
-		    PlayAnimation("","hoe_out")
-		    CarryObject("","",false)
-        end		
+		Sleep((Rand(20)+10))
 	end
-	Sleep(Rand(10)+5)
 end
 
 -- -----------------------
@@ -292,13 +312,14 @@ end
 -- -----------------------
 function GoToRandomPosition()
 	MsgDebugMeasure("Walking around...")
-	local offset 	= math.mod(GetID("Owner"), 30) * 0.1
 	local class
+	local offset = 75+Rand(250)
+
 	if GetSettlement("", "City") then
-		local	RandVal = Rand(7)
-		if RandVal<2 then
+		local RandVal = Rand(7)
+		if RandVal < 2 then
 			class = GL_BUILDING_CLASS_MARKET
-		elseif RandVal<4 then
+		elseif RandVal < 4 then
 			class = GL_BUILDING_CLASS_PUBLIC
 		else
 			class = GL_BUILDING_CLASS_WORKSHOP
@@ -306,7 +327,19 @@ function GoToRandomPosition()
 		
 		if CityGetRandomBuilding("City", class, -1, -1, -1, FILTER_IGNORE, "Destination") then
 			if GetOutdoorMovePosition("", "Destination", "MoveToPosition") then
-				f_MoveTo("","MoveToPosition", GL_MOVESPEED_WALK, 400+offset*15)
+				-- Don't move there if it is too far
+				if GetDistance("", "Destination") > 12000 then
+					SatisfyNeed("", 5, 0.25)
+					Sleep((Rand(6)+1))
+					return
+				end
+				
+				f_MoveTo("", "MoveToPosition", GL_MOVESPEED_WALK, offset)
+				-- Satisfy the need
+				SatisfyNeed("", 5, 0.5)
+				-- Add some XP
+				IncrementXPQuiet("", 5)
+				Sleep((Rand(10)+1))
 			end
 		end
 	end
@@ -573,15 +606,17 @@ function SnowballBattle(Target)
 	if not AliasExists(Target) then
 		return
 	end
+
 	MsgDebugMeasure("Throwing Snowballs...")
-	AlignTo("",Target)
+	AlignTo("", Target)
 	Sleep(1.7)
-	PlayAnimationNoWait("","manipulate_bottom_r")
+	PlayAnimationNoWait("", "manipulate_bottom_r")
 	Sleep(1.5)
 	SimStopMeasure(Target)
 	MoveStop(Target)
 	StopAnimation(Target)
-	
+	IncrementXPQuiet("", 10)	
+
 	CarryObject("", "Handheld_Device/ANIM_snowball.nif", false)
 	Sleep(1)
 	PlayAnimationNoWait("", "throw")
@@ -589,12 +624,12 @@ function SnowballBattle(Target)
 	CarryObject("", "" ,false)
 	local fDuration = ThrowObject("", Target, "Handheld_Device/ANIM_snowball.nif",0.1,"snowball",0,150,0)
 	Sleep(fDuration)
-	GetPosition(Target,"ParticleSpawnPos")
+	GetPosition(Target, "ParticleSpawnPos")
 	
-	StartSingleShotParticle("particles/snowball.nif", "ParticleSpawnPos",1,5)
-	AlignTo(Target,"")
+	StartSingleShotParticle("particles/snowball.nif", "ParticleSpawnPos", 1, 5)
+	AlignTo(Target, "")
 	Sleep(0.7)
-	PlayAnimation(Target,"threat")
+	PlayAnimation(Target, "threat")
 end
 
 -- -----------------------
@@ -941,6 +976,10 @@ end
 function UseCocotte()
 
 	MsgDebugMeasure("Search a cocotte to fullfill your need")
+	-- leave current building
+	if GetInsideBuilding("", "Inside") then
+		f_ExitCurrentBuilding("")
+	end
 	-- search cocotte in range
 	
 	local CocottsCnt = Find("","__F((Object.GetObjectsByRadius(Sim)==20000) AND (Object.GetProfession() == 30) AND (Object.Property.CocotteProvidesLove == 1) AND (Object.Property.CocotteHasClient == 0) AND (Object.HasDifferentSex()))","Cocotte", -1)
@@ -953,7 +992,8 @@ function UseCocotte()
 	ChangeAlias("Cocotte"..Rand(CocottsCnt),"Target")
 	if AliasExists("Target") then
 		MeasureCreate("UseLaborOfLove")
-		MeasureStart("UseLaborOfLove","","Target","UseLaborOfLove",true)
+		MeasureStart("UseLaborOfLove", "", "Target", "UseLaborOfLove", true)
+		return
 	end
 end
 
@@ -972,7 +1012,7 @@ function KissMeHonza()
 						
 						while true do
 							if not HasProperty("Musician","KissMe") or HasProperty("Musician","Moving") or HasProperty("Musician","MusicStage") then
-								RemoveProperty("","KissMeHoney")
+								RemoveProperty("", "KissMeHoney")
 								SatisfyNeed("", 2, 0.2)
 								IncrementXP("", 15)
 								break
@@ -983,20 +1023,20 @@ function KissMeHonza()
 								MsgSay("",GetName("Musician"))
 								Sleep(AnimTime)
 							else
-								Sleep(3)
+								Sleep(6)
 							end
 						end
 						
 					end
 				else
-					RemoveProperty("","KissMeHoney")
-					RemoveProperty("Musician","KissMe")
+					RemoveProperty("", "KissMeHoney")
+					RemoveProperty("Musician", "KissMe")
 				end
 			else
-				RemoveProperty("","KissMeHoney")
+				RemoveProperty("", "KissMeHoney")
 			end
 		else
-			RemoveProperty("","KissMeHoney")
+			RemoveProperty("", "KissMeHoney")
 		end
 	end
 end
@@ -1255,8 +1295,8 @@ function ChangeReligion(FinalReligion)
 		AddImpact("","WasInChurch",1,4)
 		return
 	end
-	if not f_MoveTo("","Church") then
-		AddImpact("","WasInChurch",1,4)
+	if not f_MoveTo("", "Church", GL_MOVESPEED_RUN) then
+		AddImpact("", "WasInChurch", 1, 4)
 		return
 	end
 	MeasureRun("","Church","ChangeFaith",true)
@@ -1314,49 +1354,56 @@ function GoToDivehouse()
 		local lokalPos = 0
 		
 		if Rand(3) == 0 then
-	    if GetFreeLocatorByName("Destination","Bar",1,4,"StehPos") then
-		    f_BeginUseLocator("","StehPos",GL_STANCE_STAND,true)
-				lokalPos = 1
-			else
-		    if GetFreeLocatorByName("Destination","appeal",1,4,"StehPos") then
-			    f_BeginUseLocator("","StehPos",GL_STANCE_STAND,true)
+		    if GetFreeLocatorByName("Destination", "Bar", 1, 4, "StehPos") then
+			    f_BeginUseLocator("", "StehPos", GL_STANCE_STAND, true)
 					lokalPos = 1
 				else
-			    local posPlatz = Rand(3)
+			    if GetFreeLocatorByName("Destination", "appeal", 1, 4, "StehPos") then
+				    f_BeginUseLocator("", "StehPos", GL_STANCE_STAND, true)
+					lokalPos = 1
+				else
+				    local posPlatz = Rand(3)
 					if posPlatz == 0 then
-	          GetFreeLocatorByName("Destination","Sit",1,4,"SitPos")
+		          		GetFreeLocatorByName("Destination", "Sit", 1, 4, "SitPos")
 					elseif posPlatz == 1 then
-				    GetFreeLocatorByName("Destination","Sit",5,7,"SitPos")
+					    GetFreeLocatorByName("Destination", "Sit", 5, 7, "SitPos")
 					else
-				    GetFreeLocatorByName("Destination","Sit",8,11,"SitPos")
+					    GetFreeLocatorByName("Destination", "Sit", 8, 11, "SitPos")
+	
+	
+	
+	
+	
+	
+	
 					end
-	        if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
-		        return
-	        end
-		    end
+		        	if not f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true) then
+			        	return
+		        	end
+			    end
 			end
 		else
-	    local posPlatz = Rand(3)
+	    	local posPlatz = Rand(3)
 			if posPlatz == 0 then
-		    if not GetFreeLocatorByName("Destination","Sit",1,4,"SitPos") then
-			    f_Stroll("",150,2) 
-			    return
+			    if not GetFreeLocatorByName("Destination","Sit",1,4,"SitPos") then
+				    f_Stroll("",150,2) 
+				    return
 				end
-	    elseif posPlatz == 1 then
+	   		elseif posPlatz == 1 then
 				if not GetFreeLocatorByName("Destination","Sit",5,7,"SitPos") then
-			    f_Stroll("",150,2) 
-			    return				
+			    	f_Stroll("",150,2) 
+			    	return				
 				end
 			else
 				if not GetFreeLocatorByName("Destination","Sit",8,11,"SitPos") then
-					f_Stroll("",150,2) 
-				  return			
+					f_Stroll("", 150, 2) 
+				 	return			
 				end
 			end
 			if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
 				return
 			end
-    end			
+    	end			
 		
 		local Hour = math.mod(GetGametime(), 24)
 		local verweile = 0
@@ -1365,58 +1412,61 @@ function GoToDivehouse()
 		if Hour > 6 and Hour < 20 then
 			verweile = Rand(2)+3
 		else
-		  verweile = Rand(4)+4
+		  	verweile = Rand(4)+4
 		end
+
 		if HasProperty("Destination","DanceShow") then
-		  verweile = verweile + 3
+		  	verweile = verweile + 3
 		end
+
 		if HasProperty("Destination","ServiceActive") then
-		  verweile = verweile + 2
+		  	verweile = verweile + 2
 		end
+
 		if HasProperty("Destination","Versengold") then
 			basicvalue = basicvalue + 1
-		  verweile = verweile + 3
+		  	verweile = verweile + 3
 		end
 
-    local simstand = SimGetRank("")
-    local grundBetrag = 0
+    	local simstand = SimGetRank("")
+    	local grundBetrag = 0
 
-		if HasProperty("Destination","ServiceActive") then
-	    if simstand == 0 or simstand == 1 then
-	    	grundBetrag = Rand(3)+5
-	    elseif simstand == 2 then
-	      grundBetrag = Rand(5)+5
-	    elseif simstand == 3 then
-	      grundBetrag = Rand(3)+10
-	    elseif simstand == 4 then
-	      grundBetrag = Rand(5)+15
-	    elseif simstand == 5 then
-	      grundBetrag = Rand(10)+20
-	    end				
+		if HasProperty("Destination", "ServiceActive") then
+		    if simstand == 0 or simstand == 1 then
+		    	grundBetrag = Rand(3)+5
+		    elseif simstand == 2 then
+		      grundBetrag = Rand(5)+5
+		    elseif simstand == 3 then
+		      grundBetrag = Rand(3)+10
+		    elseif simstand == 4 then
+		      grundBetrag = Rand(5)+15
+		    elseif simstand == 5 then
+		      grundBetrag = Rand(10)+20
+		    end				
 		else
-      if simstand == 0 or simstand == 1 then
-	      grundBetrag = 5
-      elseif simstand == 2 then
-        grundBetrag = 5
-      elseif simstand == 3 then
-        grundBetrag = 10
-      elseif simstand == 4 then
-        grundBetrag = 15
-      elseif simstand == 5 then
-        grundBetrag = 20
-      end
+		    if simstand == 0 or simstand == 1 then
+			    grundBetrag = 5
+		    elseif simstand == 2 then
+		       grundBetrag = 5
+		    elseif simstand == 3 then
+		  	    grundBetrag = 10
+		    elseif simstand == 4 then
+		        grundBetrag = 15
+	     	elseif simstand == 5 then
+		        grundBetrag = 20
+		     end
 		end
-		if HasProperty("Destination","Versengold") then
-	    grundBetrag = grundBetrag + 15
+		if HasProperty("Destination", "Versengold") then
+	    	grundBetrag = grundBetrag + 15
 		end
 		
 		while verweile > 0 do
 
 			if HasProperty("Destination","Versengold") and Rand(10)>7 then
 				if lokalPos == 0 then
-					f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+					f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
 				else
-					f_EndUseLocator("","StandPos",GL_STANCE_STAND)
+					f_EndUseLocator("", "StandPos", GL_STANCE_STAND)
 				end
 				MeasureRun("", nil, "CheerMusicians")
 			end
@@ -1481,9 +1531,10 @@ function GoToDivehouse()
 			SatisfyNeed("", 8, 0.1)
 			
 			local NumItems = Rand(2)+1
-			if HasProperty("Destination","DanceShow") then
+			if HasProperty("Destination", "DanceShow") then
 				NumItems = Rand(3)+2
 			end
+
 			local BoughtItem, BoughtAmount = economy_BuyRandomItems("Destination", "", 0, NumItems)
 			if BoughtItem and BoughtItem > 0 then
 				if HasProperty("Destination","ServiceActive") then
@@ -1504,7 +1555,7 @@ function GoToDivehouse()
 		
 		local Hour = math.mod(GetGametime(), 24)
 		if Hour > 21 or Hour < 4 then
-			if Rand(100) > 70 then
+			if Rand(100) > 90 then
 				AddImpact("","totallydrunk",1,6)
 				AddImpact("","MoveSpeed",0.7,6)
 				SetState("",STATE_TOTALLYDRUNK,true)

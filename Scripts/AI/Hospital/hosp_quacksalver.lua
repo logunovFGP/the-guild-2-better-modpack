@@ -1,16 +1,20 @@
 function Weight()
 	
 	if DynastyIsAI("SIM") then
-		if SimGetOfficeLevel("SIM")>=1 then
+		if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
+			return 0
+		end
+	else
+		if not SimGetWorkingPlace("SIM", "Hospital") then
 			return 0
 		end
 	end
 	
-	if GetMeasureRepeat("SIM", "Quacksalver") > 0 then
+	if not ReadyToRepeat("Hospital", "AI_QUACKSALVER") then
 		return 0
 	end
-	
-	if GetState("SIM",STATE_DUEL) then
+
+	if not BuildingHasUpgrade("Hospital", "MiracleCure") then
 		return 0
 	end
 	
@@ -26,7 +30,7 @@ function Weight()
 		return 0
 	end
 
-	if GetItemCount("SIM", "MiracleCure")>5 then
+	if GetItemCount("SIM", "MiracleCure") >= 1 then
 		return 100
 	elseif GetItemCount("Hospital", "MiracleCure", INVENTORY_STD) > 5 then
 		return 100
@@ -38,5 +42,6 @@ function Weight()
 end
 
 function Execute()
+	SetRepeatTimer("Hospital", "AI_QUACKSALVER", 4)
 	SetProperty("SIM", "SpecialMeasureId", -MeasureGetID("Quacksalver"))
 end
