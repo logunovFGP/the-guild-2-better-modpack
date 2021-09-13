@@ -323,4 +323,4 @@ _Rogue_
 - There now is a cooldown for the usage of 'salacious services' of 1 hour.
 - Wenches work 24 Hours per day like other rogue professions.
 - The visibility of crimes (guard detection) has been increased. Breaking bones is now considered a crime for the guards aswell.
-
+- Dicegame has now a cap of 10.000 Gold instead of 100.000

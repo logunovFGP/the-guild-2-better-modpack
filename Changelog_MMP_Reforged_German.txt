@@ -329,4 +329,4 @@ _Gauner_
 - Es gibt nun eine Abklingzeit von 1 Stunde für das Nutzen der Liebesdienste.
 - Die Gewinne der Liebesdienste wurden geändert.
 - Die Sichtbarkeit von Verbrechen (z.B. für Wachen) wurde erhöht. Knochenbrechen gilt für die Wachen nun ebenfalls als Verbrechen.
-
+- Das Würfelspiel hat nun eine Goldobergrenze von 10.000 statt 100.000

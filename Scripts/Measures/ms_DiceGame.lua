@@ -3,12 +3,12 @@ function Init()
 	local cash = GetMoney("") 	
 	
 	if cash < 100 then
-		MsgQuick("","@L_MEASURE_DICEGAME_NOMONEY_+0")
+		MsgQuick("", "@L_MEASURE_DICEGAME_NOMONEY_+0")
 		StopMeasure()
 	end
 	
-	if cash > 100000 then
-		cash = 100000
+	if cash > 10000 then
+		cash = 10000
 	end
 	
 	local vorab, regeln
@@ -34,9 +34,9 @@ function Init()
 	until vorab == "B" or regeln == "B"
 	
 	local prSatz = MsgBox("",false,"@P"..
-		"@B[5,@L_HPFZ_WS_EINSATZ_+4]"..
-		"@B[40,@L_HPFZ_WS_EINSATZ_+1]"..
-		"@B[75,@L_HPFZ_WS_EINSATZ_+2]",
+		"@B[10,@L_HPFZ_WS_EINSATZ_+4]"..
+		"@B[30,@L_HPFZ_WS_EINSATZ_+1]"..
+		"@B[50,@L_HPFZ_WS_EINSATZ_+2]",
 		"@L_HPFZ_WS_KOPF_+0",
 		"@L_HPFZ_WS_RUMPF_+8")
 	
@@ -108,8 +108,8 @@ function Run()
 	
 	cash = GetMoney("")
 	
-	if cash > 100000 then
-		cash = 100000
+	if cash > 10000 then
+		cash = 10000
 	end
 	
 	grEinsatz = ms_dicegame_AllEinsatz(1,cash)
@@ -154,8 +154,8 @@ function Run()
 
 	cash = GetMoney("")
 	
-	if cash > 100000 then
-		cash = 100000
+	if cash > 10000 then
+		cash = 10000
 	end
 	
 	grEinsatz = ms_dicegame_AllEinsatz(1,cash)	
@@ -201,8 +201,8 @@ function Run()
 
 	cash = GetMoney("")
 	
-	if cash > 100000 then
-		cash = 100000
+	if cash > 10000 then
+		cash = 10000
 	end
 	
 	grEinsatz = ms_dicegame_AllEinsatz(1,cash)

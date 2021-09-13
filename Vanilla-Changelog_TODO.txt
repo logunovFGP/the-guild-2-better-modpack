@@ -8,7 +8,6 @@ Offen:
 - Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
   (z.B. als Kardinal auf Feldherr) bewerben.
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
-- Möglichen Fehler bei der Ernennung eines Königs behoben. (Alias Änderung)
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
@@ -40,11 +39,6 @@ Offen:
 
 - Diverse Bugs beim Wegelagern wurden behoben.
 
-- KI-Sims, die sich in der ersten Runde vor 14 Uhr auf ein Amt bewarben, wurden
-  um Punkt 14 Uhr von der Liste gestrichen - ins Rathaus sind sie dann aber trotzdem 
-  gekommen. KI-Sims werden sich nun am ersten Tag vor 14 Uhr nicht mehr bewerben, um 
-  dieses Problem zu umgehen.
-
 - KI-Sims, die in einem Betrieb Waren produzierten, haben diese Arbeit 
   nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
 
@@ -57,7 +51,6 @@ Kritische Balance-Änderungen:
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.
 - Die Produkt-KI aller Betriebe wurde signifikant verbessert (dynamischen Prio-System)
-- Die Gewinne des Würfelspiels wurden drastisch gesenkt (maximal 10.000 Einsatz)
 - Lösegeldforderungen werden nun nicht immer akzeptiert, vor allem nicht, 
   wenn sie sehr hoch sind.
 - Die Höchststumme für Lösegelder liegt nun bei 50.000 Gold

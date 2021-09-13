@@ -18,6 +18,20 @@ function Weight()
 	if not ReadyToRepeat("SIM", TimerName) then
 		return 0
 	end
+	
+	local Level = SimGetMaxOfficeLevel("SIM")
+	local HighestLevel = CityGetHighestOfficeLevel("CITY_OF_OFFICE")
+	
+	if Level == HighestLevel or Level >= 6 then
+		-- if this sim is already in the highest office - no further lookup needed here
+		return 0
+	else
+		Level = Level + 1
+	end
+	
+	if Level > 1 and GetNobilityTitle("SIM") < 5 then
+		return 0
+	end
 
 --  This included defence of current office!!
 --	if SimIsAppliedForOffice("SIM") then
@@ -57,20 +71,6 @@ function Weight()
 	
 	if HasApplied then
 		SetRepeatTimer("SIM", TimerName, 10)
-		return 0
-	end
-	
-	local Level = SimGetMaxOfficeLevel("SIM")
-	local HighestLevel = CityGetHighestOfficeLevel("CITY_OF_OFFICE")
-	
-	if Level == HighestLevel then
-		-- if this sim is already in the highest office - no further lookup needed here
-		return 0
-	else
-		Level = Level + 1
-	end
-	
-	if Level > 1 and GetNobilityTitle("SIM") < 5 then
 		return 0
 	end
 	
