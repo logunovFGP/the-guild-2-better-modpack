@@ -161,14 +161,14 @@
 89 Scripts\AI\Castle\OfferBuildingProtection.lua - MERGED
 90 Scripts\AI\Castle\Razzia.lua - MERGED
 91 Scripts\AI\Church_cath\cath_PrepareWorship.lua - MERGED
-92 Scripts\AI\Church_cath\cath_WinBelievers.lua
+92 Scripts\AI\Church_cath\cath_WinBelievers.lua - MERGED
 93 Scripts\AI\Church_ev\ev_PrepareWorship.lua - MERGED
-94 Scripts\AI\Church_ev\ev_WinBelievers.lua
-95 Scripts\AI\CityGuard\cityguard_CheckCrimeSpot.lua
-96 Scripts\AI\CityGuard\cityguard_CheckHP.lua
-97 Scripts\AI\CityGuard\cityguard_CheckLocation.lua
-98 Scripts\AI\CityGuard\cityguard_CheckOutfit.lua
-99 Scripts\AI\CityGuard\_cityguard_Bodyguard.lua
+94 Scripts\AI\Church_ev\ev_WinBelievers.lua - MERGED
+95 Scripts\AI\CityGuard\cityguard_CheckCrimeSpot.lua - MERGED
+96 Scripts\AI\CityGuard\cityguard_CheckHP.lua - MERGED
+97 Scripts\AI\CityGuard\cityguard_CheckLocation.lua - MERGED
+98 Scripts\AI\CityGuard\cityguard_CheckOutfit.lua - MERGED
+99 Scripts\AI\CityGuard\_cityguard_Bodyguard.lua - MERGED
 100 Scripts\AI\Divehouse\Pirate_AIDiveGetAlc.lua
 101 Scripts\AI\Divehouse\Pirate_arrangeconcert.lua
 102 Scripts\AI\Divehouse\Pirate_AssignToDanceDivehouse.lua
@@ -177,10 +177,10 @@
 105 Scripts\AI\Divehouse\Pirate_AssignToServiceDivehouse.lua
 106 Scripts\AI\Divehouse\Pirate_AssignToThiefOfLove.lua
 107 Scripts\AI\Divehouse\Pirate_DiveGetAlc.lua
-108 Scripts\AI\EliteGuard\EliteGuard_CheckHP.lua
-109 Scripts\AI\EliteGuard\EliteGuard_CheckLocation.lua
-110 Scripts\AI\EliteGuard\EliteGuard_CheckOutfit.lua
-111 Scripts\AI\EliteGuard\EliteGuard_CheckSquad.lua
+108 Scripts\AI\EliteGuard\EliteGuard_CheckHP.lua - MERGED
+109 Scripts\AI\EliteGuard\EliteGuard_CheckLocation.lua - MERGED
+110 Scripts\AI\EliteGuard\EliteGuard_CheckOutfit.lua - MERGED
+111 Scripts\AI\EliteGuard\EliteGuard_CheckSquad.lua - MERGED
 112 Scripts\AI\Farm\CheckResource.lua
 113 Scripts\AI\Favor\fv_AbsolveSinner.lua
 114 Scripts\AI\Favor\fv_ArangeLiason.lua

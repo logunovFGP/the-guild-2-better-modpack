@@ -11,15 +11,14 @@ function Weight()
 		if SimGetClass("SIM") ~=3 then
 			return 0
 		end
-
-			
-		if SimGetAge("SIM") < 16 then
+		
+		if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_CHURCH_CATH, "Church") then
 			return 0
 		end
-	end
-	
-	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_CHURCH_CATH, "Church") then
-		return 0
+	else
+		if not SimGetWorkingPlace("SIM", "Church") then
+			return 0
+		end	
 	end
 	
 	if not BuildingHasUpgrade("Church", "Feretory") then

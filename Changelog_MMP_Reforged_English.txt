@@ -298,6 +298,7 @@ _General_
 - Pamphlets no longer lower the opinion of sims who really like or already really dislike you.
 - The Work hours of all professions have been adjusted and overall lowered. Some profession have special work hours (grave digger work at night).
 - XP gains by actions is now based on the years-per-round setting (1 year per round = 50% value, 4 years 200%)
+- Guards will now take breaks during the night.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

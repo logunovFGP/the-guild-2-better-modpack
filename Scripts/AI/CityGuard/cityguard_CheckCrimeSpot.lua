@@ -1,7 +1,14 @@
 function Weight()
+	
+	local Time = math.mod(GetGametime(),24)
+	if Time > 20 or Time < 6 then
+		return 0
+	end
+
 	if GetCrimeLocation("SIM", "CCS_Location") then
 		return 100
 	end
+
 	return 0
 end
 

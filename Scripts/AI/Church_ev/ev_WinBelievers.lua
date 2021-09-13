@@ -7,18 +7,18 @@ function Weight()
 		return 0
 	end	
 	
-	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_CHURCH_EV, "Church") then
-		return 0
-	end
-	
 	if IsDynastySim("SIM") then
 		if SimGetClass("SIM")~= 3 then
 			return 0
 		end
-
-		if SimGetAge("SIM") < 16 then
+	
+		if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_CHURCH_EV, "Church") then
 			return 0
 		end
+	else
+		if not SimGetWorkingPlace("SIM", "Church") then
+			return 0
+		end	
 	end
 	
 	if not BuildingHasUpgrade("Church", "Feretory") then
