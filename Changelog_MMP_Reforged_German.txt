@@ -206,6 +206,7 @@ _KI_
 - Vor dem Halten einer Messe werden die Priester nun gesammeltes Weihwasser ins Gebäudelager packen.
 - Die KI spammte 'Schutzgelderpressungen' auch gegen Gebäude, die bereits beschützt wurden.
 - Es war möglich, dass nicht-Gelehrte Dynastie Charaktere eine Messe in KI-kontrollierten Kirchen hielten.
+- Die KI bewarb sich nicht auf höhere Amtssessel, wenn sich jemand bereits auf ihr aktuelles Amt beworben hatte.
 
 *** Features ***
 

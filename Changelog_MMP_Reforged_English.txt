@@ -203,6 +203,7 @@ _AI_
 - Before holding a mass priests will now put gathered holy water to the church's storage.
 - AI spammed protection money rackets and also used it on buildings that were protected.
 - It was possible that non-scholar dynasty sims could hold a mass in AI controlled buildings.
+- AI did not apply for higher offices when they had to defend their current office.
 
 *** Features ***
 
