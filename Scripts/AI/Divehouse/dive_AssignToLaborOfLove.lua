@@ -3,16 +3,16 @@ function Weight()
 	if not GetSettlement("SIM", "City") then
 		return 0
 	end
-
-	if not SimGetWorkingPlace("SIM","MyWork") then
+	
+	if IsDynastySim("SIM") then
+		return 0
+	end	
+	
+	if not SimGetWorkingPlace("SIM", "MyWork") then
 	    return 0
 	end	
 
 	if CityFindCrowdedPlace("City", "SIM", "pick_pos")==0 then
-		return 0
-	end
-
-	if IsDynastySim("SIM") then
 		return 0
 	end
 

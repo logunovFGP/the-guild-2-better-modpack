@@ -126,7 +126,7 @@ function CleanUp()
 	end
 		
 	StopAction("burgleahouse", "")
-	MoveSetActivity("", "")
+	MoveSetActivity("")
 	CarryObject("", "", false)
 end
 

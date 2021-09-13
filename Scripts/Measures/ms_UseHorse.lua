@@ -64,8 +64,7 @@ function Run()
 	end
 
 	Sleep(5)
-	
-	-- MoveSetActivity("","")
+
 	Unmount("")
 	SetState("", STATE_RIDING, false)
 	
@@ -78,7 +77,7 @@ function CleanUp()
 
 	if HasProperty("", "aborted") and GetProperty("", "aborted") == 1 then
 		Sleep(1)
-		MoveSetActivity("","")
+		MoveSetActivity("")
 		Unmount("")
 		SetState("", STATE_RIDING, false)
 		SetState("", STATE_DUEL, false)
