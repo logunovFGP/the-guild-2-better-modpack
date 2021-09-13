@@ -7,7 +7,7 @@ function Weight()
 		return 0
 	end
 	
-	if GetMoney("Place") < 5000 then
+	if GetMoney("Place") < 4000 then
 		return 0
 	end
 

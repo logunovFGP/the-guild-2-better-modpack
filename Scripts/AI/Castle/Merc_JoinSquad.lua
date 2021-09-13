@@ -6,7 +6,7 @@ function Weight()
 	
 	local Count = BuildingGetWorkerCount("jq_place")
 	
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		if BuildingGetWorker("jq_place", l, "jq_quadcheck") then
 			if SquadGet("jq_quadcheck", "jq_squad") then
 				return -1
