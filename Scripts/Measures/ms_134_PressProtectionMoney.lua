@@ -54,7 +54,6 @@ function AIInitPressProtMoneyOffender()
 	return "O"
 end
 
-
 function Run()
 
 	local MeasureID = GetCurrentMeasureID("")
@@ -192,7 +191,7 @@ function Run()
 			RemoveProperty("Destination", "RobberProtected")
 			SetMeasureRepeat(TimeOut)
 			MeasureRun("", "Destination", "PlunderBuilding")
-			return
+			StopMeasure()
 		end
 	end
 end

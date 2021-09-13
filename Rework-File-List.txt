@@ -542,7 +542,7 @@
 470 Scripts\Measures\ms_051_FollowSim.lua
 471 Scripts\Measures\ms_055_InsultCharacter.lua
 472 Scripts\Measures\ms_057_KissCharacter.lua
-473 Scripts\Measures\ms_061_PlunderBuilding.lua
+473 Scripts\Measures\ms_061_PlunderBuilding.lua - MERGED
 474 Scripts\Measures\ms_066_BurgleAHouse.lua
 475 Scripts\Measures\ms_067_LetAbducteeFree.lua
 476 Scripts\Measures\ms_068_PickpocketPeople.lua - MERGED
@@ -582,7 +582,7 @@
 510 Scripts\Measures\ms_131_ApplyDeposition.lua
 511 Scripts\Measures\ms_132_ChargeCharacter.lua
 512 Scripts\Measures\ms_133_LeaveOffice.lua
-513 Scripts\Measures\ms_134_PressProtectionMoney.lua
+513 Scripts\Measures\ms_134_PressProtectionMoney.lua - MERGED
 514 Scripts\Measures\ms_142_OrderASabotage_Bomb.lua
 515 Scripts\Measures\ms_142_OrderASabotage_CombustionBomb.lua
 516 Scripts\Measures\ms_143_OrderAShadowing.lua

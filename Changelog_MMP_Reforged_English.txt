@@ -201,6 +201,7 @@ _AI_
 - AI characters got an additional item in their inventory when they bought a new weapon/armor.
 - AI management of player-dynasty's robbers and thieves was broken.
 - Before holding a mass priests will now put gathered holy water to the church's storage.
+- AI spammed protection money rackets and also used it on buildings that were protected.
 
 *** Features ***
 

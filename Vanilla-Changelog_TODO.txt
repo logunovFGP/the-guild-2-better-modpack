@@ -16,9 +16,6 @@ Offen:
 
 - Türme haben nicht-aggressive Schiffe angegriffen.
 
-- Die KI spammte Schutzgelderpressungen, weil sie beim Ablehnen ebendieser oftmals nicht korrekt das Plündern durchführte.
-- Die KI versucht nicht länger Gebäude mit Schutzgeld zu erpressen, die kürzlich geplündert wurden oder bereits beschützt werden.
-
 - Beim Alkoholverkauf in der Pinte hat man bei der Bestellung mehrerer Getränke genauso viel Geld bekommen wie bei einem einzigen Getränk.
 
 - Die Hospitals-KI setzt auch dann Angestellte zum Behandeln ein, wenn diese zurzeit außerhalb des Krankenhauses

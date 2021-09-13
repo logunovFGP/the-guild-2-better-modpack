@@ -204,6 +204,7 @@ _KI_
 - KI Charaktere erhielten beim Kauf neuer Rüstungen/Waffen ein zusätzliches Item in ihr Inventar.
 - Die KI-Verwaltung von zu Spieler-Dynastien gehörenden Räuberlagern und Diebesgilden funktionierte nicht.
 - Vor dem Halten einer Messe werden die Priester nun gesammeltes Weihwasser ins Gebäudelager packen.
+- Die KI spammte 'Schutzgelderpressungen' auch gegen Gebäude, die bereits beschützt wurden.
 
 *** Features ***
 
