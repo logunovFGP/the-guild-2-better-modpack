@@ -169,14 +169,14 @@
 97 Scripts\AI\CityGuard\cityguard_CheckLocation.lua - MERGED
 98 Scripts\AI\CityGuard\cityguard_CheckOutfit.lua - MERGED
 99 Scripts\AI\CityGuard\_cityguard_Bodyguard.lua - MERGED
-100 Scripts\AI\Divehouse\Pirate_AIDiveGetAlc.lua
-101 Scripts\AI\Divehouse\Pirate_arrangeconcert.lua
+100 Scripts\AI\Divehouse\Pirate_AIDiveGetAlc.lua - MERGED
+101 Scripts\AI\Divehouse\Pirate_arrangeconcert.lua 
 102 Scripts\AI\Divehouse\Pirate_AssignToDanceDivehouse.lua
 103 Scripts\AI\Divehouse\Pirate_AssignToLaborOfLove.lua
 104 Scripts\AI\Divehouse\Pirate_AssignToPoisonEnemy.lua
 105 Scripts\AI\Divehouse\Pirate_AssignToServiceDivehouse.lua
 106 Scripts\AI\Divehouse\Pirate_AssignToThiefOfLove.lua
-107 Scripts\AI\Divehouse\Pirate_DiveGetAlc.lua
+107 Scripts\AI\Divehouse\Pirate_DiveGetAlc.lua - MERGED
 108 Scripts\AI\EliteGuard\EliteGuard_CheckHP.lua - MERGED
 109 Scripts\AI\EliteGuard\EliteGuard_CheckLocation.lua - MERGED
 110 Scripts\AI\EliteGuard\EliteGuard_CheckOutfit.lua - MERGED
@@ -391,7 +391,7 @@
 319 Scripts\Campaign\_Network\_Network.lua - MERGED
 320 Scripts\Campaign\_Startup\_Startup.lua - MERGED
 321 Scripts\City\CityLevel.lua - MERGED
-322 Scripts\City\CityPingHour.lua
+322 Scripts\City\CityPingHour.lua - MERGED
 323 Scripts\City\MarketPingHour.lua
 324 Scripts\Cutscenes\Default.lua
 325 Scripts\Cutscenes\Duel.lua
@@ -667,7 +667,7 @@
 595 Scripts\Measures\ms_DiceGame.lua
 596 Scripts\Measures\ms_Disappropriate.lua - MERGED
 597 Scripts\Measures\ms_DistractGuards.lua
-598 Scripts\Measures\ms_DiveGetAlc.lua
+598 Scripts\Measures\ms_DiveGetAlc.lua - MERGED
 599 Scripts\Measures\ms_DoCourting.lua
 600 Scripts\Measures\ms_DoGelage.lua
 601 Scripts\Measures\ms_DrunkGame.lua

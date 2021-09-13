@@ -11,7 +11,7 @@ end
 function Run()
 	local Money = GetMoney("") 
 	
-	if Money < 700 then
+	if Money < 800 then
 		MsgQuick("", "@L_MEASURES_DIVEGETALC_FAIL_+2")
 		return
 	end	
@@ -26,7 +26,7 @@ function Run()
  	end
 
 	local menge = secretskill * 10
-	local kostengrog = 700*(1-cashskill*2)
+	local kostengrog = 800*(1-cashskill*2)
 	local kostenbrand = 1200*(1-cashskill*2)
 	local wahltext = ""
 	local bodytext = ""
@@ -43,51 +43,49 @@ function Run()
 	
 	local sauf
  	if IsGUIDriven() then
-    sauf = MsgBox("",false,"@P"..
-    wahltext,
-    "@L_MEASURES_DIVEGETALC_HEAD_+0",
-    bodytext,kostengrog,kostenbrand)
+	    sauf = MsgBox("",false,"@P"..
+	    wahltext,
+	    "@L_MEASURES_DIVEGETALC_HEAD_+0",
+	    bodytext,kostengrog,kostenbrand)
 	else
-    sauf = ms_divegetalc_AIDecide()
+	    sauf = ms_divegetalc_AIDecide()
 	end
 	
-	local preis
+	local price
 	local alcId
 		
 	if sauf == "B" then
 		alcId = "Schadelbrand"
-		preis = kostenbrand
+		price = kostenbrand
 	elseif sauf == "A" then
 		alcId = "PiratenGrog"
-		preis = kostengrog
+		price = kostengrog
 	else
-	  StopMeasure()
-	end
-
-	if not CanAddItems("",alcId,menge,INVENTORY_STD) then
-		MsgQuick("","@L_MEASURES_DIVEGETALC_FAIL_+3")
-		StopMeasure()
+	  	return
 	end
 	
-	if not chr_SpendMoney("", preis, "WaresSeaBought") then
-		MsgQuick("","@L_MEASURES_DIVEGETALC_FAIL_+2")
-		StopMeasure()
-	end
-	
-	AddItems("",alcId,menge,INVENTORY_STD)
-	MsgQuick("","@L_MEASURES_DIVEGETALC_SUCCESS_+0")
-
-  local MeasureID = GetCurrentMeasureID("")
+	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-  SetMeasureRepeat(TimeOut)
+  	SetMeasureRepeat(TimeOut)
+
+	if not CanAddItems("", alcId, menge, INVENTORY_STD) then
+		MsgQuick("", "@L_MEASURES_DIVEGETALC_FAIL_+3")
+		return
+	end
 	
+	if not chr_SpendMoney("", price, "WaresSeaBought") then
+		MsgQuick("", "@L_MEASURES_DIVEGETALC_FAIL_+2")
+		StopMeasure()
+	end
+	
+	AddItems("", alcId, menge, INVENTORY_STD)
+	MsgQuick("", "@L_MEASURES_DIVEGETALC_SUCCESS_+0")
 end
 
 function CleanUp()
-
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
