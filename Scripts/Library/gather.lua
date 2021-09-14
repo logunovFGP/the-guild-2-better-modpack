@@ -82,7 +82,7 @@ function Run(SimAlias, ResourceAlias, mode)
 	    Time =  math.floor(Time + ((Time / 100) * 20)) -- im Winter 20% langsamer
 	end
 	
-	if HasProperty(ResourceAlias,"Heuschrecken") then
+	if HasProperty(ResourceAlias, "Heuschrecken") then
 	    Time =  math.floor(Time + ((Time / 100) * 40)) -- bei Heuschrecken 40% langsamer
 	end
 	
@@ -253,24 +253,10 @@ function Honey_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
 	GfxStopParticle("bees")
 	GfxStopParticle("rauch")
 	if (Finish == 1) then
-		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Bucket_honey.nif", false)
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		CarryObject(SimAlias, "", false)
+		MoveSetActivity(SimAlias, "carry")
+		Sleep(2)
+		CarryObject(SimAlias, "Handheld_Device/ANIM_Bucket_honey.nif", false)
 	end
 end
 
@@ -292,24 +278,10 @@ end
 function Fruit_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
 	PlayAnimation(SimAlias,"knee_work_out")
 	if (Finish == 1) then
-		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Fruitbasket.nif", false)
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-			--[[feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		CarryObject(SimAlias, "", false)
+		MoveSetActivity(SimAlias, "carry")
+		Sleep(2)
+		CarryObject(SimAlias, "Handheld_Device/ANIM_Fruitbasket.nif", false)
 	end
 end
 
@@ -333,26 +305,12 @@ function Ton_In(SimAlias, ResourceAlias, Label)
 end
 
 function Ton_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
-	PlayAnimation(SimAlias,"knee_work_out")
+	PlayAnimation(SimAlias, "knee_work_out")
 	if (Finish == 1) then
-		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Bucket_carry.nif", false)
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		CarryObject(SimAlias, "", false)
+		MoveSetActivity(SimAlias, "carry")
+		Sleep(2)
+		CarryObject(SimAlias, "Handheld_Device/ANIM_Bucket_carry.nif", false)
 	end
 end
 
@@ -376,24 +334,10 @@ end
 function Herbs_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
 	PlayAnimation(SimAlias,"knee_work_out")
 	if (Finish == 1) then
-		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Herbbox.nif", false)
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-			--[[feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		CarryObject(SimAlias, "", false)
+		MoveSetActivity(SimAlias, "carry")
+		Sleep(2)
+		CarryObject(SimAlias, "Handheld_Device/ANIM_Herbbox.nif", false)
 	end
 end
 
@@ -420,27 +364,13 @@ function Mine_Out(SimAlias, ResourceAlias, Label, Removed, Finish,ITID)
 	PlayAnimation(SimAlias,"chop_out")
 	if (Finish == 1) then
 		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			if ITID == 39 then
-			    CarryObject(SimAlias,"Handheld_Device/ANIM_Granite.nif", false)
-			else
-			    CarryObject(SimAlias,"Handheld_Device/ANIM_Metalbar.nif", false)
-			end
-		else
-	
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
+		MoveSetActivity(SimAlias,"carry")
+		Sleep(2)
+
+		if ITID == 39 then
+		    CarryObject(SimAlias,"Handheld_Device/ANIM_Granite.nif", false)
+		else			  
+			CarryObject(SimAlias,"Handheld_Device/ANIM_Metalbar.nif", false)
 		end
 	end
 end
@@ -468,27 +398,9 @@ function Harvest_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
 	PlayAnimation(SimAlias,"hoe_out")
 	if (Finish == 1) then
 		CarryObject(SimAlias,"", false)
-	
-		if Removed == nil then
-			Removed = 0
-		end
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Bag.nif", false)
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		MoveSetActivity(SimAlias,"carry")
+		Sleep(2)
+		CarryObject(SimAlias,"Handheld_Device/ANIM_Bag.nif", false)
 	end
 end
 
@@ -511,27 +423,13 @@ function Beet_Out(SimAlias, ResourceAlias, Label, Removed, Finish, ITID)
 	PlayAnimation(SimAlias,"knee_work_out")
 	if (Finish == 1) then
 		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			local Ressi = ResourceGetScriptFunc(ResourceAlias)
-			if ITID == 204 then
-			    CarryObject(SimAlias,"Handheld_Device/ANIM_Fungibasket.nif", false)
-			else
-			    CarryObject(SimAlias,"Handheld_Device/ANIM_weideaeste.nif", false)
-			end
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
+		MoveSetActivity(SimAlias,"carry")
+		Sleep(2)
+			
+		if ITID == 204 then
+		    CarryObject(SimAlias,"Handheld_Device/ANIM_Fungibasket.nif", false)
+		else			    
+			CarryObject(SimAlias,"Handheld_Device/ANIM_weideaeste.nif", false)
 		end
 	end
 end
@@ -583,28 +481,15 @@ end
 
 function Animal_Out(SimAlias, ResourceAlias, Label, Removed, Finish,ITID)
 	if Finish == 1 then
-		CarryObject(SimAlias,"",false)
-		
-		if Removed > 0 then
-		    MoveSetActivity(SimAlias,"carry")
-		    Sleep(2)
-		    if ITID == 8 then
-		        CarryObject(SimAlias,"Handheld_Device/ANIM_Bag.nif", false)
-		    else
-		        CarryObject(SimAlias,"Handheld_Device/ANIM_haunch.nif", false)
-		    end
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-        end			
+		CarryObject(SimAlias, "", false)
+		MoveSetActivity(SimAlias, "carry")
+		Sleep(2)
+
+		if ITID == 8 then
+	        CarryObject(SimAlias,"Handheld_Device/ANIM_Bag.nif", false)
+	    else
+	        CarryObject(SimAlias,"Handheld_Device/ANIM_haunch.nif", false)
+	    end
 	end
 end
 
@@ -647,24 +532,10 @@ function Charcoal_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
 
 	if (Finish == 1) then
 	    MoveSetActivity(SimAlias)
-		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carry")
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Bag.nif", false)
-		else
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		CarryObject(SimAlias, "", false)
+	 	MoveSetActivity(SimAlias, "carry")
+		Sleep(2)
+		CarryObject(SimAlias, "Handheld_Device/ANIM_Bag.nif", false)
 	end
 end
 
@@ -686,27 +557,12 @@ function Lumber_In(SimAlias, ResourceAlias, Label)
 end
 
 function Lumber_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
-	PlayAnimation(SimAlias,"chop_out")
+	PlayAnimation(SimAlias, "chop_out")
 	if (Finish == 1) then
-		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			MoveSetActivity(SimAlias,"carrywood")
-			Sleep(1.5)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Woodlog.nif", false)
-		else
-	
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		CarryObject(SimAlias, "", false)
+		MoveSetActivity(SimAlias, "carrywood")
+		Sleep(1.5)
+		CarryObject(SimAlias, "Handheld_Device/ANIM_Woodlog.nif", false)
 	end
 end
 
@@ -727,29 +583,12 @@ function Well_In(SimAlias, ResourceAlias, Label)
 end
 
 function Well_Out(SimAlias, ResourceAlias, Label, Removed, Finish)
-	if Removed > 0 then
-		CarryObject(SimAlias,"Handheld_Device/ANIM_Bucket_full.nif", false)
-	end
+	CarryObject(SimAlias,"Handheld_Device/ANIM_Bucket_full.nif", false)
 	PlayAnimation(SimAlias,"fetch_water_out")
 	if (Finish == 1) then
 		CarryObject(SimAlias,"", false)
-	
-		if Removed > 0 then
-			Sleep(2)
-			CarryObject(SimAlias,"Handheld_Device/ANIM_Bucket_full.nif", false)
-		else
-			CarryObject(SimAlias,"", true)
-			local Type = ResourceGetScriptFunc(ResourceAlias)
-	
-			SimGetWorkingPlace(SimAlias,"WorkingPlace")
-	
-			BuildingGetOwner("WorkingPlace","BuildingOwner")
-		--[[	feedback_MessageWorkshop("BuildingOwner",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_HEAD_+0",
-				"@L_GENERAL_MEASURES_GATHER_RESOURCE_EMPTY_BODY_+0",
-					GetID(ResourceAlias), GetID(""), Label)
-			StopMeasure() ]]
-		end
+		Sleep(2)
+		CarryObject(SimAlias,"Handheld_Device/ANIM_Bucket_full.nif", false)
 	end
 end
 

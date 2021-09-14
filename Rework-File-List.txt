@@ -449,7 +449,7 @@
 377 Scripts\Library\f.lua
 378 Scripts\Library\feedback.lua
 379 Scripts\Library\GamePlayFormulas.lua
-380 Scripts\Library\gather.lua
+380 Scripts\Library\gather.lua - MERGED
 381 Scripts\Library\helpfuncs.lua
 382 Scripts\Library\idlelib.lua
 383 Scripts\Library\mdata.lua
@@ -497,20 +497,20 @@
 425 Scripts\Maps\weilerthal.lua
 426 Scripts\Measures\HotTea.lua
 427 Scripts\Measures\ms_001_MakeEvocation.lua
-428 Scripts\Measures\ms_002_Gather.lua
+428 Scripts\Measures\ms_002_Gather.lua - MERGED
 429 Scripts\Measures\ms_006_HaveVision.lua
 430 Scripts\Measures\ms_007_PaybackCredit.lua
 431 Scripts\Measures\ms_008_TakeCredit.lua
 432 Scripts\Measures\ms_010_GoToSleep.lua
 433 Scripts\Measures\ms_022_Fishing.lua
-434 Scripts\Measures\ms_022_Gather.lua
+434 Scripts\Measures\ms_022_Gather.lua - MERGED
 435 Scripts\Measures\ms_022_ProduceAlchemist.lua
 436 Scripts\Measures\ms_022_ProduceBakery.lua
 437 Scripts\Measures\ms_022_ProduceBankier.lua
 438 Scripts\Measures\ms_022_ProduceChurch.lua
 439 Scripts\Measures\ms_022_ProduceFisher.lua
 440 Scripts\Measures\ms_022_ProduceGaukler.lua
-441 Scripts\Measures\ms_022_ProduceGoods.lua
+441 Scripts\Measures\ms_022_ProduceGoods.lua - MERGED
 442 Scripts\Measures\ms_022_ProduceHospital.lua
 443 Scripts\Measures\ms_022_ProduceJoiner.lua
 444 Scripts\Measures\ms_022_ProduceMill.lua

@@ -35,9 +35,6 @@ Offen:
 
 - Diverse Bugs beim Wegelagern wurden behoben.
 
-- KI-Sims, die in einem Betrieb Waren produzierten, haben diese Arbeit 
-  nie freiwillig unterbrochen, um etwas Sinnvolleres zu tun (bspw. Politik).
-
 - Es konnte vorkommen, dass nicht alle eingestellten Dynastien auch tatsächlich zu Spielstart
   einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
 

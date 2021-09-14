@@ -15,12 +15,8 @@ Include("Measures/ms_022_producestonemason.lua")
 Include("Measures/ms_022_producegaukler.lua")
 
 function Run() 
-	local Age = SimGetAge("")
+	
 	local ActiveMovement = true
-
-	if Age < 16 then
-		StopMeasure()
-	end
 	
 	if not AliasExists("WorkBuilding") then
 		if not SimGetWorkingPlace("","WorkBuilding") then
@@ -29,8 +25,8 @@ function Run()
 	end
 	
 	-- special case for "force production"
-	if HasProperty("","ForceProd") then
-		SimSetProduceItemID("",GetProperty("","ForceProd"),GetID("WorkBuilding"))
+	if HasProperty("", "ForceProd") then
+		SimSetProduceItemID("", GetProperty("", "ForceProd"), GetID("WorkBuilding"))
 	end
 
 	-- special case for dynasty sims
@@ -158,7 +154,6 @@ function Run()
 		
 		-- Mill
 		if (BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_MILL) then
-		    --StartProduction("","WorkBuilding")
 			SetData("muehle", 1)
 			if not ms_022_producemill_MehlMahlen() then
 				SimSetProduceItemID("", 0, -1)
@@ -166,7 +161,7 @@ function Run()
 				Sleep(0.1)
 				return
 			end
-		elseif ItemGetType(ItemID)==ITEM_TYPE_GATHERING then
+		elseif ItemGetType(ItemID) == ITEM_TYPE_GATHERING then
 			StartProduction("", "WorkBuilding") -- Start production (internal state)
 			SetData("Gathering", 1)
 			if not ms_022_gather_Run(ItemID) then
@@ -178,6 +173,8 @@ function Run()
 			Sleep(1)
 			if BuildingGetAISetting("WorkBuilding", "Produce_Selection") >0 then
 				if IsDynastySim("") and DynastyIsAI("") then
+					break
+				elseif not IsDynastySim("")
 					break
 				end
 			end
@@ -317,23 +314,23 @@ function StartEffect(RunTime)
 	end
 end
 
-function StartRoomAni(room,ani,resettime)
-	SetData("RA_Room",room)
-	SetData("RA_Ani",ani)
+function StartRoomAni(room, ani, resettime)
+	SetData("RA_Room", room)
+	SetData("RA_Ani", ani)
 	if (resettime ~= -1) then
-		SetRoomAnimationTime("WorkBuilding",room,ani,resettime)
+		SetRoomAnimationTime("WorkBuilding", room, ani, resettime)
 	end
-	StartRoomAnimation("WorkBuilding",room,ani)
+	StartRoomAnimation("WorkBuilding", room, ani)
 end
 
-function StopRoomAni(room,ani,resettime)
+function StopRoomAni(room, ani, resettime)
 	if HasData("RA_Room") then
 		RemoveData("RA_Room")
 		RemoveData("RA_Ani")
 		
-		StopRoomAnimation("WorkBuilding",room,ani)
+		StopRoomAnimation("WorkBuilding", room, ani)
 		if (resettime ~= -1) then
-			SetRoomAnimationTime("WorkBuilding",room,ani,resettime)
+			SetRoomAnimationTime("WorkBuilding", room, ani, resettime)
 		end			
 	end
 end

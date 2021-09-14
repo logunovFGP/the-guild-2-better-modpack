@@ -6,11 +6,6 @@ function Run(ItemID)
 	local RemainingSpace 	= GetRemainingInventorySpace("WorkBuilding",ItemID)
 	local RemainingSimSpace = GetRemainingInventorySpace("",ItemID)
 	local Count = ItemGetProductionAmount(ItemID) 
-	local Age = SimGetAge("")
-	
-	if Age < 16 then
-		StopMeasure()
-	end
 
 	if RemainingSpace <= 0 and RemainingSimSpace < Count then
 		-- no space left in the inventory of the building AND the sim 
@@ -82,7 +77,9 @@ function Run(ItemID)
 			BuildingGetOwner("WorkBuilding","BuildingOwner")
 		end
 		
-		ms_022_gather_ReturnItems("", "WorkBuilding")
+		if not ms_022_gather_ReturnItems("", "WorkBuilding") then
+			return false
+		end
 	end
 	
 	return true
@@ -90,23 +87,24 @@ end
 
 function ReturnItems(SimAlias, BuildingAlias)
 
-	local	ItemId
-	local	Found
+	local ItemId
+	local Found
 	local RemainingSpace
 	local Removed
-	local	TotalCount
+	local TotalCount
 	local MovedItems = 0
+	local HasAnything = 0
 	
 	local Count = InventoryGetSlotCount(SimAlias, INVENTORY_STD)
-	for i=0,Count-1 do
+	for i=0, Count-1 do
 		ItemId, Found = InventoryGetSlotInfo(SimAlias, i, INVENTORY_STD)
-		if ItemId and ItemId>0 and Found>0 then
-		
---			if ItemGetType(ItemId)==ITEM_TYPE_GATHERING then		-- Remove because of bug 0004732
-			TotalCount			= GetItemCount(SimAlias, ItemId, INVENTORY_STD)
-			RemainingSpace	= GetRemainingInventorySpace(BuildingAlias,ItemId)
-			Removed					= RemoveItems(SimAlias, ItemId, RemainingSpace)
-			if Removed>0 then
+		if ItemId and ItemId > 0 and Found > 0 then
+			HasAnything = Found
+			TotalCount = GetItemCount(SimAlias, ItemId, INVENTORY_STD)
+			RemainingSpace = GetRemainingInventorySpace(BuildingAlias, ItemId)
+			Removed	= RemoveItems(SimAlias, ItemId, RemainingSpace)
+
+			if Removed > 0 then
 				AddItems(BuildingAlias, ItemId, Removed)
 				MovedItems = MovedItems + Removed
 			end
@@ -115,16 +113,32 @@ function ReturnItems(SimAlias, BuildingAlias)
 
 	MoveSetActivity(SimAlias)
 	Sleep(2)
-	CarryObject(SimAlias,"", false)
+	CarryObject(SimAlias, "", false)
 
-	if MovedItems>0 then
+	if MovedItems >0 then
 		return true
+	else
+		if HasAnything == 0 then
+			return true
+		else
+			return false
+		end
 	end
-	return false
 end
 
 function CleanUp()
-	if AliasExists("WorkBuilding") and DynastyIsAI("WorkBuilding") then
-		ms_022_gather_ReturnItems("", "WorkBuilding")
+	if AliasExists("WorkBuilding") and DynastyIsAI("") then
+		local ItemId, Found
+		local Count = InventoryGetSlotCount("", INVENTORY_STD)
+		for i=0,Count-1 do
+			ItemId, Found = InventoryGetSlotInfo("", i, INVENTORY_STD)
+			if ItemId and ItemId > 0 and Found > 0 then
+			
+				if CanAddItems("WorkBuilding", ItemId, Found, INVENTORY_STD) then
+					RemoveItems("", ItemId, Found)
+					AddItems("WorkBuilding", ItemId, Found)
+				end
+			end
+		end
 	end
 end
