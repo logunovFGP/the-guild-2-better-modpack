@@ -297,6 +297,20 @@ Translate and add the following lines below:
 18294   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_DESCRIPTION_+0"   "This building has been captured by another dynasty recently and thus can not be sold in the next hours."   |
 18295   "_SELLBUILDING_FAIL_HEAD_+0"   "Sale failed"   |
 18296   "_SELLBUILDING_FAIL_BODY_+0"   "%1GG has been captured recently and thus can not be sold in the next hours."   |
+18297   "_MEASURE_USE_LETTER_FROM_ROME_ERROR_INSIDE_+0"   "You can not use the >Letter from Rome< as long as %1SN is inside of %2GG! This item may only be used outside."   |
+18298   "_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_BODY_+1"   "%1SN used a faked letter to accuse %2SV of heresy! Fortunatly your view is sharp enough to see the truth. Now the letter is your first evidence for court!"   |
+18299   "_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_HEAD_+0"   "Letter from Rome failed"   |
+18300   "_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_HEAD_SPEECH_+0"   "#E[NT_NEUTRAL]Your intrigue has failed!"   |
+18301   "_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_BODY_+0"   "Bah, %1SN's bad breath is just incredible..."   |
+18302   "_INTRIGUE_LETTERFROMROME_FAILED_VICTIM_HEAD_+0"   "Someone wanted to read a letter from Rome to you"   |
+18303   "_INTRIGUE_LETTERFROMROME_FAILED_VICTIM_HEAD_SPEECH_+0"   "#E[NT_SEVERE]Someone has tried to read a letter from Rome to you!"   |
+18304   "_INTRIGUE_LETTERFROMROME_FAILED_VICTIM_BODY_+0"   "%1SN starts to read a letter from Rome %2SN. Thanks to your >%3l< it didn't come to that..."   |
+18305   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_HEAD_+0"   "Torrent of hatred has failed"   |
+18306   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_HEAD_SPEECH_+0"   "#E[NT_NEUTRAL]Your intrigue has failed!"   |
+18307   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_BODY_+0"   "Bah, %1SN's bad breath is just incredible ..."   |
+18308   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_HEAD_+0"   "Someone wanted to make a hateful speech"   |
+18309   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_HEAD_SPEECH_+0"   "#E[NT_SEVERE]Someone tried to make a hateful speech against you!"   |
+18310   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_BODY_+0"   "%1SN has started a torrent of hatred against %2SN. Thanks to your >%3l< it didn't come to that ..."   |
 
 
 

@@ -664,7 +664,7 @@
 592 Scripts\Measures\ms_DEBUG_locatortest_estate.lua
 593 Scripts\Measures\ms_DEBUG_OUTLAW.lua
 594 Scripts\Measures\ms_Default.lua
-595 Scripts\Measures\ms_DiceGame.lua
+595 Scripts\Measures\ms_DiceGame.lua - MERGED
 596 Scripts\Measures\ms_Disappropriate.lua - MERGED
 597 Scripts\Measures\ms_DistractGuards.lua
 598 Scripts\Measures\ms_DiveGetAlc.lua - MERGED
@@ -806,7 +806,7 @@
 734 Scripts\Measures\Artefacts\as_172_UseFragranceOfHoliness.lua
 735 Scripts\Measures\Artefacts\as_173_UseGhostlyFog.lua
 736 Scripts\Measures\Artefacts\as_174_UseGlovesOfDexterity.lua
-737 Scripts\Measures\Artefacts\as_175_UseLetterFromRome.lua
+737 Scripts\Measures\Artefacts\as_175_UseLetterFromRome.lua - MERGED
 738 Scripts\Measures\Artefacts\as_178_UseToadslime.lua
 739 Scripts\Measures\Artefacts\as_179_UseAboutTalents1.lua
 740 Scripts\Measures\Artefacts\as_182_UseCake.lua

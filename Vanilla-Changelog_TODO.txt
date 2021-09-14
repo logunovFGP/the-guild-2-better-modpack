@@ -18,10 +18,6 @@ Offen:
 - Die KI wird keine offensiven Maßnahmen gegen Charaktere versuchen, die sich gerade
   im Inneren eines Gebäudes aufhalten.
 
-- Die Maßnahme "Brief aus Rom" wird nun abgebrochen, sollte sich das Ziel
-  im Inneren eines Gebäudes aufhalten. Es wird eine Fehlermeldung verschickt, die darauf
-  hinweist.
-
 - Beim Würfelspiel wird die KI nicht permanent höhere Rekorde erzielen,
   das Maximum, das sie erreichen kann ist nun wie beim Spieler 40.000 -> Die KI spielt nicht richtig, sondern
   übertrifft den Spieler immer mit Random. Sollte theoretisch komplett redesignt werden.

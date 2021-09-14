@@ -164,6 +164,7 @@ _Scholar_
 - There was a possible exploit with quacksalvery where you would get a lot of gold after cancelling the action.
 - The 'Curse building' action didn't work properly.
 - Holding a mass as a dynasty character and as employees had seperate cooldowns.
+- You can no longer use 'Letter from Rome' inside of buildings. If you try it, you will get a error message.
 
 _Craftsman_
 - Mining 'Stone blocks' was bugged: the character would run between resource and workshop multiple times without unloading his inventory.
@@ -233,7 +234,8 @@ _General_
   start an affair. You can now have affairs while beeing married (however atm only with unmarried characters).
 
 _Patron_
--
+- Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
+- Your 'Drunkard Brew Beer' will protect you against 'Letters From Rome' aswell as against 'Torrents of Hatred'
 
 _Scholar_
 - Your 'medical treatments' slightly boost the opinion of the patients to the owner of that hospital.
@@ -244,6 +246,7 @@ _Scholar_
 - Poisoned wells make all characters nearby sick.
 - Leprosy-infected now lose favor with other characters, unless they use perfume.
 - During Quacksalvery customers will now comment on whether they buy miracle cures or not.
+- The 'Letter from Rome' might fail if you have a low shadow arts skill / your target a high empathy. In that case the victim gets evidence against you ...
 
 _Craftsman_
 -

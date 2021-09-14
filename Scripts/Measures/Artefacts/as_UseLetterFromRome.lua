@@ -12,7 +12,7 @@ function Run()
 	
 	if IsStateDriven() then
 		local ItemName = "LetterFromRome"
-		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
+		if GetItemCount("", ItemName, INVENTORY_STD) == 0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
@@ -20,15 +20,15 @@ function Run()
 	end
 	
 	--how much the favor of the listeners to the destination is decreased
-	local favormodify = 10
+	local favormodify = 12
 	--how much the favor from the victim to the owner is decreased
-	local favorloss = 10
+	local favorloss = 12
 	--how far the destination can be to start this action
 	local MaxDistance = 1000
 	--how far from the destination, the owner should stand while reading the letter from rome
 	local ActionDistance = 350
 	--the listening range. 
-	local ListeningRange = 1000
+	local ListeningRange = 1500
 	--time before artefact can be used again, in hours
 
 	local MeasureID = GetCurrentMeasureID("")
@@ -40,6 +40,11 @@ function Run()
 	
 	Sleep(0.5)
 	
+	-- check inside building
+	if GetInsideBuilding("Destination", "Inside") then
+ 		MsgBoxNoWait("", "Destination", "@L_GENERAL_ERROR_HEAD", "@L_MEASURE_USE_LETTER_FROM_ROME_ERROR_INSIDE", GetID("Destination"), GetID("Inside"))
+		StopMeasure()
+	end
 	--look at each other
 	feedback_OverheadActionName("Destination")
 	AlignTo("Owner", "Destination")
@@ -63,6 +68,26 @@ function Run()
 	PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	CarryObject("", "", false)
 	if RemoveItems("", "LetterFromRome", 1) > 0 then
+		
+		if GetImpactValue("Destination", "boozybreathbeer") == 1 then	
+			GetPosition("Destination", "ParticleSpawnPos")
+			StartSingleShotParticle("particles/BoozyBreathBeer.nif", "ParticleSpawnPos",2.7,3)
+			PlaySound3DVariation("Destination", "measures/boozybreathbeer", 1)
+			feedback_OverheadComment("", "@L_INTRIGUE_055_INSULTCHARACTER_BOOZYBREATHBEER_+0", false, true)
+			SetMeasureRepeat(TimeOut)
+			GetFleePosition("", "Destination", 1000, "Away")
+			f_MoveTo("", "Away", GL_MOVESPEED_RUN)
+			
+			MsgNewsNoWait("","Destination", "", "intrigue", -1,
+				"@L_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_HEAD_+0",
+				"@L_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_BODY_+0", GetID("Destination"))
+			
+			MsgNewsNoWait("Destination", "", "", "intrigue",-1,
+				"@L_INTRIGUE_LETTERFROMROME_FAILED_VICTIM_HEAD_+0",
+				"@L_INTRIGUE_LETTERFROMROME_FAILED_VICTIM_BODY_+0", GetID("Owner"),GetID("Destination"),ItemGetLabel("BoozyBreathBeer", true))			
+			StopMeasure()
+		end
+
 		PlayAnimationNoWait("Destination", "appal")
 		
 		GetPosition("", "MyPosition")
@@ -86,13 +111,21 @@ function Run()
 		
 		SetMeasureRepeat(TimeOut)
 		
-		chr_ModifyFavor("Destination","",-favorloss)
+		chr_ModifyFavor("Destination", "", -favorloss)
 		Sleep(1)
-		chr_GainXP("",GetData("BaseXP"))
-		MsgNewsNoWait("Destination","","","intrigue",-1,
+		chr_GainXP("", GetData("BaseXP"))
+
+		if GetSkillValue("", SHADOW_ARTS) >= GetSkillValue("Destination", EMPATHY) then
+			MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 			"@L_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_HEAD_+0",
 			"@L_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_BODY_+0", GetID(""), GetID("Destination"))
-	
+		else 
+		
+			MsgNewsNoWait("Destination", "", "", "intrigue", -1,
+			"@L_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_HEAD_+0",
+			"@L_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_BODY_+1", GetID(""), GetID("Destination"))
+			AddEvidence("Destination", "", "Destination", 10)
+		end
 		Sleep(5)
 	end
 end
