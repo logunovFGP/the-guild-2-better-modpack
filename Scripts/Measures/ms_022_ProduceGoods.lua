@@ -174,7 +174,7 @@ function Run()
 			if BuildingGetAISetting("WorkBuilding", "Produce_Selection") >0 then
 				if IsDynastySim("") and DynastyIsAI("") then
 					break
-				elseif not IsDynastySim("")
+				elseif not IsDynastySim("") then
 					break
 				end
 			end
