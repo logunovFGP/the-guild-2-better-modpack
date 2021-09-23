@@ -9,15 +9,18 @@ GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Textures: Jollina, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237
+Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe
 
 Localization:
+German: Fajeth, ThreeOfMe
+English: Fajeth, ThreeOfMe, F-Man
 Spanish: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador
 Italian: Marian, 
 French: Rico, StalkFire, Techgenieur, Erfive
 Portuguese: Regismrs, BossPenguin 
 Russian: Mr.Bro
-Polish:
+Polish: Seljuck
+Hungarian: WiNTeR, Rdancsol, jooe
 
 Social Media: Erilambus, Fajeth
 Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
@@ -205,6 +208,7 @@ _AI_
 - AI spammed protection money rackets and also used it on buildings that were protected.
 - It was possible that non-scholar dynasty sims could hold a mass in AI controlled buildings.
 - AI did not apply for higher offices when they had to defend their current office.
+- When sending out Employees to gather ressources, those items sometimes got lost in the employee's inventory.
 
 *** Features ***
 
@@ -303,6 +307,7 @@ _General_
 - The Work hours of all professions have been adjusted and overall lowered. Some profession have special work hours (grave digger work at night).
 - XP gains by actions is now based on the years-per-round setting (1 year per round = 50% value, 4 years 200%)
 - Guards will now take breaks during the night.
+- The action 'embezzle public money' now works the same no matter which game round it is: you can steal up to 10% of the city treasury but max. 5000 gold per try.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

@@ -9,15 +9,18 @@ GUI: MoK, Fajeth, Napi96
 Icons: Fajeth, F-Man, ThreeOfMe, Jollina
 Texturen: Jollina, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237
+Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee
 
 Lokalisierung:
+Deutsch: Fajeth, ThreeOfMe
+Englisch: Fajeth, ThreeOfMe, F-Man
 Spanisch: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador
 Italienisch: Marian, 
 Französisch: Rico, StalkFire, Techgenieur, Erfive
 Portugiesisch: Regismrs, BossPenguin
 Russisch: Mr.Bro
 Polnisch: Seljuck
+Ungarisch: WiNTeR, Rdancsol, jooe
 
 Soziale Medien: Erilambus, Fajeth
 Anderer Support: McCoy!, sublogic, Sunpack, nirvana, Scandal, Zbombe, Jedi93, barra81, Dogus + Die Gilde 2 Community!
@@ -208,6 +211,7 @@ _KI_
 - Die KI spammte 'Schutzgelderpressungen' auch gegen Gebäude, die bereits beschützt wurden.
 - Es war möglich, dass nicht-Gelehrte Dynastie Charaktere eine Messe in KI-kontrollierten Kirchen hielten.
 - Die KI bewarb sich nicht auf höhere Amtssessel, wenn sich jemand bereits auf ihr aktuelles Amt beworben hatte.
+- Wurden Mitarbeiter zum Sammeln einer Ressource ausgesandt, wurde diese teilweise nicht aus dem Inventar des Charakters entfernt und verblieb dort.
 
 *** Features ***
 
@@ -311,6 +315,7 @@ _Allgemein_
 - Die Arbeitszeiten aller Professionen wurden angepasst und tendenziell verkürzt. Einige Berufe haben besondere Arbeitszeiten (Totengräber arbeiten vor allem nachts)
 - Die Menge erhaltener Erfahrungspunkte durch Maßnahmen ist nun abhängig von der Jahre-pro-Runde Einstellung (1 Jahr pro Runde = 50%, 4 Jahre = 200%)
 - Während der Nacht macht die Stadtwache nun eine Pause.
+- Die Maßnahme "Öffentliche Gelder veruntreuen" ist nun unabhängig von der gespielten Runde und ermöglicht einen Diebstahl von bis zu 5000 Goldmünzen, jedoch maximal ein Zehntel der Stadtkasse.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
