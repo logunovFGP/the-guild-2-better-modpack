@@ -241,6 +241,8 @@ _Allgemein_
 - Man kann nun mit beliebigen Charakteren reden, um ggf. die Gunst oder den Werbungsfortschritt zu erhöhen oder an gefälschte Beweise zu kommen.
 - Man kann nun auch Charaktere umwerben, wenn man bereits verheiratet ist. Um sie zu heiraten, muss man sich aber vorher von seinem ehemaligen Ehepartner trennen.
   Allerdings könnt ihr nun auch Liebschaften eingehen, wenn ihr bereits verheiratet seid (aber nur mit unverheirateten Charakteren).
+- Angestellte sprechen nun teilweise andere Sätze, wenn man sie anklickt.
+- Wenn man Arbeitslose anstellen will, sagen diese nun ein paar Worte.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.

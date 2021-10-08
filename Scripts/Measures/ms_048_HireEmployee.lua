@@ -32,6 +32,15 @@ function Run()
 	if BuildingGetType("Destination") == 111 then
 		Handsel = Handsel + 4900
 	end
+	
+	local LableGender = ""
+	local LableRand = Rand(3) + 1
+		
+	if SimGetGender("") == GL_GENDER_FEMALE then
+		LableGender = "F"
+	else
+		LableGender = "M"
+	end
 
 	local result = MsgNews("Destination","","@P"..
 					"@B[O,@LJa_+0]"..
@@ -40,7 +49,7 @@ function Run()
 					"intrigue",
 					-1,
 					"@L_GENERAL_MEASURES_HIRE_HEAD_+0",
-					"@L_GENERAL_MEASURES_HIRE_BODY_+0",
+					"@L_GENERAL_MEASURES_HIRE_SPEECH_HEAD_"..LableGender..LableRand,
 					GetID(""), Handsel, Level, Salary)
 					
 	if result == "C" then

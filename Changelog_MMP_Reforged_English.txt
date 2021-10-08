@@ -236,6 +236,8 @@ _General_
 - You can now talk to other characters to improve relationships / courting progress and maybe even get (fake!) evidence against random enemies.
 - You can now start courting another character while beeing married. However you can only marry that character once you get divorced to your spouse or if you want to
   start an affair. You can now have affairs while beeing married (however atm only with unmarried characters).
+- Changed some voice lines when clicking on your employees.
+- When hiring a new employee, that employee will now say something with a voice line.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.

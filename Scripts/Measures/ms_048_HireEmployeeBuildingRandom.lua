@@ -9,7 +9,7 @@ function Run()
 	local Button2 = "@B[N,@L_HPFZ_EINSTELLEN_+1]"
 	local Button3 = "@B[M,@L_HPFZ_EINSTELLEN_+2]"
 	
-	local Worker2Exists = FindWorker("","worker", 3)
+	local Worker2Exists = FindWorker("", "worker", 3)
 	if Worker2Exists ~= "" then
 		Button2 = ""
 	end
@@ -101,15 +101,25 @@ function DecideYou()
 		end
 	end
 	
-	local result = MsgNews("","RandWorker","@P"..
+	local result = "O"
+	
+	if IsGUIDriven() then
+		local LableGender = ""
+		local LableRand = Rand(3) + 1
+		
+		if SimGetGender("RandWorker") == GL_GENDER_FEMALE then
+			LableGender = "F"
+		else
+			LableGender = "M"
+		end
+		
+		result = MsgBox("","RandWorker","@P"..
 					"@B[O,@LJa_+0]"..
 					"@B[C,@LNein_+0]",
-					ms_048_hireemployeebuildingrandom_Decide,
-					"intrigue",
-					-1,
 					"@L_GENERAL_MEASURES_HIRE_HEAD_+0",
-					"@L_GENERAL_MEASURES_HIRE_BODY_+0",
+					"@L_GENERAL_MEASURES_HIRE_SPEECH_HEAD_"..LableGender..LableRand,
 					GetID("RandWorker"), handsels, levels, salarys)
+	end
 					
 	if result == "C" then
 		AddImpact("RandWorker", "NoRandomHire", 1, 4)
@@ -133,17 +143,15 @@ function DecideYou()
 				RemoveProperty("WorkerLover", "courted")
 			end
 		end	
-
-		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
 		
 		if BuildingHasUpgrade("", "CrossedAxes") == true then
 			chr_SpendMoney("BOwner", 4900, "LaborHansel")
 		elseif BuildingHasUpgrade("", "HarkingHorn") then
 			chr_SpendMoney("BOwner", 2400, "LaborHansel")
-		end
-		
-		if BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
+		elseif BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
 			chr_SpendMoney("BOwner", 4900, "LaborHansel")
+		else
+			PlaySound("Effects/moneybag_to_hand+0.wav", 1)
 		end
 		
 		SetData("Entscheid", 1)
@@ -176,10 +184,6 @@ function DecideFirst()
 	else
 		return "M"
 	end
-end
-
-function Decide()
-	return "O"
 end
 
 function CheckSoeldner(Alias, Worker)

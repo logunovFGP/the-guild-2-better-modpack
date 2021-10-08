@@ -142,7 +142,7 @@ Translate and add the following lines below:
 18139   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_NAME_+0"   "Best House in Town"   |
 18140   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_DESCRIPTION_+0"   "This place has earned the reputation of pampering its guests with special attention, whenever and wherever they may be. Good dreams guaranteed as a bonus to anyone that rents a sleeping spot."   |
 18141   "_TWP_SUPPLYWORKSHOP_HELP_HEAD_+0"   "Supply Workshop"   |
-18142   "_TWP_SUPPLYWORKSHOP_HELP_BODY_+0"   "Order your card to supply the workshop with resources for your production."   |
+18142   "_TWP_SUPPLYWORKSHOP_HELP_BODY_+0"   "Assign your cart to get raw materials for your workshop.$N$NA default amount to keep in storage is preconfigured for each resource. You may change that amount to your liking.$N$NOnce you start the action, your driver will check the storage from time to time. Once the supplies run below 60%% of the expected amount, the cart will move out to buy more.$N$NYou may choose where the driver should look for the required resources. The cart will look at each supplier in given order.$N$NYour driver will take a break of about half an hour after each trip."   |
 18143   "_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0"   "Supply Workshop"   |
 18144   "_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0"   "Order your card to supply the workshop with resources for your production."   |
 18145   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0"   "Help"   |
@@ -167,10 +167,10 @@ Translate and add the following lines below:
 18164   "_MEASURE_SupplyWorkshop_TOOLTIP"   "Assign your cart to get raw materials for your workshop. You can choose how many materials you want to keep in your storage.$N$NOnce you send out your cart your driver will check the storage himself from time to time and move when the supplies go down. It's quite a tough task, so your driver will take breaks from time to time."   |
 18165   "_TWP_SALESCART_INITIATE_HEAD_+0"   "Sell products"   |
 18166   "_TWP_SALESCART_INITIATE_BODY_+0"   "Assign your cart to sell products from your workshop."   |
-18167   "_TWP_SALESCART_INITIATE_OPTION_+0"   "Choose products"   |
+18167   "_TWP_SALESCART_INITIATE_OPTION_+0"   "Protected products"   |
 18168   "_TWP_SALESCART_INITIATE_OPTION_+1"   "Set sales threshold"   |
 18169   "_TWP_SALESCART_INITIATE_OPTION_+2"   "Send out"   |
-18170   "_TWP_SALESCART_CHOOSEPRODUCT_HEAD_+0"   "Choose products"   |
+18170   "_TWP_SALESCART_CHOOSEPRODUCT_HEAD_+0"   "Protected products"   |
 18171   "_TWP_SALESCART_CHOOSEAMOUNT_+0"   "Don't sell anything"   |
 18172   "_TWP_SALESCART_CHOOSEAMOUNT_+1"   "Sell everything"   |
 18173   "_TWP_SALESCART_CHOOSEAMOUNT_+2"   "Keep 10 in storage"   |
@@ -235,7 +235,7 @@ Translate and add the following lines below:
 18232   "_CITY_NAME_LEEDS_+0"   "Leeds"   |
 18233   "_CITY_NAME_SHEFFIELD_+0"   "Sheffield"   |
 18234   "_CITY_NAME_AMSTERDAMM_+0"   "Amsterdam"   |
-18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+0"   "You have been disappropriated"   |
+18235   "_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD_+1"   "You have been disappropriated"   |
 18236   "_BUILDING_LEVELUP_HEAD_+1"   "#E[NT_NEUTRAL]Building levelup completed"   |
 18237   "_BUILDING_BUILD_HEAD_+1"   "#E[NT_NEUTRAL]Build completed"   |
 18238   "_HPFZ_KATASTR_STOD_KOPF_+1"   "Beware!"   |
@@ -259,7 +259,7 @@ Translate and add the following lines below:
 18256   "_PREMARRIAGE_PROGRESS_LOSS_+0"   "%2SN should not forget the courtship of %1SA %1SN. Why don't you go ahead and visit %1SV right away to emphasize your endeavors?"   |
 18257   "_PRIVILEGE_CanArrangeLiaison_MESSAGETEXT_+0"   "Start an affair"   |
 18258   "_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_KOPF_+0"   "Your spell has failed!"   |
-18259   "_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_RUMPF_+0"   "You did not succeed with your dark spell on %1SN! He paid too much attention to every move you've made and looked right through your shabby attempts to disguise your evil plans!"   |
+18259   "_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_RUMPF_+0"   "You did not succeed with your dark spell on %1SN! He paid too much attention to every move you've made and looked through your shabby attempts to disguise your evil plans!"   |
 18260   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_KOPF_+0"   "You have counteracted an enemy's spell!"   |
 18261   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0"   "%1SN has tried to put a dark spell on your soul but he failed miserably thanks to your remarkable empathic skills. It's time for revenge, accuse him now!"   |
 18262   "_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0"   "You are irresistible!"   |
@@ -311,43 +311,49 @@ Translate and add the following lines below:
 18308   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_HEAD_+0"   "Someone wanted to make a hateful speech"   |
 18309   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_HEAD_SPEECH_+0"   "#E[NT_SEVERE]Someone tried to make a hateful speech against you!"   |
 18310   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_BODY_+0"   "%1SN has started a torrent of hatred against %2SN. Thanks to your >%3l< it didn't come to that ..."   |
+18311   "_CHARACTERS_3_TITLES_NAME_+6"   "#E[NT_NEUTRAL]Lesser Female Citizen"   |
+18312   "_CHARACTERS_3_TITLES_NAME_+7"   "#E[NT_NEUTRAL]Lesser Citizen"   |
+18313   "_GEMCDOP"   ""   |
+18314   "LE:"   "Health:"   |
+18315   "_ABILITIES_Heiligenschein_DESCRIPTION_+0"   "You have the incomparable gift of showing yourself in the very best light, seeming like a perfect angel. You seem to be such a wonderful person that no one dares to threaten, pickpocket, or kidnap you. Even when standing before the judge, you seem as a victim rather than a perpetrator. You are truly pitiable! All crimes committed by your employees fade from witnesses' memories one-sixth faster than normal and in every trial against you, any evidence of your worst crime... is simply ignored. If you still end up in prison, there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirements: Stealth 6."   |
+18316   "_ABILITIES_Nachtmensch_DESCRIPTION_+0"   "One afternoon as you walk along the dusty road, there comes a sudden thunderstorm. Soon the storm is raging, rain is pouring down, and lightning flashes from the heavens. There is nowhere to take shelter nearby, and so you throw yourself to the ground and pray to God. It doesn't help, since the next lightning bolt thoroughly burns your backside. The electricity surges through you and shakes you, and then the miracle happens: 6 random talents are permanently increased by one point."   |
+18317   "_ABILITIES_DorianGrau_DESCRIPTION_+0"   "You have sold your soul: as though by a miracle, you live 25 years longer than you normally would have, and all diseases, breaks, and injuries vanish. There is just one catch; thanks to your pact with evil, your charisma is henceforth 1.$N$NRequirements: Charisma 5."   |
+18318   "_ABILITIES_Friedensstifter_NAME_+0"   "Peacemaker"   |
+18319   "_ABILITIES_Bettlergestalt_NAME_+0"   "Countryside Politician"   |
+18320   "_ABILITIES_Bettlergestalt_DESCRIPTION_+0"   "When you enter the meeting room, you are a sight to behold. You looks do not fit in, you smell funny and talk in wierd accent. But still for some reason most people seem to like and trust you. Your charisma and rhetoric talents have increased by 2 points and you gain a 5% bonus to favour in political meetings.$N$NRequirements: Patron."   |
+18321   "_ABILITIES_Friedensstifter_DESCRIPTION_+0"   "A breath of inviolability and holiness surrounds all of your buildings, increasing their attractiveness by 25%%. No one dares to blow them up or set fire to them with bombs, pillage them, or rob them. How handy!$N$NRequirements: Scholar."   |
+18322   "_ABILITIES_Schlitzohr_NAME_+0"   "Wily Trader"   |
+18323   "_ABILITIES_Schlitzohr_DESCRIPTION_+0"   "You are a crafty rascal and have passed on a few of these tricks to your carters. You receive a bonus of 3 points to your bargaining talent and any time you or your carts sell goods in a market, you receive a 5% bonus on the actual sale price.$N$NRequirements: Craftsman."   |
+18324   "_ABILITIES_Leisetreter_DESCRIPTION_+0"   "Through years of practice at being conspicuously inconspicuous, hiding, and skilled balancing acts, you have achieved a certain degree of mastery in this field. You receive a bonus of one point to your stealth and empathy talents.$N$NRequirements: Stealth 2."   |
+18325   "_ABILITIES_Unschuldsmiene_NAME_+0"   "Face of Innocence"   |
+18326   "_ABILITIES_Unschuldsmiene_DESCRIPTION_+0"   "You know how to put a good face on dirty tricks and convince others of your kind-heartedness and honorable intentions. All crimes committed by your employees fade from witnesses' memories one-third faster than normal and if in prison there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirements: Stealth 5."   |
+18327   "_ABILITIES_Blitzeinbruch_NAME_+0"   "Lightning Burglary"   |
+18328   "_ABILITIES_Blitzeinbruch_DESCRIPTION_+0"   "You have taught your employees a thing or two about getting into a house quickly, stuffing their pockets, and clearing out again. From now on, all of your employees save 25%% of the usual time on every burglary, run 20% faster and have bonus to their stealth talent.$N$NRequirements: Rogue."   |
+18329   "_ABILITIES_VorbildlichesElternteil_NAME_+0"   "Model Parent"   |
+18330   "_ABILITIES_VorbildlichesElternteil_DESCRIPTION_+0"   "You are an absolutely perfect mother (or, of course, father). You take the time to teach your children everything they need in life. All of your children receive an experience bonus of 250 EP when they turn 12.$N$NRequirements: Empathy 3."   |
+18331   "_ABILITIES_KamaSutraMeister_DESCRIPTION_+0"   "You are were born charismatic and as a true lover. Your charisma talent increases by one for each level of this ability and the probability that you will father a child or get pregnant increases.$N$NRequirements: Charisma 2."   |
+18332   "_ABILITIES_KamaSutraMeister_NAME_+0"   "Sex Appeal"   |
+18333   "_ABILITIES_Ortsvereinvorsitzender_DESCRIPTION_+0"   "At political meetings, you have an opinion on everything and everyone, and you always have the last word, although you almost never have any idea what is being discussed. You are just a born politician! You babble so much nonsense at political meetings that the other people at the table surrender and give you a cumulative 5% of their favour for every level of this ability, just so you will finally shut up.$N$NRequirements: Rhetoric 3."   |
+18334   "_ABILITIES_Anfuehrer_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They look up to you, and do not take it the wrong way when you reprimand them or demand exceptional effort. If you use the action >Goad workers<, you no longer suffer the loss of reputation you ought to from the goading and the effect last longer.$N$NRequirements: Charisma 5."   |
+18335   "_ABILITIES_Ortsvereinvorsitzender_NAME_+0"   "Local Club President"   |
+18336   "_ABILITIES_Wunderprediger_NAME_+0"   "Oratory Master"   |
+18337   "_ABILITIES_Wunderprediger_DESCRIPTION_+0"   "You have earned the reputation of always striking the right tone and you then train your employees to follow your example. Your employees gain bonus to their Bargaining, Empathy and Rhetoric talents.$N$NRequirements: Scholar."   |
+18338   "_ABILITIES_BestesHausAmPlatz_NAME_+0"   "Best House in Town"   |
+18339   "_ABILITIES_BestesHausAmPlatz_DESCRIPTION_+0"   "Through hard work, you have earned the reputation of pampering your guests with special attention, whenever and wherever they may be. Good dreams guaranteed as a bonus to everyone that rents a sleeping spot. Every business you operate receives a 35% bonus in attractiveness, thus drawing more customers, and your careful employees are also 35% less likely to have accidents.$N$NRequirements: Patron"   |
+18340   "_ABILITIES_Zaeh_DESCRIPTION_+0"   "Your constitution is a marvel, wiry and incredibly resistant! For every level of this ability, you receive a cumulative bonus of one point on your constitution talent and some additional life energy. This bonus also applies to every character level already reached.$N$NRequirements: Constitution 2."   |
+18341   "_ABILITIES_Artefaktwissen_NAME_+0"   "Artefact Knowledge"   |
+18342   "_ABILITIES_Artefaktwissen_DESCRIPTION_+0"   "You often have your nose stuck into old folios and study the ancient mystics, druids (and so on, and so forth...). As a result, you are able to get the very most out of an artefact. For each level of this ability your arcane knowlewdge talent increases by one and you receive 2%% more experience whenever you get experience points.$N$NRequirements: Arcane Knowledge 2."   |
+18343   "_ABILITIES_Zaeh_NAME_+0"   "Constitutional Miracle"   |
+18344   "_ABILITIES_Ausbeuter_NAME_+0"   "Great Exploiter"   |
+18345   "_ABILITIES_Ausbeuter_DESCRIPTION_+0"   "Your motto is: the lion's share for me and you can have the rest! You are excellent at motivating your employees by hinting at their job security. You recive 20%% production bonus to all your businesses and you only have to pay 80%% of your employees' wages.$N$NRequirements: Craftsman."   |
+18346   "_ABILITIES_Sicherheitsfanatiker_DESCRIPTION_+0"   "You are a security fanatic! The burglary prevention mechanisms in your businesses are checked at least 5 times every day. Your employees may roll their eyes when you pull out your magnifying glass to check the grilles for rust, but your businesses are secure. If they are attacked by torch-throwing villains, you are able to call up a cursing, shouting crowd in no time, confusing the attackers. Protection against burglary rises by 15%% in all of your businesses and your buildings suffer 20%% less damage in attacks.$N$NRequirements: Empathy 3."   |
+18347   "_ABILITIES_Seelenverkaeufer_NAME_+0"   "Super Seller"   |
+18348   "_ABILITIES_Seelenverkaeufer_DESCRIPTION_+0"   "Actually, your customer just wanted to buy a woollen blanket, but he leaves your business with a complete set of tailored clothes. You can literally sell anything to anyone. For each level of this ability your bargaining talent suddenly increases by 1 point and any time you or your carts sell goods in a market, you receive a 2%% bonus on the actual sale price.$N$NRequirements: Bargaining 2."   |
+18349   "_TWP_SUPPLYWORKSHOP_CHOOSE_SUPPLIERS_+0"   "Where should the cart get the materials? $N$C[255,20,20]Click a destination to remove it from the list."   |
 
+-------
 
-
-
-Delete the following lines:
-70   "$1Tincome %1t gold"
-779   "_BUILDING_Watchtower3_TOOLTIP_+0"
-795   "_BUILDING_Watchtower2_TOOLTIP_+0"
-822   "_BUILDING_Watchtower1_TOOLTIP_+0"
-927   "_MEDICUS_FAILURES_+0"
-1022   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"
-1038   "_MEASURE_Quacksalver_TOOLTIP_+0"
-1043   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"
-1045   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_TOOLTIP_+0"
-1047   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_DESCRIPTION_+0"
-1048   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_TOOLTIP_+0"
-1049   "_ONSCREENHELP_9_ACTION_IMPACT_Pox_DESCRIPTION_+0"
-1058   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_TOOLTIP_+0"
-1060   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_DESCRIPTION_+0"
-1061   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_TOOLTIP_+0"
-1063   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_DESCRIPTION_+0"
-1064   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_TOOLTIP_+0"  
-1066   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_DESCRIPTION_+0"
-1067   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_TOOLTIP_+0"
-1069   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   
-2195   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"
-2597   "_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_PRIBE_+0"
-7804   "Hat_+0"
-7960   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"  
-7962   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"  
-8449   "_HPFZ_MEASURES_HIRE_ZUSATZ_+0"  
-8450   "_HPFZ_HIRERANDOM_FEHLER_+0"  
-12728   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0" 
-14699   "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0"
-14700   "_PREMARRIAGE_PROGRESS_LOSS_+0"
-
-for polish, change some letters, they will show correctly ingame
+for the polish textfile, change some letters, they will show correctly ingame
 
 ą - ç
 ć - è

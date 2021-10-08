@@ -394,12 +394,12 @@
 322 Scripts\City\CityPingHour.lua - MERGED
 323 Scripts\City\MarketPingHour.lua
 324 Scripts\Cutscenes\Default.lua
-325 Scripts\Cutscenes\Duel.lua
+325 Scripts\Cutscenes\Duel.lua - MERGED
 326 Scripts\Cutscenes\MMTest.lua
 327 Scripts\Cutscenes\OfficeSession.lua - MERGED
 328 Scripts\Cutscenes\officesessionproto.lua
 329 Scripts\Cutscenes\queries.lua
-330 Scripts\Cutscenes\Trial.lua
+330 Scripts\Cutscenes\Trial.lua - MERGED
 331 Scripts\GameModule\LandscapeEditor.lua
 332 Scripts\GameState\Ambient.lua
 333 Scripts\GameState\CharacterCreation.lua
@@ -568,7 +568,7 @@
 496 Scripts\Measures\ms_105_TortureCharacter.lua
 497 Scripts\Measures\ms_106_DemolishBuilding.lua
 498 Scripts\Measures\ms_107_OrderABrainWash.lua
-499 Scripts\Measures\ms_108_EmbezzlePublicMoney.lua
+499 Scripts\Measures\ms_108_EmbezzlePublicMoney.lua - MERGED
 500 Scripts\Measures\ms_109_Set_SeverityOfLaw.lua
 501 Scripts\Measures\ms_110_Set_ChurchTithe.lua
 502 Scripts\Measures\ms_111_Set_TurnoverTax.lua
