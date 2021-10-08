@@ -238,6 +238,7 @@ _General_
   start an affair. You can now have affairs while beeing married (however atm only with unmarried characters).
 - Changed some voice lines when clicking on your employees.
 - When hiring a new employee, that employee will now say something with a voice line.
+- When firing an employee, that employee will send you a sad message.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.

@@ -243,6 +243,7 @@ _Allgemein_
   Allerdings könnt ihr nun auch Liebschaften eingehen, wenn ihr bereits verheiratet seid (aber nur mit unverheirateten Charakteren).
 - Angestellte sprechen nun teilweise andere Sätze, wenn man sie anklickt.
 - Wenn man Arbeitslose anstellen will, sagen diese nun ein paar Worte.
+- Wenn man Arbeitslose entlässt, schicken diese noch eine traurige Nachricht zum Abschied.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.

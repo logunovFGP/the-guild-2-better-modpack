@@ -1,6 +1,8 @@
 function Run()
 
 	SimGetWorkingPlace("", "workbuilding")
+	BuildingGetOwner("workbuilding", "boss")
+	
 	if GetInsideBuildingID("") == GetID("workbuilding") then
 		f_ExitCurrentBuilding("")
 	end
@@ -12,6 +14,8 @@ function Run()
 	SetProperty("", "NoMarryTime", GetGametime()+120)
 	SimResetBehavior("")
 	SimSetProduceItemID("", -1, -1)
-
+	if AliasExists("boss") then
+		MsgBoxNoWait("boss", "",  "@L_MEASURE_FireEmployee_NAME_+0", "@L_HPFZ_ENTLASSEN_SPRUCH")
+	end
 	Fire("")
 end
