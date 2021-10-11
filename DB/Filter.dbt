@@ -200,7 +200,7 @@ Data:
 281   "CanRentSleepingBerth"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND NOT(Object.BelongsToMe())AND(Object.HasUpgrade(fireplacebench)))"   |
 282   "CanUseFragranceOfHoliness"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 283   "IsResourceMeasure"   "__F((Object.BelongsToMe())AND(Object.IsResourceMeasure()))"   |
-284   "CanLinger"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==400)AND(Object.IsType(32)))"   |
+284   "CanLinger"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==600)AND(Object.IsType(32)))"   |
 286   "CanUseCutsceneFragranceOfHoliness"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneFragranceOfHoliness))AND (Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 287   "CanUseCutsceneLetterFromRome"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneLetterFromRome))AND(Object.GetItemCnt(LetterFromRome)>0)AND NOT(Object.GetState(fighting)))"   |
 288   "CanUseCutsceneAboutTalents1"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneAboutTalents1))AND(Object.GetItemCnt(AboutTalents1)>0)AND NOT(Object.GetState(fighting)))"   |
@@ -517,5 +517,6 @@ Data:
 1567   "CanArrangeConcert"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(4))OR(Object.IsType(36)))"   |
 1568   "CanUseMineGuards"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(12))AND NOT Object.GetState(building))"   |
 2000   "PATCH_TODO"   "__F((Object.BelongsToMe())AND(Object.IsDynastySim()))"   |
+2064   "IsLingerPlace"   "__F((Object.ActionAdmissible())AND(Object.IsType(32)))"   |
 2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  
