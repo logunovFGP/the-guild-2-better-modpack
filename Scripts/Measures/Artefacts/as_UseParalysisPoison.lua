@@ -61,8 +61,6 @@ function Run()
 			"@L_MEASURE_USEPOISON_BODY_+0",GetID("Destination"))
 
 	end
-
-	StopMeasure()
 end
 
 function GetOSHData(MeasureID)
@@ -73,6 +71,5 @@ function GetOSHData(MeasureID)
 end
 
 function CleanUp()
-	
 end
 

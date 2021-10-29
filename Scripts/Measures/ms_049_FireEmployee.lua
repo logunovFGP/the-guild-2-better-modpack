@@ -15,7 +15,16 @@ function Run()
 	SimResetBehavior("")
 	SimSetProduceItemID("", -1, -1)
 	if AliasExists("boss") then
-		MsgBoxNoWait("boss", "",  "@L_MEASURE_FireEmployee_NAME_+0", "@L_HPFZ_ENTLASSEN_SPRUCH")
+		local LabelGender = ""
+		local LabelRand = Rand(3) +1
+		
+		if SimGetGender("") == GL_GENDER_FEMALE then
+			LabelGender = "F"
+		else
+			LabelGender = "M"
+		end
+		
+		MsgBoxNoWait("boss", "",  "@L_MEASURE_FireEmployee_NAME_+0", "@L_SIM_COMMENTS_WORKER_ORDER_FIRED_"..LabelGender..LabelRand)
 	end
 	Fire("")
 end
