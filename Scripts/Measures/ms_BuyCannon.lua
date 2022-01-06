@@ -118,8 +118,8 @@ function Run()
 		local Result = MsgBox("", "", "@P"..
 			buttons..
 			"@B[0,@L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
-			"@L_BUY_CANNON_AMMU_AMOUNT_HEAD+0",
-			"@L_BUY_CANNON_AMMU_AMOUNT_BODY+0")
+			"@L_BUY_CANNON_AMMU_AMOUNT_HEAD_+0",
+			"@L_BUY_CANNON_AMMU_AMOUNT_BODY_+0")
 			
 		if Result == 0 then
 			StopMeasure()
