@@ -381,7 +381,7 @@ function InitializeDefaultSalescounter(BldAlias, Count, Items)
 
 	-- initialize optional Count, Items
 	if not (Count and Items) then
-		Count, Items = economy_GetItemsForSale(BldAlias)
+		Count, Items = economy_GetProducedItems(BldAlias)
 	end
 
 	local Budget = BuildingGetLevel(BldAlias) * 600

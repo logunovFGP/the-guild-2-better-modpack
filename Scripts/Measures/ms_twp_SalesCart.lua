@@ -51,6 +51,12 @@ function ChooseProducts(ProductCount, Products)
 			"@L_TWP_SALESCART_CHOOSEPRODUCT_HEAD_+0",-- HeaderLabel
 			"Body"
 		)
+		if ChosenItem and ChosenItem == -1 then
+			if ChosenItem == -1 then -- warehouse, add any available item from inventory
+				BuildingGetOwner("", "BldOwner")
+				ChosenItem = economy_ChooseItemFromInventory("", "BldOwner")
+			end
+		end
 		if ChosenItem and ChosenItem ~= "C" then
 			local Options = "@B[-1,@L_TWP_SALESCART_CHOOSEAMOUNT_+0,]".. -- do not sell
 											"@B[0,@L_TWP_SALESCART_CHOOSEAMOUNT_+1,]".. -- sell all
@@ -76,7 +82,7 @@ function InitMeasure()
 	end
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
-	local ProductCount, Products = economy_GetItemsForSale("MyHome")
+	local ProductCount, Products = economy_GetProducedItems("MyHome")
 	for i = 1, ProductCount do
 		if Products[i] == 360 or Products[i] == 360 or Products[i] == 364 or Products[i] == 365 or Products[i] == 371 then
 			-- protect medicince required for treatment
@@ -90,7 +96,7 @@ function InitMeasure()
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
 		local Options =
 			"@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help	
-			"@B[2,@L_TWP_SALESCART_INITIATE_OPTION_+0,]".. -- Choose Resources
+			"@B[2,@L_TWP_SALESCART_INITIATE_OPTION_+0,]".. -- Choose products
 			-- "@B[3,@L_TWP_SALESCART_INITIATE_OPTION_+1,]".. -- Sales threshold (not yet implemented)
 			"@B[99,@L_TWP_SALESCART_INITIATE_OPTION_+2,]" -- Start
 			--"@B[C,@LAbort_+0,]" -- Abort by right mouse click
