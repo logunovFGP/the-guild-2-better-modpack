@@ -2,19 +2,19 @@ Translate and add the following lines below:
 
 18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
 18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
-18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target already has been inspected recently. Try again later."   |
+18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target has already been inspected recently. Try again later."   |
 18003   "_AI_NEWRIVALINTOWN_HEAD_+0"   "You have a new competitor!"   |
-18004   "_AI_NEWRIVALINTOWN_BODY_+0"   "%1SN is not pleased that your %3GG has been built in the same city as %2GG. You are now competing with one another, hopefully it remains mostly peaceful between your dynasties ..."   |
-18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN points out that %3GG is built in the same city as %2GG. Hopefully your relationship will stay peacefully."   |
+18004   "_AI_NEWRIVALINTOWN_BODY_+0"   "%1SN is not pleased that your %3GG has been built in the same city as %2GG. You are now competing with one another, hopefully it will remain somewhat peaceful between your dynasties ..."   |
+18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN points out that %3GG is built in the same city as %2GG. Hopefully your relationship will remain peaceful."   |
 18006   "_BUYBUILDING_CREDIT_HEAD_+0"   "Credit account closed"   |
-18007   "_BUYBUILDING_CREDIT_BODY_+0"   "The credit account of %1GG was closed on sale. You received %2t from the account."   |
+18007   "_BUYBUILDING_CREDIT_BODY_+0"   "The credit account of %1GG was closed. You received %2t from the account."   |
 18008   "_GENERAL_ERROR_HEAD_+0"   "Action failed"   |
-18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN already has that kind of impact! Wait until the effect wears off before you use this item again." |
-18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG already has that kind of impact! Wait until the effect wears off before you use this item again." |
+18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN already has that kind of effect! Wait until it wears off before you use this item again." |
+18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG already has that kind of effect! Wait until it wears off before you use this item again." |
 18011   "_GENERAL_MEASURES_MARRY_FAILURES_+1"   "%4SV wants to marry %1SN, but %1SV has different plans ... Because of the work in %2GG for the %3DN dynasty, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %4SN."   |
 18012   "_GENERAL_MEASURES_MARRY_FAILURES_+2"   "%2SV wants to marry %1SN, but %1SV has different plans ... Because of the work for the city, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %2SN."   |
 18013   "_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0"   "What a disaster!"   |
-18014   "_MEASURES_HIRERANDOM_NOMONEY_+0"   "You can't hire a new employee, because you are unable to pay him."   |
+18014   "_MEASURES_HIRERANDOM_NOMONEY_+0"   "You can't hire a new employee, because you are unable to pay them."   |
 18015   "_GENERAL_MEASURES_FAILURES_+27"   "Action failed - you can't hire a man for the profession %1l"   |
 18016   "_TRADEROUTE_INITIATE_HEAD_+0"   "Choose procedure"   |
 18017   "_TRADEROUTE_INITIATE_HEAD_+1"   "Please choose"   |
@@ -25,7 +25,7 @@ Translate and add the following lines below:
 18022   "_TRADEROUTE_INITIATE_OPTION_+3"   "Send out"   |
 18023   "_TRADEROUTE_INITIATE_OPTION_+4"   "Abort"   |
 18024   "_TRADEROUTE_NEXT_BUILDING_+0"   "Choose next building!"   |
-18025   "_TRADEROUTE_STOPED_HEAD_+0"   "A trade route is given up"   |
+18025   "_TRADEROUTE_STOPED_HEAD_+0"   "A trade route is abandoned"   |
 18026   "_TRADEROUTE_STOPED_BODY_+0"   "Unfortunately, you don't have the necessary coinage to maintain the trade route."   |
 18027   "_TRADEROUTE_ACTIONSELECT_HEAD_+0"   "Select Action"   |
 18028   "_TRADEROUTE_ACTIONSELECT_BODY_+0"   "Choose which action should be performed at %1GG. $N If you mark the waypoint as important, the cart will finish all actions before moving on.$N$NThis waypoint is currently %2l."   |
@@ -38,9 +38,9 @@ Translate and add the following lines below:
 18035   "_TRADEROUTE_ACTIONSELECT_BODY_+1"   "important"   |
 18036   "_TRADEROUTE_ACTIONSELECT_BODY_+2"   "not important"   |
 18037   "_TRADEROUTE_HELP_HEAD_+0"   "Set up a trading route"   |
-18038   "_TRADEROUTE_HELP_BODY_+0"   "You are tired of commendeering your carts all the time? Then this is the right place for you!$N$N To >load< and >unload< a cart is quite simple. But your inventory space tends to overflow, when you unload too many goods!$N$N Use >Resupply< whenever you want your cart to fill up a workshop to a certain amount. But consider that some goods may remain on the cart when you do this!$N$N The cart will stay at important waypoints for as long as necessary to finish its actions. A waypoint is marked as important by default. $N$N Have fun!"   |	
+18038   "_TRADEROUTE_HELP_BODY_+0"   "Are you tired of commendeering your carts all the time? Then this is the right place for you!$N$N To >load< and >unload< a cart is quite simple. But your inventory space tends to overflow, when you unload too many goods!$N$N Use >Resupply< whenever you want your cart to fill up a workshop to a certain amount. But consider that some goods may remain on the cart when you do this!$N$N The cart will stay at important waypoints for as long as necessary to finish its actions. A waypoint is marked as important by default. $N$N Have fun!"   |	
 18039   "_TRADEROUTE_INTERVAL_HEAD_+0"   "Choose Interval"   |
-18040   "_TRADEROUTE_INTERVAL_BODY_+0"   "Choose how often the cart should go on this route. $N$N If you have selected any waypoint as important, >constantly< will be your best choice."   |
+18040   "_TRADEROUTE_INTERVAL_BODY_+0"   "Choose how often the cart should go on this route. $N$N If you have selected any waypoint as important, >constantly< would be your best choice."   |
 18041   "_TRADEROUTE_INITIATE_BODY_+0"   "Choose the next waypoint or send the cart on its way."   |
 18042   "_TRADEROUTE_CATEGORY_HEAD_+0"   "Choose Category"   |
 18043   "_TRADEROUTE_TYPESELECT_HEAD_+0"   "Choose Item"   |
@@ -50,7 +50,7 @@ Translate and add the following lines below:
 18047   "_TRADEROUTE_COUNTSELECT_HEAD_+0"   "Choose Amount"   |
 18048   "_TRADEROUTE_COUNTSELECT_BODY_+0"   "Choose how many %2l should be loaded onto the cart."   |
 18049   "_TRADEROUTE_COUNTSELECT_BODY_+1"   "Choose how many %2l should $C[255,20,20] remain on the cart after unloading."   |
-18050   "_TRADEROUTE_COUNTSELECT_BODY_+2"   "Choose how many %2l you will always expect in your workshop. The cart will unload just as many items as necessary."   |
+18050   "_TRADEROUTE_COUNTSELECT_BODY_+2"   "Choose how many %2l you will always expect in your workshop. The cart will unload as many items as necessary."   |
 18051   "_TRADEROUTE_INITIATE_OPTION_+5"   "Sale threshold: %1i%%"   |
 18052   "_TRADEROUTE_INITIATE_INTERVAL_+0"   "Constantly"   |
 18053   "_TRADEROUTE_INITIATE_INTERVAL_+1"   "Just once"   |
@@ -67,7 +67,7 @@ Translate and add the following lines below:
 18064   "_TRADEROUTE_WARNING_HEAD_+0"   "Your trading route is at a standstill!"   |
 18065   "_TRADEROUTE_WARNING_BODY_+0"   "One of your carts has been waiting for over %1i hours at %2GG and is still unable to complete its tasks."   |
 18066   "_TRADEROUTE_WARNING_OPTION_+0"   "I will take care of it!"   |
-18067   "_TRADEROUTE_WARNING_OPTION_+1"   "Send it on rightaway!"   |
+18067   "_TRADEROUTE_WARNING_OPTION_+1"   "Send it right away!"   |
 18068   "_TRADEROUTE_WARNING_OPTION_+2"   "Never mind, $Nhe is used to that!"   |
 18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Why do you bother me?$NPlease refrain from warning me!"   |
 18070   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
@@ -81,30 +81,30 @@ Translate and add the following lines below:
 18078   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_DESCRIPTION_+0"   "This character has slept recently."   |
 18079   "_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2"   "Sleep not possible - %1SN is not tired yet."   |
 18080   "_ABILITIES_BiologyKnowledge_NAME_+0"   "Druidic Secrets"   |
-18081   "_ABILITIES_BiologyKnowledge_DESCRIPTION_+0"   "You have studied the teachings of the druids and and taught it to your employees, which keeps them more knowledgeable and healthier. In your employment they can gather ingredients 20%% faster and their constitution and arcane knowledge talents increase.$N$NRequirements: Scholar."   |
+18081   "_ABILITIES_BiologyKnowledge_DESCRIPTION_+0"   "You have studied the teachings of the druids and taught it to your employees, which makes them more knowledgeable and healthier. In your employment they can gather ingredients 20%% faster and their constitution and arcane knowledge talents increase.$N$NRequirement: Scholar."   |
 18082   "_ABILITIES_Handcrafter_NAME_+0"   "Artisan"   |
-18083   "_ABILITIES_Handcrafter_DESCRIPTION_+0"   "You know that for businessman (or businesswoman) more the merchandise the better. Your handicraft talent increases by one for each level of this ability. This also increases your gathering speed. $N$NRequirements: Not Scholar."   |
+18083   "_ABILITIES_Handcrafter_DESCRIPTION_+0"   "You know that for a businessman (or businesswoman), the more merchandise, the better. Your handicraft talent increases by one for each level of this ability. This also increases your gathering speed. $N$NRequirement: Not Scholar."   |
 18084   "_ABILITIES_Combatant_NAME_+0"   "Warrior"   |
-18085   "_ABILITIES_Combatant_DESCRIPTION_+0"   "You know how to fight. Whether it is with fists, small dagger or large axe, you can fight more skillfully than your neighbours. Your martial arts talent increases by one for each level of this ability and you have a small chance to score critical hits when you fight.$N$NRequirements: Martial Arts 2."   |
+18085   "_ABILITIES_Combatant_DESCRIPTION_+0"   "You know how to fight. Whether it is with fists, a small dagger or a large axe, you can fight more skillfully than your neighbours. Your martial arts talent increases by one for each level of this ability and you have a small chance to score critical hits when you fight.$N$NRequirement: Martial Arts 2."   |
 18086   "_ABILITIES_SuperParent_NAME_+0"   "Super Parent"   |
-18087   "_ABILITIES_SuperParent_DESCRIPTION_+0"   "Your parenting skills are beyond perfect. Under your always watchful eye your children keep learning new skills. 4 random talents are permanently increased by one point for your children when they turn 12 but your empathy is reduced by 3 because of your constant focus to your children.$N$NRequirements: Empathy 5."   |
+18087   "_ABILITIES_SuperParent_DESCRIPTION_+0"   "Your parenting skills are beyond perfect. Under your always watchful eye your children keep learning new skills. 4 random talents are permanently increased by one point for your children when they turn 12 but your empathy is reduced by 3 because of your constant focus on your children.$N$NRequirement: Empathy 5."   |
 18088   "_ABILITIES_Traveler_NAME_+0"   "Traveler"   |
-18089   "_ABILITIES_Traveler_DESCRIPTION_+0"   "You have traveled far and wide and learnt things about efficient and agile movement. For every level of this ability your dexterity talent increases by one and your movement speed by 15%%.$N$NRequirements: Dexterity 2."   |
+18089   "_ABILITIES_Traveler_DESCRIPTION_+0"   "You have traveled far and wide and learnt things about efficient and agile movement. For every level of this ability your dexterity talent increases by one and your movement speed by 15%%.$N$NRequirement: Dexterity 2."   |
 18090   "_ABILITIES_DefenderRogues_NAME_+0"   "Defenders"   |
-18091   "_ABILITIES_DefenderRogues_DESCRIPTION_+0"   "You specialize in defensive tactics. In your leadership your troops are more watchful and better at avoiding and soaking damage. Your employees have better armor value and receive bonus to their dexterity and empathy talents.$N$NRequirements: Rogue."   |
+18091   "_ABILITIES_DefenderRogues_DESCRIPTION_+0"   "You specialize in defensive tactics. In your leadership your troops are more watchful and better at avoiding and soaking damage. Your employees have better armor value and receive bonuses to their dexterity and empathy talents.$N$NRequirement: Rogue."   |
 18092   "_ABILITIES_CharmingRogues_NAME_+0"   "Charming Rogues"   |
-18093   "_ABILITIES_CharmingRogues_DESCRIPTION_+0"   "You leads your employees by example. In your guidance your employees are able to show more skill in combat and charm in their act. Your employees receive bonus to their martial arts and charisma talents and are able to perform critical hits.$N$NRequirements: Rogue."   |
+18093   "_ABILITIES_CharmingRogues_DESCRIPTION_+0"   "You leads your employees by example. With your guidance your employees are able to show more skill in combat and charm in their act. Your employees receive bonuses to their martial arts and charisma talents and are able to perform critical hits.$N$NRequirement: Rogue."   |
 18094   "_ABILITIES_HardWorkers_NAME_+0"   "Hard Workers"   |
-18095   "_ABILITIES_HardWorkers_DESCRIPTION_+0"   "You lead most hard working laborers in the city. Your employees receive bonus to their constitution and handicraft talents and an additional inventory slot.$N$NRequirements: Patron."   |
+18095   "_ABILITIES_HardWorkers_DESCRIPTION_+0"   "You lead most hard working laborers in the city. Your employees receive bonuses to their constitution and handicraft talents and an additional inventory slot.$N$NRequirement: Patron."   |
 18096   "_ABILITIES_MasterMerchant_NAME_+0"   "Master Merchant"   |
-18097   "_ABILITIES_MasterMerchant_DESCRIPTION_+0"   "You are a true master of bargaining. You receive large bonus to your bargaining talent.$N$NRequirements: Craftsman."   |
+18097   "_ABILITIES_MasterMerchant_DESCRIPTION_+0"   "You are a true master of bargaining. You receive a large bonus to your bargaining talent.$N$NRequirement: Craftsman."   |
 18098   "_ABILITIES_MasterCrafter_NAME_+0"   "Master Crafter"   |
-18099   "_ABILITIES_MasterCrafter_DESCRIPTION_+0"   "You are a true master of craftmanship. You receive large bonus to your handicraft talent.$N$NRequirements: Craftsman."   |
+18099   "_ABILITIES_MasterCrafter_DESCRIPTION_+0"   "You are a true master of craftmanship. You receive a large bonus to your handicraft talent.$N$NRequirement: Craftsman."   |
 18100   "_ABILITIES_MasterProducer_NAME_+0"   "Master Extractor"   |
-18101   "_ABILITIES_MasterProducer_DESCRIPTION_+0"   "You are a true master at extraction and gathering of natural resources. Your employees gather resources 35%% faster.$N$NRequirements: Craftsman."   |
+18101   "_ABILITIES_MasterProducer_DESCRIPTION_+0"   "You are a true master at extraction and gathering natural resources. Your employees gather resources 35%% faster.$N$NRequirement: Craftsman."   |
 18102   "_ABILITIES_CombatMaster_NAME_+0"   "Combat Master"   |
-18103   "_ABILITIES_CombatMaster_DESCRIPTION_+0"   "You have become an embodiment of a perfect warrior. Your armor value and ability to perform critical hits both increase considerably.$N$NRequirements: Rogue, Martial Arts 6."   |
-18104   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_DESCRIPTION_+0"   "The employer of this worker knows the secrets of the druids. The worker's gathering is 20%% faster and constitution and arcane knowledge talents have increased."   |
+18103   "_ABILITIES_CombatMaster_DESCRIPTION_+0"   "You have become an embodiment of the perfect warrior. Your armor value and ability to perform critical hits both increase considerably.$N$NRequirements: Rogue, Martial Arts 6."   |
+18104   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_DESCRIPTION_+0"   "The employer of this worker knows the secrets of the druids. The worker's gathering is 20%% faster and its constitution and arcane knowledge talents have increased."   |
 18105   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_NAME_+0"   "Druidic Secrets"   |
 18106   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_TOOLTIP_+0"   "benefits from druidic secrets"   |
 18107   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_DESCRIPTION_+0"   "The employer of this worker is a good teacher. The worker earns experience 15%% faster."   |
@@ -113,31 +113,31 @@ Translate and add the following lines below:
 18110   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_DESCRIPTION_+0"   "The employer of this worker has developed a secret formula for plant growth. The worker can gather 15%% faster."   |
 18111   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_NAME_+0"   "Master of Manure"   |
 18112   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_TOOLTIP_+0"   "uses secret formula"   |
-18113   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_DESCRIPTION_+0"   "The employer of this worker is master of oratory and keeps training his employees' oratory skills. The worker's bargaining, empathy and rhetoric talents have increased."   |
+18113   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_DESCRIPTION_+0"   "The employer of this worker is a master orator and keeps training his employees' oratory skills. The worker's bargaining, empathy and rhetoric talents have increased."   |
 18114   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_NAME_+0"   "Oratory Master"   |
 18115   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_TOOLTIP_+0"   "is under oratory training"   |
-18116   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_DESCRIPTION_+0"   "The employer of this worker is masterful at arranging burglaries. The worker's stealth talent and burglary and movement speed have increased."   |
+18116   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_DESCRIPTION_+0"   "The employer of this worker is masterful at arranging burglaries. The worker's stealth talent, burglary and movement speed have increased."   |
 18117   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_NAME_+0"   "Lightining Burglary"   |
 18118   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_TOOLTIP_+0"   "is a fast burglar"   |
-18119   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_DESCRIPTION_+0"   "The employer of this worker is very good at motivating eymployees to work harder. The worker's inventory size and constitution and handicraft talents have increased."   |
+18119   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_DESCRIPTION_+0"   "The employer of this worker is very good at motivating employees to work harder. The worker's inventory size, constitution and handicraft talents have increased."   |
 18120   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_NAME_+0"   "Hard Workers"   |
 18121   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_TOOLTIP_+0"   "is a hard worker"   |
-18122   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_DESCRIPTION_+0"   "The employer of this worker leads by example. The worker is able to show more skill in combat and charm in act. The worker receive bonus to martial arts and charisma talents and is able to perform critical hits."   |
+18122   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_DESCRIPTION_+0"   "The employer of this worker leads by example. The worker is able to show more skill in combat and charm in its acts. The worker receive bonuses to martial arts and charisma talents and is able to perform critical hits."   |
 18123   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_NAME_+0"   "Charming Rogues"   |
 18124   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_TOOLTIP_+0"   "is a charming rogue"   |
-18125   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_DESCRIPTION_+0"   "The employer of this worker specializes in defensive tactics. The worker is more watchful and better at avoiding and soaking damage. The worker has better armor value and receives bonus to dexterity and empathy talents."   |
+18125   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_DESCRIPTION_+0"   "The employer of this worker specializes in defensive tactics. The worker is more watchful and better at avoiding and soaking damage. The worker has better armor value and receives bonuses to dexterity and empathy talents."   |
 18126   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_NAME_+0"   "Defenders"   |
 18127   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_TOOLTIP_+0"   "is skilled at defense"   |
-18128   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_DESCRIPTION_+0"   "The employer of this worker is a true master at extraction and gathering of natural resources. This worker can gather 35%% faster."   |
+18128   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_DESCRIPTION_+0"   "The employer of this worker is a true master of extraction and gathering of natural resources. This worker can gather 35%% faster."   |
 18129   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_NAME_+0"   "Master Extractor"   |
 18130   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_TOOLTIP_+0"   "is a fast gatherer"   |
 18131   "_HEXERDOKUMENT_VICTIM_HEAD_+0"   "You have an uneasy feeling ..."   |
-18132   "_HEXERDOKUMENT_VICTIM_BODY_+0"   "Your right toe itches: someone is up to something against you, your great empathetic senses tell you that ... But who?"   |
+18132   "_HEXERDOKUMENT_VICTIM_BODY_+0"   "Your right toe itches: someone is up to something against you, so your deep empathy warns ... But who?"   |
 18133   "_HEXERDOKUMENT_VILLAIN_HEAD_+0"   "A witchcraft was successful"   |
 18134   "_HEXERDOKUMENT_VILLAIN_BODY_+0"   "You successfully created uncontrovertible evidence against %1SN. Hopefully %1SV didn't notice anything ..."   |
 18135   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_TOOLTIP_+0"   "Protected from illness"   |
 18136   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_NAME_+0"   "Well-rested protection"   |
-18137   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_DESCRIPTION_+0"   "This character brims over with his vitality and won't get infected by any diseases for a short time."   |
+18137   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_DESCRIPTION_+0"   "This character brims of vitality and won't get infected by any diseases for a short time."   |
 18138   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_TOOLTIP_+0"   "Best House in Town"   |
 18139   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_NAME_+0"   "Best House in Town"   |
 18140   "_ONSCREENHELP_9_ACTION_IMPACT_BestHouse_DESCRIPTION_+0"   "This place has earned the reputation of pampering its guests with special attention, whenever and wherever they may be. Good dreams guaranteed as a bonus to anyone that rents a sleeping spot."   |
@@ -164,7 +164,7 @@ Translate and add the following lines below:
 18161   "_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0"   "Add Supplier"   |
 18162   "_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0"   "Choose Resource"   |
 18163   "_MEASURE_SupplyWorkshop_NAME"   "Supply Workshop"   |
-18164   "_MEASURE_SupplyWorkshop_TOOLTIP"   "Assign your cart to get raw materials for your workshop. You can choose how many materials you want to keep in your storage.$N$NOnce you send out your cart your driver will check the storage himself from time to time and move when the supplies go down. It's quite a tough task, so your driver will take breaks from time to time."   |
+18164   "_MEASURE_SupplyWorkshop_TOOLTIP"   "Assign your cart to get raw materials for your workshop. You can choose how many materials you want to keep in your storage.$N$NOnce you send out your cart your driver will check the storage from time to time and move when the supplies go down. It's quite a tough task, so your driver will take breaks from time to time."   |
 18165   "_TWP_SALESCART_INITIATE_HEAD_+0"   "Sell products"   |
 18166   "_TWP_SALESCART_INITIATE_BODY_+0"   "Assign your cart to sell products from your workshop."   |
 18167   "_TWP_SALESCART_INITIATE_OPTION_+0"   "Protected products"   |
@@ -180,7 +180,7 @@ Translate and add the following lines below:
 18177   "_TWP_SALESCART_CHOOSEAMOUNT_HEAD_+0"   "Choose amount"   |
 18178   "_TWP_SALESCART_CHOOSEAMOUNT_BODY_+0"   "Decide how many %1l shall remain in your storage."   |
 18179   "_MEASURE_SalesCart_NAME"   "Sell products"   |
-18180   "_MEASURE_SalesCart_TOOLTIP"   "Assign your cart to sell products from your workshop. You can choose how many products shall remain in your storage.$N$NOnce you send out your cart your driver will check the storage himself from time to time and move when enough goods have been produced to sell. It's quite a tough task, so your driver will take breaks from time to time."   |
+18180   "_MEASURE_SalesCart_TOOLTIP"   "Assign your cart to sell products from your workshop. You can choose how many products shall remain in your storage.$N$NOnce you send out your cart your driver will check the storage from time to time and move when enough goods have been produced to sell. It's quite a tough task, so your driver will take breaks from time to time."   |
 18181   "_ONSCREENHELP_9_ACTION_STATE_PREGNANT_DESCRIPTION_+0"   "This woman is pregnant and will give birth to a child very soon. It would be highly dishonorable to harm her right now."   |
 18182   "_IMPORTANTPERSONS_AGE_+0"   "Unemployed (sorted by age)"   |
 18183   "_IDLE_VISITDOC_NODOC_HEAD_+0"   "A patient is waiting for treatment"   |
@@ -196,9 +196,9 @@ Translate and add the following lines below:
 18193   "_MEASURE_SetBookmark_REMOVED_BODY_+0"   "The mark for %1SN has been removed. You can re-mark the person again if you want." |
 18194   "_MEASURE_SetBookmark_ADDED_BODY_+0"   "%1SN has been marked as >important<. You can now use the >Important Persons< button to find %1SV!" |
 18195   "_MEASURE_SetBookmark_TARGET_+0"   "Choose a person you whish to mark!" |
-18196   "_BUILDING_Watchtower3_TOOLTIP_+0"   "The cannon tower lives up to its name. Not only does it have immense firepower; it is built from solid masonry and can even withstand attacks from large warships for a time. Like all towers it works also against attacks on land."   |
-18197   "_BUILDING_Watchtower2_TOOLTIP_+0"   "A watchtower is a good defensive position against small and medium-sized ships. However, it can hardly withstand fire from a warship. Like all towers it works also against attacks on land."   |
-18198   "_BUILDING_Watchtower1_TOOLTIP_+0"   "The look-out tower is equipped with only limited firepower, but can be quite dangerous for a small ship. Like all towers it works also against attacks on land."   |
+18196   "_BUILDING_Watchtower3_TOOLTIP_+0"   "The cannon tower lives up to its name. Not only does it have immense firepower; it is built from solid masonry and can even withstand attacks from large warships for a time. Like all towers it also works against attacks on land."   |
+18197   "_BUILDING_Watchtower2_TOOLTIP_+0"   "A watchtower is a good defensive position against small and medium-sized ships. However, it can hardly withstand fire from a warship. Like all towers it also works against attacks on land."   |
+18198   "_BUILDING_Watchtower1_TOOLTIP_+0"   "The look-out tower is equipped with only limited firepower, but can be quite dangerous for a small ship. Like all towers it also works against attacks on land."   |
 18199   "_MEDICUS_FAILURES_+0"   "Action not possible - you are sick already and thus can't use this item."   |
 18200   "_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0"   "Your %1GG needs more %2l in order to continue the treatment."   |
 18201   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_3_+3"   "Forester"   |
@@ -215,18 +215,18 @@ Translate and add the following lines below:
 18212   "_CHARACTERS_2_PROFESSIONS_lumberjack_LEVEL_1_+0"   "Tree feller"   |
 18213   "_CHARACTERS_2_PROFESSIONS_lumberjack_NAME_+1"   "Lumberjack"   |
 18214   "_CHARACTERS_2_PROFESSIONS_lumberjack_NAME_+0"   "Lumberjack"   |
-18215   "_TWP_SALESCART_HELP_BODY_+0"   "Assign your cart to sell products from your workshop.$N$NYou may choose how many products shall remain in your storage. If you do not specify that, all products will be sold.$N$NOnce you start the action, your driver will check the storage from time to time. Once your products reach a value of %2t the cart will sell the products at the nearest market.$N$NYour driver will take a break of about half an hour after each trip to the market."   |
+18215   "_TWP_SALESCART_HELP_BODY_+0"   "Assign your cart to sell products from your workshop.$N$NYou may choose how many products shall remain in your storage. If you do not specify an amount, all products will be sold.$N$NOnce you start the action, your driver will check the storage from time to time. Once your products reach a value of %2t the cart will sell the products at the nearest market.$N$NYour driver will take a break of about half an hour after each trip to the market."   |
 18216   "$1Tincome %1t gold"   "Income: %1t"   |
 18217   "_MEASURE_Quacksalver_TOOLTIP_+0"   ">Gather round, everyone! I offer you the most wondrous and at the same time most effective cures for whatever ailment may befall you!<$NMaybe you would never fall for such bogus claims yourself. But the common people are desperately eager to buy >miracle cures< from >rhetoricly gifted< quacksalvers against all kinds of afflictions. So why not profit from their ignorance?"   |
-18218   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"   "Tooth rot is a terrible thing. You are in constant pain, unable to eat and speak properly and your breath smells quite awful ...$NThe only secure way to treat this is to have the tooth pulled and take some pain medication.$N$NYour rhetoric and charisma talents are reduced by 3. Tooth rot has no maximum duration."   |
+18218   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"   "Tooth rot is a terrible thing. You are in constant pain, unable to eat and speak properly and your breath smells quite awful...$NThe only secure way to treat this is to have the tooth pulled and take some pain medication.$N$NYour rhetoric and charisma talents are reduced by 3. Tooth rot has no maximum duration."   |
 18219   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+0"   "These are scandalous words! Surely, %1SN will be pleased to learn that I got rid of this pamphlet."   |
-18220   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+1"   "A hideous pamphlet which taunts the %1DN dynasty! Let's hope, noone saw this."   |
-18221   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+2"   "It's actually not that far from the truth ... But maybe %1SN will reward me if I dispose of this paper."   |
-18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It truly fits for %1SN! I think I will keep this for later ..."   |
-18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patrolling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that noone can see it anymore nor does your reputation gets damaged furthermore. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
+18220   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+1"   "A hideous pamphlet which taunts the %1DN dynasty! Let's hope no one saw this."   |
+18221   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+2"   "It's actually not that far from the truth ... But maybe %1SN will reward me if I dispose of this pamphlet."   |
+18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It is truly fitting for %1SN! I think I will keep this for later ..."   |
+18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patrolling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that no one can see it anymore to save your reputation from being further damaged. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
 18224   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_HEAD_+0"   "A pamphlet has been removed"   |
 18225   "_NETWORK_MAP_NAME_york_+0"   "Yorkshire"   |
-18226   "_NETWORK_MAP_DESC_york_+0"   "Once it has been a roman colony, later it was called >Jórvik< as the capital of the viking settlers. 1066 norman conquerors called it >York<. The city and its surroundings have quite a history. In the late middle ages York and it's surrounding settlements of the Shire have been an important trading region, despite the starting degrade of the former richness and glory of the big city."   |
+18226   "_NETWORK_MAP_DESC_york_+0"   "Once a roman colony, later called >Jorvik< as the capital of the viking settlers. 1066 norman conquerors called it >York<. The city and its surroundings have quite a history. In the late middle ages York and its surrounding settlements of the Shire have been an important trading region, despite the gradual degradation of the richness and glory of the city."   |
 18227   "_CITY_NAME_YORK_+0"   "York"   |
 18228   "_CITY_NAME_HULL_+0"   "Hull"   |
 18229   "_CITY_NAME_SCARBOROUGH_+0"   "Scarborough"   |
@@ -244,7 +244,7 @@ Translate and add the following lines below:
 18241   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_TOOLTIP_+0"   "is suffering from tooth rot. Talents: $S[2021] -3 $S[2025] -3"   |
 18242   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_DESCRIPTION_+0"   "Bouts of fever, bloody phlegm, painful breathing ...$NThose who have come down with pneumonia are doomed to die soon, unless a skilled healer starts treating them with pain medication immediately.$N$NPneumonia decreases all talents by 5."   |
 18243   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_TOOLTIP_+0"   "has contracted pneumonia. All talents -5"   |
-18244   "_ONSCREENHELP_9_ACTION_IMPACT_Pox_DESCRIPTION_+0"   "Leprosy, while not inherently lethal, is almost as dangerous as the plague. It covers the bodies of those unfortunate enough to contract it with ugly ulcers, damaging their bodies.$NThe only known efficient treatment for leprosy is external and internal application of a >medicine bottle<. If left untreated, the patient will remain a leper forever.$N$NConstitution, Dexterity and Charisma are reduced by 6. Also people who come close to you will lose favor to you, unless you use perfume against it. Leprosy has no maximum duration."   |
+18244   "_ONSCREENHELP_9_ACTION_IMPACT_Pox_DESCRIPTION_+0"   "Leprosy, while not inherently lethal, is almost as dangerous as the plague. It covers the bodies of those unfortunate enough to contract it with ugly ulcers, damaging their bodies.$NThe only known efficient treatment for leprosy is external and internal application of a >medicine bottle<. If left untreated, the patient will remain a leper forever.$N$NConstitution, Dexterity and Charisma are reduced by 6. Also people who come close to you will lose favor, unless you use perfume against it. Leprosy has no maximum duration."   |
 18245   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_TOOLTIP_+0"   "has contracted the plague. All talents -7"   |
 18246   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_DESCRIPTION_+0"   "The plague is extremely contagious, and lethal in most cases. Some claim that the pestilence is God's punishment for all sinners. Others think it was sent by the Unclean one, Satan himself ...$N$NBe that as it may, the Black Death will kill you fast unless you start treating it with pain medication immediately.$N$NThe Black Death decreases all talents by 7."   |
 18247   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_TOOLTIP_+0"   "has sprained an ankle. Talents: $S[2016] -2 $S[2019] -2 $S[2018] -2"   |
@@ -265,23 +265,23 @@ Translate and add the following lines below:
 18262   "_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0"   "You are irresistible!"   |
 18263   "_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0"   "Are you a heartbreaker or do you really mean it? Anyway, %1SV is completely under your spell and wishes nothing more than to spend some hours with you alone ..."   |
 18264   "_RATBOY_MSGMEASURE_+0"   "I like this flute playing!"   |
-18265   "_RATBOY_MSGMEASURE_+1"   "This is sooo exciting! An adventure ..."   |
+18265   "_RATBOY_MSGMEASURE_+1"   "This is so exciting! An adventure ..."   |
 18266   "_GENERAL_MSGMEASURE_COHABIT_+0"   "I am expected at home"   |
 18267   "_FAMILY_2_COHABITATION_FAIL_HEAD_+0"   "Your spouse despises you"   |
-18268   "_FAMILY_2_COHABITATION_FAIL_BODY_+0"   "Oh dear! %1SV seems to be far less irresistable than you might have thought. Maybe you have to bring %2SV into a romantic mood before? ... Visit a tavern together and make some compliments like in good old times, that might help!"   |
-18269   "_MEASURE_LISTENQUACKSALVER_YES_+0"   "Give me your ointment, my toe is itching the whole day ..."   |
-18270   "_MEASURE_LISTENQUACKSALVER_YES_+1"   "I need one of this wonderful cures!"   |
-18271   "_MEASURE_LISTENQUACKSALVER_YES_+2"   "If only I can sleep through the night again ..."   |
+18268   "_FAMILY_2_COHABITATION_FAIL_BODY_+0"   "Oh dear! %1SV seems to be far less irresistable than you might have thought. Maybe you have to bring %2SV into a romantic mood beforehand? Visit a tavern together and make some compliments like in the good old times, that might help!"   |
+18269   "_MEASURE_LISTENQUACKSALVER_YES_+0"   "Give me your ointment, my toe has been itching the whole day ..."   |
+18270   "_MEASURE_LISTENQUACKSALVER_YES_+1"   "I need one of these wonderful cures!"   |
+18271   "_MEASURE_LISTENQUACKSALVER_YES_+2"   "If only I could sleep through the night again ..."   |
 18272   "_MEASURE_LISTENQUACKSALVER_YES_+3"   "A nice bargain, thanks!"   |
 18273   "_MEASURE_LISTENQUACKSALVER_YES_+4"   "I don't care if it works, I just need my old mother to stop moaning."   |
-18274   "_MEASURE_LISTENQUACKSALVER_YES_+5"   "I take one!"   |
+18274   "_MEASURE_LISTENQUACKSALVER_YES_+5"   "I'll take one!"   |
 18275   "_MEASURE_LISTENQUACKSALVER_YES_+6"   "Do you have one for me?"   |
 18276   "_MEASURE_LISTENQUACKSALVER_YES_+7"   "Don't push, it's my turn now!"   |
 18277   "_MEASURE_LISTENQUACKSALVER_YES_+8"   "There is nothing better!"   |
 18278   "_MEASURE_LISTENQUACKSALVER_YES_+9"   "I can't resist ..."   |
 18279   "_MEASURE_LISTENQUACKSALVER_NO_+0"   "Humbug ..."   |
 18280   "_MEASURE_LISTENQUACKSALVER_NO_+1"   "Are you actualy a real healer?"   |
-18281   "_MEASURE_LISTENQUACKSALVER_NO_+2"   "Far to expensive."   |
+18281   "_MEASURE_LISTENQUACKSALVER_NO_+2"   "Far too expensive."   |
 18282   "_MEASURE_LISTENQUACKSALVER_NO_+3"   "You are just a show-off!"   |
 18283   "_MEASURE_LISTENQUACKSALVER_NO_+4"   "Your tinctures are giving me a rash!"   |
 18284   "_MEASURE_LISTENQUACKSALVER_NO_+5"   "Your >cures< make me sick."   |
@@ -298,7 +298,7 @@ Translate and add the following lines below:
 18295   "_SELLBUILDING_FAIL_HEAD_+0"   "Sale failed"   |
 18296   "_SELLBUILDING_FAIL_BODY_+0"   "%1GG has been captured recently and thus can not be sold in the next hours."   |
 18297   "_MEASURE_USE_LETTER_FROM_ROME_ERROR_INSIDE_+0"   "You can not use the >Letter from Rome< as long as %1SN is inside of %2GG! This item may only be used outside."   |
-18298   "_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_BODY_+1"   "%1SN used a faked letter to accuse %2SV of heresy! Fortunatly your view is sharp enough to see the truth. Now the letter is your first evidence for court!"   |
+18298   "_ARTEFACTS_175_USELETTERFROMROME_MSG_VICTIM_BODY_+1"   "%1SN used a fake letter to accuse %2SV of heresy! Fortunatly your view is sharp enough to see the truth. Now the letter is your first evidence for court!"   |
 18299   "_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_HEAD_+0"   "Letter from Rome failed"   |
 18300   "_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_HEAD_SPEECH_+0"   "#E[NT_NEUTRAL]Your intrigue has failed!"   |
 18301   "_INTRIGUE_LETTERFROMROME_FAILED_ACTOR_BODY_+0"   "Bah, %1SN's bad breath is just incredible..."   |
@@ -315,42 +315,233 @@ Translate and add the following lines below:
 18312   "_CHARACTERS_3_TITLES_NAME_+7"   "#E[NT_NEUTRAL]Lesser Citizen"   |
 18313   "_GEMCDOP"   ""   |
 18314   "LE:"   "Health:"   |
-18315   "_ABILITIES_Heiligenschein_DESCRIPTION_+0"   "You have the incomparable gift of showing yourself in the very best light, seeming like a perfect angel. You seem to be such a wonderful person that no one dares to threaten, pickpocket, or kidnap you. Even when standing before the judge, you seem as a victim rather than a perpetrator. You are truly pitiable! All crimes committed by your employees fade from witnesses' memories one-sixth faster than normal and in every trial against you, any evidence of your worst crime... is simply ignored. If you still end up in prison, there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirements: Stealth 6."   |
+18315   "_ABILITIES_Heiligenschein_DESCRIPTION_+0"   "You have the incomparable gift of showing yourself in the very best light, seemingly like a perfect angel. You seem to be such a wonderful person that no one dares to threaten, pickpocket, or kidnap you. Even when standing before the judge, you appear as a victim rather than a perpetrator. You are truly pitiable! All crimes committed by your employees fade from witnesses' memories one-sixth faster than normal and in every trial against you, any evidence of your worst crime is simply ignored. If you still end up in prison, there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirement: Stealth 6."   |
 18316   "_ABILITIES_Nachtmensch_DESCRIPTION_+0"   "One afternoon as you walk along the dusty road, there comes a sudden thunderstorm. Soon the storm is raging, rain is pouring down, and lightning flashes from the heavens. There is nowhere to take shelter nearby, and so you throw yourself to the ground and pray to God. It doesn't help, since the next lightning bolt thoroughly burns your backside. The electricity surges through you and shakes you, and then the miracle happens: 6 random talents are permanently increased by one point."   |
-18317   "_ABILITIES_DorianGrau_DESCRIPTION_+0"   "You have sold your soul: as though by a miracle, you live 25 years longer than you normally would have, and all diseases, breaks, and injuries vanish. There is just one catch; thanks to your pact with evil, your charisma is henceforth 1.$N$NRequirements: Charisma 5."   |
+18317   "_ABILITIES_DorianGrau_DESCRIPTION_+0"   "You have sold your soul: as though by a miracle, you live 25 years longer than you normally would have, and all diseases, breaks, and injuries vanish. There is just one catch; thanks to your pact with evil, your charisma is henceforth 1.$N$NRequirement: Charisma 5."   |
 18318   "_ABILITIES_Friedensstifter_NAME_+0"   "Peacemaker"   |
 18319   "_ABILITIES_Bettlergestalt_NAME_+0"   "Countryside Politician"   |
-18320   "_ABILITIES_Bettlergestalt_DESCRIPTION_+0"   "When you enter the meeting room, you are a sight to behold. You looks do not fit in, you smell funny and talk in wierd accent. But still for some reason most people seem to like and trust you. Your charisma and rhetoric talents have increased by 2 points and you gain a 5% bonus to favour in political meetings.$N$NRequirements: Patron."   |
-18321   "_ABILITIES_Friedensstifter_DESCRIPTION_+0"   "A breath of inviolability and holiness surrounds all of your buildings, increasing their attractiveness by 25%%. No one dares to blow them up or set fire to them with bombs, pillage them, or rob them. How handy!$N$NRequirements: Scholar."   |
+18320   "_ABILITIES_Bettlergestalt_DESCRIPTION_+0"   "When you enter the meeting room, you are a sight to behold. You looks do not fit in, you smell funny and talk in weird accent. But still for some reason most people seem to like you and trust you. Your charisma and rhetoric talents have increased by 2 points and you gain a 5% bonus to favour in political meetings.$N$NRequirement: Patron."   |
+18321   "_ABILITIES_Friedensstifter_DESCRIPTION_+0"   "A breath of inviolability and holiness surrounds all of your buildings, increasing their attractiveness by 25%%. No one dares to blow them up or set fire to them with bombs, pillage them, or rob them. How handy!$N$NRequirement: Scholar."   |
 18322   "_ABILITIES_Schlitzohr_NAME_+0"   "Wily Trader"   |
-18323   "_ABILITIES_Schlitzohr_DESCRIPTION_+0"   "You are a crafty rascal and have passed on a few of these tricks to your carters. You receive a bonus of 3 points to your bargaining talent and any time you or your carts sell goods in a market, you receive a 5% bonus on the actual sale price.$N$NRequirements: Craftsman."   |
-18324   "_ABILITIES_Leisetreter_DESCRIPTION_+0"   "Through years of practice at being conspicuously inconspicuous, hiding, and skilled balancing acts, you have achieved a certain degree of mastery in this field. You receive a bonus of one point to your stealth and empathy talents.$N$NRequirements: Stealth 2."   |
+18323   "_ABILITIES_Schlitzohr_DESCRIPTION_+0"   "You are a crafty rascal and have passed on a few of these tricks to your carters. You receive a bonus of 3 points to your bargaining talent and any time you or your carts sell goods in a market, you receive a 5% bonus on the actual sale price.$N$NRequirement: Craftsman."   |
+18324   "_ABILITIES_Leisetreter_DESCRIPTION_+0"   "Through years of practice at being inconspicuous, hiding, and skilled balancing acts, you have achieved a certain degree of mastery in this field. You receive a bonus of one point to your stealth and empathy talents.$N$NRequirement: Stealth 2."   |
 18325   "_ABILITIES_Unschuldsmiene_NAME_+0"   "Face of Innocence"   |
-18326   "_ABILITIES_Unschuldsmiene_DESCRIPTION_+0"   "You know how to put a good face on dirty tricks and convince others of your kind-heartedness and honorable intentions. All crimes committed by your employees fade from witnesses' memories one-third faster than normal and if in prison there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirements: Stealth 5."   |
+18326   "_ABILITIES_Unschuldsmiene_DESCRIPTION_+0"   "You know how to put a good face on dirty tricks and convince others of your kind-heartedness and honorable intentions. All crimes committed by your employees fade from witnesses' memories one-third faster than normal and if in prison there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirement: Stealth 5."   |
 18327   "_ABILITIES_Blitzeinbruch_NAME_+0"   "Lightning Burglary"   |
-18328   "_ABILITIES_Blitzeinbruch_DESCRIPTION_+0"   "You have taught your employees a thing or two about getting into a house quickly, stuffing their pockets, and clearing out again. From now on, all of your employees save 25%% of the usual time on every burglary, run 20% faster and have bonus to their stealth talent.$N$NRequirements: Rogue."   |
+18328   "_ABILITIES_Blitzeinbruch_DESCRIPTION_+0"   "You have taught your employees a thing or two about getting into a house quickly, stuffing their pockets, and clearing out again. From now on, all of your employees save 25%% of the usual time on every burglary, run 20% faster and receive a bonus to their stealth talent.$N$NRequirement: Rogue."   |
 18329   "_ABILITIES_VorbildlichesElternteil_NAME_+0"   "Model Parent"   |
-18330   "_ABILITIES_VorbildlichesElternteil_DESCRIPTION_+0"   "You are an absolutely perfect mother (or, of course, father). You take the time to teach your children everything they need in life. All of your children receive an experience bonus of 250 EP when they turn 12.$N$NRequirements: Empathy 3."   |
-18331   "_ABILITIES_KamaSutraMeister_DESCRIPTION_+0"   "You are were born charismatic and as a true lover. Your charisma talent increases by one for each level of this ability and the probability that you will father a child or get pregnant increases.$N$NRequirements: Charisma 2."   |
+18330   "_ABILITIES_VorbildlichesElternteil_DESCRIPTION_+0"   "You are an absolutely perfect mother (or, of course, father). You take the time to teach your children everything they need in life. All of your children receive an experience bonus of 250 XP when they turn 12.$N$NRequirement: Empathy 3."   |
+18331   "_ABILITIES_KamaSutraMeister_DESCRIPTION_+0"   "You are were born as a charismatic, true lover. Your charisma talent increases by one for each level of this ability and the probability that you will father a child or get pregnant increases.$N$NRequirement: Charisma 2."   |
 18332   "_ABILITIES_KamaSutraMeister_NAME_+0"   "Sex Appeal"   |
-18333   "_ABILITIES_Ortsvereinvorsitzender_DESCRIPTION_+0"   "At political meetings, you have an opinion on everything and everyone, and you always have the last word, although you almost never have any idea what is being discussed. You are just a born politician! You babble so much nonsense at political meetings that the other people at the table surrender and give you a cumulative 5% of their favour for every level of this ability, just so you will finally shut up.$N$NRequirements: Rhetoric 3."   |
-18334   "_ABILITIES_Anfuehrer_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They look up to you, and do not take it the wrong way when you reprimand them or demand exceptional effort. If you use the action >Goad workers<, you no longer suffer the loss of reputation you ought to from the goading and the effect last longer.$N$NRequirements: Charisma 5."   |
+18333   "_ABILITIES_Ortsvereinvorsitzender_DESCRIPTION_+0"   "At political meetings, you have an opinion on everything and everyone, and you always have the last word, although you almost never have any idea what is being discussed. You are just a born politician! You babble so much nonsense at political meetings that the other people at the table surrender and give you a cumulative 5% of their favour for every level of this ability, just so you will finally shut up.$N$NRequirement: Rhetoric 3."   |
+18334   "_ABILITIES_Anfuehrer_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They look up to you, and do not take it the wrong way when you reprimand them or demand exceptional effort. If you use the action >Goad workers<, you no longer suffer the loss of reputation you ought to from the goading and the effect last longer.$N$NRequirement: Charisma 5."   |
 18335   "_ABILITIES_Ortsvereinvorsitzender_NAME_+0"   "Local Club President"   |
 18336   "_ABILITIES_Wunderprediger_NAME_+0"   "Oratory Master"   |
-18337   "_ABILITIES_Wunderprediger_DESCRIPTION_+0"   "You have earned the reputation of always striking the right tone and you then train your employees to follow your example. Your employees gain bonus to their Bargaining, Empathy and Rhetoric talents.$N$NRequirements: Scholar."   |
+18337   "_ABILITIES_Wunderprediger_DESCRIPTION_+0"   "You have earned the reputation of always striking the right tone, and you train your employees to follow your example. They gain bonuses to their Bargaining, Empathy and Rhetoric talents.$N$NRequirements: Scholar."   |
 18338   "_ABILITIES_BestesHausAmPlatz_NAME_+0"   "Best House in Town"   |
-18339   "_ABILITIES_BestesHausAmPlatz_DESCRIPTION_+0"   "Through hard work, you have earned the reputation of pampering your guests with special attention, whenever and wherever they may be. Good dreams guaranteed as a bonus to everyone that rents a sleeping spot. Every business you operate receives a 35% bonus in attractiveness, thus drawing more customers, and your careful employees are also 35% less likely to have accidents.$N$NRequirements: Patron"   |
-18340   "_ABILITIES_Zaeh_DESCRIPTION_+0"   "Your constitution is a marvel, wiry and incredibly resistant! For every level of this ability, you receive a cumulative bonus of one point on your constitution talent and some additional life energy. This bonus also applies to every character level already reached.$N$NRequirements: Constitution 2."   |
+18339   "_ABILITIES_BestesHausAmPlatz_DESCRIPTION_+0"   "Through hard work, you have earned the reputation of pampering your guests with special attention, whenever and wherever they may be. Good dreams guaranteed as a bonus to everyone that rents a sleeping spot. Every business you operate receives a 35% bonus in attractiveness, thus drawing more customers, and your careful employees are also 35% less likely to have accidents.$N$NRequirement: Patron"   |
+18340   "_ABILITIES_Zaeh_DESCRIPTION_+0"   "Your constitution is marvelous. You are wiry and incredibly resistant! For every level of this ability, you receive a cumulative bonus of one point on your constitution talent and some additional health. This bonus also applies to every character level already reached.$N$NRequirement: Constitution 2."   |
 18341   "_ABILITIES_Artefaktwissen_NAME_+0"   "Artefact Knowledge"   |
-18342   "_ABILITIES_Artefaktwissen_DESCRIPTION_+0"   "You often have your nose stuck into old folios and study the ancient mystics, druids (and so on, and so forth...). As a result, you are able to get the very most out of an artefact. For each level of this ability your arcane knowlewdge talent increases by one and you receive 2%% more experience whenever you get experience points.$N$NRequirements: Arcane Knowledge 2."   |
+18342   "_ABILITIES_Artefaktwissen_DESCRIPTION_+0"   "You often have your nose stuck into old folios and study the ancient mystics, druids, and the like. As a result, you are able to get the very most out of an artefact. For each level of this ability your arcane knowlewdge talent increases by one and you receive 2%% more experience whenever you get experience points.$N$NRequirement: Arcane Knowledge 2."   |
 18343   "_ABILITIES_Zaeh_NAME_+0"   "Constitutional Miracle"   |
 18344   "_ABILITIES_Ausbeuter_NAME_+0"   "Great Exploiter"   |
-18345   "_ABILITIES_Ausbeuter_DESCRIPTION_+0"   "Your motto is: the lion's share for me and you can have the rest! You are excellent at motivating your employees by hinting at their job security. You recive 20%% production bonus to all your businesses and you only have to pay 80%% of your employees' wages.$N$NRequirements: Craftsman."   |
-18346   "_ABILITIES_Sicherheitsfanatiker_DESCRIPTION_+0"   "You are a security fanatic! The burglary prevention mechanisms in your businesses are checked at least 5 times every day. Your employees may roll their eyes when you pull out your magnifying glass to check the grilles for rust, but your businesses are secure. If they are attacked by torch-throwing villains, you are able to call up a cursing, shouting crowd in no time, confusing the attackers. Protection against burglary rises by 15%% in all of your businesses and your buildings suffer 20%% less damage in attacks.$N$NRequirements: Empathy 3."   |
+18345   "_ABILITIES_Ausbeuter_DESCRIPTION_+0"   "Your motto is: the lion's share for me and you can have the rest! You are excellent at motivating your employees by hinting at their job security. You recive 20%% production bonus to all your businesses and you only have to pay 80%% of your employees' wages.$N$NRequirement: Craftsman."   |
+18346   "_ABILITIES_Sicherheitsfanatiker_DESCRIPTION_+0"   "You are a security fanatic! The burglary prevention mechanisms in your businesses are checked at least 5 times every day. Your employees may roll their eyes when you pull out your magnifying glass to check the grilles for rust, but your businesses are secure. If they are attacked by torch-throwing villains, you are able to call up a cursing, shouting crowd in no time, confusing the attackers. Protection against burglary rises by 15%% in all of your businesses and your buildings suffer 20%% less damage from attacks.$N$NRequirement: Empathy 3."   |
 18347   "_ABILITIES_Seelenverkaeufer_NAME_+0"   "Super Seller"   |
-18348   "_ABILITIES_Seelenverkaeufer_DESCRIPTION_+0"   "Actually, your customer just wanted to buy a woollen blanket, but he leaves your business with a complete set of tailored clothes. You can literally sell anything to anyone. For each level of this ability your bargaining talent suddenly increases by 1 point and any time you or your carts sell goods in a market, you receive a 2%% bonus on the actual sale price.$N$NRequirements: Bargaining 2."   |
+18348   "_ABILITIES_Seelenverkaeufer_DESCRIPTION_+0"   "Actually, your customer just wanted to buy a woollen blanket, but they leave your business with a complete set of tailored clothes. You can literally sell anything to anyone. For each level of this ability your bargaining talent increases by 1 point and any time you or your carts sell goods in a market, you receive a 2%% bonus on the actual sale price.$N$NRequirement: Bargaining 2."   |
 18349   "_TWP_SUPPLYWORKSHOP_CHOOSE_SUPPLIERS_+0"   "Where should the cart get the materials? $N$C[255,20,20]Click a destination to remove it from the list."   |
-
+// ORIGINAL SOUNDFILES RENAMING AND REORGANIZING by Fajeth
+18350   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+1"   "#E[NT_NEUTRAL]Your Orders?"   |
+18351   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+7"   "#E[NT_NEUTRAL]You want me to thrash someone?"   |
+18352   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+8"   "#E[NT_NEUTRAL]Where is the enemy?"   |
+18353   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+8"   "#E[NT_NEUTRAL]You have an assignment for me?"   |
+18354   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+10"   "#E[NT_NEUTRAL]How may I be of service?"   |
+18355   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+11"   "#E[NT_NEUTRAL]What is it?"   |
+18356   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+6"   "#E[NT_NEUTRAL]Are there thieves in the area?"   |
+18357   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+4"   "#E[NT_NEUTRAL]What is your desire?"   |
+18358   "_SIM_COMMENTS_WORKER_ORDER_FIGHTER_NORMAL_FAVOR_+5"   "#E[NT_NEUTRAL]I'll take care of it."   |
+18359   "_SIM_COMMENTS_WORKER_ORDER_FIGHTER_NORMAL_FAVOR_+7"   "#E[NT_NEUTRAL]There won't be any clues - guaranteed."   |
+18360   "_SIM_COMMENTS_WORKER_ORDER_FIGHTER_GOOD_FAVOR_+3"   "#E[NT_NEUTRAL]You will be satisfied..."   |
+18361   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+0"   "#E[NT_NEUTRAL]I'll take care of it."   |
+18362   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+2"   "#E[NT_NEUTRAL]I'll look after it."   |
+18363   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+3"   "#E[NT_NEUTRAL]Alright."   |
+18364   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+4"   "#E[NT_NEUTRAL]I'll make certain."   |
+18365   "_SIM_COMMENTS_OWN_DYNASTY_CLICK_RANDOM_+6"   "#E[NT_NEUTRAL]Why you're always bothering me?"   |
+// F1 Hire
+18366   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18367   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18368   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18369   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18370   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18371   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18372   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18373   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18374   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18375   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18376   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// F2 Hire
+18377   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18378   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18379   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18380   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18381   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18382   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18383   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18384   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18385   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18386   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18387   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// F3 Hire
+18388   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18389   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18390   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18391   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18392   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18393   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18394   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18395   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18396   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18397   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18398   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// M1 Hire
+18399   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18400   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18401   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18402   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18403   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18404   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18405   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18406   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18407   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18408   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18409   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// M2 Hire
+18410   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18411   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18412   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18413   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18414   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18415   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18416   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18417   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18418   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18419   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18420   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// M3 Hire
+18421   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18422   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18423   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18424   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18425   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18426   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18427   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18428   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18429   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18430   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18431   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// F1 Fire
+18432   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+0"   "#E[NT_NEUTRAL]If I have to."   |
+18433   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
+18434   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
+18435   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
+18436   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+4"   "#E[NT_NEUTRAL]I don't like you."   |
+18437   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
+18438   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
+18439   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+7"   "#E[AG_RANTING]What are you thinking?!"   |
+18440   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+8"   "#E[AG_RANTING]That can't be true!"   |
+18441   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
+18442   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
+18443   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+11"   "#E[NT_NO]How impertinant"   |
+18444   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+12"   "#E[NT_NO]Who do you think you are?"   |
+18445   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
+18446   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
+18447   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+// F2 Fire
+18448   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+0"   "#E[NT_NEUTRAL]If I have to."   |
+18449   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
+18450   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
+18451   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
+18452   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+4"   "#E[NT_NEUTRAL]I don't like you."   |
+18453   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
+18454   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
+18455   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+7"   "#E[AG_RANTING]What are you thinking?!"   |
+18456   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+8"   "#E[AG_RANTING]That can't be true!"   |
+18457   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
+18458   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
+18459   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+11"   "#E[NT_NO]How impertinant"   |
+18460   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+12"   "#E[NT_NO]Who do you think you are?"   |
+18461   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
+18462   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
+18463   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+// F3 Fire
+18464   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+0"   "#E[NT_NEUTRAL]If I have to."   |
+18465   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
+18466   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
+18467   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
+18468   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+4"   "#E[NT_NEUTRAL]I don't like you."   |
+18469   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
+18470   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
+18471   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+7"   "#E[AG_RANTING]What are you thinking?!"   |
+18472   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+8"   "#E[AG_RANTING]That can't be true!"   |
+18473   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
+18474   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
+18475   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+11"   "#E[NT_NO]How impertinant"   |
+18476   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+12"   "#E[NT_NO]Who do you think you are?"   |
+18477   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
+18478   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
+18479   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+// M1 Fire
+18480   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+0"   "#E[NT_NEUTRAL]If I have to."   |
+18481   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
+18482   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
+18483   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
+18484   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+4"   "#E[NT_NEUTRAL]I don't like you."   |
+18485   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
+18486   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
+18487   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+7"   "#E[AG_RANTING]What are you thinking?!"   |
+18488   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+8"   "#E[AG_RANTING]That can't be true!"   |
+18489   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
+18490   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
+18491   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+11"   "#E[NT_NO]How impertinant"   |
+18492   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+12"   "#E[NT_NO]Who do you think you are?"   |
+18493   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
+18494   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
+18495   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+// M2 Fire
+18496   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+0"   "#E[NT_NEUTRAL]If I have to."   |
+18497   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
+18498   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
+18499   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
+18500   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+4"   "#E[NT_NEUTRAL]I don't like you."   |
+18501   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
+18502   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
+18503   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+7"   "#E[AG_RANTING]What are you thinking?!"   |
+18504   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+8"   "#E[AG_RANTING]That can't be true!"   |
+18505   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
+18506   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
+18507   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+11"   "#E[NT_NO]How impertinant"   |
+18508   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+12"   "#E[NT_NO]Who do you think you are?"   |
+18509   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
+18510   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
+18511   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+// M3 Fire
+18512   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+0"   "#E[NT_NEUTRAL]If I have to."   |
+18513   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
+18514   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
+18515   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
+18516   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+4"   "#E[NT_NEUTRAL]I don't like you."   |
+18517   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
+18518   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
+18519   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+7"   "#E[AG_RANTING]What are you thinking?!"   |
+18520   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+8"   "#E[AG_RANTING]That can't be true!"   |
+18521   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
+18522   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
+18523   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+11"   "#E[NT_NO]How impertinant"   |
+18524   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+12"   "#E[NT_NO]Who do you think you are?"   |
+18525   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
+18526   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
+18527   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+// Soundfile mod end
 -------
 
 for the polish textfile, change some letters, they will show correctly ingame
