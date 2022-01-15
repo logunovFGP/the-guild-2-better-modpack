@@ -35,7 +35,6 @@ Data:
 33   "buildableresource"   1   1   0   |
 34   "kontor"   0   0   0   |
 35   "fishinghut"   29   1   312   |
-36   "divehouse"   30   4   0   |
 37   "hospital"   31   3   360   |
 38   "warehouse"   0   0   0   |
 39   "waterresource"   0   0   0   |
@@ -48,6 +47,7 @@ Data:
 100   "robber"   15   4   0   |
 101   "thief"   26   4   0   |
 102   "gaukler"   42   4   571   |
+103   "divehouse"   30   4   0   |
 104   "Mill"   66   1   943   |
 108   "Fruitfarm"   1   1   0   |
 109   "Soldierplace"   0   0   0   |

@@ -224,7 +224,7 @@ Data:
 308   "CanUseMoneyBag"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(MoneyBag)>0)AND NOT(Object.GetState(fighting)))"   |
 309   "CanBeHijacked"   "__F(NOT(Object.BelongsToMe())AND(Object.IsDynastySim())AND(Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.ActionAdmissible()))"   |
 310   "ValidDynastyTargetForEvilMeasure"   "__F(NOT(Object.BelongsToMe())AND(Object.HasDynasty())AND(Object.ActionAdmissible())AND(Object.CheckCutscene()))"   |
-311   "CanPayBonus"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND NOT(Object.IsType(11)AND NOT(Object.IsType(100))AND NOT(Object.IsType(101))AND NOT(Object.IsType(36))AND NOT(Object.IsType(21))AND NOT(Object.IsType(102)))"   |
+311   "CanPayBonus"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND NOT(Object.IsType(11)AND NOT(Object.IsType(100))AND NOT(Object.IsType(101))AND NOT(Object.IsType(103))AND NOT(Object.IsType(21))AND NOT(Object.IsType(102)))"   |
 312   "CanPropelEmployees"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2)))"   |
 313   "CanTakeCreditAndIsAtHome"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.IsType(2)))"   |
 314   "CanTakeCreditAndIsInsideBank"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
@@ -298,7 +298,7 @@ Data:
 420   "IsDamagedHostileShip"   "__F(NOT(Object.BelongsToMe())AND NOT(Object.IsType(4))AND(Object.CompareHPRelative()<30))"   |
 421   "BelongsToMeRealShip"   "__F((Object.BelongsToMe())AND NOT(Object.IsType(4)))"   |
 425   "CanUseStinkBomb"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(StinkBomb)>0)AND NOT(Object.GetState(fighting)))"   |
-427   "IsMyCocotte"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND(Object.MinAge(16))AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(36)))"   |
+427   "IsMyCocotte"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND(Object.MinAge(16))AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(103)))"   |
 428   "CanUseCocotte"   "__F((Object.CanBeControlled())AND (Object.GetObjectsByRadius(Sim)==500)AND (Object.GetProfession()== 30)AND(Object.Property.CocotteProvidesLove == 1)AND(Object.Property.CocotteHasClient == 0)AND(Object.HasDifferentSex()))"   |
 429   "CanUseCocotteTarget"   "__F((Object.GetProfession()== 30)AND (Object.Property.CocotteProvidesLove == 1)AND (Object.Property.CocotteHasClient == 0)AND (Object.HasDifferentSex()))"   |
 430   "CanShipPlunderBuilding"   "__F((Object.CanBeControlled())AND(Object.CompareHPRelative()>30)AND(Object.IsType(8)))"   |
@@ -313,7 +313,7 @@ Data:
 440   "CanAssignToServiceDynSim"   "__F((Object.CanBeControlled())AND(Object.CanWorkHere())AND(Object.GetInsideBuilding())AND(Object.IsType(4)))"   |
 441   "CanArrangeDanceShowDynSim"   "__F((Object.CanBeControlled())AND(Object.CanWorkHere())AND(Object.GetInsideBuilding())AND(Object.HasUpgrade(stage)))"   |
 442   "IsFreeForPlunder"   "__F(NOT(Object.BelongsToMe())AND NOT(Object.IsType(4)))"   |
-443   "CanRPGSitAround"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))OR(Object.IsType(2))OR(Object.IsType(111))OR(Object.IsType(36)))"   |
+443   "CanRPGSitAround"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))OR(Object.IsType(2))OR(Object.IsType(111))OR(Object.IsType(103)))"   |
 444   "IsBlackBoard"   "__F((Object.IsType(41))"   |
 445   "CanAddPamphlet"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==400)AND(Object.IsType(41))AND(Object.HasProperty(PamphletCnt))AND(Object.Property.PamphletCnt < 4))"   |
 446   "CanRemovePamphlet"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==400)AND(Object.IsType(41))AND(Object.HasProperty(PamphletCnt))AND(Object.Property.PamphletCnt > 0))"   |
@@ -349,7 +349,7 @@ Data:
 521   "CanUseWorkingPlanPatron1b"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetItemCnt(WorkingPlanPatron1)>0)AND NOT(Object.GetState(fighting))AND(Object.GetObjectsByRadius(Building)==700)AND(Object.CanBeControlled())AND(Object.IsType(3))OR(Object.IsType(35))OR(Object.IsType(104))OR(Object.IsType(108)))"   |
 522   "CanUseWorkingPlanArtisan1"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetItemCnt(WorkingPlanArtisan1)>0)AND NOT(Object.GetState(fighting))AND(Object.GetInsideBuilding())AND(Object.CanBeControlled())AND(Object.IsType(7))OR(Object.IsType(8))OR(Object.IsType(9))OR(Object.IsType(110)))"   |
 523   "CanUseWorkingPlanScholar1"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetItemCnt(WorkingPlanScholar1)>0)AND NOT(Object.GetState(fighting))AND(Object.GetInsideBuilding())AND(Object.CanBeControlled())AND(Object.IsType(16))OR(Object.IsType(19))OR(Object.IsType(20))OR(Object.IsType(37))OR(Object.IsType(43))OR(Object.IsType(98)))"   |
-524   "CanUseWorkingPlanChiseler1a"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetItemCnt(WorkingPlanChiseler1)>0)AND NOT(Object.GetState(fighting))AND(Object.GetInsideBuilding())AND(Object.CanBeControlled())AND(Object.IsType(101))OR(Object.IsType(36)))"   |
+524   "CanUseWorkingPlanChiseler1a"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetItemCnt(WorkingPlanChiseler1)>0)AND NOT(Object.GetState(fighting))AND(Object.GetInsideBuilding())AND(Object.CanBeControlled())AND(Object.IsType(101))OR(Object.IsType(103)))"   |
 525   "CanUseWorkingPlanChiseler1b"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetItemCnt(WorkingPlanChiseler1)>0)AND NOT(Object.GetState(fighting))AND(Object.GetObjectsByRadius(Building)==700)AND(Object.CanBeControlled())AND(Object.IsType(11))OR(Object.IsType(100))OR(Object.IsType(21))OR(Object.IsType(102)))"   |
 526   "IsGuildHouse"   "__F((Object.IsType(26)))"   |
 527   "IsGuildHouseAndContract"   "__F((Object.IsType(26))AND(Object.Property.ContractCount>0))"   |
@@ -463,8 +463,8 @@ Data:
 1509   "AutoRoutenButtons"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND NOT(Object.IsType(4))AND NOT(Object.IsType(8)))"   |
 1510   "ObjectFuerStadtAusBau"   "__F((Object.IsClass(3))OR(Object.IsClass(1))AND NOT(Object.IsType(31))AND NOT(Object.IsType(29))AND NOT(Object.IsType(28))AND NOT(Object.IsType(32))AND NOT(Object.IsType(41))AND NOT(Object.IsType(2))AND NOT(Object.IsType(105))AND NOT(Object.IsType(107)))"   |
 1513   "AutoRoutenZiel"   "__F((Object.BelongsToMe())OR(Object.IsClass(5))AND(Object.Type==Building)AND NOT(Object.IsType(2)))"   |
-1516   "CanUseDrunkGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(36))AND(Object.GetLevel()>=2))"   |
-1517   "CanUseDiceGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(36))AND(Object.HasUpgrade(gablingtable)))"   |
+1516   "CanUseDrunkGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(103))AND(Object.GetLevel()>=2))"   |
+1517   "CanUseDiceGame"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(103))AND(Object.HasUpgrade(gablingtable)))"   |
 1518   "MeineBaustelle"   "__F((Object.BelongsToMe())AND(Object.Type==Building)AND(Object.GetState(building))OR(Object.GetState(levelingup)))"   |
 1519   "PartyMember"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==5000)AND(Object.BelongsToMe())AND(Object.GetState(building))OR(Object.GetState(levelingup)))"   |
 1520   "RauchBombeNutzer"   "__F((Object.CanBeControlled())AND(Object.IsClass(4))AND(Object.HasMinNobilityTitle(2))AND NOT(Object.IsInBuilding()))"   |
@@ -485,15 +485,15 @@ Data:
 1535   "CanPlayTarot"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Sim)==500)AND(Object.GetProfession()==42)AND(Object.HasProperty(Signal)))"   |
 1536   "JugglerOfferFortune"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==42)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(102))AND(Object.GetLevel()==3))"   |
 1537   "JugglerOfferTarot"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==42)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(102))AND(Object.GetLevel()>=2))"   |
-1538   "IsADivehouse"   "__F((Object.IsType(36))AND(Object.HasUpgrade(gablingtable)))"   |
-1539   "IsMyCocotteForGuards"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(36))AND(Object.GetLevel()>=2))"   |
-1540   "IsMyCocotteForThief"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(36))AND(Object.GetLevel()==3))"   |
-1541   "IsADivehouseWithSmuggler"   "__F((Object.BelongsToMe())AND(Object.IsType(36))AND(Object.HasUpgrade(PiratenGrog)))"   |
+1538   "IsADivehouse"   "__F((Object.IsType(103))AND(Object.HasUpgrade(gablingtable)))"   |
+1539   "IsMyCocotteForGuards"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(103))AND(Object.GetLevel()>=2))"   |
+1540   "IsMyCocotteForThief"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND NOT(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(103))AND(Object.GetLevel()==3))"   |
+1541   "IsADivehouseWithSmuggler"   "__F((Object.BelongsToMe())AND(Object.IsType(103))AND(Object.HasUpgrade(PiratenGrog)))"   |
 1542   "IsMyWorkerInDivehouse"   "__F((Object.CanWorkHere())AND(Object.GetProfession()==30)AND(Object.MinAge(16))AND(Object.CanBeControlled()))"   |
 1543   "CanUseFruitFarmMeasuresSim"   "__F((Object.CanBeControlled())AND(Object.IsClass(1))AND(Object.MinAge(16))AND(Object.GetOwnedBuildings())AND(Object.IsType(108)))"   |
 1544   "CanDoRazzia2"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==17)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(21))AND(Object.HasUpgrade(PlanOfSite)))"   |
 1545   "TearDownMine"   "__F((Object.BelongsToMe())AND NOT(Object.GetState(building))AND NOT(Object.GetState(levelingup)))"   |
-1546   "CanDoGelage"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND(Object.IsType(100))OR(Object.IsType(11))OR(Object.IsType(101))OR(Object.IsType(36))OR(Object.IsType(21))OR(Object.IsType(102)))"   |
+1546   "CanDoGelage"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND(Object.IsType(100))OR(Object.IsType(11))OR(Object.IsType(101))OR(Object.IsType(103))OR(Object.IsType(21))OR(Object.IsType(102)))"   |
 1547   "IsMineBankhouse"   "__F((Object.BelongsToMe())AND(Object.IsType(43))AND NOT Object.GetState(building))"   |
 1548   "IsMineBankhouseChief"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsType(43)))"   |
 1549   "IsMyFruitfarmer"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==1)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(108)))"   |
@@ -501,9 +501,9 @@ Data:
 1551   "IsDynMember"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled()))"   |
 1552   "CanEmpfangenWuerden"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(111))AND(Object.BelongsToMe())AND(Object.HasUpgrade(ImperialSignet)))"   |
 1553   "IsMyWorkerInBank"   "__F((Object.CanWorkHere())AND(Object.GetProfession()==41)AND(Object.MinAge(16))AND(Object.CanBeControlled()))"   |
-1554   "IsMyMeInDivehouse"   "__F((Object.CanWorkHere())AND(Object.CanBeControlled())AND(Object.MinAge(16))AND(Object.GetInsideBuilding())AND(Object.IsType(36)))"   |
-1555   "IsMyCocotteForDance"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND(Object.MinAge(16))AND(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(36))AND(Object.GetLevel()>=2))"   |
-1556   "IsMeForDanceDivehouse"   "__F((Object.CanWorkHere())AND(Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(36))AND(Object.GetLevel()>=2))"   |
+1554   "IsMyMeInDivehouse"   "__F((Object.CanWorkHere())AND(Object.CanBeControlled())AND(Object.MinAge(16))AND(Object.GetInsideBuilding())AND(Object.IsType(103)))"   |
+1555   "IsMyCocotteForDance"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 30)AND(Object.MinAge(16))AND(Object.IsInBuilding())AND(Object.GetWorkBuilding())AND(Object.IsType(103))AND(Object.GetLevel()>=2))"   |
+1556   "IsMeForDanceDivehouse"   "__F((Object.CanWorkHere())AND(Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(103))AND(Object.GetLevel()>=2))"   |
 1557   "IsMeAJuggler"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(102))AND NOT(Object.GetState(levelingup))OR(Object.GetState(building)))"   |
 1558   "MeOfferFortune"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(102))AND(Object.GetLevel()==3)AND NOT(Object.GetState(levelingup))OR(Object.GetState(building)))"   |
 1559   "MeOfferTarot"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(102))AND(Object.GetLevel()>=2)AND NOT(Object.GetState(levelingup))OR(Object.GetState(building)))"   |
@@ -514,7 +514,7 @@ Data:
 1564   "IsMyBuilding"   "__F((Object.Type==Building)AND(Object.BelongsToMe()))"   |
 1565   "HasBathingRoom"   "__F(Object.CanBeControlled())AND(Object.IsType(4))AND(Object.HasUpgrade(BathingRoom)))"   |
 1566   "CanLevelUpCity"   "__F((Object.CanBeControlled())AND(Object.HasImpact(LevelUpCity))AND(Object.IsInOfficeBuilding()))"   |
-1567   "CanArrangeConcert"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(4))OR(Object.IsType(36)))"   |
+1567   "CanArrangeConcert"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(4))OR(Object.IsType(103)))"   |
 1568   "CanUseMineGuards"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(12))AND NOT Object.GetState(building))"   |
 2000   "PATCH_TODO"   "__F((Object.BelongsToMe())AND(Object.IsDynastySim()))"   |
 2064   "IsLingerPlace"   "__F((Object.ActionAdmissible())AND(Object.IsType(32)))"   |
