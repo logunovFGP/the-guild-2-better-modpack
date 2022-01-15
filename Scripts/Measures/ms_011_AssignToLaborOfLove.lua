@@ -30,7 +30,7 @@ function Run()
 				local DistanceFound = GetDistance("City", "Pos")
 				if DistanceFound < BestDistance then
 					-- Now check whether there are already more than 1 actor of that profession
-					local Count = Find("Pos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == Profession) AND (Object.BelongsToMe()))", "Result", 2)
+					local Count = Find("Pos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == "..Profession..") AND (Object.BelongsToMe()))", "Result", 2)
 					if Count < 2 then
 						BestDistance = DistanceFound
 						CopyAlias("Pos", "Destination")
