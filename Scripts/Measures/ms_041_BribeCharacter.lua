@@ -15,9 +15,9 @@ function Init()
 	GetDynasty("Destination", "dynasty")
 	
 	local officetime = math.mod(GetGametime(),24)
-	if SimGetOfficeLevel("Destination")>=1 then
+	if SimGetOfficeLevel("Destination") >= 1 then
 		if officetime > 16.5 and officetime <= 17 then
-		StopMeasure()
+			StopMeasure()
 		end
 	end
 	
@@ -119,16 +119,6 @@ function AIDecision()
 end
 
 function Run()
-	if GetState("", STATE_CUTSCENE) then
-		SetData("FromCutscene",1)
-		ms_041_bribecharacter_Cutscene()
-	else
-		SetData("FromCutscene",0)
-		ms_041_bribecharacter_Normal()
-	end
-end
-  
-function Normal()
 
 	if not HasData("TFBribe") then
 		if IsStateDriven() then
@@ -149,7 +139,7 @@ function Normal()
 	local MsgTimeOut = 0.25 --15 sekunden
 	
 	local MeasureID = GetCurrentMeasureID("")
-	local TimeOut = mdata_GetTimeOut(MeasureID)
+	--local TimeOut = mdata_GetTimeOut(MeasureID)
 
 	--run to destination and start action at MaxDistance
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
@@ -172,36 +162,36 @@ function Normal()
 	end
 	
 	if not DynastyIsPlayer("Destination") then
-		CreateCutscene("default","cutscene")
-		CutsceneAddSim("cutscene","")
-		CutsceneAddSim("cutscene","Destination")
-		CutsceneCameraCreate("cutscene","")		
+		CreateCutscene("default", "cutscene")
+		CutsceneAddSim("cutscene", "")
+		CutsceneAddSim("cutscene", "Destination")
+		CutsceneCameraCreate("cutscene", "")		
 		camera_CutsceneBothLock("cutscene", "")
 	end
 	
 	--do visual stuff
-	CommitAction("bribe","Owner","Owner","Destination")
+	CommitAction("bribe", "Owner", "Owner", "Destination")
 	--PlayAnimationNoWait("Destination","cogitate")
 	PlayAnimation("", "watch_for_guard")
 	
 	local time1
 	local time2
 	time1 = PlayAnimationNoWait("Owner", "use_object_standing")
-	time2 = PlayAnimationNoWait("Destination","cogitate")
+	time2 = PlayAnimationNoWait("Destination", "cogitate")
 	Sleep(1)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("","Handheld_Device/ANIM_Smallsack.nif",false)
+	PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("", "Handheld_Device/ANIM_Smallsack.nif",false)
 	
 	Sleep(1)
-	CarryObject("","",false)
-	CarryObject("Destination","Handheld_Device/ANIM_Smallsack.nif",false)
-	time2 = PlayAnimationNoWait("Destination","fetch_store_obj_R")
+	CarryObject("", "", false)
+	CarryObject("Destination", "Handheld_Device/ANIM_Smallsack.nif",false)
+	time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
 	Sleep(1)
 	StopAnimation("")
-	PlaySound3D("Destination","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("Destination","",false)	
+	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("Destination", "", false)	
 	
-	SetMeasureRepeat(TimeOut)
+	--SetMeasureRepeat(TimeOut)
 	
 	
 	--display decision message for destination
@@ -213,32 +203,32 @@ function Normal()
 				MsgTimeOut, --TimeOut
 				"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_HEAD_+0",
 				"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_BODY_+0",
-				GetID(""),Money)
+				GetID(""), Money)
 	local Index
 	local ReplacementLabel
 	if not DynastyIsPlayer("Destination") then
 		camera_CutsceneBothLock("cutscene", "Destination")
 	end
 	if Result == 1 then --accept money
-		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
+		Index = MsgSay("Destination", "@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+"..Index
 		--do the financial stuff
 		if not chr_SpendMoney("", Money, "CostBribes") then
-			MsgQuick("","@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
+			MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
 			StopMeasure()
 		end
 		Sleep(1)
 		chr_RecieveMoney("Destination", Money, "IncomeBribes")
 		
 		--for the mission
-		mission_ScoreCrime("Destination",Money)
+		mission_ScoreCrime("Destination", Money)
 		
-		PlaySound3D("","Effects/coins_to_moneybag+0.wav", 1.0)
+		PlaySound3D("", "Effects/coins_to_moneybag+0.wav", 1.0)
 		Sleep(1)
 		--do the favor stuff
-		chr_ModifyFavor("Destination","",ModifyFavor)
+		chr_ModifyFavor("Destination", "", ModifyFavor)
 		--show message
-		chr_GainXP("",GetData("BaseXP"))
+		chr_GainXP("", GetData("BaseXP"))
 		MsgNewsNoWait("","Destination","","intrigue",-1,
 			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_HEAD_+0",
 			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_BODY_+0",ReplacementLabel,GetID("Destination"))
@@ -247,9 +237,9 @@ function Normal()
 		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
 		--do the favor stuff
-		chr_ModifyFavor("Destination","",-5)
+		chr_ModifyFavor("Destination", "", -5)
 		--show message
-		MsgNewsNoWait("","Destination","","intrigue",-1,
+		MsgNewsNoWait("", "Destination", "", "intrigue", -1,
 			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_HEAD_+0",
 			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_BODY_+0",ReplacementLabel,GetID("Destination"))
 	end
@@ -257,131 +247,12 @@ function Normal()
 	StopMeasure()
 end
 
-function Cutscene()
-
-	if not HasData("TFBribe") then
-		if IsStateDriven() then
-			ms_041_bribecharacter_Init();
-		end
-		if not HasData("TFBribe") then
-			StopMeasure()
-		end
-	end
-
-	if SimGetCutscene("","cutscene") then
-		CutsceneSetMeasureLockTime("cutscene", 2.0)
-	end
-
-	--how far the Destination can be to start this action
-	local MaxDistance = 1000
-	--how far from the destination, the owner should stand while reading the letter from rome
-	local ActionDistance = 80
-	--how much favor from destination to owner is modified. max value
-	local MaxModifyFavor = 20
-	--how long message for destination will be displayed
-	local MsgTimeOut = 0.25 --15 sekunden
-	--time before measure can be used again on this destination, in hours
-	local MeasureID = GetCurrentMeasureID("")
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-
-	--run to destination and start action at MaxDistance
---	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
---		StopMeasure()
---	end
-	
-	--get money 
-	local Money = 0 + GetData("TFBribe")
-	local ModifyFavor
-	--calc the favor
-	local DestMoney = GetMoney("Destination") / 10
-	local FavorFactor = (Money / DestMoney) * 100
-	
-	if FavorFactor < 35 then
-		ModifyFavor = 0.3 * MaxModifyFavor
-	elseif FavorFactor < 65 then
-		ModifyFavor = 0.6 * MaxModifyFavor
-	else
-		ModifyFavor = MaxModifyFavor
-	end
-	
-	--do visual stuff
-	CommitAction("bribe","Owner","Owner","Destination")
-	
-	SetMeasureRepeat(TimeOut)
-	
-	--SLeep because of the "Ok i do it Soeech of your char"
-	Sleep(1)
-	
-	--display decision message for destination
-	local Result = MsgNews("Destination","","@P"..
-				"@B[1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_BUTTON_+0]"..
-				"@B[2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_BUTTON_+1]",
-				ms_041_bribecharacter_AIDecision,  --AIFunc
-				"intrigue", --MessageClass
-				MsgTimeOut, --TimeOut
-				"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_HEAD_+0",
-				"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_BODY_+0",
-				GetID(""),Money)
-	local ReplacementLabel
-	if Result == 1 then --accept money
-		
---		SetProperty to Check after the Voting if the Destination had voted for the one he had the Money from
-		SetProperty("Destination","BribedBy",GetID(""))
-		
-		--do the financial stuff
-		chr_SpendMoney("", Money,"CostBribes")
-		chr_RecieveMoney("Destination", Money, "IncomeBribes")
-		--for the mission
-		mission_ScoreCrime("Destination",Money)
-		--do the favor stuff
-		Sleep(1)
-		chr_ModifyFavor("Destination","",ModifyFavor)
-				
-		local Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
-		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+"..Index
-		
-		Sleep(1)
-				
-		--show message
-		MsgNewsNoWait("","Destination","","intrigue",-1,
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_HEAD_+0",
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_BODY_+0",ReplacementLabel,GetID("Destination"))
-		
-	else	--decline money
-		--do the favor stuff
-		chr_ModifyFavor("Destination","",-5)		
-		local Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
-		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
-		--show message
-		MsgNewsNoWait("","Destination","","intrigue",-1,
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_HEAD_+0",
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_BODY_+0",ReplacementLabel,GetID("Destination"))
-	end
-	
-	if SimGetCutscene("","cutscene") then
-		CutsceneCallUnscheduled("cutscene", "UpdatePanel")
-		Sleep(0.1)
-	end		
-	
-	StopMeasure()
-end
-
 function CleanUp()
-	if GetData("FromCutscene") == 0 then
-		DestroyCutscene("cutscene")
-		if GetState("", STATE_CUTSCENE) == false then
-			StopAnimation("")
-			if AliasExists("Destination") then
-				StopAnimation("Destination")
-			end
-		end
-	end
-	
 	StopAction("bribe", "Owner")
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	--OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

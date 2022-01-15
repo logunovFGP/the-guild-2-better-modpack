@@ -53,7 +53,7 @@ function Run()
 	end
 	
 	if HasProperty("RandWorker", "courted") then
-		MsgQuick("","@L_HIRE_ERROR_COURTED",GetID("RandWorker"))
+		MsgQuick("","@L_HIRE_ERROR_COURTED", GetID("RandWorker"))
 		AddImpact("RandWorker", "NoRandomHire", 1, 12)
 		StopMeasure()
 	end
