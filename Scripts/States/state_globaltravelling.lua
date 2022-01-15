@@ -206,7 +206,7 @@ function Run()
 		Sleep(5)
 	end
 
-	local fame = 0
+	local fame = 1
 	local death
 	if GetProperty("WarChooser","WarWon")==1 then
 		if HasProperty("", "captain") then
@@ -254,7 +254,7 @@ function Run()
 		if fame > 0 then
 			chr_SimAddImperialFame("",fame)
 			Sleep(2)
-			chr_GainXP("",fame*20)
+			chr_GainXP("",fame*25)
 	
 			if DynastyIsPlayer("") then
 				feedback_MessageCharacter("","@L_WAR_END_ALIVE_HEAD_+0","@L_WAR_END_ALIVE_BODY_+0",GetID(""))
