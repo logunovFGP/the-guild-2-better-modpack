@@ -327,8 +327,8 @@ Data:
 1738             160              "MoneyBag"                  1                     1                 6                    101                  1701              0                 0               0          |
 1739             160              "Blanket"                   1                     1                 6                    102                  1701              0                 0               0          |
 1740             160              "FarmersClothes"            1                     0                 6                    103                  1701              0                 300             0          |
-1741             161              "jerkinnailer"              1                     0                 6                    85                   1738              0                 300             0          |
-1742             161              "sewingmachine"             1                     0                 6                    79                   1740              0                 300             0          |
+1741             161              "jerkinnailer"              1                     0                 6                    104                  1738              0                 300             0          |
+1742             161              "sewingmachine"             1                     0                 6                    105                  1740              0                 300             0          |
 1743             162              "ironmachine"               1                     0                 6                    107                  1739              0                 300             0          |
 1744             162              "LeatherGloves"             1                     0                 6                    109                  1741              0                 300             0          |
 1745             162              "CamouflageCloak"           1                     0                 6                    108                  1746              0                 300             0          |
@@ -511,12 +511,12 @@ Data:
 2235             191              "ProtectionOfBurglary"      1                     0                 8                    0.25                 2234              0                 150             0          |
 2236             192              "ProtectionOfBurglary"      1                     0                 8                    0.25                 2235              0                 150             0          |
 2237             190              "HolyWater"                 1                     1                 6                    161                  2201              0                 0               0          |
-2238             190              "Housel"                    1                     1                 6                    163                  2201              0                 0               0          |
+2238             190              "Housel"                    1                     1                 6                    162                  2201              0                 0               0          |
 2239             190              "Parchment"                 1                     1                 6                    160                  2201              0                 0               0          |
 2240             190              "Poem"                      1                     1                 6                    163                  2201              0                 0               0          |
 2241             191              "ThesisPaper"               1                     0                 6                    168                  2237              0                 300             0          |
-2242             191              "AboutTalents2"             1                     0                 6                    938                  2238              0                 300             0          |
-2243             192              "Hasstirade"                1                     0                 6                    939                  2242              0                 300             0          |
+2242             191              "AboutTalents2"             1                     0                 6                    169                  2238              0                 300             0          |
+2243             192              "Hasstirade"                1                     0                 6                    900                  2242              0                 300             0          |
 2245             190              "Altar"                     1                     1                 15                   910                  2207              0                 0               0          |
 2246             190              "Scriptorium"               1                     1                 0                    0                    2207              26                0               0          |
 2247             190              "church_window"             1                     0                 10                   0.25                 2208              0                 300             0          |
