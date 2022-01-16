@@ -187,13 +187,13 @@ function Run()
 			SetState("",STATE_INVISIBLE,false)
 			
 			if (choice==1) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_BANK,GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_BANK,GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
 			elseif (choice==2) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_BANK,GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_BANK,GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
 			elseif (choice==3) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL,GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL,GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
 			elseif (choice==4) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_SCHOOL,GL_BUILDING_TYPE_TOWNHALL,nil)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_SCHOOL,GL_BUILDING_TYPE_TOWNHALL,nil)
 			end
 		end
 	end	
@@ -213,7 +213,7 @@ function Run()
 		if NewSkillValue and NewSkillValue > 0 then
 			IncrementSkillValue("", run, NewSkillValue)
 		end
-		run = run+1
+		run = run + 1
 	end
 	
 	local ClassNr = GetDatabaseValue("Apprentice", choice, "class")
