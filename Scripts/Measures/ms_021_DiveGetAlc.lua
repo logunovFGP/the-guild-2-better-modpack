@@ -48,7 +48,7 @@ function Run()
 	    "@L_MEASURES_DIVEGETALC_HEAD_+0",
 	    bodytext,kostengrog,kostenbrand)
 	else
-	    sauf = ms_divegetalc_AIDecide()
+	    sauf = ms_021_divegetalc_AIDecide()
 	end
 	
 	local price

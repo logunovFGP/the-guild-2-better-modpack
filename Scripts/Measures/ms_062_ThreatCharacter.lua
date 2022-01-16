@@ -70,7 +70,7 @@ function Run()
 						"@L_INTRIGUE_THREAT_CHARACTER_MSG_THREATENED_HEAD", 
 						"@L_INTRIGUE_THREAT_CHARACTER_MSG_THREATENED_BODY", GetDynastyID(""), Gametime2Total(GetGametime()+DurationHours))
 			
-			CreateScriptcall("ThreatCharacter", DurationHours, "Measures/ms_ThreatCharacter.lua", "ThreatOver", "", "Destination")
+			CreateScriptcall("ThreatCharacter", DurationHours, "Measures/ms_062_ThreatCharacter.lua", "ThreatOver", "", "Destination")
 		end
 	end
 end

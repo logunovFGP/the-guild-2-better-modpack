@@ -78,7 +78,7 @@ function Run()
 	local DestResult = MsgNews("Destination","Destination","@P"..
 				"@B[A,@LJa_+0]"..
 				"@B[C,@LNein_+0]",
-				ms_rpgitemtrade_AIDecide,  --AIFunc
+				ms_026_rpgitemtrade_AIDecide,  --AIFunc
 				"default",0.5,
 				"@L_MESSAGES_RPGItemTrade_HEAD_+0",
 				"@L_MESSAGES_RPGItemTrade_BODY_+0",

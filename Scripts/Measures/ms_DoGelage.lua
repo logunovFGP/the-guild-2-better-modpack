@@ -32,7 +32,7 @@ function Init()
 	local result = InitData("@P@B[1,@L%1t,@L%1t,Hud/Buttons/btn_Money_Small.tga]"..
       				"@B[2,@L%2t,@L%2t,Hud/Buttons/btn_Money_Medium.tga]"..
       				"@B[3,@L%3t,@L%3t,Hud/Buttons/btn_Money_Large.tga]",
-					ms_hpfz_gelage_AIInitGelageGeben,
+					ms_dogelage_AIInitGelageGeben,
 					"@L_GENERAL_MEASURES_033_PAYBONUS_FORM_HEAD_+0",
 					"@L_GENERAL_MEASURES_033_PAYBONUS_FORM_BODY_+0",
 					MinSaufen,MedSaufen,BigSaufen)

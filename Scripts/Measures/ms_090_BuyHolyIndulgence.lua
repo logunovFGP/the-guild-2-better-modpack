@@ -31,7 +31,7 @@ function Run()
 		local Decision = MsgNews("","","@P"..
 			"@B[1,"..TextPrefix.."_BTN_+0]"..
 			"@B[2,"..TextPrefix.."_BTN_+1]",
-			ms_087_changefaith_AIDecide,
+			ms_090_buyholyindulgence_AIDecideBuy,
 			"politics",0,
 			"@L_CHURCH_090_BUYHOLYINDULGENCE_HEAD_+0",
 			""..TextPrefix.."_DESCRIPTION", Cost)

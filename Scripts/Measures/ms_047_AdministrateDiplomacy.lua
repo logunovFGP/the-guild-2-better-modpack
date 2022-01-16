@@ -35,7 +35,7 @@ function Init()
 	end
 
 	local result = InitData("@P"..Buttons,
-		ms_administratediplomacy_AIInitDipl,
+		ms_047_administratediplomacy_AIInitDipl,
 		"@LAdministrateDiplomacySheet",
 		"")
 	SetData("InitResult",result)
@@ -208,7 +208,7 @@ function Run()
 	local DestResult = MsgNews("Destination","",
 				"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
 				"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
-				ms_administratediplomacy_AIDecision,  --AIFunc
+				ms_047_administratediplomacy_AIDecision,  --AIFunc
 				"politics", --MessageClass
 				MsgTimeOut, --TimeOut
 				"@LAdministrateDiplomacySheet",
