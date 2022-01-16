@@ -29,9 +29,9 @@ function Run()
 					sleeping = GetProperty("myweddingchapel", "Sleeping")
 				end
 				--SetState("", STATE_INVISIBLE, false)
-				SimBeamMeUp("","SleepPos",false)
-			
-			end
+				GetLocatorByName("myweddingchapel","orphanspawnpoint","SpawnPos")
+				SimBeamMeUp("","SpawnPos",false)
+			end 
 		
 			if (GetProperty("myweddingchapel", "Orphan1")~=GetID("") or not GetProperty("myweddingchapel", "Adoption"))
 				and (GetProperty("myweddingchapel", "Orphan2")~=GetID("") or not GetProperty("myweddingchapel", "GoldRing")) then

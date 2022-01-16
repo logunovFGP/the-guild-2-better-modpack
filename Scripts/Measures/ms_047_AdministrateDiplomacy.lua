@@ -149,7 +149,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	local InitResult = GetData("InitResult")
+	local InitResult = GetData("InitResult") or "C"
 	if InitResult == "C" then
 		StopMeasure()
 	end

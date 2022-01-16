@@ -12,7 +12,7 @@ function Weight()
 	local Trys = 30
 	local Profession = SimGetProfession("SIM")
 		
-	for i = 1, trys do
+	for i = 1, Trys do
 		if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
 			-- check the distance first
 			local DistanceFound = GetDistance("City", "Pos")
@@ -40,7 +40,7 @@ function Weight()
 		end
 	end
 	
-	if not AliasExists("pick_pos")
+	if not AliasExists("pick_pos") then
 		return 0
 	end
 	

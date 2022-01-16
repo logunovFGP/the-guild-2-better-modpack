@@ -95,7 +95,8 @@ end
 
 function Execute()
 	SetRepeatTimer("dynasty", "ai_AdministrateDiplomacy", 8)
-	MeasureCreate("measure")
-	MeasureAddData("Measure", "InitResult", GetData("SetStatusTo"), false)
+	MeasureCreate("Measure") 
+	local Status = GetData("SetStatusTo")
+	MeasureAddData("Measure", "InitResult", Status, false)
 	MeasureStart("Measure", "SIM", "Victim", "AdministrateDiplomacy")
 end
