@@ -8,48 +8,42 @@ function Weight()
 		return 0
 	end
 	
-	local BestDistance = 10000
-	local Trys = 30
-	local Profession = SimGetProfession("SIM")
-		
-	for i = 1, trys do
+	if not SimGetWorkingPlace("SIM", "WorkBuilding") then
+		return 0
+	end
+	
+	-- Find a good spot for AI
+	local MaxDistance = 10000
+	local trys = 20
+	local DistanceFound = 0
+	local BestDistance = MaxDistance
+				
+	for i=1, trys do
 		if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
-			-- check the distance first
-			local DistanceFound = GetDistance("City", "Pos")
-			if DistanceFound < BestDistance then
-				-- Now check whether there are already more than 1 actor of that profession
-				local Count = Find("Pos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == "..Profession..") AND (Object.BelongsToMe()))", "Result", 2)
-				if Count < 2 then
+			if not HasProperty("WorkBuilding", "OutdoorPos"..i) then -- check if we already have one employee here
+				DistanceFound = GetDistance("SIM", "Pos") -- check how far that pos is
+				if DistanceFound < BestDistance then
 					BestDistance = DistanceFound
-					CopyAlias("Pos", "pick_pos")
-					-- stop right here if it is perfect already
-					if BestDistance < 2000 then
+					CopyAlias("Pos", "Destination")
+					SetProperty("SIM", "OutdoorPos", i) -- save this for later
+							
+					if BestDistance < 2000 then -- it's near? great, then don't waste any more time!
 						break
 					end
 				end
 			end
 		end
 	end
-
-	-- still no Destination? Select Market then
-	if not AliasExists("pick_pos") then
-		local Market = Rand(5)+1
-		if not CityGetRandomBuilding("City", 5, 14, Market, -1, FILTER_IGNORE, "pick_pos") then
-			StopMeasure()
-			return
-		end
-	end
-	
-	if not AliasExists("pick_pos")
-		return 0
-	end
-	
+			
 	return 100
 end
 
 function Execute()
+	local MyPos = GetProperty("SIM", "OutdoorPos")
+	SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
+	
 	MeasureCreate("Measure")
 	MeasureAddData("Measure", "TimeOut", 2)
-	MeasureStart("Measure", "SIM", "pick_pos", "PickpocketPeople")
+	MeasureStart("Measure", "SIM", "Destination", "PickpocketPeople")
 end
 
