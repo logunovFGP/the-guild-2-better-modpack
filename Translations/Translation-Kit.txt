@@ -440,108 +440,157 @@ Translate and add the following lines below:
 18430   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
 18431   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
 // F1 Fire
-18432   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+0"   "#E[NT_NEUTRAL]If I have to."   |
-18433   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
-18434   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
-18435   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
-18436   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+4"   "#E[NT_NEUTRAL]I don't like you."   |
-18437   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
-18438   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
-18439   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+7"   "#E[AG_RANTING]What are you thinking?!"   |
-18440   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+8"   "#E[AG_RANTING]That can't be true!"   |
-18441   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
-18442   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
-18443   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+11"   "#E[NT_NO]How impertinant"   |
-18444   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+12"   "#E[NT_NO]Who do you think you are?"   |
-18445   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
-18446   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
-18447   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+18432   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18433   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18434   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18435   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18436   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18437   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18438   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18439   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18440   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18441   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18442   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18443   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+11"   "#E[NT_NO]>How impertinant<"   |
+18444   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18445   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18446   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18447   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
 // F2 Fire
-18448   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+0"   "#E[NT_NEUTRAL]If I have to."   |
-18449   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
-18450   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
-18451   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
-18452   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+4"   "#E[NT_NEUTRAL]I don't like you."   |
-18453   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
-18454   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
-18455   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+7"   "#E[AG_RANTING]What are you thinking?!"   |
-18456   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+8"   "#E[AG_RANTING]That can't be true!"   |
-18457   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
-18458   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
-18459   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+11"   "#E[NT_NO]How impertinant"   |
-18460   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+12"   "#E[NT_NO]Who do you think you are?"   |
-18461   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
-18462   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
-18463   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+18448   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18449   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18450   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18451   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18452   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18453   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18454   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18455   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18456   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18457   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18458   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18459   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+11"   "#E[NT_NO]>How impertinant<"   |
+18460   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18461   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18462   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18463   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
 // F3 Fire
-18464   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+0"   "#E[NT_NEUTRAL]If I have to."   |
-18465   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
-18466   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
-18467   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
-18468   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+4"   "#E[NT_NEUTRAL]I don't like you."   |
-18469   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
-18470   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
-18471   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+7"   "#E[AG_RANTING]What are you thinking?!"   |
-18472   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+8"   "#E[AG_RANTING]That can't be true!"   |
-18473   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
-18474   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
-18475   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+11"   "#E[NT_NO]How impertinant"   |
-18476   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+12"   "#E[NT_NO]Who do you think you are?"   |
-18477   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
-18478   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
-18479   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+18464   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18465   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18466   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18467   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18468   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18469   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18470   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18471   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18472   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18473   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18474   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18475   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+11"   "#E[NT_NO]>How impertinant<"   |
+18476   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18477   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18478   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18479   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
 // M1 Fire
-18480   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+0"   "#E[NT_NEUTRAL]If I have to."   |
-18481   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
-18482   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
-18483   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
-18484   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+4"   "#E[NT_NEUTRAL]I don't like you."   |
-18485   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
-18486   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
-18487   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+7"   "#E[AG_RANTING]What are you thinking?!"   |
-18488   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+8"   "#E[AG_RANTING]That can't be true!"   |
-18489   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
-18490   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
-18491   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+11"   "#E[NT_NO]How impertinant"   |
-18492   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+12"   "#E[NT_NO]Who do you think you are?"   |
-18493   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
-18494   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
-18495   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+18480   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18481   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18482   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18483   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18484   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18485   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18486   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18487   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18488   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18489   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18490   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18491   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+11"   "#E[NT_NO]>How impertinant<"   |
+18492   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18493   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18494   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18495   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
 // M2 Fire
-18496   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+0"   "#E[NT_NEUTRAL]If I have to."   |
-18497   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
-18498   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
-18499   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
-18500   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+4"   "#E[NT_NEUTRAL]I don't like you."   |
-18501   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
-18502   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
-18503   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+7"   "#E[AG_RANTING]What are you thinking?!"   |
-18504   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+8"   "#E[AG_RANTING]That can't be true!"   |
-18505   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
-18506   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
-18507   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+11"   "#E[NT_NO]How impertinant"   |
-18508   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+12"   "#E[NT_NO]Who do you think you are?"   |
-18509   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
-18510   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
-18511   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+18496   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18497   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18498   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18499   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18500   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18501   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18502   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18503   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18504   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18505   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18506   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18507   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+11"   "#E[NT_NO]>How impertinant<"   |
+18508   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18509   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18510   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18511   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
 // M3 Fire
-18512   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+0"   "#E[NT_NEUTRAL]If I have to."   |
-18513   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+1"   "#E[NT_NEUTRAL]I don't think that is a good idea."   |
-18514   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+2"   "#E[NT_NEUTRAL]You don't like me, do you?"   |
-18515   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+3"   "#E[NT_NEUTRAL]Bah, what's the point of that?"   |
-18516   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+4"   "#E[NT_NEUTRAL]I don't like you."   |
-18517   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+5"   "#E[NT_NEUTRAL]You can stuff it!"   |
-18518   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+6"   "#E[AG_RANTING]And you claim to be well read?"   |
-18519   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+7"   "#E[AG_RANTING]What are you thinking?!"   |
-18520   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+8"   "#E[AG_RANTING]That can't be true!"   |
-18521   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+9"   "#E[AG_RANTING]I would have expected more guile from you!"   |
-18522   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+10"   "#E[DF_DISGUSTED]That's unheard of!"   |
-18523   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+11"   "#E[NT_NO]How impertinant"   |
-18524   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+12"   "#E[NT_NO]Who do you think you are?"   |
-18525   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+13"   "#E[AG_ENRAGED]Get out! I want nothing more to do with you."   |
-18526   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+14"   "#E[AG_ENRAGED]I have nothing more to say to you!"   |
-18527   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+15"   "#E[AG_CYNICAL]May the worms take you."   |
+18512   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18513   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18514   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18515   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18516   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18517   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18518   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18519   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18520   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18521   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18522   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18523   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+11"   "#E[NT_NO]>How impertinant<"   |
+18524   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18525   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18526   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18527   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
 // Soundfile mod end
+18528   "_BUILDING_Piratesnest2_NAME_+0"   "Pirates Haven"   | 
+18529   "_BUILDING_Piratesnest2_TOOLTIP_+0"   "Less dilapidated than the Pirates Den, the Pirates Haven is a place of even greater wickery and danger. Only those who have nothing to lose gather here. Rum, and fat booty, is all that still counts for them."   | 
+18530   "_BUILDING_Piratesnest2_REQUIREMENTS_+0"   "Prerequisite: Rogue level 3"   | 
+18531   "_BUILDING_Piratesnest2_POOL_+0"   "The Old Sea Dogs"   | 
+18532   "_BUILDING_Piratesnest2_POOL_+1"   "Equal Loot Shares"   | 
+18533   "_BUILDING_Piratesnest2_POOL_+2"   "The Ghost Ship   | 
+18534   "_BUILDING_Piratesnest2_POOL_+3"   "Funny Mug Taps"   | 
+18535   "_BUILDING_Piratesnest2_POOL_+4"   "All Men on Deck!"   | 
+18536   "_BUILDING_Piratesnest2_POOL_+5"   "The Bloody Cutlass"   | 
+18537   "_BUILDING_Piratesnest2_POOL_+6"   "The Privateers   | 
+18538   "_BUILDING_Piratesnest2_POOL_+7"   "The Bearded Men"   | 
+18549   "_BUILDING_Piratesnest2_POOL_+8"   "On a Dead Man's Chest"   | 
+18540   "_BUILDING_Piratesnest2_POOL_+9"   "Careening Ahoy !"   | 
+18541   "_BUILDING_Piratesnest2_POOL_+10"   "Set Sail!"   | 
+18542   "_BUILDING_Piratesnest2_POOL_+11"   "The Drunken Helmsman"   | 
+18543   "_BUILDING_Piratesnest3_NAME_+0"   "Pirates Fortress"   | 
+18544   "_BUILDING_Piratesnest3_TOOLTIP_+0"   "The Pirates Fortress brings terror to all righteous captains. For in this place, sea raiders, with weapons up to their neck and ships armed up to the crow's nest, sail into the seven seas, to capture every trading vessel they can get a hold of."   | 
+18545   "_BUILDING_Piratesnest3_REQUIREMENTS_+0"   "Prerequisite: Rogue level 5"   | 
+18546   "_BUILDING_Piratesnest3_POOL_+0"   "The Hooked Hand"   | 
+18547   "_BUILDING_Piratesnest3_POOL_+1"   "Wind in our Sails"   | 
+18548   "_BUILDING_Piratesnest3_POOL_+2"   "Free Hooks"   | 
+18549   "_BUILDING_Piratesnest3_POOL_+3"   "Cap'n on Deck"   | 
+18550   "_BUILDING_Piratesnest3_POOL_+4"   "The Crow's Nest"   | 
+18551   "_BUILDING_Piratesnest3_POOL_+5"   "The One-Armed Pirate"   | 
+18552   "_BUILDING_Piratesnest3_POOL_+6"   "Illustre Flibustier"   | 
+18553   "_BUILDING_Piratesnest3_POOL_+7"   "The Sea Serpent"   | 
+18554   "_BUILDING_Piratesnest3_POOL_+8"   "The Eye-Patch"   | 
+18555   "_BUILDING_Piratesnest3_POOL_+9"   "Treasure Collectors"   | 
+18556   "_BUILDING_Piratesnest3_POOL_+10"   "The Curse of the Seas"   | 
+18557   "_BUILDING_Piratesnest3_POOL_+11"   "Corsair Club"   | 
+18558   "_UPGRADE_Arbeiterslot_NAME_+0"   "Worker Slot"   |
+18559   "_UPGRADE_Arbeiterslot_TOOLTIP_+0"   "Each business can hire up to 5 workers to speed up production, but you can only do so if you have enough slots for them."   |
+18560   "_UPGRADE_Produktivitaet_NAME_+0"   "Productivity"   |
+18561   "_UPGRADE_Produktivitaet_TOOLTIP_+0"   "Increasing productivity shortens the manufacturing time of products. However, gathering time of raw materials and herbs is not affected."   |
+18562   "_UPGRADE_Lagerslot_NAME_+0"   "Storage Slots"   |
+18563   "_UPGRADE_Lagerslot_TOOLTIP_+0"   "The more storage slots your business has, the greater the variety of goods you can store."   |
+18564   "_UPGRADE_Lagermenge_NAME_+0"   "Storage Capacity"   |
+18565   "_UPGRADE_Lagermenge_TOOLTIP_+0"   "The higher the storage capacity, the more of each product you can store."   |
+18566   "_UPGRADE_Brandschutz_NAME_+0"   "Fire Protection"   |
+18567   "_UPGRADE_Brandschutz_TOOLTIP_+0"   "Fire protection reduces the damage fire does to your buildings. The higher the fire protection, the faster the fire goes out."   |
+18568   "_UPGRADE_Einbruchschutz_NAME_+0"   "Protection from Burglary"   |
+18569   "_UPGRADE_Einbruchschutz_TOOLTIP_+0"   "You cannot prevent burglaries, but you can make them more difficult. With stronger security, thieves will need more time to get into your building, and you will have more time to alert the guard."   |
+18570   "_UPGRADE_Kundenattraktivitaet_NAME_+0"   "Attractiveness to >Customers<"   |
+18571   "_UPGRADE_Kundenattraktivitaet_TOOLTIP_+0"   "Attractiveness conditions wether you will be successful in luring customers to your building or not. In some businesses, like the Tavern, the customer appeal will also affects the revenue from gratuities."   |
+18572   "_UPGRADE_Talentbonus_NAME_+0"   "Talent Bonus"   |
+18573   "_UPGRADE_Talentbonus_TOOLTIP_+0"   "Some professions benefit greatly from workers with high levels in their talents, making them much more effective during their actions."   |
+
+
+
 -------
 
 for the polish textfile, change some letters, they will show correctly ingame
