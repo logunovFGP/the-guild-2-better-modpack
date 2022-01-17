@@ -33,7 +33,13 @@ function Run()
 	
 		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
 			local MyPos = GetProperty("", "OutdoorPos")
-			GetOutdoorLocator("Crowded"..MyPos, 1, "Pos")
+			if GetOutdoorLocator("Crowded"..MyPos, 1, "Pos") < 1 then
+				--no locator found? Select Market then
+				local Market = Rand(5)+1
+				if not CityGetRandomBuilding("City", 5, 14, Market, -1, FILTER_IGNORE, "Pos") then
+					break
+				end
+			end
 			CopyAlias("Pos", "Destination")
 		end
 	
@@ -66,9 +72,11 @@ function Run()
 				local trys = 20
 				local DistanceFound = 0
 				local BestDistance = MaxDistance
+				local Found = false
 				
 				for i=1, trys do
 					if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
+						Found = true
 						if not HasProperty("WorkBuilding", "OutdoorPos"..i) then -- check if we already have one employee here
 							DistanceFound = GetDistance("", "Pos") -- check how far that pos is
 							if DistanceFound < BestDistance then
@@ -84,8 +92,12 @@ function Run()
 					end
 				end
 				
-				local MyPos = GetProperty("", "OutdoorPos")
-				SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
+				if Found then
+					local MyPos = GetProperty("", "OutdoorPos")
+					SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
+				else
+					SetProperty("", "OutdoorPos", 0) -- this only happens on older maps or if maps are bugged
+				end
 			end
 			
 			if DoIt == 1 then

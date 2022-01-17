@@ -34,6 +34,14 @@ function Weight()
 			end
 		end
 	end
+	
+	if not AliasExists("Destination") then
+		-- still no Destination? Select Market then
+		local Market = Rand(5)+1
+		if not CityGetRandomBuilding("City", 5, 14, Market, -1, FILTER_IGNORE, "Destination") then
+			return 0
+		end
+	end
 			
 	return 100
 end

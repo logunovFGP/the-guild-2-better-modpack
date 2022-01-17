@@ -142,6 +142,7 @@ function Run()
 		time2 = PlayAnimationNoWait("","fetch_store_obj_R")
 		Sleep(1)	
 		StopAnimation("GuildClerk")
+		MoveSetActivity("GuildClerk")
 		PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 		CarryObject("","",false)	
 
@@ -156,7 +157,9 @@ end
 function CleanUp()
 	DestroyCutscene("cutscene")
 	MoveSetActivity("")
-	MoveSetActivity("GuildClerk")
+	if AliasExists("GuildClerk") then
+		MoveSetActivity("GuildClerk")
+	end
 	SetState("", STATE_LOCKED, false)
 	ReleaseAvoidanceGroup("")
 	EndCutscene("")
