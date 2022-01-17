@@ -70,6 +70,9 @@ _Design_
 - Sogenannte 'Godmeasures', also Aktionen wie das Kaufen eines Titels ohne die Anwesenheit eines Charakters, sind nun auch im Mehrspielermodus möglich.
 - Sims, die im Rathaus auf den Stadtschreiber warten, setzen sich nun auf die Rathausbank.
 - Die Maßnahmen 'Knochen brechen' und 'Bedrohen' stehen nun allen Charakteren zur Verfügung, unabhängig ihrer Klasse.
+- Die Maßnahmen zum Kauf vergünstigter Rohstoffboxen über das Gildenhaus wurden deaktiviert und werden in einer späteren Version durch
+  ein besseres und übersichtlicheres System ersetzt.
+- Die Band Versengold spawnt nun erst zur dritten Spielrunde.
 
 *** Vanilla-Bugs ***
 
