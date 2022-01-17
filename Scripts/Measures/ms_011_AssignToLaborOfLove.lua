@@ -106,7 +106,7 @@ function Run()
 			SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
 		end
 		
-		if CancelCount >= 15 and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
+		if CancelCount >= 20 and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
 			StopMeasure()
 			break
 		end
