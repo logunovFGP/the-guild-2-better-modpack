@@ -11,34 +11,36 @@ function Run()
 			City0ID = GetID("City0")
 		end
 		
-		if ScenarioGetTimePlayed() > 3 then
+		if ScenarioGetTimePlayed() > 4 then
 		
-			if Level==1 then
+			if Level == 1 then
 				-- kontor city - do nothing here
 				return
-			elseif Level==2 then
+			elseif Level == 2 then
 				citypinghour_CheckVillage()
-			elseif Level==3 then
+			elseif Level == 3 then
 				citypinghour_CheckSmallTown()
-			elseif Level==4 then
+			elseif Level == 4 then
 				citypinghour_CheckTown()
-			elseif Level==5 then
+			elseif Level == 5 then
 				citypinghour_CheckCapital()
-			elseif Level==6 then
+			elseif Level == 6 then
 				citypinghour_CheckCapital()
 			end
 		end
-	
-		if GetData("#MusiciansChooser")==nil then
-			SetData("#MusiciansChooser",GetID(""))
-		elseif GetData("#MusiciansChooser")==0 then
-			SetData("#MusiciansChooser",GetID(""))
+		
+		if GetRound() > 1 then
+			if GetData("#MusiciansChooser") == nil then
+				SetData("#MusiciansChooser", GetID(""))
+			elseif GetData("#MusiciansChooser") == 0 then
+				SetData("#MusiciansChooser", GetID(""))
+			end
+			if GetData("#MusiciansChooser") == GetID("") then
+				citypinghour_CheckMusicians()
+			end
 		end
-		if GetData("#MusiciansChooser")==GetID("") then
-			citypinghour_CheckMusicians()
-		end
 	
-		if GetData("#AldermanChooser")==nil then
+		if GetData("#AldermanChooser") == nil then
 			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
 				SetData("#AldermanChooser",GetID(""))
 			end
