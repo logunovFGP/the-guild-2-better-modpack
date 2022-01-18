@@ -1,29 +1,32 @@
 function Run()
 end
 
-
 function OnLevelUp()
 end
 
-
 function Setup()
+
 	--SetState("", STATE_MOVING_BUILDING, true)
 	BuildingGetCity("", "my_settlement")
-	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_BANK)[1]>0) then
-		SetProperty("my_settlement","Guildhall",GetID(""))
+	
+	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+		SetProperty("my_settlement", "Guildhall", GetID(""))
 		MeasureRun("", nil, "GuildTrading")
 	end
 end
 
-
 function PingHour()
+
 	BuildingGetCity("", "my_settlement")
-	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_BANK)[1]>0) then
-		if not HasProperty("my_settlement","Guildhall") then
+	
+	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+		if not HasProperty("my_settlement", "Guildhall") then
 			SetProperty("my_settlement","Guildhall",GetID(""))
 		end
+		
 		guildhouse_CheckGuildMasters()
 		guildhouse_CheckGuildElders()
+		
 		if GetCurrentMeasureName("") ~= "GuildTrading" then
 			MeasureRun("", nil, "GuildTrading")
 		end
@@ -32,12 +35,13 @@ function PingHour()
 	guildhouse_CheckSimsInside()
 end
 
-
 function CheckGuildElders()
-	if GetProperty("", "PatronElder")==nil then
-		GetLocatorByName("","PatronElder","SpawnPos1")
-		SimCreate(930,"","SpawnPos1","Patron")
-		if SimGetGender("Patron")==GL_GENDER_MALE then
+
+	if GetProperty("", "PatronElder") == nil then
+		GetLocatorByName("", "PatronElder", "SpawnPos1")
+		SimCreate(930, "", "SpawnPos1", "Patron")
+		
+		if SimGetGender("Patron") == GL_GENDER_MALE then
 			local name = GetName("Patron")
 			local y,z = string.find(name, " ")
 			local newlastname = string.sub(name, 1 , y)
@@ -50,14 +54,18 @@ function CheckGuildElders()
 			SimSetFirstname("Patron", "@L_GUILDHOUSE_ELDER_FEMALE_+0")
 			SimSetLastname("Patron", newlastname)
 		end
+		
 		SimSetAge("Patron", 65)
-		SetState("Patron",STATE_TOWNNPC,true)
-		SimSetBehavior("Patron","GuildElder")
+		SetState("Patron", STATE_TOWNNPC, true)
+		SimSetBehavior("Patron", "GuildElder")
 		SetProperty("", "PatronElder", GetID("Patron"))
 	end
-	if GetProperty("", "ArtisanElder")==nil then
-		GetLocatorByName("","ArtisanElder","SpawnPos2")
-		SimCreate(931,"","SpawnPos2","Artisan")
+	
+	if GetProperty("", "ArtisanElder") == nil then
+	
+		GetLocatorByName("", "ArtisanElder", "SpawnPos2")
+		SimCreate(931, "", "SpawnPos2", "Artisan")
+		
 		if SimGetGender("Artisan")==GL_GENDER_MALE then
 			local name = GetName("Artisan")
 			local y,z = string.find(name, " ")
@@ -71,14 +79,18 @@ function CheckGuildElders()
 			SimSetFirstname("Artisan", "@L_GUILDHOUSE_ELDER_FEMALE_+0")
 			SimSetLastname("Artisan", newlastname)
 		end
+		
 		SimSetAge("Artisan", 65)
 		SetState("Artisan",STATE_TOWNNPC,true)
 		SimSetBehavior("Artisan","GuildElder")
 		SetProperty("", "ArtisanElder", GetID("Artisan"))
 	end
-	if GetProperty("", "ScholarElder")==nil then
+	
+	if GetProperty("", "ScholarElder") == nil then
+	
 		GetLocatorByName("","ScholarElder","SpawnPos3")
 		SimCreate(932,"","SpawnPos3","Scholar")
+		
 		if SimGetGender("Scholar")==GL_GENDER_MALE then
 			local name = GetName("Scholar")
 			local y,z = string.find(name, " ")
@@ -92,14 +104,17 @@ function CheckGuildElders()
 			SimSetFirstname("Scholar", "@L_GUILDHOUSE_ELDER_FEMALE_+0")
 			SimSetLastname("Scholar", newlastname)
 		end
+		
 		SimSetAge("Scholar", 65)
 		SetState("Scholar",STATE_TOWNNPC,true)
 		SimSetBehavior("Scholar","GuildElder")
 		SetProperty("", "ScholarElder", GetID("Scholar"))
 	end
-	if GetProperty("", "ChiselerElder")==nil then
+	
+	if GetProperty("", "ChiselerElder") == nil then
 		GetLocatorByName("","ChiselerElder","SpawnPos4")
 		SimCreate(933,"","SpawnPos4","Chiseler")
+		
 		if SimGetGender("Chiseler")==GL_GENDER_MALE then
 			local name = GetName("Chiseler")
 			local y,z = string.find(name, " ")
@@ -113,13 +128,13 @@ function CheckGuildElders()
 			SimSetFirstname("Chiseler", "@L_GUILDHOUSE_ELDER_FEMALE_+0")
 			SimSetLastname("Chiseler", newlastname)
 		end
+		
 		SimSetAge("Chiseler", 65)
 		SetState("Chiseler",STATE_TOWNNPC,true)
 		SimSetBehavior("Chiseler","GuildElder")
 		SetProperty("", "ChiselerElder", GetID("Chiseler"))
 	end
 end
-
 
 function CheckGuildMasters()
 	local currentRound = GetRound()
@@ -131,31 +146,34 @@ function CheckGuildMasters()
 			--add fame to last PatronMaster
 			local PatronMaster = GetProperty("", "PatronMaster")
 			if PatronMaster~=nil then
-				if GetAliasByID(PatronMaster,"Patron") and GetState("Patron", STATE_DEAD)==false then
+				if GetAliasByID(PatronMaster,"Patron") and not GetState("Patron", STATE_DEAD) then
 					chr_SimAddFame("Patron",1)
 					RemoveProperty("Patron", "PatronMaster")
 				end
 			end
+			
 			--add fame to last ArtisanMaster
 			local ArtisanMaster = GetProperty("", "ArtisanMaster")
 			if ArtisanMaster~=nil then
-				if GetAliasByID(ArtisanMaster,"Artisan") and GetState("Artisan", STATE_DEAD)==false then
+				if GetAliasByID(ArtisanMaster,"Artisan") and not GetState("Artisan", STATE_DEAD) then
 					chr_SimAddFame("Artisan",1)
 					RemoveProperty("Artisan", "ArtisanMaster")
 				end
 			end
-			--add fame to last ScholarMaster
+			
+			--add	fame to last ScholarMaster
 			local ScholarMaster = GetProperty("", "ScholarMaster")
 			if ScholarMaster~=nil then
-				if GetAliasByID(ScholarMaster,"Scholar") and GetState("Scholar", STATE_DEAD)==false then
+				if GetAliasByID(ScholarMaster,"Scholar") and not GetState("Scholar", STATE_DEAD) then
 					chr_SimAddFame("Scholar",1)
 					RemoveProperty("Scholar", "ScholarMaster")
 				end
 			end
+			
 			--add fame to last ChiselerMaster
 			local ChiselerMaster = GetProperty("", "ChiselerMaster")
 			if ChiselerMaster~=nil then
-				if GetAliasByID(ChiselerMaster,"Chiseler") and GetState("Chiseler", STATE_DEAD)==false then
+				if GetAliasByID(ChiselerMaster,"Chiseler") and not GetState("Chiseler", STATE_DEAD) then
 					chr_SimAddFame("Chiseler",1)
 					RemoveProperty("Chiseler", "ChiselerMaster")
 				end
@@ -181,7 +199,7 @@ function CheckGuildMasters()
 			local ChiselerArrayCount = 0
 			local PlayerCity = false
 			
-			for l=0,BuildingCount-1 do
+			for l=0, BuildingCount-1 do
 				Alias = "Building"..l
 				BuildingLvl = BuildingGetLevel(Alias)
 				
@@ -443,7 +461,7 @@ function CheckSimsInside()
 	local forceexit = false
 	
 	BuildingGetCity("", "my_settlement")
-	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_BANK)[1]==0) then
+	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_GUILDHOUSE)[1] == 0) then
 		forceexit = true
 	end
 
@@ -465,4 +483,3 @@ function CheckSimsInside()
 		end
 	end
 end
-

@@ -3,7 +3,7 @@ function Run()
 	Sleep(0.5)
 	MeasureSetNotRestartable()
 	local	Member = GetData("Member")
-	if not Member or Member==-1 then
+	if not Member or Member == -1 then
 		return
 	end
 	
@@ -15,13 +15,13 @@ function Run()
 		return
 	end
 	
-	if not SimGetWorkingPlace("","MyMercenarycamp") then
+	if not SimGetWorkingPlace("", "MyMercenarycamp") then
 		if IsPartyMember("") then
-			local NextBuilding = ai_GetNearestDynastyBuilding("",GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_MERCENARY)
+			local NextBuilding = ai_GetNearestDynastyBuilding("",GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CASTLE)
 			if not NextBuilding then
 				StopMeasure()
 			end
-			CopyAlias(NextBuilding,"MyMercenarycamp")
+			CopyAlias(NextBuilding, "MyMercenarycamp")
 		else
 			StopMeasure()
 		end
@@ -32,59 +32,60 @@ function Run()
 	local	IdleStep = 3
 		
 	while true do
-	
 		ToDo = ms_squaddanegeldmember_WhatToDo()
 		Success = false
 		
-		if ToDo=="return" then
+		if ToDo == "return" then
 			Success = ms_squaddanegeldmember_Wait(IdleStep)
 			IdleStep = IdleStep + 1
-		elseif ToDo=="wait" then
+		elseif ToDo == "wait" then
 			Success = ms_squaddanegeldmember_Wait(IdleStep)
 			IdleStep = IdleStep + 1
-		elseif ToDo=="Danegeld" then
+		elseif ToDo == "Danegeld" then
 			Success = ms_squaddanegeldmember_Danegeld()
 		end
 		
 		if not Success then
 			Sleep(4)
 		end
-		
 	end
 end
 
 function Wait(IdleStep)
 
-		if HasProperty("Squad", "PrimaryTarget") then
-			RemoveProperty("Squad", "PrimaryTarget")
-		end
+	if HasProperty("Squad", "PrimaryTarget") then
+		RemoveProperty("Squad", "PrimaryTarget")
+	end
+	
+	-- normal wait behavior
+	local	Distance = GetDistance("", "Destination")
 		
-		-- normal wait behavior
-		local	Distance = GetDistance("", "Destination")
-		if Distance > 500 then
-			local Range = Rand(50)
-			if not f_MoveTo("","Destination",GL_MOVESPEED_RUN,Range) then
-				return
-			end		
-		end
+	if Distance > 500 then
+		local Range = Rand(50)
+		if not f_MoveTo("","Destination", GL_MOVESPEED_RUN, Range) then
+			return
+		end		
+	end
 		
-		if (IdleStep>2) then
-			ms_squaddanegeldmember_IdleStuff()
-			IdleStep = 0
-		end
+	if (IdleStep>2) then
+		ms_squaddanegeldmember_IdleStuff()
+		IdleStep = 0
+	end
 
-		Sleep(1 + Rand(20)*0.1)
+	Sleep(1 + Rand(3))
 end
 
 function IdleStuff()
-	if Rand(3)==0 then
-		PlayAnimationNoWait("","sentinel_idle")
-	elseif Rand(3)==1 then
-		CarryObject("","Handheld_Device/ANIM_telescope.nif",false)
-		PlayAnimation("","scout_object")
-		CarryObject("","",false)
+
+	if Rand(3) == 0 then
+		PlayAnimationNoWait("", "sentinel_idle")
+	elseif Rand(3) == 1 then
+		CarryObject("", "Handheld_Device/ANIM_telescope.nif", false)
+		PlayAnimation("", "scout_object")
+		CarryObject("", "", false)
 	end
-	GfxSetRotation("",0,Rand(360),0,false)
+	
+	GfxSetRotation("", 0, Rand(360), 0, false)
 end
 
 function WhatToDo()
@@ -130,9 +131,9 @@ function Danegeld()
 
 	local favourloss = 5
 
-	if not SimGetWorkingPlace("","MyMercenarycamp") then
+	if not SimGetWorkingPlace("", "MyMercenarycamp") then
 		if IsPartyMember("") then
-			CopyAlias("","MercOwner")
+			CopyAlias("", "MercOwner")
 		else
 			return false
 		end
@@ -140,7 +141,7 @@ function Danegeld()
 		BuildingGetOwner("MyMercenarycamp", "MercOwner")
 	end
 
-	if GetImpactValue("Victim","HaveBeenPickpocketed")>0 then
+	if GetImpactValue("Victim","HaveBeenPickpocketed") >0 then
 		return false
 	end
 	
@@ -155,29 +156,28 @@ function Danegeld()
 
 			AlignTo("", "Victim")
 			PlayAnimationNoWait("", "use_object_standing")
-			CarryObject("","Handheld_Device/Anim_Bag.nif",false)
-			PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+			CarryObject("", "Handheld_Device/Anim_Bag.nif",false)
+			PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 			Sleep(1)	
 
 			--money = money + (SimGetLevel("") * 10)
 
 			CreditMoney("MercOwner", money, "IncomeBribes")
-			IncrementXPQuiet("",15)
+			IncrementXPQuiet("", 15)
 
-			PlayAnimationNoWait("","fetch_store_obj_R")
+			PlayAnimationNoWait("", "fetch_store_obj_R")
 			Sleep(1)	
-			PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-			CarryObject("","",false)	
+			PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+			CarryObject("", "", false)	
+			PlayAnimationNoWait("", "cheer_02")
 			
-			PlayAnimationNoWait("","cheer_02")
-			local random = Rand(5)
 			if IsPartyMember("") then
-				MsgSay("","@L_MEASURE_danegeld_THANKS_NO_OWNER_+"..random)
+				MsgSay("", "@L_MEASURE_danegeld_THANKS_NO_OWNER")
 			else
-				if SimGetGender("MercOwner")==GL_GENDER_MALE then
-					MsgSay("","@L_MEASURE_danegeld_THANKS_OWNER_MALE_+"..random, GetID("MercOwner"))				
+				if SimGetGender("MercOwner") == GL_GENDER_MALE then
+					MsgSay("", "@L_MEASURE_danegeld_THANKS_OWNER_MALE", GetID("MercOwner"))				
 				else
-					MsgSay("","@L_MEASURE_danegeld_THANKS_OWNER_FEMALE_+"..random, GetID("MercOwner"))				
+					MsgSay("", "@L_MEASURE_danegeld_THANKS_OWNER_FEMALE", GetID("MercOwner"))				
 				end
 			end
 			
@@ -190,7 +190,6 @@ function Danegeld()
 
 	return true
 end
-
 
 function Scan(Member)
 	
@@ -205,7 +204,7 @@ function Scan(Member)
 	
 	-- Danegeld on sims deactivated
 	local NumVictimSims = 0 --Find("Destination",DanegeldFilterSim,"VictimSim", -1)
-	local NumVictimCarts = Find("Destination",DanegeldFilterCart,"VictimCart", -1)
+	local NumVictimCarts = Find("Destination", DanegeldFilterCart, "VictimCart", -1)
 	local NumOwnMercenaries = SquadGetMemberCount("")
 	
 	if NumVictimSims <= 0 and NumVictimCarts <= 0 then
@@ -217,8 +216,8 @@ function Scan(Member)
 	local	Num
 	local	TargetAlias
 	
-	for check=0,1 do
-		if check==0 then
+	for check = 0, 1 do
+		if check == 0 then
 			--check the Danegeld from the sims
 			Num = NumVictimSims
 			TargetAlias = "VictimSim"
@@ -228,11 +227,11 @@ function Scan(Member)
 			TargetAlias = "VictimCart"
 		end
 		
-		for FoundObject=0,Num-1 do
-			if DynastyGetDiplomacyState("Dynasty",TargetAlias..FoundObject)<=DIP_NEUTRAL then --no attack agreement, no booty
-				CurrentTargetValue = chr_GetBootyCount(TargetAlias..FoundObject,INVENTORY_STD)
+		for FoundObject=0, Num-1 do
+			if DynastyGetDiplomacyState("Dynasty", TargetAlias..FoundObject) <= DIP_NEUTRAL then --no attack agreement, no booty
+				CurrentTargetValue = chr_GetBootyCount(TargetAlias..FoundObject, INVENTORY_STD)
 				if (CurrentTargetValue > MaxTargetValue) then
-					CopyAlias(TargetAlias..FoundObject,"Victim")
+					CopyAlias(TargetAlias..FoundObject, "Victim")
 					MaxTargetValue = CurrentTargetValue
 				end
 			end
@@ -246,25 +245,26 @@ function Scan(Member)
 	--	return
 	--end
 	
-	AlignTo("","Victim")
+	AlignTo("", "Victim")
 	Sleep(1)
 	
 	return "Victim"
 end
 
 function CleanUp()
+
 	RemoveProperty("", "DanegeldReady")
 	StopAnimation("")
 	MoveSetActivity("")
-	if not HasProperty("","DontLeave") then
+	if not HasProperty("", "DontLeave") then
 		SquadRemoveMember("", true)
 		if AliasExists("Squad") then
-			if SquadGetMemberCount("Squad", true)<1 then
+			if SquadGetMemberCount("Squad", true) < 1 then
 				SquadDestroy("Squad")
 			end
 		end
 	else
-		RemoveProperty("","DontLeave")
+		RemoveProperty("", "DontLeave")
 	end
 end
 

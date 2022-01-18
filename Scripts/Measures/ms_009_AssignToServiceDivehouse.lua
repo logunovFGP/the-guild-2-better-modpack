@@ -2,12 +2,13 @@
 -- Run
 -- -----------------------
 function Run()
-	if not SimGetWorkingPlace("","Divehouse") then
+
+	if not SimGetWorkingPlace("", "Divehouse") then
 		if IsPartyMember("") then
 			if not GetInsideBuilding("", "CurrentBuilding") then
 				StopMeasure()
 			end
-			if BuildingGetType("CurrentBuilding")==36 then
+			if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_DIVEHOUSE then
 				CopyAlias("CurrentBuilding", "Divehouse")
 			else
 				StopMeasure()
@@ -24,7 +25,7 @@ function Run()
 			StopMeasure()
 		end
 
-		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_PIRAT then
+		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_DIVEHOUSE then
 			CopyAlias("CurrentBuilding", "Divehouse")
 		else
 			StopMeasure()
@@ -38,7 +39,7 @@ function Run()
 		StopMeasure()
 	else
 		SetProperty("Divehouse", "ServiceActive",1)
-		SetProperty("", "ServiceSim",1)
+		SetProperty("", "ServiceSim", 1)
 		SetProperty("Divehouse", "ServiceStartTime", GetGametime())
 	end
 
@@ -51,6 +52,7 @@ function Run()
 	SetData("IsProductionMeasure", 0)
 	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
 	SetData("IsProductionMeasure", 1)
+	
 	if HasProperty("Divehouse", "GoToService") then
 		RemoveProperty("Divehouse", "GoToService")
 	end	
@@ -60,8 +62,8 @@ function Run()
 	local BreakNumber = 0
 	while true do
 	
-		local SearchSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND NOT(Object.BelongsToMe()))"
-		local NumGuests = Find("", SearchSimFilter,"Guests", -1)
+		local SearchSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 2000) AND NOT(Object.BelongsToMe()))"
+		local NumGuests = Find("", SearchSimFilter, "Guests", -1)
 		
 		if TimeOut then
 			if TimeOut < GetGametime() and NumGuests == 0 then
@@ -87,7 +89,6 @@ function Run()
 			end
 		end
 
-		IncrementXPQuiet("", 5)
 		if BreakNumber > 3 then
 			StopMeasure()
 		else
@@ -102,20 +103,21 @@ function CleanTables()
 	local Type = Rand(4)
 	if Type == 0 then
 		GetFreeLocatorByName("Divehouse", "Service", 1, 4, "MovePos")
-		f_BeginUseLocator("", "MovePos",GL_STANCE_STAND,true)
-	    CarryObject("", "Handheld_Device/ANIM_besen.nif", false)
-	    PlayAnimation("", "hoe_in")	
+		f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
+		CarryObject("", "Handheld_Device/ANIM_besen.nif", false)
+		PlayAnimation("", "hoe_in")	
 
-	    for i=0,5 do
-		    local waite = PlayAnimationNoWait("", "hoe_loop")
-		    Sleep(0.5)
-		    PlaySound3DVariation("", "Locations/herbs",1.0)
-		    Sleep(waite-0.5)
-	    end
+		for i=0, 5 do
+			local waite = PlayAnimationNoWait("", "hoe_loop")
+			Sleep(0.5)
+			PlaySound3DVariation("", "Locations/herbs",1.0)
+			Sleep(waite-0.5)
+		end
 
 		PlayAnimation("", "hoe_out")
 		CarryObject("", "", false)
 		f_EndUseLocator("", "MovePos", GL_STANCE_STAND)
+		
 	elseif Type == 1 then
 		GetFreeLocatorByName("Divehouse", "Barman1", -1, -1, "MovePos")
 		f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
@@ -144,35 +146,41 @@ function Serve()
 	end
 
 	if Type == 0 then
-		if GetLocatorByName("Divehouse","Barman1","ServePos") then
-			f_BeginUseLocator("","ServePos",GL_STANCE_STAND,true)
-			PlayAnimation("","manipulate_middle_twohand")
-			f_EndUseLocator("","ServePos",GL_STANCE_STAND)
+		if GetLocatorByName("Divehouse", "Barman1", "ServePos") then
+			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND,true)
+			PlayAnimation("", "manipulate_middle_twohand")
+			f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
 		end
+		
 	elseif Type == 1 then
-		if GetLocatorByName("Divehouse","Service"..Locator,"ServePos") then
-			f_BeginUseLocator("","ServePos",GL_STANCE_STAND,true)
-			PlayAnimation("","manipulate_middle_low_r")
-			f_EndUseLocator("","ServePos",GL_STANCE_STAND)
+		if GetLocatorByName("Divehouse", "Service"..Locator, "ServePos") then
+			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND, true)
+			PlayAnimation("", "manipulate_middle_low_r")
+			f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
 		end
+		
 	elseif Type == 2 then
-		if GetLocatorByName("Divehouse","Service"..Locator,"ServePos") then
-			f_BeginUseLocator("","ServePos",GL_STANCE_STAND,true)
-			PlayAnimation("","talk_short")
-			f_EndUseLocator("","ServePos",GL_STANCE_STAND)
+		if GetLocatorByName("Divehouse", "Service"..Locator, "ServePos") then
+			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND,true)
+			PlayAnimation("", "talk_short")
+			f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
 		end	
+	
 	else
-		if not GetLocatorByName("Divehouse","Barman1","ServePos") then
-			    GetFreeLocatorByName("Divehouse","Bar",1,4,"ServePos")
+		if not GetLocatorByName("Divehouse", "Barman1", "ServePos") then
+			    GetFreeLocatorByName("Divehouse", "Bar", 1, 4, "ServePos")
 		end
+		
 		if not f_BeginUseLocator("", "ServePos", GL_STANCE_STAND, true) then
-		    return
+			return
 		end
-		MoveSetActivity("","carry")
+		
+		MoveSetActivity("", "carry")
 		Sleep(2)
 		CarryObject("", "Handheld_Device/ANIM_Pitcher_carry.nif", false)
 		f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
-		if GetLocatorByName("Divehouse","Service"..Locator, "ServePos") then
+		
+		if GetLocatorByName("Divehouse", "Service"..Locator, "ServePos") then
 			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND, true)
 			MoveSetActivity("")
 			Sleep(2)
@@ -184,16 +192,18 @@ function Serve()
 end
 
 function CleanUp()
+
 	if HasProperty("", "ServiceSim") then
 		RemoveProperty("", "ServiceSim")
-		if HasProperty("Divehouse","ServiceActive") then
-			RemoveProperty("Divehouse","ServiceActive")
+		if HasProperty("Divehouse", "ServiceActive") then
+			RemoveProperty("Divehouse", "ServiceActive")
 		end
 	end
 
-	if HasProperty("Divehouse","GoToService") then
-		RemoveProperty("Divehouse","GoToService")
+	if HasProperty("Divehouse", "GoToService") then
+		RemoveProperty("Divehouse", "GoToService")
 	end
+	
 	CarryObject("", "", false)
 	StopAnimation("")
 	MoveSetActivity("")

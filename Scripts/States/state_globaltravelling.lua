@@ -261,7 +261,7 @@ function Run()
 			end
 
 		else
-			FindNearestBuilding("", -1, GL_BUILDING_TYPE_SCHOOL, -1, false, "Arsenal")
+			FindNearestBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, false, "Arsenal")
 			GetLocatorByName("Arsenal", "Entry1", "MoveToPosition")
 			f_MoveTo("","MoveToPosition",GL_MOVESPEED_WALK)
 		end

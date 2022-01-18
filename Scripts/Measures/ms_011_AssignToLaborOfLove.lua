@@ -1,6 +1,6 @@
 function Run()
 
-	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_PIRAT, "WorkBuilding") then
+	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_DIVEHOUSE, "WorkBuilding") then
 		StopMeasure() 
 	end 
 
@@ -128,6 +128,7 @@ function Run()
 end
 
 function CleanUp()
+
 	StopAnimation("")
  	RemoveProperty("", "CocotteProvidesLove")
 	if HasProperty("", "OutdoorPos") then

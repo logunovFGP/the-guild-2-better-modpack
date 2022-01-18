@@ -34,9 +34,9 @@ function Run()
 	end	
 
 	GetSettlement("Destination", "my_settlement")
-	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_BANK)[1]==0) then
+	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
 		noguildhouse = true
-	elseif CityGetRandomBuilding("my_settlement", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "guildhouse") then
+	elseif CityGetRandomBuilding("my_settlement", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "guildhouse") then
 		if chr_CheckGuildMaster("Destination","guildhouse") then
 			label = "@L_GUILDHOUSE_MASTERLIST"..label
 			member = true

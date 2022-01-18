@@ -3,7 +3,7 @@
 -- -----------------------
 function Run()
 	GetNearestSettlement("", "City")
-	if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_SCHOOL)[1]==0) then
+	if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_ARSENAL)[1]==0) then
 		MsgQuick("", "@L_MEASURE_BUYCANNON_FAILURE_+1", GetID("City"))
 		StopMeasure()
 	end

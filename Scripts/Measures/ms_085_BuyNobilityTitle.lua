@@ -55,13 +55,14 @@ function Run()
 					if (BYesNo == "A") then
 						if (chr_SpendMoney("boss", cost, "CostAdministration")) then
 							GetSettlement("", "Set")
+							local tax = math.floor(cost*0.33)
 														
-							CreditMoney("Set", cost, "title")
-							
+							CreditMoney("Set", tax, "title")
+					
 							if not HasProperty("Set", "NobilityMoney") then
-								SetProperty("Set", "NobilityMoney", cost)
+								SetProperty("Set", "NobilityMoney", tax)
 							else
-								local NobilityMoney = GetProperty("Set", "NobilityMoney") + cost
+								local NobilityMoney = GetProperty("Set", "NobilityMoney") + tax
 								SetProperty("Set", "NobilityMoney", NobilityMoney)
 							end
 
@@ -298,12 +299,13 @@ function Run()
 					if (chr_SpendMoney("", cost, "CostAdministration")) then
 					
 						GetSettlement("Usher", "Set")
-						CreditMoney("Set", cost, "title")
+						local tax = math.floor(cost*0.33)
+						CreditMoney("Set", tax, "title")
 
 						if not HasProperty("Set", "NobilityMoney") then
-							SetProperty("Set", "NobilityMoney", cost)
+							SetProperty("Set", "NobilityMoney", tax)
 						else
-							local NobilityMoney = GetProperty("Set", "NobilityMoney") + cost
+							local NobilityMoney = GetProperty("Set", "NobilityMoney") + tax
 							SetProperty("Set", "NobilityMoney", NobilityMoney)
 						end
 

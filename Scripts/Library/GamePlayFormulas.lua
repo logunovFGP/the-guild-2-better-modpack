@@ -665,7 +665,7 @@ function CheckPublicBuilding(city,building)
 		return {0, 0}
 	else
 		local Level = CityGetLevel(city)
-		if building==GL_BUILDING_TYPE_BANK then
+		if building == GL_BUILDING_TYPE_GUILDHOUSE then
 			if Level==1 then
 				return {0, 0}
 			elseif Level==2 then
@@ -679,7 +679,8 @@ function CheckPublicBuilding(city,building)
 			elseif Level==6 then
 				return {2, 2}
 			end
-		elseif building==GL_BUILDING_TYPE_SCHOOL or building==GL_BUILDING_TYPE_SOLDIERPLACE then
+			
+		elseif building == GL_BUILDING_TYPE_ARSENAL or building == GL_BUILDING_TYPE_SOLDIERPLACE then
 			if Level==1 then
 				return {0, 0}
 			elseif Level==2 then
@@ -846,12 +847,12 @@ end
 
 function checkBuildingNoRoom(building)
 -- checks if the building is of a type which has no room
-	if (BuildingGetType(building)==GL_BUILDING_TYPE_FARM) or (BuildingGetType(building)==GL_BUILDING_TYPE_ROBBER) or
-			(BuildingGetType(building)==GL_BUILDING_TYPE_MINE) or (BuildingGetType(building)==GL_BUILDING_TYPE_RANGERHUT) or
-			(BuildingGetType(building)==GL_BUILDING_TYPE_CASTLE) or (BuildingGetType(building)==GL_BUILDING_TYPE_TOWER) or
-			(BuildingGetType(building)==GL_BUILDING_TYPE_MERCENARY) or (BuildingGetType(building)==GL_BUILDING_TYPE_PIRATESNEST) or
-			(BuildingGetType(building)==102) or (BuildingGetType(building)==35) or (BuildingGetType(building)==38) or
-			(BuildingGetType(building)==GL_BUILDING_TYPE_MILL) or (BuildingGetType(building)==GL_BUILDING_TYPE_FRUITFARM) then
+	if (BuildingGetType(building) == GL_BUILDING_TYPE_FARM) or (BuildingGetType(building) == GL_BUILDING_TYPE_ROBBER) or
+			(BuildingGetType(building) == GL_BUILDING_TYPE_MINE) or (BuildingGetType(building) == GL_BUILDING_TYPE_RANGERHUT) or
+			(BuildingGetType(building) == GL_BUILDING_TYPE_CASTLE) or (BuildingGetType(building) == GL_BUILDING_TYPE_TOWER) or 
+			(BuildingGetType(building) == GL_BUILDING_TYPE_PIRATESNEST) or (BuildingGetType(building) == GL_BUILDING_TYPE_JUGGLER) or 
+			(BuildingGetType(building) == GL_BUILDING_TYPE_FISHINGHUT) or (BuildingGetType(building) == GL_BUILDING_TYPE_WAREHOUSE) or
+			(BuildingGetType(building) == GL_BUILDING_TYPE_MILL) or (BuildingGetType(building) == GL_BUILDING_TYPE_FRUITFARM) then
 		return 1
 	else
 		return 0

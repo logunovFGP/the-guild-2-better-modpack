@@ -2,17 +2,15 @@
 ----
 ----	OVERVIEW "ms_068_PickpocketPeople"
 ----
-----	with this measure, the player can send a thief, to pickpocket people
----- impact HaveBeenPickpocketed
+----	with this measure, the player can send a thief to pickpocket people
+----  impact HaveBeenPickpocketed
 -------------------------------------------------------------------------------
-
--- changes: added about 50 base gold to all successful pickpocketings
 
 function Run()
 	
 	if not SimGetWorkingPlace("", "WorkBuilding") then
 		if IsPartyMember("") then
-			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_THIEF)
+			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF)
 			if not NextBuilding then
 				return
 			end
@@ -28,7 +26,8 @@ function Run()
 	local TimeToWait = 8
 	local Value
 	local CancelCount = 0 -- only for AI
-	
+	GetNearestSettlement("", "City")	
+
 	while true do
 	
 		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then

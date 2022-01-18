@@ -11,7 +11,7 @@ end
 function Run()
 	if GetHomeBuilding("","myhome") then
 		BuildingGetCity("myhome","city")
-		if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_BANK)[1]==0) then
+		if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
 			SetState("",STATE_GUILDTRAVELLING,false)
 			StopMeasure()
 		end
@@ -24,7 +24,7 @@ function Run()
 	end
 
 	if not GetInsideBuilding("", "Guildhouse") then
-		if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_BANK, -1, false, "Guildhouse") then
+		if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, false, "Guildhouse") then
 			SetState("",STATE_GUILDTRAVELLING,false)
 		end
 	end

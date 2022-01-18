@@ -2,8 +2,8 @@ function Init()
 	local CState = DynastyGetDiplomacyState("Destination","Owner")
 	local Buttons = ""
 	
-	local MinState = DynastyGetMinDiplomacyState("", "Destination")
-	local MaxState = DynastyGetMaxDiplomacyState("", "Destination")
+	local MinState = DynastyGetMinDiplomacyState("Owner", "Destination")
+	local MaxState = DynastyGetMaxDiplomacyState("Owner", "Destination")
 	
 	if MinState<0 or MaxState<0 then
 		return false
@@ -38,7 +38,7 @@ function Init()
 		ms_administratediplomacy_AIInitDipl,
 		"@LAdministrateDiplomacySheet",
 		"")
-	SetData("InitResult",result)
+	SetData("InitResult", result)
 end
 
 function AIInitDipl()
@@ -150,6 +150,7 @@ function Run()
 	end
 	
 	local InitResult = GetData("InitResult")
+	
 	if InitResult == "C" then
 		StopMeasure()
 	end
@@ -178,26 +179,27 @@ function Run()
 	
 	local CurrentState = DynastyGetDiplomacyState("Destination","")
 	local CurrentLabel = "@LHostility"
+
 	if CurrentState == InitResult then
 		StopMeasure()
 	elseif InitResult < CurrentState then
-		if CurrentState == 1 then
+		if CurrentState == DIP_NEUTRAL then
 			CurrentLabel = "@LNeutral"
-		elseif CurrentState == 2 then
+		elseif CurrentState == DIP_NAP then
 			CurrentLabel = "@LNAP"
-		elseif CurrentState == 3 then	
+		elseif CurrentState == DIP_ALLIANCE then	
 			CurrentLabel = "@LAlliance"
 		end
 		
-		DynastySetDiplomacyState("Destination","",Status)
+		DynastySetDiplomacyState("Destination", "", Status)
 		DynastyForceCalcDiplomacy("")
-		SetFavorToDynasty("Destination","",Favor)
-		MsgNewsNoWait("","Destination","","politics",-1,
+		SetFavorToDynasty("Destination", "", Favor)
+		MsgNewsNoWait("", "Destination", "", "politics", -1,
 			"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-			"@LDIPLOMATIC_STATE_CHANGED",GetID("Destination"),StatusLabel,CurrentLabel)
+			"@LDIPLOMATIC_STATE_CHANGED", GetID("Destination"), StatusLabel, CurrentLabel)
 		MsgNewsNoWait("Destination","","","politics",-1,
 			"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-			"@LDIPLOMATIC_STATE_CHANGED",GetID(""),StatusLabel,CurrentLabel)
+			"@LDIPLOMATIC_STATE_CHANGED", GetID(""), StatusLabel, CurrentLabel)
 		
 		SetRepeatTimer("Dynasty", GetMeasureRepeatName(), 8)
 		StopMeasure()
@@ -205,7 +207,7 @@ function Run()
 	
 	
 	local MsgTimeOut = 0.5 --30sek
-	local DestResult = MsgNews("Destination","",
+	local DestResult = MsgNews("Destination", "",
 				"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
 				"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
 				ms_administratediplomacy_AIDecision,  --AIFunc
@@ -213,7 +215,7 @@ function Run()
 				MsgTimeOut, --TimeOut
 				"@LAdministrateDiplomacySheet",
 				"@LDIPLOMATIC_REQUEST_QUESTION",
-				GetID(""),StatusLabel)
+				GetID(""), StatusLabel)
 				
 	SetRepeatTimer("Dynasty", GetMeasureRepeatName(), 8)
 	
@@ -235,16 +237,11 @@ function Run()
 	DynastySetDiplomacyState("Destination","",Status)
 	DynastyForceCalcDiplomacy("")
 
-	if GetFavorToDynasty("Destination","")<Favor then
+	if GetFavorToDynasty("Destination", "") < Favor then
 		SetFavorToDynasty("Destination","",Favor)
 	end
-
-	Sleep(1)
-	StopMeasure()
-	
 end
 
 function CleanUp()
-
 end
 

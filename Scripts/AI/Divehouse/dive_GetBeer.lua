@@ -1,6 +1,6 @@
 function Weight()
 
-	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_PIRAT, "Divehouse") then
+	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_DIVEHOUSE, "Divehouse") then
 		return 0
 	end
 	
@@ -36,8 +36,8 @@ function Execute()
 	SetRepeatTimer("Divehouse", "ai_DiveGetBeer", 6)
 
 	if not AliasExists("Market") then
-		BuildingGetCity("Divehouse","checkTown")
-		CityGetLocalMarket("checkTown","Market")
+		BuildingGetCity("Divehouse", "checkTown")
+		CityGetLocalMarket("checkTown", "Market")
 	end
 	
 	local NeedSmallBeer = 20 - GetItemCount("Divehouse", "SmallBeer", INVENTORY_STD)
@@ -46,7 +46,7 @@ function Execute()
 	
 	-- buy SmallBeer
 	if NeedSmallBeer > 0 then
-		if GetItemCount("Market", "SmallBeer", INVENTORY_STD)>= NeedSmallBeer then
+		if GetItemCount("Market", "SmallBeer", INVENTORY_STD) >= NeedSmallBeer then
 			Price = ItemGetPriceSell("SmallBeer", "Market") * NeedSmallBeer
 			if GetMoney("Divehouse") > Price then
 				if SpendMoney("Divehouse", Price, "misc") then
@@ -59,7 +59,7 @@ function Execute()
 	
 	-- buy WheatBeer
 	if NeedWheatBeer > 0 then
-		if GetItemCount("Market", "WheatBeer", INVENTORY_STD)>= NeedWheatBeer then
+		if GetItemCount("Market", "WheatBeer", INVENTORY_STD) >= NeedWheatBeer then
 			Price = ItemGetPriceSell("WheatBeer", "Market") * NeedWheatBeer
 			if GetMoney("Divehouse") > Price then
 				if SpendMoney("Divehouse", Price, "misc") then

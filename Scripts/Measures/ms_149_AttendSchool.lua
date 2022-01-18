@@ -26,8 +26,8 @@ function Run()
 				StopMeasure()
 			end
 		elseif (choice==2) then
-			if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1] > 0) then
-				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "DestBuilding2") then
+			if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
 					StopMeasure()
 				end
 			else
@@ -54,8 +54,8 @@ function Run()
 			button1 = ""
 		end
 		
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1] > 0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "DestBuilding2") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
 				button2 = ""
 			end
 		else

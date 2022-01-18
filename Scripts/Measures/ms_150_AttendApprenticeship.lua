@@ -67,8 +67,8 @@ function Run()
 	end
 	if (choice==1) then
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_JOINERY, -1, -1, FILTER_IGNORE, "DestBuilding") then
 					if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 						return -- paranoia-fix - should never happen
@@ -84,8 +84,8 @@ function Run()
 		end
 	elseif (choice==2) then
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_IGNORE, "DestBuilding") then
 					if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BAKERY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 						return -- paranoia-fix - should never happen
@@ -99,6 +99,7 @@ function Run()
 				end
 			end
 		end
+		
 	elseif (choice==3) then
 		Appmoney = App1
 		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, -1, FILTER_IGNORE, "DestBuilding") then
@@ -108,10 +109,11 @@ function Run()
 				end
 			end
 		end
+		
 	elseif (choice==4) then
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SCHOOL, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding") then -- alternative go to townhall
 					return -- paranoia-fix - should never happen
 				end
@@ -121,6 +123,7 @@ function Run()
 				return -- paranoia-fix - should never happen
 			end
 		end
+		
 	elseif (choice==0) then
 		Appmoney = 0
 		GetHomeBuilding("","DestBuilding")
@@ -187,13 +190,13 @@ function Run()
 			SetState("",STATE_INVISIBLE,false)
 			
 			if (choice==1) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_BANK,GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
+				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
 			elseif (choice==2) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_BANK,GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
+				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
 			elseif (choice==3) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL,GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
+				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL, GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
 			elseif (choice==4) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_SCHOOL,GL_BUILDING_TYPE_TOWNHALL,nil)
+				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_ARSENAL, GL_BUILDING_TYPE_TOWNHALL,nil)
 			end
 		end
 	end	

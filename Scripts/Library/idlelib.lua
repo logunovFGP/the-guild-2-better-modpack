@@ -801,10 +801,10 @@ function GoToTavern()
 	if GetSettlement("", "City") then
 
 		local stage = GetData("#MusicStage")
-		if stage~=nil and GetAliasByID(stage,"stageobj") then
-			BuildingGetCity("stageobj","stageCity")
-			if GetID("City")==GetID("stageCity") and (Rand(100)>39) then
-				if BuildingGetType("stageobj")==GL_BUILDING_TYPE_PIRAT then
+		if stage ~= nil and GetAliasByID(stage, "stageobj") then
+			BuildingGetCity("stageobj", "stageCity")
+			if GetID("City") == GetID("stageCity") and (Rand(100)>39) then
+				if BuildingGetType("stageobj") == GL_BUILDING_TYPE_DIVEHOUSE then
 					idlelib_GoToDivehouse()
 					return
 				end

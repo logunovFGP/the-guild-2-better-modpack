@@ -4,14 +4,14 @@
 -- -----------------------
 function Run()
 
-	if BuildingGetType("")==GL_BUILDING_TYPE_BANK then
+	if BuildingGetType("")==GL_BUILDING_TYPE_GUILDHOUSE then
 		CopyAlias("", "guildhouse")
 	else
 		GetInsideBuilding("", "guildhouse")
 	end
 	BuildingGetCity("guildhouse","myCity")
 
-	if (gameplayformulas_CheckPublicBuilding("myCity", GL_BUILDING_TYPE_BANK)[1]==0) then
+	if (gameplayformulas_CheckPublicBuilding("myCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
 		MsgQuick("dynasty", "@L_MEASURE_CONTRACTGUILDHOUSE_TASK_FAILURE_+1", GetID("myCity"))
 		StopMeasure()
 	end

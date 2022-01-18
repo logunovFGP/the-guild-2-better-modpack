@@ -14,7 +14,7 @@ function Weight()
 				
 					if GetCurrentMeasureName("Child")=="Schooldays" then
 						if GetProperty("Child", "EduLevel")==0 then
-							if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_BANK)[1]>0) then
+							if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 								SetData("ToDo", "School")
 								return 100
 							end
@@ -51,7 +51,7 @@ function Weight()
 					if GetCurrentMeasureName("Child")=="University" then
 						if SimGetClass("Child")==3 then
 							if GetProperty("Child", "EduLevel")>0 and GetProperty("Child", "EduLevel")<3 then
-								if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_BANK)[1]>0) then
+								if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 									SetData("ToDo", "Uni")
 									return 100
 								end

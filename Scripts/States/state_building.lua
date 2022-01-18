@@ -95,9 +95,9 @@ function CartLoop()
 
 	GetLocalPlayerDynasty("LocalPlayer")
 	GetDynasty("", "BuildingDynasty")
-	if not IsMultiplayerGame() and GetID("LocalPlayer") == GetID("BuildingDynasty") then
-		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.1, 1, "c4")
-	end
+--	if not IsMultiplayerGame() and GetID("LocalPlayer") == GetID("BuildingDynasty") then
+--		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.1, 1, "c4")
+--	end
 end
 
 -- -----------------------

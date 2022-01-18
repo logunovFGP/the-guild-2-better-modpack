@@ -1,8 +1,8 @@
 function Weight()
 
 	if GetSettlement("SIM", "City") then
-		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_BANK)[1]>0) then
-			if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "Guildhouse") then
+		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+			if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 				return 0
 			end
 		else
@@ -12,11 +12,11 @@ function Weight()
 		return 0
 	end
 
-	if chr_GetAlderman()==GetID("SIM") then
-		return 60
-	elseif chr_CheckGuildMaster("SIM","Guildhouse") then
-		return 40
-	end
+--	if chr_GetAlderman()==GetID("SIM") then
+--		return 60
+--	elseif chr_CheckGuildMaster("SIM","Guildhouse") then
+--		return 40
+--	end
 
 	return 0
 end
@@ -26,11 +26,11 @@ function Execute()
 	MeasureCreate("Measure")
 
 	local measurelabel
-	if SimGetClass("SIM")==1 then
+	if SimGetClass("SIM") == 1 then
 		measurelabel = "BuyRawMaterialPatron"
-	elseif SimGetClass("SIM")==2 then
+	elseif SimGetClass("SIM") == 2 then
 		measurelabel = "BuyRawMaterialArtisan"
-	elseif SimGetClass("SIM")==3 then
+	elseif SimGetClass("SIM") == 3 then
 		measurelabel = "BuyRawMaterialScholar"
 	else
 		measurelabel = "BuyRawMaterialChiseler"

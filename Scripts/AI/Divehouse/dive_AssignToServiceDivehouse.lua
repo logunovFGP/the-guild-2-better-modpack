@@ -1,7 +1,7 @@
 function Weight()
 	
 	if IsDynastySim("SIM") then
-		if not ai_GetWorkBuilding("SIM ", GL_BUILDING_TYPE_PIRAT, "Divehouse") then
+		if not ai_GetWorkBuilding("SIM ", GL_BUILDING_TYPE_DIVEHOUSE, "Divehouse") then
 			return 0
 		end
 	else
@@ -18,7 +18,7 @@ function Weight()
 		return 0			
 	end
 
-	local Time = math.mod(GetGametime(),24)
+	local Time = math.mod(GetGametime(), 24)
 	local TryTime
 
 	if Time > 2 and Time < 10 then

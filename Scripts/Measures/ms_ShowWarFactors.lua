@@ -4,7 +4,7 @@
 -- -----------------------
 function Run()
 
-	if BuildingGetType("")==GL_BUILDING_TYPE_SCHOOL then
+	if BuildingGetType("")==GL_BUILDING_TYPE_ARSENAL then
 		StopMeasure()
 	end
 

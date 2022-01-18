@@ -4,7 +4,7 @@ function Run()
 	GetSettlement("", "City")
 
 	while true do
-		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
+		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
 			if GetProperty("WarChooser","WarPhase")==1 and not HasProperty("", "prewar") then
 				SetProperty("", "prewar", 1)
 				state_global_event_PreWar()

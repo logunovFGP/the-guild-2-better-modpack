@@ -1,6 +1,6 @@
 function Weight()
 
-	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_PIRAT, "Divehouse") then
+	if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_DIVEHOUSE, "Divehouse") then
 		return 0
 	end
 	
@@ -12,7 +12,7 @@ function Weight()
 		return 0
 	end
 
-	if not BuildingHasUpgrade("Divehouse","PiratenGrog") then
+	if not BuildingHasUpgrade("Divehouse", "PiratenGrog") then
 		return 0
 	end
 

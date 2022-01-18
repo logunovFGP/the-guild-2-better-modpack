@@ -19,11 +19,11 @@ function Run()
 		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
 
 			GetSettlement("", "my_settlement")
-			if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_BANK)[1]==0) then
+			if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
 				return false
 			end
 
-			CityGetRandomBuilding("my_settlement", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "guildhouse")
+			CityGetRandomBuilding("my_settlement", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "guildhouse")
 			if not f_MoveTo("", "guildhouse") then
 				return false
 			end

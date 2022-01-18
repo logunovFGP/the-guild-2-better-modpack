@@ -53,7 +53,7 @@ end
 function FindConcertDestination(CityIndex)
 	-- find a destination for the next concert
   local TavernCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HAS_DYNASTY, "tavern")
-  local DivehouseCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRAT, -1, -1, FILTER_HAS_DYNASTY, "divehouse")
+  local DivehouseCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_DIVEHOUSE, -1, -1, FILTER_HAS_DYNASTY, "divehouse")
 
 	if TavernCount <= 0 and DivehouseCount <= 0 then
 		return
@@ -276,9 +276,9 @@ function Rest()
 				end
 			else
 				if season == EN_SEASON_WINTER then
-					local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1500)AND NOT(Object.HasDynasty())AND NOT(Object.GetState(townnpc)))","FightPartner", -1)
+					local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1500)AND NOT(Object.HasDynasty())AND NOT(Object.GetState(townnpc)))", "FightPartner", -1)
 					if FightPartners>0 then
-						AlignTo("","FightPartner")
+						AlignTo("", "FightPartner")
 						Sleep(1)
 						idlelib_SnowballBattle("FightPartner")
 						Sleep(1)
@@ -288,13 +288,13 @@ function Rest()
 			Sleep(Rand(12)+6)
 		end
 		
-		if GetImpactValue("placeobj","torch")==0 then
+		if GetImpactValue("placeobj", "torch") == 0 then
 			GfxStopParticle("Campfire")
 		end
 		
-		f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
 		
-		if GetID("")==GetID("#Musician1") then
+		if GetID("") == GetID("#Musician1") then
 			SetData("#RestPlace",0)
 		end
 	end
@@ -307,10 +307,10 @@ function StartConcert()
 	local stage = GetData("#MusicStage")
 	local type = -1
 
-	if GetAliasByID(stage,"stageobj") then
+	if GetAliasByID(stage, "stageobj") then
 		if BuildingGetType("stageobj") == GL_BUILDING_TYPE_TAVERN then
 			type = 0
-		elseif BuildingGetType("stageobj") == GL_BUILDING_TYPE_PIRAT then
+		elseif BuildingGetType("stageobj") == GL_BUILDING_TYPE_DIVEHOUSE then
 			type = 1
 		end
 	end

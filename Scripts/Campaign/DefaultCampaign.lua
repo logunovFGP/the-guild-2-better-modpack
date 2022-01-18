@@ -17,7 +17,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	local PrimTypes = { GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_TAVERN  } 
 	local Protos = {	GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, -- most important
 				GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_TAILORING, GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH,  GL_BUILDING_TYPE_STONEMASON, -- second important
-				GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NECRO, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_PIRAT, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_GAUKLER  } -- least important
+				GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NECRO, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_GAUKLER  } -- least important
 	
 	local NumPrimTypes = 6
 	local NumProtos = 22
@@ -406,17 +406,17 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_JOINERY, -1, -1, FILTER_HAS_DYNASTY))*3
 					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_RANGERHUT, -1, -1, FILTER_HAS_DYNASTY))*3
 				else -- rogue
-					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MERCENARY, 1, -1, FILTER_NO_DYNASTY)
-					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_ROBBER, 1, -1, FILTER_NO_DYNASTY)
+					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CASTLE, 1, -1, FILTER_NO_DYNASTY)
+					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_ROBBER, 1, -1, FILTER_NO_DYNASTY)
 					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, 1, -1, FILTER_NO_DYNASTY)
-					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRAT, 1, -1, FILTER_NO_DYNASTY)
+					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_DIVEHOUSE, 1, -1, FILTER_NO_DYNASTY)
 					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRATESNEST, 1, -1, FILTER_NO_DYNASTY)
 					FreeWorkshops = FreeWorkshops + CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_JUGGLER, 1, -1, FILTER_NO_DYNASTY)
 					-- owned
-					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MERCENARY, -1, -1, FILTER_HAS_DYNASTY))*3
-					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_ROBBER, -1, -1, FILTER_HAS_DYNASTY))*3
+					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CASTLE, -1, -1, FILTER_HAS_DYNASTY))*3
+					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_ROBBER, -1, -1, FILTER_HAS_DYNASTY))*3
 					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, -1, -1, FILTER_HAS_DYNASTY))*3
-					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRAT, -1, -1, FILTER_HAS_DYNASTY))*3
+					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_DIVEHOUSE, -1, -1, FILTER_HAS_DYNASTY))*3
 					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_PIRATESNEST, -1, -1, FILTER_HAS_DYNASTY))*3
 					FreeWorkshops = FreeWorkshops - (CityGetBuildingCount( "CityList"..cc, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_JUGGLER, -1, -1, FILTER_HAS_DYNASTY))*3
 				end
@@ -511,7 +511,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 					Protos = { GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_BANKHOUSE }
 					ProtoCount = 5
 				else -- rogue
-					Protos = { GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_PIRAT }
+					Protos = { GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE }
 					ProtoCount = 2
 				end
 				

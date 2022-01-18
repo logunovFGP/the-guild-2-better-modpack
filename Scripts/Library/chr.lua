@@ -1333,8 +1333,8 @@ end
 function CheckGuildMaster(SimAlias,GuildHouse)
 
 	if GetSettlement(SimAlias, "city") then
-		if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_BANK)[1]>0) then
-			if not CityGetRandomBuilding("city", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "guildhouse") then
+		if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+			if not CityGetRandomBuilding("city", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "guildhouse") then
 				return false
 			end
 		else
@@ -1346,19 +1346,19 @@ function CheckGuildMaster(SimAlias,GuildHouse)
 	
 	local Class
 
-	if SimGetClass(SimAlias)==1 then
+	if SimGetClass(SimAlias) == 1 then
 		Class = "PatronMaster"
-	elseif SimGetClass(SimAlias)==2 then
+	elseif SimGetClass(SimAlias) == 2 then
 		Class = "ArtisanMaster"
-	elseif SimGetClass(SimAlias)==3 then
+	elseif SimGetClass(SimAlias) == 3 then
 		Class = "ScholarMaster"
-	elseif SimGetClass(SimAlias)==4 then
+	elseif SimGetClass(SimAlias) == 4 then
 		Class = "ChiselerMaster"
 	else
 		return false
 	end
 
-	if GetID(SimAlias)==GetProperty(GuildHouse, Class) then
+	if GetID(SimAlias) == GetProperty(GuildHouse, Class) then
 		return true
 	else
 		return false
