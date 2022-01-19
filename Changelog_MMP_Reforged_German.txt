@@ -28,8 +28,8 @@ Network Helper: Agentmass
 
 Installation:
 
-Installiere Die Gilde 2 - Renaissance
-Installiere Patchversion 4.211 (z.B. von www.gilde2.de) sofern du nicht die Steamversion hast (die automatisch aktualisiert wird)
+Installiere Die Gilde 2 - Renaissance.
+Installiere Patchversion 4.211 (z.B. von www.gilde2.de) sofern du nicht die Steamversion hast (die automatisch aktualisiert wird).
 Lösche den 'Scripts' Ordner aus dem Spielverzeichnis
 Entpacke die FMMP.zip in das Spielverzeichnis, überschreibe alles.
 Stelle sicher, dass die Sprache in der DB/text.dbt dem Eintrag 'language' in deiner config.ini entspricht.
@@ -38,14 +38,17 @@ Stelle sicher, dass die Sprache in der DB/text.dbt dem Eintrag 'language' in dei
 
 _Technik_
 - Scripte und Datenbanken aufgeräumt: Lesbarkeit verbessert, Funktionen + Aufbau optimiert, überflüssigen Code entfernt, Gestaltung der Scripte vereinheitlicht.
-- Ungenutzte Scripte separiert in einen 'Removed' Ordner (macht Löschen des Scripts-Ordners vor Installation erforderlich).
+- Ungenutzte Scripte separiert in einen 'Removed' Ordner.
+- Scripte und Ordner wurden umbenannt, um sie einheitlicher und lesbarer zu machen.
 - Keine erzwungene Heilung von kranken Mitarbeitern beim manuellen Anheuern mehr.
-- Das KI-Verhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
-- Die KI musste (abhängig vom Schwierigkeitsgrad) nur 80 bis 40 Prozent des Goldes durch Maßnahmen zahlen, das Spieler zahlen mussten. SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
+- Das Freizeitverhalten diverser NPCs wurde um neue Animationsfolgen erweitert oder performanter gestaltet.
+- Die KI musste (abhängig vom Schwierigkeitsgrad) bei Maßnahmen nur 80-40 Prozent ihres Goldes bezahlen (hardcoded). SpendMoney wurde mit chr_SpendMoney ersetzt, um dies zu umgehen. 
 - Duelle laufen etwas flüssiger ab.
 - Das Amtssitzungsscript wurde komplett ersetzt und neu strukturiert.
 - Das Gerichtsscript wurde überarbeitet.
-- Gebäude-Upgrade Datenbank wurde überarbeitet.
+- BuildingUpgrades.dbt wurde komplett überarbeitet.
+- GameConstants.dbt wurde überarbeitet. Scripte nutzen nun häufiger Konstanten, um Dinge zu vereinheitlichen und besser balancen zu können.
+- Die Möglichkeit, während Cutscenes Komplimente und andere Maßnahmen zu nutzen, wurde gestrichen. Alle Teile aus Scripten, die sich auf diesen Fall beziehen, wurden entfernt.
 
 _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.

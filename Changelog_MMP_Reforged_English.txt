@@ -28,9 +28,9 @@ Network Helper: Agentmass
 
 Installation:
 
-Install The Guild 2 - Renaissance
-Patch it up to Version 4.211 (Patch can be found at www.gilde2.de) unless you have the Steamversion (which is automaticly patched)
-Delete the 'Scripts' folder in your main game directory
+Install The Guild 2 - Renaissance.
+Patch it up to Version 4.211 (Patch can be found at www.gilde2.de) unless you have the Steamversion (which is automaticly patched).
+Delete the 'Scripts' folder in your main game directory.
 Extract the FMMP.zip to your main game directory, overwrite everything.
 Make sure the language in your DB/text.dbt matches your language setting in your config.ini
 
@@ -40,14 +40,17 @@ Enjoy!
 
 _Tech_
 - Script and database cleanup: Improved the readability, functions and structure, removed redundant code, unified the script-design.
-- Seperated unused scripts inside the new 'Removed' folder (To make use of that, you must delete your original Scripts folder before applying this patch).
+- Seperated unused scripts inside the new 'Removed' folder.
+- Renamed Scripts and Folders to have them more consistent and readable.
 - Newly hired workers will no longer get cured automaticly.
-- The idle and freetime behavior of many NPCs has been altered either to improve performance or immersion.
-- AI only needed to pay 40 zu 80 percent of the money players had to pay during certain actions. To fix this SpendMoney has been replaced by chr_SpendMoney
+- The idle and freetime behavior of many NPCs have been altered either to improve performance or immersion.
+- The AI only needed to pay 80-40 percent of the money during actions (hardcoded). To fix this SpendMoney has been replaced by chr_SpendMoney
 - Duels are a bit more fluent now.
 - Officesession script has been replaced and restructured completely.
 - Trial script has been reworked.
-- Building Upgrade database has been reworked.
+- BuildingUpgrades.dbt has been reworked.
+- GameConstants.dbt has been reworked. Scripts use GameConstants much more frequently now to make things more consistent and easier to balance.
+- The possibility of using compliments and other actions during cutscenes have caused many issues and thus got removed. All cutscene-only parts of those scripts have been removed.
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
