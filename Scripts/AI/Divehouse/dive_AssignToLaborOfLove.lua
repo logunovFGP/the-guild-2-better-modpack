@@ -21,12 +21,14 @@ function Weight()
 	local trys = 20
 	local DistanceFound = 0
 	local BestDistance = MaxDistance
-				
+	local Found = false	
+		
 	for i=1, trys do
 		if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
 			if not HasProperty("WorkBuilding", "OutdoorPos"..i) then -- check if we already have one employee here
 				DistanceFound = GetDistance("SIM", "Pos") -- check how far that pos is
 				if DistanceFound < BestDistance then
+					Found = true
 					BestDistance = DistanceFound
 					CopyAlias("Pos", "Destination")
 					SetProperty("SIM", "OutdoorPos", i) -- save this for later
@@ -37,6 +39,11 @@ function Weight()
 				end
 			end
 		end
+	end
+	
+	if Found then
+		local MyPos = GetProperty("SIM", "OutdoorPos")
+		SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
 	end
 	
 	if not AliasExists("Destination") then
@@ -57,9 +64,7 @@ function Weight()
 end
 
 function Execute()
-	local MyPos = GetProperty("SIM", "OutdoorPos")
-	SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
-	
+
 	MeasureRun("SIM", "Destination", "AssignToLaborOfLove")
 end
 

@@ -17,6 +17,7 @@ function Weight()
 	local trys = 20
 	local DistanceFound = 0
 	local BestDistance = MaxDistance
+	local Found = false
 				
 	for i=1, trys do
 		if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
@@ -26,13 +27,19 @@ function Weight()
 					BestDistance = DistanceFound
 					CopyAlias("Pos", "Destination")
 					SetProperty("SIM", "OutdoorPos", i) -- save this for later
-							
+					Found = true
+					
 					if BestDistance < 2000 then -- it's near? great, then don't waste any more time!
 						break
 					end
 				end
 			end
 		end
+	end
+	
+	if Found then
+		local MyPos = GetProperty("SIM", "OutdoorPos")
+		SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
 	end
 	
 	if not AliasExists("Destination") then
@@ -47,9 +54,7 @@ function Weight()
 end
 
 function Execute()
-	local MyPos = GetProperty("SIM", "OutdoorPos")
-	SetProperty("WorkBuilding", "OutdoorPos"..MyPos, 1) -- set WorkBuilding pos
-	
+
 	MeasureCreate("Measure")
 	MeasureAddData("Measure", "TimeOut", 2)
 	MeasureStart("Measure", "SIM", "Destination", "PickpocketPeople")
