@@ -1075,7 +1075,7 @@ Data:
 3635             1001             "ProtectionOfBurglary"      1                     0                 8                    0.25                 3634              0                 150             0          |
 3636             1002             "ProtectionOfBurglary"      1                     0                 8                    0.25                 3635              0                 150             0          |
 
-// Graveyard (Friedhof) 660-662
+// Crypt 660-662
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 3700             660              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
 3701             660              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
@@ -1181,7 +1181,7 @@ Data:
 3850             667              "rosenstrauch"              1                     0                 8                    0.25                 3835              0                 150             0          |
 
 
-// Juggler (Gaukler) 670-672
+// Juggler 670-672
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 3900             670              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
 3901             670              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |

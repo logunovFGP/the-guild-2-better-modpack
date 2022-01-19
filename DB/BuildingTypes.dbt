@@ -49,10 +49,10 @@ Data:
 42   "weddingchapel"   0   0   0   |
 43   "bankhouse"   41   3   959   |
 97   "none"   1   0   0   |
-98   "Friedhof"   40   3   966   |
+98   "crypt"   40   3   966   |
 100   "robber"   15   4   0   |
 101   "thief"   26   4   0   |
-102   "gaukler"   42   4   571   |
+102   "juggler"   42   4   571   |
 104   "Mill"   66   1   943   |
 108   "Fruitfarm"   68   1   0   |
 109   "Soldierplace"   0   0   0   |
