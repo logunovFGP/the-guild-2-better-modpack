@@ -3,34 +3,36 @@ function Weight()
 		return 0
 	end
 
-	local	maxcount
-	local	count
-	local	level
-
-	count			= GetItemCount("Hut", "Herring", INVENTORY_STD)
-	maxcount	= InventoryGetSlotSize("Hut", "Herring", INVENTORY_STD) - 10
-	if count < maxcount then
-		if ResourceFind("Hut","Herring","Resource", true) then
-			return 100
+	local	CountHerring = GetItemCount("Hut", "Herring", INVENTORY_STD)
+	local	CountSalmon = GetItemCount("Hut", "Salmon", INVENTORY_STD)
+	
+	if CountHerring<=CountSalmon then
+		if CanAddItems("Hut", "Herring", 10, INVENTORY_STD) then
+			if ResourceFind("Hut","Herring","Resource", true) then
+				return 100
+			end
+		elseif CanAddItems("Hut", "Salmon", 10, INVENTORY_STD) then
+			if ResourceFind("Hut","Salmon","Resource", true) then
+				return 100
+			end
+		else
+			return 0
+		end
+	else
+		if CanAddItems("Hut", "Salmon", 10, INVENTORY_STD) then
+			if ResourceFind("Hut","Salmon","Resource", true) then
+				return 100
+			end
+		elseif CanAddItems("Hut", "Herring", 10, INVENTORY_STD) then
+			if ResourceFind("Hut","Herring","Resource", true) then
+				return 100
+			end
+		else
+			return 0
 		end
 	end
 	
-	level			= BuildingGetLevel("Hut")
-	
-	if level<2 then
-		return 0
-	end
-	
-	count			= GetItemCount("Hut", "Salmon", INVENTORY_STD)
-	maxcount	= InventoryGetSlotSize("Hut", "Salmon", INVENTORY_STD) - 10
-	if count < maxcount then
-		if ResourceFind("Hut","Salmon","Resource", true) then
-			return 100
-		end
-	end
-	
-	return 0
-	
+	return 0	
 end
 
 function Execute()

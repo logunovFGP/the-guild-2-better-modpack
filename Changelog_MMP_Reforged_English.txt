@@ -271,6 +271,7 @@ _AI_
 - At a certain time and on higher difficulty AI dynasties will dislike it if you build the same type of buildings they already posess.
 - AI now better thinks about if it should accept protection money rackets or not.
 - AI will now check for time and waiting sims in front of their churches before assigning workers to hold a mass.
+- AI of fisher boats has been improved and will select the fish depending on what you have already in stock.
 
 *** Balancing ***
 

@@ -278,6 +278,7 @@ _KI_
 - Die KI überlegt sich nun besser, ob sie Schutzgelderpressungen annehmen sollte oder nicht.
 - Die KI der Kirchen überprüft nun nicht nur die Uhrzeit, sondern auch, ob bereits Sims vor der Tür stehen und auf eine Messe warten, bevor sie einen Priester
   anweist, eine Messe zu starten.
+- Die KI der Fischerboote wurde verbessert und wird nun etwas intelligenter auswählen, was gefischt wird.
 
 *** Balancing ***
 
