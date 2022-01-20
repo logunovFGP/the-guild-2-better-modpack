@@ -240,6 +240,7 @@ _Allgemein_
 - Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
 - Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
 - Die neue Karte 'Yorkshire' wurde hinzugefügt.
+- Neue Credits-Szene.
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 - Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod und Zusammenschnitten wurde hinzugefügt.
 - Beim Rufmord durch den Stadtschreier wird das Opfer nun benachrichtigt, desweiteren erhalten Charaktere in einem großen Umkreis denselben Beweis.

@@ -1,13 +1,13 @@
 -- the "Prepare" function is called directly after the map is loaded from the .wld-file
 function Prepare()
-	ScenarioSetOutdoorScrollBoundaries(-23160, -13428, 19783, -18032, 9881, 30561, -33661, 19147)
+	ScenarioSetOutdoorScrollBoundaries(-31361, 28000, -31160, -16000, 20426, -16000, 20000, 30000) -- Upper right (X, Z), Bottom right (X, Z), Bottom left (X, Z), Upper Left (X, Z)
 	ScenarioSetNameLanguage("french")
 	
 	local worldname = "France_3s"
 	local mapid = gameplayformulas_GetDatabaseIdByName("maps", worldname)
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
-	
+	SetProperty("World", "seamap", 1)
 
 	--if not IsMultiplayerGame() then
 		local Options = FindNode("\\Settings\\Options")

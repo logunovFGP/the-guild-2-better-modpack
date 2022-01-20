@@ -236,6 +236,7 @@ _General_
 - Added a new action to mark a dynasty character as important (same category as inventory-action). That character then will appear in the 'Important Persons' list.
 - Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
 - Added a new map "Yorkshire".
+- New credit scene.
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
 - Multiple actions now instantly open the important persons GUI and other windows for target selection.
