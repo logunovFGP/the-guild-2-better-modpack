@@ -3,27 +3,26 @@ Fajeth's MegaModPack Reforged - Lite Edition (0.1)
 *** Credits ***
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
+Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Nommy, Vivi
 Maps: Fajeth
 GUI: MoK, Fajeth, Napi96
-Icons: Fajeth, F-Man, ThreeOfMe, Jollina
-Textures: Jollina, Skip, Broliii
+2D: Fajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe
+Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
+Internal Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe
 
 Localization:
 German: Fajeth, ThreeOfMe
-English: Fajeth, ThreeOfMe, F-Man, Edglord_Zack
+English: Fajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack
 Spanish: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador
-Italian: Marian, 
+Italian: frankieorabona, Marian, Caligari89
 French: Rico, StalkFire, Techgenieur, Erfive
 Portuguese: Regismrs, BossPenguin 
-Russian: Mr.Bro, DogFire
+Russian: Rumata, Mr.Bro, DogFire
 Polish: Seljuck
 Hungarian: WiNTeR, Rdancsol, jooe
 
 Social Media: Erilambus, Fajeth
-Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
 Network Helper: Agentmass
 
 Installation:

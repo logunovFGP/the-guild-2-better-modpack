@@ -3,13 +3,13 @@ Fajeth's MegaModPack Reforged - Lite Editon (0.1)
 *** Credits ***
 
 Lead: Fajeth
-Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Napi96, Nommy
+Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Nommy, Vivi
 Maps: Fajeth
 GUI: MoK, Fajeth, Napi96
-Icons: Fajeth, F-Man, ThreeOfMe, Jollina
-Texturen: Jollina, Skip, Broliii
+2D: Fajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii
 3D Objects: Ictiv 
-Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee
+Zusätzlicher Support: MoK, VSX, McCoy!, sublogic, Sunpack, nirvana, Scandal, Napi96, Zbombe, Jedi93, barra81, Dogus + Die Gilde 2 Community!
+Internal Testing: Jollina, VSX, ThreeOfMe, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee
 
 Lokalisierung:
 Deutsch: Fajeth, ThreeOfMe
@@ -23,7 +23,6 @@ Polnisch: Seljuck
 Ungarisch: WiNTeR, Rdancsol, jooe
 
 Soziale Medien: Erilambus, Fajeth
-Anderer Support: McCoy!, sublogic, Sunpack, nirvana, Scandal, Zbombe, Jedi93, barra81, Dogus + Die Gilde 2 Community!
 Network Helper: Agentmass
 
 Installation:
