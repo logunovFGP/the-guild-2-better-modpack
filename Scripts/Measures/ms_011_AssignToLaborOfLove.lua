@@ -94,14 +94,14 @@ function Run()
 				
 			for i=1, trys do
 				if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
-					Found = true
 					if not HasProperty("WorkBuilding", "OutdoorPos"..i) then -- check if we already have one employee here
 						DistanceFound = GetDistance("", "Pos") -- check how far that pos is
 						if DistanceFound < BestDistance then
 							BestDistance = DistanceFound
 							CopyAlias("Pos", "Destination")
 							SetProperty("", "OutdoorPos", i) -- save this for later
-								
+							Found = true
+							
 							if BestDistance < 2000 then -- it's near? great, then don't waste any more time!
 								break
 							end
