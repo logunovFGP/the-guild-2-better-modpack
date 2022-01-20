@@ -129,7 +129,7 @@ function Start()
 		end
 	end
 	
-	for i = 1, 3 do
+	for i = 1, 5 do
 		if GetOutdoorLocator("Guard"..i, 1, "GuardPos") then
 			SimCreate(918, "", "GuardPos", "NPC")
 			GetNearestSettlement("NPC", "City")
