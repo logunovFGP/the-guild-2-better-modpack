@@ -639,7 +639,8 @@ function EndDuel()
 	
 	-- reset the favor and state
 	if GetFavorToSim("challenger","challenged") ~= 50 then
-		SetFavorToSim("challenger","challenged", 50)
+		SetFavorToSim("challenger", "challenged", 50)
+		dyn_AddFondness("challenger", "challenged")
 	end
 	
 	duel_Torch(0)

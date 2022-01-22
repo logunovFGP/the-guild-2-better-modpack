@@ -312,6 +312,28 @@ function ModifyFavor(source, dest, val)
 	elseif Diplo == DIP_FOE and val > 0 then
 	-- harder to gain if you are enemies
 		val = math.floor(val / 2)
+	else
+		-- check title-difference
+		local SourceTitle = GetNobilityTitle(source, true)
+		local DestinationTitle = GetNobilityTitle(dest, true)
+			
+		if val > 0 then
+		-- harder to gain favor
+			if (SourceTitle + 2) < DestinationTitle then
+				val = math.floor(val / 2)
+				if (SourceTitle + 4) < DestinationTitle then
+					val = math.floor(val / 2)
+				end
+			end
+		else
+		-- easier to lose favor
+			if (SourceTitle + 2) < DestinationTitle then
+				val = math.floor(val*1.5)
+				if (SourceTitle + 4) < DestinationTitle then
+					val = math.floor(val*1.5)
+				end
+			end
+		end
 	end
 	
 	-- grudge and fondness
@@ -319,10 +341,20 @@ function ModifyFavor(source, dest, val)
 		local TargetID = GetDynastyID(dest)
 		if HasProperty("MyDyn", "Grudge"..TargetID) then
 			-- grudges reduce positive favor and raise losts
-			val = val - GetProperty("MyDyn", "Grudge"..TargetID)
+			val = math.ceil(val - (GetProperty("MyDyn", "Grudge"..TargetID))*1.5)
 		elseif HasProperty("MyDyn", "Fondness"..TargetID) then
 			-- fondness makes your bond stronger
-			val = val + GetProperty("MyDyn", "Fondness"..TargetID)
+			val = math.floor(val + (GetProperty("MyDyn", "Fondness"..TargetID))*1.5)
+		end
+	end
+	
+	if IsDynastySim(source) and IsDynastySim(dest) then
+		-- add new grudges
+		if val <= -20 then
+			dyn_AddGrudge(source, dest)
+		elseif val >= 20 then
+		-- add new fondness
+			dyn_AddFondness(source, dest)
 		end
 	end
 	

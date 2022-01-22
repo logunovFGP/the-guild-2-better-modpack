@@ -246,8 +246,10 @@ _General_
 - Changed some voice lines when clicking on your employees.
 - When hiring a new employee, that employee will now say something with a voice line.
 - When firing an employee, that employee will send you a sad message.
+- Favor gains have been rebalanced. There are now 'categories' from 'Tiny' to 'Max' impact instead of raw numbers in each script. 
+  For example, actions like perfume will count as a 'small favor', while insults can be seen as 'large favor' decrease.
 - You can now obtain 'grudges' or 'fondness' with other dynasties. Those traits will affect directly how much favor you gain or lose with them. Gain fondness to remove grudges
-  and vice versa.
+  and vice versa. You obtain a new level of grudge or fondness everytime one of your actions changes the favor with the target for at least 20 points.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
@@ -323,7 +325,9 @@ _General_
 - The action 'embezzle public money' now works the same no matter which game round it is: you can steal up to 10% of the city treasury but max. 5000 gold per try.
 - Dynasties you have an alliance with will only lose half of the normal favor if you do something they would dislike.
   Vice versa, dynasties you have a feud with will only gain half of the normal favor if you do something they would like.
+- For dynasties you don't have an alliance or a feud with, the increase or decrease of favor heavily depends on your title. If your title is a lot lower, you will gain less and lose more favor.
 - You need slightly more imperial / guild fame before you get the first level of reputation.
+- The upgrades in your residence which gave you some fame have been removed.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

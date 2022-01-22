@@ -251,7 +251,10 @@ _Allgemein_
 - Angestellte sprechen nun teilweise andere Sätze, wenn man sie anklickt.
 - Wenn man Arbeitslose anstellen will, sagen diese nun ein paar Worte.
 - Wenn man Arbeitslose entlässt, schicken diese noch eine traurige Nachricht zum Abschied.
-- Man kann nun 'Groll' und 'Zuneigung' zu anderen Dynastien sammeln. Dieser besondere Wert beeinflusst den Gunstgewinn (oder Verlust) bei jeder Gunstveränderung.
+- Gunstveränderungen sind nun einheitlich in Kategorien geregelt, anstelle willkürlicher Werte bei jeder Aktion.
+  Parfum ist z.B. ein 'kleiner Modifikator', während eine Beleidigung bereits einen 'großen Modifikator' nutzt.
+- Man kann nun 'Groll' und 'Zuneigung' zu anderen Dynastien sammeln. Dieser besondere Wert beeinflusst den Gunstgewinn (oder Verlust) bei jeder Gunstveränderung um jeweils 1,5 Punkte.
+  Man erhält Groll oder Zuneigung, wenn sich die Gunst zu einer anderen Dynastie durch eine einzelne Aktion um mindestens 20 Punkte verschiebt.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
@@ -330,7 +333,9 @@ _Allgemein_
 - Die Maßnahme "Öffentliche Gelder veruntreuen" ist nun unabhängig von der gespielten Runde und ermöglicht einen Diebstahl von bis zu 5000 Goldmünzen, jedoch maximal ein Zehntel der Stadtkasse.
 - Dynastien, mit denen du einen Beistandspakt hast, werden nun weniger Gunst verlieren, wenn du etwas machst, das sie eigentlich nicht mögen.
   Umgekehrt bekommen jedoch auch Dynastien, mit denen du eine Fehde hast, deutlich weniger Gunst, wenn du ihnen etwas Gutes tust.
+- Bei Dynastien, mit denen du weder Fehde noch Beistandspakt hast, hängt die Gunstveränderung stark von deinem Titel ab. Ist dieser deutlich niedriger, so fallen Gunstgewinne geringer und Gunstverluste höher aus.
 - Man benötigt nun etwas mehr Gilden/Reichsruf, bevor man die erste Reputationsstufe erhält.
+- Die Upgrades im Wohnsitz, die etwas Ruf einbrachten, wurden entfernt.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
