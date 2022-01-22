@@ -155,3 +155,273 @@ function MakeDecision(DynastyAlias, Trait, Random)
 		return 0
 	end
 end
+
+-- -----------------------
+-- Guildhouse Fame Functions
+-- -----------------------
+function GetFame(SimAlias)
+	
+	if not IsDynastySim(SimAlias) then
+		return -1
+	end
+	
+	local fame = 0
+
+	if GetDynasty(SimAlias, "family") then
+		if GetProperty("family", "Fame") then
+			fame = GetProperty("family", "Fame")
+		else
+			SetProperty("family", "Fame", 0)
+		end
+	end
+
+	return fame
+end
+
+function AddFame(SimAlias, Amount)
+	
+	if not IsDynastySim(SimAlias) then
+		return
+	end
+	
+	local fame = 0 + dyn_GetFame(SimAlias)
+	
+	if GetDynasty(SimAlias, "family") then
+		SetProperty("family", "Fame", (fame+Amount))
+	end
+end
+
+function RemoveFame(SimAlias, Amount)
+	if not IsDynastySim(SimAlias) then
+		return
+	end
+	
+	local fame = 0 + dyn_GetFame(SimAlias)
+	
+	if GetDynasty(SimAlias, "family") then
+		SetProperty("family", "Fame", (fame-Amount))
+	end
+end
+
+function GetFameLevel(SimAlias)
+
+	if not IsDynastySim(SimAlias) then
+		return -1
+	end
+	
+	local fame = 0 + dyn_GetFame(SimAlias)
+
+	if fame < GL_FAME_POINTS_KNOWN then
+		return 0
+	elseif fame < GL_FAME_POINTS_NOTED then
+		return 1
+	elseif fame < GL_FAME_POINTS_RESPECTED then
+		return 2
+	elseif fame < GL_FAME_POINTS_LIKED then
+		return 3
+	elseif fame < GL_FAME_POINTS_FAMOUS then
+		return 4
+	else
+		return 5
+	end
+end
+
+-- -----------------------
+-- Imperial Fame Functions
+-- -----------------------
+function GetImperialFame(SimAlias)
+	
+	if not IsDynastySim(SimAlias) then
+		return -1
+	end
+	
+	local fame = 0
+
+	if GetDynasty(SimAlias, "family") then
+		if GetProperty("family", "ImperialFame") then
+			fame = GetProperty("family", "ImperialFame")
+		else
+			SetProperty("family", "ImperialFame", 0)
+		end
+	end
+
+	return fame
+end
+
+function AddImperialFame(SimAlias, Amount)
+	
+	if not IsDynastySim(SimAlias) then
+		return
+	end
+	
+	local fame = 0 + dyn_GetImperialFame(SimAlias)
+	
+	if GetDynasty(SimAlias, "family") then
+		SetProperty("family", "ImperialFame", (fame+Amount))
+	end
+end
+
+function RemoveImperialFame(SimAlias, Amount)
+	if not IsDynastySim(SimAlias) then
+		return
+	end
+	
+	local fame = 0 + dyn_GetImperialFame(SimAlias)
+	
+	if GetDynasty(SimAlias, "family") then
+		SetProperty("family", "ImperialFame", (fame-Amount))
+	end
+end
+
+
+function GetImperialFameLevel(SimAlias)
+
+	if not IsDynastySim(SimAlias) then
+		return -1
+	end
+	
+	local fame = 0 + dyn_GetImperialFame(SimAlias)
+
+	if fame < GL_IMPERIAL_FAME_POINTS_KNOWN then
+		return 0
+	elseif fame < GL_IMPERIAL_FAME_POINTS_NOTED then
+		return 1
+	elseif fame < GL_IMPERIAL_FAME_POINTS_RESPECTED then
+		return 2
+	elseif fame < GL_IMPERIAL_FAME_POINTS_LIKED then
+		return 3
+	elseif fame < GL_IMPERIAL_FAME_POINTS_FAMOUS then
+		return 4
+	else
+		return 5
+	end
+end
+
+-- -----------------------
+-- ModifyFavor
+-- needs 2 sims of the dynasties
+-- no rattle the chains / overhead feedback (see chr_ModifyFavor)
+-- -----------------------
+function ModifyFavor(source, dest, val)
+	
+	local Diplo = DynastyGetDiplomacyState(source, dest)
+		
+	if Diplo == DIP_ALLIANCE and val < 0 then
+	-- harder to lose if you are friends
+		val = math.floor(val / 2)
+	elseif Diplo == DIP_FOE and val > 0 then
+	-- harder to gain if you are enemies
+		val = math.floor(val / 2)
+	end
+	
+	-- grudge and fondness
+	if GetDynasty(source, "MyDyn") then
+		local TargetID = GetDynastyID(dest)
+		if HasProperty("MyDyn", "Grudge"..TargetID) then
+			-- grudges reduce positive favor and raise losts
+			val = val - GetProperty("MyDyn", "Grudge"..TargetID)
+		elseif HasProperty("MyDyn", "Fondness"..TargetID) then
+			-- fondness makes your bond stronger
+			val = val + GetProperty("MyDyn", "Fondness"..TargetID)
+		end
+	end
+	
+	ModifyFavorToSim(source, dest, val)
+end
+
+-- -----------------------
+-- AddGrudge. Grudges reduce the favor value in dyn_ModifyFavor and chr_ModifyFavor
+-- needs 2 sims of the dynasties
+-- -----------------------
+function AddGrudge(source, dest)
+
+	if GetDynasty(source, "MyDyn") and GetDynasty(dest, "TargetDyn") then
+	
+		local TargetID = GetDynastyID(dest)
+		local MyDynID = GetDynastyID(source)
+		
+		-- check for fondness first
+		if HasProperty("MyDyn", "Fondness"..TargetID) then
+			local FondnessCounter = GetProperty("MyDyn", "Fondness"..TargetID)
+			if FondnessCounter > 1 then
+				-- we are still friends, no grudge added
+				SetProperty("MyDyn", "Fondness"..TargetID, FondnessCounter-1)
+				SetProperty("TargetDyn", "Fondness"..MyDynID, FondnessCounter-1)
+				return
+			else
+				RemoveProperty("MyDyn", "Fondness"..TargetID)
+				RemoveProperty("TargetDyn", "Fondness"..MyDynID)
+				return
+			end
+		end
+		
+		--check for grudges now
+		if HasProperty("MyDyn", "Grudge"..TargetID) then
+			local GrudgeCounter = GetProperty("MyDyn", "Grudge"..TargetID)
+			if GrudgeCounter < GL_GRUDGES_MAX then
+				-- it can still get worse
+				SetProperty("MyDyn", "Grudge"..TargetID, GrudgeCounter+1)
+				SetProperty("TargetDyn", "Grudge"..MyDynID, GrudgeCounter+1)
+				return
+			else
+				return
+			end
+			
+			return
+		else
+			-- add first grudge
+			SetProperty("MyDyn", "Grudge"..TargetID, 1)
+			SetProperty("TargetDyn", "Grudge"..MyDynID, 1)
+			return
+		end
+	end
+end
+
+-- -----------------------
+-- AddFondness. Fondness raises the favor in dyn_ModifyFavor and chr_ModifyFavor
+-- needs 2 sims of the dynasties
+-- -----------------------
+function AddFondness(source, dest)
+
+	if GetDynasty(source, "MyDyn") and GetDynasty(dest, "TargetDyn") then
+	
+		local TargetID = GetDynastyID(dest)
+		local MyDynID = GetDynastyID(source)
+		
+		-- check for grudges first
+		if HasProperty("MyDyn", "Grudge"..TargetID) then
+			local GrudgeCounter = GetProperty("MyDyn", "Grudge"..TargetID)
+			if GrudgeCounter > 0 then
+				-- we had grudges from the past. Let's befriend
+				if GrudgeCounter > 1 then
+					SetProperty("MyDyn", "Grudge"..TargetID, GrudgeCounter-1)
+					SetProperty("TargetDyn", "Grudge"..MyDynID, GrudgeCounter-1)
+					return
+				else
+					RemoveProperty("MyDyn", "Grudge"..TargetID)
+					RemoveProperty("TargetDyn", "Grudge"..MyDynID)
+					return
+				end
+			end
+		end
+		
+		--check for fondness now
+		if HasProperty("MyDyn", "Fondness"..TargetID) then
+			local FondnessCounter = GetProperty("MyDyn", "Fondness"..TargetID)
+			if FondnessCounter < GL_FONDNESS_MAX then
+				-- it can still get even better
+				SetProperty("MyDyn", "Fondness"..TargetID, FondnessCounter+1)
+				SetProperty("TargetDyn", "Fondness"..MyDynID, FondnessCounter+1)
+				return
+			else
+				return
+			end
+			
+			return
+		else
+			-- add first fondness
+			SetProperty("MyDyn", "Fondness"..TargetID, 1)
+			SetProperty("TargetDyn", "Fondness"..MyDynID, 1)
+		end
+	end
+end

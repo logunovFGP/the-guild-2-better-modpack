@@ -152,22 +152,25 @@ function Run()
 		else
 		    SetProperty("WarChooser","Hostility"..choice,val-10)
 		end
+		
 		if val2 < 5 then
-		    SetProperty("WarChooser","WarRisk", 0)
+			SetProperty("WarChooser", "WarRisk", 0)
 		else
-		    SetProperty("WarChooser","WarRisk", val-5)
+			SetProperty("WarChooser", "WarRisk", val-5)
 		end
-		chr_SimAddImperialFame("",10)
+		
+		dyn_AddImperialFame("", 10)
+		
 	elseif choice2 == 2 then
-	    moveDipi = PlayAnimationNoWait("Diplomat","propel")
-	    MsgSay("Diplomat","@L_MEASURE_WUERDENTRAGEREMPFANGEN_UNFRIENDLY_ANS_+0")
-		SetProperty("WarChooser","Hostility"..choice,val+10)	
+		moveDipi = PlayAnimationNoWait("Diplomat", "propel")
+		MsgSay("Diplomat","@L_MEASURE_WUERDENTRAGEREMPFANGEN_UNFRIENDLY_ANS_+0")
+		SetProperty("WarChooser","Hostility"..choice, val+10)	
 		SetProperty("WarChooser","WarRisk", val+5)
-		chr_SimRemoveImperialFame("",10)
+		dyn_RemoveImperialFame("", 10)
 	else
-	    moveDipi = PlayAnimationNoWait("Diplomat","shake_head")
-	    MsgSay("Diplomat","@L_MEASURE_WUERDENTRAGEREMPFANGEN_JUSTGO_ANS_+0")
-        SetProperty("WarChooser","Hostility"..choice,val+5)		
+		moveDipi = PlayAnimationNoWait("Diplomat","shake_head")
+		MsgSay("Diplomat","@L_MEASURE_WUERDENTRAGEREMPFANGEN_JUSTGO_ANS_+0")
+		SetProperty("WarChooser", "Hostility"..choice, val+5)		
 	end
 	Sleep(moveDipi-1)
 

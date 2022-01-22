@@ -9,7 +9,7 @@ GUI: MoK, Fajeth, Napi96
 2D: Fajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii
 3D Objects: Ictiv 
 Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
-Internal Testing: Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe
+Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe
 
 Localization:
 German: Fajeth, ThreeOfMe
@@ -76,6 +76,7 @@ _Design_
 - The actions for buying cheap ressource-crates from the guild house have been deactivated. They will be replaced by a better system
   in one of the later updates of the mod.
 - Versengold (the band) doesn't spawn before round 3.
+- Imperial and guild fame are now dynasty traits only. Every action of your family members will affect the whole dynasty.
 
 *** Vanilla-Bugs ***
 
@@ -245,6 +246,8 @@ _General_
 - Changed some voice lines when clicking on your employees.
 - When hiring a new employee, that employee will now say something with a voice line.
 - When firing an employee, that employee will send you a sad message.
+- You can now obtain 'grudges' or 'fondness' with other dynasties. Those traits will affect directly how much favor you gain or lose with them. Gain fondness to remove grudges
+  and vice versa.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
@@ -279,8 +282,8 @@ _AI_
 *** Balancing ***
 
 _General_
-- They way talents impact your actions has been reworked completely. Instead of a linear progression there is a higher random factor and levels of succession. You will
-  also get visual feedback every time your character attempts a skillcheck.
+- Skillchecks with your talents work different now and have a higher random aspect. You will get a notification when you
+  want to try something though which will give a hint about your chances.
 - You can now use ALL of your buisness inspectors to inspect buisnesses instead of just one at a time. However you can no longer inspect buisnesses more than once every 48 hours.
   Using that power will make you lose a lot of favor with the owner of that buisness and with their workers.
 - Declining a bribe will now lose you only 5 favor.
@@ -318,6 +321,9 @@ _General_
 - XP gains by actions is now based on the years-per-round setting (1 year per round = 50% value, 4 years 200%)
 - Guards will now take breaks during the night.
 - The action 'embezzle public money' now works the same no matter which game round it is: you can steal up to 10% of the city treasury but max. 5000 gold per try.
+- Dynasties you have an alliance with will only lose half of the normal favor if you do something they would dislike.
+  Vice versa, dynasties you have a feud with will only gain half of the normal favor if you do something they would like.
+- You need slightly more imperial / guild fame before you get the first level of reputation.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

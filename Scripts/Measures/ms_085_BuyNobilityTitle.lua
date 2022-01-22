@@ -1,8 +1,8 @@
-
 -- -----------------------
 -- Run
 -- -----------------------
 function Run()
+
 	-- divide into God-Measure and Character-Measure
 	if IsType("", "Building") then
 		if BuildingGetType("") == GL_BUILDING_TYPE_TOWNHALL then
@@ -27,16 +27,16 @@ function Run()
 				if (currenttitle == GL_HIGHEST_NOBILITY_TITLE) then
 					MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_GODM_+1")
 					StopMeasure()
-					return
 				end
-				local famelvl = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
-				if chr_DynastyGetImperialFameLevel("boss") < famelvl then
-					local impfameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..famelvl
+				
+				local RequiredFameLvL = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
+				if dyn_GetImperialFameLevel("boss") < RequiredFameLvL then
+					local ImperialFameLabel = "@L_IMPERIAL_FAME_DYNASTY_+"..RequiredFameLvL
+					local FamePoints = gameplayformulas_GetImperialLevelPoints(RequiredFameLvL)
 					MsgBox("boss", "", "@P@B[0,@L_BUYTITLE_IMPERIALFAME_NO_BUTTON_+0]", "@L_MEASURE_BuyNobilityTitle_NAME_+0",
 										"@L_BUYTITLE_IMPERIALFAME_NO_TALK_+0",
-										newtitle, impfameleveldyn, chr_GetImperialFameLevelPoints(famelvl))
+										newtitle, ImperialFameLabel, FamePoints)
 					StopMeasure()
-					return	
 				end
 				if cost > money then
 					MsgBox("boss", "", "@P@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+1]"..
@@ -44,7 +44,6 @@ function Run()
 										"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
 										GetID("boss"), newtitle, cost)
 					StopMeasure()
-					return	
 				else
 
 					local BYesNo = MsgBox("boss", "", "@P@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+0]"..
@@ -70,22 +69,18 @@ function Run()
 
 							MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID("boss"))
 							StopMeasure()
-							return
 						else
 							MsgQuick("boss", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+1")
 							StopMeasure()
-							return
 						end
 					else
 						StopMeasure()
-						return
 					end
 				end
 			end
 		
 		else
 			StopMeasure()
-			return
 		end
 	end
 	
@@ -103,7 +98,7 @@ function Run()
 
 			local famelvl = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
 
-			if not (chr_DynastyGetImperialFameLevel("") < famelvl) then			
+			if dyn_GetImperialFameLevel("") < famelvl then			
 
 				if (chr_SpendMoney("", cost, "CostAdministration")) then
 					SetNobilityTitle("", currenttitle+1, false)
@@ -123,7 +118,6 @@ function Run()
 		-- Check if the sim is inside the townhall
 		if not GetInsideBuilding("", "councilbuilding") then
 			StopMeasure()
-			return
 		end
 		
 		-- Check if the desk is busy
@@ -209,6 +203,7 @@ function Run()
 					MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_1_+7", GetID(""))
 				end
 			else
+			
 				if (season == EN_SEASON_SPRING) then
 					MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_1_+8", GetID(""))
 				elseif (season == EN_SEASON_SUMMER) then
@@ -234,61 +229,58 @@ function Run()
 				PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 				MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_IMPOSSIBLE")
 				StopMeasure()
-				return
-				
 			else
 				-- Check if the sim has enough money
 				local money = GetMoney("")
-
 				local cost = GetDatabaseValue("NobilityTitle", currenttitle+1, "price")
+				
 				if cost == "" then
 					MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+2")
 					StopMeasure()
 				end
 
-				local famelvl = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
-
+				local RequiredFameLvL = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
 				local newtitle = GetNobilityTitleLabel(currenttitle+1)
 				local buy = 0
 				local Icant = false
 				
 				PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 									
-				if chr_DynastyGetImperialFameLevel("") < famelvl then
+				if dyn_GetImperialFameLevel("") < RequiredFameLvL then
 
-					local impfameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..famelvl
-
-					MsgSayInteraction("","Usher","",
-						"@B[A, @L_BUYTITLE_IMPERIALFAME_NO_BUTTON_+0]",
-						ms_085_buynobilitytitle_AIDecide,  --AIFunc
-						"@L_BUYTITLE_IMPERIALFAME_NO_TALK_+0",
-						newtitle, impfameleveldyn, chr_GetImperialFameLevelPoints(famelvl))
+					local ImperialFameLabel = "@L_IMPERIAL_FAME_DYNASTY_+"..RequiredFameLvL
+					local FamePoints = gameplayformulas_GetImperialLevelPoints(RequiredFameLvL)
+					
+					MsgSayInteraction("", "Usher", "",
+								"@B[A, @L_BUYTITLE_IMPERIALFAME_NO_BUTTON_+0]",
+								ms_085_buynobilitytitle_AIDecide,  --AIFunc
+								"@L_BUYTITLE_IMPERIALFAME_NO_TALK_+0",
+								newtitle, ImperialFameLabel, FamePoints)
 						
-						Icant = true
+					Icant = true
 
 				elseif cost > money then
 					
-					MsgSayInteraction("","Usher","",
-						"@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+1]"..
-						"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]",
-						ms_085_buynobilitytitle_AIDecide,  --AIFunc
-						"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
-						GetID(""), newtitle, cost)
+					MsgSayInteraction("", "Usher", "",
+								"@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+1]"..
+								"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]",
+								ms_085_buynobilitytitle_AIDecide,  --AIFunc
+								"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
+								GetID(""), newtitle, cost)
 						
-						Icant = true
+					Icant = true
 					
 				else
-					local BYesNo = MsgSayInteraction("","Usher","",
-							"@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+0]"..
-							"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]",
-							ms_085_buynobilitytitle_AIDecide,  --AIFunc
-							"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
-							GetID(""), newtitle, cost)
+					local BYesNo = MsgSayInteraction("", "Usher", "",
+											"@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+0]"..
+											"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]",
+											ms_085_buynobilitytitle_AIDecide,  --AIFunc
+											"@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE",
+											GetID(""), newtitle, cost)
 											
 					if (BYesNo == "A") then
 						buy = 1
 					end
-					
 				end
 
 				camera_CutsceneBothLockCam("cutscene", "Usher", "Far_HUpYRight")
@@ -313,7 +305,9 @@ function Run()
 
 						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID(""))
-						GetDynasty("","dyn")
+						
+						GetDynasty("", "dyn")
+						
 						if HasProperty("dyn", "Priority1") then
 							SetProperty("dyn", "Priority1", "none")
 						end						
@@ -321,7 +315,6 @@ function Run()
 						
 						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+1")
-						
 					end
 				else
 				
@@ -330,30 +323,30 @@ function Run()
 						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_NO")
 					end
-
 				end
-				
 			end
-			
 		end
+		
 		StopAnimation("Usher")
 		DestroyCutscene("cutscene")
 		SetData("CutsceneCleared", 1)
-	
 		StopAnimation("")
 
 		if(GetLocatorByName("councilbuilding", "LookAtBoardPos", "LookAtBoardPos")) then
 			f_MoveTo("", "LookAtBoardPos")
-		end			
+		end	
+		
 		f_StrollNoWait("", 350, 2)
 	end
 end
 
 function AIDecide()
+
 	return "A"
 end
 
 function getRandomTalk()	
+
 	local TargetArray = {"sit_talk_short", "sit_talk", "sit_talk_02"}
 	local TargetCount = 3
 	return TargetArray[Rand(TargetCount)+1]
@@ -363,9 +356,11 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
+
 	if GetData("CutsceneCleared") ~= 1 then
 		DestroyCutscene("cutscene")
 	end
+	
 	StopAnimation("Owner")
 	
 	-- "free" the usher

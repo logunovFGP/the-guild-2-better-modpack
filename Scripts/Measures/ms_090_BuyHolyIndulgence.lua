@@ -9,7 +9,7 @@ function Run()
 
 	local TextPrefix = "@L_CHURCH_090_BUYHOLYINDULGENCE"
 	
-	if GetItemCount("",166,INVENTORY_STD) <= 0 then		--lettofindulgence
+	if GetItemCount("", "LetterOfIndulgence", INVENTORY_STD) <= 0 then
 		MsgQuick("","@L_REPLACEMENTS_FAILURE_MSG_NOITEM_+0")
 		StopMeasure()
 	end
@@ -45,7 +45,7 @@ function Run()
 		if (money < Cost) then
 			MsgQuick("", "@L_CHURCH_090_BUYHOLYINDULGENCE_FAILURES_+1", Cost)
 		else
-			RemoveItems("", 166, 1, INVENTORY_STD)
+			RemoveItems("", "LetterOfIndulgence", 1, INVENTORY_STD)
 			if GetFreeLocatorByName("church","HolyIndulgence",-1,-1,"HolyIndulgencePos") then
 				f_BeginUseLocator("","HolyIndulgencePos",GL_STANCE_KNEEL,true)
 				SetData("Blocked", 1)
@@ -71,19 +71,17 @@ function Run()
 				""..TextPrefix.."_SUCCESS_MSG_BODY",GetID(""),GetID("church"),Cost)
 		end
 	end
-	StopMeasure()
 end
 
 function CleanUp()
 	StopAnimation("")
-	if GetData("Blocked")==1 then
+	if GetData("Blocked") == 1 then
 		f_EndUseLocator("","HolyIndulgencePos",GL_STANCE_STAND)
 	end
-
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

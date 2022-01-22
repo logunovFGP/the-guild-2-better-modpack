@@ -38,7 +38,7 @@ end
 
 function CalcFindRange(ObjectAlias)
 	local Level = SimGetLevel(ObjectAlias)
-	local Skillvalue = GetSkillValue(ObjectAlias,SECRET_KNOWLEDGE)
+	local Skillvalue = GetSkillValue(ObjectAlias, SECRET_KNOWLEDGE)
 	local BaseRange = 1000
 	
 	return BaseRange * Level + (Skillvalue * 500)
@@ -51,7 +51,7 @@ function CalcSightRange(ObjectAlias)
 	end
 
 	local Level = SimGetLevel(ObjectAlias)
-	local Skillvalue = GetSkillValue(ObjectAlias,EMPATHY)
+	local Skillvalue = GetSkillValue(ObjectAlias, EMPATHY)
 	local BaseRange = 250
 	return BaseRange + (Level * 50) + (Skillvalue * 100)
 end
@@ -61,8 +61,8 @@ function CalcDamage(fWeaponDamage)
 end
 
 function GetDamage(SimAlias, fWeaponDamage)
-	local AttackValue	= GetSkillValue(SimAlias,FIGHTING)
-	local Damage	= fWeaponDamage + (SimGetLevel(SimAlias) + AttackValue)*0.5
+	local AttackValue = GetSkillValue(SimAlias,FIGHTING)
+	local Damage = fWeaponDamage + (SimGetLevel(SimAlias) + AttackValue)*0.5
 	return Damage	
 end
 
@@ -71,7 +71,7 @@ function CalcArmorValue()
 end
 
 function GetArmorValue(SimAlias)
-	local Armor	= GetArmor(SimAlias) + GetImpactValue(SimAlias, "FightArmor")
+	local Armor = GetArmor(SimAlias) + GetImpactValue(SimAlias, "FightArmor")
 	return Armor	
 end
 
@@ -302,46 +302,6 @@ function SimIsAlderman()
 	end
 end
 
-function GetImpFameDynasty()
-	if IsDynastySim("") and GetDynasty("", "family") then
-		return chr_DynastyGetImperialFameLevel("")
-	else
-		return -1
-	end
-end
-
-function GetImpFameSim()
-	return chr_SimGetImperialFameLevel("")
-end
-
-function GetImpFameValue(SimAlias)
-	if (HasProperty(SimAlias,"ImperialFame")) then
-		return GetProperty(SimAlias,"ImperialFame")
-	else
-		return -1
-	end
-end
-
-function GetFameDynasty()
-	if IsDynastySim("") and GetDynasty("", "family") then
-		return chr_DynastyGetFameLevel("")
-	else
-		return -1
-	end
-end
-
-function GetFameSim()
-	return chr_SimGetFameLevel("")
-end
-
-function GetFameValue(SimAlias)
-	if (HasProperty(SimAlias,"Fame")) then
-		return GetProperty(SimAlias,"Fame")
-	else
-		return -1
-	end
-end
-
 function GetDatabaseIdByName(table, name)
 	local id = 1
 	while id<1000 do
@@ -363,7 +323,7 @@ function GetTotalOfficeIncome(city)
 	local OfficeNameLabel = ""
 	local officelabel = ""
 
-	for o=1,highestlvl do
+	for o=1, highestlvl do
 		officecount = CityGetOfficeCountAtLevel(city, o)
 		for i=0, officecount-1 do
 			if CityGetOffice(city, o, i, "office") then
@@ -374,7 +334,7 @@ function GetTotalOfficeIncome(city)
 
 					id = 1
 					while id<37 do
-						if (GetDatabaseValue("Offices", id, "title")==officelabel) then
+						if (GetDatabaseValue("Offices", id, "title") == officelabel) then
 							costs = costs + GetDatabaseValue("Offices", id, "income")
 							break
 						else
@@ -767,21 +727,21 @@ function CheckImperialOfficer()
 			local SimFameArray = {}
 			local SimArrayCount = 0
 
-			for d=0,DynCount-1 do
+			for d=0, DynCount-1 do
 				Alias = "Dyn"..d
 				if GetID(Alias)>0 and DynastyIsPlayer(Alias) or DynastyIsAI(Alias) or DynastyIsShadow(Alias) then
 					SimCount = DynastyGetMemberCount(Alias)
-					for e=0,SimCount do
+					for e=0, SimCount do
 						DynastyGetMember(Alias, e, "Sim")
-						if not SimGetOfficeLevel("Sim")==7 then
+						if not SimGetOfficeLevel("Sim") == 7 then
 							local num = 0
 							while num<100 do
-								if chr_SimGetImperialFameLevel("Sim")>1 and chr_DynastyGetImperialFameLevel("Sim")>0 then
+								if dyn_GetImperialFameLevel("Sim") > 1 then
 									if SimArray[num]==GetID("Sim") then
 										break
 									elseif SimArray[num]==nil then
 										SimArray[num] = GetID("Sim")
-										SimFameArray[num] = chr_SimGetImperialFame("Sim") + math.floor(chr_DynastyGetImperialFame("Sim")/10)
+										SimFameArray[num] = dyn_GetImperialFame("Sim")
 										SimArrayCount = SimArrayCount + 1
 										break
 									end
@@ -829,13 +789,12 @@ function CheckImperialOfficer()
 					local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+0"
 
 					GetSettlement("New", "settlement")
-					local famelevelsim = "@L_IMPERIAL_FAME_SIM_+"..chr_SimGetImperialFameLevel("New")
-					local fameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..chr_DynastyGetImperialFameLevel("New")
+					local fameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..dyn_GetImperialFameLevel("New")
 
 					MsgNewsNoWait("All","New","","politics",-1,
 							"@L_IMPERIAL_OFFICER_"..gender.."_+0",
 							"@L_CHECKIMPERIALOFFICER_BODY_+0",
-							GetYear(), GetID("New"), GetID("settlement"), label, famelevelsim, chr_SimGetImperialFame("New"), fameleveldyn, chr_DynastyGetImperialFame("New"), lordlabel)
+							GetYear(), GetID("New"), GetID("settlement"), label, fameleveldyn, dyn_GetImperialFame("New"), lordlabel)
 
 				end
 			else
@@ -856,5 +815,21 @@ function checkBuildingNoRoom(building)
 		return 1
 	else
 		return 0
+	end
+end
+
+function GetImperialLevelPoints(FameLevel)
+	local Points = 0
+	
+	if FameLevel == 1 then
+		Points = GL_IMPERIAL_FAME_POINTS_KNOWN
+	elseif FameLevel == 2 then
+		Points = GL_IMPERIAL_FAME_POINTS_NOTED
+	elseif FameLevel == 3 then
+		Points = GL_IMPERIAL_FAME_POINTS_RESPECTED
+	elseif FameLevel == 4 then
+		Points = GL_IMPERIAL_FAME_POINTS_LIKED
+	elseif FameLevel == 5 then
+		Points = GL_IMPERIAL_FAME_POINTS_FAMOUS
 	end
 end

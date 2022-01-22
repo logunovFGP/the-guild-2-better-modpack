@@ -197,7 +197,7 @@ function CheckForKing()
 		return
 	end
 	
-	if GetNobilityTitle("Boss")<8 then
+	if GetNobilityTitle("Boss") < 8 then
 		SetNobilityTitle("Boss", 8)
 	end
 	

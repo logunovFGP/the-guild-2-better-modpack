@@ -52,7 +52,7 @@ function Weight()
 		return 0
 	end
 
-	if not (chr_DynastyGetImperialFameLevel("") < famelvl) then
+	if not (dyn_GetImperialFameLevel("") < famelvl) then
 		if GetNobilityTitle("SIM") < 9 then
 			return 100
 		end

@@ -10,16 +10,17 @@
 -- Run
 -- -----------------------
 function Run()
+
 	if not GetSettlement("", "MyCity") then
 		return
 	end
 
-	local FameLvl = chr_DynastyGetFameLevel("") + 1
-	local ImpFameLvl = chr_DynastyGetImperialFameLevel("") + 1
+	local FameLvl = dyn_GetFameLevel("")
+	local ImpFameLvl = dyn_GetImperialFameLevel("")
 	local Appmoney
 	local App1 = GL_APPRENTICESHIPMONEY
-	local App2 = GL_APPRENTICESHIPMONEY * FameLvl
-	local App3 = GL_APPRENTICESHIPMONEY * ImpFameLvl
+	local App2 = GL_APPRENTICESHIPMONEY * (2+FameLvl)
+	local App3 = GL_APPRENTICESHIPMONEY * (6+ImpFameLvl)
 	local BuildingType
 	local choice = 0
 
@@ -32,9 +33,7 @@ function Run()
 		end
 		
 	else
-		--GetLocalPlayerDynasty("Player")
 		GetDynasty("", "dynasty")
-		DynastyGetMember("dynasty",0,"boss")
 		
 		local button1 = "@B[1,@L_ATTEND_APPRENTICE_NEW_OPTION_+1]" -- Guild manufacturer
 		local button2 = "@B[2,@L_ATTEND_APPRENTICE_NEW_OPTION_+2]" -- Guild patron
@@ -54,17 +53,18 @@ function Run()
 			App2 = App1
 		end
 		
-		choice = MsgBox("boss", "", "@P"..
+		choice = MsgBox("dynasty", "", "@P"..
 						button1..
 						button2..
 						button3..
 						button4..
 						"@B[0,@L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
-					"@L_ATTEND_APPRENTICESHIP_NEW_HEAD_+0",
-					"@L_ATTEND_APPRENTICESHIP_NEW_BODY_+0",
-					GetID(""),App1,App2,App3)
+						"@L_ATTEND_APPRENTICESHIP_NEW_HEAD_+0",
+						"@L_ATTEND_APPRENTICESHIP_NEW_BODY_+0",
+						GetID(""),App1,App2,App3)
 		
 	end
+	
 	if (choice==1) then
 		Appmoney = App1
 		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
@@ -82,6 +82,7 @@ function Run()
 				end
 			end
 		end
+		
 	elseif (choice==2) then
 		Appmoney = App1
 		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
@@ -124,10 +125,10 @@ function Run()
 			end
 		end
 		
-	elseif (choice==0) then
+	elseif (choice == 0) then
 		Appmoney = 0
 		GetHomeBuilding("","DestBuilding")
-	elseif (choice==5) or (choice==6) then
+	elseif (choice == 5) or (choice == 6) then
 		Appmoney = App2
 	else 
 		Appmoney = App3
@@ -139,17 +140,17 @@ function Run()
 		GetOutdoorLocator("MapExit1",1,"DestPos")
 	end
 
-	if not HasProperty("","ApprenticeshipPayed"..choice) then
+	if not HasProperty("", "ApprenticeshipPayed"..choice) then
 		
 		if not chr_SpendMoney("Dynasty", Appmoney, "CostEducation") then
 			MsgQuick("", "@L_FAMILY_150_ATTENDAPPRENTICESHIP_FAILURES_+0", GetID(""), Appmoney)
 			StopMeasure()
 		end
 		
-		SetProperty("","ApprenticeshipPayed"..choice,1)	
+		SetProperty("", "ApprenticeshipPayed"..choice, 1)	
 	end
 	
-	if not GetHomeBuilding("","Home") then
+	if not GetHomeBuilding("", "Home") then
 		StopMeasure()
 	end
 

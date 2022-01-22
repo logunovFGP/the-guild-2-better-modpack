@@ -922,3 +922,39 @@ function ChooseFromItems(ItemCount, ItemList, IncludeOK)
 	end
 	return nil
 end
+
+function CityGetUnemployedCount(CityAlias)
+	local UnemployedFilter = "__F((Object.GetObjectsByRadius(Sim) == 15000)AND(Object.GetProfession() == 0)AND NOT(Object.IsDynastySim())AND NOT(Object.GetState(npc))AND NOT(Object.GetState(npcfighter)))"
+	local NumUnemployed = Find(CityAlias, UnemployedFilter, "Sim", -1)
+	local NumUnemployedCity = 0
+	
+	for i=0, NumUnemployed-1 do
+		if GetSettlementID("Sim"..i) == GetID(CityAlias) then
+			NumUnemployedCity = NumUnemployedCity + 1
+		end
+	end
+	
+	return NumUnemployedCity
+end
+
+function CityGetGuardCount(CityAlias)
+	local Cityguard, Eliteguard
+	
+	Cityguard = 0 + CityGetServantCount(CityAlias, GL_PROFESSION_CITYGUARD)
+	LogMessage(GetName(CityAlias).." hat "..Cityguard.." Cityguards.")
+	Eliteguard = 0 + CityGetServantCount(CityAlias, GL_PROFESSION_ELITEGUARD)
+	LogMessage(GetName(CityAlias).." hat "..Eliteguard.." Eliteguards.")
+	
+	return Cityguard, Eliteguard
+end
+
+function CityGetServantCount(CityAlias)
+	local Servants = 0
+	
+	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_PRISONGUARD)
+	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_INSPECTOR)
+	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_MONITOR)
+	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_INQUISITOR)
+	
+	return Servants
+end

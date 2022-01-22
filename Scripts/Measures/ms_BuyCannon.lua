@@ -8,7 +8,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	local Fame = chr_SimGetImperialFameLevel("")
+	local Fame = dyn_GetImperialFameLevel("")
 
 	local ImperialOfficer = false
 	if chr_GetImperialOfficer()==GetID("") then
@@ -140,8 +140,8 @@ function Run()
 	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	-- CarryObject("","",false)	
 
-	AddItems("",Object,amount)
-	chr_SimAddImperialFame("",amount)
+	AddItems("", Object, amount)
+	dyn_AddImperialFame("", amount)
 	
 end
 

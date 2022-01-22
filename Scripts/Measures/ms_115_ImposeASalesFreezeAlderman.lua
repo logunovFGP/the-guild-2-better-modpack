@@ -44,34 +44,33 @@ function Run()
 		Sleep(1)
 	end
 	
-	PlayAnimationNoWait("","propel")
-	MsgSay("","@L_PRIVILEGES_115_IMPOSEASALESFREEZE_COMMENT_ACTOR_+0")
+	PlayAnimationNoWait("", "propel")
+	MsgSay("", "@L_PRIVILEGES_115_IMPOSEASALESFREEZE_COMMENT_ACTOR_+0")
 
-	SetData("Freezed",1)
+	SetData("Freezed", 1)
 	StartGameTimer(duration)
-	SimGetWorkingPlace("","Workbuilding")
+	SimGetWorkingPlace("", "Workbuilding")
 	SetRepeatTimer("Workbuilding", GetMeasureRepeatName(), TimeOut)
 
 	AddImpact("Destination", "sale_freezed", 1, duration)
-	GetSettlement("","CityAlias")
+	GetSettlement("", "CityAlias")
 	local Elapse = GetGametime() + duration
 	local ID = "Event"..GetID("")
 
 	local gradelabel
-	if SimGetGender("")==GL_GENDER_MALE then
+	if SimGetGender("") == GL_GENDER_MALE then
 		gradelabel = "@L_CHECKALDERMAN_ALDERMAN_MALE_+0"
 	else
 		gradelabel = "@L_CHECKALDERMAN_ALDERMAN_FEMALE_+0"
 	end
 
-	MsgNewsNoWait("All","","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+1,%5i,%6l]","economie",-1,
-		"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_HEAD_+0",
-		"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_BODY_+1",
-		gradelabel,GetID(""),GetID("Destination"),GetID("CityAlias"),Elapse,ID)
+	MsgNewsNoWait("All", "","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+1,%5i,%6l]","economie",-1,
+				"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_HEAD_+0",
+				"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_BODY_+1",
+				gradelabel,GetID(""),GetID("Destination"),GetID("CityAlias"),Elapse,ID)
 
-	local fame = chr_SimGetFameLevel("")
-	chr_SimRemoveFame("",fame)
-
+	local fame = dyn_GetFameLevel("")
+	dyn_RemoveFame("", fame)
 end
 
 function CleanUp()

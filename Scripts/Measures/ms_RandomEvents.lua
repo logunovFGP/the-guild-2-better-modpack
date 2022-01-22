@@ -257,12 +257,12 @@ function RandomEventPositiv(SimAlias)
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+14",cash)
 
 	elseif RandEvent == 15 then
-		chr_SimAddFame("PlayerSim",mod)
+		dyn_AddFame("PlayerSim", mod)
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+15")
 
 	elseif RandEvent == 16 then
-		chr_SimAddImperialFame("PlayerSim",mod)
+		dyn_AddImperialFame("PlayerSim", mod)
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+16")
 
@@ -381,12 +381,12 @@ function RandomEventNegativ(SimAlias)
                   "@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+11")
 ]]--
 	elseif RandEvent == 12 then
-		chr_SimRemoveFame("PlayerSim",mod)
+		dyn_RemoveFame("PlayerSim", mod)
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+1",
 					"@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+12")
 
 	elseif RandEvent == 13 then
-		chr_SimRemoveImperialFame("PlayerSim",mod)
+		dyn_RemoveImperialFame("PlayerSim", mod)
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEGATIV_MESSAGE_HEAD_+1",
 					"@L_RANDOM_EVENT_NEGATIV_MESSAGE_BODY_+13")
 	end

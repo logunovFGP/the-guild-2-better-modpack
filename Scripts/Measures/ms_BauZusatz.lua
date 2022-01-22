@@ -5,13 +5,13 @@ function Run()
 
 	if GetImpactValue("Destination", "BauArbeiter") == 0 then
 		local wahl
-		if chr_DynastyGetFameLevel("BuildingOwner") <= 1 then
+		if dyn_GetFameLevel("BuildingOwner") <= 1 then
 			wahl = "S0"
-		elseif chr_DynastyGetFameLevel("BuildingOwner") <= 3 then
+		elseif dyn_GetFameLevel("BuildingOwner") <= 3 then
 			wahl = "S1"
-		elseif chr_DynastyGetFameLevel("BuildingOwner") <= 4 then
+		elseif dyn_GetFameLevel("BuildingOwner") <= 4 then
 			wahl = "S2"
-		elseif chr_DynastyGetFameLevel("BuildingOwner") <= 5 then
+		elseif dyn_GetFameLevel("BuildingOwner") <= 5 then
 			wahl = "S3"
 		end
 
@@ -35,13 +35,13 @@ function AIWahl()
 		return
 	end
 
-	if chr_DynastyGetFameLevel("BuildingOwner") <= 1 then
+	if dyn_GetFameLevel("BuildingOwner") <= 1 then
 		return "S0"
-	elseif chr_DynastyGetFameLevel("BuildingOwner") <= 3 then
+	elseif dyn_GetFameLevel("BuildingOwner") <= 3 then
 		return "S1"
-	elseif chr_DynastyGetFameLevel("BuildingOwner") <= 4 then
+	elseif dyn_GetFameLevel("BuildingOwner") <= 4 then
 		return "S2"
-	elseif chr_DynastyGetFameLevel("BuildingOwner") <= 5 then
+	elseif dyn_GetFameLevel("BuildingOwner") <= 5 then
 		return "S3"
 	else
 		return "S"..Rand(2)

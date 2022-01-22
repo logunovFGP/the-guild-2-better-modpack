@@ -259,8 +259,8 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	CreditMoney("boss", StartMoney, "GameStart")
 	
 	if Fame and ImpFame then
-		chr_SimAddFame("boss", Fame)
-		chr_SimAddImperialFame("boss", ImpFame)
+		dyn_AddFame("boss", Fame)
+		dyn_AddImperialFame("boss", ImpFame)
 	end
 	
 	return ""

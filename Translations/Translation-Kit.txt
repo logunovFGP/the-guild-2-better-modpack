@@ -591,7 +591,7 @@ Translate and add the following lines below:
 // no need to translate the credits
 18574   "_CREDITS_+0"   ">Fajeth's Megamodpack Reforged<: $NFanaddon for >The Guild 2 - Renaissance<$Nby Fajeth$N$N$NOriginal Developers:$NRUNEFORGE Game Studio$N4HEAD Studios$N$N$NPublished by$NJoWooD Entertainment AG$NNordic Games (THQ Nordic)"   |
 18575   "_CREDITS_+1"   "$[Megamod Credits$]$N$N$[Project Lead and Design$]$NFajeth$N$N$[Script Design$]$NFajeth, ThreeOfMe, Serpens66, F-Man, Nommy$N$N$[Map Design$]$NFajeth$N$N$[Additional Music$]$NOST Europe 1400 The Guild$N$N$[GUI$]$NMoK, Fajeth, Napi96$N$N$[2D$]$NFajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii$N$N$[3D$]$NIctiv"   |
-18576   "_CREDITS_+2"   "$[Additional Support$]$NVSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus$N$N$[Special Thanks to:$]$NTHQ Nordic$NThe Guild 2 Community!$N$N$[Internal Testing$]$NJollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe$N$N$[Network Helper$]$NAgent Mass$N$N$[Community Support$]$NThreeOfMe$NErilambus$NVSX$NFajeth"   |
+18576   "_CREDITS_+2"   "$[Additional Support$]$NVSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus$N$N$[Special Thanks to:$]$NTHQ Nordic$NThe Guild 2 Community!$N$N$[Internal Testing$]$NThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe$N$N$[Network Helper$]$NAgent Mass$N$N$[Community Support$]$NThreeOfMe, Erilambus, VSX, Fajeth"   |
 18577   "_CREDITS_+3"   "$[Localization$]$N$N$[German$]$NFajeth, ThreeOfMe$N$N$[English$]$NFajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack$N$N$[Spanish$]$NSkip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador$N$N$[Italian$]$Nfrankieorabona, Marian, Caligari89$N$N$[French$]$NRico, StalkFire, Techgenieur, Erfive$N$N$[Portuguese$]$NRegismrs, BossPenguin$N$N$[Russian$]$NRumata, Mr. Bro, Dogfire$N$N$[Polish$]$NSeljuck$N$N$[Hungarian$]$NWiNTeR, Rdancsol, jooe "   |
 18578   "_CREDITS_+4"   "Original Credits for The Guild 2 Renaissance:$N$N$[Project Lead$]$NHeinrich Meyer$N$N$[Lead Artist$]$NStephan Kubisch$N$N$[Lead Game Designer$]$NHeinrich Meyer$N$N$[Additional Concept & Game Design$]$NJakob Marczynski$NFabian Hackhofer$NTobias Horn$N"   |
 18579   "_CREDITS_+5"   "$[Technical Director & Programming$]$NFabian Hackhofer$N$N$[Programming ModLauncher$]$NKristian Ziegenmeyer$N$N$[Scripting$]$NHeinrich Meyer$NFabian Hackhofer$NJakob Marczynski$NJean-Luc Preikschas$NDennis Müller"   |
@@ -619,6 +619,18 @@ Translate and add the following lines below:
 18601   "_CREDITS_+27"   "$[Acknowledgement (Patch 4.2)$]$N$NMany thanks to Audinity (www.audinity.com) for remastering remastering 6 pieces of our music!$N$NAlso thank you to Kinver, LordProtektor, McCoy, DarkLiz, Zbombe and M.C.$Nfor their helpful suggestions and solutions to so many stubborn bugs.$N$NAnd not to forget: Thank you also to the many fans of >The Guild 2 - Renaissance<, who$Nhave kept the game alive and have tirelessly called our attention to bugs.$N"   |
 18602   "_CREDITS_+28"   "$N$NEnjoy!"   |
 //
+18603   "_CHECKIMPERIALOFFICER_HEAD_+0"   "Counsellor %7l"   |
+18604   "_CHECKIMPERIALOFFICER_BODY_+0"   "With today %2SN from %3NAME is appointed >%4l%< for the duration of the year %1n %.$N$NReputation %7l: $NImperial Fame of the family: %5l (%6n)"   |
+18605   "_CHECKALDERMAN_BODY_+0"   "The council of the guild elders has selected %2SN, %3l of %4NAME, as alderman for the region for the year %1n.$N$NFame of the family: %5l (%6n)"   |
+18606   "_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0"   "Reputation"   |
+18607   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0"   "%6l%1SN is %2l to %3NAME.$N$NGuildhouse Fame of the family: %4l (%5n)$N$NImperial Fame %7l: %8l (%9n)"   |
+18608   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1"   "%4l%1SN does not belong to a guild.$N$NGuildhouse Fame of the family: %2l (%3n)$N$NImperial Fame %5l: %6l (%7n)"   |
+18609   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2"   "%5l%1SN does not belong to a guild, as in %2NAME no guild house has been founded yet.$N$NGuildhouse Fame of the family %3l (%4n)$N$NImperial Fame %6l: %7l (%8n)"   |
+18609   "_MEASURE_ShowGuildMembership_NAME_+0"   "Show your reputation"   |
+18610   "_MEASURE_ShowGuildMembership_TOOLTIP_+0"   "With this you can view the reputation of your family."   |
+18611   "_MEASURE_ShowGuildMembershipSim_NAME_+0"   "Show reputation of others"   |
+18612   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this, you can view the reputation of another family."   |
+18613   "_MEASURE_ShowGuildMembershipSim_TARGET_+0"   "Select the person whose reputation you want to see"   |
 
 
 -------

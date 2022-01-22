@@ -562,10 +562,36 @@ end
 -- ModifyFavor
 -- -----------------------
 function ModifyFavor(source, dest, val)
-	-- check if the owner has RattleTheChains impact
-	if GetImpactValue(dest,"RattleTheChains") == 1 and val < 0 then
-		val = val / 2
+	
+	if IsDynastySim(source) and IsDynastySim(dest) then
+		local Diplo = DynastyGetDiplomacyState(source, dest)
+		
+		if Diplo == DIP_ALLIANCE and val < 0 then
+		-- harder to lose if you are friends
+			val = math.floor(val / 2)
+		elseif Diplo == DIP_FOE and val > 0 then
+		-- harder to gain if you are enemies
+			val = math.floor(val / 2)
+		end
+		
+		-- grudge and fondness
+		if GetDynasty(source, "MyDyn") then
+			local TargetID = GetDynastyID(dest)
+			if HasProperty("MyDyn", "Grudge"..TargetID) then
+				-- grudges reduce positive favor and raise losts
+				val = val - GetProperty("MyDyn", "Grudge"..TargetID)
+			elseif HasProperty("MyDyn", "Fondness"..TargetID) then
+				-- fondness makes your bond stronger
+				val = val + GetProperty("MyDyn", "Fondness"..TargetID)
+			end
+		end
 	end
+	
+	-- lose only 50 percent favor if you have rattle the chains impact
+	if GetImpactValue(dest,"RattleTheChains") == 1 and val < 0 then
+		val = math.floor(val / 2)
+	end
+	
 	ModifyFavorToSim(source, dest, val)
 
 	if DynastyIsPlayer(source) or DynastyIsPlayer(dest) then
@@ -580,104 +606,23 @@ end
 
 -- -----------------------
 -- SkillCheck
+-- Roll higher than difficulty + enemy talent value
 -- -----------------------
-function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill, Hidden)
-	local TalentValue = GetSkillValue(SimAlias, Skill)*(10-Difficulty)
-	local TalentEnemy = 10
+function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill)
+	local TalentValue = GetSkillValue(SimAlias, Skill) + Rand(3)
+	local TalentEnemy = 0
 	
-	if DestAlias then
-		TalentEnemy = GetSkillValue(DestAlias, DestSkill)*10
+	if DestAlias ~= nil then
+		TalentEnemy = GetSkillValue(DestAlias, DestSkill)
 	end
 	
-	local MyRoll = Rand(TalentValue)
-	local EnemyRoll = Rand(TalentEnemy)
-	local Roll = MyRoll - EnemyRoll
+	local SuccessValue = TalentEnemy + Difficulty
 	
-	local MySkillIcon = ""
-	local DestSkillIcon = ""
-	local ShowIcons = false
-	
-	if not Hidden then
-		if DynastyIsPlayer(SimAlias) or DynastyIsPlayer(DestAlias) then
-			ShowIcons = true
-		end
+	if Rand(TalentValue) > Rand(SuccessValue) then
+		return true
+	else
+		return false
 	end
-	
-	if ShowIcons then -- visual feedback of the skill rolls
-	
-		-- show icon for destination
-		if DestAlias then
-			
-			if DestSkill == DEXTERITY then
-				DestSkillIcon = "$S[2016]"
-			elseif DestSkill == CONSTITUTION then
-				DestSkillIcon = "$S[2017]"
-			elseif DestSkill == FIGHTING then
-				DestSkillIcon = "$S[2018]"
-			elseif DestSkill == CRAFTSMANSHIP then
-				DestSkillIcon = "$S[2019]"
-			elseif DestSkill == SHADOW_ARTS then
-				DestSkillIcon = "$S[2020]"
-			elseif DestSkill == RHETORIC then
-				DestSkillIcon = "$S[2021]"
-			elseif DestSkill == EMPATHY then
-				DestSkillIcon = "$S[2022]"
-			elseif DestSkill == BARGAINING then
-				DestSkillIcon = "$S[2023]"
-			elseif DestSkill == SECRET_KNOWLEDGE then
-				DestSkillIcon = "$S[2024]"
-			elseif DestSkill == CHARISMA then
-				DestSkillIcon = "$S[2025]"
-			end
-			
-			feedback_OverheadSkill(SimAlias, "Skillcheck %3SN: "..DestSkillIcon.." %1n (%2n)", true, EnemyRoll, TalentEnemy, GetID(DestAlias))
-		end
-		
-		-- show icon for me
-		if Skill == DEXTERITY then
-			MySkillIcon = "$S[2016]"
-		elseif Skill == CONSTITUTION then
-			MySkillIcon = "$S[2017]"
-		elseif Skill == FIGHTING then
-			MySkillIcon = "$S[2018]"
-		elseif Skill == CRAFTSMANSHIP then
-			MySkillIcon = "$S[2019]"
-		elseif Skill == SHADOW_ARTS then
-			MySkillIcon = "$S[2020]"
-		elseif MySkill == RHETORIC then
-			MySkillIcon = "$S[2021]"
-		elseif Skill == EMPATHY then
-			MySkillIcon = "$S[2022]"
-		elseif Skill == BARGAINING then
-			MySkillIcon = "$S[2023]"
-		elseif Skill == SECRET_KNOWLEDGE then
-			MySkillIcon = "$S[2024]"
-		elseif Skill == CHARISMA then
-			MySkillIcon = "$S[2025]"
-		end
-		
-		Sleep(0.4)
-		feedback_OverheadSkill(SimAlias, "Skillcheck %3SN: "..MySkillIcon.." %1n (%2n)", true, MyRoll, TalentValue, GetID(SimAlias))
-	end
-
-	
-	local SuccessLevel = 0
-	
-	if Roll > 0 then -- Success
-		if Roll >= 50 then -- Perfect roll
-			SuccessLevel = 3
-		elseif Roll >= 20 then -- good roll
-			SuccessLevel = 2
-		else -- decent roll
-			SuccessLevel = 1
-		end
-	else -- failure
-		if Roll < 30 then -- critical failure, additional consequences
-			SuccessLevel = -1
-		end
-	end
-	
-	return SuccessLevel
 end
 
 -- -----------------------
@@ -781,13 +726,6 @@ function SpeakPoem(GenderDes,OwnMarried,InLove,DesFName,OwnFName)
 	end	
 	
 	return label
-end
-
--- -----------------------
--- GetTitle
--- -----------------------
-function GetTitle(Sim)
-	return GetNobilityTitle(Sim)
 end
 
 -- -----------------------
@@ -927,9 +865,9 @@ end
 -- -----------------------
 function CreateChild(Residence, Parent1, Parent2, Age, ChildAlias, Gender)
 
-	if Gender==GL_GENDER_MALE then
+	if Gender == GL_GENDER_MALE then
 		SimCreate(7, Residence, Residence, ChildAlias)
-	elseif Gender==GL_GENDER_FEMALE then
+	elseif Gender == GL_GENDER_FEMALE then
 		SimCreate(8, Residence, Residence, ChildAlias)
 	else
 		SimCreate(-1, Residence, Residence, ChildAlias)
@@ -940,13 +878,7 @@ function CreateChild(Residence, Parent1, Parent2, Age, ChildAlias, Gender)
 
 	-- Initialize more stuff in the code
 	DoNewBornStuff(ChildAlias)
-		
 	SimSetAge(ChildAlias, Age)
-
-	local fameparent1 = chr_SimGetFame(Parent1)
-	local fameparent2 = chr_SimGetFame(Parent2)
-	local famechild = math.floor((fameparent1 + fameparent2) / 4)
-	SetProperty(ChildAlias,"Fame",famechild)
 	
 	if Age < GL_AGE_FOR_GROWNUP then
 		SimSetBehavior(ChildAlias, "Childness")
@@ -1209,124 +1141,187 @@ function StartRage(SimAlias)
 	
 end
 
-function CalculateBuildingBonus(SimAlias,workbuilding,hirefire)
+function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 
 	if not AliasExists(SimAlias) then
 		return
 	end
-	if not AliasExists(workbuilding) then
+	
+	if not AliasExists(WorkBuilding) then
 		return
 	end
 
-	local constitutionmodify = 0
-	local charismamodify = 0
-	local fightingmodify = 0
-	local shadow_artsmodify = 0
-	local empathymodify = 0
-	local movespeedmodify = 0
+	local ConstitutionMod = 0
+	local DexterityMod = 0
+	local FightingMod = 0
+	local Shadow_ArtsMod = 0
+	local CharismaMod = 0
+	local EmpathyMod = 0
+	local RhetoricMod = 0
+	local Secret_KnowledgeMod = 0
+	local MovespeedModify = 0
 	
-	local buildingtype = BuildingGetType(workbuilding)
+	local BuildingType = BuildingGetType(WorkBuilding)
 	
 	-- abilities
-	BuildingGetOwner(workbuilding,"BOwner")
-	chr_CalculateAbilityBonus(SimAlias,"BOwner",hirefire)
+	BuildingGetOwner(WorkBuilding, "BOwner")
+	chr_CalculateAbilityBonus(SimAlias, "BOwner", HireFire)
 
-	-- residence
-	if buildingtype == 2 then
-		if hirefire == "hire" then
-			if BuildingHasUpgrade(workbuilding, "CrossedAxes") then
-				fightingmodify = fightingmodify + 2
+	if BuildingType == GL_BUILDING_TYPE_RESIDENCE then
+		if HireFire == "hire" then
+			if BuildingHasUpgrade(WorkBuilding, "CrossedAxes") then
+				FightingMod = FightingMod + 2
 			end
-			if BuildingHasUpgrade(workbuilding, "HarkingHorn") then
-				empathymodify = empathymodify + 1
+			
+			if BuildingHasUpgrade(WorkBuilding, "HarkingHorn") then
+				EmpathyMod = EmpathyMod + 1
 			end
-			AddImpact(SimAlias,"fighting",fightingmodify,-1)
-			AddImpact(SimAlias,"empathy",empathymodify,-1)
-		else
-			RemoveImpact(SimAlias, "fighting")
-			RemoveImpact(SimAlias, "empathy")
+			
+		else -- lower instead of removal, cause RemoveImpact removes the whole stack
+			if BuildingHasUpgrade(WorkBuilding, "CrossedAxes") then
+				FightingMod = FightingMod - 2
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "HarkingHorn") then
+				EmpathyMod = EmpathyMod - 1
+			end
 		end
+		
+		AddImpact(SimAlias, "fighting", FightingMod, -1)
+		AddImpact(SimAlias, "empathy", EmpathyMod, -1)
 	
-	-- robber
-	elseif buildingtype == 15 then
-		if hirefire == "hire" then
-			if BuildingHasUpgrade(workbuilding, "CircleOfEquals") then
-				constitutionmodify = constitutionmodify + 2
+	elseif BuildingType == GL_BUILDING_TYPE_ROBBER then
+		if HireFire == "hire" then
+			if BuildingHasUpgrade(WorkBuilding, "CircleOfEquals") then
+				ConstitutionMod = ConstitutionMod + 2
 			end
-			if BuildingHasUpgrade(workbuilding, "ChiefTent") then
-				fightingmodify = fightingmodify + 2
+			
+			if BuildingHasUpgrade(WorkBuilding, "ChiefTent") then
+				FightingMod = FightingMod + 2
 			end
-			if BuildingHasUpgrade(workbuilding, "RobberTent") then
-				movespeedmodify = movespeedmodify + 1.2
+			
+			if BuildingHasUpgrade(WorkBuilding, "RobberTent") then
+				MovespeedMod = MovespeedMod + 1.2
 			end
-			AddImpact(SimAlias,"constitution",constitutionmodify,-1)
-			AddImpact(SimAlias,"fighting",fightingmodify,-1)
-			AddImpact(SimAlias,"MoveSpeed",movespeedmodify,-1)
-		else
-			RemoveImpact(SimAlias, "constitution")
-			RemoveImpact(SimAlias, "fighting")
-			RemoveImpact(SimAlias, "movespeed")		
+			
+		else -- lower instead of removal, cause RemoveImpact removes the whole stack
+			if BuildingHasUpgrade(WorkBuilding, "CircleOfEquals") then
+				ConstitutionMod = ConstitutionMod - 2
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "ChiefTent") then
+				FightingMod = FightingMod - 2
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "RobberTent") then
+				MovespeedMod = MovespeedMod - 1.2
+			end
 		end
+		
+		AddImpact(SimAlias, "constitution", ConstitutionMod, -1)
+		AddImpact(SimAlias, "fighting", FightingMod, -1)
+		AddImpact(SimAlias, "MoveSpeed", MovespeedMod, -1)
 
-	-- thief
-	elseif buildingtype == 22 then
-		if hirefire == "hire" then
-			if BuildingHasUpgrade(workbuilding, "TrickBox") then
-				shadow_artsmodify = shadow_artsmodify + 1
+	elseif BuildingType == GL_BUILDING_TYPE_THIEF then
+		if HireFire == "hire" then
+			if BuildingHasUpgrade(WorkBuilding, "TrickBox") then
+				Shadow_ArtsMod = Shadow_ArtsMod + 1
 			end
-			if BuildingHasUpgrade(workbuilding, "ShadowCloak") then
-				shadow_artsmodify = shadow_artsmodify + 2
+			
+			if BuildingHasUpgrade(WorkBuilding, "ShadowCloak") then
+				Shadow_ArtsMod = Shadow_ArtsMod + 2
 			end
-			AddImpact(SimAlias,"shadow_arts",shadow_artsmodify,-1)
-		else
-			RemoveImpact(SimAlias, "shadow_arts")
+			
+		else -- lower instead of removal, cause RemoveImpact removes the whole stack
+			if BuildingHasUpgrade(WorkBuilding, "TrickBox") then
+				Shadow_ArtsMod = Shadow_ArtsMod - 1
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "ShadowCloak") then
+				Shadow_ArtsMod = Shadow_ArtsMod - 2
+			end
 		end
+		
+		AddImpact(SimAlias, "shadow_arts", Shadow_ArtsMod, -1)
 
-	-- piratesnest
-	elseif buildingtype == 36 then
-		if hirefire == "hire" then
-			if BuildingHasUpgrade(workbuilding, "MakeUpMirror") then
-				charismamodify = charismamodify + 1
+	elseif BuildingType == GL_BUILDING_TYPE_DIVEHOUSE then
+		if HireFire == "hire" then
+			if BuildingHasUpgrade(WorkBuilding, "MakeUpMirror") then
+				CharismaMod = CharismaMod + 1
 			end
-			if BuildingHasUpgrade(workbuilding, "BathBowl") then
-				charismamodify = charismamodify + 2
+			
+			if BuildingHasUpgrade(WorkBuilding, "BathBowl") then
+				CharismaMod = CharismaMod + 2
 			end
-			if BuildingHasUpgrade(workbuilding, "SexyClothes") then
-				charismamodify = charismamodify + 3
+			
+			if BuildingHasUpgrade(Workbuilding, "SexyClothes") then
+				CharismaMod = CharismaMod + 3
 			end
-			AddImpact(SimAlias,"charisma",charismamodify,-1)
-		else
-			RemoveImpact(SimAlias, "charisma")
+			
+		else -- lower instead of removal, cause RemoveImpact removes the whole stack
+			if BuildingHasUpgrade(WorkBuilding, "MakeUpMirror") then
+				CharismaMod = CharismaMod - 1
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "BathBowl") then
+				CharismaMod = CharismaMod - 2
+			end
+			
+			if BuildingHasUpgrade(Workbuilding, "SexyClothes") then
+				CharismaMod = CharismaMod - 3
+			end
 		end
+		
+		AddImpact(SimAlias, "charisma", CharismaMod, -1)
 
-	-- mercenary
-	elseif buildingtype == 21 then
-		if hirefire == "hire" then
-			if BuildingHasUpgrade(workbuilding, "AlarmHorn") then
-				fightingmodify = fightingmodify + 1
+	elseif BuildingType == GL_BUILDING_TYPE_CASTLE then
+		if HireFire == "hire" then
+			if BuildingHasUpgrade(WorkBuilding, "AlarmHorn") then
+				FightingMod = FightingMod + 1
 			end
-			if BuildingHasUpgrade(workbuilding, "WarBanner") then
-				fightingmodify = fightingmodify + 1
+			
+			if BuildingHasUpgrade(WorkBuilding, "WarBanner") then
+				FightingMod = FightingMod + 1
 			end
-			if BuildingHasUpgrade(workbuilding, "CircleOfEquals") then
-				constitutionmodify = constitutionmodify + 1
+			
+			if BuildingHasUpgrade(WorkBuilding, "CircleOfEquals") then
+				ConstitutionMod = ConstitutionMod + 1
 			end
-			if BuildingHasUpgrade(workbuilding, "WaterBottle") then
-				movespeedmodify = movespeedmodify + 1.2
+			
+			if BuildingHasUpgrade(WorkBuilding, "WaterBottle") then
+				MovespeedMod = MovespeedMod + 1.2
 			end
-			if BuildingHasUpgrade(workbuilding, "PlanOfSite") then
-				empathymodify = empathymodify + 1
+			
+			if BuildingHasUpgrade(WorkBuilding, "PlanOfSite") then
+				EmpathyMod = EmpathyMod + 1
 			end
-			AddImpact(SimAlias,"constitution",constitutionmodify,-1)
-			AddImpact(SimAlias,"fighting",fightingmodify,-1)
-			AddImpact(SimAlias,"MoveSpeed",movespeedmodify,-1)
-			AddImpact(SimAlias,"empathy",empathymodify,-1)
-		else
-			RemoveImpact(SimAlias, "constitution")
-			RemoveImpact(SimAlias, "fighting")
-			RemoveImpact(SimAlias, "movespeed")		
-			RemoveImpact(SimAlias, "empathy")		
+			
+		else -- lower instead of removal, cause RemoveImpact removes the whole stack
+			if BuildingHasUpgrade(WorkBuilding, "AlarmHorn") then
+				FightingMod = FightingMod - 1
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "WarBanner") then
+				FightingMod = FightingMod - 1
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "CircleOfEquals") then
+				ConstitutionMod = ConstitutionMod - 1
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "WaterBottle") then
+				MovespeedMod = MovespeedMod - 1.2
+			end
+			
+			if BuildingHasUpgrade(WorkBuilding, "PlanOfSite") then
+				EmpathyMod = EmpathyMod - 1
+			end
 		end
+		
+		AddImpact(SimAlias, "constitution", ConstitutionMod, -1)
+		AddImpact(SimAlias, "fighting", FightingMod, -1)
+		AddImpact(SimAlias, "MoveSpeed", MovespeedMod, -1)
+		AddImpact(SimAlias, "empathy", EmpathyMod, -1)
 	end
 end
 
@@ -1363,7 +1358,6 @@ function CheckGuildMaster(SimAlias,GuildHouse)
 	else
 		return false
 	end
-
 end
 
 function GetAlderman()
@@ -1393,193 +1387,6 @@ function GetKing()
 	return 0
 end
 
-function SimAddFame(SimAlias,value)
-
-	if value == nil then
-		return false
-	end
-	local upgrade = ""
-	if SimGetClass(SimAlias)==1 then
-		upgrade = "GuildSignetPatrons"
-	elseif SimGetClass(SimAlias)==2 then
-		upgrade = "GuildSignetArtisans"
-	elseif SimGetClass(SimAlias)==3 then
-		upgrade = "GuildSignetScholars"
-	elseif SimGetClass(SimAlias)==4 then
-		upgrade = "GuildSignetSchiselers"
-	end
-
-	if upgrade~="" then
-		if GetHomeBuilding(SimAlias, "Home") then
-			if BuildingHasUpgrade("Home", upgrade) then
-				value = value + 1
-			end
-		end
-	end
-
-	if value < 0 then
-		return false
-	elseif not HasProperty(SimAlias, "Fame") then
-		SetProperty(SimAlias,"Fame",value)
-		feedback_OverheadFame(SimAlias, value)
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if not HasProperty("family", "Fame") then
-				SetProperty("family","Fame",value)
-			else
-				local fame2 = GetProperty("family","Fame") + value
-				SetProperty("family","Fame",fame2)
-			end
-		end
-		return true
-	else
-		local fame = GetProperty(SimAlias,"Fame") + value
-		SetProperty(SimAlias,"Fame",fame)
-		feedback_OverheadFame(SimAlias, value)
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if not HasProperty("family", "Fame") then
-				SetProperty("family","Fame",value)
-			else
-				local fame2 = GetProperty("family","Fame") + value
-				SetProperty("family","Fame",fame2)
-			end
-		end
-		return true
-	end
-
-	return false
-
-end
-
-function SimRemoveFame(SimAlias,value)
-
-	if value == nil or value < 0 then
-		return false
-	elseif not GetProperty(SimAlias,"Fame") then
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if GetProperty("family","Fame") then
-				local fame2 = GetProperty("family","Fame") - value
-				if fame2 < 0 then
-					SetProperty("family","Fame",0)
-				else
-					SetProperty("family","Fame",fame2)
-				end
-			end
-		end
-		return false
-	else
-		local fame = GetProperty(SimAlias,"Fame")
-		fame = fame - value
-		if fame < 0 then
-			SetProperty(SimAlias,"Fame",0)
-		else
-			SetProperty(SimAlias,"Fame",fame)
-		end
-		feedback_OverheadFame(SimAlias, -value)
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if GetProperty("family","Fame") then
-				local fame2 = GetProperty("family","Fame") - value
-				if fame2 < 0 then
-					SetProperty("family","Fame",0)
-				else
-					SetProperty("family","Fame",fame2)
-				end
-			end
-		end
-		return true
-	end
-
-	return false
-
-end
-
-function SimGetFame(SimAlias)
-
-	local fame = 0
-
-	if AliasExists(SimAlias) then
-		if GetProperty(SimAlias,"Fame") then
-			fame = GetProperty(SimAlias,"Fame")
-		end
-	end
-
-	return fame
-
-end
-
-function SimGetFameLevel(SimAlias)
-
-	local fame = 0
-
-	if AliasExists(SimAlias) then
-		if GetProperty(SimAlias,"Fame") then
-			fame = GetProperty(SimAlias,"Fame")
-		end
-	end
-
-	if fame == 0 then
-		return 0
-	elseif fame < 6 then
-		return 1
-	elseif fame < 11 then
-		return 2
-	elseif fame < 16 then
-		return 3
-	elseif fame < 21 then
-		return 4
-	else
-		return 5
-	end
-
-	return 0
-
-end
-
-function DynastyGetFame(SimAlias)
-
-	local fame = 0
-
-	if AliasExists(SimAlias) then
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if GetProperty("family","Fame") then
-				fame = GetProperty("family","Fame")
-			end
-		end
-	end
-
-	return fame
-
-end
-
-function DynastyGetFameLevel(SimAlias)
-
-	local fame = 0
-
-	if AliasExists(SimAlias) then
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if GetProperty("family","Fame") then
-				fame = GetProperty("family","Fame")
-			end
-		end
-	end
-
-	if fame == 0 then
-		return 0
-	elseif fame < 21 then
-		return 1
-	elseif fame < 51 then
-		return 2
-	elseif fame < 101 then
-		return 3
-	elseif fame < 201 then
-		return 4
-	else
-		return 5
-	end
-
-	return 0
-
-end
-
 function GetImperialOfficer()
 	local ImperialOfficer = GetData("#ImperialOfficer")
 	if ImperialOfficer~=nil then
@@ -1591,198 +1398,6 @@ function GetImperialOfficer()
 	else
 		return 0
 	end
-end
-
-function SimAddImperialFame(SimAlias,value)
-
-	if value == nil then
-		return false
-	end
-	local upgrade = "ImperialSignet"
-
-	GetDynasty(SimAlias, "Dyn")
-	local	Count = DynastyGetBuildingCount2("Dyn")
-	for l=0,Count-1 do
-		if DynastyGetBuilding2("Dyn", l, "Check") then
-			if BuildingGetType("Check")==111 then
-				if BuildingHasUpgrade("Check", upgrade) then
-					value = value + 1
-				end
-			end
-		end
-	end
-
-	if value < 0 then
-		return false
-	elseif not HasProperty(SimAlias, "ImperialFame") then
-		SetProperty(SimAlias,"ImperialFame",value)
-		feedback_OverheadImpFame(SimAlias, value)
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if not HasProperty("family", "ImperialFame") then
-				SetProperty("family","ImperialFame",value)
-			else
-				local fame2 = GetProperty("family","ImperialFame") + value
-				SetProperty("family","ImperialFame",fame2)
-			end
-		end
-		return true
-	else
-		local fame = GetProperty(SimAlias,"ImperialFame") + value
-		SetProperty(SimAlias,"ImperialFame",fame)
-		feedback_OverheadImpFame(SimAlias, value)
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if not HasProperty("family", "ImperialFame") then
-				SetProperty("family","ImperialFame",value)
-			else
-				local fame2 = GetProperty("family","ImperialFame") + value
-				SetProperty("family","ImperialFame",fame2)
-			end
-		end
-		return true
-	end
-
-	return false
-
-end
-
-function SimRemoveImperialFame(SimAlias,value)
-
-	if value < 0 then
-		return false
-	elseif not GetProperty(SimAlias,"ImperialFame") then
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if GetProperty("family","ImperialFame") then
-				local fame2 = GetProperty("family","ImperialFame") - value
-				if fame2 < 0 then
-					SetProperty("family","ImperialFame",0)
-				else
-					SetProperty("family","ImperialFame",fame2)
-				end
-			end
-		end
-		return false
-	else
-		local fame = GetProperty(SimAlias,"ImperialFame")
-		fame = fame - value
-		if fame < 0 then
-			SetProperty(SimAlias,"ImperialFame",0)
-		else
-			SetProperty(SimAlias,"ImperialFame",fame)
-		end
-		feedback_OverheadImpFame(SimAlias, -value)
-		if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-			if GetProperty("family","ImperialFame") then
-				local fame2 = GetProperty("family","ImperialFame") - value
-				if fame2 < 0 then
-					SetProperty("family","ImperialFame",0)
-				else
-					SetProperty("family","ImperialFame",fame2)
-				end
-			end
-		end
-		return true
-	end
-
-	return false
-
-end
-
-function SimGetImperialFame(SimAlias)
-
-	local fame = 0
-
-	if GetProperty(SimAlias,"ImperialFame") then
-		fame = GetProperty(SimAlias,"ImperialFame")
-	end
-
-	return fame
-
-end
-
-function SimGetImperialFameLevel(SimAlias)
-
-	local fame = 0
-
-	if GetProperty(SimAlias,"ImperialFame") then
-		fame = GetProperty(SimAlias,"ImperialFame")
-	end
-
-	if fame == 0 then
-		return 0
-	elseif fame < 6 then
-		return 1
-	elseif fame < 11 then
-		return 2
-	elseif fame < 16 then
-		return 3
-	elseif fame < 21 then
-		return 4
-	else
-		return 5
-	end
-
-	return 0
-
-end
-
-function DynastyGetImperialFame(SimAlias)
-
-	local fame = 0
-
-	if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-		if GetProperty("family","ImperialFame") then
-			fame = GetProperty("family","ImperialFame")
-		end
-	end
-
-	return fame
-
-end
-
-function DynastyGetImperialFameLevel(SimAlias)
-
-	local fame = 0
-
-	if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
-		if GetProperty("family","ImperialFame") then
-			fame = GetProperty("family","ImperialFame")
-		end
-	end
-
-	if fame == 0 then
-		return 0
-	elseif fame < 21 then
-		return 1
-	elseif fame < 51 then
-		return 2
-	elseif fame < 101 then
-		return 3
-	elseif fame < 201 then
-		return 4
-	else
-		return 5
-	end
-
-	return 0
-
-end
-
-function GetImperialFameLevelPoints(Level)
-
-	if Level == 1 then
-		return 1
-	elseif Level == 2 then
-		return 21
-	elseif Level == 3 then
-		return 51
-	elseif Level == 4 then
-		return 101
-	else
-		return 201
-	end
-
-	return 0
-
 end
 
 function GetWarRiskLevel(val)

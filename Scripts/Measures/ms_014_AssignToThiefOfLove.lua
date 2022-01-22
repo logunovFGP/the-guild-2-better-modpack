@@ -163,7 +163,7 @@ function Run()
 							AddImpact("VictimSim", "HaveBeenPickpocketed", 1, 1)
 							local Difficulty = math.floor(math.pow(ScenarioGetDifficulty(),0.54))
 							local Badluck = Rand(70 + (GetSkillValue("",SHADOW_ARTS)*15))
-							if ((chr_GetTitle("VictimSim") > 3) and (Badluck < (2+Difficulty))) or (Badluck < (Difficulty)) then
+							if (GetNobilityTitle("VictimSim") > 3) and (Badluck < (2+Difficulty))) or (Badluck < (Difficulty)) then
 								CommitAction("pickpocket", "", "", "VictimSim")
 								feedback_OverheadComment("VictimSim",
 									"@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)

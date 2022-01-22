@@ -153,7 +153,7 @@ function Run()
 						Sleep(3)
 						StopAnimation("")
 						SetData("Blocked", 0)
-						if chr_GetTitle(DestAlias) > 3 then
+						if GetNobilityTitle(DestAlias) > 3 then
 							chr_ModifyFavor(DestAlias,"",-5)
 							CommitAction("pickpocket", "", "", DestAlias)
 							feedback_OverheadComment(DestAlias,

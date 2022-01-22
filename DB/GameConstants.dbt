@@ -224,3 +224,23 @@ Data:
 217   "GL_AI_WAIT_FOR_COURTING_PLAYER"      4                 ""                              | 
 218   "GL_COURT_LOVER_MINFAVOR"             50                ""                              | 
 219   "GL_MAX_CRUSADERS"                    20                ""                              | 
+220   "GL_IMPERIAL_FAME_POINTS_KNOWN"       5                 ""                              | 
+221   "GL_IMPERIAL_FAME_POINTS_NOTED"       25                ""                              | 
+222   "GL_IMPERIAL_FAME_POINTS_RESPECTED"   50                ""                              | 
+223   "GL_IMPERIAL_FAME_POINTS_LIKED"       100               ""                              | 
+224   "GL_IMPERIAL_FAME_POINTS_FAMOUS"      200               ""                              | 
+225   "GL_IMPERIAL_FAME_INCREMENT_SCHOOL"   1                 ""                              | 
+226   "GL_FAME_POINTS_KNOWN"                5                 ""                              | 
+227   "GL_FAME_POINTS_NOTED"                25                ""                              | 
+228   "GL_FAME_POINTS_RESPECTED"            50                ""                              | 
+229   "GL_FAME_POINTS_LIKED"                100               ""                              | 
+230   "GL_FAME_POINTS_FAMOUS"               200               ""                              | 
+231   "GL_FAME_INCREMENT_SCHOOL"            1                 ""                              | 
+232   "GL_SKILLCHECK_EASY"                  1                 ""                              |
+233   "GL_SKILLCHECK_MEDIUM"                3                 ""                              |
+234   "GL_SKILLCHECK_HARD"                  6                 ""                              |
+235   "GL_SKILLCHECK_IMPOSSIBLE"            9                 ""                              |
+236   "GL_GRUDGES_MAX"                      10                ""                              |
+237   "GL_FONDNESS_MAX"                     10                ""                              |
+
+

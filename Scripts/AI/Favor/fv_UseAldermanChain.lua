@@ -1,6 +1,6 @@
 function Weight()
 	local	Item = "AldermanChain"
-	local value = chr_SimGetFameLevel("SIM") * 10
+	local value = dyn_GetFameLevel("SIM") * 10
 	local Title = GetNobilityTitle("SIM")
 	local Price = (Title * Title) * 50
 

@@ -92,8 +92,7 @@ function Run()
 				ContractFame = ContractFame - 1
 			end
 			
-			chr_SimAddFame("",ContractFame)
-		
+			dyn_AddFame("", ContractFame)
 		end
 
 	elseif Contract==2 then

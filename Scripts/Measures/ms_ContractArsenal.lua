@@ -134,7 +134,7 @@ function Run()
 					StopMeasure()
 				else
 					chr_SpendMoney("", money, "HireMercenaries")
-					chr_SimAddImperialFame("",fame * choice2)
+					dyn_AddImperialFame("", fame * choice2)
 					Count = GetProperty("Arsenal", label) + choice2
 					SetProperty("Arsenal", label, Count)
 					if HasProperty("family", "WarLandNo") then

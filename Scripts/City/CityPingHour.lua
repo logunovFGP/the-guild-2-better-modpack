@@ -41,11 +41,11 @@ function Run()
 		end
 	
 		if GetData("#AldermanChooser") == nil then
-			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
+			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 				SetData("#AldermanChooser",GetID(""))
 			end
-		elseif GetData("#AldermanChooser")==0 then
-			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
+		elseif GetData("#AldermanChooser") == 0 then
+			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 				SetData("#AldermanChooser",GetID(""))
 			end
 		end
@@ -54,11 +54,11 @@ function Run()
 		end
 	
 		if GetData("#ImperialChooser")==nil then
-			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_SCHOOL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
+			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
 				SetData("#ImperialChooser",GetID(""))
 			end
 		elseif GetData("#ImperialChooser")==0 then
-			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_SCHOOL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
+			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
 				SetData("#ImperialChooser",GetID(""))
 			end
 		end
@@ -72,12 +72,16 @@ function Run()
 		
 	------------------------------------------------------------------------------
 		local currentGameTime = math.mod(GetGametime(),24)
-		if (currentGameTime == 1) then	
+	--	if (currentGameTime == 1) then	
 			
 			-- check weather (stop raining if it bugs!)
 			Weather_SetWeather("Fine", 4.0)
+			
+			-- -----------------------
+			-- City Treasury
+			-- -----------------------
 		
-			local TaxValue = 0+ GetProperty("","TurnoverTax")
+			local TaxValue = 0 + GetProperty("", "TurnoverTax")
 			local Tax = 0
 			local cost = 0
 			local repairTotal = 0
@@ -85,25 +89,98 @@ function Run()
 			local Alias, WorkshopLvl
 	
 			-- taxes (income)
-			local WorkshopCount = CityGetBuildings("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop")
-			for l=0,WorkshopCount-1 do
-				Alias = "Workshop"..l
-				WorkshopLvl = BuildingGetLevel(Alias)
-				if BuildingGetOwner(Alias, "Sim") then
-					Tax = Tax + ((Rand(125) + 125) * WorkshopLvl * (TaxValue/10))
+			local WorkshopCount = CityGetBuildings("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop") -- for the message
+			SetProperty("", "Workshops", WorkshopCount)
+			
+			CityGetLocalMarket("", "Market")
+			local TurnoverTax = 0 + GetProperty("", "TurnoverTax")
+			
+			-- tax efficiency
+			local Tax1 = 0.15 -- cat 1 raw
+			local Tax2 = 0.40 -- cat 2 food
+			local Tax3 = 0.50 -- cat 3 handi
+			local Tax4 = 0.40 -- cat 4 schol
+			local Tax5 = 0.50 -- cat 5 herbs
+			local Tax6 = 0.50 -- cat 6 iron
+			
+			local ItemToCheck, ItemCat, ItemCount
+
+			local Sum1 = 0
+			local Sum2 = 0
+			local Sum3 = 0
+			local Sum4 = 0
+			local Sum5 = 0
+			local Sum6 = 0
+			
+			for i=0, 166 do
+				local BaseValue = 0
+				ItemToCheck = GetDatabaseValue("ItemsToMarket", i, "name")
+				
+				if ItemToCheck ~= nil then
+					ItemCat = ItemGetCategory(ItemToCheck)
+					ItemCount = GetItemCount("Market", ItemToCheck)
+					if ItemCat == 1 then
+						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax1
+						Sum1 = math.floor(Sum1 + (BaseValue*(TurnoverTax/100)))
+					elseif ItemCat == 2 then
+						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax2
+						Sum2 = math.floor(Sum2 + (BaseValue*(TurnoverTax/100)))
+					elseif ItemCat == 3 then
+						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax3
+						Sum3 = math.floor(Sum3 + (BaseValue*(TurnoverTax/100)))
+					elseif ItemCat == 4 then
+						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax4
+						Sum4 = math.floor(Sum4 + (BaseValue*(TurnoverTax/100)))
+					elseif ItemCat == 5 then
+						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax5
+						Sum5 = math.floor(Sum5 + (BaseValue*(TurnoverTax/100)))
+					else
+						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax6
+						Sum6 = math.floor(Sum6 + (BaseValue*(TurnoverTax/100)))
+					end
+				
 				end
 			end
-			SetProperty("", "Workshops", WorkshopCount)
-			if Tax>0 then
+			
+			Tax = Sum1 + Sum2 + Sum3 + Sum4 + Sum5 + Sum6
+			
+			LogMessage("Total Taxes for"..GetName("").." is "..Tax.." Raw Material is "..Sum1.." Food is "..Sum2.." Handi is "..Sum3.." Schol is "..Sum4.." Herbs is "..Sum5.." Ironstuff is "..Sum6)
+			
+				
+			if Tax >0 then
 				CreditMoney("", Tax, "Tax")
 			end
-			SetProperty("", "TaxValue", TaxValue)
-			SetProperty("", "TaxMoney", Tax)
-	
-			-- offices costs
+			
+			SetProperty("", "TaxValue", TaxValue) -- for the message
+			SetProperty("", "TaxMoney", Tax) -- for the message
+			SetProperty("", "TaxRaw", Sum1)
+			SetProperty("", "TaxFood", Sum2)
+			SetProperty("", "TaxHandi", Sum3)
+			SetProperty("", "TaxSchol", Sum4)
+			SetProperty("", "TaxHerbs", Sum5)
+			SetProperty("", "TaxIron", Sum6)
+			
+			-- nobility titles (income)
+			local NobilityMoney = 0
+			if HasProperty("", "NobilityMoney") then
+				NobilityMoney = GetProperty("", "NobilityMoney")
+			end
+			SetProperty("", "NobilityMoneyLY", NobilityMoney)
+			SetProperty("", "NobilityMoney", 0)
+			
+			-- land tax (income)
+			
+			
+			-- fees (income)
+			
+			
+			-- trials (income)
+			
+				
+			-- offices (costs)
 			local officecostsTotal = gameplayformulas_GetTotalOfficeIncome("")
-			if officecostsTotal>0 then
-				if GetMoney("")>officecostsTotal then
+			if officecostsTotal > 0 then
+				if GetMoney("") > officecostsTotal then
 					SpendMoney("", officecostsTotal, "OfficeIncome")				
 				else
 					local tmpcosts = GetMoney("")
@@ -111,50 +188,48 @@ function Run()
 				end
 			end
 			SetProperty("", "OfficeMoney", officecostsTotal)
-	
-			-- repair costs for workerhuts
-			local WorkerhutCount = CityGetBuildings("", -1, GL_BUILDING_TYPE_WORKER_HOUSING, 1, -1, FILTER_IGNORE, "Workerhut")
-			for f=0,WorkerhutCount-1 do
-				Alias = "Workerhut"..f
-				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias)<GetMaxHP(Alias)) then
-					cost = BuildingGetRepairPrice(Alias)
-	
-					if GetMoney("")>cost then
-						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
-						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
-						repairTotal = repairTotal + cost
-					end
-				end
-			end
-	
-			-- repair costs for residences without owner
+			
+			LogMessage("Office Costs for "..GetName("").." is "..officecostsTotal)
+			
+			-- guards (costs)
+			local Cityguards, Eliteguards = economy_CityGetGuardCount("")
+			local Totalguards = Cityguards + Eliteguards
+			LogMessage(GetName("").." hat insgesamt "..Totalguards.." Stadtwachen")
+			
+			-- weapons (costs)
+			
+			
+			-- servants (costs)
+			local Servants = economy_CityGetServantCount("")
+			LogMessage(GetName("").." hat insgesamt "..Servants.." Stadtbedienstete")
+			
+			-- repair for residences without owner (costs)
 			local FreeResidenceCount = CityGetBuildings("", nil, GL_BUILDING_TYPE_RESIDENCE, -1, -1, FILTER_IS_BUYABLE, "FreeResidence")
-			for f=0,FreeResidenceCount-1 do
+			for f=0, FreeResidenceCount-1 do
 				Alias = "FreeResidence"..f
-				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias)<GetMaxHP(Alias)) then
+				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias) < GetMaxHP(Alias)) then
 					cost = BuildingGetRepairPrice(Alias)
 	
-					if GetMoney("")>cost then
+					if GetMoney("") > cost then
 						repairedbuildings = repairedbuildings + 1
 						SpendMoney("", cost, "BuildingRepairs")				
-						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
+						ModifyHP(Alias, (GetMaxHP(Alias) - GetHP(Alias)), false)
 						repairTotal = repairTotal + cost
 					end
 				end
 			end
 	
-			-- repair costs for workshops without owner
+			-- repair for workshops without owner (costs)
 			local FreeWorkshopCount = CityGetBuildings("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IS_BUYABLE, "FreeWorkshop")
 			for f=0,FreeWorkshopCount-1 do
 				Alias = "FreeWorkshop"..f
 				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias)<GetMaxHP(Alias)) then
 					cost = BuildingGetRepairPrice(Alias)
 	
-					if GetMoney("")>cost then
+					if GetMoney("") > cost then
 						repairedbuildings = repairedbuildings + 1
 						SpendMoney("", cost, "BuildingRepairs")				
-						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
+						ModifyHP(Alias, (GetMaxHP(Alias)-GetHP(Alias)), false)
 						repairTotal = repairTotal + cost
 					end
 				end
@@ -162,13 +237,44 @@ function Run()
 	
 			SetProperty("", "repairedbuildings", repairedbuildings)
 			SetProperty("", "BuildingRepairs", repairTotal)
-
-			local NobilityMoney = 0
-			if HasProperty("", "NobilityMoney") then
-				NobilityMoney = GetProperty("", "NobilityMoney")
+			
+			-- test
+			local Test = CityGetServantCount("", GL_PROFESSION_PEASANT)
+			LogMessage(GetName("").." hat insgesamt "..Test.." Bauern")
+			
+			local Test2 = CityGetServantCount("", GL_PROFESSION_THIEF)
+			LogMessage(GetName("").." hat insgesamt "..Test2.." Diebe")
+			
+			-- -----------------------
+			-- City Clergy
+			-- -----------------------
+			
+			local ChurchTithe = 0 + GetProperty("", "ChurchTithe")
+			if not HasProperty("", "ChurchTreasury") then
+				SetProperty("", "ChurchTreasury", 1000)
 			end
-			SetProperty("", "NobilityMoneyLY", NobilityMoney)
-			SetProperty("", "NobilityMoney", 0)
+			local ChurchTreasury = 0 + GetProperty("", "ChurchTreasury")
+			
+			-- unemployed count
+			local NumUnemployed = economy_CityGetUnemployedCount("")
+			
+			LogMessage(GetName("").." hat genau "..NumUnemployed.." Arbeitslose gefunden")
+			
+			-- repair costs for workerhuts
+			local WorkerhutCount = CityGetBuildings("", -1, GL_BUILDING_TYPE_WORKER_HOUSING, 1, -1, FILTER_IGNORE, "Workerhut")
+			for f=0,WorkerhutCount-1 do
+				Alias = "Workerhut"..f
+				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias)<GetMaxHP(Alias)) then
+					cost = BuildingGetRepairPrice(Alias)
+	
+					if GetMoney("") > cost then
+						repairedbuildings = repairedbuildings + 1
+						SpendMoney("", cost, "BuildingRepairs")				
+						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
+						repairTotal = repairTotal + cost
+					end
+				end
+			end
 
 			local WarMoney = 0
 			if HasProperty("", "Warcosts") then
@@ -177,7 +283,7 @@ function Run()
 			SetProperty("", "WarcostsLY", WarMoney)
 			SetProperty("", "Warcosts", 0)
 
-		end
+	--	end
 	end
 end
 
@@ -348,12 +454,14 @@ function CheckVillage()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, -1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 1)
 
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_BANK, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1])
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SCHOOL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1])
+	
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
 	end
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
@@ -380,12 +488,14 @@ function CheckSmallTown()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 2)
 
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_BANK, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1])
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SCHOOL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1])
+	
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
 	end
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
@@ -412,12 +522,14 @@ function CheckTown()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 3)
 
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_BANK, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1])
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SCHOOL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1])
+	
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
 	end
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
@@ -453,12 +565,14 @@ function CheckCapital()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 3)
 
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_BANK, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_BANK)[1])
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SCHOOL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SCHOOL)[1])
+	
+	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
 	end
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
@@ -573,12 +687,12 @@ function CheckAlderman()
 						if HasProperty("Sim", "PatronMaster") or HasProperty("Sim", "ArtisanMaster") or HasProperty("Sim", "ScholarMaster") or HasProperty("Sim", "ChiselerMaster") then
 							local num = 0
 							while num<100 do
-								if chr_SimGetFameLevel("Sim")>1 and chr_DynastyGetFameLevel("Sim")>0 then
-									if SimArray[num]==GetID("Sim") then
+								if dyn_GetFameLevel("Sim") > 0 then
+									if SimArray[num] == GetID("Sim") then
 										break
 									elseif SimArray[num]==nil then
 										SimArray[num] = GetID("Sim")
-										SimFameArray[num] = chr_SimGetFame("Sim") + math.floor(chr_DynastyGetFame("Sim")/10)
+										SimFameArray[num] = dyn_GetFame("Sim")
 										SimArrayCount = SimArrayCount + 1
 										break
 									end
@@ -601,13 +715,14 @@ function CheckAlderman()
 				end
 				
 				local oldalderman = chr_GetAlderman()
-				if oldalderman>0 then
-					GetAliasByID(oldalderman,"Old")
-					chr_SimAddImperialFame("Old",1)
+				
+				if oldalderman > 0 then
+					GetAliasByID(oldalderman, "Old")
+					dyn_AddImperialFame("Old", 1)
 					RemoveProperty("Old", "Alderman")
 				end
 				
-				SetData("#Alderman",0)
+				SetData("#Alderman", 0)
 				if GetAliasByID(SimArray[AldermanWinner],"New") then
 					SetProperty("New","Alderman",1)
 					SetData("#Alderman",SimArray[AldermanWinner])
@@ -630,17 +745,16 @@ function CheckAlderman()
 					end
 
 					GetSettlement("New", "settlement")
-					local famelevelsim = "@L_GUILDHOUSE_FAME_SIM_+"..chr_SimGetFameLevel("New")
-					local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..chr_DynastyGetFameLevel("New")
+					local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..dyn_GetFameLevel("New")
 
-					MsgNewsNoWait("All","New","","politics",-1,
-							"@L_CHECKALDERMAN_HEAD_+0",
-							"@L_CHECKALDERMAN_BODY_+0",
-							GetYear(),GetID("New"), label, GetID("settlement"), famelevelsim, chr_SimGetFame("New"), fameleveldyn, chr_DynastyGetFame("New"))
+					MsgNewsNoWait("All", "New", "", "politics", -1,
+								"@L_CHECKALDERMAN_HEAD_+0",
+								"@L_CHECKALDERMAN_BODY_+0",
+								GetYear(), GetID("New"), label, GetID("settlement"), fameleveldyn, dyn_GetFame("New"))
 
 				end
 			else
-				SetData("#Alderman",0)
+				SetData("#Alderman", 0)
 			end
 		end
 	end

@@ -9,7 +9,7 @@ GUI: MoK, Fajeth, Napi96
 2D: Fajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii
 3D Objects: Ictiv 
 Zusätzlicher Support: MoK, VSX, McCoy!, sublogic, Sunpack, nirvana, Scandal, Napi96, Zbombe, Jedi93, barra81, Dogus + Die Gilde 2 Community!
-Internal Testing: Jollina, VSX, ThreeOfMe, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee
+Internal Testing: ThreeOfMe, Jollina, VSX, ThreeOfMe, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee
 
 Lokalisierung:
 Deutsch: Fajeth, ThreeOfMe
@@ -75,6 +75,7 @@ _Design_
 - Die Maßnahmen zum Kauf vergünstigter Rohstoffboxen über das Gildenhaus wurden deaktiviert und werden in einer späteren Version durch
   ein besseres und übersichtlicheres System ersetzt.
 - Die Band Versengold spawnt nun erst zur dritten Spielrunde.
+- Reichsruf und Gildenruf sind nun ausschließlich Dynastiewerte. Jede Aktion eurer Charaktere hat Einfluss auf eure gesamte Dynastie.
 
 *** Vanilla-Bugs ***
 
@@ -250,6 +251,7 @@ _Allgemein_
 - Angestellte sprechen nun teilweise andere Sätze, wenn man sie anklickt.
 - Wenn man Arbeitslose anstellen will, sagen diese nun ein paar Worte.
 - Wenn man Arbeitslose entlässt, schicken diese noch eine traurige Nachricht zum Abschied.
+- Man kann nun 'Groll' und 'Zuneigung' zu anderen Dynastien sammeln. Dieser besondere Wert beeinflusst den Gunstgewinn (oder Verlust) bei jeder Gunstveränderung.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
@@ -286,8 +288,8 @@ _KI_
 *** Balancing ***
 
 _Allgemein_
-- Die Art und Weise wie sich Talente auf Maßnahmen auswirken, wurde verändert. Es gibt eine neue Formel, bei der Zufall und 'Erfolgsstufen' eine größere Rolle spielen und
-  keine lineare Steigerung der Effektivität mehr. Zusätzlich gibt es ein visuelles Feedback bei Talentproben.
+- Die Funktionsweise von Talentproben wurde grundlegend geändert. Es gibt nun einen stärkeren Zufallsaspekt. Allerdings
+  bekommst du vor jeder Maßnahme, die einen Skillcheck benötigt, eine Meldung, die dir einen Hinweis auf deine Chancen gibt.
 - Man kann nun jeden zur Verfügung stehenden Betriebsprüfer benutzen, es gibt keinen globalen Cooldown mehr. Dafür kann jeder Betrieb nur einmal alle 48 Ingamestunden überprüft werden. 
   Zudem verliert man massiv an Gunst beim betroffenen Betriebsleiter und bei seinen Angestellten.
 - Bestechungsgelder abzulehnen wird nun die Gunst nur noch um 5 Punkte reduzieren.
@@ -326,6 +328,9 @@ _Allgemein_
 - Die Menge erhaltener Erfahrungspunkte durch Maßnahmen ist nun abhängig von der Jahre-pro-Runde Einstellung (1 Jahr pro Runde = 50%, 4 Jahre = 200%)
 - Während der Nacht macht die Stadtwache nun eine Pause.
 - Die Maßnahme "Öffentliche Gelder veruntreuen" ist nun unabhängig von der gespielten Runde und ermöglicht einen Diebstahl von bis zu 5000 Goldmünzen, jedoch maximal ein Zehntel der Stadtkasse.
+- Dynastien, mit denen du einen Beistandspakt hast, werden nun weniger Gunst verlieren, wenn du etwas machst, das sie eigentlich nicht mögen.
+  Umgekehrt bekommen jedoch auch Dynastien, mit denen du eine Fehde hast, deutlich weniger Gunst, wenn du ihnen etwas Gutes tust.
+- Man benötigt nun etwas mehr Gilden/Reichsruf, bevor man die erste Reputationsstufe erhält.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

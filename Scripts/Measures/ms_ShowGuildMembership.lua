@@ -70,59 +70,57 @@ function Run()
 		label3 = label3.."_FEMALE_+1"
 	end
 
-	local famelevelsim = "@L_GUILDHOUSE_FAME_SIM_+"..chr_SimGetFameLevel("")
-	local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..chr_DynastyGetFameLevel("")
+	local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..dyn_GetFameLevel("")
 
 	GetScenario("scenario")
 	local mapid = GetProperty("scenario", "mapid")
 	local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+0"
 
-	local impfamelevelsim = "@L_IMPERIAL_FAME_SIM_+"..chr_SimGetImperialFameLevel("")
-	local impfameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..chr_DynastyGetImperialFameLevel("")
+	local impfameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..dyn_GetImperialFameLevel("")
 
-	if member==true then
-		if chr_GetAlderman()==GetID("") and HasProperty("", "Alderman") then
+	if member == true then
+		if chr_GetAlderman() == GetID("") and HasProperty("", "Alderman") then
 			label2 = "@L_MEASURE_SHOWGUILDMEMBERSHIP_ALDERMAN_+0"
-			MsgBoxNoWait("dynasty","",
-				"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
-				"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0",
-				GetID(""),label,GetID("my_settlement"), famelevelsim, chr_SimGetFame(""), fameleveldyn, chr_DynastyGetFame(""), label2, 
-					lordlabel, impfamelevelsim, chr_SimGetImperialFame(""), impfameleveldyn, chr_DynastyGetImperialFame(""), label3)
+			MsgBoxNoWait("dynasty", "",
+						"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
+						"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0",
+						GetID(""), label, GetID("my_settlement"), fameleveldyn, dyn_GetFame(""), label2, 
+						lordlabel, impfameleveldyn, dyn_GetImperialFame(""))
 		else
 			MsgBoxNoWait("dynasty","",
-				"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
-				"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0",
-				GetID(""),label,GetID("my_settlement"), famelevelsim, chr_SimGetFame(""), fameleveldyn, chr_DynastyGetFame(""), label2, 
-					lordlabel, impfamelevelsim, chr_SimGetImperialFame(""), impfameleveldyn, chr_DynastyGetImperialFame(""))
+						"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
+						"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0",
+						GetID(""), label, GetID("my_settlement"), fameleveldyn, dyn_GetFame(""), label2, 
+						lordlabel, impfameleveldyn, dyn_GetImperialFame(""))
 		end
 	else
 		if noguildhouse==true then
 			if chr_GetAlderman()==GetID("") and HasProperty("", "Alderman") then
 				MsgBoxNoWait("dynasty","",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2",
-					GetID(""), GetID("my_settlement"), famelevelsim, chr_SimGetFame(""), fameleveldyn, chr_DynastyGetFame(""), label3, 
-						lordlabel, impfamelevelsim, chr_SimGetImperialFame(""), impfameleveldyn, chr_DynastyGetImperialFame(""))
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2",
+							GetID(""), GetID("my_settlement"), fameleveldyn, dyn_GetFame(""), label3, 
+							lordlabel, impfameleveldyn, dyn_GetImperialFame(""))
 			else
 				MsgBoxNoWait("dynasty","",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2",
-					GetID(""), GetID("my_settlement"), famelevelsim, chr_SimGetFame(""), fameleveldyn, chr_DynastyGetFame(""), label2, 
-						lordlabel, impfamelevelsim, chr_SimGetImperialFame(""), impfameleveldyn, chr_DynastyGetImperialFame(""))
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2",
+							GetID(""), GetID("my_settlement"), fameleveldyn, dyn_GetFame(""), label2, 
+							lordlabel, impfameleveldyn, dyn_GetImperialFame(""))
 			end				
 		else
 			if chr_GetAlderman()==GetID("") and HasProperty("", "Alderman") then
 				MsgBoxNoWait("dynasty","",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1",
-					GetID(""), famelevelsim, chr_SimGetFame(""), fameleveldyn, chr_DynastyGetFame(""), label3,
-						lordlabel, impfamelevelsim, chr_SimGetImperialFame(""), impfameleveldyn, chr_DynastyGetImperialFame(""))
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1",
+							GetID(""), fameleveldyn, dyn_GetFame(""), label3,
+							lordlabel, impfameleveldyn, dyn_GetImperialFame(""))
 			else
 				MsgBoxNoWait("dynasty","",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
-					"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1",
-					GetID(""), famelevelsim, chr_SimGetFame(""), fameleveldyn, chr_DynastyGetFame(""), label2,
-						lordlabel, impfamelevelsim, chr_SimGetImperialFame(""), impfameleveldyn, chr_DynastyGetImperialFame(""))
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
+							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1",
+							GetID(""), fameleveldyn, dyn_GetFame(""), label2,
+							lordlabel, impfameleveldyn, dyn_GetImperialFame(""))
 			end
 		end
 	end	

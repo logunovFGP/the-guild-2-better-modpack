@@ -8,12 +8,12 @@ function Run()
 		return
 	end
 
-	local FameLvl = chr_DynastyGetFameLevel("") + 1
-	local ImpFameLvl = chr_DynastyGetImperialFameLevel("") + 1
+	local FameLvl = dyn_GetFameLevel("")
+	local ImpFameLvl = dyn_GetImperialFameLevel("")
 	local Schoolmoney
 	local School1 = GL_SCHOOLMONEY
 	local School2 = GL_SCHOOLMONEY*(2+FameLvl)
-	local School3 = GL_SCHOOLMONEY*(10+ImpFameLvl)
+	local School3 = GL_SCHOOLMONEY*(8+ImpFameLvl)
 	local BuildingType		
 	local choice
 
@@ -41,9 +41,7 @@ function Run()
 			StopMeasure()
 		end		
 	else
-		-- GetLocalPlayerDynasty("Player")
 		GetDynasty("", "dynasty")
-		DynastyGetMember("dynasty", 0, "boss")
 		
 		local button1 = "@B[1,@L_ATTEND_SCHOOL_NEW_OPTION1_+0]"
 		local button2 = "@B[2,@L_ATTEND_SCHOOL_NEW_OPTION2_+0]"
@@ -54,7 +52,7 @@ function Run()
 			button1 = ""
 		end
 		
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) and FameLvL > 0 then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
 				button2 = ""
 			end
@@ -62,26 +60,26 @@ function Run()
 			button2 = ""
 		end
 		
-		if GetNobilityTitle("") < 5 or GetOutdoorLocator("MapExit1",1,"DestPos") == 0 then
+		if GetNobilityTitle("") < 5 or GetOutdoorLocator("MapExit1", 1, "DestPos") == 0 or ImpFameLvl < 1 then
 			button3 = ""
 		end
 		
-		choice = MsgBox("boss", "", "@P"..
-						button1..
-						button2..
-						button3..
-						"@B[0,@L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
+		choice = MsgBox("dynasty", "", "@P"..
+					button1..
+					button2..
+					button3..
+					"@B[0,@L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
 					"@L_ATTEND_SCHOOL_NEW_HEAD_+0",
 					"@L_ATTEND_SCHOOL_NEW_BODY_+0",
-					GetID(""),School1,School2,School3)
+					GetID(""), School1, School2, School3)
 	end
 				
 
-	if (choice==1) then
+	if (choice == 1) then
 		Schoolmoney = School1
-	elseif (choice==2) then
+	elseif (choice == 2) then
 		Schoolmoney = School2
-	elseif (choice==3) then
+	elseif (choice == 3) then
 		Schoolmoney = School3
 	else
 		StopMeasure()
@@ -93,7 +91,7 @@ function Run()
 		GetLocatorByName("DestBuilding"..choice, "Entry1", "DestPos") 
 	end -- else DestPos is mapexit!
 	
-	if not HasProperty("","SchoolPayed") then	
+	if not HasProperty("", "SchoolPayed") then	
 		if not chr_SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
 			MsgQuick("", "@L_FAMILY_149_ATTENDSCHOOL_FAILURES_+0", GetID(""), Schoolmoney)
 			return
@@ -105,10 +103,12 @@ function Run()
 	SetData("MaxTime", Time)	
 	local SchoolStart = math.floor(0+GetGametime())
 	SetData("StartTime", SchoolStart)
+	
 	if HasProperty("", "Time_done_school") then
 		local TimeLeft = 0+GetProperty("", "Time_done_school")
 		Time = 0+Time - TimeLeft
 	end
+	
 	SetMeasureRepeat(Time)
 	StartGameTimer(Time)
 
@@ -177,61 +177,48 @@ function Run()
 		textLabel = "@L_FAMILY_ATTENDSCHOOL_LORD_END_CERTIFICATE_DOCUMENT_+0"
 	end
 	
-	if (choice==2) then
-		if not HasProperty("", "Fame") then
-			SetProperty("", "Fame", FameLvl)
-		else
-			local fame = GetProperty("", "Fame") + FameLvl
-			SetProperty("","Fame",fame)
-		end
-		feedback_OverheadFame("", FameLvl)
-	elseif (choice==3) then
-		if not HasProperty("", "ImperialFame") then
-			SetProperty("","ImperialFame",ImpFameLvl)
-		else
-			local fame = GetProperty("","ImperialFame") + ImpFameLvl
-			SetProperty("","ImperialFame",fame)
-		end
-		feedback_OverheadImpFame("", ImpFameLvl)
+	if (choice == 2) then
+		dyn_AddFame("", GL_FAME_INCREMENT_SCHOOL)
+	elseif (choice == 3) then
+		dyn_AddImperialFame("", GL_IMPERIAL_FAME_INCREMENT_SCHOOL)
 	end
 	
 	MsgNewsNoWait("", "", "panel_nobility_title_deed", "intrigue", -1, "@L_FAMILY_149_ATTENDSCHOOL_END_CERTIFICATE_HEADER", textLabel, 
-		GetID(""),
-		GetID("Settlement"),
-		Gametime2Total(GetGametime()))
+				GetID(""),
+				GetID("Settlement"),
+				Gametime2Total(GetGametime()))
 	
 	SetProperty("", "EduLevel", EDULEVEL_SCHOOL)
-	
-	SimBeamMeUp("","DestPos", false)
-
+	SimBeamMeUp("", "DestPos", false)
 	SetState("", STATE_INVISIBLE, false)
 	xp_School("")
-	PlayAnimation("", "cheer_01")
+	
 	if GetHomeBuilding("", "Home") then
 		f_MoveToNoWait("", "Home", GL_MOVESPEED_WALK)
 	end
-	
 end
 
 -- -----------------------
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	SetMeasureRepeat(0.001)
+
 	if HasData("StartTime") and not HasData("Finished") then
 		local SchoolEnd = math.floor(0+GetGametime())
 		local SchoolStart = 0+GetData("StartTime")
 		local Difference = 0+ SchoolEnd - SchoolStart
 		local MaxTime = 0+GetData("MaxTime")
+		
 		if HasProperty("", "Time_done_school") then
 			Difference = Difference + GetProperty("", "Time_done_school")
 		end
+		
 		if Difference < MaxTime then
 			SetProperty("", "Time_done_school", Difference)
 			
 			feedback_MessageSchedule("",
-				"@L_FAMILY_149_ATTENDSCHOOL_NOTFINISHED_HEAD",
-				"@L_FAMILY_149_ATTENDSCHOOL_NOTFINISHED_BODY",GetID(""),MaxTime-Difference)
+								"@L_FAMILY_149_ATTENDSCHOOL_NOTFINISHED_HEAD",
+								"@L_FAMILY_149_ATTENDSCHOOL_NOTFINISHED_BODY", GetID(""), MaxTime-Difference)
 			
 			-- get the sim back to the DestPos and let him go home
 			SimBeamMeUp("", "DestPos", false)

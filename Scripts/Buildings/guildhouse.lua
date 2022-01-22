@@ -140,14 +140,14 @@ function CheckGuildMasters()
 	local currentRound = GetRound()
 	if currentRound > 0 then
 
-		local currentGameTime = math.mod(GetGametime(),24)
+		local currentGameTime = math.mod(GetGametime(), 24)
 		if (currentGameTime == 5) or ((currentGameTime > 5) and (currentGameTime < 6)) then
 
 			--add fame to last PatronMaster
 			local PatronMaster = GetProperty("", "PatronMaster")
 			if PatronMaster~=nil then
 				if GetAliasByID(PatronMaster,"Patron") and not GetState("Patron", STATE_DEAD) then
-					chr_SimAddFame("Patron",1)
+					dyn_AddFame("Patron", 1)
 					RemoveProperty("Patron", "PatronMaster")
 				end
 			end
@@ -156,7 +156,7 @@ function CheckGuildMasters()
 			local ArtisanMaster = GetProperty("", "ArtisanMaster")
 			if ArtisanMaster~=nil then
 				if GetAliasByID(ArtisanMaster,"Artisan") and not GetState("Artisan", STATE_DEAD) then
-					chr_SimAddFame("Artisan",1)
+					dyn_AddFame("Artisan", 1)
 					RemoveProperty("Artisan", "ArtisanMaster")
 				end
 			end
@@ -165,7 +165,7 @@ function CheckGuildMasters()
 			local ScholarMaster = GetProperty("", "ScholarMaster")
 			if ScholarMaster~=nil then
 				if GetAliasByID(ScholarMaster,"Scholar") and not GetState("Scholar", STATE_DEAD) then
-					chr_SimAddFame("Scholar",1)
+					dyn_AddFame("Scholar", 1)
 					RemoveProperty("Scholar", "ScholarMaster")
 				end
 			end
@@ -174,12 +174,12 @@ function CheckGuildMasters()
 			local ChiselerMaster = GetProperty("", "ChiselerMaster")
 			if ChiselerMaster~=nil then
 				if GetAliasByID(ChiselerMaster,"Chiseler") and not GetState("Chiseler", STATE_DEAD) then
-					chr_SimAddFame("Chiseler",1)
+					dyn_AddFame("Chiseler", 1)
 					RemoveProperty("Chiseler", "ChiselerMaster")
 				end
 			end
 
-			BuildingGetCity("","city")		
+			BuildingGetCity("", "city")		
 			local BuildingCount = CityGetBuildings("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IGNORE, "Building")
 			local year = GetYear()
 			local Alias
@@ -203,18 +203,18 @@ function CheckGuildMasters()
 				Alias = "Building"..l
 				BuildingLvl = BuildingGetLevel(Alias)
 				
-				if BuildingGetOwner(Alias, "Sim") and (GetSettlementID("Sim")==GetID("city")) then
+				if BuildingGetOwner(Alias, "Sim") and (GetSettlementID("Sim") == GetID("city")) then
 					
 					if DynastyIsPlayer("Sim") then
 						PlayerCity = true
 					end
 					
 					--Patron
-					if SimGetClass("Sim")==1 and BuildingGetCharacterClass(Alias)==1 then
+					if SimGetClass("Sim") == 1 and BuildingGetCharacterClass(Alias) == 1 then
 						local num = 0
 						while num<100 do
 							if PatronArray[num]==GetID("Sim") then
-								tmpPoints = PatronPointArray[num] + BuildingLvl + chr_SimGetFame("Sim")
+								tmpPoints = PatronPointArray[num] + BuildingLvl + dyn_GetFame("Sim")
 								PatronPointArray[num] = tmpPoints
 								break
 							elseif PatronArray[num]==nil then
@@ -228,11 +228,11 @@ function CheckGuildMasters()
 						end
 		
 					--Artisan
-					elseif SimGetClass("Sim")==2 and BuildingGetCharacterClass(Alias)==2 then
+					elseif SimGetClass("Sim") == 2 and BuildingGetCharacterClass(Alias) == 2 then
 						local num = 0
 						while num<100 do
 							if ArtisanArray[num]==GetID("Sim") then
-								tmpPoints = ArtisanPointArray[num] + BuildingLvl + chr_SimGetFame("Sim")
+								tmpPoints = ArtisanPointArray[num] + BuildingLvl + dyn_GetFame("Sim")
 								ArtisanPointArray[num] = tmpPoints
 								break
 							elseif ArtisanArray[num]==nil then
@@ -246,11 +246,11 @@ function CheckGuildMasters()
 						end
 		
 					--Scholar
-					elseif SimGetClass("Sim")==3 and BuildingGetCharacterClass(Alias)==3 then
+					elseif SimGetClass("Sim") == 3 and BuildingGetCharacterClass(Alias) == 3 then
 						local num = 0
 						while num<100 do
 							if ScholarArray[num]==GetID("Sim") then
-								tmpPoints = ScholarPointArray[num] + BuildingLvl + chr_SimGetFame("Sim")
+								tmpPoints = ScholarPointArray[num] + BuildingLvl + dyn_GetFame("Sim")
 								ScholarPointArray[num] = tmpPoints
 								break
 							elseif ScholarArray[num]==nil then
@@ -264,11 +264,11 @@ function CheckGuildMasters()
 						end
 		
 					--Chiseler
-					elseif SimGetClass("Sim")==4 and BuildingGetCharacterClass(Alias)==4 then
+					elseif SimGetClass("Sim") == 4 and BuildingGetCharacterClass(Alias) == 4 then
 						local num = 0
 						while num<100 do
 							if ChiselerArray[num]==GetID("Sim") then
-								tmpPoints = ChiselerPointArray[num] + BuildingLvl + chr_SimGetFame("Sim")
+								tmpPoints = ChiselerPointArray[num] + BuildingLvl + dyn_GetFame("Sim")
 								ChiselerPointArray[num] = tmpPoints
 								break
 							elseif ChiselerArray[num]==nil then

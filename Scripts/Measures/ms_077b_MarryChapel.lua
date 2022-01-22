@@ -223,8 +223,19 @@ function Run()
 					"@L_MEASURE_MARRY_CEREMONY_HEAD_+0",
 					TextLabel, GetID(""))
 	end
-			
-	chr_SimAddFame("", GuestCount)
+	
+	local GuestFame = 0
+	if GuestCount > 2 then
+		GuestFame = 1
+	elseif GuestCount > 5 then
+		GuestFame = 2
+	elseif GuestCount > 8 then
+		GuestFame = 3
+	else
+		GuestFame = 5
+	end
+	
+	dyn_AddFame("", GuestCount)
 	MsgNewsNoWait("All", "", "", "politics", -1, 
 				"@L_MEASURE_MARRY_CEREMONY_HEAD_+0",
 				"@L_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0",
