@@ -626,12 +626,42 @@ Translate and add the following lines below:
 18607   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0"   "%6l%1SN is %2l to %3NAME.$N$NGuildhouse Fame of the family: %4l (%5n)$N$NImperial Fame %7l: %8l (%9n)"   |
 18608   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1"   "%4l%1SN does not belong to a guild.$N$NGuildhouse Fame of the family: %2l (%3n)$N$NImperial Fame %5l: %6l (%7n)"   |
 18609   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2"   "%5l%1SN does not belong to a guild, as in %2NAME no guild house has been founded yet.$N$NGuildhouse Fame of the family %3l (%4n)$N$NImperial Fame %6l: %7l (%8n)"   |
-18609   "_MEASURE_ShowGuildMembership_NAME_+0"   "Show your reputation"   |
-18610   "_MEASURE_ShowGuildMembership_TOOLTIP_+0"   "With this you can view the reputation of your family."   |
-18611   "_MEASURE_ShowGuildMembershipSim_NAME_+0"   "Show reputation of others"   |
-18612   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this, you can view the reputation of another family."   |
-18613   "_MEASURE_ShowGuildMembershipSim_TARGET_+0"   "Select the person whose reputation you want to see"   |
-
+18610   "_MEASURE_ShowGuildMembership_NAME_+0"   "Show your reputation"   |
+18611   "_MEASURE_ShowGuildMembership_TOOLTIP_+0"   "With this action you can view the reputation of your family."   |
+18612   "_MEASURE_ShowGuildMembershipSim_NAME_+0"   "Show reputation of others"   |
+18613   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this action, you can view the reputation of another family."   |
+18614   "_MEASURE_ShowGuildMembershipSim_TARGET_+0"   "Select the person whose reputation you want to see"   |
+18615   "_ONSCREENHELP_9_ACTION_IMPACT_destitute_NAME_+0"   "Destitute"   |
+18616   "_ONSCREENHELP_9_ACTION_IMPACT_poor_NAME_+0"   "Poor"   |
+18617   "_ONSCREENHELP_9_ACTION_IMPACT_middleclass_NAME_+0"   "Middle Class"   |
+18618   "_ONSCREENHELP_9_ACTION_IMPACT_prosperous_NAME_+0"   "Prosperous"   |
+18619   "_ONSCREENHELP_9_ACTION_IMPACT_rich_NAME_+0"   "Rich"   |
+18620   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+0"   ""   |
+18621   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+1"   ""   |
+18622   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+2"   ""   |
+18623   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+3"   ""   |
+18624   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+4"   ""   |
+18625   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+1"   "Destitute people (unemployed)"   |
+18626   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+2"   "Poor people (apprentices)"   |
+18627   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+3"   "Middle class (journeymen & dynasties)"   |
+18628   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+4"   "Prosperous people (masters & dynasties)"   |
+18629   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+5"   "The richest citizens (dynasties)"   |
+18630   "_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_HEAD_+0"   "Fondness regresses"   |
+18631   "_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_BODY_+0"   "%2ST %2SN's Dynasty has grown less fond of you due to the recent events.$N$NNew level of Fondness: %3n"   |
+18632   "_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_HEAD_+0"   "Fondness dies out"   |
+18633   "_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_BODY_+0"   "%1ST %1SN, the latest events have left their mark. %2ST %2SN's Dynasty holds no more Fondness for you !"   |
+18634   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_HEAD_+0"   "A Grudge is born"   |
+18635   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a scar so deep that your dynasties now hold a Grudge against each other!$N$NEvery level of Grudge will make it harder to obtain Favor from them. If you don't act, this could last for a very long time..."   |
+18636   "_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_HEAD_+0"   "A Grudge intensifies"   |
+18637   "_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a mark. The Grudge between your Dynasties intensifies even more!$N$NNew level of Grudge: %3n"   |
+18638   "_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_HEAD_+0"   "A Grudge calms down"   |
+18639   "_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_BODY_+0"   "%1ST %1SN, the ongoing Grudge between you and %2ST %2SN's Dynasty has started to die down thanks to the latest events!$N$NNew level of Grudge: %3n"   |
+18640   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_HEAD_+0"   "A Grudge settles"   |
+18641   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_BODY_+0"   "%1ST %1SN, the latest events leave their mark. %2ST %2SN's Dynasty has finally let go of their Grudge towards you!"   |
+18642   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_HEAD_+0"   "A Dynasty is fond of you!"   |
+18643   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN has brought your Dynasties together in a bond of friendship!$N$NEvery level of Fondness will make it easier to obtain Favor from them. If you continue like this, this friendship could last for a very long time!"   |
+18644   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_HEAD_+0"   "A bond of friendship strengthens"   |
+18645   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_BODY_+0"   "%1ST %1SN, the latest events between you and %2ST %2SN have borne fruits. The ties of friendship between your families have grown stronger!$N$NNew level of Fondness: %3n"   |
 
 -------
 

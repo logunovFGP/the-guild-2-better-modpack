@@ -304,7 +304,6 @@ function AnswerMarriage(Rhetoric, Gender)
 	return label
 end
 
-
 -- -------------------------
 -- Msg for gaining an office
 -- -------------------------
@@ -334,16 +333,17 @@ function MessageOffice(Owner, GetPrivilegeList, Headline, Text, ...)
 			
 			-- PrivilegName -> "AimForInquisitionalProceeding" or "HaveImmunity"
 			
-			Param[Count] 		= "_MEASURE_"..PrivilegName.."_NAME_+0"
-			PriviText 		= PriviText .. "$N  - %"..FirstFreeParameter.."l"
-			FirstFreeParameter 	= FirstFreeParameter + 1
+			Param[Count] = "_MEASURE_"..PrivilegName.."_NAME_+0"
+			PriviText = PriviText .. "$N  - %"..FirstFreeParameter.."l"
+			FirstFreeParameter = FirstFreeParameter + 1
 			
 			Count = Count + 1
 		end
 	end
 
-	SetArg( arg.n+1, PriviText)
+	SetArg(arg.n+1, PriviText)
 	Count = 1
+	
 	while (Param[Count]) do
 		SetArg(arg.n+1+Count, Param[Count])
 		Count = Count + 1
@@ -351,8 +351,103 @@ function MessageOffice(Owner, GetPrivilegeList, Headline, Text, ...)
 	
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
-
-		
 	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
 end
 
+-- -------------------------
+-- Msg for grudges (ModifyFavor)
+-- -------------------------
+
+function FavorReduceFondness(Owner, Target)
+	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
+		local TargetID = GetDynastyID(Target)
+		local MyDynID = GetDynastyID(Owner)
+		local FondnessCounter = 0 + GetProperty("MyDyn", "Fondness"..TargetID)
+		
+		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_BODY_+0", 
+					GetID(Owner), GetID(Target), FondnessCounter)
+	end
+end
+
+function FavorRemoveFondness(Owner, Target)
+	MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_BODY_+0", 
+					GetID(Owner), GetID(Target))
+end
+
+function FavorGainGrudge(Owner, Target)
+	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
+		local TargetID = GetDynastyID(Target)
+		local MyDynID = GetDynastyID(Owner)
+		
+		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_BODY_+0", 
+					GetID(Owner), GetID(Target))
+	end
+end
+
+function FavorAddGrudge(Owner, Target)
+	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
+		local TargetID = GetDynastyID(Target)
+		local MyDynID = GetDynastyID(Owner)
+		local GrudgeCounter = 0 + GetProperty("MyDyn", "Grudge"..TargetID)
+		
+		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_BODY_+0", 
+					GetID(Owner), GetID(Target), GrudgeCounter)
+	end
+end
+
+-- -------------------------
+-- Msg for fondness (ModifyFavor)
+-- -------------------------
+
+function FavorReduceGrudge(Owner, Target)
+	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
+		local TargetID = GetDynastyID(Target)
+		local MyDynID = GetDynastyID(Owner)
+		local GrudgeCounter = 0 + GetProperty("MyDyn", "Grudge"..TargetID)
+		
+		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_BODY_+0", 
+					GetID(Owner), GetID(Target), GrudgeCounter)
+	end
+end
+
+function FavorRemoveGrudge(Owner, Target)
+	MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_BODY_+0", 
+					GetID(Owner), GetID(Target))
+end
+
+function FavorGainFondness(Owner, Target)
+	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
+		local TargetID = GetDynastyID(Target)
+		local MyDynID = GetDynastyID(Owner)
+		
+		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_BODY_+0", 
+					GetID(Owner), GetID(Target))
+	end
+end
+
+function FavorAddFondness(Owner, Target)
+	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
+		local TargetID = GetDynastyID(Target)
+		local MyDynID = GetDynastyID(Owner)
+		local FondnessCounter = 0 + GetProperty("MyDyn", "Grudge"..TargetID)
+		
+		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_HEAD_+0",
+					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_BODY_+0", 
+					GetID(Owner), GetID(Target), FondnessCounter)
+	end
+end

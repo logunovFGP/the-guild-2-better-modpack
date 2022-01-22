@@ -379,10 +379,16 @@ function AddGrudge(source, dest)
 				-- we are still friends, no grudge added
 				SetProperty("MyDyn", "Fondness"..TargetID, FondnessCounter-1)
 				SetProperty("TargetDyn", "Fondness"..MyDynID, FondnessCounter-1)
+				
+				feedback_FavorReduceFondness("MyDyn", "TargetDyn")
+				feedback_FavorReduceFondness("TargetDyn", "MyDyn")
 				return
 			else
 				RemoveProperty("MyDyn", "Fondness"..TargetID)
 				RemoveProperty("TargetDyn", "Fondness"..MyDynID)
+				
+				feedback_FavorRemoveFondness("MyDyn", "TargetDyn")
+				feedback_FavorRemoveFondness("TargetDyn", "MyDyn")
 				return
 			end
 		end
@@ -394,6 +400,9 @@ function AddGrudge(source, dest)
 				-- it can still get worse
 				SetProperty("MyDyn", "Grudge"..TargetID, GrudgeCounter+1)
 				SetProperty("TargetDyn", "Grudge"..MyDynID, GrudgeCounter+1)
+				
+				feedback_FavorAddGrudge("MyDyn", "TargetDyn")
+				feedback_FavorAddGrudge("TargetDyn", "MyDyn")
 				return
 			else
 				return
@@ -404,6 +413,9 @@ function AddGrudge(source, dest)
 			-- add first grudge
 			SetProperty("MyDyn", "Grudge"..TargetID, 1)
 			SetProperty("TargetDyn", "Grudge"..MyDynID, 1)
+			
+			feedback_FavorGainGrudge("MyDyn", "TargetDyn")
+			feedback_FavorGainGrudge("TargetDyn", "MyDyn")
 			return
 		end
 	end
@@ -428,10 +440,16 @@ function AddFondness(source, dest)
 				if GrudgeCounter > 1 then
 					SetProperty("MyDyn", "Grudge"..TargetID, GrudgeCounter-1)
 					SetProperty("TargetDyn", "Grudge"..MyDynID, GrudgeCounter-1)
+					
+					feedback_FavorReduceGrudge("MyDyn", "TargetDyn")
+					feedback_FavorReduceGrudge("TargetDyn", "MyDyn")
 					return
 				else
 					RemoveProperty("MyDyn", "Grudge"..TargetID)
 					RemoveProperty("TargetDyn", "Grudge"..MyDynID)
+					
+					feedback_FavorRemoveGrudge("MyDyn", "TargetDyn")
+					feedback_FavorRemoveGrudge("TargetDyn", "MyDyn")
 					return
 				end
 			end
@@ -444,6 +462,9 @@ function AddFondness(source, dest)
 				-- it can still get even better
 				SetProperty("MyDyn", "Fondness"..TargetID, FondnessCounter+1)
 				SetProperty("TargetDyn", "Fondness"..MyDynID, FondnessCounter+1)
+				
+				feedback_FavorAddFondness("MyDyn", "TargetDyn")
+				feedback_FavorAddFondness("TargetDyn", "MyDyn")
 				return
 			else
 				return
@@ -454,6 +475,9 @@ function AddFondness(source, dest)
 			-- add first fondness
 			SetProperty("MyDyn", "Fondness"..TargetID, 1)
 			SetProperty("TargetDyn", "Fondness"..MyDynID, 1)
+			
+			feedback_FavorGainFondness("MyDyn", "TargetDyn")
+			feedback_FavorGainFondness("TargetDyn", "MyDyn")
 		end
 	end
 end

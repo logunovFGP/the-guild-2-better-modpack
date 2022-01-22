@@ -93,7 +93,18 @@ function Run()
 				
 			--do favor stuff
 			local Charisma = GetSkillValue("", 3)
-			local favorbonus = 1 * math.ceil(Charisma / 5) --at 6 Cha bonus becomes +2, at 11 bounus is +3
+			local favorbonus = 0
+			
+			if Charisma < 4 then
+				favorbonus = GL_FAVOR_MOD_TINY
+			elseif Charisma < 7 then
+				favorbonus = GL_FAVOR_MOD_VERYSMALL
+			elseif Charisma < 10 then
+				favorbonus = GL_FAVOR_MOD_SMALL
+			else
+				favorbonus = GL_FAVOR_MOD_NORMAL
+			end
+			
 			BuildingGetInsideSimList("CurrentBuilding", "SimsList")
 			for i=0, ListSize("SimsList")-1 do
 				ListGetElement("SimsList", i, "Sim")

@@ -579,12 +579,12 @@ function Round1Action()
 end
 
 function EndDuelFail(ChallengerMissing, ChallengedMissing)
-
+	
 	--how much the favor of the listeners to the destination is decreased
-	local favormodify = 10
+	local favormodify = GL_FAVOR_MOD_NORMAL
 	--the listening range. 
-	local ListeningRange = 2500
-
+	local ListeningRange = 2000
+	
 	if (ChallengerMissing == 1 and ChallengedMissing == 0) then
 		local count = Find("Destination","__F((Object.GetObjectsByRadius(Sim) == "..ListeningRange.."))","Challenger", -1)
 		for i=0,count-1 do 

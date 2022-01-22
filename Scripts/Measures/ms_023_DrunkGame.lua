@@ -143,7 +143,7 @@ function Run()
 			    -- Nachricht
           BuildingGetOwner("Tave","TaveCHef")
 
-					chr_ModifyFavor("TaveCHef","",-10)
+					chr_ModifyFavor("TaveCHef", "", -GL_FAVOR_MOD_NORMAL)
           MsgNewsNoWait("","Tave","","default",-1,"@L_MEASURE_DRUNKGAME_FAIL_HEAD_+0",
 	                    "@L_MEASURE_DRUNKGAME_FAIL_BODY_+0")
 

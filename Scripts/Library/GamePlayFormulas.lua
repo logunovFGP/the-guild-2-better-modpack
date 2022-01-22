@@ -77,6 +77,7 @@ end
 
 function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 	local Distance = GetDistance(SimAlias,DestAlias)
+	local FavorLost = GL_FAVOR_MOD_VERYLARGE
 
 	if IsType(SimAlias, "Sim") then
 
@@ -149,11 +150,11 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 					f_MoveTo(SimAlias,DestAlias,GL_MOVESPEED_RUN, 500)
 				end
 				StartSingleShotParticle("particles/bloodsplash.nif", "ParticleSpawnPos",1,5)	
-				PlaySound3D(DestAlias,"combat/pain/Hurt_s_01.wav",1)
-				ModifyFavorToSim(DestAlias,SimAlias,-50)
+				PlaySound3D(DestAlias,"combat/pain/Hurt_s_01.wav", 1)
+				ModifyFavorToSim(DestAlias, SimAlias, -FavorLost)
 			elseif IsType(DestAlias, "Building") then
-				if BuildingGetOwner(DestAlias,"BuildingOwner") then
-					ModifyFavorToSim("BuildingOwner",SimAlias,-50)
+				if BuildingGetOwner(DestAlias, "BuildingOwner") then
+					ModifyFavorToSim("BuildingOwner", SimAlias, -FavorLost)
 				end
 			end
 			
@@ -163,7 +164,7 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			for i=0,victims-1 do
 				PlaySound3D("DestSim","combat/pain/Hurt_s_01.wav",1)
 				ModifyHP("DestSim",-100,true)
-				ModifyFavorToSim("DestSim",SimAlias,-50)
+				ModifyFavorToSim("DestSim",SimAlias,-FavorLost)
 			end
 
 		elseif IsType(DestAlias, "Building") and GetItemCount(SimAlias, "Cannon", INVENTORY_EQUIPMENT)>0 and GetItemCount(SimAlias, "Cannonball", INVENTORY_STD)>0 then
@@ -192,11 +193,13 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			local BuildingLevel = BuildingGetLevel(DestAlias)
 			local side = -1
 			GetPosition(DestAlias,"BuildingPos")
+			
 			local OffsetArray = {
 				0,400*BuildingLevel,0,1,
 				-100,400*BuildingLevel,100,1,
 				100,400*BuildingLevel,-100,1,
 			}
+			
 			local fDuration = ThrowObject(SimAlias, "TargetPos", "Outdoor/NewAssets/cannonball.nif",0.1, "CannonBall", OffsetArray[1]*side, OffsetArray[2], OffsetArray[3])
 			RemoveItems(SimAlias,"Cannonball",1)
 			PlaySound3DVariation(SimAlias,"Effects/combat_cannon_shot",1)
@@ -211,14 +214,14 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			GfxDetachObject("Cannon")
 
 			if BuildingGetOwner(DestAlias,"BuildingOwner") then
-				ModifyFavorToSim("BuildingOwner",SimAlias,-100)
+				ModifyFavorToSim("BuildingOwner",SimAlias,(-FavorLost)*2)
 			end
 
 			local victims = Find(DestAlias,"__F((Object.GetObjectsByRadius(Sim) == 30)","DestSim", -1)
 			for i=0,victims-1 do
 				PlaySound3D("DestSim","combat/pain/Hurt_s_01.wav",1)
 				ModifyHP("DestSim",-100,true)
-				ModifyFavorToSim("DestSim",SimAlias,-100)
+				ModifyFavorToSim("DestSim",SimAlias,(-FavorLost)*2)
 			end
 		end
 

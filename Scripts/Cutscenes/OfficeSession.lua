@@ -796,12 +796,14 @@ function DoVote(VoterAlias,OfficeAlias,ApplicantAlias, ApplicantCnt)
 		Res = -1
 	end
 	
-	officesession_SimCam(VoterAlias, 0, 0)	
+	officesession_SimCam(VoterAlias, 0, 0)
+	local FavorAdd = GL_FAVOR_MOD_NORMAL
+	
 	if Res ~= -1 then
 --		SetData("votes"..Res, GetData("votes"..Res) + 1)
 		PlayAnimationNoWait(VoterAlias, "sit_yes")
 		MsgSay(VoterAlias, "@L_SESSION_3_ELECT_CHOISE_+0", GetID(ApplicantAlias..Res))
-		ModifyFavorToSim(VoterAlias, ApplicantAlias..Res, 5)
+		ModifyFavorToSim(VoterAlias, ApplicantAlias..Res, FavorAdd)
 --		SetData("VotedFor_"..GetDynastyID(VoterAlias),GetID("Applicant_"..CurrentOffice.."_"..Res))
 	else
 		PlayAnimationNoWait(VoterAlias, "sit_no")

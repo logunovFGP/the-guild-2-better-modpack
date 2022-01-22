@@ -40,35 +40,7 @@ function Weight()
 end
 
 function Execute()
-	if not SimGetSpouse("SIM", "Spouse") then
-		return
-	end
-	
-	if ModifyFavorToSim("SIM", "Spouse",5)<70 then
-		-- try to boost the favor to the partner
-		local Measure
-		local	Count = 0
-		local Arr
-		local Court
-
-		Arr = {}
-
-		for Measure=0,7 do
-			Court = CourtingId2Measure(Measure)
-			if GetMeasureRepeat("SIM", Court, "Spouse")<=0 then
-				Arr[Count] = Court
-				Count = Count + 1
-			end
-		end
-
-		if Count==0 then
-			return
-		end
-
-		local MeasureName = Arr[Rand(Count)]
-		if MeasureName~="" then
-			MeasureRun("SIM", "Spouse", MeasureName)
-		end
+	if not AliasExists("Spouse") then
 		return
 	end
 	

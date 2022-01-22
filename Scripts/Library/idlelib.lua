@@ -1729,8 +1729,8 @@ function TakeACredit()
 
 							SatisfyNeed("", 9, 1)
 
-							if BuildingGetOwner("Destination","Glaubiger") then
-								chr_ModifyFavor("","Glaubiger",4)					
+							if BuildingGetOwner("Destination", "Glaubiger") then
+								chr_ModifyFavor("","Glaubiger", GL_FAVOR_MOD_SMALL)					
 							end
 
 							Sleep(dowhat)
@@ -1781,7 +1781,7 @@ function ReturnACredit()
 			PlaySound3D("","Effects/coins_to_moneybag+0.wav", 1.0)
 
 			if BuildingGetOwner("Destination","Glaubiger") then
-				chr_ModifyFavor("","Glaubiger",-3)					
+				chr_ModifyFavor("","Glaubiger",-GL_FAVOR_MOD_VERYSMALL)					
 			end
 
 			local schuld = GetProperty("","SchuldenMeng")
@@ -2134,16 +2134,18 @@ function BuySomeCoin(SplitNumber)
 				PlaySound3D("","Effects/coins_to_moneybag+0.wav", 1.0)
 	
 				if BuildingGetOwner("Destination","Glaubiger") then
-					chr_ModifyFavor("","Glaubiger",1)					
+					chr_ModifyFavor("","Glaubiger",GL_FAVOR_MOD_TINY)					
 				end
+				
 				Sleep(playTime-1)
 			else
 				if SplitNumber then
 					return "c"
 				else
 					if BuildingGetOwner("Destination","Glaubiger") then
-						chr_ModifyFavor("","Glaubiger",-1)					
+						chr_ModifyFavor("","Glaubiger",-GL_FAVOR_MOD_TINY)					
 					end
+					
 					SetProperty("", "IgnoreBank", "Destination")
 					SetProperty("", "IgnoreBankTime", GetGametime()+36)
 				end
