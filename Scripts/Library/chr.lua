@@ -1637,3 +1637,29 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 
 end
 
+function NeedsTreatment(SimAlias)
+	local MyHP = GetHP(SimAlias)
+	local Damage = false
+	local Sickness = { "Fever", "Cold", "Sprain", "Influenza", "BurnWound", "Caries", "Pox", "Pneumonia", "Blackdeath" }
+	
+	if MyHP < GetMaxHP(SimAlias)/2 then
+		return true
+	end
+	
+	if (GetImpactValue(SimAlias, "Sickness") > 0) then
+		for i=1, 9 do
+			if GetImpactValue(SimAlias, Sickness[i]) > 0 then
+				if ImpactGetMaxTimeleft(SimAlias, Sickness[i]) >= 2 or Sickness[i] == "Pneumonia" or Sickness[i] == "Blackdeath" then
+					Damage = true
+					break
+				end
+			end
+		end
+	end
+	
+	if Damage then
+		return true
+	end
+	
+	return false
+end

@@ -57,9 +57,11 @@ function Run()
 		Sleep(DoNothing)
 	end 
 	
-	if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP("")/2)) then
-		if gameplayformulas_CheckMoneyForTreatment("")==1 then
-			idlelib_VisitDoc()
+	if ((GetImpactValue("", "Sickness") > 0) or (GetHP("") < GetMaxHP("")/2)) then
+		if gameplayformulas_CheckMoneyForTreatment("") == 1 then
+			if ReadyToRepeat("", "ai_VisitDoc") and chr_NeedsTreatment("") then
+				idlelib_VisitDoc()
+			end
 		end
 	end
 
@@ -423,8 +425,10 @@ function Worker(ActiveMovement)
 			end
 
 			if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP("")/4)) then
-				if gameplayformulas_CheckMoneyForTreatment("")==1 then
-					idlelib_VisitDoc()
+				if gameplayformulas_CheckMoneyForTreatment("") == 1 then
+					if ReadyToRepeat("", "ai_VisitDoc") and chr_NeedsTreatment("") then
+						idlelib_VisitDoc()
+					end
 				end
 			end
 

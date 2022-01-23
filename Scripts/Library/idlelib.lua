@@ -1138,6 +1138,7 @@ end
 -- VisitDoc
 -- -----------------------
 function VisitDoc(HospitalID)
+	SetRepeatTimer("", "ai_VisitDoc", 1)
 	local DistanceBest = -1
 	local Attractivity
 	local Distance

@@ -36,7 +36,9 @@ function Run()
 
 	if GetImpactValue("","Sickness")>0 then
 		if gameplayformulas_CheckMoneyForTreatment("")==1 then
-			idlelib_VisitDoc()
+			if chr_NeedsTreatment("") then
+				idlelib_VisitDoc()
+			end
 		end
 	end
 
