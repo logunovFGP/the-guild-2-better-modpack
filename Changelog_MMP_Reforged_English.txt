@@ -77,6 +77,7 @@ _Design_
   in one of the later updates of the mod.
 - Versengold (the band) doesn't spawn before round 3.
 - Imperial and guild fame are now dynasty traits only. Every action of your family members will affect the whole dynasty.
+- Removed unnecessary statistics from statistic's tab.
 
 *** Vanilla-Bugs ***
 

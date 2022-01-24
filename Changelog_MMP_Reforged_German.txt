@@ -76,6 +76,7 @@ _Design_
   ein besseres und übersichtlicheres System ersetzt.
 - Die Band Versengold spawnt nun erst zur dritten Spielrunde.
 - Reichsruf und Gildenruf sind nun ausschließlich Dynastiewerte. Jede Aktion eurer Charaktere hat Einfluss auf eure gesamte Dynastie.
+- Unnötige Statistiken vom Statistik-Fenster entfernt.
 
 *** Vanilla-Bugs ***
 
