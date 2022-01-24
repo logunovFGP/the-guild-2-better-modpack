@@ -1,112 +1,89 @@
-
 function GameStart()
-
-	if not GetSettlement("", "City") then
-		return 0
-	end
+	
+	GetSettlement("", "City")
 	
 	if CityIsKontor("City") then
 		return 0
 	end
 	
 	local Level = CityGetLevel("City")
-	marketpinghour_CheckResources(Level)
 	
-	-- initialize some other items at game start
-	marketpinghour_CheckItem(Level, "FlowerOfDiscord", 1, 3)
-	marketpinghour_CheckItem(Level, "Perfume", 4, 8)
-	marketpinghour_CheckItem(Level, "CartBooster", 4, 10)
-	marketpinghour_CheckItem(Level, "AboutTalents1", 3, 9)
-	marketpinghour_CheckItem(Level, "Poem", 1, 2)
-	marketpinghour_CheckItem(Level, "CamouflageCloak", 1, 3)
-	marketpinghour_CheckItem(Level, "GlovesOfDexterity", 0, 2)
-	marketpinghour_CheckItem(Level, "MoneyBag", 1, 3)
-	marketpinghour_CheckItem(Level, "WalkingStick",2, 6)
-	marketpinghour_CheckItem(Level, "BeltOfMetaphysic",0, 1)
-	marketpinghour_CheckItem(Level, "Mead", 4, 8)
-	marketpinghour_CheckItem(Level, "Cake", 2, 4)
-	marketpinghour_CheckItem(Level, "Antidote", 2, 4)
-	marketpinghour_CheckItem(Level, "Dagger", 2, 4)
-	marketpinghour_CheckItem(Level, "SilverRing", 4, 8)
-	marketpinghour_CheckItem(Level, "FarmersClothes", 4, 8)
+	marketpinghour_SpawnItems("City", Level)
 	
+	-- far trader
 	economy_CalcNeedsForMarket("City")
 	economy_CalcSalesForMarket("City")
 end
 
-
 function PingHour()
-	if not GetSettlement("", "City") then
+
+	if CityIsKontor("") then
 		return 0
 	end
-
-	if CityIsKontor("City") then
-		return 0
-	end
-
-	marketpinghour_RemoveItemMarket("City")
 	
-	if math.mod(GetGametime(), 3) == 2 then -- at 2, 5, 8, 11, ...
-		local Level = CityGetLevel("City")
-		marketpinghour_CheckResources(Level)
-	end
+	local Level = CityGetLevel("")
+
+--	marketpinghour_RemoveItems("", Level)
 	
 	if math.mod(GetGametime(), 24) == 5 then -- at 5am
-		local CityNeedCount, CityNeeds = economy_CalcNeedsForMarket("City")
-		economy_CalcSalesForMarket("City")
+		local CityNeedCount, CityNeeds = economy_CalcNeedsForMarket("")
+		economy_CalcSalesForMarket("")
 		marketpinghour_SendFarTrader(CityNeedCount, CityNeeds)
 	end
 end
 
-function CheckResources(CityLevel)
-	local Difficulty = ScenarioGetDifficulty() -- easy 0, 1, 2, 3, 4 hard
-	-- Easy, Very easy: always
-	--    Normal: 12 - 6 = 6 rounds
-	--      Hard: 12 - 9 = 3 rounds
-	-- Very hard: 12 - 12 = 0 rounds
-	local AddMissing = Difficulty < 2 or GetRound() < 12 - (3 * Difficulty)
+function SpawnItems(City, CityLevel)
 	
-	-- woodcutter
-	marketpinghour_CheckItem(CityLevel, "Charcoal", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Oakwood", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Pinewood", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Fungi", 4, 12, AddMissing)
-	-- mine
-	marketpinghour_CheckItem(CityLevel, "Iron", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Silver", 4, 12, AddMissing)
-	-- farm
-	marketpinghour_CheckItem(CityLevel, "Wool", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Wheat", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Barley", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Leather", 4, 12, AddMissing)
-	-- orchard
-	marketpinghour_CheckItem(CityLevel, "Fruit", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "Honey", 4, 12, AddMissing)
-	-- miller
-	marketpinghour_CheckItem(CityLevel, "WheatFlour", 4, 12, AddMissing)
-	marketpinghour_CheckItem(CityLevel, "BarleyFlour", 4, 12, AddMissing)
-	-- other	
-	marketpinghour_CheckItem(CityLevel, "Dye", 4, 12, AddMissing)
-
-	GetScenario("World")
-	if HasProperty("World","seamap") then
-		marketpinghour_CheckItem(CityLevel, "Herring", 4, 12, AddMissing)
-		marketpinghour_CheckItem(CityLevel, "Salmon", 2, 4, AddMissing)
-	else
-		marketpinghour_CheckItem(CityLevel, "Herring", 6, 18, AddMissing)
-		marketpinghour_CheckItem(CityLevel, "Salmon", 3, 6, AddMissing)
+	local ItemName = ""
+	local BuildingType = 0
+	local MinLevel = 0
+	local Spawn = 0
+	local LevelFound = 0 -- count the higher level buildings multiple times
+	
+	-- db
+	local TableName = "ItemsToMarket" 
+	local NumItems = 166 -- this should be the last ID from DB/ItemsToMarket.dbt
+	
+	for i=0, NumItems do
+		ItemName = GetDatabaseValue(TableName, i, "name")
+		
+		if ItemName and ItemName ~= nil and ItemName ~= "" then
+			BuildingType = GetDatabaseValue(TableName, i, "buildingtype")
+			MinLevel = GetDatabaseValue(TableName, i, "minlevel")
+			Spawn = GetDatabaseValue(TableName, i, "spawn_gamestart")
+			
+			-- count the levels
+			if MinLevel == 3 then
+				LevelFound = (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, BuildingType, 3, -1, FILTER_IGNORE)) * 3
+			elseif MinLevel == 2 then
+				LevelFound = (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, BuildingType, 3, -1, FILTER_IGNORE)) * 3
+				LevelFound = LevelFound + (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, BuildingType, 2, -1, FILTER_IGNORE)) * 2
+			else
+				LevelFound = (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, BuildingType, 3, -1, FILTER_IGNORE)) * 3
+				LevelFound = LevelFound + (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, BuildingType, 2, -1, FILTER_IGNORE)) * 2
+				LevelFound = LevelFound + CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, BuildingType, 1, -1, FILTER_IGNORE)
+			end
+			
+			-- special case for level 1 church items, count church_cath aswell
+			if ItemName == "Parchment" or ItemName == "HolyWater" or ItemName == "Housel" or ItemName == "Poem" then
+				-- count the levels
+				LevelFound = LevelFound + (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_CATH, 3, -1, FILTER_IGNORE)) * 3
+				LevelFound = LevelFound + (CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_CATH, 2, -1, FILTER_IGNORE)) * 2
+				LevelFound = LevelFound + CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_CATH, 1, -1, FILTER_IGNORE)
+			end
+			
+			-- multiply and add
+			Spawn = Spawn*LevelFound
+			
+			if Spawn == 0 then
+				AddItems("", ItemName, 1, INVENTORY_STD) -- we spawn it anyway to have to slot shown
+				RemoveItems("", ItemName, 1, INVENTORY_STD)
+			else
+				AddItems("", ItemName, Spawn, INVENTORY_STD)
+			end
+		end
 	end
 end
-
-function CheckItem(CityLevel, Item, MinCount, MaxCount, AddMissing)
-	AddMissing = AddMissing or true 
-	local Wanted = MinCount + Rand(5) + math.floor((MaxCount - MinCount)*CityLevel/5)
-	local Count = GetItemCount("", Item, INVENTORY_STD)
-	if Count < Wanted then
-		AddItems("", Item, Wanted - Count, INVENTORY_STD)
-	end
-end
-
 
 function RemoveItemMarket()
  local chance, Name, Baseprice, Sellprice
@@ -148,17 +125,22 @@ function RemoveItemMarket()
 end
 
 function SendFarTrader(CityNeedCount, CityNeeds)
+
 	if CityNeedCount <= 0 then
 		return -- nothing to do
 	end
+	
 	-- get cart or create one
 	local CartID = GetProperty("", "TWP_FarTraderCart")
 	local CartAlias = "CartAlias"
+	
 	if not CartID or not GetAliasByID(CartID, CartAlias) then
+	
 		if not GetSettlement("", "MyCity") then
 			LogMessage("TWP::MarketPingHour Could not create cart, settlement not found.")
 			return
 		end
+		
 		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
 			LogMessage("TWP::MarketPingHour Could not create cart, market building not found.")
 			return
@@ -178,6 +160,7 @@ function SendFarTrader(CityNeedCount, CityNeeds)
 			LogMessage("TWP::MarketPingHour Could not create cart.")
 			return
 		end
+		
 	elseif not HasProperty(CartAlias, "TWP_HomeBuilding") then
 		-- should not happen, but the Property was lost once during testing 
 		SetProperty(CartAlias, "TWP_HomeBuilding", GetID(""))
@@ -190,6 +173,7 @@ function SendFarTrader(CityNeedCount, CityNeeds)
 	
 	-- weighted random decision for one of the first 5 needs
 	local Weights = {}
+	
 	for i=1, 5 do
 		if CityNeeds[i] then
 			Weights[i] = CityNeeds[i][2]
@@ -197,8 +181,10 @@ function SendFarTrader(CityNeedCount, CityNeeds)
 			break
 		end
 	end
+	
 	local Choice = helpfuncs_RandWeighted(Weights)
 	local ItemToBuy = CityNeeds[Choice][1]
+	
 	-- start measure with item and budget of 10000
 	MeasureCreate("Measure")
 	MeasureAddData("Measure", "Item", ItemToBuy)

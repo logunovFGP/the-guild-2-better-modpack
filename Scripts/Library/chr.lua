@@ -565,7 +565,10 @@ end
 -- -----------------------
 function ModifyFavor(source, dest, val)
 	
-	if IsDynastySim(source) and IsDynastySim(dest) then
+	local SourceTitle = 0
+	local DestinationTitle = 0
+	
+	if IsDynastySim(source) and IsDynastySim(dest) and GetDynastyID(source) > 0 and GetDynastyID(dest) > 0 then
 		local Diplo = DynastyGetDiplomacyState(source, dest)
 		
 		if Diplo == DIP_ALLIANCE and val < 0 then
@@ -576,8 +579,8 @@ function ModifyFavor(source, dest, val)
 			val = math.floor(val / 2)
 		else
 			-- check title-difference
-			local SourceTitle = GetNobilityTitle(source, true)
-			local DestinationTitle = GetNobilityTitle(dest, true)
+			SourceTitle = 0 + GetNobilityTitle(source)
+			DestinationTitle = 0 + GetNobilityTitle(dest)
 			
 			if val > 0 then
 			-- harder to gain favor
