@@ -15,15 +15,6 @@ function AttackEnemy(Owner, OwnLevel, EnemyLevel)
 end
 
 -- ------------------
--- BlackmailCharacter
--- ------------------
-function BlackmailCharacter(Owner, BaseXP, EvidenceCount)
-	if AliasExists(Owner) then
-		IncrementXP(Owner, BaseXP + EvidenceCount * 10)
-	end
-end
-
--- ------------------
 -- BuyNobilityTitle
 -- ------------------
 function BuyNobilityTitle(Owner, BaseXP, Title)

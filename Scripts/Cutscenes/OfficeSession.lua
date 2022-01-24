@@ -16,7 +16,7 @@ function Start()
 	
 	-- fos = Frequency of Office Sessions (every round, every 2 or 4 rounds)
 	GetScenario("World")
-	local fos = GetProperty("World","fos")
+	local fos = GetProperty("World", "fos")
 	local nextOS = 17
 	
 	if not HasProperty("World", "static") and (GetRound() > 0 or math.mod(GetGametime(),24) > 17) then
@@ -37,14 +37,14 @@ function Start()
 	if (WaitTime<0) then
 		officesession_SetBuildingInfo()
 	else
-		CutsceneAddEvent("","SetBuildingInfo",WaitTime)
+		CutsceneAddEvent("", "SetBuildingInfo",WaitTime)
 	end
 	
-	if HasProperty("councilbuilding","CutsceneAhead") then
-		local CutscenesAhead = GetProperty("councilbuilding","CutsceneAhead") + 1
-		SetProperty("councilbuilding","CutsceneAhead",CutscenesAhead)
+	if HasProperty("councilbuilding", "CutsceneAhead") then
+		local CutscenesAhead = GetProperty("councilbuilding", "CutsceneAhead") + 1
+		SetProperty("councilbuilding", "CutsceneAhead",CutscenesAhead)
 	else
-		SetProperty("councilbuilding","CutsceneAhead",1)
+		SetProperty("councilbuilding", "CutsceneAhead",1)
 	end
 	
 	--??
@@ -53,7 +53,7 @@ function Start()
 end
 
 function SetBuildingInfo()
-	SetProperty("councilbuilding","sessioncutszene",GetID(""))
+	SetProperty("councilbuilding", "sessioncutszene",GetID(""))
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ function AddApplicant()
 	end
 
 	--Invite the Applicant
-	officesession_InviteApplicant("applicant","")
+	officesession_InviteApplicant("applicant", "")
 
 	-- invite the current office holder if he exists and is not already invited. "Holder" is the alias of the current holder
 	if(OfficeGetHolder("office", "Holder") and not ListContains("InvitedSims", "Holder")) then
@@ -139,7 +139,7 @@ function BeginCouncilMeeting()
 	
 	-- go over all office members and stop those who are to late.
 	for i=0, SimCnt-1 do
-		ListGetElement("SimOfficeList",i,"Sim")
+		ListGetElement("SimOfficeList",i, "Sim")
 		
 		-- The sim is not at the right place
 		if not officesession_SimIsInTownhall("Sim") then
@@ -165,7 +165,7 @@ function BeginCouncilMeeting()
 			end
 			
 			-- remove the sim from the list
-			ListRemove("SimOfficeList","Sim")
+			ListRemove("SimOfficeList", "Sim")
 		end
 	end
 	
@@ -203,7 +203,7 @@ function BeginCouncilMeeting()
 		-- Get the Chairman, if no one of the office tree is there, use the guard
 		local ChairmanExists = officesession_GetChairman("Chairman")
 		if(not ChairmanExists)then
-			BuildingFindSimByProperty("councilbuilding", "BUILDING_NPC", 2,"Guard")
+			BuildingFindSimByProperty("councilbuilding", "BUILDING_NPC", 2, "Guard")
 			CopyAlias("Guard", "Chairman")
 		end
 	end
@@ -220,7 +220,7 @@ function BeginCouncilMeeting()
 					SetData("KingTask", 1)
 					SetData("CardinalID", GetID("Sim"))
 					CutsceneCallThread("", "SpecialSimAttend", "Sim", "LeftAssessorChairPos")
-					ListRemove("SimOfficeList","Sim")
+					ListRemove("SimOfficeList", "Sim")
 				else
 					SetData("KingTask", 1)
 					SetData("FeldherrID", GetID("Sim"))
@@ -320,7 +320,7 @@ function RunCouncilMeeting()
 	if (officesession_GetValidApplicantCount("settlement") <1) then
 		officesession_SimCam("Chairman", 0, 0)
 		PlayAnimationNoWait("Chairman", "sit_talk_short")
-		MsgSay("Chairman","@L_SESSION_ADDON_NO_DECIDERS")
+		MsgSay("Chairman", "@L_SESSION_ADDON_NO_DECIDERS")
 		EndCutscene("")
 	end
 
@@ -346,7 +346,7 @@ function RunCouncilMeeting()
 				local ApplicantCnt = officesession_OfficeGetApplicants("OfficeToCheck", "Applicant")
 				local Winner = Rand(ApplicantCnt)
 
-				officesession_SaveVoteResult("OfficeToCheck","Applicant"..Winner)
+				officesession_SaveVoteResult("OfficeToCheck", "Applicant"..Winner)
 				
 				local OfficeNameLabel = OfficeGetTextLabel("OfficeToCheck", SimGetGender("Applicant"..Winner))
 
@@ -439,7 +439,7 @@ function VoteForOffice(Office)
 			MsgSay("Chairman", "@L_SESSION_3_ELECT_INTRO_+0")
 		end
 	else
-		MsgSay("Chairman","@L_SESSION_ADDON_INTRO")
+		MsgSay("Chairman", "@L_SESSION_ADDON_INTRO")
 	end
 	
 	if CutsceneLocalPlayerIsWatching("") then
@@ -462,7 +462,7 @@ function VoteForOffice(Office)
 	end
 	
 	for i=0, VoteCacheIdx-1 do
-		if(OfficeGetHolder("Office","OfficeHolder") and GetData("VoteCacheWinnerID"..i) == GetID("OfficeHolder")) then
+		if(OfficeGetHolder("Office", "OfficeHolder") and GetData("VoteCacheWinnerID"..i) == GetID("OfficeHolder")) then
 			wonEllection = true
 			break
 		end
@@ -480,7 +480,7 @@ function VoteForOffice(Office)
 		else
 			officesession_SimCam("OfficeHolder", 0, 0)
 			-- What? I never did something wrong!
-			MsgSay("OfficeHolder","@L_SESSION_2_CANCEL_1STINTRO_SUB")
+			MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_1STINTRO_SUB")
 			if CutsceneLocalPlayerIsWatching("") then
 				HudClearSelection()
 			end
@@ -535,7 +535,7 @@ function VoteForOffice(Office)
 		-- no voters, random winner
 		if(VoterCnt == 0) then
 			officesession_OverviewCam()
-			MsgSay("Chairman", "@L_SESSION_7_NOJURYEVENT_WELCOME","@L_SESSION_ADDON_ADD_NO_VOTERS")
+			MsgSay("Chairman", "@L_SESSION_7_NOJURYEVENT_WELCOME", "@L_SESSION_ADDON_ADD_NO_VOTERS")
 			if CutsceneLocalPlayerIsWatching("") then
 				HudClearSelection()
 			end
@@ -582,14 +582,14 @@ function VoteForOffice(Office)
 										if GetSkillValue("OfficeHolder", RHETORIC) >= GetSkillValue(VoterAlias, EMPATHY) then
 											PlayAnimationNoWait(VoterAlias, "sit_yes") -- it works
 											if DynastyIsAI(VoterAlias) then
-												SetFavorToSim(VoterAlias,"OfficeHolder", GetFavorToSim(VoterAlias,"OfficeHolder")+10)
+												SetFavorToSim(VoterAlias, "OfficeHolder", GetFavorToSim(VoterAlias, "OfficeHolder")+10)
 											end
 											officesession_SimCam(VoterAlias, 0, 0)
 											MsgSay(VoterAlias, "@L_SESSION_2_CANCEL_REASONTOSTAY_REACTION_PRO")
 										else
 											PlayAnimationNoWait(VoterAlias, "sit_no") -- it fails
 											if DynastyIsAI(VoterAlias) then
-												SetFavorToSim(VoterAlias,"OfficeHolder", GetFavorToSim(VoterAlias,"OfficeHolder")-10)
+												SetFavorToSim(VoterAlias, "OfficeHolder", GetFavorToSim(VoterAlias, "OfficeHolder")-10)
 											end
 											officesession_SimCam(VoterAlias, 0, 0)
 											MsgSay(VoterAlias, "@L_SESSION_2_CANCEL_REASONTOSTAY_REACTION_CONTRA")
@@ -612,7 +612,7 @@ function VoteForOffice(Office)
 	
 			-- Do your votes
 			officesession_OverviewCam()
-			if(OfficeGetHolder("Office","OfficeHolder") and officesession_SimIsInTownhall("OfficeHolder")) then
+			if(OfficeGetHolder("Office", "OfficeHolder") and officesession_SimIsInTownhall("OfficeHolder")) then
 				MsgSay("Chairman", "@L_SESSION_2_CANCEL_2NDINTRO")
 			else
 				MsgSay("Chairman", "@L_SESSION_3_ELECT_INTRO_+2")
@@ -680,9 +680,9 @@ function VoteForOffice(Office)
 				local OfficeName = "@L"..string.sub(OfficeNameLabel, 0, -4)..GenderText
 				-- old office holder is new office holder?
 				if( OfficeGetHolder("Office", "OfficeHolder") and GetID("OfficeHolder") == GetID(CurrentWinner) ) then
---					MsgSay("Chairman","@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+1")
+--					MsgSay("Chairman", "@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+1")
 				elseif( OfficeGetHolder("Office", "OfficeHolder") and wonEllection == false ) then
---					MsgSay("Chairman","@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+0")
+--					MsgSay("Chairman", "@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+0")
 					MsgSay("Chairman", "@L_SESSION_3_ELECT_RESULT1"..GenderText,GetID(CurrentWinner), GetID("settlement"), OfficeName)
 				else
 					MsgSay("Chairman", "@L_SESSION_3_ELECT_RESULT1"..GenderText,GetID(CurrentWinner), GetID("settlement"), OfficeName)
@@ -700,10 +700,10 @@ function VoteForOffice(Office)
 				end
 				
 				if( OfficeGetHolder("Office", "OfficeHolder") and GetID("OfficeHolder") == GetID(CurrentWinner) ) then
---					MsgSay("Chairman","@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+1")
+--					MsgSay("Chairman", "@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+1")
 				elseif( OfficeGetHolder("Office", "OfficeHolder") and wonEllection == false ) then
 					MsgSay("Chairman", "@L_SESSION_3_ELECT_RESULT2", GetID("Applicant"..Winner))
---					MsgSay("Chairman","@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+0")
+--					MsgSay("Chairman", "@L_SESSION_2_CANCEL_ANOUNCEMENT_SPEECH_+0")
 				else
 					MsgSay("Chairman", "@L_SESSION_3_ELECT_RESULT2", GetID("Applicant"..Winner))
 				end
@@ -730,13 +730,13 @@ function VoteForOffice(Office)
 			officesession_SimCam("OfficeHolder", 0, 0)
 			-- some insults before I go
 			--if SimGetGender("Applicant"..Winner)==GL_GENDER_FEMALE then
-			--	MsgSay("OfficeHolder","@L_SESSION_2_CANCEL_REASONTOGO_INSULT_FEMALE")
+			--	MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_REASONTOGO_INSULT_FEMALE")
 			--else
-			--	MsgSay("OfficeHolder","@L_SESSION_2_CANCEL_REASONTOGO_INSULT_MALE")
+			--	MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_REASONTOGO_INSULT_MALE")
 			--end
 			MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_COMMENTS")
 		else
-			MsgSay("Applicant"..Winner,"@L_SESSION_3_ELECT_REACTION") 
+			MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION") 
 		end
 		
 		if CutsceneLocalPlayerIsWatching("") then
@@ -820,7 +820,7 @@ function DoVote(VoterAlias,OfficeAlias,ApplicantAlias, ApplicantCnt)
 				SetFavorToSim(VoterAlias, "BribedBySim", GetFavorToSim(VoterAlias, "BribedBySim")-25)
 			end
 		else
-			SetFavorToSim(VoterAlias, "BribedBySim", GetFavorToSim(VoterAlias,"BribedBySim")-10)
+			SetFavorToSim(VoterAlias, "BribedBySim", GetFavorToSim(VoterAlias, "BribedBySim")-10)
 		end
 		RemoveProperty(VoterAlias, "BribedBy")
 	end
@@ -837,22 +837,22 @@ end
 function InviteApplicant(SimAlias)
 	local WaitTime = math.floor(GetData("WaitTime") / 60)
 	AddImpact(SimAlias, "OfficeTimer", 1, WaitTime)
-	SimAddDate(SimAlias,"councilbuilding","Council Meeting", SettlementEventGetTime("council_date")-120,"AttendOfficeMeeting")
+	SimAddDate(SimAlias, "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
 	feedback_MessagePolitics(SimAlias, "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
-	SimAddDatebookEntry(SimAlias,SettlementEventGetTime("council_date"),"councilbuilding","@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
+	SimAddDatebookEntry(SimAlias,SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
 end
 
 -- invite current office holders
 function InviteDepositionDefender(SimAlias, RunForOfficeSim)
 	local WaitTime = math.floor(GetData("WaitTime") / 60)
 	AddImpact(SimAlias, "OfficeTimer", 1, WaitTime)
-	SimAddDate(SimAlias,"councilbuilding","Council Meeting", SettlementEventGetTime("council_date")-120,"AttendOfficeMeeting")
+	SimAddDate(SimAlias, "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
 	-- only send 1 message if multiple guys run for your office
 	if GetImpactValue(SimAlias, "SuppressDefenderMessage")==0 then
 		AddImpact(SimAlias, "SuppressDefenderMessage",1,12)
 		feedback_MessagePolitics(SimAlias, "@L_SESSION_ADDON_MESSAGE_HEAD_+0", "@L_SESSION_ADDON_MESSAGE_BODY", GetID(RunForOfficeSim),GetID("settlement"))
 	end
-	SimAddDatebookEntry(SimAlias,SettlementEventGetTime("council_date"),"councilbuilding","@L_SESSION_ADDON_MESSAGE_HEAD_+0","@L_SESSION_ADDON_MESSAGE_BODY_+1", GetID(RunForOfficeSim), GetID("settlement"))
+	SimAddDatebookEntry(SimAlias,SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_ADDON_MESSAGE_HEAD_+0", "@L_SESSION_ADDON_MESSAGE_BODY_+1", GetID(RunForOfficeSim), GetID("settlement"))
 end
 
 -- invite Voters
@@ -862,31 +862,31 @@ function InviteAllVoters()
 	end
 	-- get all voters
 	-- last parameter: 0 - All (voters and applicants), 1 - only office voters, 2 - only applicants 
-	local VoterCnt = OfficePrepareSessionMembers("office","VoterList",1)
+	local VoterCnt = OfficePrepareSessionMembers("office", "VoterList",1)
 	
 	--Filter out already invited voters
 	for i=0, VoterCnt-1 do
-		ListGetElement("VoterList",i,"Voter")
-		if(ListContains("InvitedSims","Voter")) then
-			ListRemove("VoterList","Voter")
+		ListGetElement("VoterList",i, "Voter")
+		if(ListContains("InvitedSims", "Voter")) then
+			ListRemove("VoterList", "Voter")
 		end
 	end
 
 	-- invite all remaining voters
 	VoterCnt = ListSize("VoterList")
 	for i=0, VoterCnt-1 do
-		ListGetElement("VoterList",i,"Voter")
-		ListAdd("InvitedSims","Voter")
+		ListGetElement("VoterList",i, "Voter")
+		ListAdd("InvitedSims", "Voter")
 		
 		local WaitTime = math.floor(GetData("WaitTime") / 60)
 		AddImpact("Voter", "OfficeTimer", 1, WaitTime)
-		SimAddDate("Voter","councilbuilding","Council Meeting", SettlementEventGetTime("council_date")-120,"AttendOfficeMeeting")
+		SimAddDate("Voter", "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
 		-- only send 1 message if you vote for multiple offices
 		if GetImpactValue("Voter", "SuppressVoterMessage")==0 then 
 			AddImpact("Voter", "SuppressVoterMessage",1,12)
 			feedback_MessagePolitics("Voter", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
 		end
-		SimAddDatebookEntry("Voter",SettlementEventGetTime("council_date"),"councilbuilding","@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
+		SimAddDatebookEntry("Voter",SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
 
 	end
 	
@@ -902,7 +902,7 @@ function CheckForValidOfficeRun(Office)
 	--Check if the current rask have living applicants
 	local Valid = false
 
-	local ApplicantCnt = officesession_OfficeGetApplicants(Office,"Applicant")
+	local ApplicantCnt = officesession_OfficeGetApplicants(Office, "Applicant")
 
 	local DeadApplicants = 0
 	
@@ -947,10 +947,10 @@ end
 --check if sim is in the offices session townhall
 function SimIsInTownhall(SimAlias)
 	if AliasExists(SimAlias) then
-		if GetInsideBuilding(SimAlias,"currentbuilding") then
+		if GetInsideBuilding(SimAlias, "currentbuilding") then
 			if GetID("currentbuilding")==GetID("councilbuilding") then
-				GetInsideRoom(SimAlias,"InsideRoom")
-				BuildingGetRoom("councilbuilding","Judge","Room")
+				GetInsideRoom(SimAlias, "InsideRoom")
+				BuildingGetRoom("councilbuilding", "Judge", "Room")
 				if (GetID("Room") ~= GetID("InsideRoom")) then
 					-- sim is in the wrong room
 					return false
@@ -974,7 +974,7 @@ end
 -- prepares the valid (available for the office meeting) applicants for the given office, returns the number of valid applicants
 function OfficeGetApplicants(Office,ApplicantAlias)
 	local APPLICANTS = 2
-	OfficePrepareSessionMembers(Office,"ApplicantList", APPLICANTS)
+	OfficePrepareSessionMembers(Office, "ApplicantList", APPLICANTS)
 	return officesession_BuildValidSimList("ApplicantList", ApplicantAlias)
 end
 
@@ -1051,18 +1051,18 @@ function VoterAttend(Id)
 	SimStopMeasure("")
 	
 	if LocatorStatus("councilbuilding", "TableChair"..Id, true) == 1 then
-		SetData("Office_Sims_"..GetID("").."Seat","TableChair"..Id)
+		SetData("Office_Sims_"..GetID("").."Seat", "TableChair"..Id)
 		-- add some extra life for the session to avoid early dying, but let it run out
 		AddImpact("", "LifeExpanding", 2, 8)
 		
 		-- sit down
 		if(GetLocatorByName("councilbuilding", "TableChair"..Id, "TableChair")) then
-			if not f_BeginUseLocator("","TableChair", GL_STANCE_SIT, true) then
+			if not f_BeginUseLocator("", "TableChair", GL_STANCE_SIT, true) then
 				-- failed to reach the seat. move to the next one first and try again
 				local Id2 = Id+1
 				GetLocatorByName("councilbuilding", "TableChair"..Id2, "TableChair2")
 				f_MoveTo("", "TableChair2")
-				f_BeginUseLocator("","TableChair", GL_STANCE_SIT, true)
+				f_BeginUseLocator("", "TableChair", GL_STANCE_SIT, true)
 				CutsceneSendEventTrigger("owner", "Reached")
 			else
 				CutsceneSendEventTrigger("owner", "Reached")
@@ -1082,7 +1082,7 @@ function ApplicantAttend(Id)
 		
 		-- sit down
 		if(GetLocatorByName("councilbuilding", "BenchChair"..Id, "BenchChair")) then
-			if not f_BeginUseLocator("","BenchChair", GL_STANCE_SITBENCH, true) then
+			if not f_BeginUseLocator("", "BenchChair", GL_STANCE_SITBENCH, true) then
 				-- failed to reach the seat. move to the next one first and try again
 				local Id2 = Id+1
 				GetLocatorByName("councilbuilding", "BenchChair"..Id2, "BenchChair2")
@@ -1291,7 +1291,7 @@ function AIAbstimmung(Params)
 		
 		-- current office holder bonus 5%. Only applies if I have at least 50 favor, otherwise -5%
 		local CurrentOfficeBonus = 1
-		if SimGetOffice(CurrentApplicant,"ExistingSimOffice") then
+		if SimGetOffice(CurrentApplicant, "ExistingSimOffice") then
 			if (GetID("ExistingSimOffice") == GetID(GetData("CurrentOffice"))) then
 				if GetFavorToSim(VoterAlias,CurrentApplicant)>=50 then
 					CurrentOfficeBonus = 1.05
@@ -1309,7 +1309,7 @@ function AIAbstimmung(Params)
 		
 		-- local club president talent 10%
 		local TalentBonus = 1
-		if GetImpactValue(CurrentApplicant,"CutsceneFavor")>0 then
+		if GetImpactValue(CurrentApplicant, "CutsceneFavor")>0 then
 			TalentBonus = 1.1
 		end
 		
@@ -1350,7 +1350,7 @@ function SimLeaveTownhall()
 	local totalCount = 0
 	
 	for i=0, SimCnt-1 do
-		ListGetElement("SimList",i,"Sim")
+		ListGetElement("SimList",i, "Sim")
 		if HasData("UsherSession") then
 			if SimGetProfession("Sim") ~= 18 then
 				if HasProperty("Sim", "BUILDING_NPC") and GetProperty("Sim", "BUILDING_NPC") == 2 then

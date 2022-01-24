@@ -108,7 +108,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	local Fame = 0
 	local ImpFame = 0
 	local NobLevel = 2 + Rand(3)
-	local XP = 500
+	local XP = GL_STARTUP_XP_SHADOW_DYNASTY
 	local StartMoney = 2500
 	
 	-- Bonus if dynasty has buildings

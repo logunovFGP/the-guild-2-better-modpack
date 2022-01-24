@@ -612,7 +612,7 @@ function ModifyFavor(source, dest, val)
 	end
 	
 	-- lose only 50 percent favor if you have rattle the chains impact
-	if GetImpactValue(dest,"RattleTheChains") == 1 and val < 0 then
+	if GetImpactValue(dest, "RattleTheChains") == 1 and val < 0 then
 		val = math.floor(val / 2)
 	end
 	
@@ -630,9 +630,9 @@ function ModifyFavor(source, dest, val)
 
 	if DynastyIsPlayer(source) or DynastyIsPlayer(dest) then
 		if (val >0) then
-			feedback_OverheadSkill("","@L$S[2007] +%1n", true, val)
+			feedback_OverheadSkill("", "@L$S[2007] +%1n", true, val)
 		else
-			feedback_OverheadSkill("","@L$S[2006] %1n", true, val)
+			feedback_OverheadSkill("", "@L$S[2006] %1n", true, val)
 		end
 	end
 end
@@ -677,11 +677,11 @@ function GetMaxHaulValue(DestAlias, DynastyID, ThiefLevel)
 		BaseValue = BaseValue * 2
 	end
 	
-	if HasProperty(DestAlias,"ScoutedBy"..DynastyID) then
+	if HasProperty(DestAlias, "ScoutedBy"..DynastyID) then
 		BaseValue = BaseValue * 3
 	end
 
-	local LootFactor	= ((101 - GetImpactValue(DestAlias,"ProtectionOfBurglary"))*100 + 10*ThiefLevel )
+	local LootFactor	= ((101 - GetImpactValue(DestAlias, "ProtectionOfBurglary"))*100 + 10*ThiefLevel )
 	local LootValue		=	(BaseValue * LootFactor / 100)
 	
 	if LootValue > 1500 then
@@ -721,7 +721,7 @@ end
 -- -----------------------
 function GetBuildingProtFromBurglaryLevel(destination)	
 	--the protection of burglary from the target building
-	local ProtectionValue = GetImpactValue(destination,"ProtectionOfBurglary")
+	local ProtectionValue = GetImpactValue(destination, "ProtectionOfBurglary")
 	ProtectionValue = (ProtectionValue - 100)*100
 	local ProtectionClass = 0
 
@@ -770,9 +770,9 @@ function SimModifyFaith(Sim,FaithAmount,Religion)
 	local faith = SimGetFaith(Sim) + FaithAmount
 	SimSetFaith(Sim,faith)
 	if Religion == 0 then
-		ShowOverheadSymbol(Sim,false,true,0,"@L$S[2015] %1n",FaithAmount)
+		ShowOverheadSymbol(Sim,false,true,0, "@L$S[2015] %1n",FaithAmount)
 	else
-		ShowOverheadSymbol(Sim,false,true,0,"@L$S[2014] %1n",FaithAmount)
+		ShowOverheadSymbol(Sim,false,true,0, "@L$S[2014] %1n",FaithAmount)
 	end
 end
 
@@ -808,10 +808,10 @@ function OutputHireError(SimAlias, BuildingAlias, Error)
 		local Profession = BuildingGetProfession(BuildingAlias)
 		if SimGetGender(SimAlias) == GL_GENDER_MALE then -- can't hire Male for female only jobs
 			local Label = ProfessionGetLabel(Profession, GL_GENDER_FEMALE)
-			MsgQuick(BuildingAlias,"@L_GENERAL_MEASURES_FAILURES_+27", Label)
+			MsgQuick(BuildingAlias, "@L_GENERAL_MEASURES_FAILURES_+27", Label)
 		else -- can't hire Female for male only jobs
 			local Label = ProfessionGetLabel(Profession, GL_GENDER_MALE)
-			MsgQuick(BuildingAlias,"@L_GENERAL_MEASURES_FAILURES_+12", Label)
+			MsgQuick(BuildingAlias, "@L_GENERAL_MEASURES_FAILURES_+12", Label)
 		end
 	elseif (Error == "NoSpace") then
 		local	MaxWorker = BuildingGetMaxWorkerCount(BuildingAlias)
@@ -1150,8 +1150,8 @@ function StartRage(SimAlias)
 	
 	SetRepeatTimer(SimAlias, GetMeasureRepeatName2("Rage"), TimeOut)
 	
-	GetPosition(SimAlias,"ParticleSpawnPos")
-	PlaySound3D(SimAlias,"Effects/mystic_gift+0.wav", 1.0)
+	GetPosition(SimAlias, "ParticleSpawnPos")
+	PlaySound3D(SimAlias, "Effects/mystic_gift+0.wav", 1.0)
 	StartSingleShotParticle("particles/rage.nif", "ParticleSpawnPos", 1, 2.0)
 	AddImpact(SimAlias, "fighting", boost, duration)
 	AddImpact(SimAlias, "IsOnRage", boost, duration)
@@ -1165,8 +1165,8 @@ function StartRage(SimAlias)
 	end
 	
 	for i=0, FightUnits-1 do
-		GetPosition("FightUnit"..i,"ParticleSpawnPos")
-		PlaySound3D(SimAlias,"Effects/mystic_gift+0.wav", 1.0)
+		GetPosition("FightUnit"..i, "ParticleSpawnPos")
+		PlaySound3D(SimAlias, "Effects/mystic_gift+0.wav", 1.0)
 		StartSingleShotParticle("particles/rage.nif", "ParticleSpawnPos", 1, 2.0)
 		AddImpact("FightUnit"..i, "fighting", boost, duration)
 		AddImpact("FightUnit"..i, "IsOnRage", boost, duration)
@@ -1397,7 +1397,7 @@ end
 function GetAlderman()
 	local alderman = GetData("#Alderman")
 	if alderman~=nil then
-		if (alderman>0) and GetAliasByID(alderman,"Alderman") and GetState("Alderman", STATE_DEAD)==false then
+		if (alderman>0) and GetAliasByID(alderman, "Alderman") and GetState("Alderman", STATE_DEAD)==false then
 			return alderman
 		else
 			return 0
@@ -1424,7 +1424,7 @@ end
 function GetImperialOfficer()
 	local ImperialOfficer = GetData("#ImperialOfficer")
 	if ImperialOfficer~=nil then
-		if (ImperialOfficer>0) and GetAliasByID(ImperialOfficer,"ImperialOfficer") and GetState("ImperialOfficer", STATE_DEAD)==false then
+		if (ImperialOfficer>0) and GetAliasByID(ImperialOfficer, "ImperialOfficer") and GetState("ImperialOfficer", STATE_DEAD)==false then
 			return ImperialOfficer
 		else
 			return 0
@@ -1498,7 +1498,7 @@ end
 function CheckWorkerBonuses(BldAlias)
 	
 	local NumWorkers = BuildingGetWorkerCount(BldAlias)
-	if not BuildingGetOwner(BldAlias,"BOwner") then
+	if not BuildingGetOwner(BldAlias, "BOwner") then
 		return
 	end
 	
@@ -1522,117 +1522,117 @@ function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 	local booster
 	
 	-- master of manure
-	booster = GetImpactValue(SimAlias,"ManureI")  
-	if (not (booster == 1) and SimHasAbility(SimOwner,5)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias,"GatherBonus",20  * (1 - booster),-1)
-		AddImpact(SimAlias,"ManureI",1       * (1 - booster),-1)		
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,5) or hirefire == "fire") then
-		AddImpact(SimAlias,"GatherBonus",-20 * booster,-1)
-		RemoveImpact(SimAlias,"ManureI")
+	booster = GetImpactValue(SimAlias, "ManureI")  
+	if (not (booster == 1) and SimHasAbility(SimOwner, 5)) and not (hirefire == "fire") then 
+		AddImpact(SimAlias, "GatherBonus", 20  * (1 - booster), -1)
+		AddImpact(SimAlias, "ManureI", 1 * (1 - booster), -1)		
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 5) or hirefire == "fire") then
+		AddImpact(SimAlias, "GatherBonus", -20 * booster, -1)
+		RemoveImpact(SimAlias, "ManureI")
 	end
 	
 	-- mentor
-	booster = GetImpactValue(SimAlias,"MentorI")  
-	if (not (booster == 1) and SimHasAbility(SimOwner,8)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias,"ExpGaining",15  * (1 - booster),-1)
-		AddImpact(SimAlias,"MentorI",1      * (1 - booster),-1)
+	booster = GetImpactValue(SimAlias, "MentorI")  
+	if (not (booster == 1) and SimHasAbility(SimOwner, 8)) and not (hirefire == "fire") then 
+		AddImpact(SimAlias, "ExpGaining", 15  * (1 - booster), -1)
+		AddImpact(SimAlias, "MentorI", 1 * (1 - booster), -1)
 	elseif not (booster == 0) and (not SimHasAbility(SimOwner,8) or hirefire == "fire") then
-		AddImpact(SimAlias,"ExpGaining",-15 * booster,-1)
-		RemoveImpact(SimAlias,"MentorI")
+		AddImpact(SimAlias, "ExpGaining",-15 * booster, -1)
+		RemoveImpact(SimAlias, "MentorI")
 	end
 	
 	-- oratory master   
-	booster = GetImpactValue(SimAlias,"MarketerI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,17)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias,"rhetoric",2    * (1 - booster),-1)
-		AddImpact(SimAlias,"empathy",2     * (1 - booster),-1)
-		AddImpact(SimAlias,"bargaining",2  * (1 - booster),-1)
-		AddImpact(SimAlias,"MarketerI",1   * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,17) or hirefire == "fire") then
-		AddImpact(SimAlias,"rhetoric",-2   * booster,-1)
-		AddImpact(SimAlias,"empathy",-2    * booster,-1)
-		AddImpact(SimAlias,"bargaining",-2 * booster,-1)
-		RemoveImpact(SimAlias,"MarketerI")
+	booster = GetImpactValue(SimAlias, "MarketerI")
+	if (not (booster == 1) and SimHasAbility(SimOwner, 17)) and not (hirefire == "fire") then 
+		AddImpact(SimAlias, "rhetoric", 2 * (1 - booster), -1)
+		AddImpact(SimAlias, "empathy", 2 * (1 - booster), -1)
+		AddImpact(SimAlias, "bargaining", 2 * (1 - booster), -1)
+		AddImpact(SimAlias, "MarketerI", 1 * (1 - booster), -1)
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 17) or hirefire == "fire") then
+		AddImpact(SimAlias, "rhetoric", -2 * booster, -1)
+		AddImpact(SimAlias, "empathy", -2 * booster, -1)
+		AddImpact(SimAlias, "bargaining", -2 * booster, -1)
+		RemoveImpact(SimAlias, "MarketerI")
 	end
 	
 	-- lightning burglary
-	booster = GetImpactValue(SimAlias,"BurglaryI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,21)) and not (hirefire == "fire") then
-		AddImpact(SimAlias,"BurglarySpeedup",25  * (1 - booster),-1)
-		AddImpact(SimAlias,"MoveSpeed",1.2       * (1 - booster),-1)
-		AddImpact(SimAlias,"BurglaryI",1         * (1 - booster),-1)
-		AddImpact(SimAlias,"shadow_arts",2       * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,21) or hirefire == "fire") then
-		AddImpact(SimAlias,"BurglarySpeedup",-25 * booster,-1)
-		AddImpact(SimAlias,"MoveSpeed",-1.2      * booster,-1)
-		AddImpact(SimAlias,"shadow_arts",-2      * booster,-1)
-		RemoveImpact(SimAlias,"BurglaryI")
+	booster = GetImpactValue(SimAlias, "BurglaryI")
+	if (not (booster == 1) and SimHasAbility(SimOwner, 21)) and not (hirefire == "fire") then
+		AddImpact(SimAlias, "BurglarySpeedup", 25 * (1 - booster), -1)
+		AddImpact(SimAlias, "MoveSpeed", 1.2 * (1 - booster), -1)
+		AddImpact(SimAlias, "BurglaryI", 1 * (1 - booster), -1)
+		AddImpact(SimAlias, "shadow_arts", 2 * (1 - booster), -1)
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 21) or hirefire == "fire") then
+		AddImpact(SimAlias, "BurglarySpeedup", -25 * booster, -1)
+		AddImpact(SimAlias, "MoveSpeed", -1.2 * booster, -1)
+		AddImpact(SimAlias, "shadow_arts", -2 * booster, -1)
+		RemoveImpact(SimAlias, "BurglaryI")
 	end
 	
 	-- druidic secrets
-	booster = GetImpactValue(SimAlias,"DruidicI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,34)) and not (hirefire == "fire") then     
-		AddImpact(SimAlias,"GatherBonus",20      * (1 - booster),-1)
-		AddImpact(SimAlias,"constitution",2      * (1 - booster),-1)
-		AddImpact(SimAlias,"secret_knowledge",2  * (1 - booster),-1)
-		AddImpact(SimAlias,"DruidicI",1          * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,34) or hirefire == "fire") then
-		AddImpact(SimAlias,"GatherBonus",-20     * booster,-1)
-		AddImpact(SimAlias,"constitution",-2     * booster,-1)
-		AddImpact(SimAlias,"secret_knowledge",-2 * booster,-1)
-		RemoveImpact(SimAlias,"DruidicI")
+	booster = GetImpactValue(SimAlias, "DruidicI")
+	if (not (booster == 1) and SimHasAbility(SimOwner, 34)) and not (hirefire == "fire") then     
+		AddImpact(SimAlias, "GatherBonus", 20 * (1 - booster), -1)
+		AddImpact(SimAlias, "constitution", 2 * (1 - booster), -1)
+		AddImpact(SimAlias, "secret_knowledge", 2 * (1 - booster), -1)
+		AddImpact(SimAlias, "DruidicI", 1 * (1 - booster), -1)
+	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 34) or hirefire == "fire") then
+		AddImpact(SimAlias, "GatherBonus", -20 * booster, -1)
+		AddImpact(SimAlias, "constitution", -2 * booster, -1)
+		AddImpact(SimAlias, "secret_knowledge", -2 * booster, -1)
+		RemoveImpact(SimAlias, "DruidicI")
 	end
 	
 	-- hard workers
-	booster = GetImpactValue(SimAlias,"HardWorkersI")
+	booster = GetImpactValue(SimAlias, "HardWorkersI")
 	if (not (booster == 1) and SimHasAbility(SimOwner,36)) and not (hirefire == "fire") then
-		AddImpact(SimAlias,"BonusSlot",1      * (1 - booster),-1)
-		AddImpact(SimAlias,"constitution",2   * (1 - booster),-1)
-		AddImpact(SimAlias,"craftsmanship",2  * (1 - booster),-1)
-		AddImpact(SimAlias,"HardWorkersI",1   * (1 - booster),-1)
+		AddImpact(SimAlias, "BonusSlot",1      * (1 - booster),-1)
+		AddImpact(SimAlias, "constitution",2   * (1 - booster),-1)
+		AddImpact(SimAlias, "craftsmanship",2  * (1 - booster),-1)
+		AddImpact(SimAlias, "HardWorkersI",1   * (1 - booster),-1)
 	elseif not (booster == 0) and (not SimHasAbility(SimOwner,36) or hirefire == "fire") then
-		AddImpact(SimAlias,"BonusSlot",-1     * booster,-1)
-		AddImpact(SimAlias,"constitution",-2  * booster,-1)
-		AddImpact(SimAlias,"craftsmanship",-2 * booster,-1)
-		RemoveImpact(SimAlias,"HardWorkersI")
+		AddImpact(SimAlias, "BonusSlot",-1     * booster,-1)
+		AddImpact(SimAlias, "constitution",-2  * booster,-1)
+		AddImpact(SimAlias, "craftsmanship",-2 * booster,-1)
+		RemoveImpact(SimAlias, "HardWorkersI")
 	end
 	
 	-- charming rogues
-	booster = GetImpactValue(SimAlias,"CharmingI")
+	booster = GetImpactValue(SimAlias, "CharmingI")
 	if (not (booster == 1) and SimHasAbility(SimOwner,37)) and not (hirefire == "fire") then
-		AddImpact(SimAlias,"FightCrit",15  * (1 - booster),-1)
-		AddImpact(SimAlias,"charisma",2    * (1 - booster),-1)
-		AddImpact(SimAlias,"fighting",2    * (1 - booster),-1)
-		AddImpact(SimAlias,"CharmingI",1   * (1 - booster),-1)
+		AddImpact(SimAlias, "FightCrit",15  * (1 - booster),-1)
+		AddImpact(SimAlias, "charisma",2    * (1 - booster),-1)
+		AddImpact(SimAlias, "fighting",2    * (1 - booster),-1)
+		AddImpact(SimAlias, "CharmingI",1   * (1 - booster),-1)
 	elseif not (booster == 0) and (not SimHasAbility(SimOwner,37) or hirefire == "fire") then
-		AddImpact(SimAlias,"FightCrit",-15 * booster,-1)
-		AddImpact(SimAlias,"charisma",-2   * booster,-1)
-		AddImpact(SimAlias,"fighting",-2   * booster,-1)
-		RemoveImpact(SimAlias,"CharmingI")
+		AddImpact(SimAlias, "FightCrit",-15 * booster,-1)
+		AddImpact(SimAlias, "charisma",-2   * booster,-1)
+		AddImpact(SimAlias, "fighting",-2   * booster,-1)
+		RemoveImpact(SimAlias, "CharmingI")
 	end
 	
 	-- defenders
-	booster = GetImpactValue(SimAlias,"DefendersI")
+	booster = GetImpactValue(SimAlias, "DefendersI")
 	if (not (booster == 1) and SimHasAbility(SimOwner,38)) and not (hirefire == "fire") then
-		AddImpact(SimAlias,"FightArmor",7  * (1 - booster),-1)
-		AddImpact(SimAlias,"dexterity",2   * (1 - booster),-1)
-		AddImpact(SimAlias,"empathy",2     * (1 - booster),-1)
-		AddImpact(SimAlias,"DefendersI",1  * (1 - booster),-1)
+		AddImpact(SimAlias, "FightArmor",7  * (1 - booster),-1)
+		AddImpact(SimAlias, "dexterity",2   * (1 - booster),-1)
+		AddImpact(SimAlias, "empathy",2     * (1 - booster),-1)
+		AddImpact(SimAlias, "DefendersI",1  * (1 - booster),-1)
 	elseif not (booster == 0) and (not SimHasAbility(SimOwner,38) or hirefire == "fire") then
-		AddImpact(SimAlias,"FightArmor",-7 * booster,-1)
-		AddImpact(SimAlias,"dexterity",-2  * booster,-1)
-		AddImpact(SimAlias,"empathy",-2    * booster,-1)
-		RemoveImpact(SimAlias,"DefendersI")
+		AddImpact(SimAlias, "FightArmor",-7 * booster,-1)
+		AddImpact(SimAlias, "dexterity",-2  * booster,-1)
+		AddImpact(SimAlias, "empathy",-2    * booster,-1)
+		RemoveImpact(SimAlias, "DefendersI")
 	end
 	
 	-- master extractor
-	booster = GetImpactValue(SimAlias,"ProducerI")
+	booster = GetImpactValue(SimAlias, "ProducerI")
 	if (not (booster == 1) and SimHasAbility(SimOwner,41)) and not (hirefire == "fire") then  
-		AddImpact(SimAlias,"GatherBonus",35  * (1 - booster),-1)
-		AddImpact(SimAlias,"ProducerI",1     * (1 - booster),-1)
+		AddImpact(SimAlias, "GatherBonus",35  * (1 - booster),-1)
+		AddImpact(SimAlias, "ProducerI",1     * (1 - booster),-1)
 	elseif not (booster == 0) and (not SimHasAbility(SimOwner,41) or hirefire == "fire") then
-		AddImpact(SimAlias,"GatherBonus",-35 * booster,-1)
-		RemoveImpact(SimAlias,"ProducerI")
+		AddImpact(SimAlias, "GatherBonus",-35 * booster,-1)
+		RemoveImpact(SimAlias, "ProducerI")
 	end
 
 end

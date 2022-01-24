@@ -215,6 +215,7 @@ _AI_
 - It was possible that non-scholar dynasty sims could hold a mass in AI controlled buildings.
 - AI did not apply for higher offices when they had to defend their current office.
 - When sending out Employees to gather ressources, those items sometimes got lost in the employee's inventory.
+- AI will only visit the doctor if there is enough time left on the sickness or if it is deadly.
 
 *** Features ***
 

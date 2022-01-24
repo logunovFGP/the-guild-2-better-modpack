@@ -38,7 +38,7 @@ function Start()
 	
 --	SetData("StartXP",MyXP)
 
-	IncrementXP("#Player",200)
+	IncrementXP("#Player", 200)
 	
 	local totalSkill = 0
 	totalSkill = totalSkill+GetSkillValue("#Player",CONSTITUTION)

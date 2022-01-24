@@ -80,7 +80,7 @@ function Run()
 	Sleep(1)
 	
 	-- Add xp
-	xp_BlackmailCharacter("", GetData("BaseXP"), Sum)
+	chr_GainXP("", GetData("BaseXP"))
 	
 	StopAction("blackmail", "Owner")
 	

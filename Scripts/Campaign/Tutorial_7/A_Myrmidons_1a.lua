@@ -42,7 +42,7 @@ function Start()
 	SetExclusiveMeasure("#MyMyrmidon", "Walk", EN_BOTH)
 	
 	IncrementSkillValue("#MyMyrmidon",fighting, 7)
-	IncrementXP("#MyMyrmidon",5000)	
+	IncrementXP("#MyMyrmidon", 5000)	
 					
 	GetLocatorByName("#Residence","Stroll1","Stroll1")
 	StopAllAnimations("#MyMyrmidon")

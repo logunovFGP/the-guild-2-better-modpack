@@ -218,6 +218,7 @@ _KI_
 - Es war möglich, dass nicht-Gelehrte Dynastie Charaktere eine Messe in KI-kontrollierten Kirchen hielten.
 - Die KI bewarb sich nicht auf höhere Amtssessel, wenn sich jemand bereits auf ihr aktuelles Amt beworben hatte.
 - Wurden Mitarbeiter zum Sammeln einer Ressource ausgesandt, wurde diese teilweise nicht aus dem Inventar des Charakters entfernt und verblieb dort.
+- Die KI wird nur dann zum Heiler gehen, wenn die Krankheit noch lange genug anhält oder falls diese tödlich wäre.
 
 *** Features ***
 

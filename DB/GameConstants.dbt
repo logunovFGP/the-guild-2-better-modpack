@@ -251,5 +251,6 @@ Data:
 244   "GL_FAVOR_MOD_VERYLARGE"              25                ""                              |
 245   "GL_FAVOR_MOD_EPIC"                   50                ""                              |
 246   "GL_FAVOR_MOD_MAX"                    100               ""                              |
+247   "GL_STARTUP_XP_SHADOW_DYNASTY"        500               ""                              |
 
 
