@@ -678,11 +678,12 @@ end
 
 function CheckMoneyForTreatment(SimAlias)
 
-	if IsPartyMember(SimAlias)==false then
+	if not IsPartyMember(SimAlias) then
 		return 1
 	end
 
 	local Costs = 0
+	
 	if GetImpactValue(SimAlias,"Sprain")==1 then
 		Costs = diseases_GetTreatmentCost("Sprain")
 	elseif GetImpactValue(SimAlias,"Cold")==1 then
@@ -708,6 +709,7 @@ function CheckMoneyForTreatment(SimAlias)
 	end
 		
 	local Money = GetMoney(SimAlias)
+	
 	if Costs > Money then
 		return 0
 	else
@@ -716,94 +718,90 @@ function CheckMoneyForTreatment(SimAlias)
 end
 
 function CheckImperialOfficer()
-	local currentRound = GetRound()
-	if currentRound > -1 then
 
-		local currentGameTime = math.mod(GetGametime(),24)
-		if (currentGameTime == 13) or ((currentGameTime > 13) and (currentGameTime < 14)) then
+	local year = GetYear() - 2 + math.mod(GetGametime(), 6)
+	local DynCount = ScenarioGetObjects("cl_Dynasty", 99, "Dyn")
+	local SimCount, Alias, SimPrioNew
+	local SimArray = {}
+	local SimFameArray = {}
+	local SimArrayCount = 0
+	local SimPrio = 0
 
-			local year = GetYear() - 2 + math.mod(GetGametime(),6)
-			local DynCount = ScenarioGetObjects("cl_Dynasty", 99, "Dyn")
-			local SimCount
-			local Alias
-			local SimArray = {}
-			local SimFameArray = {}
-			local SimArrayCount = 0
-
-			for d=0, DynCount-1 do
-				Alias = "Dyn"..d
-				if GetID(Alias)>0 and DynastyIsPlayer(Alias) or DynastyIsAI(Alias) or DynastyIsShadow(Alias) then
-					SimCount = DynastyGetMemberCount(Alias)
-					for e=0, SimCount do
-						DynastyGetMember(Alias, e, "Sim")
-						if not SimGetOfficeLevel("Sim") == 7 then
-							local num = 0
-							while num<100 do
-								if dyn_GetImperialFameLevel("Sim") > 1 then
-									if SimArray[num]==GetID("Sim") then
-										break
-									elseif SimArray[num]==nil then
-										SimArray[num] = GetID("Sim")
-										SimFameArray[num] = dyn_GetImperialFame("Sim")
-										SimArrayCount = SimArrayCount + 1
-										break
-									end
-								end
-								num = num + 1
-							end
-						end
+	for i=0, DynCount-1 do
+		Alias = "Dyn"..i
+		if GetID(Alias) > 0 then
+			SimCount = DynastyGetMemberCount(Alias)
+			for e=0, SimCount do
+				DynastyGetMember(Alias, e, "Sim"..e)
+				if dyn_GetImperialFameLevel("Sim"..e) > 2 then
+					SimPrioNew = SimGetLevel("Sim"..e) + SimGetOfficeLevel("Sim"..e)*3	
+					if SimPrioNew > SimPrio then
+						SimPrio = SimPrioNew
+						CopyAlias("Sim"..e, "Candidate"..i)
 					end
 				end
 			end
+					
+			if AliasExists("Candidate"..i) then
+				SimArrayCount = SimArrayCount + 1
+				SimArray[SimArrayCount] = GetID("Candidate"..i)
+				SimFameArray[SimArrayCount] = dyn_GetImperialFame("Candidate"..i)
+			end
+		end
+	end
 
-			local ImperialWinner
-			local ImperialFame = -1
-			if SimArrayCount>0 then
-				for x=0,SimArrayCount do
-					if SimFameArray[x]~=nil and SimFameArray[x]>ImperialFame then
-						ImperialFame = SimFameArray[x]
-						ImperialWinner = x
-					end
-				end
+	local ImperialWinner
+	local ImperialFame = -1
+			
+	if SimArrayCount > 0 then
+		for x=1, SimArrayCount do
+			if SimFameArray[x]~=nil and SimFameArray[x] > ImperialFame then
+				ImperialFame = SimFameArray[x]
+				ImperialWinner = x
+			end
+		end
+		
+		-- goodbye old officer
+		local OldImperialOfficer = chr_GetImperialOfficer()
+		if OldImperialOfficer > 0 then
+			GetAliasByID(OldImperialOfficer, "Old")
+			dyn_AddImperialFame("Old", 1)
+			RemoveProperty("Old", "ImperialOfficer")
+		end						
 				
-				local oldimperialofficer = chr_GetImperialOfficer()
-				if oldimperialofficer>0 then
-					GetAliasByID(oldimperialofficer,"Old")
-					RemoveProperty("Old", "ImperialOfficer")
-				end						
-				SetData("#ImperialOfficer",0)
-				if GetAliasByID(SimArray[ImperialWinner],"New") then
-					SetProperty("New","ImperialOfficer",1)
-					SetData("#ImperialOfficer",SimArray[ImperialWinner])
+		SetData("#ImperialOfficer", 0)
+		
+		-- welcome new man
+		if GetAliasByID(SimArray[ImperialWinner], "New") then
+			SetProperty("New", "ImperialOfficer", 1)
+			SetData("#ImperialOfficer", SimArray[ImperialWinner])
 
-					local label = "@L_IMPERIAL_OFFICER"
-					local gender = ""
+			local label = "@L_IMPERIAL_OFFICER"
+			local gender = ""
 
-					if SimGetGender("New")==GL_GENDER_MALE then
-						label = label.."_MALE_+1"
-						gender = gender.."MALE"
-					else
-						label = label.."_FEMALE_+1"
-						gender = gender.."MALE"
-					end
+			if SimGetGender("New") == GL_GENDER_MALE then
+				label = label.."_MALE_+1"
+				gender = gender.."MALE"
+			else
+				label = label.."_FEMALE_+1"
+				gender = gender.."MALE"
+			end
 
-					GetScenario("scenario")
-					local mapid = GetProperty("scenario", "mapid")
-					local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+0"
+			GetScenario("scenario")
+			local mapid = GetProperty("scenario", "mapid")
+			local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+0"
 
-					GetSettlement("New", "settlement")
-					local fameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..dyn_GetImperialFameLevel("New")
+			GetSettlement("New", "settlement")
+			local fameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..dyn_GetImperialFameLevel("New")
 
-					MsgNewsNoWait("All","New","","politics",-1,
+			MsgNewsNoWait("All", "New", "", "politics", -1,
 							"@L_IMPERIAL_OFFICER_"..gender.."_+0",
 							"@L_CHECKIMPERIALOFFICER_BODY_+0",
 							GetYear(), GetID("New"), GetID("settlement"), label, fameleveldyn, dyn_GetImperialFame("New"), lordlabel)
 
-				end
-			else
-				SetData("#ImperialOfficer",0)
-			end
 		end
+	else
+		SetData("#ImperialOfficer", 0)
 	end
 end
 

@@ -18,7 +18,7 @@ end
 
 function GetMinLevel()
 	local Level = 2
-	if CityGetRandomBuilding("",GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"Townhall") then
+	if CityGetRandomBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"Townhall") then
 		if HasProperty("Townhall", "Level") then
 			Level = GetProperty("Townhall", "Level")
 		end
