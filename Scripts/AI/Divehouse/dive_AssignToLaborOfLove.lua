@@ -55,7 +55,7 @@ function Weight()
 	end
 
 	if BuildingGetLevel("WorkBuilding") > 1 then
-		if not HasProperty("MyWork", "DanceShow") then
+		if not HasProperty("WorkBuilding", "DanceShow") then
 			return 33
 		end	
 	end
