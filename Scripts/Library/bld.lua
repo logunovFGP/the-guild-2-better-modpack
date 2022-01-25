@@ -842,7 +842,7 @@ function RemoveCart(BldAlias, CartAlias)
 				end
 			end
 			if not HasItems then -- only remove cart if it is empty
-				chr_CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
+				CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
 				InternalRemove("CartAlias")
 			end
 		end
