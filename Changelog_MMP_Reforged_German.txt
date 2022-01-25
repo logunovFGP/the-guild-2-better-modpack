@@ -48,6 +48,7 @@ _Technik_
 - BuildingUpgrades.dbt wurde komplett überarbeitet.
 - GameConstants.dbt wurde überarbeitet. Scripte nutzen nun häufiger Konstanten, um Dinge zu vereinheitlichen und besser balancen zu können.
 - Die Möglichkeit, während Cutscenes Komplimente und andere Maßnahmen zu nutzen, wurde gestrichen. Alle Teile aus Scripten, die sich auf diesen Fall beziehen, wurden entfernt.
+- Gildenhaus-Script wurde generalüberholt.
 
 _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
@@ -75,7 +76,8 @@ _Design_
 - Die Maßnahmen zum Kauf vergünstigter Rohstoffboxen über das Gildenhaus wurden deaktiviert und werden in einer späteren Version durch
   ein besseres und übersichtlicheres System ersetzt.
 - Die Band Versengold spawnt nun erst zur dritten Spielrunde.
-- Reichsruf und Gildenruf sind nun ausschließlich Dynastiewerte. Jede Aktion eurer Charaktere hat Einfluss auf eure gesamte Dynastie.
+- Reichsruf und Gildenruf sind nun Dynastiewerte. Jede Aktion eurer Charaktere hat Einfluss auf eure gesamte Dynastie. Der persönliche Ruf ist nur für die 
+  Ernennung zum Gildenmeister einer Stadt relevant.
 - Unnötige Statistiken vom Statistik-Fenster entfernt.
 
 *** Vanilla-Bugs ***

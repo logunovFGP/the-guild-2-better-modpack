@@ -834,3 +834,27 @@ function GetImperialLevelPoints(FameLevel)
 		Points = GL_IMPERIAL_FAME_POINTS_FAMOUS
 	end
 end
+
+function GetFameDynasty()
+	if IsDynastySim("") and GetDynasty("", "family") then
+		return dyn_GetFameLevel("")
+	else
+		return -1
+	end
+end
+
+function GetFameSim()
+	return dyn_GetFameLevel("")
+end
+
+function GetImpFameSim()
+	return dyn_GetImperialFameLevel("")
+end
+
+function GetImpFameDynasty()
+	if IsDynastySim("") and GetDynasty("", "family") then
+		return dyn_GetImperialFameLevel("")
+	else
+		return -1
+	end
+end

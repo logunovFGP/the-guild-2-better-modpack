@@ -50,6 +50,7 @@ _Tech_
 - BuildingUpgrades.dbt has been reworked.
 - GameConstants.dbt has been reworked. Scripts use GameConstants much more frequently now to make things more consistent and easier to balance.
 - The possibility of using compliments and other actions during cutscenes have caused many issues and thus got removed. All cutscene-only parts of those scripts have been removed.
+- guild house script has been completely revised.
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
@@ -76,7 +77,8 @@ _Design_
 - The actions for buying cheap ressource-crates from the guild house have been deactivated. They will be replaced by a better system
   in one of the later updates of the mod.
 - Versengold (the band) doesn't spawn before round 3.
-- Imperial and guild fame are now dynasty traits only. Every action of your family members will affect the whole dynasty.
+- Imperial and guild fame are now dynasty traits only. Every action of your family members will affect the whole dynasty. The personal guild fame is only
+  relevant for the guild master's election.
 - Removed unnecessary statistics from statistic's tab.
 
 *** Vanilla-Bugs ***
