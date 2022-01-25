@@ -274,12 +274,13 @@ function CheckGuildMasters()
 				GetAliasByID(ArrayPatron[WinnerPatron], "Winner")
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
-				if GetDynasty("Winner", "Dyn") and not DynastyIsShadow("Dyn") then
+				if DynastyIsShadow("Winner") then
+					textArray[9] = "@L$S[2008]"
+				else
+					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
 					local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 					textArray[9] = "@L$S[20"..tmpflag.."]"
-				else
-					textArray[9] = "@L$S[2008]"
 				end
 				
 				textArray[2] = GetName("Winner")
@@ -301,12 +302,13 @@ function CheckGuildMasters()
 				GetAliasByID(ArrayArtisan[WinnerArtisan], "Winner")
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
-				if GetDynasty("Winner", "Dyn") and not DynastyIsShadow("Dyn") then
+				if DynastyIsShadow("Winner") then
+					textArray[10] = "@L$S[2008]"
+				else
+					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
 					local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 					textArray[10] = "@L$S[20"..tmpflag.."]"
-				else
-					textArray[10] = "@L$S[2008]"
 				end
 				
 				textArray[4] = GetName("Winner")
@@ -329,12 +331,13 @@ function CheckGuildMasters()
 				GetAliasByID(ArrayScholar[WinnerScholar], "Winner")
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
-				if GetDynasty("Winner", "Dyn") and not DynastyIsShadow("Dyn") then
+				if DynastyIsShadow("Winner") then
+					textArray[11] = "@L$S[2008]"
+				else
+					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
 					local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 					textArray[11] = "@L$S[20"..tmpflag.."]"
-				else
-					textArray[11] = "@L$S[2008]"
 				end
 				
 				textArray[6] = GetName("Winner")
@@ -357,12 +360,13 @@ function CheckGuildMasters()
 				GetAliasByID(ArrayChiseler[WinnerChiseler], "Winner")
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
-				if GetDynasty("Winner", "Dyn") and not DynastyIsShadow("Dyn") then
+				if DynastyIsShadow("Winner") then
+					textArray[12] = "@L$S[2008]"
+				else
+					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
 					local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 					textArray[12] = "@L$S[20"..tmpflag.."]"
-				else
-					textArray[12] = "@L$S[2008]"
 				end
 				
 				textArray[8] = GetName("Winner")
