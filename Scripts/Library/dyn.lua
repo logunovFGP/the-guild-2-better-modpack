@@ -189,9 +189,18 @@ function AddFame(SimAlias, Amount)
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "Fame", (fame+Amount))
 	end
+	
+	-- save the fame earned by the sim
+	if not HasProperty(SimAlias, "GuildFame") then
+		SetProperty(SimAlias, "GuildFame", 0)
+	end
+	
+	local SimFame = 0 + GetProperty(SimAlias, "GuildFame")
+	SetProperty(SimAlias, "GuildFame", (SimFame+Amount))
 end
 
 function RemoveFame(SimAlias, Amount)
+	
 	if not IsDynastySim(SimAlias) then
 		return
 	end
@@ -201,6 +210,14 @@ function RemoveFame(SimAlias, Amount)
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "Fame", (fame-Amount))
 	end
+	
+	-- save the fame earned by the sim
+	if not HasProperty(SimAlias, "GuildFame") then
+		SetProperty(SimAlias, "GuildFame", 0)
+	end
+	
+	local SimFame = 0 + GetProperty(SimAlias, "GuildFame")
+	SetProperty(SimAlias, "GuildFame", (SimFame-Amount))
 end
 
 function GetFameLevel(SimAlias)

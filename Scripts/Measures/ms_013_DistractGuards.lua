@@ -27,20 +27,6 @@ function Run()
 	
 	-- Get data
 	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-	
-	if BuildingHasUpgrade("WorkBuilding","SexClothes") then
-		duration = duration * 2
-	end
-	
-	-- Progress bar stuff
-	local Time = GetGametime()
-	local EndTime = Time + duration
-	SetData("Time", duration)
-	SetData("EndTime", EndTime)
-	SetProcessMaxProgress("", duration*10)
-	SendCommandNoWait("", "Progress")
 	
 	-- Time out stuff
 	SetMeasureRepeat(TimeOut)
@@ -49,7 +35,7 @@ function Run()
 	local Counter = 0
 	
 	-- Loop
-	while GetGametime() < EndTime do
+	while true do
 		local Guard = Find("", "__F((Object.GetObjectsByRadius(Sim)==2500)AND(Object.GetProfession()==21)OR(Object.GetProfession()==25))", "Guard", -1)
 		if Guard > 0 then
 			for i=0,Guard-1 do
@@ -66,9 +52,6 @@ function Run()
 		PlayAnimation("", "dance_female_1")
 		
 	end
-	
-	StopMeasure()
-	
 end
 
 -- -----------------------
@@ -104,21 +87,6 @@ function BeDistracted()
 		end
 	end
 	
-end
-
--- -----------------------
--- Progress
--- -----------------------
-function Progress()
-	while true do
-		local Time = GetData("Time")
-		local EndTime = GetData("EndTime")
-		local CurrentTime = GetGametime()
-		CurrentTime = EndTime - CurrentTime
-		CurrentTime = Time - CurrentTime
-		SetProcessProgress("",CurrentTime*10)
-		Sleep(3)
-	end
 end
 
 -- -----------------------

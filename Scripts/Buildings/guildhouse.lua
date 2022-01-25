@@ -125,6 +125,11 @@ function CheckGuildMasters()
 			end
 			
 			local num = 1
+			if not HasProperty("Sim", "GuildFame") then
+				SetProperty("Sim", "GuildFame", 0)
+			end
+			
+			local SimFame = 0 + GetProperty("Sim", "GuildFame")
 			while num < 100 do
 	
 				if BuildCharClass == GL_CLASS_PATRON then
@@ -134,9 +139,9 @@ function CheckGuildMasters()
 						PointArrayPatron[num] = tmpPoints
 						break
 					elseif ArrayPatron[num] == nil then
-					-- SimID not found - add it to the array + add family fame once to the points
+					-- SimID not found - add it to the array + add family fame and sim fame once to the points
 						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim")
+						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
 						PointArrayPatron[num] = tmpPoints
 						ArrayCountPatron = ArrayCountPatron + 1
 						break
@@ -151,7 +156,7 @@ function CheckGuildMasters()
 					elseif ArrayPatron[num] == nil then
 					-- SimID not found - add it to the array + add family fame once to the points
 						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim")
+						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
 						PointArrayPatron[num] = tmpPoints
 						ArrayCountPatron = ArrayCountPatron + 1
 						break
@@ -165,7 +170,7 @@ function CheckGuildMasters()
 					elseif ArrayPatron[num] == nil then
 					-- SimID not found - add it to the array + add family fame once to the points
 						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim")
+						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
 						PointArrayPatron[num] = tmpPoints
 						ArrayCountPatron = ArrayCountPatron + 1
 						break
@@ -179,7 +184,7 @@ function CheckGuildMasters()
 					elseif ArrayPatron[num] == nil then
 					-- SimID not found - add it to the array + add family fame once to the points
 						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim")
+						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
 						PointArrayPatron[num] = tmpPoints
 						ArrayCountPatron = ArrayCountPatron + 1
 						break

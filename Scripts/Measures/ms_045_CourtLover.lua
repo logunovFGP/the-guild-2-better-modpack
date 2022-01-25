@@ -86,6 +86,11 @@ function Run()
 		end
 	end
 	
+	if SimGetCourtingSim("Destination", "blabla") then
+		MsgQuick("", "%1SN %2l", GetID("Destination")," @L_FILTER_IS_COURTED")
+		StopMeasure()
+	end
+	
 	-- Calculate the difficulty which will be set as property to the destination and used in the following MsgBox
 	-- There are four locations where this property will be removed:
 	-- At the CleanUp() in this measure if it is canceled before the SetCourtLover()
@@ -108,26 +113,25 @@ function Run()
 	
 	local CharismaSkill = GetSkillValue("", CHARISMA)
 	local RhetoricSkill = GetSkillValue("", RHETORIC)
-	local TotalSkill = CharismaSkill + RhetoricSkill	
+	local TotalSkill = CharismaSkill + RhetoricSkill
+
+	local MyTitle = GetNobilityTitle("")
+	local DestinationTitle = GetNobilityTitle("Destination")
+	local TitleDifference = (MyTitle - DestinationTitle) * 2
 	
-	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill
+	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill + TitleDifference
 	local InteractionDistance = 128
 	local TimeUntilRepeat = 3
 	
 	if GetInsideBuilding("Destination", "DestBuilding") then
 		GetOutdoorMovePosition("", "DestBuilding", "MovePos")
-		if not f_MoveTo("","MovePos",GL_MOVESPEED_RUN, 800) then
+		if not f_MoveTo("","MovePos",GL_MOVESPEED_RUN, 700) then
 			StopMeasure()
 		end
 		BlockChar("Destination")
 		f_ExitCurrentBuilding("Destination")
 		Sleep(1)
-		f_MoveTo("Destination","Owner",GL_MOVESPEED_RUN,400)
-	end
-	
-	if SimGetCourtingSim("Destination","blabla") then
-		MsgQuick("","%1SN %2l",GetID("Destination"),"@L_FILTER_IS_COURTED")
-		StopMeasure()
+		f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
 	end
 	
 	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
@@ -179,7 +183,7 @@ function Run()
 	feedback_OverheadActionName("Destination")
 
 	-- get the gender of the owner
-	local IsMale = (SimGetGender("")==GL_GENDER_MALE)
+	local IsMale = (SimGetGender("") == GL_GENDER_MALE)
 	
 	-- animation timings
 	local time1 = 0
@@ -187,6 +191,11 @@ function Run()
 	
 	-- check if the favor is high enough for courting
 	local success = (GetFavorToSim("Destination", "") > MinimumFavor)
+	
+	-- fail if the Dest is employed already
+	if SimGetProfession("Destination") > 0 then
+		success = false
+	end
 	
 	-- Proposal
 	PlayAnimationNoWait("", "talk")
