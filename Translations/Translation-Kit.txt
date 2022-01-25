@@ -623,13 +623,13 @@ Translate and add the following lines below:
 18604   "_CHECKIMPERIALOFFICER_BODY_+0"   "With today %2SN from %3NAME is appointed >%4l%< for the duration of the year %1n %.$N$NReputation %7l: $NImperial Fame of the family: %5l (%6n)"   |
 18605   "_CHECKALDERMAN_BODY_+0"   "The council of the guild elders has selected %2SN, %3l of %4NAME, as alderman for the region for the year %1n.$N$NFame of the family: %5l (%6n)"   |
 18606   "_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0"   "Reputation"   |
-18607   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0"   "%6l%1SN is %2l to %3NAME.$N$NGuildhouse Fame of the family: %4l (%5n)$N$NImperial Fame %7l: %8l (%9n)"   |
-18608   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1"   "%4l%1SN does not belong to a guild.$N$NGuildhouse Fame of the family: %2l (%3n)$N$NImperial Fame %5l: %6l (%7n)"   |
-18609   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2"   "%5l%1SN does not belong to a guild, as in %2NAME no guild house has been founded yet.$N$NGuildhouse Fame of the family %3l (%4n)$N$NImperial Fame %6l: %7l (%8n)"   |
+18607   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0"   "%6l%1SN is %2l to %3NAME.$N$NGuildhouse Fame of the Dynasty: %4l (%5n)$NPersonal Fame: %10n $N$NImperial Fame %7l: %8l (%9n)"   |
+18608   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1"   "%4l%1SN does not belong to a guild.$N$NGuildhouse Fame of the Dynasty: %2l (%3n)$NPersonal Fame: %8n $N$NImperial Fame %5l: %6l (%7n)"   |
+18609   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2"   "%5l%1SN does not belong to a guild, as in %2NAME no guild house has been founded yet.$N$NGuildhouse Fame of the Dynasty %3l (%4n)$NPersonal Fame: %9n $N$NImperial Fame %6l: %7l (%8n)"   |
 18610   "_MEASURE_ShowGuildMembership_NAME_+0"   "Show your reputation"   |
-18611   "_MEASURE_ShowGuildMembership_TOOLTIP_+0"   "With this action you can view the reputation of your family."   |
+18611   "_MEASURE_ShowGuildMembership_TOOLTIP_+0"   "With this action you can view the reputation of your Dynasty."   |
 18612   "_MEASURE_ShowGuildMembershipSim_NAME_+0"   "Show reputation of others"   |
-18613   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this action, you can view the reputation of another family."   |
+18613   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this action, you can view the reputation of another Dynasty."   |
 18614   "_MEASURE_ShowGuildMembershipSim_TARGET_+0"   "Select the person whose reputation you want to see"   |
 18615   "_ONSCREENHELP_9_ACTION_IMPACT_destitute_NAME_+0"   "Destitute"   |
 18616   "_ONSCREENHELP_9_ACTION_IMPACT_poor_NAME_+0"   "Poor"   |
@@ -662,6 +662,8 @@ Translate and add the following lines below:
 18643   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN has brought your Dynasties together in a bond of friendship!$N$NEvery level of Fondness will make it easier to obtain Favor from them. If you continue like this, this friendship could last for a very long time!"   |
 18644   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_HEAD_+0"   "A bond of friendship strengthens"   |
 18645   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_BODY_+0"   "%1ST %1SN, the latest events between you and %2ST %2SN have borne fruits. The ties of friendship between your families have grown stronger!$N$NNew level of Fondness: %3n"   |
+18646   "_MEASURE_Train_TOOLTIP_+0"   "Once in a while, reading a good book or doing some exercises at home can really help you with everyday life.$N$NFor this action you get experience points!"   |
+18647   "_MEASURE_Train_NAME_+0"   "Learning"   |
 
 -------
 
