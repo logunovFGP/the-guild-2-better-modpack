@@ -3,6 +3,7 @@ function Weight()
 --	if DynastyIsShadow("SIM") then
 --		return 0
 --	end
+	GetDynasty("SIM", "MyDyn")
 	
 	if SimGetAge("SIM") < 16 then
 		return 0
@@ -20,7 +21,7 @@ function Weight()
 	
 	if not AliasExists("Beloved") then
 	
-		if not ReadyToRepeat("SIM", "AI_CourtLover_Start") then
+		if not ReadyToRepeat("MyDyn", "AI_CourtLover_Start") then
 			return 0
 		end
 		
@@ -72,8 +73,8 @@ function Execute()
 
 	local	ToDo = GetData("aicl_todo")
 	
-	if ToDo=="Start" then
-		SetRepeatTimer("SIM", "AI_CourtLover_Start", 1)
+	if ToDo == "Start" then
+		SetRepeatTimer("MyDyn", "AI_CourtLover_Start", 1)
 		MeasureRun("SIM", nil, "CourtLover")
 		return
 	end

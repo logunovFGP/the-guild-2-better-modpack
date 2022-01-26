@@ -20,7 +20,9 @@ function Run()
 	local Cost = (Title * 2) * 300
 	local InteractionDistance = 128
 	
-	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel")
+	if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel") then
+		return
+	end
 	
 	ms_077b_marrychapel_InviteGuests("Weddingchapel", "", "Destination")
 		

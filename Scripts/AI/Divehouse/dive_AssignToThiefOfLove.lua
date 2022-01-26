@@ -12,7 +12,7 @@ function Weight()
 	    return 0
 	end
 	
-	if not BuildingHasUpgrade("MyWork","SexyClothes") then
+	if not BuildingHasUpgrade("MyWork", "SexyClothes") then
 	    return 0
 	end
 
@@ -25,7 +25,7 @@ function Weight()
 		return 0
 	end
 
-	if CityFindCrowdedPlace("City", "SIM", "pick_pos")==0 then
+	if CityFindCrowdedPlace("City", "SIM", "pick_pos") == 0 then
 		return 0
 	end
 

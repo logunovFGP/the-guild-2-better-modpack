@@ -11,45 +11,73 @@
 -- -----------------------
 function AIInit()
 
-	local	Selection
+	local Selection
 	local BestValue = -1
-	local Partners = Find("", "__F((Object.GetObjectsFromCity(Sim))AND(Object.CanBeCourted())AND(Object.CanBeInterrupted(CourtLover)))","Partner", -1)
+	local Partners = Find("", "__F((Object.GetObjectsFromCity(Sim))AND(Object.CanBeCourted())AND(Object.CanBeInterrupted(CourtLover)))", "Partner", -1)
 
---	GetLocalPlayerDynasty("LocDyn")
-	if Partners>0 then
-		local Lauf
-		local	Value
-		local	Alias
-		for Lauf=0,Partners-1 do
-			Alias = "Partner"..Lauf
+	if Partners > 0 then
+		local Value
+		local Alias
+		local CharismaSkill = GetSkillValue("", CHARISMA)
+		local RhetoricSkill = GetSkillValue("", RHETORIC)
+		local TotalSkill = CharismaSkill + RhetoricSkill
+		local MyTitle = GetNobilityTitle("")
+		local MyClass = SimGetClass("")
+		local Skip = false
+		
+		for i = 0, Partners-1 do
+			Alias = "Partner"..i
+			Skip = false
+			
+			-- check dynasty decision and employee status
+			if GetDynasty(Alias, "DestDyn") and GetImpactValue("DestDyn", "NoPlayerCourt") == 1 then
+				Skip = true
+			elseif SimGetWorkingPlaceID(Alias) > 0 then
+				Skip = true
+			end
+			
+			-- check class
+			local DestClass = SimGetClass(Alias)
+			if DestClass < 1 or DestClass > 4 or DestClass == MyClass then
+				Skip = true
+			end
+			
+			-- check min favor
+			local DestinationTitle = 0
+			if IsDynastySim(Alias) then
+				DestinationTitle = GetNobilityTitle(Alias)
+			end
+	
+			local TitleDifference = (MyTitle - DestinationTitle) * 2
+			local MinFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - TitleDifference
+			
+			if GetFavorToSim(Alias, "") < MinFavor then
+				Skip = true
+			end
 
--- Hack damit player umworben wird			
--- if GetDynastyID(Alias) == GetDynastyID("LocDyn") then
--- 	Selection = Alias
--- end
-
-			-- Impact 303 means wait for 4 hours
-			if not GetDynasty(Alias, "DestDyn") or GetImpactValue("DestDyn", 303) == 0 then
-				if GetFavorToSim(Alias, "")>=GL_COURT_LOVER_MINFAVOR  then
-					Value = GetMoney(Alias) + SimGetMaxOfficeLevel(Alias)*1000 + math.mod(GetID(Alias), 31)
+			if not Skip then
+				Value = SimGetLevel(Alias)*10
 					
-					local AgeDiff = SimGetAge(Alias) - SimGetAge("")
-					if AgeDiff<0 then
-						AgeDiff = -AgeDiff
-					end
+				if TitleDifference < 0 then
+					Value = Value * 2
+				end
 					
-					if AgeDiff > 20 then
-						Value = Value / 5
-					elseif AgeDiff > 10 then
-						Value = Value / 3
-					elseif AgeDiff < 5 then
-						Value = Value * 1.5
-					end
+				local AgeDiff = SimGetAge(Alias) - SimGetAge("")
+				if AgeDiff < 0 then
+					AgeDiff = -AgeDiff
+				end
 					
-					if not Selection or Value > BestValue then
-						Selection = Alias
-						BestValue = Value
-					end
+				if AgeDiff > 20 then
+					Value = Value / 5
+				elseif AgeDiff > 10 then
+					Value = Value / 3
+				elseif AgeDiff < 5 then
+					Value = Value * 1.5
+				end
+					
+				if not Selection or Value > BestValue then
+					Selection = Alias
+					BestValue = Value
 				end
 			end
 		end
@@ -116,10 +144,14 @@ function Run()
 	local TotalSkill = CharismaSkill + RhetoricSkill
 
 	local MyTitle = GetNobilityTitle("")
-	local DestinationTitle = GetNobilityTitle("Destination")
-	local TitleDifference = (MyTitle - DestinationTitle) * 2
+	local DestinationTitle = 0
+	if IsDynastySim("Destination") then
+		DestinationTitle = GetNobilityTitle("Destination")
+	end
 	
-	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill + TitleDifference
+	local TitleDifference = (MyTitle - DestinationTitle) * 2
+	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - TitleDifference
+	
 	local InteractionDistance = 128
 	local TimeUntilRepeat = 3
 	
@@ -162,14 +194,14 @@ function Run()
 		
 		-- If it was allowed by the player don´t do the whole animation thing
 		if Allow == 1 then
-			SetProperty("Destination","courted",1)
+			SetProperty("Destination", "courted", 1)
 			SetState("Destination", STATE_INLOVE, true)
 			SimSetCourtLover("", "Destination")
 			return
 		else
 			-- Dont ask this sim on and on again
 			if GetDynasty("Destination", "DestDyn") then
-				AddImpact("DestDyn", 303, 1, GL_AI_WAIT_FOR_COURTING_PLAYER)
+				AddImpact("DestDyn", "NoPlayerCourt", 1, GL_AI_WAIT_FOR_COURTING_PLAYER)
 				StopMeasure() 
 				return  
 			end
@@ -190,10 +222,10 @@ function Run()
 	local time2 = 0
 	
 	-- check if the favor is high enough for courting
-	local success = (GetFavorToSim("Destination", "") > MinimumFavor)
+	local success = (GetFavorToSim("Destination", "") >= MinimumFavor)
 	
 	-- fail if the Dest is employed already
-	if SimGetProfession("Destination") > 0 then
+	if SimGetWorkingPlaceID("Destination") > 0 then
 		success = false
 	end
 	
@@ -227,10 +259,15 @@ function Run()
 	CutsceneShowCharacterPanel("",true)
 	MsgSay("", label.."_1ST"..label2)
 	MsgSay("", label.."_2ND"..label2)
-	CutsceneShowCharacterPanel("",false)
+	CutsceneShowCharacterPanel("", false)
 	
 	-- Check if it was successfull
 	if success then
+		
+		-- for the AI, wait some time before starting again
+		if GetDynasty("", "AI_Dyn") then
+			SetRepeatTimer("AI_Dyn", "AI_CourtLover_Start", 32)
+		end
 		
 		-- Check the sex
 		if IsMale then
@@ -330,7 +367,6 @@ function Run()
 			"@L_COURTLOVER_MSG_FAILED_BODY_+0", GetID("Destination"), GetID("Owner"))
 
 	end
-	
 end
 
 -- -----------------------
