@@ -501,7 +501,9 @@ function AddFondness(source, dest)
 	end
 end
 
--- returns the sim name with dynasty flag if possible
+---
+-- returns the sim name with dynasty flag if possible.
+-- DO NOT USE inside of buttons 
 function GetName(SimAlias, WithFlag)
 	if not AliasExists(SimAlias) then
 		return ""
@@ -513,4 +515,19 @@ function GetName(SimAlias, WithFlag)
 	else 
 		return GetName(SimAlias)
 	end
+end
+
+---
+-- Sim name with dynasty flag for use in buttons
+-- Usage:
+-- Buttons = Buttons .. "@B[" .. i .. "," .. dyn_GetNameLabel(Alias, i) .. ",]"
+function GetNameLabel(SimAlias, ParameterIndex)
+	local MyLabel = "@L_DYNASTY_FLAG_SWITCH_+"
+	if not AliasExists(SimAlias) or not GetDynasty(SimAlias, "DynAliasForFlag") then
+		return MyLabel .. "0"
+	end
+	
+	local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") or 16 
+	local Offset = Math.min(16, MyFlag) * 4 + ParameterIndex
+	return MyLabel .. Offset
 end
