@@ -1,15 +1,17 @@
 function Run()
-	SetState("",STATE_TOWNNPC,true)
+	SetState("", STATE_TOWNNPC, true)
 
 	FindNearestBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, false, "Townhall")
-	BuildingGetCity("Townhall","DestCity")
+	BuildingGetCity("Townhall", "DestCity")
 
-	if not CityGetRandomBuilding("DestCity",0,GL_BUILDING_TYPE_DUELPLACE,-1,-1,FILTER_IGNORE,"InvisContainer") then
+	if not CityGetRandomBuilding("DestCity", 0, GL_BUILDING_TYPE_DUELPLACE,-1,-1,FILTER_IGNORE,"InvisContainer") then
 		StopMeasure()
 	end
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "myweddingchapel")
-	GetLocatorByName("myweddingchapel","Sleeping","SleepPos")
+	if not GetLocatorByName("myweddingchapel", "Sleeping", "SleepPos") then
+		StopMeasure()
+	end
 	
 	while true do
 		std_orphan_CheckAge()
@@ -19,62 +21,68 @@ function Run()
 			--if it is sleeping time...
 			local sleeping = GetProperty("myweddingchapel", "Sleeping")
 			if sleeping==1 then
-				f_MoveTo("", "SleepPos")
+				if AliasExists("SleepPos") then
+					f_MoveTo("", "SleepPos")
+				end
 				--SetState("", STATE_INVISIBLE, true)
-				CityGetRandomBuilding("DestCity",0,GL_BUILDING_TYPE_DUELPLACE,-1,-1,FILTER_IGNORE,"InvisContainer")
-				SimBeamMeUp("","InvisContainer",false)
+				CityGetRandomBuilding("DestCity", 0, GL_BUILDING_TYPE_DUELPLACE, -1, -1, FILTER_IGNORE, "InvisContainer")
+				SimBeamMeUp("", "InvisContainer",false)
 				while sleeping==1 do
 					Sleep(2)
 					std_orphan_CheckAge()
 					sleeping = GetProperty("myweddingchapel", "Sleeping")
 				end
 				--SetState("", STATE_INVISIBLE, false)
-				SimBeamMeUp("","SleepPos",false)
-			
+				if AliasExists("SleepPos") then
+					SimBeamMeUp("", "SleepPos", false)
+				else
+					GetLocatorByName("myweddingchapel", "Entry1", "SleepPos")
+					SimBeamMeUp("", "SleepPos", false)
+				end
 			end
 		
-			if (GetProperty("myweddingchapel", "Orphan1")~=GetID("") or not GetProperty("myweddingchapel", "Adoption"))
-				and (GetProperty("myweddingchapel", "Orphan2")~=GetID("") or not GetProperty("myweddingchapel", "GoldRing")) then
+			if (GetProperty("myweddingchapel", "Orphan1") ~= GetID("") or not GetProperty("myweddingchapel", "Adoption"))
+				and (GetProperty("myweddingchapel", "Orphan2") ~= GetID("") or not GetProperty("myweddingchapel", "GoldRing")) then
 				local random = Rand(6) + 1
-				if GetLocatorByName("myweddingchapel","Play"..random,"PlayPos") then
-					f_BeginUseLocator("","PlayPos", GL_STANCE_STAND, true)
+				if GetLocatorByName("myweddingchapel", "Play"..random,"PlayPos") then
+					f_BeginUseLocator("", "PlayPos", GL_STANCE_STAND, true)
 				end
 				
 				Sleep(1)
 
-				SetExclusiveMeasure("", "StartDialog",EN_PASSIVE)
+				SetExclusiveMeasure("", "StartDialog", EN_PASSIVE)
 
 				--playing
 				local Action = Rand(4)
 				local idletime = 0
 				if Action == 0 then	
-					PlayAnimation("","child_play_02_in")
-					LoopAnimation("","child_play_02_loop",10)
-					PlayAnimation("","child_play_02_out")
+					PlayAnimation("", "child_play_02_in")
+					LoopAnimation("", "child_play_02_loop",10)
+					PlayAnimation("", "child_play_02_out")
 					idletime = 2
 				elseif Action == 1 then
 					if Rand(100)>50 then
-						PlayAnimation("","manipulate_middle_low_r")
-						PlayAnimation("","eat_standing")
-						idletime = 20
+						PlayAnimation("", "manipulate_middle_low_r")
+						PlayAnimation("", "eat_standing")
+						idletime = 3
 					else
-						PlayAnimation("","cogitate")
-						idletime = 20
+						PlayAnimation("", "cogitate")
+						idletime = 3
 					end
 				elseif Action == 2 then
-					idletime = 6
+					idletime = 3 + Rand(2)
 				else
-					MoveSetStance("",GL_STANCE_SITGROUND)
-					idletime = Rand(10)+10
+					MoveSetStance("", GL_STANCE_SITGROUND)
+					idletime = 3 + Rand(3)
 				end
 
-				for i=0,idletime,2 do
-					if GetProperty("myweddingchapel", "Orphan1")==GetID("") then
+				for i=0, idletime, 5 do
+					if GetProperty("myweddingchapel", "Orphan1") == GetID("") then
 						if GetProperty("myweddingchapel", "Adoption") then
 							break
 						end
 					end
-					if GetProperty("myweddingchapel", "Orphan2")==GetID("") then
+					if GetProperty("myweddingchapel", "Orphan2") == GetID("") then
 						if GetProperty("myweddingchapel", "GoldRing") then
 							break
 						end

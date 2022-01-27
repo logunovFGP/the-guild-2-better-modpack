@@ -791,27 +791,32 @@ function CalcNeedsForMarket(CityAlias)
 	-- get all workshops in town
 	local WorkshopCount = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop")
 	local CityNeedCount, CityNeeds =  0, {}
-	-- iterate over workshops
-	local Alias, NeedCount, Needs  -- for use in iteration
-	for i = 0, WorkshopCount - 1 do
-		Alias = "Workshop"..i
-		NeedCount, Needs  = economy_GetResourceNeeds(Alias)
-		-- merge needs into global needs
-		CityNeedCount, CityNeeds = economy_MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
-	end
-	CityGetLocalMarket(CityAlias, "MarketAlias")
-	CityNeedCount, CityNeeds = economy_CalcCurrentResourceNeeds("MarketAlias", CityNeedCount, CityNeeds, 0.4)
-	-- save first five needs as properties
-	for i=1, 5 do
-		if i <= CityNeedCount and CityNeeds[i] then
-			SetProperty("MarketAlias", "twpNeed"..i, CityNeeds[i][1])
-			SetProperty("MarketAlias", "twpNeedAmount"..i, CityNeeds[i][2])
-		else
-			RemoveProperty("MarketAlias", "twpNeed"..i)
-			RemoveProperty("MarketAlias", "twpNeedAmount"..i)
+	
+	if WorkshopCount >= 1 then
+		-- iterate over workshops
+		local Alias, NeedCount, Needs  -- for use in iteration
+		for i = 0, WorkshopCount - 1 do
+			Alias = "Workshop"..i
+			NeedCount, Needs  = economy_GetResourceNeeds(Alias)
+			-- merge needs into global needs
+			CityNeedCount, CityNeeds = economy_MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
 		end
+		CityGetLocalMarket(CityAlias, "MarketAlias")
+		CityNeedCount, CityNeeds = economy_CalcCurrentResourceNeeds("MarketAlias", CityNeedCount, CityNeeds, 0.4)
+		-- save first five needs as properties
+		for i=1, 5 do
+			if i <= CityNeedCount and CityNeeds[i] then
+				SetProperty("MarketAlias", "twpNeed"..i, CityNeeds[i][1])
+				SetProperty("MarketAlias", "twpNeedAmount"..i, CityNeeds[i][2])
+			else
+				RemoveProperty("MarketAlias", "twpNeed"..i)
+				RemoveProperty("MarketAlias", "twpNeedAmount"..i)
+			end
+		end
+		return CityNeedCount, CityNeed
+	else
+		return -1, -1
 	end
-	return CityNeedCount, CityNeeds 
 end
 
 function GetNeedsForMarket(CityAlias)
