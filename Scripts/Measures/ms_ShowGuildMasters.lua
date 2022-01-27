@@ -41,17 +41,18 @@ function Run()
 				textArray[2] = GetName("Patron")
 			end
 			
-			if GetDynasty("Patron", "Dyn") and not DynastyIsShadow("Dyn") then
+			if not DynastyIsShadow("Patron") then
+				GetDynasty("Patron", "Dyn")
 				local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 				textArray[9] = "@L$S[20"..tmpflag.."]"
 			else
-				textArray[9] = "@L$S[2008]"
+				textArray[9] = "@L$S[2045]"
 			end
 			
 		else
 			textArray[1] = "@L_GUILDHOUSE_MASTERLIST_PATRON_MALE_+0"
 			textArray[2] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
-			textArray[9] = "@L$S[2008]"
+			textArray[9] = "@L$S[2045]"
 		end
 
 		local ArtisanMaster = GetProperty("guildhouse", "ArtisanMaster")
@@ -68,16 +69,17 @@ function Run()
 				textArray[4] = GetName("Artisan")
 			end
 			
-			if GetDynasty("Artisan", "Dyn") and not DynastyIsShadow("Dyn") then
+			if not DynastyIsShadow("Artisan") then
+				GetDynasty("Artisan", "Dyn")
 				local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 				textArray[10] = "@L$S[20"..tmpflag.."]"
 			else
-				textArray[10] = "@L$S[2008]"
+				textArray[10] = "@L$S[2045]"
 			end
 		else
 			textArray[3] = "@L_GUILDHOUSE_MASTERLIST_ARTISAN_MALE_+0"
 			textArray[4] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
-			textArray[10] = "@L$S[2008]"
+			textArray[10] = "@L$S[2045]"
 		end
 
 		local ScholarMaster = GetProperty("guildhouse", "ScholarMaster")
@@ -94,11 +96,12 @@ function Run()
 				textArray[6] = GetName("Scholar")
 			end
 			
-			if GetDynasty("Scholar", "Dyn") and not DynastyIsShadow("Dyn") then
+			if not DynastyIsShadow("Scholar") then
+				GetDynasty("Scholar", "Dyn") and
 				local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 				textArray[11] = "@L$S[20"..tmpflag.."]"
 			else
-				textArray[11] = "@L$S[2008]"
+				textArray[11] = "@L$S[2045]"
 			end
 		else
 			textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_MALE_+0"
@@ -109,7 +112,7 @@ function Run()
 		local ChiselerMaster = GetProperty("guildhouse", "ChiselerMaster")
 		if ChiselerMaster ~= nil and ChiselerMaster > 0 then
 		
-			if not GetAliasByID(ChiselerMaster,"Chiseler") or GetState("Chiseler", STATE_DEAD) then
+			if not GetAliasByID(ChiselerMaster, "Chiseler") or GetState("Chiseler", STATE_DEAD) then
 				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_MALE_+0"
 				textArray[8] = "@L_GUILDHOUSE_MASTERLIST_DEAD_+0"
 			elseif SimGetGender("Chiseler") == GL_GENDER_MALE then
@@ -120,16 +123,17 @@ function Run()
 				textArray[8] = GetName("Chiseler")
 			end
 			
-			if GetDynasty("Chiseler", "Dyn") and not DynastyIsShadow("Dyn") then
+			if not DynastyIsShadow("Chiseler") then
+				GetDynasty("Chiseler", "Dyn")
 				local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 				textArray[12] = "@L$S[20"..tmpflag.."]"
 			else
-				textArray[12] = "@L$S[2008]"
+				textArray[12] = "@L$S[2045]"
 			end
 		else
 			textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_MALE_+0"
 			textArray[8] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
-			textArray[12] = "@L$S[2008]"
+			textArray[12] = "@L$S[2045]"
 		end
 
 		local Alderman = chr_GetAlderman()
@@ -146,11 +150,12 @@ function Run()
 				textArray[14] = GetName("Alderman")
 			end
 			
-			if GetDynasty("Alderman", "Dyn") and not DynastyIsShadow("Dyn") then
+			if not DynastyIsShadow("Alderman") then
+				GetDynasty("Alderman", "Dyn")
 				local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 				textArray[15] = "@L$S[20"..tmpflag.."]"
 			else
-				textArray[15] = "@L$S[2008]"
+				textArray[15] = "@L$S[2045]"
 			end
 		else
 			textArray[13] = "@L_CHECKALDERMAN_ALDERMAN_MALE_+1"

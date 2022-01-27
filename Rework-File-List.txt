@@ -1,77 +1,3 @@
-0 DB\abilities.dbt - MERGED
-1 DB\abilitypoints.dbt - MERGED
-2 DB\Action.dbt - MERGED
-3 DB\AICharacterType.dbt - MERGED
-4 DB\AIScripts.dbt - MERGED
-5 DB\AnimationEffects.dbt - MERGED
-6 DB\Apprentice.dbt - MERGED
-7 DB\BoneLODs.dbt - NOT FINISHED
-8 DB\BuildingNPC.dbt - MERGED
-9 DB\Buildings.dbt - MERGED
-10 DB\BuildingToItems.dbt - NEW
-11 DB\BuildingTypes.dbt - NOT FINISHED
-12 DB\BuildingUpgrades.dbt - MERGED
-13 DB\CharLevels.dbt - MERGED
-14 DB\CharModels.dbt - MERGED
-15 DB\CharPatternGroups.dbt - MERGED
-16 DB\CharPatterns.dbt - MERGED
-17 DB\CharPropertyTemplates.dbt - MERGED
-18 DB\Classes.dbt - MERGED
-19 DB\ConstructionTime.dbt - MERGED
-20 DB\Decorators.dbt - MERGED
-21 DB\DynastyColors.dbt - MERGED
-22 DB\FacialExpressions.dbt - MERGED
-23 DB\Filter.dbt - NOT FINISHED
-24 DB\Fonts.dbt - MERGED
-25 DB\GameConstants.dbt - MERGED
-26 DB\GitseConstants.dbt - MERGED
-27 DB\GitseDialogtypes.dbt - MERGED
-28 DB\GitsePropertys.dbt - MERGED
-29 DB\GuildResource.dbt - NOT FINISHED
-30 DB\Impacts.dbt - NOT FINISHED
-31 DB\IndoorMapPositions.dbt - MERGED
-35 DB\Lordship.dbt - MERGED
-36 DB\maps.dbt - MERGED
-37 DB\Materials.dbt - MERGED
-38 DB\MeasureObjects.dbt - MERGED
-39 DB\Measures.dbt - NOT FINISHED
-40 DB\MeasureToObjects.dbt - NOT FINISHED
-41 DB\MeasureType.dbt - MERGED
-42 DB\MemoryEvent.dbt - MERGED
-43 DB\MemoryInfoQuality.dbt - MERGED
-44 DB\messageclass.dbt - MERGED
-45 DB\Models.dbt - MERGED
-46 DB\Needs.dbt - MERGED
-47 DB\NobilityTitle.dbt - MERGED
-48 DB\Offices.dbt - MERGED
-49 DB\PathMaterials.dbt - MERGED
-50 DB\PathPrefPatternNames.dbt - MERGED
-51 DB\PathPrefPatterns.dbt - MERGED
-52 DB\Positions.dbt - MERGED
-53 DB\Professions.dbt - NOT FINISHED
-54 DB\Properties.dbt - MERGED
-55 DB\PropertiesTypes.dbt - MERGED
-56 DB\Scenes.dbt - MERGED
-57 DB\Seasons.dbt - MERGED
-58 DB\Sentences.dbt - MERGED
-59 DB\Skills.dbt - MERGED
-60 DB\SkillXpCost.dbt - NOT FINISHED
-61 DB\songspecialevents.dbt - MERGED
-62 DB\songvariation.dbt - MERGED
-63 DB\Sound.dbt - MERGED
-64 DB\SoundSources.dbt - MERGED
-65 DB\State.dbt - MERGED
-66 DB\tables.dbt - MERGED
-67 DB\TemplatePropValues.dbt - MERGED
-68 DB\Text.dbt - *LOCALIZATION*
-69 DB\textcategories.dbt - MERGED
-70 DB\VegetationGroups.dbt - MERGED
-71 DB\Weapons.dbt - MERGED
-
-
-0 Scripts\AI\Bankhouse\bank_betrugen.lua - REMOVED
-1 Scripts\AI\Bankhouse\bank_SetOfferCredit.lua - MERGED
-2 Scripts\AI\Bankhouse\bank_SetOrderCredit.lua - MERGED
 3 Scripts\AI\BaseTree\CheckChilds.lua
 4 Scripts\AI\BaseTree\CheckDynasty.lua
 5 Scripts\AI\BaseTree\CheckGuildHouse.lua
@@ -153,35 +79,13 @@
 81 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\OrderCollectEvidence.lua
 82 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\Patrol.lua
 83 Scripts\AI\BaseTree\CheckSquad\SquadJoin.lua
-84 Scripts\AI\Castle\Danegeld.lua - MERGED
-85 Scripts\AI\Castle\GetCured.lua - MERGED
-86 Scripts\AI\Castle\HushMoney.lua  - MERGED
-87 Scripts\AI\Castle\Merc_CheckOutfit.lua - MERGED
-88 Scripts\AI\Castle\Merc_JoinSquad.lua - MERGED
-89 Scripts\AI\Castle\OfferBuildingProtection.lua - MERGED
-90 Scripts\AI\Castle\Razzia.lua - MERGED
-91 Scripts\AI\Church_cath\cath_PrepareWorship.lua - MERGED
-92 Scripts\AI\Church_cath\cath_WinBelievers.lua - MERGED
-93 Scripts\AI\Church_ev\ev_PrepareWorship.lua - MERGED
-94 Scripts\AI\Church_ev\ev_WinBelievers.lua - MERGED
-95 Scripts\AI\CityGuard\cityguard_CheckCrimeSpot.lua - MERGED
-96 Scripts\AI\CityGuard\cityguard_CheckHP.lua - MERGED
-97 Scripts\AI\CityGuard\cityguard_CheckLocation.lua - MERGED
-98 Scripts\AI\CityGuard\cityguard_CheckOutfit.lua - MERGED
-99 Scripts\AI\CityGuard\_cityguard_Bodyguard.lua - MERGED
-100 Scripts\AI\Divehouse\Pirate_AIDiveGetAlc.lua - MERGED
+
 101 Scripts\AI\Divehouse\Pirate_arrangeconcert.lua 
 102 Scripts\AI\Divehouse\Pirate_AssignToDanceDivehouse.lua
-103 Scripts\AI\Divehouse\Pirate_AssignToLaborOfLove.lua
-104 Scripts\AI\Divehouse\Pirate_AssignToPoisonEnemy.lua
-105 Scripts\AI\Divehouse\Pirate_AssignToServiceDivehouse.lua
 106 Scripts\AI\Divehouse\Pirate_AssignToThiefOfLove.lua
-107 Scripts\AI\Divehouse\Pirate_DiveGetAlc.lua - MERGED
-108 Scripts\AI\EliteGuard\EliteGuard_CheckHP.lua - MERGED
-109 Scripts\AI\EliteGuard\EliteGuard_CheckLocation.lua - MERGED
-110 Scripts\AI\EliteGuard\EliteGuard_CheckOutfit.lua - MERGED
-111 Scripts\AI\EliteGuard\EliteGuard_CheckSquad.lua - MERGED
+
 112 Scripts\AI\Farm\CheckResource.lua
+
 113 Scripts\AI\Favor\fv_AbsolveSinner.lua
 114 Scripts\AI\Favor\fv_ArangeLiason.lua
 115 Scripts\AI\Favor\fv_BribeCharacter.lua
@@ -208,14 +112,15 @@
 136 Scripts\AI\Favor\fv_UseRubinStaff.lua
 137 Scripts\AI\Favor\fv_UseShellchain.lua
 138 Scripts\AI\Favor\fv_UseSilverRing.lua
-139 Scripts\AI\Fishinghut_Ship\fish_dofishing.lua
+
 140 Scripts\AI\Friedhof\friedhof_verfluchen.lua
+
 141 Scripts\AI\Fruitfarm\CheckFruitResource.lua
+
 142 Scripts\AI\Gaukler\Juggler_JugglerBeg.lua
 143 Scripts\AI\Gaukler\Juggler_LayTarot.lua
 144 Scripts\AI\Gaukler\Juggler_TellFortune.lua
-145 Scripts\AI\Hospital\hosp_quacksalver.lua - MERGED
-146 Scripts\AI\Hospital\hosp_treatment.lua - MERGED
+
 147 Scripts\AI\OfficeSession\OfficeSession_CheckCandidate.lua
 148 Scripts\AI\OfficeSession\_OfficeSession_CheckJury.lua
 149 Scripts\AI\OfficeSession\OfficeSession_CheckCandidate\CheckCandidate_DifferentGender.lua
@@ -232,10 +137,8 @@
 160 Scripts\AI\Piratesnest_Ship\pirateship_UnloadCargo.lua
 161 Scripts\AI\Piratesnest_Ship\ship_PlunderBuilding.lua
 162 Scripts\AI\Robber\GetCured.lua
-163 Scripts\AI\Robber\PressProtectionMoney.lua - MERGED
 164 Scripts\AI\Robber\Robber_CheckOutfit.lua
 165 Scripts\AI\Robber\Robber_JoinSquad.lua
-166 Scripts\AI\Robber\Robber_Plunder.lua - MERGED
 167 Scripts\AI\Robber\WaylayForBooty.lua
 168 Scripts\AI\Tavern\tavern_arrangeconcert.lua
 169 Scripts\AI\Tavern\tavern_ausschenken.lua
@@ -252,186 +155,9 @@
 180 Scripts\AI\Trial\Trial_CheckCandidate\Trial_CheckCandidate_SameEnemyReligion.lua
 181 Scripts\AI\Trial\Trial_CheckCandidate\Trial_CheckCandidate_SelfFunction.lua
 182 Scripts\AI\Trial\Trial_CheckCandidate\Trial_CheckCandidate_ThirdManActions.lua
-183 Scripts\Buildings\Alchimist.lua - MERGED
-184 Scripts\Buildings\arsenal.lua - MERGED
-185 Scripts\Buildings\Baker.lua - MERGED
-186 Scripts\Buildings\Bankhouse.lua - MERGED
-187 Scripts\Buildings\BlackBoard.lua - MERGED
-188 Scripts\Buildings\Castle.lua - MERGED
-189 Scripts\Buildings\church.lua - MERGED
-190 Scripts\Buildings\Divehouse.lua - MERGED
-191 Scripts\Buildings\Farm.lua - MERGED
-192 Scripts\Buildings\fishinghut.lua - MERGED
-193 Scripts\Buildings\Friedhof.lua - MERGED
-194 Scripts\Buildings\Fruitfarm.lua - MERGED
-195 Scripts\Buildings\Gaukler.lua - MERGED
-196 Scripts\Buildings\guildhouse.lua - MERGED
-197 Scripts\Buildings\Harbour.lua - MERGED
-198 Scripts\Buildings\Hospital.lua - MERGED
-199 Scripts\Buildings\Joiner.lua - MERGED
-200 Scripts\Buildings\Kontor.lua - MERGED
-201 Scripts\Buildings\KontorLand.lua - MERGED
-202 Scripts\Buildings\Mercenary.lua - MERGED
-203 Scripts\Buildings\Mine.lua - MERGED
-204 Scripts\Buildings\PirateHarbor.lua - MERGED
-205 Scripts\Buildings\Piratesnest.lua - MERGED
-206 Scripts\Buildings\Residence.lua - MERGED
-207 Scripts\Buildings\Robber.lua - MERGED
-208 Scripts\Buildings\Smith.lua - MERGED
-209 Scripts\Buildings\SoldierPlace.lua - MERGED
-210 Scripts\Buildings\Stonemason.lua - MERGED
-211 Scripts\Buildings\Storehouse.lua - MERGED
-212 Scripts\Buildings\Tailor.lua - MERGED
-213 Scripts\Buildings\Tavern.lua - MERGED
-214 Scripts\Buildings\Thief.lua - MERGED
-215 Scripts\Buildings\Tower.lua - MERGED
-216 Scripts\Buildings\townhall.lua - MERGED
-217 Scripts\Buildings\Warehouse.lua - MERGED
-218 Scripts\Buildings\WeddingChapel.lua - MERGED
-219 Scripts\Buildings\Well.lua - MERGED
-220 Scripts\Buildings\Windmill.lua - MERGED
-221 Scripts\Buildings\WoodcutterHut.lua - MERGED
 222 Scripts\Campaign\DefaultCampaign.lua
-223 Scripts\Campaign\Tutorial_1\A_CamControl.lua - MERGED
-224 Scripts\Campaign\Tutorial_1\B_CharControl.lua - MERGED
-225 Scripts\Campaign\Tutorial_1\C_Hud_1.lua - MERGED
-226 Scripts\Campaign\Tutorial_1\C_Hud_1_b.lua - MERGED
-227 Scripts\Campaign\Tutorial_1\C_Hud_2.lua - MERGED
-228 Scripts\Campaign\Tutorial_1\C_Hud_2_b.lua - MERGED
-229 Scripts\Campaign\Tutorial_1\C_Hud_3.lua - MERGED
-230 Scripts\Campaign\Tutorial_1\C_Hud_3_b.lua - MERGED
-231 Scripts\Campaign\Tutorial_1\C_Hud_4.lua - MERGED
-232 Scripts\Campaign\Tutorial_1\C_Hud_4_b.lua - MERGED
-233 Scripts\Campaign\Tutorial_1\C_Hud_5.lua - MERGED
-234 Scripts\Campaign\Tutorial_1\C_Hud_5_b.lua - MERGED
-235 Scripts\Campaign\Tutorial_1\Intro1.lua - MERGED
-236 Scripts\Campaign\Tutorial_1\Tutorial_1.lua - MERGED
-237 Scripts\Campaign\Tutorial_2\A_Character_1.lua - MERGED
-238 Scripts\Campaign\Tutorial_2\A_Character_2.lua - MERGED
-239 Scripts\Campaign\Tutorial_2\A_Character_3.lua - MERGED
-240 Scripts\Campaign\Tutorial_2\A_Character_4.lua - MERGED
-241 Scripts\Campaign\Tutorial_2\A_Character_4_b.lua - MERGED
-242 Scripts\Campaign\Tutorial_2\A_Character_5.lua - MERGED
-243 Scripts\Campaign\Tutorial_2\A_Character_5_b.lua - MERGED
-244 Scripts\Campaign\Tutorial_2\B_Classes_1.lua - MERGED
-245 Scripts\Campaign\Tutorial_2\B_Classes_2.lua - MERGED
-246 Scripts\Campaign\Tutorial_2\B_Classes_3.lua - MERGED
-247 Scripts\Campaign\Tutorial_2\B_Classes_4.lua - MERGED
-248 Scripts\Campaign\Tutorial_2\B_Classes_5.lua - MERGED
-249 Scripts\Campaign\Tutorial_2\Intro2.lua - MERGED
-250 Scripts\Campaign\Tutorial_2\Tutorial_2.lua - MERGED
-251 Scripts\Campaign\Tutorial_3\A_Build_1.lua - MERGED
-252 Scripts\Campaign\Tutorial_3\A_Build_2.lua - MERGED
-253 Scripts\Campaign\Tutorial_3\A_Build_3.lua - MERGED
-254 Scripts\Campaign\Tutorial_3\B_BuildingInfo_1.lua - MERGED
-255 Scripts\Campaign\Tutorial_3\B_BuildingInfo_1b.lua - MERGED
-256 Scripts\Campaign\Tutorial_3\B_BuildingInfo_2.lua - MERGED
-257 Scripts\Campaign\Tutorial_3\B_BuildingInfo_3.lua -  MERGED
-258 Scripts\Campaign\Tutorial_3\B_BuildingInfo_4.lua - MERGED
-259 Scripts\Campaign\Tutorial_3\C_Workshop_1.lua - MERGED
-260 Scripts\Campaign\Tutorial_3\C_Workshop_2.lua - MERGED
-261 Scripts\Campaign\Tutorial_3\C_Workshop_3.lua - MERGED
-262 Scripts\Campaign\Tutorial_3\C_Workshop_4.lua - MERGED
-263 Scripts\Campaign\Tutorial_3\D_Buy_1.lua - MERGED
-264 Scripts\Campaign\Tutorial_3\D_Buy_1b.lua - MERGED
-265 Scripts\Campaign\Tutorial_3\Intro3.lua - MERGED
-266 Scripts\Campaign\Tutorial_3\Tutorial_3.lua - MERGED
-267 Scripts\Campaign\Tutorial_4\A_Resources_1.lua - MERGED
-268 Scripts\Campaign\Tutorial_4\A_Resources_2.lua - MERGED
-269 Scripts\Campaign\Tutorial_4\A_Resources_3.lua - MERGED
-270 Scripts\Campaign\Tutorial_4\A_Resources_3b.lua - MERGED
-271 Scripts\Campaign\Tutorial_4\A_Resources_4.lua - MERGED
-272 Scripts\Campaign\Tutorial_4\A_Resources_5.lua - MERGED
-273 Scripts\Campaign\Tutorial_4\A_Resources_6.lua - MERGED
-274 Scripts\Campaign\Tutorial_4\B_Production_1.lua - MERGED
-275 Scripts\Campaign\Tutorial_4\C_Sell_1.lua - MERGED
-276 Scripts\Campaign\Tutorial_4\C_Sell_2.lua - UNFINISHED
-277 Scripts\Campaign\Tutorial_4\C_Sell_3.lua - MERGED
-278 Scripts\Campaign\Tutorial_4\C_Sell_4.lua - MERGED
-279 Scripts\Campaign\Tutorial_4\C_Sell_5.lua - MERGED
-280 Scripts\Campaign\Tutorial_4\Intro4.lua - MERGED
-281 Scripts\Campaign\Tutorial_4\Tutorial_4.lua - MERGED
-282 Scripts\Campaign\Tutorial_5\A_Favor_1.lua - MERGED
-283 Scripts\Campaign\Tutorial_5\A_Favor_2.lua - MERGED
-284 Scripts\Campaign\Tutorial_5\A_Favor_3.lua - MERGED
-285 Scripts\Campaign\Tutorial_5\A_Favor_4.lua - MERGED
-286 Scripts\Campaign\Tutorial_5\B_Marriage_1.lua - MERGED
-287 Scripts\Campaign\Tutorial_5\B_Marriage_1b.lua - MERGED
-288 Scripts\Campaign\Tutorial_5\B_Marriage_2.lua - MERGED
-289 Scripts\Campaign\Tutorial_5\B_Marriage_3.lua - MERGED
-290 Scripts\Campaign\Tutorial_5\C_Children_1.lua - MERGED
-291 Scripts\Campaign\Tutorial_5\C_Children_2.lua - MERGED
-292 Scripts\Campaign\Tutorial_5\Intro5.lua - MERGED
-293 Scripts\Campaign\Tutorial_5\Tutorial_5.lua - MERGED
-294 Scripts\Campaign\Tutorial_6\A_Title_1.lua - MERGED
-295 Scripts\Campaign\Tutorial_6\A_Title_2.lua - MERGED
-296 Scripts\Campaign\Tutorial_6\B_Office_1.lua - MERGED
-297 Scripts\Campaign\Tutorial_6\B_Office_2.lua - MERGED
-298 Scripts\Campaign\Tutorial_6\B_Office_3.lua - MERGED
-299 Scripts\Campaign\Tutorial_6\B_Office_4.lua - MERGED
-300 Scripts\Campaign\Tutorial_6\B_Office_4b.lua - MERGED
-301 Scripts\Campaign\Tutorial_6\End6.lua - MERGED
-302 Scripts\Campaign\Tutorial_6\Intro6.lua - MERGED
-303 Scripts\Campaign\Tutorial_6\Tutorial_6.lua - MERGED
-304 Scripts\Campaign\Tutorial_7\A_Myrmidons_1a.lua - MERGED
-305 Scripts\Campaign\Tutorial_7\A_Myrmidons_1b.lua - MERGED
-306 Scripts\Campaign\Tutorial_7\A_Myrmidons_1c.lua - MERGED
-307 Scripts\Campaign\Tutorial_7\C_GoodEvil_1.lua - MERGED
-308 Scripts\Campaign\Tutorial_7\Intro7.lua - MERGED
-309 Scripts\Campaign\Tutorial_7\Tutorial_7.lua - MERGED
-310 Scripts\Campaign\_Battleground\_Battleground.lua - MERGED
-311 Scripts\Campaign\_Endless\_Endless.lua - MERGED
-312 Scripts\Campaign\_Missions\Mission_Acuss.lua - MERGED
-313 Scripts\Campaign\_Missions\Mission_Criminal.lua - MERGED
-314 Scripts\Campaign\_Missions\Mission_DeathMatch.lua - MERGED
-315 Scripts\Campaign\_Missions\Mission_Endless.lua - MERGED
-316 Scripts\Campaign\_Missions\Mission_MakeMoney.lua - MERGED
-317 Scripts\Campaign\_Missions\Mission_Office.lua - MERGED
-318 Scripts\Campaign\_Missions\Mission_TimeLimit.lua - MERGED
-319 Scripts\Campaign\_Network\_Network.lua - MERGED
-320 Scripts\Campaign\_Startup\_Startup.lua - MERGED
-321 Scripts\City\CityLevel.lua - MERGED
-322 Scripts\City\CityPingHour.lua - MERGED
-323 Scripts\City\MarketPingHour.lua
 324 Scripts\Cutscenes\Default.lua
-325 Scripts\Cutscenes\Duel.lua - MERGED
-326 Scripts\Cutscenes\MMTest.lua
-327 Scripts\Cutscenes\OfficeSession.lua - MERGED
-328 Scripts\Cutscenes\officesessionproto.lua
 329 Scripts\Cutscenes\queries.lua
-330 Scripts\Cutscenes\Trial.lua - MERGED
-331 Scripts\GameModule\LandscapeEditor.lua
-332 Scripts\GameState\Ambient.lua
-333 Scripts\GameState\CharacterCreation.lua
-334 Scripts\GameState\CompanyLogo.lua
-335 Scripts\GameState\CoPublisherLogo.lua
-336 Scripts\GameState\DedicatedServer.lua
-337 Scripts\GameState\DeveloperLogo.lua
-338 Scripts\GameState\Editor.lua
-339 Scripts\GameState\FrequencyOfficeSessions.lua
-340 Scripts\GameState\Game.lua
-341 Scripts\GameState\GameIntro.lua
-342 Scripts\GameState\GameStartUp.lua
-343 Scripts\GameState\GuiViewer.lua
-344 Scripts\GameState\Hello.lua
-345 Scripts\GameState\JoinSession.lua
-346 Scripts\GameState\MattiWorld.lua
-347 Scripts\GameState\Menu.lua
-348 Scripts\GameState\Messages.lua
-349 Scripts\GameState\Pause.lua
-350 Scripts\GameState\SceneViewer.lua
-351 Scripts\GameState\SelectSession.lua
-352 Scripts\GameState\StartMenu.lua
-353 Scripts\GameState\StartScreen.lua
-354 Scripts\GameState\Startup.lua
-355 Scripts\GameState\WaitforSync.lua
-356 Scripts\GameState\YearsPerRound.lua
-357 Scripts\Hud\CharacterCreationHud.lua
-358 Scripts\Hud\GameHud.lua
-359 Scripts\Hud\PlayMovie.lua
-360 Scripts\Hud\SetTutorialMovies.lua
-361 Scripts\Hud\StartMenuHud.lua
-362 Scripts\Hud\ImportantPersons\Gathering.lua
 363 Scripts\Library\AI.lua
 364 Scripts\Library\anims_fight_building.lua
 365 Scripts\Library\anims_fight_ship.lua
@@ -449,7 +175,6 @@
 377 Scripts\Library\f.lua
 378 Scripts\Library\feedback.lua
 379 Scripts\Library\GamePlayFormulas.lua
-380 Scripts\Library\gather.lua - MERGED
 381 Scripts\Library\helpfuncs.lua
 382 Scripts\Library\idlelib.lua
 383 Scripts\Library\mdata.lua
@@ -495,22 +220,17 @@
 423 Scripts\Maps\vienna.lua
 424 Scripts\Maps\vienna_2c.lua
 425 Scripts\Maps\weilerthal.lua
-426 Scripts\Measures\HotTea.lua
-427 Scripts\Measures\ms_001_MakeEvocation.lua
-428 Scripts\Measures\ms_002_Gather.lua - MERGED
-429 Scripts\Measures\ms_006_HaveVision.lua
+
 430 Scripts\Measures\ms_007_PaybackCredit.lua
 431 Scripts\Measures\ms_008_TakeCredit.lua
 432 Scripts\Measures\ms_010_GoToSleep.lua
 433 Scripts\Measures\ms_022_Fishing.lua
-434 Scripts\Measures\ms_022_Gather.lua - MERGED
 435 Scripts\Measures\ms_022_ProduceAlchemist.lua
 436 Scripts\Measures\ms_022_ProduceBakery.lua
 437 Scripts\Measures\ms_022_ProduceBankier.lua
 438 Scripts\Measures\ms_022_ProduceChurch.lua
 439 Scripts\Measures\ms_022_ProduceFisher.lua
 440 Scripts\Measures\ms_022_ProduceGaukler.lua
-441 Scripts\Measures\ms_022_ProduceGoods.lua - MERGED
 442 Scripts\Measures\ms_022_ProduceHospital.lua
 443 Scripts\Measures\ms_022_ProduceJoiner.lua
 444 Scripts\Measures\ms_022_ProduceMill.lua
@@ -530,10 +250,8 @@
 458 Scripts\Measures\ms_036_AttackEnemy.lua
 459 Scripts\Measures\ms_039_BlackmailCharacter.lua
 460 Scripts\Measures\ms_041_BribeCharacter.lua
-461 Scripts\Measures\ms_043_CaptureBuilding.lua - MERGED
 462 Scripts\Measures\ms_045_CourtLover.lua
-463 Scripts\Measures\ms_046_StartDialog.lua - MERGED
-464 Scripts\Measures\ms_048_HireEmployee.lua
+64 Scripts\Measures\ms_048_HireEmployee.lua
 465 Scripts\Measures\ms_048_HireEmployeeBuildingRandom.lua
 466 Scripts\Measures\ms_049_FireEmployee.lua
 467 Scripts\Measures\ms_050_EscortCharacterOrTransport.lua
@@ -542,10 +260,8 @@
 470 Scripts\Measures\ms_051_FollowSim.lua
 471 Scripts\Measures\ms_055_InsultCharacter.lua
 472 Scripts\Measures\ms_057_KissCharacter.lua
-473 Scripts\Measures\ms_061_PlunderBuilding.lua - MERGED
 474 Scripts\Measures\ms_066_BurgleAHouse.lua
 475 Scripts\Measures\ms_067_LetAbducteeFree.lua
-476 Scripts\Measures\ms_068_PickpocketPeople.lua - MERGED
 477 Scripts\Measures\ms_069_DemandRansom.lua
 478 Scripts\Measures\ms_070_ScoutAHouse.lua
 479 Scripts\Measures\ms_071_BuyBuilding.lua
@@ -556,9 +272,6 @@
 484 Scripts\Measures\ms_087_ChangeFaith.lua
 485 Scripts\Measures\ms_089_PrayForGodsBlessing.lua
 486 Scripts\Measures\ms_090_BuyHolyIndulgence.lua
-487 Scripts\Measures\ms_091a_WorshipPraise.lua - MERGED
-488 Scripts\Measures\ms_091b_WorshipScold.lua - MERGED
-489 Scripts\Measures\ms_091_PrepareWorship.lua - MERGED
 490 Scripts\Measures\ms_092_SingForPeacefulness.lua
 491 Scripts\Measures\ms_093_WinBelievers.lua
 492 Scripts\Measures\ms_098_AbsolveSinner.lua
@@ -568,39 +281,30 @@
 496 Scripts\Measures\ms_105_TortureCharacter.lua
 497 Scripts\Measures\ms_106_DemolishBuilding.lua
 498 Scripts\Measures\ms_107_OrderABrainWash.lua
-499 Scripts\Measures\ms_108_EmbezzlePublicMoney.lua - MERGED
 500 Scripts\Measures\ms_109_Set_SeverityOfLaw.lua
 501 Scripts\Measures\ms_110_Set_ChurchTithe.lua
 502 Scripts\Measures\ms_111_Set_TurnoverTax.lua
 503 Scripts\Measures\ms_112_DetainCharacter.lua
-504 Scripts\Measures\ms_114_BanCharacter.lua - MERGED
 505 Scripts\Measures\ms_115_ImposeASalesFreeze.lua
 506 Scripts\Measures\ms_115_ImposeASalesFreezeAlderman.lua
 507 Scripts\Measures\ms_116_PropitiateEnemies.lua
-508 Scripts\Measures\ms_118_RunForAnOffice.lua - MERGED
 509 Scripts\Measures\ms_128_HaveAStabbingGaze.lua
 510 Scripts\Measures\ms_131_ApplyDeposition.lua
 511 Scripts\Measures\ms_132_ChargeCharacter.lua
 512 Scripts\Measures\ms_133_LeaveOffice.lua
-513 Scripts\Measures\ms_134_PressProtectionMoney.lua - MERGED
 514 Scripts\Measures\ms_142_OrderASabotage_Bomb.lua
 515 Scripts\Measures\ms_142_OrderASabotage_CombustionBomb.lua
 516 Scripts\Measures\ms_143_OrderAShadowing.lua
 517 Scripts\Measures\ms_145_OrderASpying.lua
 518 Scripts\Measures\ms_146_AlertTheGuard.lua
-519 Scripts\Measures\ms_147_PatrolTheTown.lua - MERGED
-520 Scripts\Measures\ms_152b_TakeABathAlone.lua - MERGED
-521 Scripts\Measures\ms_152_TakeABath.lua - MERGED
 522 Scripts\Measures\ms_155_ArrangeDanceShow.lua
 523 Scripts\Measures\ms_157_AssignEmployeeToService.lua
-524 Scripts\Measures\ms_158_RentSleepingBerth.lua - MERGED
 525 Scripts\Measures\ms_160b_InviteToFeast.lua
 526 Scripts\Measures\ms_160_GiveAFeast.lua
 527 Scripts\Measures\ms_211_OrderCollectEvidence.lua
 528 Scripts\Measures\ms_220_TrainCharacter.lua
 529 Scripts\Measures\ms_230_MakeAPresent.lua
 530 Scripts\Measures\ms_231_MakeACompliment.lua
-531 Scripts\Measures\ms_232_InviteToDance.lua - MERGED
 532 Scripts\Measures\ms_AddPamphlet.lua
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
@@ -618,12 +322,10 @@
 546 Scripts\Measures\ms_AssignToServiceDivehouse.lua
 547 Scripts\Measures\ms_AssignToThiefOfLove.lua
 548 Scripts\Measures\ms_AttendApprenticeship.lua
-549 Scripts\Measures\ms_AttendDoctor.lua - MERGED
 550 Scripts\Measures\ms_AttendMass.lua
 551 Scripts\Measures\ms_AttendSchool.lua
 552 Scripts\Measures\ms_AttendUniversity.lua
 553 Scripts\Measures\ms_Babble.lua
-554 Scripts\Measures\ms_BauArbeit.lua - MERGED
 555 Scripts\Measures\ms_BauZusatz.lua
 556 Scripts\Measures\ms_BeDistracted.lua
 557 Scripts\Measures\ms_Betrugen.lua
@@ -638,7 +340,6 @@
 566 Scripts\Measures\ms_BuyCannon.lua
 567 Scripts\Measures\ms_BuyGoldRing.lua
 568 Scripts\Measures\ms_BuyHorse.lua
-569 Scripts\Measures\ms_BuyNobilityTitle.lua - MERGED
 570 Scripts\Measures\ms_BuyRawMaterialArtisan.lua
 571 Scripts\Measures\ms_BuyRawMaterialChiseler.lua
 572 Scripts\Measures\ms_BuyRawMaterialPatron.lua
@@ -648,26 +349,18 @@
 576 Scripts\Measures\ms_CampaignLost.lua
 577 Scripts\Measures\ms_CampaignWon.lua
 578 Scripts\Measures\ms_CarstenS.lua
-579 Scripts\Measures\ms_ChangeAppearance.lua - MERGED
 580 Scripts\Measures\ms_ChangeBuildingName.lua
 581 Scripts\Measures\ms_CheckLocation.lua
 582 Scripts\Measures\ms_CheckOutfit.lua
 583 Scripts\Measures\ms_CheckTheWorld.lua
 584 Scripts\Measures\ms_CheerMusicians.lua
-585 Scripts\Measures\ms_CityControl.lua - MERGED
-586 Scripts\Measures\ms_CityTreasure.lua - MERGED
 587 Scripts\Measures\ms_CohabitWithCharacter.lua
 588 Scripts\Measures\ms_ConfiscateGoods.lua
 589 Scripts\Measures\ms_ContractArsenal.lua
 590 Scripts\Measures\ms_ContractGuildHouse.lua
 591 Scripts\Measures\ms_Danegeld.lua
-592 Scripts\Measures\ms_DEBUG_locatortest_estate.lua
-593 Scripts\Measures\ms_DEBUG_OUTLAW.lua
 594 Scripts\Measures\ms_Default.lua
-595 Scripts\Measures\ms_DiceGame.lua - MERGED
-596 Scripts\Measures\ms_Disappropriate.lua - MERGED
 597 Scripts\Measures\ms_DistractGuards.lua
-598 Scripts\Measures\ms_DiveGetAlc.lua - MERGED
 599 Scripts\Measures\ms_DoCourting.lua
 600 Scripts\Measures\ms_DoGelage.lua
 601 Scripts\Measures\ms_DrunkGame.lua
@@ -684,11 +377,8 @@
 612 Scripts\Measures\ms_FightRoughUp.lua
 613 Scripts\Measures\ms_FindCourtLover.lua
 614 Scripts\Measures\ms_FlamingSpeech.lua
-615 Scripts\Measures\ms_Flirt.lua - MERGED
-616 Scripts\Measures\ms_FollowRatBoy.lua - MERGED
 617 Scripts\Measures\ms_ForceMarriage.lua
 618 Scripts\Measures\ms_GeneralPardon.lua
-619 Scripts\Measures\ms_GetDivorced.lua - MERGED
 620 Scripts\Measures\ms_GetPoisonedByBeer.lua
 621 Scripts\Measures\ms_GlobalEvent.lua
 622 Scripts\Measures\ms_GuildTrading.lua
@@ -718,10 +408,6 @@
 646 Scripts\Measures\ms_Merchantman.lua
 647 Scripts\Measures\ms_MilitaryTraining.lua
 648 Scripts\Measures\ms_MilitaryTrainingSelf.lua
-649 Scripts\Measures\ms_MineGuards.lua - MERGED
-650 Scripts\Measures\ms_mmdebug0.lua
-651 Scripts\Measures\ms_mmdebug1.lua
-652 Scripts\Measures\ms_mmdebug2.lua
 653 Scripts\Measures\ms_multiplayersay.lua
 654 Scripts\Measures\ms_OfferBuildingProtection.lua
 655 Scripts\Measures\ms_OfferCredit.lua
@@ -729,7 +415,6 @@
 657 Scripts\Measures\ms_PlayerParty.lua
 658 Scripts\Measures\ms_PlayTarot.lua
 659 Scripts\Measures\ms_PlunderShip.lua
-660 Scripts\Measures\ms_PoisonWell.lua - MERGED
 661 Scripts\Measures\ms_Protectorate.lua
 662 Scripts\Measures\ms_Quacksalver.lua
 663 Scripts\Measures\ms_QuestBuildPestMask.lua
@@ -752,7 +437,6 @@
 680 Scripts\Measures\ms_SelberBauen.lua
 681 Scripts\Measures\ms_SendApplicant.lua
 682 Scripts\Measures\ms_SendCartAndUnload.lua
-683 Scripts\Measures\ms_SetBookmark.lua - MERGED
 684 Scripts\Measures\ms_SetChildName.lua
 685 Scripts\Measures\ms_ShipPlunderBuilding.lua
 686 Scripts\Measures\ms_ShowBlackBoard.lua
@@ -761,17 +445,11 @@
 689 Scripts\Measures\ms_ShowContracts.lua
 690 Scripts\Measures\ms_ShowDiseasedPeople.lua
 691 Scripts\Measures\ms_ShowDivehouseChampions.lua
-692 Scripts\Measures\ms_ShowGuildMasters.lua
-693 Scripts\Measures\ms_ShowGuildMastersResidence.lua
-694 Scripts\Measures\ms_ShowGuildMembership.lua
-695 Scripts\Measures\ms_ShowGuildMembershipSim.lua
 696 Scripts\Measures\ms_ShowWarFactors.lua
 697 Scripts\Measures\ms_SimDie.lua
 698 Scripts\Measures\ms_SimHide.lua
-699 Scripts\Measures\ms_Slander.lua - MERGED
 700 Scripts\Measures\ms_SowField.lua
 701 Scripts\Measures\ms_SowWiese.lua
-702 Scripts\Measures\ms_StartDialog.lua - REMOVED
 703 Scripts\Measures\ms_StartmenuShip.lua
 704 Scripts\Measures\ms_StefanD.lua
 705 Scripts\Measures\ms_StepAside.lua
@@ -788,11 +466,8 @@
 716 Scripts\Measures\ms_twp_SalesCart.lua
 717 Scripts\Measures\ms_twp_SupplyWorkshop.lua
 718 Scripts\Measures\ms_UpgradeResidence.lua
-719 Scripts\Measures\ms_UseHorse.lua - MERGED
-720 Scripts\Measures\ms_UseLaborOfLove.lua - MERGED
 721 Scripts\Measures\ms_Verfluchen.lua
 722 Scripts\Measures\ms_walk.lua
-723 Scripts\Measures\ms_walkhome.lua - MERGED
 724 Scripts\Measures\ms_WaylayForBooty.lua
 725 Scripts\Measures\ms_WorkWonders.lua
 726 Scripts\Measures\ms_WorldTrader.lua
@@ -806,7 +481,6 @@
 734 Scripts\Measures\Artefacts\as_172_UseFragranceOfHoliness.lua
 735 Scripts\Measures\Artefacts\as_173_UseGhostlyFog.lua
 736 Scripts\Measures\Artefacts\as_174_UseGlovesOfDexterity.lua
-737 Scripts\Measures\Artefacts\as_175_UseLetterFromRome.lua - MERGED
 738 Scripts\Measures\Artefacts\as_178_UseToadslime.lua
 739 Scripts\Measures\Artefacts\as_179_UseAboutTalents1.lua
 740 Scripts\Measures\Artefacts\as_182_UseCake.lua
@@ -836,64 +510,19 @@
 764 Scripts\Measures\Artefacts\as_UseAmulet.lua
 765 Scripts\Measures\Artefacts\as_UseAntidote.lua
 766 Scripts\Measures\Artefacts\as_UseArgusEyeglasses.lua
-767 Scripts\Measures\Artefacts\as_UseArmorsBox1.lua
-768 Scripts\Measures\Artefacts\as_UseArmorsBox2.lua
-769 Scripts\Measures\Artefacts\as_UseArmorsBox3.lua
-770 Scripts\Measures\Artefacts\as_UseBarleyBox1.lua
-771 Scripts\Measures\Artefacts\as_UseBarleyBox2.lua
-772 Scripts\Measures\Artefacts\as_UseBarleyBox3.lua
 773 Scripts\Measures\Artefacts\as_UseBlackWidowPoison.lua
 774 Scripts\Measures\Artefacts\as_UseBlissstone.lua
-775 Scripts\Measures\Artefacts\as_UseCamouflageCloakBox1.lua
-776 Scripts\Measures\Artefacts\as_UseCamouflageCloakBox2.lua
-777 Scripts\Measures\Artefacts\as_UseCamouflageCloakBox3.lua
-778 Scripts\Measures\Artefacts\as_UseCharcoalBox1.lua
-779 Scripts\Measures\Artefacts\as_UseCharcoalBox2.lua
-780 Scripts\Measures\Artefacts\as_UseCharcoalBox3.lua
 781 Scripts\Measures\Artefacts\as_UseCitizensClothes.lua
 782 Scripts\Measures\Artefacts\as_UseFarmersClothes.lua
-783 Scripts\Measures\Artefacts\as_UseFatBox1.lua
-784 Scripts\Measures\Artefacts\as_UseFatBox2.lua
-785 Scripts\Measures\Artefacts\as_UseFatBox3.lua
-786 Scripts\Measures\Artefacts\as_UseFruitBox1.lua
-787 Scripts\Measures\Artefacts\as_UseFruitBox2.lua
-788 Scripts\Measures\Artefacts\as_UseFruitBox3.lua
-789 Scripts\Measures\Artefacts\as_UseFungiBox1.lua
-790 Scripts\Measures\Artefacts\as_UseFungiBox2.lua
-791 Scripts\Measures\Artefacts\as_UseFungiBox3.lua
 792 Scripts\Measures\Artefacts\as_UseGemRing.lua
-793 Scripts\Measures\Artefacts\as_UseGoldBox1.lua
-794 Scripts\Measures\Artefacts\as_UseGoldBox2.lua
-795 Scripts\Measures\Artefacts\as_UseGoldBox3.lua
 796 Scripts\Measures\Artefacts\as_UseGoldChain.lua
 797 Scripts\Measures\Artefacts\as_UseHasstirade.lua
-798 Scripts\Measures\Artefacts\as_UseHerringBox1.lua
-799 Scripts\Measures\Artefacts\as_UseHerringBox2.lua
-800 Scripts\Measures\Artefacts\as_UseHerringBox3.lua
 801 Scripts\Measures\Artefacts\as_UseHexerdokumentI.lua
 802 Scripts\Measures\Artefacts\as_UseHexerdokumentII.lua
-803 Scripts\Measures\Artefacts\as_UseHoneyBox1.lua
-804 Scripts\Measures\Artefacts\as_UseHoneyBox2.lua
-805 Scripts\Measures\Artefacts\as_UseHoneyBox3.lua
 806 Scripts\Measures\Artefacts\as_UseHorse.lua
-807 Scripts\Measures\Artefacts\as_UseIronBox1.lua
-808 Scripts\Measures\Artefacts\as_UseIronBox2.lua
-809 Scripts\Measures\Artefacts\as_UseIronBox3.lua
 810 Scripts\Measures\Artefacts\as_UseKamm.lua
 811 Scripts\Measures\Artefacts\as_UseKnochenarmreif.lua
-812 Scripts\Measures\Artefacts\as_UseLeatherBox1.lua
-813 Scripts\Measures\Artefacts\as_UseLeatherBox2.lua
-814 Scripts\Measures\Artefacts\as_UseLeatherBox3.lua
-815 Scripts\Measures\Artefacts\as_UseMeadBox1.lua
-816 Scripts\Measures\Artefacts\as_UseMeadBox2.lua
-817 Scripts\Measures\Artefacts\as_UseMeadBox3.lua
-818 Scripts\Measures\Artefacts\as_UseMediPackBox1.lua
-819 Scripts\Measures\Artefacts\as_UseMediPackBox2.lua
-820 Scripts\Measures\Artefacts\as_UseMediPackBox3.lua
 821 Scripts\Measures\Artefacts\as_UseNoblesClothes.lua
-822 Scripts\Measures\Artefacts\as_UseOakwoodBox1.lua
-823 Scripts\Measures\Artefacts\as_UseOakwoodBox2.lua
-824 Scripts\Measures\Artefacts\as_UseOakwoodBox3.lua
 825 Scripts\Measures\Artefacts\as_UseOakwoodRing.lua
 826 Scripts\Measures\Artefacts\as_UseOrientalCarpet.lua
 827 Scripts\Measures\Artefacts\as_UseOrientalStatues.lua
@@ -902,34 +531,14 @@
 830 Scripts\Measures\Artefacts\as_Usepddv.lua
 831 Scripts\Measures\Artefacts\as_UsePearlChain.lua
 832 Scripts\Measures\Artefacts\as_UsePendel.lua
-833 Scripts\Measures\Artefacts\as_UsePinewoodBox1.lua
-834 Scripts\Measures\Artefacts\as_UsePinewoodBox2.lua
-835 Scripts\Measures\Artefacts\as_UsePinewoodBox3.lua
-836 Scripts\Measures\Artefacts\as_UseRobe.lua
+36 Scripts\Measures\Artefacts\as_UseRobe.lua
 837 Scripts\Measures\Artefacts\as_UseRubinStaff.lua
 838 Scripts\Measures\Artefacts\as_UseShellChain.lua
-839 Scripts\Measures\Artefacts\as_UseSilverBox1.lua
-840 Scripts\Measures\Artefacts\as_UseSilverBox2.lua
-841 Scripts\Measures\Artefacts\as_UseSilverBox3.lua
-842 Scripts\Measures\Artefacts\as_UseSilverRing.lua
+42 Scripts\Measures\Artefacts\as_UseSilverRing.lua
 843 Scripts\Measures\Artefacts\as_UseSpindel.lua
 844 Scripts\Measures\Artefacts\as_UseStinkBomb.lua
-845 Scripts\Measures\Artefacts\as_UseStonerotary.lua - MERGED
-846 Scripts\Measures\Artefacts\as_UseSugarBeetBox1.lua
-847 Scripts\Measures\Artefacts\as_UseSugarBeetBox2.lua
-848 Scripts\Measures\Artefacts\as_UseSugarBeetBox3.lua
 849 Scripts\Measures\Artefacts\as_UseTarotCards.lua
-850 Scripts\Measures\Artefacts\as_UseVoodo.lua - MERGED
 851 Scripts\Measures\Artefacts\as_UseWeaponPoison.lua
-852 Scripts\Measures\Artefacts\as_UseWeaponsBox1.lua
-853 Scripts\Measures\Artefacts\as_UseWeaponsBox2.lua
-854 Scripts\Measures\Artefacts\as_UseWeaponsBox3.lua
-855 Scripts\Measures\Artefacts\as_UseWheatBox1.lua
-856 Scripts\Measures\Artefacts\as_UseWheatBox2.lua
-857 Scripts\Measures\Artefacts\as_UseWheatBox3.lua
-858 Scripts\Measures\Artefacts\as_UseWoolBox1.lua
-859 Scripts\Measures\Artefacts\as_UseWoolBox2.lua
-860 Scripts\Measures\Artefacts\as_UseWoolBox3.lua
 861 Scripts\Measures\Artefacts\as_UseWorkingPlanArtisan1.lua
 862 Scripts\Measures\Artefacts\as_UseWorkingPlanChiseler1.lua
 863 Scripts\Measures\Artefacts\as_UseWorkingPlanPatron1.lua
@@ -940,7 +549,6 @@
 868 Scripts\Measures\Behaviour\behavior_checkpresession.lua
 869 Scripts\Measures\Behaviour\behavior_checkpretrial.lua
 870 Scripts\Measures\Behaviour\behavior_Cheer.lua
-871 Scripts\Measures\Behaviour\behavior_CheerBlackBoard.lua - MERGED
 872 Scripts\Measures\Behaviour\behavior_childness.lua
 873 Scripts\Measures\Behaviour\behavior_CitizenChild.lua
 874 Scripts\Measures\Behaviour\behavior_Cry.lua
@@ -959,9 +567,7 @@
 887 Scripts\Measures\Behaviour\behavior_Listen.lua
 888 Scripts\Measures\Behaviour\behavior_ListenFlamingSpeech.lua
 889 Scripts\Measures\Behaviour\behavior_ListenPreacher.lua
-890 Scripts\Measures\Behaviour\behavior_ListenQuacksalver.lua - MERGED
 891 Scripts\Measures\Behaviour\behavior_MercAttack.lua
-892 Scripts\Measures\Behaviour\behavior_MineGuardsDuty.lua - MERGED
 893 Scripts\Measures\Behaviour\behavior_playing.lua
 894 Scripts\Measures\Behaviour\behavior_presession.lua
 895 Scripts\Measures\Behaviour\behavior_pretrial.lua
@@ -981,10 +587,8 @@
 909 Scripts\Measures\Behaviour\bs_ConcertFinished.lua
 910 Scripts\Measures\Behaviour\bs_Crusade.lua
 911 Scripts\Measures\Behaviour\bs_DonateJuggler.lua
-912 Scripts\Measures\Behaviour\bs_Dying.lua - MERGED
 913 Scripts\Measures\Behaviour\bs_Explosion.lua
 914 Scripts\Measures\Behaviour\bs_Fire.lua
-915 Scripts\Measures\Behaviour\bs_FlamingSpeech.lua - MERGED
 916 Scripts\Measures\Behaviour\bs_Gauntlet.lua
 917 Scripts\Measures\Behaviour\bs_hpfz_Ausschenken.lua
 918 Scripts\Measures\Behaviour\bs_hpfz_Betrugen.lua
@@ -1001,7 +605,6 @@
 929 Scripts\Measures\Behaviour\bs_Poison.lua
 930 Scripts\Measures\Behaviour\bs_Preacher.lua
 931 Scripts\Measures\Behaviour\bs_Quacksalver.lua
-932 Scripts\Measures\Behaviour\bs_ratboy.lua - MERGED
 933 Scripts\Measures\Behaviour\bs_revolt.lua
 934 Scripts\Measures\Behaviour\bs_SicknessDetection.lua
 935 Scripts\Measures\Behaviour\bs_SimGetKurios.lua
@@ -1038,7 +641,6 @@
 966 Scripts\Measures\Behaviour\std_QuestNPC.lua
 967 Scripts\Measures\Behaviour\std_QuestNPCDeliverDocs.lua
 968 Scripts\Measures\Behaviour\std_QuestNPCStrollMarket.lua
-969 Scripts\Measures\Behaviour\std_RatBoy.lua - MERGED
 970 Scripts\Measures\Behaviour\std_Sailor.lua
 971 Scripts\Measures\Behaviour\std_Sekundant1.lua
 972 Scripts\Measures\Behaviour\std_Sekundant2.lua
@@ -1074,19 +676,6 @@
 1002 Scripts\Measures\Squad\ms_SquadWarMember.lua
 1003 Scripts\Measures\Squad\ms_SquadWaylayForBooty.lua
 1004 Scripts\Measures\Squad\ms_SquadWaylayMember.lua
-1005 Scripts\Privileges\ps_02_gemeiner.lua - MERGED
-1006 Scripts\Privileges\ps_03_freisasse.lua - MERGED
-1007 Scripts\Privileges\ps_04_beisasse.lua - MERGED
-1008 Scripts\Privileges\ps_05_buerger.lua - MERGED
-1009 Scripts\Privileges\ps_06_freibuerger.lua - MERGED
-1010 Scripts\Privileges\ps_07_patrizier.lua - MERGED
-1011 Scripts\Privileges\ps_08_edelmann.lua - MERGED
-1012 Scripts\Privileges\ps_09_freiherr.lua - MERGED
-1013 Scripts\Privileges\ps_10_baron.lua - MERGED
-1014 Scripts\Privileges\ps_11_graf.lua - MERGED
-1015 Scripts\Privileges\ps_12_markgraf.lua - MERGED
-1016 Scripts\Privileges\ps_13_fuerst.lua - MERGED
-1017 Scripts\Privileges\ps_14_reichsfuerst.lua - MERGED
 1018 Scripts\Privileges\ps_bischof.lua
 1019 Scripts\Privileges\ps_buergermeister.lua
 1020 Scripts\Privileges\ps_dorfschulze.lua
@@ -1116,21 +705,16 @@
 1044 Scripts\Privileges\ps_schultheiss.lua
 1045 Scripts\Privileges\ps_seneschall.lua
 1046 Scripts\Privileges\ps_weibel.lua
-1047 Scripts\Ships\InitShip.lua - MERGED
 1048 Scripts\States\state_active_escort.lua
 1049 Scripts\States\state_aiguildproduce.lua
 1050 Scripts\States\state_aiunpackrawmaterial.lua
-1051 Scripts\States\state_animal.lua - MERGED
 1052 Scripts\States\state_blackdeath.lua
-1053 Scripts\States\state_building.lua - MERGED
 1054 Scripts\States\state_burning.lua
 1055 Scripts\States\state_captured.lua
 1056 Scripts\States\state_checkforspinnings.lua
 1057 Scripts\States\state_child.lua
-1058 Scripts\States\state_contaminated.lua - MERGED
 1059 Scripts\States\state_crusade.lua
 1060 Scripts\States\state_cutscene.lua
-1061 Scripts\States\state_dead.lua - MERGED
 1062 Scripts\States\state_driverattacked.lua
 1063 Scripts\States\state_duel.lua
 1064 Scripts\States\state_dying.lua
@@ -1191,9 +775,3 @@
 1119 Scripts\States\state_twp_autocart.lua
 1120 Scripts\States\state_unconscious.lua
 1121 Scripts\States\state_underattack.lua
-1122 Scripts\States\state_working.lua - MERGED
-1123 Scripts\Weather\Cloudy.lua - MERGED
-1124 Scripts\Weather\Fine.lua - MERGED
-1125 Scripts\Weather\Rain.lua - MERGED
-1126 Scripts\Weather\Storm.lua - MERGED
-1127 Scripts\Weather\weather_StartMenu.lua - MERGED

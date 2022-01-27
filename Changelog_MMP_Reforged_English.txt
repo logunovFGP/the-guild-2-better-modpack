@@ -80,6 +80,7 @@ _Design_
 - Imperial and guild fame are now dynasty traits only. Every action of your family members will affect the whole dynasty. The personal guild fame is only
   relevant for the guild master's election.
 - Removed unnecessary statistics from statistic's tab.
+- Shadow dynasties have a grey badge you can see on certain messages (like it is done for the coloured dynasties).
 
 *** Vanilla-Bugs ***
 

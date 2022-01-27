@@ -664,6 +664,7 @@ Translate and add the following lines below:
 18645   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_BODY_+0"   "%1ST %1SN, the latest events between you and %2ST %2SN have borne fruits. The ties of friendship between your families have grown stronger!$N$NNew level of Fondness: %3n"   |
 18646   "_MEASURE_Train_TOOLTIP_+0"   "Once in a while, reading a good book or doing some exercises at home can really help you with everyday life.$N$NFor this action you get experience points!"   |
 18647   "_MEASURE_Train_NAME_+0"   "Learning"   |
+18648   "_MEASURE_Kill_TOOLTIP_+0"   "Is it not enough for you to defeat your opponent in battle? No? Then get to cold-blooded action and finish him off. But watch out for witnesses, because even in these dark times, murder is a serious crime!$NYou receive experience points for this action. The higher the level of your victim is the more experience you get."   |
 
 -------
 

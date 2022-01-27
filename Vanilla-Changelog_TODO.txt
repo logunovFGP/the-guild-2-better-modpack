@@ -41,7 +41,6 @@ Offen:
 
 Kritische Balance-Änderungen:
 - Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
-- Der Bonus für die Schweigegeld-Maßnahme von Seiten der Stadt ist zu hoch.
 - Die Produkt-KI aller Betriebe wurde signifikant verbessert (dynamischen Prio-System)
 - Lösegeldforderungen werden nun nicht immer akzeptiert, vor allem nicht, 
   wenn sie sehr hoch sind.

@@ -275,7 +275,7 @@ function CheckGuildMasters()
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
-					textArray[9] = "@L$S[2008]"
+					textArray[9] = "@L$S[2045]"
 				else
 					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
@@ -303,7 +303,7 @@ function CheckGuildMasters()
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
-					textArray[10] = "@L$S[2008]"
+					textArray[10] = "@L$S[2045]"
 				else
 					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
@@ -332,7 +332,7 @@ function CheckGuildMasters()
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
-					textArray[11] = "@L$S[2008]"
+					textArray[11] = "@L$S[2045]"
 				else
 					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)
@@ -361,7 +361,7 @@ function CheckGuildMasters()
 				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
-					textArray[12] = "@L$S[2008]"
+					textArray[12] = "@L$S[2045]"
 				else
 					GetDynasty("Winner", "Dyn")
 					-- show the badge (flag)

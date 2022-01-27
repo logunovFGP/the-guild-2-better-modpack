@@ -79,6 +79,7 @@ _Design_
 - Reichsruf und Gildenruf sind nun Dynastiewerte. Jede Aktion eurer Charaktere hat Einfluss auf eure gesamte Dynastie. Der persönliche Ruf ist nur für die 
   Ernennung zum Gildenmeister einer Stadt relevant.
 - Unnötige Statistiken vom Statistik-Fenster entfernt.
+- Schattendynastien haben nun ein Wappen, das bei einigen Nachrichten zu sehen ist (analog zu den farbigen Dynastien).
 
 *** Vanilla-Bugs ***
 
