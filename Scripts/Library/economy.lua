@@ -789,7 +789,7 @@ end
 --     * Sales Prices for these resources are increased and all players are notified (see kontor event). 
 function CalcNeedsForMarket(CityAlias)
 	-- get all workshops in town
-	local WorkshopCount = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop")
+	local WorkshopCount = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop") or 0
 	local CityNeedCount, CityNeeds =  0, {}
 	
 	if WorkshopCount >= 1 then
