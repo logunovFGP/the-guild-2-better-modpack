@@ -82,6 +82,7 @@ _Design_
   relevant for the guild master's election.
 - Removed unnecessary statistics from statistic's tab.
 - Shadow dynasties have a grey badge you can see on certain messages (like it is done for the coloured dynasties).
+- Thugs on escort duty will now wait outside of buildings until their protegee comes out again.
 
 *** Vanilla-Bugs ***
 

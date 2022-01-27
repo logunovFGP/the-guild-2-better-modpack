@@ -10,17 +10,17 @@ function Run()
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "myweddingchapel")
 	if not GetLocatorByName("myweddingchapel", "Sleeping", "SleepPos") then
-		StopMeasure()
+		GetLocatorByName("myweddingchapel", "entry1", "SleepPos")
 	end
 	
 	while true do
 		std_orphan_CheckAge()
 		-- try to walk to the wedding chapel
-		if GetID("myweddingchapel")~=-1 then
+		if GetID("myweddingchapel") ~= -1 then
 			std_orphan_CheckAge()
 			--if it is sleeping time...
 			local sleeping = GetProperty("myweddingchapel", "Sleeping")
-			if sleeping==1 then
+			if sleeping == 1 then
 				if AliasExists("SleepPos") then
 					f_MoveTo("", "SleepPos")
 				end

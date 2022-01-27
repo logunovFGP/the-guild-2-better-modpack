@@ -5,9 +5,9 @@ function Run()
 	end
 
 	local TimeOut = -1
-	if SimGetProfession("")==GL_PROFESSION_CITYGUARD then
+	if SimGetProfession("") == GL_PROFESSION_CITYGUARD then
 		TimeOut = 5
-		SetData("Endtime"..GetID("Destination"),math.mod(GetGametime(),24)+5)
+		SetData("Endtime"..GetID("Destination"), math.mod(GetGametime(),24) + 5)
 	end
 
 	local fDistance = 300
@@ -19,7 +19,7 @@ function Run()
 	
 	local	DataValue
 	local	Temp
-	for l=0,4 do
+	for l=0, 4 do
 		Temp = "EscortedBy_"..l
 		if not HasProperty("Destination", Temp ) then
 			DataValue = Temp
@@ -34,100 +34,124 @@ function Run()
 	SetData("Property", DataValue)
 	SetProperty("Destination", DataValue, GetID(""))
 
-	if TimeOut<0 then
+	if TimeOut < 0 then
 		while true do
-			if GetInsideBuilding("Destination", "InsideTarget") then
-				if HasProperty("","CityBodyguard") or HasProperty("","KIbodyguard") then
+			if GetInsideBuilding("Destination", "InsideTarget") then -- don't follow inside!
+				if HasProperty("", "CityBodyguard") or HasProperty("", "KIbodyguard") then
 					break
 				end
-				if GetInsideBuilding("","Inside") then
-					if GetID("Inside") ~= GetID("InsideTarget") then
-						if HasProperty("", "WaitBench") then
-							RemoveProperty("", "WaitBench")
-						end
-						f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN)
+				
+				local InsideType = BuildingGetType("InsideTarget")
+				if InsideType == GL_BUILDING_TYPE_TOWNHALL then -- stay out
+					local LocArray = {"walledge2", "bomb2", "entry1", "bomb1", "walledge1"}
+					local randomChoice = Rand(5) + 1
+					if GetLocatorByName("InsideTarget", LocArray[randomChoice], "WaitHere") then
+						f_MoveTo("", "WaitHere", GL_MOVESPEED_RUN, fDistance)
+						f_Stroll("", 400, 4)
 					else
-						if GetInsideRoom("", "MyRoom") and GetInsideRoom("Destination", "DesRoom") then
-							if GetID("MyRoom") == GetID("DesRoom") then
-								if BuildingGetType("Inside") == GL_BUILDING_TYPE_TOWNHALL then -- sit down in townhall
-									if BuildingGetRoom("Inside","Judge","Room") then
-										if GetID("Room") == GetID("MyRoom") then
-											if not HasProperty("", "WaitBench") then
-												if GetFreeLocatorByName("Inside","tablechair",16,11,"SitPos") then
-													if f_BeginUseLocator("","SitPos",GL_STANCE_SITBENCH,true) then
-														SetProperty("", "WaitBench", 1)
-													end
-												end
-											else
-												Sleep(2)
-											end
-										end
-									end
-								end
-							else
-								if HasProperty("", "WaitBench") then
-									f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-									RemoveProperty("", "WaitBench")
-								end
-								if not f_Follow("","Destination", GL_MOVESPEED_RUN, fDistance, true) then
-									Sleep(1)
-								end
-							end
-						else
-							if Rand(12)== 0 then
-								f_Stroll("", 400, 2)
-							end
-						end
-						Sleep(3)
+						f_MoveTo("", "InsideTarget")
+						f_Stroll("", 400, 4)
 					end
-				else
-					if HasProperty("", "WaitBench") then
-						f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-						RemoveProperty("", "WaitBench")
+					
+					while GetInsideBuilding("Destination", "InsideTarget") do
+						Sleep(10)
 					end
-					f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN)
+					
+				elseif InsideType == GL_BUILDING_TYPE_TAVERN then
+					local LocArray = {"walledge2", "bomb4", "entry1", "bomb1", "walledge1"}
+					local randomChoice = Rand(5) + 1
+					if GetLocatorByName("InsideTarget", LocArray[randomChoice], "WaitHere") then
+						f_MoveTo("", "WaitHere", GL_MOVESPEED_RUN, fDistance)
+						f_Stroll("", 400, 4)
+					else
+						f_MoveTo("", "InsideTarget")
+						f_Stroll("", 400, 4)
+					end
+					
+					while GetInsideBuilding("Destination", "InsideTarget") do
+						Sleep(10)
+					end
+					
+				elseif InsideType == GL_BUILDING_TYPE_RESIDENCE then
+					local LocArray = {"walledge2", "bomb3", "entry1", "walledge1"}
+					local randomChoice = Rand(4) + 1
+					if GetLocatorByName("InsideTarget", LocArray[randomChoice], "WaitHere") then
+						f_MoveTo("", "WaitHere", GL_MOVESPEED_RUN, fDistance)
+						f_Stroll("", 400, 4)
+					else
+						f_MoveTo("", "InsideTarget")
+						f_Stroll("", 400, 4)
+					end
+					
+					while GetInsideBuilding("Destination", "InsideTarget") do
+						Sleep(10)
+					end
+					
+				elseif InsideType == GL_BUILDING_TYPE_CHURCH_EV or GL_BUILDING_TYPE_CHURCH_CATH then
+					local LocArray = {"walledge1", "entry1", "walledge2"}
+					local randomChoice = Rand(3) + 1
+					if GetLocatorByName("InsideTarget", LocArray[randomChoice], "WaitHere") then
+						f_MoveTo("", "WaitHere", GL_MOVESPEED_RUN, fDistance)
+						f_Stroll("", 400, 4)
+					else
+						f_MoveTo("", "InsideTarget")
+						f_Stroll("", 400, 4)
+					end
+					
+					while GetInsideBuilding("Destination", "InsideTarget") do
+						Sleep(10)
+					end
+			
+				else -- default inside
+					if GetLocatorByName("InsideTarget", "entry1", "WaitHere") then
+						f_MoveTo("", "WaitHere", GL_MOVESPEED_RUN, fDistance)
+						f_Stroll("", 400, 4)
+					else
+						f_MoveTo("", "InsideTarget")
+						f_Stroll("", 400, 4)
+					end
+					
+					while GetInsideBuilding("Destination", "InsideTarget") do
+						Sleep(10)
+					end
 				end
 			else
-				if HasProperty("", "WaitBench") then
-					f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-					RemoveProperty("", "WaitBench")
+				if not f_Follow("", "Destination", GL_MOVESPEED_RUN, fDistance, true) then
+					f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN, fDistance)
 				end
-				if not f_Follow("","Destination", GL_MOVESPEED_RUN, fDistance, true) then
-					Sleep(1)
-				end
+				Sleep(1)
 			end
-			Sleep(2)
 		end
-		if HasProperty("", "WaitBench") then
-			f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-			RemoveProperty("", "WaitBench")
-		end
+		
 		return
 	end
 	
 --	Sleep(Gametime2Realtime(TimeOut))
-	if TimeOut==5 then
-		f_FollowNoWait("","Destination", GL_MOVESPEED_RUN, fDistance)
-		if math.mod(GetGametime(),24)>GetData("Endtime"..GetID("Destination")) then
+	if TimeOut == 5 then
+		f_FollowNoWait("", "Destination", GL_MOVESPEED_RUN, fDistance)
+		if math.mod(GetGametime(), 24) > GetData("Endtime"..GetID("Destination")) then
 			StopMeasure()
 		end
 	end
 end
 
 function CleanUp()
-	local	DataValue = GetData("Property")
+	local DataValue = GetData("Property")
+
 	if DataValue then
 		RemoveProperty("Destination", DataValue)
 	end
-	if AliasExists("Destination") and HasProperty("Destination","KIbodyguard") then
-		if GetProperty("Destination","KIbodyguard")>1 then
-			SetProperty("Destination","KIbodyguard",1)
+
+	if AliasExists("Destination") and HasProperty("Destination", "KIbodyguard") then
+		if GetProperty("Destination", "KIbodyguard") > 1 then
+			SetProperty("Destination", "KIbodyguard", 1)
 		else
-			RemoveProperty("Destination","KIbodyguard")
+			RemoveProperty("Destination", "KIbodyguard")
 		end
 	end
-	if HasProperty("","CityBodyguard") then
-		RemoveProperty("","CityBodyguard")
+
+	if HasProperty("", "CityBodyguard") then
+		RemoveProperty("", "CityBodyguard")
 	end
 end
 

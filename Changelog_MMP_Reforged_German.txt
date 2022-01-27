@@ -83,6 +83,7 @@ _Design_
   Ernennung zum Gildenmeister einer Stadt relevant.
 - Unnötige Statistiken vom Statistik-Fenster entfernt.
 - Schattendynastien haben nun ein Wappen, das bei einigen Nachrichten zu sehen ist (analog zu den farbigen Dynastien).
+- Schergen, die Charaktere eskortieren, werden sich nun vor den Gebäuden postieren, in denen sich ihr Schützling gerade aufhält und dort auf ihn warten.
 
 *** Vanilla-Bugs ***
 
