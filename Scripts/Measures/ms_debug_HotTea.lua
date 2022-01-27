@@ -1,19 +1,25 @@
 function Run()
 	GetHomeBuilding("","myhome")
 	BuildingGetCity("myhome","city")
-	local NeedCount, Needs = economy_CalcNeedsForMarket("city")
-	economy_ChooseFromItems(NeedCount, Needs)
-	-- for each building
-	--for i=100, 672 do 
-	--	local Testname = GetDatabaseValue("BuildingToItems", i, "name")
-	--	if Testname and Testname ~= "" then
-	--		hottea_PrintRequiredItems(i)
-	--	end		
-	--end
 
 	local Target = ""
 	if AliasExists("Destination") then
 		Target = "Destination"
+	end
+	
+	local MySim = ms_debug_hottea_GetName("")
+	local TargetSim = ms_debug_hottea_GetName("Destination")
+	local MsgBody = MySim .. "$N$N" .. TargetSim
+	local Panel = "@P" .. "@B[1," .. MySim .. ",]" .. "@B[2," .. TargetSim .. ",]" 
+	
+	-- start dialog to select target or destination
+	local TargetChoice = MsgBox("", Target, 
+					Panel,
+					"Confirm Selection",
+					MsgBody)
+	
+	if TargetChoice and TargetChoice ~= "C" then
+		-- irrelevant for now
 	end
 	
 	local result = InitData("@P"..
@@ -76,6 +82,19 @@ function Run()
 		elseif freeze == 0 then
 			ScenarioPauseAI(false)
 		end
+	end
+end
+
+function GetName(SimAlias, WithFlag)
+	if not AliasExists(SimAlias) then
+		return ""
+	end
+
+	if WithFlag and GetDynasty(SimAlias, "DynAliasForFlag") then
+		local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") + 29
+		return "$S[20" .. MyFlag .. "] " .. GetName(SimAlias)
+	else 
+		return GetName(SimAlias)
 	end
 end
 
