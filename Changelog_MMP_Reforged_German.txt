@@ -24,6 +24,9 @@ Ungarisch: WiNTeR, Rdancsol, jooe
 
 Soziale Medien: Erilambus, Fajeth
 Network Helper: Agentmass
+Zusätzliche Musik: Gilde 1 Soundtrack + Alexander Nakarada (https://www.serpentsoundstudios.com unter CC BY 4.0 Lizenz)
+
+
 
 Installation:
 
@@ -236,7 +239,7 @@ _Allgemein_
 - Auch Gelehrte, Patrone und Handwerker haben nun eine sichtbare Rüstung, wenn sie Lederrüstung, Kettenhemd oder Plattenpanzer anlegen.
 - Die Zuordnung von Frisuren, Bärten und Kopfbedeckungen wurde vollständig überarbeitet. 
 - Die Musikvarianz wurde deutlich erhöht, dabei wurden einige Stücke eingebaut, die bislang gar nicht oder nur sehr selten
-  abgespielt wurden. Darüber hinaus wurden viele Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' eingebaut!
+  abgespielt wurden. Darüber hinaus wurden viele Originalstücke aus dem Vorgängerspiel 'Die Gilde - Gold' und von Alexander Nakarada eingebaut!
 - Die automatischen Handelsrouten wurden komplett überarbeitet
 - Zusätzlich gibt es nun zwei weitere Optionen, um Betriebe noch leichter zu versorgen oder Waren zu verkaufen.
 - Schwangere sind nicht länger an ihr Bett gefesselt.
