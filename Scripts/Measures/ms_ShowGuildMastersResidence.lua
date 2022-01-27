@@ -98,7 +98,7 @@ function Run()
 			end
 			
 			if not DynastyIsShadow("Scholar") then
-				GetDynasty("Scholar", "Dyn") and
+				GetDynasty("Scholar", "Dyn")
 				local tmpflag = DynastyGetFlagNumber("Dyn") + 29
 				textArray[11] = "@L$S[20"..tmpflag.."]"
 			else
