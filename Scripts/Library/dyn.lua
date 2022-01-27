@@ -500,3 +500,17 @@ function AddFondness(source, dest)
 		end
 	end
 end
+
+-- returns the sim name with dynasty flag if possible
+function GetName(SimAlias, WithFlag)
+	if not AliasExists(SimAlias) then
+		return ""
+	end
+
+	if WithFlag and GetDynasty(SimAlias, "DynAliasForFlag") then
+		local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") + 29
+		return "$S[20" .. MyFlag .. "] " .. GetName(SimAlias)
+	else 
+		return GetName(SimAlias)
+	end
+end
