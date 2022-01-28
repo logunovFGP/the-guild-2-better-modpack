@@ -399,15 +399,15 @@ function AddGrudge(source, dest)
 				SetProperty("MyDyn", "Fondness"..TargetID, FondnessCounter-1)
 				SetProperty("TargetDyn", "Fondness"..MyDynID, FondnessCounter-1)
 				
-				feedback_FavorReduceFondness("MyDyn", "TargetDyn")
-				feedback_FavorReduceFondness("TargetDyn", "MyDyn")
+				feedback_FavorReduceFondness(source, dest)
+				feedback_FavorReduceFondness(dest, source)
 				return
 			else
 				RemoveProperty("MyDyn", "Fondness"..TargetID)
 				RemoveProperty("TargetDyn", "Fondness"..MyDynID)
 				
-				feedback_FavorRemoveFondness("MyDyn", "TargetDyn")
-				feedback_FavorRemoveFondness("TargetDyn", "MyDyn")
+				feedback_FavorRemoveFondness(source, dest)
+				feedback_FavorRemoveFondness(dest, source)
 				return
 			end
 		end
@@ -420,8 +420,8 @@ function AddGrudge(source, dest)
 				SetProperty("MyDyn", "Grudge"..TargetID, GrudgeCounter+1)
 				SetProperty("TargetDyn", "Grudge"..MyDynID, GrudgeCounter+1)
 				
-				feedback_FavorAddGrudge("MyDyn", "TargetDyn")
-				feedback_FavorAddGrudge("TargetDyn", "MyDyn")
+				feedback_FavorAddGrudge(source, dest)
+				feedback_FavorAddGrudge(dest, source)
 				return
 			else
 				return
@@ -433,8 +433,8 @@ function AddGrudge(source, dest)
 			SetProperty("MyDyn", "Grudge"..TargetID, 1)
 			SetProperty("TargetDyn", "Grudge"..MyDynID, 1)
 			
-			feedback_FavorGainGrudge("MyDyn", "TargetDyn")
-			feedback_FavorGainGrudge("TargetDyn", "MyDyn")
+			feedback_FavorGainGrudge(source, dest)
+			feedback_FavorGainGrudge(dest, source)
 			return
 		end
 	end
@@ -460,15 +460,15 @@ function AddFondness(source, dest)
 					SetProperty("MyDyn", "Grudge"..TargetID, GrudgeCounter-1)
 					SetProperty("TargetDyn", "Grudge"..MyDynID, GrudgeCounter-1)
 					
-					feedback_FavorReduceGrudge("MyDyn", "TargetDyn")
-					feedback_FavorReduceGrudge("TargetDyn", "MyDyn")
+					feedback_FavorReduceGrudge(source, dest)
+					feedback_FavorReduceGrudge(dest, source)
 					return
 				else
 					RemoveProperty("MyDyn", "Grudge"..TargetID)
 					RemoveProperty("TargetDyn", "Grudge"..MyDynID)
 					
-					feedback_FavorRemoveGrudge("MyDyn", "TargetDyn")
-					feedback_FavorRemoveGrudge("TargetDyn", "MyDyn")
+					feedback_FavorRemoveGrudge(source, dest)
+					feedback_FavorRemoveGrudge(dest, source)
 					return
 				end
 			end
@@ -482,8 +482,8 @@ function AddFondness(source, dest)
 				SetProperty("MyDyn", "Fondness"..TargetID, FondnessCounter+1)
 				SetProperty("TargetDyn", "Fondness"..MyDynID, FondnessCounter+1)
 				
-				feedback_FavorAddFondness("MyDyn", "TargetDyn")
-				feedback_FavorAddFondness("TargetDyn", "MyDyn")
+				feedback_FavorAddFondness(source, dest)
+				feedback_FavorAddFondness(dest, source)
 				return
 			else
 				return
@@ -495,8 +495,8 @@ function AddFondness(source, dest)
 			SetProperty("MyDyn", "Fondness"..TargetID, 1)
 			SetProperty("TargetDyn", "Fondness"..MyDynID, 1)
 			
-			feedback_FavorGainFondness("MyDyn", "TargetDyn")
-			feedback_FavorGainFondness("TargetDyn", "MyDyn")
+			feedback_FavorGainFondness(source, dest)
+			feedback_FavorGainFondness(dest, source)
 		end
 	end
 end

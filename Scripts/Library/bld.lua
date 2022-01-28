@@ -396,7 +396,7 @@ function CheckRivals(BldAlias)
 		return
 	end 
 	
-	if not BuildingGetOwner(BldAlias, "MyBoss") then
+	if not BuildingGetOwner(BldAlias, "MyBoss") or not BuildingGetCity(BldAlias, "MyCity") then
 		return
 	end
 	
@@ -406,39 +406,32 @@ function CheckRivals(BldAlias)
 	
 	
 	local BuildType = BuildingGetType(BldAlias)
-	local BuildLevel = BuildingGetLevel(BldAlias)
 	local BuildID = GetID(BldAlias)
 	
-	-- check for same buisness nearby
-	local RivalFilter = "__F((Object.GetObjectsByRadius(Building) == 9000) AND (Object.IsType("..BuildType..")) AND (Object.GetLevel()<="..BuildLevel.."))"
-	local NumRivals = Find(BldAlias, RivalFilter, "RivalBuilding", -1)
-	local RivBld
-	local RivID
+	-- check for same buisnesses nearby
+	local BuildingCount = CityGetBuildings("MyCity", GL_BUILDING_CLASS_WORKSHOP, BuildType, -1, -1, FILTER_HAS_DYNASTY, "RivalBuilding") or 1
+	local RivBld, RivID
 	
-	if NumRivals == 0 then
+	if BuildingCount < 2 then
 		return
 	end
 	
-	if NumRivals > 0 then
-		for i=0, NumRivals-1 do
-			RivBld = "RivalBuilding"..i
-			RivID = GetDynastyID("RivalBuilding"..i)
-			if RivID ~= GetDynastyID(BldAlias) then
-				if not HasProperty(BldAlias, "Rival"..RivID) then
-					if GetSettlementID(RivBld) == GetSettlementID(BldAlias) then
-						if not GetState(RivBld, STATE_BUILDING) then
-							if BuildingGetOwner(RivBld, "RivalBoss") then
-								-- rival needs to be a player
-								if DynastyIsPlayer("RivalBoss") then
-									-- check for diplomacy
-									if DynastyGetDiplomacyState("MyBoss", "RivalBoss") < DIP_ALLIANCE then
-										SetProperty(BldAlias, "Rival"..RivID, 1) -- only one msg
-										MsgNewsNoWait("RivalBoss", "MyBoss", "", "intrigue", -1,
-													"@L_AI_NEWRIVALINTOWN_HEAD", "@L_AI_NEWRIVALINTOWN_BODY", GetID("MyBoss"), GetID(BldAlias), GetID(RivBld))
-										SetFavorToSim("MyBoss", "RivalBoss", 20)
-										break
-									end
-								end
+	for i=0, BuildingCount-1 do
+		RivBld = "RivalBuilding"..i
+		RivID = GetDynastyID("RivalBuilding"..i)
+		if RivID ~= GetDynastyID(BldAlias) then
+			if not HasProperty(BldAlias, "Rival"..RivID) then
+				if not GetState(RivBld, STATE_BUILDING) then
+					if BuildingGetOwner(RivBld, "RivalBoss") then
+						-- rival needs to be a player
+						if DynastyIsPlayer("RivalBoss") then
+							-- check for diplomacy
+							if DynastyGetDiplomacyState("MyBoss", "RivalBoss") < DIP_ALLIANCE then
+								SetProperty(BldAlias, "Rival"..RivID, 1) -- only one msg
+								MsgNewsNoWait("RivalBoss", "MyBoss", "", "intrigue", -1,
+											"@L_AI_NEWRIVALINTOWN_HEAD", "@L_AI_NEWRIVALINTOWN_BODY", GetID("MyBoss"), GetID(BldAlias), GetID(RivBld))
+								chr_ModifyFavor("MyBoss", "RivalBoss", -GL_FAVOR_MOD_VERYLARGE)
+								break
 							end
 						end
 					end
