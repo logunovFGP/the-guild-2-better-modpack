@@ -4,13 +4,13 @@ function Run()
 	FindNearestBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, false, "Townhall")
 	BuildingGetCity("Townhall", "DestCity")
 
-	if not CityGetRandomBuilding("DestCity", 0, GL_BUILDING_TYPE_DUELPLACE,-1,-1,FILTER_IGNORE,"InvisContainer") then
+	if not CityGetRandomBuilding("DestCity", 0, GL_BUILDING_TYPE_DUELPLACE, -1, -1, FILTER_IGNORE, "InvisContainer") then
 		StopMeasure()
 	end
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "myweddingchapel")
-	if not GetLocatorByName("myweddingchapel", "Sleeping", "SleepPos") then
-		GetLocatorByName("myweddingchapel", "entry1", "SleepPos")
+	if not GetLocatorByName("myweddingchapel", "monastery1", "SleepPos") then
+		GetLocatorByName("myweddingchapel", "exit1", "SleepPos")
 	end
 	
 	while true do
@@ -24,25 +24,27 @@ function Run()
 				if AliasExists("SleepPos") then
 					f_MoveTo("", "SleepPos")
 				end
-				--SetState("", STATE_INVISIBLE, true)
+				
 				CityGetRandomBuilding("DestCity", 0, GL_BUILDING_TYPE_DUELPLACE, -1, -1, FILTER_IGNORE, "InvisContainer")
-				SimBeamMeUp("", "InvisContainer",false)
+				SimBeamMeUp("", "InvisContainer", false)
+				
 				while sleeping==1 do
 					Sleep(2)
 					std_orphan_CheckAge()
 					sleeping = GetProperty("myweddingchapel", "Sleeping")
 				end
-				--SetState("", STATE_INVISIBLE, false)
+				
 				if AliasExists("SleepPos") then
 					SimBeamMeUp("", "SleepPos", false)
 				else
-					GetLocatorByName("myweddingchapel", "Entry1", "SleepPos")
+					GetLocatorByName("myweddingchapel", "exit1", "SleepPos")
 					SimBeamMeUp("", "SleepPos", false)
 				end
 			end
 		
-			if (GetProperty("myweddingchapel", "Orphan1") ~= GetID("") or not GetProperty("myweddingchapel", "Adoption"))
-				and (GetProperty("myweddingchapel", "Orphan2") ~= GetID("") or not GetProperty("myweddingchapel", "GoldRing")) then
+			if (GetProperty("myweddingchapel", "Orphan1") ~= GetID("") or not HasProperty("myweddingchapel", "Adoption"))
+				and (GetProperty("myweddingchapel", "Orphan2") ~= GetID("") or not HasProperty("myweddingchapel", "GoldRing")) then
+				
 				local random = Rand(6) + 1
 				if GetLocatorByName("myweddingchapel", "Play"..random,"PlayPos") then
 					f_BeginUseLocator("", "PlayPos", GL_STANCE_STAND, true)
@@ -55,9 +57,10 @@ function Run()
 				--playing
 				local Action = Rand(4)
 				local idletime = 0
+				
 				if Action == 0 then	
 					PlayAnimation("", "child_play_02_in")
-					LoopAnimation("", "child_play_02_loop",10)
+					LoopAnimation("", "child_play_02_loop", 10)
 					PlayAnimation("", "child_play_02_out")
 					idletime = 2
 				elseif Action == 1 then
@@ -77,43 +80,40 @@ function Run()
 				end
 
 				for i=0, idletime, 5 do
-					if GetProperty("myweddingchapel", "Orphan1") == GetID("") then
-						if GetProperty("myweddingchapel", "Adoption") then
-							break
-						end
+					if GetProperty("myweddingchapel", "Orphan1") == GetID("") and HasProperty("myweddingchapel", "Adoption") then
+						break
 					end
-					if GetProperty("myweddingchapel", "Orphan2") == GetID("") then
-						if GetProperty("myweddingchapel", "GoldRing") then
-							break
-						end
+					
+					if GetProperty("myweddingchapel", "Orphan2") == GetID("") and HasProperty("myweddingchapel", "GoldRing") then
+						break
 					end
+					
 					if GetProperty("myweddingchapel", "Sleeping") == 1 then
 						break
 					end
 					Sleep(2)
 				end
 
-				f_EndUseLocator("","PlayPos",GL_STANCE_STAND)
+				f_EndUseLocator("", "PlayPos", GL_STANCE_STAND)
 			end
 			Sleep(2)
 		end
 	end
 end
 
-
 function CheckAge()
-	if SimGetAge("")>5 then
+	if SimGetAge("") > 5 then
 		SimSetAge("", 5)
 	end
 end
 
-
 function CleanUp()
+
 	if AliasExists("PlayPos") then
-		f_EndUseLocator("","PlayPos",GL_STANCE_STAND)
+		f_EndUseLocator("", "PlayPos", GL_STANCE_STAND)
 	end
+	
 	SetInvisible("", false)
 	AllowAllMeasures("")
 end
-
 

@@ -835,24 +835,57 @@ end
 
 -- invite Applicants
 function InviteApplicant(SimAlias)
-	local WaitTime = math.floor(GetData("WaitTime") / 60)
+	local EventTime = SettlementEventGetTime("council_date")/60
+	local CurrentTime = math.mod(GetGametime(),24)
+	local WaitTime = math.floor(EventTime-CurrentTime)
+	
 	AddImpact(SimAlias, "OfficeTimer", 1, WaitTime)
 	SimAddDate(SimAlias, "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
-	feedback_MessagePolitics(SimAlias, "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
-	SimAddDatebookEntry(SimAlias,SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
+	
+	-- Start Countdown
+	if GetDynasty(SimAlias, "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE") then
+		SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE", WaitTime)
+		WaitTime = EventTime - CurrentTime
+		local DestTime = CurrentTime + WaitTime
+		local ID = "Event"..GetID(SimAlias)
+		
+		MsgNewsNoWait(SimAlias, SimAlias, "@C[@L_OFFICE_SESSION_IN_TOWN_COUNTDOWN_+0,%3i,%4l]", "default", -1,
+				       "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0",
+				       "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1",
+				       GetID(SimAlias), GetID("settlement"), DestTime, ID)
+	else
+		feedback_MessagePolitics(SimAlias, "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
+	end
+	SimAddDatebookEntry(SimAlias, SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+0", "@L_SESSION_6_TIMEPLANNERENTRY_APPLICANT_+1", GetID(SimAlias), GetID("settlement"))
 end
 
 -- invite current office holders
 function InviteDepositionDefender(SimAlias, RunForOfficeSim)
-	local WaitTime = math.floor(GetData("WaitTime") / 60)
+	local EventTime = SettlementEventGetTime("council_date")/60
+	local CurrentTime = math.mod(GetGametime(),24)
+	local WaitTime = math.floor(EventTime-CurrentTime)
+	
 	AddImpact(SimAlias, "OfficeTimer", 1, WaitTime)
 	SimAddDate(SimAlias, "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
+	
 	-- only send 1 message if multiple guys run for your office
-	if GetImpactValue(SimAlias, "SuppressDefenderMessage")==0 then
-		AddImpact(SimAlias, "SuppressDefenderMessage",1,12)
-		feedback_MessagePolitics(SimAlias, "@L_SESSION_ADDON_MESSAGE_HEAD_+0", "@L_SESSION_ADDON_MESSAGE_BODY", GetID(RunForOfficeSim),GetID("settlement"))
+	if GetImpactValue(SimAlias, "SuppressDefenderMessage") == 0 then
+		AddImpact(SimAlias, "SuppressDefenderMessage", 1, WaitTime)
+		if GetDynasty(SimAlias, "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE") then -- start countdown in HUD
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE", WaitTime)
+			WaitTime = EventTime - CurrentTime
+			local DestTime = CurrentTime + WaitTime
+			local ID = "Event"..GetID(SimAlias)
+			
+			MsgNewsNoWait(SimAlias, SimAlias, "@C[@L_OFFICE_SESSION_IN_TOWN_COUNTDOWN_+0,%i3,%l4]", "default", -1,
+						"@L_SESSION_ADDON_MESSAGE_HEAD_+0", 
+						"@L_SESSION_ADDON_MESSAGE_BODY", 
+						GetID(RunForOfficeSim), GetID("settlement"), DestTime, ID)
+		else
+			feedback_MessagePolitics(SimAlias, "@L_SESSION_ADDON_MESSAGE_HEAD_+0", "@L_SESSION_ADDON_MESSAGE_BODY", GetID(RunForOfficeSim), GetID("settlement"))
+		end
 	end
-	SimAddDatebookEntry(SimAlias,SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_ADDON_MESSAGE_HEAD_+0", "@L_SESSION_ADDON_MESSAGE_BODY_+1", GetID(RunForOfficeSim), GetID("settlement"))
+	SimAddDatebookEntry(SimAlias, SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_ADDON_MESSAGE_HEAD_+0", "@L_SESSION_ADDON_MESSAGE_BODY_+1", GetID(RunForOfficeSim), GetID("settlement"))
 end
 
 -- invite Voters
@@ -862,7 +895,7 @@ function InviteAllVoters()
 	end
 	-- get all voters
 	-- last parameter: 0 - All (voters and applicants), 1 - only office voters, 2 - only applicants 
-	local VoterCnt = OfficePrepareSessionMembers("office", "VoterList",1)
+	local VoterCnt = OfficePrepareSessionMembers("office", "VoterList", 1)
 	
 	--Filter out already invited voters
 	for i=0, VoterCnt-1 do
@@ -872,22 +905,37 @@ function InviteAllVoters()
 		end
 	end
 
+	local EventTime = SettlementEventGetTime("council_date")/60
+	local CurrentTime = math.mod(GetGametime(),24)
+	local WaitTime = math.floor(EventTime-CurrentTime)
+	
 	-- invite all remaining voters
 	VoterCnt = ListSize("VoterList")
 	for i=0, VoterCnt-1 do
-		ListGetElement("VoterList",i, "Voter")
+		ListGetElement("VoterList", i, "Voter")
 		ListAdd("InvitedSims", "Voter")
 		
-		local WaitTime = math.floor(GetData("WaitTime") / 60)
 		AddImpact("Voter", "OfficeTimer", 1, WaitTime)
 		SimAddDate("Voter", "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
 		-- only send 1 message if you vote for multiple offices
-		if GetImpactValue("Voter", "SuppressVoterMessage")==0 then 
-			AddImpact("Voter", "SuppressVoterMessage",1,12)
-			feedback_MessagePolitics("Voter", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
+		if GetImpactValue("Voter", "SuppressVoterMessage") == 0 then 
+			AddImpact("Voter", "SuppressVoterMessage", 1, WaitTime)
+			-- start Countdown
+			if GetDynasty("Voter", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE") then
+				SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE", WaitTime)
+				WaitTime = EventTime - CurrentTime
+				local DestTime = CurrentTime + WaitTime
+				local ID = "Event"..GetID("Voter")
+		
+				MsgNewsNoWait("Voter", "Voter", "@C[@L_OFFICE_SESSION_IN_TOWN_COUNTDOWN_+0,%i3,%l4]", "default", -1,
+							"@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0",
+							"@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", 
+							GetID("Voter"), GetID("settlement"), DestTime, ID)
+			else
+				feedback_MessagePolitics("Voter", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
+			end
 		end
-		SimAddDatebookEntry("Voter",SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
-
+		SimAddDatebookEntry("Voter", SettlementEventGetTime("council_date"), "councilbuilding", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", "@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+1", GetID("Voter"), GetID("settlement"))
 	end
 	
 	RemoveAlias("Voter")
