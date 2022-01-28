@@ -544,22 +544,22 @@ Translate and add the following lines below:
 // Soundfile mod end
 18528   "_BUILDING_Piratesnest2_NAME_+0"   "Pirates Haven"   | 
 18529   "_BUILDING_Piratesnest2_TOOLTIP_+0"   "Less dilapidated than the Pirates Den, the Pirates Haven is a place of even greater wickery and danger. Only those who have nothing to lose gather here. Rum, and fat booty, is all that still counts for them."   | 
-18530   "_BUILDING_Piratesnest2_REQUIREMENTS_+0"   "Prerequisite: Rogue level 3"   | 
+18530   "_BUILDING_Piratesnest2_REQUIREMENTS_+0"   "Requirements: Rogue level 3"   | 
 18531   "_BUILDING_Piratesnest2_POOL_+0"   "The Old Sea Dogs"   | 
 18532   "_BUILDING_Piratesnest2_POOL_+1"   "Equal Loot Shares"   | 
-18533   "_BUILDING_Piratesnest2_POOL_+2"   "The Ghost Ship   | 
+18533   "_BUILDING_Piratesnest2_POOL_+2"   "The Ghost Ship"   | 
 18534   "_BUILDING_Piratesnest2_POOL_+3"   "Funny Mug Taps"   | 
 18535   "_BUILDING_Piratesnest2_POOL_+4"   "All Men on Deck!"   | 
 18536   "_BUILDING_Piratesnest2_POOL_+5"   "The Bloody Cutlass"   | 
-18537   "_BUILDING_Piratesnest2_POOL_+6"   "The Privateers   | 
+18537   "_BUILDING_Piratesnest2_POOL_+6"   "The Privateers"   | 
 18538   "_BUILDING_Piratesnest2_POOL_+7"   "The Bearded Men"   | 
 18549   "_BUILDING_Piratesnest2_POOL_+8"   "On a Dead Man's Chest"   | 
-18540   "_BUILDING_Piratesnest2_POOL_+9"   "Careening Ahoy !"   | 
+18540   "_BUILDING_Piratesnest2_POOL_+9"   "Careening Ahoy!"   | 
 18541   "_BUILDING_Piratesnest2_POOL_+10"   "Set Sail!"   | 
 18542   "_BUILDING_Piratesnest2_POOL_+11"   "The Drunken Helmsman"   | 
 18543   "_BUILDING_Piratesnest3_NAME_+0"   "Pirates Fortress"   | 
 18544   "_BUILDING_Piratesnest3_TOOLTIP_+0"   "The Pirates Fortress brings terror to all righteous captains. For in this place, sea raiders, with weapons up to their neck and ships armed up to the crow's nest, sail into the seven seas, to capture every trading vessel they can get a hold of."   | 
-18545   "_BUILDING_Piratesnest3_REQUIREMENTS_+0"   "Prerequisite: Rogue level 5"   | 
+18545   "_BUILDING_Piratesnest3_REQUIREMENTS_+0"   "Requirements: Rogue level 5"   | 
 18546   "_BUILDING_Piratesnest3_POOL_+0"   "The Hooked Hand"   | 
 18547   "_BUILDING_Piratesnest3_POOL_+1"   "Wind in our Sails"   | 
 18548   "_BUILDING_Piratesnest3_POOL_+2"   "Free Hooks"   | 
@@ -582,7 +582,7 @@ Translate and add the following lines below:
 18565   "_UPGRADE_Lagermenge_TOOLTIP_+0"   "The higher the storage capacity, the more of each product you can store."   |
 18566   "_UPGRADE_Brandschutz_NAME_+0"   "Fire Protection"   |
 18567   "_UPGRADE_Brandschutz_TOOLTIP_+0"   "Fire protection reduces the damage fire does to your buildings. The higher the fire protection, the faster the fire goes out."   |
-18568   "_UPGRADE_Einbruchschutz_NAME_+0"   "Protection from Burglary"   |
+18568   "_UPGRADE_Einbruchschutz_NAME_+0"   "Burglary Protection"   |
 18569   "_UPGRADE_Einbruchschutz_TOOLTIP_+0"   "You cannot prevent burglaries, but you can make them more difficult. With stronger security, thieves will need more time to get into your building, and you will have more time to alert the guard."   |
 18570   "_UPGRADE_Kundenattraktivitaet_NAME_+0"   "Attractiveness to >Customers<"   |
 18571   "_UPGRADE_Kundenattraktivitaet_TOOLTIP_+0"   "Attractiveness conditions wether you will be successful in luring customers to your building or not. In some businesses, like the Tavern, the customer appeal will also affects the revenue from gratuities."   |
@@ -590,7 +590,7 @@ Translate and add the following lines below:
 18573   "_UPGRADE_Talentbonus_TOOLTIP_+0"   "Some professions benefit greatly from workers with high levels in their talents, making them much more effective during their actions."   |
 // no need to translate the credits
 18574   "_CREDITS_+0"   ">Fajeth's Megamodpack Reforged<: $NFanaddon for >The Guild 2 - Renaissance<$Nby Fajeth$N$N$NOriginal Developers:$NRUNEFORGE Game Studio$N4HEAD Studios$N$N$NPublished by$NJoWooD Entertainment AG$NNordic Games (THQ Nordic)"   |
-18575   "_CREDITS_+1"   "$[Megamod Credits$]$N$N$[Project Lead and Design$]$NFajeth$N$N$[Script Design$]$NFajeth, ThreeOfMe, Serpens66, F-Man, Nommy$N$N$[Map Design$]$NFajeth$N$N$[Additional Music$]$NOST Europe 1400 The Guild$N$N$[GUI$]$NMoK, Fajeth, Napi96$N$N$[2D$]$NFajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii$N$N$[3D$]$NIctiv"   |
+18575   "_CREDITS_+1"   "$[Megamod Credits$]$N$N$[Project Lead and Design$]$NFajeth$N$N$[Script Design$]$NFajeth, ThreeOfMe, Serpens66, F-Man, Nommy$N$N$[Map Design$]$NFajeth$N$N$[Additional Music$]$NOST Europe 1400 The Guild$NAlexander Nakarada (www.serpentsoundstudios.com)$N$N$[GUI$]$NMoK, Fajeth, Napi96$N$N$[2D$]$NFajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii$N$N$[3D$]$NIctiv"   |
 18576   "_CREDITS_+2"   "$[Additional Support$]$NVSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus$N$N$[Special Thanks to:$]$NTHQ Nordic$NThe Guild 2 Community!$N$N$[Internal Testing$]$NThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe$N$N$[Network Helper$]$NAgent Mass$N$N$[Community Support$]$NThreeOfMe, Erilambus, VSX, Fajeth"   |
 18577   "_CREDITS_+3"   "$[Localization$]$N$N$[German$]$NFajeth, ThreeOfMe$N$N$[English$]$NFajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack$N$N$[Spanish$]$NSkip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador$N$N$[Italian$]$Nfrankieorabona, Marian, Caligari89$N$N$[French$]$NRico, StalkFire, Techgenieur, Erfive$N$N$[Portuguese$]$NRegismrs, BossPenguin$N$N$[Russian$]$NRumata, Mr. Bro, Dogfire$N$N$[Polish$]$NSeljuck$N$N$[Hungarian$]$NWiNTeR, Rdancsol, jooe "   |
 18578   "_CREDITS_+4"   "Original Credits for The Guild 2 Renaissance:$N$N$[Project Lead$]$NHeinrich Meyer$N$N$[Lead Artist$]$NStephan Kubisch$N$N$[Lead Game Designer$]$NHeinrich Meyer$N$N$[Additional Concept & Game Design$]$NJakob Marczynski$NFabian Hackhofer$NTobias Horn$N"   |
@@ -632,10 +632,10 @@ Translate and add the following lines below:
 18613   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this action, you can view the reputation of another Dynasty."   |
 18614   "_MEASURE_ShowGuildMembershipSim_TARGET_+0"   "Select the person whose reputation you want to see"   |
 18615   "_ONSCREENHELP_9_ACTION_IMPACT_destitute_NAME_+0"   "Destitute"   |
-18616   "_ONSCREENHELP_9_ACTION_IMPACT_poor_NAME_+0"   "Poor"   |
-18617   "_ONSCREENHELP_9_ACTION_IMPACT_middleclass_NAME_+0"   "Middle Class"   |
-18618   "_ONSCREENHELP_9_ACTION_IMPACT_prosperous_NAME_+0"   "Prosperous"   |
-18619   "_ONSCREENHELP_9_ACTION_IMPACT_rich_NAME_+0"   "Rich"   |
+18616   "_ONSCREENHELP_9_ACTION_IMPACT_poor_NAME_+1"   "Poor"   |
+18617   "_ONSCREENHELP_9_ACTION_IMPACT_middleclass_NAME_+2"   "Middle Class"   |
+18618   "_ONSCREENHELP_9_ACTION_IMPACT_prosperous_NAME_+3"   "Prosperous"   |
+18619   "_ONSCREENHELP_9_ACTION_IMPACT_rich_NAME_+4"   "Rich"   |
 18620   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+0"   ""   |
 18621   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+1"   ""   |
 18622   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+2"   ""   |
@@ -643,28 +643,101 @@ Translate and add the following lines below:
 18624   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+4"   ""   |
 18625   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+1"   "Destitute people (unemployed)"   |
 18626   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+2"   "Poor people (apprentices)"   |
-18627   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+3"   "Middle class (journeymen & dynasties)"   |
-18628   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+4"   "Prosperous people (masters & dynasties)"   |
-18629   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+5"   "The richest citizens (dynasties)"   |
+18627   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+3"   "Middle class (journeymen & Dynasties)"   |
+18628   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+4"   "Prosperous people (masters & Dynasties)"   |
+18629   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+5"   "The richest citizens (Dynasties)"   |
 18630   "_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_HEAD_+0"   "Fondness regresses"   |
 18631   "_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_BODY_+0"   "%2ST %2SN's Dynasty has grown less fond of you due to the recent events.$N$NNew level of Fondness: %3n"   |
 18632   "_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_HEAD_+0"   "Fondness dies out"   |
 18633   "_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_BODY_+0"   "%1ST %1SN, the latest events have left their mark. %2ST %2SN's Dynasty holds no more Fondness for you !"   |
 18634   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_HEAD_+0"   "A Grudge is born"   |
-18635   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a scar so deep that your dynasties now hold a Grudge against each other!$N$NEvery level of Grudge will make it harder to obtain Favor from them. If you don't act, this could last for a very long time..."   |
+18635   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a scar so deep that your Dynasties now hold a Grudge against each other!$N$NEvery level of Grudge will make it harder to obtain Favor from them. If you don't act, this could last for a very long time..."   |
 18636   "_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_HEAD_+0"   "A Grudge intensifies"   |
 18637   "_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a mark. The Grudge between your Dynasties intensifies even more!$N$NNew level of Grudge: %3n"   |
 18638   "_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_HEAD_+0"   "A Grudge calms down"   |
 18639   "_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_BODY_+0"   "%1ST %1SN, the ongoing Grudge between you and %2ST %2SN's Dynasty has started to die down thanks to the latest events!$N$NNew level of Grudge: %3n"   |
 18640   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_HEAD_+0"   "A Grudge settles"   |
-18641   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_BODY_+0"   "%1ST %1SN, the latest events leave their mark. %2ST %2SN's Dynasty has finally let go of their Grudge towards you!"   |
+18641   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_BODY_+0"   "%1ST %1SN, the latest events leave their mark. %2ST %2SN's Dynasty has finally let go of their Grudge towards you !"   |
 18642   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_HEAD_+0"   "A Dynasty is fond of you!"   |
-18643   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN has brought your Dynasties together in a bond of friendship!$N$NEvery level of Fondness will make it easier to obtain Favor from them. If you continue like this, this friendship could last for a very long time!"   |
+18643   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN has brought your Dynasties together in a bond of friendship!$N$NEvery level of Fondness will make it easier to obtain Favor from them. If you continue like this, this friendship could last for a very long time !"   |
 18644   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_HEAD_+0"   "A bond of friendship strengthens"   |
 18645   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_BODY_+0"   "%1ST %1SN, the latest events between you and %2ST %2SN have borne fruits. The ties of friendship between your families have grown stronger!$N$NNew level of Fondness: %3n"   |
-18646   "_MEASURE_Train_TOOLTIP_+0"   "Once in a while, reading a good book or doing some exercises at home can really help you with everyday life.$N$NFor this action you get experience points!"   |
+18646   "_MEASURE_Train_TOOLTIP_+0"   "Once in a while, reading a good book or doing some exercises at home can really help you with everyday life.$N$NFor this action you get Experience Points !"   |
 18647   "_MEASURE_Train_NAME_+0"   "Learning"   |
 18648   "_MEASURE_Kill_TOOLTIP_+0"   "Is it not enough for you to defeat your opponent in battle? No? Then get to cold-blooded action and finish him off. But watch out for witnesses, because even in these dark times, murder is a serious crime!$NYou receive experience points for this action. The higher the level of your victim is the more experience you get."   |
+18649   "_OFFICE_SESSION_IN_TOWN_COUNTDOWN_+0"   "Council meeting in %2NAME"   |
+18650   "_DUEL_IN_TOWN_COUNTDOWN_+0"   "Duel in %2NAME"   |
+18651   "_TRIAL_IN_TOWN_COUNTDOWN_+0"   "Trial in %2NAME"   |
+19000   "_DYNASTY_FLAG_SWITCH_+0"    "%1SN"   |
+19001   "_DYNASTY_FLAG_SWITCH_+1"    "$S[2029] %1SN"   |
+19002   "_DYNASTY_FLAG_SWITCH_+2"    "$S[2029] %2SN"   |
+19003   "_DYNASTY_FLAG_SWITCH_+3"    "$S[2029] %3SN"   |
+19004   "_DYNASTY_FLAG_SWITCH_+4"    "$S[2029] %4SN"   |
+19011   "_DYNASTY_FLAG_SWITCH_+5"    "$S[2030] %1SN"   |
+19012   "_DYNASTY_FLAG_SWITCH_+6"    "$S[2030] %2SN"   |
+19013   "_DYNASTY_FLAG_SWITCH_+7"    "$S[2030] %3SN"   |
+19014   "_DYNASTY_FLAG_SWITCH_+8"    "$S[2030] %4SN"   |
+19021   "_DYNASTY_FLAG_SWITCH_+9"    "$S[2031] %1SN"   |
+19022   "_DYNASTY_FLAG_SWITCH_+10"   "$S[2031] %2SN"   |
+19023   "_DYNASTY_FLAG_SWITCH_+11"   "$S[2031] %3SN"   |
+19024   "_DYNASTY_FLAG_SWITCH_+12"   "$S[2031] %4SN"   |
+19031   "_DYNASTY_FLAG_SWITCH_+13"   "$S[2032] %1SN"   |
+19032   "_DYNASTY_FLAG_SWITCH_+14"   "$S[2032] %2SN"   |
+19033   "_DYNASTY_FLAG_SWITCH_+15"   "$S[2032] %3SN"   |
+19034   "_DYNASTY_FLAG_SWITCH_+16"   "$S[2032] %4SN"   |
+19041   "_DYNASTY_FLAG_SWITCH_+17"   "$S[2033] %1SN"   |
+19042   "_DYNASTY_FLAG_SWITCH_+18"   "$S[2033] %2SN"   |
+19043   "_DYNASTY_FLAG_SWITCH_+19"   "$S[2033] %3SN"   |
+19044   "_DYNASTY_FLAG_SWITCH_+20"   "$S[2033] %4SN"   |
+19051   "_DYNASTY_FLAG_SWITCH_+21"   "$S[2034] %1SN"   |
+19052   "_DYNASTY_FLAG_SWITCH_+22"   "$S[2034] %2SN"   |
+19053   "_DYNASTY_FLAG_SWITCH_+23"   "$S[2034] %3SN"   |
+19054   "_DYNASTY_FLAG_SWITCH_+24"   "$S[2034] %4SN"   |
+19061   "_DYNASTY_FLAG_SWITCH_+25"   "$S[2035] %1SN"   |
+19062   "_DYNASTY_FLAG_SWITCH_+26"   "$S[2035] %2SN"   |
+19063   "_DYNASTY_FLAG_SWITCH_+27"   "$S[2035] %3SN"   |
+19064   "_DYNASTY_FLAG_SWITCH_+28"   "$S[2035] %4SN"   |
+19071   "_DYNASTY_FLAG_SWITCH_+29"   "$S[2036] %1SN"   |
+19072   "_DYNASTY_FLAG_SWITCH_+30"   "$S[2036] %2SN"   |
+19073   "_DYNASTY_FLAG_SWITCH_+31"   "$S[2036] %3SN"   |
+19074   "_DYNASTY_FLAG_SWITCH_+32"   "$S[2036] %4SN"   |
+19081   "_DYNASTY_FLAG_SWITCH_+33"   "$S[2037] %1SN"   |
+19082   "_DYNASTY_FLAG_SWITCH_+34"   "$S[2037] %2SN"   |
+19083   "_DYNASTY_FLAG_SWITCH_+35"   "$S[2037] %3SN"   |
+19084   "_DYNASTY_FLAG_SWITCH_+36"   "$S[2037] %4SN"   |
+19091   "_DYNASTY_FLAG_SWITCH_+37"   "$S[2038] %1SN"   |
+19092   "_DYNASTY_FLAG_SWITCH_+38"   "$S[2038] %2SN"   |
+19093   "_DYNASTY_FLAG_SWITCH_+39"   "$S[2038] %3SN"   |
+19094   "_DYNASTY_FLAG_SWITCH_+40"   "$S[2038] %4SN"   |
+19101   "_DYNASTY_FLAG_SWITCH_+41"   "$S[2039] %1SN"   |
+19102   "_DYNASTY_FLAG_SWITCH_+42"   "$S[2039] %2SN"   |
+19103   "_DYNASTY_FLAG_SWITCH_+43"   "$S[2039] %3SN"   |
+19104   "_DYNASTY_FLAG_SWITCH_+44"   "$S[2039] %4SN"   |
+19111   "_DYNASTY_FLAG_SWITCH_+45"   "$S[2040] %1SN"   |
+19112   "_DYNASTY_FLAG_SWITCH_+46"   "$S[2040] %2SN"   |
+19113   "_DYNASTY_FLAG_SWITCH_+47"   "$S[2040] %3SN"   |
+19114   "_DYNASTY_FLAG_SWITCH_+48"   "$S[2040] %4SN"   |
+19121   "_DYNASTY_FLAG_SWITCH_+49"   "$S[2041] %1SN"   |
+19122   "_DYNASTY_FLAG_SWITCH_+50"   "$S[2041] %2SN"   |
+19123   "_DYNASTY_FLAG_SWITCH_+51"   "$S[2041] %3SN"   |
+19124   "_DYNASTY_FLAG_SWITCH_+52"   "$S[2041] %4SN"   |
+19131   "_DYNASTY_FLAG_SWITCH_+53"   "$S[2042] %1SN"   |
+19132   "_DYNASTY_FLAG_SWITCH_+54"   "$S[2042] %2SN"   |
+19133   "_DYNASTY_FLAG_SWITCH_+55"   "$S[2042] %3SN"   |
+19134   "_DYNASTY_FLAG_SWITCH_+56"   "$S[2042] %4SN"   |
+19141   "_DYNASTY_FLAG_SWITCH_+57"   "$S[2043] %1SN"   |
+19142   "_DYNASTY_FLAG_SWITCH_+58"   "$S[2043] %2SN"   |
+19143   "_DYNASTY_FLAG_SWITCH_+59"   "$S[2043] %3SN"   |
+19144   "_DYNASTY_FLAG_SWITCH_+60"   "$S[2043] %4SN"   |
+19151   "_DYNASTY_FLAG_SWITCH_+61"   "$S[2044] %1SN"   |
+19152   "_DYNASTY_FLAG_SWITCH_+62"   "$S[2044] %2SN"   |
+19153   "_DYNASTY_FLAG_SWITCH_+63"   "$S[2044] %3SN"   |
+19154   "_DYNASTY_FLAG_SWITCH_+64"   "$S[2044] %4SN"   |
+19161   "_DYNASTY_FLAG_SWITCH_+65"   "$S[2045] %1SN"   |
+19162   "_DYNASTY_FLAG_SWITCH_+66"   "$S[2045] %2SN"   |
+19163   "_DYNASTY_FLAG_SWITCH_+67"   "$S[2045] %3SN"   |
+19164   "_DYNASTY_FLAG_SWITCH_+68"   "$S[2045] %4SN"   |
+
 
 -------
 
