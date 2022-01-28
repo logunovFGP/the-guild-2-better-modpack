@@ -63,7 +63,7 @@ Data:
 131   "IsInventoryVisible"   "__F((Object.IsInventoryVisible())AND NOT(Object.HudIsInCutscene()))"   |
 132   "IsInsideBank"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
 133   "IsMySimInTownHall"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
-135   "CanAdministrateDiplomacy"   "__F((Object.CanBeControlled())AND (Object.IsClass(1))AND(Object.HasUpgrade(Escritoire)))"   |
+135   "CanAdministrateDiplomacy"   "__F((Object.CanBeControlled())AND(Object.IsClass(1))AND(Object.HasUpgrade(Escritoire)))"   |
 136   "HasNoLiaison"   "__F((Object.CanBeControlled())AND NOT(Object.HasLiaison())AND(Object.MinAge(16)))"   |
 137   "FreeForLiaison"   "__F((Object.HasDifferentSex())AND NOT(Object.BelongsToMe())AND(Object.MinAge(16)))"   |
 138   "CanBeBlackmailed"   "__F(NOT(Object.BelongsToMe())AND(Object.ActionAdmissible()))"   |

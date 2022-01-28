@@ -932,7 +932,7 @@ Data:
 3236             442              "Wachhundtraining"          1                     0                 8                    0.25                 3235              0                 150             0          |
 3237             440              "SpyGlass"                  1                     0                 15                   1450                 3207              0                 300             0          |
 3238             441              "BackRoom"                  1                     1                 0                    0                    3239              6                 0               0          |
-3239             440              "Escritoire"                1                     0                 0                    0                    3207              0                 300             0          |
+3239             440              "Escritoire"                1                     0                 15                   470                  3207              0                 300             0          |
 3240             443              "TreasureChest"             1                     0                 8                    0.25                 3236              0                 150             0          |
 3241             444              "TheWeepingCulprit"         1                     0                 8                    0.25                 3240              0                 150             0          |
 3242             443              "ProtectionFromFire"        1                     0                 7                    0.15                 3233              0                 150             0          |
