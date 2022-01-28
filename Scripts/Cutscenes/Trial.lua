@@ -56,10 +56,12 @@ function Start()
 	
 	
 	local EventTime = SettlementEventGetTime("trial_date")
-
+	local EventTimeInvite = EventTime/60
+	local CurrentTime = math.mod(GetGametime(),24)
 	local GameTime = GetGametime()*60
 	local WaitTime = EventTime - GameTime - 150
 	local ImpactTime = math.floor(WaitTime/60)
+	local CityID = GetID("settlement")
 
 	if (WaitTime < 0) then
 		trial_SetBuildingInfo()
@@ -75,14 +77,29 @@ function Start()
 		-- Property for AI
 		SetProperty("judge", "DefendTrial", 1)
 		AddImpact("judge", "TrialTimer", 1, ImpactTime)
+		
+		-- start countdown
+		if GetDynasty("judge", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+			local DestTime = CurrentTime + ImpactTimeCorrect
+			local ID = "Event"..GetID("judge")
+			MsgNewsNoWait("judge", "judge", "@C[@L_TRIAL_IN_TOWN_COUNTDOWN_+0,%i7,%l8]", "default", -1,
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_RICHTER_+0",
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_RICHTER_+1", 
+						GetID("judge"), GetID("accuser"), GetID("accused"), EventTime, SettlementEventGetTime("trial_date"), GetID("settlement"), DestTime, ID)
+		else				
 			
-		SimAddDate("judge","courtbuilding", "Court Hearing", EventTime-120,"AttendTrialMeeting")
-		SimAddDatebookEntry("judge",EventTime,"courtbuilding","@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER","@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_RICHTER",
-						GetID("accuser"),GetID("accused"),GetID("settlement"))
-		feedback_MessagePolitics("judge",
+			feedback_MessagePolitics("judge",
 							"@L_LAWSUIT_2_MESSAGES_2A_SEND_RICHTER_+0",
 							"@L_LAWSUIT_2_MESSAGES_2A_SEND_RICHTER_+1",
-							GetID("judge"),GetID("accuser"),GetID("accused"), EventTime, SettlementEventGetTime("trial_date"),GetID("settlement"))
+							GetID("judge"),GetID("accuser"),GetID("accused"), EventTime, SettlementEventGetTime("trial_date"), GetID("settlement"))
+		end
+		
+		SimAddDate("judge","courtbuilding", "Court Hearing", EventTime-120, "AttendTrialMeeting")
+		SimAddDatebookEntry("judge", EventTime, "courtbuilding", "@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER", "@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_RICHTER",
+						GetID("accuser"), GetID("accused"), GetID("settlement"))
+		
 	end
 		
 	SetData("judge",GetID("judge"))
@@ -96,14 +113,26 @@ function Start()
 		SetProperty("accuser", "TrialJudge", GetID("judge"))
 		AddImpact("accuser", "TrialTimer", 1, ImpactTime)
 		
-		SimAddDate("accuser","courtbuilding","Court Hearing", EventTime-120,"AttendTrialMeeting")
-		SimAddDatebookEntry("accuser",EventTime,"courtbuilding","@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER","@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_KLAEGER",
-						GetID("accused"),GetID("settlement"))
-
-		feedback_MessagePolitics("accuser",
+		-- start countdown
+		if GetDynasty("accuser", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+			local DestTime = CurrentTime + ImpactTimeCorrect
+			local ID = "Event"..GetID("accuser")
+			MsgNewsNoWait("accuser", "accuser", "@C[@L_TRIAL_IN_TOWN_COUNTDOWN_+0,%i7,%l8]", "default", -1,
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_KLAEGER_+0",
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_KLAEGER_+1", 
+						GetID("accuser"), GetID("accused"), GetID("settlement"), (Evidences+1), EventTime, EventTime, DestTime, ID)
+		else				
+			feedback_MessagePolitics("accuser",
 							"@L_LAWSUIT_2_MESSAGES_2A_SEND_KLAEGER_+0",
 							"@L_LAWSUIT_2_MESSAGES_2A_SEND_KLAEGER_+1",
-							GetID("accuser"),GetID("accused"),GetID("settlement"),(Evidences+1),EventTime,EventTime)
+							GetID("accuser"), GetID("accused"), GetID("settlement"), (Evidences+1), EventTime, EventTime)
+		end
+		
+		SimAddDate("accuser", "courtbuilding", "Court Hearing", EventTime-120, "AttendTrialMeeting")
+		SimAddDatebookEntry("accuser", EventTime, "courtbuilding", "@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER", "@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_KLAEGER",
+						GetID("accused"), GetID("settlement"))
 
 		SetProperty("accuser","trial_destination_ID",GetID(""))
 		SetProperty("accuser","HaveCutscene",1)
@@ -118,52 +147,89 @@ function Start()
 		SetProperty("accused", "TrialOpponent", GetID("accuser"))
 		SetProperty("accused", "TrialJudge", GetID("judge"))
 		AddImpact("accused", "TrialTimer", 1, ImpactTime)
-			
-		SimAddDate("accused","courtbuilding","Court Hearing", EventTime-120,"AttendTrialMeeting")
-		SimAddDatebookEntry("accused",EventTime,"courtbuilding","@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER","@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_ANGEKLAGTER",
-						GetID("accuser"),GetID("settlement"))
-		feedback_MessagePolitics("accused",
+		
+		-- start countdown
+		if GetDynasty("accused", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+			local DestTime = CurrentTime + ImpactTimeCorrect
+			local ID = "Event"..GetID("accused")
+			MsgNewsNoWait("accused", "accused", "@C[@L_TRIAL_IN_TOWN_COUNTDOWN_+0,%i6,%l7]", "default", -1,
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_ANGEKLAGTER_+0",
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_ANGEKLAGTER_+1", 
+						GetID("accused"), GetID("accuser"), GetID("settlement"), SettlementEventGetTime("trial_date"), SettlementEventGetTime("trial_date"), DestTime, ID)
+		else		
+			feedback_MessagePolitics("accused",
 							"@L_LAWSUIT_2_MESSAGES_2A_SEND_ANGEKLAGTER_+0",
 							"@L_LAWSUIT_2_MESSAGES_2A_SEND_ANGEKLAGTER_+1",
-							GetID("accused"),GetID("accuser"),GetID("settlement"),SettlementEventGetTime("trial_date"),SettlementEventGetTime("trial_date"))
-
-		SetProperty("accused","trial_destination_ID",GetID(""))
-		SetProperty("accused","HaveCutscene",1)
+							GetID("accused"), GetID("accuser"), GetID("settlement"), SettlementEventGetTime("trial_date"), SettlementEventGetTime("trial_date"))
+		end
+		
+		SimAddDate("accused", "courtbuilding", "Court Hearing", EventTime-120, "AttendTrialMeeting")
+		SimAddDatebookEntry("accused", EventTime, "courtbuilding", "@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER", "@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_ANGEKLAGTER",
+						GetID("accuser"), GetID("settlement"))
+		
+		SetProperty("accused", "trial_destination_ID", GetID(""))
+		SetProperty("accused", "HaveCutscene", 1)
 	end
 	
-	SetData("accused",GetID("accused"))
+	SetData("accused", GetID("accused"))
 
-	if (GetID("assessor1")~=-1) then
+	if (GetID("assessor1") ~= -1) then
 		SimAddDate("assessor1","courtbuilding","Court Hearing", EventTime-120,"AttendTrialMeeting")
 		SetProperty("accused", "TrialAssessor1", GetID("assessor1"))
 		SetProperty("accuser", "TrialAssessor1", GetID("assessor1"))
+		
+		-- start countdown
+		if GetDynasty("assessor1", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+			local DestTime = CurrentTime + ImpactTimeCorrect
+			local ID = "Event"..GetID("assessor1")
+			MsgNewsNoWait("assessor1", "assessor1", "@C[@L_TRIAL_IN_TOWN_COUNTDOWN_+0,%i7,%l8]", "default", -1,
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+0",
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+1", 
+						GetID("assessor1"), GetID("accuser"), GetID("accused"), EventTime, EventTime, GetID("settlement"), DestTime, ID)
+		else	
+			feedback_MessagePolitics("assessor1",
+								"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+0",
+								"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+1",
+								GetID("assessor1"), GetID("accuser"), GetID("accused"), EventTime, EventTime, GetID("settlement"))
+		end
 
-		feedback_MessagePolitics("assessor1",
-							"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+0",
-							"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+1",
-							GetID("assessor1"),GetID("accuser"),GetID("accused"),EventTime,EventTime,GetID("settlement"))
-
-		SimAddDatebookEntry("assessor1",EventTime,"courtbuilding","@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER","@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_BEISITZER",
-						GetID("accuser"),GetID("accused"),GetID("settlement"))
+		SimAddDatebookEntry("assessor1", EventTime, "courtbuilding", "@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER", "@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_BEISITZER",
+						GetID("accuser"), GetID("accused"), GetID("settlement"))
 	end
 	
-	SetData("assessor1",GetID("assessor1"))
+	SetData("assessor1", GetID("assessor1"))
 
-	if (GetID("assessor2")~=-1) then
-		SimAddDate("assessor2","courtbuilding","Court Hearing", EventTime-120,"AttendTrialMeeting")
+	if (GetID("assessor2") ~= -1) then
+		SimAddDate("assessor2", "courtbuilding", "Court Hearing", EventTime-120, "AttendTrialMeeting")
 		SetProperty("accused", "TrialAssessor2", GetID("assessor2"))
 		SetProperty("accuser", "TrialAssessor2", GetID("assessor2"))
 		
-		feedback_MessagePolitics("assessor2",
-							"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+0",
-							"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+1",
-							GetID("assessor2"),GetID("accuser"),GetID("accused"),EventTime,EventTime,GetID("settlement"))
+		-- start countdown
+		if GetDynasty("assessor2", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+			local DestTime = CurrentTime + ImpactTimeCorrect
+			local ID = "Event"..GetID("assessor2")
+			MsgNewsNoWait("assessor2", "assessor2", "@C[@L_TRIAL_IN_TOWN_COUNTDOWN_+0,%i7,%l8]", "default", -1,
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+0",
+						"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+1", 
+						GetID("assessor2"), GetID("accuser"), GetID("accused"), EventTime, EventTime, GetID("settlement"), DestTime, ID)
+		else	
+			feedback_MessagePolitics("assessor2",
+								"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+0",
+								"@L_LAWSUIT_2_MESSAGES_2A_SEND_BEISITZER_+1",
+								GetID("assessor2"), GetID("accuser"), GetID("accused"), EventTime, EventTime, GetID("settlement"))
+		end
 
-		SimAddDatebookEntry("assessor2",EventTime,"courtbuilding","@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER","@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_BEISITZER",
-						GetID("accuser"),GetID("accused"),GetID("settlement"))
+		SimAddDatebookEntry("assessor2", EventTime, "courtbuilding", "@L_NEWSTUFF_TRIAL_DATEBOOK_HEADER", "@L_LAWSUIT_2_MESSAGES_2B_TIMEPLANNERENTRY_BEISITZER",
+						GetID("accuser"), GetID("accused"), GetID("settlement"))
 	end
 	
-	SetData("assessor2",GetID("assessor2"))
+	SetData("assessor2", GetID("assessor2"))
 end
 
 function SetBuildingInfo()

@@ -257,6 +257,7 @@ _General_
   For example, actions like perfume will count as a 'small favor', while insults can be seen as 'large favor' decrease.
 - You can now obtain 'grudges' or 'fondness' with other dynasties. Those traits will affect directly how much favor you gain or lose with them. Gain fondness to remove grudges
   and vice versa. You obtain a new level of grudge or fondness everytime one of your actions changes the favor with the target for at least 20 points.
+- You get a timer for office, trial and duels at the bottom of your screen.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.

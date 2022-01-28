@@ -7,9 +7,12 @@ function Start()
 	
 		CityScheduleCutsceneEvent("my_settlement", "duel_date", "", "EverybodyInTheirPlace", 4, 5, "@L_DUELL_6_TIMEPLANNERENTRY_DATEBOOK_+0", GetID("challenger"), GetID("challenged"))	-- hourofday=7,mintimeinfuture=2
 		local EventTime = SettlementEventGetTime("duel_date")
+		local EventTimeInvite = EventTime/60
+		local CurrentTime = math.mod(GetGametime(),24)
 		local GameTime = GetGametime()*60
 		local WaitTime = EventTime - GameTime - 120
 		local ImpactTime = math.floor(WaitTime/60)
+		local CityID = GetID("my_settlement")
 
 		--invite sims to duel
 		if GetID("challenger") > 0 then
@@ -17,32 +20,55 @@ function Start()
 			SetProperty("challenger", "DuelOpponent", GetID("challenged"))
 			AddImpact("challenger", "DuelTimer", 1, ImpactTime)
 			
-			SimAddDate("challenger","duel_place","Duel", SettlementEventGetTime("duel_date")-80,"AttendDuel")
-			feedback_MessageCharacter("challenger",
-					"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST2_+0",
-					"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST2_+1",
-					GetID("challenged"), GetID("challenger"))
+			-- start countdown
+			if GetDynasty("challenger", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_DUEL"..CityID) then
+				SetRepeatTimer("InviteDyn", "COUNTDOWN_DUEL"..CityID, ImpactTime)
+				local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+				local DestTime = CurrentTime + ImpactTimeCorrect
+				local ID = "Event"..GetID("challenger")
+				MsgNewsNoWait("challenger", "challenger", "@C[@L_DUEL_IN_TOWN_COUNTDOWN_+0,%i3,%l4]", "default", -1,
+							"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST2_+0",
+							"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST2_+1", 
+							GetID("challenged"), GetID("challenger"), DestTime, ID)
+			else
+				feedback_MessageCharacter("challenger",
+									"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST2_+0",
+									"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST2_+1",
+									GetID("challenged"), GetID("challenger"))
+			end
 			
+			SimAddDate("challenger","duel_place","Duel", SettlementEventGetTime("duel_date")-80,"AttendDuel")
 			SimAddDatebookEntry("challenger", SettlementEventGetTime("duel_date"), "duel_place",
 						"@L_NEWSTUFF_DUEL_DATEBOOK_HEADER", "@L_DUELL_6_TIMEPLANNERENTRY_DATEBOOK_+0", GetID("challenger"), GetID("challenged"))
 		end
+		
 		if GetID("challenged") > 0 then
 
 			-- Property for AI
-			SetProperty("challenger", "DuelOpponent", GetID("challenger"))
-			AddImpact("challenger", "DuelTimer", 1, ImpactTime)
-
-			SimAddDate("challenged", "duel_place", "Duel", SettlementEventGetTime("duel_date")-80, "AttendDuel")
---			feedback_MessageCharacter("challenged",
---					"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST1_+0",
---					"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST1_+1",
---					GetID("challenged"), GetID("challenger"))
+			SetProperty("challenged", "DuelOpponent", GetID("challenger"))
+			AddImpact("challenged", "DuelTimer", 1, ImpactTime)
+		
+			-- start countdown
+			if GetDynasty("challenged", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_DUEL"..CityID) then
+				SetRepeatTimer("InviteDyn", "COUNTDOWN_DUEL"..CityID, ImpactTime)
+				local ImpactTimeCorrect = EventTimeInvite - CurrentTime
+				local DestTime = CurrentTime + ImpactTimeCorrect
+				local ID = "Event"..GetID("challenged")
+				MsgNewsNoWait("challenged", "challenged", "@C[@L_DUEL_IN_TOWN_COUNTDOWN_+0,%i3,%l4]", "default", -1,
+							"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST1_+0",
+							"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST1_+1", 
+							GetID("challenged"), GetID("challenger"), DestTime, ID)
+			else
+				feedback_MessageCharacter("challenged",
+									"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST1_+0",
+									"@L_DUELL_6_TIMEPLANNERENTRY_DUELLIST1_+1",
+									GetID("challenged"), GetID("challenger"))
+			end
 			
+			SimAddDate("challenged", "duel_place", "Duel", SettlementEventGetTime("duel_date")-80, "AttendDuel")
 			SimAddDatebookEntry("challenged", SettlementEventGetTime("duel_date"), "duel_place",
 							"@L_NEWSTUFF_DUEL_DATEBOOK_HEADER", "@L_DUELL_6_TIMEPLANNERENTRY_DATEBOOK_+0", GetID("challenger"), GetID("challenged"))
 		end
-		
-		
 		
 	else
 		-- no duel place found

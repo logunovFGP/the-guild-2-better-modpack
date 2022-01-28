@@ -264,6 +264,7 @@ _Allgemein_
   Parfum ist z.B. ein 'kleiner Modifikator', während eine Beleidigung bereits einen 'großen Modifikator' nutzt.
 - Man kann nun 'Groll' und 'Zuneigung' zu anderen Dynastien sammeln. Dieser besondere Wert beeinflusst den Gunstgewinn (oder Verlust) bei jeder Gunstveränderung um jeweils 1,5 Punkte.
   Man erhält Groll oder Zuneigung, wenn sich die Gunst zu einer anderen Dynastie durch eine einzelne Aktion um mindestens 20 Punkte verschiebt.
+- Für Amtssitzungen, Gerichtsverhandlungen und Duelle wird am unteren Bildschirmrand nun ein Countdown angezeigt.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
