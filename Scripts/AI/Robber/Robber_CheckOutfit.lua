@@ -1,10 +1,14 @@
 function Weight()
+
+	if not ReadyToRepeat("SIM", "AI_CheckOutfit") then
+		return 0
+	end
+
 	if not SimGetWorkingPlace("SIM", "Place") then
 		return 0
 	end
 
-	local	Remaining = BuildingGetFreeBudget("Place")
-	if Remaining < 100 then
+	if GetMoney("Place") < 3000 then
 		return 0
 	end
 
@@ -12,6 +16,7 @@ function Weight()
 end
 
 function Execute()
+	SetRepeatTimer("SIM", "AI_CheckOutfit", 12)
 	SetProperty("SIM", "SpecialMeasureId", -MeasureGetID("CheckOutfit"))
 end
 

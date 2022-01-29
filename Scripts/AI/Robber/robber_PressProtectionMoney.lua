@@ -1,4 +1,5 @@
 function Weight()
+
 	if IsDynastySim("SIM") then
 		return 0
 	end
@@ -24,10 +25,8 @@ function Weight()
 		return 0
 	end
 	
-	local Alias
-	local Value
+	local Alias, Value, BestAlias
 	local BestValue = 0
-	local BestAlias
 	
 	for l=0, Count-1 do
 		Alias	= "PPM_BUILD"..l
@@ -48,13 +47,14 @@ function Weight()
 		return 0
 	end
 	
-	if GetImpactValue(BestAlias, "buildingburgledtoday")>0 then
+	if GetImpactValue(BestAlias, "buildingburgledtoday") > 0 then
 		return 0
 	end
 	
 	if HasProperty(BestAlias, "RobberProtected") then
 		return 0
 	end
+
 	CopyAlias(BestAlias, "PPM_DEST")
 
 	return 100
@@ -62,7 +62,7 @@ end
 
 function Execute()
 	SetRepeatTimer("PresserHome", "AI_PRESS", 2)
-	SetRepeatTimer("PPM_DEST","AI_PRESSED", 8)
+	SetRepeatTimer("PPM_DEST", "AI_PRESSED", 8)
 	SetProperty("SIM", "SpecialMeasureDestination", GetID("PPM_DEST"))
 	SetProperty("SIM", "SpecialMeasureId", -MeasureGetID("PressProtectionMoney"))
 end

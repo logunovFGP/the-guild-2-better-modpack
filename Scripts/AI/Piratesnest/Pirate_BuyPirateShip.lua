@@ -1,14 +1,19 @@
 function Weight()
 
-	if not SimGetWorkingPlace("SIM","PirateHarbor") then
+	if not SimGetWorkingPlace("SIM", "PirateHarbor") then
+		return 0
+	end
+	
+	if not ReadyToRepeat("PirateHarbor", "ai_BuyPirateShip") then
 		return 0
 	end
 	
 	local Found = false
-	for i=0,BuildingGetCartCount("PirateHarbor")-1 do
-		if BuildingGetCart("PirateHarbor",i,"Cart") then
-			if CartGetType("Cart")==EN_CT_CORSAIR then
+	for i=0, BuildingGetCartCount("PirateHarbor")-1 do
+		if BuildingGetCart("PirateHarbor", i, "Cart") then
+			if CartGetType("Cart") == EN_CT_CORSAIR then
 				Found = true
+				break
 			end
 		end
 	end
@@ -21,6 +26,7 @@ function Weight()
 end
 
 function Execute()
-	BuildingBuyCart("PirateHarbor",EN_CT_CORSAIR,true,"PirateShip")
+	SetRepeatTimer("PirateHarbor", "ai_BuyPirateShip", 24)
+	BuildingBuyCart("PirateHarbor", EN_CT_CORSAIR, true, "PirateShip")
 end
 

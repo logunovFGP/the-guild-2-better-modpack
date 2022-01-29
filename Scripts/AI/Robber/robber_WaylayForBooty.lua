@@ -1,5 +1,13 @@
 function Weight()
+
 	if IsDynastySim("SIM") then
+		return 0
+	end
+
+	local Hour = math.mod(GetGametime(), 24)
+	if Hour > 21 then
+		return 0
+	elseif Hour < 5 then
 		return 0
 	end
 	
@@ -8,16 +16,16 @@ function Weight()
 	end
 
 	local Count = GetOutdoorLocator("ambush", -1, "Ambush")
-	if (Count==0) or (Count==nil) then
+	if (Count == 0) or (Count == nil) then
 		return 0
 	end
 	
-	local	Alias
-	local	Dist = -1
+	local Alias
+	local Dist = -1
 	local Location = nil
 	local BestDist = 99999
 	
-	for l=0,Count-1 do
+	for l=0, Count-1 do
 		Alias = "Ambush"..l
 		Dist = GetDistance("WFB_Place", Alias)
 		
