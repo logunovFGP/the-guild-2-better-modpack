@@ -35,4 +35,5 @@ function GetPrice(MeasureName, Title)
 	
 	-- default case:
 	local Cost = Title * Title * BasePrice
+	return Cost
 end
