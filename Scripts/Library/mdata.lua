@@ -25,3 +25,14 @@ function GetTimeOut(MeasureID)
 	return TimeOut
 end
 
+function GetPrice(MeasureName, Title)
+	local BasePrice = 50
+	-- special cases:
+	
+	if MeasureName == "AdoptOrphan" then
+		BasePrice = GL_ADOPTION_BASE_PRICE
+	end
+	
+	-- default case:
+	local Cost = Title * Title * BasePrice
+end

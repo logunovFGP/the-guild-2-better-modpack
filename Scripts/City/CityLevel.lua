@@ -3,22 +3,22 @@
 Include("Campaign/DefaultCampaign.lua")
 
 function GetValue(Level)
-	if Level==2 then
+	if Level == 2 then
 		return 100
-	elseif Level==3 then
+	elseif Level == 3 then
 		return 200
-	elseif Level==4 then
+	elseif Level == 4 then
 		return 300
-	elseif Level==5 then
+	elseif Level == 5 then
 		return 400
-	elseif Level==6 then -- this never happens
+	elseif Level == 6 then -- this never happens
 		return 9999
 	end
 end
 
 function GetMinLevel()
 	local Level = 2
-	if CityGetRandomBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"Townhall") then
+	if CityGetRandomBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "Townhall") then
 		if HasProperty("Townhall", "Level") then
 			Level = GetProperty("Townhall", "Level")
 		end
@@ -122,7 +122,7 @@ end
 function SetNewLevel(OldLevel, NewLevel)
 
 	-- output a message
-	if NewLevel>0 and NewLevel<=GL_MAX_CITY_LEVEL and ScenarioGetTimePlayed()>0.1 then
+	if NewLevel > 0 and NewLevel <= GL_MAX_CITY_LEVEL and ScenarioGetTimePlayed() > 0.1 then
 		-- only output messages, when the game is running, not at gamestart
 		local Attribute = "@L_GENERAL_INFORMATION_CITY_LEVEL_MSG_PLUS_ATTRIBUTE_+"..(OldLevel-1)
 		GetScenario("scenario")
@@ -159,19 +159,19 @@ function CheckForKing()
 	
 	local DynCount 	= ScenarioGetObjects("Dynasty", 999, "DynList")
 	
-	local	Points
-	local	Candidate = nil
-	local	BestPoints = 0
-	local	DynAlias
+	local Points
+	local Candidate = nil
+	local BestPoints = 0
+	local DynAlias
 	local fame = 0
 	
 	for dyn=0,DynCount-1 do
 		DynAlias = "DynList"..dyn
 		if DynastyGetBuilding2(DynAlias, 0, "DynHome") then
-			if GetSettlementID("DynHome")==GetID("") then
+			if GetSettlementID("DynHome") == GetID("") then
 				if DynastyIsShadow(DynAlias) then
-					if GetProperty(DynAlias,"ImperialFame") then
-						fame = GetProperty(DynAlias,"ImperialFame")
+					if HasProperty(DynAlias, "ImperialFame") then
+						fame = GetProperty(DynAlias, "ImperialFame")
 					end
 					Points = (GetNobilityTitle(DynAlias) * 20000) + (fame * 2000) + GetMoney(DynAlias)
 					if not Candidate or Points>BestPoints then

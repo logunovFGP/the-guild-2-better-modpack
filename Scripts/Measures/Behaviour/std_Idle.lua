@@ -1,5 +1,6 @@
 function Run()
 
+	-- get a new home
 	if not GetHomeBuilding("", "HomeBuilding") then
 		if not GetSettlement("", "MyCity") then
 			GetNearestSettlement("", "MyCity")
@@ -11,51 +12,54 @@ function Run()
 		end
 	end
 	
-	if HasProperty("","Berserker") then
-		RemoveProperty("","Berserker")   
+	-- cleanup properties etc
+	if HasProperty("", "Berserker") then
+		RemoveProperty("", "Berserker")   
+	end
+	
+	if GetImpactValue("", "Sickness") < 1 then
+		MoveSetActivity("")
 	end
 
+	if SimGetAge("") < 16 then
+		return
+	end	
+	
+	-- some workers have special behavior when they are idle
 	if GetState("", STATE_WORKING) then
 		std_idle_Worker()
 		return
 	end
 	
+	-- Do nothing once in a while
+	local DoNothing = GetProperty("", "_DO_NOTHING_TIME") or 0
+	if DoNothing > 0 then
+		RemoveProperty("", "_DO_NOTHING_TIME")
+		DoNothing = Gametime2Realtime(DoNothing)
+		Sleep(DoNothing)
+	end 
+	
+	-- Check activity or stand around
 	local Activity = idlelib_GetActivity()
 	local ActiveMovement = false
-	if Rand(100) < Activity then
+	if Activity > Rand(100) then
 		ActiveMovement = true
-	end
-
-	if (SimGetGender("")==GL_GENDER_FEMALE) then
-		idlelib_KissMeHonza()
 	end
 	
 	if not ActiveMovement then
 		local Distance = GetDistance("", "HomeBuilding")
 		if Distance > 1000 then
 			idlelib_GoHome()
+			return
 		else
 			idlelib_DoNothing()
+			return
 		end
 	end
 	
-	if SimGetAge("") <16 then
-		return
+	if (SimGetGender("") == GL_GENDER_FEMALE) then
+		idlelib_KissMeHonza()
 	end
-
-	if GetImpactValue("", "Sickness") < 1 then
-		MoveSetActivity("")
-	end	
-	
-	local DoNothing = GetProperty("", "_DO_NOTHING_TIME")
-	if DoNothing then
-		RemoveProperty("", "_DO_NOTHING_TIME")
-		if DoNothing==0 then
-			DoNothing = 0.5
-		end
-		DoNothing = Gametime2Realtime(DoNothing)
-		Sleep(DoNothing)
-	end 
 	
 	if ((GetImpactValue("", "Sickness") > 0) or (GetHP("") < GetMaxHP("")/2)) then
 		if gameplayformulas_CheckMoneyForTreatment("") == 1 then

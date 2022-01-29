@@ -2,38 +2,45 @@
 -- Init
 -- -----------------------
 function Init()
- --needed for caching
+	--needed for caching
 end
 
 -- -----------------------
 -- GetActivity
--- The main acivity facor
 -- 0 = no activity, 100 = full activity of the sims
 -- -----------------------
 function GetActivity()
-	if not GetSettlement("","MyCity") then
+
+	if not GetSettlement("", "MyCity") then
 		return 0
 	end
 
-	local CityLevel = CityGetLevel("MyCity")
-	local res = 0
+	local CitizenCount = CityGetCitizenCount("MyCity")
+	local Activity = 0
 	
-	if CityLevel<=2 then
-		res = 100
-	elseif CityLevel==3 then
-		res = 90
-	elseif CityLevel==4 then
-		res = 80
-	elseif CityLevel==5 then
-		res = 70
+	if CitizenCount <= 100 then
+		Activity = 95
+	elseif CitizenCount < 150 then
+		Activity = 85
+	elseif CitizenCount < 200 then
+		Activity = 75
+	elseif CitizenCount < 250 then
+		Activity = 65
+	elseif CitizenCount < 300 then
+		Activity = 55
+	elseif CitizenCount < 350 then
+		Activity = 45
+	elseif CitizenCount < 400 then
+		Activity = 35
 	else
-		res = 60
+		Activity = 20
 	end
-	if (HasProperty("","SchuldenGeb")) and (res<80) then
-		res = 80
+	
+	if (HasProperty("", "SchuldenGeb")) and (Activity < 80) then
+		Activity = 80
 	end
 
-	return res
+	return Activity
 end
 
 -- -----------------------

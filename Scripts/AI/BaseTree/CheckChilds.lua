@@ -1,88 +1,72 @@
 function Weight()
 
+	if not ReadyToRepeat("dynasty", "AI_CheckChilds") then
+		return 0
+	end
+
 	local Count = DynastyGetMemberCount("dynasty")
-	for i=0,Count-1 do
 	
+	for i=0, Count-1 do
 		if DynastyGetMember("dynasty", i, "Parent") then
-		
 			local Childs = SimGetChildrenCount("Parent")
-			for c=0,Childs-1 do
+			if Childs > 0 then
+				for c=0, Childs-1 do
+					if SimGetChildren("Parent", c, "Child") then
+						
+						-- check for settlement
+						if not GetSettlement("Child", "City") then
+							GetSettlement("Parent", "City")
+							GetHomeBuilding("Parent", "MyHome")
+							SetHomeBuilding("Child", "MyHome")
+						end
 			
-				if SimGetChildren("Parent", c, "Child") and GetSettlement("Child", "City") then
+						local ChildAge = SimGetAge("Child")
+						local EduLevel = GetProperty("EduLevel") or 0
+						local Measure = GetCurrentMeasureName("Child")
+						
+						-- idle?
+						if Measure == "Schooldays" or Measure == "Apprenticeship" or Measure == "University" then
 					
-					-- check for school
-				
-					if GetCurrentMeasureName("Child")=="Schooldays" then
-						if GetProperty("Child", "EduLevel")==0 then
-							if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+							-- check for school
+							if EduLevel == 0 and ChildAge >= GL_AGE_FOR_SCHOOL and ChildAge < GL_AGE_FOR_APPRENTICESHIP and GetMoney("Parent") > GL_SCHOOLMONEY then
 								SetData("ToDo", "School")
+								return 100
+							end
+							
+							-- check for apprenticeship
+							if not HasProperty("Child", "is_apprentice") and ChildAge >= GL_AGE_FOR_APPRENTICESHIP and ChildAge < GL_AGE_FOR_UNIVERSITY and GetMoney("Parent") > GL_APPRENTICESHIPMONEY then
+								SetData("ToDo", "Apprentice")
+								return 100
+							end
+							
+							-- check for university
+							if SimGetClass("Child") == 3 and EduLevel > 0 and EduLevel < 3 and GetMoney("Parent") > GL_UNIVERSITYMONEY then
+								SetData("ToDo", "Uni")
 								return 100
 							end
 						end
 					end
-						
-					-- check for apprenticeship
-
-					if GetCurrentMeasureName("Child")=="Apprenticeship" then
-						if not HasProperty("Child", "is_apprentice") then
-
-							local Class = AIFindGoodClass("Child")
-							local DynID = GetDynastyID("Child")
-
-							for trys=0,10 do
-						
-								if CityGetBuildingForCharacter("City", Class, FILTER_HAS_DYNASTY, "WorkShop") then
-									if GetDynastyID("WorkShop") ~= DynID then
-										if DynastyGetDiplomacyState("Child", "WorkShop") >= DIP_NEUTRAL then
-											CopyAlias("WorkShop", "School")
-											SetData("ToDo", "Apprentice")
-											return 100
-										end
-									end
-								end
-							end
-							
-						end
-					end
-						
-						
-					-- check for university
-					
-					if GetCurrentMeasureName("Child")=="University" then
-						if SimGetClass("Child")==3 then
-							if GetProperty("Child", "EduLevel")>0 and GetProperty("Child", "EduLevel")<3 then
-								if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-									SetData("ToDo", "Uni")
-									return 100
-								end
-							end
-						end
-					end
-
 				end
 			end
 		end
 	end
+	
 	return 0
 end
 			
 function Execute()
-	local		ToDo = GetData("ToDo")
+	local ToDo = GetData("ToDo")
+	SetRepeatTimer("dynasty", "AI_CheckChilds", 3)
 	
-	if ToDo=="School" then
-		MeasureRun("Child", "School", "AttendSchool")
+	if ToDo == "School" then
+		MeasureRun("Child", nil, "AttendSchool")
+		return
+	elseif ToDo == "Apprentice" then
+		MeasureRun("Child", nil, "AttendApprenticeship")
+		return
+	elseif ToDo == "Uni" then
+		MeasureRun("Child", nil, "AttendUniversity")
 		return
 	end
-	
-	if ToDo=="Apprentice" then
-		MeasureRun("Child", "School", "AttendApprenticeship")
-		return
-	end
-
-	if ToDo=="Uni" then
-		MeasureRun("Child", "School", "AttendUniversity")
-		return
-	end
-	
 end
 

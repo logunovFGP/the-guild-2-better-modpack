@@ -3,12 +3,15 @@
 -- -----------------------
 function Run()
 
+	local MeasureID = GetCurrentMeasureID("")
+	local MeasureName = GetCurrentMeasureName("")
+
 	if IsStateDriven() then
 		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 			StopMeasure()
 		end
 		if GetInsideBuilding("", "WeddingChapel") then
-			if not (GetID("Destination")==GetID("WeddingChapel")) then
+			if not (GetID("Destination") == GetID("WeddingChapel")) then
 				StopMeasure()
 			end
 		else
@@ -21,9 +24,9 @@ function Run()
 	end
 
 	local Count = SimGetChildCount("")
-	local MaxChilds = 3
+	local MaxChilds = GL_MAX_CHILD_COUNT
 	
-	if Count > MaxChilds then
+	if Count >= MaxChilds then
 		MsgQuick("", "@L_MEASURE_ADOPTORPHAN_FAILURE_+0", GetID(""), GetID("Spouse"), Count)
 		StopMeasure()
 	end
@@ -32,7 +35,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if GetProperty("Church", "Sleeping")==1 then
+	if GetProperty("Church", "Sleeping") == 1 then
 		MsgQuick("", "@L_MEASURE_ADOPTORPHAN_FAILURE_+2")
 		StopMeasure()
 	end
@@ -41,59 +44,63 @@ function Run()
 		weddingchapel_CheckOrphans()
 		StopMeasure()
 	end
+	
 	SetProperty("Church", "Adoption", 1)
-
 	local ChildID = GetProperty("Church", "Orphan1")
 	GetAliasByID(ChildID, "Child")
 
 	--get the locators
-	if not GetLocatorByName("Church","AdoptOrphanOwner","OwnerPos") then
+	if not GetLocatorByName("Church", "AdoptOrphanOwner", "OwnerPos") then
 		StopMeasure()
 	end
-	if not GetLocatorByName("Church","AdoptOrphanChild","ChildPos") then
+	
+	if not GetLocatorByName("Church", "AdoptOrphanChild", "ChildPos") then
 		StopMeasure()
 	end
-	if not GetLocatorByName("Church","FlowerChild1","MarryScenePos") then
+	
+	if not GetLocatorByName("Church", "FlowerChild1", "MarryScenePos") then
 		StopMeasure()
 	end
 
 	--if locator is blocked
 	while true do
-		if LocatorStatus("Church","AdoptOrphanOwner",true)==1 then
+		if LocatorStatus("Church", "AdoptOrphanOwner", true) == 1 then
 			break
 		end
 		Sleep(2)
 	end
 
-	if not f_BeginUseLocatorWeak("","OwnerPos",GL_STANCE_STAND,true) then
+	if not f_BeginUseLocatorWeak("", "OwnerPos", GL_STANCE_STAND, true) then
 		StopMeasure()
 	end 
-	if not f_BeginUseLocatorWeak("Child","ChildPos",GL_STANCE_STAND,true) then
+	
+	if not f_BeginUseLocatorWeak("Child", "ChildPos", GL_STANCE_STAND, true) then
 		StopMeasure()
 	end
+	
 	Sleep(1)
-
 	AlignTo("", "Child")
 	AlignTo("Child", "")
-
  	SetAvoidanceGroup("", "Child")
 	MoveSetActivity("", "converse")
 	MoveSetActivity("Child", "converse")
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","Child")
-	CutsceneCameraCreate("cutscene","")
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Child")
+	CutsceneCameraCreate("cutscene", "")
 	camera_CutsceneBothLock("cutscene", "Child")
 
 	Sleep(1)
 
 	local Title = GetNobilityTitle("")
-	local Cost = (Title * Title) * 150
+	local Cost = mdata_GetPrice(MeasureName, Title)
+	SetData("Price", Cost)
 	local choice
 	
 	if not IsStateDriven() then
-		PlayAnimationNoWait("Child","talk")
-		choice = MsgSayInteraction("","Child","",
+	
+		PlayAnimationNoWait("Child", "talk")
+		choice = MsgSayInteraction("", "Child", "",
 								"@B[0,@L_MEASURE_ADOPTORPHAN_OPTION_+0]"..
 								"@B[1,@L_MEASURE_ADOPTORPHAN_OPTION_+1]"..
 								"@B[2,@L_MEASURE_ADOPTORPHAN_OPTION_+2]",
@@ -104,9 +111,9 @@ function Run()
 		choice = 1	
 	end
 
-	if (choice==0) or (choice==1) then
+	if (choice == 0) or (choice == 1) then
 
-		if not GetLocatorByName("Church","OrphanSpawnPoint","OrphanStart") then
+		if not GetLocatorByName("Church", "OrphanSpawnPoint", "OrphanStart") then
 			StopMeasure()
 		end
 		
@@ -137,10 +144,14 @@ function Run()
 		SetState("Orphan", STATE_CHILD, true)
 
 		if not IsStateDriven() then
-			feedback_MessageCharacter("","@L_MEASURE_ADOPTORPHAN_SUCCESS_HEAD_+0","@L_MEASURE_ADOPTORPHAN_SUCCESS_BODY_+0",GetID(""),GetID("Spouse"),GetID("Orphan"))
+			feedback_MessageCharacter("", "@L_MEASURE_ADOPTORPHAN_SUCCESS_HEAD_+0","@L_MEASURE_ADOPTORPHAN_SUCCESS_BODY_+0",GetID(""),GetID("Spouse"),GetID("Orphan"))
 		end
 	end
+end
 
+function GetOSHData(MeasureID)
+	--cost
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", (GetData("Price")))
 end
 
 function CleanUp()
@@ -156,7 +167,7 @@ function CleanUp()
 	ReleaseAvoidanceGroup("")
 
 	if AliasExists("Church") then
-		RemoveProperty("Church","Adoption")
+		RemoveProperty("Church", "Adoption")
 	end
 
 	if IsStateDriven() then

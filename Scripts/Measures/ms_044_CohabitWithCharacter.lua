@@ -215,7 +215,7 @@ function Run()
 			
 			-- If maximum number of childs is reached, PregnantChance = 0
 			local Count = SimGetChildCount("")
-			local MaxChilds = 6
+			local MaxChilds = GL_MAX_CHILD_COUNT
 			if Count >= MaxChilds then
 				PregnantChance = 0
 			end
