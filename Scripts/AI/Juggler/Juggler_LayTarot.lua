@@ -4,11 +4,11 @@ function Weight()
 		return 0
 	end
 	
-	if CityFindCrowdedPlace("City", "SIM", "jugglerPlay")==0 then
+	if CityFindCrowdedPlace("City", "SIM", "jugglerPlay") == 0 then
 		return 0
 	end
 	
-	if SimGetWorkingPlace("SIM","MyWork") then
+	if SimGetWorkingPlace("SIM", "MyWork") then
 	    if BuildingGetLevel("MyWork") < 2 then
 		    return 0
 		end

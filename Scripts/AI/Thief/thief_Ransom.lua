@@ -1,4 +1,5 @@
 function Weight()
+
 	if IsDynastySim("SIM") then
 		return 0
 	end

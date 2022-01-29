@@ -1,4 +1,10 @@
 function Weight()
+
+	local Time = math.mod(GetGametime(), 24)
+	if Time > 6 and Time < 20 then
+		return 0
+	end
+
 	if IsDynastySim("SIM") then
 		return 0
 	end
@@ -15,11 +21,11 @@ function Weight()
 		return 0
 	end
 	
-	if GetMeasureRepeat("SIM", "Hijack")>0 then
+	if GetMeasureRepeat("SIM", "Hijack") > 0 then
 		return 0
 	end
 		
-	for trys=0,9 do
+	for trys=0, 9 do
 		if thief_hijack_Check() then
 			return 100
 		end
@@ -29,7 +35,11 @@ end
 
 function Check()
 	
-	if not DynastyGetRandomVictim("SIM", 55, "HIJ_VICTIM") then
+	if not DynastyGetRandomVictim("SIM", 50, "HIJ_VICTIM") then
+		return false
+	end
+	
+	if GetInsideBuilding("HIJ_VICTIM", "Inside") then
 		return false
 	end
 	
@@ -38,7 +48,7 @@ function Check()
 	end
 	
 	local Count = DynastyGetMemberCount("HIJ_VICTIM")
-	if Count<1 then
+	if Count < 1 then
 		return false
 	end
 	

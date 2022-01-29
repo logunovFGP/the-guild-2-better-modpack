@@ -1,6 +1,7 @@
 function Weight()
-	local	Quote = GetHPRelative("SIM")
-	if Quote>0.95 then
+	
+	local Quote = GetHPRelative("SIM")
+	if Quote > 0.85 then
 		return 0
 	end
 	
@@ -13,12 +14,8 @@ function Weight()
 	if not CityGetNearestBuilding("City", "SIM", -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "LingerPlace") then
 		return 0
 	end
-		
-	if Quote<0.75 then
-		return -20
-	end
 	
-	return 1
+	return 100
 end
 
 

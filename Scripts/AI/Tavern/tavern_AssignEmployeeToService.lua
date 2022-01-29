@@ -27,7 +27,7 @@ function Weight()
 	
 	local Time = math.mod(GetGametime(), 24)
 	
-	if 2 < Time and Time < 10 then
+	if Time > 2 and Time < 10 then
 		return 0
 	end
 
@@ -35,7 +35,7 @@ function Weight()
 end
 
 function Execute()
-	SetProperty("Tavern","GoToService",1)
+	SetProperty("Tavern", "GoToService", 1)
 	MeasureCreate("Measure")
 	MeasureStart("Measure", "SIM", "Tavern", "AssignEmployeeToService")
 end

@@ -1,6 +1,6 @@
 function Weight()
 	local Time = math.mod(GetGametime(), 24)
-	if Time<6 and Time>21 then	
+	if Time < 6 and Time > 21 then	
 		return 0
 	end
 	
