@@ -1666,3 +1666,15 @@ function NeedsTreatment(SimAlias)
 	
 	return false
 end
+
+function FindCrowdedPlace(SimAlias, WorkBuilding, Settlement)
+
+end
+
+function FindNewCrowdedPlace(SimAlias, WorkBuilding, Settlement)
+
+end
+
+function RemoveCrowdedPlace(SimAlias, WorkBuilding)
+
+end

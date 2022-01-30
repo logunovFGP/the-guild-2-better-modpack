@@ -833,8 +833,13 @@ function GetImperialLevelPoints(FameLevel)
 	elseif FameLevel == 5 then
 		Points = GL_IMPERIAL_FAME_POINTS_FAMOUS
 	end
+	
+	return Points
 end
 
+---------------------------------------------------------------------------
+-- These functions are referenced by the Dynasty Overview HUD and my not be removed
+---------------------------------------------------------------------------
 function GetFameDynasty()
 	if IsDynastySim("") and GetDynasty("", "family") then
 		return dyn_GetFameLevel("")
@@ -858,3 +863,77 @@ function GetImpFameDynasty()
 		return -1
 	end
 end
+---------------------------------------------------------------------------
+
+
+-------------------------
+-- Important dynasties + players referencing
+-- IDs saved in properties at the scenario
+-------------------------
+function GetImportantDynastiesCount()
+	GetScenario("World")
+	local DynastyCount = GetProperty("World", "ImportantDynCount") or 1
+	
+	return DynastyCount
+end
+
+function GetRandomImportantDynasty()
+	GetScenario("World")
+	local DynastyCount = GetProperty("World", "ImportantDynCount") or 1
+	local DynArray = {}
+	
+	if DynastyCount > 0 then
+		for i=1, DynastyCount do
+			local DynID = GetProperty("World", "ImportantDyn"..i) or 0
+			DynArray[i] = DynID
+		end
+	end
+	
+	local Random = Rand(DynastyCount) + 1
+	return DynArray[Random]
+end
+
+function SaveImportantDynasty(DynAlias)
+	local DynID = GetID(DynAlias)
+	GetScenario("World")
+	local DynastyCount = GetProperty("World", "ImportantDynCount") or 0
+	local NewCount = DynastyCount + 1
+	
+	SetProperty("World", "ImportantDynCount", NewCount)
+	SetProperty("World", "ImportantDyn"..NewCount, DynID)
+end
+
+function GetPlayerCount()
+	GetScenario("World")
+	local PlayerCount = GetProperty("World", "PlayerCount") or 1
+	
+	return PlayerCount
+end
+
+function GetRandomPlayer()
+	GetScenario("World")
+	local PlayerCount = GetProperty("World", "PlayerCount") or 1
+	local PlayerArray = {}
+	
+	if PlayerCount > 0 then
+		for i=1, PlayerCount do
+			local DynID = GetProperty("World", "PlayerDyn"..i) or 0
+			PlayerArray[i] = DynID
+		end
+	end
+	
+	local Random = Rand(PlayerCount) + 1
+	return PlayerArray[Random]
+end
+
+function SavePlayerDynasty(DynAlias)
+	local DynID = GetID(DynAlias)
+	GetScenario("World")
+	local PlayerCount = GetProperty("World", "PlayerCount") or 0
+	local NewCount = PlayerCount + 1
+	
+	SetProperty("World", "PlayerCount", NewCount)
+	SetProperty("World", "PlayerDyn"..NewCount, DynID)
+end
+
+--------------------------

@@ -501,10 +501,12 @@ function AddFondness(source, dest)
 	end
 end
 
----
--- returns the sim name with dynasty flag if possible.
+-- ---------------------
+-- GetName with flag
 -- DO NOT USE inside of buttons 
+-- --------------------
 function GetName(SimAlias, WithFlag)
+
 	if not AliasExists(SimAlias) then
 		return ""
 	end
@@ -517,11 +519,13 @@ function GetName(SimAlias, WithFlag)
 	end
 end
 
----
--- Sim name with dynasty flag for use in buttons
+-- ---------------------
+-- GetName with flag in Buttons
 -- Usage:
 -- Buttons = Buttons .. "@B[" .. i .. "," .. dyn_GetNameLabel(Alias, i) .. ",]"
+-- --------------------
 function GetNameLabel(SimAlias, ParameterIndex)
+
 	local MyLabel = "@L_DYNASTY_FLAG_SWITCH_+"
 	if not AliasExists(SimAlias) or not GetDynasty(SimAlias, "DynAliasForFlag") then
 		return MyLabel .. "0"
@@ -530,4 +534,354 @@ function GetNameLabel(SimAlias, ParameterIndex)
 	local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") or 16 
 	local Offset = Math.min(16, MyFlag) * 4 + ParameterIndex
 	return MyLabel .. Offset
+end
+
+-- -----------------------
+-- GetEnemyCounter (slots, may get empty)
+-- -----------------------
+function GetEnemyCounter(SimAlias)
+
+	GetDynasty(SimAlias, "MyDyn")
+	local Enemies = GetProperty("MyDyn", "EnemyCounter") or 0
+	
+	return Enemies
+end
+
+-- -----------------------
+-- RecountEnemies (clean up the slots). This function has a cooldown for performance
+-- -----------------------
+function RecountEnemies(SimAlias)
+	GetDynasty(SimAlias, "MyDyn")
+	if ReadyToRepeat("MyDyn", "RecountEnemies") then
+		local EnemyCounter = 0
+		local Enemies = {}
+		local DynCount = ScenarioGetObjects("Dynasty", 100, "DynList")
+		local CheckDyn
+		
+		-- check all scenario objects with type Dynasty
+		for dyn=0, DynCount-1 do
+			if AliasExists("DynList"..dyn) then
+				local Alias = "DynList"..dyn
+				CheckDyn = GetID(Alias)
+				if DynastyGetDiplomacyState("MyDyn", Alias) == DIP_FOE then
+					EnemyCounter = EnemyCounter + 1
+					Enemies[EnemyCounter] = CheckDyn
+				end
+			end
+		end
+		
+		-- Delete the old properties
+		local OldEnemyCounter = dyn_GetEnemyCounter(SimAlias)
+		for i=1, OldEnemyCounter do
+			if HasProperty("MyDyn", "EnemyNo"..i) then
+				RemoveProperty("MyDyn", "EnemyNo"..i)
+			end
+		end
+		
+		RemoveProperty("MyDyn", "EnemyCounter")
+		
+		-- add new counters and IDs
+		if EnemyCounter > 0 then
+			for i=1, EnemyCounter do
+				local Add = Enemies[i]
+				SetProperty("MyDyn", "EnemyNo"..i, Add)
+			end
+		end
+		
+		SetProperty("MyDyn", "EnemyCounter", EnemyCounter)
+		
+		-- set repeat timer to 48 ingame hours
+		SetRepeatTimer("MyDyn", "RecountEnemies", 48)
+		return
+	else
+		return
+	end
+end
+
+-- -----------------------
+-- GetEnemies (actual number)
+-- -----------------------
+function GetEnemies(SimAlias)
+	
+	local NumEnemies = 0
+	
+	GetDynasty(SimAlias, "MyDyn")
+	local EnemyCounter = dyn_GetEnemyCounter(SimAlias)
+	
+	for i=1, EnemyCounter do
+		local DynID = GetProperty("MyDyn", "EnemyNo"..i) or 0
+		if DynID > 0 then
+			NumEnemies = NumEnemies + 1
+		end
+	end
+	
+	return Enemies
+end
+
+-- -----------------------
+-- GetRandomEnemy
+-- -----------------------
+function GetRandomEnemy(SimAlias)
+	
+	local Enemies = 0
+	local EnemyCounter = dyn_GetEnemyCounter(SimAlias)
+	local EnemyArray = {}
+	GetDynasty(SimAlias, "MyDyn")
+	
+	if EnemyCounter > 0 then
+		for i=1, EnemyCounter do
+			local DynID = GetProperty("MyDyn", "EnemyNo"..i) or 0
+			if DynID > 0 then
+				EnemyArray[i] = DynID
+				Enemies = Enemies + 1
+			end
+		end
+	end
+	
+	if Enemies == 0 then
+		return 0
+	elseif Enemies == 1 then
+		return EnemyArray[1]
+	else
+		local Random = Rand(Enemies) +1
+		return EnemyArray[Random]
+	end
+end
+
+-- -----------------------
+-- AddEnemy
+-- -----------------------
+function AddEnemy(SimAlias, TargetAlias)
+
+	GetDynasty(SimAlias, "MyDyn")
+	GetDynasty(TargetAlias, "TargetDyn")
+	local MyID = GetID("MyDyn")
+	local TargetID = GetID("TargetDyn")
+	
+	local MyEnemies = dyn_GetEnemyCounter(SimAlias)
+	local MyNewCounter = MyEnemies + 1
+	
+	SetProperty("MyDyn", "EnemyCounter", MyNewCounter)
+	SetProperty("MyDyn", "EnemyNo"..MyNewCounter, TargetID)
+	
+	local TargetEnemies = dyn_GetEnemyCounter(TargetAlias)
+	local TargetNewCounter = TargetEnemies + 1
+	
+	SetProperty("TargetDyn", "EnemyCounter", TagetNewCounter)
+	SetProperty("TargetDyn", "EnemyNo"..TargetNewCounter, MyID)
+	return
+end
+
+-- -----------------------
+-- RemoveEnemy
+-- -----------------------
+function RemoveEnemy(SimAlias, TargetAlias)
+	
+	GetDynasty(SimAlias, "MyDyn")
+	GetDynasty(TargetAlias, "TargetDyn")
+	local MyID = GetID("MyDyn")
+	local TargetID = GetID("TargetDyn")
+	
+	local MyEnemies = dyn_GetEnemyCounter(SimAlias)
+	for i=1, MyEnemies do
+		if GetProperty("MyDyn", "EnemyNo"..i) == TargetID then
+			SetProperty("MyDyn", "EnemyNo"..i, 0)
+			break
+		end
+	end
+	
+	local TargetEnemies = dyn_GetEnemyCounter(TargetAlias)
+	for i=1, TargetEnemies do
+		if GetProperty("TargetDyn", "EnemyNo"..i) == MyID then
+			SetProperty("TargetDyn", "EnemyNo"..i, 0)
+			break
+		end
+	end
+	
+	dyn_RecountEnemies(SimAlias)
+	dyn_RecountEnemies(TargetAlias)
+	return
+end
+
+-- -----------------------
+-- GetAllyCounter (slots, may get empty)
+-- -----------------------
+function GetAllyCounter(SimAlias)
+
+	GetDynasty(SimAlias, "MyDyn")
+	local Allies = GetProperty("MyDyn", "AllyCounter") or 0
+	
+	return Allies
+end
+
+-- -----------------------
+-- RecountAllies (clean up the slots). This function has a cooldown for performance
+-- -----------------------
+function RecountEnemies(SimAlias)
+
+	GetDynasty(SimAlias, "MyDyn")
+	
+	if ReadyToRepeat("MyDyn", "RecountAllies") then
+		local AllyCounter = 0
+		local Allies = {}
+		local DynCount = ScenarioGetObjects("Dynasty", 100, "DynList")
+		local CheckDyn
+		
+		-- check all scenario objects with type Dynasty
+		for dyn=0, DynCount-1 do
+			if AliasExists("DynList"..dyn) then
+				local Alias = "DynList"..dyn
+				CheckDyn = GetID(Alias)
+				if DynastyGetDiplomacyState("MyDyn", Alias) == DIP_ALLIANCE then
+					AllyCounter = AllyCounter + 1
+					Allies[AllyCounter] = CheckDyn
+				end
+			end
+		end
+		
+		-- Delete the old properties
+		local OldAllyCounter = dyn_GetAllyCounter(SimAlias)
+		for i=1, OldAllyCounter do
+			if HasProperty("MyDyn", "AllyNo"..i) then
+				RemoveProperty("MyDyn", "AllyNo"..i)
+			end
+		end
+		
+		RemoveProperty("MyDyn", "AllyCounter")
+		
+		-- add new counters and IDs
+		if AllyCounter > 0 then
+			for i=1, AllyCounter do
+				local Add = Allies[i]
+				SetProperty("MyDyn", "AllyNo"..i, Add)
+			end
+		end
+		
+		SetProperty("MyDyn", "AllyCounter", AllyCounter)
+		
+		-- set repeat timer to 48 ingame hours
+		SetRepeatTimer("MyDyn", "RecountAllies", 48)
+		return
+	else
+		return
+	end
+end
+
+-- -----------------------
+-- GetRandomAlly
+-- -----------------------
+function GetRandomAlly(SimAlias)
+	local Allies = 0
+	local AllyCounter = dyn_GetAllyCounter(SimAlias)
+	local AllyArray = {}
+	GetDynasty(SimAlias, "MyDyn")
+	
+	if AllyCounter > 0 then
+		for i=1, AllyCounter do
+			local DynID = GetProperty("MyDyn", "AllyNo"..i) or 0
+			if DynID > 0 then
+				AllyArray[i] = DynID
+				Allies = Allies + 1
+			end
+		end
+	end
+	
+	if Allies == 0 then
+		return 0
+	elseif Allies == 1 then
+		return AllyArray[1]
+	else
+		local Random = Rand(Allies) +1
+		return AllyArray[Random]
+	end
+end
+
+-- -----------------------
+-- AddAlly
+-- -----------------------
+function AddAlly(SimAlias, TargetAlias)
+
+	GetDynasty(SimAlias, "MyDyn")
+	GetDynasty(TargetAlias, "TargetDyn")
+	local MyID = GetID("MyDyn")
+	local TargetID = GetID("TargetDyn")
+	
+	local MyAllies = dyn_GetAllyCounter(SimAlias)
+	local MyNewCounter = MyAllies + 1
+	
+	SetProperty("MyDyn", "AllyCounter", MyNewCounter)
+	SetProperty("MyDyn", "AllyNo"..MyNewCounter, TargetID)
+	
+	local TargetAllies = dyn_GetAllyCounter(TargetAlias)
+	local TargetNewCounter = TargetAllies + 1
+	
+	SetProperty("TargetDyn", "AllyCounter", TagetNewCounter)
+	SetProperty("TargetDyn", "AllyNo"..TargetNewCounter, MyID)
+	return
+end
+
+-- -----------------------
+-- RemoveAlly
+-- -----------------------
+function RemoveAlly(SimAlias, TargetAlias)
+	
+	GetDynasty(SimAlias, "MyDyn")
+	GetDynasty(TargetAlias, "TargetDyn")
+	local MyID = GetID("MyDyn")
+	local TargetID = GetID("TargetDyn")
+	
+	local MyAllies = dyn_GetAllyCounter(SimAlias)
+	for i=1, MyAllies do
+		if GetProperty("MyDyn", "AllyNo"..i) == TargetID then
+			SetProperty("MyDyn", "AllyNo"..i, 0)
+			break
+		end
+	end
+	
+	local TargetAllies = dyn_GetAllyCounter(TargetAlias)
+	for i=1, TargetAllies do
+		if GetProperty("TargetDyn", "AllyNo"..i) == MyID then
+			SetProperty("TargetDyn", "AllyNo"..i, 0)
+			break
+		end
+	end
+	
+	dyn_RecountAllies(SimAlias)
+	dyn_RecountAllies(TargetAlias)
+	return
+end
+
+-- -----------------------
+-- SetDiplomacyState (set / update new properties for faster counting)
+-- -----------------------
+function SetDiplomacyState(ObjectA, ObjectB, NewState)
+	if IsType(ObjectA, "Dynasty") then
+		DynastyGetMember(ObjectA, 0, "MySim")
+	else
+		CopyAlias(ObjectA, "MySim")
+	end
+	
+	if IsType(ObjectB, "Dynasty") then
+		DynastyGetMember(ObjectB, 0, "TargetSim")
+	else
+		CopyAlias(ObjectB, "TargetSim")
+	end
+	
+	local CurrentState = DynastyGetDiplomacyState("MySim", "TargetSim")
+	if CurrentState ~= NewState then
+		if CurrentState == DIP_FOE then
+			dyn_RemoveEnemy("MySim", "TargetSim")
+		elseif CurrentState == DIP_ALLIANCE then
+			dyn_RemoveAlly("MySim", "TargetSim")
+		end
+		
+		if NewState == DIP_FOE then
+			dyn_AddEnemy("MySim", "TargetSim")
+		elseif NewState == DIP_ALLIANCE then
+			dyn_AddAlly("MySim", "TargetSim")
+		end
+		
+		-- set the actual state now
+		DynastySetDiplomacyState("MySim", "TargetSim", NewState)
+	end
 end
