@@ -151,7 +151,7 @@ function Run()
 		SetData("ReleaseLocator", 1)
 		
 		-- Get the Usher
-		if not BuildingFindSimByProperty("councilbuilding","BUILDING_NPC", 1,"Usher") then
+		if not BuildingFindSimByProperty("councilbuilding", "BUILDING_NPC", 1, "Usher") then
 			StopMeasure()
 		end
 		
@@ -171,10 +171,10 @@ function Run()
 			StopAnimation("Usher")
 			
 		else
-			CreateCutscene("default","cutscene")
-			CutsceneAddSim("cutscene","")
-			CutsceneAddSim("cutscene","Usher")
-			CutsceneCameraCreate("cutscene","")		
+			CreateCutscene("default", "cutscene")
+			CutsceneAddSim("cutscene", "")
+			CutsceneAddSim("cutscene", "Usher")
+			CutsceneCameraCreate("cutscene", "")		
 			camera_CutsceneBothLockCam("cutscene", "Usher", "Far_HUpYRight")
 			-- Get the season and time
 			local season = GetSeason()

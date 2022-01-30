@@ -186,9 +186,9 @@ function Run()
 		
 		if not DynastyIsShadow("") then
 			PlayAnimationNoWait("Usher", ms_118_runforanoffice_getRandomTalk())
+			StopAnimation("")
 			MsgSay("Usher", "@L_PRIVILEGES_118_RUNFORANOFFICE_COMMENT_TOWN_CLERK")
 			StopAnimation("Usher")
-			StopAnimation("")
 		end
 	else
 		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+2", GetID("city"))
