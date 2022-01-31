@@ -112,7 +112,7 @@ function Status()
 		StopMeasure()
 	end
 	
-	local CState = DynastyGetDiplomacyState("Destination","MyBoss")
+	local CState = DynastyGetDiplomacyState("Destination", "MyBoss")
 	local Buttons = ""
 	
 	-- some measures don't allow us to change status
@@ -1594,6 +1594,8 @@ function SpecialCheck()
 	local Counter = 0
 	local Threat = ai_DynastyCalcThreat("Destination", "MyBoss") or 0
 	local Favor = GetFavorToDynasty("MyBoss", "Destination")
+	local State = DynastyGetDiplomacyState("Destination","MyBoss")
+	local Label = ""
 	
 	if Grudges > Fondness then
 		Counter = Grudges
@@ -1601,6 +1603,16 @@ function SpecialCheck()
 		Counter = Fondness
 	end
 	
+	if State == 0 then
+		Label = "@LHostility"
+	elseif State == 1 then
+		Label = "@LNeutral"
+	elseif State == 2 then
+		Label = "@LNAP"
+	else
+		State = "@LAlliance"
+	end
+		
 	local GrudgeLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_GRUDGE_+0"
 	if Fondness > 0 then
 		GrudgeLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_FONDNESS_+0"
@@ -1622,7 +1634,7 @@ function SpecialCheck()
 	
 	MsgBoxNoWait("dynasty", "Destination", 
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_+0", 
-				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_BODY_+0", GetID("Destination"), TargetBadge, Favor, Enemies, Allies, GrudgeLabel, Counter, ThreatLabel, RivalLabel, GetID("ReasonRival"))
+				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_BODY_+0", GetID("Destination"), TargetBadge, Favor, Enemies, Allies, GrudgeLabel, Counter, ThreatLabel, RivalLabel, GetID("ReasonRival"), State)
 end
 
 function CleanUp()

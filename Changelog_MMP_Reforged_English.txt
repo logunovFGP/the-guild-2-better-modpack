@@ -258,6 +258,8 @@ _General_
 - You can now obtain 'grudges' or 'fondness' with other dynasties. Those traits will affect directly how much favor you gain or lose with them. Gain fondness to remove grudges
   and vice versa. You obtain a new level of grudge or fondness everytime one of your actions changes the favor with the target for at least 20 points.
 - You get a timer for office, trial and duels at the bottom of your screen.
+- The Diplomacy feature has been reworked completely and is much bigger now. You have many new interactions, such as 'Send money', 'Demand a payment', Send a (positive/negative) diplomatic message,
+  or even create a war pact ... The feature builds heavily on RPG-elements.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
@@ -288,6 +290,7 @@ _AI_
 - AI now better thinks about if it should accept protection money rackets or not.
 - AI will now check for time and waiting sims in front of their churches before assigning workers to hold a mass.
 - AI of fisher boats has been improved and will select the fish depending on what you have already in stock.
+- AI now uses 'praise someone' or 'libel someone' during sermons on enemies.
 
 *** Balancing ***
 

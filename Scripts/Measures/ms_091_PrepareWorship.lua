@@ -11,7 +11,7 @@ function Run()
 		if not GetInsideBuilding("", "CurrentBuilding") then
 			StopMeasure()
 		end
-		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_CATH or BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_CHURCH_EV then
+		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_CATH or BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_EV then
 			CopyAlias("CurrentBuilding", "church")
 		else
 			StopMeasure()
@@ -66,6 +66,15 @@ function Run()
 		Sleep(0.2)
 		PlaySound3D("church","Locations/bell_stroke_cathedral_loop+0.wav", 1)
 	end
+
+	if GetImpactValue("church", "MassInProgress") == 0 then
+		AddImpact("church", "MassInProgress", 1, duration)
+	end
+
+	if GetImpactValue("", "MassInProgress") == 0 then
+		AddImpact("", "MassInProgress", 1, duration)
+	end
+
 	
 	-- worship loop
 	GetLocatorByName("church", "Priest1", "PriestPos")
@@ -84,21 +93,10 @@ function Run()
 	SetProcessMaxProgress("", 40)
 	local TimeLeft = ImpactGetMaxTimeleft("", "MassInProgress") * 10
 	
-	if GetImpactValue("", "MassInProgress") > 0 then
-		Sleep(10)
-		MsgSay("", "@L_CHURCH_091_PREPAREWORSHIP_WORSHIPPING_WELCOME")
-	end
-	
-	if GetImpactValue("church", "MassInProgress") == 0 then
-		AddImpact("church", "MassInProgress", 1, duration)
-	end
-
-	if GetImpactValue("", "MassInProgress") == 0 then
-		AddImpact("", "MassInProgress", 1, duration)
-	end
-	
+	Sleep(10)
+	MsgSay("", "@L_CHURCH_091_PREPAREWORSHIP_WORSHIPPING_WELCOME")
 	while (GetImpactValue("", "MassInProgress") == 1) do
-		TimeLeft = ImpactGetMaxTimeleft("","MassInProgress") * 10
+		TimeLeft = ImpactGetMaxTimeleft("", "MassInProgress") * 10
 		TimeLeft = (OriginalDuration*10) - TimeLeft
 		SetProcessProgress("", TimeLeft)
 		PlayAnimationNoWait("", "preach")
