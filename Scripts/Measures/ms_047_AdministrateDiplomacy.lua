@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_AdministrateDiplomacy.lua"
+----	OVERVIEW "ms_047_AdministrateDiplomacy.lua"
 ----
 ----	With this measure the player can change the diplomatic status, 
 ----	can make requests, demands, gifts or send diplomatic messages
@@ -28,6 +28,11 @@ function Init() -- this is called before Run
 		local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 		local Badge = "@L$S[20"..BadgeID.."]"
 		
+		-- target badge
+		GetDynasty("Destination", "TargetDyn")
+		local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
+		local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+		
 		-- First we need to choose what we want to do
 		local Selection = MsgBox("MyBoss", "Destination", "@P"..
 								"@B[1,@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_+0]"..
@@ -37,7 +42,7 @@ function Init() -- this is called before Run
 								"@B[3,@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_+0]"..
 								"@B[5,@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_+0]",
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_HEAD_+0",
-								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_BODY_+0", GetID("Destination"), Badge)
+								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_BODY_+0", GetID("Destination"), TargetBadge)
 	
 		SetData("Choice", Selection)
 	end
@@ -62,32 +67,32 @@ function Run()
 		else
 			-- player ask for status
 			if DynastyIsPlayer("") then 
-				ms_administratediplomacy_Status()
+				ms_047_administratediplomacy_Status()
 			end
 			
 			-- confirm your choice
 			result = GetData("InitResult")
 			if result == 0 then -- feud
-				ms_administratediplomacy_ConfirmFeud()
+				ms_047_administratediplomacy_ConfirmFeud()
 			elseif result == 1 then -- neutral
-				ms_administratediplomacy_ConfirmNeutral()
+				ms_047_administratediplomacy_ConfirmNeutral()
 			elseif result == 2 then -- NAP
-				ms_administratediplomacy_ConfirmNAP()
+				ms_047_administratediplomacy_ConfirmNAP()
 			elseif result == 3 then -- Alliance
-				ms_administratediplomacy_ConfirmAlliance()
+				ms_047_administratediplomacy_ConfirmAlliance()
 			end
 		end
 		
 	elseif Selection == 2 then -- message to raise/lower favor (not with enemies)
-		ms_administratediplomacy_Message()
+		ms_047_administratediplomacy_Message()
 	elseif Selection == 3 then -- gift for allies
-		ms_administratediplomacy_Gift()
+		ms_047_administratediplomacy_Gift()
 	elseif Selection == 4 then -- demand for non-allies
-		ms_administratediplomacy_RequestEnemies()
+		ms_047_administratediplomacy_RequestEnemies()
 	elseif Selection == 5 then -- request for allies
-		ms_administratediplomacy_RequestAllies()
-	elseif Selection == 6 then -- check for grudges and fondness
-		ms_administratediplomacy_SpecialCheck()
+		ms_047_administratediplomacy_RequestAllies()
+	elseif Selection == 6 then -- check for grudges and fondness, rivals, allies and foes
+		ms_047_administratediplomacy_SpecialCheck()
 	end
 end
 
@@ -96,7 +101,7 @@ function Status()
 	
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	
 	-- timout for changing status multiple times
 	local DestID = GetDynastyID("Destination")
@@ -156,7 +161,7 @@ function Message()
 	
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -232,7 +237,7 @@ function Gift()
 	
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -287,7 +292,7 @@ function Gift()
 	if DynastyIsAI("Destination") then
 		-- reaction for AI
 		local AnswerTime = 0.1
-		CreateScriptcall("Answer_Gift", AnswerTime, "Measures/ms_AdministrateDiplomacy.lua", "AnswerGift", "MyBoss", "Destination", Amount, TargetBadge)
+		CreateScriptcall("Answer_Gift", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerGift", "MyBoss", "Destination", Amount, TargetBadge)
 	end
 end
 
@@ -297,7 +302,7 @@ function AnswerGift(Amount)
 	-- target badge
 	GetDynasty("Destination", "TargetDyn")
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	
 	local DesMoney = GetMoney("Destination")
 	local AmountPercent = (Amount*100) / DesMoney
@@ -317,7 +322,7 @@ function RequestAllies()
 
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -366,7 +371,7 @@ function RequestAllies()
 						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_MONEY_BODY_+0", GetID("MyBoss"), Badge)
 		else
 			local AnswerTime = 0.15
-			CreateScriptcall("Answer_Request", AnswerTime, "Measures/ms_AdministrateDiplomacy.lua", "AnswerRequest", "MyBoss", "Destination", Amount)
+			CreateScriptcall("Answer_Request", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerRequest", "MyBoss", "Destination", Amount)
 		end
 	elseif resultReq == 2 then
 		
@@ -582,7 +587,7 @@ function RequestEnemies()
 	
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -631,7 +636,7 @@ function RequestEnemies()
 	if RequestResult == 1 then
 		SetRepeatTimer("dynasty", "DIP_"..DestID, 20)
 		dyn_ModifyFavor("Destination", "MyBoss", (-GL_FAVOR_MOD_NORMAL))
-		CreateScriptcall("Answer_RequestEnemies", 0.15, "Measures/ms_AdministrateDiplomacy.lua", "AnswerRequestEnemies", "MyBoss", "Destination", ReqMoney)
+		CreateScriptcall("Answer_RequestEnemies", 0.15, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerRequestEnemies", "MyBoss", "Destination", ReqMoney)
 	else
 		StopMeasure()
 	end
@@ -686,7 +691,7 @@ function ConfirmFeud()
 
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -721,7 +726,7 @@ function ConfirmFeud()
 		if DynastyIsAI("Destination") and DynastyIsPlayer("MyBoss") then
 			local AnswerTime = 0.1
 			local Status = "FOE"
-			CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
+			CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
 		else	
 			
 			-- in case we downgrade from alliance (who would do that?) we need to remove properties
@@ -750,7 +755,7 @@ function ConfirmNeutral()
 	
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -784,7 +789,7 @@ function ConfirmNeutral()
 			if DynastyIsAI("Destination") and DynastyIsPlayer("MyBoss") then
 				local Status = "NEUTRAL"
 				local AnswerTime = 0.1
-				CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
+				CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
 			else
 				-- set the new status and favor here
 				DynastySetDiplomacyState("Destination", "", DIP_NEUTRAL)
@@ -811,7 +816,7 @@ function ConfirmNeutral()
 			local DestResult = MsgNews("Destination", "MyBoss",
 								"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
 								"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
-								ms_administratediplomacy_AIDecision,  --AIFunc
+								ms_047_administratediplomacy_AIDecision,  --AIFunc
 								"politics", --MessageClass
 								MsgTimeOut, --TimeOut
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_HEAD_+0",
@@ -853,7 +858,7 @@ function ConfirmNeutral()
 					local Status = "NEUTRAL"
 				
 					if ConfirmDemand == 1 then
-						ms_administratediplomacy_Demand(Status)
+						ms_047_administratediplomacy_Demand(Status)
 					end
 				end
 				StopMeasure()
@@ -895,7 +900,7 @@ function ConfirmNAP()
 	 
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -929,7 +934,7 @@ function ConfirmNAP()
 			if DynastyIsAI("Destination") and DynastyIsPlayer("MyBoss") then
 				local Status = "NAP"
 				local AnswerTime = 0.1
-				CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
+				CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
 			else
 				-- set the new status and favor here
 				DynastySetDiplomacyState("Destination", "", DIP_NAP)
@@ -962,7 +967,7 @@ function ConfirmNAP()
 			local DestResult = MsgNews("Destination", "MyBoss",
 								"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
 								"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
-								ms_administratediplomacy_AIDecision,  --AIFunc
+								ms_047_administratediplomacy_AIDecision,  --AIFunc
 								"politics", --MessageClass
 								MsgTimeOut, --TimeOut
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_HEAD_+0",
@@ -1008,7 +1013,7 @@ function ConfirmNAP()
 						local Status = "NAP"
 				
 						if ConfirmDemand == 1 then
-							ms_administratediplomacy_Demand(Status)
+							ms_047_administratediplomacy_Demand(Status)
 						else
 							StopMeasure()
 						end
@@ -1031,7 +1036,7 @@ function ConfirmNAP()
 						local Status = "NAP"
 				
 						if ConfirmDemand == 1 then
-							ms_administratediplomacy_Demand(Status)
+							ms_047_administratediplomacy_Demand(Status)
 						end
 					end
 					StopMeasure()
@@ -1082,7 +1087,7 @@ function ConfirmAlliance()
 	 
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -1108,7 +1113,7 @@ function ConfirmAlliance()
 		local DestResult = MsgNews("Destination","MyBoss",
 							"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
 							"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
-							ms_administratediplomacy_AIDecision,  --AIFunc
+							ms_047_administratediplomacy_AIDecision,  --AIFunc
 							"politics", --MessageClass
 							MsgTimeOut, --TimeOut
 							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_HEAD_+0",
@@ -1167,7 +1172,7 @@ function ConfirmAlliance()
 				local Status = "ALLIANCE"
 				
 				if ConfirmDemand == 1 then
-					ms_administratediplomacy_Demand(Status)
+					ms_047_administratediplomacy_Demand(Status)
 				end
 			end
 			StopMeasure()
@@ -1217,31 +1222,31 @@ function AIDecision()
 		return "A"
 	end
 	
-	local DesiredState = ai_DynastyGetBestDiplomacyState("DestinationDyn", "AskerDyn")
+	local DesiredState = ai_DynastyGetBestDiplomacyState("MyBoss", "Destination")
 	local CurrentFavor = GetFavorToDynasty("AskerDyn", "DestinationDyn")
 	local MinFavor = 0
 	local IsRival = ai_DynastyCheckForRival("DestinationDyn", "AskerDyn")
 	local RivalAllowed = true
-	local Threat = ai_DynastyCalcThreat("DestinationDyn", "AskerDyn")
+	local Threat = ai_DynastyCalcThreat("Destination", "MyBoss")
 	local MinThreat = 0
 	
 	if not AliasExists("Destination") then
-		LogMessage("Destination fehlt")
+		LogMessage("Diplomacy: Destination missing")
 	end
 	
 	if not AliasExists("MyBoss") then
-		LogMessage("My Boss fehlt")
+		LogMessage("Diplomacy: My Boss missing")
 	end
 	
 	if OfferedState == "ALLIANCE" then
-		MinFavor = 75
+		MinFavor = 70
 		MinThreat = 2
 		RivalAllowed = false
 	elseif OfferedState == "NAP" then
-		MinFavor = 40
+		MinFavor = 45
 		MinThreat = 1
 	elseif OfferedState == "NEUTRAL" then
-		MinFavor = 30
+		MinFavor = 35
 		MinThreat = 0
 	end
 	
@@ -1253,12 +1258,12 @@ function AIDecision()
 		if RivalAllowed or IsRival==0 then
 			if CurrentFavor >= MinFavor then
 				if DesiredState ~= "ALLIANCE" then -- special thoughts about alliances
-					if CurrentFavor <90 then
+					if CurrentFavor < 90 then
 						if Threat >= MinThreat then
-							SetData("ReasonToDecline",2) -- I will make a demand
+							SetData("ReasonToDecline", 2) -- I will make a demand
 							return "C" -- no
 						else
-							SetData("ReasonToDecline",1) -- You are not dangerous enough
+							SetData("ReasonToDecline", 1) -- You are not dangerous enough
 							return "C"
 						end
 					else
@@ -1266,20 +1271,359 @@ function AIDecision()
 					end
 				else
 					if Threat >= MinThreat then
-						SetData("ReasonToDecline",2) -- I will make a demand
+						SetData("ReasonToDecline", 2) -- I will make a demand
 						return "C" -- no
 					else
-						SetData("ReasonToDecline",1) -- You are not dangerous enough
+						SetData("ReasonToDecline", 1) -- You are not dangerous enough
 						return "C"
 					end
 				end
 			else
-				SetData("ReasonToDecline",0) -- I don't like you
+				SetData("ReasonToDecline", 0) -- I don't like you
 				return "C" -- no
 			end
 		else
-			SetData("ReasonToDecline",3) -- rival
+			SetData("ReasonToDecline", 3) -- rival
 			return "C" -- no 
 		end
 	end
+end
+
+function AnswerLetter(NewState)
+	-- You downgraded our relation. Our reaction is either positive (1) or negative (2). This is purely RP though
+	
+	GetDynasty("Destination", "DynastyAlias")
+	GetDynasty("", "MyDyn")
+	
+	local CState = DynastyGetDiplomacyState("Destination", "")
+	local Reaction = 0
+	local DipStatus
+	local MinFavor = 0
+	local MaxFavor = 0
+	local CurrentFavor = GetFavorToDynasty("MyDyn", "DynastyAlias")
+	
+	if NewState == "FOE" then
+		DipStatus = DIP_FOE
+	elseif NewState == "NEUTRAL" then
+		DipStatus = DIP_NEUTRAL
+		MinFavor = 35
+		MaxFavor = 50
+	elseif NewState == "NAP" then
+		DipStatus = DIP_NAP
+		MinFavor = 45
+		MaxFavor = 60
+	end
+	
+	if ai_DynastyGetBestDiplomacyState("DynastyAlias","MyDyn") == NewState then
+		Reaction = 1 -- positive reaction
+	else
+		Reaction = 2 -- negative reaction
+	end
+	
+	-- set the new status and favor here
+	DynastySetDiplomacyState("", "Destination", DipStatus)
+	DynastyForceCalcDiplomacy("")
+	
+	if DipStatus == DIP_FOE then
+		-- add the new property
+		dyn_AddEnemy("", "Destination")
+	end
+	
+	-- remove properties
+	if CState == DIP_ALLIANCE then
+		dyn_RemoveAlly("", "Destination")
+	elseif CState == DIP_FOE then
+		dyn_RemoveEnemy("", "Destination")
+	end
+
+	if CurrentFavor < MinFavor then
+		SetFavorToDynasty("MyDyn", "DynastyAlias", MinFavor)
+	elseif CurrentFavor > MaxFavor then
+		SetFavorToDynasty("MyDyn", "DynastyAlias", MaxFavor)
+	end
+	
+	if NewState == "FOE" then
+		if Reaction == 1 then
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@LDIPLOMATIC_STATE_CHANGED_HEAD", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_POSITIVE", GetID("MyBoss"))
+		else
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@LDIPLOMATIC_STATE_CHANGED_HEAD", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_NEGATIVE", GetID("MyBoss"))
+		end
+	elseif NewState == "NEUTRAL" then
+		if Reaction == 1 then
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@LDIPLOMATIC_STATE_CHANGED_HEAD", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_POSITIVE", GetID("MyBoss"))
+		else
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@LDIPLOMATIC_STATE_CHANGED_HEAD", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_NEGATIVE", GetID("MyBoss"))
+		end
+	elseif NewState == "NAP" then
+		if Reaction == 1 then
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@LDIPLOMATIC_STATE_CHANGED_HEAD", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_POSITIVE", GetID("MyBoss"))
+		else
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@LDIPLOMATIC_STATE_CHANGED_HEAD", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_NEGATIVE", GetID("MyBoss"))
+		end
+	end
+end
+
+function Demand(RequestedState)
+	-- to end our feud we demand you to...
+	
+	-- get the saved IDs
+	local MyBoss = GetData("MyBossID")
+	local Destination = GetData("MyDestID")
+	GetAliasByID(MyBoss, "MyBoss")
+	GetAliasByID(Destination, "Destination")
+	
+	local CState = DynastyGetDiplomacyState("Destination", "MyBoss")
+	
+	local MoneyToPay = 0
+	local MyCash = GetMoney("MyBoss")
+	local DestCash = GetMoney("Destination")
+	local HasEnemy = 0
+	local NewDip
+	
+	local MinFavor = 0
+	local MaxFavor = 0
+	
+	if RequestedState == "NEUTRAL" then
+		MoneyToPay = 2500 + (math.floor(DestCash*0.1)) + (math.floor(MyCash*0.05))
+		NewDip = DIP_NEUTRAL
+		MinFavor = 30
+		MaxFavor = 50
+			
+	elseif RequestedState == "NAP" then
+		MoneyToPay = 5000 + (math.floor(DestCash*0.1)) + (math.floor(MyCash*0.05))
+		if DynastyGetDiplomacyState("MyBoss","Destination") == DIP_FOE then
+			MoneyToPay = MoneyToPay*2
+		end
+		NewDip = DIP_NAP
+		MinFavor = 40
+		MaxFavor = 60
+		
+	elseif RequestedState == "ALLIANCE" then
+		MoneyToPay = 7500 + (math.floor(DestCash*0.2)) + (math.floor(MyCash*0.1))
+		NewDip = DIP_ALLIANCE
+		MinFavor = 75
+		MaxFavor = 100
+	end
+	
+	-- alternative make war with my enemy
+	
+	-- get all relevant dynasties and data
+	
+	local DesEnemyCounter = dyn_GetEnemyCounter("Destination")
+	
+	GetDynasty("MyBoss", "MyDyn")
+	GetDynasty("Destination", "DestDyn")
+	
+	local MyCityID = GetSettlementID("MyBoss")
+	local CurrentFavor = GetFavorToDynasty("MyBoss", "DestDyn")
+	
+	-- check all enemies of Destination and see if MyBoss can help
+	for i=1, DesEnemyCounter do
+		if HasProperty("DestDyn", "EnemyNo"..i) and GetProperty("DestDyn", "EnemyNo"..i) > 0 then
+			local FoundID = GetProperty("DestDyn", "Enemy"..i)
+			if GetAliasByID(FoundID, "EnemyDyn") then
+				local BossID = dyn_GetValidMember("EnemyDyn")
+				if GetAliasByID(BossID, "EnemyBoss") then
+					if DynastyGetDiplomacyState("MyDyn", "EnemyDyn") < DIP_NAP then
+						if GetSettlementID("EnemyBoss") == MyCityID then
+							-- calc threat-level. 2/3/4 means we need assistance
+							if ai_DynastyCalcThreat("Destination", "EnemyBoss") >= 2 then
+								CopyAlias("EnemyBoss", "EnemyAlias")
+								break
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if AliasExists("EnemyAlias") then
+		HasEnemy = 1
+		SetData("DemandEnemy", (GetID("EnemyAlias")))
+	end
+	
+	if HasEnemy == 0 then
+		-- No enemy, we want money
+		local accept = MsgBox("MyBoss", "Destination", "@P"..
+						"@B[1,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
+						"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_HEAD_+0",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_"..RequestedState.."_BODY",
+						GetID("Destination"), MoneyToPay)
+		
+		if accept == "C" then
+			StopMeasure()
+		elseif accept == 1 then
+			if GetMoney("MyBoss") >= MoneyToPay then
+				chr_SpendMoney("MyBoss", MoneyToPay, "CostBribes")
+				CreditMoney("Destination", MoneyToPay, "IncomeBribes")
+				
+				-- set the new status and favor here
+				DynastySetDiplomacyState("MyBoss", "Destination", NewDip)
+				DynastyForceCalcDiplomacy("MyBoss")
+				
+				if NewDip == DIP_ALLIANCE then
+					-- add the new property
+					dyn_AddAlly("MyBoss", "Destination")
+				end
+				
+				-- remove properties
+				if CState == DIP_FOE then
+					dyn_RemoveEnemy("MyBoss", "Destination")
+				end
+
+				if CurrentFavor < MinFavor then
+					SetFavorToDynasty("MyBoss","DestDyn", MinFavor)
+				elseif CurrentFavor > MaxFavor then
+					SetFavorToDynasty("MyBoss","DestDyn", MaxFavor)
+				end
+				
+				MsgBoxNoWait("MyBoss", "Destination",
+						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_"..RequestedState.."_+0", GetID("Destination"))
+			else
+				MsgBoxNoWait("MyBoss", "Destination",
+						"@LDIPLOMATIC_DEMAND_FAILED_HEAD",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_FAILED_BODY_+0", GetID("Destination"))
+				StopMeasure()
+			end
+		end
+	else	
+		-- you can make war with our enemy or pay us the gold
+		local Choice = MsgBox("MyBoss","EnemyAlias","@P"..
+							"@B[1,@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_CHOICE_MONEY]"..
+							"@B[2,@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_CHOICE_WAR]"..
+							"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
+							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_HEAD_+0",
+							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_CHOICE_BODY",
+							GetID("Destination"), MoneyToPay, GetID("EnemyAlias"))
+		
+		if Choice == "C" then
+			StopMeasure()
+		elseif Choice == 1 then
+			if GetMoney("MyBoss") >= MoneyToPay then
+				chr_SpendMoney("MyBoss", MoneyToPay, "CostBribes")
+				CreditMoney("Destination", MoneyToPay, "IncomeBribes")
+				
+				-- set the new status and favor here
+				DynastySetDiplomacyState("MyBoss", "DestDyn", NewDip)
+				DynastyForceCalcDiplomacy("MyBoss")
+				
+				if NewDip == DIP_ALLIANCE then
+					-- add the new property
+					dyn_AddAlly("MyBoss", "Destination")
+				end
+				
+				-- remove properties
+				if CState == DIP_FOE then
+					dyn_RemoveEnemy("MyBoss", "Destination")
+				end
+				
+				if CurrentFavor < MinFavor then
+					SetFavorToDynasty("MyBoss", "DestDyn", MinFavor)
+				elseif CurrentFavor > MaxFavor then
+					SetFavorToDynasty("MyBoss", "DestDyn", MaxFavor)
+				end
+				
+				MsgBoxNoWait("MyBoss", "Destination",
+						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_"..RequestedState.."_+0", GetID("Destination"))
+			else
+				MsgBoxNoWait("MyBoss", "Destination",
+						"@LDIPLOMATIC_DEMAND_FAILED_HEAD",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_FAILED_BODY_+0", GetID("Destination"))
+				StopMeasure()
+			end
+		elseif Choice == 2 then
+			-- set the new status and favor here
+			DynastySetDiplomacyState("MyDyn", "DestDyn", NewDip)
+			
+			if NewDip == DIP_ALLIANCE then
+				-- add the new property
+				dyn_AddAlly("MyBoss", "Destination")
+			end
+			
+			-- remove properties
+			if CState == DIP_FOE then
+				dyn_RemoveEnemy("MyBoss", "Destination")
+			end
+
+			if CurrentFavor < MinFavor then
+				SetFavorToDynasty("MyDyn", "DestDyn", MinFavor)
+			elseif CurrentFavor > MaxFavor then
+				SetFavorToDynasty("MyDyn", "DestDyn", MaxFavor)
+			end
+			
+			-- set the favor to the enemy
+			SetFavorToDynasty("EnemyAlias", "MyDyn", 0)
+			DynastySetDiplomacyState("MyDyn", "EnemyAlias", DIP_FOE)
+			DynastyForceCalcDiplomacy("MyDyn")
+			dyn_AddEnemy("MyBoss", "EnemyAlias")
+			
+			if DynastyIsPlayer("EnemyAlias") then
+				-- send a message to the enemy
+				MsgNewsNoWait("EnemyAlias", "MyBoss", "", "politics", -1,
+						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_FOE_DESTINATION_WAR_+0", GetID("MyBoss"), GetID("Destination"))
+			end
+			
+			MsgBoxNoWait("MyBoss", "Destination",
+						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_ACCEPTED_WAR_FOR_"..RequestedState.."_+0", GetID("EnemyAlias"), GetID("Destination"))
+			StopMeasure()
+		else
+			StopMeasure()
+		end
+	end
+end
+
+function SpecialCheck()
+	-- get infos
+	
+	-- target badge
+	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
+	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	local MyDynID = GetID("dynasty")
+	
+	local Enemies = dyn_GetEnemies("Destination") or 0
+	local Allies =  dyn_GetAllies("Destination") or 0
+	local IsRival = ai_DynastyCheckForRival("TargetDyn", "dynasty") or 0
+	local Grudges = GetProperty("TargetDyn", "Fondness"..MyDynID) or 0
+	local Fondness = GetProperty("TargetDyn", "Grudge"..MyDynID) or 0
+	local Counter = 0
+	local Threat = ai_DynastyCalcThreat("Destination", "MyBoss") or 0
+	local Favor = GetFavorToDynasty("MyBoss", "Destination")
+	
+	if Grudges > Fondness then
+		Counter = Grudges
+	elseif Fondness > Grudges then
+		Counter = Fondness
+	end
+	
+	local GrudgeLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_GRUDGE_+0"
+	if Fondness > 0 then
+		GrudgeLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_FONDNESS_+0"
+	end
+	
+	local ThreatLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_THREAT_+"..Threat
+	local RivalLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_RIVAL_+0"
+	
+	if IsRival > 0 then
+		GetAliasByID(IsRival, "ReasonRival")
+		if IsType("ReasonRival", "Sim") then
+			RivalLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_RIVAL_+1"
+		else
+			RivalLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_RIVAL_+2"
+		end
+	else
+		CopyAlias("Destination", "ReasonRival") -- this is only for parsing
+	end
+	
+	MsgBoxNoWait("dynasty", "Destination", 
+				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_+0", 
+				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_BODY_+0", GetID("Destination"), TargetBadge, Favor, Enemies, Allies, GrudgeLabel, Counter, ThreatLabel, RivalLabel, GetID("ReasonRival"))
+end
+
+function CleanUp()
 end

@@ -30,7 +30,7 @@ function GetPrice(MeasureName, Title)
 	-- special cases:
 	
 	if MeasureName == "AdoptOrphan" then
-		BasePrice = GL_ADOPTION_BASE_PRICE
+		BasePrice = GL_BASE_PRICE_ADOPTORPHAN
 	end
 	
 	-- default case:

@@ -588,7 +588,7 @@ end
 function SetupDiplomacy()
 
 	local CityCount = ScenarioGetObjects("Settlement", -1, "Cities")
-	local DynCount 	= ScenarioGetObjects("Dynasty", 150, "DynList")
+	local DynCount 	= ScenarioGetObjects("Dynasty", 100, "DynList")
 	if CityCount == 0 or DynCount == 0 then
 		return
 	end
@@ -657,9 +657,11 @@ function InitCameraPosition()
 end
 
 function FindDynasty(DipState, MaxState, StartNo, EndNo, FirstOfType)
+
 	local DynNo
-	local	Found
-	local	Count = 0
+	local Found
+	local Count = 0
+	
 	for DynNo=StartNo, EndNo-1 do
 		if DynastyGetDiplomacyState("Dynasties"..(StartNo-1), "Dynasties"..DynNo) == DIP_NEUTRAL then
 			if defaultcampaign_GetStateCount("Dynasties"..DynNo, DipState, EndNo) < MaxState then

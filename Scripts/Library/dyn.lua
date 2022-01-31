@@ -615,7 +615,7 @@ function GetEnemies(SimAlias)
 		end
 	end
 	
-	return Enemies
+	return NumEnemies
 end
 
 -- -----------------------
@@ -715,9 +715,29 @@ function GetAllyCounter(SimAlias)
 end
 
 -- -----------------------
+-- GetEnemies (actual number)
+-- -----------------------
+function GetAllies(SimAlias)
+	
+	local NumAllies = 0
+	
+	GetDynasty(SimAlias, "MyDyn")
+	local AllyCounter = dyn_GetAllyCounter(SimAlias)
+	
+	for i=1, AllyCounter do
+		local DynID = GetProperty("MyDyn", "AllyNo"..i) or 0
+		if DynID > 0 then
+			NumAllies = NumAllies + 1
+		end
+	end
+	
+	return NumAllies
+end
+
+-- -----------------------
 -- RecountAllies (clean up the slots). This function has a cooldown for performance
 -- -----------------------
-function RecountEnemies(SimAlias)
+function RecountAllies(SimAlias)
 
 	GetDynasty(SimAlias, "MyDyn")
 	

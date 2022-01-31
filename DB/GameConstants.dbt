@@ -253,6 +253,6 @@ Data:
 246   "GL_FAVOR_MOD_MAX"                    100               ""                              |
 247   "GL_STARTUP_XP_SHADOW_DYNASTY"        500               ""                              |
 248   "GL_MAX_CHILD_COUNT"                  6                 ""                              |
-249   "GL_ADOPTION_BASE_PRICE"              200               ""                              |
+249   "GL_BASE_PRICE_ADOPTORPHAN"           200               ""                              |
 
 

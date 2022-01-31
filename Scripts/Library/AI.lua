@@ -935,7 +935,7 @@ function CalcItemBudget(DynastyAlias)
 	end
 end
 
-function DynastyCheckForRival(DynastyAlias,TargetDynasty)
+function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 	
 	local IsRival = 0 -- no rival
 	local MyCount = DynastyGetMemberCount(DynastyAlias)
@@ -1003,40 +1003,180 @@ function DynastyCalcThreat(SimAlias, TargetAlias)
 	local TargetTitle = GetNobilityTitle(TargetAlias)
 	local MyEnemyCount = dyn_GetEnemies(SimAlias) or 0
 	local TargetEnemyCount = dyn_GetEnemies(TargetAlias) or 0
-	local HighestOffice = 0
-	local HighestOfficeTarget = 0
+	local HighestOffice = dyn_GetHighestOfficeLevel(SimAlias) or 0
+	local HighestOfficeTarget = dyn_GetHighestOfficeLevel(TargetAlias) or 0
 	local ThreatLevel = 0
 	local Difference = 0
 	
-	TargetMoney = TargetMoney - (TargetEnemyCount * 5000)
-	if TargetMoney < 0 then
-		TargetMoney = 0
-	elseif TargetMoney > 100000 then
-		TargetMoney = 100000
+	if TargetMoney > 50000 then
+		TargetMoney = 50000
 	end
 	
-	MyMoney = MyMoney - (MyEnemyCount * 5000)
-	if MyMoney < 0 then
-		MyMoney = 0
-	elseif MyMoney > 100000 then
-		MyMoney = 100000
+	TargetMoney = TargetMoney - (TargetEnemyCount * 2500)
+	
+	if MyMoney > 50000 then
+		MyMoney = 50000
 	end
+	
+	MyMoney = MyMoney - (MyEnemyCount * 2500)
 	
 	Difference = TargetMoney - MyMoney
-	Difference = Difference - ((TargetTitle - MyTitle) * 2500)
-	Difference = Difference - ((HighestOfficeTarget - HighestOffice) * 5000)
+	Difference = Difference + ((TargetTitle - MyTitle) * 5000)
+	Difference = Difference + ((HighestOfficeTarget - HighestOffice) * 5000)
 	
-	if Difference > 100000 then -- very high threat
+	if Difference > 50000 then -- very high threat
 		ThreatLevel = 4
-	elseif Difference > 50000 then -- high threat
+	elseif Difference > 20000 then -- high threat
 		ThreatLevel = 3
-	elseif Difference > 25000 then -- threat
+	elseif Difference > 12500 then -- threat
 		ThreatLevel = 2
-	elseif Difference > 5000 then -- barely a threat
+	elseif Difference > 2500 then -- barely a threat
 		ThreatLevel = 1
 	else -- no threat at all
 		ThreatLevel = 0
 	end
 	
 	return ThreatLevel
+end
+
+function DynastyGetBestDiplomacyState(SimAlias, TargetAlias)
+
+	if not (GetDynasty(SimAlias, "MyDyn") and GetDynasty(TargetAlias, "TargetDyn")) then
+		return false
+	end
+	
+	local CurrentStatus = DynastyGetDiplomacyState("MyDyn", "TargetDyn")
+	local Favor = GetFavorToDynasty("MyDyn", "TargetDyn")
+	local Threat = ai_DynastyCalcThreat(SimAlias, TargetAlias)
+	local IsRival = ai_DynastyCheckForRival("MyDyn", "TargetDyn")
+	
+	if CurrentStatus == DIP_ALLIANCE then
+		
+		if IsRival == 0 then
+			if Favor >= 75 then
+				return "CurrentState"
+			else
+				if Threat >= 3 then
+					return "CurrentState"
+				else
+					return "NAP"
+				end
+			end
+		else
+			if Favor >= 85 then
+				return "CurrentState"
+			else
+				return "NAP"
+			end
+		end
+		
+	elseif CurrentStatus == DIP_NAP then
+		
+		if IsRival == 0 then
+			if Favor >= 70 and Threat >=3 then
+				return "ALLIANCE"
+			elseif Favor >= 50 and Threat == 4 then
+				return "ALLIANCE"
+			elseif Favor >= 50 and Threat < 4 then
+				return "CurrentState"
+			elseif Favor < 50 and Favor >=30 and Threat >=3 then
+				return "CurrentState"
+			elseif Favor < 50 and Favor >= 30 then
+				return "NEUTRAL"
+			elseif Favor <= 10 and Threat < 2 then
+				return "FOE"
+			elseif Threat < 2 then
+				return "NEUTRAL"
+			end
+		else
+			if Threat >=3 then
+				return "CurrentState"
+			else
+				return "NEUTRAL"
+			end
+		end
+			
+	elseif CurrentStatus == DIP_NEUTRAL then
+		
+		if IsRival == 0 then
+			if Favor >= 65 then 
+				return "NAP"
+			elseif Favor >= 50 then
+				if Threat >= 2 then
+					return "NAP"
+				else
+					return "CurrentState"
+				end
+			elseif Favor <50 and Favor >=30 then
+				if Threat >=3 then
+					return "NAP"
+				else
+					return "CurrentState"
+				end
+			elseif Favor < 15 then
+				if Favor <= 5 then
+					return "FOE"
+				else
+					if Threat < 3 then
+						return "FOE"
+					else
+						return "CurrentState"
+					end
+				end
+			end
+		else
+			if Favor >= 70 then
+				if Threat >=2 then
+					return "NAP"
+				else 
+					return "CurrentState"
+				end
+			elseif Favor >= 25 then
+				return "CurrentState"
+			else
+				return "FOE"
+			end
+		end
+		
+	else -- DIP_FOE
+		if IsRival == 0 then
+			if Favor > 50 then
+				if Threat >= 3 then
+					return "NAP"
+				elseif Threat == 2 then
+					return "NEUTRAL"
+				else
+					return "CurrentState"
+				end
+			elseif Favor >= 40 then
+				if Threat >= 3 then
+					return "NAP"
+				elseif Threat == 2 then
+					return "NEUTRAL"
+				else
+					return "CurrentState"
+				end
+			else
+				return "CurrentState"
+			end
+		else
+			if Favor >= 65 then
+				if Threat >= 3 then
+					return "NAP"
+				else
+					return "CurrentState"
+				end
+			elseif Favor >= 45 then
+				if Threat >= 2 then
+					return "NEUTRAL"
+				else
+					return "CurrentState"
+				end
+			elseif Favor > 25 and Threat == 4 then
+				return "NEUTRAL"
+			else
+				return "CurrentState"
+			end
+		end
+	end		
 end
