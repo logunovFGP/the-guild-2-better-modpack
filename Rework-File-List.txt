@@ -221,7 +221,6 @@
 532 Scripts\Measures\ms_AddPamphlet.lua
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
-535 Scripts\Measures\ms_AdoptOrphan.lua
 536 Scripts\Measures\ms_AIBuyArmor.lua
 537 Scripts\Measures\ms_AIBuyItem.lua
 538 Scripts\Measures\ms_AIBuyWeapon.lua
@@ -462,7 +461,6 @@
 868 Scripts\Measures\Behaviour\behavior_checkpresession.lua
 869 Scripts\Measures\Behaviour\behavior_checkpretrial.lua
 870 Scripts\Measures\Behaviour\behavior_Cheer.lua
-872 Scripts\Measures\Behaviour\behavior_childness.lua
 873 Scripts\Measures\Behaviour\behavior_CitizenChild.lua
 874 Scripts\Measures\Behaviour\behavior_Cry.lua
 875 Scripts\Measures\Behaviour\behavior_deride.lua

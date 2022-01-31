@@ -934,3 +934,109 @@ function CalcItemBudget(DynastyAlias)
 		SetProperty(DynastyAlias, "ItemBudget"..Round, Budget)
 	end
 end
+
+function DynastyCheckForRival(DynastyAlias,TargetDynasty)
+	
+	local IsRival = 0 -- no rival
+	local MyCount = DynastyGetMemberCount(DynastyAlias)
+	local TargetCount = DynastyGetMemberCount(TargetDynasty)
+	
+	local MyBuildings = DynastyGetBuildingCount2(DynastyAlias)
+	local TargetBuildings = DynastyGetBuildingCount2(TargetDynasty)
+	
+	-- Check for same buisnesses
+	
+	if MyBuildings > 0 and TargetBuildings > 0 then
+		for i=0, MyCount-1 do
+			if DynastyGetBuilding2(DynastyAlias, i, "Building") then -- check every building
+				local Type = BuildingGetType("Building")
+				if Type ~= GL_BUILDING_TYPE_RESIDENCE then -- we don't look for houses
+					if DynastyGetRandomBuilding(TargetDynasty, GL_BUILDING_CLASS_WORKSHOP, Type, "TargetBuilding") then
+						-- we found the same type building
+						if GetSettlementID("TargetBuilding") == GetSettlementID("Building") then
+							-- workshops in same city
+							CopyAlias("Building", "RivalBuilding")
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if AliasExists("RivalBuilding") then
+		IsRival = GetID("RivalBuilding")
+	end
+	
+	-- check for political ambitions
+	
+	for i=0, MyCount-1 do
+		if DynastyGetMember(DynastyAlias, i, "Member"..i) then -- check every member
+			local OfficeLevel = SimGetOfficeLevel("Member"..i)
+			if OfficeLevel >= 0 then -- we found someone
+				for y=0, TargetCount-1 do -- check every member of target
+					if DynastyGetMember(TargetDynasty, y, "TargetMember"..i) then
+						if SimGetOfficeLevel("TargetMember"..i) == (OfficeLevel+1) then 
+							if GetSettlementID("TargetMember"..i) == GetSettlementID("Member"..i) then
+								-- you have the office I want and we live in the same city
+								CopyAlias("TargetMember"..i, "RivalOfficeHolder")
+								break
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if AliasExists("RivalOfficeHolder") then
+		IsRival = GetID("RivalOfficeHolder")
+	end
+	
+	return IsRival
+end
+
+function DynastyCalcThreat(SimAlias, TargetAlias)
+	local MyMoney = GetMoney(SimAlias)
+	local TargetMoney = GetMoney(TargetAlias)
+	local MyTitle = GetNobilityTitle(SimAlias)
+	local TargetTitle = GetNobilityTitle(TargetAlias)
+	local MyEnemyCount = dyn_GetEnemies(SimAlias) or 0
+	local TargetEnemyCount = dyn_GetEnemies(TargetAlias) or 0
+	local HighestOffice = 0
+	local HighestOfficeTarget = 0
+	local ThreatLevel = 0
+	local Difference = 0
+	
+	TargetMoney = TargetMoney - (TargetEnemyCount * 5000)
+	if TargetMoney < 0 then
+		TargetMoney = 0
+	elseif TargetMoney > 100000 then
+		TargetMoney = 100000
+	end
+	
+	MyMoney = MyMoney - (MyEnemyCount * 5000)
+	if MyMoney < 0 then
+		MyMoney = 0
+	elseif MyMoney > 100000 then
+		MyMoney = 100000
+	end
+	
+	Difference = TargetMoney - MyMoney
+	Difference = Difference - ((TargetTitle - MyTitle) * 2500)
+	Difference = Difference - ((HighestOfficeTarget - HighestOffice) * 5000)
+	
+	if Difference > 100000 then -- very high threat
+		ThreatLevel = 4
+	elseif Difference > 50000 then -- high threat
+		ThreatLevel = 3
+	elseif Difference > 25000 then -- threat
+		ThreatLevel = 2
+	elseif Difference > 5000 then -- barely a threat
+		ThreatLevel = 1
+	else -- no threat at all
+		ThreatLevel = 0
+	end
+	
+	return ThreatLevel
+end

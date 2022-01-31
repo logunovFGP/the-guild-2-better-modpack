@@ -885,3 +885,23 @@ function SetDiplomacyState(ObjectA, ObjectB, NewState)
 		DynastySetDiplomacyState("MySim", "TargetSim", NewState)
 	end
 end
+
+-- -----------------------
+-- GetHighestOfficeLevel
+-- -----------------------
+function GetHighestOfficeLevel(SimAlias)
+	GetDynasty(SimAlias, "MyDyn")
+	local Members = DynastyGetMemberCount("MyDyn")
+	local HighestLevel = 0
+	
+	for i=0, Members-1 do
+		if DynastyGetMember("MyDyn", i, "CheckMe") then
+			local OfficeLevel = SimGetOfficeLevel("CheckMe")
+			if OfficeLevel > HighestLevel then
+				HighestLevel = OfficeLevel
+			end
+		end
+	end
+	
+	return HighestLevel
+end
