@@ -21,7 +21,7 @@ function Weight()
 						end
 			
 						local ChildAge = SimGetAge("Child")
-						local EduLevel = GetProperty("EduLevel") or 0
+						local EduLevel = GetProperty("Child", "EduLevel") or 0
 						local Measure = GetCurrentMeasureName("Child")
 						
 						-- idle?
