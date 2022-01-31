@@ -339,6 +339,7 @@ _General_
 - For dynasties you don't have an alliance or a feud with, the increase or decrease of favor heavily depends on your title. If your title is a lot lower, you will gain less and lose more favor.
 - You need slightly more imperial / guild fame before you get the first level of reputation.
 - The upgrades in your residence which gave you some fame have been removed.
+- Counting houses first special offer only occur at the second round
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

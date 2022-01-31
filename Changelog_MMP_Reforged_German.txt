@@ -350,6 +350,7 @@ _Allgemein_
 - Bei Dynastien, mit denen du weder Fehde noch Beistandspakt hast, hängt die Gunstveränderung stark von deinem Titel ab. Ist dieser deutlich niedriger, so fallen Gunstgewinne geringer und Gunstverluste höher aus.
 - Man benötigt nun etwas mehr Gilden/Reichsruf, bevor man die erste Reputationsstufe erhält.
 - Die Upgrades im Wohnsitz, die etwas Ruf einbrachten, wurden entfernt.
+- Kontor-Aufträge kommen erst ab der zweiten Runde.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

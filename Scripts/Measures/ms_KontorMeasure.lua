@@ -2,7 +2,7 @@ function Run()
 
 	GetSettlement("", "City")
 
-	local	Firsttime		= true
+	local	Firsttime = true
 	local	TimeToSleep = Gametime2Realtime(0.5)
 	local	Count
 	local	Item
@@ -13,7 +13,7 @@ function Run()
 	
 	while true do
 	
-		if Rand(100)>97 then
+		if GetRound() > 0 and Rand(100)>97 then
 			Count = GetData("#KontorEventCount")
 			if (not Count) or Count<1 then
 				if not GetState("", STATE_KONTOR_EVENT) then
@@ -57,21 +57,20 @@ function Run()
 		
 		RemoveEmptySlots("", INVENTORY_STD)
 		Firsttime = false
-
 	end
 end
 
 function CheckItem(Item, Wanted, FirstTime)
-	if Wanted==0 then
+	if Wanted == 0 then
 		return
 	end
 	
-	local Count	= GetItemCount("", Item, INVENTORY_STD)
-	if Count>=Wanted then
+	local Count = GetItemCount("", Item, INVENTORY_STD)
+	if Count >= Wanted then
 		return
 	end
 	
-	local	Var		= 95 - (Wanted-Count)*0.5
+	local	Var = 95 - (Wanted-Count)*0.5
 	
 	local Grow = (Wanted-Count) * 0.05
 	if Grow<1 then

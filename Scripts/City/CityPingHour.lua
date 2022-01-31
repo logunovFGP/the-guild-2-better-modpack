@@ -81,7 +81,7 @@ function Run()
 		
 	------------------------------------------------------------------------------
 	--  deactivated only for testing # Fajeth
-	--	if (currentGameTime == 1) then	
+		if (currentGameTime == 1) then	
 			
 			-- check weather (stop raining if it bugs!)
 			Weather_SetWeather("Fine", 4.0)
@@ -292,7 +292,7 @@ function Run()
 			SetProperty("", "WarcostsLY", WarMoney)
 			SetProperty("", "Warcosts", 0)
 
-	--	end
+		end
 	end
 end
 
