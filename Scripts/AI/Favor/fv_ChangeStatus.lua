@@ -1,14 +1,42 @@
 function Weight()
 	
-	if not ReadyToRepeat("dynasty", "DIP_"..GetDynastyID("Victim")) then
+	local trys = 0
+	while not AliasExists("Target") do
+		trys = trys + 1
+		local TargetID = gameplayformulas_GetRandomPlayer()
+		if GetAliasByID(TargetID, "CheckMe") then
+			if ReadyToRepeat("dynasty", "DIP_"..TargetID) then
+				CopyAlias("CheckMe", "Target")
+				break
+			end
+		end
+		
+		TargetID = gameplayformulas_GetRandomImportantDynasty()
+		if GetAliasByID(TargetID, "CheckMe") then
+			if ReadyToRepeat("dynasty", "DIP_"..TargetID) then
+				CopyAlias("CheckMe", "Target")
+				break
+			end
+		end
+		
+		if trys > 10 then
+			break
+		end
+	end
+	
+	if not AliasExists("Target") then
 		return 0
 	end
 	
-	if not GetDynasty("Victim", "TargetDyn") then
+	if not ReadyToRepeat("dynasty", "DIP_"..GetDynastyID("Target")) then
 		return 0
 	end
 	
-	local BestState = ai_DynastyGetBestDiplomacyState("SIM", "Victim")
+	if not GetDynasty("Target", "TargetDyn") then
+		return 0
+	end
+	
+	local BestState = ai_DynastyGetBestDiplomacyState("SIM", "Target")
 	if BestState ~= "CurrentState" then
 		if BestState == "ALLIANCE" then
 			SetData("SetStatusTo",3) -- to ALLIANCE
@@ -26,9 +54,9 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("dynasty", "DIP_"..GetDynastyID("Victim"), 22)
+	SetRepeatTimer("dynasty", "DIP_"..GetDynastyID("Target"), 22)
 	MeasureCreate("measure")
 	MeasureAddData("Measure", "Choice", 1, false) -- change status
 	MeasureAddData("Measure", "InitResult", GetData("SetStatusTo"), false) -- the new status
-	MeasureStart("Measure", "SIM", "Victim", "AdministrateDiplomacy")
+	MeasureStart("Measure", "SIM", "Target", "AdministrateDiplomacy")
 end
