@@ -93,13 +93,26 @@ end
 -- ------------------
 -- DuelWithOpponent
 -- ------------------
-function DuelWithOpponent(Owner, Won, SkillFactor, HPcause)
-	if AliasExists(Owner) then
-		if Won == true then -- The owner won the duel
-			IncrementXP(Owner, (SkillFactor + 10) * 13)
-		else -- It´s a draw
-			IncrementXP(Owner, (SkillFactor + 10) * HPcause / 8)
+function DuelWithOpponent(Owner, Killed, SkillFactor)
+	local BaseXP = GL_EXP_GAIN_HIGH_RISK
+	
+	if SkillFactor > 0 then
+		if Killed then
+			BaseXP = math.floor(BaseXP + (BaseXP * (0.2 * SkillFactor)))
+		else
+			BaseXP = math.floor(BaseXP + (BaseXP * (0.1 * SkillFactor)))
 		end
+	else
+		if Killed then
+			BaseXP = math.floor(BaseXP + (BaseXP * (0.05 * SkillFactor)))
+			if BaseXP < GL_EXP_GAIN_HIGH_RISK then
+				BaseXP = GL_EXP_GAIN_HIGH_RISK
+			end
+		end
+	end
+	
+	if AliasExists(Owner) then
+		chr_GainXP(Owner, BaseXP)
 	end
 end
 

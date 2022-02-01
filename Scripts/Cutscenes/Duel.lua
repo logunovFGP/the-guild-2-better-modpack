@@ -640,8 +640,8 @@ end
 
 
 function EndDuel()
-	local SkillChallenger = 0 + GetSkillValue("challenger", FIGHTING) + SimGetLevel("challenger")
-	local SkillChallenged = 0 + GetSkillValue("challenged", FIGHTING) + SimGetLevel("challenged")
+	local SkillChallenger = 0 + GetSkillValue("challenger", FIGHTING) + (SimGetLevel("challenger")*2)
+	local SkillChallenged = 0 + GetSkillValue("challenged", FIGHTING) + (SimGetLevel("challenged")*2)
 	
 	local DifficultyChallenger = SkillChallenged - SkillChallenger
 	local DifficultyChallenged = SkillChallenger - SkillChallenged
