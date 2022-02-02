@@ -141,8 +141,8 @@ Data:
 212   "CanBanCharacter"   "__F((Object.CanBeControlled())AND(Object.HasImpact(BanCharacter)))"   |
 213   "CanImposeASalesFreeze"   "__F((Object.PlayerHasOfficeImpact('ImposeASalesFreeze'))AND(Object.PlayerHasOfficeImpact('CommandInspector'))AND(Object.GetProfession()== 23))"   |
 214   "CanBeFreezed"   "__F((Object.IsType(14)))"   |
-215   "IsMyThief"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 26)AND(Object.MinAge(16)))"   |
-216   "CanReceivePoem"   "__F((Object.MinAge(16))AND(Object.CheckCutscene())AND (Object.HasDifferentSex())AND (NOT (Object.BelongsToMe())OR NOT (Object.IsDynastySim())OR (Object.IsMySpouse())))"   |
+215   "IsMyThief"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())OR(Object.GetWorkBuilding())AND(Object.IsType(101)))"   |
+216   "CanReceivePoem"   "__F((Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.HasDifferentSex())AND NOT(Object.BelongsToMe()))"   |
 217   "CanQuestGather"   "__F((Object.CanBeControlled())AND(Object.Property.CanGather==1))"   |
 218   "CanBeAMaster"   "__F((Object.HasMinNobilityTitle(2)))"   |
 219   "IsMySimInTownhallCanRunOffice"   "__F((Object.CanBeControlled())AND(Object.HasMinNobilityTitle(4))AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
@@ -194,7 +194,7 @@ Data:
 273   "CanOrderAShadowing"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 18)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(2))AND(Object.HasUpgrade(DarkCorner)))"   |
 274   "HasFullLoverProgressAndNoLiaisonAndCanHaveLiaison"   "__F((Object.CanBeControlled())AND(Object.HasFullLoverProgress())AND NOT(Object.HasLiaison())AND(Object.HasMinNobilityTitle(6)))"   |
 275   "CanPropitiateEnemies"   "__F((Object.CanBeControlled())AND (Object.HasImpact(PropitiateEnemies)))"   |
-276   "CanHijack"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 26)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.HasUpgrade(PrisonDoor)))"   |
+276   "CanHijack"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())OR(Object.GetWorkBuilding())AND(Object.IsType(101))AND(Object.HasUpgrade(PrisonDoor)))"   |
 277   "CanEscapeFromArrest"   "__F((Object.BelongsToMe())AND NOT(Object.CanBeControlled())AND(Object.CompareHPRelative()>30)AND(Object.GetState(captured))AND NOT(Object.IsInBuilding())AND NOT(Object.HasImpact(Unantastbar))AND NOT(Object.Property.NoEscape==1))"   |
 280   "IsAllowedForCourtingMeasures"   "__F((Object.HasDifferentSex())AND(Object.CheckCutscene())AND(Object.MinAge(16))AND(Object.IsSocialMeasureTarget()))"   |
 281   "CanRentSleepingBerth"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND NOT(Object.BelongsToMe())AND(Object.HasUpgrade(fireplacebench)))"   |
@@ -222,8 +222,7 @@ Data:
 306   "CanUseWalkingStick"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(WalkingStick)>0)AND NOT(Object.GetState(fighting)))"   |
 307   "CanUseArgusEyeglasses"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(ArgusEyeglasses)>0)AND NOT(Object.GetState(fighting)))"   |
 308   "CanUseMoneyBag"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(MoneyBag)>0)AND NOT(Object.GetState(fighting)))"   |
-309   "CanBeHijacked"   "__F(NOT(Object.BelongsToMe())AND(Object.IsDynastySim())AND(Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.ActionAdmissible()))"   |
-310   "ValidDynastyTargetForEvilMeasure"   "__F(NOT(Object.BelongsToMe())AND(Object.HasDynasty())AND(Object.ActionAdmissible())AND(Object.CheckCutscene()))"   |
+310   "ValidDynastyTargetForEvilMeasure"   "__F(NOT(Object.BelongsToMe())AND(Object.HasDynasty())AND(Object.MinAge(16))AND(Object.ActionAdmissible())AND(Object.CheckCutscene()))"   |
 311   "CanPayBonus"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND NOT(Object.IsType(11)AND NOT(Object.IsType(100))AND NOT(Object.IsType(101))AND NOT(Object.IsType(36))AND NOT(Object.IsType(21))AND NOT(Object.IsType(102)))"   |
 312   "CanPropelEmployees"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2)))"   |
 313   "CanTakeCreditAndIsAtHome"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.IsType(2)))"   |
@@ -282,7 +281,7 @@ Data:
 404   "CanUseMixture"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Mixture)>0)AND NOT(Object.GetState(fighting)))"   |
 405   "TargetCanRepealImmunity"   "__F(NOT(Object.BelongsToMe())AND(Object.HasImpact(HaveImmunity))AND NOT(Object.HasOfficeType(3))AND NOT(Object.HasImpact(HasRepealedImmunity)))"   |
 406   "IsMedic"   "__F((Object.GetProfession()==31)AND(Object.CanBeControlled())AND(Object.MinAge(16)))"   |
-407   "CanMedicalTreatmentDynSim"   "__F((Object.CanBeControlled())AND(Object.CanWorkHere())AND(Object.MinAge(16))AND(Object.GetInsideBuilding())AND(Object.IsType(37)))"   |
+407   "CanMedicalTreatmentDynSim"   "__F((Object.CanBeControlled())AND(Object.CanWorkHere())AND(Object.GetInsideBuilding())AND(Object.IsType(37)))"   |
 408   "CanQuacksalveDynSim"   "__F((Object.CanBeControlled())AND(Object.IsClass(3))AND(Object.MinAge(16))AND(Object.HasAccessToItem(MiracleCure))AND(Object.GetOwnedBuildings())AND(Object.IsType(37)))"   |
 409   "CanQuacksalve"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==31)AND(Object.MinAge(16))AND(Object.HasAccessToItem(MiracleCure)))"   |
 410   "CanGoToDoc"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.HasImpact(Sickness))OR(Object.CompareHPRelative()<99))"   |
