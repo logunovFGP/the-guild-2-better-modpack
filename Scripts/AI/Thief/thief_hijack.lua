@@ -13,7 +13,7 @@ function Weight()
 		return 0
 	end
 	
-	if BuildingGetLevel("Thiefshut") < 2 then
+	if not BuildingHasUpgrade("Thiefshut", "PrisonDoor") then
 		return 0
 	end
 	
