@@ -55,16 +55,9 @@ function Run()
 						if (chr_SpendMoney("boss", cost, "CostAdministration")) then
 							GetSettlement("", "Set")
 							local tax = math.floor(cost*0.33)
-														
-							CreditMoney("Set", tax, "title")
-					
-							if not HasProperty("Set", "NobilityMoney") then
-								SetProperty("Set", "NobilityMoney", tax)
-							else
-								local NobilityMoney = GetProperty("Set", "NobilityMoney") + tax
-								SetProperty("Set", "NobilityMoney", NobilityMoney)
-							end
-
+							local IncomeNob = GetProperty("Set", "NobilityMoney") or 0
+							IncomeNob = IncomeNob + tax
+							SetProperty("Set", "NobilityMoney", tax)
 							SetNobilityTitle("boss", currenttitle+1, false)
 
 							MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID("boss"))
@@ -101,6 +94,11 @@ function Run()
 			if dyn_GetImperialFameLevel("") < famelvl then			
 
 				if (chr_SpendMoney("", cost, "CostAdministration")) then
+					GetSettlement("", "Set")
+					local tax = math.floor(cost*0.33)
+					local IncomeNob = GetProperty("Set", "NobilityMoney") or 0
+					IncomeNob = IncomeNob + tax
+					SetProperty("Set", "NobilityMoney", tax)
 					SetNobilityTitle("", currenttitle+1, false)
 				else
 					StopMeasure()
@@ -292,15 +290,9 @@ function Run()
 					
 						GetSettlement("Usher", "Set")
 						local tax = math.floor(cost*0.33)
-						CreditMoney("Set", tax, "title")
-
-						if not HasProperty("Set", "NobilityMoney") then
-							SetProperty("Set", "NobilityMoney", tax)
-						else
-							local NobilityMoney = GetProperty("Set", "NobilityMoney") + tax
-							SetProperty("Set", "NobilityMoney", NobilityMoney)
-						end
-
+						local IncomeNob = GetProperty("Set", "NobilityMoney") or 0
+						IncomeNob = IncomeNob + tax
+						SetProperty("Set", "NobilityMoney", tax)
 						SetNobilityTitle("", currenttitle+1, false)
 
 						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())

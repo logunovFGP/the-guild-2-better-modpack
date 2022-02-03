@@ -451,3 +451,80 @@ function FavorAddFondness(Owner, Target)
 					GetID(Owner), GetID(Target), FondnessCounter)
 	end
 end
+
+-- -------------
+-- CityBalanceRound
+-- -------------
+function CityBalanceRound(CityAlias)
+	
+	if CityGetRandomBuilding(CityAlias, GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "Townhall") then
+		BuildingGetNPC("Townhall", 1, "Usher")
+	end
+	
+	-- get the needed data
+	-- taxes
+	local TotalIncome = GetProperty(CityAlias, "TotalIncome") or 0
+	local TaxValue = GetProperty(CityAlias, "TaxValue") or 0
+	local TaxRaw = GetProperty(CityAlias, "TaxRaw") or 0
+	local TaxFood = GetProperty(CityAlias, "TaxFood") or 0
+	local TaxHandi = GetProperty(CityAlias, "TaxHandi") or 0
+	local TaxSchol = GetProperty(CityAlias, "TaxSchol") or 0
+	local TaxHerbs = GetProperty(CityAlias, "TaxHerbs") or 0
+	local TaxIron = GetProperty(CityAlias, "TaxIron") or 0
+	-- other income
+	local NobilityMoneyLY = GetProperty(CityAlias, "NobilityMoneyLY") or 0
+	local FeesLY = GetProperty(CityAlias, "CityFeesLY") or 0
+	local TrialsLY = GetProperty(CityAlias, "TrialIncomeLY") or 0
+	-- costs
+	local TotalCost = GetProperty(CityAlias, "TotalCost") or 0
+	
+	local Balance = TotalIncome - TotalCost
+	local BalanceLabel = ""
+	if Balance > 0 then
+		BalanceLabel = "@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_PROFIT_+0"
+	else
+		BalanceLabel = "@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_LOSS_+0"
+	end
+	
+	local OfficeMoney = GetProperty(CityAlias, "OfficeMoney") or 0
+	local BuildingRepairs = GetProperty(CityAlias, "BuildingRepairs") or 0
+	local Warcosts = GetProperty(CityAlias, "WarcostsLY") or 0
+	local CostServants = GetProperty(CityAlias, "ServantCost") or 0
+	local CostCityGuard = GetProperty(CityAlias, "CityGC") or 0
+	local CostEliteGuard = GetProperty(CityAlias, "EliteGC") or 0
+	
+	-- church income
+	local ChurchTithe = GetProperty(CityAlias, "TitheValue") or 0
+	local ChurchTreasury = GetProperty(CityAlias, "ChurchTreasury") or 0
+	local ChurchIncome = GetProperty(CityAlias, "ChurchIncome") or 0
+	local UnemployedCost = GetProperty(CityAlias, "UnemployedCost") or 0
+	
+	-- send a message to all office holders of the city
+	local year = GetYear() - 1
+	local Choice = 0
+	local MaxLevel = CityGetHighestOfficeLevel(CityAlias)
+	local Level = 0
+	local Count = CityGetOfficeCountAtLevel(CityAlias, Level)
+	
+	for l=0, MaxLevel do
+		Choice = 0
+		for i=0, Count-1 do
+			Choice = Count-1 - i
+			if SettlementGetOffice(CityAlias, Level, 0, "OfficeToCheck") then
+				if OfficeGetHolder("OfficeToCheck", "OfficeHolder") and GetDynasty("OfficeHolder", "OfficeDyn") then
+					if ReadyToRepeat("OfficeDyn", "CityBalance"..GetID(CityAlias)) then
+						MsgNewsNoWait("OfficeHolder", "Usher", "", "politics", -1,
+									"@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_HEAD_+0",
+									"@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_BODY_+0", GetID("Usher"), GetID(CityAlias), year, TaxValue, 
+									TaxRaw, TaxFood, TaxHandi, TaxSchol, TaxHerbs, TaxIron, NobilityMoneyLY, FeesLY, TrialsLY, TotalIncome, 
+									OfficeMoney, CostServants, CostCityGuard, CostEliteGuard, BuildingRepairs, Warcosts, TotalCost, 
+									BalanceLabel, GetMoney(CityAlias), ChurchTithe, ChurchIncome, UnemployedCost, ChurchTreasury, Balance)
+						SetRepeatTimer("OfficeDyn", "CityBalance"..GetID(CityAlias), 1)
+					end
+				end
+			end
+		end
+		Level = Level + 1
+		Count = CityGetOfficeCountAtLevel(CityAlias, Level)
+	end
+end

@@ -26,13 +26,11 @@ function Run()
 
 	for l=0, Count-1 do
 		if DynastyGetMember("dynasty", l, "Member") then
-			if IsPartyMember("Member") then
-				if GetHomeBuilding("Member", "Home") then
-					BuildingGetCity("Home", "PlayerCity")
-					if GetID("city") == GetID("PlayerCity") then
-						if SimGetOfficeLevel("Member") >=0 then
-							officebearer = true
-						end
+			if GetHomeBuilding("Member", "Home") then
+				BuildingGetCity("Home", "PlayerCity")
+				if GetID("city") == GetID("PlayerCity") then
+					if SimGetOfficeLevel("Member") >=0 then
+						officebearer = true
 					end
 				end
 			end
@@ -40,87 +38,74 @@ function Run()
 	end
 
 	if officebearer then
-
-		if GetRound() > 0 then
-			local TaxMoney = 0
-			if HasProperty("city", "TaxMoney") then
-				TaxMoney = GetProperty("city", "TaxMoney")
-			end
-	
-			local TaxValue = 0
-			if HasProperty("city", "TaxValue") then
-				TaxValue = GetProperty("city", "TaxValue")
-			end
 		
-			local Workshops = 0
-			if HasProperty("city", "Workshops") then
-				Workshops = GetProperty("city", "Workshops")
-			end
-			
-			local NobilityMoney = 0
-			if HasProperty("city", "NobilityMoneyLY") then
-				NobilityMoney = GetProperty("city", "NobilityMoneyLY")
-			end
-			
-			local OfficeMoney = 0
-			if HasProperty("city", "OfficeMoney") then
-				OfficeMoney = GetProperty("city", "OfficeMoney")
-			end
-	
-			local repairedbuildings = 0
-			if HasProperty("city", "repairedbuildings") then
-				repairedbuildings = GetProperty("city", "repairedbuildings")
-			end
-	
-			local BuildingRepairs = 0
-			if HasProperty("city", "BuildingRepairs") then
-				BuildingRepairs = GetProperty("city", "BuildingRepairs")
-			end
-
-			local MercMoney = 0
-			if HasProperty("city", "Mercenaries") then
-				MercMoney = GetProperty("city", "Mercenaries")
-			end
-
-			local Warcosts = 0
-			local wartext = ""
-			if HasProperty("city", "WarcostsLY") then
-				Warcosts = GetProperty("city", "WarcostsLY")
-			end
-			
-			if Warcosts > 0 then
-				wartext = "_MEASURE_CITYTREASURE_WAR_+1"
-			elseif Warcosts < 0 then
-				wartext = "_MEASURE_CITYTREASURE_WAR_+0"
-				Warcosts = Warcosts * (-1)
-			end
-	
-			if LevelID < 6 then
-				lvluptext = "_MEASURE_CITYTREASURE_LVLUP_+0"
-			end
-
-			MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+0", GetID("city"), TaxMoney, TaxValue, Workshops, NobilityMoney, OfficeMoney, repairedbuildings, BuildingRepairs, wartext, Warcosts, GetMoney("city"), MercMoney, Level, CurrentCitizens, lvluptext, citizens)
-		else
-			MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+1", GetID("city"), GetMoney("city"), Level, CurrentCitizens, lvluptext, citizens)
+		if CityGetRandomBuilding("city", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "Townhall") then
+			BuildingGetNPC("Townhall", 1, "Usher")
 		end
-	
+		
+		-- get the needed data
+		-- taxes
+		local TotalIncome = GetProperty("city", "TotalIncome") or 0
+		local TaxValue = GetProperty("city", "TaxValue") or 0
+		local TaxRaw = GetProperty("city", "TaxRaw") or 0
+		local TaxFood = GetProperty("city", "TaxFood") or 0
+		local TaxHandi = GetProperty("city", "TaxHandi") or 0
+		local TaxSchol = GetProperty("city", "TaxSchol") or 0
+		local TaxHerbs = GetProperty("city", "TaxHerbs") or 0
+		local TaxIron = GetProperty("city", "TaxIron") or 0
+		-- other income
+		local NobilityMoneyLY = GetProperty("city", "NobilityMoneyLY") or 0
+		local FeesLY = GetProperty("city", "CityFeesLY") or 0
+		local TrialsLY = GetProperty("city", "TrialIncomeLY") or 0
+		-- costs
+		local TotalCost = GetProperty("city", "TotalCost") or 0
+		
+		local Balance = TotalIncome - TotalCost
+		local BalanceLabel = ""
+		if Balance > 0 then
+			BalanceLabel = "@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_PROFIT_+0"
+		else
+			BalanceLabel = "@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_LOSS_+0"
+		end
+		
+		local OfficeMoney = GetProperty("city", "OfficeMoney") or 0
+		local BuildingRepairs = GetProperty("city", "BuildingRepairs") or 0
+		local Warcosts = GetProperty("city", "WarcostsLY") or 0
+		local CostServants = GetProperty("city", "ServantCost") or 0
+		local CostCityGuard = GetProperty("city", "CityGC") or 0
+		local CostEliteGuard = GetProperty("city", "EliteGC") or 0
+		
+		-- church income
+		local ChurchTithe = GetProperty("city", "TitheValue") or 0
+		local ChurchTreasury = GetProperty("city", "ChurchTreasury") or 0
+		local ChurchIncome = GetProperty("city", "ChurchIncome") or 0
+		local UnemployedCost = GetProperty("city", "UnemployedCost") or 0
+		
+		local year = GetYear() - 1
+		MsgBoxNoWait("dynasty", "Usher",
+					"@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_HEAD_+0",
+					"@L_CITY_PINGHOUR_CITY_TREASURY_BALANCE_BODY_+0", GetID("Usher"), GetID("city"), year, TaxValue, 
+					TaxRaw, TaxFood, TaxHandi, TaxSchol, TaxHerbs, TaxIron, NobilityMoneyLY, FeesLY, TrialsLY, TotalIncome, 
+					OfficeMoney, CostServants, CostCityGuard, CostEliteGuard, BuildingRepairs, Warcosts, TotalCost, 
+					BalanceLabel, GetMoney("city"), ChurchTithe, ChurchIncome, UnemployedCost, ChurchTreasury, Balance)
+					
 	else
 	
 		local citytreasure = GetMoney("city")
 		local replacement = ""
-		if citytreasure < 5000 then
+		if citytreasure < 10000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+0"
-		elseif citytreasure < 15000 then
+		elseif citytreasure < 30000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+1"
-		elseif citytreasure < 35000 then
+		elseif citytreasure < 80000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+2"
-		elseif citytreasure < 100000 then
+		elseif citytreasure < 200000 then
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+3"
 		else
 			replacement = "_MEASURE_CITYTREASURE_TEXT_+4"
 		end		
 	
-		MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY_+2", GetID("city"), replacement, Level, CurrentCitizens, lvluptext, citizens)
+		MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY", GetID("city"), replacement, Level, CurrentCitizens, lvluptext, citizens)
 	end
 end
 

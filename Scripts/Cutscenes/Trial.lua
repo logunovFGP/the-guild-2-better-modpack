@@ -245,9 +245,9 @@ function EverybodySitDown()
 	GetInsideRoom("assessor1", "Room")
 	if (GetID("assessor1")==-1) or (GetHP("assessor1")<1) or (GetID("Room")~=GetID("judgeroom")) then  
 		if AliasExists("assessor1") and GetID("assessor1")>0 then
-			CityAddPenalty("settlement","assessor1",PENALTY_MONEY, 500)
+			CityAddPenalty("settlement","assessor1", PENALTY_MONEY, GL_TRIAL_COST_PER_LEVEL)
 			feedback_MessagePolitics("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_RICHTER_MESSAGES_+0",
-								"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_RICHTER_MESSAGES_+1",GetID("assessor1"), 500) 
+								"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_RICHTER_MESSAGES_+1", GetID("assessor1"), 500) 
 		end
 		BuildingFindSimByProperty("courtbuilding","BUILDING_NPC", 2,"assessor1")
 	end
@@ -256,7 +256,7 @@ function EverybodySitDown()
 	GetInsideRoom("assessor2","Room")
 	if (GetID("assessor2")==-1) or (GetHP("assessor2")<1) or  (GetID("Room")~=GetID("judgeroom")) then
 		if AliasExists("assessor2") and GetID("assessor2")>0 then
-			CityAddPenalty("settlement","assessor2", PENALTY_MONEY, 500)
+			CityAddPenalty("settlement","assessor2", PENALTY_MONEY, GL_TRIAL_COST_PER_LEVEL)
 			feedback_MessagePolitics("assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_RICHTER_MESSAGES_+0",
 								"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_RICHTER_MESSAGES_+1",GetID("assessor2"), 500) 
 		end
@@ -351,8 +351,7 @@ function Go()
 	end
 	
 	--the fine, judge has to pay when he forgets the court
-	local fine = 1000 + math.floor(GetMoney("judge")/10)
-	
+	local fine = GL_TRIAL_COST_PER_LEVEL * 2
 	local NumCrimes = 0 + CutsceneCollectEvidences("", "accuser", "accused")
 	local RawPenalty = 0
 	
@@ -364,8 +363,8 @@ function Go()
 	
 	-- how many years do you become an outlaw if you miss the trial?
 	local FugitiveYears = math.floor(RawPenalty/4 + 1)
-	if FugitiveYears > 12 then 
-		FugitiveYears = 12
+	if FugitiveYears > 16 then 
+		FugitiveYears = 16
 	end
 
 	local Options = FindNode("\\Settings\\Options")
@@ -621,16 +620,23 @@ function Go()
 		HudClearSelection()
 	end
 	
+	local TrialCosts = GL_TRIAL_COST_BASE + GL_TRIAL_COST_PER_LEVEL*CityLevel
+	local JudgeMoney = TrialCosts / 2
+	local AssessorMoney = TrialCosts / 4
+	
 	if NumCrimes == 0 then -- somehow all evidences are gone
 		trial_Cam("TrialMainCam")
-		local TrialFee = 250 + math.floor(GetMoney("accuser")/10)
+		local NobTitle = GetNobilityTitle("accuser")
+		local TrialFee = GL_TRIAL_COST_BASE + math.floor(NobTitle*NobTitle * GL_TRIAL_PENALTY_LOW)
+		local TrialIncome = GetProperty("settlement", "TrialIncome") or 0
+		SetProperty("settlement", "TrialIncome", (TrialIncome + TrialFee))
 		PlayAnimationNoWait("accuser", "cogitate")
 		MsgSay("accuser","@L_LAWSUIT_4_ACCUSAL_NOEVIDENCE_ACCUSER")
 		PlayAnimationNoWait("judge", "sit_no")
 		MsgSay("judge","@L_LAWSUIT_4_ACCUSAL_NOEVIDENCE_JUDGE", TrialFee)
 		PlayAnimationNoWait("judge", "sit_talk")
 		MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_CLOSE_+0")
-		SpendMoney("accuser", TrialFee, "trialfee")
+		chr_SpendMoney("accuser", TrialFee, "trialfee", true)
 	else
 		-- Go through all evidences
 		
@@ -692,21 +698,21 @@ function Go()
 		end
 
 		trial_Cam("TrialMainCam")
-		GetDynasty("accused","accuseddynasty")
+		GetDynasty("accused", "accuseddynasty")
 		
 		-- inquisition bonus
-		if GetImpactValue("accuser","AimForInquisitionalProceeding")~=0 then
+		if GetImpactValue("accuser", "AimForInquisitionalProceeding")~=0 then
 			trial_ModifyTotalEvidenceValue(3)
 			PlayAnimationNoWait("judge", "sit_talk")
-			MsgSay("judge","@L_PRIVILEGES_113_AIMFORINQUISITIONALPROCEEDING_LAWSUIT_JUDGE",GetID("accuser"))
+			MsgSay("judge", "@L_PRIVILEGES_113_AIMFORINQUISITIONALPROCEEDING_LAWSUIT_JUDGE", GetID("accuser"))
 		end
 
 		local TEV = GetData("TotalEvidenceValue")
 		
 		-- severity of law
-		local SeverityOfLaw = GetProperty("settlement","SeverityOfLaw")
+		local SeverityOfLaw = GetProperty("settlement", "SeverityOfLaw")
 		local LawReplace
-		if SeverityOfLaw==0 then
+		if SeverityOfLaw == 0 then
 			LawReplace = "_LIBERAL"
 			trial_ModifyTotalEvidenceValue(-3)
 		elseif SeverityOfLaw==1 then
@@ -1030,14 +1036,13 @@ function Go()
 			CityLevel = CityGetLevel("TheCity")
 		end
 		
-		local TrialCosts = 250 + 750*CityLevel 
 		local DecisionForFinalComment = 0
 		trial_Cam("JudgeFromBelowCam")
 		-- Urteilsverkündung--------------------------------------------
 
 		--MsgSay("judge","@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_+0")
-		if confession==2 or conviction_cnt>=2 then
-			if confession==2 and conviction_cnt<2 then
+		if confession == 2 or conviction_cnt >= 2 then
+			if confession == 2 and conviction_cnt < 2 then
 				PlayAnimationNoWait("judge", "sit_talk")
 				MsgSay("judge","@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_GUILTY_BUT_MILD"..GenderType)
 				PlayAnimationNoWait("judge", "sit_talk")
@@ -1047,8 +1052,8 @@ function Go()
 				SentenceLevel = SentenceLevel - 1
 			else
 				PlayAnimationNoWait("judge", "sit_talk")
-				MsgSay("judge","@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_GUILTY"..GenderType,GetID("accused"))
-				if conviction_cnt==2 then
+				MsgSay("judge","@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_GUILTY"..GenderType, GetID("accused"))
+				if conviction_cnt == 2 then
 					PlayAnimationNoWait("judge", "sit_talk")
 					MsgSay("judge","@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_GUILTY_HALF")
 					SentenceLevel = SentenceLevel - 1;
@@ -1060,53 +1065,57 @@ function Go()
 
 			local PenaltyType = -1
 			local PenaltyValue = 0
+			local PenaltyTitle = GetNobilityTitle("accused")
+			local PenaltyMsg = 0
 
 			PlayAnimationNoWait("judge", "sit_talk")
 			if SentenceLevel < 1 then
-				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+0", GetID("accused"),PenaltyValue)
+				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+0", GetID("accused"), PenaltyValue)
 			elseif SentenceLevel == 1 then
-				PenaltyValue = GetMoney("accused")/5
-				if PenaltyValue < 1000 then
-					PenaltyValue = 1000
-				end
-				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+1",GetID("accused"),PenaltyValue)
+				PenaltyValue = PenaltyTitle * PenaltyTitle * GL_TRIAL_PENALTY_MEDIUM
+				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+1",GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_MONEY
+				local PenaltyIncome = GetProperty("settlement", "TrialIncome") or 0
+				PenaltyIncome = PenaltylIncome + PenaltyValue
+				SetProperty("settlement", "TrialIncome", PenaltyIncome)
 			elseif SentenceLevel==2 then
 				PenaltyValue = 12
-				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+2",GetID("accused"),PenaltyValue)
+				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+2",GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_PILLORY
 			elseif SentenceLevel==3 then
-				PenaltyValue = GetMoney("accused")/1.5
-				if PenaltyValue < 5000 then
-					PenaltyValue = 5000
-				end
-				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+4",GetID("accused"),PenaltyValue)
+				PenaltyValue = PenaltyTitle * PenaltyTitle * GL_TRIAL_PENALTY_HIGH
+				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+4", GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_MONEY
+				local PenaltyIncome = GetProperty("settlement", "TrialIncome") or 0
+				PenaltyIncome = PenaltylIncome + PenaltyValue
+				SetProperty("settlement", "TrialIncome", PenaltyIncome)
 			elseif SentenceLevel==4 then
 				PenaltyType = PENALTY_TITLE
 				if (SimGetOfficeID("accused")~=-1) then
-					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+3",GetID("accused"))
+					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+3", GetID("accused"))
 				elseif (GetNobilityTitle("accused")>1) then
-					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+5",GetID("accused"))
+					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+5", GetID("accused"))
 				else
 					MsgSay("judge","@L_NEWSTUFF_NOTITLEPENALTY_+0")
 					PlayAnimationNoWait("judge", "sit_talk")
-					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6",GetID("accused"))
 					PenaltyType = PENALTY_PRISON
 					local YearsPerRound = Options:GetValueInt("YearsPerRound")
-					PenaltyValue = 192 / YearsPerRound
+					PenaltyValue = 48 * YearsPerRound
+					PenaltyMsg = PenaltyValue / 24
+					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6", GetID("accused"), PenaltyMsg)
 				end
 			elseif SentenceLevel==5 then
 				PlayAnimationNoWait("judge", "sit_talk")
-				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6",GetID("accused"),PenaltyValue)
 				PenaltyType = PENALTY_PRISON
 				local YearsPerRound = Options:GetValueInt("YearsPerRound")
-				PenaltyValue = 192 / YearsPerRound
-			elseif SentenceLevel==6 then
+				PenaltyValue = 48 * YearsPerRound
+				PenaltyMsg = PenaltyValue / 24
+				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6", GetID("accused"), PenaltyMsg)
+			elseif SentenceLevel == 6 then
 				PlayAnimationNoWait("judge", "sit_talk")
-				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+7",GetID("accused"),PenaltyValue)
+				MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+7", GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_DEATH
-				SetProperty("accused","ExecutedBy",GetID("accuser"))
+				SetProperty("accused", "ExecutedBy", GetID("accuser"))
 				--mission_ScoreAccuse("accuser")
 			end
 
@@ -1127,8 +1136,12 @@ function Go()
 		else -- gerichtskosten trägt die anklage
 			trial_PlayRelevantJuryAni("judge",0)
 			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY"..GenderType,GetID("accused"))
-			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY_TOBOTH",TrialCosts)
-			CreditMoney("accuser",-TrialCosts,"trialfee")
+			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY_TOBOTH", TrialCosts)
+			chr_SpendMoney("accuser", TrialCosts, "trialfee", true)
+			local TrialIncome = GetProperty("settlement", "TrialIncome") or 0
+			TrialIncome = TrialIncome + TrialCosts
+			SetProperty("settlement", "TrialIncome", TrialIncome)
+			
 			DecisionForFinalComment = 0
 			local XPLevel = 1
 			if HasData("AccuserSentence") then
@@ -1164,6 +1177,14 @@ function Go()
 			PlayAnimationNoWait("accuser", "shake_head")
 			MsgSay("accuser", "@L_LAWSUIT_6_DECISION_D_REACTIONS_NOTGUILTY")
 		end
+		
+		-- money
+		local TrialIncome = GetProperty("settlement", "TrialIncome") or 0
+		TrialIncome = TrialIncome - TrialCosts
+		SetProperty("settlement", "TrialIncome", TrialIncome)
+		CreditMoney("judge", JudgeMoney, "Office")
+		CreditMoney("assessor1", AssessorMoney, "Office")
+		CreditMoney("assessor2", AssessorMoney, "Office")
 	end
 
 	--Fertig

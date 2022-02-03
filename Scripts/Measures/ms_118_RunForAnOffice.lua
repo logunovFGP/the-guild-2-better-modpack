@@ -183,6 +183,9 @@ function Run()
 	
 	if SimRunForAnOffice("", "destination") then
 		chr_SpendMoney("", ChargeCost, "CostAdministration")
+		local CityFees = GetProperty("city", "CityFees") or 0
+		CityFees = CityFees + ChargeCost
+		SetProperty("city", "CityFees", CityFees)
 		
 		if not DynastyIsShadow("") then
 			PlayAnimationNoWait("Usher", ms_118_runforanoffice_getRandomTalk())

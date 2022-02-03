@@ -835,6 +835,7 @@ function GetNeedsForMarket(CityAlias)
 end
 
 function CalcSalesForMarket(CityAlias)
+
 	local SalesCount, Sales = 0, {}
 	-- check all items in storage
 	if not CityGetRandomBuilding(CityAlias, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
@@ -865,6 +866,7 @@ function CalcSalesForMarket(CityAlias)
 			RemoveProperty("MarketAlias", "twpSalesAmount"..i)
 		end
 	end
+	
 	return SalesCount, Sales
 end
 
@@ -873,6 +875,7 @@ function GetSalesForMarket(CityAlias)
 	local SalesCount, Sales = 0, {}
 	CityGetLocalMarket(CityAlias, "MarketAlias")
 	local tmp
+	
 	for i=1, 5 do
 		tmp = GetProperty("MarketAlias", "twpSales"..i)
 		if tmp then
@@ -880,11 +883,14 @@ function GetSalesForMarket(CityAlias)
 			Sales[SalesCount] = { tmp, GetProperty("MarketAlias", "twpSalesAmount"..i) }
 		end
 	end
+	
 	return SalesCount, Sales 
 end
 
 function MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
+
 	local ItemExists 
+	
 	for j = 1, NeedCount do
 		ItemExists = false
 		for i = 1, CityNeedCount do
@@ -898,12 +904,14 @@ function MergeNeedLists(CityNeedCount, CityNeeds, NeedCount, Needs)
 			CityNeeds[CityNeedCount] = Needs[j]
 		end
 	end
+	
 	return CityNeedCount, CityNeeds
 end
 
 function ChooseFromItems(ItemCount, ItemList, IncludeOK)
 	local Id, ItemTexture, Tooltip, Subtext
 	local Buttons = "@P"
+	
 	for i=1, ItemCount do
 		Id = ItemList[i][1]
 		ItemTexture = "Hud/Items/Item_"..ItemGetName(Id)..".tga"
@@ -912,6 +920,7 @@ function ChooseFromItems(ItemCount, ItemList, IncludeOK)
 		-- result, Tooltip, label, icon
 		Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
 	end
+	
 	if IncludeOK then
 		Buttons = Buttons.."@B[C,@L_GENERAL_BUTTONS_OK_+0,@L_GENERAL_BUTTONS_OK_+0,Hud/Buttons/btn_Ok.tga]"
 	end	
@@ -920,42 +929,43 @@ function ChooseFromItems(ItemCount, ItemList, IncludeOK)
 		Buttons, -- PanelParam
 		0, -- AIFunc
 		"@L_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0",-- HeaderLabel
-		"Body"
-	)
+		"Body")
+		
 	if ChosenItem and ChosenItem ~= "C" then
 		return ChosenItem
 	end
+	
 	return nil
 end
 
 function CityGetUnemployedCount(CityAlias)
-	local UnemployedFilter = "__F((Object.GetObjectsByRadius(Sim) == 15000)AND(Object.GetProfession() == 0)AND NOT(Object.IsDynastySim())AND NOT(Object.GetState(npc))AND NOT(Object.GetState(npcfighter)))"
-	local NumUnemployed = Find(CityAlias, UnemployedFilter, "Sim", -1)
-	local NumUnemployedCity = 0
 	
-	for i=0, NumUnemployed-1 do
-		if GetSettlementID("Sim"..i) == GetID(CityAlias) then
-			NumUnemployedCity = NumUnemployedCity + 1
+	local GlobalSimCount = ScenarioGetObjects("cl_Sim", -1, "Sim")
+	local UnemployedCity = 0
+	local CityID = GetID(CityAlias)
+	
+	for i=0, GlobalSimCount-1 do
+		local Alias = "Sim"..i
+		if not IsDynastySim(Alias) and GetSettlementID(Alias) == CityID and SimGetAge(Alias) >= 17 and SimGetWorkingPlaceID(Alias) < 0 and not GetStateImpact(Alias, "no_hire") then
+			UnemployedCity = UnemployedCity + 1
 		end
 	end
 	
-	return NumUnemployedCity
+	return UnemployedCity
 end
 
 function CityGetGuardCount(CityAlias)
-	local Cityguard, Eliteguard
 	
+	local Cityguard, Eliteguard
 	Cityguard = 0 + CityGetServantCount(CityAlias, GL_PROFESSION_CITYGUARD)
-	LogMessage(GetName(CityAlias).." hat "..Cityguard.." Cityguards.")
 	Eliteguard = 0 + CityGetServantCount(CityAlias, GL_PROFESSION_ELITEGUARD)
-	LogMessage(GetName(CityAlias).." hat "..Eliteguard.." Eliteguards.")
 	
 	return Cityguard, Eliteguard
 end
 
 function CityGetServantCount(CityAlias)
-	local Servants = 0
 	
+	local Servants = 0
 	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_PRISONGUARD)
 	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_INSPECTOR)
 	Servants = Servants + CityGetServantCount(CityAlias, GL_PROFESSION_MONITOR)

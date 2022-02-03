@@ -254,5 +254,10 @@ Data:
 247   "GL_STARTUP_XP_SHADOW_DYNASTY"        500               ""                              |
 248   "GL_MAX_CHILD_COUNT"                  6                 ""                              |
 249   "GL_BASE_PRICE_ADOPTORPHAN"           200               ""                              |
+250   "GL_TRIAL_COST_BASE"                  200               ""                              |
+251   "GL_TRIAL_COST_PER_LEVEL"             750               ""                              |
+252   "GL_TRIAL_PENALTY_LOW"                100               ""                              |
+253   "GL_TRIAL_PENALTY_MEDIUM"             200               ""                              |
+254   "GL_TRIAL_PENALTY_HIGH"               400               ""                              |
 
 

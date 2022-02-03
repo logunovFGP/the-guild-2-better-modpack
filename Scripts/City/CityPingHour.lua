@@ -1,299 +1,255 @@
 function Run()
 
 	GetScenario("World")
-	
-	if not HasProperty("World", "static") then
+	if HasProperty("World", "static") then
+		return
+	end
 		
-		local currentGameTime = math.mod(GetGametime(), 24)
-		local Level = CityGetLevel("")
-		local DefaultID = GetID("")
-		local City0ID = GetID("City0")
+	local currentGameTime = math.mod(GetGametime(), 24)
+	local Level = CityGetLevel("")
 		
-		if City0ID == -1 then
-			local CityCount = ScenarioGetObjects("Settlement", 1, "City")
-			City0ID = GetID("City0")
-		end
-		
-		-- get important things rolling
-		
-		if GetData("#AldermanChooser") == nil or GetData("#AldermanChooser") == 0 then
-			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-				SetData("#AldermanChooser", GetID(""))
-			end
-		end
-		
-		if GetData("#ImperialChooser") == nil or GetData("#ImperialChooser") == 0 then
-			if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-				SetData("#ImperialChooser",GetID(""))
-			end
-		end
-		
-		-- check the town
-		if ScenarioGetTimePlayed() > 4 then
-		
-			if Level == 1 then
-				-- kontor city - do nothing here
-				return
-			elseif Level == 2 then
-				citypinghour_CheckVillage()
-			elseif Level == 3 then
-				citypinghour_CheckSmallTown()
-			elseif Level == 4 then
-				citypinghour_CheckTown()
-			elseif Level == 5 then
-				citypinghour_CheckCapital()
-			elseif Level == 6 then
-				citypinghour_CheckCapital()
-			end
-			
-			if ScenarioGetTimePlayed() > 16 then
-				citypinghour_CheckCrimes()
-			end
-		end
-		
-		-- get special events rolling
-		if GetRound() > 1 then
-		
-			if GetData("#MusiciansChooser") == nil then
-				SetData("#MusiciansChooser", GetID(""))
-			elseif GetData("#MusiciansChooser") == 0 then
-				SetData("#MusiciansChooser", GetID(""))
-			end
-			
-			if GetData("#MusiciansChooser") == GetID("") then
-				citypinghour_CheckMusicians()
-			end
-			
-			if currentGameTime == 12 or (currentGameTime > 12 and currentGameTime < 13) then
-				if GetData("#AldermanChooser") == GetID("") then
-					citypinghour_CheckAlderman()
-				end
-			end
-			
-			if GetRound() > 2 then
-				if currentGameTime == 21 or (currentGameTime > 21 and currentGameTime < 22) then
-					if GetData("#ImperialChooser") == GetID("") then
-						gameplayformulas_CheckImperialOfficer()
-					end
-				end
-			end
-		end
-		
-	------------------------------------------------------------------------------
-	--  deactivated only for testing # Fajeth
-		if (currentGameTime == 1) then	
-			
-			-- check weather (stop raining if it bugs!)
-			Weather_SetWeather("Fine", 4.0)
-			
-			-- -----------------------
-			-- City Treasury
-			-- -----------------------
-		
-			local TaxValue = 0 + GetProperty("", "TurnoverTax")
-			local Tax = 0
-			local cost = 0
-			local repairTotal = 0
-			local repairedbuildings = 0
-			local Alias, WorkshopLvl
-	
-			-- taxes (income)
-			local WorkshopCount = CityGetBuildings("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Workshop") -- for the message
-			SetProperty("", "Workshops", WorkshopCount)
-			
-			CityGetLocalMarket("", "Market")
-			local TurnoverTax = 0 + GetProperty("", "TurnoverTax")
-			
-			-- tax efficiency
-			local Tax1 = 0.15 -- cat 1 raw
-			local Tax2 = 0.40 -- cat 2 food
-			local Tax3 = 0.50 -- cat 3 handi
-			local Tax4 = 0.40 -- cat 4 schol
-			local Tax5 = 0.50 -- cat 5 herbs
-			local Tax6 = 0.50 -- cat 6 iron
-			
-			local ItemToCheck, ItemCat, ItemCount
-
-			local Sum1 = 0
-			local Sum2 = 0
-			local Sum3 = 0
-			local Sum4 = 0
-			local Sum5 = 0
-			local Sum6 = 0
-			
-			for i=0, 166 do
-				local BaseValue = 0
-				ItemToCheck = GetDatabaseValue("ItemsToMarket", i, "name")
-				
-				if ItemToCheck and ItemToCheck ~= nil and ItemToCheck ~= "" then
-					ItemCat = ItemGetCategory(ItemToCheck)
-					ItemCount = GetItemCount("Market", ItemToCheck)
-					if ItemCat == 1 then
-						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax1
-						Sum1 = math.floor(Sum1 + (BaseValue*(TurnoverTax/100)))
-					elseif ItemCat == 2 then
-						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax2
-						Sum2 = math.floor(Sum2 + (BaseValue*(TurnoverTax/100)))
-					elseif ItemCat == 3 then
-						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax3
-						Sum3 = math.floor(Sum3 + (BaseValue*(TurnoverTax/100)))
-					elseif ItemCat == 4 then
-						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax4
-						Sum4 = math.floor(Sum4 + (BaseValue*(TurnoverTax/100)))
-					elseif ItemCat == 5 then
-						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax5
-						Sum5 = math.floor(Sum5 + (BaseValue*(TurnoverTax/100)))
-					else
-						BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax6
-						Sum6 = math.floor(Sum6 + (BaseValue*(TurnoverTax/100)))
-					end
-				
-				end
-			end
-			
-			Tax = Sum1 + Sum2 + Sum3 + Sum4 + Sum5 + Sum6
-			
-			LogMessage("Total Taxes for"..GetName("").." is "..Tax.." Raw Material is "..Sum1.." Food is "..Sum2.." Handi is "..Sum3.." Schol is "..Sum4.." Herbs is "..Sum5.." Ironstuff is "..Sum6)
-			
-				
-			if Tax >0 then
-				CreditMoney("", Tax, "Tax")
-			end
-			
-			SetProperty("", "TaxValue", TaxValue) -- for the message
-			SetProperty("", "TaxMoney", Tax) -- for the message
-			SetProperty("", "TaxRaw", Sum1)
-			SetProperty("", "TaxFood", Sum2)
-			SetProperty("", "TaxHandi", Sum3)
-			SetProperty("", "TaxSchol", Sum4)
-			SetProperty("", "TaxHerbs", Sum5)
-			SetProperty("", "TaxIron", Sum6)
-			
-			-- nobility titles (income)
-			local NobilityMoney = 0
-			if HasProperty("", "NobilityMoney") then
-				NobilityMoney = GetProperty("", "NobilityMoney")
-			end
-			SetProperty("", "NobilityMoneyLY", NobilityMoney)
-			SetProperty("", "NobilityMoney", 0)
-			
-			-- land tax (income)
-			
-			
-			-- fees (income)
-			
-			
-			-- trials (income)
-			
-				
-			-- offices (costs)
-			local officecostsTotal = gameplayformulas_GetTotalOfficeIncome("")
-			if officecostsTotal > 0 then
-				if GetMoney("") > officecostsTotal then
-					SpendMoney("", officecostsTotal, "OfficeIncome")				
-				else
-					local tmpcosts = GetMoney("")
-					SpendMoney("", tmpcosts, "OfficeIncome")				
-				end
-			end
-			SetProperty("", "OfficeMoney", officecostsTotal)
-			
-			LogMessage("Office Costs for "..GetName("").." is "..officecostsTotal)
-			
-			-- guards (costs)
-			local Cityguards, Eliteguards = economy_CityGetGuardCount("")
-			local Totalguards = Cityguards + Eliteguards
-			LogMessage(GetName("").." hat insgesamt "..Totalguards.." Stadtwachen")
-			
-			-- weapons (costs)
-			
-			
-			-- servants (costs)
-			local Servants = economy_CityGetServantCount("")
-			LogMessage(GetName("").." hat insgesamt "..Servants.." Stadtbedienstete")
-			
-			-- repair for residences without owner (costs)
-			local FreeResidenceCount = CityGetBuildings("", nil, GL_BUILDING_TYPE_RESIDENCE, -1, -1, FILTER_IS_BUYABLE, "FreeResidence")
-			for f=0, FreeResidenceCount-1 do
-				Alias = "FreeResidence"..f
-				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias) < GetMaxHP(Alias)) then
-					cost = BuildingGetRepairPrice(Alias)
-	
-					if GetMoney("") > cost then
-						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
-						ModifyHP(Alias, (GetMaxHP(Alias) - GetHP(Alias)), false)
-						repairTotal = repairTotal + cost
-					end
-				end
-			end
-	
-			-- repair for workshops without owner (costs)
-			local FreeWorkshopCount = CityGetBuildings("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IS_BUYABLE, "FreeWorkshop")
-			for f=0,FreeWorkshopCount-1 do
-				Alias = "FreeWorkshop"..f
-				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias)<GetMaxHP(Alias)) then
-					cost = BuildingGetRepairPrice(Alias)
-	
-					if GetMoney("") > cost then
-						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
-						ModifyHP(Alias, (GetMaxHP(Alias)-GetHP(Alias)), false)
-						repairTotal = repairTotal + cost
-					end
-				end
-			end
-	
-			SetProperty("", "repairedbuildings", repairedbuildings)
-			SetProperty("", "BuildingRepairs", repairTotal)
-			
-			-- test
-			local Test = CityGetServantCount("", GL_PROFESSION_PEASANT)
-			LogMessage(GetName("").." hat insgesamt "..Test.." Bauern")
-			
-			local Test2 = CityGetServantCount("", GL_PROFESSION_THIEF)
-			LogMessage(GetName("").." hat insgesamt "..Test2.." Diebe")
-			
-			-- -----------------------
-			-- City Clergy
-			-- -----------------------
-			
-			local ChurchTithe = 0 + GetProperty("", "ChurchTithe")
-			if not HasProperty("", "ChurchTreasury") then
-				SetProperty("", "ChurchTreasury", 1000)
-			end
-			local ChurchTreasury = 0 + GetProperty("", "ChurchTreasury")
-			
-			-- unemployed count
-			local NumUnemployed = economy_CityGetUnemployedCount("")
-			
-			LogMessage(GetName("").." hat genau "..NumUnemployed.." Arbeitslose gefunden")
-			
-			-- repair costs for workerhuts
-			local WorkerhutCount = CityGetBuildings("", -1, GL_BUILDING_TYPE_WORKER_HOUSING, 1, -1, FILTER_IGNORE, "Workerhut")
-			for f=0,WorkerhutCount-1 do
-				Alias = "Workerhut"..f
-				if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias)<GetMaxHP(Alias)) then
-					cost = BuildingGetRepairPrice(Alias)
-	
-					if GetMoney("") > cost then
-						repairedbuildings = repairedbuildings + 1
-						SpendMoney("", cost, "BuildingRepairs")				
-						ModifyHP(Alias,(GetMaxHP(Alias)-GetHP(Alias)),false)
-						repairTotal = repairTotal + cost
-					end
-				end
-			end
-
-			local WarMoney = 0
-			if HasProperty("", "Warcosts") then
-				WarMoney = GetProperty("", "Warcosts")
-			end
-			SetProperty("", "WarcostsLY", WarMoney)
-			SetProperty("", "Warcosts", 0)
-
+	-- get important things rolling
+	if GetData("#AldermanChooser") == nil or GetData("#AldermanChooser") == 0 then
+		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+			SetData("#AldermanChooser", GetID(""))
 		end
 	end
+		
+	if GetData("#ImperialChooser") == nil or GetData("#ImperialChooser") == 0 then
+		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+			SetData("#ImperialChooser",GetID(""))
+		end
+	end
+		
+	-- check the town
+	if ScenarioGetTimePlayed() > 4 then
+		
+		if Level == 1 then
+			-- kontor city - do nothing here
+			return
+		elseif Level == 2 then
+			citypinghour_CheckVillage()
+		elseif Level == 3 then
+			citypinghour_CheckSmallTown()
+		elseif Level == 4 then
+			citypinghour_CheckTown()
+		elseif Level == 5 then
+			citypinghour_CheckCapital()
+		elseif Level == 6 then
+			citypinghour_CheckCapital()
+		end
+			
+		if ScenarioGetTimePlayed() > 16 then
+			citypinghour_CheckCrimes()
+		end
+	end
+		
+	-- get special events rolling
+	if GetRound() > 1 then
+		
+		if GetData("#MusiciansChooser") == nil then
+			SetData("#MusiciansChooser", GetID(""))
+		elseif GetData("#MusiciansChooser") == 0 then
+			SetData("#MusiciansChooser", GetID(""))
+		end
+			
+		if GetData("#MusiciansChooser") == GetID("") then
+			citypinghour_CheckMusicians()
+		end
+			
+		if currentGameTime == 12 or (currentGameTime > 12 and currentGameTime < 13) then
+			if GetData("#AldermanChooser") == GetID("") then
+				citypinghour_CheckAlderman()
+			end
+		end
+			
+		if GetRound() > 2 then
+			if currentGameTime == 21 or (currentGameTime > 21 and currentGameTime < 22) then
+				if GetData("#ImperialChooser") == GetID("") then
+					gameplayformulas_CheckImperialOfficer()
+				end
+			end
+		end
+	end
+		
+	------------------------------------------------------------------------------
+	if (currentGameTime == 1) then	
+			
+		-- check weather (stop raining if it bugs!)
+		Weather_SetWeather("Fine", 4.0)
+		citypinghour_CityBalance()	
+	end
+end
+
+function CityBalance()
+	-- -----------------------
+	-- City Treasury (Income + Cost)
+	-- -----------------------
+	local TurnoverTax = GetProperty("", "TurnoverTax") or 0
+	SetProperty("", "TaxValue", TurnoverTax) -- save it for the balance
+	local ChurchTithe = GetProperty("", "ChurchTithe") or 0
+	SetProperty("", "TitheValue", ChurchTithe)
+	local IncomeTotal = 0
+	local CostTotal = 0
+	local repairTotal = 0
+	local Alias, WorkshopLvl
+	
+	-- Taxes from market (income)
+	CityGetLocalMarket("", "Market")
+			
+	-- Tax efficiency
+	local Tax1 = 0.15 -- cat 1 raw
+	local Tax2 = 0.35 -- cat 2 food
+	local Tax3 = 0.40 -- cat 3 handi
+	local Tax4 = 0.40 -- cat 4 schol
+	local Tax5 = 0.40 -- cat 5 herbs
+	local Tax6 = 0.40 -- cat 6 iron
+	
+	local ItemToCheck, ItemCat, ItemCount
+
+	local Sum1 = 0
+	local Sum2 = 0
+	local Sum3 = 0
+	local Sum4 = 0
+	local Sum5 = 0
+	local Sum6 = 0
+	local ChurchIncome = 0
+			
+	for i=0, 166 do
+		local BaseValue = 0
+		ItemToCheck = GetDatabaseValue("ItemsToMarket", i, "name")
+				
+		if ItemToCheck and ItemToCheck ~= nil and ItemToCheck ~= "" then
+			ItemCat = ItemGetCategory(ItemToCheck)
+			ItemCount = GetItemCount("Market", ItemToCheck)
+			if ItemCat == 1 then
+				BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax1
+				Sum1 = math.floor(Sum1 + (BaseValue*(TurnoverTax/100)))
+				ChurchIncome = math.floor(ChurchIncome + (BaseValue*(ChurchTithe/100)))
+			elseif ItemCat == 2 then
+				BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax2
+				Sum2 = math.floor(Sum2 + (BaseValue*(TurnoverTax/100)))
+				ChurchIncome = math.floor(ChurchIncome + (BaseValue*(ChurchTithe/100)))
+			elseif ItemCat == 3 then
+				BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax3
+				Sum3 = math.floor(Sum3 + (BaseValue*(TurnoverTax/100)))
+				ChurchIncome = math.floor(ChurchIncome + (BaseValue*(ChurchTithe/100)))
+			elseif ItemCat == 4 then
+				BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax4
+				Sum4 = math.floor(Sum4 + (BaseValue*(TurnoverTax/100)))
+				ChurchIncome = math.floor(ChurchIncome + (BaseValue*(ChurchTithe/100)))
+			elseif ItemCat == 5 then
+				BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax5
+				Sum5 = math.floor(Sum5 + (BaseValue*(TurnoverTax/100)))
+				ChurchIncome = math.floor(ChurchIncome + (BaseValue*(ChurchTithe/100)))
+			else
+				BaseValue = ItemCount*ItemGetBasePrice(ItemToCheck)*Tax6
+				Sum6 = math.floor(Sum6 + (BaseValue*(TurnoverTax/100)))
+				ChurchIncome = math.floor(ChurchIncome + (BaseValue*(ChurchTithe/100)))
+			end
+		end
+	end
+			
+	IncomeTotal = Sum1 + Sum2 + Sum3 + Sum4 + Sum5 + Sum6
+			
+	SetProperty("", "ChurchIncome", ChurchIncome)
+	SetProperty("", "TaxRaw", Sum1)
+	SetProperty("", "TaxFood", Sum2)
+	SetProperty("", "TaxHandi", Sum3)
+	SetProperty("", "TaxSchol", Sum4)
+	SetProperty("", "TaxHerbs", Sum5)
+	SetProperty("", "TaxIron", Sum6)
+			
+	-- nobility titles (income)
+	local NobilityMoney = GetProperty("", "NobilityMoney") or 0
+	SetProperty("", "NobilityMoneyLY", NobilityMoney)
+	SetProperty("", "NobilityMoney", 0)
+			
+	-- fees (income)
+	local Fees = GetProperty("", "CityFees") or 0
+	SetProperty("", "CityFeesLY", Fees)
+	SetProperty("", "CityFees", 0)
+			
+	-- trials (income)
+	local TrialIncome = GetProperty("", "TrialIncome") or 0
+	SetProperty("", "TrialIncomeLY", TrialIncome)
+	SetProperty("", "TrialIncome", 0)
+		
+	-- add it
+	IncomeTotal = IncomeTotal + TrialIncome + Fees + NobilityMoney
+	SetProperty("", "TotalIncome", IncomeTotal) -- for the balance
+	CreditMoney("", IncomeTotal, "misc")
+				
+	-- offices (costs)
+	local officecostsTotal = gameplayformulas_GetTotalOfficeIncome("")
+	CostTotal = officecostsTotal
+	SetProperty("", "OfficeMoney", officecostsTotal)
+		
+	-- guards (costs)
+	local Cityguards, Eliteguards = economy_CityGetGuardCount("")
+	local CostCG = Cityguards * 150 or 0
+	local CostEG = Eliteguards * 100 or 0
+	SetProperty("", "CityGC", CostCG)
+	SetProperty("", "EliteGC", CostEG)
+	CostTotal = CostTotal + CostCG + CostEG
+			
+	-- servants (costs)
+	local Servants = economy_CityGetServantCount("")
+	local ServCost = Servants * 200
+	SetProperty("", "ServantCost", ServCost)
+	CostTotal = CostTotal + ServCost
+			
+	-- repair buildings without owner (costs)
+	local FreeBuildings = CityGetBuildings("", -1, -1, -1, -1, FILTER_NO_DYNASTY, "FreeBuilding")
+	for f=0, FreeBuildings-1 do
+		Alias = "FreeBuilding"..f
+		if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias) < GetMaxHP(Alias)) then
+			cost = BuildingGetRepairPrice(Alias)
+			if GetMoney("") > cost then
+				ModifyHP(Alias, (GetMaxHP(Alias) - GetHP(Alias)), false)
+				repairTotal = repairTotal + cost
+			end
+		end
+	end
+		
+	-- -----------------------
+	-- War
+	-- -----------------------
+	local WarMoney = 0
+		
+	if HasProperty("", "Warcosts") then
+		WarMoney = GetProperty("", "Warcosts")
+	end
+		
+	SetProperty("", "WarcostsLY", WarMoney)
+	SetProperty("", "Warcosts", 0)
+		
+	-- pay
+	SetProperty("", "BuildingRepairs", repairTotal)
+	CostTotal = CostTotal + WarMoney + repairTotal
+	SetProperty("", "TotalCost", CostTotal)
+	SpendMoney("", CostTotal, "misc", true)
+			
+	-- -----------------------
+	-- City Clergy
+	-- -----------------------
+	if not HasProperty("", "ChurchTreasury") then
+		SetProperty("", "ChurchTreasury", 1000)
+	end
+		
+	local ChurchTreasury = GetProperty("", "ChurchTreasury")
+	ChurchTreasury = ChurchTreasury + ChurchIncome
+		
+	-- unemployed count
+	local NumUnemployed = economy_CityGetUnemployedCount("")
+	local NewCost = 100*NumUnemployed
+	SetProperty("", "UnemployedCost", NewCost)
+			
+	ChurchTreasury = ChurchTreasury - NewCost
+	SetProperty("", "ChurchTreasury", ChurchTreasury)
+			
+	-- send message to all politicians of the City
+	feedback_CityBalanceRound("")
 end
 
 function CheckMusicians()
