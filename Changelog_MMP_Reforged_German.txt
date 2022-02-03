@@ -9,7 +9,8 @@ GUI: MoK, Fajeth, Napi96
 2D: Fajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii
 3D Objects: Ictiv 
 Zusätzlicher Support: MoK, VSX, McCoy!, sublogic, Sunpack, nirvana, Scandal, Napi96, Zbombe, Jedi93, barra81, Dogus + Die Gilde 2 Community!
-Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee, Daimyo21, Settembrini
+Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee, Daimyo21, Settembrini,
+                  BubblesTheRoo, Craftgeeking
 
 Lokalisierung:
 Deutsch: Fajeth, ThreeOfMe
