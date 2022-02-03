@@ -12,7 +12,6 @@
 15 Scripts\AI\BaseTree\CheckDynasty\Medicus.lua
 16 Scripts\AI\BaseTree\CheckDynasty\Poisoned.lua
 17 Scripts\AI\BaseTree\CheckDynasty\Shadow.lua
-18 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_AdministrateDiplomacy.lua
 19 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_AdoptOrphan.lua
 20 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_ApplyForOffice.lua
 21 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_Banned.lua
@@ -61,10 +60,8 @@
 64 Scripts\AI\BaseTree\CheckDynasty\Defend\def_BuyWeapon.lua
 65 Scripts\AI\BaseTree\CheckDynasty\Defend\def_MineGuards.lua
 66 Scripts\AI\BaseTree\CheckDynasty\Defend\def_UsePrivilege.lua
-67 Scripts\AI\BaseTree\CheckDynasty\Defend\di_RemovePamphlet.lua - MERGED
 68 Scripts\AI\BaseTree\CheckDynasty\Shadow\shad_RemovePamphlet.lua
 69 Scripts\AI\BaseTree\CheckDynasty\Shadow\shad_SellWorkshop.lua
-70 Scripts\AI\BaseTree\CheckGuildHouse\AIBuyRawMaterial.lua
 71 Scripts\AI\BaseTree\CheckGuildHouse\AIContractGuildHouse.lua
 72 Scripts\AI\BaseTree\CheckGuildHouse\AIGuildHouseDoNothing.lua
 73 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Attack.lua
@@ -119,7 +116,6 @@
 372 Scripts\Library\diseasedbuilding.lua
 373 Scripts\Library\diseases.lua
 374 Scripts\Library\dyn.lua
-375 Scripts\Library\economy.lua
 376 Scripts\Library\emotes.lua
 377 Scripts\Library\f.lua
 378 Scripts\Library\feedback.lua
@@ -127,8 +123,6 @@
 381 Scripts\Library\helpfuncs.lua
 382 Scripts\Library\idlelib.lua
 384 Scripts\Library\mission.lua
-385 Scripts\Library\officesessioninvite.lua
-386 Scripts\Library\Speech.lua
 387 Scripts\Library\srv.lua
 388 Scripts\Library\stdafx.lua
 389 Scripts\Library\talk.lua

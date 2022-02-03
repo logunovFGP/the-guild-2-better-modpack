@@ -201,20 +201,8 @@ Data:
 282   "CanUseFragranceOfHoliness"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 283   "IsResourceMeasure"   "__F((Object.BelongsToMe())AND(Object.IsResourceMeasure()))"   |
 284   "CanLinger"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==600)AND(Object.IsType(32)))"   |
-286   "CanUseCutsceneFragranceOfHoliness"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneFragranceOfHoliness))AND (Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
-287   "CanUseCutsceneLetterFromRome"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneLetterFromRome))AND(Object.GetItemCnt(LetterFromRome)>0)AND NOT(Object.GetState(fighting)))"   |
-288   "CanUseCutsceneAboutTalents1"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneAboutTalents1))AND(Object.GetItemCnt(AboutTalents1)>0)AND NOT(Object.GetState(fighting)))"   |
-289   "CanUseCutsceneFlowerOfDiscord"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneFlowerOfDiscord))AND(Object.GetItemCnt(FlowerOfDiscord)>0)AND NOT(Object.GetState(fighting)))"   |
-290   "CanUseCutscenePerfume"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutscenePerfume))AND(Object.GetItemCnt(Perfume)>0)AND NOT(Object.GetState(fighting)))"   |
-291   "CanUseCutscenePoem"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutscenePoem))AND(Object.GetItemCnt(Poem)>0)AND NOT(Object.GetState(fighting)))"   |
-292   "CanUseCutsceneThesisPaper"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneThesisPaper))AND(Object.GetItemCnt(ThesisPaper)>0)AND NOT(Object.GetState(fighting)))"   |
-295   "CanUseCutsceneHaveAStabbingGaze"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneHaveAStabbingGaze))AND(Object.HasImpact(UncannyGlare)))"   |
-296   "CanUseCutsceneMakeACompliment"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneMakeACompliment)))"   |
-297   "CanUseCutsceneFlirt"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneFlirt)))"   |
-298   "CanUseCutsceneThreatCharacter"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneThreatCharacter)))"   |
 299   "CanUseDrFaustusElixir"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(DrFaustusElixir)>0)AND NOT(Object.GetState(fighting)))"   |
 300   "CanUseToadSlime"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Toadslime)>0)AND NOT(Object.GetState(fighting)))"   |
-301   "CanUseCutsceneAboutTalents2"   "__F((Object.CanBeControlledInCutscene())AND (Object.HasProperty(CutsceneAboutTalents2))AND(Object.GetItemCnt(AboutTalents2)>0)AND NOT(Object.GetState(fighting)))"   |
 302   "CanPoisonWell"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(16))AND(Object.GetLevel()>=2)ANDObject.HasUpgrade(AlchimistCellar)))"   |
 303   "IsWell"   "__F((Object.IsType(24))AND NOT(Object.HasImpact(polluted)))"   |
 304   "CanUseHolyWater"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(HolyWater)>0)AND NOT(Object.GetState(fighting)))"   |
@@ -237,7 +225,6 @@ Data:
 323   "InstantSawField"   "__F(NOT(Object.CanBeGathered())AND (Object.IsResourceMeasure()))"   |
 324   "CanTakeABath"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND(Object.HasUpgrade(BathingRoom)))"   |
 325   "IsMyCityGuardInBuilding"   "__F((Object.PlayerHasOfficeImpact('CommandCityGuard'))AND(Object.GetProfession()== 21)AND(Object.IsInBuilding()))"   |
-356   "CanUseCutsceneCanDuel"   "__F((Object.CanBeControlledInCutscene())AND(Object.HasProperty(CutsceneInsult))AND(Object.BelongsToMe())AND(Object.HasMinNobilityTitle(6)))"   |
 358   "IsMyWorkingBuilding"   "__F((Object.CanBeControlled())AND (Object.IsClass(2)))"   |
 359   "CanBuyNobilityTitle"   "__F((Object.CanBeControlled())AND NOT(Object.GrantInProgress())AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
 360   "NotInsideBuilding"   "__F(NOT(Object.IsInBuilding()))"   |
@@ -356,54 +343,6 @@ Data:
 529   "IsInGuildHouseArtisanMaster"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.Property.ArtisanMaster>0)OR(Object.Property.Alderman>0)AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
 530   "IsInGuildHouseScholarMaster"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.Property.ScholarMaster>0)OR(Object.Property.Alderman>0)AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
 531   "IsInGuildHouseChiselerMaster"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.Property.ChiselerMaster>0)OR(Object.Property.Alderman>0)AND(Object.GetInsideBuilding())AND(Object.IsType(26)))"   |
-532   "CanUnpackIronBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(IronBox1)>0))"   |
-533   "CanUnpackIronBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(IronBox2)>0))"   |
-534   "CanUnpackIronBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(IronBox3)>0))"   |
-535   "CanUnpackSilverBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(SilverBox1)>0))"   |
-536   "CanUnpackSilverBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(SilverBox2)>0))"   |
-537   "CanUnpackSilverBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(SilverBox3)>0))"   |
-538   "CanUnpackGoldBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(GoldBox1)>0))"   |
-539   "CanUnpackGoldBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(GoldBox2)>0))"   |
-540   "CanUnpackGoldBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(GoldBox3)>0))"   |
-541   "CanUnpackFungiBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FungiBox1)>0))"   |
-542   "CanUnpackFungiBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FungiBox2)>0))"   |
-543   "CanUnpackFungiBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FungiBox3)>0))"   |
-544   "CanUnpackLeatherBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(LeatherBox1)>0))"   |
-545   "CanUnpackLeatherBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(LeatherBox2)>0))"   |
-546   "CanUnpackLeatherBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(LeatherBox3)>0))"   |
-547   "CanUnpackOakwoodBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(OakwoodBox1)>0))"   |
-548   "CanUnpackOakwoodBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(OakwoodBox2)>0))"   |
-549   "CanUnpackOakwoodBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(OakwoodBox3)>0))"   |
-550   "CanUnpackPinewoodBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(PinewoodBox1)>0))"   |
-551   "CanUnpackPinewoodBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(PinewoodBox2)>0))"   |
-552   "CanUnpackPinewoodBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(PinewoodBox3)>0))"   |
-553   "CanUnpackBarleyBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(BarleyBox1)>0))"   |
-554   "CanUnpackBarleyBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(BarleyBox2)>0))"   |
-555   "CanUnpackBarleyBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(BarleyBox3)>0))"   |
-556   "CanUnpackWheatBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WheatBox1)>0))"   |
-557   "CanUnpackWheatBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WheatBox2)>0))"   |
-558   "CanUnpackWheatBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WheatBox3)>0))"   |
-559   "CanUnpackWoolBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WoolBox1)>0))"   |
-560   "CanUnpackWoolBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WoolBox2)>0))"   |
-561   "CanUnpackWoolBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WoolBox3)>0))"   |
-562   "CanUnpackHerringBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(HerringBox1)>0))"   |
-563   "CanUnpackHerringBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(HerringBox2)>0))"   |
-564   "CanUnpackHerringBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(HerringBox3)>0))"   |
-565   "CanUnpackMediPackBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(MediPackBox1)>0))"   |
-566   "CanUnpackMediPackBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(MediPackBox2)>0))"   |
-567   "CanUnpackMediPackBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(MediPackBox3)>0))"   |
-568   "CanUnpackWeaponsBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WeaponsBox1)>0))"   |
-569   "CanUnpackWeaponsBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WeaponsBox2)>0))"   |
-570   "CanUnpackWeaponsBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(WeaponsBox3)>0))"   |
-571   "CanUnpackArmorsBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(ArmorsBox1)>0))"   |
-572   "CanUnpackArmorsBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(ArmorsBox2)>0))"   |
-573   "CanUnpackArmorsBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(ArmorsBox3)>0))"   |
-574   "CanUnpackCamouflageCloakBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(CamouflageCloakBox1)>0))"   |
-575   "CanUnpackCamouflageCloakBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(CamouflageCloakBox2)>0))"   |
-576   "CanUnpackCamouflageCloakBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(CamouflageCloakBox3)>0))"   |
-577   "CanUnpackMeadBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(MeadBox1)>0))"   |
-578   "CanUnpackMeadBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(MeadBox2)>0))"   |
-579   "CanUnpackMeadBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(MeadBox3)>0))"   |
 580   "IsMyHospital"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(37)))"   |
 581   "GuildNewsletter"   "__F((Object.CanBeControlled())AND(Object.HasUpgrade(GuildNewsletter)))"   |
 582   "StrongBox"   "__F((Object.CanBeControlled())AND(Object.HasUpgrade(StrongBox)))"   |
@@ -414,9 +353,6 @@ Data:
 588   "CanUseParalysisPoison"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(ParalysisPoison)>0)AND NOT(Object.GetState(fighting)))"   |
 589   "CanUseBlackWidowPoison"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(BlackWidowPoison)>0)AND NOT(Object.GetState(fighting)))"   |
 590   "CanUseAntidote"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Antidote)>0)AND NOT(Object.GetState(fighting))AND(Object.HasImpact(poisoned)))"   |
-592   "CanUnpackCharcoalBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(CharcoalBox1)>0))"   |
-593   "CanUnpackCharcoalBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(CharcoalBox2)>0))"   |
-594   "CanUnpackCharcoalBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(CharcoalBox3)>0))"   |
 595   "CanBuildPirateShip"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(11))AND(Object.LacksProperty('pirateship')))"   |
 596   "CanBeWorldTrader"   "__F((Object.Type==Vehicle)AND NOT(Object.CanBeControlled()))"   |
 597   "CanManageProduction"   "__F((Object.CanBeControlled())AND(Object.IsType(4))OR(Object.IsType(6))OR(Object.IsType(7))OR(Object.IsType(8))OR(Object.IsType(9))OR(Object.IsType(19))OR(Object.IsType(20)))"   |
@@ -470,12 +406,6 @@ Data:
 1521   "KannStadtUpgrade"   "__F((Object.PlayerHasOfficeImpact('TurnoverTax')))"   |
 1522   "CanUseKnochenarmreif"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Knochenarmreif)>0)AND NOT(Object.GetState(fighting))AND NOT(Object.HasImpact(jewellery)))"   |
 1523   "CanEatDrink"   "__F((Object.CanBeControlled())AND NOT(Object.GetState(fighting)))"   |
-1524   "CanUnpackHoneyBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(HoneyBox1)>0))"   |
-1525   "CanUnpackHoneyBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(HoneyBox2)>0))"   |
-1526   "CanUnpackHoneyBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(HoneyBox3)>0))"   |
-1527   "CanUnpackFruitBox1"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FruitBox1)>0))"   |
-1528   "CanUnpackFruitBox2"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FruitBox2)>0))"   |
-1529   "CanUnpackFruitBox3"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FruitBox3)>0))"   |
 1530   "CanMarry"   "__F((Object.CanBeControlled())AND(Object.CanCourt())AND NOT(Object.IsMarried()) AND NOT (Object.HasProperty(Guarding)))"   |
 1531   "IsTownHallAndNoMultiplayer"   "__F((Object.IsType(23))AND NOT(Object.IsMultiplayer()))"   |
 1532   "CanDoRazzia"   "__F((Object.CanBeControlled())AND(Object.IsClass(4))AND(Object.GetOwnedBuildings())AND(Object.IsType(21))AND(Object.HasUpgrade(PlanOfSite)))"   |

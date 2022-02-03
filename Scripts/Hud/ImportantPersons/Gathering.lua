@@ -193,9 +193,8 @@ function IsUnemployedSim(Alias)
 	
 	local IsUnemployed = false
 	if not IsDynastySim(Alias)                              -- Is not a member of a dynasty
-		and not DynastyIsShadow(Alias) -- no shadows
 		and GetDynastyID(Alias) < 1
-		and (SimGetProfession(Alias) == 0)                      -- Is unemployed
+		and (SimGetWorkingPlaceID(Alias) < 1)                      -- Is unemployed
 		and (SimGetAge(Alias) >= 17)                            -- Is old enough to work
 		and (GetSettlementID(Alias) == GetSettlementID(""))     -- Lives in same settlement
 		and not SimGetCourtLover(Alias, "MyLover")
@@ -203,10 +202,6 @@ function IsUnemployedSim(Alias)
 		and not GetStateImpact(Alias, "no_hire")
 		and not HasProperty(Alias, "courted")
 		and not HasProperty(Alias, "NotAffectable")
-		and not GetState(Alias, STATE_NPC)
-		and not GetState(Alias, STATE_NPCFIGHTER)
-		and not GetState(Alias, STATE_TOWNNPC)
-		
 	then
 		IsUnemployed = true
 		SimSetHireable(Alias, true)
