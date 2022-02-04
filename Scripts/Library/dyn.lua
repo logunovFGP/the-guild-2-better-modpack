@@ -532,7 +532,7 @@ function GetNameLabel(SimAlias, ParameterIndex)
 	end
 	
 	local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") or 16 
-	local Offset = Math.min(16, MyFlag) * 4 + ParameterIndex
+	local Offset = math.min(16, MyFlag) * 4 + ParameterIndex
 	return MyLabel .. Offset
 end
 

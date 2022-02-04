@@ -507,7 +507,7 @@ function VoteForOffice(Office)
 		if( SimOfficeID ~= OfficeID ) then
 			if (officesession_SimIsInTownhall("Applicant"..i)) then
 				officesession_SimCam("Applicant"..i, 0, 0)
-				MsgSay("Chairman", "%1SN", GetID("Applicant"..i))
+				MsgSay("Chairman", dyn_GetNameLabel("Applicant"..i, 1), GetID("Applicant"..i))
 			end
 			
 			if CutsceneLocalPlayerIsWatching("") then
@@ -750,15 +750,6 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 
 function DoVote(VoterAlias,OfficeAlias,ApplicantAlias, ApplicantCnt)
-
-	local ApplicantIDArray = { 0, 0, 0, 0}
-	local ApplicantIDCnt = 0	
-	local CommandIdx = 3
-	local ButtonLabel = "@B[0,@L%"..CommandIdx.."SN]"
-	ApplicantIDArray[ApplicantIDCnt] = GetID(ApplicantAlias..0)
-	ApplicantIDCnt = ApplicantIDCnt + 1	
-	CommandIdx = CommandIdx + 1	
-
 --	Check if the Voter is maybe an applicant of the current office run, security task
 	for CheckApp = 0,ApplicantCnt-1 do
 		if (GetID(VoterAlias) == GetID(ApplicantAlias..CheckApp)) then
@@ -766,32 +757,29 @@ function DoVote(VoterAlias,OfficeAlias,ApplicantAlias, ApplicantCnt)
 		end
 	end
 
-	for App = 1, ApplicantCnt-1 do
-		local SimExists = GetAliasByID(GetID(ApplicantAlias..App), "ExistingSim")
+	local ButtonLabel = "@P"
+	for i = 0, ApplicantCnt-1 do
+		local SimExists = GetAliasByID(GetID(ApplicantAlias..i), "ExistingSim")
 			
 		if (GetID(VoterAlias) == GetID("ExistingSim")) then
 			return -1
 		end
 
 		if(SimExists == true) then
-			if officesession_SimIsInTownhall(ApplicantAlias..App) == true then
-				ButtonLabel = ButtonLabel.."@B["..App..",@L"..GetName(ApplicantAlias..App).."]"
-				ApplicantIDArray[ApplicantIDCnt] = GetID(ApplicantAlias..App)
-				ApplicantIDCnt = ApplicantIDCnt + 1	
-				CommandIdx = CommandIdx + 1				
+			if officesession_SimIsInTownhall(ApplicantAlias..i) == true then
+				ButtonLabel = ButtonLabel.."@B["..i..","..dyn_GetNameLabel(ApplicantAlias..i, i+1).."]"
 			end
 		end
 	end
 
 	ButtonLabel = ButtonLabel.."@B[-1,@L_SESSION_+0]"
 
-	ButtonLabel = ButtonLabel.."@P"
-
 	local Res
 
+	-- TODO ApplicantIDArray may have less entries
 	Res = MsgSayInteraction(VoterAlias, VoterAlias, 0, 
 						ButtonLabel, officesession_AIAbstimmung, "@L_SESSION_3_ELECT_PLAYER", 
-						VoterAlias, GetID(VoterAlias), ApplicantIDArray[0], ApplicantIDArray[1], ApplicantIDArray[2], ApplicantIDArray[3])
+						GetID(ApplicantAlias..0), GetID(ApplicantAlias..1), GetID(ApplicantAlias..2), GetID(ApplicantAlias..3), GetID(VoterAlias))
 	if Res == "C" then
 		Res = -1
 	end
