@@ -737,6 +737,9 @@ Translate and add the following lines below:
 19162   "_DYNASTY_FLAG_SWITCH_+66"   "$S[2045] %2SN"   |
 19163   "_DYNASTY_FLAG_SWITCH_+67"   "$S[2045] %3SN"   |
 19164   "_DYNASTY_FLAG_SWITCH_+68"   "$S[2045] %4SN"   |
+19165   "_MEASURE_BauArbeitMeasure_NAME_+0"   "Construct Building"   |
+19166   "_MEASURE_BauZusatzMeasure_NAME_+0"   "Construct Building"   |
+19167   "_MEASURE_Linger_TARGET_+0"   "Select the place where you want to rest."   |
 
 
 -------
