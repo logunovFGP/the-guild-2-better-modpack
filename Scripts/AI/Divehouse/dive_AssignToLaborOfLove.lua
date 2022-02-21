@@ -4,10 +4,6 @@ function Weight()
 		return 0
 	end
 	
-	if IsDynastySim("SIM") then
-		return 0
-	end	
-
 	if not SimGetWorkingPlace("SIM", "WorkBuilding") then
 		return 0
 	end
