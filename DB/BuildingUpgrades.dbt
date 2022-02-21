@@ -661,7 +661,7 @@ Data:
 2537             240              "SpyGlass"                  1                     1                 15                   700                  2507              0                 0               -1         |
 2538             241              "LetAbducteeOut"            1                     1                 0                    670                  0                 0                 0               -1         |
 2539             241              "DemandRansom"              1                     1                 0                    690                  0                 0                 0               -1         |
-2540             241              "PrisonDoor"                1                     0                 15                   10920                2507              0                 500             0          |
+2540             241              "PrisonDoor"                1                     0                 15                   650                  2507              0                 500             0          |
 2541             240              "PicklockCasket"            1                     1                 15                   660                  2507              0                 0               -1         |
 2542             240              "DaggerCollection"          1                     1                 15                   680                  2507              0                 0               -1         |
 2543             240              "TrickBox"                  2                     0                 25                   1                    2507              0                 500             0          |
