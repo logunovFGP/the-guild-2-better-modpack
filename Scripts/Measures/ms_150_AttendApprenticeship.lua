@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_AttendApprenticeship"
+----	OVERVIEW "ms_150_AttendApprenticeship"
 ----
 ----	With this measure the player can send a child to apprenticeship
 ----
@@ -168,9 +168,9 @@ function Run()
 	
 	local EndTime = GetGametime() + Time
 	SetData("EndTime",EndTime)
-	SetData("Time",Time)
-	SetProcessMaxProgress("",Time*10)
-	SendCommandNoWait("","Progress")
+	SetData("Time", Time)
+	SetProcessMaxProgress("", Time*10)
+	SendCommandNoWait("", "Progress")
 
 	-- get to the destpos a first time
 	if f_MoveTo("","DestPos",GL_MOVESPEED_RUN) then
@@ -182,22 +182,22 @@ function Run()
 		if choice > 3 or choice == 0 then -- only get next building if choice is 1 or 2
 			Sleep(Rand(30)+20)
 		else
-			if f_MoveTo("","DestPos",GL_MOVESPEED_RUN) then
-				SetState("",STATE_INVISIBLE,true)
+			if f_MoveTo("", "DestPos",GL_MOVESPEED_RUN) then
+				SetState("", STATE_INVISIBLE,true)
 				Sleep(Rand(30)+20)
 			end
 			
-			SimBeamMeUp("","DestPos", false)
-			SetState("",STATE_INVISIBLE,false)
+			SimBeamMeUp("", "DestPos", false)
+			SetState("", STATE_INVISIBLE,false)
 			
 			if (choice==1) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
 			elseif (choice==2) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
 			elseif (choice==3) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL, GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL, GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
 			elseif (choice==4) then
-				ms_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_ARSENAL, GL_BUILDING_TYPE_TOWNHALL,nil)
+				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_ARSENAL, GL_BUILDING_TYPE_TOWNHALL,nil)
 			end
 		end
 	end	

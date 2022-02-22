@@ -620,6 +620,11 @@ function Go()
 		HudClearSelection()
 	end
 	
+	local CityLevel = 2
+	if GetSettlement("accuser", "TheCity") then
+		CityLevel = CityGetLevel("TheCity")
+	end
+	
 	local TrialCosts = GL_TRIAL_COST_BASE + GL_TRIAL_COST_PER_LEVEL*CityLevel
 	local JudgeMoney = TrialCosts / 2
 	local AssessorMoney = TrialCosts / 4
@@ -1030,11 +1035,6 @@ function Go()
 		SetData("judgedecision", -1)
 		SetData("assessor1decision", -1)
 		SetData("assessor2decision", -1)
-
-		local CityLevel = 2
-		if GetSettlement("accuser", "TheCity") then
-			CityLevel = CityGetLevel("TheCity")
-		end
 		
 		local DecisionForFinalComment = 0
 		trial_Cam("JudgeFromBelowCam")

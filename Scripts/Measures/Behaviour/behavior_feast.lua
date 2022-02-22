@@ -286,13 +286,13 @@ function Host()
 	MsgSay("","@L_FEAST_4_GOODBYE_A_BYE_INVITER")
 	
 	--some comments
-	FoodQuality = GetProperty("PartyLocation","FoodLevel")
-	MusicQuality = GetProperty("PartyLocation","MusicLevel")
+	FoodQuality = GetProperty("PartyLocation","FoodLevel") or 0
+	MusicQuality = GetProperty("PartyLocation","MusicLevel") or 0
 	for i=1,6 do
 		if HasProperty("PartyLocation","Guest"..i) then
-			local GuestID = GetProperty("PartyLocation","Guest"..i)
+			local GuestID = GetProperty("PartyLocation","Guest"..i) or 0
 			if GetAliasByID(GuestID,"Guest") then
-				local FavorWon = GetProperty("PartyLocation","FavorWonMusic"..i) + GetProperty("PartyLocation","FavorWonEat"..i)
+				local FavorWon = GetProperty("PartyLocation","FavorWonMusic"..i) + GetProperty("PartyLocation","FavorWonEat"..i) or 0
 				if FavorWon >= 5 then
 					camera_CutsceneBothLock("cutscene", "Guest")
 					MsgSay("Guest","@L_FEAST_4_GOODBYE_B_COMMENTS_GOOD")

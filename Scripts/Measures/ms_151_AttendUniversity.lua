@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 ----
-----	OVERVIEW "ms_AttendUniversity"
+----	OVERVIEW "ms_151_AttendUniversity"
 ----
 ----	With this measure the player can send a child into university
 ----	
@@ -127,7 +127,7 @@ function Run()
 			GetID("Settlement"),
 			Gametime2Total(GetGametime()))
 		
-		ms_attenduniversity_AddRandomBonusSkills(BonusUniversity2)
+		ms_151_attenduniversity_AddRandomBonusSkills(BonusUniversity2)
 		SetNobilityTitle("", NOBILITY_DOCTOR)
 		SetData("Finished",1)
 		RemoveProperty("","Time_done")
