@@ -10,7 +10,7 @@ Data:
 3 "smalltown" "25_opener_small_town2.ogg" 1 "26_opener_small_town3.ogg" 1 "09_building_joiner.ogg" 1 "G1_MauerUndTor.ogg" 1 "G1_MitFlinkemStich.ogg" 1 "G1_ImDunklenTann.ogg" 1 | 
 4 "town" "28_opener_town2.ogg" 1 "29_opener_town3.ogg" 1 "30_opener_city1.ogg" 1 "31_opener_city2.ogg" 1 "207_castle.ogg" 1 "Alexander_Nakarada-Heartbeat.mp3" 1 | 
 5 "capital" "75_capital1.ogg" 1 "77_capital2.ogg" 1 "216_juggler.ogg" 1 "217_guildhouse.ogg" 1 "08_building_blacksmith.ogg" 1 "G1_Rittersleut.ogg" 1 | 
-6 "winter" "71_winter_landscape1.ogg" 1 "72_winter_landscape2.ogg" 1 "73_winter_woods1.ogg" 1 "74_winter_woods2.ogg" 1 "76_winter_deep.ogg" 1 "" 1 | 
+6 "winter" "71_winter_landscape1.ogg" 1 "72_winter_landscape2.ogg" 1 "73_winter_woods1.ogg" 1 "74_winter_woods2.ogg" 1 "76_winter_deep.ogg" 1 "none" 1 | 
 7 "spring" "05_building_bakery.ogg" 1 "24_romantic_waters.ogg" 1 "37_springtime.ogg" 1 "41_background_woods1.ogg" 1 "201_maintheme_old.ogg" 1 "G1_KraeuterUndPhiolen.ogg" 1 | 
 8 "summer" "24_romantic_waters.ogg" 1 "37_springtime.ogg" 1 "41_background_woods1.ogg" 1 "32_summer.ogg" 1 "G1_DasParfuem.ogg" 1 "126_Opening_HPfZ.ogg" 1 | 
 9 "autumn" "G1_ImHerbst.ogg" 1 "33_background_village1.ogg" 1 "35_background_small_town.ogg" 1 "40a_background_landscape4.ogg" 1 "40_background_landscape3.ogg" 1 "G1_DasParfuem.ogg" 1 | 
