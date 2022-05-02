@@ -155,6 +155,7 @@ _General_
 - Fixed several map issues
 - Exploit: You could capture, sell and re capture a building indefinetly. Now you have to wait for 2 rounds before you can capture / sell the building again.
 - In extinction mode you could not win when you had a team.
+- Several wrong / missing locators were called by some scripts.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

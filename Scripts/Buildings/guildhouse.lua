@@ -27,7 +27,7 @@ function PingHour()
 		
 		if GetRound() > 0 then
 			local currentGameTime = math.mod(GetGametime(), 24)
-			if (currentGameTime == 15) or ((currentGameTime > 15) and (currentGameTime < 16)) then
+			if (currentGameTime == 11) or ((currentGameTime > 11) and (currentGameTime < 12)) then
 				guildhouse_CheckGuildMasters()
 			end
 		end
@@ -77,125 +77,166 @@ end
 
 function CheckGuildMasters()
 
-	local MasterList = {"Patron", "Artisan", "Scholar", "Chiseler"}
-	local MasterName = ""
-	local PatronMaster, ArtisanMaster, ScholarMaster, ChiselerMaster, MasterID
+	local MasterList = {"PatronMaster", "ArtisanMaster", "ScholarMaster", "ChiselerMaster"}
+	local CheckMaster = ""
+	local PatronMasterID, ArtisanMasterID, ScholarMasterID, ChiselerMasterID, CheckMasterID
 	
-	--add fame to last Master
+	--add fame to last Master & remove property
 	for i=1, 4 do
-		MasterName = MasterList[i]
-		MasterID = GetProperty("", MasterName.."Master")
+		CheckMaster = MasterList[i]
+		CheckMasterID = GetProperty("", CheckMaster)
 		
 		if MasterID ~= nil then
-			if GetAliasByID(MasterID, "CheckMaster") and not GetState("CheckMaster", STATE_DEAD) then
-				dyn_AddFame("CheckMaster", 1)
-				RemoveProperty("CheckMaster", MasterName.."Master")
+			if GetAliasByID(CheckMasterID, "OldMaster") and not GetState("OldMaster", STATE_DEAD) then
+				dyn_AddFame("OldMaster", 1)
+				RemoveProperty("OldMaster", CheckMaster)
 			end
 		end
 	end
 
-	local year = GetYear()
+	local PlayerCity = false
 	local Alias, BuildingLvl, tmpPoints, BuildingCharacterClass
+	
 	local ArrayPatron = {}
 	local PointArrayPatron = {}
 	local ArrayCountPatron = 0
+	
 	local ArrayArtisan = {}
 	local PointArrayArtisan = {}
 	local ArrayCountArtisan = 0
+	
 	local ArrayScholar = {}
 	local PointArrayScholar = {}
 	local ArrayCountScholar = 0
+	
 	local ArrayChiseler = {}
 	local PointArrayChiseler = {}
 	local ArrayCountChiseler = 0
-	local PlayerCity = false
+	
 	BuildingGetCity("", "city")		
-	local BuildingCount = CityGetBuildings("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IGNORE, "Building")
+	local BuildingCount = CityGetBuildings("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "Building")
 	
 	-- check all buildings of the city
 	for i=0, BuildingCount-1 do
 		Alias = "Building"..i
-		BuildingLvl = BuildingGetLevel(Alias)
+		BuildingLvl = BuildingGetLevel(Alias) * BuildingGetLevel(Alias)
 		BuildCharClass = BuildingGetCharacterClass(Alias)
 		
 		if BuildingGetOwner(Alias, "Sim") and (GetSettlementID("Sim") == GetID("city")) then
 			
-			if DynastyIsPlayer("Sim") and not PlayerCity then
+			if not PlayerCity and DynastyIsPlayer("Sim") then
 				PlayerCity = true
 			end
 			
-			local num = 1
-			if not HasProperty("Sim", "GuildFame") then
-				SetProperty("Sim", "GuildFame", 0)
-			end
+			local SimFame = dyn_GetFame("Sim") or 0
 			
-			local SimFame = 0 + GetProperty("Sim", "GuildFame")
-			while num < 100 do
-	
-				if BuildCharClass == GL_CLASS_PATRON then
-					if ArrayPatron[num] == GetID("Sim") then
-					-- found SimID in the Array. Only add additional BuildingLvl to the points
-						tmpPoints = PointArrayPatron[num] + BuildingLvl
-						PointArrayPatron[num] = tmpPoints
-						break
-					elseif ArrayPatron[num] == nil then
-					-- SimID not found - add it to the array + add family fame and sim fame once to the points
-						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
-						PointArrayPatron[num] = tmpPoints
-						ArrayCountPatron = ArrayCountPatron + 1
-						break
+			-- ## Patron Class ##
+			if BuildCharClass == GL_CLASS_PATRON then
+				if ArrayCountPatron > 0 then -- we have patrons in the list. Check the list
+					for u=1, ArrayCountPatron do
+						local CheckArray = ArrayPatron[u]
+						
+						if CheckArray ~= nil and GetID("Sim") == CheckArray then -- already in the array? Add BuildingLvl to the points
+							tmpPoints = PointArrayPatron[u] + BuildingLvl
+							PointArrayPatron[u] = tmpPoints
+							break
+						end
+							
+						if u == ArrayCountPatron then -- last in the last and no break yet? Then add the new guy
+							ArrayPatron[(u+1)] = GetID("Sim")
+							tmpPoints = BuildingLvl + SimFame
+							PointArrayPatron[(u+1)] = tmpPoints
+							ArrayCountPatron = ArrayCountPatron + 1
+							break
+						end
 					end
-					
-				elseif BuildCharClass == GL_CLASS_ARTISAN then
-					if ArrayPatron[num] == GetID("Sim") then
-					-- found SimID in the Array. Only add additional BuildingLvl to the points
-						tmpPoints = PointArrayPatron[num] + BuildingLvl
-						PointArrayPatron[num] = tmpPoints
-						break
-					elseif ArrayPatron[num] == nil then
-					-- SimID not found - add it to the array + add family fame once to the points
-						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
-						PointArrayPatron[num] = tmpPoints
-						ArrayCountPatron = ArrayCountPatron + 1
-						break
-					end
-				elseif BuildCharClass == GL_CLASS_SCHOLAR then
-					if ArrayPatron[num] == GetID("Sim") then
-					-- found SimID in the Array. Only add additional BuildingLvl to the points
-						tmpPoints = PointArrayPatron[num] + BuildingLvl
-						PointArrayPatron[num] = tmpPoints
-						break
-					elseif ArrayPatron[num] == nil then
-					-- SimID not found - add it to the array + add family fame once to the points
-						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
-						PointArrayPatron[num] = tmpPoints
-						ArrayCountPatron = ArrayCountPatron + 1
-						break
-					end
-				elseif BuildCharClass == GL_CLASS_CHISELER then
-					if ArrayPatron[num] == GetID("Sim") then
-					-- found SimID in the Array. Only add additional BuildingLvl to the points
-						tmpPoints = PointArrayPatron[num] + BuildingLvl
-						PointArrayPatron[num] = tmpPoints
-						break
-					elseif ArrayPatron[num] == nil then
-					-- SimID not found - add it to the array + add family fame once to the points
-						ArrayPatron[num] = GetID("Sim")
-						tmpPoints = BuildingLvl + dyn_GetFame("Sim") + SimFame
-						PointArrayPatron[num] = tmpPoints
-						ArrayCountPatron = ArrayCountPatron + 1
-						break
-					end
+				else -- no list yet, then go ahead!
+					ArrayPatron[1] = GetID("Sim")
+					tmpPoints = BuildingLvl + SimFame
+					PointArrayPatron[1] = tmpPoints
+					ArrayCountPatron = ArrayCountPatron + 1
 				end
-				num = num + 1
+					
+			-- ## Craftsman (Artisan) Class ##
+			elseif BuildCharClass == GL_CLASS_ARTISAN then
+				if ArrayCountArtisan > 0 then -- we have artisans in the list. Check the list
+					for u=1, ArrayCountArtisan do
+						local CheckArray = ArrayArtisan[u]
+						if CheckArray ~= nil and GetID("Sim") == CheckArray then -- already in the array? Add BuildingLvl to the points
+							tmpPoints = PointArrayArtisan[u] + BuildingLvl
+							PointArrayArtisan[u] = tmpPoints
+							break
+						end
+							
+						if u == ArrayCountArtisan then -- last in the last and no break yet? Then add the new guy
+							ArrayArtisan[(u+1)] = GetID("Sim")
+							tmpPoints = BuildingLvl + SimFame
+							PointArrayArtisan[(u+1)] = tmpPoints
+							ArrayCountArtisan = ArrayCountArtisan + 1
+							break
+						end
+					end
+				else -- no list yet, then go ahead!
+					ArrayArtisan[1] = GetID("Sim")
+					tmpPoints = BuildingLvl + SimFame
+					PointArrayArtisan[1] = tmpPoints
+					ArrayCountArtisan = ArrayCountArtisan + 1
+				end
+						
+			-- ## Scholar Class ##
+			elseif BuildCharClass == GL_CLASS_SCHOLAR then
+				if ArrayCountScholar > 0 then -- we have scholars in the list. Check the list
+					for i=1, ArrayCountScholar do
+						local CheckArray = ArrayScholar[i]
+						if CheckArray ~= nil and GetID("Sim") == CheckArray then -- already in the array? Add BuildingLvl to the points
+							tmpPoints = PointArrayScholar[i] + BuildingLvl
+							PointArrayScholar[i] = tmpPoints
+							break
+						end
+							
+						if i == ArrayCountScholar then -- last in the last and no break yet? Then add the new guy
+							ArrayScholar[(i+1)] = GetID("Sim")
+							tmpPoints = BuildingLvl + SimFame
+							PointArrayScholar[(i+1)] = tmpPoints
+							ArrayCountScholar = ArrayCountScholar + 1
+							break
+						end
+					end
+				else -- no list yet, then go ahead!
+					ArrayScholar[1] = GetID("Sim")
+					tmpPoints = BuildingLvl + SimFame
+					PointArrayScholar[1] = tmpPoints
+					ArrayCountScholar = ArrayCountScholar + 1
+				end
+				
+			-- ## Rogue (Chiseler) Class ##
+			elseif BuildCharClass == GL_CLASS_CHISELER then
+				if ArrayCountChiseler > 0 then -- we have chiselers in the list. Check the list
+					for i=1, ArrayCountChiseler do
+						local CheckArray = ArrayChiseler[i]
+						if CheckArray ~= nil and GetID("Sim") == CheckArray then -- already in the array? Add BuildingLvl to the points
+							tmpPoints = PointArrayChiseler[i] + BuildingLvl
+							PointArrayChiseler[i] = tmpPoints
+							break
+						end
+							
+						if i == ArrayCountChiseler then -- last in the last and no break yet? Then add the new guy
+							ArrayChiseler[(i+1)] = GetID("Sim")
+							tmpPoints = BuildingLvl + SimFame
+							PointArrayChiseler[(i+1)] = tmpPoints
+							ArrayCountChiseler = ArrayCountChiseler + 1
+							break
+						end
+					end
+				else -- no list yet, then go ahead!
+					ArrayChiseler[1] = GetID("Sim")
+					tmpPoints = BuildingLvl + SimFame
+					PointArrayChiseler[1] = tmpPoints
+					ArrayCountChiseler = ArrayCountChiseler + 1
+				end
 			end
 		end
 	end
-	
-	SetProperty("", "year", year)
 	
 	-- get the winners
 	local WinnerPatron -- Winner index
@@ -259,20 +300,20 @@ function CheckGuildMasters()
 		SetProperty("", "ChiselerMaster", 0)
 	end
 	
+	-- ## Send Messages ##
+	
 	-- PatronLabel[1], PatronName[2],  ArtisanLabel[3], ArtisanName[4],
 	-- ScholarLabel[5], ScholarName[6], ChiselerLabel[7], ChiselerName[8],
 	-- PatronFlag[9], ArtisanFlag[10], ScholarFlag[11], ChiselerFlag[12]
 	local textArray = {"", "", "", "", "", "", "", "", "", "", "", "" }
-	local LabelArray = { "PATRON", "ARTISAN", "SCHOLAR", "CHISELER" }
-	local ClassLabel, Gender, GenderLabel
+	local Gender, GenderLabel
 	local GenderArray = { "FEMALE", "MALE"}
 	
 	for w=1, 4 do -- send messages to all 4 winners
 		if w == 1 then -- patron
-			ClassLabel = LabelArray[GL_CLASS_PATRON]
 			if ArrayPatron[WinnerPatron] ~= nil then
 				GetAliasByID(ArrayPatron[WinnerPatron], "Winner")
-				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
+				SetProperty("Winner", "PatronMaster", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
 					textArray[9] = "@L$S[2045]"
@@ -283,24 +324,24 @@ function CheckGuildMasters()
 					textArray[9] = "@L$S[20"..tmpflag.."]"
 				end
 				
-				textArray[2] = GetName("Winner")
-			
 				Gender = SimGetGender("Winner") + 1
 				GenderLabel = GenderArray[Gender]
-				textArray[1] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0"
+				textArray[1] = "@L_GUILDHOUSE_MASTERLIST_PATRON_"..GenderLabel.."_+0"
+				textArray[2] = GetName("Winner")
+				
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									ArrayPatron[WinnerPatron], GetYear(), "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0")
+									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_PATRON_"..GenderLabel.."_+0")
 				
 			else
-				textArray[1] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_MALE_+0"
+				textArray[1] = "@L_GUILDHOUSE_MASTERLIST_PATRON_MALE_+0"
 				textArray[2] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
 			end
+			
 		elseif w == 2 then -- artisan
-			ClassLabel = LabelArray[GL_CLASS_ARTISAN]
 			if ArrayArtisan[WinnerArtisan] ~= nil then
 				GetAliasByID(ArrayArtisan[WinnerArtisan], "Winner")
-				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
+				SetProperty("Winner", "ArtisanMaster", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
 					textArray[10] = "@L$S[2045]"
@@ -311,25 +352,24 @@ function CheckGuildMasters()
 					textArray[10] = "@L$S[20"..tmpflag.."]"
 				end
 				
-				textArray[4] = GetName("Winner")
-				ClassLabel = LabelArray[w]
-			
 				Gender = SimGetGender("Winner") + 1
 				GenderLabel = GenderArray[Gender]
-				textArray[3] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0"
+				textArray[3] = "@L_GUILDHOUSE_MASTERLIST_ARTISAN_"..GenderLabel.."_+0"
+				textArray[4] = GetName("Winner")
+				
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									ArrayArtisan[WinnerArtisan], GetYear(), "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0")
+									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_ARTISAN_"..GenderLabel.."_+0")
 				
 			else
-				textArray[3] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_MALE_+0"
+				textArray[3] = "@L_GUILDHOUSE_MASTERLIST_ARTISAN_MALE_+0"
 				textArray[4] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
 			end
+			
 		elseif w == 3 then -- scholar
-			ClassLabel = LabelArray[GL_CLASS_SCHOLAR]
 			if ArrayScholar[WinnerScholar] ~= nil then
 				GetAliasByID(ArrayScholar[WinnerScholar], "Winner")
-				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
+				SetProperty("Winner", "ScholarMaster", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
 					textArray[11] = "@L$S[2045]"
@@ -340,25 +380,24 @@ function CheckGuildMasters()
 					textArray[11] = "@L$S[20"..tmpflag.."]"
 				end
 				
+				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0"
 				textArray[6] = GetName("Winner")
-				ClassLabel = LabelArray[w]
 			
 				Gender = SimGetGender("Winner") + 1
 				GenderLabel = GenderArray[Gender]
-				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0"
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									ArrayScholar[WinnerScholar], GetYear(), "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0")
+									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0")
 				
 			else
-				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_MALE_+0"
+				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_MALE_+0"
 				textArray[6] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
 			end
+			
 		else -- chiseler
-			ClassLabel = LabelArray[GL_CLASS_CHISELER]
 			if ArrayChiseler[WinnerChiseler] ~= nil then
 				GetAliasByID(ArrayChiseler[WinnerChiseler], "Winner")
-				SetProperty("Winner", MasterList[w].."Master", GetID("city"))
+				SetProperty("Winner", "ChiselerMaster", GetID("city"))
 			
 				if DynastyIsShadow("Winner") then
 					textArray[12] = "@L$S[2045]"
@@ -369,18 +408,18 @@ function CheckGuildMasters()
 					textArray[12] = "@L$S[20"..tmpflag.."]"
 				end
 				
+				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0"
 				textArray[8] = GetName("Winner")
-				ClassLabel = LabelArray[w]
 			
 				Gender = SimGetGender("Winner") + 1
 				GenderLabel = GenderArray[Gender]
-				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0"
-				feedback_MessagePolitics("Winner"..w, "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
+		
+				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									ArrayChiseler[WinnerChiseler], GetYear(), "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_"..GenderLabel.."_+0")
+									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0")
 				
 			else
-				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_"..ClassLabel.."_MALE_+0"
+				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_MALE_+0"
 				textArray[8] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
 			end
 		end
