@@ -482,48 +482,55 @@ function Worker(ActiveMovement)
 	
 	Sleep(120)
 	return
-	
 end
-
 
 -- -----------------------
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	StopAction("brawl","")
-	if AliasExists("SitPos") then
-		f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-	end
-	if GetState("",STATE_SLEEPING) then
-		SetState("",STATE_SLEEPING,false)
-	end
-	--RemoveAllOverheadSymbols("")
+	StopAction("brawl", "")
+	ReleaseLocator("")
 	StopAnimation("")
-	MoveSetStance("",GL_STANCE_STAND)
-	if not (GetImpactValue("","Sickness")>0) then
+	MoveSetStance("", GL_STANCE_STAND)
+	CarryObject("", "", true)
+	CarryObject("", "", false)
+	
+	if AliasExists("SitPos") then
+		f_EndUseLocator("","SitPos", GL_STANCE_STAND)
+	end
+	
+	if GetState("", STATE_SLEEPING) then
+		SetState("", STATE_SLEEPING, false)
+	end
+	
+	if GetImpactValue("", "Sickness") == 0 then
 		MoveSetActivity("")
 	end
-	CarryObject("","",true)
-	CarryObject("","",false)
+	
 	if HasProperty("","WaitingForTreatment") then
-		RemoveProperty("","WaitingForTreatment")
+		RemoveProperty("", "WaitingForTreatment")
 	end
+	
 	if AliasExists("SleepPosition") then
 		f_EndUseLocatorNoWait("", "SleepPosition", GL_STANCE_STAND)
 		RemoveAlias("SleepPosition")
 	end
+	
 	if AliasExists("ChairPos") then
 		f_EndUseLocatorNoWait("", "ChairPos", GL_STANCE_STAND)
 		RemoveAlias("ChairPos")
 	end
+	
 	if HasProperty("","ProTCBank") then
 		RemoveProperty("","ProTCBank")
 	end
+	
 	if HasProperty("","ProRCBank") then
 		RemoveProperty("","ProRCBank")
 	end
-	if HasProperty("","KissMeHoney") then
-		RemoveProperty("","KissMeHoney")
+	
+	if HasProperty("", "KissMeHoney") then
+		RemoveProperty("", "KissMeHoney")
 	end
 end
 
