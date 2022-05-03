@@ -356,7 +356,7 @@ function Run()
 			
 				if WhatToDo == 99 then
 					if GetHPRelative("")>0.3 then
-						local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==3000)AND NOT(Object.HasDynasty())AND NOT(Object.GetState(unconscious))AND NOT(Object.GetState(dead))AND(Object.CompareHP()>30))","FightPartner", -1)
+						local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==2000)AND(Object.CompareHP()>30)AND(Object.CheckCutscene())AND(Object.MinAge(16))AND NOT(Object.HasDynasty())AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal))", "FightPartner", -1)
 						if FightPartners>0 then
 							idlelib_ForceAFight("FightPartner")
 							return

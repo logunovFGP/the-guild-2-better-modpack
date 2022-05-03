@@ -378,64 +378,185 @@ end
 -- -----------------------
 function SitDown()
 	MsgDebugMeasure("Sit down and enjoy the season")
-	local season = GetSeason()
-	local Distance = Rand(10000)+1000
-	if season == EN_SEASON_SPRING or season == EN_SEASON_SUMMER or season == EN_SEASON_AUTUMN then
+	
+	if GetSeason() == EN_SEASON_WINTER then
+		if Rand(100) > 50 then
+			local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==2000) AND NOT (Object.HasDynasty()))", "FightPartner", -1)
+			if FightPartners >0 then
+				idlelib_SnowballBattle("FightPartner")
+				return
+			end
+		else
+			MsgDebugMeasure("Relax in the cold")
+			local SleepTime = 10 + Rand(30)
+			Sleep(SleepTime)
+		end
+	else
 		if GetSettlement("", "City") then
-			if CityGetRandomBuilding("City", GL_BUILDING_CLASS_PUBLIC, 32, -1, -1, FILTER_IGNORE, "Destination") then
-				local Stance = 2
-				--0=sitground, 1=sitbench, 2=stand
-				if GetFreeLocatorByName("Destination","idle_Sit",1,5,"SitPos") then
-					f_BeginUseLocator("","SitPos",GL_STANCE_SITBENCH,true)
-					Stance = 1
-					if GetLocatorByName("Destination","campfire","CampFirePos") then
-						if GetImpactValue("Destination","torch")==0 then
-							AddImpact("Destination","torch",1,1)
-							GfxStartParticle("Campfire","particles/Campfire2.nif","CampFirePos",3)
-							--GfxStartParticle("Camplight","Lights/candle_M_01.nif","CampFirePos",6)		
+			if CityGetNearestBuilding("City", "", GL_BUILDING_CLASS_PUBLIC, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
+				local Stance = 2 --0=sitground, 1=sitbench, 2=stand
+				local LingerLevel = BuildingGetLevel("Destination") or 1
+				local GuestCount = GetProperty("Destination", "Guests") or 0
+				
+				if LingerLevel == 1 then -- lingerplace with fire
+					-- locators: campfire, idle_Sit1-Sit6, idle_SitGround1-3, idle_Stand1-4, Entry1
+					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 6, "SitPos") then
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
+						Stance = 1
+						if GetLocatorByName("Destination", "campfire", "CampFirePos") then
+							if GetImpactValue("Destination", "torch") == 0 then
+								AddImpact("Destination", "torch", 1, 1)
+								GfxStartParticle("Campfire", "particles/Campfire2.nif", "CampFirePos", 3)
+							end
+							
+							GuestCount = GuestCount + 1
+							SetProperty("Destination", "Guests", GuestCount)
 						end
+					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 3, "SitPos") then
+						Stance = 0
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
+						Stance = 2
+						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+					else
+						return
 					end
-				elseif GetFreeLocatorByName("Destination","idle_SitGround",1,5,"SitPos") then
-					Stance = 0
-					f_BeginUseLocator("","SitPos",GL_STANCE_SITGROUND,true)
-				elseif GetFreeLocatorByName("Destination","idle_Stand",1,5,"SitPos") then
-					Stance = 2
-					f_BeginUseLocator("","SitPos",GL_STANCE_STAND,true)
+				
+				elseif LingerLevel == 2 then -- lingerplace crates
+					-- locators: idle_Sit1-3, idle_SitGround1-2, idle_Stand1-4, Entry1
+					-- locators: campfire, idle_Sit1-Sit6, idle_SitGround1-3, idle_Stand1-4, Entry1
+					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 3, "SitPos") then
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						Stance = 1
+					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 3, "SitPos") then
+						Stance = 0
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
+					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
+						Stance = 2
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
+					else
+						return
+					end
+				elseif LingerLevel == 3 then -- lingerplace bank
+					-- locators: idle_Sit1-2, idle_SitGround1-2, idle_Stand1-4, Entry1
+					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 2, "SitPos") then
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						Stance = 1
+					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 2, "SitPos") then
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						Stance = 0
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
+					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						Stance = 2
+						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
+					else
+						return
+					end
+				elseif LingerLevel == 4 then -- lingerplace barrel
+					-- locators: idle_Sit1-2, idle_SitGround1-2, idle_Stand1-4, Entry
+					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 2, "SitPos") then
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						Stance = 1
+					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 2, "SitPos") then
+						Stance = 0
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
+					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
+						Stance = 2
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
+					else
+						return
+					end
+				elseif LingerLevel == 5 then -- lingerplace statue
+					-- locators: idle_Sit1-5, idle_SitGround1-3, idle_Stand1-5, Entry1
+					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 5, "SitPos") then
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						Stance = 1
+					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 3, "SitPos") then
+						Stance = 0
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
+					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 5, "SitPos") then
+						Stance = 2
+						GuestCount = GuestCount + 1
+						SetProperty("Destination", "Guests", GuestCount)
+						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
+					else
+						return
+					end
 				end
-				local EndTime = GetGametime()+1
+					
+				local EndTime = GetGametime()+2
+				
 				while GetGametime() < EndTime do				
-					if Stance == 1 then
-						Sleep(2)
-						local AnimTime = 0
-						local idx = Rand(3)
-						if idx == 0 then
-							PlaySound3DVariation("","CharacterFX/male_anger",1)
-							PlayAnimation("","bench_sit_offended")
-						elseif idx == 1 then
-							PlaySound3DVariation("","CharacterFX/male_amazed",1)
-							PlayAnimation("","bench_sit_talk_short")
-						else
-							PlaySound3DVariation("","CharacterFX/male_neutral",1)
-							PlayAnimation("","bench_talk")						
+					if GuestCount > 1 then
+						if Stance == 1 then
+							local SleepTime = 2 + Rand(6)
+							Sleep(SleepTime)
+							local AnimTime = 0
+							local idx = Rand(3)
+							
+							if idx == 0 then
+								PlayAnimation("", "bench_sit_offended")
+							elseif idx == 1 then
+								PlayAnimation("", "bench_sit_talk_short")
+							else
+								PlayAnimation("", "bench_talk")						
+							end
+						elseif Stance == 2 then
+							if Rand(3) == 0 then
+								PlayAnimation("", "cogitate")
+							end
+							
+							Sleep(2)
+							
+							if Rand(5) == 1 then
+								PlayAnimationNoWait("", "use_book_standing")
+								Sleep(1)
+								PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 0.5)
+								CarryObject("", "Handheld_Device/Anim_openscroll.nif", false)
+								Sleep(1)
+								
+								PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 0.5)
+								CarryObject("", "", false)
+							end
+							
+							Sleep(2+Rand(10))
 						end
 					end
 					Sleep(Rand(10)+10)
 				end
-				if GetImpactValue("Destination","torch")==0 then
+				
+				if LingerLevel == 1 and GetImpactValue("Destination", "torch") == 0 then
 					GfxStopParticle("Campfire")
-					--GfxStopParticle("Camplight")
 				end
 				
-				f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-				
-				Sleep(6)
-			end
-		end
-	else
-		if Rand(100)>50 then
-			local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==2500)AND NOT(Object.HasDynasty()))","FightPartner", -1)
-			if FightPartners>0 then
-				idlelib_SnowballBattle("FightPartner")
+				GuestCount = GuestCount - 1
+				SetProperty("Destination", "Guests", GuestCount)
+				f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
 				return
 			end
 		end

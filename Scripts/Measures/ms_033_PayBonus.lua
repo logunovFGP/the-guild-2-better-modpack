@@ -28,7 +28,7 @@ function Init()
 		end
 	end
 	
-	if (numFound==0) then
+	if (numFound == 0) then
 		MsgQuick("", "@L_GENERAL_MEASURES_033_PAYBONUS_FAILURES_+0", GetID("Building"))
 		return
 	end
@@ -74,19 +74,24 @@ end
 function Run()
 
 	local MeasureID = GetCurrentMeasureID("")
-	local TimeOut		= mdata_GetTimeOut(MeasureID)
+	local TimeOut = mdata_GetTimeOut(MeasureID)
 
 	if not HasData("TFBonus") then
 		StopMeasure()
 	end
 
-	local Bonus				= GetData("TFBonus")
+	local Bonus = GetData("TFBonus")
 	local FavorModify = GetData("TFFavor")
-	local numFound		= GetData("numFound")
-	local baseXP			= GetData("BaseXP") * numFound
+	local numFound	= GetData("numFound")
+	local baseXP = GetData("BaseXP") * numFound
 	
 	if GetMoney("Dynasty") < Bonus then
 		MsgQuick("", "@L_GENERAL_MEASURES_033_PAYBONUS_FAILURES_+1", Bonus)
+		return
+	end
+	
+	if BuildingGetType("Building") == GL_BUILDING_TYPE_RESIDENCE then
+		SetMeasureRepeat(0.5)
 		return
 	end
 
@@ -106,12 +111,10 @@ function Run()
 
 	MeasureSetNotRestartable()
 	
-	
 	-- change the check from GetInsideBuilding to SimIsWorkingTime to make it possible to use this measure on outside workers at farms/mines/etc.
 
 	Sleep(1)
-
-	AlignTo("","Worker0")
+	AlignTo("", "Worker0")
 	Sleep(1)
 	
 	if GetMoney("Dynasty") < Bonus then
@@ -135,7 +138,7 @@ function Run()
 
 	-- Play a coin sound for the local player	
 	if dyn_IsLocalPlayer("") then
-		PlaySound3D("","misc/CoinJingle_s_01.wav", 1.0, 1, "c4")
+		PlaySound3D("", "misc/CoinJingle_s_01.wav", 1.0, 1, "c4")
 	end
 	
 	local AnimTime = 1
@@ -148,10 +151,7 @@ function Run()
 	
 	Sleep(0.5)
 	chr_GainXP("",baseXP)
-
 	Sleep(AnimTime)
-	StopMeasure()
-
 end
 
 function CleanUp()
@@ -170,4 +170,3 @@ function GetOSHData(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
-

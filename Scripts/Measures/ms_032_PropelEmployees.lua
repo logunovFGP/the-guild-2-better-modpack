@@ -22,6 +22,11 @@ function Run()
 		return
 	end
 	
+	if BuildingGetType("Building") == GL_BUILDING_TYPE_RESIDENCE then
+		SetMeasureRepeat(0.5)
+		return
+	end
+	
 	MeasureSetStopMode(STOP_CANCEL)
 	
 	local	Count = BuildingGetWorkerCount("Building")
