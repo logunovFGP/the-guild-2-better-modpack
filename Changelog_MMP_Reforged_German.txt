@@ -158,6 +158,7 @@ _Allgemein_
 - Im 'Auslöschungsmodus' wurden die Siegbedingungen nicht erreicht, wenn man im Team spielte.
 - Diverse Locator wurden von Scripten angesprochen, die gar nicht für diese Gebäude / Indoor-Scene existierten.
 - Tiere werden nicht mehr zufällig angegriffen.
+- Während einer Hochzeitszeremonie wurden bei der Rede des Priesters die Geschlechter vertauscht, wenn ein weiblicher Charakter die Maßnahme startete.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

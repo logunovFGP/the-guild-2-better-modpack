@@ -88,6 +88,8 @@ function Run()
 			
 			local Type = BuildingGetType("WorkBuilding")
 			GetLocatorFunction = ms_022_producegoods_GetLocator
+			
+			-- get special locators
 			if (Type == GL_BUILDING_TYPE_SMITHY) then
 				GetLocatorFunction = ms_022_producesmithy_GetLocator
 			elseif (Type == GL_BUILDING_TYPE_ALCHEMIST) then
@@ -137,23 +139,20 @@ function Run()
 			end
 		end
     
-    -- Necromancer
-		if BuildingGetType("WorkBuilding") == 98 then
-		  StartProduction("","WorkBuilding")
-			if SimGetProduceItemID("") == 973 or SimGetProduceItemID("") == 972 or SimGetProduceItemID("") == 971 then
-			    if not ms_022_producenekro_KnochenGraben() then
-				    SimSetProduceItemID("", 0, -1)
-				    StopMeasure()
-				    Sleep(0.1)
-				    return
-			    end
+		-- Necromancer
+		if BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_NEKRO then
+			StartProduction("","WorkBuilding")
+			if SimGetProduceItemID("") == 973 or SimGetProduceItemID("") == 972 or SimGetProduceItemID("") == 971 then -- Knochen, Schadel, Leichenhemd
+				if not ms_022_producenekro_KnochenGraben() then
+					SimSetProduceItemID("", 0, -1)
+					StopMeasure()
+					Sleep(0.1)
+					return
+				end
 			else
-      	GetLocatorFunction = ms_022_producenekro_GetLocator
+				GetLocatorFunction = ms_022_producenekro_GetLocator
 			end
-		end
-		
-		-- Mill
-		if (BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_MILL) then
+		elseif (BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_MILL) then
 			SetData("muehle", 1)
 			if not ms_022_producemill_MehlMahlen() then
 				SimSetProduceItemID("", 0, -1)
@@ -161,7 +160,10 @@ function Run()
 				Sleep(0.1)
 				return
 			end
-		elseif ItemGetType(ItemID) == ITEM_TYPE_GATHERING then
+		end
+		
+		-- Gathering	
+		if ItemGetType(ItemID) == ITEM_TYPE_GATHERING then
 			StartProduction("", "WorkBuilding") -- Start production (internal state)
 			SetData("Gathering", 1)
 			if not ms_022_gather_Run(ItemID) then
@@ -178,8 +180,9 @@ function Run()
 					break
 				end
 			end
+		-- Do it	
 		elseif ActiveMovement then
-			local	LocatorName = ""
+			local LocatorName = ""
 			local AnimationFunction
 			local UpgradeName
 			
@@ -214,7 +217,8 @@ function Run()
 				Sleep(0.5)
 			end
 		else
-			f_MoveTo("","WorkBuilding")
+		-- walk to it
+			f_MoveTo("", "WorkBuilding")
 			StartProduction("", "WorkBuilding") 
 			Sleep(Rand(10)+20)
 		end
@@ -242,16 +246,17 @@ function CleanUp()
 	end
 
 	if GetData("muehle")==1 then
-	    ms_022_producemill_CleanUp()
+		ms_022_producemill_CleanUp()
 	end
 	
 	if AliasExists("WorkBuilding") then
 		ms_022_producegoods_StopRoomAni(GetData("RA_Room"),GetData("RA_Ani"),-1)
 	end
+	
 	StopAnimation("")
 	CarryObject("","",false)
 	CarryObject("","",true)
-	MoveSetStance("",GL_STANCE_STAND)
+	MoveSetStance("", GL_STANCE_STAND)
 	MoveSetActivity("")
 	StopProduction("")
 	
@@ -260,7 +265,6 @@ function CleanUp()
 			SimSetProduceItemID("", -1, -1)
 		end
 	end
-
 end
 
 function GetLocator()
@@ -273,16 +277,17 @@ function GetLocator()
 		"Work_05", ms_022_producegoods_UseLocator, "",
 		"Work_06", ms_022_producegoods_UseLocator, "",
 		"Work_07", ms_022_producegoods_UseLocator, "",
-		"Work_08", ms_022_producegoods_UseLocator, "",
-	}
+		"Work_08", ms_022_producegoods_UseLocator, "", }
+	
 	local	LocatorCount = 8
-
 	local Position = (Rand(LocatorCount))*3+1
-	return	LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
+	
+	return LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
 end
 
 function UseLocator()
-	CarryObject("","Handheld_Device/Anim_Hammer.nif", false)
+	
+	CarryObject("", "Handheld_Device/Anim_Hammer.nif", false)
 	LoopAnimation("", "hammer_loop", 15)
 	CarryObject("", "", false)
 end
@@ -290,13 +295,16 @@ end
 -- GUI Listeners --
 
 function OnButtonPressed(x,y,device,key)
+	
 	-- Set the choosen Product
 	local Interface = FindNode("\\application\\game\\MSProducePanel")
+	
 	if(Interface) then
 		SimStopMeasure("")
 		local ItemID = this:GetValueInt("ItemID")
-		Interface:SetValueInt("ProduceItemId",ItemID)
+		Interface:SetValueInt("ProduceItemId", ItemID)
 	end
+	
 	-- Close the Panel
 	local Game = FindNode("\\application\\game")
 	if(Game) then
@@ -304,8 +312,8 @@ function OnButtonPressed(x,y,device,key)
 	end
 end
 
-
 function StartEffect(RunTime)
+	
 	while(1) do
 		this:SetValueInt("VISIBILITY",1)
 		Sleep(0.5)
@@ -315,6 +323,7 @@ function StartEffect(RunTime)
 end
 
 function StartRoomAni(room, ani, resettime)
+	
 	SetData("RA_Room", room)
 	SetData("RA_Ani", ani)
 	if (resettime ~= -1) then
@@ -324,6 +333,7 @@ function StartRoomAni(room, ani, resettime)
 end
 
 function StopRoomAni(room, ani, resettime)
+	
 	if HasData("RA_Room") then
 		RemoveData("RA_Room")
 		RemoveData("RA_Ani")
@@ -334,5 +344,3 @@ function StopRoomAni(room, ani, resettime)
 		end			
 	end
 end
-
-

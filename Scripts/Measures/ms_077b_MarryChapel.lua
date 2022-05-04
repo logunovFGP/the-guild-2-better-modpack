@@ -97,11 +97,11 @@ function Run()
 		MsgSay("Destination","_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 		AlignTo("Priest", "")
 		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID("Destination"), GetID(""))
+		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(""), GetID("Destination"))
 		MsgSay("", "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 		Sleep(1)
 
-		-- kiss your wife good man...
+		-- kiss your husband good woman...
 		AlignTo("Priest", "Destination")
 		MsgSay("Priest","_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID("Destination"))
 		AlignTo("", "Destination")

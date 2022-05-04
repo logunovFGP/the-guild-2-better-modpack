@@ -3,16 +3,16 @@ function GetLocator()
 	local LocatorArray = {
 		"TakeToolPos", ms_022_producesmithy_UseAnvil, "",
 		"AirPos", ms_022_producesmithy_UseBellow, "bellow",
-		"Tool2Pos", ms_022_producesmithy_UseWeaponRack, "weaponrack",
+		"ArmoryPos", ms_022_producesmithy_UseWeaponRack, "weaponrack",
 		"Pedestral", ms_022_producesmithy_UsePedestral, "",
-		"Shelf_in_the_wall", ms_022_producesmithy_UseShelf_in_the_wall, "",
-		"Meltingpot",ms_022_producesmithy_UseMeltingpot, "",
+		"ShelfInTheWall", ms_022_producesmithy_UseShelfInTheWall, "",
+		"Meltingpot", ms_022_producesmithy_UseMeltingpot, "",
 		"MagnifyPos",ms_022_producesmithy_UseMagnify, "magnifyingglas",
-		"Tool1Pos",ms_022_producesmithy_UseFineTools, "engravingtoolset",
-		"Tool2Pos",ms_022_producesmithy_UseFineTools2, "fileshelf",
-		"canonpos",ms_022_producesmithy_UseCannon, "cannonmold",
-		"Forge2",ms_022_producesmithy_UseHammerInstallation, "",
-		"Pedestral", ms_022_producesmithy_UsePedestral, "",
+		"Tool1Pos", ms_022_producesmithy_UseFineTools, "engravingtoolset",
+		"Tool2Pos", ms_022_producesmithy_UseFineTools2, "fileshelf",
+		"CanonPos", ms_022_producesmithy_UseCannon, "cannonmold",
+		"Forge2", ms_022_producesmithy_UseHammerInstallation, "",
+		"Stroll1", ms_022_producesmithy_UseStuff, "",
 	}
 	local	LocatorCount = 12
 
@@ -21,7 +21,10 @@ function GetLocator()
 end
 
 function UsePedestral()
-	PlayAnimation("", "manipulate_middle_twohand")
+	PlayAnimation("", "manipulate_middle_low_r")
+	PlayAnimation("", "manipulate_middle_low_l")
+	Sleep(0.3)
+	PlayAnimation("", "fetch_store_obj_L")
 end
 
 function UseAnvil()
@@ -38,8 +41,8 @@ function UseAnvil()
 	end
 
 	--take the metal from the forge
-	PlayAnimation("", "hold_middle_in")
 	CarryObject("Owner", "Handheld_Device/Anim_Forceps.nif", true)
+	PlayAnimation("", "hold_middle_in")
 	GetLocatorByName("WorkBuilding", "GlutPos", "GlutPos")
 	StartSingleShotParticle("particles/glut_sparks.nif", "GlutPos",1,10)
 	LoopAnimation("", "hold_middle_loop", 10)
@@ -128,8 +131,8 @@ end
 
 function UseHammerInstallation()
   -- SFX loc_smithy_hammerwork_02
-	PlayAnimation("", "hold_middle_in")
 	CarryObject("Owner", "Handheld_Device/ANIM_iron_rod.nif", false)
+	PlayAnimation("", "hold_middle_in")
 	GetLocatorByName("WorkBuilding", "GlutPos", "GlutPos")
 	StartSingleShotParticle("particles/glut_sparks.nif", "GlutPos",1,10)			
 	LoopAnimation("", "hold_middle_loop", 10)
@@ -142,12 +145,11 @@ function UseHammerInstallation()
 		-- SFX loc_smithy_anvil_01 bis 03
 		PlayAnimation("", "hold_middle_in")
 		for i=0,10 do
-			PlayAnimation("", "hold_middle_loop")
 			StartSingleShotParticle("particles/HammerSpark.nif", "SparkInstallation",1,3)
+			PlayAnimation("", "hold_middle_loop")
 		end
 		PlayAnimation("", "hold_middle_out")
 	end
-
 
 	if BuildingHasUpgrade("WorkBuilding", "Waterbucket") and GetLocatorByName("WorkBuilding", "Waterbucket", "BucketPos") then
 		GetLocatorByName("WorkBuilding", "steam1", "Steam1Pos")
@@ -188,22 +190,20 @@ function UseBellow()
 	PlayAnimation("", "crank_front_out_02")
 end
 
-function UseShelf_in_the_wall()
+function UseShelfInTheWall()
 	-- SFX loc_general_digging_shelf_01
 	MoveSetActivity("","carry")
 	Sleep(2)
-	CarryObject("","Handheld_Device/ANIM_holzscheite.nif",false)
+	CarryObject("", "Handheld_Device/ANIM_holzscheite.nif",false)
 	Sleep(2)
 
 	GetLocatorByName("WorkBuilding", "Forge2", "ForgePos")
-	f_MoveTo("","ForgePos")
+	f_MoveTo("", "ForgePos")
 	Sleep(0.7)
 	MoveSetActivity("")
 	Sleep(2)
 	CarryObject("","",false)
 	Sleep(2)
-
-
 end
 
 function UseWeaponRack()
@@ -224,19 +224,41 @@ end
 
 function UseCannon()
 	PlayAnimation("", "wheel_in")
-	ms_022_producegoods_StartRoomAni("","U_cannonmold",0)
+	ms_022_producegoods_StartRoomAni("","U_cannonmold", 0)
 	LoopAnimation("", "wheel_loop",14)
 	PlayAnimation("", "wheel_out")
 	Sleep(2)
 	PlayAnimation("", "wheel_in")
-	LoopAnimation("", "wheel_loop",8)
-	ms_022_producegoods_StopRoomAni("","U_cannonmold",0)
+	LoopAnimation("", "wheel_loop", 8)
+	ms_022_producegoods_StopRoomAni("","U_cannonmold", 0)
 	PlayAnimation("", "wheel_out")
 end
 
 function UseMeltingpot()
 	-- SFX loc_smithy_meltingpot_01
+	PlayAnimation("", "shake_head")
+	PlayAnimation("", "fetch_store_obj_L")
+	PlayAnimation("", "manipulate_middle_low_l")
 	PlayAnimation("", "manipulate_middle_twohand")
 end
 
+function UseStuff()
+	PlayAnimation("", "cogitate")
+	PlayAnimation("", "nod")
+	
+	GetLocatorByName("WorkBuilding", "ShelfInTheWall", "ShelfPos")
+	f_MoveTo("", "ShelfPos")
+	Sleep(0.3)
+	PlayAnimationNoWait("", "manipulate_middle_low_r")
+	Sleep(0.6)
+	CarryObject("", "Handheld_Device/ANIM_metahammer.nif", false)
+	Sleep(1)
 
+	GetLocatorByName("WorkBuilding", "Stroll1", "WorkPos")
+	f_MoveTo("", "WorkPos")
+	Sleep(0.7)
+	PlayAnimationNoWait("", "manipulate_middle_low_r")
+	Sleep(0.6)
+	CarryObject("", "", false)
+	Sleep(2)
+end

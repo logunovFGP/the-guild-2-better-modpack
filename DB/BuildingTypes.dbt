@@ -14,7 +14,6 @@ Data:
 7   "smithy"   5   2   60   |
 8   "joinery"   6   2   81   |
 9   "tailoring"   7   2   103   |
-10   "stonemason"   62   2   31   |
 11   "piratesnest"   0   4   0   |
 12   "mine"   13   2   0   |
 13   "harbor"   0   0   0   |
@@ -56,4 +55,5 @@ Data:
 104   "Mill"   66   1   943   |
 108   "Fruitfarm"   68   1   0   |
 109   "Soldierplace"   0   0   0   |
+110   "stonemason"   62   2   31   |
 111   "estate"   74   0   0   |
