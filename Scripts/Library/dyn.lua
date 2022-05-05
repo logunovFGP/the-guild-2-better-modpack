@@ -368,12 +368,14 @@ function ModifyFavor(source, dest, val)
 	end
 	
 	if IsDynastySim(source) and IsDynastySim(dest) then
-		-- add new grudges
-		if val <= -20 then
-			dyn_AddGrudge(source, dest)
-		elseif val >= 20 then
-		-- add new fondness
-			dyn_AddFondness(source, dest)
+		if GetDynastyID(source) ~= GetDynastyID(dest) then
+			-- add new grudges
+			if val <= -20 then
+				dyn_AddGrudge(source, dest)
+			elseif val >= 20 then
+			-- add new fondness
+				dyn_AddFondness(source, dest)
+			end
 		end
 	end
 	
