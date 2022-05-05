@@ -668,6 +668,352 @@ Translate and add the following lines below:
 18649   "_OFFICE_SESSION_IN_TOWN_COUNTDOWN_+0"   "Council meeting in %2NAME"   |
 18650   "_DUEL_IN_TOWN_COUNTDOWN_+0"   "Duel in %2NAME"   |
 18651   "_TRIAL_IN_TOWN_COUNTDOWN_+0"   "Trial in %2NAME"   |
+18652   "_MEASURE_ADMINISTRATE_DIPLOMACY_NOOWNER_BODY_+0"   "Error! This building has no owner. Please assign a new owner to continue!"   |
+18653   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_+0"   "Change diplomatic relation"   |
+18654   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_+0"   "Send a letter"   |
+18655   "_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_+0"   "Send money"   |
+18656   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_+0"   "Make a demand"   |
+18657   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_+0"   "Make a request"   |
+18658   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_+0"   "Relation-Overview"   |
+18659   "_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_HEAD_+0"   "Choose diplomatic action"   |
+18660   "_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_BODY_+0"   "With your desk you can send diplomatic messages, make demands or agreements. An agreement protects you against hostilities and allies will support you as much as they can. You can, of course, just express your disapproval or admiration, at least if your family leader is sufficiently rhetorically gifted.$N$N What diplomatic action would you like to do for the %1DN dynasty?"   |
+18661   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_COOLDOWN_+0"   "You just recently sent the %1DN family a letter. Let's not exaggerate, that would not help the diplomatic relations between you ... $N$NYou can only send one message per day, so try again later."   |
+18662   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_ERROR_FOE_+0"   "You can not send a letter to the %1DN family - they would immediately burn it. In any case, it would not be wise to pour more oil into the fire ..."   |
+18663   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_BTN_+0"   "Show them respect"   |
+18664   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_BTN_+0"   "Mock them"   |
+18665   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_BODY_+0"   "What do you want to write the %1DN family in your letter?"   |
+18666   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_SEND_LOW_+0"   "You submit the letter to the %1DN family to your messenger. It expresses why you like them so much. It may also contain some spelling errors ... Well, the text may not be beautiful, but it comes from the heart."   |
+18667   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_SEND_MEDIUM_+0"   "You submit the letter to the %1DN family to your messenger. You expresse your admiration for them and appreciate their achievements so far. The text should certainly convince %1SN of your good intentions."   |
+18668   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_SEND_HIGH_+0"   "You submit the letter to the %1DN family to your messenger. You praise their negotiation skills and the strategy behind all their actions. The text is a fine piece of literature and should please %1SN."   |
+18669   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_SEND_PERFECT_+0"   "You submit the letter to the %1DN family to your messenger. It is an ode full of praise over the heroic deeds of the %1DN family. The city would not be the same without them. The text is a rhetoric masterpiece, every metaphor is original and well set. %1SN will be delighted."   |
+18670   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_SEND_LOW_+0"   "You submit the letter to the %1DN family to your messenger. It expresses why you do not like them. It also contains a few very original insults, which occured to you on the privy. This will certainly be a lesson to them!"   |
+18671   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_SEND_MEDIUM_+0"   "You submit the letter to the %1DN family to your messenger. You ridicule their family management and joke about the names of their ancestors. Actually, the %1DN family is not even worth the paper on which these words were written, but they may keep it."   |
+18672   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_SEND_HIGH_+0"   "You submit the letter to the %1DN family to your messenger. You jotted down a tirade that has it all. Your words are chosen so very angry as to make it hard for %1SN to keep calm."   |
+18673   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_SEND_PERFECT_+0"   "You submit the letter to the %1DN family to your messenger. With enchanting ease, you unmask the disgrace of the %1DN family. The city should be ashamed to tolerate someone like this within its walls. Your insults are as fanciful as they are true. %1SN will hate you."   |
+18674   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_RECEIVE_LOW_+0"   "You receive a message from the %1DN family. It expresses why you are liked so much. It contains some spelling errors and the language is very simple. The whole thing is a bit embarrassing."   |
+18675   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_RECEIVE_MEDIUM_+0"   "You receive a message from the %1DN family. %1SN expresses the admiration for you and the recognition for your achievements so far. The text is deliberately written, but truly no revelation."   |
+18676   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_RECEIVE_HIGH_+0"   "You receive a message from the %1DN family. %1SN praises your negotiating skills and the strategy that is behind all your actions. You catch yourself reading the words a second time. Apparently, you feel flattered."   |
+18677   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_RECEIVE_PERFECT_+0"   "You receive a message from the %1DN family. It is an ode full of praise over your heroic deeds. The city would not be the same without you. You must admit that every metaphor is original and well set. This piece of paper is given a special place in your house!"   |
+18678   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_RECEIVE_LOW_+0"   "You receive a message from the %1DN family. %1SN expresses why they can not stand you. Actually, it is just a string of abstruse insults, at least if >birdbrain< should be an offense."   |
+18679   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_RECEIVE_MEDIUM_+0"   "You receive a message from the %1DN family. They ridicule your family management and jokes about the names of your ancestors. Actually, your family is not even worth the paper on which these words were written. You may keep the paper anyway."   |
+18680   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_RECEIVE_HIGH_+0"   "You receive a message from the %1DN family. You hardly believe your eyes when you see the tirade in your hands. %1SN's words are chosen so very angry as to make it hard for you to keep calm."   |
+18681   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_RECEIVE_PERFECT_+0"   "You receive a message from the %1DN family. You barely make it to the first sentence until you turn red. Your family is leprosy, a disgrace, and much worse. The city should be ashamed to tolerate someone like you within its walls. %1SN will suffer for this!"   |
+18682   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_RECEIVE_HEAD_+0"   "You receive a diplomatic letter" |
+18683   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_GIFT_+0"   "You can only send money to your allies!"   |
+18684   "_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_BODY_+0"   "How many coins do you want to send to the %1DN family?"   |
+18685   "_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_HEAD_+0"   "Send money"   |
+18686   "_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_RECEIVE_BODY_+0"   "%1SN sends you compliments and the sum of %2t. You should be grateful to %1SV."   |
+18687   "_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_RECEIVE_HEAD_+0"   "Your Ally sends money"   |
+18688   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_GIFT_NEUTRAL_+0"   "%1SN thanks you for your gift. To quote: >This support would really not have been necessary, but we appreciate the gesture.<$N$NHowever, this has no effect on your relationship."   |
+18689   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_GIFT_POSITIVE_+0"   "%1SN thanks you for your gift. To quote: >Your support is very welcome. We hope that the friendship between our families will continue for a long time. Perhaps we can return the favour sometime.<$N$NThe relations have improved slightly."   |
+18690   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_GIFT_GRATEFUL_+0"   "%1SN thanks you for your gift. To quote: >We are overwhelmed by your support! The alliance with you was obviously a good decision, be assured that we will always stand by you.<$N$NThe relations have improved drastically!"   |
+18691   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_REQUEST_+0"   "To make a request, you must have an alliance with your target."   |
+18692   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_MONEY_BTN_+0"   "Ask for money"   |
+18693   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ATTACK_BUILDING_BTN_+0"   "Attack a building"   |
+18694   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_GENERAL_HEAD_+0"   "Ask an Ally for help"   |
+18695   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_GENERAL_BODY_+0"   "What kind of help should be provided by %1SN?"   |
+18696   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_MONEY_BODY_+0"   "You are low on funds, so you ask the %1DN dynasty for financial support. Any sum is fine right now. You will receive a message soon."   |
+18697   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_HEAD_+0"   "An ally asks for your help"   |
+18698   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_MONEY_BODY_+0"   "%1SN asks for financial support! If you are willing to do so, simply send some gold over the diplomatic action."   |
+18699   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_REQUEST_NOENEMIES_+0"   "Currently you do not have any feuds!"   |
+18700   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ATTACK_ENEMY_HEAD_+0"   "Request: Attack an enemy"   |
+18701   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ATTACK_ENEMY_BODY_+0"   "Which of your enemies %1SN should attack?"   |
+18702   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_ATTACK_BUILDING_+0"   "%1SN plans an attack, perhaps even the takeover or destruction of a building:$N$N%2GG$N$N%1SN asks for your immediate support in this endeavour."   |
+18703   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ATTACK_BUILDING_NO_SETTLEMENT_+0"   "%1SN has received your request, but since %2GG is in a different place, %1SV unfortunately has to reject. The distance is just too far. Therefore, you are on your own."   |
+18704   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ATTACK_BUILDING_NO_THREAT_+0"   "%1SN has received your request, but the danger emanating from the %2DN dynasty is too high for the %1DN family. Therefore, you are on your own."   |
+18705   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ATTACK_BUILDING_NO_DIPLO_+0"   "%1SN has received your request, but unfortunately, they maintain binding peace agreements with the %2DN dynasty. Therefore, you are on your own."   |
+18706   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ATTACK_BUILDING_NO_SORRY_+0"   "%1SN has received your request and would really like to support you, but unfortunately they currently do not have the means to attack %2GG. Therefore, you are on your own."   |
+18707   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ATTACK_BUILDING_YES_BOMB_+0"   "%1SN has received your request and assures you the support of the %1DN family! A henchman has just set off to bomb %2GG. Whatever your intentions are, use this moment."   |
+18708   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0"   "Answer to a request"   |
+18709   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO_THREAT_+0"   "%1SN sadly has to refuse your request. Currently, the %1DN dynasty does not think it is wise to give you any further support."   |
+18710   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO_+0"   "%1SN sadly has to refuse your request. They are currently pursuing their own plans."   |
+18711   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO_LOWMONEY_+0"   "%1SN sadly has to refuse your request. Currently, the %1DN dynasty itself is not particularly well positioned."   |
+18712   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_YES_+0"   "%1SN is willing to meet your request. The %1DN family sends you %2t in total, use it wisely."   |
+18713   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_HEAD_+0"   "Make a demand"   |
+18714   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_BODY_+0"   "Do you really want to make a demand on the %1DN dynasty? You could get %2t, but the relations to the %1DN dynasty will certainly worsen."   |
+18715   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_REQUEST_ENEMIES_+0"   "You can not make a demand on your enemies - after all, you are already at war, what should your enemy be afraid of?"   |
+18716   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_HEAD_+0"   "Answer to your demand"   |
+18717   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_RIVAL_+0"   "%1SN strongly rejects your request. The% 1DN family would never voluntarily leave their money to a rival like you. The impudence of your request, however, has a detrimental effect on your relationship."   |
+18718   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_YES_+0"   "%1SN accepts your demand. If this avoids an armed conflict with your family, the price of %2t is acceptable."   |
+18719   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_NO_+0"   "%1SN strongly rejects your request. The demand is an impertinence, the sum of %2t is in no relation to the dangerousness of your family. On the contrary, the %1DN family now seem all the more to seek conflict with you."   |
+18720   "_MEASURE_ADMINISTRATE_DIPLOMACY_CONFIRM_HEAD_+0"   "Change diplomacy status"   |
+18721   "_MEASURE_ADMINISTRATE_DIPLOMACY_CONFIRM_FOE_BODY_+0"   "Are you sure you want to declare the feud against the %1DN dynasty? Feuds may be bloody and are easier to start than to end - but your reputation will be damaged if you cause harm to other families without first declaring the feud."   |
+18722   "_MEASURE_ADMINISTRATE_DIPLOMACY_CONFIRM_NEUTRAL_BODY_+0"   "Are you sure you want to make the %1DN dynasty an offer for a rupture of diplomatic relations?"   |
+18723   "_MEASURE_ADMINISTRATE_DIPLOMACY_CONFIRM_NAP_BODY_+0"   "Are you sure you want to make the %1DN dynasty an offer for a non-aggression pact?"   |
+18724   "_MEASURE_ADMINISTRATE_DIPLOMACY_CONFIRM_ALLIANCE_BODY_+0"   "Are you sure you want to make the %1DN dynasty an offer for an alliance?"   |
+18725   "_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_FOE_+0"   "You declared the feud against the %1DN dynasty! May God have mercy on you and your foes and bring your strife to a just end."   |
+18727   "_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NEUTRAL_+0"   "All diplomatic relations with the %1DN dynasty were reset. You are neutral to each other again."   |
+18728   "_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_FOE_DESTINATION_+0"   "Bad news! The %1DN dynasty declared the feud against you! May God have mercy on you and your foes and bring your strife to a just end."   |
+18729   "_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NEUTRAL_DESTINATION_+0"   "Bad news! The %1DN dynasty has changed the diplomatic relationship with you to >neutral<. Past agreements no longer apply."   |
+18730   "_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NAP_DESTINATION_+0"   "Bad news! The %1DN dynasty has cancelled your alliance! %1SN is of the opinion that >non-aggression pact< is the better agreement between your families."   |
+18731   "_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NAP_+0"   "You have changed your alliance with the %1DN dynasty into a non-aggression pact."   |
+18732   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_HEAD_+0"   "Make peace offer"   |
+18733   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NEUTRAL_BODY_+0"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >There is no further strife between us.<$N$N%1SN therefore proposes to return to a neutral relationship. What do you think?"   |
+18734   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NEUTRAL_BODY_+1"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >There were enough tears shed and blood spilled.<$N$N%1SN therefore proposes to return to a neutral relationship. What do you think?"   |
+18735   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NEUTRAL_BODY_+2"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >Every dispute must have an end<$N$N%1SN therefore proposes to return to a neutral relationship. What do you think?"   |
+18736   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NEUTRAL_BODY_+3"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >Peace would be beneficial to both of us<$N$N%1SN therefore proposes to return to a neutral relationship. What do you think?"   |
+18737   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NEUTRAL_BODY_+4"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >My resentment on you has long since faded away<$N$N%1SN therefore proposes to return to a neutral relationship. What do you think?"   |
+18738   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_HEAD_+0"   "Peace offer rejected"   |
+18739   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_BODY_+0"   "The %1DN family does not even think about accepting your request. To quote: >We do not like you and want you out of town!< $N$NSo the hostilities between you will go on."   |
+18740   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_BODY_+1"   "The %1DN family does not even think about accepting your request. To quote: >We will have peace as soon as the crows cost you!< $N$NSo the hostilities between you will go on."   |
+18741   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_BODY_+2"   "The %1DN family does not even think about accepting your request. To quote: >So you recognize your mistake to challenge us? Unfortunately it is too late for that!< $N$NSo the hostilities between you will go on."   |
+18742   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_BODY_+3"   "The %1DN family does not even think about accepting your request. To quote: >We anxiously await the day when we spit on your grave.< $N$NSo the hostilities between you will go on."   |
+18743   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_NOTHREAT_BODY_+0"   "The %1DN family is making fun of your request. To quote: >You did not want it any different. Now you will learn what it takes to get involved with the %1DN dynasty< $N$NSo the hostilities between you will go on."   |
+18744   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_NOTHREAT_BODY_+1"   "The %1DN family is making fun of your request. To quote: >Beg for mercy, weakling.< $N$NSo the hostilities between you will go on."   |
+18745   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_NOTHREAT_BODY_+2"   "The %1DN family is making fun of your request. To quote: >We do not fear the dispute with you.< $N$NSo the hostilities between you will go on."   |
+18746   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_NOTHREAT_BODY_+3"   "The %1DN family is making fun of your request. To quote: >We see no reason why we should end this dispute< $N$NSo the hostilities between you will go on."   |
+18747   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_DEMAND_BODY_+0"   "The %1DN family has rejected your request, but it may not be all in vain. To quote: >You have given us a hard time, we demand reparation if you are serious.< $N$NAre you willing to listen to their demands?"   |
+18748   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_DEMAND_BODY_+1"   "The %1DN family has rejected your request, but it may not be all in vain. To quote: >You must pay for the misfortune you have brought upon us.< $N$NAre you willing to listen to their demands?"   |
+18749   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_DEMAND_BODY_+2"   "The %1DN family has rejected your request, but it may not be all in vain. To quote: >For the insults against us, we expect a gesture of humility.< $N$NAre you willing to listen to their demands?"   |
+18750   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_DECLINE_DEMAND_BODY_+3"   "The %1DN family has rejected your request, but it may not be all in vain. To quote: >We would be willing to refrain from further disputes if you agree to meet our conditions.< $N$NAre you willing to listen to their demands?"   |
+18751   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_ACCEPT_NEUTRAL_HEAD_+0"   "Peace offer accepted"   |
+18752   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_ACCEPT_NEUTRAL_BODY_+0"   "The %1DN family accepts your offer. It is time to end the dispute. $N$NYour relationship is now >neutral< again."   |
+18753   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NAP_BODY_+0"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >There is no further strife between us.<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18754   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NAP_BODY_+1"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >There were enough tears shed and blood spilled.<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18755   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NAP_BODY_+2"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >Every dispute must have an end<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18756   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NAP_BODY_+3"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >Peace would be beneficial to both of us<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18757   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NAP_BODY_+4"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to end the conflict between your families. To quote: >My resentment on you has long since faded away<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18758   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_BODY_+0"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >We do not want any strife with you. What do you think about it when we do not bother each other for a while?<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18759   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_BODY_+1"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >We both have big goals - but I don't think we will get in each other's way.<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18760   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_BODY_+2"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >Such an agreement would be an appropriate sign of our friendship.<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18761   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_BODY_+3"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >With this offer we want to express the respect that we feel for your family.<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18762   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_BODY_+4"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >We have many enemies, so it would be in our mutual interest to keep the peace between us.<$N$N%1SN therefore proposes a non-aggression pact. What do you think?"   |
+18763   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_HEAD_+0"   "Offer for a non-aggression pact"   |
+18764   "_MEASURE_ADMINISTRATE_DIPLOMACY_SELECT_TARGET_+0"   "Choose a member of a dynasty"   |
+18765   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_ACCEPT_HEAD_+0"   "Non-aggression pact accepted"   |
+18766   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_ACCEPT_BODY_+0"   "The %1DN family accepts your offer. It is about time to secure the peace between your families. $N$NFrom now on you have a >Non-aggression pact<"   |
+18767   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_ACCEPT_BODY_+1"   "The %1DN family accepts your offer. The time for such an agreement is favourable. $N$NFrom now on you have a >Non-aggression pact<"   |
+18768   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_NOTHREAT_BODY_+0"   "The %1DN family does not think that such an agreement is necessary. To quote: >We have no quarrel with you, but that is hardly a reason for us to sign such an agreement.< $N$NYour relationship therefore remains neutral."   |
+18769   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_NOTHREAT_BODY_+1"   "The %1DN family does not think that such an agreement is necessary. To quote: >Such an agreement would confine our family unnecessarily.< $N$NYour relationship therefore remains neutral."   |
+18770   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_NOTHREAT_BODY_+2"   "The %1DN family does not think that such an agreement is necessary. To quote: >Your dynasty lacks strength and prestige.< $N$NYour relationship therefore remains neutral."   |
+18771   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_NOTHREAT_BODY_+3"   "The %1DN family does not think that such an agreement is necessary. To quote: >We do not think you are a danger to our family.< $N$NYour relationship therefore remains neutral."   |
+18772   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_DEMAND_BODY_+0"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >We would be willing to accept your request if you meet our conditions.< $N$NAre you willing to listen to their demands?"   |
+18773   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_DEMAND_BODY_+1"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >If you are serious with your concerns, we surely can come to an agreement.< $N$NAre you willing to listen to their demands?"   |
+18774   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_DEMAND_BODY_+2"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >If you show a goodwill gesture, we will consider your offer.< $N$NAre you willing to listen to their demands?"   |
+18775   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_DEMAND_BODY_+3"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >Before we sign anything, you must do us a favour.< $N$NAre you willing to listen to their demands?"   |
+18776   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_BODY_+0"   "The %1DN family is not willing to conclude such an agreement. To quote: >We don't like you very much, just so you know.< $N$NYour relationship therefore remains neutral."   |
+18777   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_BODY_+1"   "The %1DN family is not willing to conclude such an agreement. To quote: >We have many friends, but you're not one of them.< $N$NYour relationship therefore remains neutral."   |
+18778   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_BODY_+2"   "The %1DN family is not willing to conclude such an agreement. To quote: >We have no quarrel and it should stay that way.< $N$NYour relationship therefore remains neutral."   |
+18779   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_BODY_+3"   "The %1DN family is not willing to conclude such an agreement. To quote: >If you are afraid of us, do not challenge us!< $N$NYour relationship therefore remains neutral."   |
+18780   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_DECLINE_HEAD_+0"   "Non-aggression pact rejected"   |
+18781   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_ACCEPT_NAP_HEAD_+0"   "Peace offer accepted"   |
+18782   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_ACCEPT_NAP_BODY_+0"   "The %1DN family accepts your offer. It is time to end this dispute and secure the peace between your families. $N$NFrom now on you have a >Non-aggression pact<"   |
+18783   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_HEAD_+0"   "Alliance rejected"   |
+18784   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_BODY_+0"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >We feel connected to your dynasty and we think that we should make our friendship official.<$N$N%1SN proposes an >alliance<. What do you think?"   |
+18785   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_BODY_+1"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >Our families both have great ambitions, together we will certainly accomplish them.<$N$N%1SN proposes an >alliance<. What do you think?"   |
+18786   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_BODY_+2"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >We have been admiring you for a long time and you know you can count on us.<$N$N%1SN proposes an >alliance<. What do you think?"   |
+18787   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_BODY_+3"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >With your support our family would certainly have nothing to fear anymore.<$N$N%1SN proposes an >alliance<. What do you think?"   |
+18788   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_BODY_+4"   "%2SN, you received a diplomatic request. The %1DN dynasty would like to stipulate the peace between your families. To quote: >We pledge to support you with everything in our power.<$N$N%1SN proposes an >alliance<. What do you think?"   |
+18789   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_HEAD_+0"   "Offer for an alliance"   |
+18790   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_ACCEPT_HEAD_+0"   "Alliance accepted"   |
+18791   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_ACCEPT_BODY_+0"   "The %1DN family accepts your offer. It is time to consolidate the friendship between your families. $N$NYou now have an >alliance<"   |
+18792   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_ACCEPT_BODY_+1"   "The %1DN family accepts your offer. The time for such an agreement is favourable. $N$NYou now have an >alliance<"   |
+18793   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_NOTHREAT_BODY_+0"   "The %1DN family does not think that it would be wise to sign such an agreement. To quote: >We have no quarrel with you, but that is hardly a reason for us to sign such an agreement.< $N$NYour relationship therefore remains unchanged."   |
+18794   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_NOTHREAT_BODY_+1"   "The %1DN family does not think that it would be wise to sign such an agreement. To quote: >Such an agreement would confine our family unnecessarily.< $N$NYour relationship therefore remains unchanged."   |
+18795   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_NOTHREAT_BODY_+2"   "The %1DN family does not think that it would be wise to sign such an agreement. To quote: >Your dynasty lacks strength and prestige.< $N$NYour relationship therefore remains unchanged."   |
+18796   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_NOTHREAT_BODY_+3"   "The %1DN family does not think that it would be wise to sign such an agreement. To quote: >We don't think you are a danger to our family.< $N$NYour relationship therefore remains unchanged."   |
+18797   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_DEMAND_BODY_+0"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >We would be willing to accept your request if you meet our conditions.< $N$NAre you willing to listen to their demands?"   |
+18798   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_DEMAND_BODY_+1"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >If you are serious with your concerns, we surely can come to an agreement.< $N$NAre you willing to listen to their demands?"   |
+18799   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_DEMAND_BODY_+2"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >If you show a goodwill gesture, we will consider your offer.< $N$NAre you willing to listen to their demands?"   |
+18800   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_DEMAND_BODY_+3"   "The %1DN family has rejected your request, but maybe it is not completely in vain. To quote: >Before we sign anything, you must do us a favour.< $N$NAre you willing to listen to their demands?"   |
+18801   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_BODY_+0"   "The %1DN family seems irritated by your request. To quote: >We don't like you very much, just so you know.< $N$NYour relationship therefore remains unchanged."   |
+18802   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_BODY_+1"   "The %1DN family seems irritated by your request. To quote: >We have many friends, but you're not one of them.< $N$NYour relationship therefore remains unchanged."   |
+18803   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_BODY_+2"   "The %1DN family seems irritated by your request. To quote: >We have no quarrel and it should stay that way.< $N$NYour relationship therefore remains unchanged."   |
+18804   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_BODY_+3"   "The %1DN family seems irritated by your request. To quote: >If you are afraid of us, do not challenge us!< $N$NYour relationship therefore remains unchanged."   |
+18805   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_RIVAL_SIM_BODY_+0"   "The %1DN family rejects the offer firmly. To quote: >As long as %2SN threatens our political ambitions, an alliance is out of the question.< $N$NYour relationship therefore remains unchanged."   |
+18806   "_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_DECLINE_RIVAL_BUILDING_BODY_+0"   "The %1DN family rejects the offer firmly. To quote: >As long as you are in the possession of %2GG, we consider you as a competitor for our business.< $N$NYour relationship therefore remains unchanged."   |
+18807   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_POSITIVE_+0"   "The %1DN dynasty takes the feud with you full of joy. To quote: >For a long time we wish to cross the blades with you!<"   |
+18808   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_POSITIVE_+1"   "The %1DN dynasty takes the feud with you full of joy. To quote: >Finally we can pay back your insults with your own coin.<"   |
+18809   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_POSITIVE_+2"   "The %1DN dynasty takes the feud with you full of joy. To quote: >We do not fear a feud with your family.<"   |
+18810   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_POSITIVE_+3"   "The %1DN dynasty takes the feud with you full of joy. To quote: >You will regret challenging us!<"   |
+18811   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_POSITIVE_+4"   "The %1DN dynasty takes the feud with you full of joy. To quote: >With this feud you have sealed your fate.<"   |
+18812   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_NEGATIVE_+0"   "The %1DN dynasty is horrified by the feud with you. To quote: >We really don't know why we would have deserved your enmity.<"   |
+18813   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_NEGATIVE_+1"   "The %1DN dynasty is horrified by the feud with you. To quote: >We don't want this conflict, but we will fight with fervour.<"   |
+18814   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_NEGATIVE_+2"   "The %1DN dynasty is horrified by the feud with you. To quote: >God willing, your own destructiveness will be your downfall.<"   |
+18815   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_NEGATIVE_+3"   "The %1DN dynasty is horrified by the feud with you. To quote: >Justice is on our side, you will regret your actions.<"   |
+18816   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_FOE_NEGATIVE_+4"   "The %1DN dynasty is horrified by the feud with you. To quote: >We regret that it has come so far, but we will defend ourselves to the utmost.<"   |
+18817   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_POSITIVE_+0"   "The %1DN dynasty takes your breach of promise calmly. To quote: >Our relationship is no longer the same, Neutral is an appropriate relationship.<"   |
+18818   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_POSITIVE_+1"   "The %1DN dynasty takes your breach of promise calmly. To quote: >We agree that Neutral is the right relationship for our families.<"   |
+18819   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_POSITIVE_+2"   "The %1DN dynasty takes your breach of promise calmly. To quote: >We are not particularly troubled about your change of mind.<"   |
+18820   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_POSITIVE_+3"   "The %1DN dynasty takes your breach of promise calmly. To quote: >An alliance whatsoever does not help any of us.<"   |
+18821   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_POSITIVE_+4"   "The %1DN dynasty takes your breach of promise calmly. To quote: >Your dynasty does not add much to our strength anyway.<"   |
+18822   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_NEGATIVE_+0"   "The %1DN dynasty is alienated. To quote: >We don't understand what we have done to you.<"   |
+18823   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_NEGATIVE_+1"   "The %1DN dynasty is alienated. To quote: >You end our good relations needlessly?<"   |
+18824   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_NEGATIVE_+2"   "The %1DN dynasty is alienated. To quote: >We could have achieved great things together.<"   |
+18825   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_NEGATIVE_+3"   "The %1DN dynasty is alienated. To quote: >We will not stand for that.<"   |
+18826   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NEUTRAL_NEGATIVE_+4"   "The %1DN dynasty is alienated. To quote: >Your new power probably got to your head, eh?<"   |
+18827   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_POSITIVE_+0"   "The %1DN dynasty agrees with the new diplomatic conditions. To quote: >An alliance confines us unnecessarily.<"   |
+18828   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_POSITIVE_+1"   "The %1DN dynasty agrees with the new diplomatic conditions. To quote: >As Allied you were a disappointment, this step accommodates us.<"   |
+18829   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_POSITIVE_+2"   "The %1DN dynasty agrees with the new diplomatic conditions. To quote: >We are happy to continue to live in peaceful coexistence with you.<"   |
+18830   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_POSITIVE_+3"   "The %1DN dynasty agrees with the new diplomatic conditions. To quote: >We were also not quite happy with our alliance, a wise decision.<"   |
+18831   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_POSITIVE_+4"   "The %1DN dynasty agrees with the new diplomatic conditions. To quote: >Your actions testify your providence.<"   |
+18832   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_NEGATIVE_+0"   "The %1DN dynasty is worried about your actions. To quote: >We thought we were good allies for you.<"   |
+18833   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_NEGATIVE_+1"   "The %1DN dynasty is worried about your actions. To quote: >Hopefully, we can regain your trust.<"   |
+18834   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_NEGATIVE_+2"   "The %1DN dynasty is worried about your actions. To quote: >Obviously, this is some kind of misunderstanding?<"   |
+18835   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_NEGATIVE_+3"   "The %1DN dynasty is worried about your actions. To quote: >Our relationship should not worsen even further.<"   |
+18836   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_NAP_NEGATIVE_+4"   "The %1DN dynasty is worried about your actions. To quote: >We are not quite sure why you have ended our alliance.<"   |
+18837   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_HEAD_+0"   "A dynasty makes a demand on you"   |
+18838   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_NEUTRAL_BODY_+0"   "The %1DN family prompts you the payment of %2t. This would make it possible to forget the old insults and the feud might be ended.$N$NAre you willing to pay that sum?"   |
+18839   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_NAP_BODY_+0"   "The %1DN family prompts you the payment of %2t. That gold could be the basis for peaceful coexistence.$N$NAre you willing to pay that sum?"   |
+18840   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_ALLIANCE_BODY_+0"   "The %1DN family prompts you the payment of %2t. By paying you would prove that you are a worthy ally.$N$NAre you willing to pay that sum?"   |
+18841   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_FAILED_BODY_+0"   "Unfortunately, you don't have the resources to meet the requirements of the %1DN family."   |
+18842   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_CHOICE_MONEY_+0"   "Pay the gold"   |
+18843   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_CHOICE_WAR_+0"   "Accept the war pact"   |
+18844   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_CHOICE_BODY_+0"   "The %1DN family prompts you the payment of %2t. However, the %3DN dynasty is a big concern - if you were willing to declare the  feud on the %3DN dynasty, they would waive further claims. $N$NWhat do you say?"   |
+18845   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_ACCEPTED_WAR_FOR_NEUTRAL_+0"   "You accept the war pact. You declare the feud on the %1DN dynasty, in return the relationship with the %2DN dynasty is >neutral< again."   |
+18846   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_ACCEPTED_WAR_FOR_NAP_+0"   "You accept the war pact. You declare the feud on the %1DN dynasty, in return you now have a >non-aggression pact< with the %2DN dynasty."   |
+18847   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_MESSAGE_ACCEPTED_WAR_FOR_ALLIANCE_+0"   "You accept the war pact. You declare thr feud on the %1DN dynasty, in return you now have an >alliance< with the %2DN dynasty."   |
+18848   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_NEUTRAL_WAR_+0"   "By accepting the terms, you now have a >neutral< relationship with the %1DN dynasty."   |
+18849   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_NAP_WAR_+0"   "By accepting the terms, you now have a >non-aggression pact< with the %1DN dynasty."   |
+18850   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_ALLIANCE_WAR_+0"   "By accepting the terms, you now have an >alliance< with the %1DN dynasty."   |
+18851   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_FOE_DESTINATION_WAR_+0"   "Oh dear! Out of nowhere, the %1DN dynasty declared a feud to you! The %2DN family is probably behind this..."   |
+18852   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_NEUTRAL_+0"   "By accepting to pay, the feud between your dynasties ends. Towards the %1DN family you now have the status: >Neutral<."   |
+18853   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_NAP_+0"   "By accepting to pay, peace is contractually secured. From now on you have a non-aggression pact with the %1DN family."   |
+18854   "_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_CHANGED_ALLIANCE_+0"   "By accepting to pay you have convinced the %1DN Dynasty of your benefit as an Ally. From now on you have an Alliance."   |
+18855   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_BODY_+0"   "Here you can find the most important values for your relations to the %2l %1DN-Dynasty.$N$N$NStatus: %11l $NFavor: %3i%% $NEnemies: %4i $NAllies: %5i $N%6l: %7i $N$N%8l $N%9l"   |
+18856   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_GRUDGE_+0"   "Grudge Level"   |
+18857   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_FONDNESS_+0"   "Fondness Level"   |
+18858   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_THREAT_+0"   "The %1DN-Dynasty doesn't fear your Dynasty at all."   |
+18859   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_THREAT_+1"   "The %1DN-Dynasty considers your Dynasty to be of equal strength."   |
+18860   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_THREAT_+2"   "The %1DN-Dynasty shows respect for your Dynasty."   |
+18861   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_THREAT_+3"   "The %1DN-Dynasty is intimidated by the power of your Dynasty."   |
+18862   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_THREAT_+4"   "The %1DN-Dynasty is scared of the power of your Dynasty!"   |
+18863   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_RIVAL_+0"   "You are no Rivals."   |
+18864   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_RIVAL_+1"   "The %1DN-Dynasty sees %10SA %10SN as a political competitor."   |
+18865   "_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_RIVAL_+2"   "The %1DN-Dynasty sees %10GG as competition."   |
+18866   "_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_HEAD_+0"   "Send a letter"   |
+18867   "_CITY_PINGHOUR_CITY_TREASURY_BALANCE_HEAD_+0"   "The town clerk informs"   |
+18868   "_CITY_PINGHOUR_CITY_TREASURY_BALANCE_BODY_+0"   "The town clerk %1SN informs you about the revenue and expenses of %2NAME in %3j$N------------------------------------------------------------$N$C[0,153,0]Revenue: %14t$C[0,0,0]$N------------------------------------------------------------$NSales taxes (%4i%%):$NRaw Materials %5t --- Food %6t $NHandicraft %7t --- Bauble %8t $NScent & Herb %9t --- Iron Goods %10t $NFees:$NTitles %11t --- Applications %12t --- Fines %13t$N------------------------------------------------------------$N$C[255,0,51]Expenses: %21t$C[0,0,0]$N------------------------------------------------------------$NOffice Bearers %15t --- City Servants %16t $NGuards %17t --- Bailiffs %18t$NRepairs: %19t --- War %20t $N------------------------------------------------------------$N %22l $NRemaining in the city treasury: %23t$N------------------------------------------------------------$N$C[0,255,255]Church Tithe (%24i%%):$N$C[0,0,0]Revenue: %25t $NAlms: %26t$N Remaining in the church treasury: %27t$N------------------------------------------------------------"   |
+18869   "_STARTDIALOG_START_YOUNG_MALE_+0"   "Hey, young man! I need to talk to you ..."   |
+18870   "_STARTDIALOG_START_YOUNG_FEMALE_+0"   "Hey, young girl! Could you spare a moment for me?"   |
+18871   "_STARTDIALOG_START_ADULT_MALE_+0"   "Sir, just a moment please, if you can spare the time ..."   |
+18872   "_STARTDIALOG_START_ADULT_FEMALE_+0"   "Mylady, may I speak to you?"   |
+18873   "_STARTDIALOG_NO_+0"   "Go away! I do not talk to ragtag and bobtail!"   |
+18874   "_STARTDIALOG_NO_+1"   "How dare you?! I don't talk to people like you!"   |
+18875   "_STARTDIALOG_SORRY_+0"   "I'm so sorry! I couldn't guess, that you did't want to talk ..."   |
+18876   "_STARTDIALOG_SORRY_+1"   "I apologize, I didn't want to bother you!"   |
+18877   "_STARTDIALOG_EVIDENCE_+0"   "Before you go, take this document! It may be helpful some day."   |
+18878   "_STARTDIALOG_EVIDENCE_+1"   "Please wait! I have some interesting information regarding the behaviour of a fellow citizen ..."   |
+18879   "_STARTDIALOG_THX_+0"   "This is an interesting evidence! Thank you!"   |
+18880   "_STARTDIALOG_THX_+1"   "Interesting indeed! I'm not surprised ... I owe you one."   |
+18881   "_STARTDIALOG_FAVOR_POS_ADULT_+0"   "That was a interesting conversation. Have a nice day."   |
+18882   "_STARTDIALOG_FAVOR_POS_ADULT_+1"   "I thank you for the pleasure. We should do this again."   |
+18883   "_STARTDIALOG_FAVOR_POS_YOUNG_+0"   "That was funny! I have to go to school now."   |
+18884   "_STARTDIALOG_FAVOR_POS_YOUNG_+1"   "You're so funny! I hope we play again soon."   |
+18885   "_STARTDIALOG_FAVOR_NEG_ADULT_+0"   "This conversation is quite boring - let us end it. Go away!"   |
+18886   "_STARTDIALOG_FAVOR_NEG_ADULT_+1"   "Arghh, you're such a moron! Don't bother me again!"   |
+18887   "_STARTDIALOG_FAVOR_NEG_YOUNG_+0"   "Mommy says, that I must not talk to strangers!"   |
+18888   "_STARTDIALOG_FAVOR_NEG_YOUNG_+1"   "May I go now? You are boooooring!"   |
+18889   "_MEASURE_MarryChapel_TOOLTIP_+0"   "This character takes part in a great event: The wedding of two loving people. In this particular case their eternal bond will not only formed before god but also infront of a priest and guests in a monastary chapel. A memorable event of which one will speak for many years!"   |
+18890   "_MEASURE_MarryChapel_NAME_+0"   "Visit a wedding ceremony"   |
+18891   "_CITY_PINGHOUR_CITY_TREASURY_BALANCE_PROFIT_+0"   "%2NAME generated a profit of %28t"   |
+18892   "_CITY_PINGHOUR_CITY_TREASURY_BALANCE_LOSS_+0"   "%2NAME suffered a loss of %28t"   |
+18894   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_SPEECH_+6"   "#E[NT_SEVERE]You are hereby sentenced to 4 years in prison. Take them away!"   |
+18895   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_SPEECH_+3"   "#E[NT_SEVERE]You are stripped of your office!"   |
+18896   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_SPEECH_+4"   "#E[NT_SEVERE]You are sentenced to a heavy fine!"   |
+18897   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_SPEECH_+1"   "#E[HP_SMILING]I sentence you to a fine."   |
+18898   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_SPEECH_+2"   "#E[NT_NEUTRAL]I hereby sentence you to 6 hours in the pillory!"   |
+18899   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6"   "#E[NT_SEVERE]You are hereby sentenced to 4 years in prison, %1SA %1SV. Take them away!"   |
+18900   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+7"   "#E[NT_SEVERE]I hereby sentence you, %1SA %1SV, to death. May God have pity on your poor soul."   |
+18901   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_SPEECH_+0"   "#E[HP_SMILING]I hereby issue you a caution. The city will carry the court costs."   |
+18902   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+5"   "#E[NT_SEVERE]%1ST %1SV, you are hereby stripped of your title."   |
+18903   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+1"   "#E[HP_SMILING]%1SZ, I sentence you to a fine in the amount of %2t."   |
+18904   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+2"   "#E[NT_NEUTRAL]I hereby sentence you, %1SA %1SV, to 6 hours in the pillory!"   |
+18905   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+3"   "#E[NT_SEVERE]%1SA %1SV, you are stripped of your office!"   |
+18906   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+4"   "#E[NT_SEVERE]%1SZ, you have been sentenced to a heavy fine in the amount of %2t!"   |
+18907   "_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+0"   "#E[HP_SMILING]%1SZ, I hereby issue you a caution. The city will carry the court costs."   |
+18908   "_TIPSNTRICKS_+0"   "Category: Tip 1:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18909   "_TIPSNTRICKS_+1"   "Category: Tip 2:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18910   "_TIPSNTRICKS_+2"   "Category: Tip 3:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18911   "_TIPSNTRICKS_+3"   "Category: Tip 4:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18912   "_TIPSNTRICKS_+4"   "Category: Tip 5:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18913   "_TIPSNTRICKS_+5"   "Category: Tip 6:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18914   "_TIPSNTRICKS_+6"   "Category: Tip 7:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18915   "_TIPSNTRICKS_+7"   "Category: Tip 8:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18916   "_TIPSNTRICKS_+8"   "Category: Tip 9:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18917   "_TIPSNTRICKS_+9"   "Category: Tip 10:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18918   "_TIPSNTRICKS_+10"   "Category: Tip 11:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18919   "_TIPSNTRICKS_+11"   "Category: Tip 12:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18920   "_TIPSNTRICKS_+12"   "Category: Tip 13:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18921   "_TIPSNTRICKS_+13"   "Category: Tip 14:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18922   "_TIPSNTRICKS_+14"   "Category: Tip 15:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18923   "_TIPSNTRICKS_+15"   "Category: Tip 16:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18924   "_TIPSNTRICKS_+16"   "Category: Tip 17:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18925   "_TIPSNTRICKS_+17"   "Category: Tip 18:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18926   "_TIPSNTRICKS_+18"   "Category: Tip 19:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18927   "_TIPSNTRICKS_+19"   "Category: Tip 20:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18928   "_TIPSNTRICKS_+20"   "Category: Tip 21:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18929   "_TIPSNTRICKS_+21"   "Category: Tip 22:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18930   "_TIPSNTRICKS_+22"   "Category: Tip 23:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18931   "_TIPSNTRICKS_+23"   "Category: Tip 24:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18932   "_TIPSNTRICKS_+24"   "Category: Tip 25:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18933   "_TIPSNTRICKS_+25"   "Category: Tip 26:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18934   "_TIPSNTRICKS_+26"   "Category: Tip 27:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18935   "_TIPSNTRICKS_+27"   "Category: Tip 28:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18936   "_TIPSNTRICKS_+28"   "Category: Tip 29:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18937   "_TIPSNTRICKS_+29"   "Category: Tip 30:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18938   "_TIPSNTRICKS_+30"   "Category: Tip 31:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18939   "_TIPSNTRICKS_+31"   "Category: Tip 1:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18940   "_TIPSNTRICKS_+32"   "Category: Tip 2:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18941   "_TIPSNTRICKS_+33"   "Category: Tip 3:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18942   "_TIPSNTRICKS_+34"   "Category: Tip 4:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18943   "_TIPSNTRICKS_+35"   "Category: Tip 5:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18944   "_TIPSNTRICKS_+36"   "Category: Tip 6:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18945   "_TIPSNTRICKS_+37"   "Category: Tip 7:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18946   "_TIPSNTRICKS_+38"   "Category: Tip 8:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18947   "_TIPSNTRICKS_+39"   "Category: Tip 9:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18948   "_TIPSNTRICKS_+40"   "Category: Tip 10:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18949   "_TIPSNTRICKS_+41"   "Category: Tip 11:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18950   "_TIPSNTRICKS_+42"   "Category: Tip 12:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18951   "_TIPSNTRICKS_+43"   "Category: Tip 13:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18952   "_TIPSNTRICKS_+44"   "Category: Tip 14:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18953   "_TIPSNTRICKS_+45"   "Category: Tip 15:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18954   "_TIPSNTRICKS_+46"   "Category: Tip 16:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18955   "_TIPSNTRICKS_+47"   "Category: Tip 17:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18956   "_TIPSNTRICKS_+48"   "Category: Tip 18:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18957   "_TIPSNTRICKS_+49"   "Category: Tip 19:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18958   "_TIPSNTRICKS_+50"   "Category: Tip 20:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18959   "_TIPSNTRICKS_+51"   "Category: Tip 21:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18960   "_TIPSNTRICKS_+52"   "Category: Tip 22:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18961   "_TIPSNTRICKS_+53"   "Category: Tip 23:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18962   "_TIPSNTRICKS_+54"   "Category: Tip 24:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18963   "_TIPSNTRICKS_+55"   "Category: Tip 25:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18964   "_TIPSNTRICKS_+56"   "Category: Tip 26:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18965   "_TIPSNTRICKS_+57"   "Category: Tip 27:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18966   "_TIPSNTRICKS_+58"   "Category: Tip 28:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18967   "_TIPSNTRICKS_+59"   "Category: Tip 29:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18968   "_TIPSNTRICKS_+60"   "Category: Tip 30:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18969   "_TIPSNTRICKS_+61"   "Category: Tip 31:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18970   "_TIPSNTRICKS_+62"   "Category: Tip 1:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18971   "_TIPSNTRICKS_+63"   "Category: Tip 2:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18972   "_TIPSNTRICKS_+64"   "Category: Tip 3:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18973   "_TIPSNTRICKS_+65"   "Category: Tip 4:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18974   "_TIPSNTRICKS_+66"   "Category: Tip 5:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18975   "_TIPSNTRICKS_+67"   "Category: Tip 6:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18976   "_TIPSNTRICKS_+68"   "Category: Tip 7:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18977   "_TIPSNTRICKS_+69"   "Category: Tip 8:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18978   "_TIPSNTRICKS_+70"   "Category: Tip 9:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18979   "_TIPSNTRICKS_+71"   "Category: Tip 10:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18980   "_TIPSNTRICKS_+72"   "Category: Tip 11:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18981   "_TIPSNTRICKS_+73"   "Category: Tip 12:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18982   "_TIPSNTRICKS_+74"   "Category: Tip 13:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18983   "_TIPSNTRICKS_+75"   "Category: Tip 14:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18984   "_TIPSNTRICKS_+76"   "Category: Tip 15:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18985   "_TIPSNTRICKS_+77"   "Category: Tip 16:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18986   "_TIPSNTRICKS_+78"   "Category: Tip 17:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18987   "_TIPSNTRICKS_+79"   "Category: Tip 18:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18988   "_TIPSNTRICKS_+80"   "Category: Tip 19:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18989   "_TIPSNTRICKS_+81"   "Category: Tip 20:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18990   "_TIPSNTRICKS_+82"   "Category: Tip 21:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18991   "_TIPSNTRICKS_+83"   "Category: Tip 22:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18992   "_TIPSNTRICKS_+84"   "Category: Tip 23:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18993   "_TIPSNTRICKS_+85"   "Category: Tip 24:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18994   "_TIPSNTRICKS_+86"   "Category: Tip 25:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18995   "_TIPSNTRICKS_+87"   "Category: Tip 26:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18996   "_TIPSNTRICKS_+88"   "Category: Tip 27:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18997   "_TIPSNTRICKS_+89"   "Category: Tip 28:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18998   "_TIPSNTRICKS_+90"   "Category: Tip 29:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
+18999   "_TIPSNTRICKS_+91"   "Category: Tip 30:$N$NPlaceholder. The tips are getting reworked. You can deactivate the tips via the filter."   |
 19000   "_DYNASTY_FLAG_SWITCH_+0"    "%1SN"   |
 19001   "_DYNASTY_FLAG_SWITCH_+1"    "$S[2029] %1SN"   |
 19002   "_DYNASTY_FLAG_SWITCH_+2"    "$S[2029] %2SN"   |
