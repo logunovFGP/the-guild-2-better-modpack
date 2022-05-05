@@ -321,16 +321,16 @@ end
 
 function CleanUp()
 	GfxDetachAllObjects()
-	GetSettlement("","City")
+	GetSettlement("", "City")
 	if AliasExists("City") then
-		if HasProperty("City","InfectedSims") then
-			local CurrentInfected = GetProperty("City","InfectedSims") - 1
-			SetProperty("City","InfectedSims",CurrentInfected)
+		if HasProperty("City", "InfectedSims") then
+			local CurrentInfected = GetProperty("City", "InfectedSims") - 1
+			SetProperty("City", "InfectedSims", CurrentInfected)
 		end
 	end
-	StopAction("sickness","")
-	AddImpact("","Resist",1,6)
-	RemoveOverheadSymbols("")
-	
+	MoveSetActivity("")
+	StopAction("sickness", "")
+	AddImpact("", "Resist", 1, 6)
+	RemoveOverheadSymbols("")	
 end
 
