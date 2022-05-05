@@ -730,7 +730,7 @@ Translate and add the following lines below:
 18711   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO_LOWMONEY_+0"   "%1SN sadly has to refuse your request. Currently, the %1DN dynasty itself is not particularly well positioned."   |
 18712   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_YES_+0"   "%1SN is willing to meet your request. The %1DN family sends you %2t in total, use it wisely."   |
 18713   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_HEAD_+0"   "Make a demand"   |
-18714   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_BODY_+0"   "Do you really want to make a demand on the %1DN dynasty? You could get %2t, but the relations to the %1DN dynasty will certainly worsen."   |
+18714   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_BODY_+0"   "Do you really want to make a demand on the %3l %1DN dynasty? You could get %2t, but the relations to the %1DN dynasty will certainly worsen."   |
 18715   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_REQUEST_ENEMIES_+0"   "You can not make a demand on your enemies - after all, you are already at war, what should your enemy be afraid of?"   |
 18716   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_HEAD_+0"   "Answer to your demand"   |
 18717   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_RIVAL_+0"   "%1SN strongly rejects your request. The% 1DN family would never voluntarily leave their money to a rival like you. The impudence of your request, however, has a detrimental effect on your relationship."   |
