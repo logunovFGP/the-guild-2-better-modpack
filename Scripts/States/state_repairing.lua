@@ -73,7 +73,7 @@ function BuildingStart()
 	if not scaffoldmodel or scaffoldmodel == "" or scaffoldmodel == 0 or scaffoldmodel == -1 then
 
 		-- add particles and let them appear out of the ground
-	 	GfxAttachObject("ParticleDust", "particles/build.nif")
+	 --	GfxAttachObject("ParticleDust", "particles/build.nif")
 	 	
 	 	-- Get the base area of the building
 	 	local BaseArea = GfxGetHeight("") 	
@@ -81,9 +81,9 @@ function BuildingStart()
 		if PartScale > 6 then
 			PartScale = 6
 		end
-	 	GfxScale("ParticleDust", PartScale)
-	 	GfxSetPosition("ParticleDust", 0, -200, 0, false, true)
-		GfxMoveToPositionNoWait("ParticleDust", 0, 200, 0, 3, false)
+	 --	GfxScale("ParticleDust", PartScale)
+	 --	GfxSetPosition("ParticleDust", 0, -200, 0, false, true)
+	--	GfxMoveToPositionNoWait("ParticleDust", 0, 200, 0, 3, false)
 
 		SetData("ScaffoldLevel", -1)
 
@@ -105,7 +105,7 @@ function BuildingStart()
 		local ScaffoldLevel = -1
 	 	
 		-- add particles and let them appear out of the ground
-	 	GfxAttachObject("ParticleDust", "particles/build.nif")
+	-- 	GfxAttachObject("ParticleDust", "particles/build.nif")
 	 	
 	 	-- Get the base area of the building
 	 	local BaseArea = GfxGetHeight("") 	
@@ -113,9 +113,9 @@ function BuildingStart()
 		if PartScale > 6 then
 			PartScale = 6
 		end
-	 	GfxScale("ParticleDust", PartScale)
-	 	GfxSetPosition("ParticleDust", 0, -200, 0, false, true)
-		GfxMoveToPositionNoWait("ParticleDust", 0, 200, 0, 3, false)
+	-- 	GfxScale("ParticleDust", PartScale)
+	 --	GfxSetPosition("ParticleDust", 0, -200, 0, false, true)
+	--	GfxMoveToPositionNoWait("ParticleDust", 0, 200, 0, 3, false)
 	 	
 		if scaffoldmodel > 0 then
 			while ScaffoldMaxLevel > 0.9 do			
@@ -148,7 +148,7 @@ end
 function BuildingEnd()
 	
 	-- get rid of the particle and all the scaffolds
-	GfxMoveNoWait("ParticleDust", 0, -1, 0, 100)
+--	GfxMoveNoWait("ParticleDust", 0, -1, 0, 100)
 	
 	local ScaffoldLevel = GetData("ScaffoldLevel")
 	

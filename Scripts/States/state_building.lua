@@ -54,9 +54,9 @@ function CartLoop()
 	Attach3DSound("", "measures/ms_BuildHouse_s_01.wav", 1.0)
 	
 	-- add particles and let them appear out of the ground
- 	GfxAttachObject("ParticleDust", "particles/build.nif")
- 	GfxSetPosition("ParticleDust", 0, -100, 0, false, true)
- 	GfxMoveToPositionNoWait("ParticleDust", 0, 100, 0, 4, false)
+ --	GfxAttachObject("ParticleDust", "particles/build.nif")
+-- 	GfxSetPosition("ParticleDust", 0, -100, 0, false, true)
+-- 	GfxMoveToPositionNoWait("ParticleDust", 0, 100, 0, 4, false)
  	
 	-- Get the buildingtime (add a value to the prefpattern table)
 	local CartPrefPattern = MoveGetPrefPattern("")
@@ -271,9 +271,9 @@ function BuildingLoop()
 	
 	GetLocalPlayerDynasty("LocalPlayer")
 	GetDynasty("", "BuildingDynasty")
-	if not IsMultiplayerGame() and GetID("LocalPlayer") == GetID("BuildingDynasty") then
-		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.1, 1, "c4")
-	end
+--	if not IsMultiplayerGame() and GetID("LocalPlayer") == GetID("BuildingDynasty") then
+--		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.1, 1, "c4")
+--	end
 
 	feedback_MessageWorkshop("",
 		"@L_BUILDING_BUILD_HEAD",
