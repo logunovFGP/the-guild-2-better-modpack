@@ -13,7 +13,7 @@ function TakeOffice(Messages)
 		feedback_MessageOffice("",
 			ps_foltermeister_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_foltermeister_GetPrivilegeList() )
@@ -24,7 +24,7 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_foltermeister_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )

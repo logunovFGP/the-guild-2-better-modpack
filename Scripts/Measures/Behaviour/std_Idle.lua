@@ -313,22 +313,6 @@ function Run()
 			end
 		end
 		
-		
-		--Repair Homebuilding if damaged and if not dynsim
-		if GetDynastyID("") <= 0 then
-			if not (GetImpactValue("","Sickness")>0) then
-				if GetHomeBuilding("","HomeBuilding") then
-					local CurrentHP = GetHPRelative("HomeBuilding")
-					if CurrentHP <= 0.9 then
-						if Rand(100) > 50 then
-							idlelib_RepairHome("HomeBuilding")
-						end
-					end
-				end
-			end
-		end
-		
-		
 		if ActiveMovement then
 			f_ExitCurrentBuilding("")
 			Sleep(Rand(10)+5)

@@ -3,7 +3,7 @@ function Run()
 		return
 	end
 	
-	if CartGetEscortCount("")==0 then
+	if CartGetEscortCount("") == 0 then
 		return
 	end
 	
@@ -14,11 +14,12 @@ function Run()
 	local	TimeOut = Gametime2Realtime(0.5)
 	
 	while CartCheckEscort("") do
-		if CartGetEscortCount("")==0 then
+		if CartGetEscortCount("") == 0 then
 			return
 		end
+
 		Sleep(5)
-		if TimeOut<0 then
+		if TimeOut < 0 then
 			if not CartCheckFighting("") then
 				break
 			end

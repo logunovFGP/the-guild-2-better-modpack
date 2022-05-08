@@ -78,7 +78,6 @@ function Run()
 		local MeasureID = GetCurrentMeasureID("")
 		local duration = mdata_GetDuration(MeasureID)
 		local EndTime = GetGametime() + duration
-		SetRepeatTimer("", GetMeasureRepeatName(), 1)
 
 		CommitAction("quacksalver", "", "")
 		while GetGametime() < EndTime do
@@ -86,11 +85,7 @@ function Run()
 			if GetItemCount("", "MiracleCure")<1 then
 				break
 			end
-			if SimGetGender("")==GL_GENDER_MALE then
-				PlaySound3DVariation("","CharacterFX/male_jolly",1)
-			else
-				PlaySound3DVariation("","CharacterFX/female_jolly",1)
-			end
+			
 			PlayAnimation("","pray_standing")
 			PlayAnimation("","preach")
 			Sleep( 1 + 0.1*Rand(20) )

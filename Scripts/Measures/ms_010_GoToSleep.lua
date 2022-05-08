@@ -195,13 +195,14 @@ function CleanUp()
 				AddImpact("","fighting",1,12)
 				AddImpact("","shadow_arts",1,12)
 			end
+			
 			if Rand(100)>96 then
 				AddImpact("","LifeExpanding",SleepBonus,-1)
 			elseif Rand(3)>1 then
 				AddImpact("","Resist",1,SleepBonus*Factor/50)
 				AddImpact("","ResistDream",1,SleepBonus*Factor/50)
 			else
-				chr_GainXP("",Factor)
+				chr_GainXP("", Factor)
 			end
 			AddImpact("","GoodDream",1,12)
 		else 

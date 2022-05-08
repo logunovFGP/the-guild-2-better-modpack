@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return "AimForInquisitionalProceeding","Set_ChurchTithe","AbsolveSinner", "CommandMonitor"
+	return "AimForInquisitionalProceeding", "Set_ChurchTithe", "AbsolveSinner", "CommandMonitor"
 end
 
 function InitOffice()
@@ -13,7 +13,7 @@ function TakeOffice(Messages)
 		feedback_MessageOffice("",
 			ps_bischof_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_bischof_GetPrivilegeList() )
@@ -24,7 +24,7 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_bischof_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )

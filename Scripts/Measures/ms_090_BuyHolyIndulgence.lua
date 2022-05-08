@@ -65,7 +65,7 @@ function Run()
 			end
 			local baseXP = GetData("BaseXP")
 			baseXP = baseXP * NumEvidences
-			chr_GainXP("",baseXP)
+			chr_GainXP("", baseXP)
 			feedback_MessagePolitics("",
 				""..TextPrefix.."_SUCCESS_MSG_HEAD",
 				""..TextPrefix.."_SUCCESS_MSG_BODY",GetID(""),GetID("church"),Cost)

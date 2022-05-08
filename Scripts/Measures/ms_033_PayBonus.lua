@@ -16,7 +16,7 @@ function Init()
 	end
 
 	local numFound = 0
-	local	Alias
+	local Alias
 	local count = BuildingGetWorkerCount("Building")
 	
 	for number=0, count-1 do
@@ -150,7 +150,7 @@ function Run()
 	end
 	
 	Sleep(0.5)
-	chr_GainXP("",baseXP)
+	chr_GainXP("", baseXP)
 	Sleep(AnimTime)
 end
 

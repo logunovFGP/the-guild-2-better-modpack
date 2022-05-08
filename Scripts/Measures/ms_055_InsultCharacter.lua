@@ -156,8 +156,8 @@ function Normal()
 		CreateCutscene("Duel","my_duel")
 		CopyAliasToCutscene("Destination","my_duel","challenger")
 		CopyAliasToCutscene("","my_duel","challenged")
-		CutsceneCallUnscheduled("my_duel","Start")
-		chr_GainXP("",GetData("BaseXP"))
+		CutsceneCallUnscheduled("my_duel", "Start")
+		chr_GainXP("", GetData("BaseXP"))
 		
 	--destination is a n00b and defeats
 	elseif Result == "B" then

@@ -4,27 +4,34 @@ function Weight()
 		return 0
 	end	
 
-	local Count = DynastyGetMemberCount("dynasty")
-	if Count > 2 then
+	local DynastyCount = DynastyGetMemberCount("dynasty") -- active group members
+	if DynastyCount > 2 then
+		SetRepeatTimer("dynasty", "AI_CheckPartyMember", 6)
 		return 0
 	end
 	
-	local Count = DynastyGetFamilyMemberCount("dynasty")
-	local	idx
+	local FamilyCount = DynastyGetFamilyMemberCount("dynasty") -- all members of the family
 	local BestWeight = -1
+
+	if FamilyCount == DynastyCount then -- nothing to add
+		SetRepeatTimer("dynasty", "AI_CheckPartyMember", 16)
+		return 0
+	end
 	
-	for idx=0,Count-1 do
+	for idx=0, FamilyCount-1 do
 		if DynastyGetFamilyMember("dynasty", idx, "member") then
-			local Weight =  checkparty_CheckMember("member")
-			if Weight > BestWeight then
-				BestWeight = Weight
-				CopyAlias("member", "SIM")
+			if GetID("dynasty") == GetDynastyID("member") then -- make sure we don't steal members
+				local Weight =  checkparty_CheckMember("member")
+				if Weight > BestWeight then
+					BestWeight = Weight
+					CopyAlias("member", "SIM")
+				end
 			end
 		end
 	end
 	
 	if not AliasExists("SIM") then
-		SetRepeatTimer("dynasty", "AI_CheckPartyMember", 1)
+		SetRepeatTimer("dynasty", "AI_CheckPartyMember", 12)
 		return 0
 	end
 	
@@ -36,9 +43,16 @@ function CheckMember(SimAlias)
 		return -1
 	end
 	
+	-- don't add members used by other players
+	if GetHomeBuilding(SimAlias, "Home") then
+		if GetDynastyID("Home") ~= GetID("dynasty") then
+			return -1
+		end
+	end	
+
 	local Age = SimGetAge(SimAlias)
 	
-	if Age <16 then
+	if Age >= 72 or < 16 then
 		return -1
 	end
 	
@@ -47,12 +61,13 @@ function CheckMember(SimAlias)
 	end
 	
 	local Weight
-	Weight = 2*(68 - (Age - 16)) + SimGetLevel(SimAlias) * 10
+	Weight = 2*(72 - (Age - 16)) + SimGetLevel(SimAlias) * 10
 	
 	return Weight
 end
 
 function Execute()
+	LogMessage("Dynasty added "..GetName("SIM").." to group of Dynasty "..GetID("dynasty"))
 	DynastyAddMember("dynasty", "SIM")
 end
 

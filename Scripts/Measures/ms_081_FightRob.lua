@@ -27,13 +27,13 @@ function Run()
 		MsgNewsNoWait("Destination","","","intrigue",-1,
 						"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_HEAD_+0",
 						"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_BODY_+0",GetID("Destination"),GetID(""))
-		chr_GainXP("",GetData("BaseXP"))
+		chr_GainXP("", GetData("BaseXP"))
 	else
 		local Level = SimGetLevel("Destination")
 		local MoneyToSteal = Level*(Rand(100)+10)
-		CreditMoney("",MoneyToSteal,"IncomeRobber")
-		chr_GainXP("",GetData("BaseXP"))
-		mission_ScoreCrime("",MoneyToSteal)
+		CreditMoney("", MoneyToSteal,"IncomeRobber")
+		chr_GainXP("", GetData("BaseXP"))
+		mission_ScoreCrime("", MoneyToSteal)
 		--MsgQuick("","@L_BATTLE_FIGHTROB_FAILED_+0",GetID("Destination"))
 	end
 	Sleep(2)

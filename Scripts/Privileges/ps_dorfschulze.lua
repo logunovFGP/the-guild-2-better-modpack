@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return	"HaveImmunity","EmbezzlePublicMoney","Set_TurnoverTax","BanCharacter","CanApplyForEpicOffice", "LevelUpCity"
+	return	"HaveImmunity","EmbezzlePublicMoney", "Set_TurnoverTax", "BanCharacter", "CanApplyForEpicOffice", "LevelUpCity"
 end
 
 function InitOffice()
@@ -13,11 +13,11 @@ function TakeOffice(Messages)
 		feedback_MessageOffice("",
 			ps_dorfschulze_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_dorfschulze_GetPrivilegeList() )
-	RemoveImpact("","CanApplyForEpicOfficeTimed")
+	RemoveImpact("", "CanApplyForEpicOfficeTimed")
 end
 
 function LooseOffice(Messages)
@@ -25,10 +25,10 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_dorfschulze_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )
-	AddImpact("","CanApplyForEpicOfficeTimed",1,24)
+	AddImpact("","CanApplyForEpicOfficeTimed", 1, 24)
 end
  

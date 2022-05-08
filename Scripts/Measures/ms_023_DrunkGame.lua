@@ -166,11 +166,11 @@ function Run()
 	        local altwinner = GetProperty("Tave","BestDrunkPoints")
 		    if punktestand > altwinner then
 	            local winnername = GetName("")
-	            SetProperty("Tave","BestDrunkPlayer",winnername)
-		        SetProperty("Tave","BestDrunkPoints",punktestand)
+	            SetProperty("Tave","BestDrunkPlayer", winnername)
+		        SetProperty("Tave","BestDrunkPoints", punktestand)
 		    end
 	    end
-		chr_GainXP("",GetData("BaseXP"))
+		chr_GainXP("", GetData("BaseXP"))
 	end
 	
 	StopMeasure()

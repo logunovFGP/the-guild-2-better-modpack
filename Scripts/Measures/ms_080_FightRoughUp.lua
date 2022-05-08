@@ -1,6 +1,8 @@
 function Run()
 	local MaxDistance = 1000
 	local ActionDistance = 50
+	local MeasureID = GetCurrentMeasureID("")
+	local TimeOut = mdata_GetTimeOut(MeasureID)
 
 	--already beaten up
 	if GetImpactValue("Destination","Fracture")~=0 then
@@ -27,7 +29,7 @@ function Run()
 		StartSingleShotParticle("particles/bloodsplash.nif", "ParticleSpawnPos", 1,4)
 		PlaySound3DVariation("Destination","Effects/combat_strike_mace",1)
 		SetProperty("Destination","RoughUp_start",2)
-		local OkGoOn = GetProperty("Destination","RoughUp_start",2)
+		local OkGoOn = GetProperty("Destination","RoughUp_start", TimeOut)
 		if OkGoOn == 2 then
 			if GetImpactValue("Destination","Fracture")~=0 then
 				MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+25",GetID("Destination"))
@@ -35,7 +37,7 @@ function Run()
 			end
 			-- set fracture for the victim
 			diseases_Fracture("Destination", true)
-			chr_GainXP("",GetData("BaseXP"))
+			chr_GainXP("", GetData("BaseXP"))
 			SetRepeatTimer("", GetMeasureRepeatName2("RoughUp"), 2)
 			feedback_MessageCharacter("","@L_BATTLE_FIGHTROUGHUP_MSG_SUCCESS_OWNER_HEAD_+0",
 								"@L_BATTLE_FIGHTROUGHUP_MSG_SUCCESS_OWNER_BODY_+0",GetID(""),GetID("Destination"))

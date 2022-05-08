@@ -23,6 +23,7 @@ function Run()
 	local ActionDistance = 30
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
+	local duration = mdata_GetDuration(MeasureID)
 	
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
 		MsgQuick("", "_HPFZ_ARTEFAKT_ALLGEMEIN_FEHLER_+0")
@@ -68,8 +69,8 @@ function Run()
 			chr_GainXP("", GetData("BaseXP"))
 			if DerFluch < 4 then
 				-- make drunk
-				AddImpact("Destination", "totallydrunk", 1, 6)
-				AddImpact("Destination", "MoveSpeed", 0.7, 6)
+				AddImpact("Destination", "totallydrunk", 1, duration)
+				AddImpact("Destination", "MoveSpeed", 0.7, duration)
 				SetState("Destination", STATE_TOTALLYDRUNK, true)
 				return
 			elseif DerFluch < 7 then

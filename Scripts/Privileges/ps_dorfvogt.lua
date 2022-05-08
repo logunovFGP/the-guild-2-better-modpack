@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return "HaveImmunity","Set_SeverityOfLaw"
+	return "HaveImmunity", "Set_SeverityOfLaw"
 end
 
 function InitOffice()
@@ -13,12 +13,11 @@ function TakeOffice(Messages)
 		feedback_MessageOffice("",
 			ps_dorfvogt_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""))
 	end
 	
-	-- Remove the "HasRepealedImmunity" impact
-	if GetImpactValue("", 345) ~= 0 then
-		RemoveImpact("", 345)
+	if GetImpactValue("", "HasRepealedImmunity") ~= 0 then
+		RemoveImpact("", "HasRepealedImmunity")
 	end
 	
 	chr_SetOfficeImpactList( "Office", ps_dorfvogt_GetPrivilegeList() )
@@ -29,7 +28,7 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_dorfvogt_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )

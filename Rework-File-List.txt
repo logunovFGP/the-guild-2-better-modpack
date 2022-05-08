@@ -1,7 +1,3 @@
-4 Scripts\AI\BaseTree\CheckDynasty.lua
-5 Scripts\AI\BaseTree\CheckGuildHouse.lua
-6 Scripts\AI\BaseTree\CheckMyrmidon.lua
-7 Scripts\AI\BaseTree\CheckParty.lua
 8 Scripts\AI\BaseTree\CheckSquad.lua
 9 Scripts\AI\BaseTree\CheckDynasty\Actions.lua
 10 Scripts\AI\BaseTree\CheckDynasty\Attack.lua
@@ -159,7 +155,7 @@
 459 Scripts\Measures\ms_039_BlackmailCharacter.lua
 460 Scripts\Measures\ms_041_BribeCharacter.lua
 462 Scripts\Measures\ms_045_CourtLover.lua
-64 Scripts\Measures\ms_048_HireEmployee.lua
+464 Scripts\Measures\ms_048_HireEmployee.lua
 465 Scripts\Measures\ms_048_HireEmployeeBuildingRandom.lua
 466 Scripts\Measures\ms_049_FireEmployee.lua
 468 Scripts\Measures\ms_051_FollowMe.lua
@@ -377,6 +373,7 @@
 724 Scripts\Measures\ms_WaylayForBooty.lua
 725 Scripts\Measures\ms_WorkWonders.lua
 726 Scripts\Measures\ms_WorldTrader.lua
+
 727 Scripts\Measures\Artefacts\as_164_UseAboutTalents2.lua
 728 Scripts\Measures\Artefacts\as_165_UseBeltOfMetaPhysic.lua
 729 Scripts\Measures\Artefacts\as_166_UseBoozyBreathBeer.lua
@@ -437,7 +434,7 @@
 830 Scripts\Measures\Artefacts\as_Usepddv.lua
 831 Scripts\Measures\Artefacts\as_UsePearlChain.lua
 832 Scripts\Measures\Artefacts\as_UsePendel.lua
-36 Scripts\Measures\Artefacts\as_UseRobe.lua
+836 Scripts\Measures\Artefacts\as_UseRobe.lua
 837 Scripts\Measures\Artefacts\as_UseRubinStaff.lua
 838 Scripts\Measures\Artefacts\as_UseShellChain.lua
 842 Scripts\Measures\Artefacts\as_UseSilverRing.lua
@@ -449,6 +446,7 @@
 862 Scripts\Measures\Artefacts\as_UseWorkingPlanChiseler1.lua
 863 Scripts\Measures\Artefacts\as_UseWorkingPlanPatron1.lua
 864 Scripts\Measures\Artefacts\as_UseWorkingPlanScholar1.lua
+
 865 Scripts\Measures\Behaviour\behavior_apprenticeship.lua
 866 Scripts\Measures\Behaviour\behavior_attack.lua
 867 Scripts\Measures\Behaviour\behavior_CallGuards.lua
@@ -556,12 +554,14 @@
 978 Scripts\Measures\Behaviour\std_Usher.lua
 979 Scripts\Measures\Behaviour\std_Vendor1.lua
 980 Scripts\Measures\Behaviour\std_WeddingPriest.lua
+
 981 Scripts\Measures\Cutscenes\ms_Attend.lua
 982 Scripts\Measures\Cutscenes\ms_AttendDuel.lua
 983 Scripts\Measures\Cutscenes\ms_AttendFestivity.lua
 984 Scripts\Measures\Cutscenes\ms_AttendFuneral.lua
 985 Scripts\Measures\Cutscenes\ms_AttendOfficeMeeting.lua
 986 Scripts\Measures\Cutscenes\ms_AttendTrialMeeting.lua
+
 987 Scripts\Measures\Squad\ms_SquadCheckLocation.lua
 988 Scripts\Measures\Squad\ms_SquadCreate.lua
 989 Scripts\Measures\Squad\ms_SquadDanegeld.lua
@@ -580,15 +580,7 @@
 1002 Scripts\Measures\Squad\ms_SquadWarMember.lua
 1003 Scripts\Measures\Squad\ms_SquadWaylayForBooty.lua
 1004 Scripts\Measures\Squad\ms_SquadWaylayMember.lua
-1018 Scripts\Privileges\ps_bischof.lua
-1019 Scripts\Privileges\ps_buergermeister.lua
-1020 Scripts\Privileges\ps_dorfschulze.lua
-1021 Scripts\Privileges\ps_dorfvogt.lua
-1022 Scripts\Privileges\ps_feldherr.lua
-1023 Scripts\Privileges\ps_foltermeister.lua
-1024 Scripts\Privileges\ps_gildenmeister.lua
-1025 Scripts\Privileges\ps_gildenvertreter.lua
-1026 Scripts\Privileges\ps_gildenvorsteher.lua
+
 1027 Scripts\Privileges\ps_hauptmann.lua
 1028 Scripts\Privileges\ps_henker.lua
 1029 Scripts\Privileges\ps_inquisitor.lua
@@ -609,10 +601,9 @@
 1044 Scripts\Privileges\ps_schultheiss.lua
 1045 Scripts\Privileges\ps_seneschall.lua
 1046 Scripts\Privileges\ps_weibel.lua
-1048 Scripts\States\state_active_escort.lua
+
 1049 Scripts\States\state_aiguildproduce.lua
 1050 Scripts\States\state_aiunpackrawmaterial.lua
-1052 Scripts\States\state_blackdeath.lua
 1054 Scripts\States\state_burning.lua
 1055 Scripts\States\state_captured.lua
 1056 Scripts\States\state_checkforspinnings.lua
@@ -642,7 +633,6 @@
 1082 Scripts\States\state_hpfz_verflucht.lua
 1083 Scripts\States\state_hpfz_windmuehle.lua
 1084 Scripts\States\state_imprisoned.lua
-1085 Scripts\States\state_inlove.lua
 1086 Scripts\States\state_inspected.lua
 1087 Scripts\States\state_invisible.lua
 1088 Scripts\States\state_jewellery.lua

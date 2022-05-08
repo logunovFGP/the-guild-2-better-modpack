@@ -10,7 +10,7 @@ end
 -- ------------------
 function AttackEnemy(Owner, OwnLevel, EnemyLevel)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, (EnemyLevel - OwnLevel + 10) * 8)
+		chr_GainXP(Owner, (EnemyLevel - OwnLevel + 10) * 8)
 	end
 end
 
@@ -19,7 +19,7 @@ end
 -- ------------------
 function BuyNobilityTitle(Owner, BaseXP, Title)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, BaseXP + Title * 100)
+		chr_GainXP(Owner, BaseXP + Title * 100)
 	end
 end
 
@@ -28,7 +28,7 @@ end
 -- ------------------
 function CaptureBuilding(Owner, BaseXP, BuildingLevel)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, BaseXP + BuildingLevel * 150)
+		chr_GainXP(Owner, BaseXP + BuildingLevel * 150)
 	end
 end
 
@@ -38,9 +38,9 @@ end
 function CohabitWithCharacter(Owner, ChildCount)
 	if AliasExists(Owner) then
 		if ChildCount == 0 then
-			IncrementXP(Owner, 150)
+			chr_GainXP(Owner, 150)
 		else
-			IncrementXP(Owner, 100)
+			chr_GainXP(Owner, 100)
 		end
 	end
 end
@@ -52,21 +52,21 @@ function CourtingSuccess(Owner, Difficulty, Ceremony)
 	if AliasExists(Owner) then
 		if Difficulty < 4 then
 			if Ceremony == 1 then
-				IncrementXP(Owner, 500)
+				chr_GainXP(Owner, 500)
 			else
-				IncrementXP(Owner, 250)
+				chr_GainXP(Owner, 250)
 			end
 		elseif Difficulty < 7 then
 			if Ceremony == 1 then
-				IncrementXP(Owner, 1000)
+				chr_GainXP(Owner, 1000)
 			else
-				IncrementXP(Owner, 500)
+				chr_GainXP(Owner, 500)
 			end
 		elseif not Difficulty == nil then
 			if Ceremony == 1 then
-				IncrementXP(Owner, 1500)
+				chr_GainXP(Owner, 1500)
 			else
-				IncrementXP(Owner, 750)
+				chr_GainXP(Owner, 750)
 			end
 		end
 	end
@@ -77,7 +77,7 @@ end
 -- ------------------
 function BuildBuilding(Owner, Level)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, 250 + Level * 250)
+		chr_GainXP(Owner, 250 + Level * 250)
 	end
 end
 
@@ -86,7 +86,7 @@ end
 -- ------------------
 function RunForAnOffice(Owner, OfficeLevel)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, OfficeLevel * 200)
+		chr_GainXP(Owner, OfficeLevel * 200)
 	end
 end
 
@@ -121,7 +121,7 @@ end
 -- ------------------
 function ChargeCharacter(Owner, SentenceLevel)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, SentenceLevel * 100)
+		chr_GainXP(Owner, SentenceLevel * 100)
 	end
 end
 
@@ -130,7 +130,7 @@ end
 -- ------------------
 function OrderASabotage(Owner, BaseXP)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, BaseXP)
+		chr_GainXP(Owner, BaseXP)
 	end
 end
 
@@ -139,7 +139,7 @@ end
 -- ------------------
 function LevelUpBuilding(Owner, Level)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, 250 + Level * 250)
+		chr_GainXP(Owner, 250 + Level * 250)
 	end
 end
 
@@ -148,7 +148,7 @@ end
 -- ------------------
 function ApplyDeposition(Owner, OfficeLevel)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, OfficeLevel * 100)
+		chr_GainXP(Owner, OfficeLevel * 100)
 	end
 end
 
@@ -157,7 +157,7 @@ end
 -- ------------------
 function BurgleAHouse(Owner, BuildingLevel)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, BuildingLevel * 50)
+		chr_GainXP(Owner, BuildingLevel * 50)
 	end
 end
 
@@ -166,7 +166,7 @@ end
 -- ------------------
 function HijackCharacter(Owner, Level)
 	if AliasExists(Owner) then
-		IncrementXP(Owner, Level * 25)
+		chr_GainXP(Owner, Level * 25)
 	end
 end
 
@@ -179,7 +179,7 @@ function WaylayForBooty(Owner, ItemValue)
 		if xp > 1000 then
 			xp = 1000
 		end
-		IncrementXP(Owner, xp)
+		chr_GainXP(Owner, xp)
 	end
 end
 
@@ -188,21 +188,21 @@ end
 -- School
 -- ------------------
 function School(Owner)
-	IncrementXP(Owner, 1000)
+	chr_GainXP(Owner, 1000)
 end
 
 
 function Apprenticeship(Owner)
 --	if SimGetClass(Owner)~=3 then
-		IncrementXP(Owner, 500)
+		chr_GainXP(Owner, 500)
 --	end
 end
 
 function University(Owner)
-	IncrementXP(Owner, 1000)
+	chr_GainXP(Owner, 1000)
 end
 
 function Doctor(Owner)
-	IncrementXP(Owner, 1000)
+	chr_GainXP(Owner, 1000)
 end
 

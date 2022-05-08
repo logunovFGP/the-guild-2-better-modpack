@@ -45,18 +45,17 @@ function Run()
 	end
 	
 	--how long the ban will be 
-	local duration
+	local duration = GetDatabaseValue("Measures", MeasureID, "duration")
 	local OfficeType = SimGetOfficeLevel("")
 
 	if OfficeType == 3 then
 		--if office holder is dorfschulze
-		duration = 24
 	elseif OfficeType == 4 then
 		--if officeholder is buergemeister
-		duration = 36
+		duration = duration*1.5
 	else
 		--then officeholder must be landesherr
-		duration = 48
+		duration = duration*2
 	end
 	
 	--run to destination and start action at MaxDistance

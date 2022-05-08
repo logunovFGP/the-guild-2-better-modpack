@@ -58,7 +58,7 @@ function Run()
 				end
 			end	
 
-			chr_GainXP("",baseXP)
+			chr_GainXP("", baseXP)
 			SetProperty("Destination","UnconsciousKill",1)
 			Kill("Destination")	-- must be the last command in this measure, because the kill of a measure object restarts the measure
 		end
