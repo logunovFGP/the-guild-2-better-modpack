@@ -1,9 +1,11 @@
 function Weight()
-	local	Quote = GetHPRelative("SIM")
-	if GetImpactValue("","Sickness")>0 then
-		return 1
+	
+	local Quote = GetHPRelative("SIM")
+	if GetImpactValue("", "Sickness") >0 then
+		return 100
 	end
-	if Quote>0.95 then
+
+	if Quote >=0.9 then
 		return 0
 	end
 	
@@ -16,17 +18,12 @@ function Weight()
 	if not CityGetNearestBuilding("City", "SIM", -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "LingerPlace") then
 		return 0
 	end
-		
-	if Quote<0.75 then
-		return -20
-	end
-	
-	return 1
+			
+	return 100
 end
 
-
 function Execute()
-	if GetImpactValue("","Sickness")>0 then
+	if GetImpactValue("", "Sickness") > 0 then
 		MeasureRun("SIM", "", "AttendDoctor")
 	else
 		MeasureRun("SIM", "LingerPlace", "Linger")

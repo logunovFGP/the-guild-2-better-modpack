@@ -1,5 +1,5 @@
 -- -----------------------
--- StartBuildingAction  
+-- StartBuildingAction
 --
 -- 
 -- -----------------------
@@ -223,49 +223,49 @@ function ShowMoveError(result)
 		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+2")
 	end
 
-	if result == GL_MOVERESULT_ERROR_NOT_ENTERABLE then  
+	if result == GL_MOVERESULT_ERROR_NOT_ENTERABLE then
 		if AliasExists("Destination") then
-			if GetState("",STATE_FIGHTING) then
-				MsgMeasure("","@L_NEWSTUFF_NOENTER_FIGHTING")
-			elseif GetState("Destination",STATE_LEVELINGUP) then
-				MsgMeasure("","@L_NEWSTUFF_NOENTER_LEVELUP")
-			elseif GetState("Destination",STATE_BUILDING) then
-				MsgMeasure("","@L_NEWSTUFF_NOENTER_BUILDING")
-			elseif GetState("Destination",STATE_BURNING) then
-				MsgMeasure("","@L_NEWSTUFF_NOENTER_BURNING")
-			--elseif GetState("Destination",STATE_CONTAMINATED) then
-				--MsgQuick("","@L_NEWSTUFF_NOENTER_CONTAMINATED")
-			elseif GetState("Destination",STATE_CUTSCENE) then
+			if GetState("", STATE_FIGHTING) then
+				MsgMeasure("", "@L_NEWSTUFF_NOENTER_FIGHTING")
+			elseif GetState("Destination", STATE_LEVELINGUP) then
+				MsgMeasure("", "@L_NEWSTUFF_NOENTER_LEVELUP")
+			elseif GetState("Destination", STATE_BUILDING) then
+				MsgMeasure("", "@L_NEWSTUFF_NOENTER_BUILDING")
+			elseif GetState("Destination", STATE_BURNING) then
+				MsgMeasure("", "@L_NEWSTUFF_NOENTER_BURNING")
+			--elseif GetState("Destination", STATE_CONTAMINATED) then
+				--MsgQuick("", "@L_NEWSTUFF_NOENTER_CONTAMINATED")
+			elseif GetState("Destination", STATE_CUTSCENE) then
 				MsgMeasure("","@L_NEWSTUFF_NOENTER_SESSION")
-			elseif GetState("Destination",STATE_DEAD) then
+			elseif GetState("Destination", STATE_DEAD) then
 				MsgMeasure("","@L_NEWSTUFF_NOENTER_DEAD")
 			elseif (GetHPRelative("Destination")<=0.2) then
-				MsgMeasure("","@L_NEWSTUFF_NOENTER_CRITICALDAMAGE")
-			--elseif (SimGetProfession("")==GL_PROFESSION_MYRMIDON) then
-			--	MsgMeasure("","@L_NEWSTUFF_NOENTER_NOFIGHTERS")
-			--MsgQuick("","@L_NEWSTUFF_NOENTER_CLOSED")
+				MsgMeasure("", "@L_NEWSTUFF_NOENTER_CRITICALDAMAGE")
+			--elseif (SimGetProfession("") == GL_PROFESSION_MYRMIDON) then
+			--	MsgMeasure("", "@L_NEWSTUFF_NOENTER_NOFIGHTERS")
+			--MsgQuick("", "@L_NEWSTUFF_NOENTER_CLOSED")
 			else
-				MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+3",GetID(""))
+				MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+3", GetID(""))
 			end
 		else
-			MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+3",GetID(""))
+			MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+3", GetID(""))
 		end
 	elseif result == GL_MOVERESULT_ERROR_MOVEMENT_ABORTED then
 		--MsgMeasure("", "@LMOVE_OVERHEAD_CANNOT_REACH_TARGET@T%1SN: Bewegungsabbruch.")
 	elseif result == GL_MOVERESULT_ERROR_NOT_ENTERABLE_ILLEGAL_DEST then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+4",GetID(""))
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+4", GetID(""))
 	elseif result == GL_MOVERESULT_ERROR_TRANSITION_FAILED then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+5",GetID(""))	
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+5", GetID(""))	
 	elseif result == GL_MOVERESULT_ERROR_TARGET_GONE then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+6",GetID(""))
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+6", GetID(""))
 	elseif result == GL_MOVERESULT_ERROR_TARGET_INACCESSIBLE then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+7",GetID(""))		
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+7", GetID(""))		
 	elseif result == GL_MOVERESULT_ERROR_TARGET_UNREACHABLE then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+8",GetID(""))		
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+8", GetID(""))		
 	elseif result == GL_MOVERESULT_ERROR_NOT_INITIALIZED then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+9",GetID(""))				
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+9", GetID(""))				
 	elseif result == GL_MOVERESULT_ERROR_UNKNOWN_PATHFINDER then 
-		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+10",GetID(""))	
+		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+10", GetID(""))	
 	else
 		--strange things
 		--	feedback_OverheadFadeText("", "@LMOVE_OVERHEAD_CANNOT_REACH_TARGET@T%1SN: Es wurde ein MoveTask unterbrochen der den Zustand IDLE hatte?!", false)
@@ -313,25 +313,26 @@ function MultiMoveTo(...)
 		-- check results of the objects
 		for steps = 0, number-1 do
 			local result = GetData(objectarray[steps])
-			if ( result == GL_MOVERESULT_TARGET_REACHED) then
+			if (result == GL_MOVERESULT_TARGET_REACHED) then
 				--copy to end
 				objectarray[steps] = objectarray[number-1]
 				--shorten list
 				number = number-1
-			elseif (  result ~= nil ) then
+			elseif (result ~= nil) then
 				if (result > GL_MOVERESULT_ERROR_UNKNOWN) then
 					return false
 				end
 			end				
 		end
-		Sleep(0.50)
+		Sleep(0.5)
 	end
 	return true 
 end
 
 function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	local ErrorNumber, Done = Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
-	if ErrorNumber ~=TRANSFER_SUCCESS then
+	
+	if ErrorNumber ~= TRANSFER_SUCCESS then
 		ai_TransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
 		return Done
 	end
@@ -405,9 +406,9 @@ end
 
 function BuyItem(SimAlias, Item, ItemCount)
 	ItemCount = ItemCount or 1
-	local PlaceAlias 	= "__AI_CBI_PLACE"
-	local CityAlias 	= "__AI_CBI_CITY"
-	local Price 			= ai_CanBuyItem(SimAlias, Item, ItemCount, CityAlias, PlaceAlias)
+	local PlaceAlias = "__AI_CBI_PLACE"
+	local CityAlias = "__AI_CBI_CITY"
+	local Price = ai_CanBuyItem(SimAlias, Item, ItemCount, CityAlias, PlaceAlias)
 	
 	if Price < 0 then
 		return false
@@ -473,24 +474,24 @@ function IsDeploymentInProgress(SimAlias)
 
 	local CurrentDeplicant
 	local OfficeTask
-	local	SimID = GetID(SimAlias)
+	local SimID = GetID(SimAlias)
 	local Alias
 	
 	ListAllCutscenes("cutscene_list")
 	local NumCutscenes = ListSize("cutscene_list")
-	for iCutscene=0,NumCutscenes-1 do
-		if ListGetElement("cutscene_list",iCutscene,"my_cutscene") and GetID("my_cutscene")~=-1 then
+	for iCutscene = 0, NumCutscenes-1 do
+		if ListGetElement("cutscene_list", iCutscene, "my_cutscene") and GetID("my_cutscene") ~= -1 then
 	
 			local DepList_Count
 			CutsceneGetData("my_cutscene","DepList_Count")
 			DepList_Count = GetData("DepList_Count")
 			
-			if DepList_Count~=nil then
+			if DepList_Count ~= nil then
 				for UseOffice = 1, DepList_Count, 1 do
 
 					Alias = "DepList_"..(UseOffice).."_ID"
 					CutsceneGetData("my_cutscene",Alias)
-					OfficeTask  = GetData(Alias)
+					OfficeTask = GetData(Alias)
 
 					Alias = "DepList_"..(OfficeTask).."_DepID"
 					CutsceneGetData("my_cutscene",Alias)
@@ -509,9 +510,9 @@ end
 
 function GetPower(SimAlias)
 
-	local	WeaponDamage 	= SimGetWeaponDamage(SimAlias)
-	local Damage		= gameplayformulas_GetDamage(SimAlias, WeaponDamage)
-	local	Defence	 	= gameplayformulas_GetArmorValue(SimAlias)
+	local WeaponDamage = SimGetWeaponDamage(SimAlias)
+	local Damage = gameplayformulas_GetDamage(SimAlias, WeaponDamage)
+	local Defence = gameplayformulas_GetArmorValue(SimAlias)
 	
 	return Damage, Defence
 end
@@ -715,6 +716,15 @@ function HasAccessToItem(SimAlias, ItemName)
 			return true
 		end
 		
+		if BuildingGetType("aihati_Place") == GL_BUILDING_TYPE_HOSPITAL then
+			if HasProperty("aihati_Place", "MiracleCures") then
+				local Cures = GetProperty("aihati_Place", "MiracleCures")
+				if Cures > 0 then
+					return true
+				end
+			end
+		end
+		
 	end
 	
 	return false
@@ -785,154 +795,47 @@ end
 -------------------------------------------------------
 
 function CalcNextDynastyGoal(DynastyAlias)
-	if HasProperty(DynastyAlias, "Priority1") and GetProperty(DynastyAlias, "Priority1") ~= "none" then
-		return
-	end
-	
-	SetProperty(DynastyAlias, "Priority1", "none")
-	
-	if not HasProperty(DynastyAlias, "LastPriority1") then
-		SetProperty(DynastyAlias, "LastPriority1", "none")
-	end
-	
-	local LastPriority = GetProperty(DynastyAlias, "LastPriority1")
-	
-	
-	local BuildingValue = ai_CalcBuildingGoal(DynastyAlias)
-	local TitleValue = ai_CalcTitleGoal(DynastyAlias)
-	local LevelUpValue = ai_CalcBuildingLevelGoal(DynastyAlias)
-	ai_CalcItemBudget(DynastyAlias)
-	local Value = BuildingValue
-	local NextPriority  = "workshop"
-	
-	if TitleValue > Value then
-		Value = TitleValue
-		NextPriority = "title"
-	end
-	if LevelUpValue > Value then
-		Value = LevelUpValue
-		NextPriority = "leveluphome"
-	end
-	
-	-- DEBUG START
-	if not DynastyIsShadow(DynastyAlias) then
-		DynastyGetMemberRandom(DynastyAlias, "member")
-		local Name = SimGetLastname("member")
-		LogMessage("@DynastyPrioritySystem "..Name..": "..NextPriority)
-	end
-	-- DEBUG END
-	SetProperty(DynastyAlias, "Priority1", NextPriority)
-	
-	local Round = GetRound()
-	if not HasProperty(DynastyAlias, "ItemBudget"..Round) then
-		ai_CalcItemBudget(DynastyAlias)
-	end
+	-- removed due to new system
+	SetProperty(DynastyAlias, "Priority1", "title")
 end
 
 function CalcBuildingGoal(DynastyAlias)
-	local Money = GetMoney(DynastyAlias)
-	local WorkBuildingCount = DynastyGetBuildingCount(DynastyAlias, GL_BUILDING_CLASS_WORKSHOP)
-	local BestNumberOfWorkshops = ai_GetBestNumberOfWorkshops(DynastyAlias)
-	local Difference = BestNumberOfWorkshops - WorkBuildingCount
-	
-	return 50 + Difference * 10
+	-- removed due to new system
+	return 0
 end
 
 function CalcTitleGoal(DynastyAlias)
-	DynastyGetMemberRandom(DynastyAlias, "member")
-	local Wealth = SimGetWealth("member")
-	local Title = GetNobilityTitle("member")
-	local Cost = GetDatabaseValue("NobilityTitle", Title+1, "price")
-	if Cost == nil or Cost == "" then
-		return 0
-	end
-	if Title < 4 then
-		return 100
-	elseif Title < 5 then
-		if Wealth < 10000 then
-			return 10
-		end
-		return 100	
-	elseif Title < 6 then
-		if Wealth < 25000 then
-			return 10
-		end
-		return 100
-	elseif Title < 7 then
-		if Wealth < 70000 then
-			return 10
-		end
-		return 90
-	elseif Title < 8 then
-		if Wealth < 150000 then
-			return 10
-		end
-		return 90		
-	elseif Title < 9 then
-		if Wealth < 300000 then
-			return 10
-		end
-		return 90
-	else
-		if Wealth < 700000 then
-			return 0
-		end
-		return 70
-	end
+	-- removed due to new system
+	return 0
 end
 
 function CalcBuildingLevelGoal(DynastyAlias)
-	local Value = 60
-	DynastyGetMemberRandom(DynastyAlias, "member")
-	if GetHomeBuilding("member", "home") then
-		local HomeBuildingLevel = BuildingGetLevel("home")
-		local Title = GetNobilityTitle("member")
-		local Wealth = SimGetWealth("member")
-		Value = Rand(10) + Value - HomeBuildingLevel*10 + 4*Title
-		if Wealth > 100000 then
-			Value = Value + 20
-		elseif Wealth > 40000 then
-			Value = Value + 10
-		end
-	end
-	
-	return Value
+	-- removed due to new system
+	return 0
 end
 
 function GetBestNumberOfWorkshops(DynastyAlias)
 	DynastyGetMemberRandom(DynastyAlias, "member")
 	local Title = GetNobilityTitle("member")
-	local MaxNumber = GetMaxWorkshopCount(DynastyAlias)
 	local BestNumber = 1
-	if Title < 4 then
+	if Title >=3 and Title <= 4 then
 		BestNumber = 2
-	elseif Title == 5 then
+	elseif >=5 and Title <= 6 then
 		BestNumber = 3
-	elseif Title == 6 then
+	elseif >=7 and Title <= 8 then
 		BestNumber = 4
+	elseif >=9 and Title <= 10 then
+		BestNumber = 5
 	else
-		BestNumber = 7
+		BestNumber = 6
 	end
-	
+
 	return BestNumber
 end
 
 function CalcItemBudget(DynastyAlias)
-	local Budget = GetMoney(DynastyAlias) * 0.25
-	local Round = GetRound()
-	if HasProperty(DynastyAlias, "ItemBudget"..Round) then
-		return
-	end
-	
-	if Round > 0 and HasProperty(DynastyAlias, "ItemBudget"..Round-1) then
-		RemoveProperty(DynastyAlias, "ItemBudget"..Round-1)
-	end
-	
-	if Budget < 100 then
-		SetProperty(DynastyAlias, "ItemBudget"..Round, 0)
-	else
-		SetProperty(DynastyAlias, "ItemBudget"..Round, Budget)
-	end
+	-- removed due to new system
+	return
 end
 
 function DynastyCheckForRival(DynastyAlias, TargetDynasty)
@@ -1179,4 +1082,49 @@ function DynastyGetBestDiplomacyState(SimAlias, TargetAlias)
 			end
 		end
 	end		
+end
+
+function BuildNewWorkshop(Owner, Type)
+	 local proto = ScenarioFindBuildingProto(GL_BUILDING_CLASS_WORKSHOP, Type, 1, 0)
+	if not GetHomeBuilding(Owner, "home") then
+		return false
+	end
+	if not BuildingGetCity("home", "city") then
+		return false
+	end
+	-- this will only work for buildings inside the city boundaries
+	CityBuildNewBuilding("city", proto, Owner, "building")
+end
+
+function BuyRandomWorkshop(Owner)
+	if not GetHomeBuilding(Owner, "home") then
+		return false
+	end
+	if not BuildingGetCity("home", "city") then
+		return false
+	end
+	local money = GetMoney(Owner) - 1000
+	-- decide, which building to buy
+	local n = CityGetBuildingCount("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IS_BUYABLE)
+	if n >= 1 then 
+		CityGetBuildings("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IS_BUYABLE, "bld")
+		for i=0, n-1 do
+			local cost = BuildingGetBuyPrice("bld"..i)
+			if BuildingCanBeOwnedBy("bld"..i, Owner) and cost < money then		
+				MeasureRun("bld"..i, Owner, "BuyBuilding", true)
+				return true
+			end
+		end
+	end
+
+	-- no buildings available or not able to buy any of them
+	local m = CityGetBuildingCount("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_NO_DYNASTY )
+	for i=0, m-1 do
+		if not BuildingGetForSale("bld"..i) and BuildingCanBeOwnedBy("bld"..i, Owner)then
+			if MeasureRun("bld"..i, Owner, "TakeOverBid", true) then 
+				return true
+			end
+		end
+	end
+	return false
 end

@@ -2,35 +2,61 @@ function AIReturnO()
 	return "O"
 end
 
-function AttendTrialMeeting(DestinationID)
-	if GetState("Sim",STATE_CUTSCENE) then
-		return
+function InitAttend(Sim)
+	if GetState(Sim, STATE_CUTSCENE) then
+		return false
 	end
-	if GetCurrentMeasureName("Sim")=="AttendTrialMeeting" then
+	
+	local CurrentMeasure = GetCurrentMeasureName(Sim)
+	
+	if CurrentMeasure == "AttendTrialMeeting" then
+		return false
+	elseif CurrentMeasure == "AttendOfficeMeeting" then
+		return false
+	elseif CurrentMeasure == "AttendDuel" then
+		return false
+	elseif CurrentMeasure == "AttendFestivity" then
+		return false
+	end
+	
+	if GetImpactValue(Sim, 369) > 0 then -- SuppressAttendMessage
+		return false
+	end
+	
+	if GetImpactValue(Sim, 360) > 0 then -- totallydrunk
+		return false
+	end
+	
+	if f_SimIsValid(Sim) == false then -- check for states
+		return false
+	end
+	
+	return true
+end
+
+function AttendTrialMeeting(DestinationID)
+	
+	-- Init
+	if queries_InitAttend("Sim") == false then
 		DestroyCutscene("")
 		return
 	end
 	
-	if GetImpactValue("Sim", 369)>0 then
-		DestroyCutscene("")
-		return
-	end
-
-	AddImpact("Sim", 369, 1, 3)
+	AddImpact("Sim", 369, 1, 3) -- Suppress AttendMessage
 
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		GetInsideBuilding("Sim","InsideBuilding")
 		if (GetID("destination") ~= GetID("InsideBuilding")) then
-			if MsgNews("Sim","destination",
+			if MsgNews("Sim", "Destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"politics",0.5,"@L_LAWSUIT_DIARY_REMEMBER_+0","@L_LAWSUIT_DIARY_REMEMBER_+1",GetID("Sim"),GetSettlementID("destination"))=="C" then
+					queries_AIReturnO,"politics", 1, "@L_LAWSUIT_DIARY_REMEMBER_+0", "@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("destination"))=="C" then
 				bRun = false
 			end
 		end
 	end 
 
-	if bRun==true then
+	if bRun then
 		MeasureRun("Sim", "Destination", "AttendTrialMeeting", true)
 	end
 		
@@ -39,16 +65,13 @@ end
 
 function AttendOfficeMeeting(DestinationID)
 
-	if GetState("Sim",STATE_CUTSCENE) then
-		return
-	end
-
-	if GetCurrentMeasureName("Sim")=="AttendOfficeMeeting" then
+	-- Init
+	if queries_InitAttend("Sim") == false then
 		DestroyCutscene("")
 		return
 	end
-	
-	if GetImpactValue("Sim", 369)>0 then
+
+	if math.mod(GetGametime(),24)>17 or math.mod(GetGametime(),24) <13 then
 		DestroyCutscene("")
 		return
 	end
@@ -59,15 +82,17 @@ function AttendOfficeMeeting(DestinationID)
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		GetInsideBuilding("Sim","InsideBuilding")
 		if (GetID("destination") ~= GetID("InsideBuilding")) then
-			if MsgNews("Sim","destination",
+			if MsgNews("Sim", "Destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"politics",0.5,"@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0","@L_LAWSUIT_DIARY_REMEMBER_+1",GetID("Sim"),GetSettlementID("destination"))=="C" then
+					queries_AIReturnO, "politics", 1, 
+					"@L_SESSION_6_TIMEPLANNERENTRY_ELECTOR_+0", 
+					"@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("Destination"))=="C" then
 				bRun = false
 			end
 		end
 	end
 	
-	if bRun==true then
+	if bRun then
 		MeasureRun("Sim", "Destination", "AttendOfficeMeeting", true)
 	end
 
@@ -80,18 +105,24 @@ function AttendFuneral(DestinationID)
 end
 
 function AttendDuel(DestinationID)
-	local bRun = true
-	if GetState("Sim",STATE_CUTSCENE) then
+	
+	-- Init
+	if queries_InitAttend("Sim") == false then
+		DestroyCutscene("")
 		return
 	end
+	
+	AddImpact("Sim", 369, 1, 3)
+
+	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		if MsgNews("Sim","destination",
 				"@P"..
 				"@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]"..
 				"@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-				queries_AIReturnO,"intrigue",0.5,
+				queries_AIReturnO, "intrigue", 1,
 				"@L_DUELL_6_TIMEPLANNERENTRY_REMEMBER_+0",
-				"@L_DUELL_6_TIMEPLANNERENTRY_REMEMBER_+1",GetID("Sim"))=="C" then
+				"@L_DUELL_6_TIMEPLANNERENTRY_REMEMBER_+1", GetID("Sim"))=="C" then
 					
 				bRun = false
 		end
@@ -106,32 +137,42 @@ end
 
 
 function AttendFestivity(DestinationID)
+	
+	-- Init
+	if queries_InitAttend("Sim") == false then
+		DestroyCutscene("")
+		return
+	end
+	
+	AddImpact("Sim", 369, 1, 3)
+	
 	local bRun = true
 	local message = 0
-	if GetInsideBuilding("Sim","Currentbuilding") then
+	if GetInsideBuilding("Sim", "Currentbuilding") then
 		if GetID("CurrentBuilding") == GetID("Destination") then
-			--is schon da
+			-- already there
 		else
 			message = 1
 		end
 	else
 		message = 1
 	end
+
 	if message == 1 then
 		if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
-			if MsgNews("Sim","destination",
+			if MsgNews("Sim", "Destination",
 					"@P"..
 					"@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]"..
 					"@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"schedule",0.5,
+					queries_AIReturnO, "schedule", 1,
 					"@L_FEAST_5_TIMEPLANNERENTRY_REMEMBER_+0",
-					"@L_FEAST_5_TIMEPLANNERENTRY_REMEMBER_+1",GetID("Sim"))=="C" then
+					"@L_FEAST_5_TIMEPLANNERENTRY_REMEMBER_+1", GetID("Sim"))=="C" then
 						bRun = false
 			end
 		end
 	end
 
-	if bRun==true then
+	if bRun then
 		MeasureRun("Sim", "Destination", "AttendFestivity", true)
 	end
 
@@ -144,7 +185,7 @@ function Attend(DestinationID)
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		if MsgNews("Sim","destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"politics",0.5,"@L_LAWSUIT_DIARY_REMEMBER_+0","@L_LAWSUIT_DIARY_REMEMBER_+1",GetID("Sim"),GetSettlementID("destination"))=="C" then
+					queries_AIReturnO,"politics", 1, "@L_LAWSUIT_DIARY_REMEMBER_+0", "@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("destination"))=="C" then
 			bRun = false
 		end
 	end
@@ -158,11 +199,12 @@ end
 
 function DecideFugitive()
 	local Decision = 0
-	local Fee = GetData("RawPenalty") * DynastyGetRanking("Sim") * 0.05
+	local Fee = GetData("RawPenalty") * 500
 	
-	if Fee <= 200 then
-		Fee = 200
+	if Fee <= 500 then
+		Fee = 500
 	end
+
 	local FugitiveYears = GetData("FugitiveYears")
 	local HoursInPrison = GetData("RawPenalty")*3
 	local CanPayFee = true
@@ -174,15 +216,15 @@ function DecideFugitive()
 	if DynastyIsPlayer("Sim") and IsPartyMember("") then
 		-- user decision
 		local Result = "C"
-		if Fee>GetMoney("Sim") then	-- cannot pay fee, omit option pay_fee
-			Result = MsgNews("Sim","Sim",
+		if Fee > GetMoney("Sim") then	-- cannot pay fee, omit option pay_fee
+			Result = MsgNews("Sim", "Sim",
 								"@P@B[I,@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+7]"..
 								"@B[P,@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+8]",
 								-1,"politics",1.0,
 								"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+9",
 								"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+5",GetID("Sim"),Fee,FugitiveYears)
 		else -- can pay fee
-			Result = MsgNews("Sim","Sim",
+			Result = MsgNews("Sim", "Sim",
 								"@P@B[O,@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+6]"..
 								"@B[I,@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+7]"..
 								"@B[P,@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+8]",
@@ -201,7 +243,15 @@ function DecideFugitive()
 	else
 		-- AI decision
 		if SimGetClass("Sim")==4 then	-- if is chiseler
-			Decision = 0		-- ignore
+			if Fee*2 < GetMoney("Sim") then
+				if Rand(4) == 0 then
+					Decision = 2
+				else
+					Decision = 0
+				end
+			else
+				Decision = 0		-- ignore
+			end
 		elseif Fee*2<GetMoney("Sim") then
 			Decision = 2		-- ich zahle
 		else 
@@ -209,7 +259,7 @@ function DecideFugitive()
 		end
 	end
 
-	if (Decision==0) then
+	if (Decision == 0) then
 		-- ignore
 		local Options = FindNode("\\Settings\\Options")
 		local YearsPerRound = Options:GetValueInt("YearsPerRound")
@@ -219,41 +269,42 @@ function DecideFugitive()
 		AddImpact("Sim","REVOLT",1,FugitiveHours)
 		SetState("Sim",STATE_REVOLT,true)
 
-		feedback_MessagePolitics("Sim","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+0",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+1",GetID("Sim"),FugitiveYears)
-		feedback_MessagePolitics("accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3",GetID("Sim"),FugitiveYears)
-		feedback_MessagePolitics("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3",GetID("Sim"),FugitiveYears)
-		feedback_MessagePolitics("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3",GetID("Sim"),FugitiveYears)
-		feedback_MessagePolitics("assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3",GetID("Sim"),FugitiveYears)
+		MsgBoxNoWait("Sim", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+0",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+1", GetID("Sim"), FugitiveYears)
+		MsgBoxNoWait("accuser", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3", GetID("Sim"), FugitiveYears)
+		MsgBoxNoWait("judge", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3", GetID("Sim"), FugitiveYears)
+		MsgBoxNoWait("assessor1", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3", GetID("Sim"), FugitiveYears)
+		MsgBoxNoWait("assessor2", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+2",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+3", GetID("Sim"), FugitiveYears)
 
-	elseif (Decision==1) then
+	
+	elseif (Decision == 1) then
 		-- prison
 		CityAddPenalty("City","Sim",PENALTY_PRISON, HoursInPrison )
 
-		feedback_MessagePolitics("Accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13",GetID("Sim"),HoursInPrison,GetID("City"))
-		feedback_MessagePolitics("Assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13",GetID("Sim"),HoursInPrison,GetID("City"))
-		feedback_MessagePolitics("Assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13",GetID("Sim"),HoursInPrison,GetID("City"))
-		feedback_MessagePolitics("Judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13",GetID("Sim"),HoursInPrison,GetID("City"))
-	elseif (Decision==2) then
+		MsgBoxNoWait("Accuser", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13", GetID("Sim"), HoursInPrison, GetID("City"))
+		MsgBoxNoWait("Assessor1", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13", GetID("Sim"), HoursInPrison, GetID("City"))
+		MsgBoxNoWait("Assessor2", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13", GetID("Sim"), HoursInPrison, GetID("City"))
+		MsgBoxNoWait("Judge", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+12",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+13", GetID("Sim"), HoursInPrison, GetID("City"))
+	elseif (Decision == 2) then
 		-- fee
 		CityAddPenalty("City","Sim",PENALTY_MONEY, Fee )
 
-		feedback_MessagePolitics("Accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11",GetID("Sim"),Fee)
-		feedback_MessagePolitics("Assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11",GetID("Sim"),Fee)
-		feedback_MessagePolitics("Assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11",GetID("Sim"),Fee)
-		feedback_MessagePolitics("Judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11",GetID("Sim"),Fee)
+		MsgBoxNoWait("Accuser", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11", GetID("Sim"), Fee)
+		MsgBoxNoWait("Assessor1", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11", GetID("Sim"), Fee)
+		MsgBoxNoWait("Assessor2", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11", GetID("Sim"), Fee)
+		MsgBoxNoWait("Judge", "Sim", "@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+10",
+						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ANGEKLAGTER_MESSAGES_+11", GetID("Sim"), Fee)
 	end
 	DestroyCutscene("")
 end
