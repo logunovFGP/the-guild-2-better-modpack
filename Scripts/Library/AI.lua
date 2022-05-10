@@ -797,6 +797,7 @@ end
 function CalcNextDynastyGoal(DynastyAlias)
 	-- removed due to new system
 	SetProperty(DynastyAlias, "Priority1", "title")
+	return
 end
 
 function CalcBuildingGoal(DynastyAlias)
@@ -820,11 +821,11 @@ function GetBestNumberOfWorkshops(DynastyAlias)
 	local BestNumber = 1
 	if Title >=3 and Title <= 4 then
 		BestNumber = 2
-	elseif >=5 and Title <= 6 then
+	elseif Title >=5 and Title <= 6 then
 		BestNumber = 3
-	elseif >=7 and Title <= 8 then
+	elseif Title >=7 and Title <= 8 then
 		BestNumber = 4
-	elseif >=9 and Title <= 10 then
+	elseif Title >=9 and Title <= 10 then
 		BestNumber = 5
 	else
 		BestNumber = 6

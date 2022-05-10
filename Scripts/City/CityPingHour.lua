@@ -484,6 +484,9 @@ function CheckSmallTown()
 			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
 		end
 	end
+	
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_RANGERHUT, 1)
 end
 
 function CheckTown()
@@ -510,7 +513,9 @@ function CheckTown()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-
+	
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_RANGERHUT, 1)
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_ROBBER, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
 	
@@ -524,7 +529,6 @@ function CheckTown()
 		end
 	end
 	
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_THIEF, 1)
 	citypinghour_CheckChurch(1)
 end
 
@@ -552,7 +556,8 @@ function CheckCapital()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-
+	
+	AICheckWorkingPlace("", GL_BUILDING_TYPE_RANGERHUT, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
 	AICheckWorkingPlace("", GL_BUILDING_TYPE_ROBBER, 1)
@@ -567,8 +572,6 @@ function CheckCapital()
 		end
 	end
 	
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_THIEF, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_NEKRO, 1)
 	citypinghour_CheckChurch(2)
 end
 

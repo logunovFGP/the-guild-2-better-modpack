@@ -7,8 +7,8 @@ function GetWorld()
 end
 
 function Prepare()
-	local	Time = 6
-	local StartSeason	= EN_SEASON_SPRING -- 1 ansonsten Winterbäume beim Start
+	local	Time = 5
+	local StartSeason = EN_SEASON_SPRING -- 1 ansonsten Winterbäume beim Start
 	local StartYear	= GetSettingNumber("ENDLESS", "StartYear", 1400)
 	SetTime(StartSeason, StartYear, Time, 0)
 
@@ -65,6 +65,5 @@ function CreatePlayerDynasty(ID, SpawnPoint, PeerID, PlayerDesc)
 		end
 		Number = Number + 1
 	end
-	
 end
 

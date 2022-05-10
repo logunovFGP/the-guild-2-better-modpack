@@ -52,7 +52,7 @@ function CheckMember(SimAlias)
 
 	local Age = SimGetAge(SimAlias)
 	
-	if Age >= 72 or < 16 then
+	if Age >= 72 or Age < 16 then
 		return -1
 	end
 	
