@@ -68,7 +68,7 @@ function Run()
 				MoveStop("")
 				PlayAnimation("", "cogitate")
 			else
-				Sleep(3)
+				Sleep(5)
 			end
 			
 			-- AI stops measure if no patients are available to do better things
@@ -111,8 +111,7 @@ function Run()
 			local Cured = false
 			local Disease = false
 			local CanHeal = false
-			local Medicine, Label
-			local FavorMod
+			local Medicine, Label, FavorMod
 			
 			--SPRAIN
 			if GetImpactValue("SickSim0", "Sprain") == 1 then
@@ -214,23 +213,6 @@ function Run()
 							end
 							
 							CreditMoney("Hospital", Costs, "Offering")
-							-- for the balance
-							local TotalIncome = 0
-							if HasProperty("Hospital", "TotalIncome") then
-								TotalIncome = GetProperty("Hospital", "TotalIncome")
-							end
-							local RoundIncome = 0
-							if HasProperty("Hospital", "RoundIncome") then
-								RoundIncome = GetProperty("Hospital", "RoundIncome")
-							end
-							local MedicalIncome = 0
-							if HasProperty("Hospital", "MedicalIncome") then
-								MedicalIncome = GetProperty("Hospital", "MedicalIncome")
-							end
-							SetProperty("Hospital", "TotalIncome",(TotalIncome+Costs))
-							SetProperty("Hospital", "RoundIncome",(RoundIncome+Costs))
-							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+Costs))
-							
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
 							if Disease == "Sprain" then
@@ -355,6 +337,16 @@ function Run()
 						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
 									"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
 									GetID("Hospital"),ItemGetLabel(Medicine,false))
+					end
+					
+					-- if bandages are missing, AI stops to produce something
+					if Medicine == "Bandage" then
+						if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
+							if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > 1 then
+								SimSetProduceItemID("", -1, -1)
+								StopMeasure()
+							end
+						end
 					end
 				end
 			end

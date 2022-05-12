@@ -18,6 +18,10 @@ function Weight()
 		end
 	end
 	
+	if GetMoney("PirateHarbor") < 1000 then
+		return 0
+	end
+	
 	if Found then
 		return 0
 	end
