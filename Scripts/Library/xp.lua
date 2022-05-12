@@ -10,7 +10,7 @@ end
 -- ------------------
 function AttackEnemy(Owner, OwnLevel, EnemyLevel)
 	if AliasExists(Owner) then
-		chr_GainXP(Owner, (EnemyLevel - OwnLevel + 10) * 8)
+		chr_GainXP(Owner, (EnemyLevel - OwnLevel + 10) * 5)
 	end
 end
 
@@ -18,8 +18,16 @@ end
 -- BuyNobilityTitle
 -- ------------------
 function BuyNobilityTitle(Owner, BaseXP, Title)
+	
+	local GainXP = BaseXP + (Title * 50)
+
 	if AliasExists(Owner) then
-		chr_GainXP(Owner, BaseXP + Title * 100)
+		local Count = DynastyGetMemberCount(Owner)
+		for i=0, Count-1 do
+			if DynastyGetMember(Owner, i, "Member") then
+				chr_GainXP("Member", GainXP)
+			end
+		end
 	end
 end
 
@@ -86,7 +94,7 @@ end
 -- ------------------
 function RunForAnOffice(Owner, OfficeLevel)
 	if AliasExists(Owner) then
-		chr_GainXP(Owner, OfficeLevel * 200)
+		chr_GainXP(Owner, OfficeLevel * 100)
 	end
 end
 
@@ -166,7 +174,7 @@ end
 -- ------------------
 function HijackCharacter(Owner, Level)
 	if AliasExists(Owner) then
-		chr_GainXP(Owner, Level * 25)
+		chr_GainXP(Owner, Level * 50)
 	end
 end
 
@@ -183,14 +191,12 @@ function WaylayForBooty(Owner, ItemValue)
 	end
 end
 
-
 -- ------------------
 -- School
 -- ------------------
 function School(Owner)
 	chr_GainXP(Owner, 1000)
 end
-
 
 function Apprenticeship(Owner)
 --	if SimGetClass(Owner)~=3 then

@@ -380,7 +380,6 @@ function BothLock(Player, FocusSim)
 	end
 	
 	CameraLock(CameraType, FocusSim)
-	
 end
 
 
@@ -442,7 +441,6 @@ function AllowToSwitch(Player)
 		return false
 	end
 	
-	return true
-		
+	return true	
 end
 

@@ -111,10 +111,13 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			time = PlayAnimationNoWait(DestAlias,"duel_shoot_gothit")
 			PlaySound3D(SimAlias,"Effects/combat_strike_fist/combat_strike_fist+4.wav",1)
 			Sleep(0.5)
+			
 			PlaySound3D(DestAlias,"combat/pain/Hurt_s_01.wav",1)
 			ModifyHP(DestAlias,-50,true)
 			
-			CarryObject(SimAlias,"",false)
+			if AliasExists(SimAlias) then
+				CarryObject(SimAlias, "", false)
+			end
 
 		elseif (IsType(DestAlias, "Sim") or IsType(DestAlias, "Building") or IsType(DestAlias, "Cart")) and GetItemCount(SimAlias, "Sparkingsteel", INVENTORY_EQUIPMENT)>0 and GetItemCount(SimAlias, "Granate", INVENTORY_STD)>0 then
 			local time
@@ -123,14 +126,14 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 
 
 			if IsMounted(DestAlias) then
-					Unmount(DestAlias)
+				Unmount(DestAlias)
 			end
 
-			AlignTo(SimAlias,DestAlias)
+			AlignTo(SimAlias, DestAlias)
 			Sleep(0.5)
 			
-			GetPosition(DestAlias,"ParticleSpawnPos")
-			PlayAnimationNoWait(SimAlias,"fetch_store_obj_R")
+			GetPosition(DestAlias, "ParticleSpawnPos")
+			PlayAnimationNoWait(SimAlias, "fetch_store_obj_R")
 			Sleep(1)
 			PlaySound3D(SimAlias,"Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 			CarryObject(SimAlias, "Handheld_Device/ANIM_Bomb_02.nif", false)
@@ -138,19 +141,19 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			Sleep(time)
 
 			local fDuration = ThrowObject(SimAlias, DestAlias, "Handheld_Device/ANIM_Bomb_02.nif",0.1,"snowball",0,150,0)
-			CarryObject(SimAlias, "" ,false)
-			RemoveItems(SimAlias,"Granate",1)
+			CarryObject(SimAlias, "", false)
+			RemoveItems(SimAlias, "Granate", 1)
 			Sleep(fDuration)
 
 			StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos",1,5)
-			PlaySound3D(DestAlias,"Effects/combat_bomb_explode/combat_bomb_explode+0.wav", 1.0)
+			PlaySound3D(DestAlias, "Effects/combat_bomb_explode/combat_bomb_explode+0.wav", 1.0)
 			
 			if IsType(DestAlias, "Sim") then
-				if Distance>500 then
+				if Distance > 500 then
 					f_MoveTo(SimAlias,DestAlias,GL_MOVESPEED_RUN, 500)
 				end
 				StartSingleShotParticle("particles/bloodsplash.nif", "ParticleSpawnPos",1,5)	
-				PlaySound3D(DestAlias,"combat/pain/Hurt_s_01.wav", 1)
+				PlaySound3D(DestAlias, "combat/pain/Hurt_s_01.wav", 1)
 				ModifyFavorToSim(DestAlias, SimAlias, -FavorLost)
 			elseif IsType(DestAlias, "Building") then
 				if BuildingGetOwner(DestAlias, "BuildingOwner") then
@@ -228,25 +231,31 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 		--if Distance>500 then
 		--	f_MoveTo(SimAlias,DestAlias,GL_MOVESPEED_RUN, 500)
 		--end
-		if IsMounted(SimAlias) then
+		if AliasExists(SimAlias)
+			if IsMounted(SimAlias) then
 				Unmount(SimAlias)
+			end
 		end
 	end
 	
-	if IsType(DestAlias, "Sim") then
-		if IsMounted(DestAlias) then
+	if AliasExists(DestAlias)
+		if IsType(DestAlias, "Sim") then
+			if IsMounted(DestAlias) then
 				Unmount(DestAlias)
+			end
 		end
 	end
 end
 
 function SimIsGuildmaster()
+
 	if not GetSettlement("", "City") then
 		return 0
 	end
-	if HasProperty("City","Guildhall") then
-		local gh = GetProperty("City","Guildhall")
-		if not GetAliasByID(gh,"Guildhouse") then
+
+	if HasProperty("City", "Guildhall") then
+		local gh = GetProperty("City", "Guildhall")
+		if not GetAliasByID(gh, "Guildhouse") then
 			return 0
 		end
 

@@ -411,6 +411,7 @@ function GetRandomPositionFromAlias(AliasName,Range)
 end
 
 function SimIsValid(Target)
+
 	if (not AliasExists(Target) or
 	GetHP(Target) < 1 or 
 	GetStateImpact(Target, "no_control")) then
@@ -421,9 +422,11 @@ function SimIsValid(Target)
 end
 
 function GetNearestMapExit(Alias, RetAlias)
+
 	GetScenario("World")
 	local Distance
 	local ExitIndex
+	
 	for i=1, 5 do
 		if not HasProperty("World", "BrokenMapExit"..i) then
 			if GetOutdoorLocator("MapExit"..i, 1, "ExitLocator") then
@@ -438,5 +441,6 @@ function GetNearestMapExit(Alias, RetAlias)
 			end
 		end
 	end
+	
 	return ExitIndex
 end

@@ -91,7 +91,7 @@ function Run()
 	Sleep(3)
 	
 	-- start the burn-building measure
-	local Damage = srv_GetUseBombDamage("", "Destination")
+	local Damage = 50
 	SetProperty("Destination", "BurnDamage", Damage)
 	
 	if IsDynastySim("") then

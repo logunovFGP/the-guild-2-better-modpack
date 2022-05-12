@@ -8,15 +8,19 @@
 ----	This measure has been greatly reworked by Fajeth
 ----
 ----	Note: AI will use scriptcalls instead, using the 
-----	AI scripts found in: ac_AdministrateDiplomacy.lua
+----	AI scripts
 -------------------------------------------------------------------------------
 
 function Init() -- this is called before Run
 
 	-- We need the Owner because this measure is now a building-measure
-	if not BuildingGetOwner("", "MyBoss") then
-		MsgBoxNoWait("dynasty", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_NOOWNER_BODY_+0")
-		return false
+	if IsGUIDriven() then
+		if not BuildingGetOwner("", "MyBoss") then
+			MsgBoxNoWait("dynasty", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_NOOWNER_BODY_+0")
+			return false
+		end
+	else
+		CopyAlias("", "MyBoss")
 	end
 	
 	if not AliasExists("Destination") then

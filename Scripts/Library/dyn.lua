@@ -717,7 +717,7 @@ function GetAllyCounter(SimAlias)
 end
 
 -- -----------------------
--- GetEnemies (actual number)
+-- GetAllies (actual number)
 -- -----------------------
 function GetAllies(SimAlias)
 	

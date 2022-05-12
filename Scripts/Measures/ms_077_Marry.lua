@@ -76,11 +76,11 @@ function Run()
 		camera_CutsceneBothLock("cutscene", "")
 		
 		chr_MultiAnim("", "proposal_male", "Destination", "proposal_female", ProposeInteractionDistance, 0.3)
-		MsgSay("", feedback_AskMarriage(GetSkillValue("", RHETORIC), SimGetGender("")));
+		MsgSay("", talk_AskMarriage(GetSkillValue("", RHETORIC), SimGetGender("")));
 		
 		
 		camera_CutscenePlayerLock("cutscene", "Destination")
-		MsgSay("Destination", feedback_AnswerMarriage(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination")));
+		MsgSay("Destination", talk_AnswerMarriage(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination")));
 		
 		if IsPartyMember("Destination") then
 			SetProperty("Destination", "Wedding", 1)
@@ -187,7 +187,7 @@ function Run()
 
 		else
 		
-			MsgQuick("","@L_MEASURE_WEDDING_FAILURE_+0",GetID(""), GetID("Destination"))
+			MsgQuick("", "@L_MEASURE_WEDDING_FAILURE_+0",GetID(""), GetID("Destination"))
 
 		end
 

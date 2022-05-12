@@ -63,7 +63,7 @@ function Run()
 	CarryObject("", "Handheld_Device/ANIM_Bomb.nif", false)
 	SetData("CarryingBomb", 1)
 
-	PlayAnimation("","watch_for_guard")
+	PlayAnimation("", "watch_for_guard")
 	Sleep(1)
 
 	-- Check if the building still exists
@@ -93,7 +93,7 @@ function Run()
 	Sleep(3)
 	
 	-- start the burn-building measure
-	local Damage = srv_GetUseBombDamage("", "Destination")
+	local Damage = 50
 	SetProperty("Destination", "BurnDamage", Damage)
 	
 	if IsDynastySim("Owner") then

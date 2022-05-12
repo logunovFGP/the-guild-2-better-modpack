@@ -12,12 +12,12 @@ function CheckStock()
 	local ObjCount = 0
 
 	for i=1, 249 do
-		ObjCount = ObjCount + GetItemCount("#Duncan",i) + GetItemCount("#Residence",i) + GetItemCount("#Smithy",i)
+		ObjCount = ObjCount + GetItemCount("#Duncan", i) + GetItemCount("#Residence", i) + GetItemCount("#Smithy", i)
 	end
 
 	local CartCount = BuildingGetCartCount("#Smithy")
 
-	if CartCount>0 then
+	if CartCount > 0 then
 		for i=0, CartCount-1 do
 			if BuildingGetCart("#Smithy", CartCount-1, "Cart") then
 				for i=1, 249 do
@@ -29,22 +29,21 @@ function CheckStock()
 
 	local CartCount = BuildingGetCartCount("#Residence")
 
-	if CartCount>0 then
+	if CartCount > 0 then
 		for i=0, CartCount-1 do
 			if BuildingGetCart("#Smithy", CartCount-1, "Cart") then
 				for i=1, 249 do
-					ObjCount = ObjCount + GetItemCount("Cart",i)
+					ObjCount = ObjCount + GetItemCount("Cart", i)
 				end
 			end
 		end
 	end
 
-	if ObjCount>0 then
+	if ObjCount > 0 then
 		return true
 	else
 		return false
-	end
-	
+	end	
 end
 
 -- check if the character is dead
@@ -65,7 +64,6 @@ function CheckDead(char)
 	end
 	
 	return false
-
 end
 
 
@@ -78,7 +76,6 @@ function CheckDayTime()
 	else
 		return false
 	end
-
 end
 
 
@@ -140,8 +137,8 @@ function CreateEvidence(offender, target)
 			AddEvidence(target, offender, "found"..victim, 11)
 		end
 	end
-	return true
-		
+
+	return true		
 end
 
 

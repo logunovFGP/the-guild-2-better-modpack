@@ -1,7 +1,5 @@
 -- -----------------------
 -- StartBuildingAction
---
--- 
 -- -----------------------
 function StartBuildingAction(FirstSim, SecondSim, BuildingClass, BuildingType, BuildingAlias)
 
@@ -100,6 +98,9 @@ function CheckInsideBuilding(SimAlias, BuildingClass, BuildingType, BuildingAlia
 	return true, InsideAlias
 end
 
+-- -----------------------
+-- GoInsideBuilding
+-- -----------------------
 function GoInsideBuilding(SimAlias, CityObject, BuildingClass, BuildingType, BuildingAlias)
 
 	local	IsOk
@@ -219,7 +220,7 @@ end
 
 function ShowMoveError(result) 
 
-	if result == NIL then
+	if result == nil then
 		MsgMeasure("", "@L_GENERAL_MEASURES_FAILURES_+2")
 	end
 
@@ -414,8 +415,8 @@ function BuyItem(SimAlias, Item, ItemCount)
 		return false
 	end
 	
-	local	MoveToPos		= "__AI_CBI_MoveTo"
-	local	eInv
+	local MoveToPos	= "__AI_CBI_MoveTo"
+	local eInv
 	
 	if IsType(PlaceAlias , "Building") then
 		GetOutdoorMovePosition(SimAlias, PlaceAlias, MoveToPos)
@@ -434,11 +435,13 @@ function BuyItem(SimAlias, Item, ItemCount)
 	end
 	
 	local Done
+	
 	if eInv == INVENTORY_STD then -- market
 		Done = ai_Transfer(SimAlias, SimAlias, INVENTORY_STD, PlaceAlias, eInv, Item, ItemCount)
 	else
 		Done = economy_BuyItems(PlaceAlias, SimAlias, Item, ItemCount, INVENTORY_STD)
 	end
+	
 	return (Done >= ItemCount)
 end
 
@@ -458,7 +461,6 @@ function CheckMutex(BaseAlias, MeasureName)
 	end
 	return true
 end
-
 
 function ReleaseMutex(BaseAlias)
 	local	PropertyName = "_MUTEX_"..SystemGetMeasureName()
@@ -524,7 +526,7 @@ function CheckForces(Agressor, Victim, Radius)
 	end
 
 	local FoundCount
-	local	AgressorID 		= GetDynastyID(Agressor)
+	local	AgressorID = GetDynastyID(Agressor)
 	local	Alias
 	local	Add
 	local	Att
@@ -1128,4 +1130,49 @@ function BuyRandomWorkshop(Owner)
 		end
 	end
 	return false
+end
+
+-------------------------------------------------------
+-- ChoosePersonality 
+-------------------------------------------------------
+function ChoosePersonality(Dynasty)
+	
+	if DynastyIsShadow(Dynasty) then
+		SetProperty(Dynasty, "AI_PERSONA", 0)
+		return -- set shadow persona
+	else
+		local RandomChoice = Rand(100)
+		local Choice = 0
+		if RandomChoice <= 20 then -- 0-20
+			Choice = 1 -- goodguy
+		elseif RandomChoice <= 35 then -- 21-35
+			Choice = 2 -- whiteknight
+		elseif RandomChoice <= 55 then -- 36-55
+			Choice = 3 -- tactician
+		elseif RandomChoice <= 75 then -- 56-75
+			Choice = 4 -- overlord
+		elseif RandomChoice <= 90 then -- 76-90
+			Choice = 5 -- sociopath
+		else
+			Choice = 6 -- maniac -- 91-99
+		end
+		
+		SetProperty(Dynasty, "AI_PERSONA", Choice)
+		return
+	end
+end
+
+-------------------------------------------------------
+-- CheckPersonality - choose one if not available
+-------------------------------------------------------
+function CheckPersonality(Dynasty, ActionCategory)
+	
+	if not HasProperty(Dynasty, "AI_PERSONA") then
+		ai_ChoosePersonality(Dynasty)
+	end
+	
+	local PersonalityID = GetProperty(Dynasty, "AI_PERSONA")
+	local Weight = GetDatabaseValue("AIPersonality", PersonalityID, ActionCategory)
+	
+	return Weight
 end
