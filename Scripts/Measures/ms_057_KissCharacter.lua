@@ -71,7 +71,7 @@ function Run()
 				Sleep(time1 * 0.4)
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
 			
 			else
 				
@@ -88,7 +88,7 @@ function Run()
 				end
 			
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", chr_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))
+				MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))
 				
 			end
 			
@@ -130,21 +130,19 @@ function Run()
 			SetMeasureRepeat(TimeUntilRepeat)
 			
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"))
+			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"))
 					
 		elseif outraged then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination","",FavorLoss)
 			SetMeasureRepeat(TimeUntilRepeat)
-			
 			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"))
-			
+			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"))
 		else
 			
 			chr_MultiAnim("", "bow", "Destination", "curtsy", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6))
+			MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6))
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			chr_ModifyFavor("Destination","",FavorWon)
@@ -152,8 +150,6 @@ function Run()
 			
 		end
 	end
-	
-	StopMeasure()
 end
 
 -- -----------------------

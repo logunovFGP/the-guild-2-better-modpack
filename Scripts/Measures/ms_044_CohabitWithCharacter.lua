@@ -105,7 +105,7 @@ function Run()
 		
 
 		-- Ask the question
-		MsgSay("", chr_AskCohabit(GetSkillValue("", RHETORIC), SimGetGender("")));
+		MsgSay("", talk_AskCohabit(GetSkillValue("", RHETORIC), SimGetGender("")));
 					
 		-- Check the success
 		local Success = 0
@@ -123,15 +123,15 @@ function Run()
 		SetRepeatTimer("Dynasty", GetMeasureRepeatName(), TimeOut)
 
 		if (Favor > Chance) then
-			MsgSay("Destination", chr_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 1));
+			MsgSay("Destination", talk_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 1));
 			Success = 1
 		else 
 			if Favor > 2 then
-				MsgSay("Destination", chr_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 2));
+				MsgSay("Destination", talk_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 2));
 				OwnerAnimLength = PlayAnimationNoWait("", "talk")
 				DestinationAnimLength = PlayAnimationNoWait("Destination", "shake_head")
 			else
-				MsgSay("Destination", chr_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 3));
+				MsgSay("Destination", talk_AnswerCohabit(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 3));
 				OwnerAnimLength = PlayAnimationNoWait("", "got_a_slap")
 				DestinationAnimLength = PlayAnimationNoWait("Destination", "give_a_slap")
 			end

@@ -153,10 +153,10 @@ function Run()
 			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
 			if (EnoughVariation == false) then
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 			else
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
+				MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 			end
 
 			Sleep(3.0)

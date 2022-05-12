@@ -334,7 +334,7 @@ function Run()
 
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 				Sleep(DestinationAnimationLength * 0.2)
 
 			else
@@ -359,7 +359,7 @@ function Run()
 
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 
-				MsgSay("Destination", chr_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
+				MsgSay("Destination", talk_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 
 			end
 

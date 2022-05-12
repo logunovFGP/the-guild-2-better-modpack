@@ -63,11 +63,11 @@ function Run()
 	
 	-- Actually do the flirting
 	camera_CutscenePlayerLock("cutscene", "")
-	MsgSay("", chr_FlirtSaying1(GetSkillValue("", RHETORIC), OwnerGender))
+	MsgSay("", talk_FlirtSaying1(GetSkillValue("", RHETORIC), OwnerGender))
 	camera_CutscenePlayerLock("cutscene", "Destination")
-	MsgSay("Destination", chr_FlirtAnswer(GetSkillValue("Destination", RHETORIC), DestGender))
+	MsgSay("Destination", talk_FlirtAnswer(GetSkillValue("Destination", RHETORIC), DestGender))
 	camera_CutscenePlayerLock("cutscene", "")
-	MsgSay("", chr_FlirtSaying2(GetSkillValue("", RHETORIC), OwnerGender))
+	MsgSay("", talk_FlirtSaying2(GetSkillValue("", RHETORIC), OwnerGender))
 	
 	local WasCourtLover = 0
 	
@@ -91,7 +91,7 @@ function Run()
 				Sleep(DestinationAnimationLength * 0.4)
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", chr_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
+				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 				Sleep(DestinationAnimationLength * 0.2)
 				
 			else
@@ -109,7 +109,7 @@ function Run()
 				end
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)				
-				MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
+				MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
 				
 			end
 			
@@ -142,7 +142,7 @@ function Run()
 				PlayAnimationNoWait("Destination", "shake_head")
 			end
 
-			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
+			MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
 			
 		else
 			-- ToDo: Make this feature optional
@@ -166,7 +166,7 @@ function Run()
 				PlayAnimationNoWait("Destination", "bow")
 			end		
 			
-			MsgSay("Destination", chr_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, 10))			
+			MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, 10))			
 			
 			-- Set the repeat timer and the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			SetRepeatTimer("", GetMeasureRepeatName2("Flirt"), TimeUntilRepeat)

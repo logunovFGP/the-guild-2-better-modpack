@@ -175,7 +175,7 @@ function Run()
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 				
 			else
 				
@@ -286,7 +286,7 @@ function Run()
 				end
 			
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)					
-				MsgSay("Destination", chr_AnswerCourtingMeasure("TAKE_A_BATH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
+				MsgSay("Destination", talk_AnswerCourtingMeasure("TAKE_A_BATH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 				
 			end
 			
@@ -427,7 +427,7 @@ function Run()
 			ModifyHP("", 5, true)
 			ModifyHP("Destination", 5, true)
 			
-			MsgSay("Destination", chr_AnswerBathing(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), true))
+			MsgSay("Destination", talk_AnswerBathing(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), true))
 			feedback_MessageCharacter("",
 				"@L_TAVERN_152_TAKEABATH_MSG_SUCCESS_HEAD_+0",
 				"@L_TAVERN_152_TAKEABATH_MSG_SUCCESS_BODY_+0", GetID("Destination"))
@@ -441,7 +441,7 @@ function Run()
 			ModifyHP("", 5, true)
 			ModifyHP("Destination", 5, true)
 			
-			MsgSay("Destination", chr_AnswerBathing(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), false))
+			MsgSay("Destination", talk_AnswerBathing(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), false))
 			feedback_MessageCharacter("",
 				"@L_TAVERN_152_TAKEABATH_MSG_FAILED_HEAD_+0",
 				"@L_TAVERN_152_TAKEABATH_MSG_FAILED_BODY_+0", GetID("Destination"))

@@ -159,7 +159,7 @@ function Run()
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 			else
 				local OwnerAnimation = ""
 				local DestinationAnimation = ""
@@ -212,7 +212,7 @@ function Run()
 				end
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)				
-				MsgSay("Destination", chr_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
+				MsgSay("Destination", talk_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 				
 			end
 			
@@ -260,21 +260,19 @@ function Run()
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination", "", FavorLoss)
-			
 			ms_232_invitetodance_EnterCutscene()
 --			camera_CutsceneBothLock("", "Destination")
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"));
+			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"));
 			
 		elseif outraged then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination", "", FavorLoss)
-			
 			ms_232_invitetodance_EnterCutscene()
 			camera_CutscenePlayerLock("", "Destination")
 			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)
-			MsgSay("Destination", chr_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"));
+			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"));
 			
 		else
 			if AliasExists("cutscene") then
@@ -309,7 +307,7 @@ function Run()
 			
 			SetAvoidanceGroup("", "Destination")
 			chr_MultiAnim("", "dance_social_male", "Destination", "dance_social_female", InteractionDistance)
-			MsgSay("Destination", chr_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6));
+			MsgSay("Destination", talk_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6));
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			f_EndUseLocatorNoWait("", "DancePos")
@@ -317,7 +315,6 @@ function Run()
 			chr_ModifyFavor("Destination", "", FavorWon)
 		end
 	end
-	StopMeasure() -- make sure to cleanup
 end
 
 -- -----------------------
@@ -328,7 +325,6 @@ function CleanUp()
 	
 	ReleaseAvoidanceGroup("")
 	StopAnimation("")
-	
 	ReleaseLocator("")
 	ReleaseLocator("Destination")
 
@@ -340,9 +336,11 @@ function CleanUp()
 end
 
 function MoveToPosition()
+	
 	if not f_BeginUseLocator("", "DancePos2", GL_STANCE_STAND, true) then
 		StopMeasure()
 	end
+	
 	SetData("DanceLocatorInUse", 1)
 	while true do
 		Sleep(4)
@@ -357,10 +355,10 @@ end
 
 function EnterCutscene()
 	if not AliasExists("cutscene") then
-		CreateCutscene("default","cutscene")
-		CutsceneAddSim("cutscene","")
-		CutsceneAddSim("cutscene","destination")
-		CutsceneCameraCreate("cutscene","")			
+		CreateCutscene("default", "cutscene")
+		CutsceneAddSim("cutscene", "")
+		CutsceneAddSim("cutscene", "destination")
+		CutsceneCameraCreate("cutscene", "")			
 		camera_CutsceneBothLock("cutscene", "destination")
 	end
 end

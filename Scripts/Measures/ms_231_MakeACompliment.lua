@@ -65,7 +65,7 @@ function Normal()
 	-- Actually speak out the compliment
 	camera_CutscenePlayerLock("cutscene", "")
 	PlayAnimationNoWait("", "talk")
-	MsgSay("", chr_MakeACompliment(SimGetGender(""), GetSkillValue("", RHETORIC)))
+	MsgSay("", talk_MakeACompliment(SimGetGender(""), GetSkillValue("", RHETORIC)))
 	
 	local WasCourtLover = 0
 	chr_BlockSocialMeasures("")
@@ -90,7 +90,7 @@ function Normal()
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
 				Sleep(DestinationAnimationLength * 0.2)
 				
 			else
@@ -108,7 +108,7 @@ function Normal()
 				end
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)				
-				MsgSay("Destination", chr_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))
+				MsgSay("Destination", talk_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))
 				
 			end
 			
@@ -139,7 +139,7 @@ function Normal()
 				camera_CutscenePlayerLock("cutscene", "Destination")
 				PlayAnimationNoWait("Destination", "cheer_01")
 			end
-			MsgSay("Destination", chr_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), -10))
+			MsgSay("Destination", talk_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), -10))
 			
 		else
 			
@@ -150,7 +150,7 @@ function Normal()
 			else
 				PlayAnimationNoWait("Destination", "bow")
 			end
-			MsgSay("Destination", chr_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10))			
+			MsgSay("Destination", talk_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10))			
 			
 			-- Set the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			chr_ModifyFavor("Destination", "", FavorWon)
@@ -215,7 +215,7 @@ function Cutscene()
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
 				
 			else
 				
@@ -226,7 +226,7 @@ function Cutscene()
 				end
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)	
-				MsgSay("Destination", chr_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))			
+				MsgSay("Destination", talk_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))			
 			end
 			
 			-- Add the archieved progress
@@ -250,14 +250,14 @@ function Cutscene()
 			chr_ModifyFavor("Destination", "", FavorLoss)
 			feedback_OverheadComment("Destination","@L$S[2006] %1n", false, false, FavorLoss)
 			
-			MsgSay("Destination", chr_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), -10))
+			MsgSay("Destination", talk_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), -10))
 		else
 			-- Set the repeat timer and the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			SetRepeatTimer("", GetMeasureRepeatName2("MakeACompliment"), TimeUntilRepeat)
 			chr_ModifyFavor("Destination", "", FavorWon)
 			feedback_OverheadComment("Destination","@L$S[2007] %1n", false, false, FavorWon)
 			
-			MsgSay("Destination", chr_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10))			
+			MsgSay("Destination", talk_AnswerCourtingMeasure("COMPLIMENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10))			
 		end
 	end
 	

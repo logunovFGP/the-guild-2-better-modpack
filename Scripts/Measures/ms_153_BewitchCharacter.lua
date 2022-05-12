@@ -198,7 +198,7 @@ function Run()
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
-				MsgSay("Destination", chr_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
+				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 				
 			else
 	
@@ -256,7 +256,7 @@ function Run()
 					camera_CutscenePlayerLockSit("cutscene", "Destination")
 				end
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)								
-				MsgSay("Destination", chr_AnswerCourtingMeasure("BEWITCH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
+				MsgSay("Destination", talk_AnswerCourtingMeasure("BEWITCH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 				--CutsceneCameraRelease("cutscene")
 				
 			end
