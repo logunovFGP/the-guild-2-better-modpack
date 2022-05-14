@@ -1086,6 +1086,9 @@ Translate and add the following lines below:
 19165   "_MEASURE_BauArbeitMeasure_NAME_+0"   "Construct Building"   |
 19166   "_MEASURE_BauZusatzMeasure_NAME_+0"   "Construct Building"   |
 19167   "_MEASURE_Linger_TARGET_+0"   "Select the place where you want to rest."   |
+19168   "_NAMES_SCANDINAVIAN_FEMALE_+65"   "Linnéa"   |
+19169   "_NAMES_FRENCH_FEMALE_+120"   "Linéa"   |
+19170   "_NAMES_GERMAN_FEMALE_+113"   "Linea"   |
 
 
 -------
