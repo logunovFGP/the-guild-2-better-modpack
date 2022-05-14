@@ -29,7 +29,7 @@ We wish you a lot of fun with this little gem and with the Modpack!
 --Overview of version 0.1 (Lite)--
 
 - The mod has been redone from scratch, adding features of MMP 0.95 by hand onto a clean installation of Patch 4.211. As for now, not ALL features of the old mod have been added (yet).
-- Due to the separation into 'Lite' and 'Full mod', AI changes and new items have NOT been added yet.
+- Due to the separation into 'Lite' and 'Full mod', new items have NOT been added yet.
 - Countless problems and bugs of Vanilla and MegaMod 0.95 have been solved or bypassed.
 - There's new music, some new icons and character textures or model alterations.
 - There's a new map (Yorkshire) to play on.
@@ -41,6 +41,7 @@ We wish you a lot of fun with this little gem and with the Modpack!
 - Overall you need more experience points to reach the higher levels. XP gains scale with the years-per-round setting.
 - Every business can now have up to 16 item slots, but only the warehouse can have really big slots.
 - The diplomacy feature of 0.95 has been added: it has has been reworked completely and got a lot of extras additions.
+- The dynasty AI system has been reworked and now features a personality based new priority-system. Details will be added in later versions.
 - The takeover bid feature of 0.95 has been added: make a offer for a building already owned by a dynasty, paying much more than its actual worth.
 - A new, more dynamic system for the city treasury has been added.
 

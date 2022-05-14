@@ -10,38 +10,36 @@ end
 -- ShowOverheadSymbol
 -- -----------------------
 function OverheadPercent(ObjectAlias, Number)
+	
 	-- shows fading percents
-
-	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L$C[51,102,255]%1i%%",Number)
-
+	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L$C[51,102,255]%1i%%", Number)
 end 
 
 -- -------------
 -- OverheadMoney
 -- -------------
 function OverheadMoney(ObjectAlias, Number)
+	
 	-- shows fading money
-
-	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t",Number)
-
+	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t", Number)
 end
 
 -- -------------
 -- OverheadFame
 -- -------------
 function OverheadFame(ObjectAlias, Number)
+	
 	-- shows fading fame
-	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L_GUILDHOUSE_FAME_+0",Number)
-
+	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L_GUILDHOUSE_FAME_+0", Number)
 end
 
 -- ---------------
 -- OverheadImpFame
 -- ---------------
 function OverheadImpFame(ObjectAlias, Number)
+	
 	-- shows fading fame
-	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L_IMPERIAL_FAME_+0",Number)
-
+	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L_IMPERIAL_FAME_+0", Number)
 end
 
 -- ---------------------
@@ -50,7 +48,7 @@ end
 function OverheadCourtProgress(ObjectAlias, Progress)
 
 	-- shows fading (possibly broken) heart
-	if (Progress>0) then
+	if (Progress > 0) then
 		ShowOverheadSymbol(ObjectAlias, false, true, 0, "@L$S[2001] +%1i", Progress)
 	else
 		ShowOverheadSymbol(ObjectAlias, false, true, 0, "@L$S[2012] %1i", Progress)
@@ -59,6 +57,7 @@ function OverheadCourtProgress(ObjectAlias, Progress)
 end
 
 function OverheadActionName(ObjectAlias, ActionName, Force, Replacement)
+	
 	-- the overhead is shown permanent
 	-- Force: true = show overhead symbol global, false = show overhead symbol only for the dynasty
 	-- Replacement: e.g. character name, building name, item name, time, counter, etc.
@@ -72,10 +71,10 @@ function OverheadActionName(ObjectAlias, ActionName, Force, Replacement)
 	else
 		RemoveOverheadSymbols(ObjectAlias)
 	end
-
 end
 
 function OverheadComment(ObjectAlias, Comment, NoFade, Force, Replacement1, Replacement2)
+	
 	-- NoFade: true = the overhead is shown permanent, false = the overhead is fading out
 	-- Force: true = show overhead symbol global, false = show overhead symbol only for the dynasty
 	-- Replacement: e.g. character name, building name, item name, time, counter, etc.
@@ -85,19 +84,19 @@ function OverheadComment(ObjectAlias, Comment, NoFade, Force, Replacement1, Repl
 	else
 		RemoveOverheadSymbols(ObjectAlias)
 	end
-
 end
 
 function OverheadSkill(ObjectAlias, Skill, Force, Replacement1, Replacement2, Replacement3)
+	
 	-- NoFade: true = the overhead is shown permanent, false = the overhead is fading out
 	-- Force: true = show overhead symbol global, false = show overhead symbol only for the dynasty
 	-- Replacement: e.g. character name, building name, item name, time, counter, etc.
+	
 	if Skill then
 		ShowOverheadSymbol(ObjectAlias, false, Force, 0, Skill, Replacement1, Replacement2, Replacement3)
 	else
 		RemoveOverheadSymbols(ObjectAlias)
 	end
-
 end
 
 function OverheadFadeText(ObjectAlias, FadeText, Force, Replacement)
@@ -106,7 +105,6 @@ function OverheadFadeText(ObjectAlias, FadeText, Force, Replacement)
 
 	ShowOverheadSymbol(ObjectAlias, false, Force, 0, FadeText, Replacement)
 end
-
 
 -- -----------------------
 -- MsgNews
@@ -119,8 +117,7 @@ function MessageWorkshop(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 function MessageCharacter(Owner, Headline, Text, ...)
@@ -131,8 +128,26 @@ function MessageCharacter(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-	
 	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+end
+
+function MessageOtherCharacters(Owner, Headline, Text, ...)
+
+	local HeaderText = Headline
+	local MessageClass = "intrigue"
+	local OwnerDyn = GetDynastyID(Owner)
+	local Alias
+	local DynCount = ScenarioGetObjects("Dynasty", 100, "Dynasties")
+	
+	for i=0, DynCount do
+		Alias = "Dynasties"..i
+		if DynastyIsPlayer(Alias) and GetDynastyID(Alias) ~= OwnerDyn then
+			-- copies variable parameters to c	
+			-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
+			GetVariableParameters(arg)
+			MsgNewsNoWait(Alias, Owner, "", MessageClass, -1, HeaderText, Text)
+		end
+	end
 end
 
 function MessageProduction(Owner, Headline, Text,...)
@@ -143,7 +158,6 @@ function MessageProduction(Owner, Headline, Text,...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-	
 	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
 end
 
@@ -155,8 +169,7 @@ function MessageEconomie(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 function MessageMilitary(Owner, Headline, Text, ...)
@@ -167,8 +180,7 @@ function MessageMilitary(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-		
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 function MessagePolitics(Owner, Headline, Text, ...)
@@ -179,8 +191,7 @@ function MessagePolitics(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-		
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 function MessageSchedule(Owner, Headline, Text, ...)
@@ -191,8 +202,7 @@ function MessageSchedule(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 function MessageMission(Owner, Headline, Text, ...)
@@ -203,8 +213,7 @@ function MessageMission(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-
-	MsgNewsNoWait(Owner,0,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, 0, "", MessageClass, -1, HeaderText, Text)
 end
 
 function MessageDefault(Owner, Headline, Text, ...)
@@ -215,8 +224,7 @@ function MessageDefault(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 -- -----------------------
@@ -230,8 +238,7 @@ function MessageBox(Owner, Headline, Text, ...)
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 	GetVariableParameters(arg)
-		
-	MsgBoxNoWait(Owner,Owner,HeaderText, Text)
+	MsgBoxNoWait(Owner, Owner, HeaderText, Text)
 end
 
 -- -----------------------
@@ -303,7 +310,7 @@ function MessageOffice(Owner, GetPrivilegeList, Headline, Text, ...)
 	
 	-- copies variable parameters to c	
 	-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
-	MsgNewsNoWait(Owner,Owner,"",MessageClass,-1, HeaderText, Text)
+	MsgNewsNoWait(Owner, Owner, "", MessageClass, -1, HeaderText, Text)
 end
 
 -- -------------------------
@@ -311,6 +318,7 @@ end
 -- -------------------------
 
 function FavorReduceFondness(Owner, Target)
+	
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)
@@ -324,6 +332,7 @@ function FavorReduceFondness(Owner, Target)
 end
 
 function FavorRemoveFondness(Owner, Target)
+	
 	MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
 					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_HEAD_+0",
 					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_BODY_+0", 
@@ -331,6 +340,7 @@ function FavorRemoveFondness(Owner, Target)
 end
 
 function FavorGainGrudge(Owner, Target)
+	
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)
@@ -343,6 +353,7 @@ function FavorGainGrudge(Owner, Target)
 end
 
 function FavorAddGrudge(Owner, Target)
+	
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)
@@ -360,6 +371,7 @@ end
 -- -------------------------
 
 function FavorReduceGrudge(Owner, Target)
+	
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)
@@ -373,6 +385,7 @@ function FavorReduceGrudge(Owner, Target)
 end
 
 function FavorRemoveGrudge(Owner, Target)
+	
 	MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
 					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_HEAD_+0",
 					"@L_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_BODY_+0", 
@@ -380,6 +393,7 @@ function FavorRemoveGrudge(Owner, Target)
 end
 
 function FavorGainFondness(Owner, Target)
+	
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)
@@ -392,6 +406,7 @@ function FavorGainFondness(Owner, Target)
 end
 
 function FavorAddFondness(Owner, Target)
+	
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)

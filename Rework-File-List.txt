@@ -1,12 +1,9 @@
+open: 626
 9 Scripts\AI\BaseTree\CheckDynasty\Actions.lua
 10 Scripts\AI\BaseTree\CheckDynasty\Attack.lua
 11 Scripts\AI\BaseTree\CheckDynasty\CheckCutscene.lua
-12 Scripts\AI\BaseTree\CheckDynasty\CheckHome.lua
 13 Scripts\AI\BaseTree\CheckDynasty\CheckTrialCutscene.lua
 14 Scripts\AI\BaseTree\CheckDynasty\Defend.lua
-15 Scripts\AI\BaseTree\CheckDynasty\Medicus.lua
-16 Scripts\AI\BaseTree\CheckDynasty\Poisoned.lua
-17 Scripts\AI\BaseTree\CheckDynasty\Shadow.lua
 19 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_AdoptOrphan.lua
 20 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_ApplyForOffice.lua
 21 Scripts\AI\BaseTree\CheckDynasty\Actions\ac_Banned.lua
@@ -65,9 +62,6 @@
 77 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Attack\OrderASpying.lua
 78 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Attack\Sabotage.lua
 79 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Attack\War.lua
-80 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\Bodyguard.lua
-81 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\OrderCollectEvidence.lua
-82 Scripts\AI\BaseTree\CheckMyrmidon\myrm_Defensive\Patrol.lua
 
 114 Scripts\AI\Favor\fv_ArangeLiason.lua
 116 Scripts\AI\Favor\fv_CurryFavor.lua
@@ -92,29 +86,9 @@
 137 Scripts\AI\Favor\fv_UseShellchain.lua
 138 Scripts\AI\Favor\fv_UseSilverRing.lua
 
-364 Scripts\Library\anims_fight_building.lua
-365 Scripts\Library\anims_fight_ship.lua
-366 Scripts\Library\anims_fight_sim.lua
-367 Scripts\Library\bld.lua
-368 Scripts\Library\camera.lua
-369 Scripts\Library\campaign.lua
-370 Scripts\Library\cart.lua
 371 Scripts\Library\chr.lua
-372 Scripts\Library\diseasedbuilding.lua
-373 Scripts\Library\diseases.lua
 374 Scripts\Library\dyn.lua
-376 Scripts\Library\emotes.lua
-377 Scripts\Library\f.lua
-378 Scripts\Library\feedback.lua
-379 Scripts\Library\GamePlayFormulas.lua
-381 Scripts\Library\helpfuncs.lua
 382 Scripts\Library\idlelib.lua
-384 Scripts\Library\mission.lua
-387 Scripts\Library\srv.lua
-388 Scripts\Library\stdafx.lua
-389 Scripts\Library\talk.lua
-390 Scripts\Library\WorldAmbient.lua
-391 Scripts\Library\xp.lua
 
 430 Scripts\Measures\ms_007_PaybackCredit.lua
 431 Scripts\Measures\ms_008_TakeCredit.lua

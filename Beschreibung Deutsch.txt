@@ -1,0 +1,51 @@
+--Projektbeschreibung:--
+
+Fajeths MegaModPack Reforged ist ein umfangreiches nicht-kommerzielles Fan-Addon für Die Gilde 2 - Renaissance. Es behebt hunderte von kleineren und größeren Fehlern des Originalspiels oder verbessert die
+Logik und die Performanz der darunter liegenden Technik. Darüber hinaus erweitert das Addon das Spiel vor allem in der Tiefe statt nur in der Breite. Neue Features wie zum Beispiel neue
+Items oder Interaktionsmöglichkeiten werden mit dem Grundgerüst des Originals verknüpft, sodass dieses neu interpretiert wird. 
+
+Das Addon ist eine 'Total-Conversion'-Mod, also eine Generalüberholung so gut wie aller Bereiche. Trotz der teils massiven Änderungen sollen der originale Charme und das generelle Spielprinzip
+von Die Gilde 2 erhalten und gestärkt werden. Wo Features des Originals aus Zeitmangel oberflächlich oder sehr simpel gestaltet wurden, bietet das Modpack zusätzliche Spieltiefe
+oder atmosphärische Ergänzungen. Keine Änderung wird jedoch grundlegende Brüche mit dem Original erzeugen.
+
+Neben diesen Aspekten sind aber zwei Philosophien besonders entscheidend: Einerseits versucht das Modpack die unbestreitbar hohen Einstiegshürden zu senken, mit denen sich neue Spieler
+konfrontiert sehen. Intuitivere HUD-Elemente und Visualisierungen, verbesserte Tooltips, neue Tips und Tricks und zusätzliche Informationsfenster beim Ausführen von Aktionen dienen dazu,
+die Funktionsweise der vielen Spielelemente (ob neu oder alt) klarer zu vermitteln und die Lernkurve angenehmer zu gestalten.
+Andererseits liegt ein großes Augenmerk bei der Entwicklung auf der KI bzw. Interaktionen mit der KI. Eine glaubhafte und angenehm zu bespielende Gegner-KI sind dabei genauso wichtig wie ein
+relativ zuverlässiges und gut kontrollierbares Steuern der Betriebsverwaltungen. Diese Elemente sind Grundvoraussetzungen für nachhaltigen und lang andauernden Spielspaß im Endgame einer Partie.
+
+Die MegaMod ist ein Herzensprojekt, das nun ein gutes Jahrzehnt besteht. Die Mod befindet sich in konstanter Entwicklung und erhält mit der jüngsten Generalüberholung durch 'Reforged' einen
+völlig neuen Qualitätsstandard. Dennoch, und gerade deshalb, wird es in der Anfangszeit zwangsläufig zu technischen Problemen oder Inkonsistenzen beim Design kommen. Diese auszumerzen wird
+ein langer und anstrengender Prozess, der nur durch eure Mithilfe möglich wird. Es wird auch immer wieder experimentelle Entscheidungen geben, um die Grenzen des Gilde 2-Moddings auszuloten
+und weiter zu verschieben. Es ist nachvollziehbar, dass bestimmte Entscheidungen daher nicht immer von allen begrüßt werden. 
+
+Um der Vielfalt unter den Spielern und Unterstützern des Projektes gerecht zu werden, wird es mit 'Reforged' zwei Versionsarten der MegaMod geben. Neben der 'Vollversion' gibt es eine 'Lite'-Edition. Diese Edition wird
+von allen technischen Neuerungen, Bugfixes und Quality-of-Life Verbesserungen ebenso profitieren, wie die Vollversion. Generalüberholungen beim allgemeinen Gameplay oder den Professionen,
+insbesondere starke Veränderungen bei der Item-Balance werden jedoch nur in der Vollversion zu finden sein. Wir hoffen, dass die Lite-Version so einen Ersatz für offizielle Patches bieten
+kann. Die Lite-Version darf ohne Weiteres als Grundlage für eigene Mods verwendet werden, bei der Vollversion bitten wir um eine vorherige Kontaktaufnahme und das Bauen reiner 'Addon'-Mods, die
+nach der vollständigen Installation der MegaMod aufgesetzt werden.
+
+Wir wünschen viel Spaß mit diesem kleinen Juwel und dem ModPack!
+
+
+--Überblick über 0.1 (Lite)--
+
+- Die Mod wurde komplett neu aufgesetzt. Jedes Feature aus MMP 0.95 wurde von Hand und ggf. überarbeitet auf eine saubere Version von Patch 4.211 übertragen. Dabei sind (noch) nicht
+alle Features wieder integriert.
+- Durch die neue Designentscheidung einer Lite und einer Vollversion hat 0.1 noch keinerlei Änderungen an der Item/-Marktbalance.
+- Zahlreiche Probleme aus dem Grundspiel oder MMP 0.95 wurden gelöst oder umgangen.
+- Es gibt eine neue Musikauswahl, teils neue Grafiken oder Charakter-Texturen.
+- Es gibt eine neue Map (Yorkshire)
+- Die aus 0.95 bereits bekannten vergrößten Weltkarten- und Gebäude-Upgradefenster wurden übernommen.
+- Die Handelsrouten wurden überarbeitet und um einige zusätzliche Möglichkeiten erweitert
+- Gunstveränderungen wurden neu ausbalanciert und um ein 'Groll' und 'Zuneigungs'-System erweitert, das dauerhaft den Effekt von Gunstveränderungen modifiziert.
+- Das Ruf-System wurde überarbeitet.
+- KI und Spieler haben vergleichbarere Startvoraussetzungen, auch auf dem höchsten Schwierigkeitsgrad.
+- Man braucht insgesamt mehr Erfahrungspunkte, um zur Maximalstufe zu gelangen. Der Erhalt von EP ist nun Abhängig von der Jahre-pro-Runde Einstellung. Die Fertigkeiten bei Stufenaufstieg wurden überarbeitet.
+- Jeder Betrieb kann bis zu 16 Inventarslots haben, doch nur das Lagerhaus kann auf enorme Slot-Kapazitäten zurückgreifen.
+- Das Diplomatie-Feature aus 0.95 wurde übernommen: Diplomatie wurde grundlegend überarbeitet und erweitert.
+- Die KI hat ein neues Persönlichkeits- und Prioritätssystem. Eine stärkere Ausdifferenzierung folgt in späteren Versionen.
+- Das Kaufangebot-Feature aus 0.95 wurde übernommen: Man kann Besitzern ein Übernahmeangebot machen, das deutlich über Wert liegt.
+- Ein neues, dynamischeres System für die Stadtkasse wurde integriert.
+
+... und vieles mehr.

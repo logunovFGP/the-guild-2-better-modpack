@@ -85,6 +85,7 @@ _Design_
 - Removed unnecessary statistics from statistic's tab.
 - Shadow dynasties have a grey badge you can see on certain messages (like it is done for the coloured dynasties).
 - Thugs on escort duty will now wait outside of buildings until their protegee comes out again.
+- When aquiring a new nobility title, all members of your party get some xp instead of just the character who initially bought the title.
 
 *** Vanilla-Bugs ***
 
@@ -266,6 +267,7 @@ _General_
 - You get a timer for office, trial and duels at the bottom of your screen.
 - The Diplomacy feature has been reworked completely and is much bigger now. You have many new interactions, such as 'Send money', 'Demand a payment', Send a (positive/negative) diplomatic message,
   or even create a war pact ... The feature builds heavily on RPG-elements.
+- You get a message when your employee has been killed or died by sickness.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
@@ -346,6 +348,7 @@ _General_
 - You need slightly more imperial / guild fame before you get the first level of reputation.
 - The upgrades in your residence which gave you some fame have been removed.
 - Counting houses first special offer only occur at the second round
+- The effect of illnesses has been changed.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
@@ -357,6 +360,7 @@ _Scholar_
 - Church owners will get the money from changing faith.
 - Sorcerer's robe no longer will give you a malus.
 - The Arcane Knowledge talent no longer effects producitivity of employees: instead, like all other classes, handicraft is used.
+- Medical treatments cost more.
 
 _Craftsman_
 - mine and wood cutter start with higher inventory space per slot.

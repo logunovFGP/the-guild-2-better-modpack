@@ -86,6 +86,7 @@ _Design_
 - Unnötige Statistiken vom Statistik-Fenster entfernt.
 - Schattendynastien haben nun ein Wappen, das bei einigen Nachrichten zu sehen ist (analog zu den farbigen Dynastien).
 - Schergen, die Charaktere eskortieren, werden sich nun vor den Gebäuden postieren, in denen sich ihr Schützling gerade aufhält und dort auf ihn warten.
+- Beim Kauf eines neuen Adelstitels erhalten nun alle Charaktere einer Spielergruppe Erfahrung, unabhängig davon, wer den Titel beantragt.
 
 *** Vanilla-Bugs ***
 
@@ -231,7 +232,7 @@ _KI_
 - Es war möglich, dass nicht-Gelehrte Dynastie Charaktere eine Messe in KI-kontrollierten Kirchen hielten.
 - Die KI bewarb sich nicht auf höhere Amtssessel, wenn sich jemand bereits auf ihr aktuelles Amt beworben hatte.
 - Wurden Mitarbeiter zum Sammeln einer Ressource ausgesandt, wurde diese teilweise nicht aus dem Inventar des Charakters entfernt und verblieb dort.
-- Die KI wird nur dann zum Heiler gehen, wenn die Krankheit noch lange genug anhält oder falls diese tödlich wäre.
+- Die KI wird nur dann zum Heiler gehen, wenn die Krankheit noch lange genug anhält oder falls diese tödlich wäre. 
 
 *** Features ***
 
@@ -272,6 +273,7 @@ _Allgemein_
 - Für Amtssitzungen, Gerichtsverhandlungen und Duelle wird am unteren Bildschirmrand nun ein Countdown angezeigt.
 - Das Diplomatie-System wurde völlig überarbeitet, man hat noch deutlich mehr Interaktionsmöglichkeiten, u. A: Geld senden, Zahlung fordern, (positive oder negative) Nachrichten versenden, Informationen
   einsehen oder sogar einen Kriegspakt eingehen. Der Rollenspiel-Aspekt wurde enorm ausgebaut.
+- Ihr bekommt eine Nachricht, wenn eure Angestellten getötet werden oder an einer Krankheit sterben.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
@@ -356,6 +358,7 @@ _Allgemein_
 - Man benötigt nun etwas mehr Gilden/Reichsruf, bevor man die erste Reputationsstufe erhält.
 - Die Upgrades im Wohnsitz, die etwas Ruf einbrachten, wurden entfernt.
 - Kontor-Aufträge kommen erst ab der zweiten Runde.
+- Der Effekt von Krankheiten wurde neu gebalanced.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
@@ -366,6 +369,7 @@ _Gelehrter_
 - Ein Glaubenswechsel wird nun dem Kirchenbesitzer gutgeschrieben.
 - Die 'Hexerrobe' verursacht keinen Malus mehr.
 - Gelehrte nutzen nun wieder Handwerkskunst und nicht Geheimwissen, um die Produktivität ihrer Angestellten zu erhöhen.
+- Behandlungskosten wurden erhöht.
 
 _Handwerker_
 -

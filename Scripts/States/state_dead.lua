@@ -58,26 +58,31 @@ function Run()
 			end
 		end
 		
-		-- decrement sicksimcounter if some sick sim dies
+		-- message the dynasty leader if you are a former employee
+		if SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+			MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"))
+		end
+		
+		-- Decrement sicksimcounter if some sick sim dies
 		if GetSettlement("", "City") then
 			if GetImpactValue("", "Sprain") == 1 then
-				chr_decrementInfectionCount("SprainInfected", "City")
+				chr_DecrementInfectionCount("SprainInfected", "City")
 			elseif GetImpactValue("", "Cold") == 1 then
-				chr_decrementInfectionCount("ColdInfected", "City")
+				chr_DecrementInfectionCount("ColdInfected", "City")
 			elseif GetImpactValue("", "Influenza") == 1 then
-				chr_decrementInfectionCount("InfluenzaInfected", "City")
-			elseif GetImpactValue("","BurnWound") == 1 then
-				chr_decrementInfectionCount("BurnWoundInfected", "City")
-			elseif GetImpactValue("","Pox") == 1 then
-				chr_decrementInfectionCount("PoxInfected", "City")
-			elseif GetImpactValue("","Pneumonia") == 1 then
-				chr_decrementInfectionCount("PneumoniaInfected", "City")
-			elseif GetImpactValue("","Blackdeath") == 1 then
-				chr_decrementInfectionCount("BlackdeathInfected", "City")
-			elseif GetImpactValue("","Fracture") == 1 then
-				chr_decrementInfectionCount("FractureInfected", "City")
-			elseif GetImpactValue("","Caries") == 1 then
-				chr_decrementInfectionCount("CariesInfected", "City")
+				chr_DecrementInfectionCount("InfluenzaInfected", "City")
+			elseif GetImpactValue("", "BurnWound") == 1 then
+				chr_DecrementInfectionCount("BurnWoundInfected", "City")
+			elseif GetImpactValue("", "Pox") == 1 then
+				chr_DecrementInfectionCount("PoxInfected", "City")
+			elseif GetImpactValue("", "Pneumonia") == 1 then
+				chr_DecrementInfectionCount("PneumoniaInfected", "City")
+			elseif GetImpactValue("", "Blackdeath") == 1 then
+				chr_DecrementInfectionCount("BlackdeathInfected", "City")
+			elseif GetImpactValue("", "Fracture") == 1 then
+				chr_DecrementInfectionCount("FractureInfected", "City")
+			elseif GetImpactValue("", "Caries") == 1 then
+				chr_DecrementInfectionCount("CariesInfected", "City")
 			end
 		end
 		
@@ -90,35 +95,30 @@ function Run()
 		------ Lay out ------
 		---------------------  
         
-		if HasProperty("", "WasDynastySim") then
+		if HasProperty("", "WasDynastySim") and not DynastyIsShadow("") then
 
-			-- Indicates if a sim of the local player dynasty is dead
 			local IsFuneralOfMyDynasty = 0
-
-			-- Fire messages (differ between player and other dynasties)
-			GetLocalPlayerDynasty("LocalPlayerDyn")
 
 			local Age = SimGetAge("")
 			local SettlementId = GetSettlementID("")			
 			GetSettlement("", "DeadSimsSettlement")
 			local Gender = SimGetGender("")
-			local DynastyID = GetID("dynasty")
-	
-			if DynastyID == GetID("LocalPlayerDyn") then
-				IsFuneralOfMyDynasty = 1
-				if Gender == GL_GENDER_MALE then
-					feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_MALE", GetID(""), Age, SettlementId)
-				else
-					feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
-				end
+			
+			if Gender == GL_GENDER_MALE then
+				feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_MALE", GetID(""), Age, SettlementId)
 			else
-				feedback_MessageCharacter("All", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""))
+				feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
+			end
+			
+			-- send to all other dynasties
+			else
+				feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""))
 			end
 
 			if (SimGetOfficeID("") ~= -1) then
-				GetHomeBuilding("","home")
-				BuildingGetCity("home","homecity")				
-				CityRemoveFromOffice("homecity","")
+				GetHomeBuilding("", "home")
+				BuildingGetCity("home", "homecity")				
+				CityRemoveFromOffice("homecity", "")
 			end
 			
 			-- Spawn the priest at the graveyard
