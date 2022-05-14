@@ -95,32 +95,33 @@ function Run()
 		------ Lay out ------
 		---------------------  
         
-		if HasProperty("", "WasDynastySim") and not DynastyIsShadow("") then
+		if HasProperty("", "WasDynastySim") then
+			if not DynastyIsShadow("") then
 
-			local IsFuneralOfMyDynasty = 0
+				local IsFuneralOfMyDynasty = 0
 
-			local Age = SimGetAge("")
-			local SettlementId = GetSettlementID("")			
-			GetSettlement("", "DeadSimsSettlement")
-			local Gender = SimGetGender("")
-			
-			if Gender == GL_GENDER_MALE then
-				feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_MALE", GetID(""), Age, SettlementId)
-			else
-				feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
-			end
-			
-			-- send to all other dynasties
-			else
+				local Age = SimGetAge("")
+				local SettlementId = GetSettlementID("")			
+				GetSettlement("", "DeadSimsSettlement")
+				local Gender = SimGetGender("")
+				
+				if Gender == GL_GENDER_MALE then
+					feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_MALE", GetID(""), Age, SettlementId)
+				else
+					feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
+				end
+				-- for other dynasties
 				feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""))
 			end
+			
+		
 
 			if (SimGetOfficeID("") ~= -1) then
 				GetHomeBuilding("", "home")
 				BuildingGetCity("home", "homecity")				
 				CityRemoveFromOffice("homecity", "")
 			end
-			
+				
 			-- Spawn the priest at the graveyard
 			local MaxTries=10
 			while MaxTries > 0 do
@@ -163,10 +164,10 @@ function Run()
 							Sleep(2)
 							SimResetBehavior("Undertaker")
 						end
-					
+						
 						GfxMoveToPosition("", 0, -50, 0, 6, false)					
 						return
-						
+							
 					end
 				else
 					GfxMoveToPosition("", 0, -50, 0, 6, false)
@@ -175,9 +176,6 @@ function Run()
 				Sleep(5)
 				MaxTries = MaxTries - 1
 			end
-		else
-			GfxMoveToPosition("", 0, -50, 0, 6, false)
-			return
 		end
 	---------------------------
 	------ Building die -------
@@ -333,6 +331,7 @@ function Run()
 		local ShipType = CartGetType("")
 		local ShipSize = "Small"
 		local Platz
+		
 		if ShipType == EN_CT_MERCHANTMAN_SMALL then
 			ShipSize = "Medium"
 			Platz = 2
@@ -349,7 +348,7 @@ function Run()
 			ShipSize = "Small"
 		end
 	
-		GetPosition("","ShipPos")
+		GetPosition("", "ShipPos")
 		local rotation = (ObjectGetRotationY("") / 360) * (2 * math.pi)		
 
 		InternalDie("")
@@ -368,12 +367,8 @@ function Run()
 					}
 		
 		local EndTime = GetGametime() + 0.15
-		
 		local tx,ty,tz = PositionGetVector("ShipPos")
-		
-		
 		GfxMoveToPositionNoWait("", 0, -Height, 0, Duration, false)
-		
 		PlaySound3DVariation("", "ship/ShipDrown/"..ShipSize, 1)
 		
 			
@@ -381,11 +376,13 @@ function Run()
 		while GetGametime() < EndTime do
 			local Gun = Rand(5)
 			local side = Rand(10)
+			
 			if side < 4 then
 				side = 1 
 			else
 				side = -1
 			end
+			
 			local nx = (OffsetArray[(Gun*4)+1]*side) * math.cos(rotation) + OffsetArray[(Gun*4)+3] * math.sin(rotation)
 			local ny = ty - 100
 			local nz = OffsetArray[(Gun*4)+3] * math.cos(rotation) - (OffsetArray[(Gun*4)+1]*side) * math.sin(rotation)
