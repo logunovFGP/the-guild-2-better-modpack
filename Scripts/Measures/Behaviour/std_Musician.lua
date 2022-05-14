@@ -149,7 +149,7 @@ function Rest()
 				if GetLocatorByName("placeobj","campfire","CampFirePos") then
 					if GetImpactValue("placeobj","torch")==0 then
 						AddImpact("placeobj","torch",1,1)
-						GfxStartParticle("Campfire","particles/Campfire2.nif","CampFirePos",3)
+						GfxStartParticle("Campfire","particles/Campfire2.nif", "CampFirePos",3)
 					end
 				end
 			elseif GetFreeLocatorByName("placeobj","idle_SitGround",1,5,"SitPos") then
@@ -223,54 +223,70 @@ function Rest()
 				local AnimTime = 0
 				local idx = Rand(7)
 				if idx == 0 and Stance ~= 0 then
-					PlaySound3DVariation("","CharacterFX/male_anger",1)
+					if Rand(2) == 0 then
+						PlaySound3DVariation("", "CharacterFX/male_anger", 1)
+					end
 					PlayAnimation("","bench_sit_offended")
 				elseif idx == 1 and Stance ~= 0 then
-					PlaySound3DVariation("","CharacterFX/male_amazed",1)
+					if Rand(2) == 0 then
+						PlaySound3DVariation("", "CharacterFX/male_amazed", 1)
+					end
 					PlayAnimation("","bench_sit_talk_short")
 				elseif idx == 2 and Stance ~= 0 then
-					PlaySound3DVariation("","CharacterFX/male_neutral",1)
+					if Rand(2) == 0 then
+						PlaySound3DVariation("", "CharacterFX/male_neutral", 1)
+					end
 					PlayAnimation("","bench_talk")
 				elseif idx == 3 then
-					MoveSetStance("",GL_STANCE_STAND)
+					MoveSetStance("", GL_STANCE_STAND)
 					Sleep(1)
-					AnimTime = PlayAnimationNoWait("","clink_glasses")
+					AnimTime = PlayAnimationNoWait("", "clink_glasses")
 					Sleep(1)
-					CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
+					CarryObject("", "Handheld_Device/ANIM_beaker.nif",false)
 					Sleep(AnimTime-2)
-					PlaySound3DVariation("","CharacterFX/male_belch",1)
+					if Rand(10) == 0 then
+						PlaySound3DVariation("","CharacterFX/male_belch",1)
+					end
 					CarryObject("","",false)
 					Sleep(1)
-					if Stance == 0 then
-						MoveSetStance("",GL_STANCE_SITGROUND)
-					elseif Stance == 1 then
-						MoveSetStance("",GL_STANCE_SITBENCH)
-					end
-				
-				else
-					MoveSetStance("",GL_STANCE_STAND)	
-					Sleep(1)
-					local idx_advanced = Rand(5)
-					if idx_advanced==0 then
-						PlaySound3DVariation("","CharacterFX/male_anger_loop",1)
-						PlayAnimation("","propel")
-					elseif idx_advanced==1 then
-						PlayAnimation("","shake_head")
-					elseif idx_advanced==2 then
-						PlaySound3DVariation("","CharacterFX/male_anger_loop",1)
-						PlayAnimation("","insult_character")
-					elseif idx_advanced==3 then
-						PlaySound3DVariation("","CharacterFX/male_joy_loop",1)
-						PlayAnimation("","talk_2")
-					else
-						PlaySound3DVariation("","CharacterFX/male_anger_loop",1)
-						PlayAnimation("","threat")
-					end
 					
 					if Stance == 0 then
 						MoveSetStance("",GL_STANCE_SITGROUND)
 					elseif Stance == 1 then
 						MoveSetStance("",GL_STANCE_SITBENCH)
+					end
+				else
+					MoveSetStance("",GL_STANCE_STAND)	
+					Sleep(1)
+					local idx_advanced = Rand(5)
+					if idx_advanced == 0 then
+						if Rand(2) == 0 then
+							PlaySound3DVariation("", "CharacterFX/male_anger_loop", 1)
+						end
+						PlayAnimation("", "propel")
+					elseif idx_advanced == 1 then
+						PlayAnimation("", "shake_head")
+					elseif idx_advanced==2 then
+						if Rand(2) == 0 then
+							PlaySound3DVariation("", "CharacterFX/male_anger_loop", 1)
+						end
+						PlayAnimation("","insult_character")
+					elseif idx_advanced==3 then
+						if Rand(2) == 0 then
+							PlaySound3DVariation("", "CharacterFX/male_joy_loop", 1)
+						end
+						PlayAnimation("", "talk_2")
+					else
+						if Rand(2) == 0 then
+							PlaySound3DVariation("", "CharacterFX/male_anger_loop", 1)
+						end
+						PlayAnimation("","threat")
+					end
+					
+					if Stance == 0 then
+						MoveSetStance("", GL_STANCE_SITGROUND)
+					elseif Stance == 1 then
+						MoveSetStance("", GL_STANCE_SITBENCH)
 					end
 					
 				end
@@ -354,12 +370,12 @@ function StartConcert()
 	
 		BuildingGetCity("stageobj","City")
 		
-		MsgNewsNoWait("All","stageobj","@C[@L_MESSAGES_UPCOMING_CONCERT_COOLDOWN_+0,%4i,%5l]","default",-1,
+		MsgNewsNoWait("All", "stageobj","@C[@L_MESSAGES_UPCOMING_CONCERT_COOLDOWN_+0,%4i,%5l]","default",-1,
 				       "@L_MESSAGES_UPCOMING_CONCERT_HEADER_+0",
 				       "@L_MESSAGES_UPCOMING_CONCERT_BODY_+0",
 				       GetID("City"),"@L_MESSAGES_UPCOMING_CONCERT_STAGE_+"..type, GetID("stageobj"), DestTime, ID)
 
-		SetData("#HaveFunTime",StartTime)
+		SetData("#HaveFunTime", StartTime)
 		
 		SetProperty("#Musician1","HaveFun",Round)
 		SetProperty("#Musician2","HaveFun",Round)
