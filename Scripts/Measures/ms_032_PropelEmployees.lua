@@ -112,8 +112,8 @@ function Run()
 	-- boost the productivity
 	local	Boost = GetSkillValue("", CRAFTSMANSHIP)
 	local AnimTime = 1
-	local	BoostDuration = duration * GetImpactValue("", 35)*0.01 -- 35 -> PropelSpeedupTime
-	LoyaltyLoss = LoyaltyLoss * 0.01 * GetImpactValue("", 41) -- 41 -> PropelFavorMalus
+	local	BoostDuration = duration * GetImpactValue("", "PropelSpeedupTime")*0.01 -- 35
+	LoyaltyLoss = LoyaltyLoss * 0.01 * GetImpactValue("", "PropelFavorMalus") -- 41 
 	
 	for number=0, Found-1 do
 		Alias = "Worker"..number

@@ -5,21 +5,6 @@ function Init()
  --needed for caching 
 end
 
--- -------------------
--- BlockSocialMeasures
--- -------------------
-function BlockSocialMeasures(ActorAlias, TimeOut)
-	
-	if TimeOut == nil then
-		TimeOut = 1
-	end
-	
-	SetRepeatTimer(ActorAlias, GetMeasureRepeatName2("Flirt"), TimeOut)
-	SetRepeatTimer(ActorAlias, GetMeasureRepeatName2("HugCharacter"), TimeOut)
-	SetRepeatTimer(ActorAlias, GetMeasureRepeatName2("KissCharacter"), TimeOut)
-	SetRepeatTimer(ActorAlias, GetMeasureRepeatName2("MakeACompliment"), TimeOut)
-end
-
 -- ----------- 
 -- MoveToExact
 -- -----------
@@ -663,7 +648,6 @@ function MultiAnim(Actor1, Anim1, Actor2, Anim2, Distance, ReturnAfter, Seconds)
 	
 	Sleep(time3)
 	return 0
-	
 end
 
 function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
@@ -713,6 +697,7 @@ end
 -- GainXP
 -- -----------------------
 function GainXP(SimAlias, XPAmount)
+	
 	local Options = FindNode("\\Settings\\Options")
 	local YPR = Options:GetValueInt("YearsPerRound")
 	local Multiplicator = 1
@@ -829,7 +814,6 @@ function StartRage(SimAlias)
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	local BaseXP = GetDatabaseValue("Measures", MeasureID, "basexp")
-	
 	local boost = 4
 	
 	SetRepeatTimer(SimAlias, GetMeasureRepeatName2("Rage"), TimeOut)
@@ -855,8 +839,8 @@ function StartRage(SimAlias)
 		AddImpact("FightUnit"..i, "fighting", boost, duration)
 		AddImpact("FightUnit"..i, "IsOnRage", boost, duration)
 	end
-	return true
 	
+	return true
 end
 
 function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
@@ -1151,10 +1135,9 @@ function GetEnemyMoodLevel(val)
 	end
 
 	return 0
-
 end
 
-function decrementInfectionCount(InfectionName, CityAlias)
+function DecrementInfectionCount(InfectionName, CityAlias)
 	if HasProperty(CityAlias,InfectionName) then
 		local Infected = GetProperty(CityAlias,InfectionName) - 1
 		if Infected < 1 then
@@ -1166,7 +1149,7 @@ function decrementInfectionCount(InfectionName, CityAlias)
 	end
 end
 
-function incrementInfectionCount(InfectionName, CityAlias)
+function IncrementInfectionCount(InfectionName, CityAlias)
 	if HasProperty(CityAlias,InfectionName) then
 		local Infected = GetProperty(CityAlias,InfectionName) + 1
 		SetProperty(CityAlias,InfectionName,Infected)
@@ -1178,7 +1161,6 @@ end
 -- --------------------------------------------------------
 -- Check bonuses workers get from their current employer
 -- --------------------------------------------------------
-
 function CheckWorkerBonuses(BldAlias)
 	
 	local NumWorkers = BuildingGetWorkerCount(BldAlias)
@@ -1196,7 +1178,6 @@ end
 -- --------------------------------------------------------
 -- Calculate bonuses workers get from their current employer
 -- --------------------------------------------------------
-
 function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
 
 	if not AliasExists(SimAlias) then
@@ -1358,4 +1339,14 @@ end
 
 function RemoveCrowdedPlace(SimAlias, WorkBuilding)
 
+end
+
+function GetBribeAmount(SimAlias) 
+	local OfficeLevel = SimGetOfficeLevel(SimAlias)
+	if OfficeLevel < 1 then 
+		OfficeLevel = 1
+	end
+	
+	local Title = GetNobilityTitle(SimAlias)
+	local Amount = (Title * 500) * OfficeLevel
 end

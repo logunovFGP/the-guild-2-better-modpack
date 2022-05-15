@@ -17,8 +17,8 @@ function TakeOffice(Messages)
 	end
 	
 	-- Remove the "HasRepealedImmunity" impact
-	if GetImpactValue("", 345) ~= 0 then
-		RemoveImpact("", 345)
+	if GetImpactValue("", "HasRepealedImmunity") ~= 0 then
+		RemoveImpact("", "HasRepealedImmunity")
 	end
 	
 	chr_SetOfficeImpactList( "Office", ps_obersterrichter_GetPrivilegeList() )

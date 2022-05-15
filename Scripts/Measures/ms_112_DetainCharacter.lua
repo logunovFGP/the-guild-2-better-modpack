@@ -45,7 +45,7 @@ function Run()
 	for i = 0,2 do
 		if DynastyGetMember("ActorDyn",i,"Actor") then
 			if GetSettlementID("Actor") == GetSettlementID("") then
-				if GetImpactValue("Actor", 227) then -- 227 = CommandCityGuard
+				if GetImpactValue("Actor", "CommandCityGuard") then -- 227
 					found = true
 					break
 				end

@@ -114,7 +114,7 @@ function Run()
 	
 	--get the burgle skill , dexterity skill of the thief
 	local Skill = GetSkillValue("",2)*10			-- from 40 to 100
-	local SpeedupTime = GetImpactValue("", 43) / 100	-- 43 = BurglarySpeedup  --0.25 wenn aktiv
+	local SpeedupTime = GetImpactValue("", "BurglarySpeedup") / 100	-- 43  --0.25 wenn aktiv
 	if SpeedupTime > 0 then
 		Skill = Skill + (Skill*SpeedupTime)
 	end

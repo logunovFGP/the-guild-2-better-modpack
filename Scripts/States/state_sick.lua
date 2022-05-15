@@ -17,32 +17,32 @@ function Run()
 		-- this is only done twice because incubate is only true if
 		-- the disease changed to a higher level
 		if GetSettlement("", "City") then
-			if GetImpactValue("","Sprain")==1 then
-				chr_incrementInfectionCount("SprainInfected", "City")
+			if GetImpactValue("", "Sprain") == 1 then
+				chr_IncrementInfectionCount("SprainInfected", "City")
 				Incubate = state_sick_SprainBehaviour()
-			elseif GetImpactValue("","Cold")==1 then
-				chr_incrementInfectionCount("ColdInfected", "City")
+			elseif GetImpactValue("", "Cold") == 1 then
+				chr_IncrementInfectionCount("ColdInfected", "City")
 				Incubate = state_sick_ColdBehaviour()
-			elseif GetImpactValue("","Influenza")==1 then
-				chr_incrementInfectionCount("InfluenzaInfected", "City")
+			elseif GetImpactValue("", "Influenza") == 1 then
+				chr_IncrementInfectionCount("InfluenzaInfected", "City")
 				Incubate = state_sick_InfluenzaBehaviour()
-			elseif GetImpactValue("","BurnWound")==1 then
-				chr_incrementInfectionCount("BurnWoundInfected", "City")
+			elseif GetImpactValue("", "BurnWound") == 1 then
+				chr_IncrementInfectionCount("BurnWoundInfected", "City")
 				Incubate = state_sick_BurnWoundBehaviour()
-			elseif GetImpactValue("","Pox")==1 then
-				chr_incrementInfectionCount("PoxInfected", "City")
+			elseif GetImpactValue("", "Pox") == 1 then
+				chr_IncrementInfectionCount("PoxInfected", "City")
 				Incubate = state_sick_PoxBehaviour()
-			elseif GetImpactValue("","Pneumonia")==1 then
-				chr_incrementInfectionCount("PneumoniaInfected", "City")
+			elseif GetImpactValue("", "Pneumonia") == 1 then
+				chr_IncrementInfectionCount("PneumoniaInfected", "City")
 				Incubate = state_sick_PneumoniaBehaviour()
-			elseif GetImpactValue("","Blackdeath")==1 then
-				chr_incrementInfectionCount("BlackdeathInfected", "City")
+			elseif GetImpactValue("", "Blackdeath") == 1 then
+				chr_IncrementInfectionCount("BlackdeathInfected", "City")
 				Incubate = state_sick_BlackdeathBehaviour()
-			elseif GetImpactValue("","Fracture")==1 then
-				chr_incrementInfectionCount("FractureInfected", "City")
+			elseif GetImpactValue("", "Fracture") == 1 then
+				chr_IncrementInfectionCount("FractureInfected", "City")
 				Incubate = state_sick_FractureBehaviour()
-			elseif GetImpactValue("","Caries")==1 then
-				chr_incrementInfectionCount("CariesInfected", "City")
+			elseif GetImpactValue("", "Caries") == 1 then
+				chr_IncrementInfectionCount("CariesInfected", "City")
 				Incubate = state_sick_CariesBehaviour()
 			elseif GetState("", STATE_BLACKDEATH) then
 				return
@@ -65,7 +65,7 @@ function SprainBehaviour()
 	
 	-- disease finished
 	if GetSettlement("", "City") then
-		chr_decrementInfectionCount("SprainInfected", "City")
+		chr_DecrementInfectionCount("SprainInfected", "City")
 	end
 	
 	return false
@@ -96,7 +96,7 @@ function ColdBehaviour()
 	
 	-- disease finished
 	if GetSettlement("", "City") then
-		chr_decrementInfectionCount("ColdInfected", "City")
+		chr_DecrementInfectionCount("ColdInfected", "City")
 	end
 	
 	if not IsPartyMember("") then
@@ -108,25 +108,25 @@ end
 function InfluenzaBehaviour()
 	--ShowOverheadSymbol("",true,true,0,"Scheisse, ich hab Grippe!")
 	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","sick")
+		if not GetDynasty("", "Tdyn") then
+			MoveSetActivity("", "sick")
 		end
 	end
-	CommitAction("sickness","","")
-	while GetImpactValue("","Influenza")==1 do
+	CommitAction("sickness", "", "")
+	while GetImpactValue("", "Influenza") == 1 do
 		Sleep(Rand(20)+10)
-		if (GetState("", STATE_IDLE) and MoveGetStance("")==GL_STANCE_STAND) then
+		if (GetState("", STATE_IDLE) and MoveGetStance("") == GL_STANCE_STAND) then
 			local AnimTime
 			local Gender = SimGetGender("")
 			if Rand(10)>4 then
-				AnimTime = PlayAnimationNoWait("","sneeze")
+				AnimTime = PlayAnimationNoWait("", "sneeze")
 				Sleep(0.5)
-				PlaySound3DVariation("","CharacterFX/sneeze",1)
+				PlaySound3DVariation("", "CharacterFX/sneeze",1)
 				Sleep(AnimTime-0.5)
 			else
-				AnimTime = PlayAnimationNoWait("","cough")
+				AnimTime = PlayAnimationNoWait("", "cough")
 				Sleep(1)
-				PlaySound3DVariation("","CharacterFX/disease_light_cough",1)
+				PlaySound3DVariation("", "CharacterFX/disease_light_cough",1)
 				Sleep(AnimTime-1)
 				
 			end
@@ -134,8 +134,8 @@ function InfluenzaBehaviour()
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("InfluenzaInfected", "City")
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("InfluenzaInfected", "City")
 	end
 	
 	if not IsPartyMember("") then
@@ -150,7 +150,7 @@ function BurnWoundBehaviour()
 
 	while true do
 		Sleep(60)
-		if not AliasExists("") or GetImpactValue("","BurnWound")~=1 then
+		if not AliasExists("") or GetImpactValue("", "BurnWound")~=1 then
 			break
 		end
 		if IsDynastySim("") then
@@ -162,8 +162,8 @@ function BurnWoundBehaviour()
 	end
 		
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("BurnWoundInfected", "City")
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("BurnWoundInfected", "City")
 	end
 	
 	return false
@@ -172,27 +172,27 @@ end
 function PoxBehaviour()
 	--ShowOverheadSymbol("",true,true,0,"Verdammt, ich hab die Pocken!")
 	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","sick")
+		if not GetDynasty("", "Tdyn") then
+			MoveSetActivity("", "sick")
 		end
 	end
-	CommitAction("sickness","","")
-	while GetImpactValue("","Pox")==1 do
+	CommitAction("sickness", "", "")
+	while GetImpactValue("", "Pox") == 1 do
 		Sleep(Rand(20)+10)
-		if (GetState("", STATE_IDLE) and MoveGetStance("")==GL_STANCE_STAND) then
+		if (GetState("", STATE_IDLE) and MoveGetStance("") == GL_STANCE_STAND) then
 			local AnimTime
 			local Gender = SimGetGender("")
 			
-			AnimTime = PlayAnimationNoWait("","cough")
+			AnimTime = PlayAnimationNoWait("", "cough")
 			Sleep(1)
-			PlaySound3DVariation("","CharacterFX/disease_seriously_cough",1)
+			PlaySound3DVariation("", "CharacterFX/disease_seriously_cough",1)
 			Sleep(AnimTime-1)
 		end
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("PoxInfected", "City")
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("PoxInfected", "City")
 	end
 	
 	return false
@@ -201,24 +201,24 @@ end
 function PneumoniaBehaviour()
 	--ShowOverheadSymbol("",true,true,0,"Verdammt, Lungenentzündung! *hust*")
 	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","sick")
+		if not GetDynasty("", "Tdyn") then
+			MoveSetActivity("", "sick")
 		end
 	end
-	while GetImpactValue("","Pneumonia")==1 do
+	while GetImpactValue("", "Pneumonia") == 1 do
 		Sleep(Rand(20)+10)
-		if (GetState("", STATE_IDLE) and MoveGetStance("")==GL_STANCE_STAND) then
+		if (GetState("", STATE_IDLE) and MoveGetStance("") == GL_STANCE_STAND) then
 			local AnimTime
 			local Gender = SimGetGender("")
 			if Rand(10)>4 then
-				AnimTime = PlayAnimationNoWait("","sneeze")
+				AnimTime = PlayAnimationNoWait("", "sneeze")
 				Sleep(0.5)
-				PlaySound3DVariation("","CharacterFX/sneeze",1)
+				PlaySound3DVariation("", "CharacterFX/sneeze", 1)
 				Sleep(AnimTime-0.5)
 			else
-				AnimTime = PlayAnimationNoWait("","cough")
+				AnimTime = PlayAnimationNoWait("", "cough")
 				Sleep(1)
-				PlaySound3DVariation("","CharacterFX/disease_seriously_cough",1)
+				PlaySound3DVariation("", "CharacterFX/disease_seriously_cough", 1)
 				Sleep(AnimTime-1)
 				
 			end
@@ -226,80 +226,80 @@ function PneumoniaBehaviour()
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("PneumoniaInfected", "City")
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("PneumoniaInfected", "City")
 	end
 	
-	SetProperty("","WasSick",1)
+	SetProperty("", "WasSick", 1)
 	if IsDynastySim("") then
-		SetProperty("", "WasDynastySim",1)
+		SetProperty("", "WasDynastySim", 1)
 	end
-	while GetState("",STATE_CUTSCENE) do
+	while GetState("", STATE_CUTSCENE) do
 		Sleep(20)
 	end
-	ModifyHP("",-GetMaxHP(""),true)
+	ModifyHP("", -GetMaxHP(""), true)
 	return false
 end
 
 function BlackdeathBehaviour()
 	--ShowOverheadSymbol("",true,true,0,"Argh, PEST!")
 	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","sick")
+		if not GetDynasty("", "Tdyn") then
+			MoveSetActivity("", "sick")
 		end
 	end
-	CommitAction("sickness","","")
+	CommitAction("sickness", "", "")
 	
 	--extra visuals for blackdeath
---	GfxAttachObject("Trine","particles/ship_burn.nif")
+--	GfxAttachObject("Trine", "particles/ship_burn.nif")
 --	AttachModel("", "Trine")
 --	GfxSetPosition("Trine", 0, 100, 0, true)
 --	GfxScale("Trine",1)
 	
-	while GetImpactValue("","Blackdeath")==1 do
+	while GetImpactValue("", "Blackdeath") == 1 do
 		Sleep(Rand(20)+10)
-		if (GetState("", STATE_IDLE) and MoveGetStance("")==GL_STANCE_STAND) then
+		if (GetState("", STATE_IDLE) and MoveGetStance("") == GL_STANCE_STAND) then
 			local AnimTime
 			local Gender = SimGetGender("")
 			
-			AnimTime = PlayAnimationNoWait("","cough")
+			AnimTime = PlayAnimationNoWait("", "cough")
 			Sleep(1)
-			PlaySound3DVariation("","CharacterFX/disease_seriously_cough",1)
+			PlaySound3DVariation("", "CharacterFX/disease_seriously_cough", 1)
 			Sleep(AnimTime-1)
 		end
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("BlackdeathInfected", "City")	
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("BlackdeathInfected", "City")	
 	end
 	
-	SetProperty("","WasSick",1)
+	SetProperty("", "WasSick", 1)
 	if IsDynastySim("") then
-		SetProperty("", "WasDynastySim",1)
+		SetProperty("", "WasDynastySim", 1)
 	end
-	while GetState("",STATE_CUTSCENE) do
+	while GetState("", STATE_CUTSCENE) do
 		Sleep(20)
 	end
-	ModifyHP("",-GetMaxHP(""),true)
+	ModifyHP("", -GetMaxHP(""), true)
 	return false
 end
 
 function FractureBehaviour()
 	--ShowOverheadSymbol("",true,true,0,"Aua, hab mir mein Bein gebrochen!")
 	if not IsPartyMember("") then
-		if not GetDynasty("","Tdyn") then
-			MoveSetActivity("","hobble")
+		if not GetDynasty("", "Tdyn") then
+			MoveSetActivity("", "hobble")
 		end
 	end
 		
-	while GetImpactValue("","Fracture")==1 do
+	while GetImpactValue("", "Fracture") == 1 do
 		Sleep(Rand(20)+10)
 	end
 
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("FractureInfected", "City")
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("FractureInfected", "City")
 	end
 	
 	return false
@@ -307,13 +307,13 @@ end
 
 function CariesBehaviour()
 	--ShowOverheadSymbol("",true,true,0,"Meine Zähne faulen!")
-	while GetImpactValue("","Caries")==1 do
+	while GetImpactValue("", "Caries") == 1 do
 		Sleep(Rand(20)+10)
 	end
 	
 	-- disease finished
-	if GetSettlement("","City") then
-		chr_decrementInfectionCount("CariesInfected", "City")		
+	if GetSettlement("", "City") then
+		chr_DecrementInfectionCount("CariesInfected", "City")		
 	end
 	
 	return false

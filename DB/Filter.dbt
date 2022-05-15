@@ -230,7 +230,7 @@ Data:
 360   "NotInsideBuilding"   "__F(NOT(Object.IsInBuilding()))"   |
 363   "CanBeAssignedToHome"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.IsClass(1))AND NOT(Object.IsBuildingMyHome()))"   |
 364   "CanBewitchCharacter"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND(Object.HasUpgrade(Divanbed)))"   |
-365   "CanBeBribed"   "__F(NOT(Object.BelongsToMe())AND(Object.MinAge(16)))"   |
+365   "CanBeBribed"   "__F(NOT(Object.BelongsToMe())AND(Object.MinAge(16))AND(Object.IsOfficeBearer()))"   |
 366   "CanOrderSpying"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 18)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(2))AND(Object.HasUpgrade(SpyGlass)))"   |
 367   "CanUseCartBooster"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(CartBooster)>0)AND NOT(Object.GetState(fighting)))"   |
 368   "CanUseBoobyTrap"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(BoobyTrap)>0)AND NOT(Object.GetState(fighting)))"   |

@@ -248,13 +248,13 @@ function MoveToBuildingAction(Owner, Destination, iSpeed, fRange)
 			DestOutside = true
 		end
 
-		if (OwnerOutside==false) and (DestOutside==true) then
+		if (OwnerOutside == false) and (DestOutside == true) then
 			f_ExitCurrentBuilding(Owner)
-		elseif (OwnerOutside==true) and (DestOutside==false) then
+		elseif (OwnerOutside == true) and (DestOutside == false) then
 			f_MoveTo(Owner, Destination, iSpeed, fRange)
 		end
 
-		if (GetID("OwnerRoom") == GetID("DestRoom")) or ((OwnerOutside==true) and (DestOutside==true)) then
+		if (GetID("OwnerRoom") == GetID("DestRoom")) or ((OwnerOutside == true) and (DestOutside == true)) then
 			Distance = GetDistance(Owner,Destination)
 			if Distance > fRange then
 				f_MoveToNoWait(Owner, Destination, iSpeed, fRange)
@@ -294,7 +294,7 @@ function WeakMoveTo(Owner, Destination, iSpeed, fRange)
 		--local lateresult = GetData(ResultName)
  		local lateresult = GetProperty(Owner, ResultName)
 		RemoveProperty(Owner, ResultName)
-		if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
+		if lateresult == nil or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
 			if IsType(Owner, "Sim") then
 				ai_ShowMoveError(lateresult, Owner)
 			end
@@ -384,11 +384,11 @@ function ExitCurrentBuilding(Alias)
 		--workaround for unreachable entry locators...
 		if HasProperty(Alias,"BlockLocB") then
 	    	GetNearestSettlement(Alias, "TheCity")
-	    	CityGetNearestBuilding("TheCity", Alias,-1,-1,-1,-1,FILTER_IGNORE,"TheBuilding")
-			local l = GetProperty(Alias,"BlockLocL")
-			local b = GetProperty(Alias,"BlockLocB")
-			RemoveProperty(Alias,"BlockLocL")
-			RemoveProperty(Alias,"BlockLocB")
+	    	CityGetNearestBuilding("TheCity", Alias, -1, -1, -1, -1, FILTER_IGNORE, "TheBuilding")
+			local l = GetProperty(Alias, "BlockLocL")
+			local b = GetProperty(Alias, "BlockLocB")
+			RemoveProperty(Alias, "BlockLocL")
+			RemoveProperty(Alias, "BlockLocB")
 	
 			if GetID("TheBuilding") == b then
 				GetLocatorByName("TheBuilding", l, "entry")

@@ -19,11 +19,11 @@ function InitAttend(Sim)
 		return false
 	end
 	
-	if GetImpactValue(Sim, 369) > 0 then -- SuppressAttendMessage
+	if GetImpactValue(Sim, "SuppressAttendMessage") > 0 then
 		return false
 	end
 	
-	if GetImpactValue(Sim, 360) > 0 then -- totallydrunk
+	if GetImpactValue(Sim, "totallydrunk") > 0 then -- totallydrunk
 		return false
 	end
 	
@@ -42,7 +42,7 @@ function AttendTrialMeeting(DestinationID)
 		return
 	end
 	
-	AddImpact("Sim", 369, 1, 3) -- Suppress AttendMessage
+	AddImpact("Sim", "SuppressAttendMessage", 1, 3) -- Suppress AttendMessage
 
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then

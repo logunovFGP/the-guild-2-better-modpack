@@ -206,8 +206,8 @@ function Run()
 				PregnantChance = PregnantChance - (FemaleAge - 30)*3
 			end
 			
-			-- ImpactValue 42 -> CreateChild
-			PregnantChance = PregnantChance + GetImpactValue("male", 42) + GetImpactValue("female", 42)
+			-- ImpactValue 42
+			PregnantChance = PregnantChance + GetImpactValue("male", "CreateChild") + GetImpactValue("female", "CreateChild")
 			
 			if FemaleAge >= 47 then
 				PregnantChance = 0

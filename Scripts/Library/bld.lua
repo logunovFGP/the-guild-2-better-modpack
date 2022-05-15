@@ -36,6 +36,27 @@ function ClearBuildingStash(BldAlias, OwnerAlias)
 				"@L_BUYBUILDING_CREDIT_BODY_+0", 
 				GetID(BldAlias), invest)
 		end
+	elseif BuildingGetType(BldAlias) == GL_BUILDING_TYPE_HOSPITAL then
+		-- Remove all items from medicine stash and credit base value
+		local Items = {"Salve", "Bandage", "Medicine", "PainKiller", "Soap", "MiracleCure"}
+		local Value = 0
+
+		for i=1, 6 do
+			local ItemProp = Items[i].."s"
+			if HasProperty(BldAlias, ItemProp) then
+				local n = GetProperty(BldAlias, ItemProp)
+				Value = Value + (n * ItemGetBasePrice(Items[i]))
+				RemoveProperty(BldAlias, ItemProp)
+			end	
+		end
+
+		if Value > 0 and AliasExists(OwnerAlias) then
+			CreditMoney(OwnerAlias, Value, "misc")
+			MsgNewsNoWait(OwnerAlias, BldAlias, "", "building", -1, 
+				"@L_BUYBUILDING_MEDICINE_HEAD_+0",
+				"@L_BUYBUILDING_MEDICINE_BODY_+0", 
+				GetID(BldAlias), Value)
+		end			
 	end
 end
 
@@ -349,6 +370,9 @@ function CalcTreatmentNeed(BldAlias, SimAlias)
 	end
 	
 	local AvailableBandages = GetItemCount(BldAlias, "Bandage")
+	if HasProperty(BldAlias, "Bandages") then
+		AvailableBandages = AvailableBandages + GetProperty(BldAlias, "Bandages")
+	end
 	
 	-- we need more bandages right now!
 	if AvailableBandages == 0 then
@@ -380,7 +404,7 @@ function CheckRivals(BldAlias)
 		return
 	end
 	
-	if ScenarioGetTimePlayed() < 2 then
+	if ScenarioGetTimePlayed() < 3 then
 		return
 	end
 	
@@ -390,7 +414,7 @@ function CheckRivals(BldAlias)
 		return
 	end
 	
-	SetRepeatTimer(BldAlias, "ai_CheckRivals", 6)
+	SetRepeatTimer(BldAlias, "ai_CheckRivals", 12)
 
 	if not GetDynasty(BldAlias, "MyDynasty") then
 		return
@@ -759,6 +783,9 @@ end
 function GetNeedForMedicine(HospAlias, ItemName)
 	-- calculate available items
 	local AvailableItems = GetItemCount(HospAlias, ItemName)
+	if HasProperty(HospAlias, ItemName.."s") then
+		AvailableItems = AvailableItems + GetProperty(HospAlias, ItemName.."s")
+	end
 	
 	-- one item is missing
 	if AvailableItems == 0 then

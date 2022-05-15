@@ -45,56 +45,55 @@ function Run()
 end
 	
 function PflegeVieh()
-  local dasTier = GetData("Art")
+	local dasTier = GetData("Art")
 	local range = 300
 	
-  GetPosition("","TierPosX")
-	GetPosition("","TierPosY")	
+	GetPosition("", "TierPosX")
 	
-  while GetImpactValue("",380)==1 do
-
-    GetPosition("TierPosY","TierPosX")
-    local x,y,z = PositionGetVector("TierPosX")
-    x = x + ((Rand(range)*2)-range)
-    z = z + ((Rand(range)*2)-range)
-    PositionModify("TierPosX",x,y,z)
-		SetPosition("TierPosX",x,y,z)
-		local abstand = GetDistance("Owner","TierPosX")
-		local abstand2
-		f_MoveToNoWait("","TierPosX",GL_MOVESPEED_SNEAK)				
-		while abstand > 40 do
-		  abstand2 = GetDistance("Owner","TierPosX")
-			LoopAnimation("",""..dasTier.."_walk",1,1)
-			abstand = GetDistance("Owner","TierPosX")
-			if abstand == abstand2 then
-				break
-			end
-		end
+	local x,y,z = PositionGetVector("TierPosX")
+	x = x + ((Rand(range)*2)-range)
+	z = z + ((Rand(range)*2)-range)
+	PositionModify("TierPosX", x, y, z)
+	SetPosition("TierPosX", x, y, z)
 	
-    local idleArt = Rand(4)
-    local idleWart = Rand(14)+5
-    if idleArt == 0 then
-	    -- weiter gehts
-    elseif idleArt == 1 then
-	    LoopAnimation("",""..dasTier.."_idle_01",idleWart,1)
-	    PlayAnimation("",""..dasTier.."_idle_02",1)
-    elseif idleArt == 2 then
-	    LoopAnimation("",""..dasTier.."_idle_01",idleWart,1)
-    elseif idleArt == 3 then
-	    PlayAnimation("",""..dasTier.."_idle_02",1)
-    end
-		if Rand(5) == 4 then
-	    if dasTier == "Sheep" then
-	      PlaySound3DVariation("","Locations/sheep_baa",1.0)
-	    elseif dasTier == "Pig" then
-	      PlaySound3DVariation("","Locations/pigs_grunt",1.0)
-	    elseif dasTier == "Cow" then
-	      PlaySound3DVariation("","Locations/cow_low",1.0)
-	    end
+	local abstand = GetDistance("Owner", "TierPosX")
+	local abstand2
+	f_MoveToNoWait("", "TierPosX", GL_MOVESPEED_SNEAK)				
+	
+	while abstand > 40 do
+		abstand2 = GetDistance("Owner", "TierPosX")
+		LoopAnimation("", ""..dasTier.."_walk", 1, 1)
+		abstand = GetDistance("Owner", "TierPosX")
+		if abstand == abstand2 then
+			break
 		end
 	end
-	RemoveAlias("TierPosX")
 	
+	local idleArt = Rand(4)
+	local idleWart = Rand(20)+10
+	
+	if idleArt == 0 then
+		-- weiter gehts
+	elseif idleArt == 1 then
+		LoopAnimation("",""..dasTier.."_idle_01",idleWart,1)
+		PlayAnimation("",""..dasTier.."_idle_02",1)
+	elseif idleArt == 2 then
+		LoopAnimation("",""..dasTier.."_idle_01",idleWart,1)
+	elseif idleArt == 3 then
+		PlayAnimation("",""..dasTier.."_idle_02",1)
+	end
+	
+	if Rand(12) == 4 then
+		if dasTier == "Sheep" then
+			PlaySound3DVariation("","Locations/sheep_baa", 1.0)
+		elseif dasTier == "Pig" then
+			PlaySound3DVariation("","Locations/pigs_grunt", 1.0)
+		elseif dasTier == "Cow" then
+			PlaySound3DVariation("","Locations/cow_low", 1.0)
+		end
+	end
+	
+	RemoveAlias("TierPosX")
 end
 
 function WaldVieh()
@@ -175,39 +174,43 @@ function WaldVieh()
 end
 
 function HofVieh()
-  local dasTier = GetData("Art")
+	local dasTier = GetData("Art")
 	local range = 600
-	GetNearestSettlement("","AnimalTown")
-	CityGetNearestBuilding("AnimalTown","",2,3,-1,-1,FILTER_IGNORE,"TierPosY")
+	GetNearestSettlement("", "AnimalTown")
+	CityGetNearestBuilding("AnimalTown", "", 2, 3, -1, -1, FILTER_IGNORE, "TierPosY")
 	
-  while GetImpactValue("TierPosY",380)==1 do
-  	GetPosition("TierPosY","TierPosX")
-    local x,y,z = PositionGetVector("TierPosX")
-    x = x + ((Rand(range)*2)-range)
-    z = z + ((Rand(range)*2)-range)
-    PositionModify("TierPosX",x,y,z)
-    SetPosition("TierPosX",x,y,z)
-    local abstand = GetDistance("Owner","TierPosX")
-    local abstand2
-    f_MoveToNoWait("","TierPosX",GL_MOVESPEED_SNEAK)				
-    while abstand > 100 do
-      abstand2 = GetDistance("Owner","TierPosX")
-	    LoopAnimation("",""..dasTier.."_walk",1,1)
-      abstand = GetDistance("Owner","TierPosX")
-	    if abstand == abstand2 then
-	    	break
-	    end
-    end	
-    local idleArt = Rand(3)
-    local idleWart = Rand(10)+5
-    if idleArt == 0 then
-      -- weiter gehts
-    elseif idleArt == 1 then
-      LoopAnimation("",""..dasTier.."_idle_01",idleWart,1)
-    elseif idleArt == 2 then
-      LoopAnimation("",""..dasTier.."_idle_01",idleWart,1)
-    end
-    RemoveAlias("GehHin")
+  	GetPosition("TierPosY", "TierPosX")
+	local x,y,z = PositionGetVector("TierPosX")
+	x = x + ((Rand(range)*2)-range)
+	z = z + ((Rand(range)*2)-range)
+	PositionModify("TierPosX", x, y, z)
+	SetPosition("TierPosX", x, y, z)
+	
+	local abstand = GetDistance("Owner", "TierPosX")
+	local abstand2
+	f_MoveToNoWait("", "TierPosX", GL_MOVESPEED_SNEAK)	
+	
+	while abstand > 100 do
+		abstand2 = GetDistance("Owner", "TierPosX")
+		LoopAnimation("", ""..dasTier.."_walk", 1, 1)
+		abstand = GetDistance("Owner", "TierPosX")
+		if abstand == abstand2 then
+			break
+		end
+	end	
+	
+	local idleArt = Rand(3)
+	local idleWart = Rand(20)+10
+	
+	if idleArt == 0 then
+		-- weiter gehts
+	elseif idleArt == 1 then
+		LoopAnimation("", ""..dasTier.."_idle_01", idleWart, 1)
+	elseif idleArt == 2 then
+		LoopAnimation("", ""..dasTier.."_idle_01", idleWart, 1)
+	end
+	
+	RemoveAlias("TierPosX")
 	end
 end
 
@@ -218,9 +221,9 @@ function KleinVieh()
 		range = 200
 	elseif dasTier == "goose" then
 		range = 400
-    end
+	end
+	
 	GetPosition("","TierPosX")
-	GetPosition("","TierPosY")	
 	
 			while true do	
 				GetPosition("TierPosY","TierPosX")

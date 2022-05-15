@@ -264,5 +264,12 @@ Data:
 440   1   2   0   "ResistDream"   0   "Hud/state/GoodDream.tga"   |
 441   1   2   0   "BestHouse"   0   "Hud/state/GoodDream.tga"   |
 442   1   2   0   "Ceremony"   0   ""   |
-
-
+443   1   2   0   "ReceivedKiss"   0   ""   |
+444   1   2   0   "ReceivedHug"   0   ""   |
+445   1   2   0   "ReceivedFlirt"   0   ""   |
+446   1   2   0   "ReceivedCompliment"   0   ""   |
+447   1   2   0   "ReceivedDance"   0   ""   |
+448   1   2   0   "ReceivedTalk"   0   ""   |
+449   1   2   0   "ReceivedBath"   0   ""   |
+450   1   2   0   "ReceivedBewitch"   0   ""   |
+451   1   2   0   "ReceivedPresent"   0   ""   |

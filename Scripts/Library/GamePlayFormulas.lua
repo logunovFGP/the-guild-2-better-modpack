@@ -231,14 +231,14 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 		--if Distance>500 then
 		--	f_MoveTo(SimAlias,DestAlias,GL_MOVESPEED_RUN, 500)
 		--end
-		if AliasExists(SimAlias)
+		if AliasExists(SimAlias) then
 			if IsMounted(SimAlias) then
 				Unmount(SimAlias)
 			end
 		end
 	end
 	
-	if AliasExists(DestAlias)
+	if AliasExists(DestAlias) then
 		if IsType(DestAlias, "Sim") then
 			if IsMounted(DestAlias) then
 				Unmount(DestAlias)
@@ -946,3 +946,134 @@ function SavePlayerDynasty(DynAlias)
 end
 
 --------------------------
+
+-------------------------
+-- Courting progress Rework
+-- Allows changes in calculation and even additions to courting measures
+-------------------------
+function GetCourtingProgress(SimAlias, Destination, MeasureID)
+	
+	local Skill = 0
+	local Class = SimGetClass(Destination)
+	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class)
+	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination)
+	
+	if MeasureID == 530 then -- Flirt 
+		Skill = CHARISMA
+	elseif MeasureID == 540 then -- Hug
+		Skill = CHARISMA
+	elseif MeasureID == 570 then -- Kiss
+		Skill = EMPATHY
+	elseif MeasureID == 2300 then -- Make A Present
+		Skill = EMPATHY
+	elseif MeasureID == 2310 then -- Compliment
+		Skill = RHETORIC
+	elseif MeasureID == 2320 then -- Dancing
+		Skill = DEXTERITY
+	elseif MeasureID == 1520 then -- Bathing
+		Skill = CHARISMA
+	elseif MeasureID == 1530 then -- Bewitching
+		Skill = RHETORIC
+	elseif MeasureID == 460 then -- Dialog
+		Skill = EMPATHY
+	end
+	
+	local SkillMod = GetSkillValue(SimAlias, Skill)
+	local TitleDiff = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
+	
+	local Progress = math.floor((BaseValue*SkillMod + Rand(5) - Rand(5) + TitleDiff) * VariationMod)
+	return Progress
+end
+
+function GetCourtingMeasureValue(MeasureID, Class)
+	
+	local Value = 0
+	local ClassValue = {}
+	
+	if MeasureID == 530 then -- Flirt
+		ClassValue = { 1, 1, 2, 1, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 540 then -- Hug
+		ClassValue = { 3, 2, 1, 2, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 570 then -- Kiss
+		ClassValue = { 3, 2, 1, 3, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 2300 then -- Make A Present
+		ClassValue = { 1.5, 1, 2, 0.5, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 2310 then -- Compliment
+		ClassValue = { 1, 0.5, 2, 0.5, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 2320 then -- Dancing
+		ClassValue = { 3, 2, 3, 1, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 1520 then -- Bathing
+		ClassValue = { 3, 2, 1, 3, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 1530 then -- Bewitching
+		ClassValue = { 3, 1, 1, 2, 0, 0 }
+		Value = ClassValue[Class]
+	elseif MeasureID == 460 then -- Dialog
+		ClassValue = { 0.5, 1, 2, 0.25, 0, 0 }
+		Value = ClassValue[Class]
+	end
+	
+	return Value
+end
+
+function GetCourtingMeasureVariation(MeasureID, Destination)
+	local Factor = 1
+	local ImpactVal = 0
+	local Class = SimGetClass(Destination)
+	local VariationClass
+	
+	if Class == GL_CLASS_PATRON then
+		VariationClass = 1
+	elseif Class == GL_CLASS_ARTISAN then
+		VariationClass = 0.5
+	elseif Class == GL_CLASS_SCHOLAR then
+		VariationClass = 0.25
+	else
+		VariationClass = 0.5
+	end
+	
+	if MeasureID == 530 then -- Flirt
+		ImpactVal = GetImpactValue(Destination, "ReceivedFlirt")*VariationClass
+	elseif MeasureID == 540 then -- Hug
+		ImpactVal = GetImpactValue(Destination, "ReceivedHug")*VariationClass
+	elseif MeasureID == 570 then -- Kiss
+		ImpactVal = GetImpactValue(Destination, "ReceivedKiss")*VariationClass
+	elseif MeasureID == 2300 then -- Make A Present
+		ImpactVal = GetImpactValue(Destination, "ReceivedPresent")*VariationClass
+	elseif MeasureID == 2310 then -- Compliment
+		ImpactVal = GetImpactValue(Destination, "ReceivedCompliment")*(VariationClass*0.5)
+	elseif MeasureID == 2320 then -- Dancing
+		ImpactVal = GetImpactValue(Destination, "ReceivedDance")*VariationClass
+	elseif MeasureID == 1520 then -- Bathing
+		ImpactVal = GetImpactValue(Destination, "ReceivedBath")*VariationClass
+	elseif MeasureID == 1530 then -- Bewitching
+		ImpactVal = GetImpactValue(Destination, "ReceivedBewitch")*VariationClass
+	elseif MeasureID == 460 then -- Dialog
+		ImpactVal = GetImpactValue(Destination, "ReceivedTalk")*VariationClass
+	end
+	
+	Factor = Factor - ImpactVal
+	
+	if Class == GL_CLASS_SCHOLAR and Factor < 0.3 then
+		Factor = 0.3
+	end
+	
+	return Factor
+end
+
+function CourtingProgress(SimAlias, Value)
+	local OldProgress = SimGetProgress(SimAlias)
+	local NewProgress = OldProgress + Value
+	
+	if NewProgress > 99 then
+		NewProgress = 100
+	end
+	
+	SimSetProgress(SimAlias, NewProgress)
+end

@@ -10,62 +10,43 @@
 
 function Init()
 
-	local Money = SimGetWealth("Destination") 
-
 	GetDynasty("Destination", "dynasty")
 	
-	local officetime = math.mod(GetGametime(),24)
-	if SimGetOfficeLevel("Destination") >= 1 then
-		if officetime > 16.5 and officetime <= 17 then
-			StopMeasure()
-		end
+	if GetImpactValue("Destination", "OfficeTimer") > 0 and ImpactGetMaxTimeleft("Destination", "OfficeTimer") < 2 then
+		return
 	end
 	
-	if SimGetOfficeLevel("Destination") > 0 then
-		Money = Money * 0.5 * SimGetOfficeLevel("Destination")
-	end
+	local Money = chr_GetBribeAmount("Destination") 
 	
-	if not DynastyIsPlayer("") and Money > 100000 then
-		Money = 100000
-	end
+	local Button1 = "@B[1, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0, Hud/Buttons/btn_Money_Small.tga]"
+	local Button2 = "@B[2, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1, Hud/Buttons/btn_Money_Medium.tga]"
+	local Button3 = "@B[3, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2, Hud/Buttons/btn_Money_Large.tga]"
 	
-	if Money < 2000 then
-		Money = 2000
-	end
-	
-	local Button1 = "@B[1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0,Hud/Buttons/btn_Money_Small.tga]"
-	local Button2 = "@B[2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1,Hud/Buttons/btn_Money_Medium.tga]"
-	local Button3 = "@B[3,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,Hud/Buttons/btn_Money_Large.tga]"
-	
-	if GetMoney("Owner") < Money * 0.02 then
+	if GetMoney("Owner") < Money * 0.25 then
 		MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
 		StopMeasure()
-	elseif GetMoney("") < Money * 0.06 then
+	elseif GetMoney("") < Money * 0.5 then
 		Button2 = ""
 		Button3 = ""
-	elseif GetMoney("") < Money * 0.12 then
+	elseif GetMoney("") < Money * 1 then
 		Button3 = ""
 	end
 	
-	local Skill = GetSkillValue("", BARGAINING)/100
-	local Choice1 = (0.02 * Money)*(1-Skill * 2)
-	local Choice2 = (0.06 * Money)*(1-Skill * 2)
-	local Choice3 = (0.12 * Money)*(1-Skill * 2)
-	MsgMeasure("","")
+	MsgMeasure("", "")
 	local result = InitData("@P"..
-	Button1..
-	Button2..
-	Button3,
-	ms_041_bribecharacter_AIInitBribe,
-	"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_HEAD_+0",
-	"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_BODY_+0",
-	GetID("Destination"),Choice1,Choice2,Choice3)
+					Button1..
+					Button2..
+					Button3,
+					ms_041_bribecharacter_AIInitBribe,
+					"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_HEAD_+0",
+					"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_BODY_+0",
+					GetID("Destination"), Choice1, Choice2, Choice3)
 
-	if result==1 then
+	if result == 1 then
 		SetData("TFBribe", Choice1)
-	elseif result==2 then
+	elseif result == 2 then
 		SetData("TFBribe", Choice2)
-	elseif result==3 then
+	elseif result == 3 then
 		SetData("TFBribe", Choice3)
 	end
 end
@@ -76,9 +57,11 @@ function AIInitBribe()
 	local DestMoney = GetMoney("Destination")
 	local Favor = GetFavorToSim("Destination", "Owner")
 	local SpendFactor = 0
+	
 	if OwnerMoney < DestMoney then
 		SpendFactor = SpendFactor + 1
 	end
+	
 	if Favor < 50 then
 		SpendFactor = SpendFactor + 1
 	end
@@ -87,6 +70,7 @@ function AIInitBribe()
 		if SpendFactor > 1 then
 			SpendFactor = 1
 		end
+		
 	elseif OwnerMoney < DestMoney * 0.1 then
 		if SpendFactor > 2 then
 			SpendFactor = 2
@@ -103,6 +87,7 @@ function AIInitBribe()
 end
 
 function AIDecision()
+	
 	--AI accept or decline money
 	local Money = 0 + GetData("TFBribe")
 	local DestMoney = GetMoney("Destination") / 10
@@ -115,7 +100,6 @@ function AIDecision()
 	else
 		return 1
 	end
-
 end
 
 function Run()
@@ -209,14 +193,13 @@ function Run()
 	if not DynastyIsPlayer("Destination") then
 		camera_CutsceneBothLock("cutscene", "Destination")
 	end
+	
 	if Result == 1 then --accept money
 		Index = MsgSay("Destination", "@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+"..Index
+		
 		--do the financial stuff
-		if not chr_SpendMoney("", Money, "CostBribes") then
-			MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
-			StopMeasure()
-		end
+		chr_SpendMoney("", Money, "CostBribes", true)
 		Sleep(1)
 		chr_RecieveMoney("Destination", Money, "IncomeBribes")
 		
@@ -225,29 +208,34 @@ function Run()
 		
 		PlaySound3D("", "Effects/coins_to_moneybag+0.wav", 1.0)
 		Sleep(1)
+		
 		--do the favor stuff
 		chr_ModifyFavor("Destination", "", ModifyFavor)
-		--show message
 		chr_GainXP("", GetData("BaseXP"))
-		MsgNewsNoWait("","Destination","","intrigue",-1,
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_HEAD_+0",
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_BODY_+0",ReplacementLabel,GetID("Destination"))
 		
-	else	--decline money
-		Index = MsgSay("Destination","@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
-		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
-		--do the favor stuff
-		chr_ModifyFavor("Destination", "", -5)
 		--show message
 		MsgNewsNoWait("", "Destination", "", "intrigue", -1,
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_HEAD_+0",
-			"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_BODY_+0",ReplacementLabel,GetID("Destination"))
+					"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_HEAD_+0",
+					"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_BODY_+0", ReplacementLabel, GetID("Destination"))
+		
+	else	--decline money
+		Index = MsgSay("Destination", "@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
+		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
+		
+		--do the favor stuff
+		chr_ModifyFavor("Destination", "", -5)
+		
+		--show message
+		MsgNewsNoWait("", "Destination", "", "intrigue", -1,
+					"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_HEAD_+0",
+					"@L_INTRIGUE_041_BRIBECHARACTER_MSG_FAILED_BODY_+0", ReplacementLabel, GetID("Destination"))
 	end
-	DestroyCutscene("cutscene")
-	StopMeasure()
 end
 
 function CleanUp()
+	if AliasExists("cutscene") then
+		DestroyCutscene("cutscene")
+	end
 	StopAction("bribe", "Owner")
 end
 
