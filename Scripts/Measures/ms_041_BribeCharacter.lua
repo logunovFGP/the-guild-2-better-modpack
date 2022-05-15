@@ -26,7 +26,7 @@ function Init()
 	local Button3 = "@B[3,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,Hud/Buttons/btn_Money_Large.tga]"
 	
 	if GetMoney("Owner") < Choice1 then
-		MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0", Choice1)
+		MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0", Choice1, GetID("Destination"))
 		StopMeasure()
 	elseif GetMoney("") < Choice2 then
 		Button2 = ""
