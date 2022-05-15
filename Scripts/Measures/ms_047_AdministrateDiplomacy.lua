@@ -1598,7 +1598,7 @@ function SpecialCheck()
 	local Counter = 0
 	local Threat = ai_DynastyCalcThreat("Destination", "MyBoss") or 0
 	local Favor = GetFavorToDynasty("MyBoss", "Destination")
-	local State = DynastyGetDiplomacyState("Destination","MyBoss")
+	local State = DynastyGetDiplomacyState("Destination", "MyBoss")
 	local Label = ""
 	
 	if Grudges > Fondness then
@@ -1614,7 +1614,7 @@ function SpecialCheck()
 	elseif State == 2 then
 		Label = "@LNAP"
 	else
-		State = "@LAlliance"
+		Label = "@LAlliance"
 	end
 		
 	local GrudgeLabel = "@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_LABEL_GRUDGE_+0"
@@ -1638,7 +1638,7 @@ function SpecialCheck()
 	
 	MsgBoxNoWait("dynasty", "Destination", 
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_+0", 
-				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_BODY_+0", GetID("Destination"), TargetBadge, Favor, Enemies, Allies, GrudgeLabel, Counter, ThreatLabel, RivalLabel, GetID("ReasonRival"), State)
+				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SPECIAL_BODY_+0", GetID("Destination"), TargetBadge, Favor, Enemies, Allies, GrudgeLabel, Counter, ThreatLabel, RivalLabel, GetID("ReasonRival"), Label)
 end
 
 function CleanUp()
