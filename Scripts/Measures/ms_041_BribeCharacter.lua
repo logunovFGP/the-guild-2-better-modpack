@@ -16,19 +16,22 @@ function Init()
 		return
 	end
 	
-	local Money = chr_GetBribeAmount("Destination") 
+	local Money = chr_GetBribeAmount("Destination") -- base value
+	local Choice1 = Money * 0.25
+	local Choice2 = Money * 0.5
+	local Choice3 = Money
 	
-	local Button1 = "@B[1, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0, Hud/Buttons/btn_Money_Small.tga]"
-	local Button2 = "@B[2, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1, Hud/Buttons/btn_Money_Medium.tga]"
-	local Button3 = "@B[3, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2, @L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2, Hud/Buttons/btn_Money_Large.tga]"
+	local Button1 = "@B[1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0,Hud/Buttons/btn_Money_Small.tga]"
+	local Button2 = "@B[2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1,Hud/Buttons/btn_Money_Medium.tga]"
+	local Button3 = "@B[3,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+2,Hud/Buttons/btn_Money_Large.tga]"
 	
-	if GetMoney("Owner") < Money * 0.25 then
-		MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0")
+	if GetMoney("Owner") < Choice1 then
+		MsgQuick("", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0", Choice1)
 		StopMeasure()
-	elseif GetMoney("") < Money * 0.5 then
+	elseif GetMoney("") < Choice2 then
 		Button2 = ""
 		Button3 = ""
-	elseif GetMoney("") < Money * 1 then
+	elseif GetMoney("") < Choice3 then
 		Button3 = ""
 	end
 	
@@ -44,10 +47,13 @@ function Init()
 
 	if result == 1 then
 		SetData("TFBribe", Choice1)
+		SetData("FavorGain", GL_FAVOR_MOD_SMALL) -- 5
 	elseif result == 2 then
 		SetData("TFBribe", Choice2)
+		SetData("FavorGain", GL_FAVOR_MOD_NORMAL) -- 10
 	elseif result == 3 then
 		SetData("TFBribe", Choice3)
+		SetData("FavorGain", GL_FAVOR_MOD_LARGE) -- 20
 	end
 end
 
@@ -117,13 +123,11 @@ function Run()
 	local MaxDistance = 1000
 	--how far from the destination, the owner should stand while reading the letter from rome
 	local ActionDistance = 80
-	--how much favor from destination to owner is modified. max value
-	local MaxModifyFavor = 20
 	--how long message for destination will be displayed
 	local MsgTimeOut = 0.25 --15 sekunden
 	
 	local MeasureID = GetCurrentMeasureID("")
-	--local TimeOut = mdata_GetTimeOut(MeasureID)
+	local TimeOut = mdata_GetTimeOut(MeasureID)
 
 	--run to destination and start action at MaxDistance
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
@@ -131,19 +135,8 @@ function Run()
 	end
 	
 	--get money 
-	local Money = 0 + GetData("TFBribe")
-	local ModifyFavor
-	--calc the favor
-	local DestMoney = GetMoney("Destination") / 10
-	local FavorFactor = (Money / DestMoney) * 100
-	
-	if FavorFactor < 35 then
-		ModifyFavor = 0.3 * MaxModifyFavor
-	elseif FavorFactor < 65 then
-		ModifyFavor = 0.6 * MaxModifyFavor
-	else
-		ModifyFavor = MaxModifyFavor
-	end
+	local Money = GetData("TFBribe") or 0
+	local ModifyFavor = GetData("FavorGain") or 0
 	
 	if not DynastyIsPlayer("Destination") then
 		CreateCutscene("default", "cutscene")
@@ -164,7 +157,7 @@ function Run()
 	time2 = PlayAnimationNoWait("Destination", "cogitate")
 	Sleep(1)
 	PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("", "Handheld_Device/ANIM_Smallsack.nif",false)
+	CarryObject("", "Handheld_Device/ANIM_Smallsack.nif", false)
 	
 	Sleep(1)
 	CarryObject("", "", false)
@@ -175,9 +168,9 @@ function Run()
 	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	CarryObject("Destination", "", false)	
 	
-	--SetMeasureRepeat(TimeOut)
-	
-	
+	GetDynasty("", "MyDyn")
+	SetRepeatTimer("MyDyn", GetMeasureRepeatName(), TimeOut)
+
 	--display decision message for destination
 	local Result = MsgNews("Destination","",
 				"@B[1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_BUTTON_+0]"..
@@ -232,15 +225,15 @@ function Run()
 	end
 end
 
+
+function GetOSHData(MeasureID)
+	--can be used again in:
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
+end
+
 function CleanUp()
 	if AliasExists("cutscene") then
 		DestroyCutscene("cutscene")
 	end
 	StopAction("bribe", "Owner")
 end
-
-function GetOSHData(MeasureID)
-	--can be used again in:
-	--OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
-end
-

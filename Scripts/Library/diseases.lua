@@ -17,17 +17,21 @@ function CheckDisease(Objectalias,Force)
 	
 	local CurrentInfected = 0
 	local InfectableSims = CityGetCitizenCount("City") / 4
+
 	if InfectableSims <= 0 then
 		return false
 	end
-	if GetImpactValue(Objectalias,"Sickness")>0 then
+
+	if GetImpactValue(Objectalias, "Sickness") > 0 then
 		return false
 	end
+
 	if not Force then
-		if GetImpactValue(Objectalias,"Resist")>0 then
+		if GetImpactValue(Objectalias, "Resist") > 0 then
 			return false
 		end
-		if GetImpactValue("City","Sickness")>1 then
+
+		if GetImpactValue("City", "Sickness") > 1 then
 			return false
 		end
 	end
@@ -43,9 +47,11 @@ function CheckDisease(Objectalias,Force)
 			return false
 		end
 	end
-	AddImpact("City","Sickness",1,0.25)
+
+	AddImpact("City", "Sickness", 1, 0.25)
 	return true
 end
+
 -- -----------------------
 -- fever (for workers only)
 -- -----------------------
@@ -69,82 +75,90 @@ function Fever(ObjectAlias, State)
 	end
 
 end
+
 -- -----------------------
 -- LEVEL 1 DISEASES
 -- -----------------------
+
 -- -----------------------
--- Sprain / verstauchung
+-- Sprain / Verstauchung
 -- -----------------------
 function Sprain(ObjectAlias, State, Force)
 	-- State: true = character should get a fracture, false = the fracture should heal
 	
-	local duration = 12
+	local duration = 16
 	local endtime = math.mod(GetGametime(),24)+duration
 
 	if State == true then
 		if not diseases_CheckDisease(ObjectAlias,Force) then
 			return		
 		end
-		if not (GetImpactValue(ObjectAlias,"Sprain")==1) then
-			AddImpact(ObjectAlias,"Sprain",1,duration)
-			AddImpact(ObjectAlias,"Sickness",1,duration)
-			SetState(ObjectAlias,STATE_SICK,true)
-			SetProperty(ObjectAlias,"SprainTime",endtime)
+
+		if not (GetImpactValue(ObjectAlias, "Sprain") == 1) then
+			AddImpact(ObjectAlias, "Sprain", 1, duration)
+			AddImpact(ObjectAlias,"Sickness", 1, duration)
+			SetState(ObjectAlias, STATE_SICK, true)
+			SetProperty(ObjectAlias, "SprainTime", endtime)
 			
 			--AddImpact(ObjectAlias,"MoveSpeed",0.8,duration)
-			AddImpact(ObjectAlias,"dexterity",-2,duration)
+			AddImpact(ObjectAlias,"dexterity", -2, duration)
+			AddImpact(ObjectAlias,"craftsmanship", -2, duration)
+			AddImpact(ObjectAlias,"fighting", -2, duration)
 		end
 	else
-		if GetImpactValue(ObjectAlias,"Sprain")==1 then
-			RemoveImpact(ObjectAlias,"Sprain")
-			RemoveImpact(ObjectAlias,"Sickness")
-			SetState(ObjectAlias,STATE_SICK,false)
+		if GetImpactValue(ObjectAlias,"Sprain") == 1 then
+			RemoveImpact(ObjectAlias, "Sprain")
+			RemoveImpact(ObjectAlias, "Sickness")
+			SetState(ObjectAlias, STATE_SICK, false)
 			
 			--RemoveImpact(ObjectAlias,"MoveSpeed")
 			-- instead of RemoveImpact we add a impact for the rest of the time
-			if math.mod(GetGametime(),24)<GetProperty(ObjectAlias,"SprainTime") then
+			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias,"SprainTime") then
 				duration = math.floor(GetProperty(ObjectAlias,"SprainTime")-math.mod(GetGametime(),24))
-				AddImpact(ObjectAlias,"dexterity",2,duration)
+				AddImpact(ObjectAlias, "dexterity", 2, duration)
+				AddImpact(ObjectAlias, "craftsmanship", 2, duration)
+				AddImpact(ObjectAlias, "fighting", 2, duration)
 				RemoveProperty(ObjectAlias,"SprainTime")
+				MoveSetActivity(ObjectAlias)
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("SprainInfected", "City")
+				chr_DecrementInfectionCount("SprainInfected", "City")
 			end
 		end
 	end
 
 end
 -- -----------------------
--- Cold / erkaeltung
+-- Cold / Erkaeltung
 -- -----------------------
 function Cold(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
-	local duration = 18
+	local duration = 24
 	local modifier = 1
 	local endtime = math.mod(GetGametime(),24)+duration
 
 	if State == true then
-		if not diseases_CheckDisease(ObjectAlias,Force) then
+		if not diseases_CheckDisease(ObjectAlias, Force) then
 			return		
 		end
-		if not (GetImpactValue(ObjectAlias,"Cold")==1) then
-			AddImpact(ObjectAlias,"Cold",1,duration)
-			AddImpact(ObjectAlias,"Sickness",1,duration)
-			SetState(ObjectAlias,STATE_SICK,true)
-			SetProperty(ObjectAlias,"ColdTime",endtime)
+		if not (GetImpactValue(ObjectAlias, "Cold") == 1) then
+			AddImpact(ObjectAlias, "Cold", 1, duration)
+			AddImpact(ObjectAlias, "Sickness", 1, duration)
+			SetState(ObjectAlias, STATE_SICK, true)
+			SetProperty(ObjectAlias, "ColdTime", endtime)
 
-			AddImpact(ObjectAlias,"constitution",-modifier,duration)
-			AddImpact(ObjectAlias,"dexterity",-modifier,duration)
-			AddImpact(ObjectAlias,"charisma",-modifier,duration)
-			AddImpact(ObjectAlias,"fighting",-modifier,duration)
-			AddImpact(ObjectAlias,"craftsmanship",-modifier,duration)
-			AddImpact(ObjectAlias,"shadow_arts",-modifier,duration)
-			AddImpact(ObjectAlias,"rhetoric",-modifier,duration)
-			AddImpact(ObjectAlias,"empathy",-modifier,duration)
-			AddImpact(ObjectAlias,"bargaining",-modifier,duration)
-			AddImpact(ObjectAlias,"secret_knowledge",-modifier,duration)
+			AddImpact(ObjectAlias,"constitution", -modifier, duration)
+			AddImpact(ObjectAlias,"dexterity", -modifier, duration)
+			AddImpact(ObjectAlias,"charisma", -modifier, duration)
+			AddImpact(ObjectAlias,"fighting", -modifier, duration)
+			AddImpact(ObjectAlias,"craftsmanship", -modifier, duration)
+			AddImpact(ObjectAlias,"shadow_arts", -modifier, duration)
+			AddImpact(ObjectAlias,"rhetoric", -modifier, duration)
+			AddImpact(ObjectAlias,"empathy", -modifier, duration)
+			AddImpact(ObjectAlias,"bargaining", -modifier, duration)
+			AddImpact(ObjectAlias,"secret_knowledge", -modifier, duration)
 
 		end
 	else
@@ -170,7 +184,7 @@ function Cold(ObjectAlias, State, Force)
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("ColdInfected", "City")
+				chr_DecrementInfectionCount("ColdInfected", "City")
 			end
 		end
 	end
@@ -179,12 +193,12 @@ end
 -- LEVEL 2 DISEASES
 -- -----------------------
 -- -----------------------
--- Influenza / grippe
+-- Influenza / Grippe
 -- -----------------------
 function Influenza(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
-	local duration = 14
+	local duration = 16
 	local modifier = 3
 	local endtime = math.mod(GetGametime(),24)+duration
 
@@ -233,13 +247,13 @@ function Influenza(ObjectAlias, State, Force)
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("InfluenzaInfected", "City")				
+				chr_DecrementInfectionCount("InfluenzaInfected", "City")				
 			end
 		end
 	end
 end
 -- -----------------------
--- Burn / brandwunde
+-- Burn / Brandwunde
 -- -----------------------
 function BurnWound(ObjectAlias, State)
 	-- State: true = character should get a fracture, false = the fracture should heal
@@ -259,19 +273,19 @@ function BurnWound(ObjectAlias, State)
 			SetState(ObjectAlias,STATE_SICK,false)
 
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("BurnWoundInfected", "City")	
+				chr_DecrementInfectionCount("BurnWoundInfected", "City")	
 			end
 		end
 	end
 end
 -- -----------------------
--- Lepra (intern pocken)
+-- Leprosy (intern Pox) / Lepra
 -- -----------------------
 function Pox(ObjectAlias, State, Force)
 	-- State: true = character should get a fracture, false = the fracture should heal
 	
 	local duration = -1
-	local modifier = 4
+	local modifier = 6
 
 	if State == true then
 		if not diseases_CheckDisease(ObjectAlias,Force) then
@@ -282,20 +296,24 @@ function Pox(ObjectAlias, State, Force)
 			AddImpact(ObjectAlias,"Sickness",1,duration)
 			SetState(ObjectAlias,STATE_SICK,true)
 			
+			AddImpact(ObjectAlias,"LifeExpanding", -1, -1) -- lose lifetime on infection
 			AddImpact(ObjectAlias,"constitution",-modifier,duration)
 			AddImpact(ObjectAlias,"charisma",-modifier,duration)
+			AddImpact(ObjectAlias,"dexterity", -modifier, duration)
 		end
 	else
 		if GetImpactValue(ObjectAlias,"Pox")==1 then
 			RemoveImpact(ObjectAlias,"Pox")
 			RemoveImpact(ObjectAlias,"Sickness")
-			SetState(ObjectAlias,STATE_SICK,false)
+			SetState(ObjectAlias,STATE_SICK, false)
 			
-			AddImpact(ObjectAlias,"constitution",modifier,duration)
-			AddImpact(ObjectAlias,"charisma",modifier,duration)
+			AddImpact(ObjectAlias,"constitution", modifier, duration)
+			AddImpact(ObjectAlias,"charisma", modifier, duration)
+			AddImpact(ObjectAlias,"dexterity", modifier, duration)
+
 
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("PoxInfected", "City")				
+				chr_DecrementInfectionCount("PoxInfected", "City")				
 			end
 		end
 	end
@@ -309,7 +327,7 @@ end
 function Pneumonia(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
-	local duration = 16
+	local duration = 24
 	local modifier = 5
 	local endtime = math.mod(GetGametime(),24)+duration
 	
@@ -319,10 +337,11 @@ function Pneumonia(ObjectAlias, State, Force)
 			return		
 		end
 		if not (GetImpactValue(ObjectAlias,"Pneumonia")==1) then
-			AddImpact(ObjectAlias,"Pneumonia",1,duration)
-			AddImpact(ObjectAlias,"Sickness",1,duration)
-			SetState(ObjectAlias,STATE_SICK,true)
-			SetProperty(ObjectAlias,"PneumoniaTime",endtime)
+			AddImpact(ObjectAlias, "LifeExpanding", -2, -1) -- lose lifetime on infection
+			AddImpact(ObjectAlias, "Pneumonia",1,duration)
+			AddImpact(ObjectAlias, "Sickness",1,duration)
+			SetState(ObjectAlias, STATE_SICK,true)
+			SetProperty(ObjectAlias, "PneumoniaTime",endtime)
 
 			AddImpact(ObjectAlias,"constitution",-modifier,duration)
 			AddImpact(ObjectAlias,"dexterity",-modifier,duration)
@@ -358,7 +377,7 @@ function Pneumonia(ObjectAlias, State, Force)
 			end
 
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("PneumoniaInfected", "City")				
+				chr_DecrementInfectionCount("PneumoniaInfected", "City")				
 			end
 		end
 	end
@@ -418,7 +437,7 @@ function Blackdeath(ObjectAlias, State, Force)
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("BlackdeathInfected", "City")				
+				chr_DecrementInfectionCount("BlackdeathInfected", "City")				
 			end
 		end
 	end
@@ -429,7 +448,7 @@ end
 function Fracture(ObjectAlias, State,Force)
 	-- State: true = character should get a fracture, false = the fracture should heal
 	
-	local duration = 18
+	local duration = 24
 	local endtime = math.mod(GetGametime(),24)+duration
 
 	if State == true then
@@ -437,15 +456,16 @@ function Fracture(ObjectAlias, State,Force)
 			return		
 		end
 		if not (GetImpactValue(ObjectAlias,"Fracture")==1) then
+			AddImpact(ObjectAlias, "LifeExpanding", -1, -1) -- lose lifetime on infection
 			AddImpact(ObjectAlias,"Fracture",1,duration)
 			AddImpact(ObjectAlias,"Sickness",1,duration)
 			SetState(ObjectAlias,STATE_SICK,true)
-			SetProperty(ObjectAlias,"FractureTime",endtime)
+			SetProperty(ObjectAlias,"FractureTime", endtime)
 			
 			--AddImpact(ObjectAlias,"MoveSpeed",0.6,duration)
-			AddImpact(ObjectAlias,"craftsmanship",-1,duration)
-			AddImpact(ObjectAlias,"Fighting",-2,duration)
-			AddImpact(ObjectAlias,"dexterity",-4,duration)
+			AddImpact(ObjectAlias,"craftsmanship", -4,duration)
+			AddImpact(ObjectAlias,"Fighting", -4,duration)
+			AddImpact(ObjectAlias,"dexterity", -4,duration)
 		end
 	else
 		if GetImpactValue(ObjectAlias,"Fracture")==1 then
@@ -457,14 +477,14 @@ function Fracture(ObjectAlias, State,Force)
 			-- instead of RemoveImpact we add a impact for the rest of the time
 			if math.mod(GetGametime(),24)<GetProperty(ObjectAlias,"FractureTime") then
 				duration = math.floor(GetProperty(ObjectAlias,"FractureTime")-math.mod(GetGametime(),24))
-				AddImpact(ObjectAlias,"craftsmanship",1,duration)
-				AddImpact(ObjectAlias,"Fighting",2,duration)
-				AddImpact(ObjectAlias,"dexterity",4,duration)
-				RemoveProperty(ObjectAlias,"FractureTime")
+				AddImpact(ObjectAlias,"craftsmanship", 4, duration)
+				AddImpact(ObjectAlias,"Fighting", 4, duration)
+				AddImpact(ObjectAlias,"dexterity", 4, duration)
+				RemoveProperty(ObjectAlias, "FractureTime")
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("FractureInfected", "City")				
+				chr_DecrementInfectionCount("FractureInfected", "City")				
 			end
 		end
 	end
@@ -473,11 +493,11 @@ end
 -- -----------------------
 -- Caries / zahnfaeule
 -- -----------------------
-function Caries(ObjectAlias, State,Force)
+function Caries(ObjectAlias, State, Force)
 	-- State: true = character should get a fracture, false = the fracture should heal
 	
-	local duration = -1
-	local modifier = 4
+	local duration = 48
+	local modifier = 3
 
 	if State == true then
 		if not diseases_CheckDisease(ObjectAlias,Force) then
@@ -501,7 +521,7 @@ function Caries(ObjectAlias, State,Force)
 			AddImpact(ObjectAlias,"charisma",modifier,duration)
 			
 			if GetSettlement(ObjectAlias,"City") then
-				chr_decrementInfectionCount("CariesInfected", "City")				
+				chr_DecrementInfectionCount("CariesInfected", "City")				
 			end
 		end
 	end
@@ -511,28 +531,27 @@ end
 -- GetTreatmentCost
 -- -----------------------
 function GetTreatmentCost(Disease)
+
 	if Disease == "Sprain" then
-		return 120
-	elseif Disease == "Cold" then
-		return 150
-	elseif Disease == "Influenza" then
 		return 200
-	elseif Disease == "BurnWound" then
-		return 290
-	elseif Disease == "Pox" then
-		return 450
-	elseif Disease == "Pneumonia" then
-		return 300
-	elseif Disease == "Blackdeath" then
-		return 500
-	elseif Disease == "Fracture" then
+	elseif Disease == "Cold" then
+		return 250
+	elseif Disease == "Influenza" then
 		return 400
+	elseif Disease == "BurnWound" then
+		return 500
+	elseif Disease == "Pox" then
+		return 750
+	elseif Disease == "Pneumonia" then
+		return 850
+	elseif Disease == "Blackdeath" then
+		return 1000
+	elseif Disease == "Fracture" then
+		return 600
 	elseif Disease == "Caries" then
 		return 800
 	else
-		return 0
+		return 50
 	end
-	
-	
 end
 

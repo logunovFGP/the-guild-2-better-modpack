@@ -1342,11 +1342,13 @@ function RemoveCrowdedPlace(SimAlias, WorkBuilding)
 end
 
 function GetBribeAmount(SimAlias) 
-	local OfficeLevel = SimGetOfficeLevel(SimAlias)
+	local OfficeLevel = dyn_GetHighestOfficeLevel(SimAlias)
 	if OfficeLevel < 1 then 
 		OfficeLevel = 1
 	end
 	
 	local Title = GetNobilityTitle(SimAlias)
 	local Amount = (Title * 500) * OfficeLevel
+	
+	return Amount
 end
