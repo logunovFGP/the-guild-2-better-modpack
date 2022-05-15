@@ -410,7 +410,7 @@ function FavorAddFondness(Owner, Target)
 	if GetDynasty(Owner, "MyDyn") and GetDynasty(Target, "TargetDyn") then
 		local TargetID = GetDynastyID(Target)
 		local MyDynID = GetDynastyID(Owner)
-		local FondnessCounter = 0 + GetProperty("MyDyn", "Grudge"..TargetID)
+		local FondnessCounter = 0 + GetProperty("MyDyn", "Fondness"..TargetID)
 		
 		MsgNewsNoWait(Owner, Target, "", "intrigue", -1, 
 					"@L_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_HEAD_+0",
