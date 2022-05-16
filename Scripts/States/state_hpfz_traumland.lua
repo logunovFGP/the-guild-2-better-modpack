@@ -11,7 +11,6 @@ function Init()
 	
 	SetState("", STATE_IDLE, false);
 	SetState("", STATE_FIGHTING, false);
-	SetState("", STATE_CAPTURED, false)
 	StopMeasure()
 end
 

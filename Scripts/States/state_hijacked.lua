@@ -55,9 +55,12 @@ function CleanUp()
 	if HasProperty("","ForceFree") then
 		RemoveProperty("","ForceFree")
 	end
-	SetState("", STATE_EXPEL, true)
+	
+	if SimIsInside("") then
+		f_ExitCurrentBuilding("")
+	end
+	
 	SetState("", STATE_HIJACKED, false)
-	SetState("", STATE_CAPTURED, false)
 	SetState("", STATE_CUTSCENE, false)
 	
 	SimResetBehavior("")

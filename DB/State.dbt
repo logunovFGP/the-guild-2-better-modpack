@@ -35,7 +35,6 @@ Data:
 28           "hidden"                        "states\state_hidden.lua"          | 
 29           "driverattacked"                "states\state_driverattacked.lua"  | 
 30           "townnpc"                       "states\state_townnpc.lua"         | 
-31           "expel"                         "states\state_expel.lua"           | 
 32           "npcfighter"                    "states\state_npcfighter.lua"      | 
 33           "duel"                          "states\state_duel.lua"            | 
 34           "sleeping"                      "states\state_sleeping.lua"        | 

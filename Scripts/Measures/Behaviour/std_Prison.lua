@@ -284,7 +284,7 @@ function CleanUp()
 		SimBeamMeUp("","CellTeleportTargetPos",false)
 		StopAnimation("")		
 		if not HasProperty("","GettingTortured") then	
-			SetState("", STATE_EXPEL, true)
+			f_ExitCurrentBuilding("")
 		end
 		RemoveProperty("","Imprisoned")
 	end

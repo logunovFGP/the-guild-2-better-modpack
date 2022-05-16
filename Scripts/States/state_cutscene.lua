@@ -5,8 +5,8 @@ function Init()
 	SetStateImpact("no_hire")
 	SetStateImpact("no_fire")	
 	SetStateImpact("no_enter")
-	-- SetStateImpact("no_measure_attach")
-	-- SetStateImpact("no_measure_start")
+	SetStateImpact("no_measure_attach")
+	SetStateImpact("no_measure_start")
 end
 
 function Run()
