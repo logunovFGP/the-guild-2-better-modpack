@@ -150,7 +150,10 @@ function Run()
 			gameplayformulas_StartHighPriorMusic(MUSIC_MARRIAGE)
 
 			SetAvoidanceGroup("", "Destination")
-			CutsceneCameraCreate("cutscene","")
+			CreateCutscene("default", "cutscene")
+			CutsceneAddSim("cutscene", "")
+			CutsceneAddSim("cutscene", "Destination")
+			CutsceneCameraCreate("cutscene", "")
 			camera_CutsceneBothLock("cutscene", "")
 
 			ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
