@@ -1,6 +1,6 @@
 function Run()
 
-	if GetState("Owner", STATE_BLACKDEATH) then
+	if GetState("Owner", STATE_SICK) then
 		return ""
 	end
 

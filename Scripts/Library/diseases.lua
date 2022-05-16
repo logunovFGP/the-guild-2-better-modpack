@@ -53,30 +53,6 @@ function CheckDisease(Objectalias,Force)
 end
 
 -- -----------------------
--- fever (for workers only)
--- -----------------------
-function Fever(ObjectAlias, State)
-	-- State: true = character should get a fever
-
-	local duration = 12
-
-	if State == true then
-		if not (GetImpactValue(ObjectAlias,"Fever")==1) then
-			AddImpact(ObjectAlias,"Fever",1,duration)
-			AddImpact(ObjectAlias,"Sickness",1,duration)
-			SetState(ObjectAlias,STATE_BLACKDEATH,true)
-		end
-	else
-		if (GetImpactValue(ObjectAlias,"Fever")==1) then
-			RemoveImpact(ObjectAlias,"Fever")
-			RemoveImpact(ObjectAlias,"Sickness")
-			SetState(ObjectAlias,STATE_BLACKDEATH,false)
-		end
-	end
-
-end
-
--- -----------------------
 -- LEVEL 1 DISEASES
 -- -----------------------
 

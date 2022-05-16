@@ -1,4 +1,4 @@
 function Run()
-	SetState("", STATE_BLACKDEATH, false)
+	-- empty
 end
 

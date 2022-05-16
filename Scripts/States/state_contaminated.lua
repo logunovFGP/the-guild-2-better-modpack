@@ -118,8 +118,8 @@ function BuildingImpacts()
 								diseases_Cold("Sim", true)
 							end
 						else
-							if not GetState("Sim", STATE_BLACKDEATH) then
-								diseases_Fever("Sim", true)
+							if not GetState("Sim", STATE_SICK) then
+								diseases_Influenza("Sim", true)
 							end
 						end		 
 					end
@@ -137,8 +137,8 @@ function BuildingImpacts()
 								diseases_Cold("Sim", true)
 							end
 						else
-							if not GetState("Sim", STATE_BLACKDEATH) then
-								diseases_Fever("Sim", true)
+							if not GetState("Sim", STATE_SICK) then
+								diseases_Influenza("Sim", true)
 							end
 						end		 
 					end

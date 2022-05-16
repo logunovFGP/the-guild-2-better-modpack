@@ -8,7 +8,6 @@ Data:
 0            "idle"                          ""                                 | 
 1            "burning"                       "states\state_burning.lua"         | 
 2            "building"                      "states\state_building.lua"        | 
-3            "blackdeath"                    "states\state_blackdeath.lua"      | 
 4            "repairing"                     "states\state_repairing.lua"       |  
 5            "levelingup"                    "states\state_levelingup.lua"      | 
 6            "dead"                          "states\state_dead.lua"            | 

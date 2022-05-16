@@ -44,8 +44,6 @@ function Run()
 			elseif GetImpactValue("", "Caries") == 1 then
 				chr_IncrementInfectionCount("CariesInfected", "City")
 				Incubate = state_sick_CariesBehaviour()
-			elseif GetState("", STATE_BLACKDEATH) then
-				return
 			else
 				SetState("", STATE_SICK, false)
 				return
