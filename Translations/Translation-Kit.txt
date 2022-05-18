@@ -1089,6 +1089,9 @@ Translate and add the following lines below:
 19168   "_NAMES_SCANDINAVIAN_FEMALE_+65"   "Linnéa"   |
 19169   "_NAMES_FRENCH_FEMALE_+120"   "Linéa"   |
 19170   "_NAMES_GERMAN_FEMALE_+113"   "Linea"   |
+19171   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0"   "#E[SD_SAD]An employee has died."   |
+19172   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0"   "%1SN, employed at %2GG, has died today. Thus you need to refill the position."   |
+19173   "_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0"   "Bribery not possible - you don't have %1t to bribe %2SN"   |
 
 
 -------
