@@ -9,6 +9,7 @@ function Run()
 			
 			local BossID = dyn_GetValidMember("dynasty")
 			GetAliasByID(BossID, "boss")
+			
 			if GetNobilityTitle("boss", true) == true then
 				MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_GODM_+0")
 				StopMeasure()
@@ -16,7 +17,7 @@ function Run()
 				local currenttitle = GetNobilityTitle("boss")
 
 				local cost = GetDatabaseValue("NobilityTitle", currenttitle+1, "price")
-				if cost=="" then
+				if cost == "" then
 					MsgQuick("boss", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+2")
 					StopMeasure()
 				end
@@ -30,6 +31,7 @@ function Run()
 				end
 				
 				local RequiredFameLvL = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
+				
 				if dyn_GetImperialFameLevel("boss") < RequiredFameLvL then
 					local ImperialFameLabel = "@L_IMPERIAL_FAME_DYNASTY_+"..RequiredFameLvL
 					local FamePoints = gameplayformulas_GetImperialLevelPoints(RequiredFameLvL)
@@ -38,6 +40,7 @@ function Run()
 										newtitle, ImperialFameLabel, FamePoints)
 					StopMeasure()
 				end
+				
 				if cost > money then
 					MsgBox("boss", "", "@P@B[A, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+1]"..
 										"@B[B, @L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_3_POSSIBLE_MENU_+2]", "@L_MEASURE_BuyNobilityTitle_NAME_+0",
@@ -59,7 +62,9 @@ function Run()
 							IncomeNob = IncomeNob + tax
 							SetProperty("Set", "NobilityMoney", tax)
 							SetNobilityTitle("boss", currenttitle+1, false)
-
+							
+							-- send msg
+							feedback_MessageOtherDynastiesTitle("boss")
 							MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID("boss"))
 							StopMeasure()
 						else
@@ -76,6 +81,8 @@ function Run()
 			StopMeasure()
 		end
 	end
+	
+	-- Character-measure
 	
 	if not IsGUIDriven() and DynastyIsShadow("") then
 		if GetNobilityTitle("", true) == true then
@@ -100,6 +107,9 @@ function Run()
 					IncomeNob = IncomeNob + tax
 					SetProperty("Set", "NobilityMoney", tax)
 					SetNobilityTitle("", currenttitle+1, false)
+					
+					-- send msg
+					feedback_MessageOtherDynastiesTitle("")
 				else
 					StopMeasure()
 				end
@@ -201,7 +211,6 @@ function Run()
 					MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_1_+7", GetID(""))
 				end
 			else
-			
 				if (season == EN_SEASON_SPRING) then
 					MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_1_+8", GetID(""))
 				elseif (season == EN_SEASON_SUMMER) then
@@ -294,6 +303,9 @@ function Run()
 						IncomeNob = IncomeNob + tax
 						SetProperty("Set", "NobilityMoney", tax)
 						SetNobilityTitle("", currenttitle+1, false)
+						
+						-- send msg
+						feedback_MessageOtherDynastiesTitle("")
 
 						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID(""))

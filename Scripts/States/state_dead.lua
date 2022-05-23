@@ -29,7 +29,7 @@ end
 function Run()
 
 	----------------------
-	------ Sim die -------
+	------ Sim dies -------
 	----------------------
 	MoveStop("")
 	if IsType("", "Sim") then
@@ -39,10 +39,121 @@ function Run()
 				SquadDestroy("Squad")
 			end
 		end
-
+		
+		-- Messages. Get cause
+		if HasProperty("", "SenilDecay") then -- default msg
+			-- Message only for dynasty
+			if IsDynastySim("") and not DynastyIsShadow("") then
+				
+				local Age = SimGetAge("")
+				local SettlementId = GetSettlementID("")			
+				if GetSettlement("", "DeadSimsSettlement") then
+					local Gender = SimGetGender("")
+					
+					if Gender == GL_GENDER_MALE then
+						feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_MALE", GetID(""), Age, SettlementId)
+					else
+						feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
+					end
+					-- for other dynasties
+					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""), Age, SettlementId)
+				end
+			end
+		elseif HasProperty("", "WasSick") then -- special msg: Sickness
+			local ReasonToDie = ""
+			ReasonToDie = GetProperty("", "ReasonToDie") or 0
+			local ReasonLabel = "@L_ILLNESS_REASON_+0"
+			
+			if ReasonToDie == "BurnWound" then
+				ReasonLabel = "@L_ILLNESS_REASON_+1"
+				local Age = SimGetAge("")
+				if IsDynastySim("") and not DynastyIsShadow("") then
+				
+					local SettlementId = GetSettlementID("")			
+					if GetSettlement("", "DeadSimsSettlement") then
+						local Gender = SimGetGender("")
+						
+						if Gender == GL_GENDER_MALE then
+							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_MALE", GetID(""), Age, SettlementId, ReasonLabel)
+						else
+							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
+						end
+						-- for other dynasties
+						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+					end
+				 -- message the dynasty leader if you are a former employee
+				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+				end
+			elseif ReasonToDie == "Pneumonia" then
+				ReasonLabel = "@L_ILLNESS_REASON_+2"
+				local Age = SimGetAge("")
+				if IsDynastySim("") and not DynastyIsShadow("") then
+				
+					local SettlementId = GetSettlementID("")			
+					if GetSettlement("", "DeadSimsSettlement") then
+						local Gender = SimGetGender("")
+						
+						if Gender == GL_GENDER_MALE then
+							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_MALE", GetID(""), Age, SettlementId, ReasonLabel)
+						else
+							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
+						end
+						-- for other dynasties
+						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+					end
+				 -- message the dynasty leader if you are a former employee
+				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+				end
+			elseif ReasonToDie == "Blackdeath" then
+				ReasonLabel = "@L_ILLNESS_REASON_+3"
+				local Age = SimGetAge("")
+				if IsDynastySim("") and not DynastyIsShadow("") then
+				
+					local SettlementId = GetSettlementID("")			
+					if GetSettlement("", "DeadSimsSettlement") then
+						local Gender = SimGetGender("")
+						
+						if Gender == GL_GENDER_MALE then
+							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_BLACKDEATH_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_MALE", GetID(""), Age, SettlementId, ReasonLabel)
+						else
+							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_BLACKDEATH_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
+						end
+						-- for other dynasties
+						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+					end
+				 -- message the dynasty leader if you are a former employee
+				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BLACKDEATH_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+				end
+			end
+		else -- died by force
+			local ReasonLabel = "@L_ILLNESS_REASON_+4"
+			local Age = SimGetAge("")
+			if IsDynastySim("") and not DynastyIsShadow("") then
+				
+				local SettlementId = GetSettlementID("")			
+				if GetSettlement("", "DeadSimsSettlement") then
+					local Gender = SimGetGender("")
+					
+					if Gender == GL_GENDER_MALE then
+						feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_MALE", GetID(""), Age, SettlementId, ReasonLabel)
+					else
+						feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
+					end
+					-- for other dynasties
+					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+				end
+			-- message the dynasty leader if you are a former employee
+			elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+				MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+			end
+		end
+		
 		-- Let the sim play the die animation in case he is not already unconscious
 		if not (GetState("", STATE_UNCONSCIOUS)) then
-			if not (HasProperty("", "SenilDecay") or HasProperty("","Executed")) then
+			if not (HasProperty("", "SenilDecay") or HasProperty("", "Executed")) then
 				PlayAnimation("", "fight_die")
 				if HasProperty("","WasSick") then
 					PlayAnimation("", "die_sick_idle_in")
@@ -58,125 +169,75 @@ function Run()
 			end
 		end
 		
-		-- message the dynasty leader if you are a former employee
-		if SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
-			MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"))
-		end
-		
 		-- Decrement sicksimcounter if some sick sim dies
-		if GetSettlement("", "City") then
-			if GetImpactValue("", "Sprain") == 1 then
-				chr_DecrementInfectionCount("SprainInfected", "City")
-			elseif GetImpactValue("", "Cold") == 1 then
-				chr_DecrementInfectionCount("ColdInfected", "City")
-			elseif GetImpactValue("", "Influenza") == 1 then
-				chr_DecrementInfectionCount("InfluenzaInfected", "City")
-			elseif GetImpactValue("", "BurnWound") == 1 then
-				chr_DecrementInfectionCount("BurnWoundInfected", "City")
-			elseif GetImpactValue("", "Pox") == 1 then
-				chr_DecrementInfectionCount("PoxInfected", "City")
-			elseif GetImpactValue("", "Pneumonia") == 1 then
-				chr_DecrementInfectionCount("PneumoniaInfected", "City")
-			elseif GetImpactValue("", "Blackdeath") == 1 then
-				chr_DecrementInfectionCount("BlackdeathInfected", "City")
-			elseif GetImpactValue("", "Fracture") == 1 then
-				chr_DecrementInfectionCount("FractureInfected", "City")
-			elseif GetImpactValue("", "Caries") == 1 then
-				chr_DecrementInfectionCount("CariesInfected", "City")
-			end
-		end
-		
-		-- Let the sim lay on the ground or in his bed for a while
-		-- local SleepTime = Gametime2Realtime(GL_TIME_LYING_DEAD_ON_THE_GROUND)
+		gameplayformulas_DecreaseInfectionCountCity("")
 	
 		Sleep(10)
 
 		---------------------
 		------ Lay out ------
 		---------------------  
-        
-		if HasProperty("", "WasDynastySim") then
-			if not DynastyIsShadow("") then
 
-				local IsFuneralOfMyDynasty = 0
-
-				local Age = SimGetAge("")
-				local SettlementId = GetSettlementID("")			
-				GetSettlement("", "DeadSimsSettlement")
-				local Gender = SimGetGender("")
-				
-				if Gender == GL_GENDER_MALE then
-					feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_MALE", GetID(""), Age, SettlementId)
-				else
-					feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
-				end
-				-- for other dynasties
-				feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""))
-			end
-			
-		
-
-			if (SimGetOfficeID("") ~= -1) then
-				GetHomeBuilding("", "home")
-				BuildingGetCity("home", "homecity")				
-				CityRemoveFromOffice("homecity", "")
-			end
+		if (SimGetOfficeID("") ~= -1) then
+			GetHomeBuilding("", "home")
+			BuildingGetCity("home", "homecity")				
+			CityRemoveFromOffice("homecity", "")
+		end
 				
 			-- Spawn the priest at the graveyard
-			local MaxTries=10
-			while MaxTries > 0 do
-				GetHomeBuilding("","home")
-				BuildingGetCity("home","homecity")
-				if CityGetRandomBuilding("homecity",-1,GL_BUILDING_TYPE_GRAVEYARD, -1, -1, FILTER_IGNORE,"graveyard") then
-					if not BuildingGetNPC("graveyard", 9, "Undertaker") then
-						Assert(false, "state_dead - no undertake found in the graveyard")
-					end
+		--	local MaxTries=10
+		--	while MaxTries > 0 do
+		--		GetHomeBuilding("","home")
+		--		BuildingGetCity("home","homecity")
+		--		if CityGetRandomBuilding("homecity",-1,GL_BUILDING_TYPE_GRAVEYARD, -1, -1, FILTER_IGNORE,"graveyard") then
+		--			if not BuildingGetNPC("graveyard", 9, "Undertaker") then
+		--				Assert(false, "state_dead - no undertake found in the graveyard")
+		--			end
 						
-					if not HasProperty("Undertaker","DeadBody") then
-						SetData("Priest",1)
-						SetProperty("Undertaker","DeadBody",GetID(""))
+		--			if not HasProperty("Undertaker","DeadBody") then
+		--				SetData("Priest",1)
+		--				SetProperty("Undertaker","DeadBody",GetID(""))
 
 						-- Let the priest go to the dead sim
-						if SimIsInside("") then
-							GetInsideBuilding("", "DeadHouse")
-							f_MoveTo("Undertaker", "DeadHouse", GL_MOVESPEED_RUN)
-							if GetLocatorByName("Home", "Priest", "Priest") then
-								f_BeginUseLocator("Undertaker", "Priest", GL_STANCE_STAND, true)
-								f_EndUseLocator("Undertaker","Priest",GL_STANCE_STAND)
-							end
-						else
-							if GetPosition("", "SimPos") then
-								f_MoveTo("Undertaker", "SimPos", GL_MOVESPEED_RUN, 80)
-								AlignTo("Undertaker", "")
-							end
-						end
+		--				if SimIsInside("") then
+		--					GetInsideBuilding("", "DeadHouse")
+		--					f_MoveTo("Undertaker", "DeadHouse", GL_MOVESPEED_RUN)
+		--					if GetLocatorByName("Home", "Priest", "Priest") then
+		--						f_BeginUseLocator("Undertaker", "Priest", GL_STANCE_STAND, true)
+		--						f_EndUseLocator("Undertaker","Priest",GL_STANCE_STAND)
+		--					end
+		--				else
+		--					if GetPosition("", "SimPos") then
+		--						f_MoveTo("Undertaker", "SimPos", GL_MOVESPEED_RUN, 80)
+		--						AlignTo("Undertaker", "")
+		--					end
+		--				end
 
-						if HasProperty("", "SenilDecay") then
-							MsgSayNoWait("Undertaker", "@L_FAMILY_6_DEATH_ANOINTING")
-							PlayAnimation("Undertaker", "manipulate_middle_twohand")
-						else
-							MoveSetStance("Undertaker", GL_STANCE_KNEEL)
+		--				if HasProperty("", "SenilDecay") then
+		--					MsgSayNoWait("Undertaker", "@L_FAMILY_6_DEATH_ANOINTING")
+		--					PlayAnimation("Undertaker", "manipulate_middle_twohand")
+		--				else
+		--					MoveSetStance("Undertaker", GL_STANCE_KNEEL)
 							-- Give the priest some time to kneel down
-							Sleep(4)
-							SetData("PriestKneeing", 1)
-							MsgSay("Undertaker", "@L_FAMILY_6_DEATH_ANOINTING")
+		--					Sleep(4)
+		--					SetData("PriestKneeing", 1)
+		--					MsgSay("Undertaker", "@L_FAMILY_6_DEATH_ANOINTING")
 
-							Sleep(2)
-							SimResetBehavior("Undertaker")
-						end
+		--					Sleep(2)
+		--					SimResetBehavior("Undertaker")
+		--				end
 						
-						GfxMoveToPosition("", 0, -50, 0, 6, false)					
-						return
+		--				GfxMoveToPosition("", 0, -50, 0, 6, false)					
+		--				return
 							
-					end
-				else
-					GfxMoveToPosition("", 0, -50, 0, 6, false)
-					return
-				end
-				Sleep(5)
-				MaxTries = MaxTries - 1
-			end
-		end
+		--			end
+		--		else
+		--			GfxMoveToPosition("", 0, -50, 0, 6, false)
+		--			return
+		--		end
+		--		Sleep(5)
+		--		MaxTries = MaxTries - 1
+		--	end
 	---------------------------
 	------ Building die -------
 	---------------------------

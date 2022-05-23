@@ -173,6 +173,7 @@ end
 -- RemoveNobilityImpactList
 -- -----------------------
 function RemoveNobilityImpactList(TitleHolder, ... )
+	
 	for i = 1, arg.n, 1 do
 		local element = arg[i]
 		if element ~= "" then
@@ -185,6 +186,7 @@ end
 -- GeneratePrivilegeListLabels
 -- -----------------------
 function GeneratePrivilegeListLabels(... )
+	
 	local Labels  = {}
 	for k=0, 20 do
 		Labels[k] = ""

@@ -1077,3 +1077,51 @@ function CourtingProgress(SimAlias, Value)
 	
 	SimSetProgress(SimAlias, NewProgress)
 end
+
+function IncreaseInfectionCountCity(Alias)
+	if GetSettlement(Alias, "City") then
+		if GetImpactValue(Alias, "Sprain") == 1 then
+			chr_IncrementInfectionCount("SprainInfected", "City")
+		elseif GetImpactValue(Alias, "Cold") == 1 then
+			chr_IncrementInfectionCount("ColdInfected", "City")
+		elseif GetImpactValue(Alias, "Influenza") == 1 then
+			chr_IncrementInfectionCount("InfluenzaInfected", "City")
+		elseif GetImpactValue(Alias, "BurnWound") == 1 then
+			chr_IncrementInfectionCount("BurnWoundInfected", "City")
+		elseif GetImpactValue(Alias, "Pox") == 1 then
+			chr_IncrementInfectionCount("PoxInfected", "City")
+		elseif GetImpactValue(Alias, "Pneumonia") == 1 then
+			chr_IncrementInfectionCount("PneumoniaInfected", "City")
+		elseif GetImpactValue(Alias, "Blackdeath") == 1 then
+			chr_IncrementInfectionCount("BlackdeathInfected", "City")
+		elseif GetImpactValue(Alias, "Fracture") == 1 then
+			chr_IncrementInfectionCount("FractureInfected", "City")
+		elseif GetImpactValue(Alias, "Caries") == 1 then
+			chr_IncrementInfectionCount("CariesInfected", "City")
+		end
+	end
+end
+
+function DecreaseInfectionCountCity(Alias)
+	if GetSettlement(Alias, "City") then
+		if GetImpactValue(Alias, "Sprain") == 1 then
+			chr_DecrementInfectionCount("SprainInfected", "City")
+		elseif GetImpactValue(Alias, "Cold") == 1 then
+			chr_DecrementInfectionCount("ColdInfected", "City")
+		elseif GetImpactValue(Alias, "Influenza") == 1 then
+			chr_DecrementInfectionCount("InfluenzaInfected", "City")
+		elseif GetImpactValue(Alias, "BurnWound") == 1 then
+			chr_DecrementInfectionCount("BurnWoundInfected", "City")
+		elseif GetImpactValue(Alias, "Pox") == 1 then
+			chr_DecrementInfectionCount("PoxInfected", "City")
+		elseif GetImpactValue(Alias, "Pneumonia") == 1 then
+			chr_DecrementInfectionCount("PneumoniaInfected", "City")
+		elseif GetImpactValue(Alias, "Blackdeath") == 1 then
+			chr_DecrementInfectionCount("BlackdeathInfected", "City")
+		elseif GetImpactValue(Alias, "Fracture") == 1 then
+			chr_DecrementInfectionCount("FractureInfected", "City")
+		elseif GetImpactValue(Alias, "Caries") == 1 then
+			chr_DecrementInfectionCount("CariesInfected", "City")
+		end
+	end
+end

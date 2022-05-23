@@ -150,6 +150,28 @@ function MessageOtherCharacters(Owner, Headline, Text, ...)
 	end
 end
 
+function MessageOtherDynastiesTitle(Owner)
+
+	local OwnerDyn = GetDynastyID(Owner)
+	local Alias
+	local DynCount = ScenarioGetObjects("Dynasty", 100, "Dynasties")
+	
+	for i=0, DynCount do
+		Alias = "Dynasties"..i
+		if DynastyIsPlayer(Alias) and GetDynastyID(Alias) ~= OwnerDyn then
+			-- check for diplomacy
+			local Diplo = DynastyGetDiplomacyState(Alias, Owner)
+			if Diplo == DIP_FOE then
+				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_ENEMY_+0", GetID(Owner))
+			elseif Diplo == DIP_ALLIANCE then
+				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_BLOODBAND_+0", GetID(Owner))
+			else -- neutral
+				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_NEUTRAL_+0", GetID(Owner))
+			end			
+		end
+	end
+end
+
 function MessageProduction(Owner, Headline, Text,...)
 
 	local HeaderText = Headline

@@ -127,7 +127,6 @@ open: 626
 469 Scripts\Measures\ms_051_FollowOnce.lua
 470 Scripts\Measures\ms_051_FollowSim.lua
 471 Scripts\Measures\ms_055_InsultCharacter.lua
-472 Scripts\Measures\ms_057_KissCharacter.lua
 474 Scripts\Measures\ms_066_BurgleAHouse.lua
 475 Scripts\Measures\ms_067_LetAbducteeFree.lua
 477 Scripts\Measures\ms_069_DemandRansom.lua
@@ -172,7 +171,6 @@ open: 626
 527 Scripts\Measures\ms_211_OrderCollectEvidence.lua
 528 Scripts\Measures\ms_220_TrainCharacter.lua
 529 Scripts\Measures\ms_230_MakeAPresent.lua
-530 Scripts\Measures\ms_231_MakeACompliment.lua
 532 Scripts\Measures\ms_AddPamphlet.lua
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
@@ -261,7 +259,6 @@ open: 626
 632 Scripts\Measures\ms_hpfz_ProduceMill.lua
 633 Scripts\Measures\ms_hpfz_RauchBombe.lua
 634 Scripts\Measures\ms_hpfz_Tarnung.lua
-635 Scripts\Measures\ms_HugCharacter.lua
 636 Scripts\Measures\ms_HushMoney.lua
 637 Scripts\Measures\ms_JugglerBeg.lua
 638 Scripts\Measures\ms_KontorMeasure.lua
