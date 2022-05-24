@@ -46,7 +46,10 @@ function Run()
 			if IsDynastySim("") and not DynastyIsShadow("") then
 				
 				local Age = SimGetAge("")
-				local SettlementId = GetSettlementID("")			
+				local SettlementId = GetSettlementID("")
+				-- your badge
+				local BadgeID = DynastyGetFlagNumber("dynasty") + 29
+				local Badge = "@L$S[20"..BadgeID.."]"
 				if GetSettlement("", "DeadSimsSettlement") then
 					local Gender = SimGetGender("")
 					
@@ -56,7 +59,7 @@ function Run()
 						feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_BODY_FEMALE", GetID(""), Age, SettlementId)
 					end
 					-- for other dynasties
-					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""), Age, SettlementId)
+					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""), Age, SettlementId, Badge)
 				end
 			end
 		elseif HasProperty("", "WasSick") then -- special msg: Sickness
@@ -69,7 +72,10 @@ function Run()
 				local Age = SimGetAge("")
 				if IsDynastySim("") and not DynastyIsShadow("") then
 				
-					local SettlementId = GetSettlementID("")			
+					local SettlementId = GetSettlementID("")
+					-- your badge
+					local BadgeID = DynastyGetFlagNumber("dynasty") + 29
+					local Badge = "@L$S[20"..BadgeID.."]"
 					if GetSettlement("", "DeadSimsSettlement") then
 						local Gender = SimGetGender("")
 						
@@ -79,7 +85,7 @@ function Run()
 							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
 						end
 						-- for other dynasties
-						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel, Badge)
 					end
 				 -- message the dynasty leader if you are a former employee
 				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
@@ -90,7 +96,10 @@ function Run()
 				local Age = SimGetAge("")
 				if IsDynastySim("") and not DynastyIsShadow("") then
 				
-					local SettlementId = GetSettlementID("")			
+					local SettlementId = GetSettlementID("")
+					-- your badge
+					local BadgeID = DynastyGetFlagNumber("dynasty") + 29
+					local Badge = "@L$S[20"..BadgeID.."]"
 					if GetSettlement("", "DeadSimsSettlement") then
 						local Gender = SimGetGender("")
 						
@@ -100,7 +109,7 @@ function Run()
 							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
 						end
 						-- for other dynasties
-						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel, Badge)
 					end
 				 -- message the dynasty leader if you are a former employee
 				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
@@ -111,7 +120,10 @@ function Run()
 				local Age = SimGetAge("")
 				if IsDynastySim("") and not DynastyIsShadow("") then
 				
-					local SettlementId = GetSettlementID("")			
+					local SettlementId = GetSettlementID("")
+					-- your badge
+					local BadgeID = DynastyGetFlagNumber("dynasty") + 29
+					local Badge = "@L$S[20"..BadgeID.."]"
 					if GetSettlement("", "DeadSimsSettlement") then
 						local Gender = SimGetGender("")
 						
@@ -121,7 +133,7 @@ function Run()
 							feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_BLACKDEATH_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
 						end
 						-- for other dynasties
-						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel, Badge)
 					end
 				 -- message the dynasty leader if you are a former employee
 				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
@@ -133,7 +145,10 @@ function Run()
 			local Age = SimGetAge("")
 			if IsDynastySim("") and not DynastyIsShadow("") then
 				
-				local SettlementId = GetSettlementID("")			
+				local SettlementId = GetSettlementID("")
+				-- your badge
+				local BadgeID = DynastyGetFlagNumber("dynasty") + 29
+				local Badge = "@L$S[20"..BadgeID.."]"
 				if GetSettlement("", "DeadSimsSettlement") then
 					local Gender = SimGetGender("")
 					
@@ -143,7 +158,7 @@ function Run()
 						feedback_MessageCharacter("", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE", GetID(""), Age, SettlementId, ReasonLabel)
 					end
 					-- for other dynasties
-					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel)
+					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel, Badge)
 				end
 			-- message the dynasty leader if you are a former employee
 			elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
