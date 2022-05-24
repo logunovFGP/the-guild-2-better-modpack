@@ -13,7 +13,6 @@ function Init()
 	SetStateImpact("no_hire")
 	SetStateImpact("no_control")
 	SetStateImpact("no_attackable")
-	StopMeasure()
 end
 
 -- -----------------------
@@ -25,3 +24,5 @@ function Run()
 	end
 end
 
+function CleanUp()
+end

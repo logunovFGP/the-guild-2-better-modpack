@@ -160,6 +160,7 @@ _General_
 - Several wrong / missing locators were called by some scripts.
 - Animals should no longer get randomly attacked.
 - During a wedding ceremony the priest swapped genders when a female character started the action.
+- The Plague never ended.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

@@ -1,87 +1,81 @@
 function Run()
-	if GetState("", STATE_SICK) then
+	
+	-- check state impact
+	if GetStateImpact("", "no_control") or GetStateImpact("", "no_hire") then
 		return
 	end
-	local Profession = SimGetProfession("")
-	if Profession then
-		--cityguard, prisonguard, inspector, monitor, eliteguard
-		if (Profession > 20) and (Profession < 26) then
-			return
-		end
-		--iquisitor
-		if Profession == 28 then
-			return
-		end
+	
+	if not GetSettlement("", "MyHomeCity") then
+		return
 	end
-	if GetImpactValue("","Resist")>0 then
+	
+	-- Resist prevents infection spams on the same Sim
+	if GetImpactValue("", "Resist") > 0 then
 		return
 	else
-		AddImpact("","Resist",1,2)
+		AddImpact("", "Resist", 1, 2)
 	end
 	
-	if GetInsideBuilding("","CurrentBuilding") then
-		if BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_HOSPITAL then
+	-- no infection spam in certain areas
+	if GetInsideBuilding("", "CurrentBuilding") then
+		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_HOSPITAL then
+			return
+		end
+		
+		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING then
 			return
 		end
 	end
-	if GetImpactValue("Actor","Blackdeath")==0 then
-		if IsDynastySim("") then
-			return
-		end
+	
+	-- check how contagious the disease is
+	local Hazard = 50 -- 50% base chance
+	
+	if GetImpactValue("Actor", "Influenza") then
+		Hazard = Hazard + 10 -- more contagious
+	elseif GetImpactValue("Actor", "Blackdeath") then
+		Hazard = Hazard + 30 -- highly contagious
 	end
 	
-	local Constitution = 10 + GetSkillValue("",1) * 10
-	if Constitution < 10 then
-		Constitution = (Rand(7)+1)*10
-	end
-	local SimAge = SimGetAge("") / 2
-	if SimAge < 8 then
-		return
-	end
-	local Immunity = Constitution - SimAge
-	if Immunity <= 0 then
-		Immunity = 0
-	else
-		Immunity = Rand(Immunity) + (Immunity/(2 - Constitution/100))
-	end
-	local CurrentRound = GetRound()
+	local Constitution = GetSkillValue("", CONSTITUTION) * 5 -- high consti protects you from infections
+	Hazard = Hazard - Constitution
 	
-	-- ShowOverheadSymbol("",false,true,0,"Immunität: %1n",Immunity)
-	local Hazard = 0
-	if GetImpactValue("Actor","Cold")==1 then
-		Hazard = 20
-		if Rand(Hazard) > Immunity then
-			diseases_Cold("",true)
-		end
-	elseif GetImpactValue("Actor","Influenza")==1 then
-		Hazard = 30
-		if Rand(Hazard) > Immunity then
-			diseases_Influenza("",true)
-		end
-	elseif GetImpactValue("Actor","Pox")==1 then
-		Hazard = 40
-		if CurrentRound < 5 then
-			Hazard = 30
-		end
-		if Rand(Hazard) > Immunity then
-			diseases_Pox("",true)
-		end
-	elseif GetImpactValue("Actor","Blackdeath")==1 then
-		Hazard = 50
-		if CurrentRound < 5 then
-			Hazard = 20
-		elseif CurrentRound < 7 then
-			Hazard = 30
-		end		
-		if Rand(Hazard) > Immunity then
-			GetSettlement("","City")
-			local InfectableSims = CityGetCitizenCount("City") / 4
-			local CurrentInfected = GetProperty("City","InfectedSims")
-			if CurrentInfected < InfectableSims then
-				diseases_Blackdeath("",true,true)
+	local SimAge = SimGetAge("") 
+	
+	if SimAge > 30 then -- old people have higher chances for infections
+		Hazard = Hazard + 5
+	end
+	
+	if SimAge > 40 then 
+		Hazard = Hazard + 5
+	end
+	
+	if SimAge > 50 then
+		Hazard = Hazard + 5
+	end
+	
+	if SimAge > 60 then
+		Hazard = Hazard + 5
+	end
+	
+	if Hazard > Rand(100) then -- infected!
+		-- get the correct illness
+		
+		if GetImpactValue("Actor", "Cold") > 0 then
+			diseases_Cold("", true)
+		elseif GetImpactValue("Actor", "Influenza") > 0 then
+			diseases_Influenza("", true)
+		elseif GetImpactValue("Actor", "Pneumonia") > 0 then
+			diseases_Influenza("", true)
+		elseif GetImpactValue("Actor", "Blackdeath") > 0 then
+			if not HasState("", "BlackdeathImmunity") then
+				local CurrentRound = GetRound()
+				local StartingRound = GetProperty("MyHomeCity", "ActivePlague") or 0
+				if CurrentRound < StartingRound + 4 then
+					diseases_Blackdeath("", true)
+				end
 			end
+			return "flee"
 		end
-		return "flee"
 	end
 end
 

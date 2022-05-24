@@ -34,7 +34,7 @@ function Run()
 		if GetSettlement("", "MyHomeCity") then
 			if not HasProperty("MyHomeCity", "ActivePlague") then
 				local StartingYear = GetRound()
-				SetProperty("MyHomeCity", "ActivePlague", StartingYear
+				SetProperty("MyHomeCity", "ActivePlague", StartingYear)
 				MsgNewsNoWait("All", "", "", "intrigue", -1,
 							"@L_HPFZ_KATASTR_STOD_KOPF",
 							"@L_HPFZ_KATASTR_STOD_RUMPF_+0",
