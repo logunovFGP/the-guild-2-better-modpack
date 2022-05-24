@@ -1,5 +1,3 @@
-Translate and add the following lines below:
-
 18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
 18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
 18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target has already been inspected recently. Try again later."   |
@@ -1113,17 +1111,3 @@ Translate and add the following lines below:
 19192   "_HPFZ_KATASTR_KRANK_NAM_+8"   "the Plague"   |
 19193   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+0"   "A family member got the Plague"   |
 19194   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+1"   "An employee got the Plague"   |
-
--------
-
-for the polish textfile, change some letters, they will show correctly ingame
-
-ą - ç
-ć - è
-ę - ô
-ł - ø
-ń - ñ
-ó - exist
-ś - é
-ż - ö
-ź - ý

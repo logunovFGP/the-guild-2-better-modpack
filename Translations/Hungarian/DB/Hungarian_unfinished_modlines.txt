@@ -1,6 +1,30 @@
-Translate and add the following lines below:
+// unfinished
+16468   "_SCENARIO_OPTIONS_FOS_DESC_+0"   "Council meetings"   |
+16469   "_UPGRADE_Lagerschild_NAME_+0"   "Warehouse sign"   |
+16471   "_UPGRADE_Lagerschild_TOOLTIP_+0"   "This sign draws the attention of passersby to the fact that this building is a warehouse."   |
+16472   "_CITY_NAME_ULM_+0"   "Ulm"   |
+16473   "_CITY_NAME_ALTHEIM_+0"   "Altheim"   |
+16474   "_CITY_NAME_STUTTGART_+0"   "Stuttgart"   |
+16475   "_CITY_NAME_ELCHINGEN_+0"   "Elchingen"   |
+16476   "_NETWORK_MAP_NAME_ULM_+0"   "Ulm"   |
+16477   "_NETWORK_MAP_DESC_ULM_+0"   "At the end of the 14th Century, the city councillors decided to expand Ulm to quadruple its original size. In the course of this process, many craftsmen and merchants took to the city, along with many an unsavoury character, to partake in some of the new prosperity."   |
+16478   "_MUNSTER_+0"   "Münster"   |
+16479   "_NETWORK_MAP_NAME_VIENNA_2C"   "Pressburg and Vienna"   |
+16480   "_NETWORK_MAP_DESC_VIENNA_2C"   "At the center of the Holy Roman Empire's German Nation, lie the tranquil cities of Vienna and Pressburg. However both cities are locked in a battle for supremecy in the archduchy of Austria."   |
+16481   "_CHARGE_FAILURE_+0"   "Unfortunately, the victim of your conspiracy is currently at war, defending our Fatherland. You cannot accuse them."   |
+16482   "_CHURCH_087_CHANGEFAITH_CATHOLIC_DESCRIPTIONFAMILY_+0"   "Do you want to renounce your false faith and devote yourself to the Holy Roman Church?"   |
+16483   "_CHURCH_087_CHANGEFAITH_PROTESTANT_DESCRIPTIONFAMILY_+0"   "Do you want to renoune your affection for the Pope and devote yourself to the true Protestant faith?"   |
+16484   "_NETWORK_MAP_NAME_ENGLAND_+0"   "England"   |
+16485   "_NETWORK_MAP_DESC_ENGLAND_+0"   "From the capital of London, the King of England controls the fate of his land. However the city also offers a lot of opportunities for Craftsmen, merchants and many an unsavoury character."   |
+16486   "_CITY_NAME_LEHAVRE_+0"   "Le Havre"   |
+16487   "_CITY_NAME_NORWICH_+0"   "Norwich"   |
+16488   "_DANCE_FAILURE_+0"   "Only women can delight your customers with a dance."   |
+16489   "_MEASURE_MineGuards_NAME_+0"   "Mine guards"   |
+16490   "_MEASURE_MineGuards_TOOLTIP_+0"   "Are you tired of nefarious ruffians robbing your mine, setting it on fire, or even capturing it? With this action, you will recruit guards who will then dedicate themselves entirely to your - yes your mine. And the ruffians who try to attack it."   |
 
+// MegaMod New and Changed lines
 18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
+// unfinished
 18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
 18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target has already been inspected recently. Try again later."   |
 18003   "_AI_NEWRIVALINTOWN_HEAD_+0"   "You have a new competitor!"   |
@@ -1113,17 +1137,3 @@ Translate and add the following lines below:
 19192   "_HPFZ_KATASTR_KRANK_NAM_+8"   "the Plague"   |
 19193   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+0"   "A family member got the Plague"   |
 19194   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+1"   "An employee got the Plague"   |
-
--------
-
-for the polish textfile, change some letters, they will show correctly ingame
-
-ą - ç
-ć - è
-ę - ô
-ł - ø
-ń - ñ
-ó - exist
-ś - é
-ż - ö
-ź - ý

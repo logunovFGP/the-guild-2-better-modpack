@@ -1,0 +1,459 @@
+// unfinished
+18311   "_CHARACTERS_3_TITLES_NAME_+6"   "#E[NT_NEUTRAL]Lesser Female Citizen"   |
+18312   "_CHARACTERS_3_TITLES_NAME_+7"   "#E[NT_NEUTRAL]Lesser Citizen"   |
+18313   "_GEMCDOP"   ""   |
+18314   "LE:"   "Health:"   |
+18315   "_ABILITIES_Heiligenschein_DESCRIPTION_+0"   "You have the incomparable gift of showing yourself in the very best light, seemingly like a perfect angel. You seem to be such a wonderful person that no one dares to threaten, pickpocket, or kidnap you. Even when standing before the judge, you appear as a victim rather than a perpetrator. You are truly pitiable! All crimes committed by your employees fade from witnesses' memories one-sixth faster than normal and in every trial against you, any evidence of your worst crime is simply ignored. If you still end up in prison, there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirement: Stealth 6."   |
+18316   "_ABILITIES_Nachtmensch_DESCRIPTION_+0"   "One afternoon as you walk along the dusty road, there comes a sudden thunderstorm. Soon the storm is raging, rain is pouring down, and lightning flashes from the heavens. There is nowhere to take shelter nearby, and so you throw yourself to the ground and pray to God. It doesn't help, since the next lightning bolt thoroughly burns your backside. The electricity surges through you and shakes you, and then the miracle happens: 6 random talents are permanently increased by one point."   |
+18317   "_ABILITIES_DorianGrau_DESCRIPTION_+0"   "You have sold your soul: as though by a miracle, you live 25 years longer than you normally would have, and all diseases, breaks, and injuries vanish. There is just one catch; thanks to your pact with evil, your charisma is henceforth 1.$N$NRequirement: Charisma 5."   |
+18318   "_ABILITIES_Friedensstifter_NAME_+0"   "Peacemaker"   |
+18319   "_ABILITIES_Bettlergestalt_NAME_+0"   "Countryside Politician"   |
+18320   "_ABILITIES_Bettlergestalt_DESCRIPTION_+0"   "When you enter the meeting room, you are a sight to behold. You looks do not fit in, you smell funny and talk in weird accent. But still for some reason most people seem to like you and trust you. Your charisma and rhetoric talents have increased by 2 points and you gain a 5% bonus to favour in political meetings.$N$NRequirement: Patron."   |
+18321   "_ABILITIES_Friedensstifter_DESCRIPTION_+0"   "A breath of inviolability and holiness surrounds all of your buildings, increasing their attractiveness by 25%%. No one dares to blow them up or set fire to them with bombs, pillage them, or rob them. How handy!$N$NRequirement: Scholar."   |
+18322   "_ABILITIES_Schlitzohr_NAME_+0"   "Wily Trader"   |
+18323   "_ABILITIES_Schlitzohr_DESCRIPTION_+0"   "You are a crafty rascal and have passed on a few of these tricks to your carters. You receive a bonus of 3 points to your bargaining talent and any time you or your carts sell goods in a market, you receive a 5% bonus on the actual sale price.$N$NRequirement: Craftsman."   |
+18324   "_ABILITIES_Leisetreter_DESCRIPTION_+0"   "Through years of practice at being inconspicuous, hiding, and skilled balancing acts, you have achieved a certain degree of mastery in this field. You receive a bonus of one point to your stealth and empathy talents.$N$NRequirement: Stealth 2."   |
+18325   "_ABILITIES_Unschuldsmiene_NAME_+0"   "Face of Innocence"   |
+18326   "_ABILITIES_Unschuldsmiene_DESCRIPTION_+0"   "You know how to put a good face on dirty tricks and convince others of your kind-heartedness and honorable intentions. All crimes committed by your employees fade from witnesses' memories one-third faster than normal and if in prison there is a chance every midnight that the prison guards will show mercy and set you free.$N$NRequirement: Stealth 5."   |
+18327   "_ABILITIES_Blitzeinbruch_NAME_+0"   "Lightning Burglary"   |
+18328   "_ABILITIES_Blitzeinbruch_DESCRIPTION_+0"   "You have taught your employees a thing or two about getting into a house quickly, stuffing their pockets, and clearing out again. From now on, all of your employees save 25%% of the usual time on every burglary, run 20% faster and receive a bonus to their stealth talent.$N$NRequirement: Rogue."   |
+18329   "_ABILITIES_VorbildlichesElternteil_NAME_+0"   "Model Parent"   |
+18330   "_ABILITIES_VorbildlichesElternteil_DESCRIPTION_+0"   "You are an absolutely perfect mother (or, of course, father). You take the time to teach your children everything they need in life. All of your children receive an experience bonus of 250 XP when they turn 12.$N$NRequirement: Empathy 3."   |
+18331   "_ABILITIES_KamaSutraMeister_DESCRIPTION_+0"   "You are were born as a charismatic, true lover. Your charisma talent increases by one for each level of this ability and the probability that you will father a child or get pregnant increases.$N$NRequirement: Charisma 2."   |
+18332   "_ABILITIES_KamaSutraMeister_NAME_+0"   "Sex Appeal"   |
+18333   "_ABILITIES_Ortsvereinvorsitzender_DESCRIPTION_+0"   "At political meetings, you have an opinion on everything and everyone, and you always have the last word, although you almost never have any idea what is being discussed. You are just a born politician! You babble so much nonsense at political meetings that the other people at the table surrender and give you a cumulative 5% of their favour for every level of this ability, just so you will finally shut up.$N$NRequirement: Rhetoric 3."   |
+18334   "_ABILITIES_Anfuehrer_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They look up to you, and do not take it the wrong way when you reprimand them or demand exceptional effort. If you use the action >Goad workers<, you no longer suffer the loss of reputation you ought to from the goading and the effect last longer.$N$NRequirement: Charisma 5."   |
+18335   "_ABILITIES_Ortsvereinvorsitzender_NAME_+0"   "Local Club President"   |
+18336   "_ABILITIES_Wunderprediger_NAME_+0"   "Oratory Master"   |
+18337   "_ABILITIES_Wunderprediger_DESCRIPTION_+0"   "You have earned the reputation of always striking the right tone, and you train your employees to follow your example. They gain bonuses to their Bargaining, Empathy and Rhetoric talents.$N$NRequirements: Scholar."   |
+18338   "_ABILITIES_BestesHausAmPlatz_NAME_+0"   "Best House in Town"   |
+18339   "_ABILITIES_BestesHausAmPlatz_DESCRIPTION_+0"   "Through hard work, you have earned the reputation of pampering your guests with special attention, whenever and wherever they may be. Good dreams guaranteed as a bonus to everyone that rents a sleeping spot. Every business you operate receives a 35% bonus in attractiveness, thus drawing more customers, and your careful employees are also 35% less likely to have accidents.$N$NRequirement: Patron"   |
+18340   "_ABILITIES_Zaeh_DESCRIPTION_+0"   "Your constitution is marvelous. You are wiry and incredibly resistant! For every level of this ability, you receive a cumulative bonus of one point on your constitution talent and some additional health. This bonus also applies to every character level already reached.$N$NRequirement: Constitution 2."   |
+18341   "_ABILITIES_Artefaktwissen_NAME_+0"   "Artefact Knowledge"   |
+18342   "_ABILITIES_Artefaktwissen_DESCRIPTION_+0"   "You often have your nose stuck into old folios and study the ancient mystics, druids, and the like. As a result, you are able to get the very most out of an artefact. For each level of this ability your arcane knowlewdge talent increases by one and you receive 2%% more experience whenever you get experience points.$N$NRequirement: Arcane Knowledge 2."   |
+18343   "_ABILITIES_Zaeh_NAME_+0"   "Constitutional Miracle"   |
+18344   "_ABILITIES_Ausbeuter_NAME_+0"   "Great Exploiter"   |
+18345   "_ABILITIES_Ausbeuter_DESCRIPTION_+0"   "Your motto is: the lion's share for me and you can have the rest! You are excellent at motivating your employees by hinting at their job security. You recive 20%% production bonus to all your businesses and you only have to pay 80%% of your employees' wages.$N$NRequirement: Craftsman."   |
+18346   "_ABILITIES_Sicherheitsfanatiker_DESCRIPTION_+0"   "You are a security fanatic! The burglary prevention mechanisms in your businesses are checked at least 5 times every day. Your employees may roll their eyes when you pull out your magnifying glass to check the grilles for rust, but your businesses are secure. If they are attacked by torch-throwing villains, you are able to call up a cursing, shouting crowd in no time, confusing the attackers. Protection against burglary rises by 15%% in all of your businesses and your buildings suffer 20%% less damage from attacks.$N$NRequirement: Empathy 3."   |
+18347   "_ABILITIES_Seelenverkaeufer_NAME_+0"   "Super Seller"   |
+18348   "_ABILITIES_Seelenverkaeufer_DESCRIPTION_+0"   "Actually, your customer just wanted to buy a woollen blanket, but they leave your business with a complete set of tailored clothes. You can literally sell anything to anyone. For each level of this ability your bargaining talent increases by 1 point and any time you or your carts sell goods in a market, you receive a 2%% bonus on the actual sale price.$N$NRequirement: Bargaining 2."   |
+18349   "_TWP_SUPPLYWORKSHOP_CHOOSE_SUPPLIERS_+0"   "Where should the cart get the materials? $N$C[255,20,20]Click a destination to remove it from the list."   |
+// ORIGINAL SOUNDFILES RENAMING AND REORGANIZING by Fajeth
+18350   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+1"   "#E[NT_NEUTRAL]Your Orders?"   |
+18351   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+7"   "#E[NT_NEUTRAL]You want me to thrash someone?"   |
+18352   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+8"   "#E[NT_NEUTRAL]Where is the enemy?"   |
+18353   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+8"   "#E[NT_NEUTRAL]You have an assignment for me?"   |
+18354   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+10"   "#E[NT_NEUTRAL]How may I be of service?"   |
+18355   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+11"   "#E[NT_NEUTRAL]What is it?"   |
+18356   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+6"   "#E[NT_NEUTRAL]Are there thieves in the area?"   |
+18357   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+4"   "#E[NT_NEUTRAL]What is your desire?"   |
+18358   "_SIM_COMMENTS_WORKER_ORDER_FIGHTER_NORMAL_FAVOR_+5"   "#E[NT_NEUTRAL]I'll take care of it."   |
+18359   "_SIM_COMMENTS_WORKER_ORDER_FIGHTER_NORMAL_FAVOR_+7"   "#E[NT_NEUTRAL]There won't be any clues - guaranteed."   |
+18360   "_SIM_COMMENTS_WORKER_ORDER_FIGHTER_GOOD_FAVOR_+3"   "#E[NT_NEUTRAL]You will be satisfied..."   |
+18361   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+0"   "#E[NT_NEUTRAL]I'll take care of it."   |
+18362   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+2"   "#E[NT_NEUTRAL]I'll look after it."   |
+18363   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+3"   "#E[NT_NEUTRAL]Alright."   |
+18364   "_SIM_COMMENTS_OWN_DYNASTY_ORDER_RANDOM_+4"   "#E[NT_NEUTRAL]I'll make certain."   |
+18365   "_SIM_COMMENTS_OWN_DYNASTY_CLICK_RANDOM_+6"   "#E[NT_NEUTRAL]Why you're always bothering me?"   |
+// F1 Hire
+18366   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18367   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18368   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18369   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18370   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18371   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18372   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18373   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18374   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18375   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18376   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F1_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// F2 Hire
+18377   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18378   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18379   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18380   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18381   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18382   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18383   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18384   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18385   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18386   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18387   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F2_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// F3 Hire
+18388   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18389   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18390   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18391   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18392   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18393   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18394   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18395   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18396   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18397   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18398   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_F3_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// M1 Hire
+18399   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18400   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18401   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18402   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18403   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18404   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18405   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18406   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18407   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18408   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18409   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M1_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// M2 Hire
+18410   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18411   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18412   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18413   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18414   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18415   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18416   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18417   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18418   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18419   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18420   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M2_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// M3 Hire
+18421   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+0"   "#E[SD_SAD]>Do you have any work for me?<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18422   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+1"   "#E[SD_DEPRESSED]>Oh... leave me alone!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18423   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+2"   "#E[NT_CONFIDENT]>Hire me - I can do anything!<$N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18424   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+3"   "#E[SD_DEPRESSED]>I want to work...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18425   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+4"   "#E[SD_DEPRESSED]>I'm bored...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18426   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+5"   "#E[SD_SAD]>Have you any spare coin?< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18427   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+6"   "#E[SD_SAD]>Alms...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18428   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+7"   "#E[SD_DEPRESSED]>Have mercy...< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18429   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+8"   "#E[NT_NEUTRAL]>Count me in.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18430   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+9"   "#E[NT_NEUTRAL]>Finally - I've waited a long time for this.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+18431   "_GENERAL_MEASURES_HIRE_SPEECH_HEAD_M3_+10"   "#E[NT_NEUTRAL]>Find someone else to order around.< $N$NDo you want to hire %1SN for a handsel of %2t?$N$N%1SK %1SN (Level: %3n)$NWage per round: %4t"   |
+// F1 Fire
+18432   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18433   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18434   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18435   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18436   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18437   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18438   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18439   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18440   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18441   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18442   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18443   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+11"   "#E[NT_NO]>How impertinant<"   |
+18444   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18445   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18446   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18447   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F1_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
+// F2 Fire
+18448   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18449   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18450   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18451   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18452   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18453   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18454   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18455   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18456   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18457   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18458   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18459   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+11"   "#E[NT_NO]>How impertinant<"   |
+18460   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18461   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18462   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18463   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F2_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
+// F3 Fire
+18464   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18465   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18466   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18467   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18468   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18469   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18470   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18471   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18472   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18473   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18474   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18475   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+11"   "#E[NT_NO]>How impertinant<"   |
+18476   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18477   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18478   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18479   "_SIM_COMMENTS_WORKER_ORDER_FIRED_F3_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
+// M1 Fire
+18480   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18481   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18482   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18483   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18484   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18485   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18486   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18487   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18488   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18489   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18490   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18491   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+11"   "#E[NT_NO]>How impertinant<"   |
+18492   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18493   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18494   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18495   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M1_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
+// M2 Fire
+18496   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18497   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18498   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18499   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18500   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18501   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18502   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18503   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18504   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18505   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18506   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18507   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+11"   "#E[NT_NO]>How impertinant<"   |
+18508   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18509   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18510   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18511   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M2_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
+// M3 Fire
+18512   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+0"   "#E[NT_NEUTRAL]>If I have to.<"   |
+18513   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+1"   "#E[NT_NEUTRAL]>I don't think that is a good idea.<"   |
+18514   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+2"   "#E[NT_NEUTRAL]>You don't like me, do you?<"   |
+18515   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+3"   "#E[NT_NEUTRAL]>Bah, what's the point of that?<"   |
+18516   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+4"   "#E[NT_NEUTRAL]>I don't like you.<"   |
+18517   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+5"   "#E[NT_NEUTRAL]>You can stuff it!<"   |
+18518   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+6"   "#E[AG_RANTING]>And you claim to be well read?<"   |
+18519   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+7"   "#E[AG_RANTING]>What are you thinking?!<"   |
+18520   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+8"   "#E[AG_RANTING]>That can't be true!<"   |
+18521   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+9"   "#E[AG_RANTING]>I would have expected more guile from you!<"   |
+18522   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+10"   "#E[DF_DISGUSTED]>That's unheard of!<"   |
+18523   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+11"   "#E[NT_NO]>How impertinant<"   |
+18524   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+12"   "#E[NT_NO]>Who do you think you are?<"   |
+18525   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+13"   "#E[AG_ENRAGED]>Get out! I want nothing more to do with you.<"   |
+18526   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+14"   "#E[AG_ENRAGED]>I have nothing more to say to you!<"   |
+18527   "_SIM_COMMENTS_WORKER_ORDER_FIRED_M3_+15"   "#E[AG_CYNICAL]>May the worms take you.<"   |
+// Soundfile mod end
+18528   "_BUILDING_Piratesnest2_NAME_+0"   "Pirates Haven"   | 
+18529   "_BUILDING_Piratesnest2_TOOLTIP_+0"   "Less dilapidated than the Pirates Den, the Pirates Haven is a place of even greater wickery and danger. Only those who have nothing to lose gather here. Rum, and fat booty, is all that still counts for them."   | 
+18530   "_BUILDING_Piratesnest2_REQUIREMENTS_+0"   "Requirements: Rogue level 3"   | 
+18531   "_BUILDING_Piratesnest2_POOL_+0"   "The Old Sea Dogs"   | 
+18532   "_BUILDING_Piratesnest2_POOL_+1"   "Equal Loot Shares"   | 
+18533   "_BUILDING_Piratesnest2_POOL_+2"   "The Ghost Ship"   | 
+18534   "_BUILDING_Piratesnest2_POOL_+3"   "Funny Mug Taps"   | 
+18535   "_BUILDING_Piratesnest2_POOL_+4"   "All Men on Deck!"   | 
+18536   "_BUILDING_Piratesnest2_POOL_+5"   "The Bloody Cutlass"   | 
+18537   "_BUILDING_Piratesnest2_POOL_+6"   "The Privateers"   | 
+18538   "_BUILDING_Piratesnest2_POOL_+7"   "The Bearded Men"   | 
+18549   "_BUILDING_Piratesnest2_POOL_+8"   "On a Dead Man's Chest"   | 
+18540   "_BUILDING_Piratesnest2_POOL_+9"   "Careening Ahoy!"   | 
+18541   "_BUILDING_Piratesnest2_POOL_+10"   "Set Sail!"   | 
+18542   "_BUILDING_Piratesnest2_POOL_+11"   "The Drunken Helmsman"   | 
+18543   "_BUILDING_Piratesnest3_NAME_+0"   "Pirates Fortress"   | 
+18544   "_BUILDING_Piratesnest3_TOOLTIP_+0"   "The Pirates Fortress brings terror to all righteous captains. For in this place, sea raiders, with weapons up to their neck and ships armed up to the crow's nest, sail into the seven seas, to capture every trading vessel they can get a hold of."   | 
+18545   "_BUILDING_Piratesnest3_REQUIREMENTS_+0"   "Requirements: Rogue level 5"   | 
+18546   "_BUILDING_Piratesnest3_POOL_+0"   "The Hooked Hand"   | 
+18547   "_BUILDING_Piratesnest3_POOL_+1"   "Wind in our Sails"   | 
+18548   "_BUILDING_Piratesnest3_POOL_+2"   "Free Hooks"   | 
+18549   "_BUILDING_Piratesnest3_POOL_+3"   "Cap'n on Deck"   | 
+18550   "_BUILDING_Piratesnest3_POOL_+4"   "The Crow's Nest"   | 
+18551   "_BUILDING_Piratesnest3_POOL_+5"   "The One-Armed Pirate"   | 
+18552   "_BUILDING_Piratesnest3_POOL_+6"   "Illustre Flibustier"   | 
+18553   "_BUILDING_Piratesnest3_POOL_+7"   "The Sea Serpent"   | 
+18554   "_BUILDING_Piratesnest3_POOL_+8"   "The Eye-Patch"   | 
+18555   "_BUILDING_Piratesnest3_POOL_+9"   "Treasure Collectors"   | 
+18556   "_BUILDING_Piratesnest3_POOL_+10"   "The Curse of the Seas"   | 
+18557   "_BUILDING_Piratesnest3_POOL_+11"   "Corsair Club"   | 
+18558   "_UPGRADE_Arbeiterslot_NAME_+0"   "Worker Slot"   |
+18559   "_UPGRADE_Arbeiterslot_TOOLTIP_+0"   "Each business can hire up to 5 workers to speed up production, but you can only do so if you have enough slots for them."   |
+18560   "_UPGRADE_Produktivitaet_NAME_+0"   "Productivity"   |
+18561   "_UPGRADE_Produktivitaet_TOOLTIP_+0"   "Increasing productivity shortens the manufacturing time of products. However, gathering time of raw materials and herbs is not affected."   |
+18562   "_UPGRADE_Lagerslot_NAME_+0"   "Storage Slots"   |
+18563   "_UPGRADE_Lagerslot_TOOLTIP_+0"   "The more storage slots your business has, the greater the variety of goods you can store."   |
+18564   "_UPGRADE_Lagermenge_NAME_+0"   "Storage Capacity"   |
+18565   "_UPGRADE_Lagermenge_TOOLTIP_+0"   "The higher the storage capacity, the more of each product you can store."   |
+18566   "_UPGRADE_Brandschutz_NAME_+0"   "Fire Protection"   |
+18567   "_UPGRADE_Brandschutz_TOOLTIP_+0"   "Fire protection reduces the damage fire does to your buildings. The higher the fire protection, the faster the fire goes out."   |
+18568   "_UPGRADE_Einbruchschutz_NAME_+0"   "Burglary Protection"   |
+18569   "_UPGRADE_Einbruchschutz_TOOLTIP_+0"   "You cannot prevent burglaries, but you can make them more difficult. With stronger security, thieves will need more time to get into your building, and you will have more time to alert the guard."   |
+18570   "_UPGRADE_Kundenattraktivitaet_NAME_+0"   "Attractiveness to >Customers<"   |
+18571   "_UPGRADE_Kundenattraktivitaet_TOOLTIP_+0"   "Attractiveness conditions wether you will be successful in luring customers to your building or not. In some businesses, like the Tavern, the customer appeal will also affects the revenue from gratuities."   |
+18572   "_UPGRADE_Talentbonus_NAME_+0"   "Talent Bonus"   |
+18573   "_UPGRADE_Talentbonus_TOOLTIP_+0"   "Some professions benefit greatly from workers with high levels in their talents, making them much more effective during their actions."   |
+// no need to translate the credits
+18574   "_CREDITS_+0"   ">Fajeth's Megamodpack Reforged<: $NFanaddon for >The Guild 2 - Renaissance<$Nby Fajeth$N$N$NOriginal Developers:$NRUNEFORGE Game Studio$N4HEAD Studios$N$N$NPublished by$NJoWooD Entertainment AG$NNordic Games (THQ Nordic)"   |
+18575   "_CREDITS_+1"   "$[Megamod Credits$]$N$N$[Project Lead and Design$]$NFajeth$N$N$[Script Design$]$NFajeth, ThreeOfMe, Serpens66, F-Man, Nommy$N$N$[Map Design$]$NFajeth$N$N$[Additional Music$]$NOST Europe 1400 The Guild$NAlexander Nakarada (www.serpentsoundstudios.com)$N$N$[GUI$]$NMoK, Fajeth, Napi96$N$N$[2D$]$NFajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii$N$N$[3D$]$NIctiv"   |
+18576   "_CREDITS_+2"   "$[Additional Support$]$NVSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus$N$N$[Special Thanks to:$]$NTHQ Nordic$NThe Guild 2 Community!$N$N$[Internal Testing$]$NThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe$N$N$[Network Helper$]$NAgent Mass$N$N$[Community Support$]$NThreeOfMe, Erilambus, VSX, Fajeth"   |
+18577   "_CREDITS_+3"   "$[Localization$]$N$N$[German$]$NFajeth, ThreeOfMe$N$N$[English$]$NFajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack$N$N$[Spanish$]$NSkip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador$N$N$[Italian$]$Nfrankieorabona, Marian, Caligari89$N$N$[French$]$NRico, StalkFire, Techgenieur, Erfive$N$N$[Portuguese$]$NRegismrs, BossPenguin$N$N$[Russian$]$NRumata, Mr. Bro, Dogfire$N$N$[Polish$]$NSeljuck$N$N$[Hungarian$]$NWiNTeR, Rdancsol, jooe "   |
+18578   "_CREDITS_+4"   "Original Credits for The Guild 2 Renaissance:$N$N$[Project Lead$]$NHeinrich Meyer$N$N$[Lead Artist$]$NStephan Kubisch$N$N$[Lead Game Designer$]$NHeinrich Meyer$N$N$[Additional Concept & Game Design$]$NJakob Marczynski$NFabian Hackhofer$NTobias Horn$N"   |
+18579   "_CREDITS_+5"   "$[Technical Director & Programming$]$NFabian Hackhofer$N$N$[Programming ModLauncher$]$NKristian Ziegenmeyer$N$N$[Scripting$]$NHeinrich Meyer$NFabian Hackhofer$NJakob Marczynski$NJean-Luc Preikschas$NDennis Müller"   |
+18580   "_CREDITS_+6"   "$[2D & 3D Artists$]$NStephan Kubisch$NJakob Marczynski$N$N$[Additional Artists$]$NAndre Panzerzynski$NIsabell Panzerzynski$N$N$[Map Design$]$NStephan Kubisch$NTobias Horn$NHeinrich Meyer$NDennis Müller$N"   |
+18581   "_CREDITS_+7"   "$[Quality Assurance Manager$]$NTobias Horn$NDennis Müller$N$N$[Renaissance-Soundtrack composed by$]$NYannick Süß$N$N$[Remastered by$]$NRobin Birner$N$N$[German Handbook$]$NAngelika Lorenz$N"   |
+18582   "_CREDITS_+8"   "JoWooD Entertainment AG:$N$NProducer$NReinhard Pollice$N$N$[Testing Coordinator$]$NDan Dawang$N$N$[Localization Manager$]$NGennaro Giani"   |
+18583   "_CREDITS_+9"   "Marketing and PR - Europe:$N$N$[Head of Publishing$]$NStefan Berger$N$N$[Marketing Manager$]$NMarkus Reutner$N$N$[Product Marketing Manager$]$NRoswitha Hauke$N$N$[PR Manager$]$NTamara Berger$NClemens Schneidhofer$N$N$[Community Management$]$N>Megalomaniac<$N"   |
+18584   "_CREDITS_+10"   "$[Graphic Artist$]$NSabine Schmid$N$N$[Web$]$NErnst Satzinger$NChristian Hutterer$N$N$[Trailer Creation$]$NErnst Satzinger$N"   |
+18585   "_CREDITS_+11"   "$[Age Rating Coordinator$]$NThomas Reisinger$N$N$[International Sales$]$NRoland >HobbiBobbi< Hobiger$N$N$[Online Sales$]$NThomas Reisinger$N$N$[Manufacturing$]$NMasen Watti$N"   |
+18586   "_CREDITS_+12"   "Legal Affairs and Business Development:$N$N$[Legal Affairs$]$NKourosh Onghaie$N$N$[Business Development$]$NReinhard Pollice$NStefan Berger$N"   |
+18587   "_CREDITS_+13"   "Executive Management JoWooD Group:$N$N$[CEO$]$NFranz Rossler$N$N$[CFO$]$NKlemens Kreuzer"   |
+18588   "_CREDITS_+14"   "Dreamcatcher Interactive:$N$NMarketing and PR - North America$N$NProduct Marketing Manager$NDan Dawang$NBryan Cook$N$N$[PR Coordinator$]$NMichael Mota$N$N$[Art Director$]$NJay Kinsella$N"   |
+18589   "_CREDITS_+15"   "$[Graphic Designers$]$NEsther Sucre$N$N$[Online Marketing and Web Design$]$NTed Thompson$N$N$[Sales$]$NEric Edwards$N$N$[CEO$]$NRoman Wenzl$N"   |
+18590   "_CREDITS_+16"   "External QA:$N$NQuantic Lab$Nwww.quanticlab.com$N$N$[CEO$]$NStefan Seicarescu$N$N$[Lead Tester$]$NPap Szilveszter$N"   |
+18591   "_CREDITS_+17"   "$[Nordic Games GmbH: $N$N$[Producer, Designer & Scripter$]$NHeinrich Meyer$N$N$[Executive Producer$]$NReinhard Pollice$N$N$[Localization Manager$]$NGennaro Giani$N$N$[PR & Marketing Manager$]$NPhilipp Brock$N$N$[Social Media Manager$]$NManuel Karl$N"   |
+18592   "_CREDITS_+18"   "$[Lead Graphic Artist$]$NErnst Satzinger$N$N$[Asset Assistant$]$NTobias Grimus$N$N$[Age Rating Coordinator$]$NThomas Reisinger$N$N$[Sales Director$]$NGeorg Klotzberg$N$N$[Sales$]$NReinhold Schor$NNik Blower$N$N$[Digital Distribution Manager$]$NThomas Reisinger$N$N$[Manufacturing$]$NAnton Seicarescu$N"   |
+18593   "_CREDITS_+19"   "$[Accounting & Office Management$]$NMarion Mayer$NAnton Seicarescu$N$N$[Business & Product Development Director$]$NReinhard Pollice$N$N$[Nordic Games GmbH Management$]$NKlemens Kreuzer$NLars Wingefors$N$N$[Nordic Games NA Inc.$]$NEric Wuestmann$NKlemens Kreuzer$N"   |
+18594   "_CREDITS_+20"   "$[Original Concept & Gamedesign (4HEAD Studios)$]$NLars Martensen$NTobias Severin$N4HEAD Studios Team$N$N$[Original Sound Design$]$NPierre Langer$N$Nproduced by$NDynamedion - www.dynamedion.de$N"   |
+18595   "_CREDITS_+21"   "German Voice Recordings:$N$NTon In Ton$Nwww.toninton.de$N$Nproduced by$NWolfgang Zarges$N$N$[German Voice Actors$]$N$NNarrator$NAart Veder$N$NIsabella Bartdorf$NMonika Heusch$NThomas Friebe$NDana Geissler$NDieter Gring$NJulius Gröber$NKarl-Jürgen Sihler$NJulian Steiner$NSebastian Walch$N"   |
+18596   "_CREDITS_+22"   "Music and Sound FX$N$NOriginal Score written by$NPierre Langer$NMarkus Schmidt$NTilman Sillescu$NAlexander Röder$N$Nexcept for >Thief of the Night< (40A) by Proud Music$N"   |
+18597   "_CREDITS_+23"   "$[Score Layout by$]$NMarco Jovic$N$N$[Orchestra$]$NThüringen Philharmonie Gotha - Suhl$N$NOrchestra recorded, edited and mixed by$NGENUIN Musikproduktion$N$N"   |
+18598   "_CREDITS_+24"   "$[Special Thanks to:$]$N$NAlex 'Rocky_4r' Marocchi$NIvan 'Aragornil' Lábaj $NPatrick 'pad11' Donghia$NSiriusgirl$NMarcus Reichel$NAlexander Just$NMcCoy!$NAngelika Lorenz$N"   |
+18599   "_CREDITS_+25"   "$[Patch 4.21 Betatesters$]$NVFB43, Phenomtaker, Sagisa, vonBonna, TheJan, Crossfire, Duranoyr, Glycerius, Siegfried$N$N$[Patch 4.2 Betatesters$]$NNeromi, Napi, PhenomTaker, Sagisa, david234, JulianT, Fajeth,$NBegemont, chemiestudent, SirWayne0815, Hamma$N$N$[Patch 4.15 Betatesters$]$NRocky_4r, Siriusgirl, Reinhold, Aragornil, Hamma, Khalim,$NEickes, Sunshine, Racer, Durin, FrodoBeutlin, Sunpack, L-Tek,$NFajeth, LOST, Tithilion, Wulfgar, Poena, Soribus, Travis McBonG,$NHalama, JacksonSG1, lukiono$N"   |
+18600   "_CREDITS_+26"   "$[Guest appearance by Formatio Versengold$]$N$NWe were able to obtain the services of the famous German medieval band Versengold$N(www.versengold.de) for several in-game performances. They play three of their$Npieces in the taverns and inns of >The Guild 2 - Renaissance<.$N"   |
+18601   "_CREDITS_+27"   "$[Acknowledgement (Patch 4.2)$]$N$NMany thanks to Audinity (www.audinity.com) for remastering remastering 6 pieces of our music!$N$NAlso thank you to Kinver, LordProtektor, McCoy, DarkLiz, Zbombe and M.C.$Nfor their helpful suggestions and solutions to so many stubborn bugs.$N$NAnd not to forget: Thank you also to the many fans of >The Guild 2 - Renaissance<, who$Nhave kept the game alive and have tirelessly called our attention to bugs.$N"   |
+18602   "_CREDITS_+28"   "$N$NEnjoy!"   |
+//
+18603   "_CHECKIMPERIALOFFICER_HEAD_+0"   "Counsellor %7l"   |
+18604   "_CHECKIMPERIALOFFICER_BODY_+0"   "With today %2SN from %3NAME is appointed >%4l%< for the duration of the year %1n %.$N$NReputation %7l: $NImperial Fame of the family: %5l (%6n)"   |
+18605   "_CHECKALDERMAN_BODY_+0"   "The council of the guild elders has selected %2SN, %3l of %4NAME, as alderman for the region for the year %1n.$N$NFame of the family: %5l (%6n)"   |
+18606   "_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0"   "Reputation"   |
+18607   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+0"   "%6l%1SN is %2l to %3NAME.$N$NGuildhouse Fame of the Dynasty: %4l (%5n)$NPersonal Fame: %10n $N$NImperial Fame %7l: %8l (%9n)"   |
+18608   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1"   "%4l%1SN does not belong to a guild.$N$NGuildhouse Fame of the Dynasty: %2l (%3n)$NPersonal Fame: %8n $N$NImperial Fame %5l: %6l (%7n)"   |
+18609   "_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2"   "%5l%1SN does not belong to a guild, as in %2NAME no guild house has been founded yet.$N$NGuildhouse Fame of the Dynasty %3l (%4n)$NPersonal Fame: %9n $N$NImperial Fame %6l: %7l (%8n)"   |
+18610   "_MEASURE_ShowGuildMembership_NAME_+0"   "Show your reputation"   |
+18611   "_MEASURE_ShowGuildMembership_TOOLTIP_+0"   "With this action you can view the reputation of your Dynasty."   |
+18612   "_MEASURE_ShowGuildMembershipSim_NAME_+0"   "Show reputation of others"   |
+18613   "_MEASURE_ShowGuildMembershipSim_TOOLTIP_+0"   "With this action, you can view the reputation of another Dynasty."   |
+18614   "_MEASURE_ShowGuildMembershipSim_TARGET_+0"   "Select the person whose reputation you want to see"   |
+18615   "_ONSCREENHELP_9_ACTION_IMPACT_destitute_NAME_+0"   "Destitute"   |
+18616   "_ONSCREENHELP_9_ACTION_IMPACT_poor_NAME_+1"   "Poor"   |
+18617   "_ONSCREENHELP_9_ACTION_IMPACT_middleclass_NAME_+2"   "Middle Class"   |
+18618   "_ONSCREENHELP_9_ACTION_IMPACT_prosperous_NAME_+3"   "Prosperous"   |
+18619   "_ONSCREENHELP_9_ACTION_IMPACT_rich_NAME_+4"   "Rich"   |
+18620   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+0"   ""   |
+18621   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+1"   ""   |
+18622   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+2"   ""   |
+18623   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+3"   ""   |
+18624   "_ONSCREENHELP_1_CHARACTER_OTHER_SOCIAL_STATE_+4"   ""   |
+18625   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+1"   "Destitute people (unemployed)"   |
+18626   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+2"   "Poor people (apprentices)"   |
+18627   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+3"   "Middle class (journeymen & Dynasties)"   |
+18628   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+4"   "Prosperous people (masters & Dynasties)"   |
+18629   "_ONSCREENHELP_2_ITEMS_PREFFERENCE_+5"   "The richest citizens (Dynasties)"   |
+18630   "_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_HEAD_+0"   "Fondness regresses"   |
+18631   "_DIPLOMATIC_FEEDBACK_FONDNESS_REDUCE_BODY_+0"   "%2ST %2SN's Dynasty has grown less fond of you due to the recent events.$N$NNew level of Fondness: %3n"   |
+18632   "_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_HEAD_+0"   "Fondness dies out"   |
+18633   "_DIPLOMATIC_FEEDBACK_FONDNESS_REMOVE_BODY_+0"   "%1ST %1SN, the latest events have left their mark. %2ST %2SN's Dynasty holds no more Fondness for you !"   |
+18634   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_HEAD_+0"   "A Grudge is born"   |
+18635   "_DIPLOMATIC_FEEDBACK_GRUDGE_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a scar so deep that your Dynasties now hold a Grudge against each other!$N$NEvery level of Grudge will make it harder to obtain Favor from them. If you don't act, this could last for a very long time..."   |
+18636   "_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_HEAD_+0"   "A Grudge intensifies"   |
+18637   "_DIPLOMATIC_FEEDBACK_GRUDGE_ADD_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN have left a mark. The Grudge between your Dynasties intensifies even more!$N$NNew level of Grudge: %3n"   |
+18638   "_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_HEAD_+0"   "A Grudge calms down"   |
+18639   "_DIPLOMATIC_FEEDBACK_GRUDGE_REDUCE_BODY_+0"   "%1ST %1SN, the ongoing Grudge between you and %2ST %2SN's Dynasty has started to die down thanks to the latest events!$N$NNew level of Grudge: %3n"   |
+18640   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_HEAD_+0"   "A Grudge settles"   |
+18641   "_DIPLOMATIC_FEEDBACK_GRUDGE_REMOVE_BODY_+0"   "%1ST %1SN, the latest events leave their mark. %2ST %2SN's Dynasty has finally let go of their Grudge towards you !"   |
+18642   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_HEAD_+0"   "A Dynasty is fond of you!"   |
+18643   "_DIPLOMATIC_FEEDBACK_FONDNESS_GAIN_BODY_+0"   "%1ST %1SN, the latest events with %2ST %2SN has brought your Dynasties together in a bond of friendship!$N$NEvery level of Fondness will make it easier to obtain Favor from them. If you continue like this, this friendship could last for a very long time !"   |
+18644   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_HEAD_+0"   "A bond of friendship strengthens"   |
+18645   "_DIPLOMATIC_FEEDBACK_FONDNESS_ADD_BODY_+0"   "%1ST %1SN, the latest events between you and %2ST %2SN have borne fruits. The ties of friendship between your families have grown stronger!$N$NNew level of Fondness: %3n"   |
+18646   "_MEASURE_Train_TOOLTIP_+0"   "Once in a while, reading a good book or doing some exercises at home can really help you with everyday life.$N$NFor this action you get Experience Points !"   |
+18647   "_MEASURE_Train_NAME_+0"   "Learning"   |
+//
+18648   "_MEASURE_Kill_TOOLTIP_+0"   "Ne vous suffit-il pas de vaincre votre adversaire au combat? Non? Alors, soyez cruel et finissez-le. Mais attention aux témoins, car même dans ces temps sombres, le meurtre est un crime sérieux!$NVous obtenez de l'expérience pour cette mesure. Plus le niveau de votre victime est élevé, plus vous avez d'expérience."   |
+// unfinished
+18649   "_OFFICE_SESSION_IN_TOWN_COUNTDOWN_+0"   "Council meeting in %2NAME"   |
+18650   "_DUEL_IN_TOWN_COUNTDOWN_+0"   "Duel in %2NAME"   |
+18651   "_TRIAL_IN_TOWN_COUNTDOWN_+0"   "Trial in %2NAME"   |
+19000   "_DYNASTY_FLAG_SWITCH_+0"    "%1SN"   |
+19001   "_DYNASTY_FLAG_SWITCH_+1"    "$S[2029] %1SN"   |
+19002   "_DYNASTY_FLAG_SWITCH_+2"    "$S[2029] %2SN"   |
+19003   "_DYNASTY_FLAG_SWITCH_+3"    "$S[2029] %3SN"   |
+19004   "_DYNASTY_FLAG_SWITCH_+4"    "$S[2029] %4SN"   |
+19011   "_DYNASTY_FLAG_SWITCH_+5"    "$S[2030] %1SN"   |
+19012   "_DYNASTY_FLAG_SWITCH_+6"    "$S[2030] %2SN"   |
+19013   "_DYNASTY_FLAG_SWITCH_+7"    "$S[2030] %3SN"   |
+19014   "_DYNASTY_FLAG_SWITCH_+8"    "$S[2030] %4SN"   |
+19021   "_DYNASTY_FLAG_SWITCH_+9"    "$S[2031] %1SN"   |
+19022   "_DYNASTY_FLAG_SWITCH_+10"   "$S[2031] %2SN"   |
+19023   "_DYNASTY_FLAG_SWITCH_+11"   "$S[2031] %3SN"   |
+19024   "_DYNASTY_FLAG_SWITCH_+12"   "$S[2031] %4SN"   |
+19031   "_DYNASTY_FLAG_SWITCH_+13"   "$S[2032] %1SN"   |
+19032   "_DYNASTY_FLAG_SWITCH_+14"   "$S[2032] %2SN"   |
+19033   "_DYNASTY_FLAG_SWITCH_+15"   "$S[2032] %3SN"   |
+19034   "_DYNASTY_FLAG_SWITCH_+16"   "$S[2032] %4SN"   |
+19041   "_DYNASTY_FLAG_SWITCH_+17"   "$S[2033] %1SN"   |
+19042   "_DYNASTY_FLAG_SWITCH_+18"   "$S[2033] %2SN"   |
+19043   "_DYNASTY_FLAG_SWITCH_+19"   "$S[2033] %3SN"   |
+19044   "_DYNASTY_FLAG_SWITCH_+20"   "$S[2033] %4SN"   |
+19051   "_DYNASTY_FLAG_SWITCH_+21"   "$S[2034] %1SN"   |
+19052   "_DYNASTY_FLAG_SWITCH_+22"   "$S[2034] %2SN"   |
+19053   "_DYNASTY_FLAG_SWITCH_+23"   "$S[2034] %3SN"   |
+19054   "_DYNASTY_FLAG_SWITCH_+24"   "$S[2034] %4SN"   |
+19061   "_DYNASTY_FLAG_SWITCH_+25"   "$S[2035] %1SN"   |
+19062   "_DYNASTY_FLAG_SWITCH_+26"   "$S[2035] %2SN"   |
+19063   "_DYNASTY_FLAG_SWITCH_+27"   "$S[2035] %3SN"   |
+19064   "_DYNASTY_FLAG_SWITCH_+28"   "$S[2035] %4SN"   |
+19071   "_DYNASTY_FLAG_SWITCH_+29"   "$S[2036] %1SN"   |
+19072   "_DYNASTY_FLAG_SWITCH_+30"   "$S[2036] %2SN"   |
+19073   "_DYNASTY_FLAG_SWITCH_+31"   "$S[2036] %3SN"   |
+19074   "_DYNASTY_FLAG_SWITCH_+32"   "$S[2036] %4SN"   |
+19081   "_DYNASTY_FLAG_SWITCH_+33"   "$S[2037] %1SN"   |
+19082   "_DYNASTY_FLAG_SWITCH_+34"   "$S[2037] %2SN"   |
+19083   "_DYNASTY_FLAG_SWITCH_+35"   "$S[2037] %3SN"   |
+19084   "_DYNASTY_FLAG_SWITCH_+36"   "$S[2037] %4SN"   |
+19091   "_DYNASTY_FLAG_SWITCH_+37"   "$S[2038] %1SN"   |
+19092   "_DYNASTY_FLAG_SWITCH_+38"   "$S[2038] %2SN"   |
+19093   "_DYNASTY_FLAG_SWITCH_+39"   "$S[2038] %3SN"   |
+19094   "_DYNASTY_FLAG_SWITCH_+40"   "$S[2038] %4SN"   |
+19101   "_DYNASTY_FLAG_SWITCH_+41"   "$S[2039] %1SN"   |
+19102   "_DYNASTY_FLAG_SWITCH_+42"   "$S[2039] %2SN"   |
+19103   "_DYNASTY_FLAG_SWITCH_+43"   "$S[2039] %3SN"   |
+19104   "_DYNASTY_FLAG_SWITCH_+44"   "$S[2039] %4SN"   |
+19111   "_DYNASTY_FLAG_SWITCH_+45"   "$S[2040] %1SN"   |
+19112   "_DYNASTY_FLAG_SWITCH_+46"   "$S[2040] %2SN"   |
+19113   "_DYNASTY_FLAG_SWITCH_+47"   "$S[2040] %3SN"   |
+19114   "_DYNASTY_FLAG_SWITCH_+48"   "$S[2040] %4SN"   |
+19121   "_DYNASTY_FLAG_SWITCH_+49"   "$S[2041] %1SN"   |
+19122   "_DYNASTY_FLAG_SWITCH_+50"   "$S[2041] %2SN"   |
+19123   "_DYNASTY_FLAG_SWITCH_+51"   "$S[2041] %3SN"   |
+19124   "_DYNASTY_FLAG_SWITCH_+52"   "$S[2041] %4SN"   |
+19131   "_DYNASTY_FLAG_SWITCH_+53"   "$S[2042] %1SN"   |
+19132   "_DYNASTY_FLAG_SWITCH_+54"   "$S[2042] %2SN"   |
+19133   "_DYNASTY_FLAG_SWITCH_+55"   "$S[2042] %3SN"   |
+19134   "_DYNASTY_FLAG_SWITCH_+56"   "$S[2042] %4SN"   |
+19141   "_DYNASTY_FLAG_SWITCH_+57"   "$S[2043] %1SN"   |
+19142   "_DYNASTY_FLAG_SWITCH_+58"   "$S[2043] %2SN"   |
+19143   "_DYNASTY_FLAG_SWITCH_+59"   "$S[2043] %3SN"   |
+19144   "_DYNASTY_FLAG_SWITCH_+60"   "$S[2043] %4SN"   |
+19151   "_DYNASTY_FLAG_SWITCH_+61"   "$S[2044] %1SN"   |
+19152   "_DYNASTY_FLAG_SWITCH_+62"   "$S[2044] %2SN"   |
+19153   "_DYNASTY_FLAG_SWITCH_+63"   "$S[2044] %3SN"   |
+19154   "_DYNASTY_FLAG_SWITCH_+64"   "$S[2044] %4SN"   |
+19161   "_DYNASTY_FLAG_SWITCH_+65"   "$S[2045] %1SN"   |
+19162   "_DYNASTY_FLAG_SWITCH_+66"   "$S[2045] %2SN"   |
+19163   "_DYNASTY_FLAG_SWITCH_+67"   "$S[2045] %3SN"   |
+19164   "_DYNASTY_FLAG_SWITCH_+68"   "$S[2045] %4SN"   |
+19165   "_MEASURE_BauArbeitMeasure_NAME_+0"   "Construct Building"   |
+19166   "_MEASURE_BauZusatzMeasure_NAME_+0"   "Construct Building"   |
+19167   "_MEASURE_Linger_TARGET_+0"   "Select the place where you want to rest."   |
+19168   "_NAMES_SCANDINAVIAN_FEMALE_+65"   "Linnéa"   |
+19169   "_NAMES_FRENCH_FEMALE_+120"   "Linéa"   |
+19170   "_NAMES_GERMAN_FEMALE_+113"   "Linea"   |
+19171   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0"   "#E[SD_SAD]An employee has died."   |
+19172   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0"   "%1SN, employed at %2GG, has died today. Thus you need to refill the position."   |
+19173   "_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0"   "Bribery not possible - you don't have %1t to bribe %2SN"   |
+19174   "_BUILDING_LEVELUP_HEAD_+2"   "#E[NT_NEUTRAL]Building-Level increased"   |
+19175   "_BUILDING_BUILD_HEAD_+2"   "#E[NT_NEUTRAL]New Building"   |
+19176   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BLACKDEATH_HEAD_+0"   "#E[NT_SAD]An employee died after severe illness"   |
+19177   "_FAMILY_6_DEATH_MSG_DEAD_BLACKDEATH_HEAD_+0"   "#E[NT_SAD]A member of your family died after severe illness"   |
+19178   "_FAMILY_6_DEATH_MSG_DEAD_ILLNESS_HEAD_+0"   "#E[NT_SAD]A member of your family died after severe illness"   |
+19179   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0"   "#E[NT_SAD]An employee died after severe illness"   |
+19180   "_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY_+0"   "%1SN of the Dynasty %4l %1DN has died today. %1SV was %2i years old and will be buried in %3NAME."   |
+19181   "_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_MALE_+0"   "With great sadness I have to inform you about the demise of %1SN. He lived for %2n years on God's wonderful earth and died %4l. %1SV will be buried in the family grave in %3NAME."   |
+19182   "_FAMILY_6_DEATH_MSG_DEAD_OWNER_ILLNESS_BODY_FEMALE_+0"   "With great sadness I have to inform you about the demise of %1SN. She lived for %2n years on God's wonderful earth and died %4l. %1SV will be buried in the family grave in %3NAME."   |
+19183   "_ILLNESS_REASON_+0"   "after severe illness"   |
+19184   "_ILLNESS_REASON_+1"   "because of the consequences of a burn wound"   |
+19185   "_ILLNESS_REASON_+2"   "because of the consequences of a pneumonia"   |
+19186   "_ILLNESS_REASON_+3"   "because of the consequences of the Plague"   |
+19187   "_ILLNESS_REASON_+4"   "a violent death"   |
+19188   "_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY_+0"   "%1SN of the Dynasty %5l %1DN has died %4l today. %1SV was %2i years old and will be buried in %3NAME."   |
+19189   "_HPFZ_KATASTR_SICK_BODY_+0"   "Alack! %1SV is suffering from %2l! Such illnesses reduce your talents for a certain period of time, some are contagious or even deadly.$N$NOne should not be afraid to pay the doctor a visit, at least if you can make it in time..."   |
+19190   "_HPFZ_KATASTR_KRANK_NAM_+6"   "a burn wound"   |
+19191   "_HPFZ_KATASTR_KRANK_NAM_+7"   "a pneumonia"   |
+19192   "_HPFZ_KATASTR_KRANK_NAM_+8"   "the Plague"   |
+19193   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+0"   "A family member got the Plague"   |
+19194   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+1"   "An employee got the Plague"   |
