@@ -1,3 +1,5 @@
+function Run()
+end
 
 -- CheckPosition is called everytime a new position is checked for a building of this kind
 -- the only alias defined here is "Position", that represents the wanted position
