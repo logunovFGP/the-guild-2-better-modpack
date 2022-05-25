@@ -21,11 +21,7 @@ function PingHour()
 		return 0
 	end
 	
-	local Level = CityGetLevel("")
-
---	marketpinghour_RemoveItems("", Level)
-	
-	if math.mod(GetGametime(), 24) == 5 then -- at 5am
+	if math.mod(GetGametime(), 24) == 5 then -- at 5 am
 		local CityNeedCount, CityNeeds = economy_CalcNeedsForMarket("")
 		if CityNeedCount > 0 then
 			economy_CalcSalesForMarket("")
@@ -34,6 +30,7 @@ function PingHour()
 	end
 end
 
+-- spawn at gamestart
 function SpawnItems(City, CityLevel)
 	
 	local ItemName = ""
@@ -83,45 +80,6 @@ function SpawnItems(City, CityLevel)
 			else
 				AddItems("", ItemName, Spawn, INVENTORY_STD)
 			end
-		end
-	end
-end
-
-function RemoveItemMarket()
- local chance, Name, Baseprice, Sellprice
- local Reducevalue = Rand(6)
- local item = {
-		"Barleybread", "Cookie", "Wheatbread", "Cake", "BreadRoll", "CreamPie", "Candy",
-		"vase", "GrainPap", "SmallBeer", "SalmonFilet", "WheatBeer", "Mead", "RoastBeef",
-		"BoozyBreathBeer", "GhostlyFog", "Tool", "Dagger", "SilverRing", "Shortsword", "IronBrachelet",
-		"GemRing", "BeltOfMetaphysic", "GoldChain", "Longsword", "IronCap", "Chainmail",
-		"FullHelmet", "Platemail", "OakwoodRing", "BuildMaterial", "Torch", "WalkingStick",
-		"Mace", "CrossOfProtection", "RubinStaff", "Axe", "Cloth", "MoneyBag", "Blanket",
-		"FarmersClothes", "LeatherArmor", "CitizensClothes", "GlovesOfDexterity", "NoblesClothes",
-		"CamouflageCloak", "LeatherGloves", "HerbTea", "Perfume", "DartagnansFragrance",
-		"DrFaustusElixir", "FragranceOfHoliness", "FlowerOfDiscord", "ToadExcrements", 
-		"Toadslime", "CartBooster", "BoobyTrap", "Housel", "Poem", "Chaplet", "AboutTalents1",
-		"LetterOfIndulgence", "LetterFromRome", "ThesisPaper", "AboutTalents2", "Shellchain", 
-		"FriedHerring", "Shellsoup", "SmokedSalmon", "StinkBomb", "Pearlchain", "Bandage",
-		"Soap", "MiracleCure", "Salve", "Medicine", "StaffOfAesculap", "Mixture", "MediPack",
-		"PainKiller","WeaponPoison", "Antidote", "ParalysisPoison", "BlackWidowPoison", "Amulet",
-		"Hasstirade", "Handwerksurkunde", "Kamm", "Holzzapfen", "Beschlag", "Stonerotary",
-		"bust", "statue", "Blissstone", "Optigold", "Optisilber", "Optieisen", "Goldveryhigh",
-		"Goldmedhigh", "Goldlowmed", "Urkunde", "Schuldenbrief", "HexerdokumentII", 
-		"HexerdokumentI", "Schadelkerze", "Dye", "Knochenarmreif", "Pendel", "Spindel",
-		"Voodo", "Robe", "Pddv"
-		}
- 
-	local NewBaseprice
-	for i=0, 114 do
-		Name = item[i]
-		if (Name ~= nil) then
-			Baseprice = ItemGetBasePrice(Name)
-			NewBaseprice = Baseprice - math.floor((Baseprice / 100 * 10))
-			Sellprice = ItemGetPriceSell(Name, "") 
-			if Sellprice < NewBaseprice then
-				RemoveItems ("", Name, Reducevalue, INVENTORY_STD)
-			end 
 		end
 	end
 end

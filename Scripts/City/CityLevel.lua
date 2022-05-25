@@ -36,11 +36,8 @@ function CalcStartupLevel()
 --	Count = Count + 50 -- initbuffer
 
 	local Level = citylevel_GetMinLevel()
-	while Level < GL_MAX_CITY_LEVEL and citylevel_GetValue(Level) < Count do
-		Level = Level + 1
-	end
 
-	if worldambient_CheckAmbient()==true then
+	if worldambient_CheckAmbient() == true then
 		worldambient_CreateCityAnimals("", true)
 		--worldambient_CreateCityBettler("", Level)
 		if not AliasExists("#Eseltreiber") or not AliasExists("#Packo") then
@@ -54,16 +51,16 @@ function CalcStartupLevel()
 	end
 
 	-- init buyable buildings
-	local buyablehouses = CityGetBuildingCount("",1,2,-1,-1,FILTER_IS_BUYABLE)
-	CityGetBuildings("",1,2,-1,-1,FILTER_IS_BUYABLE,"FreeHouse")
+	local buyablehouses = CityGetBuildingCount("", 1, 2, -1, -1, FILTER_IS_BUYABLE)
+	CityGetBuildings("", 1, 2, -1, -1, FILTER_IS_BUYABLE, "FreeHouse")
 	for i=0, buyablehouses-1 do
 		if BuildingGetBuyPrice("FreeHouse"..i) then
 			SetState("FreeHouse"..i, STATE_SELLFLAG, true)
 		end
 	end
 	
-	local buyableworkshops = CityGetBuildingCount("",2,-1,-1,-1,FILTER_IS_BUYABLE)
-	CityGetBuildings("",2,-1,-1,-1,FILTER_IS_BUYABLE,"FreeWorkshop")
+	local buyableworkshops = CityGetBuildingCount("", 2, -1, -1, -1, FILTER_IS_BUYABLE)
+	CityGetBuildings("", 2, -1, -1, -1, FILTER_IS_BUYABLE, "FreeWorkshop")
 	for k=0, buyableworkshops-1 do
 		if BuildingGetBuyPrice("FreeWorkshop"..k) then
 			SetState("FreeWorkshop"..k, STATE_SELLFLAG, true)
@@ -73,7 +70,7 @@ function CalcStartupLevel()
 	return Level
 end
 
--- this function is called every ingame hour and checks, if the city is able to grow or shrink
+-- this function is called every ingame hour and checks, if the city is able to grow
 function CalcNewLevel()
 
 	if CityIsKontor("") then
@@ -88,12 +85,12 @@ function CalcNewLevel()
 		SetData("#LastUpdateYear", CurrentYear) -- no updates in first round
 	end
 	
-	CityGetRandomBuilding("",GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"Townhall")
+	CityGetRandomBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "Townhall")
 	
 	local LastUpdateYear = GetData("#LastUpdateYear")
 	if AliasExists("Townhall") then
-		if not HasProperty("Townhall","CityLevelUpAhead") and CurrentYear <= LastUpdateYear then
-			SetProperty("","LevelUpCity",0)
+		if not HasProperty("Townhall", "CityLevelUpAhead") and CurrentYear <= LastUpdateYear then
+			SetProperty("", "LevelUpCity", 0)
 			return Level
 		end
 	
@@ -102,21 +99,20 @@ function CalcNewLevel()
 	
 		if (BuildingGetCutscene("Townhall", "cutscene") == false) then
 			if CurrentCitizens >= MinCitizens then -- enough people for levelup
-				if HasProperty("","LevelUpPaid") and GetProperty("","LevelUpPaid")==1 and HasProperty("","LevelUpCity") and GetProperty("","LevelUpCity")==1 then
-					SetProperty("","LevelUpCity",0)
+				if HasProperty("", "LevelUpPaid") and GetProperty("", "LevelUpPaid") == 1 and HasProperty("", "LevelUpCity") and GetProperty("", "LevelUpCity") == 1 then
+					SetProperty("", "LevelUpCity",0)
 					SetData("#LastUpdateYear", CurrentYear)
 					return (Level + 1)
 				else
-					SetProperty("","LevelUpCity",1)
+					SetProperty("", "LevelUpCity", 1)
 					return Level
 				end
 			end
 		end
 	end
 
-	SetProperty("","LevelUpCity",0)
+	SetProperty("", "LevelUpCity", 0)
 	return Level
-
 end
 
 function SetNewLevel(OldLevel, NewLevel)
@@ -132,7 +128,7 @@ function SetNewLevel(OldLevel, NewLevel)
 			"@L_GENERAL_INFORMATION_CITY_LEVEL_MSG_PLUS_HEAD_+0",
 			"@L_GENERAL_INFORMATION_CITY_LEVEL_MSG_PLUS_BODY_+0", CityLevel2Label(OldLevel), GetID(""), Attribute, CityLevel2Label(NewLevel), lordlabel )
 
-		if HasProperty("", "LevelUpPaid") and GetProperty("", "LevelUpPaid")==1 then
+		if HasProperty("", "LevelUpPaid") and GetProperty("", "LevelUpPaid") == 1 then
 			SetProperty("", "LevelUpPaid", 0)
 		end
 	end
@@ -165,7 +161,7 @@ function CheckForKing()
 	local DynAlias
 	local fame = 0
 	
-	for dyn=0,DynCount-1 do
+	for dyn=0, DynCount-1 do
 		DynAlias = "DynList"..dyn
 		if DynastyGetBuilding2(DynAlias, 0, "DynHome") then
 			if GetSettlementID("DynHome") == GetID("") then

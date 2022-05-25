@@ -5,9 +5,9 @@ function Weight()
 	end
 
 	if GetSettlement("SIM","_city") then
-		local TopDynastyID = GetProperty("_city","Crimes_TopAccuserDynastyID")
-		local TopActorID = GetProperty("_city","Crimes_TopActorID")
-		local TopBias = GetProperty("_city","Crimes_TopBias")
+		local TopDynastyID = GetProperty("_city","Crimes_TopAccuserDynastyID") or 0
+		local TopActorID = GetProperty("_city","Crimes_TopActorID") or 0
+		local TopBias = GetProperty("_city","Crimes_TopBias") or 0
 		
 		if TopDynastyID==GetID("dynasty") then
 			if GetAliasByID(TopActorID,"Actor") then
