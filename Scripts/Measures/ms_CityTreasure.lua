@@ -9,7 +9,7 @@ function Run()
 	local Level = CityLevel2Label(LevelID) 
 	local citizens = citylevel_GetValue(LevelID)
 	local CurrentCitizens	= CityGetCitizenCount("city")
-	local lvluptext = "_MEASURE_CITYTREASURE_LVLUP_+1"
+	local lvluptext = "@L_MEASURE_CITYTREASURE_LVLUP_+1"
 	local nomorelvlup = false
 	local ImperialId = ScenarioGetImperialCapitalId()
 	
@@ -18,7 +18,7 @@ function Run()
 	end
 	
 	if Level == 6 or nomorelvlup then
-		lvluptext = "_MEASURE_CITYTREASURE_LVLUP_+2"
+		lvluptext = "@L_MEASURE_CITYTREASURE_LVLUP_+2"
 	end
 
 	local officebearer = false
@@ -94,15 +94,15 @@ function Run()
 		local citytreasure = GetMoney("city")
 		local replacement = ""
 		if citytreasure < 10000 then
-			replacement = "_MEASURE_CITYTREASURE_TEXT_+0"
+			replacement = "@L_MEASURE_CITYTREASURE_TEXT_+0"
 		elseif citytreasure < 30000 then
-			replacement = "_MEASURE_CITYTREASURE_TEXT_+1"
+			replacement = "@L_MEASURE_CITYTREASURE_TEXT_+1"
 		elseif citytreasure < 80000 then
-			replacement = "_MEASURE_CITYTREASURE_TEXT_+2"
+			replacement = "@L_MEASURE_CITYTREASURE_TEXT_+2"
 		elseif citytreasure < 200000 then
-			replacement = "_MEASURE_CITYTREASURE_TEXT_+3"
+			replacement = "@L_MEASURE_CITYTREASURE_TEXT_+3"
 		else
-			replacement = "_MEASURE_CITYTREASURE_TEXT_+4"
+			replacement = "@L_MEASURE_CITYTREASURE_TEXT_+4"
 		end		
 	
 		MsgBoxNoWait("dynasty", "city", "@L_MEASURE_CITYTREASURE_HEAD_+0", "@L_MEASURE_CITYTREASURE_BODY", GetID("city"), replacement, Level, CurrentCitizens, lvluptext, citizens)
