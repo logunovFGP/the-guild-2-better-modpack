@@ -186,6 +186,10 @@ function AddFame(SimAlias, Amount)
 	
 	local fame = 0 + dyn_GetFame(SimAlias)
 	
+	if Amount > 0 and GetImpactValue(SimAlias, "GuildmasterI") > 0 then
+		Amount = Amount + GetImpactValue(SimAlias, "GuildmasterI")
+	end
+	
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "Fame", (fame+Amount))
 	end
@@ -272,6 +276,10 @@ function AddImperialFame(SimAlias, Amount)
 	end
 	
 	local fame = 0 + dyn_GetImperialFame(SimAlias)
+	
+	if Amount > 0 and GetImpactValue(SimAlias, "FamousI") > 0 then
+		Amount = Amount * 2
+	end
 	
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "ImperialFame", (fame+Amount))
