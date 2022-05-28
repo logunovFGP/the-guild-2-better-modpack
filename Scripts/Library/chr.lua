@@ -287,6 +287,20 @@ function ModifyFavor(source, dest, val)
 		val = math.floor(val / 2)
 	end
 	
+	-- Infamous ability
+	if GetImpactValue(dest, "InfamousI") == 1 and SimGetClass(source) == 4 then
+		if val < 0 then
+			val = math.floor(val / 2)
+		else
+			val = val * 2
+		end
+	end
+	
+	-- Nice Guy ability
+	if GetImpactValue(dest, "NiceGuyI") == 1 and (val > 0 or val <= -2)  then
+		val = val + 1
+	end
+	
 	if IsDynastySim(source) and IsDynastySim(dest) then
 		if GetDynastyID(source) ~= GetDynastyID(dest) then
 			-- add new grudges
@@ -867,7 +881,7 @@ function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 	
 	-- abilities
 	BuildingGetOwner(WorkBuilding, "BOwner")
-	chr_CalculateAbilityBonus(SimAlias, "BOwner", HireFire)
+	chr_CalculateAbilityBonus(WorkBuilding, SimAlias, "BOwner", HireFire)
 
 	if BuildingType == GL_BUILDING_TYPE_RESIDENCE then
 		if HireFire == "hire" then
@@ -1170,7 +1184,7 @@ function CheckWorkerBonuses(BldAlias)
 	
 	for i=0 , NumWorkers -1 do
 		if BuildingGetWorker(BldAlias, i, "Worker") then
-			chr_CalculateAbilityBonus("Worker", "BOwner", "hire")
+			chr_CalculateAbilityBonus(BldAlias, "Worker", "BOwner", "hire")
 		end
 	end
 end
@@ -1178,128 +1192,124 @@ end
 -- --------------------------------------------------------
 -- Calculate bonuses workers get from their current employer
 -- --------------------------------------------------------
-function CalculateAbilityBonus(SimAlias, SimOwner, hirefire)
+function CalculateAbilityBonus(BldAlias, SimAlias, SimOwner, hirefire)
 
 	if not AliasExists(SimAlias) then
 		return
 	end
 	
 	local booster
+	local BossBonus
 	
-	-- master of manure
-	booster = GetImpactValue(SimAlias, "ManureI")  
-	if (not (booster == 1) and SimHasAbility(SimOwner, 5)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias, "GatherBonus", 20  * (1 - booster), -1)
-		AddImpact(SimAlias, "ManureI", 1 * (1 - booster), -1)		
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 5) or hirefire == "fire") then
-		AddImpact(SimAlias, "GatherBonus", -20 * booster, -1)
-		RemoveImpact(SimAlias, "ManureI")
+	-- Mentor
+	booster = GetImpactValue(SimAlias, "MentorBoost")
+	
+	if (not (booster == 1) and SimHasAbility(SimOwner, 12)) and not (hirefire == "fire") then 
+		AddImpact(SimAlias, "XPBonus", 250  * (1 - booster), -1)
+		AddImpact(SimAlias, "MentorBoost", 1 * (1 - booster), -1)
 	end
 	
-	-- mentor
-	booster = GetImpactValue(SimAlias, "MentorI")  
-	if (not (booster == 1) and SimHasAbility(SimOwner, 8)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias, "ExpGaining", 15  * (1 - booster), -1)
-		AddImpact(SimAlias, "MentorI", 1 * (1 - booster), -1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,8) or hirefire == "fire") then
-		AddImpact(SimAlias, "ExpGaining",-15 * booster, -1)
-		RemoveImpact(SimAlias, "MentorI")
+	-- Thief
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_THIEF or BuildingGetType(BldAlias) == GL_BUILDING_TYPE_DIVEHOUSE or BuildingGetType(BldAlias) == GL_BUILDING_TYPE_GAUKLER then
+	
+		booster = GetImpactValue(SimAlias, "ThiefBoost") 
+		BossBonus = GetImpactValue(SimOwner, "ThiefI") 
+		
+		if (BossBonus > 0 and BossBonus ~= booster) and not (hirefire == "fire") then 
+			AddImpact(SimAlias, "ThiefBoost", 1 * (BossBonus - booster), -1)		
+		elseif (BossBonus == 0 and booster > 0) or hirefire == "fire" then
+			RemoveImpact(SimAlias, "ThiefBoost")
+		end
 	end
 	
-	-- oratory master   
-	booster = GetImpactValue(SimAlias, "MarketerI")
-	if (not (booster == 1) and SimHasAbility(SimOwner, 17)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias, "rhetoric", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "empathy", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "bargaining", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "MarketerI", 1 * (1 - booster), -1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 17) or hirefire == "fire") then
-		AddImpact(SimAlias, "rhetoric", -2 * booster, -1)
-		AddImpact(SimAlias, "empathy", -2 * booster, -1)
-		AddImpact(SimAlias, "bargaining", -2 * booster, -1)
-		RemoveImpact(SimAlias, "MarketerI")
+	-- FarmBonus
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_FARM or BuildingGetType(BldAlias) == GL_BUILDING_TYPE_FRUITFARM then
+	
+		booster = GetImpactValue(SimAlias, "FarmBoost") 
+		BossBonus = GetImpactValue(SimOwner, "FarmBonusI")  
+		
+		if (BossBonus > 0 and BossBonus ~= booster) and not (hirefire == "fire") then 
+			AddImpact(SimAlias, "GatherBonus", 25  * (BossBonus - booster), -1)
+			AddImpact(SimAlias, "FarmBoost", 1 * (BossBonus - booster), -1)		
+		elseif (BossBonus == 0 and booster > 0) or hirefire == "fire" then
+			AddImpact(SimAlias, "GatherBonus", -25 * booster, -1)
+			RemoveImpact(SimAlias, "FarmBoost")
+		end
 	end
 	
-	-- lightning burglary
-	booster = GetImpactValue(SimAlias, "BurglaryI")
-	if (not (booster == 1) and SimHasAbility(SimOwner, 21)) and not (hirefire == "fire") then
-		AddImpact(SimAlias, "BurglarySpeedup", 25 * (1 - booster), -1)
-		AddImpact(SimAlias, "MoveSpeed", 1.2 * (1 - booster), -1)
-		AddImpact(SimAlias, "BurglaryI", 1 * (1 - booster), -1)
-		AddImpact(SimAlias, "shadow_arts", 2 * (1 - booster), -1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 21) or hirefire == "fire") then
-		AddImpact(SimAlias, "BurglarySpeedup", -25 * booster, -1)
-		AddImpact(SimAlias, "MoveSpeed", -1.2 * booster, -1)
-		AddImpact(SimAlias, "shadow_arts", -2 * booster, -1)
-		RemoveImpact(SimAlias, "BurglaryI")
+	-- Alchemist
+	booster = GetImpactValue(SimAlias, "MarauderBoost") 
+	BossBonus = GetImpactValue(SimOwner, "MarauderI")  
+		
+	if (BossBonus > 0 and BossBonus ~= booster) and not (hirefire == "fire") then 
+		AddImpact(SimAlias, "LifeExpanding", 25  * (BossBonus - booster), -1)
+		AddImpact(SimAlias, "MarauderBoost", 1 * (BossBonus - booster), -1)	
 	end
 	
-	-- druidic secrets
-	booster = GetImpactValue(SimAlias, "DruidicI")
-	if (not (booster == 1) and SimHasAbility(SimOwner, 34)) and not (hirefire == "fire") then     
-		AddImpact(SimAlias, "GatherBonus", 20 * (1 - booster), -1)
-		AddImpact(SimAlias, "constitution", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "secret_knowledge", 2 * (1 - booster), -1)
-		AddImpact(SimAlias, "DruidicI", 1 * (1 - booster), -1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner, 34) or hirefire == "fire") then
-		AddImpact(SimAlias, "GatherBonus", -20 * booster, -1)
-		AddImpact(SimAlias, "constitution", -2 * booster, -1)
-		AddImpact(SimAlias, "secret_knowledge", -2 * booster, -1)
-		RemoveImpact(SimAlias, "DruidicI")
+	-- Marauder
+	booster = GetImpactValue(SimAlias, "AlchemistBoost") 
+	BossBonus = GetImpactValue(SimOwner, "AlchemistI")  
+		
+	if (BossBonus > 0 and BossBonus ~= booster) and not (hirefire == "fire") then 
+		AddImpact(SimAlias, "MarauderBoost", 1 * (BossBonus - booster), -1)		
+	elseif (BossBonus == 0 and booster > 0) or hirefire == "fire" then
+		RemoveImpact(SimAlias, "AlchemistBoost")
 	end
 	
-	-- hard workers
-	booster = GetImpactValue(SimAlias, "HardWorkersI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,36)) and not (hirefire == "fire") then
-		AddImpact(SimAlias, "BonusSlot",1      * (1 - booster),-1)
-		AddImpact(SimAlias, "constitution",2   * (1 - booster),-1)
-		AddImpact(SimAlias, "craftsmanship",2  * (1 - booster),-1)
-		AddImpact(SimAlias, "HardWorkersI",1   * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,36) or hirefire == "fire") then
-		AddImpact(SimAlias, "BonusSlot",-1     * booster,-1)
-		AddImpact(SimAlias, "constitution",-2  * booster,-1)
-		AddImpact(SimAlias, "craftsmanship",-2 * booster,-1)
-		RemoveImpact(SimAlias, "HardWorkersI")
-	end
+	-- General
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_RESIDENCE then
 	
-	-- charming rogues
-	booster = GetImpactValue(SimAlias, "CharmingI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,37)) and not (hirefire == "fire") then
-		AddImpact(SimAlias, "FightCrit",15  * (1 - booster),-1)
-		AddImpact(SimAlias, "charisma",2    * (1 - booster),-1)
-		AddImpact(SimAlias, "fighting",2    * (1 - booster),-1)
-		AddImpact(SimAlias, "CharmingI",1   * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,37) or hirefire == "fire") then
-		AddImpact(SimAlias, "FightCrit",-15 * booster,-1)
-		AddImpact(SimAlias, "charisma",-2   * booster,-1)
-		AddImpact(SimAlias, "fighting",-2   * booster,-1)
-		RemoveImpact(SimAlias, "CharmingI")
-	end
-	
-	-- defenders
-	booster = GetImpactValue(SimAlias, "DefendersI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,38)) and not (hirefire == "fire") then
-		AddImpact(SimAlias, "FightArmor",7  * (1 - booster),-1)
-		AddImpact(SimAlias, "dexterity",2   * (1 - booster),-1)
-		AddImpact(SimAlias, "empathy",2     * (1 - booster),-1)
-		AddImpact(SimAlias, "DefendersI",1  * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,38) or hirefire == "fire") then
-		AddImpact(SimAlias, "FightArmor",-7 * booster,-1)
-		AddImpact(SimAlias, "dexterity",-2  * booster,-1)
-		AddImpact(SimAlias, "empathy",-2    * booster,-1)
-		RemoveImpact(SimAlias, "DefendersI")
-	end
-	
-	-- master extractor
-	booster = GetImpactValue(SimAlias, "ProducerI")
-	if (not (booster == 1) and SimHasAbility(SimOwner,41)) and not (hirefire == "fire") then  
-		AddImpact(SimAlias, "GatherBonus",35  * (1 - booster),-1)
-		AddImpact(SimAlias, "ProducerI",1     * (1 - booster),-1)
-	elseif not (booster == 0) and (not SimHasAbility(SimOwner,41) or hirefire == "fire") then
-		AddImpact(SimAlias, "GatherBonus",-35 * booster,-1)
-		RemoveImpact(SimAlias, "ProducerI")
+		booster = GetImpactValue(SimAlias, "GeneralBoost") 
+		
+		if (not (booster == 1) and SimHasAbility(SimOwner, 39)) and not (hirefire == "fire") then  
+			AddImpact(SimAlias, "fighting", 2  * (1 - booster), -1)
+			AddImpact(SimAlias, "GeneralBoost", 1 * (1 - booster), -1)		
+		elseif (not (booster == 0) and not SimHasAbility(SimOwner,39)) or hirefire == "fire" then
+			AddImpact(SimAlias, "fighting", -2 * booster, -1)
+			RemoveImpact(SimAlias, "GeneralBoost")
+		end
 	end
 
+
+end
+
+-- --------------------------------------------------------
+-- Check bonuses carts get from their current employer
+-- --------------------------------------------------------
+function CheckCartBonuses(BldAlias)
+	
+	local NumCarts = BuildingGetCartCount(BldAlias)
+	if not BuildingGetOwner(BldAlias,"BOwner") then
+		return
+	end
+	
+	for i=0 , NumCarts -1 do
+		if BuildingGetCart(BldAlias, i, "Cart") then
+			chr_CalculateCartBonus("Cart","BOwner")
+		end
+	end
+end
+
+-- --------------------------------------------------------
+-- Calculate bonuses carts get from their current employer
+-- --------------------------------------------------------
+function CalculateCartBonus(CartAlias, SimOwner)
+
+	if not AliasExists(CartAlias) then
+		return
+	end
+	
+	local booster
+	local BossBonus
+	
+	-- CartBonus
+	booster = GetImpactValue(CartAlias, "CartBoost")
+	
+	if not (booster == 1) and SimHasAbility(SimOwner, 21) then 
+		AddImpact(CartAlias, "MoveSpeed", 1.2  * (1 - booster), -1)
+		AddImpact(CartAlias, "CartBoost", 1 * (1 - booster), -1)
+	end
+	
 end
 
 function NeedsTreatment(SimAlias)
