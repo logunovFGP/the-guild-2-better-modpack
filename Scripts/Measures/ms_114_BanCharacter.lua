@@ -43,7 +43,8 @@ function Run()
 			StopMeasure()
 		end
 	end
-
+	
+	-- immunity by ability
 	if SimHasAbility("Destination", 33) then
 		--MsgQuick("", "@L_BAN_FAILURE_+1")
 		StopMeasure()
