@@ -80,13 +80,13 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 120 then -- BreadShop (Backstube)
 		OffsetX = 100
 		OffsetZ = -30
-	elseif Proto == 121 then -- Bakery2 (Bäckerei)
+	elseif Proto == 121 then -- Bakery2 (Bï¿½ckerei)
 		OffsetX = 50
 		OffsetZ = -80
 	elseif Proto == 122 then -- PastryShop (Konditorei)
 		OffsetX = 55
 		OffsetZ = -15
-	elseif Proto == 130 then -- Taproom (Schänke)
+	elseif Proto == 130 then -- Taproom (Schï¿½nke)
 		OffsetX = -10
 		OffsetZ = -100
 	elseif Proto == 131 then -- Inn (Taverne)
@@ -107,7 +107,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 143 then -- CannonFoundry (Kanonengiesserei)
 		OffsetX = 300
 		OffsetZ = -140
-	elseif Proto == 144 then -- Armourer (Rüstungsschmiede)
+	elseif Proto == 144 then -- Armourer (Rï¿½stungsschmiede)
 		OffsetX = 60
 		OffsetZ = -1750
 	elseif Proto == 150 then -- Joinery (Tischlerei)
@@ -203,7 +203,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 340 then -- School (Schule)
 		OffsetX = 10
 		OffsetZ = -130
-	elseif Proto == 341 then -- University (Universität)
+	elseif Proto == 341 then -- University (Universitï¿½t)
 		OffsetX = 200
 		OffsetZ = -440
 	elseif Proto == 200 then -- Watchtower1
@@ -245,7 +245,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 432 then -- WorkersHut3 (Arbeiterhaus)
 		OffsetX = 40
 		OffsetZ = -210
-	elseif Proto == 440 then -- Hütte
+	elseif Proto == 440 then -- Hï¿½tte
 		OffsetX = -45
 		OffsetZ = -180
 	elseif Proto == 441 then -- Haus
@@ -260,7 +260,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 444 then -- Herrenhaus
 		OffsetX = 200
 		OffsetZ = -300
-	elseif Proto == 483 then -- Prison_lv3 (Gefängnis)
+	elseif Proto == 483 then -- Prison_lv3 (Gefï¿½ngnis)
 		OffsetX = 130
 		OffsetZ = -330
 	elseif Proto == 654 then -- Piratenest
@@ -994,14 +994,10 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	end
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses(BldAlias)
-	
-	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_TAVERN then
-		if SimHasAbility("MyBoss", 16) and GetImpactValue(BldAlias, "BestHouse") == 0 then
-			AddImpact(BldAlias, "BestHouse", 1, -1)
-		elseif not (SimHasAbility("MyBoss", 16) or GetImpactValue(BldAlias, "BestHouse") == 0) then
-			RemoveImpact(BldAlias, "BestHouse")
-		end
-	end
+	-- Check every cart every hour for bonuses from employer's abilities
+	chr_CheckCartBonuses(BldAlias)
+	-- Check every hour for bonuses from employer's abilities to the building
+	bld_CalculateAbilityBonus(BldAlias)
 	
 	-- Check every worker (only once) for illness and equipment 
 	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
@@ -1049,4 +1045,59 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	--bld_BuildingWorkersStopWorking(BldAlias) -- this seemed necessary at some point
 	bld_ResetWorkers(BldAlias)
 	economy_ClearBalance(BldAlias)
+end
+
+function CalculateAbilityBonus(BldAlias)
+
+	if not BuildingGetOwner(BldAlias, "MyBoss") then
+		return
+	end
+	
+	local booster
+	local BossBonus
+	
+	-- Safeguard
+	booster = GetImpactValue(BldAlias, "SafeBoost")
+	BossBonus = GetImpactValue("MyBoss", "SafeguardI")
+	
+	if BossBonus > 0 and BossBonus ~= booster then 
+		AddImpact(BldAlias, "ProtectionFromFire",   0.15  * (BossBonus - booster), -1)
+		AddImpact(BldAlias, "ProtectionOfBurglary", 0.15  * (BossBonus - booster), -1)
+		AddImpact(BldAlias, "SafeBoost", 1 * (BossBonus - booster), -1)		
+	elseif BossBonus == 0 and booster > 0 then
+		AddImpact(BldAlias, "ProtectionFromFire",   -0.15 * booster, -1)
+		AddImpact(BldAlias, "ProtectionOfBurglary", -0.15 * booster, -1)
+		RemoveImpact(SimAlias, "SafeBoost")
+	end
+	
+	-- PartyBonus
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_RESIDENCE then
+		
+		booster = GetImpactValue(BldAlias, "PartyBoost")
+		BossBonus = GetImpactValue("MyBoss", "PartyBonusI")
+		
+		if BossBonus > 0 and BossBonus ~= booster then 
+			AddImpact(BldAlias, "Attractivity",   0.25  * (BossBonus - booster), -1)
+			AddImpact(BldAlias, "PartyBoost", 1 * (BossBonus - booster), -1)		
+		elseif BossBonus == 0 and booster > 0 then
+			AddImpact(BldAlias, "Attractivity",   -0.25 * booster, -1)
+			RemoveImpact(SimAlias, "PartyBoost")
+		end		
+	end
+	
+	-- Preacher
+	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_CHURCH_EV or BuildingGetType(BldAlias) == GL_BUILDING_TYPE_CHURCH_CATH then
+		
+		booster = GetImpactValue(BldAlias, "PreacherBoost")
+		BossBonus = GetImpactValue("MyBoss", "PreacherI")
+		
+		if BossBonus > 0 and BossBonus ~= booster then 
+			AddImpact(BldAlias, "Attractivity",   0.25  * (BossBonus - booster), -1)
+			AddImpact(BldAlias, "PreacherBoost", 1 * (BossBonus - booster), -1)		
+		elseif BossBonus == 0 and booster > 0 then
+			AddImpact(BldAlias, "Attractivity",   -0.25 * booster, -1)
+			RemoveImpact(SimAlias, "PreacherBoost")
+		end		
+	end
+
 end
