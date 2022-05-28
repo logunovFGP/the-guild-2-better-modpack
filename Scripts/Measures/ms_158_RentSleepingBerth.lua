@@ -63,9 +63,9 @@ function Run()
 	local MaxHP = GetMaxHP("")
 	local ToHeal = MaxHP - CurrentHP
 	local HealPerTic = ToHeal / (HasToSleep * 10)
-	if HeavySleep then
-		HealPerTic = HealPerTic*1.5
-	end
+	--if HeavySleep then
+	--	HealPerTic = HealPerTic*1.5
+	--end
 	local StartTime = GetGametime()
 	SetData("StartTime", StartTime)
 
@@ -88,9 +88,7 @@ function Run()
 		diseases_Sprain("", false)
 		if HeavySleep then
 			diseases_Influenza("", false)
-			if Rand(3) > 0 then
-				diseases_Pneumonia("", false)
-			end
+			diseases_Pneumonia("", false)
 		else
 			if Rand(3) > 0 then
 				diseases_Influenza("", false)
@@ -165,14 +163,14 @@ function CleanUp()
 		
 		local SleepBonus = 3
 	
-		if HeavySleep then
-			Factor = Factor+20
-			SleepBonus = 5
-		elseif BestHouse then
+		--if HeavySleep then
+		--	Factor = Factor+20
+		--	SleepBonus = 5
+		if BestHouse then
 			Factor = Factor+20
 		end
 	
-		if (Factor-20) > Rand(100) then
+		if (Factor-20) > Rand(100) or HeavySleep then
 			if SimGetClass("") == 1 then
 				AddImpact("", "constitution", 1, 12)
 				AddImpact("", "empathy", 1, 12)
