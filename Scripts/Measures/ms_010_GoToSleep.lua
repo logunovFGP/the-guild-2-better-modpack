@@ -135,15 +135,18 @@ function CleanUp()
 	if IsDynastySim("Owner") then
 	
 		if GetImpactValue("","Sickness")>0 and Factor>Rand(100) then
+			if GetImpactValue("","Sprain")>0 and HeavySleep then 
+				diseases_Sprain("", false)
+			end
 			if GetImpactValue("","Cold")>0 then
-				if (HeavySleep == true) or (Rand(6) > 4) then  -- no items with ability or if very lucky
+				if HeavySleep or (Rand(6) > 4) then  -- no items with ability or if very lucky
 					diseases_Cold("",false)
 				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					diseases_Cold("",false)
 				end
 			end
 			if GetImpactValue("","Influenza")>0 then
-				if HeavySleep == true then	-- no items with ability
+				if HeavySleep then	-- no items with ability
 					diseases_Influenza("",false)
 				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then
@@ -155,7 +158,7 @@ function CleanUp()
 				end
 			end
 			if GetImpactValue("","Pneumonia")>0 then
-				if HeavySleep == true then  -- 100% chance and no items with ability
+				if HeavySleep then  -- 100% chance and no items with ability
 					diseases_Pneumonia("",false)
 				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then					
@@ -173,11 +176,11 @@ function CleanUp()
 		
 		local SleepBonus=3
 
-		--if HeavySleep == true then
+		--if HeavySleep then
 		--	Factor=Factor+20
 		--	SleepBonus=5
 		--end
-		if (Factor-20)>Rand(100) or HeavySleep == true then
+		if (Factor-20)>Rand(100) or HeavySleep then
 			if SimGetClass("")==1 then
 				AddImpact("","constitution",1,12)
 				AddImpact("","empathy",1,12)
