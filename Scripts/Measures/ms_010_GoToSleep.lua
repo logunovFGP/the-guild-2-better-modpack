@@ -130,7 +130,7 @@ function CleanUp()
 	Factor=Factor*Factor*100
 		
 	local HealChance = 0 --50%
-	local HeavySleep = SimHasAbility("",32)  --Deep Sleep ability
+	local HeavySleep = SimHasAbility("",7)  --SleepBonus ability
 	
 	if IsDynastySim("Owner") then
 	
@@ -143,10 +143,10 @@ function CleanUp()
 				end
 			end
 			if GetImpactValue("","Influenza")>0 then
-				if RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
-					if HeavySleep == true then  -- no need for tea with ability
-						HealChance = 1 --100%
-					elseif RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then
+				if HeavySleep == true then	-- no items with ability
+					diseases_Influenza("",false)
+				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
+					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then
 						HealChance = 1 --100%
 					end
 					if HealChance >= Rand(2) then
@@ -155,11 +155,11 @@ function CleanUp()
 				end
 			end
 			if GetImpactValue("","Pneumonia")>0 then
-				if RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
+				if HeavySleep == true then  -- 100% chance and no items with ability
+					diseases_Pneumonia("",false)
+				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then					
-						if HeavySleep == true then  -- 100% chance and no need for honey and bandage with ability
-							diseases_Pneumonia("",false)
-						elseif RemoveItems("HomeBuilding","Honey",1,INVENTORY_STD)==1 then
+						if RemoveItems("HomeBuilding","Honey",1,INVENTORY_STD)==1 then
 							if RemoveItems("HomeBuilding","Bandage",1,INVENTORY_STD)==1 then -- you need a lot of stuff
 								if Rand(2)>0 then -- but you still need to be lucky (50%)
 									diseases_Pneumonia("",false)
@@ -173,11 +173,11 @@ function CleanUp()
 		
 		local SleepBonus=3
 
-		if HeavySleep == true then
-			Factor=Factor+20
-			SleepBonus=5
-		end
-		if (Factor-20)>Rand(100) then
+		--if HeavySleep == true then
+		--	Factor=Factor+20
+		--	SleepBonus=5
+		--end
+		if (Factor-20)>Rand(100) or HeavySleep == true then
 			if SimGetClass("")==1 then
 				AddImpact("","constitution",1,12)
 				AddImpact("","empathy",1,12)
