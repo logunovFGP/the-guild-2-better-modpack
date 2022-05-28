@@ -209,6 +209,14 @@ function Run()
 			-- ImpactValue 42
 			PregnantChance = PregnantChance + GetImpactValue("male", "CreateChild") + GetImpactValue("female", "CreateChild")
 			
+			-- Ability bonus
+			if SimHasAbility("male", 3) then
+				PregnantChance = PregnantChance * 1.5
+			end
+			if SimHasAbility("female", 3) then
+				PregnantChance = PregnantChance * 1.5
+			end
+
 			if FemaleAge >= 47 then
 				PregnantChance = 0
 			end
