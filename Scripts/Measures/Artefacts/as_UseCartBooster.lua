@@ -17,6 +17,10 @@ function Run()
 		StopMeasure()
 	end
 
+	if not GetImpactValue("Destination", "CartBoost")<1 then
+		StopMeasure()
+	end
+
 	local Time = PlayAnimationNoWait("","manipulate_middle_twohand")
 	Sleep(3)
 	if RemoveItems("","CartBooster",1)>0 then
@@ -24,7 +28,8 @@ function Run()
 		Sleep(Time-3)
 		PlaySound3D("","Effects/mystic_gift+0.wav", 1.0)
 		SetMeasureRepeat(TimeOut)				
-		AddImpact("Destination","MoveSpeed",1.2,duration) 
+		AddImpact("Destination","MoveSpeed",1.2,duration)  
+		AddImpact("Destination","CartBoost",1,duration)
 		
 		chr_GainXP("",GetData("BaseXP"))
 	end
