@@ -43,6 +43,11 @@ function Run()
 			StopMeasure()
 		end
 	end
+
+	if SimHasAbility("Destination", 33) then
+		--MsgQuick("", "@L_BAN_FAILURE_+1")
+		StopMeasure()
+	end
 	
 	--how long the ban will be 
 	local duration = GetDatabaseValue("Measures", MeasureID, "duration")
