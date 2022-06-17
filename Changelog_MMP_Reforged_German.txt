@@ -197,6 +197,7 @@ _Handwerker_
 
 _Gauner_
 - Dirnen laufen nicht mehr selbstständig durch die Stadt, sondern bleiben am anvisierten Ort.
+- Dirnen greifen nicht länger in Kämpfe in der Nähe ein.
 - Es werden keine Nachrichten über 'Liebesdienste' mehr an Charaktere verschickt, die nicht in der aktiven Spielergruppe sind.
 - Kinder sind nun nicht länger mögliche Ziele von Dirnen.
 - Die Maßnahme 'Ausruhen' wird nun korrekterweise bei den anderen roten Maßnahmen eingeordnet.
@@ -206,6 +207,7 @@ _Gauner_
   abzuwehren.
 - Bei Schutzgelderpressungen wurde die falsche Dauer im Tooltip angezeigt.
 - Bei der Söldnermaßnahme 'Gebäudeschutz anbieten' wurde kein Cooldown im Tooltip angezeigt.
+
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.

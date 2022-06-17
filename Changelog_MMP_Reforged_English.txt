@@ -197,6 +197,7 @@ _Craftsman_
 
 _Rogue_
 - Wenches no longer run through the city to find new 'customers'.
+- Wenches no longer join fights nearby.
 - You no longer get messages for characters outside of your active party about the usage of 'salacious services'
 - Children are no longer targets of wenches.
 - The action 'Rest' now has the red action category like the icon suggests.

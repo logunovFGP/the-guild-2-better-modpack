@@ -5,17 +5,20 @@ function Run()
 	end
 
 	if ActionIsStopped("Action") then
-		-- Check if its a city guard
 		if not GetState("", STATE_SCANNING) then
 			return ""
 		end
 	end
 
-	if GetState("",STATE_NPC) then
+	if GetState("", STATE_NPC) then
 		return "-"
 	end
 	
-	if GetImpactValue("","spying") == 1 then
+	if GetState("", STATE_ROBBERGUARD) then
+		return ""
+	end
+	
+	if GetImpactValue("", "spying") == 1 then
 		return ""
 	end
 
@@ -23,24 +26,34 @@ function Run()
 		return ""
 	end
 	
-	if GetCurrentMeasureName("") == "BurgleAHouse"  then
+	local MeasureName = GetCurrentMeasureName("")
+	
+	if MeasureName == "BurgleAHouse"  then
 		return ""
+	elseif MeasureName == "PickpocketPeople" then
+		return ""
+	elseif MeasureName == "AttackEnemy" then
+		return ""
+	elseif MeasureName == "SquadWaylayMember") then
+		SetProperty("", "DontLeave", 1)
 	end
 	
-	if GetCurrentMeasureName("")== "PickpocketPeople" then
-		return ""
-	end
+	local MyDyn = GetDynastyID("")
+	local ActorDyn = GetDynastyID("Actor")
+	local VictimDyn = GetDynastyID("Victim")
 	
-	if GetCurrentMeasureName("") == "AttackEnemy" then
-		return ""
-	end
-	
-	if GetCurrentMeasureName("") == "SquadWaylayMember" then 
-		SetProperty("","DontLeave",1)
+	if SimGetProfession("") == GL_PROFESSION_COCOTTE then
+		if MyDyn == ActorDyn then
+			return ""
+		elseif MyDyn > 0 and MyDyn == VictimDyn then
+			return "-CallGuards:2"
+		else
+			return "-Flee"
+		end
 	end
 
 	local bEvidence = ActionIsEvidence("Action")
-	local bIsGuard =(GetDynastyID("") == -1) and (SimGetClass("") == GL_CLASS_CHISELER)
+	local bIsGuard =(MyDyn == -1) and (SimGetClass("") == GL_CLASS_CHISELER)
 
 	-- join an existing Fight
 	if not (bIsGuard) then
@@ -51,9 +64,10 @@ function Run()
 	end
 	
 	-- starts a new Fight
+	
 	if IsType("", "Ship") then
 		-- attack if i am the victim to protect myself
-		if GetDynastyID("") == GetDynastyID("Victim") then
+		if MyDyn == VictimDyn then
 			if DynastyGetDiplomacyState("", "Actor")>DIP_NEUTRAL then
 				DynastySetDiplomacyState("", "Actor", DIP_NEUTRAL)
 			end
@@ -97,7 +111,7 @@ function Run()
 		end
 
 		-- attack if i am the victim to protect myself
-		if AliasExists("Victim") and GetDynastyID("") == GetDynastyID("Victim") then
+		if AliasExists("Victim") and MyDyn == VictimDyn then
 			if DynastyGetDiplomacyState("", "Actor")>DIP_NEUTRAL then
 				DynastySetDiplomacyState("", "Actor", DIP_NEUTRAL)
 			end
@@ -113,12 +127,8 @@ function Run()
 			end
 		end
 	end
-	
-	if GetState("",STATE_ROBBERGUARD) then
-		return ""
-	end
 
-	if GetDynastyID("")>0 and AliasExists("Victim") and GetDynastyID("")==GetDynastyID("Victim") then
+	if MyDyn > 0 and AliasExists("Victim") and MyDyn == VictimDyn then
 		return "-CallGuards"
 	end
 	
@@ -134,9 +144,9 @@ function Run()
 	
 	-- some workless just flee at random
 	local random = Rand(5)
-	if ((random > 3) and (GetDynastyID("Owner") < 1)) then
+	if ((random > 3) and (MyDyn < 1)) then
 		return "-Flee"
-	elseif (GetDynastyID("Owner") < 1) then
+	elseif (MyDyn < 1) then
 		return "-Gape:8"
 	end		
 	
