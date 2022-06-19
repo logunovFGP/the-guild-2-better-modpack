@@ -159,9 +159,9 @@ function Run()
 	local MyOfficeID = GetID("SimOffice")
 	
 	for i=Size-1,0,-1 do
-		ListGetElement("OfficeList", i,"Office")
+		ListGetElement("OfficeList", i, "Office")
 		if not(MyOfficeID == GetID("Office")) then
-			OfficePrepareSessionMembers("Office","ApplicantList",APPLICANTS)
+			OfficePrepareSessionMembers("Office", "ApplicantList", APPLICANTS)
 			local AppSize = ListSize("ApplicantList")
 			
 			for j=0, AppSize,1 do
@@ -174,8 +174,8 @@ function Run()
 		end		
 	end
 	
-	if not HasProperty("councilbuilding","CutsceneAhead") then
-		if HasProperty("councilbuilding","CityLevelUpAhead") then
+	if not HasProperty("councilbuilding", "CutsceneAhead") then
+		if HasProperty("councilbuilding", "CityLevelUpAhead") then
 			MsgQuick("", "@L_REPLACEMENTS_FAILURE_MSG_OFFICE_ACTION_IMPOSSIBLE_CITYLEVELUP_+0")
 			StopMeasure()
 		end

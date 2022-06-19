@@ -8,8 +8,8 @@
 ----
 -------------------------------------------------------------------------------
 
-
 function Run()
+
 	if not AliasExists("Destination") then
 		MsgDebugMeasure("TakeCredit - Can not take a credit in this building")
 		return
@@ -30,6 +30,7 @@ function Run()
 	
 	local	Sum
 	Sum = CreditGetSum("Credit")
+
 	if Sum <= 0 then
 		MsgQuick("", "@L_BANK_008_TAKECREDIT_FAILURES_+0")
 		return
@@ -44,6 +45,5 @@ function Run()
 		feedback_OverheadFadeText("", "@L%1t", false, Sum)
 	else
 		MsgQuick("", "@L_BANK_008_TAKECREDIT_FAILURES_+1")
-	end
-	
+	end	
 end

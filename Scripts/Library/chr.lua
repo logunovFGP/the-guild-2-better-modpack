@@ -215,7 +215,7 @@ function ArtifactsDuration(User, duration)
 	if Value <= 1 then
 		return 0
 	else
-		return ((Value/40)*duration)
+		return ((Value/20)*duration)
 	end
 end
 
@@ -452,11 +452,11 @@ end
 -- for the robbers
 -- -----------------------
 function GetBootyCount(Destination, InventoryType)
-	local	Slots = InventoryGetSlotCount(Destination, InventoryType)
-	local	Number
-	local	ItemId
-	local	ItemCount
-	local	Total = 0
+	local Slots = InventoryGetSlotCount(Destination, InventoryType)
+	local Number
+	local ItemId
+	local ItemCount
+	local Total = 0
 	
 	for Number = 0, Slots-1 do
 		ItemId, ItemCount = InventoryGetSlotInfo(Destination, Number, InventoryType)
@@ -466,7 +466,6 @@ function GetBootyCount(Destination, InventoryType)
 	end
 	
 	return Total
-
 end
 
 function OutputHireError(SimAlias, BuildingAlias, Error)
@@ -505,12 +504,12 @@ function CreateFamily(SimAlias)
 		return
 	end
 	
-	local	Age = SimGetAge(SimAlias)
+	local Age = SimGetAge(SimAlias)
 	if Age < 16 then
 		return
 	end
 
-	local	Var = 90
+	local Var = 90
 	if Age < 26 then
 		Var = 100 - (26 - Age) * 10
 		if Var > 90 then
@@ -520,7 +519,7 @@ function CreateFamily(SimAlias)
 	
 	local SpouseAlias = SimAlias.."_s"
 	
-	local	Married = false
+	local Married = false
 	if Rand(100) < Var then
 		if BossCreate(HomeAlias, 1-SimGetGender(SimAlias), 0, 2, SpouseAlias) then
 			SimSetAge(SpouseAlias, Rand(9) + Age - 4)
@@ -536,15 +535,15 @@ function CreateFamily(SimAlias)
 	
 	Age = math.min( SimGetAge(SimAlias), SimGetAge(SpouseAlias) )
 	
-	local Childs 		= Rand(3)+1
-	local	Birthday 	= Rand(16)+16
+	local Childs = Rand(3) + 1
+	local Birthday = Rand(16)+16
 	local ChildAge
 	local ChildAlias
-	local	CreateChild
+	local CreateChild
 	local ChildWasCreated = false
 	
 	
-	while Childs>0 and Birthday < Age do
+	while Childs > 0 and Birthday < Age do
 		ChildAge = Age - Birthday
 		
 		CreateChild = true
@@ -722,9 +721,9 @@ function CheckSell()
 		return true
 	end
 
-	local	Ok = false
+	local Ok = false
 	
-	local	Count = DynastyGetBuildingCount2("")
+	local Count = DynastyGetBuildingCount2("")
 	for l=0, Count-1 do
 		if DynastyGetBuilding2("", l, "Check") then
 			if BuildingGetType("Check") == GL_BUILDING_TYPE_RESIDENCE then
@@ -769,9 +768,9 @@ function CheckDestroy()
 		return true
 	end
 
-	local	Ok = false
+	local Ok = false
 	
-	local	Count = DynastyGetBuildingCount2("")
+	local Count = DynastyGetBuildingCount2("")
 	for l=0, Count-1 do
 		if DynastyGetBuilding2("", l, "Check") then
 			if BuildingGetType("Check")==GL_BUILDING_TYPE_RESIDENCE then

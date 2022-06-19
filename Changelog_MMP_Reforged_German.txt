@@ -362,6 +362,7 @@ _Allgemein_
 - Die Upgrades im Wohnsitz, die etwas Ruf einbrachten, wurden entfernt.
 - Kontor-Aufträge kommen erst ab der zweiten Runde.
 - Der Effekt von Krankheiten wurde neu gebalanced.
+- Geheimwissen verlängert die Artefaktdauer nun um 10 % pro Stufe (vorher 5%).
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
