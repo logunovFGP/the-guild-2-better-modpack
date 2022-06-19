@@ -1,6 +1,7 @@
 function AIFunction()
 	return "O"
 end
+
 function Run()
 	SimSetProduceItemID("", -1, -1)
 	
@@ -115,8 +116,10 @@ function Run()
 end
 
 function CleanUp()
+
 	SetState("", STATE_LOCKED, false)
 	RemoveProperty("", "AccessAllAreas")
+
 	if not HasData("Start") then
 		if HasProperty("", "InvitedBy") then
 			RemoveProperty("", "InvitedBy")

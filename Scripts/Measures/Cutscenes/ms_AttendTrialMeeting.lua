@@ -1,6 +1,5 @@
 function Run()
 	SimSetProduceItemID("", -1, -1)
-	SetProperty("","destination_ID",GetID("destination"))
 	BuildingGetRoom("destination", "Judge", "Room")
 	
 	if not f_SimIsValid("") then

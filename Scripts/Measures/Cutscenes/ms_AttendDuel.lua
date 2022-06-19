@@ -1,11 +1,8 @@
 function Run()
+
 	SimSetProduceItemID("", -1, -1)
-	
-	if GetState("", STATE_FIGHTING) then
-		return
-	end
-	
-	if not f_SimIsValid("") then
+
+	if not f_SimIsValid("") or GetState("", STATE_FIGHTING) then
 		return
 	end
 	
@@ -13,5 +10,5 @@ function Run()
 		f_MoveTo("", "MovePos", GL_MOVESPEED_RUN)
 	end
 	
-	Sleep(1000)
+	Sleep(2000)
 end
