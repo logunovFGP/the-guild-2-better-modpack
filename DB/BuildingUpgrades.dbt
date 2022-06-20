@@ -620,7 +620,7 @@ Data:
 2435             231              "BlindBarrier"              1                     0                 8                    0.25                 2434              0                 150             0          |
 2436             232              "CamouflageNet"             1                     0                 8                    0.25                 2435              0                 150             0          |
 2437             230              "Campfire"                  1                     0                 15                   310                  2407              0                 150             0          |
-2438             231              "RobberTent"                2                     0                 283                  1.20                 2437              0                 500             0          |
+2438             231              "RobberTent"                2                     0                 5                    1.20                 2437              0                 500             0          |
 2439             232              "CircleOfEquals"            2                     0                 22                   2                    2438              0                 500             0          |
 2440             232              "ChiefTent"                 2                     0                 23                   2                    2438              0                 500             0          |
 
@@ -787,9 +787,9 @@ Data:
 2942             371              "Shellchain"                1                     0                 6                    309                  2940              0                 300             0          |
 2943             372              "PearlChain"                1                     0                 6                    321                  2942              0                 300             0          |
 2944             372              "StinkBomb"                 1                     0                 6                    318                  2941              0                 300             0          |
-2945             372              "SecondBoot"                1                     0                 352                  1                    2946              0                 500             0          |
+2945             372              "SecondBoot"                1                     0                 16                   1                    2946              0                 500             0          |
 2946             370              "InnardsBarrel"             1                     1                 0                    0                    0                 0                 0               0          |
-2947             371              "LargeSails"                8                     0                 283                  1.20                 2907              0                 500             0          |
+2947             371              "LargeSails"                8                     0                 5                    1.20                 2907              0                 500             0          |
 
 // Divehouse 380-382
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
@@ -1035,7 +1035,7 @@ Data:
 3536             651              "weaponrack2"               1                     0                 8                    0.25                 3535              0                 150             0          |
 3545             649              "Campfire"                  1                     0                 15                   310                  3507              0                 300             0          |
 3546             649              "AlarmHorn"                 2                     0                 23                   1                    3545              0                 300             0          |
-3547             650              "WaterBottle"               2                     0                 283                  1.20                 3546              0                 400             0          |
+3547             650              "WaterBottle"               2                     0                 5                    1.20                 3546              0                 400             0          |
 3548             650              "Halberd"                   1                     0                 15                   400                  3546              0                 300             0          |
 3549             651              "CircleOfEquals"            2                     0                 22                   1                    3547              0                 400             0          |
 3550             651              "WarBanner"                 2                     0                 23                   1                    3548              0                 400             0          |
@@ -1221,9 +1221,9 @@ Data:
 3940             671              "Clay"                      1                     0                 6                    30                   3939              0                 300             0          |
 3941             671              "pendel"                    1                     0                 6                    974                  3937              0                 300             0          |
 3942             672              "Voodo"                     1                     0                 6                    976                  3941              0                 300             0          |
-3944             670              "flote"                     1                     0                 394                  2                    3907              0                 300             0          |
-3945             671              "leier"                     1                     0                 394                  4                    3944              0                 400             0          |
-3946             672              "trommel"                   1                     0                 394                  6                    3945              0                 500             0          |
+3944             670              "flote"                     1                     0                 19                   2                    3907              0                 300             0          |
+3945             671              "leier"                     1                     0                 19                   4                    3944              0                 400             0          |
+3946             672              "trommel"                   1                     0                 19                   6                    3945              0                 500             0          |
 3947             672              "traumfanger"               1                     0                 4                    0.20                 3929              0                 300             0          |
 
 // Estate 675-677
