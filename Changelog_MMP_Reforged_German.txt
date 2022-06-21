@@ -52,6 +52,8 @@ _Technik_
 - Das Gerichtsscript wurde überarbeitet.
 - BuildingUpgrades.dbt wurde komplett überarbeitet.
 - GameConstants.dbt wurde überarbeitet. Scripte nutzen nun häufiger Konstanten, um Dinge zu vereinheitlichen und besser balancen zu können.
+- Measures.dbt wurde komplett überarbeitet.
+- Impacts.dbt wurde bereinigt.
 - Die Möglichkeit, während Cutscenes Komplimente und andere Maßnahmen zu nutzen, wurde gestrichen. Alle Teile aus Scripten, die sich auf diesen Fall beziehen, wurden entfernt.
 - Gildenhaus-Script wurde generalüberholt.
 
@@ -162,6 +164,7 @@ _Allgemein_
 - Tiere werden nicht mehr zufällig angegriffen.
 - Während einer Hochzeitszeremonie wurden bei der Rede des Priesters die Geschlechter vertauscht, wenn ein weiblicher Charakter die Maßnahme startete.
 - Die Pest endete nie.
+- Als Träger eines Amtes auf Reichsebene kann man sich nun auf andere Ämter derselben Stufe bewerben.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

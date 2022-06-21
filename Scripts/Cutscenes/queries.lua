@@ -76,7 +76,7 @@ function AttendOfficeMeeting(DestinationID)
 		return
 	end
 	
-	AddImpact("Sim", 369, 1, 3)
+	AddImpact("Sim", "SuppressAttendMessage", 1, 3)
 	
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
@@ -112,7 +112,7 @@ function AttendDuel(DestinationID)
 		return
 	end
 	
-	AddImpact("Sim", 369, 1, 3)
+	AddImpact("Sim", "SuppressAttendMessage", 1, 3)
 
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
@@ -144,7 +144,7 @@ function AttendFestivity(DestinationID)
 		return
 	end
 	
-	AddImpact("Sim", 369, 1, 3)
+	AddImpact("Sim", "SuppressAttendMessage", 1, 3)
 	
 	local bRun = true
 	local message = 0

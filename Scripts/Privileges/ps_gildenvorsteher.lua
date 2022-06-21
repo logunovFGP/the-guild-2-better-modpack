@@ -27,6 +27,6 @@ function LooseOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
-	RemoveAllObjectDependendImpacts( "", "Office" )
+	RemoveAllObjectDependendImpacts("", "Office")
 end
  

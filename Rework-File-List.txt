@@ -1,4 +1,3 @@
-open: 626
 9 Scripts\AI\BaseTree\CheckDynasty\Actions.lua
 10 Scripts\AI\BaseTree\CheckDynasty\Attack.lua
 11 Scripts\AI\BaseTree\CheckDynasty\CheckCutscene.lua
@@ -86,12 +85,8 @@ open: 626
 137 Scripts\AI\Favor\fv_UseShellchain.lua
 138 Scripts\AI\Favor\fv_UseSilverRing.lua
 
-371 Scripts\Library\chr.lua
-374 Scripts\Library\dyn.lua
 382 Scripts\Library\idlelib.lua
 
-430 Scripts\Measures\ms_007_PaybackCredit.lua
-431 Scripts\Measures\ms_008_TakeCredit.lua
 432 Scripts\Measures\ms_010_GoToSleep.lua
 433 Scripts\Measures\ms_022_Fishing.lua
 435 Scripts\Measures\ms_022_ProduceAlchemist.lua
@@ -517,13 +512,6 @@ open: 626
 979 Scripts\Measures\Behaviour\std_Vendor1.lua
 980 Scripts\Measures\Behaviour\std_WeddingPriest.lua
 
-981 Scripts\Measures\Cutscenes\ms_Attend.lua
-982 Scripts\Measures\Cutscenes\ms_AttendDuel.lua
-983 Scripts\Measures\Cutscenes\ms_AttendFestivity.lua
-984 Scripts\Measures\Cutscenes\ms_AttendFuneral.lua
-985 Scripts\Measures\Cutscenes\ms_AttendOfficeMeeting.lua
-986 Scripts\Measures\Cutscenes\ms_AttendTrialMeeting.lua
-
 987 Scripts\Measures\Squad\ms_SquadCheckLocation.lua
 988 Scripts\Measures\Squad\ms_SquadCreate.lua
 989 Scripts\Measures\Squad\ms_SquadDanegeld.lua
@@ -543,29 +531,6 @@ open: 626
 1003 Scripts\Measures\Squad\ms_SquadWaylayForBooty.lua
 1004 Scripts\Measures\Squad\ms_SquadWaylayMember.lua
 
-1027 Scripts\Privileges\ps_hauptmann.lua
-1028 Scripts\Privileges\ps_henker.lua
-1029 Scripts\Privileges\ps_inquisitor.lua
-1030 Scripts\Privileges\ps_kardinal.lua
-1031 Scripts\Privileges\ps_kerkermeister.lua
-1032 Scripts\Privileges\ps_kerkervogt.lua
-1033 Scripts\Privileges\ps_koenig.lua
-1034 Scripts\Privileges\ps_konsul.lua
-1035 Scripts\Privileges\ps_landesherr.lua
-1036 Scripts\Privileges\ps_landgraf.lua
-1037 Scripts\Privileges\ps_marschall.lua
-1038 Scripts\Privileges\ps_obersterrichter.lua
-1039 Scripts\Privileges\ps_obrist.lua
-1040 Scripts\Privileges\ps_pachtmeister.lua
-1041 Scripts\Privileges\ps_ratsdiener.lua
-1042 Scripts\Privileges\ps_richter.lua
-1043 Scripts\Privileges\ps_schlichtmann.lua
-1044 Scripts\Privileges\ps_schultheiss.lua
-1045 Scripts\Privileges\ps_seneschall.lua
-1046 Scripts\Privileges\ps_weibel.lua
-
-1049 Scripts\States\state_aiguildproduce.lua
-1050 Scripts\States\state_aiunpackrawmaterial.lua
 1054 Scripts\States\state_burning.lua
 1055 Scripts\States\state_captured.lua
 1056 Scripts\States\state_checkforspinnings.lua

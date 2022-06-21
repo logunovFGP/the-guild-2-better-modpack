@@ -63,7 +63,7 @@ function Run()
 				if not Total then
 					Total = 0
 				end
-				local ProdValue = GetImpactValue("", 4)
+				local ProdValue = GetImpactValue("", "Productivity")
 				Total = Total + ProdValue*Diff
 				SetProperty("", PropName, Total)
 				if Total > Time then

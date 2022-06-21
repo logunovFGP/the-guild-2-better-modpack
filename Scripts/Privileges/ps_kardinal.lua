@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return "HaveImmunity", "CommandInquisitor", "LeadCrusade", "WorkWonders"
+	return "HaveImmunity", "CommandInquisitor", "LeadCrusade", "WorkWonders", "CanApplyForEpicOffice"
 end
 
 function InitOffice()
@@ -13,10 +13,11 @@ function TakeOffice(Messages)
 		feedback_MessageOffice("",
 			ps_kardinal_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_kardinal_GetPrivilegeList() )
+	RemoveImpact("", "CanApplyForEpicOfficeTimed")
 end
 
 function LooseOffice(Messages)
@@ -24,9 +25,11 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_kardinal_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
-	RemoveAllObjectDependendImpacts( "", "Office" )
+	RemoveAllObjectDependendImpacts("", "Office")
+	RemoveImpact("", "CanApplyForEpicOfficeTimed")
+	AddImpact("", "CanApplyForEpicOfficeTimed", 1, 24)
 end
  

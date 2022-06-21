@@ -66,7 +66,6 @@ function Weight()
 					if Distance<4000 and GetCurrentMeasureID("ResourceAlias")<1 then
 					
 						if GetDynastyID("ResourceAlias")<1 then
-						--if GetState("ResourceAlias",STATE_SELLFLAG) == true or  GetImpactValue("ResourceAlias", 296) > 0 then
 							SetData("ToDo", "Buy")
 							SetData("ItemID", ItemID)
 							return 100

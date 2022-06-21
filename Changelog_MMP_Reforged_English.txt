@@ -52,6 +52,8 @@ _Tech_
 - Trial script has been reworked.
 - BuildingUpgrades.dbt has been reworked.
 - GameConstants.dbt has been reworked. Scripts use GameConstants much more frequently now to make things more consistent and easier to balance.
+- Measures.dbt has been completely reworked.
+- Impacts.dbt has been cleaned up.
 - The possibility of using compliments and other actions during cutscenes have caused many issues and thus got removed. All cutscene-only parts of those scripts have been removed.
 - guild house script has been completely revised.
 
@@ -161,6 +163,7 @@ _General_
 - Animals should no longer get randomly attacked.
 - During a wedding ceremony the priest swapped genders when a female character started the action.
 - The Plague never ended.
+- As an epic office bearer you can apply for other epic offices.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

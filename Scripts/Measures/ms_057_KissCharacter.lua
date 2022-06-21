@@ -23,7 +23,7 @@ function Run()
 	local	time1 = 0
 	local time2 = 0	
 	
-	local FlirtBonus = GetImpactValue("", 52)		-- 52 = FlirtProfi
+	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01	
 	
 	-- The action number for the courting

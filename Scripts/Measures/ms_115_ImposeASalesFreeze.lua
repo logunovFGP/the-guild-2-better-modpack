@@ -13,22 +13,22 @@ function Run()
 		StopMeasure()
 	end
 
-  if GetImpactValue("Destination", "sale_freezed")==1 then
+	if GetImpactValue("Destination", "sale_freezed") == 1 then
 		MsgQuick("", "_IMPOSEASALESFREEZE_FAILURE_+0")
 	 	StopMeasure()
 	end
     
-	GetSettlement("","OwnerCity")
-	GetSettlement("Destination","DestCity")
-	if GetID("OwnerCity")~=GetID("DestCity") then
-		MsgQuick("","_IMPOSEASALESFREEZE_FAILURE_+1")
+	GetSettlement("", "OwnerCity")
+	GetSettlement("Destination", "DestCity")
+	if GetID("OwnerCity") ~= GetID("DestCity") then
+		MsgQuick("", "_IMPOSEASALESFREEZE_FAILURE_+1")
 		StopMeasure()
 	end
 	
-	GetPosition("","OwnerPos")
-	GetPosition("Destination","MarketPos")
-	if GetDistance("OwnerPos","MarketPos") > 5000 then
-		MsgQuick("","_IMPOSEASALESFREEZE_FAILURE_+2")
+	GetPosition("", "OwnerPos")
+	GetPosition("Destination", "MarketPos")
+	if GetDistance("OwnerPos", "MarketPos") > 5000 then
+		MsgQuick("", "_IMPOSEASALESFREEZE_FAILURE_+2")
 		StopMeasure()
 	end
 

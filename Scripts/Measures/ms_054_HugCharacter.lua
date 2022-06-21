@@ -22,7 +22,7 @@ function Run()
 	local FavorWon = 5 + (CharismaSkill * 0.5)
 	local FavorLoss = Rand(4)-9
 	
-	local FlirtBonus = GetImpactValue("", 52)		-- 52 = FlirtProfi
+	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52 = FlirtProfi
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
 	
 	-- The action number for the courting

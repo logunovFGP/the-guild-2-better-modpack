@@ -11,7 +11,7 @@ function Run()
 		return
 	end
 	
-	local	TimeOut = Gametime2Realtime(0.5)
+	local	TimeOut = 30
 	
 	while CartCheckEscort("") do
 		if CartGetEscortCount("") == 0 then

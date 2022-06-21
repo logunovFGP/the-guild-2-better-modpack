@@ -100,7 +100,7 @@ function Run()
 	if FavorLoss > -5 then
 		FavorLoss = -5
 	end
-	local FlirtBonus = GetImpactValue("", 52)		-- 52 = FlirtProfi
+	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
 	
 	-- the action number for the courting

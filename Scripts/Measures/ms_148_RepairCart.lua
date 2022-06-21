@@ -87,13 +87,12 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
+
 	SetRepeatTimer("", GetMeasureRepeatName(), 0)
 	StopAnimation("operator")
 	EnterVehicle("operator", "")
 	SetState("operator", STATE_LOCKEDALT, false)
-	RemoveProperty("operator", "NoControlSim")
 	ResetProcessProgress("")
-	
 end
 
 -- -----------------------
