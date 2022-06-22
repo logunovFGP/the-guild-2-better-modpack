@@ -355,6 +355,7 @@ _General_
 - Counting houses first special offer only occur at the second round
 - The effect of illnesses has been changed.
 - Arcane Knowledge increases artefact's durations by 10% per point (5% before).
+- Sleeping a few hours gains your character some extra experience points.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

@@ -30,14 +30,12 @@ function Run()
 	end
 	
 	local MeasureID = GetCurrentMeasureID("")
-	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	if GetInsideBuilding("","Currentbuilding") then
 		MsgQuick("","@L_CHURCH_093_WINBELIEVERS_FAILURES_+1")
 		StopMeasure()
 	end
 
-	SetMeasureRepeat(TimeOut)	
 	local Prefix = "@L_CHURCH_093_WINBELIEVERS_BLAZING_SERMON"
 	
 	local Religion = BuildingGetReligion("church")
@@ -100,7 +98,7 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	--OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 
 

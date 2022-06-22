@@ -233,7 +233,11 @@ function Run()
 				xp_CohabitWithCharacter("male", SimGetChildCount("male"))
 				xp_CohabitWithCharacter("female", SimGetChildCount("female"))
 				
-			else				
+			else	
+				chr_GainXP("male", GetData("BaseXP"))
+				Sleep(0.2)
+				chr_GainXP("female", GetData("BaseXP"))
+				Sleep(0.1)
 				MsgSay("", feedback_PregnancySuccess(SimGetGender(""), 0));				
 			end
 

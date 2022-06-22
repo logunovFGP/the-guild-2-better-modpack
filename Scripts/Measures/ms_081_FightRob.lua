@@ -4,7 +4,6 @@ function Run()
 	local ActionDistance = 50
 	
 	local MeasureID = GetCurrentMeasureID("")
-	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	--run to destination and start action at MaxDistance
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil, true) then
@@ -18,7 +17,7 @@ function Run()
 	end
 	PlayAnimation("","manipulate_bottom_r")
 	local Booty = Plunder("", "Destination",1)
-	SetMeasureRepeat(TimeOut)
+	
 	if Booty > 0 then
 		--for the mission
 		mission_ScoreCrime("",Booty)
@@ -43,6 +42,6 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	--OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

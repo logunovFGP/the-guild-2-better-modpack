@@ -61,6 +61,7 @@ function Run()
 	
 	SetMeasureRepeat(TimeOut)
 	AddImpact("destination","DivineBlessing",1,duration)
+	chr_GainXP("", Get
 	
 end
 

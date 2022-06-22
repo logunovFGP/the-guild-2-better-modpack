@@ -26,7 +26,7 @@ function Run()
 	end
 	
 	-- Not sleepy?
-	if GetImpactValue("","GoodDream")>0 or GetImpactValue("","BadDream")>0 then
+	if GetImpactValue("","GoodDream")>0 or GetImpactValue("", "BadDream") > 0 then
 		MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
 		StopMeasure()
 	end
@@ -42,8 +42,8 @@ function Run()
 			end
 		end
 	end
-	if GetImpactValue("","SleepRecoverBonus")>0 then
-		duration = duration - ((GetImpactValue("","SleepRecoverBonus")*0.01)*duration)
+	if GetImpactValue("", "SleepRecoverBonus") > 0 then
+		duration = duration - ((GetImpactValue("", "SleepRecoverBonus")*0.01)*duration)
 	end
 	local CurrentHP = GetHP("")
 	local MaxHP = GetMaxHP("")
@@ -57,17 +57,17 @@ function Run()
 
 	if GetFreeLocatorByName("HomeBuilding", "Bed",1,3, "SleepPosition") then
 		if not f_BeginUseLocator("", "SleepPosition", GL_STANCE_LAY, true) then
-			MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1",GetID(""))
+			MsgQuick("", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
 			StopMeasure()
 		end
 	else
-		if SimGetProfession("")==GL_PROFESSION_MYRMIDON then
-			MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1",GetID(""))
+		if SimGetProfession("") == GL_PROFESSION_MYRMIDON then
+			MsgQuick("", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
 			StopMeasure()
 		end
-		if GetDynastyID("")~=-1 and IsDynastySim("Owner") then
+		if GetDynastyID("") ~= -1 and IsDynastySim("Owner") then
 			-- member from a dynasty must sleep in the right way
-			MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1",GetID(""))
+			MsgQuick("","@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
 			return
 		end
 		RemoveAlias("SleepPosition")
@@ -206,7 +206,7 @@ function CleanUp()
 			end
 			AddImpact("","GoodDream",1,12)
 		else 
-			chr_GainXP("",Factor)
+			chr_GainXP("", Factor)
 			AddImpact("","BadDream",1,12)
 		end
 	end	

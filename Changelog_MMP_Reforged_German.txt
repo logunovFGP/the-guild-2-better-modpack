@@ -366,6 +366,7 @@ _Allgemein_
 - Kontor-Aufträge kommen erst ab der zweiten Runde.
 - Der Effekt von Krankheiten wurde neu gebalanced.
 - Geheimwissen verlängert die Artefaktdauer nun um 10 % pro Stufe (vorher 5%).
+- Eine Zeit lang zu schlafen, bringt garantiert eine kleine Menge Erfahrungspunkte (abhängig von der Jahre-pro-Runde-Einstellung)
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

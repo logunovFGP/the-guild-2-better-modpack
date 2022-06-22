@@ -86,7 +86,6 @@ function Run()
 			ms_015_assigntodancedivehouse_Dance()
 		end
 
-		IncrementXPQuiet("",15)
 		CurrentTime = GetGametime()
 		Sleep(1)
 	end
@@ -157,6 +156,7 @@ function Dance()
 		end
 		
 		CreditMoney("", spend, "LaborOfLove")
+		IncrementXPQuiet("", 10)
 		AddImpact(DestAlias,"FullOfLove",1,2)
 		end
 	    Sleep(letsdance+2)

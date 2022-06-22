@@ -56,23 +56,23 @@ function Run()
 	  	
 		local empskill = GetSkillValue("", EMPATHY)
 		local chakill = GetSkillValue("Destination", CHARISMA)
-     	local spender = SimGetRank("")
-      	local spend
+		local spender = SimGetRank("")
+		local spend
 
-	    if spender == 0 or spender == 1 then
-	     	spend = 25 * chakill
-	    elseif spender == 2 then
-	    	spend = 30 * chakill
-	    elseif spender == 3 then
-	     	spend = 35 * chakill
-	    elseif spender == 4 then
-	     	spend = 40 * chakill
-	    elseif spender == 5 then
-	     	spend = 50 * chakill
-	    end
+		if spender == 0 or spender == 1 then
+			spend = 25 * chakill
+		elseif spender == 2 then
+			spend = 30 * chakill
+		elseif spender == 3 then
+			spend = 35 * chakill
+		elseif spender == 4 then
+			spend = 40 * chakill
+		elseif spender == 5 then
+			spend = 50 * chakill
+		end
 
 		if IsDynastySim("") then
-			 chr_SpendMoney("", spend, "LaborHansel")
+			chr_SpendMoney("", spend, "LaborHansel")
 		end
 
 		CreditMoney("Destination", spend, "LaborOfLove")
