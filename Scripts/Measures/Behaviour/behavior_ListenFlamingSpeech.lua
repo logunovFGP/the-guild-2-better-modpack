@@ -6,7 +6,7 @@ function Run()
 	AlignTo("Owner", "Actor")
 	Sleep(1)
 	
-	local FavorModify = 10
+	local FavorModify = GL_FAVOR_MOD_NORMAL
 	local ActionName = GetData("Action_Name")
 	local TimeLeft = -1
 	local	TimeOut = GetGametime()+0.5

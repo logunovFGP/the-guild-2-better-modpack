@@ -20,9 +20,9 @@ function Run()
 	end
 	
 	--how much the favor of the listeners to the destination is decreased
-	local favormodify = 12
+	local favormodify = GL_FAVOR_MOD_NORMAL
 	--how much the favor from the victim to the owner is decreased
-	local favorloss = 12
+	local favorloss = GL_FAVOR_MOD_GREATER
 	--how far the destination can be to start this action
 	local MaxDistance = 1000
 	--how far from the destination, the owner should stand while reading the letter from rome

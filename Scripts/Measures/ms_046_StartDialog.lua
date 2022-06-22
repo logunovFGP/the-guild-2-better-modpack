@@ -88,7 +88,7 @@ function Run()
 	if (GetFavorToSim("Destination", "") < MinFavor) then
 		SetMeasureRepeat(TimeOut)
 		MsgSay("Destination","@L_STARTDIALOG_NO")
-		local favormodify = (Rand(5) + desttitle)
+		local favormodify = (GL_FAVOR_MOD_SMALL + desttitle)
 		chr_ModifyFavor("Destination","", -favormodify)
 		Sleep(0.5)
 		MsgSay("", "@L_STARTDIALOG_SORRY")

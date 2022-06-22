@@ -117,60 +117,60 @@ function Run()
 			if GetImpactValue("SickSim0", "Sprain") == 1 then
 				Disease = "Sprain"
 				Medicine = "Bandage"
-				FavorMod = 5
+				FavorMod = GL_FAVOR_MOD_SMALL
 				Label = "SPRAIN"
 			--COLD	
 			elseif GetImpactValue("SickSim0", "Cold") == 1 then
 				Disease = "Cold"
 				Medicine = "Bandage"
-				FavorMod = 5
+				FavorMod = GL_FAVOR_MOD_SMALL
 				Label = "COLD"
 			--INFLUENZA
 			elseif GetImpactValue("SickSim0", "Influenza") == 1 then
 				Disease = "Influenza"
 				Medicine = "Medicine"
-				FavorMod = 5
+				FavorMod = GL_FAVOR_MOD_SMALL
 				Label = "INFLUENZA"
 			--FRACTURE
 			elseif GetImpactValue("SickSim0", "Fracture") == 1 then
 				Disease = "Fracture"
 				Medicine = "PainKiller"
-				FavorMod = 10
+				FavorMod = GL_FAVOR_MOD_NORMAL
 				Label = "FRACTURE"
 			--BURNWOUND	
 			elseif GetImpactValue("SickSim0", "BurnWound") == 1 then
 				Disease = "BurnWound"
 				Medicine = "PainKiller"
-				FavorMod = 10
+				FavorMod = GL_FAVOR_MOD_NORMAL
 				Label = "BURNWOUND"
 			--POX	
 			elseif GetImpactValue("SickSim0", "Pox") == 1 then
 				Disease = "Pox"
 				Medicine = "Medicine"
-				FavorMod = 10
+				FavorMod = GL_FAVOR_MOD_NORMAL
 				Label = "POX"
 			--CARIES					
 			elseif GetImpactValue("SickSim0", "Caries") == 1 then
 				Disease = "Caries"
 				Medicine = "PainKiller"
-				FavorMod = 10
+				FavorMod = GL_FAVOR_MOD_NORMAL
 				Label = "CARIES"
 			--PNEUMONIA
 			elseif GetImpactValue("SickSim0", "Pneumonia") == 1 then
 				Disease = "Pneumonia"
 				Medicine = "PainKiller"
-				FavorMod = 15
+				FavorMod = GL_FAVOR_MOD_GREATER
 				Label = "PNEUMONIA"
 			--BLACKDEATH
 			elseif GetImpactValue("SickSim0", "Blackdeath") == 1 then
 				Disease = "Blackdeath"
 				Medicine = "PainKiller"
-				FavorMod = 15
+				FavorMod = GL_FAVOR_MOD_LARGE
 				Label = "BLACKDEATH"
 			--ELSE (HP LOSS)
 			elseif (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
 				Medicine = "Bandage"
-				FavorMod = 5
+				FavorMod = GL_FAVOR_MOD_SMALL
 				Label = "HPLOSS"
 			-- NOTHING
 			else
@@ -291,32 +291,32 @@ function Run()
 						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
 						
 						if Disease == "Sprain" then
-							diseases_Sprain("SickSim0",false)
+							diseases_Sprain("SickSim0", false)
 						elseif Disease == "Cold" then
-							diseases_Cold("SickSim0",false)
+							diseases_Cold("SickSim0", false)
 						elseif Disease == "Influenza" then
-							diseases_Influenza("SickSim0",false)
+							diseases_Influenza("SickSim0", false)
 						elseif Disease == "Fracture" then
-							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 							diseases_Fracture("SickSim0",false)
 						elseif Disease == "BurnWound" then
-							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 							diseases_BurnWound("SickSim0",false)
 						elseif Disease == "Pox" then
-							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 							diseases_Pox("SickSim0",false)
 						elseif Disease == "Caries" then
-							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 							diseases_Caries("SickSim0", false)
 						elseif Disease == "Pneumonia" then
-							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 							diseases_Pneumonia("SickSim0", false)
 						elseif Disease == "Blackdeath" then
-							ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-							diseases_Blackdeath("SickSim0",false)
+							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
+							diseases_Blackdeath("SickSim0", false)
 						else
 							local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
-							ModifyHP("SickSim0",ToHeal,true)
+							ModifyHP("SickSim0", ToHeal, true)
 						end
 						
 						if HasData("LayStill") then
@@ -324,8 +324,8 @@ function Run()
 						end
 						
 						-- modify the favor to the boss
-							if BuildingGetOwner("Hospital","MyBoss") then
-								chr_ModifyFavor("SickSim0","MyBoss",FavorMod)
+							if BuildingGetOwner("Hospital", "MyBoss") then
+								chr_ModifyFavor("SickSim0", "MyBoss", FavorMod)
 							end
 						Cured = true
 					end

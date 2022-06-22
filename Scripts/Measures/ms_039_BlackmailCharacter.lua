@@ -15,7 +15,7 @@ function Run()
 	--how far from the destination, the owner should stand
 	local ActionDistance = 80
 	--how much favor from destination to owner is decreased
-	local ModifyFavor = 15
+	local ModifyFavor = GL_FAVOR_MOD_GREATER
 	
 	local MeasureID = GetCurrentMeasureID("")
 	local duration = mdata_GetDuration(MeasureID)

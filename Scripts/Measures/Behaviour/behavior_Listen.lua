@@ -44,7 +44,7 @@ function Run()
 			if GetState("Actor",STATE_HPFZ_HYPNOSE) == true then
         if SimGetOfficeID("Actor") > 0 then
 	        if SimGetOfficeID("Owner") > 0 then
-	          chr_ModifyFavor("","Actor",-5)
+	          chr_ModifyFavor("","Actor",-GL_FAVOR_MOD_SMALL)
 	        end
 				end
 			end

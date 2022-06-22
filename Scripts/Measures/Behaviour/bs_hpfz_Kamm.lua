@@ -1,7 +1,7 @@
 function Run()
 	
 	if SimGetOfficeID("") > 0 then
-		chr_ModifyFavor("", "Actor", 5)
+		chr_ModifyFavor("", "Actor", GL_FAVOR_MOD_SMALL)
 		if IsPartyMember("")  then
 			MsgNewsNoWait("", "Actor", "", "intrigue", -1,
 					"@L_HPFZ_ARTEFAKT_KAMM_OPFER_KOPF_+0",

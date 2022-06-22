@@ -29,10 +29,10 @@ function Run()
 			
 			if GetID("Destination") ~= GetID("receiver") then
 			
-				chr_ModifyFavor("receiver", "Destination", (-2-PreacherSkill))
+				chr_ModifyFavor("receiver", "Destination", (-GL_FAVOR_MOD_TINY-PreacherSkill))
 			end
 		end
-		chr_ModifyFavor("Destination", "MrChurch", (-1-PreacherSkill))
+		chr_ModifyFavor("Destination", "MrChurch", (-GL_FAVOR_MOD_TINY-PreacherSkill))
 	end
 end
 

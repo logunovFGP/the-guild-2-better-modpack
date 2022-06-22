@@ -131,7 +131,7 @@ function Run()
 			MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_KOPF_+0",
 						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0", GetID(""))
-			chr_ModifyFavor("Destination", "", -10)
+			chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_NORMAL)
 			AddEvidence("Destination", "Owner", "Destination", 11) -- poison
 		end
 	end

@@ -105,7 +105,7 @@ function Run()
 					
 					if GetHomeBuilding(DestAlias, "VictimHome") then
 						if BuildingGetOwner("VictimHome", "VictimOwner") then
-							local favourloss = 5
+							local favourloss = GL_FAVOR_MOD_SMALL
 							chr_ModifyFavor("VictimOwner", "MercOwner", -favourloss)
 						end
 					end

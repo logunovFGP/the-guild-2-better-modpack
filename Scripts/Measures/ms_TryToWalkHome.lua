@@ -80,7 +80,7 @@ function Brawl()
 		PlaySound3DVariation("","CharacterFX/female_anger_loop",1)
 	end
 	PlayAnimation("","threat")
-	chr_ModifyFavor("Enemy","",-5)
+	chr_ModifyFavor("Enemy","",-GL_FAVOR_MOD_SMALL)
 	if SimGetGender("Enemy")==GL_GENDER_MALE then
 		PlaySound3DVariation("","CharacterFX/male_joy_loop",1)
 		PlayAnimationNoWait("Enemy","talk_2")
@@ -136,7 +136,7 @@ function KissCheck()
 	else
 		PlaySound3DVariation("Enemy","CharacterFX/female_anger",1)
 	end
-	chr_ModifyFavor("Enemy","",-5)
+	chr_ModifyFavor("Enemy","",-GL_FAVOR_MOD_SMALL)
 	PlayAnimation("","push_back_male")
 	GetFleePosition("Enemy","",800,"FleePos")
 	f_MoveToNoWait("Enemy","FleePos",GL_MOVESPEED_RUN)

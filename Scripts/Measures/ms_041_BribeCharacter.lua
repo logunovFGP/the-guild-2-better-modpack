@@ -216,7 +216,7 @@ function Run()
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
 		
 		--do the favor stuff
-		chr_ModifyFavor("Destination", "", -5)
+		chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_SMALL)
 		
 		--show message
 		MsgNewsNoWait("", "Destination", "", "intrigue", -1,

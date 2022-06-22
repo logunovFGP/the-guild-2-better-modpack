@@ -112,7 +112,7 @@ function Run()
 				CarryObject("Child","",false)
 				PlayAnimationNoWait("","child_play_02_out")
 				PlayAnimation("Child","child_play_02_out")
-				chr_ModifyFavor("Child","",3)
+				chr_ModifyFavor("Child","", GL_FAVOR_MOD_VERYSMALL)
 				SetData("Blocked",1)
 				return
 			end

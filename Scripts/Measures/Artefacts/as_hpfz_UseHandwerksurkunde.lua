@@ -74,9 +74,9 @@ function Run()
 		local AnimTime = 1
 		for loop_var=0, numFound-1 do
 			Alias = "Worker"..loop_var
-			chr_ModifyFavor(Alias, "Owner", 20)
+			chr_ModifyFavor(Alias, "Owner", GL_FAVOR_MOD_LARGE)
 			Sleep(0.5)
-			chr_GainXP(Alias, 500)
+			chr_GainXP(Alias, GetData("BaseXP"))
 			if SimGetGender(Alias) == 1 then
 				AnimTime = PlayAnimationNoWait(Alias, "cheer_02")
 				PlaySound3D(Alias,"CharacterFX/male_cheer/male_cheer+4.ogg", 1.0)

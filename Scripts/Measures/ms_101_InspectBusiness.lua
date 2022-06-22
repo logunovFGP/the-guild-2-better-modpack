@@ -48,7 +48,7 @@ function Run()
 	SetRepeatTimer("", GetMeasureRepeatName(), TimeOut)
 	
 	-- lose favor
-	local FavorToLose = 20
+	local FavorToLose = GL_FAVOR_MOD_LARGE
 	if GetOfficeTypeHolder("InspectingCity", 6 ,"InspectorBoss") then	-- 6 = EN_OFFICETYPE_GUILDMAN
 		if BuildingGetOwner("Destination", "EnemyBoss") then
 			ModifyFavorToSim("InspectorBoss", "EnemyBoss", -FavorToLose)

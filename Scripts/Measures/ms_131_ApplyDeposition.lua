@@ -84,7 +84,7 @@ function Run()
 	if GetImpactValue("destination","holdoffice") ~= 1 then
 		if SimApplyDeposition("","destination") then
 			if DynastyIsPlayer("Owner") then
-				chr_ModifyFavor("destination","Owner", -15)
+				chr_ModifyFavor("destination","Owner", -GL_FAVOR_MOD_GREATER)
 			end
 			PlayAnimationNoWait("Usher",ms_131_applydeposition_getRandomTalk())
 			MsgSay("Usher","@L_PRIVILEGES_131_APPLYDEPOSITION_COMMENT_TOWN_CLERK_SUCCESS",GetID("destination"))

@@ -85,7 +85,7 @@ function Run()
 		PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 		CarryObject("", "", false)
 		
-		chr_ModifyFavor("Believer", "Destination", -100)		
+		chr_ModifyFavor("Believer", "Destination", -GL_FAVOR_MOD_MAX)		
 			
 		MsgNewsNoWait("", "Believer", "", "intrigue", -1,
 					"@L_HPFZ_ARTEFAKT_TIRADE_NUTZER_KOPF_+0",

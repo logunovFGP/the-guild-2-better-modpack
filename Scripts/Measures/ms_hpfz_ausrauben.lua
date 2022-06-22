@@ -190,7 +190,7 @@ function Run()
 						AddImpact(DestAlias,"HaveBeenAusraubed",1,TimeToWait)
 						AlignTo(DestAlias, "Owner")
 						Sleep(1)
-							chr_ModifyFavor(DestAlias,"",-20)
+							chr_ModifyFavor(DestAlias,"",-GL_FAVOR_MOD_LARGE)
 							if (GetSkillValue("Owner",SHADOW_ARTS) <= GetSkillValue("Destination",EMPATHY)) then
 							    CommitAction("rob", "", "", DestAlias)
 							end

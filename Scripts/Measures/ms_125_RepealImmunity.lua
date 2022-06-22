@@ -51,7 +51,7 @@ function Run()
 	
 	chr_GainXP("", GetData("BaseXP"))
 	Sleep(0.25)
-	chr_ModifyFavor("Destination", "", -10)
+	chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_NORMAL)
 	
 end
 

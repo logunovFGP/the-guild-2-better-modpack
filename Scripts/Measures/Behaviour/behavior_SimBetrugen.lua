@@ -87,7 +87,7 @@ function Run()
       MsgSay("Owner","_HPFZ_BEHAVIOUR_BETRUGEN_SPRUCH_+7")
     end
     PlayAnimation("Owner","propel")
-    chr_ModifyFavor("Owner","Actor",-20)
+    chr_ModifyFavor("Owner","Actor",-GL_FAVOR_MOD_LARGE)
   end
 
   Sleep(2.0)

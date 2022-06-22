@@ -70,18 +70,18 @@ function Run()
 			PlayFE("", "nervous", 1, 3, 0)
 			if (Rhetoric < 20) then
 				MsgSay("", "_HPFZ_ARTEFAKT_SPINDEL_SPRUCH_+1")
-				favorlost = 100
+				favorlost = GL_FAVOR_MOD_MAX
 				AddEvidence("Destination", "", "Destination", 11)
 			elseif (Rhetoric < 40) then
 				MsgSay("", "_HPFZ_ARTEFAKT_SPINDEL_SPRUCH_+2")
-				favorlost = 50
+				favorlost = GL_FAVOR_MOD_EPIC
 				AddEvidence("Destination", "", "Destination", 11)
 			elseif (Rhetoric < 60) then
 				MsgSay("Owner", "_HPFZ_ARTEFAKT_SPINDEL_SPRUCH_+3")
-				favorlost = 10
+				favorlost = GL_FAVOR_MOD_NORMAL
 			elseif (Rhetoric < 80) then
 				MsgSay("", "_HPFZ_ARTEFAKT_SPINDEL_SPRUCH_+4")
-				favorlost = 5
+				favorlost = GL_FAVOR_MOD_SMALL
 			else
 				MsgSay("", "_HPFZ_ARTEFAKT_SPINDEL_SPRUCH_+5")
 				favorlost = 0

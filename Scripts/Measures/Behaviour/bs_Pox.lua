@@ -1,6 +1,6 @@
 function Run()
 	
-	chr_ModifyFavor("", "Actor", -5)
+	chr_ModifyFavor("", "Actor", -GL_FAVOR_MOD_SMALL)
 
 	return ""
 end

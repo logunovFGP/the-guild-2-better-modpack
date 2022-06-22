@@ -154,7 +154,7 @@ function Run()
 						StopAnimation("")
 						SetData("Blocked", 0)
 						if GetNobilityTitle(DestAlias) > 3 then
-							chr_ModifyFavor(DestAlias,"",-5)
+							chr_ModifyFavor(DestAlias,"",-GL_FAVOR_MOD_SMALL)
 							CommitAction("pickpocket", "", "", DestAlias)
 							feedback_OverheadComment(DestAlias,
 								"@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)

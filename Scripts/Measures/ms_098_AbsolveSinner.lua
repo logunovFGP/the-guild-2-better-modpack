@@ -11,7 +11,7 @@ function Run()
 	
 	BlockChar("Destination")
 	--how much the favor of the Destination to the owner is decreased
-	local favormodify = 10
+	local favormodify = GL_FAVOR_MOD_NORMAL
 	--how far the Destination can be to start this action
 	local MaxDistance = 1000
 	--how far from the destination, the owner should stand while reading the letter from rome

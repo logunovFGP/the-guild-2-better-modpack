@@ -18,7 +18,7 @@ function Run()
 	end
 
 	--how much the favor of the Destination to the owner is decreased
-	local favormodify = 20
+	local favormodify = GL_FAVOR_MOD_VERYLARGE
 	--how far the Destination can be to start this action
 	local MaxDistance = 1500
 	--how far from the destination, the owner should stand while reading the letter from rome

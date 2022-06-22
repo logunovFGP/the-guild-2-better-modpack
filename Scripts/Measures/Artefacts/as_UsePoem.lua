@@ -21,7 +21,7 @@ function Run()
 	end
 
 	--how much the favor of the destination to the owner is increased
-	local favormodify = 10
+	local favormodify = GL_FAVOR_MOD_NORMAL
 	--how far the victim can be to start this action
 	local MaxDistance = 800
 	--how far from the destination, the owner should stand while reading the poem

@@ -19,7 +19,7 @@ function Run()
 	end
 
 	-- Measure parameter
-	local favormodify = 100
+	local favormodify = GL_FAVOR_MOD_EPIC
 	local MaxDistance = 1500
 	local ActionDistance = 130
 	local YearsToLive = (-3)

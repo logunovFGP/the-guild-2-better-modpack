@@ -36,7 +36,7 @@ function Run()
 	SetMeasureRepeat(TimeOut)
 	MeasureSetNotRestartable()
 	chr_GainXP("", GetData("BaseXP"))
-	chr_ModifyFavor("Victim", "", -50)
+	chr_ModifyFavor("Victim", "", -GL_FAVOR_MOD_EPIC)
 	DynastyForceCalcDiplomacy("Victim")
 	DynastyForceCalcDiplomacy("")
 	

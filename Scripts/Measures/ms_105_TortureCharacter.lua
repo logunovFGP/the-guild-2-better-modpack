@@ -172,7 +172,7 @@ function Run()
 	local ActualHP = GetHP("Destination")
 	ModifyHP("Destination",-(ActualHP/3),true)
 	Sleep(0.5)
-	chr_ModifyFavor("Destination","MrTorture",-10)
+	chr_ModifyFavor("Destination","MrTorture",-GL_FAVOR_MOD_GREATER)
 	if CheckSkill("Destination",1,5) then
 		chr_GainXP("MrTorture",GetData("BaseXP"))
 		while true do

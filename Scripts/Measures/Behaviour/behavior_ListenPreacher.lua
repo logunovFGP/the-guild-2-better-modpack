@@ -55,13 +55,13 @@ function Run()
 		
 		if (SimGetReligion("Owner")==Religion) then
 			if (Religion==0) then
-				chr_SimModifyFaith("Owner",faithmodifier,0)
+				chr_SimModifyFaith("Owner", faithmodifier, 0)
 				Sleep(1)
-				chr_ModifyFavor("Owner","Actor",5)
+				chr_ModifyFavor("Owner", "Actor", GL_FAVOR_MOD_SMALL)
 			else
 				chr_SimModifyFaith("Owner",faithmodifier,1)
 				Sleep(1)
-				chr_ModifyFavor("Owner","Actor",5)
+				chr_ModifyFavor("Owner", "Actor", GL_FAVOR_MOD_SMALL)
 			end
 		else
 			if CheckSkill("Actor",RHETORIC, faith/10) then

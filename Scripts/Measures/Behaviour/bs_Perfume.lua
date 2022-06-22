@@ -9,19 +9,19 @@ function Run()
 	local modval2 = 0 --same gender
 
 	if GetProperty("Actor", "perfume") == 5 then
-		modval = 5
-		modval2 = 3
+		modval = GL_FAVOR_MOD_SMALL
+		modval2 = GL_FAVOR_MOD_VERYSMALL
 	elseif GetProperty("Actor", "perfume") == 4 then
 		modval = 4
 		modval2 = 2
 	elseif GetProperty("Actor", "perfume") == 3 then
-		modval = 3
-		modval2 = 1
+		modval = GL_FAVOR_MOD_VERYSMALL
+		modval2 = GL_FAVOR_MOD_TINY
 	elseif GetProperty("Actor", "perfume") == 2 then
 		modval = 2
 		modval2 = 1
 	elseif GetProperty("Actor", "perfume") == 1 then
-		modval = 1
+		modval = GL_FAVOR_MOD_TINY
 	end
 
 	if SimGetGender("") == SimGetGender("Actor") then

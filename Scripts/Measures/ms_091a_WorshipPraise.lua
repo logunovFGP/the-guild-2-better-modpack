@@ -27,10 +27,10 @@ function Run()
 			ListGetElement("sims_in_church", i, "receiver")
 			
 			if GetID("Destination") ~= GetID("receiver") then
-				chr_ModifyFavor("receiver", "Destination", (2+PreacherSkill))
+				chr_ModifyFavor("receiver", "Destination", (GL_FAVOR_MOD_TINY+PreacherSkill))
 			end
 		end
-		chr_ModifyFavor("destination", "MrChurch", (2+PreacherSkill))
+		chr_ModifyFavor("destination", "MrChurch", (GL_FAVOR_MOD_TINY+PreacherSkill))
 	end
 end
 

@@ -254,7 +254,7 @@ function Run()
 		if fame > 0 then
 			chr_SimAddImperialFame("",fame)
 			Sleep(2)
-			chr_GainXP("",fame*25)
+			chr_GainXP("", GetData("BaseXP"))
 	
 			if DynastyIsPlayer("") then
 				feedback_MessageCharacter("","@L_WAR_END_ALIVE_HEAD_+0","@L_WAR_END_ALIVE_BODY_+0",GetID(""))

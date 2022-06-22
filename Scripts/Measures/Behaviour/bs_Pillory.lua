@@ -13,7 +13,7 @@ function Run()
 		return ""
 	end
 	
-	chr_ModifyFavor("", "Actor", -5)
+	chr_ModifyFavor("", "Actor", -GL_FAVOR_MOD_VERYSMALL)
 	
 	local	Favor = GetFavorToSim("", "Actor")
 	if  Favor < 60 then

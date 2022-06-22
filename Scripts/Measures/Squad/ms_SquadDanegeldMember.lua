@@ -129,7 +129,7 @@ function Danegeld()
 		money = 25
 	end
 
-	local favourloss = 5
+	local favourloss = GL_FAVOR_MOD_SMALL
 
 	if not SimGetWorkingPlace("", "MyMercenarycamp") then
 		if IsPartyMember("") then

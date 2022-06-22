@@ -19,7 +19,7 @@ function Run()
 		
 	elseif GetProperty("Actor", "jewellery") == 7 then
 		if not (SimGetGender("") == SimGetGender("Actor")) then
-			chr_ModifyFavor("", "Actor", 7)
+			chr_ModifyFavor("", "Actor", GL_FAVOR_MOD_SMALL+2)
 		end
 		return ""
 	elseif GetProperty("Actor", "jewellery") == 6 then

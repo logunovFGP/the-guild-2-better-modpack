@@ -135,7 +135,7 @@ function Run()
 		ListGetElement("GuestList", i, "SimToCheck")
 		if IsDynastySim("SimToCheck") and not GetState("SimToCheck", STATE_NPC) then
 			if GetID("SimToCheck") ~= GetID("") and GetID("SimToCheck") ~= GetID("Destination") then
-				chr_GainXP("SimToCheck", 150)
+				chr_GainXP("SimToCheck", GL_EXP_GAIN_RARE)
 				ReleaseLocator("SimToCheck")
 				if GetDynasty("SimToCheck", "CheckDyn") then
 					if GetImpactValue("CheckDyn", "Ceremony") == 0 then
@@ -143,7 +143,7 @@ function Run()
 					end
 				end
 					
-				ModifyFavorToSim("SimToCheck", "", 3)
+				ModifyFavorToSim("SimToCheck", "", GL_FAVOR_MOD_VERYSMALL)
 				GuestCount = GuestCount + 1
 					
 				if CheerCount == 0 then

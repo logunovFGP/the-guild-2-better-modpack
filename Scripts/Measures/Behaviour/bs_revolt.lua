@@ -1,7 +1,7 @@
 function Run()
 
 	if GetImpactValue("Actor", "revolt") > 0 then
-		chr_ModifyFavor("", "Actor", -15)
+		chr_ModifyFavor("", "Actor", -GL_FAVOR_MOD_GREATER)
 
 		if SimGetProfession("") == GL_PROFESSION_CITYGUARD then
 			if GetState("Actor",STATE_UNCONSCIOUS) and GetImpactValue("Actor", "REVOLT") > 0 then

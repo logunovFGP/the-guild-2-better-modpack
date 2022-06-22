@@ -28,7 +28,7 @@ function Normal()
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	--favorloss of destination to owner
-	local favorloss = 5
+	local favorloss = GL_FAVOR_MOD_SMALL
 	MeasureSetNotRestartable()
 	--run to destination and start action at MaxDistance
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then

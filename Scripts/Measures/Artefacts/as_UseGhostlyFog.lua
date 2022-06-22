@@ -21,7 +21,7 @@ function Run()
 	--how much the empathy of the Destination is decreased (25%)
 	local modifyvalue = (math.ceil(GetSkillValue("Destination",EMPATHY)*.25))
 	--how much the favor of the Destination to the owner is decreased
-	local favormodify = 10
+	local favormodify = GL_FAVOR_MOD_NORMAL
 	--how far the Destination can be to start this action
 	local MaxDistance = 1500
 	--how far from the destination, the owner should stand while reading the letter from rome

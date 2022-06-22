@@ -39,15 +39,15 @@ function Init()
 	
 	if result==1 then
 		SetData("TFBonus", MinSaufen)
-		SetData("TFFavor", 10)
+		SetData("TFFavor", GL_FAVOR_MOD_NORMAL)
 		SetData("Drunk", 1)
 	elseif result==2 then
 		SetData("TFBonus", MedSaufen)
-		SetData("TFFavor", 30)
+		SetData("TFFavor", GL_FAVOR_MOD_LARGE)
 		SetData("Drunk", 2)
 	elseif result==3 then
 		SetData("TFBonus", BigSaufen)
-		SetData("TFFavor", 50)
+		SetData("TFFavor", GL_FAVOR_MOD_EPIC)
 		SetData("Drunk", 3)
 	end
 	SetData("numFound", numFound)

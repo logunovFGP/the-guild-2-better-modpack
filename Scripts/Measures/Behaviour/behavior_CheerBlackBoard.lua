@@ -11,7 +11,7 @@ function Run()
 			if GetID("") ~= GetID("Victim_"..i) then
 				
 				if GetFavorToSim("", "Victim_"..i) < 80 and GetFavorToSim("", "Victim_"..i) > 25 then
-					chr_ModifyFavor("", "Victim_"..i, -5)
+					chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_SMALL)
 				end
 			end
 			Found = Found + 1

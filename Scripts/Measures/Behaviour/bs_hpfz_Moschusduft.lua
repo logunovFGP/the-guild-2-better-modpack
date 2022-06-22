@@ -7,7 +7,7 @@ function Run()
 	
 	if SimGetGender("Actor") == SimGetGender("") then
 		if SimGetOfficeLevel("Actor") == SimGetOfficeLevel("") then
-			chr_ModifyFavor("", "Actor", 10)
+			chr_ModifyFavor("", "Actor", GL_FAVOR_MOD_NORMAL)
 			if IsPartyMember("")  then
 				MsgNewsNoWait("","Actor","","intrigue",-1,
 					"@L_HPFZ_ARTEFAKT_MOSCHUS_OPFER_KOPF_+0",

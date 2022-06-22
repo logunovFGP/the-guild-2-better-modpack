@@ -336,7 +336,7 @@ function Run()
 		
 		camera_CutscenePlayerLock("cutscene", "Destination")		
 		
-		chr_ModifyFavor("Destination", "", -5)
+		chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_SMALL)
 		
 		local Time1 = PlayAnimationNoWait("Destination", "propel")
 

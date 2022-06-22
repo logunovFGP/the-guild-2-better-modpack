@@ -79,7 +79,7 @@ function Run()
 	MsgSay("Destination2","@L_PRIVILEGES_116_PROPITIATEENEMIES_DESTINATION_SUCCESS")
 	
 	--modify the favor
-	ModifyFavorToDynasty("Destination2","Destination",ModifyValue)
+	chr_ModifyFavor("Destination2","Destination",ModifyValue)
 	
 
 	-- reset the timer for this action

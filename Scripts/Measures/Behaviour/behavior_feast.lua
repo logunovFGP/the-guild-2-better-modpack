@@ -80,7 +80,7 @@ function Host()
 	
 	MsgSay("","@L_FEAST_3_FEAST_A_HELLO_GO_EVERYTHINGOK")
 	for i=0,NumGuests-1 do
-		chr_ModifyFavor("Guest"..i,"",2)
+		chr_ModifyFavor("Guest"..i,"", GL_FAVOR_MOD_VERYSMALL)
 	end
 			
 	MsgSay("","@L_FEAST_3_FEAST_B_DANCE_INTRO")
@@ -131,20 +131,20 @@ function Host()
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_VERYCONFIDENT")
 					end
-					chr_ModifyFavor("Guest","",5)
+					chr_ModifyFavor("Guest", "", GL_FAVOR_MOD_SMALL)
 					SetProperty("PartyLocation","FavorWonMusic"..i,5)
 				elseif MusicQuality == -1 then
 					if GuestWealth == 4 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_DISAPPOINTED")
-						chr_ModifyFavor("Guest","",-2)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_VERYSMALL)
 						SetProperty("PartyLocation","FavorWonMusic"..i,-2)
 					else
 						if Rand(100) > 20 then
 							camera_CutsceneBothLock("cutscene", "Guest")
 							MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_CONFIDENT")
 						end
-						chr_ModifyFavor("Guest","",3)
+						chr_ModifyFavor("Guest","", GL_FAVOR_MOD_VERYSMALL)
 						SetProperty("PartyLocation","FavorWonMusic"..i,3)
 					end
 				elseif MusicQuality == -2 then
@@ -152,34 +152,34 @@ function Host()
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_VERYDISAPPOINTED")
 						chr_ModifyFavor("Guest","",-4)
-						SetProperty("PartyLocation","FavorWonMusic"..i,-4)
+						SetProperty("PartyLocation","FavorWonMusic"..i, -GL_FAVOR_MOD_SMALL)
 					else
 						if Rand(100) > 20 then
 							camera_CutsceneBothLock("cutscene", "Guest")
 							MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_NEUTRAL")
 						end
-						chr_ModifyFavor("Guest","",1)
+						chr_ModifyFavor("Guest","", GL_FAVOR_MOD_TINY)
 						SetProperty("PartyLocation","FavorWonMusic"..i,1)
 					end
 				elseif MusicQuality == -3 then
 					if GuestWealth == 4 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_VERYDISAPPOINTED")
-						chr_ModifyFavor("Guest","",-4)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_SMALL)
 						SetProperty("PartyLocation","FavorWonMusic"..i,-4)
 					else
 						if Rand(100) > 20 then
 							camera_CutsceneBothLock("cutscene", "Guest")
 							MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_DISAPPOINTED")
 						end
-						chr_ModifyFavor("Guest","",-2)
-						SetProperty("PartyLocation","FavorWonMusic"..i,-2)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_VERYSMALL)
+						SetProperty("PartyLocation","FavorWonMusic"..i,-GL_FAVOR_MOD_VERYSMALL)
 					end
 				elseif MusicQuality == -4 then
 					if Rand(100) > 20 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_B_DANCE_COMMENTS_VERYDISAPPOINTED")
-						chr_ModifyFavor("Guest","",-4)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_SMALL)
 						SetProperty("PartyLocation","FavorWonMusic"..i,-4)
 					end
 				end
@@ -225,55 +225,55 @@ function Host()
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_VERYCONFIDENT")
 					end
-					chr_ModifyFavor("Guest","",5)
+					chr_ModifyFavor("Guest","",GL_FAVOR_MOD_SMALL)
 					SetProperty("PartyLocation","FavorWonEat"..i,5)
 				elseif FoodQuality == -1 then
 					if GuestWealth == 4 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_DISAPPOINTED")
-						chr_ModifyFavor("Guest","",-2)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_VERYSMALL)
 						SetProperty("PartyLocation","FavorWonEat"..i,-2)
 					else
 						if Rand(100) > 20 then
 							camera_CutsceneBothLock("cutscene", "Guest")
 							MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_CONFIDENT")
 						end
-						chr_ModifyFavor("Guest","",3)
+						chr_ModifyFavor("Guest","",GL_FAVOR_MOD_VERYSMALL)
 						SetProperty("PartyLocation","FavorWonEat"..i,3)
 					end
 				elseif FoodQuality == -2 then
 					if GuestWealth == 4 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_VERYDISAPPOINTED")
-						chr_ModifyFavor("Guest","",-4)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_SMALL)
 						SetProperty("PartyLocation","FavorWonEat"..i,-4)
 					else
 						if Rand(100) > 20 then
 							camera_CutsceneBothLock("cutscene", "Guest")
 							MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_NEUTRAL")
 						end
-						chr_ModifyFavor("Guest","",1)
+						chr_ModifyFavor("Guest","",GL_FAVOR_MOD_TINY)
 						SetProperty("PartyLocation","FavorWonEat"..i,1)
 					end
 				elseif FoodQuality == -3 then
 					if GuestWealth == 4 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_VERYDISAPPOINTED")
-						chr_ModifyFavor("Guest","",-4)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_SMALL)
 						SetProperty("PartyLocation","FavorWonEat"..i,-4)
 					else
 						if Rand(100) > 20 then
 							camera_CutsceneBothLock("cutscene", "Guest")
 							MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_DISAPPOINTED")
 						end
-						chr_ModifyFavor("Guest","",-2)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_VERYSMALL)
 						SetProperty("PartyLocation","FavorWonEat"..i,-2)
 					end
 				elseif FoodQuality == -4 then
 					if Rand(100) > 20 then
 						camera_CutsceneBothLock("cutscene", "Guest")
 						MsgSay("Guest","@L_FEAST_3_FEAST_C_EATDRINK_COMMENTS_VERYDISAPPOINTED")
-						chr_ModifyFavor("Guest","",-4)
+						chr_ModifyFavor("Guest","",-GL_FAVOR_MOD_VERYSMALL)
 						SetProperty("PartyLocation","FavorWonEat"..i,-4)
 					end
 				end
@@ -355,7 +355,7 @@ function Guest()
 				else
 					Sleep(5)
 				end
-				chr_ModifyFavor("","Host",-5)
+				chr_ModifyFavor("","Host",-GL_FAVOR_MOD_SMALL)
 				StopMeasure()
 			end
 			while not HasProperty("PartyLocation","GoDance") do
@@ -402,7 +402,7 @@ function Guest()
 					MsgSay("",ReplacementlabelHostMissing,GetID("Host"))
 				end
 			end
-			chr_ModifyFavor("","Host",-5)
+			chr_ModifyFavor("","Host",-GL_FAVOR_MOD_SMALL)
 			StopMeasure()
 			
 		end
