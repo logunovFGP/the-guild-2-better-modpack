@@ -57,6 +57,10 @@ function Run()
 	if GetImpactValue("", "Sickness") >0 then
 		WasSick = true
 	end
+	local TeaBonus = false
+	if GetImpactValue("", "HerbTea") >0 then
+		TeaBonus = true
+	end
 	
 	local HeavySleep = SimHasAbility("", 32)  --Deep Sleep ability
 	local CurrentHP = GetHP("")
@@ -86,7 +90,7 @@ function Run()
 	if WasSick == true then
 		diseases_Cold("", false)
 		diseases_Sprain("", false)
-		if HeavySleep then
+		if HeavySleep and TeaBonus then
 			diseases_Influenza("", false)
 			diseases_Pneumonia("", false)
 		else
