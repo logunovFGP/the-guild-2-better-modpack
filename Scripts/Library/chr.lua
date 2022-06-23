@@ -1264,17 +1264,14 @@ function CalculateAbilityBonus(BldAlias, SimAlias, SimOwner, hirefire)
 	end
 	
 	-- General
-	if BuildingGetType(BldAlias) == GL_BUILDING_TYPE_RESIDENCE then
-	
-		booster = GetImpactValue(SimAlias, "GeneralBoost") 
+	booster = GetImpactValue(SimAlias, "GeneralBoost") 
 		
-		if (not (booster == 1) and SimHasAbility(SimOwner, 39)) and not (hirefire == "fire") then  
-			AddImpact(SimAlias, "fighting", 2  * (1 - booster), -1)
-			AddImpact(SimAlias, "GeneralBoost", 1 * (1 - booster), -1)		
-		elseif (not (booster == 0) and not SimHasAbility(SimOwner,39)) or hirefire == "fire" then
-			AddImpact(SimAlias, "fighting", -2 * booster, -1)
-			RemoveImpact(SimAlias, "GeneralBoost")
-		end
+	if (not (booster == 1) and SimHasAbility(SimOwner, 39)) and not (hirefire == "fire") then  
+		AddImpact(SimAlias, "fighting", 2  * (1 - booster), -1)
+		AddImpact(SimAlias, "GeneralBoost", 1 * (1 - booster), -1)		
+	elseif (not (booster == 0) and not SimHasAbility(SimOwner,39)) or hirefire == "fire" then
+		AddImpact(SimAlias, "fighting", -2 * booster, -1)
+		RemoveImpact(SimAlias, "GeneralBoost")
 	end
 
 
