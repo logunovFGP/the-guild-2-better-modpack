@@ -301,6 +301,7 @@ function ModifyFavor(source, dest, val)
 		val = val + 1
 	end
 
+	-- Motivator ability
 	if GetImpactValue(dest, "MotivatorI") == 1 and val < 0 then
 		val = math.floor(val / 2)
 	elseif GetImpactValue(dest, "MotivatorI") == 2 and val < 0 then
