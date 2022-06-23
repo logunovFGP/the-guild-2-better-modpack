@@ -1212,7 +1212,7 @@ function CalculateAbilityBonus(BldAlias, SimAlias, SimOwner, hirefire)
 	booster = GetImpactValue(SimAlias, "MentorBoost")
 	
 	if (not (booster == 1) and SimHasAbility(SimOwner, 12)) and not (hirefire == "fire") then 
-		AddImpact(SimAlias, "XPBonus", 250  * (1 - booster), -1)
+		AddImpact(SimAlias, "XPBonus", 300  * (1 - booster), -1)
 		AddImpact(SimAlias, "MentorBoost", 1 * (1 - booster), -1)
 	end
 	
