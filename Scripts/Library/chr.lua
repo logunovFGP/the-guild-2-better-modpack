@@ -300,6 +300,12 @@ function ModifyFavor(source, dest, val)
 	if GetImpactValue(dest, "NiceGuyI") == 1 and (val > 0 or val <= -2)  then
 		val = val + 1
 	end
+
+	if GetImpactValue(dest, "MotivatorI") == 1 and val < 0 then
+		val = math.floor(val / 2)
+	elseif GetImpactValue(dest, "MotivatorI") == 2 and val < 0 then
+		val = 0
+	end
 	
 	if IsDynastySim(source) and IsDynastySim(dest) then
 		if GetDynastyID(source) ~= GetDynastyID(dest) then
