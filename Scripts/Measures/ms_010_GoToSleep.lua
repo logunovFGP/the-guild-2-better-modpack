@@ -78,6 +78,10 @@ function Run()
 	if GetImpactValue("","Sickness")>0 then
 		duration = duration * 2
 	end
+	local TeaBonus = false
+	if GetImpactValue("","HerbTea")>0 then
+		TeaBonus = true
+	end
 	SetData("Duration", duration)
 	local EndTime = CurrentTime + duration
 	
@@ -135,18 +139,18 @@ function CleanUp()
 	if IsDynastySim("Owner") then
 	
 		if GetImpactValue("","Sickness")>0 and Factor>Rand(100) then
-			if GetImpactValue("","Sprain")>0 and HeavySleep then 
+			if GetImpactValue("","Sprain")>0 and HeavySleep and TeaBonus then 
 				diseases_Sprain("", false)
 			end
 			if GetImpactValue("","Cold")>0 then
-				if HeavySleep or (Rand(6) > 4) then  -- no items with ability or if very lucky
+				if (HeavySleep and TeaBonus) or (Rand(6) > 4) then  -- no items with ability or if very lucky
 					diseases_Cold("",false)
 				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					diseases_Cold("",false)
 				end
 			end
 			if GetImpactValue("","Influenza")>0 then
-				if HeavySleep then	-- no items with ability
+				if HeavySleep and TeaBonus then	-- no items with ability
 					diseases_Influenza("",false)
 				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then
@@ -158,7 +162,7 @@ function CleanUp()
 				end
 			end
 			if GetImpactValue("","Pneumonia")>0 then
-				if HeavySleep then  -- 100% chance and no items with ability
+				if HeavySleep and TeaBonus then  -- 100% chance and no items with ability
 					diseases_Pneumonia("",false)
 				elseif RemoveItems("HomeBuilding","Blanket",1,INVENTORY_STD)==1 then
 					if RemoveItems("HomeBuilding","HerbTea",1,INVENTORY_STD)==1 then					
