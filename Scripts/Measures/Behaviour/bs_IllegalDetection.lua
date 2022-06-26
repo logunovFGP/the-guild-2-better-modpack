@@ -34,7 +34,7 @@ function Run()
 		return ""
 	elseif MeasureName == "AttackEnemy" then
 		return ""
-	elseif MeasureName == "SquadWaylayMember") then
+	elseif MeasureName == "SquadWaylayMember" then
 		SetProperty("", "DontLeave", 1)
 	end
 	
