@@ -1,6 +1,15 @@
 Fajeth's MegaModPack Reforged - Lite Editon (0.1)
 
 *** Credits ***
+_______________
+The MegaMod Reforged is a modding project for Fans of the Guild-Series worldwide. While I have put countless hours and dedication
+into this mod it wouldn't be as big and fantastic as it is today without the support of many people around the globe. This mod
+makes The Guild 2 playable in more languages than ever before. It is a project of friendship, cooperation and common grounds.
+Thus, I dedicate this mod to all fans on the world and especially to the people of Ukraine who defend and die for their homeland, freedom
+and the safety of Europe. We will never forget what you did for us and what happened to your country.
+
+And to all the toxic nationalists and imperialists in the world I quote some famous Ukrainian words: Go f*** yourself.
+- Fajeth
 
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Nommy, Vivi
@@ -10,11 +19,11 @@ GUI: MoK, Fajeth, Napi96
 3D Objects: Ictiv 
 Zusätzlicher Support: MoK, VSX, McCoy!, sublogic, Sunpack, nirvana, Scandal, Napi96, Zbombe, Jedi93, barra81, Dogus + Die Gilde 2 Community!
 Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, joee, Daimyo21, Settembrini,
-                  BubblesTheRoo, Craftgeeking
+                  BubblesTheRoo, Craftgeeking, Mr. Bro
 
 Lokalisierung:
 Deutsch: Fajeth, ThreeOfMe
-Englisch: Fajeth, ThreeOfMe, F-Man, Edglord_Zack
+Englisch: Fajeth, ThreeOfMe, F-Man, Edglord_Zack, Infra
 Spanisch: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador, Bassford
 Italienisch: frankieorabona, Marian, Caligari89
 Französisch: Rico, StalkFire, Techgenieur, Erfive
@@ -367,6 +376,7 @@ _Allgemein_
 - Der Effekt von Krankheiten wurde neu gebalanced.
 - Geheimwissen verlängert die Artefaktdauer nun um 10 % pro Stufe (vorher 5%).
 - Eine Zeit lang zu schlafen, bringt garantiert eine kleine Menge Erfahrungspunkte (abhängig von der Jahre-pro-Runde-Einstellung)
+- Brandschutz wurde neu gebalanced: Jeder % senkt nun den Schaden durch ein Feuer um genau diese %. Zudem verhindert ein hoher Brandschutz, dass ein Feuer überhaupt auf ein Gebäude übergreift.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

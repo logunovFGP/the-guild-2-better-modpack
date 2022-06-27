@@ -1,6 +1,15 @@
 Fajeth's MegaModPack Reforged - Lite Edition (0.1)
 
 *** Credits ***
+_______________
+The MegaMod Reforged is a modding project for Fans of the Guild-Series worldwide. While I have put countless hours and dedication
+into this mod it wouldn't be as big and fantastic as it is today without the support of many people around the globe. This mod
+makes The Guild 2 playable in more languages than ever before. It is a project of friendship, cooperation and common grounds.
+Thus, I dedicate this mod to all fans on the world and especially to the people of Ukraine who defend and die for their homeland, freedom
+and the safety of Europe. We will never forget what you did for us and what happened to your country.
+
+And to all the toxic nationalists and imperialists in the world, I quote some famous Ukrainian words: Go f*** yourself.
+- Fajeth
 
 Lead: Fajeth
 Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Nommy, Vivi
@@ -10,11 +19,11 @@ GUI: MoK, Fajeth, Napi96
 3D Objects: Ictiv 
 Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
 Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe, Daimyo21, Settembrini
-                  BubblesTheRoo, Craftgeeking
+                  BubblesTheRoo, Craftgeeking, Mr. Bro
 
 Localization:
 German: Fajeth, ThreeOfMe
-English: Fajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack
+English: Fajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack, Infra
 Spanish: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador, Bassford
 Italian: frankieorabona, Marian, Caligari89
 French: Rico, StalkFire, Techgenieur, Erfive
@@ -356,6 +365,7 @@ _General_
 - The effect of illnesses has been changed.
 - Arcane Knowledge increases artefact's durations by 10% per point (5% before).
 - Sleeping a few hours gains your character some extra experience points.
+- Protection against fire has been rebalanced: Every % reduces the damage of a fire by that exact same %. In addition, it may protect you from burning altogether.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
