@@ -1114,6 +1114,88 @@ Translate and add the following lines below:
 19193   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+0"   "A family member got the Plague"   |
 19194   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+1"   "An employee got the Plague"   |
 
+English:
+
+20000   "_ABILITIES_Motivator_NAME_+0"   "Leader" |
+20001   "_ABILITIES_Motivator_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They look up to you, and do not take it the wrong way when you reprimand them or demand exceptional effort. For every level of this ability, you increase the length of effect for the action >Goad workers< by 50%% and reduces the loss of reputation you suffer towards your employees by 50%% for all actions."   |
+20002   "_ABILITIES_Charming_NAME_+0"   "Irresistible" |
+20003   "_ABILITIES_Charming_DESCRIPTION_+0"   "You posess an inherent attractiveness, people naturally flock to you and you are a born lover. $NFor every level of this ability, the favour bonus of your social interactions and when courting increases. For every level of this ability, the probability that you will father a child or get pregnant increases by 50%%. $N$NRequirements: Charisma 2."   |  
+20004   "_ABILITIES_Educated_NAME_+0"   "Educated"   |
+20005   "_ABILITIES_Educated_DESCRIPTION_+0"   "Learning how to read and write at a young age probably caused you to have a higher perception the most people. Documenting your experiences for your posterity is your passion, no matter how trivial they might be. $NFor every level in this ability, you receive 10%% more experience for your actions.$N$NRequirements: Scholar."   |
+20006   "_ABILITIES_PackMule_NAME_+0"   "Pack mule"   |
+20007   "_ABILITIES_PackMule_DESCRIPTION_+0"   "You are one of those people who would rather make one trip and lose half your baggage on the way than make the same trip 3 times. However you do it, you somehow manage to stow all your possessions so that you can carry more than other people. $NFor every level of this ability, You gain 1 additional compartment in your personal inventory.. $N$NRequirements: Constitution 2."   |
+20008   "_ABILITIES_IronSkin_NAME_+0"   "Unbreakable"   |
+20009   "_ABILITIES_IronSkin_DESCRIPTION_+0"   "You have an extremely resistant hide... in any case, you have such a robust physique that you are significantly harder to damage with weapons or brawling. $NFor every level of this ability, your armour value increases by 5. $N$NRequirements: Rogue."   |
+20010   "_ABILITIES_SleepBonus_NAME_+0"   "Miraculous sleep"   |
+20011   "_ABILITIES_SleepBonus_DESCRIPTION_+0"   "It is stated that >sleep is the best medicine< and you are proof of that. Have a Herb tea first and let your body do the rest. $NYour Character can heal any disease during his slumber, while under the influence of >Herb tea<. $N$NRequirements: Arcane knowledge 2."   |
+20012   "_ABILITIES_Trader_NAME_+0"   "Shopkeeper"   |
+20013   "_ABILITIES_Trader_DESCRIPTION_+0"   "Can you get that cheaper? Possibly, but your goods are of unmatched quality and that shows in the price. Only today i am offering you something only a fool would refuse. You on the other hand, were very wise to pick this ability. $NFor every level of this ability, your bargaining talent increases by 2. $N$NRequirements: Bargaining 2."   |
+20014   "_ABILITIES_Athletics_NAME_+0"   "Athletics"   |
+20015   "_ABILITIES_Athletics_DESCRIPTION_+0"   "You are naturally agile and all of your troubles holding still as a child finally pay off. $NFor every level of this ability, your character's speed of movement increases by 15%% and your dexterity talent increases by 1. $N$NRequirements: Dexterity 2."   |
+20016   "_ABILITIES_Nimble_NAME_+0"   "Nimble"   |
+20017   "_ABILITIES_Nimble_DESCRIPTION_+0"   "For some people a piece of wood is just a piece of wood. However, you are able to create art with it. Other people call it hard work, you call it an opportunity to show your skill.$NFor every level of this ability, your Handicrafts talent increases by 2. $N$NRequirements: Craftsman."   |
+20018   "_ABILITIES_NiceGuy_NAME_+0"   "Likeable"   |
+20019   "_ABILITIES_NiceGuy_DESCRIPTION_+0"   "Some say, patrons are simple-minded farmers while others claim they are warm-hearted, social, hardworking members of our community. That does not matter to you. You know your place, make the best out of it and the people around you reward your modesty. $NFor every level of this ability, you increase every amount of favour you gain by 1 and decrease every amount of favour you lose by 1. $N$NRequirements: Patron."   |
+20020   "_ABILITIES_Mentor_NAME_+0"   "Mentor"   |
+20021   "_ABILITIES_Mentor_DESCRIPTION_+0"   "Wandering on the divine path has rewarded you with extensive experience and it doesn't hurt do have others join you on your journey as soon as possible.$N All of your children and your employees recieve an experience bonus of 300 EP.$N$NRequirements: Arcane knowledge 4."   |
+20022   "_ABILITIES_Safeguard_NAME_+0"   "Safeguard"   |
+20023   "_ABILITIES_Safeguard_DESCRIPTION_+0"   "Nothing escapes your watchful eye, you always check the safety precautions of your buildings several times in a row and your apprentices better not leave the front door open for too long! $N$NFor every level of this ability, your building's burglary protection and fire protection increase by 15%%. $N$NRequirements: None."   |
+20024   "_ABILITIES_Warrior_NAME_+0"   "Fighting spirit"   |
+20025   "_ABILITIES_Warrior_DESCRIPTION_+0"   "Even as a child you never avoided a fight. Bruises, bloody noses, broken bones... All the pain taught you where it really hurts.$NFor every level of this ability, your critical hit damage increases by 50%%. $N$NRequirements: Rogue + Martial arts 4."   |
+20026   "_ABILITIES_Thief_NAME_+0"   "Heart of gold"   |
+20027   "_ABILITIES_Thief_DESCRIPTION_+0"   "You know the true value of life: It is measured in gold. That is why it is right and proper when you take what is offered to you, why let it go to waste? $NFor every level of this ability, you and your employees receive a 10%% bonus from pickpocketing, burglary, jugglery or salacious services and it increases your stealth talent by 1. $N$NRequirements: Rogue + dexterity 4."   |
+20028   "_ABILITIES_FarmBonus_NAME_+0"   "Green thumb"   |
+20029   "_ABILITIES_FarmBonus_DESCRIPTION_+0"   "You are fascinated by watching grass grow. Your commitment to plants helped you notice all sorts of improvements other people overlooked. Now it is time to put them into practice on your own farmlands.$NFor every level of this ability, the productivity of your farms and orchards increases by 25%%. $N$NRequirements: Patron."   |
+20030   "_ABILITIES_PartyBonus_NAME_+0"   "Party animal"   |
+20031   "_ABILITIES_PartyBonus_DESCRIPTION_+0"   "God blessed humanity with two things: Beauties and beer. You know exactly where to get both and there is nothing else you'd rather spend your spare time on.$NFor every level of this ability, your tolerance to alcohol increases by 50%%, making you able to drink more alcohol than other people. Also increses the attractiveness of your feasts by 25%%. $N$NRequirements: Patron + constitution 4."   |
+20032   "_ABILITIES_Preacher_NAME_+0"   "Preacher"   |
+20033   "_ABILITIES_Preacher_DESCRIPTION_+0"   "You have earned a reputation for striking the right note in your sermons at all times. Whether quiet and modest, or eloquent and shrill: people love you.$NFor every level of this ability, the attractiveness of your churches increases by 25%% and your rhetoric talent increases by 1.$N$NRequirements: Scholar + rhetoric 4."   |
+20034   "_ABILITIES_Alchemist_NAME_+0"   "Theory of the four humors"   |
+20035   "_ABILITIES_Alchemist_DESCRIPTION_+0"   "As a scholar, you know all about the interaction of the four humors: blood, yellow bile, black bile and phlegm. Thanks to a strict diet and bloodletting at the right time, many bad illnesses can be avoided.$NFor every level of this ability, your immunity to illnesses increases by 50%%. Additionally increases the life expectancy for your employees by 10 years.$N$NRequirements: Scholar + arcane knowledge 4."   |
+20036   "_ABILITIES_Guildmaster_NAME_+0"   "Guild master"   |
+20037   "_ABILITIES_Guildmaster_DESCRIPTION_+0"   "You know about the true power that resides in guilds, so you are particularly eager to be in their favour. This gives you access to a whole range of privileges other members will need to work much harder for. $NFor every level of this ability, the amount of guild reputation your character acquires increases by 1. $N$NRequirements: Craftsman + charisma 4."   |
+20038   "_ABILITIES_CartBonus_NAME_+0"   "Engineer"   |
+20039   "_ABILITIES_CartBonus_DESCRIPTION_+0"   "When your parents told you it would not be possible for you to reinvent the wheel, they were wrong. $NAll of your carts move 20%% faster.$N$NRequirements: Craftsman + handicraft 4."   |
+20040   "_ABILITIES_Exploiter_NAME_+0"   "Exploiter"   |
+20041   "_ABILITIES_Exploiter_DESCRIPTION_+0"   "Your have earned a reputation of being cheap but nothing could be further from the truth. Something is better than nothing, isn't it? $NFor every level of this ability, you reduce the salaries of your employees by 10%%$N$NRequirements: Bargaining 7."   |
+20042   "_ABILITIES_Politician_NAME_+0"   "Politician"   |
+20043   "_ABILITIES_Politician_DESCRIPTION_+0"   "You were born for politics. Competition and other people striving for power should not concern you because you simply belong in this comfortable office chair! $NYou recieve a 10%% bonus when AI-Dynasties are considering whether they are voting in your favour.$N$NRequirements: Charisma 7."   |
+20044   "_ABILITIES_Marauder_NAME_+0"   "Marauder"   |
+20045   "_ABILITIES_Marauder_DESCRIPTION_+0"   "Over time you have gained enough experience to know how to get into even the most heavily secured buildings. Even barricades or iron bars can't keep you out. $NFor every level of this ability, you and your employees deal 20%% more damage to buildings and your target's burglary protection against you is 20%% less effective. $N$NRequirements: Rogue + stealth 7."   |
+20046   "_ABILITIES_Innocent_NAME_+0"   "Face of innocence"   |
+20047   "_ABILITIES_Innocent_DESCRIPTION_+0"   "What, you really are alleged of have done all those terrible deeds? That's impossible! How can you claim that our commendable paragon of nobility and perfection should be guilty? $NFor every level of this ability, you crimes fade from witnesses' memories 25%% faster than normal. Additionally you gain a 50%% chance of being released from prison after mere 12 hours.$N$NRequirements: Rogue + charisma 7."   |
+20048   "_ABILITIES_BestHouse_NAME_+0"   "Best house in town"   |
+20049   "_ABILITIES_BestHouse_DESCRIPTION_+0"   "You have earned a reputation for fulfilling any and all of your guest's wishes. People flock to your inns because they are as comfortable as a second home. $N$NFor every level of this ability, the attractiveness of all your taverns increases by 30%%. $N$NRequirements: Patron."   |
+20050   "_ABILITIES_Lucky_NAME_+0"   "Lucky fellow"   |
+20051   "_ABILITIES_Lucky_DESCRIPTION_+0"   "Sometimes, fate decides that some people are luckier that others...$NFor every level of this ability, your luck increases by 2. Luck affects certain random events and sways them in favour of you.$N$NRequirements: Patron."   |
+20052   "_ABILITIES_SixSense_NAME_+0"   "Sixth sense"   |
+20053   "_ABILITIES_SixSense_DESCRIPTION_+0"   "You can tell a person's intention just by looking at them. This makes it impossible to ambush you with poisons or jugglery and let's you see through their lies.$N A certain set of hostile actions have no effect on your character.$N$NRequirements: Scholar + empathy 7."   |
+20054   "_ABILITIES_Blessed_NAME_+0"   "Blessed"   |
+20055   "_ABILITIES_Blessed_DESCRIPTION_+0"   "You are known as infallibe, virtuos and a rigorous believer. $NAny form of Character assassination, insults and forged evidence have no effect against you.$N$NRequirements: Scholar + charisma 7."   |
+20056   "_ABILITIES_PeaceMaker_NAME_+0"   "Peace maker"   |
+20057   "_ABILITIES_PeaceMaker_DESCRIPTION_+0"   "Even people who dont like you have to admin that you are a truly rightous and act in the interest of your community. Therefore you can end any unjustified strife against you as you wish.$NYou can enter a non-aggression pact with any dynasty.$N$NVoraussetzung: Craftsman."   |
+20058   "_ABILITIES_WeaponMaster_NAME_+0"   "Master armourer"   |
+20059   "_ABILITIES_WeaponMaster_DESCRIPTION_+0"   "You don't need to be a rogue in order to appreciate the value of a good weapon, especially when you know how to craft it yourself. While crafting weapons for others you've spent a significant amount of time thinking about how to put them to use properly. Only in you mind, of course...$N$NFor every level of this ability, your martial arts talend and dexterity talent increase by 2.$N$NRequirements: Craftsman + martial arts 7."   |
+20060   "_ABILITIES_Eldest_NAME_+0"   "Non-aging"   |
+20061   "_ABILITIES_Eldest_DESCRIPTION_+0"   "Your competitors cheer for the day you finally perish. Make them wait a little bit longer! $NYour life expectancy increases by 12 years.$N$NRequirements: None."   |
+20062   "_ABILITIES_Halo_NAME_+0"   "Halo"   |
+20063   "_ABILITIES_Halo_DESCRIPTION_+0"   "Everybody is convinced: you are a saint the angels speak through you. God moves in mysterious ways and nobody dares attracting his wrath by judging you. $NYou cannot be sentenced to death, banished or become the suspect of an inquisition trial.$N$NRequirements: None."   |
+20064   "_ABILITIES_Infamous_NAME_+0"   "Infamous"   |
+20065   "_ABILITIES_Infamous_DESCRIPTION_+0"   "Some people enjoy an immaculate reputation in the whole country, when talking about you, however, people only dare to whisper. Nobody knows if any of this is true but it certainly helps among your reputation with other rogues.$NYou gain twice as much favour from other rogues and only lose half as much as normal. (minimum 1). $N$NRequirements: Rogue."   |
+20066   "_ABILITIES_EpicCraftsman_NAME_+0"   "Master crafter"   |
+20067   "_ABILITIES_EpicCraftsman_DESCRIPTION_+0"   "Many have tried, many have failed, but you succeded in refining your craftsmanship to perfection. Being a master of your profession allows you to craft the most exclusive and desired goods. $NYou can now craft epic artefacts in your craftsman businesses.$N$NRequirements: Craftsman + Handicrafts 9."   |
+20068   "_ABILITIES_EpicPatron_NAME_+0"   "Gourmet"   |
+20069   "_ABILITIES_EpicPatron_DESCRIPTION_+0"   "Love goes through the stomach. Your love for adventurous cooking helped you discover the secret to delicacies others can only find in faraway places.$NYou can now craft epic artefacts in your patron businesses.$N$Requirements: Patron + Handicrafts 9."   |
+20070   "_ABILITIES_EpicScholar_NAME_+0"   "Genius"   |
+20071   "_ABILITIES_EpicScholar_DESCRIPTION_+0"   "You've studied so hard and got so far, in the end it really mattered. You acquired secret knowledge about your profession that lets you craft goods nobody else can.$NYou can now craft epic artefacts in your scholar businesses.$N$NRequirements: Scholar + Arcane knowledge 9."   |
+20072   "_ABILITIES_Famous_NAME_+0"   "Famous"   |
+20073   "_ABILITIES_Famous_DESCRIPTION_+0"   "You know how to catch somebodies eye. Nobody is interested in others as long as you are around and they can see about all the things you have done for the empire!$NYour character gains twice as much imperial reputation as normal.$N$NRequirements: Charisma 9."   |
+20074   "_ABILITIES_General_NAME_+0"   "General"   |
+20075   "_ABILITIES_General_DESCRIPTION_+0"   "You are a master of warfare and know how to lead your subordinates into battle. $NYour employee's martial arts talent increases by 2.$N$NRequirements: Martial arts 9."   |
+20076   "_ABILITIES_DoubleLife_NAME_+0"   "Double life"   |
+20077   "_ABILITIES_DoubleLife_DESCRIPTION_+0"   "Honourable member of the community by day, dishonourable master of shadows and intrigues by night. $NAdditionally to your profession guild, you are allowed into the rogue guild and gain their priviledges. $N$NRequirements: No rogue + Stealth 9."   |
+20078   "_ABILITIES_Windwalker_NAME_+0"   "Like the wind"   |
+20079   "_ABILITIES_Windwalker_DESCRIPTION_+0"   "Your reflexes are trained exceedingly well, allowing you to evade and attack with your eyes closed. On top of that: You are less affected with magic and witchcraft.$NEvery ambush with poisons, witchcraft or sorcery towards you gets reflected back to your attacker. You start combat with a guaranteed critical hit.$N$NRequirements: No scholar + Dexterity 9."   |
 -------
 
 for the polish textfile, change some letters, they will show correctly ingame
