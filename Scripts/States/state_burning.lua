@@ -40,7 +40,8 @@ function Run()
 	-- calculate the actual damage
 	local BaseFireDmg = RandomFire * MaxHP
 	local ActualFireDmg = math.ceil(BaseFireDmg * (1 - FireProt)) -- each % of FireProt reduces the dmg
-
+	
+	SetProperty("Owner", "BurningDmg", ActualFireDmg) -- save it to property for firefighting-Measures
 	CommitAction("fire", "Owner", "Owner")
 	
 	-- prevents worker's dwellings from being destroyed
@@ -97,6 +98,10 @@ function Run()
 
 	while DmgDealt < ActualFireDmg do
 		
+		if DmgDealt >= GetProperty("Owner", "BurningDmg") then
+			break
+		end
+		
 		Evacuate("Owner")
 		Sleep(5)
 		PlaySound3D("", "fire/DartingFlame_s_02.wav", 1.0)
@@ -152,4 +157,7 @@ end
 function CleanUp()
 	Detach3DSound("")
 	StopAction("fire", "Owner")
+	if HasProperty("Owner", "BurningDmg") then
+		RemoveProperty("Owner", "BurningDmg")
+	end
 end

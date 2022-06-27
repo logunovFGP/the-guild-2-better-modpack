@@ -377,6 +377,7 @@ _Allgemein_
 - Geheimwissen verlängert die Artefaktdauer nun um 10 % pro Stufe (vorher 5%).
 - Eine Zeit lang zu schlafen, bringt garantiert eine kleine Menge Erfahrungspunkte (abhängig von der Jahre-pro-Runde-Einstellung)
 - Brandschutz wurde neu gebalanced: Jeder % senkt nun den Schaden durch ein Feuer um genau diese %. Zudem verhindert ein hoher Brandschutz, dass ein Feuer überhaupt auf ein Gebäude übergreift.
+- Für Löschversuche erhöht sich die Gunst zum Besitzer eines Gebäudes um jeweils 5.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

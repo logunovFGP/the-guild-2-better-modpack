@@ -6,10 +6,10 @@ function Run()
 	
 	if Rand(10)>5 then
 		Sleep((Rand(10)+5)*0.1)
-		if SimGetGender("")==GL_GENDER_MALE then
-			PlaySound3DVariation("","CharacterFX/male_pain_long",1)
+		if SimGetGender("") == GL_GENDER_MALE then
+			PlaySound3DVariation("", "CharacterFX/male_pain_long", 1)
 		else
-			PlaySound3DVariation("","CharacterFX/female_pain_long",1)
+			PlaySound3DVariation("", "CharacterFX/female_pain_long", 1)
 		end
 	end
 	
@@ -18,26 +18,24 @@ function Run()
 		if not GetState("Actor", STATE_BURNING) then
 			break
 		end
-		local FoundWell = Find("Owner", "__F( (Object.GetObjectsByRadius(Building)==20000) AND (Object.IsType(24)) )", "Well", -1)
+		
+		local FoundWell = Find("Owner", "__F( (Object.GetObjectsByRadius(Building) == 12000) AND (Object.IsType(24)) )", "Well", -1)
 		if FoundWell == 0 then
 --			MsgMeasure("Owner","Could not find a place to get water")
 			break
 		end
 		
 		local WellAlias = ""
-		local OldDistance = GetDistance("","Well0")
-		for i=0,FoundWell-1 do
+		local OldDistance = GetDistance("", "Well0")
+		for i=0, FoundWell-1 do
 			WellAlias = "Well"..i
-			local CurrentDistance = GetDistance("",WellAlias)
+			local CurrentDistance = GetDistance("", WellAlias)
 			if CurrentDistance < OldDistance then
 				CopyAlias(WellAlias,"Well")
 				OldDistance = CurrentDistance
 			end
 		end
 		
-		
-		
-			
 --		MsgMeasure("Owner","Running to get some water")
 		
 		if not f_MoveTo("Owner", "Well", GL_MOVESPEED_RUN, "", 50) then
@@ -54,43 +52,43 @@ function Run()
 		end
 				
 --		MsgMeasure("Owner","running to the fire with some water")
-		f_MoveTo("Owner", "ExtPos", GL_MOVESPEED_RUN, 200)
+		f_MoveTo("Owner", "ExtPos", GL_MOVESPEED_RUN, 150)
 		
 		if not GetState("Actor", STATE_BURNING) then
 			break
 		end
 				
-		--increase the end status of the burning building
-		local ToDo = GetProperty("Actor", "BurningToDo")
-		if not ToDo then
-			break
-		end
-		SetProperty("Actor", "BurningToDo", ToDo - 5)
-		local BurnToHP = GetProperty("Actor","BurnToHP")
-		if not BurnToHP then
-			break
-		end
-		local DestHPBurnModifier = (GetMaxHP("Actor")*0.05)+BurnToHP
-		SetProperty("Actor", "BurnToHP", DestHPBurnModifier)
-		AlignTo("","Actor")
+		--decrease the burning dmg
+		AlignTo("", "Actor")
 		Sleep(0.65)
 		
 		local Time = PlayAnimationNoWait("Owner", "put_out_fire")
 		Sleep(1)
-		if Rand(100)<4 then
-			diseases_BurnWound("",true)	
+		
+		if Rand(100) < 4 then
+			diseases_BurnWound("", true)	
 		end
-		PlaySound3DVariation("","measures/putoutfire",1)
+		
+		PlaySound3DVariation("", "measures/putoutfire", 1)
 		Sleep(Time-1)
 		
+		if BuildingGetOwner("Actor", "MyBoss") then
+			chr_ModifyFavor("Owner", "MyBoss", GL_FAVOR_MOD_SMALL)
+		end
 		
+		if not GetState("Actor", STATE_BURNING) then
+			break
+		end
+		local BurnDamge = GetProperty("Actor", "BurningDmg") or 0
+		local NewBurnDamage = math.ceil(BurnDamage / 10) or 0
+		SetProperty("Actor", "BurningDmg", NewBurnDamage)
 	end
 end
 
 function CleanUp()
-		if HasProperty("Owner", "HasBucket") then
-			CarryObject("Owner", "", true)
-			RemoveProperty("Owner", "HasBucket")
-		end		
+	if HasProperty("Owner", "HasBucket") then
+		CarryObject("Owner", "", true)
+		RemoveProperty("Owner", "HasBucket")
+	end		
 end
 

@@ -366,6 +366,7 @@ _General_
 - Arcane Knowledge increases artefact's durations by 10% per point (5% before).
 - Sleeping a few hours gains your character some extra experience points.
 - Protection against fire has been rebalanced: Every % reduces the damage of a fire by that exact same %. In addition, it may protect you from burning altogether.
+- Every attempt on firefighting raises favor towards the owner of the building by 5.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
