@@ -67,6 +67,14 @@ function CreateWorldAnimals()
 				worldambient_CreateAnimal("Goose","locpos"..l, 2)
 			end
 		end
+		
+		-- create goats
+		local num = GetOutdoorLocator("Goat", -1, "locpos")
+		if num > 0 then
+			for l=0,num-1 do
+				worldambient_CreateAnimal("Goat", "locpos"..l, 1)
+			end
+		end
 
 		-- create chicken
 		local num = GetOutdoorLocator("Chicken", -1, "locpos")
@@ -90,7 +98,7 @@ function CreateWorldAnimals()
 end
 
 function CreateAnimal(animal, building, count)	
-	if worldambient_CheckAmbient()==true then
+	if worldambient_CheckAmbient() then
 
 		if BuildingGetType(building)== -1 then
 			local Num = ScenarioGetObjects("cl_Settlement", 20, "Cities")
@@ -102,34 +110,41 @@ function CreateAnimal(animal, building, count)
 		  	GetLocatorByName(building, "Entry1", "SetPos")
 		end
 
-		CityGetRandomBuilding("City",5,14,-1,-1,FILTER_IGNORE,"Home")
-
 		local aID
-		if animal=="Dog" then
+		if animal == "Dog" then
 			aID = 906
-		elseif animal=="Cat" then
+		elseif animal == "Cat" then
 			aID = 908
-		elseif animal=="Wolf" then
+		elseif animal == "Wolf" then
 			aID = 913
-		elseif animal=="Duck" then
+		elseif animal == "Duck" then
 			aID = 911
-		elseif animal=="Goose" then
+		elseif animal == "Goose" then
 			aID = 912
-		elseif animal=="Chicken" then
+		elseif animal == "Chicken" then
 			aID = 909
-		elseif animal=="Cock" then
+		elseif animal == "Cock" then
 			aID = 910
-		elseif animal=="Deer" then
+		elseif animal == "Goat" then
+			aID = 947
+		elseif animal == "Deer" then
 			aID = 914
-		elseif animal=="Stag" then
+		elseif animal == "Stag" then
 			aID = 915
 		end
 
 		for i=0,count-1 do
-		  	SimCreate(aID,"Home","SetPos","Animal"..count)
-			SimSetFirstname("Animal"..count, "@L_"..animal.."_NAME_+0")
-			SimSetLastname("Animal"..count, "@L_EMPTY_NAME_+0")
-			SetState("Animal"..count, STATE_ANIMAL, true)
+			local Alias = "Animal"..count
+		  	SimCreate(aID, "Home", "SetPos", Alias)
+			SimSetFirstname(Alias, "@L_"..animal.."_NAME_+0")
+			SimSetLastname(Alias, "@L_EMPTY_NAME_+0")
+			SetState(Alias, STATE_ANIMAL, true)
+			if BuildingGetType(building) > 0 then
+				SetHomeBuilding(Alias, building)
+			else
+				CityGetNearestBuilding("City", Alias, 5, 14, -1, -1, FILTER_IGNORE, "Home")
+				SetHomeBuilding(Alias, "Home")
+			end
 		end
 	end
 end

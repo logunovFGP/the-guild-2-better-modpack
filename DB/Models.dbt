@@ -1348,6 +1348,8 @@ Data:
 9013   "city/garden/"          "glass_sand"                    0              0               0                 0                0                       0                        | 
 9014   "city/garden/"          "grapevines"                    0              0               0                 0                0                       0                        | 
 9016   "Animals/"   "buckelwal"   0    0   0                 0                0                       0                        | 
+9017   "Animals/"   "Carp"   0    0   0                 0                0                       0                        | 
+9018   "Animals/"   "bull"   0    0   0                 0                0                       0                        | 
 9067   "city/specialbuildings/Vienna_Buildings/"   "Bank1"                         0              1               0                 0                0                       0                        | 
 9068   "city/specialbuildings/Vienna_Buildings/"   "Bank2"                         0              1               0                 0                0                       0                        | 
 9075   "city/specialbuildings/Vienna_Buildings/"   "WorkerHut1"                    0              1               0                 0                0                       0                        | 
@@ -1358,3 +1360,4 @@ Data:
 9087   "city/Transport/"   "Drafter"                          0              0               0                 0                0                       0                        | 
 9088   "city/Transport/"   "Drafter_Horse"                          0              0               0                 0                0                       0                        | 
 9089   "city/Transport/"   "Trailer"  0  0  0  0  0  0  | 
+9090   "city/build/"   "structure"   0   0   0   0   0   0   |
