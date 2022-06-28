@@ -1344,7 +1344,7 @@ function AIAbstimmung(Params)
 		local CurrentOfficeBonus = 1
 		if SimGetOffice(CurrentApplicant, "ExistingSimOffice") then
 			if (GetID("ExistingSimOffice") == GetID(GetData("CurrentOffice"))) then
-				if GetFavorToSim(VoterAlias,CurrentApplicant)>=50 then
+				if GetFavorToSim(VoterAlias,CurrentApplicant) >= 50 then
 					CurrentOfficeBonus = 1.05
 				else
 					CurrentOfficeBonus = 0.95
@@ -1354,14 +1354,15 @@ function AIAbstimmung(Params)
 		
 		-- political attention perk 10%
 		local PoliticalAttention = 1
-		if GetImpactValue(CurrentApplicant, "PoliticalAttention")>0 or Title >= 7 then -- title 7 to be sure this works
+		if GetImpactValue(CurrentApplicant, "PoliticalAttention") > 0 or Title >= 7 then -- title 7 to be sure this works
 			PoliticalAttention = 1.1
 		end
 		
-		-- local club president talent 10%
+		--Ability bonus, default: 10%
 		local TalentBonus = 1
-		if GetImpactValue(CurrentApplicant, "CutsceneFavor")>0 then
-			TalentBonus = 1.1
+		local ImpactVal = GetImpactValue(CurrentApplicant, "CutsceneFavor")
+		if ImpactVal > 0 then
+			TalentBonus = 1 + ImpactVal 
 		end
 		
 		-- present?
