@@ -109,6 +109,8 @@ function CreateAnimal(animal, building, count)
 			BuildingGetCity(building, "City")
 		  	GetLocatorByName(building, "Entry1", "SetPos")
 		end
+		
+		CityGetRandomBuilding("City", 5, 14, -1, -1, FILTER_IGNORE, "Home")
 
 		local aID
 		if animal == "Dog" then
@@ -143,7 +145,7 @@ function CreateAnimal(animal, building, count)
 				SetHomeBuilding(Alias, building)
 			else
 				CityGetNearestBuilding("City", Alias, 5, 14, -1, -1, FILTER_IGNORE, "Home")
-				SetHomeBuilding(Alias, "Home")
+				SetHomeBuilding(Alias, building)
 			end
 		end
 	end

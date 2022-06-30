@@ -316,7 +316,7 @@ function ModifyFavor(source, dest, val)
 	
 	-- Nice Guy ability
 	local MyNiceGuyLevel = GetImpactValue(source, "NiceGuyI")
-	local YourNiceGuylevel = GetImpactValue(dest, "NiceGuyI")
+	local YourNiceGuyLevel = GetImpactValue(dest, "NiceGuyI")
 
 	if MyNiceGuyLevel > 0 then
 		if val > 0 then
@@ -359,6 +359,8 @@ function ModifyFavor(source, dest, val)
 			end
 		end
 	end
+	
+	-- Grudges + Fondness for Dynasties
 	if IsDynastySim(source) and IsDynastySim(dest) then
 		if GetDynastyID(source) ~= GetDynastyID(dest) then
 			-- add new grudges

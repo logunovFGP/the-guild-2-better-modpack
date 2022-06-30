@@ -955,8 +955,14 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local Skill = 0
 	local Class = SimGetClass(Destination)
+	if Class == 0 and HasProperty(Destination, "OldClass") then
+		Class = GetProperty(Destination, "OldClass")
+	end
 	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class)
-	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination)
+	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class)
+	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
+	
+	BaseValue = math.ceil(BaseValue / CourtingDiff)
 	
 	if MeasureID == 530 then -- Flirt 
 		Skill = CHARISMA
@@ -989,6 +995,9 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	
 	local Value = 0
 	local ClassValue = {}
+	if Class == 0 then
+		Class = Rand(4) + 1
+	end
 	
 	if MeasureID == 530 then -- Flirt
 		ClassValue = { 1, 1, 2, 1, 0, 0 }
@@ -1019,13 +1028,13 @@ function GetCourtingMeasureValue(MeasureID, Class)
 		Value = ClassValue[Class]
 	end
 	
+	Value = Value + 5 -- base value
 	return Value
 end
 
-function GetCourtingMeasureVariation(MeasureID, Destination)
+function GetCourtingMeasureVariation(MeasureID, Destination, Class)
 	local Factor = 1
 	local ImpactVal = 0
-	local Class = SimGetClass(Destination)
 	local VariationClass
 	
 	if Class == GL_CLASS_PATRON then

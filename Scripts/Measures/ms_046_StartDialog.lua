@@ -14,31 +14,50 @@ function Run()
 	
 	if not AliasExists("Destination") then
 
-		local TalkPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1500)AND(Object.IsDynastySim())AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal))AND NOT(Object.GetStateImpact(no_idle))AND(Object.CanBeInterrupted(StartDialog)))","Destination", -1)
+		local TalkPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1200)AND(Object.IsDynastySim())AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal))AND NOT(Object.GetStateImpact(no_idle))AND(Object.CanBeInterrupted(StartDialog)))","Destination", -1)
+		
 		if (TalkPartners == 0) then
 			return
 		end
+		
 		CopyAlias("Destination"..Rand(TalkPartners), "Destination")
-
 	end
 	
+	-- The time in hours until the measure can be repeated
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	-- the action number for the courting
+	local DestGender = SimGetGender("Destination")
+	local Age = SimGetAge("Destination")
+	
+	-- The minimum favor for this action to success
+	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
+	local RhetoricSkill = GetSkillValue("", RHETORIC)
+	local MinimumFavor = GL_STARTDIALOG_MINFAVOR + TitleDifference - RhetoricSkill
+	local Favor = GetFavorToSim("Destination", "")
+	local FavorWon = 5 + (RhetoricSkill * 0.5)
+	local FavorLoss = -5
+	local ModifyFavor = 0
+	
+	-- Courting related
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	
+	local time1, time2 = 0, 0
+	
+	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
+	FavorWon = FavorWon * (1 + FlirtBonus)
+	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
+	
+	-- The distance between both sims to interact with each other
+	local InteractionDistance = 128
 
-	local CourtingActionNumber = 0
-
-	if not(AliasExists("Destination")) then
-		return
-	end
-
-	if not ai_StartInteraction("", "Destination", 350, 100) then
+	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
 		return
 	end
 	
+	-- for tutorial
 	if not IsMultiplayerGame() then
-		-- for tutorial
 		-- only a player should be able to start a quests
 		if GetLocalPlayerDynasty("LocalPlayer") then
 			if GetID("LocalPlayer") == GetID("dynasty") then
@@ -50,169 +69,142 @@ function Run()
 			end
 		end
 	end
-	
-	local owntitle = 10
-	if IsDynastySim("") then
-		owntitle = GetNobilityTitle("")
-	end
-	local desttitle = GetNobilityTitle("Destination")
-	local TitleDiffMod = owntitle - 1
-	local TitleFactor = owntitle - desttitle
-	local Age = SimGetAge("Destination")
-	local MinFavor = 30 - TitleFactor*2 
 
 	SetProperty("", "InTalk", 1)
 	SetProperty("Destination", "InTalk", 1)
-
-	local Favor = GetFavorToSim("Destination", "")
-
-	if SimGetGender("Destination") == GL_GENDER_MALE then
-
-		if Age < 16 then
-			MsgSay("", "@L_STARTDIALOG_START_YOUNG_MALE")
-		else
-			MsgSay("", "@L_STARTDIALOG_START_ADULT_MALE")
-		end
-
+	SetAvoidanceGroup("", "Destination")
+	MoveSetActivity("", "converse")
+	MoveSetActivity("Destination", "converse")
+	
+	-- dialog related
+	local ReplaceAge = ""
+	local ReplaceGender = ""
+	
+	if DestGender == GL_GENDER_MALE then
+		ReplaceGender = "MALE"
 	else
-
-		if Age < 16 then
-			MsgSay("", "@L_STARTDIALOG_START_YOUNG_FEMALE")
-		else
-			MsgSay("", "@L_STARTDIALOG_START_ADULT_FEMALE")
-		end
+		ReplaceGender = "FEMALE"
 	end
+	
+	if Age < 16 then
+		ReplaceAge = "YOUNG"
+	else
+		ReplaceAge = "ADULT"
+	end
+	
+	-- hello, I need to talk to you
+	MsgSay("", "@L_STARTDIALOG_START_"..ReplaceAge.."_"..ReplaceGender)
 
-	-- Niemand will etwas mit dem Char zu tun haben
-
-	if (GetFavorToSim("Destination", "") < MinFavor) then
+	-- Destination doesn't want to talk
+	if Favor < MinimumFavor then
+		TimeOut = TimeOut * 2
 		SetMeasureRepeat(TimeOut)
-		MsgSay("Destination","@L_STARTDIALOG_NO")
-		local favormodify = (GL_FAVOR_MOD_SMALL + desttitle)
-		chr_ModifyFavor("Destination","", -favormodify)
-		Sleep(0.5)
+		MsgSay("Destination", "@L_STARTDIALOG_NO")
+		chr_ModifyFavor("Destination","", FavorLoss)
+		Sleep(0.3)
 		MsgSay("", "@L_STARTDIALOG_SORRY")
 		return
 	end
-
-	SetAvoidanceGroup("", "Destination")
+	
 	feedback_OverheadActionName("Owner")
 	feedback_OverheadActionName("Destination")
 	AlignTo("Owner", "Destination")
 	AlignTo("Destination", "Owner")
 	SetMeasureRepeat(TimeOut)
 	Sleep(1)
+	Talk("", "Destination", true)
 
-	if SimGetGender("")==GL_GENDER_MALE then
-		if(Favor >= 65) then
+	if SimGetGender("") == GL_GENDER_MALE then
+		if (Favor >= 60) then
 			PlaySound3DVariation("", "CharacterFX/male_friendly", 0.5)
 		else
 			PlaySound3DVariation("", "CharacterFX/male_neutral", 0.5)
 		end
 	else
-		if(Favor >= 65)	then
-			PlaySound3DVariation("", "CharacterFX/female_friendly",0.5)
+		if (Favor >= 60)	then
+			PlaySound3DVariation("", "CharacterFX/female_friendly", 0.5)
 		else
 			PlaySound3DVariation("", "CharacterFX/female_neutral", 0.5)
 		end
 	end
-	if SimGetGender("Destination")==GL_GENDER_MALE then
-  		if(Favor >= 65) then
+	
+	time1 = PlayAnimationNoWait("Owner", "talk")
+	Sleep(0.7)
+	
+	if DestGender == GL_GENDER_MALE then
+  		if (Favor >= 60) then
 			PlaySound3DVariation("Destination", "CharacterFX/male_friendly", 0.5)
 		else
 			PlaySound3DVariation("Destination", "CharacterFX/male_neutral", 0.5)
 		end
 	else
-  		if(Favor >= 65)	then
+  		if (Favor >= 60)	then
 			PlaySound3DVariation("Destination", "CharacterFX/female_friendly",0.5)
 		else
 			PlaySound3DVariation("Destination", "CharacterFX/female_neutral", 0.5)
 		end
 	end
 
-	time1 = PlayAnimationNoWait("Owner", "talk")
-	Sleep(0.7)
 	time2 = PlayAnimation("Destination", "talk")
-
-	Talk("", "Destination",true)
-	SatisfyNeed("", 3, 1.0)
-	SatisfyNeed("Destination", 3, 1.0)
 
 	-------------------------
 	------ Court Lover ------
 	-------------------------
 
 	if SimGetCourtLover("", "CourtLover") then
-		if GetID("CourtLover")==GetID("Destination") then
+		if GetID("CourtLover") == GetID("Destination") then
 
 			MoveSetActivity("", "converse")
 			MoveSetActivity("Destination", "converse")
 
 	--		camera_CutscenePlayerLock("cutscene", "Destination")
 
-			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			if (EnoughVariation == false) then
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
+			if VariationFactor <= 0.5 then
+				ModifyFavor = FavorLoss
+				CourtingProgress = -5
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 			else
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 			end
 
 			Sleep(3.0)
 			
 			-- Add the achieved progress
-			SimAddCourtingProgress("")
+			chr_ModifyFavor("Destination", "", ModifyFavor)
+			Sleep(0.2)
+			feedback_OverheadCourtProgress("Destination", CourtingProgress)
+			AddImpact("Destination", "ReceivedTalk", 1, 4)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 		return
 	end
 
-	if (TitleDiffMod < 0) then
-		TitleDiffMod = 0
-	end
+	----------------------------
+	------ No Court Lover ------
+	----------------------------
 	
-	TitleDiffMod = TitleDiffMod + Rand(4)
-
-	-- Postiv, Gunst steigt
-
-	if ((GetSkillValue("", RHETORIC)) + TitleDiffMod >= (GetSkillValue("Destination", RHETORIC) + desttitle)) then
-		local favormodify = (GetSkillValue("", RHETORIC)+Rand(5))
-		local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52 = FlirtProfi
-		favormodify = math.floor(favormodify + favormodify * FlirtBonus * 0.01)
-		chr_ModifyFavor("Destination", "", favormodify)
-
+	-- Postiv
+	if VariationFactor > 0.5 and (Favor >= 65 or chr_SkillCheck("", RHETORIC, 2, "Destination", RHETORIC)) then
+		
+		chr_ModifyFavor("Destination", "", ModifyFavor)
         	if Age < 16 then
 			MsgSay("Destination", "@L_STARTDIALOG_FAVOR_POS_YOUNG")
 		else
-			MsgSay("Destination","@L_STARTDIALOG_FAVOR_POS_ADULT")
+			MsgSay("Destination", "@L_STARTDIALOG_FAVOR_POS_ADULT")
 		end
+
+		AddImpact("Destination", "ReceivedTalk", 1, 4)
 
 		-- Zufällige Person aus der Umgebung auswählen
 		if IsDynastySim("") and IsDynastySim("Destination") then
-			local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim)==3000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
+			local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim) == 2000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
 
 			if NumOfObjects > 0 then
 				local DestAlias = "Sims"..Rand(NumOfObjects)
-				local Check = true
 
-				if not IsDynastySim(DestAlias) then
-					Check = false
-				end
-
-				if GetState(DestAlias, STATE_NPC) then
-					Check = false
-				end
-
-				if GetState(DestAlias, STATE_DEAD) then
-					Check = false
-				end
-
-			-- Gesprächspartner mag die zufällige Person nicht und übergibt einen (gefälschten!) Beweis
-
-				if Check then
-
-					if GetFavorToSim("Destination", DestAlias) < 25 or GetFavorToSim("", DestAlias) < 25 then
-						
+				--check for favor to create evidence
+				if GetDynastyID(DestAlias) ~= GetDynastyID("") and GetDynastyID(DestAlias) ~= GetDynastyID("Destination") then
+					if GetFavorToSim("Destination", DestAlias) < 20 or GetFavorToSim("", DestAlias) < 20 then
 						MsgSay("Destination", "@L_STARTDIALOG_EVIDENCE")
 
 						local Random = Rand(11)
@@ -238,16 +230,16 @@ function Run()
 							Evidence = 18
 						end
 
-						-- zufällige Dynastie auswählen
+						-- create victim
 						while true do
 							ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
-							if GetDynasty("CurrentRandomSim", "CDynasty") then
+							if GetDynasty("CurrentRandomSim", "CDynasty") and GetID("CDynasty") ~= GetDynastyID(DestAlias) then
 								CopyAlias("CurrentRandomSim", "EvidenceVictim")
 								break
 							end
 						end
 
-						AddEvidence("", DestAlias, "EvidenceVictim", Evidence)
+						AddEvidence("", DestAlias, "EvidenceVictim", Evidence, "Destination", DestAlias)
 						MsgSay("", "@L_STARTDIALOG_THX")
 					end
 				end
@@ -255,32 +247,35 @@ function Run()
 		end
 	else
 
-	  -- Negativ, Gunst sinkt
-
-		local favormodify = (Rand(5) + desttitle)
-		chr_ModifyFavor("Destination", "", -favormodify)
+		-- Negative
+		ModifyFavor = FavorLoss
+		chr_ModifyFavor("Destination", "", ModifyFavor)
 
 		if Age < 16 then
 			MsgSay("Destination", "@L_STARTDIALOG_FAVOR_NEG_YOUNG")
 		else
  			MsgSay("Destination", "@L_STARTDIALOG_FAVOR_NEG_ADULT")
 		end
-
 	end
-
-	SatisfyNeed("", 3, 1.0)
-	SatisfyNeed("Destination", 3, 1.0)
 end
 
 -- -----------------------
 -- CleanUp
 -- -----------------------
 function CleanUp()
+
 	ReleaseAvoidanceGroup("")
-	if(AliasExists("Destination")) then
-		RemoveProperty("Destination", "InTalk")
-	end
+	MoveSetActivity("")
+	StopAnimation("")
 	RemoveProperty("", "InTalk")
+	
+	if (AliasExists("Destination")) then
+		RemoveProperty("Destination", "InTalk")
+		MoveSetActivity("Destination")
+		if GetDynastyID("") ~= GetDynastyID("Destination") then
+			SimLock("Destination", 0.2)
+		end
+	end
 end
 
 function GetOSHData(MeasureID)

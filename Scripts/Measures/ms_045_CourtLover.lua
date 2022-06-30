@@ -13,7 +13,7 @@ function AIInit()
 
 	local Selection
 	local BestValue = -1
-	local Partners = Find("", "__F((Object.GetObjectsFromCity(Sim))AND(Object.CanBeCourted())AND(Object.CanBeInterrupted(CourtLover)))", "Partner", -1)
+	local Partners = Find("", "__F((Object.GetObjectsFromCity(Sim))AND(Object.CanBeCourted())AND(Object.CanBeInterrupted(CourtLover)))", "Partner", 50)
 
 	if Partners > 0 then
 		local Value
@@ -38,7 +38,7 @@ function AIInit()
 			
 			-- check class
 			local DestClass = SimGetClass(Alias)
-			if DestClass < 1 or DestClass > 4 or DestClass == MyClass then
+			if DestClass > 4 or DestClass == MyClass then
 				Skip = true
 			end
 			
@@ -153,11 +153,10 @@ function Run()
 	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - TitleDifference
 	
 	local InteractionDistance = 128
-	local TimeUntilRepeat = 3
-	
+
 	if GetInsideBuilding("Destination", "DestBuilding") then
 		GetOutdoorMovePosition("", "DestBuilding", "MovePos")
-		if not f_MoveTo("","MovePos",GL_MOVESPEED_RUN, 700) then
+		if not f_MoveTo("", "MovePos",GL_MOVESPEED_RUN, 700) then
 			StopMeasure()
 		end
 		BlockChar("Destination")
@@ -256,7 +255,7 @@ function Run()
 		label2 = "_GOOD_RHETORIC"
 	end	
 
-	CutsceneShowCharacterPanel("",true)
+	CutsceneShowCharacterPanel("", true)
 	MsgSay("", label.."_1ST"..label2)
 	MsgSay("", label.."_2ND"..label2)
 	CutsceneShowCharacterPanel("", false)
@@ -266,7 +265,7 @@ function Run()
 		
 		-- for the AI, wait some time before starting again
 		if GetDynasty("", "AI_Dyn") then
-			SetRepeatTimer("AI_Dyn", "AI_CourtLover_Start", 32)
+			SetRepeatTimer("AI_Dyn", "AI_CourtLover_Start", 48)
 		end
 		
 		-- Check the sex
@@ -275,7 +274,7 @@ function Run()
 			-- Show the appropriate Animation	and save the animation lenghts
 			local DestinationAnimationLength = PlayAnimationNoWait("Destination", "curtsy")
 			
-			Sleep(DestinationAnimationLength*0.15)
+			Sleep(DestinationAnimationLength*0.13)
 
 			camera_CutscenePlayerLock("cutscene", "Destination")				
 			
@@ -291,14 +290,14 @@ function Run()
 			StopAnimation("")
 			PlayAnimationNoWait("", "bow")
 			
-			Sleep(DestinationAnimationLength*0.3)
+			Sleep(DestinationAnimationLength*0.2)
 			
 		else
 
 			-- Show the appropriate Animation	and save the animation lenghts
 			local DestinationAnimationLength = PlayAnimationNoWait("Destination", "bow")
 			
-			Sleep(DestinationAnimationLength*0.15)
+			Sleep(DestinationAnimationLength*0.13)
 			
 			camera_CutscenePlayerLock("cutscene", "Destination")
 			
@@ -314,10 +313,11 @@ function Run()
 			StopAnimation("")
 			PlayAnimationNoWait("", "curtsy")
 			
-			Sleep(DestinationAnimationLength*0.3)
+			Sleep(DestinationAnimationLength*0.2)
 			
 		end
-		-- PATCH TODO -- adds property so that CourtLover cannot be hired
+
+		-- adds property so that CourtLover cannot be hired
 		SetProperty("Destination", "courted", 1)
 		SetState("Destination", STATE_INLOVE, true)
 		SetData("CourtLoverSet", 1)
@@ -325,14 +325,11 @@ function Run()
 		DestroyCutscene("cutscene")
 
 		feedback_MessageCharacter("", 
-			"@L_COURTLOVER_MSG_SUCCESS_HEAD_+0",
-			"@L_COURTLOVER_MSG_SUCCESS_BODY_+0", GetID("Destination"), GetID("Owner"))
+							"@L_COURTLOVER_MSG_SUCCESS_HEAD_+0",
+							"@L_COURTLOVER_MSG_SUCCESS_BODY_+0", GetID("Destination"), GetID("Owner"))
 		
 		SimSetCourtLover("", "Destination")		
 	else
-		
-		-- Set the repeat timer and the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again
-		SetMeasureRepeat(TimeUntilRepeat, "Destination")
 		
 		camera_CutscenePlayerLock("cutscene", "Destination")		
 		
@@ -342,6 +339,7 @@ function Run()
 
 		if IsMale then
 			local Rhetoric2 = GetSkillValue("Destination", RHETORIC)
+
 			if (Rhetoric2 < 3) then
 				MsgSay("Destination", "@L_COURTLOVER_BEGIN_ANSWER_FAILED_FEMALE_WEAK_RHETORIC")
 			elseif (Rhetoric2 < 6) then
@@ -351,6 +349,7 @@ function Run()
 			end	
 		else
 			local Rhetoric2 = GetSkillValue("Destination", RHETORIC)
+
 			if (Rhetoric2 < 3) then
 				MsgSay("Destination", "@L_COURTLOVER_BEGIN_ANSWER_FAILED_MALE_WEAK_RHETORIC")
 			elseif (Rhetoric2 < 6) then
@@ -360,7 +359,7 @@ function Run()
 			end	
 		end
 		
-		Sleep(Time1)
+		Sleep(Time1*0.3)
 		
 		feedback_MessageCharacter("", 
 			"@L_COURTLOVER_MSG_FAILED_HEAD_+0",
@@ -393,7 +392,7 @@ function CleanUp()
 		end
 		MoveSetActivity("Destination")
 		feedback_OverheadActionName("Destination")
-		SimLock("Destination", 0.25)
+		SimLock("Destination", 0.3)
 	end
 	
 end

@@ -378,6 +378,7 @@ _Allgemein_
 - Eine Zeit lang zu schlafen, bringt garantiert eine kleine Menge Erfahrungspunkte (abhängig von der Jahre-pro-Runde-Einstellung)
 - Brandschutz wurde neu gebalanced: Jeder % senkt nun den Schaden durch ein Feuer um genau diese %. Zudem verhindert ein hoher Brandschutz, dass ein Feuer überhaupt auf ein Gebäude übergreift.
 - Für Löschversuche erhöht sich die Gunst zum Besitzer eines Gebäudes um jeweils 5.
+- Man kann nicht länger mit Angestellten flirten/reden.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
