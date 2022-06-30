@@ -4,8 +4,6 @@ Bug-Fixes & Workarounds:
 
 Offen:
 
-- Man kann sich nun auch, wenn man bereits ein Amt auf Reichseben hat (z.B. König) ohne Probleme nach "unten" oder "seitlich" 
-  (z.B. als Kardinal auf Feldherr) bewerben.
 - Fehlende Tooltips für verfluchte Gebäude hinzugefügt.
 - Die KI wird aggressive Maßnahmen nicht mehr gegen Ziele einsetzen, die gegenwärtig nicht steuerbar sind (sterbend, gefangen, 
   auf Reisen, im Duell ...).
@@ -23,19 +21,9 @@ Offen:
 
 - Ein Zufallsereignis hatte fehlende Texte.
 
-- Die Pest endete nach Ausbruch nie, weil sich vor allem neu generierte Arbeitslose
-  innerhalb der Arbeiterhütte immer wieder von Neuem ansteckten.
-
-- Nachdem man ein Gebäude von einer Dynastie erworben hatte, arbeiteten
-  die Dynastiemitglieder der alten Besitzer dort trotzdem weiter. Nun werden
-  alle Sims ihre aktuelle Aufgabe unterbrechen und ggf. das Gebäude verlassen.
-
 - Das Bau/Levelup-Verhalten der KI war fehlerhaft/ nicht nachvollziehbar (Spar-Priorities nicht ausgereift)
 
 - Diverse Bugs beim Wegelagern wurden behoben.
-
-- Es konnte vorkommen, dass nicht alle eingestellten Dynastien auch tatsächlich zu Spielstart
-  einen Wohnsitz und einen Betrieb hatten (deshalb nach wenigen Stunden ausstarben).
 
 
 

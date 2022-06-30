@@ -431,7 +431,6 @@
 893 Scripts\Measures\Behaviour\behavior_playing.lua
 894 Scripts\Measures\Behaviour\behavior_presession.lua
 895 Scripts\Measures\Behaviour\behavior_pretrial.lua
-896 Scripts\Measures\Behaviour\behavior_putoutfire.lua
 897 Scripts\Measures\Behaviour\behavior_RoyalGuardDuty.lua
 898 Scripts\Measures\Behaviour\behavior_schooldays.lua
 899 Scripts\Measures\Behaviour\behavior_seeblackdeath.lua
@@ -531,7 +530,6 @@
 1003 Scripts\Measures\Squad\ms_SquadWaylayForBooty.lua
 1004 Scripts\Measures\Squad\ms_SquadWaylayMember.lua
 
-1054 Scripts\States\state_burning.lua
 1055 Scripts\States\state_captured.lua
 1056 Scripts\States\state_checkforspinnings.lua
 1057 Scripts\States\state_child.lua
