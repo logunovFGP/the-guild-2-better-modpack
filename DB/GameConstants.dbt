@@ -263,11 +263,11 @@ Data:
 256   "GL_STARTDIALOG_MINFAVOR"             40                ""                              | 
 257   "GL_FLIRT_MINFAVOR"                   60                ""                              | 
 258   "GL_HUG_MINFAVOR"                     60                ""                              | 
-259   "GL_PRESENT_MINFAVOR"                 60                ""                              | 
+259   "GL_PRESENT_MINFAVOR"                 65                ""                              | 
 260   "GL_KISS_MINFAVOR"                    70                ""                              | 
 261   "GL_DANCE_MINFAVOR"                   50                ""                              | 
-262   "GL_BEWITCH_MINFAVOR"                 60                ""                              | 
-263   "GL_BATH_MINFAVOR"                    70                ""                              | 
+262   "GL_BEWITCH_MINFAVOR"                 65                ""                              | 
+263   "GL_BATH_MINFAVOR"                    75                ""                              | 
 
 
 

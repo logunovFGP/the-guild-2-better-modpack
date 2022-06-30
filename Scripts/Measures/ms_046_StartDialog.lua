@@ -273,7 +273,7 @@ function CleanUp()
 		RemoveProperty("Destination", "InTalk")
 		MoveSetActivity("Destination")
 		if GetDynastyID("") ~= GetDynastyID("Destination") then
-			SimLock("Destination", 0.2)
+			SimLock("Destination", 0.3)
 		end
 	end
 end

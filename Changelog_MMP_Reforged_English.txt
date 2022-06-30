@@ -368,6 +368,7 @@ _General_
 - Protection against fire has been rebalanced: Every % reduces the damage of a fire by that exact same %. In addition, it may protect you from burning altogether.
 - Every attempt on firefighting raises favor towards the owner of the building by 5.
 - You can no longer talk/flirt with employees.
+- You can hug a person of the same sex now.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
