@@ -996,7 +996,7 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	chr_CheckWorkerBonuses(BldAlias)
 	
 	-- abilities for buildings (last forever)
-	local Type = BuildingGetType(BldAlilas)
+	local Type = BuildingGetType(BldAlias)
 	if Type == GL_BUILDING_TYPE_TAVERN then
 		local BossAbility = GetImpactValue("MyBoss", "BestHouseI")
 		if BossAbility > 0 then
