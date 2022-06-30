@@ -574,7 +574,7 @@ Data:
 2342             194              "AboutTalents1"             1                     0                 6                    165                  2338              0                 300             0          |
 2343             195              "LetterOfIndulgence"        1                     0                 6                    166                  2341              0                 300             0          |
 2344             195              "LetterFromRome"            1                     0                 6                    167                  2341              0                 300             0          |
-2345             193              "baptismal_font_catholic"   1                     0                 15                   870                  2307              0                 0               0          |
+2345             193              "baptismal_font_catholic"   1                     0                 15                   870                  2307              0                 300              0          |
 2346             193              "Scriptorium"               1                     1                 0                    0                    2346              26                0               0          |
 2347             194              "Confessional"              1                     1                 0                    0                    2346              0                 0               0          |
 2348             194              "Feretory"                  1                     0                 15                   930                  2349              0                 0               0          |
