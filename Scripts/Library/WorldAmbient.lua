@@ -110,7 +110,7 @@ function CreateAnimal(animal, building, count)
 		  	GetLocatorByName(building, "Entry1", "SetPos")
 		end
 		
-		CityGetRandomBuilding("City", 5, 14, -1, -1, FILTER_IGNORE, "Home")
+		CityGetRandomBuilding("City", 5, 14, -1, -1, FILTER_IGNORE, "Start")
 
 		local aID
 		if animal == "Dog" then
@@ -135,25 +135,19 @@ function CreateAnimal(animal, building, count)
 			aID = 915
 		end
 
-		for i=0,count-1 do
+		for i=0, count-1 do
 			local Alias = "Animal"..count
-		  	SimCreate(aID, "Home", "SetPos", Alias)
+		  	SimCreate(aID, "Start", "SetPos", Alias)
 			SimSetFirstname(Alias, "@L_"..animal.."_NAME_+0")
 			SimSetLastname(Alias, "@L_EMPTY_NAME_+0")
 			SetState(Alias, STATE_ANIMAL, true)
-			if BuildingGetType(building) > 0 then
-				SetHomeBuilding(Alias, building)
-			else
-				CityGetNearestBuilding("City", Alias, 5, 14, -1, -1, FILTER_IGNORE, "Home")
-				SetHomeBuilding(Alias, building)
-			end
 		end
 	end
 end
 
 function CreateSailor(building,count)	
 	if worldambient_CheckAmbient()==true then
-	  GetLocatorByName(building, "Entry1", "SetPos")
+		GetLocatorByName(building, "Entry1", "SetPos")
 
 		for i=0,count-1 do
 		 	SimCreate(916,building,"SetPos","Sailor"..i)

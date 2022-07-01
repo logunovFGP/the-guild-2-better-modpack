@@ -73,11 +73,6 @@ function Run(SimAlias, ResourceAlias, mode)
 
 	local Count = ItemGetProductionAmount(ItemID)
 
-	local Value = GetImpactValue("", "GatherBonus")	-- 34
-	if Value and Value > 0 then
-		Time = Time - Time * Value * 0.01
-	end
-
 	if GetSeason() == 3 then
 	    Time =  math.floor(Time + ((Time / 100) * 20)) -- im Winter 20% langsamer
 	end
