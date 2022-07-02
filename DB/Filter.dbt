@@ -142,7 +142,7 @@ Data:
 213   "CanImposeASalesFreeze"   "__F((Object.PlayerHasOfficeImpact('ImposeASalesFreeze'))AND(Object.PlayerHasOfficeImpact('CommandInspector'))AND(Object.GetProfession()== 23))"   |
 214   "CanBeFreezed"   "__F((Object.IsType(14)))"   |
 215   "IsMyThief"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())OR(Object.GetWorkBuilding())AND(Object.IsType(101)))"   |
-216   "CanReceivePoem"   "__F((Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.HasDifferentSex())AND NOT(Object.BelongsToMe()))"   |
+216   "CanReceivePoem"   "__F((Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.HasDifferentSex())AND NOT(Object.BelongsToMe())OR(Object.IsMySpouse()))"   |
 217   "CanQuestGather"   "__F((Object.CanBeControlled())AND(Object.Property.CanGather==1))"   |
 218   "CanBeAMaster"   "__F((Object.HasMinNobilityTitle(2)))"   |
 219   "IsMySimInTownhallCanRunOffice"   "__F((Object.CanBeControlled())AND(Object.HasMinNobilityTitle(4))AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
@@ -196,8 +196,8 @@ Data:
 275   "CanPropitiateEnemies"   "__F((Object.CanBeControlled())AND (Object.HasImpact(PropitiateEnemies)))"   |
 276   "CanHijack"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())OR(Object.GetWorkBuilding())AND(Object.IsType(101))AND(Object.HasUpgrade(PrisonDoor)))"   |
 277   "CanEscapeFromArrest"   "__F((Object.BelongsToMe())AND NOT(Object.CanBeControlled())AND(Object.CompareHPRelative()>30)AND(Object.GetState(captured))AND NOT(Object.IsInBuilding())AND NOT(Object.HasImpact(Unantastbar))AND NOT(Object.Property.NoEscape==1))"   |
-279   "IsAllowedForCourtingMeasuresSameSex"   "__F((Object.ActionAdmissible())AND(Object.CheckCutscene())AND(Object.MinAge(16))AND(Object.IsSocialMeasureTarget())AND NOT(Object.GetProfession()>0))"   |
-280   "IsAllowedForCourtingMeasures"   "__F((Object.ActionAdmissible())AND(Object.HasDifferentSex())AND(Object.CheckCutscene())AND(Object.MinAge(16))AND(Object.IsSocialMeasureTarget())AND NOT(Object.GetProfession()>0))"   |
+279   "IsAllowedForCourtingMeasuresSameSex"   "__F((Object.CheckCutscene())AND(Object.MinAge(16))AND(Object.IsSocialMeasureTarget())AND NOT(Object.GetProfession()>0))"   |
+280   "IsAllowedForCourtingMeasures"   "__F((Object.HasDifferentSex())AND(Object.CheckCutscene())AND(Object.MinAge(16))AND(Object.IsSocialMeasureTarget())AND NOT(Object.GetProfession()>0))"   |
 281   "CanRentSleepingBerth"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND NOT(Object.BelongsToMe())AND(Object.HasUpgrade(fireplacebench)))"   |
 282   "CanUseFragranceOfHoliness"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 283   "IsResourceMeasure"   "__F((Object.BelongsToMe())AND(Object.IsResourceMeasure()))"   |
