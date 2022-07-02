@@ -1,18 +1,19 @@
 function AIInitPressProtMoneyVictim()
 
-    GetDynasty("Destination", "VictimDyn")
+	GetDynasty("Destination", "VictimDyn")
 	local v = BuildingGetLevel("Destination")
-	local p = 500 * w
+	local p = 500 * v
 	local kivermog = GetMoney("VictimDyn")
 
 	if DynastyGetDiplomacyState("", "VictimDyn") > DIP_NEUTRAL  then
-        if DynastyGetDiplomacyState("", "VictimDyn") == DIP_NAP then
-            p = 400 * v -- low price for not attack
-        elseif DynastyGetDiplomacyState("", "VictimDyn") == DIP_ALLIANCE then
-            p = 250 * v -- lower price for allied
-        end
+		if DynastyGetDiplomacyState("", "VictimDyn") == DIP_NAP then
+			p = 400 * v -- low price for not attack
+		elseif DynastyGetDiplomacyState("", "VictimDyn") == DIP_ALLIANCE then
+			p = 250 * v -- lower price for allied
+		end
 	end
-    if ((kivermog / 100) * 50) < p then
+	
+	if ((kivermog / 100) * 50) < p then
 	    return "C"
 	end
 
@@ -30,9 +31,9 @@ function Run()
 		StopMeasure()
 	end
 
-    if DynastyGetDiplomacyState("","VictimDyn") < DIP_NEUTRAL then
-	    MsgQuick("","@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+0")
-	    StopMeasure()
+	if DynastyGetDiplomacyState("","VictimDyn") < DIP_NEUTRAL then
+		MsgQuick("","@L_MEASURE_OFFERBUILDINGPROTECTION_FAIL_+0")
+		StopMeasure()
 	end
 	
 	if HasProperty("Destination", "RobberProtected") then
@@ -114,16 +115,15 @@ function Run()
 				GetID("MrProtectionMoney"), GetID("Destination"))
 			
 			-- cancel measure
-			RemoveProperty("Destination","RobberProtected")
-			SetMeasureRepeat(TimeOut)
+			RemoveProperty("Destination", "RobberProtected")
 			StopMeasure()
 		end
 	else   -- if it is our own dynasty, we want to protect our building for free without getting a notification
-        SetMeasureRepeat(TimeOut)
-        SetProperty("", "TotalMoney", price)
-        SetProperty("", "RobberProtecting", iVictimID)
-       	SetState("", STATE_GUARDING, true)
-    end
+		SetMeasureRepeat(TimeOut)
+		SetProperty("", "TotalMoney", price)
+		SetProperty("", "RobberProtecting", iVictimID)
+		SetState("", STATE_GUARDING, true)
+	end
 end
 
 function CleanUp()
