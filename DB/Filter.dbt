@@ -220,7 +220,7 @@ Data:
 317   "CanRoughUp"   "__F((Object.CanBeControlled()))"   |
 318   "CanBeGathered"   "__F((Object.CanBeGathered()))"   |
 319   "ValidBuildingTargetForEvilMeasures"   "__F(NOT(Object.BelongsToMe())AND(Object.IsClass(1))OR(Object.IsClass(2))AND(Object.ActionAdmissible()))"   |
-320   "InstantDynastyCharStartDialog"   "__F((Object.ActionAdmissible())AND NOT(Object.IsHostile())AND NOT(Object.GetState(animal))AND NOT(Object.GetState(npc))AND NOT(Object.GetProfession()>0))"   |
+320   "InstantDynastyCharStartDialog"   "__F(NOT(Object.IsHostile())AND NOT(Object.GetState(animal))AND NOT(Object.GetState(npc))AND NOT(Object.GetProfession()>0))"   |
 321   "InstantDynastyCharPropelEmployes"   "__F((Object.CanBeControlled())AND (Object.CanWorkHere()))"   |
 322   "InstantAttack"   "__F((Object.CanAttack())AND(Object.ActionAdmissible())AND NOT(Object.HasImpact(Unantastbar))AND(Object.IsHostile())AND(Object.IsClass(4))OR(Object.GetProfession()== 18)OR(Object.GetProfession()== 15))"   |
 323   "InstantSawField"   "__F(NOT(Object.CanBeGathered())AND (Object.IsResourceMeasure()))"   |
@@ -439,7 +439,7 @@ Data:
 1559   "MeOfferTarot"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(102))AND(Object.GetLevel()>=2)AND NOT(Object.GetState(levelingup))OR(Object.GetState(building)))"   |
 1560   "MeAMercenary"   "__F((Object.CanBeControlled())AND(Object.IsClass(4))AND(Object.GetOwnedBuildings())AND(Object.IsType(21)))"   |
 1561   "MeAMercenary2"   "__F((Object.CanBeControlled())AND(Object.IsClass(4))AND(Object.GetOwnedBuildings())AND(Object.IsType(21))AND(Object.HasUpgrade(Halberd)))"   |
-1562   "CanHaveProtection"   "__F((Object.HasDynasty())AND(Object.ActionAdmissible())AND NOT(Object.GetState(building))AND(Object.IsClass(1))OR(Object.IsClass(2)))"   |
+1562   "CanHaveProtection"   "__F((Object.HasDynasty())AND NOT(Object.GetState(building))AND(Object.IsClass(1))OR(Object.IsClass(2)))"   |
 1563   "IsMyResidenceAndNotUpgrading"   "__F((Object.CanBeControlled())AND (Object.IsClass(1))AND NOT (Object.GetState(levelingup)))"   |
 1564   "IsMyBuilding"   "__F((Object.Type==Building)AND(Object.BelongsToMe()))"   |
 1565   "HasBathingRoom"   "__F(Object.CanBeControlled())AND(Object.IsType(4))AND(Object.HasUpgrade(BathingRoom)))"   |
