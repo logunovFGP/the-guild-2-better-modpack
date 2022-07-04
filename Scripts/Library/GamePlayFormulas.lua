@@ -818,7 +818,7 @@ function checkBuildingNoRoom(building)
 -- checks if the building is of a type which has no room
 	if (BuildingGetType(building) == GL_BUILDING_TYPE_FARM) or (BuildingGetType(building) == GL_BUILDING_TYPE_ROBBER) or
 			(BuildingGetType(building) == GL_BUILDING_TYPE_MINE) or (BuildingGetType(building) == GL_BUILDING_TYPE_RANGERHUT) or
-			(BuildingGetType(building) == GL_BUILDING_TYPE_CASTLE) or (BuildingGetType(building) == GL_BUILDING_TYPE_TOWER) or 
+			(BuildingGetType(building) == GL_BUILDING_TYPE_MERCENARY) or (BuildingGetType(building) == GL_BUILDING_TYPE_TOWER) or 
 			(BuildingGetType(building) == GL_BUILDING_TYPE_PIRATESNEST) or (BuildingGetType(building) == GL_BUILDING_TYPE_JUGGLER) or 
 			(BuildingGetType(building) == GL_BUILDING_TYPE_FISHINGHUT) or (BuildingGetType(building) == GL_BUILDING_TYPE_WAREHOUSE) or
 			(BuildingGetType(building) == GL_BUILDING_TYPE_MILL) or (BuildingGetType(building) == GL_BUILDING_TYPE_FRUITFARM) then

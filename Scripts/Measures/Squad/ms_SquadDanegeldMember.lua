@@ -17,7 +17,7 @@ function Run()
 	
 	if not SimGetWorkingPlace("", "MyMercenarycamp") then
 		if IsPartyMember("") then
-			local NextBuilding = ai_GetNearestDynastyBuilding("",GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CASTLE)
+			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MERCENARY)
 			if not NextBuilding then
 				StopMeasure()
 			end

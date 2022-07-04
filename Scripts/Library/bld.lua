@@ -1061,7 +1061,7 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
 			end
 		end
-	elseif Type == GL_BUILDING_TYPE_CASTLE then
+	elseif Type == GL_BUILDING_TYPE_MERCENARY then
 		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
 		if BossAbility > 0 then
 			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
