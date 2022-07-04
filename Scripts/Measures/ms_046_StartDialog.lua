@@ -203,6 +203,18 @@ function Run()
 
 		AddImpact("Destination", "ReceivedTalk", 1, 4)
 		
+		if SimGetSpouse("Destination", "Spouse") then
+			if (GetID("Spouse") == GetID("")) then
+				AddImpact("", "LoveLevel", 1, 24) -- add some love for the next 24 hours
+				AddImpact("Destination","LoveLevel", 1, 24)
+				if GetImpactValue("Destination", "LoveLevel") >= 10 then
+					MsgNewsNoWait("", "Destination", "", "schedule", -1,
+							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+				end
+			end
+		end
+		
 		if Favor < 100 then
 			-- Zufällige Person aus der Umgebung auswählen
 			if IsDynastySim("") and IsDynastySim("Destination") then

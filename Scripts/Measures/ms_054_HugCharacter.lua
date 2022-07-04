@@ -163,6 +163,18 @@ function Run()
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
+			
+			if SimGetSpouse("Destination", "Spouse") then
+				if (GetID("Spouse") == GetID("")) then
+					AddImpact("", "LoveLevel", 1, 24) -- add some love for the next 24 hours
+					AddImpact("Destination","LoveLevel",1, 24)
+					if GetImpactValue("Destination", "LoveLevel") >= 10 then
+						MsgNewsNoWait("", "Destination", "", "schedule", -1,
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+					end
+				end
+			end
 		end
 	end
 end
