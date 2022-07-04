@@ -25,6 +25,12 @@ function Run()
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = GetSkillValue("", CHARISMA)
 	local MinimumFavor = GL_HUG_MINFAVOR + TitleDifference - CharismaSkill
+	local Favor = 0
+	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
+		Favor = 100
+	else
+		Favor = GetFavorToSim("Destination", "")
+	end
 	local FavorWon = 5 + (CharismaSkill * 0.5)
 	local FavorLoss = -5
 	local ModifyFavor = 0
@@ -120,7 +126,7 @@ function Run()
 		AddImpact("Destination", "ReceivedHug", 1, 4)
 		
 		-- React negativ if  the favor is not high enough
-		if GetFavorToSim("Destination", "") < MinimumFavor then
+		if Favor < MinimumFavor then
 			if Rand(20) > 14 then
 				TimeOut = TimeOut * 2
 				slap = true

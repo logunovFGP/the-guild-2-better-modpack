@@ -34,7 +34,12 @@ function Run()
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local RhetoricSkill = GetSkillValue("", RHETORIC)
 	local MinimumFavor = GL_STARTDIALOG_MINFAVOR + TitleDifference - RhetoricSkill
-	local Favor = GetFavorToSim("Destination", "")
+	local Favor = 0
+	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
+		Favor = 100
+	else
+		Favor = GetFavorToSim("Destination", "")
+	end
 	local FavorWon = 5 + (RhetoricSkill * 0.5)
 	local FavorLoss = -5
 	local ModifyFavor = 0
@@ -115,13 +120,13 @@ function Run()
 	Talk("", "Destination", true)
 
 	if SimGetGender("") == GL_GENDER_MALE then
-		if (Favor >= 60) then
+		if (Favor >= MinimumFavor) then
 			PlaySound3DVariation("", "CharacterFX/male_friendly", 0.5)
 		else
 			PlaySound3DVariation("", "CharacterFX/male_neutral", 0.5)
 		end
 	else
-		if (Favor >= 60)	then
+		if (Favor >= MinimumFavor) then
 			PlaySound3DVariation("", "CharacterFX/female_friendly", 0.5)
 		else
 			PlaySound3DVariation("", "CharacterFX/female_neutral", 0.5)
@@ -132,13 +137,13 @@ function Run()
 	Sleep(0.7)
 	
 	if DestGender == GL_GENDER_MALE then
-  		if (Favor >= 60) then
+  		if (Favor >= MinimumFavor) then
 			PlaySound3DVariation("Destination", "CharacterFX/male_friendly", 0.5)
 		else
 			PlaySound3DVariation("Destination", "CharacterFX/male_neutral", 0.5)
 		end
 	else
-  		if (Favor >= 60)	then
+  		if (Favor >= MinimumFavor) then
 			PlaySound3DVariation("Destination", "CharacterFX/female_friendly",0.5)
 		else
 			PlaySound3DVariation("Destination", "CharacterFX/female_neutral", 0.5)
@@ -184,9 +189,12 @@ function Run()
 	----------------------------
 	
 	-- Postiv
-	if VariationFactor > 0.5 and (Favor >= 65 or chr_SkillCheck("", RHETORIC, 2, "Destination", RHETORIC)) then
+	if VariationFactor > 0.5 and (Favor >= MinimumFavor or chr_SkillCheck("", RHETORIC, 2, "Destination", RHETORIC)) then
 		
-		chr_ModifyFavor("Destination", "", ModifyFavor)
+		if Favor < 100 then 
+			chr_ModifyFavor("Destination", "", ModifyFavor)
+		end
+		
         	if Age < 16 then
 			MsgSay("Destination", "@L_STARTDIALOG_FAVOR_POS_YOUNG")
 		else
@@ -194,53 +202,55 @@ function Run()
 		end
 
 		AddImpact("Destination", "ReceivedTalk", 1, 4)
+		
+		if Favor < 100 then
+			-- Zufällige Person aus der Umgebung auswählen
+			if IsDynastySim("") and IsDynastySim("Destination") then
+				local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim) == 2000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
 
-		-- Zufällige Person aus der Umgebung auswählen
-		if IsDynastySim("") and IsDynastySim("Destination") then
-			local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim) == 2000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
+				if NumOfObjects > 0 then
+					local DestAlias = "Sims"..Rand(NumOfObjects)
 
-			if NumOfObjects > 0 then
-				local DestAlias = "Sims"..Rand(NumOfObjects)
+					--check for favor to create evidence
+					if GetDynastyID(DestAlias) ~= GetDynastyID("") and GetDynastyID(DestAlias) ~= GetDynastyID("Destination") then
+						if GetFavorToSim("Destination", DestAlias) < 20 or GetFavorToSim("", DestAlias) < 20 then
+							MsgSay("Destination", "@L_STARTDIALOG_EVIDENCE")
 
-				--check for favor to create evidence
-				if GetDynastyID(DestAlias) ~= GetDynastyID("") and GetDynastyID(DestAlias) ~= GetDynastyID("Destination") then
-					if GetFavorToSim("Destination", DestAlias) < 20 or GetFavorToSim("", DestAlias) < 20 then
-						MsgSay("Destination", "@L_STARTDIALOG_EVIDENCE")
-
-						local Random = Rand(11)
-						if Random == 0 then
-							Evidence = 1
-						elseif Random == 1 then
-							Evidence = 4
-						elseif Random == 2 then
-							Evidence = 7
-						elseif Random == 3 then
-							Evidence = 10
-						elseif Random == 4 then
-							Evidence = 11
-						elseif Random == 5 then
-							Evidence = 12
-						elseif Random == 6 then
-							Evidence = 13
-						elseif Random == 7 then
-							Evidence = 14
-						elseif Random == 8 then
-							Evidence = 15
-						else
-							Evidence = 18
-						end
-
-						-- create victim
-						while true do
-							ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
-							if GetDynasty("CurrentRandomSim", "CDynasty") and GetID("CDynasty") ~= GetDynastyID(DestAlias) then
-								CopyAlias("CurrentRandomSim", "EvidenceVictim")
-								break
+							local Random = Rand(11)
+							if Random == 0 then
+								Evidence = 1
+							elseif Random == 1 then
+								Evidence = 4
+							elseif Random == 2 then
+								Evidence = 7
+							elseif Random == 3 then
+								Evidence = 10
+							elseif Random == 4 then
+								Evidence = 11
+							elseif Random == 5 then
+								Evidence = 12
+							elseif Random == 6 then
+								Evidence = 13
+							elseif Random == 7 then
+								Evidence = 14
+							elseif Random == 8 then
+								Evidence = 15
+							else
+								Evidence = 18
 							end
-						end
 
-						AddEvidence("", DestAlias, "EvidenceVictim", Evidence, "Destination", DestAlias)
-						MsgSay("", "@L_STARTDIALOG_THX")
+							-- create victim
+							while true do
+								ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
+								if GetDynasty("CurrentRandomSim", "CDynasty") and GetID("CDynasty") ~= GetDynastyID(DestAlias) then
+									CopyAlias("CurrentRandomSim", "EvidenceVictim")
+									break
+								end
+							end
+
+							AddEvidence("", DestAlias, "EvidenceVictim", Evidence, "Destination", DestAlias)
+							MsgSay("", "@L_STARTDIALOG_THX")
+						end
 					end
 				end
 			end
