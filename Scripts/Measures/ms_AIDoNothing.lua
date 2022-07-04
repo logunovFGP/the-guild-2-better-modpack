@@ -2,7 +2,7 @@ function Run()
 	if not ms_aidonothing_MoveToHome() then
 		return
 	end
-	local		Time = Rand(20)+5
+	local	Time = Rand(30) + 15
 	Sleep(Time)
 end
 

@@ -1,5 +1,5 @@
 function Init()
-	InitData("SayPanel",0,"SayHeader","SayBody")
+	InitData("SayPanel", 0, "SayHeader", "SayBody")
 end
 
 function Run()
@@ -21,6 +21,7 @@ function Run()
 		local foundFacial = false
 		local facialString = "#E[NT_NEUTRAL]"
 		local animationToPlay = ""
+		
 		if GetState("",STATE_SITAROUND) then
 			animationToPlay = "sit_talk"
 		else
@@ -39,7 +40,7 @@ function Run()
 			if(string.find(string.lower(label),face_tags[i])) then
 				local found = face_tags[i]
 				facialString = "#E[HP_HAPPY]"
-				if GetState("",STATE_SITAROUND) then
+				if GetState("", STATE_SITAROUND) then
 					animationToPlay = "sit_laugh"
 				else
 					animationToPlay = "talk_2"
@@ -114,7 +115,7 @@ function Run()
 		end
 		PlayAnimationNoWait("",animationToPlay)
 		
-  		MsgSay("",label)
+  		MsgSay("", label)
 
 	end
 end

@@ -18,8 +18,8 @@ Data:
 21   "HasOperator"   "__F((Object.VehicleHasOperator()))"   |
 22   "IsNotInBuilding"   "__F(NOT(Object.IsInBuilding()))"   |
 25   "IsBurning"   "__F((Object.GetState(burning))AND(Object.CanBeControlled()))"   |
-27   "HasBlackDeath"   "__F((Object.GetState(blackdeath)))"   |
-28   "HasNotBlackDeath"   "__F(NOT(Object.GetState(blackdeath)))"   |
+27   "HasBlackDeath"   "__F((Object.GetState(sick)))"   |
+28   "HasNotBlackDeath"   "__F(NOT(Object.GetState(sick)))"   |
 75   "IsMyMyrmidon"   "__F((Object.CanBeControlled())AND(Object.GetProfession()== 18)OR(Object.GetProfession()== 74))"   |
 76   "CanWorkHere"   "__F((Object.CanWorkHere())AND(Object.CanBeControlled())AND(Object.GetProfession()!= 18))"   |
 80   "CanExitCart"   "__F((Object.CanBeControlled())AND (Object.VehicleHasOperator()))"   |

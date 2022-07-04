@@ -6,16 +6,18 @@ function Weight()
 	
 	TotalFound = 0
 	Count = DynastyGetMemberCount("dynasty")
-	for i=0,Count-1 do
+	for i=0, Count-1 do
 		if DynastyGetMember("dynasty", i, "CHECKME") then
-			if GetState("CHECKME", STATE_WORKING) then
-				if Rand(10) == 0 then
+			if DynastyIsAI("CHECKME") then
+				if GetState("CHECKME", STATE_WORKING) then
+					if Rand(6) == 0 then
+						CopyAlias("CHECKME", "MEMBER"..TotalFound)
+						TotalFound = TotalFound + 1
+					end
+				elseif GetState("CHECKME", STATE_IDLE) then
 					CopyAlias("CHECKME", "MEMBER"..TotalFound)
 					TotalFound = TotalFound + 1
 				end
-			elseif GetState("CHECKME", STATE_IDLE) then
-				CopyAlias("CHECKME", "MEMBER"..TotalFound)
-				TotalFound = TotalFound + 1
 			end
 		end
 	end

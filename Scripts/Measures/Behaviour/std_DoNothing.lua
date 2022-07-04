@@ -1,16 +1,16 @@
 function Run()
 
-	local DoNothing = GetProperty("", "_DO_NOTHING_TIME")
-	if not DoNothing then
-		Sleep(5)
-		return
-	end
+	local DoNothing = GetProperty("", "_DO_NOTHING_TIME") or 5
 
 	RemoveProperty("", "_DO_NOTHING_TIME")
-	if DoNothing==0 then
-		DoNothing = 0.5
+	if DoNothing < 5 then
+		DoNothing = 5
 	end
-	DoNothing = Gametime2Realtime(DoNothing)
+	
+	if DynastyIsPlayer("") and IsDynastySim("") then
+		DoNothing = 30
+	end
+	
 	Sleep(DoNothing)
 end
 
