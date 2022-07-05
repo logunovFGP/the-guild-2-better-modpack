@@ -95,7 +95,7 @@ end
 function Setup()
 	bld_HandleSetup("")	-- create ambient animals
 	if Rand(2)==0 then
-		worldambient_CreateAnimal("Stag", "" , 1)
+		worldambient_CreateAnimal("Stag", "", 2)
 	else
 		worldambient_CreateAnimal("Deer", "", 2)
 	end

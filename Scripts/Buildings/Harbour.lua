@@ -33,9 +33,9 @@ end
 
 
 function PingHour()
-  local CurrentTime = math.mod(GetGametime(),24)
+	local CurrentTime = math.mod(GetGametime(), 24)
 
-  if CurrentTime == 7 or CurrentTime == 19 then
+	if CurrentTime == 7 or CurrentTime == 19 then
 		worldambient_CreateSailor("", 3)
 	end
 end

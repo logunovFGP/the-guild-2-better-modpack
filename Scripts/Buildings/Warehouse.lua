@@ -43,9 +43,9 @@ end
 function Run()
 end
 
-
 function Setup()
 	bld_HandleSetup("")
 end
+
 function PingHour()
 end

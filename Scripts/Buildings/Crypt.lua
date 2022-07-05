@@ -11,7 +11,7 @@ function Setup()
 	if Rand(2)==0 then
 		worldambient_CreateAnimal("Cat", "", 1)
 	else
-		worldambient_CreateAnimal("Wolf", "", 1)
+		worldambient_CreateAnimal("Dog", "", 1)
 	end
 end
 

@@ -8,8 +8,8 @@ end
 function Setup()
 	bld_HandleSetup("")
 	-- create ambient animals
-	worldambient_CreateAnimal("Cock", "", 1)
-	worldambient_CreateAnimal("Chicken", "", 3)
+	--worldambient_CreateAnimal("Cock", "", 1)
+	--worldambient_CreateAnimal("Chicken", "", 3)
 end
 
 function SellOtherStuff(BldAlias)
