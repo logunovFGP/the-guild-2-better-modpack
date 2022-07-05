@@ -10,75 +10,90 @@
 -- Run
 -- -----------------------
 function Run()
-	local MeasureID = GetCurrentMeasureID("")
+	
+	if not AliasExists("Destination") then
+		return
+	end
+	
 	-- The time in hours until the measure can be repeated
-	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)	
+	local MeasureID = GetCurrentMeasureID("")
+	local TimeOut = mdata_GetTimeOut(MeasureID)	
+	
+	local DestGender = SimGetGender("Destination")
 	
 	-- The minimum favor for this action to success
+	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local EmpathySkill = GetSkillValue("", EMPATHY)
-	local MinimumFavor = 50 - EmpathySkill
-	local FavorWon = 5 + (EmpathySkill * 0.5)
-	local FavorLoss = Rand(4)-9
+	local MinimumFavor = GL_KISS_MINFAVOR + TitleDifference - (EmpathySkill * 2)
+	local Favor = 0
+	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
+		Favor = 100
+	else
+		Favor = GetFavorToSim("Destination", "")
+	end
+	local FavorWon = 7 + (EmpathySkill * 0.75)
+	local FavorLoss = -10
+	local ModifyFavor = 0
+	
+	-- Courting related
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
 	
 	local	time1 = 0
-	local time2 = 0	
 	
-	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
-	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01	
-	
-	-- The action number for the courting
-	local CourtingActionNumber = 6
+	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
+	FavorWon = FavorWon * (1 + FlirtBonus)	
+	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 	
 	-- The distance between both sims to interact with each other
 	local InteractionDistance = 128
 
 	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
-		StopMeasure()
 		return
 	end
 
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","destination")
-	CutsceneCameraCreate("cutscene","")			
-	
 	SetAvoidanceGroup("", "Destination")
 	MoveSetActivity("", "converse")
 	MoveSetActivity("Destination", "converse")
 	
-	camera_CutsceneBothLock("cutscene", "")
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Destination")
+	CutsceneCameraCreate("cutscene", "")			
 	
+	-- do it
+	camera_CutsceneBothLock("cutscene", "")
 	chr_MultiAnim("", "kiss_male", "Destination", "kiss_female", InteractionDistance)
 	
 	local WasCourtLover = 0	
-	chr_BlockSocialMeasures("")
 	
 	-------------------------
 	------ Court Lover ------
 	-------------------------
 	if (SimGetCourtLover("", "CourtLover")) then
-		if GetID("CourtLover")==GetID("Destination") then
+		if GetID("CourtLover") == GetID("Destination") then
 				
 			WasCourtLover = 1
-			local ModifyFavor = FavorWon
-		
-			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			if (EnoughVariation == false) then
-				
+			local Slap = false
+	
+			if VariationFactor <= 0.5 then
+				TimeOut = TimeOut * 2
+				SetMeasureRepeat(TimeOut)
+				ModifyFavor = FavorLoss
+				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
 				
 				time1 = PlayAnimationNoWait("Destination", "cheer_01")
-				Sleep(time1 * 0.4)
+				Sleep(time1 * 0.3)
 				
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)))
-			
+				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
 				
-				if (CourtingProgress < -5) then
+				if (CourtingProgress < -5) or Favor < MinimumFavor then
 					camera_CutsceneBothLock("cutscene", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
+					Slap = true
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
@@ -87,67 +102,80 @@ function Run()
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
 			
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-				MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress))
-				
+				MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
 			end
 			
-			-- Add the archieved progress
+			-- Add the achieved progress
+			if Slap then
+				ModifyHP("", -30, true, 10)
+				Sleep(0.1)
+			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			SimAddCourtingProgress("")
-			
+			Sleep(0.2)
+			feedback_OverheadCourtProgress("Destination", CourtingProgress)
+			AddImpact("Destination", "ReceivedKiss", 1, 4)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end
 	
 	----------------------------
 	------ No Court Lover ------
 	----------------------------
-	if (WasCourtLover==0) then
+	if (WasCourtLover == 0) then
 		
-		local slap = false
-		local outraged = false
+		local Slap = false
+		local Outraged = false
 		
 		-- React negativ if the destination married or if the favor is not high enough
 		if SimGetSpouse("Destination", "Spouse") then
-			if (GetID("Spouse")~=GetID("")) then
-				outraged = true
+			if (GetID("Spouse") ~= GetID("")) then
+				Outraged = true
 			end
-		elseif GetFavorToSim("Destination", "") < MinimumFavor then
+		elseif Favor < MinimumFavor then
 			if Rand(20) > 14 then
-				slap = true
+				Slap = true
 			end
 		elseif Rand(10) == 5 then
-			outraged = true
+			Outraged = true
 		end
 		
 		camera_CutsceneBothLock("cutscene", "Destination")
+		SetMeasureRepeat(TimeOut)
 		
-		if slap then
+		if Slap then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination","",FavorLoss)
-
-			SetMeasureRepeat(TimeUntilRepeat)
-			
+			chr_ModifyFavor("Destination", "", (FavorLoss*2))
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
-			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Slap"))
+			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Slap"))
 					
-		elseif outraged then
+		elseif Outraged then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination","",FavorLoss)
-			SetMeasureRepeat(TimeUntilRepeat)
+			chr_ModifyFavor("Destination", "", FavorLoss)
 			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)
-			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC), "Outraged"))
+			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Outraged"))
 		else
 			
 			chr_MultiAnim("", "bow", "Destination", "curtsy", InteractionDistance, 1.0, true)
-			MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6))
+			MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), DestGender, 6))
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
-			chr_ModifyFavor("Destination","",FavorWon)
-			SetMeasureRepeat(TimeUntilRepeat)
+			chr_ModifyFavor("Destination", "", FavorWon)
+			AddImpact("Destination", "ReceivedKiss", 1, 4)
 			
+			-- lovelevel
+			if SimGetSpouse("Destination", "Spouse") then
+				if (GetID("Spouse") == GetID("")) then
+					AddImpact("", "LoveLevel", 2, 24) -- add some love for the next 24 hours
+					AddImpact("Destination", "LoveLevel", 2, 24)
+					if GetImpactValue("Destination", "LoveLevel") >= 10 then
+						MsgNewsNoWait("", "Destination", "", "schedule", -1,
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+					end
+				end
+			end
 		end
 	end
 end
@@ -156,7 +184,10 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	DestroyCutscene("cutscene")
+	
+	if AliasExists("cutscene") then
+		DestroyCutscene("cutscene")
+	end
 	
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
@@ -164,13 +195,14 @@ function CleanUp()
 	
 	if AliasExists("Destination") then
 		MoveSetActivity("Destination")
-		SimLock("Destination", 0.4)
-	end	
-	
+		if  GetDynastyID("") ~= GetDynastyID("Destination") then
+			SimLock("Destination", 0.3)
+		end
+	end
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

@@ -75,6 +75,7 @@ function Run()
 		if GetID("CourtLover") == GetID("Destination") then
 			
 			WasCourtLover = 1
+			local Slap = false
 			
 			if VariationFactor <= 0.5 then
 				TimeOut = TimeOut * 2
@@ -88,13 +89,14 @@ function Run()
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
-				
+				SetMeasureRepeat(TimeOut)
 				if (CourtingProgress < -5) then
 					TimeOut = TimeOut * 2
 					camera_CutsceneBothLock("cutscene", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
-				elseif (CourtingProgress < 1) or GetFavorToSim("", "Destination") < MinimumFavor then
+					Slap = true
+				elseif (CourtingProgress < 1) or Favor < MinimumFavor then
 					TimeOut = TimeOut * 2
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
@@ -102,12 +104,15 @@ function Run()
 				else
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
-				SetMeasureRepeat(TimeOut)				
 
 				MsgSay("Destination", talk_AnswerCourtingMeasure("HUG", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
 			end
 			
 			-- Add the achieved progress
+			if Slap then
+				ModifyHP("", -30, true, 10)
+				Sleep(0.1)
+			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			Sleep(0.2)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)
@@ -121,36 +126,36 @@ function Run()
 	----------------------------
 	if (WasCourtLover == 0) then
 		
-		local slap = false
-		local outraged = false
-		AddImpact("Destination", "ReceivedHug", 1, 4)
+		local Slap = false
+		local Outraged = false
 		
 		-- React negativ if  the favor is not high enough
 		if Favor < MinimumFavor then
 			if Rand(20) > 14 then
 				TimeOut = TimeOut * 2
-				slap = true
+				Slap = true
 			end
 			ModifyFavor = FavorLoss
 		elseif Rand(10) == 5 then
-			outraged = true
+			Outraged = true
 			ModifyFavor = FavorLoss
 		elseif VariationFactor <= 0.5 then
 			TimeOut = TimeOut * 2
 			MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
-			outraged = true
+			Outraged = true
 			ModifyFavor = FavorLoss
 		end
+		
 		camera_CutsceneBothLock("cutscene", "Destination")
 		SetMeasureRepeat(TimeOut)				
 
-		if slap then
+		if Slap then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination", "", (ModifyFavor*2))
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
 			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Slap"))
-		elseif outraged then
+		elseif Outraged then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
@@ -163,11 +168,13 @@ function Run()
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
+			AddImpact("Destination", "ReceivedHug", 1, 4)
 			
+			-- lovelevel
 			if SimGetSpouse("Destination", "Spouse") then
 				if (GetID("Spouse") == GetID("")) then
 					AddImpact("", "LoveLevel", 1, 24) -- add some love for the next 24 hours
-					AddImpact("Destination","LoveLevel",1, 24)
+					AddImpact("Destination", "LoveLevel", 1, 24)
 					if GetImpactValue("Destination", "LoveLevel") >= 10 then
 						MsgNewsNoWait("", "Destination", "", "schedule", -1,
 								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
