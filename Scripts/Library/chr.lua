@@ -1405,7 +1405,7 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 	local CheckNewCount = 7
 	local ChangeWeapon = false
 	
-	for i=1, CheckNewCount, do
+	for i=1, CheckNewCount do
 		if WeaponNew == CheckNew[i] then
 			FoundNew = true
 			local FreeSlot = GetRemainingInventorySpace(SimAlias, WeaponNew, INVENTORY_EQUIPMENT)
@@ -1426,7 +1426,7 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 2
 					local FoundOld = false
 		
-					for i=1, CheckOldCount, do
+					for i=1, CheckOldCount do
 						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
@@ -1442,7 +1442,7 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 3
 					local FoundOld = false
 		
-					for i=1, CheckOldCount, do
+					for i=1, CheckOldCount do
 						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
@@ -1458,7 +1458,7 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 4
 					local FoundOld = false
 		
-					for i=1, CheckOldCount, do
+					for i=1, CheckOldCount do
 						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
@@ -1474,7 +1474,7 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 5
 					local FoundOld = false
 		
-					for i=1, CheckOldCount, do
+					for i=1, CheckOldCount do
 						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
@@ -1490,7 +1490,7 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 6
 					local FoundOld = false
 		
-					for i=1, CheckOldCount, do
+					for i=1, CheckOldCount do
 						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
