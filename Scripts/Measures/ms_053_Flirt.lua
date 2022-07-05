@@ -109,6 +109,10 @@ function Run()
 			end
 			
 			-- Add the achieved progress
+			if Slap then
+				ModifyHP("", -30, true, 10)
+				Sleep(0.1)
+			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			Sleep(0.2)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)

@@ -15,246 +15,406 @@ function Run()
 
 	-- The time in hours until the measure can be repeated
 	local MeasureID = GetCurrentMeasureID("")
-	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
-
-	local	Slots = InventoryGetSlotCount("", INVENTORY_STD)
-	local	Number
-	local	ItemId
-	local	ItemCount
-	local	NumItems = 0
-	local	ItemName = {}
-	local	ItemLabel = {}
-	local	ItemTexture
-	local 	btn = ""
-	local	added = {}
-	--count all items, remove duplicates
-	for Number = 0, Slots-1 do
-		ItemId, ItemCount = InventoryGetSlotInfo("", Number, InventoryType)
-		if ItemId and ItemId>0 and ItemCount then
-			if ItemGetType(ItemId) >= 3 and ItemGetType(ItemId) <= 5 then
-				if not added[ItemId] then
-
-					added[ItemId] = true
-
-					--create labels for replacements
-					ItemName[NumItems] = ItemId
-					local ItemTextureName = ItemGetName(ItemId)
-					ItemTexture = "Hud/Items/Item_"..ItemTextureName..".tga"
-					btn = btn.."@B[A"..NumItems..",,%"..1+NumItems.."l,"..ItemTexture.."]"
-					ItemLabel[NumItems] = ""..ItemGetLabel(ItemName[NumItems],true)
-					NumItems = NumItems + 1
-				end
+	local TimeOut = mdata_GetTimeOut(MeasureID)
+	
+	local OwnerGender = SimGetGender("")
+	local DestGender = SimGetGender("Destination")
+	local DestTitle = GetNobilityTitle("Destination")
+	local TitleDifference = DestTitle - GetNobilityTitle("")*2
+	
+	-- special
+	if not HasProperty("Destination", "CourtingPerso") then
+		DestPersonality = Rand(4)
+		SetProperty("Destination", "CourtingPerso", DestPersonality)
+	end
+	local DestPersonality = GetProperty("Destination", "CourtingPerso") or 0
+	
+	local DestClass = SimGetClass("Destination")
+	local CourtingClass = DestClass
+	if DestClass == 0 or DestClass > 4 then
+		CourtingClass = GetProperty("Destination", "FakeClass") or 1
+	end
+	
+	-- the more favor the better you know what your Destination wants (more correct Options)
+	local Favor = 0
+	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
+		Favor = 100
+	else
+		Favor = GetFavorToSim("Destination", "") + GetSkillValue("", EMPATHY)
+	end
+	
+	local MinimumFavor = GL_PRESENT_MINFAVOR + TitleDifference
+	local FavorWon = 10
+	local ModifyFavor = 0
+	
+	-- Courting related
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID) + 5
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	
+	-- max 4 presents
+	local PresA, PresB, PresC, PresD
+	
+	-- first two are basic gender. Most love those.
+	if DestGender == GL_GENDER_MALE then
+		-- weapon. Get Title!
+		PresA = "Dagger"
+		if DestTitle > 3 and DestTitle < 7 then
+			PresA = "Longsword"
+		else
+			PresA = "Axe"
+		end
+		
+		-- clothing. Get Title!
+		PresB = "FarmersClothes"
+		if DestTitle > 3 and DestTitle < 7 then
+			PresB = "CitizensClothes"
+		else
+			PresB = "NoblesClothes"
+		end
+	else
+		-- scent
+		PresA = "Soap"
+		if DestTitle > 3 and DestTitle < 7 then
+			PresA = "Perfume"
+		else
+			PresB =  "FragranceOfHoliness"
+		end
+		
+		-- nice things
+		PresB = "Chaplet"
+		if DestTitle > 3 and DestTitle < 7 then
+			PresA = "SilverRing"
+		else
+			PresB =  "GoldChain"
+		end
+	end
+	
+	local RightStuff = { }
+	local RightNum = 0
+	local WrongStuff = { }
+	local WrongNum = 0
+	local CheckPresC = true
+	local CheckPresD = true
+	
+	-- Specific stuff (+100 % gain)
+	if CourtingClass == GL_CLASS_PATRON then
+		if DestPersonality == 0 then -- baker
+			local InsertListRight = { "Cookie", "Wheatbread", "Cake", "BreadRoll", "CreamPie", "Candy" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "SmallBeer", "WheatBeer", "Mead", "BoozyBreathBeer", "RoastBeef", "SalmonFilet" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 1 then -- innkeeper
+			local InsertListRight = { "SmallBeer", "WheatBeer", "Mead", "BoozyBreathBeer", "RoastBeef", "SalmonFilet" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Shellchain", "FriedHerring", "Shellsoup", "Pearlchain" }
+			WrongNum = 4
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 2 then -- fisher
+			local InsertListRight = { "Shellchain", "FriedHerring", "Shellsoup", "Pearlchain" }
+			RightNum = 4
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Wool", "Beef", "Barley", "Wheat", "Leather", "Fruit", "Honey" }
+			WrongNum = 7
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 3 then -- farmer
+			local InsertListRight = { "Wool", "Beef", "Barley", "Wheat", "Leather", "Fruit", "Honey" }
+			RightNum = 7
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Cookie", "Wheatbread", "Cake", "BreadRoll", "CreamPie", "Candy" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		end
+			
+	elseif CourtingClass == GL_CLASS_ARTISAN then
+		if DestPersonality == 0 then -- tailor
+			local InsertListRight = { "Cloth", "MoneyBag", "Blanket", "GlovesOfDexterity", "LeatherGloves" }
+			RightNum = 5
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong =  { "Tool", "Shortsword", "IronBrachelet", "GemRing", "FullHelmet", "BeltOfMetaphysic" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 1 then -- smithy
+			local InsertListRight = { "Tool", "Shortsword", "IronBrachelet", "GemRing", "FullHelmet", "BeltOfMetaphysic" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "OakwoodRing", "BuildMaterial", "Torch", "WalkingStick", "CrossOfProtection", "RubinStaff" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 2 then -- joiner
+			local InsertListRight = { "OakwoodRing", "BuildMaterial", "Torch", "WalkingStick", "CrossOfProtection", "RubinStaff" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "vase", "bust", "statue", "Blissstone", "Grindingbrick" }
+			WrongNum = 5
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 3 then -- stonemason
+			local InsertListRight = { "vase", "bust", "statue", "Blissstone", "Grindingbrick" }
+			RightNum = 5
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong =  { "Cloth", "MoneyBag", "Blanket", "GlovesOfDexterity", "LeatherGloves" }
+			WrongNum = 5
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		end
+	elseif CourtingClass == GL_CLASS_SCHOLAR then
+		if DestPersonality == 0 then -- gravedigger
+			local InsertListRight = { "Schadelkerze", "Knochenarmreif", "Pendel", "Spindel", "Robe" }
+			RightNum = 5
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong =  { "MiracleCure", "Bandage", "Medicine", "StaffOfAesculap", "Lavender", "PainKiller" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 1 then -- medic
+			local InsertListRight = { "MiracleCure", "Bandage", "Medicine", "StaffOfAesculap", "Lavender", "PainKiller" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Poem", "AboutTalents1", "ThesisPaper", "AboutTalents2", "Parchment", "Schuldenbrief" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 2 then --priest
+			local InsertListRight = { "Poem", "AboutTalents1", "ThesisPaper", "AboutTalents2", "Parchment", "Schuldenbrief" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Moonflower", "HerbTea", "DaragnansFragrance", "Stonelily", "CartBooster" }
+			WrongNum = 5
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 3 then -- alchemist nice
+			local InsertListRight = { "Moonflower", "HerbTea", "DaragnansFragrance", "Stonelily", "CartBooster" }
+			RightNum = 5
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong =  { "Schadelkerze", "Knochenarmreif", "Pendel", "Spindel", "Robe" }
+			WrongNum = 5
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		end
+	else
+		if DestPersonality == 0 then -- alchemist evil
+			local InsertListRight = { "FlowerOfDiscord", "Frogeye", "Spiderleg", "PoisonedCake", "ToadExcrements" }
+			RightNum = 5
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong =  { "Salve", "MediPack", "WeaponPoison", "Antidote", "ParalysisPoison", "BlackWidowPoison" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 1 then -- medic alternative
+			local InsertListRight = { "Salve", "MediPack", "WeaponPoison", "Antidote", "ParalysisPoison", "BlackWidowPoison" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Amulet", "HexerdokumentI", "HexerdokumentII", "pddv", "Hasstirade", "StinkBomb" }
+			WrongNum = 6
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 2 then -- mean stuff
+			local InsertListRight = { "Amulet", "HexerdokumentI", "HexerdokumentII", "pddv", "Hasstirade", "StinkBomb" }
+			RightNum = 6
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong = { "Chainmail", "IronCap", "Platemail", "LetherArmor", "FullHelmet" }
+			WrongNum = 5
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
+			end
+		elseif DestPersonality == 3 then -- armor stuff
+			local InsertListRight = { "Chainmail", "IronCap", "Platemail", "LetherArmor", "FullHelmet" }
+			RightNum = 5
+			for i=1, RightNum do
+				RightStuff[i] = InsertListRight[i]
+			end
+			
+			local InsertListWrong =  { "FlowerOfDiscord", "Frogeye", "Spiderleg", "PoisonedCake", "ToadExcrements" }
+			WrongNum = 5
+			for i=1, WrongNum do
+				WrongStuff[i] = InsertListWrong[i]
 			end
 		end
 	end
-	SetData("NumItems",NumItems)
-
-	local Result
-	if Slots > 0 and NumItems > 0 then
-		Result = InitData("@P"..btn,
-				ms_230_makeapresent_AIDecide,  --AIFunc
-				"@L_INTERFACE_PRESENTTEXT_+0",
-				"",
-				ItemLabel[0],ItemLabel[1],
-				ItemLabel[2],ItemLabel[3],
-				ItemLabel[4],ItemLabel[5])
-
+	
+	LogMessage("WrongNum is "..WrongNum)
+	LogMessage("RightNum is "..RightNum)
+	
+	-- get the right stuff 
+	if Favor >= Rand(100) then
+		local RandChoice = Rand(RightNum) + 1
+		PresC = RightStuff[RandChoice]
+			
+		local RandChoice2 = Rand(RightNum) + 1
+		PresD = RightStuff[RandChoice2]
+			
+		-- bad luck
+		if PresD == PresC then
+			if Rand(2) == 0 then
+				-- more random
+				local RandChoice3 = Rand(WrongNum) + 1
+				PresC = WrongStuff[RandChoice3]
+				CheckPresC = false
+			else
+				-- more random
+				local RandChoice3 = Rand(WrongNum) + 1
+				PresD = WrongStuff[RandChoice3]
+				CheckPresD = false
+			end
+		end
 	else
-		MsgQuick("","@L_REPLACEMENTS_FAILURE_MSG_NOITEM_+0")
-		StopMeasure()
+	-- get the wrong stuff
+		local RandChoice = Rand(WrongNum) + 1
+		PresC = WrongStuff[RandChoice]
+		CheckPresC = false
+			
+		local RandChoice2 = Rand(WrongNum) + 1
+		PresD = WrongStuff[RandChoice2]
+		CheckPresD = false
+		
+		-- good luck
+		if PresD == PresC then
+			if Rand(2) == 0 then
+				-- more random
+				local RandChoice3 = Rand(RightNum) + 1
+				PresC = RightStuff[RightChoice3]
+				CheckPresC = true
+			else
+				-- more random
+				local RandChoice3 = Rand(RightNum) + 1
+				PresD = RightStuff[RandChoice3]
+				CheckPresD = true
+			end
+		end
 	end
+	
+	LogMessage("PresC is "..PresC)
+	LogMessage("PresD is "..PresD)
+
+	local ItemTexture1 = "Hud/Items/Item_"..PresA..".tga"
+	local Button1 = "@B[A,,%1l,"..ItemTexture1.."]"
+	local ItemLabel1 = ItemGetLabel(PresA, true)
+	
+	local ItemTexture2 = "Hud/Items/Item_"..PresB..".tga"
+	local Button2 = "@B[B,,%2l,"..ItemTexture2.."]"
+	local ItemLabel2 = ItemGetLabel(PresB, true)
+	
+	local ItemTexture3 = "Hud/Items/Item_"..PresC..".tga"
+	local Button3 = "@B[C,,%3l,"..ItemTexture3.."]"
+	local ItemLabel3 = ItemGetLabel(PresC, true)
+	
+	local ItemTexture4 = "Hud/Items/Item_"..PresD..".tga"
+	local Button4 = "@B[D,,%4l,"..ItemTexture4.."]"
+	local ItemLabel4 = ItemGetLabel(PresD, true)
+	
+	local ItemTexture5 = "Hud/Items/Item_JanesRing.tga"
+	local Button5 = "@B[E,,%5l,"..ItemTexture5.."]"
+	local ItemLabel5 = ItemGetLabel("JanesRing", true)
+	
+	local Result = InitData("@P"..Button1..
+						Button2..
+						Button3..
+						Button4..
+						Button5,
+						ms_230_makeapresent_AIDecide,  --AIFunc
+						"@L_INTERFACE_PRESENTTEXT_+0",
+						"",
+						ItemLabel1, ItemLabel2, ItemLabel3,
+						ItemLabel4, ItemLabel5)
 
 	if Result == "C" then
 		return
 	end
-
+	
+	local TheItem
+	local GoodPresent = true
+	
 	--check the item
-	local ItemIndex
-	if Result == "A0" then
-		ItemIndex = 0
-	elseif Result == "A1" then
-		ItemIndex = 1
-	elseif Result == "A2" then
-		ItemIndex = 2
-	elseif Result == "A3" then
-		ItemIndex = 3
-	elseif Result == "A4" then
-		ItemIndex = 4
-	else
-		ItemIndex = 5
-	end
-	local ItemValue = 0
-	local ProgressModify = 0
-	local FavorModify = 0
-	if not ItemName[ItemIndex] then
-		StopMeasure()
-	end
-	if ItemGetProductionTime(ItemName[ItemIndex])==-1 then
-		StopMeasure()
+	if Result == "A" then
+		TheItem = PresA
+	elseif Result == "B" then
+		TheItem = PresB
+	elseif Result == "C" then
+		TheItem = PresC
+		GoodPresent = CheckPresC
+		CourtingProgress = CourtingProgress * 1.5
+	elseif Result == "D" then
+		TheItem = PresD
+		GoodPresent = CheckPresD
+		CourtingProgress = CourtingProgress * 1.5
+	elseif Result == "G" then
+		TheItem = "JanesRing"
+		CourtingProgress = CourtingProgress * 2
 	end
 	
-
-	local ItemTime = ItemGetProductionTime(ItemName[ItemIndex])
-	if ItemTime < 2 then
-		--crap
-		ProgressModify = -5
-		FavorModify = -10
-		ItemValue = 0
-	elseif ItemTime < 3 then
-		--cheap
-		ProgressModify = -3
-		FavorModify = -5
-		ItemValue = 0
-	elseif ItemTime < 4 then
-		--hmm
-		ProgressModify = -1
-		FavorModify = 0
-		ItemValue = 1
-	elseif ItemTime < 7 then
-		--ok
-		ProgressModify = 1
-		FavorModify = 5
-		ItemValue = 1
-	elseif ItemTime < 10 then
-		--better
-		ProgressModify = 3
-		FavorModify = 10
-		ItemValue = 2
-	elseif ItemTime < 15 then
-		--good
-		ProgressModify = 6
-		FavorModify = 15
-		ItemValue = 3
-	elseif ItemTime < 20 then
-		--great
-		ProgressModify = 9
-		FavorModify = 20
-		ItemValue = 4
-	else
-		--damn .......... great
-		ProgressModify = 12
-		FavorModify = 25
-		ItemValue = 5
-	end
-	
-	
-	--special items
-	local PresentName = ItemGetName(ItemName[ItemIndex])
-	local DestGender = SimGetGender("Destination")
-	
-	--female special presents
-	if DestGender == GL_GENDER_FEMALE then
-		if PresentName == "SilverRing" then
-			ProgressModify = 10
-			FavorModify = 10
-			ItemValue = 3
-		elseif PresentName == "GemRing" then
-			ProgressModify = 15
-			FavorModify = 20
-			ItemValue = 4
-		elseif PresentName == "GoldChain" then
-			ProgressModify = 20
-			FavorModify = 25
-			ItemValue = 5
-		elseif PresentName == "OakwoodRing" then
-			ProgressModify = 8
-			FavorModify = 5
-			ItemValue = 3
-		elseif PresentName == "RubinStaff" then	
-			ProgressModify = 18
-			FavorModify = 22
-			ItemValue = 5
-		elseif PresentName == "CitizensClothes" then
-			ProgressModify = 12
-			FavorModify = 14
-			ItemValue = 4
-		elseif PresentName == "NoblesClothes" then
-			ProgressModify = 17
-			FavorModify = 13
-			ItemValue = 5
-		elseif PresentName == "Perfume" then
-			ProgressModify = 14
-			FavorModify = 20
-			ItemValue = 4
-		elseif PresentName == "Pearlchain" then
-			ProgressModify = 19
-			FavorModify = 25
-			ItemValue = 4
-		elseif PresentName == "JanesRing" then
-			ProgressModify = 35
-			FavorModify = 25
-			ItemValue = 5
-		end
-	--male special presents	
-	else
-		if PresentName == "Axe" then
-			ProgressModify = 20
-			FavorModify = 18
-			ItemValue = 5
-		elseif PresentName == "Chainmail" then
-			ProgressModify = 14
-			FavorModify = 14
-			ItemValue = 5
-		elseif PresentName == "BoozyBreathBeer" then
-			ProgressModify = 21
-			FavorModify = 22
-			ItemValue = 4
-		elseif PresentName == "FullHelmet" then
-			ProgressModify = 20
-			FavorModify = 19
-			ItemValue = 5
-		elseif PresentName == "LeatherArmor" then
-			ProgressModify = 14
-			FavorModify = 16
-			ItemValue = 4
-		elseif PresentName == "Longsword" then
-			ProgressModify = 19
-			FavorModify = 14
-			ItemValue = 5
-		elseif PresentName == "Mace" then
-			ProgressModify = 14
-			FavorModify = 13
-			ItemValue = 4
-		elseif PresentName == "SmallBeer" then
-			ProgressModify = 10
-			FavorModify = 10
-			ItemValue = 3
-		elseif PresentName == "WheatBeer" then
-			ProgressModify = 14
-			FavorModify = 11
-			ItemValue = 4
-		elseif PresentName == "RoastBeef" then
-			ProgressModify = 16
-			FavorModify = 14
-			ItemValue = 4
-		elseif PresentName == "Shortsword" then
-			ProgressModify = 13
-			FavorModify = 11
-			ItemValue = 4
-		elseif PresentName == "IronCap" then
-			ProgressModify = 12
-			FavorModify = 16
-			ItemValue = 4
-		elseif PresentName == "Platemail" then
-			ProgressModify = 20
-			FavorModify = 25
-			ItemValue = 5
-		elseif PresentName == "Tool" then
-			ProgressModify = 10
-			FavorModify = 10
-			ItemValue = 3
-		elseif PresentName == "JanesRing" then
-			ProgressModify = 35
-			FavorModify = 25
-			ItemValue = 5
+	if not GoodPresent then
+		if CourtingProgress > 0 then
+			CourtingProgress = CourtingProgress * (-1)
 		end
 	end
-
-	-- The minimum favor for this action to success
-	local MinimumFavor = 30 - ((2*GetSkillValue("", CHARISMA))+GetNobilityTitle("",false))
-
-	-- The action number for the courting
-	local CourtingActionNumber = 3
 
 	-- The distance between both sims to interact with each other
 	local InteractionDistance = 85
@@ -267,45 +427,42 @@ function Run()
 	SetAvoidanceGroup("", "Destination")
 	MoveSetActivity("", "converse")
 	MoveSetActivity("Destination", "converse")
-
 	feedback_OverheadActionName("Destination")
-
 	chr_AlignExact("", "Destination", InteractionDistance)
 
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","destination")
-	CutsceneCameraCreate("cutscene","")
-
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Destination")
+	CutsceneCameraCreate("cutscene", "")
 	camera_CutscenePlayerLock("cutscene", "")
 
-	local time1
-	local time2
+	local time1, time2
+	
 	time1 = PlayAnimationNoWait("Owner", "use_object_standing")
-	time2 = PlayAnimationNoWait("Destination","cogitate")
+	time2 = PlayAnimationNoWait("Destination", "cogitate")
 	Sleep(1)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("","Handheld_Device/ANIM_Smallsack.nif",false)
+	PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("", "Handheld_Device/ANIM_Smallsack.nif", false)
 	
 	Sleep(1)
-	CarryObject("","",false)
-	CarryObject("Destination", "Handheld_Device/ANIM_Smallsack.nif",false)
+	CarryObject("", "", false)
+	CarryObject("Destination", "Handheld_Device/ANIM_Smallsack.nif", false)
 	time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
 	Sleep(1)	
 	StopAnimation("")
 	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 	CarryObject("Destination", "", false)	
 
-	if RemoveItems("", ItemName[ItemIndex], 1, INVENTORY_STD) == 0 then
+	if RemoveItems("", TheItem, 1, INVENTORY_STD) == 0 then
 		return
 	end
 	
-	SetMeasureRepeat(TimeUntilRepeat)
+	SetMeasureRepeat(TimeOut)
 	
 	if IsPartyMember("Destination") and not PresentName == "JanesRing" then
 		if DynastyIsPlayer("Destination") then
-			if GetRemainingInventorySpace("Destination",ItemName[ItemIndex],INVENTORY_STD) then
-				AddItems("Destination",ItemName[ItemIndex],1,INVENTORY_STD)
+			if GetRemainingInventorySpace("Destination", ItemName[ItemIndex], INVENTORY_STD) > 0 then
+				AddItems("Destination", ItemName[ItemIndex], 1, INVENTORY_STD)
 			end
 		end
 	end
@@ -318,14 +475,14 @@ function Run()
 	------ Court Lover ------
 	-------------------------
 	if (SimGetCourtLover("", "CourtLover")) then
-		if GetID("CourtLover")==GetID("Destination") then
+		if GetID("CourtLover") == GetID("Destination") then
 
 			WasCourtLover = 1
-			local ModifyFavor = FavorModify
+			local Slap = false
 
-			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber,ProgressModify)
-			CourtingProgress = CourtingProgress + ProgressModify
-			if (EnoughVariation == false) then
+			if VariationFactor <= 0.5 then
+				TimeOut = TimeOut * 2
+				SetMeasureRepeat(TimeOut)
 
 				camera_CutscenePlayerLock("cutscene", "Destination")
 
@@ -338,7 +495,7 @@ function Run()
 				Sleep(DestinationAnimationLength * 0.2)
 
 			else
-
+				SetMeasureRepeat(TimeOut)
 				chr_AlignExact("", "Destination", InteractionDistance)
 				local DestinationAnimationLength
 				if (CourtingProgress < -5) then
@@ -346,14 +503,16 @@ function Run()
 					PlayAnimationNoWait("", "got_a_slap")
 					DestinationAnimationLength = PlayAnimationNoWait("Destination", "give_a_slap")
 					Sleep(DestinationAnimationLength * 0.4)
-					ModifyFavor = FavorModify
+					ModifyFavor = FavorWon * (-1)
+					Slap = true
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					PlayAnimationNoWait("", "talk")
 					DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
 					Sleep(DestinationAnimationLength * 0.4)
-					ModifyFavor = FavorModify
+					ModifyFavor = -5
 				else
+					ModifyFavor = FavorWon
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
 
@@ -364,9 +523,13 @@ function Run()
 			end
 
 			-- Add the archieved progress
+			if Slap then
+				ModifyHP("", -30, true, 10)
+				Sleep(0.1)
+			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			SimAddCourtingProgress("")
-
+			AddImpact("Destination", "ReceivedPresent", 1, 8)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end
 
@@ -378,10 +541,12 @@ function Run()
 		local IsMale = (SimGetGender("Destination") == GL_GENDER_MALE)
 		local DestinationRank = SimGetRank("Destination")
 		
-		if (GetFavorToSim("Destination", "") < MinimumFavor) or (DestinationRank > ItemValue) then
+		if Favor < MinimumFavor then
 
 			-- Set the repeat timer and the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again
 			--chr_ModifyFavor("Destination", "", FavorModify)
+			TimeOut = TimeOut * 2
+			SetMeasureRepeat(TimeOut)
 
 			if (IsMale) then
 				camera_CutscenePlayerLock("cutscene", "Destination")
@@ -394,9 +559,8 @@ function Run()
 				
 			end
 			--MsgSay("Destination", chr_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), -10));
-
 		else
-
+			SetMeasureRepeat(TimeOut)
 			camera_CutscenePlayerLock("cutscene", "Destination")
 
 			if (IsMale) then
@@ -407,9 +571,7 @@ function Run()
 			--MsgSay("Destination", chr_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 10));
 
 			chr_ModifyFavor("Destination", "", FavorModify)
-
 		end
-
 	end
 end
 
@@ -417,8 +579,10 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-
-	DestroyCutscene("cutscene")
+	
+	if AliasExists("cutscene") then
+		DestroyCutscene("cutscene")
+	end
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
 	StopAnimation("")
