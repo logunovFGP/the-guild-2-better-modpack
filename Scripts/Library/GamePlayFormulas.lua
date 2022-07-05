@@ -955,9 +955,15 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local Skill = 0
 	local Class = SimGetClass(Destination)
-	if Class == 0 and HasProperty(Destination, "OldClass") then
-		Class = GetProperty(Destination, "OldClass")
+	if Class == 0 then
+		if HasProperty(Destination, "FakeClass") then
+			Class = GetProperty(Destination, "FakeClass")
+		else
+			Class = Rand(4) + 1
+			SetProperty(Destination, "FakeClass", Class)
+		end
 	end
+	
 	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class)
 	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class)
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
@@ -995,9 +1001,6 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	
 	local Value = 0
 	local ClassValue = {}
-	if Class == 0 then
-		Class = Rand(4) + 1
-	end
 	
 	if MeasureID == 530 then -- Flirt
 		ClassValue = { 1, 1, 2, 1, 0, 0 }

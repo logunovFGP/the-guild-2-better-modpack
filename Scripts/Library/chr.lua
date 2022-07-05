@@ -1398,3 +1398,113 @@ function GetBribeAmount(SimAlias)
 	
 	return Amount
 end
+
+function CheckWeaponChange(SimAlias, WeaponNew)
+	local WeaponOld = ""
+	local CheckNew = { "Dagger", "Shortsword", "Mace", "Longsword", "Axe", "Excalibur", "EpicAxe" }
+	local CheckNewCount = 7
+	local ChangeWeapon = false
+	
+	for i=1, CheckNewCount, do
+		if WeaponNew == CheckNew[i] then
+			FoundNew = true
+			local FreeSlot = GetRemainingInventorySpace(SimAlias, WeaponNew, INVENTORY_EQUIPMENT)
+			
+			if FreeSlot > 0 then
+				ChangeWeapon = true
+				break
+			else
+				if WeaponNew == "Dagger" then
+					break
+				elseif WeaponNew == "Shortsword" then
+					if GetItemCount(SimAlias, "Dagger", INVENTORY_EQUIPMENT)  > 0 then
+						ChangeWeapon = true
+						break
+					end
+				elseif WeaponNew == "Mace" then
+					local CheckOld = { "Dagger", "Shortsword" }
+					local CheckOldCount = 2
+					local FoundOld = false
+		
+					for i=1, CheckOldCount, do
+						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+							FoundOld = true
+							break
+						end
+					end
+					
+					if FoundOld then
+						ChangeWeapon = true
+						break
+					end
+				elseif WeaponNew == "Longsword" then
+					local CheckOld = { "Dagger", "Shortsword", "Mace" }
+					local CheckOldCount = 3
+					local FoundOld = false
+		
+					for i=1, CheckOldCount, do
+						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+							FoundOld = true
+							break
+						end
+					end
+					
+					if FoundOld then
+						ChangeWeapon = true
+						break
+					end
+				elseif WeaponNew == "Axe" then
+					local CheckOld = { "Dagger", "Shortsword", "Mace", "Longsword" }
+					local CheckOldCount = 4
+					local FoundOld = false
+		
+					for i=1, CheckOldCount, do
+						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+							FoundOld = true
+							break
+						end
+					end
+					
+					if FoundOld then
+						ChangeWeapon = true
+						break
+					end
+				elseif WeaponNew == "Excalibur" then
+					local CheckOld = { "Dagger", "Shortsword", "Mace", "Longsword", "Axe" }
+					local CheckOldCount = 5
+					local FoundOld = false
+		
+					for i=1, CheckOldCount, do
+						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+							FoundOld = true
+							break
+						end
+					end
+					
+					if FoundOld then
+						ChangeWeapon = true
+						break
+					end
+				elseif WeaponNew == "EpicAxe" then
+					local CheckOld = { "Dagger", "Shortsword", "Mace", "Longsword", "Axe", "Excalibur" }
+					local CheckOldCount = 6
+					local FoundOld = false
+		
+					for i=1, CheckOldCount, do
+						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+							FoundOld = true
+							break
+						end
+					end
+					
+					if FoundOld then
+						ChangeWeapon = true
+						break
+					end
+				end
+			end
+		end
+	end
+	
+	return ChangeWeapon
+end
