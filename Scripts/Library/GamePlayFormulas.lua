@@ -1030,8 +1030,7 @@ function GetCourtingMeasureValue(MeasureID, Class)
 		ClassValue = { 0.5, 1, 2, 0.25, 0, 0 }
 		Value = ClassValue[Class]
 	end
-	
-	Value = Value + 5 -- base value
+
 	return Value
 end
 
