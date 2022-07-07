@@ -968,7 +968,15 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class)
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
 	
-	BaseValue = math.ceil(BaseValue / CourtingDiff)
+	if CourtingDiff < 1 then
+		if CourtingDiff < 0.25 then
+			CourtingDiff = 0.25
+		elseif CourtingDiff < 0.5 then
+			CourtingDiff = 0.5
+		else
+			CourtingDiff = 0.75
+		end
+	end
 	
 	if MeasureID == 530 then -- Flirt 
 		Skill = CHARISMA
@@ -993,7 +1001,7 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	local SkillMod = GetSkillValue(SimAlias, Skill)
 	local TitleDiff = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
 	
-	local Progress = math.floor((BaseValue*SkillMod + Rand(5) - Rand(5) + TitleDiff) * VariationMod)
+	local Progress = math.floor((((BaseValue*SkillMod + Rand(6) - Rand(6)) / CourtingDiff) + TitleDiff) * VariationMod)
 	return Progress
 end
 
@@ -1003,28 +1011,28 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	local ClassValue = {}
 	
 	if MeasureID == 530 then -- Flirt
-		ClassValue = { 1, 1, 2, 1, 0, 0 }
+		ClassValue = { 1.5, 1.5, 2.5, 1.5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 540 then -- Hug
-		ClassValue = { 3, 2, 1, 2, 0, 0 }
+		ClassValue = { 3.5, 2.5, 1.5, 2.5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 570 then -- Kiss
-		ClassValue = { 3, 2, 1, 3, 0, 0 }
+		ClassValue = { 4, 3, 2, 4, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 2300 then -- Make A Present
-		ClassValue = { 1.5, 1, 2, 0.5, 0, 0 }
+		ClassValue = { 3.5, 3, 4, 2.5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 2310 then -- Compliment
-		ClassValue = { 1, 0.5, 2, 0.5, 0, 0 }
+		ClassValue = { 1.5, 1, 2.5, 1, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 2320 then -- Dancing
-		ClassValue = { 3, 2, 3, 1, 0, 0 }
+		ClassValue = { 3.5, 2.5, 3.5, 1.5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 1520 then -- Bathing
-		ClassValue = { 3, 2, 1, 3, 0, 0 }
+		ClassValue = { 4, 3, 2, 4, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 1530 then -- Bewitching
-		ClassValue = { 3, 1, 1, 2, 0, 0 }
+		ClassValue = { 4, 2, 2, 3, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 460 then -- Dialog
 		ClassValue = { 0.5, 1, 2, 0.25, 0, 0 }

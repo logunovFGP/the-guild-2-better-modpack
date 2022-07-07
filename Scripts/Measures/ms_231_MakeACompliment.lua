@@ -17,7 +17,7 @@ function Run()
 	
 	-- The time in hours until the measure can be repeated
 	local MeasureID = GetCurrentMeasureID("")
-	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
+	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	local OwnerGender = SimGetGender("")
 	local DestGender = SimGetGender("Destination")
@@ -100,7 +100,11 @@ function Run()
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
+					if CourtingProgress > 0 then
+						CourtingProgress = -1
+					end
 				else
+					ModifyFavor = FavorWon
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
 				

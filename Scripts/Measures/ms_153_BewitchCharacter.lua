@@ -94,22 +94,17 @@ function Run()
 	-- The minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = (GetSkillValue("", CHARISMA)*2)
-	local MinimumFavor = 60 + TitleDifference - CharismaSkill
+	local MinimumFavor = GL_BEWITCH_MINFAVOR + TitleDifference - CharismaSkill
 	local FavorWon = 10 + (CharismaSkill/2) + Rand(7)
-	local FavorLoss = -10 - TitleDifference
-	if FavorLoss > -5 then
-		FavorLoss = -5
-	end
+	local FavorLoss = -5
+	
+	-- Courting related
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	
 	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
-	
-	-- the action number for the courting
-	local CourtingActionNumber = 5
-	
---	if not BlockChar("Destination") then
---		StopMeasure()
---		return
---	end
+	CourtingProgress = CourtingProgress * (FlirtBonus * 0.01)
 	
 	-- Get the tavern
 	if not GetInsideBuilding("", "Tavern") then
@@ -190,8 +185,7 @@ function Run()
 			WasCourtLover = 1
 			local ModifyFavor = FavorWon
 			
-			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			if (EnoughVariation == false) then
+			if VariationFactor <= 0.5 then
 				
 				local DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
 				Sleep(DestinationAnimationLength * 0.4)
@@ -199,10 +193,8 @@ function Run()
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
-				
 			else
 	
-			
 				if (CourtingProgress < -5) then
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
@@ -264,19 +256,15 @@ function Run()
 			-- Add the archieved progress
 			SetMeasureRepeat(TimeUntilRepeat)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-		--	if ModifyFavor > 5 then
-		--		AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
-		--		AddImpact("Destination", "LoveLevel", 10, 24)
-		--	end
-			SimAddCourtingProgress("")
-			
+			AddImpact("Destination", "ReceivedBewitch", 1, 8)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end
 	
 	----------------------------
 	------ No Court Lover ------
 	----------------------------
-	if (WasCourtLover==0) then
+	if (WasCourtLover == 0) then
 	
 		-- check if the favor is high enough for bathing
 		local success = (GetFavorToSim("Destination", "Owner") > MinimumFavor)
@@ -397,7 +385,6 @@ function CleanUp()
 	if IsStateDriven() then
 		MeasureRun("", nil, "DynastyIdle")
 	end
-	
 end
 
 function GetOSHData(MeasureID)

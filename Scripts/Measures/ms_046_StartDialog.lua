@@ -169,6 +169,7 @@ function Run()
 				CourtingProgress = -5
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 			else
+				ModifyFavor = FavorWon
 				MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 			end
 

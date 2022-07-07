@@ -97,11 +97,15 @@ function Run()
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
 					Slap = true
+					if CourtingProgress > -5 then
+						CourtingProgress = -6
+					end
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
 				else
+					ModifyFavor = FavorWon
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
 				

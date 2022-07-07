@@ -19,15 +19,24 @@ function Run()
 	-- the minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local DexteritySkill = (GetSkillValue("", DEXTERITY))*2
-	local MinimumFavor = 40 + TitleDifference - DexteritySkill
+	local MinimumFavor = GL_DANCE_MINFAVOR + TitleDifference - DexteritySkill
 	local FavorWon = 6 + (DexteritySkill/2) + Rand(5)
-	local FavorLoss = (-10) -TitleDifference
+	local FavorLoss = -5
+	
 	if FavorLoss > -5 then
 		FavorLoss = -5
 	end
 	
 	local OverallPrice = 250
 	SetData("Price", OverallPrice)
+	
+	-- Courting related
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	
+	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
+	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
+	CourtingProgress = CourtingProgress * (FlirtBonus * 0.01)
 	
 	if IsStateDriven() then
 
@@ -107,9 +116,6 @@ function Run()
 			StopMeasure()
 		end
 	end
-
-	-- the action number for the courting
-	local CourtingActionNumber = 2
 	
 	-- The distance between both sims to interact with each other
 	local InteractionDistance=128
@@ -151,8 +157,7 @@ function Run()
 			local ModifyFavor = FavorWon
 			SetMeasureRepeat(TimeUntilRepeat)
 			
-			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			if (EnoughVariation == false) then
+			if VariationFactor <= 0.5 then
 			
 				local time1 = PlayAnimationNoWait("Destination", "cheer_01")
 				Sleep(time1 * 0.4)
@@ -220,7 +225,8 @@ function Run()
 			f_EndUseLocatorNoWait("", "DancePos")
 			f_EndUseLocatorNoWait("Destination", "DancePos2")
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			SimAddCourtingProgress("")
+			AddImpact("Destination", "ReceivedDance", 1, 12)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 			f_ExitCurrentBuilding("Destination")
 		end
 	end
@@ -321,7 +327,9 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	DestroyCutscene("cutscene")
+	if AliasExists("cutscene") then
+		DestroyCutscene("cutscene")
+	end
 	
 	ReleaseAvoidanceGroup("")
 	StopAnimation("")
@@ -357,8 +365,8 @@ function EnterCutscene()
 	if not AliasExists("cutscene") then
 		CreateCutscene("default", "cutscene")
 		CutsceneAddSim("cutscene", "")
-		CutsceneAddSim("cutscene", "destination")
+		CutsceneAddSim("cutscene", "Destination")
 		CutsceneCameraCreate("cutscene", "")			
-		camera_CutsceneBothLock("cutscene", "destination")
+		camera_CutsceneBothLock("cutscene", "Destination")
 	end
 end

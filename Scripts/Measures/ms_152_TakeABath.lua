@@ -16,24 +16,20 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
 	
-	local OverallPrice = 500
-	SetData("Price", OverallPrice)
-	
 	-- The minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = GetSkillValue("", CHARISMA)*2
-	local MinimumFavor = 65 + TitleDifference - CharismaSkill
+	local MinimumFavor = GL_BATH_MINFAVOR + TitleDifference - (CharismaSkill * 2)
 	local FavorWon = 15 + (CharismaSkill * 0.5)+ Rand(6)
-	local FavorLoss = -10 - TitleDifference
-	if FavorLoss > -5 then
-		FavorLoss = -5
-	end
+	local FavorLoss = -10
+	
+	-- Courting related
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
 	
 	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
-	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
-	
-	-- the action number for the courting
-	local CourtingActionNumber = 7
+	FavorWon = FavorWon + FavorWon * (FlirtBonus * 0.01)	
+	CourtingProgress = CourtingProgress * (FlirtBonus * 0.01)
 
 	if IsStateDriven() then
 		if not GetSettlement("","city") then
@@ -115,9 +111,9 @@ function Run()
 	end
 	
 	if GetDynastyID("Tavern") ~= GetDynastyID("") then
-		local Money = GetMoney("")
-		if Money < OverallPrice then
-			MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+1", OverallPrice)
+		local Money = GetMoney("") or 0
+		if Money < 500 then
+			MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+1", 500)
 			StopMeasure()
 		end
 	end
@@ -146,7 +142,6 @@ function Run()
 		SetProperty("Tavern", "BathInUse", 1)
 	end
 	
-	
 	feedback_OverheadActionName("Destination")
 	AlignTo("", "Destination")
 	Sleep(0.5)
@@ -167,8 +162,7 @@ function Run()
 			WasCourtLover = 1
 			local ModifyFavor = FavorWon
 			
-			local EnoughVariation, CourtingProgress = SimDoCourtingAction("", CourtingActionNumber)
-			if (EnoughVariation == false) and (GetFavorToSim("Destination", "") > MinimumFavor) then
+			if VariationFactor <= 0.5 then
 				
 				DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
 				Sleep(DestinationAnimationLength * 0.4)
@@ -176,7 +170,6 @@ function Run()
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
-				
 			else
 				
 				if (CourtingProgress < -5) or (GetFavorToSim("Destination", "") < MinimumFavor) then
@@ -192,7 +185,7 @@ function Run()
 				else
 					-- Pay if the tavern does not belong to the owners dynasty
 					if GetDynastyID("Tavern") ~= GetDynastyID("") then
-						if not chr_SpendMoney("", GetData("Price"), "CostSocial") then
+						if not chr_SpendMoney("", 500, "CostSocial") then
 							MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 							StopMeasure()
 							return
@@ -201,16 +194,14 @@ function Run()
 					end
 					
 					-- player goes to his position after his partner went to his one
-						if f_MoveToNoWait("Destination", "BathPosition2", GL_WALKSPEED_RUN) then
-							f_MoveTo("", "BathPosition1")
-						
-							SetProperty("", "Ready")
-							SetProperty("Destination", "Ready")
-						end
+					if f_MoveToNoWait("Destination", "BathPosition2", GL_WALKSPEED_RUN) then
+						f_MoveTo("", "BathPosition1")
+					
+						SetProperty("", "Ready")
+						SetProperty("Destination", "Ready")
+					end
 					
 	
-						
-					
 					if HasProperty("Destination", "Ready") then
 						f_BeginUseLocator("Destination", "BathPosition2", GL_STANCE_STAND, true)
 						SetData("BathPosition2InUse", 1)
@@ -232,9 +223,6 @@ function Run()
 						end
 					end
 					
-							
-			
-
 					if HasProperty("", "Here") and HasProperty("Destination", "Here") then				
 						GfxStartParticle("Steam", "particles/bath_steam.nif", "BathPosition1", 2.5)
 						local iCount = 0
@@ -256,11 +244,10 @@ function Run()
 					------ PreBath ------
 					---------------------
 					
-				if HasProperty("", "PreBath") and HasProperty("Destination", "PreBath") then
-					if GetLocatorByName("Tavern", "PreBathSit", "PreBathPosSit") then
-						if GetLocatorByName("Tavern", "PreBathStand", "PreBathPosStand") then
-							
-							if SimGetGender("") == GL_GENDER_MALE then
+					if HasProperty("", "PreBath") and HasProperty("Destination", "PreBath") then
+						if GetLocatorByName("Tavern", "PreBathSit", "PreBathPosSit") then
+							if GetLocatorByName("Tavern", "PreBathStand", "PreBathPosStand") then
+								if SimGetGender("") == GL_GENDER_MALE then
 									f_MoveToNoWait("", "PreBathPosStand")
 									f_BeginUseLocator("Destination", "PreBathPosSit", GL_STANCE_SIT, true)
 									SetData("PreBathPosSitInUse", 1)
@@ -280,19 +267,20 @@ function Run()
 							end
 						end
 					end
-					
+						
 					RemoveProperty("", "PreBath")
 					RemoveProperty("Destination", "PreBath")
 				end
 			
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)					
 				MsgSay("Destination", talk_AnswerCourtingMeasure("TAKE_A_BATH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
-				
+					
 			end
 			
-			-- Add the archieved progress
+			-- Add the achieved progress
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			SimAddCourtingProgress("")
+			AddImpact("Destination", "ReceivedBath", 1, 12)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 			SetMeasureRepeat(TimeUntilRepeat)
 		end
 	end
@@ -300,7 +288,7 @@ function Run()
 	----------------------------
 	------ No Court Lover ------
 	----------------------------
-	if (WasCourtLover==0) then
+	if (WasCourtLover == 0) then
 		
 		-- Check if the favor is high enough for bathing
 		local success = (GetFavorToSim("Destination", "") > MinimumFavor)
@@ -308,8 +296,8 @@ function Run()
 			
 			if SimGetSpouse("Destination", "Spouse") then
 				if (GetID("Spouse") == GetID("")) then
-					AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
-					AddImpact("Destination","LoveLevel", 10, 24)
+					AddImpact("", "LoveLevel", 5, 24) -- add some love for the next 24 hours
+					AddImpact("Destination","LoveLevel", 5, 24)
 					if GetImpactValue("Destination", "LoveLevel") >= 10 then
 						MsgNewsNoWait("", "Destination", "", "schedule", -1,
 								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
@@ -320,7 +308,7 @@ function Run()
 			
 			-- Pay if the tavern does not belong to the owners dynasty
 			if GetDynastyID("Tavern") ~= GetDynastyID("") then
-				if not chr_SpendMoney("", GetData("Price"), "CostSocial") then
+				if not chr_SpendMoney("", 500, "CostSocial") then
 					MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 					StopMeasure()
 					return
@@ -506,7 +494,7 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6",500)
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 500)
 end
 
