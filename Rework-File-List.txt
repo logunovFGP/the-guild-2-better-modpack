@@ -170,7 +170,6 @@
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
 536 Scripts\Measures\ms_AIBuyArmor.lua
-537 Scripts\Measures\ms_AIBuyItem.lua
 538 Scripts\Measures\ms_AIBuyWeapon.lua
 539 Scripts\Measures\ms_AIDoNothing.lua
 540 Scripts\Measures\ms_ArrangeConcert.lua
@@ -477,7 +476,6 @@
 943 Scripts\Measures\Behaviour\std_DiceGambler.lua
 944 Scripts\Measures\Behaviour\std_Doctor.lua
 945 Scripts\Measures\Behaviour\std_Donkeyteam.lua
-946 Scripts\Measures\Behaviour\std_DoNothing.lua
 947 Scripts\Measures\Behaviour\std_DummySim.lua
 948 Scripts\Measures\Behaviour\std_EliteGuard.lua
 949 Scripts\Measures\Behaviour\std_Groupie.lua
@@ -559,7 +557,6 @@
 1083 Scripts\States\state_hpfz_windmuehle.lua
 1084 Scripts\States\state_imprisoned.lua
 1086 Scripts\States\state_inspected.lua
-1087 Scripts\States\state_invisible.lua
 1088 Scripts\States\state_jewellery.lua
 1089 Scripts\States\state_kontor_event.lua
 1090 Scripts\States\state_krypta_event.lua
@@ -580,7 +577,6 @@
 1105 Scripts\States\state_pregnant.lua
 1106 Scripts\States\state_repairing.lua
 1107 Scripts\States\state_revolt.lua
-1108 Scripts\States\state_riding.lua
 1109 Scripts\States\state_robberguard.lua
 1110 Scripts\States\state_royalguard.lua
 1111 Scripts\States\state_scanning.lua
@@ -591,6 +587,3 @@
 1116 Scripts\States\state_totallydrunk.lua
 1117 Scripts\States\state_townnpc.lua
 1118 Scripts\States\state_tradercontrol.lua
-1119 Scripts\States\state_twp_autocart.lua
-1120 Scripts\States\state_unconscious.lua
-1121 Scripts\States\state_underattack.lua

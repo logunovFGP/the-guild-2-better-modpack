@@ -995,7 +995,7 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	elseif MeasureID == 1530 then -- Bewitching
 		Skill = RHETORIC
 	elseif MeasureID == 460 then -- Dialog
-		Skill = EMPATHY
+		Skill = RHETORIC
 	end
 	
 	local SkillMod = GetSkillValue(SimAlias, Skill)

@@ -83,8 +83,8 @@ function Run()
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
 				
-				time1 = PlayAnimationNoWait("Destination", "cheer_01")
-				Sleep(time1 * 0.3)
+				time1 = PlayAnimationNoWait("Destination", "propel")
+				Sleep(time1 * 0.1)
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
@@ -96,10 +96,11 @@ function Run()
 					if CourtingProgress > -5 then
 						CourtingProgress = -6
 					end
+					ModifyHP("", -30, true, 10)
 					Slap = true
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
-					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
+					chr_MultiAnim("", "talk", "Destination", "propel", InteractionDistance, 0.2)
 					ModifyFavor = FavorLoss
 				else
 					ModifyFavor = FavorWon
@@ -110,10 +111,6 @@ function Run()
 			end
 			
 			-- Add the achieved progress
-			if Slap then
-				ModifyHP("", -30, true, 10)
-				Sleep(0.1)
-			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			Sleep(0.2)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)
@@ -149,19 +146,19 @@ function Run()
 		if Slap then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination", "", (FavorLoss*2))
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
+			ModifyHP("", -30, true, 10)
 			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Slap"))
-					
+			chr_ModifyFavor("Destination", "", (FavorLoss*2))
 		elseif Outraged then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
 			chr_ModifyFavor("Destination", "", FavorLoss)
-			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)
+			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 0.3, true)
 			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Outraged"))
 		else
 			
-			chr_MultiAnim("", "bow", "Destination", "curtsy", InteractionDistance, 1.0, true)
+			chr_MultiAnim("", "bow", "Destination", "curtsy", InteractionDistance, 0.3, true)
 			MsgSay("Destination", talk_AnswerCourtingMeasure("KISS", GetSkillValue("Destination", RHETORIC), DestGender, 6))
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)

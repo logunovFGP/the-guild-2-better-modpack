@@ -98,6 +98,7 @@ _Design_
 - Schattendynastien haben nun ein Wappen, das bei einigen Nachrichten zu sehen ist (analog zu den farbigen Dynastien).
 - Schergen, die Charaktere eskortieren, werden sich nun vor den Gebäuden postieren, in denen sich ihr Schützling gerade aufhält und dort auf ihn warten.
 - Beim Kauf eines neuen Adelstitels erhalten nun alle Charaktere einer Spielergruppe Erfahrung, unabhängig davon, wer den Titel beantragt.
+- Die Waffenmodelle wurden teilweise geändert.
 
 *** Vanilla-Bugs ***
 

@@ -97,6 +97,7 @@ _Design_
 - Shadow dynasties have a grey badge you can see on certain messages (like it is done for the coloured dynasties).
 - Thugs on escort duty will now wait outside of buildings until their protegee comes out again.
 - When aquiring a new nobility title, all members of your party get some xp instead of just the character who initially bought the title.
+- Some weapon models have been changed.
 
 *** Vanilla-Bugs ***
 

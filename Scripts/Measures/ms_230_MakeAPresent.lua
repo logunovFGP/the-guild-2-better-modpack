@@ -48,7 +48,7 @@ function Run()
 	local ModifyFavor = 0
 	
 	-- Courting related
-	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID) + 5
+	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
 	
 	-- max 4 presents
@@ -355,23 +355,23 @@ function Run()
 	LogMessage("PresD is "..PresD)
 
 	local ItemTexture1 = "Hud/Items/Item_"..PresA..".tga"
-	local Button1 = "@B[A,,%1l,"..ItemTexture1.."]"
+	local Button1 = "@B[0,,%1l,"..ItemTexture1.."]"
 	local ItemLabel1 = ItemGetLabel(PresA, true)
 	
 	local ItemTexture2 = "Hud/Items/Item_"..PresB..".tga"
-	local Button2 = "@B[B,,%2l,"..ItemTexture2.."]"
+	local Button2 = "@B[1,,%2l,"..ItemTexture2.."]"
 	local ItemLabel2 = ItemGetLabel(PresB, true)
 	
 	local ItemTexture3 = "Hud/Items/Item_"..PresC..".tga"
-	local Button3 = "@B[C,,%3l,"..ItemTexture3.."]"
+	local Button3 = "@B[2,,%3l,"..ItemTexture3.."]"
 	local ItemLabel3 = ItemGetLabel(PresC, true)
 	
 	local ItemTexture4 = "Hud/Items/Item_"..PresD..".tga"
-	local Button4 = "@B[D,,%4l,"..ItemTexture4.."]"
+	local Button4 = "@B[3,,%4l,"..ItemTexture4.."]"
 	local ItemLabel4 = ItemGetLabel(PresD, true)
 	
 	local ItemTexture5 = "Hud/Items/Item_JanesRing.tga"
-	local Button5 = "@B[E,,%5l,"..ItemTexture5.."]"
+	local Button5 = "@B[4,,%5l,"..ItemTexture5.."]"
 	local ItemLabel5 = ItemGetLabel("JanesRing", true)
 	
 	local Result = InitData("@P"..Button1..
@@ -393,21 +393,26 @@ function Run()
 	local GoodPresent = true
 	
 	--check the item
-	if Result == "A" then
+	if Result == 0 then
 		TheItem = PresA
-	elseif Result == "B" then
+	elseif Result == 1 then
 		TheItem = PresB
-	elseif Result == "C" then
+	elseif Result == 2 then
 		TheItem = PresC
 		GoodPresent = CheckPresC
 		CourtingProgress = CourtingProgress * 1.5
-	elseif Result == "D" then
+	elseif Result == 3 then
 		TheItem = PresD
 		GoodPresent = CheckPresD
 		CourtingProgress = CourtingProgress * 1.5
-	elseif Result == "G" then
+	elseif Result == 4 then
 		TheItem = "JanesRing"
-		CourtingProgress = CourtingProgress * 2
+		local EmpathySkill = GetSkillValue("", EMPATHY)
+		if SimGetProgress("") >= (80 - EmpathySkill) then 
+			CourtingProgress = 19 + 1 * EmpathySkill
+		else
+			CourtingProgress = -3
+		end
 	end
 	
 	if not GoodPresent then
@@ -486,13 +491,12 @@ function Run()
 
 				camera_CutscenePlayerLock("cutscene", "Destination")
 
-				local DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
+				local DestinationAnimationLength = PlayAnimationNoWait("Destination", "shake_head")
 				Sleep(DestinationAnimationLength * 0.4)
 
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
 
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
-				Sleep(DestinationAnimationLength * 0.2)
 
 			else
 				SetMeasureRepeat(TimeOut)
@@ -508,7 +512,7 @@ function Run()
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					PlayAnimationNoWait("", "talk")
-					DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
+					DestinationAnimationLength = PlayAnimationNoWait("Destination", "propel")
 					Sleep(DestinationAnimationLength * 0.4)
 					ModifyFavor = -5
 				else

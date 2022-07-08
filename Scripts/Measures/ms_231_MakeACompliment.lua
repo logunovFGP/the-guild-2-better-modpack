@@ -85,8 +85,8 @@ function Run()
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
 				
-				time1 = PlayAnimationNoWait("Destination", "cheer_01")
-				Sleep(time1 * 0.3)
+				time1 = PlayAnimationNoWait("Destination", "shake_head")
+				Sleep(time1 * 0.2)
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
@@ -96,6 +96,7 @@ function Run()
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
 					Slap = true
+					ModifyHP("", -30, true, 10)
 				elseif (CourtingProgress < 1) or Favor < MinimumFavor then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
@@ -112,10 +113,6 @@ function Run()
 			end
 			
 			-- Add the achieved progress
-			if Slap then
-				ModifyHP("", -30, true, 10)
-				Sleep(0.1)
-			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			Sleep(0.2)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)

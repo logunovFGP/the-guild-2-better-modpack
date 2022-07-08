@@ -273,8 +273,6 @@ function Run()
 			
 			-- Show the appropriate Animation	and save the animation lenghts
 			local DestinationAnimationLength = PlayAnimationNoWait("Destination", "curtsy")
-			
-			Sleep(DestinationAnimationLength*0.13)
 
 			camera_CutscenePlayerLock("cutscene", "Destination")				
 			
@@ -290,14 +288,12 @@ function Run()
 			StopAnimation("")
 			PlayAnimationNoWait("", "bow")
 			
-			Sleep(DestinationAnimationLength*0.2)
+			Sleep(DestinationAnimationLength*0.15)
 			
 		else
 
 			-- Show the appropriate Animation	and save the animation lenghts
 			local DestinationAnimationLength = PlayAnimationNoWait("Destination", "bow")
-			
-			Sleep(DestinationAnimationLength*0.13)
 			
 			camera_CutscenePlayerLock("cutscene", "Destination")
 			
@@ -313,7 +309,7 @@ function Run()
 			StopAnimation("")
 			PlayAnimationNoWait("", "curtsy")
 			
-			Sleep(DestinationAnimationLength*0.2)
+			Sleep(DestinationAnimationLength*0.15)
 			
 		end
 
