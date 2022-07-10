@@ -19,7 +19,7 @@ function Start()
 	SetMainQuestDescription("MAIN_MISSION","@L_INTERFACE_MISSIONS_ENDLESS_+1")
 	SetMainQuest("MAIN_MISSION")
 	
-	feedback_MessageMission("Actor","@L_INTERFACE_MISSIONS_ENDLESS_+0","@L_INTERFACE_MISSIONS_ENDLESS_+1")
+	feedback_MessageMission("Actor", "@L_MISSIONS_MISSIONS_FRIENDSHIP_+0", "@L_INTERFACE_MISSIONS_ENDLESS_+1")
 end
 
 function CheckEnd()
