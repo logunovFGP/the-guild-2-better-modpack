@@ -9,13 +9,15 @@ function Init()
 end
 
 function Run()
-	if not FindNearestBuilding("", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, -1, false, "InvisContainer") then
-		return
+	if GetNearestSettlement("", "City") then
+		if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "InvisContainer") then
+			return
+		end
 	end
 	
-	SimBeamMeUp("","InvisContainer",false)
+	SimBeamMeUp("", "InvisContainer", false)
 	while true do
-		Sleep(Rand(15)+2)
+		Sleep(30)
 	end
 	
 end

@@ -8,14 +8,14 @@ end
 function Run()
 	
 	while true do
-		PlaySound3DVariation("","Animals/Horse/whinny",1)
-		Sleep(20)
+		PlaySound3DVariation("", "Animals/Horse/whinny",1)
+		Sleep(30)
 	end
 end
 
 function CleanUp()
 	
 	SetState("", STATE_RIDING, false)
-	PlaySound3DVariation("","Animals/Horse/snort",1)
+	PlaySound3DVariation("", "Animals/Horse/snort", 1)
 end
 

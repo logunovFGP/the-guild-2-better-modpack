@@ -12,7 +12,6 @@ function Init()
 	SetState("", STATE_IDLE, false);
 	SetState("", STATE_FIGHTING, false);
 	SetState("", STATE_CAPTURED, false)
-	StopMeasure()
 end
 
 function Run()
@@ -28,35 +27,31 @@ function Run()
 	
 	if IsType("", "Sim") then
 		StopAllAnimations("")		
-		--PlayAnimation("", "fight_die")
-		local ActivityTime = MoveSetActivity("","unconscious")
+		local ActivityTime = MoveSetActivity("", "unconscious")
 		Sleep(ActivityTime)
-		--Pause 3 hours gametime
---		local SleepTime = Gametime2Realtime(3)
---		Sleep(SleepTime)
-		
+
+		--Pause 3 hours gametime		
 		local duration = 3
-		SetData("Time",duration)
+		SetData("Time", duration)
 		local EndTime = GetGametime() + duration
-		SetData("EndTime",EndTime)
-		SetProcessMaxProgress("",duration*10)
+		SetData("EndTime", EndTime)
+		SetProcessMaxProgress("", duration*10)
 		--SendCommandNoWait("","Progress")
 		local CurrentTime = GetGametime()
 		while GetGametime() < EndTime do
 			CurrentTime = GetGametime()
 			CurrentTime = EndTime - CurrentTime
 			CurrentTime = duration - CurrentTime
-			SetProcessProgress("",CurrentTime*10)
-			Sleep(3)
+			SetProcessProgress("", CurrentTime*10)
+			Sleep(5)
 		end
+
 		ResetProcessProgress("")	
-		while GetImpactValue("","Hidden")~=0 do
-			Sleep(2)
+		while GetImpactValue("", "Hidden")~=0 do
+			Sleep(5)
 		end
 		
 	end
-	
-	StopMeasure()
 end
 
 function Progress()
@@ -66,8 +61,8 @@ function Progress()
 		local CurrentTime = GetGametime()
 		CurrentTime = EndTime - CurrentTime
 		CurrentTime = Time - CurrentTime
-		SetProcessProgress("",CurrentTime*10)
-		Sleep(3)
+		SetProcessProgress("", CurrentTime*10)
+		Sleep(5)
 	end
 end
 
@@ -80,7 +75,6 @@ function CleanUp()
 		if (currenthealth < targethealth) then
 			ModifyHP("", targethealth-currenthealth)
 		end				
-		--PlayAnimation("","crouch_up")
 		MoveSetActivity("")
 	end
 end
