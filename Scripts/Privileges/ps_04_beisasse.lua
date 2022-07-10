@@ -20,10 +20,15 @@ function TakeTitle()
 	local BuildLabel = "_BUILDING_Residence"..buildinglevel.."_NAME_+0"
 	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..(currenttitle * 2) - 1
 	local buildingcount = dyn_GetWorkshopCount("TitleHolder")
-
+	local BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+4"
+	
+	if SimGetGender("") == GL_GENDER_FEMALE then
+		BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+4"
+	end
+	
 	feedback_MessageCharacter("",
-		"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_PRIVILEGES_HEAD_+0",
-		"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+0", TitleLabel, BuildLabel, maxworkshops, buildingcount, chr_GeneratePrivilegeListLabels(ps_04_beisasse_GetCompletePrivilegeList()))
+						"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_PRIVILEGES_HEAD_+0",
+						BodyLabel, TitleLabel, BuildLabel, maxworkshops, buildingcount, chr_GeneratePrivilegeListLabels(ps_04_beissasse_GetCompletePrivilegeList()))
 
 end
 

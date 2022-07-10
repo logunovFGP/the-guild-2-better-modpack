@@ -99,6 +99,7 @@ _Design_
 - Schergen, die Charaktere eskortieren, werden sich nun vor den Gebäuden postieren, in denen sich ihr Schützling gerade aufhält und dort auf ihn warten.
 - Beim Kauf eines neuen Adelstitels erhalten nun alle Charaktere einer Spielergruppe Erfahrung, unabhängig davon, wer den Titel beantragt.
 - Die Waffenmodelle wurden teilweise geändert.
+- Im Dynastie-Modus gibt es nun zu Spielbeginn eine Erzählerstimme.
 
 *** Vanilla-Bugs ***
 
@@ -175,6 +176,7 @@ _Allgemein_
 - Während einer Hochzeitszeremonie wurden bei der Rede des Priesters die Geschlechter vertauscht, wenn ein weiblicher Charakter die Maßnahme startete.
 - Die Pest endete nie.
 - Als Träger eines Amtes auf Reichsebene kann man sich nun auf andere Ämter derselben Stufe bewerben.
+- Wer mit Aufträgen spielt, erhielt keine vertonte Missionsanweisung zu Spielbeginn.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

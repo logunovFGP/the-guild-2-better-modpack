@@ -24,9 +24,16 @@ function TakeTitle()
 	
 	RemoveImpact("TitleHolder", "CanApplyForLowestOffice") -- remove the canapplyforlowestoffice-impact
 
+	local BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+5"
+	
+	if SimGetGender("") == GL_GENDER_FEMALE then
+		BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+5"
+	end
+	
 	feedback_MessageCharacter("",
-		"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_PRIVILEGES_HEAD_+0",
-		"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+0", TitleLabel, BuildLabel, maxworkshops, buildingcount, chr_GeneratePrivilegeListLabels(ps_05_buerger_GetCompletePrivilegeList()))
+						"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_PRIVILEGES_HEAD_+0",
+						BodyLabel, TitleLabel, BuildLabel, maxworkshops, buildingcount, chr_GeneratePrivilegeListLabels(ps_05_buerger_GetCompletePrivilegeList()))
+
 
 end
 
