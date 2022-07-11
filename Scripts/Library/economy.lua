@@ -676,23 +676,27 @@ function GetResourceNeeds(BldAlias)
 		return 0, {} 
 	end
 	
-	local BldId = BuildingGetProto(BldAlias)
 	-- get values from DBT
+	local BldId = BuildingGetProto(BldAlias)
 	local ItemsString = GetDatabaseValue("BuildingToItems", BldId, "requireditems")
 	if ItemsString == nil then
 		return 0, {}
 	end
+	
 	-- initialize return list
 	local Items = {}
 	local Ids = {}
 	local Count = 0
+	
 	for Id in string.gfind(ItemsString, "%d+") do
 		Count = Count + 1
 		Ids[Count] = ItemGetID(Id)
 	end
+	
 	local Multiplier = BuildingGetWorkerCount(BldAlias) + 1
 	local AmountsString = GetDatabaseValue("BuildingToItems", BldId, "requireditemusages")
 	local i = 0
+	
 	for Amount in string.gfind(AmountsString, "%d+") do
 		i = i + 1
 		-- multiply base amount by workercount or productivity

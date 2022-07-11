@@ -119,6 +119,7 @@ function InitMeasure()
 	if not GetHomeBuilding("","MyHome") then
 		return
 	end
+	
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
 	local ResourceCount, Resources = economy_GetResourceNeeds("MyHome")
