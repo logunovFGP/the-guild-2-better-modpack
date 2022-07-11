@@ -44,13 +44,6 @@ function Run()
 	SetProperty("Owner", "BurningDmg", ActualFireDmg) -- save it to property for firefighting-Measures
 	CommitAction("fire", "Owner", "Owner")
 	
-	-- prevents worker's dwellings from being destroyed
-	
-	if BuildingGetType("") == GL_BUILDING_TYPE_WORKER_HOUSING then
-		if BurnToHP < (GetMaxHP("") * 0.1) then	
-			BurnToHP = (GetMaxHP("") * 0.1)
-		end
-	end 
 
 	-- count the fire locator
 	local FireLocatorCount = 1

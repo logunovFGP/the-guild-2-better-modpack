@@ -38,11 +38,12 @@ function Run()
 		SetProperty("", "DontLeave", 1)
 	end
 	
+	local MyProfession = SimGetProfession("")
 	local MyDyn = GetDynastyID("")
 	local ActorDyn = GetDynastyID("Actor")
 	local VictimDyn = GetDynastyID("Victim")
 	
-	if SimGetProfession("") == GL_PROFESSION_COCOTTE then
+	if MyProfession == GL_PROFESSION_COCOTTE then
 		if MyDyn == ActorDyn then
 			return ""
 		elseif MyDyn > 0 and MyDyn == VictimDyn then
@@ -53,7 +54,7 @@ function Run()
 	end
 
 	local bEvidence = ActionIsEvidence("Action")
-	local bIsGuard =(MyDyn == -1) and (SimGetClass("") == GL_CLASS_CHISELER)
+	local bIsGuard = (MyDyn == -1) and (MyProfession == GL_PROFESSION_CITYGUARD or MyProfession == GL_PROFESSION_ELITEGUARD)
 
 	-- join an existing Fight
 	if not (bIsGuard) then
@@ -64,7 +65,6 @@ function Run()
 	end
 	
 	-- starts a new Fight
-	
 	if IsType("", "Ship") then
 		-- attack if i am the victim to protect myself
 		if MyDyn == VictimDyn then
@@ -100,19 +100,28 @@ function Run()
 		end
 
 		-- Fighter without a dynasty means guard, and guards attack illegals
-		if (bEvidence and bIsGuard) then
+		if (bEvidence and (bIsGuard or HasProperty("", "Guarding"))) then
 			local	ActorID = GetDynastyID("Actor")
-			if ActorID<1 or ActorID~=SimGetServantDynastyId("") then
+			if ActorID < 1 then
 				CopyAlias("Actor", "Destination")
 				return "Attack"
+			-- check if I am a servant of the attacker, attack if not
+			elseif ActorID ~= SimGetServantDynastyId("") then
+				CopyAlias("Actor", "Destination")
+				return "Attack"
+			else
+				if HasProperty("", "Guarding") then
+					return ""
+				else
+					SetData("Distance", 2000)
+					return "-Flee"
+				end
 			end
-			SetData("Distance", 2500)
-			return "-Flee"
 		end
 
 		-- attack if i am the victim to protect myself
 		if AliasExists("Victim") and MyDyn == VictimDyn then
-			if DynastyGetDiplomacyState("", "Actor")>DIP_NEUTRAL then
+			if DynastyGetDiplomacyState("", "Actor") > DIP_NEUTRAL then
 				DynastySetDiplomacyState("", "Actor", DIP_NEUTRAL)
 			end
 			CopyAlias("Actor", "Destination")
@@ -144,7 +153,7 @@ function Run()
 	
 	-- some workless just flee at random
 	local random = Rand(5)
-	if ((random > 3) and (MyDyn < 1)) then
+	if ((random > 2) and (MyDyn < 1)) then
 		return "-Flee"
 	elseif (MyDyn < 1) then
 		return "-Gape:8"

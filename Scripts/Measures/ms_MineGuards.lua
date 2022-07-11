@@ -44,6 +44,7 @@ function Run()
 			SetProperty("Guard"..i, "CurMeasID", CurMeasID)
 			SetProperty("Guard"..i, "DynID", GetDynastyID(""))
 			SimSetBehavior("Guard"..i, "MineGuardsDuty")
+			
 			-- Get the guard a weapon
 			if not HasProperty("Guard"..i, "Equiped") then
 				AddItems("Guard"..i, "LeatherArmor", 1, INVENTORY_EQUIPMENT)
