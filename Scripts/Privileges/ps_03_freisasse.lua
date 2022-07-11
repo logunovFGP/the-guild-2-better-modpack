@@ -29,7 +29,8 @@ function TakeTitle()
 	feedback_MessageCharacter("",
 						"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_PRIVILEGES_HEAD_+0",
 						BodyLabel, TitleLabel, BuildLabel, maxworkshops, buildingcount, chr_GeneratePrivilegeListLabels(ps_03_freisasse_GetCompletePrivilegeList()))
-
+	-- send msg to other dynasties
+	feedback_MessageOtherDynastiesTitle("")
 end
 
 function LooseTitle()

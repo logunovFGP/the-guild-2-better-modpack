@@ -63,8 +63,6 @@ function Run()
 							SetProperty("Set", "NobilityMoney", tax)
 							SetNobilityTitle("boss", currenttitle+1, false)
 							
-							-- send msg
-							feedback_MessageOtherDynastiesTitle("boss")
 							MsgQuick("boss", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID("boss"))
 							StopMeasure()
 						else
@@ -108,8 +106,6 @@ function Run()
 					SetProperty("Set", "NobilityMoney", tax)
 					SetNobilityTitle("", currenttitle+1, false)
 					
-					-- send msg
-					feedback_MessageOtherDynastiesTitle("")
 				else
 					StopMeasure()
 				end
@@ -303,9 +299,6 @@ function Run()
 						IncomeNob = IncomeNob + tax
 						SetProperty("Set", "NobilityMoney", tax)
 						SetNobilityTitle("", currenttitle+1, false)
-						
-						-- send msg
-						feedback_MessageOtherDynastiesTitle("")
 
 						PlayAnimationNoWait("Usher", ms_085_buynobilitytitle_getRandomTalk())
 						MsgSay("Usher", "@L_CHARACTERS_3_TITLES_AQUIRE_TOWNHALL_4", GetID(""))
