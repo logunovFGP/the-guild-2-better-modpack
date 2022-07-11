@@ -105,7 +105,7 @@ function Run()
 								"@B[1,@L_MEASURE_ADOPTORPHAN_OPTION_+1]"..
 								"@B[2,@L_MEASURE_ADOPTORPHAN_OPTION_+2]",
 								"@L_MEASURE_ADOPTORPHAN_HEAD_+0",
-								"@L_MEASURE_ADOPTORPHAN_QUESTION_+0",Cost)
+								"@L_MEASURE_ADOPTORPHAN_QUESTION_+0", Cost)
 		StopAnimation("Child")
 	else
 		choice = 1	
@@ -144,14 +144,14 @@ function Run()
 		SetState("Orphan", STATE_CHILD, true)
 
 		if not IsStateDriven() then
-			feedback_MessageCharacter("", "@L_MEASURE_ADOPTORPHAN_SUCCESS_HEAD_+0","@L_MEASURE_ADOPTORPHAN_SUCCESS_BODY_+0",GetID(""),GetID("Spouse"),GetID("Orphan"))
+			feedback_MessageCharacter("", "@L_MEASURE_ADOPTORPHAN_SUCCESS_HEAD_+0", "@L_MEASURE_ADOPTORPHAN_SUCCESS_BODY_+0", GetID(""), GetID("Spouse"), GetID("Orphan"))
 		end
 	end
 end
 
 function GetOSHData(MeasureID)
 	--cost
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", (GetData("Price")))
+	--OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", (GetData("Price")))
 end
 
 function CleanUp()
