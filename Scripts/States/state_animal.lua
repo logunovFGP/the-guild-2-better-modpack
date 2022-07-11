@@ -92,7 +92,7 @@ function PflegeVieh(Animal)
 			local StuckCheck = 0
 			local StuckCounter = 0
 			while true do
-				if StuckCounter > 1 then
+				if StuckCounter == 1 then
 					StuckCheck = CurrentDistance
 				else
 					StuckCounter = StuckCounter + 1
@@ -212,7 +212,7 @@ function WaldVieh(Animal)
 			local StuckCheck = 0
 			local StuckCounter = 0
 			while true do
-				if StuckCounter > 1 then
+				if StuckCounter == 1 then
 					StuckCheck = CurrentDistance
 				else
 					StuckCounter = StuckCounter + 1
@@ -257,6 +257,7 @@ function WaldVieh(Animal)
 			LoopAnimation("", ""..Animal.."_idle_01", idleTime, 1)
 		elseif idle == 3 then
 			PlayAnimation("", ""..Animal.."_idle_02", 1)
+			LoopAnimation("", ""..Animal.."_idle_01", (math.ceil(idleTime/2)), 1)
 		end
 		
 		RemoveAlias("NewPos")
@@ -314,7 +315,7 @@ function KleinVieh(Animal)
 			local StuckCounter = 0
 			
 			while true do
-				if StuckCounter > 1 then
+				if StuckCounter == 1 then
 					StuckCheck = CurrentDistance
 				else
 					StuckCounter = StuckCounter + 1
@@ -345,7 +346,7 @@ function KleinVieh(Animal)
 			LoopAnimation("", ""..Animal.."_idle_01", idleTime, 1)
 		end
 				
-		if Rand(10) == 4 then
+		if Rand(5) == 4 then
 			if Animal == "duck" then
 				PlaySound3DVariation("", "Animals/duck", 1.0)
 			elseif Animal == "chicken" then
@@ -429,7 +430,7 @@ function HausVieh(Animal)
 			local StuckCheck = 0
 			local StuckCounter = 0
 			while true do
-				if StuckCounter > 1 then
+				if StuckCounter == 1 then
 					StuckCheck = CurrentDistance
 				else
 					StuckCounter = StuckCounter + 1
@@ -463,9 +464,10 @@ function HausVieh(Animal)
 			LoopAnimation("", ""..Animal.."_idle_01", idleTime, 1)
 		elseif idle == 3 then
 			PlayAnimation("", ""..Animal.."_idle_02", 1)
+			LoopAnimation("", ""..Animal.."_idle_01", (math.ceil(idleTime/2)), 1)
 		end
 				
-		if Rand(10) == 4 then
+		if Rand(5) == 4 then
 			if Animal == "dog" then
 				PlaySound3DVariation("", "ambient/dog_bark", 1.0)
 			elseif Animal == "cat" then
