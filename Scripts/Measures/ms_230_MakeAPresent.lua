@@ -538,6 +538,7 @@ function Run()
 						ItemLabel4, ItemLabel5)
 
 	if Result == "C" then
+		SetMeasureRepeat(1)
 		return
 	end
 	
@@ -585,7 +586,7 @@ function Run()
 										"@L_MEASURE_MAKEAPRESENT_GETITEM_BODY_+0", GetID("AccessBld"), FoundCount )
 				
 				if GetItem == "C" then
-					StopMeasure()
+					SetMeasureRepeat(1)
 				else
 					if RemoveItems("AccessBld", TheItem, 1, INVENTORY_STD) == 1 then
 						SetMeasureRepeat(TimeOut)
@@ -610,7 +611,7 @@ function Run()
 										"@L_MEASURE_MAKEAPRESENT_GETITEM_BODY_+1", GetID("City"), Price)
 				
 						if GetItem == "C" then
-							StopMeasure()
+							SetMeasureRepeat(1)
 						else
 							if RemoveItems("Market", TheItem, 1, INVENTORY_STD) == 1 then
 								SetMeasureRepeat(TimeOut)
