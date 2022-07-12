@@ -24,9 +24,9 @@ Data:
 17 "dungeon" "54_event_gaol.ogg" 1 "46_situation_suspense2.ogg" 1 "44_situation_disease.ogg" 1 "11_building_alchemist.ogg" 1 "47_situation_suspense3.ogg" 1 "G1_ImKerker.ogg" 1 | 
 18 "positive_event" "55_jingle_positive1.ogg" 1 "56_jingle_positive2.ogg" 1 "57_jingle_positive3.ogg" 1 "58_jingle_positive4.ogg" 1 "59_jingle_positive5.ogg" 1 "none" 1 | 
 19 "negative_event" "60_jingle_negative1.ogg" 1 "61_jingle_negative2.ogg" 1 "62_jingle_negative3.ogg" 1 "63_jingle_negative4.ogg" 1 "64_jingle_negative5.ogg" 1 "none" 1 | 
-20 "fight" "48_situation_combat1.ogg" 1 "49_situation_combat2.ogg" 1 "200_war1.ogg" 1 "200_war.ogg" 1 "G1_Flucht.mp3" 1 "none" 1 | 
+20 "fight" "48_situation_combat1.ogg" 1 "49_situation_combat2.ogg" 1 "200_war1.ogg" 1 "200_war.ogg" 1 "G1_Flucht.mp3" 1 "88_ShipFight1.ogg" 1 | 
 21 "accused" "45_situation_suspense1.ogg" 1 "46_situation_suspense2.ogg" 1 "G1_ImKerker.ogg" 1 "none" 1 "none" 1 "none" 1 | 
-22 "epidemic" "44_situation_disease.ogg" 1 "46_situation_suspense2.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
+22 "epidemic" "44_situation_disease.ogg" 1 "46_situation_suspense2.ogg" 1 "45_situation_suspense1.ogg" 1 "G1_ImKerker.ogg" 1 "none" 1 "none" 1 | 
 23 "credits" "G1_DerStolzenTraum.ogg" 1 "G1_DasParfuem.ogg" 1 "02_game_won.ogg" 1 "none" 1 "none" 1 "none" 1 | 
 24 "game_won" "02_game_won.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 25 "game_lost" "03_game_lost.ogg" 1 "G1_LichtUndGnade.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
@@ -42,9 +42,9 @@ Data:
 35 "ship_sunk" "95_OwnShipSunk1.ogg" 1 "96_OwnShipSunk2.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 36 "pirate" "80_pirate.ogg" 1 "86_sailing_under_pirate_flag1.ogg" 1 "Alexander_Nakarada-We_Three_Celtic_Kings.mp3" 1 "G1_Flucht.mp3" 1 "none" 1 "none" 1 | 
 37 "fisherman" "81_Fisherman.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
-38 "war" "200_war.ogg" 1 "G1_Hungerlohn.ogg" 1 "Alexander_Nakarada-War_Shout.mp3" 1 "none" 1 "none" 1 "none" 1 | 
+38 "war" "200_war.ogg" 1 "G1_Hungerlohn.ogg" 1 "Alexander_Nakarada-War_Shout.mp3" 1 "89_ShipFight2.ogg" 1 "none" 1 "none" 1 | 
 39 "Silence" "Silence.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
-47 "graveyard" "202_crypt.ogg" 1 "47_situation_suspense3.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
+47 "graveyard" "202_crypt.ogg" 1 "47_situation_suspense3.ogg" 1 "46_situation_suspense2.ogg" 1 "G1_FinsterePlaene.ogg" 1 "G1_ImKerker.ogg" 1 "none" 1 | 
 48 "Drey_Weiber" "Versengold_Drey_Weiber_TG2Ren_Special.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 49 "Fass_Wein" "Versengold_Ich_und_ein_Fass_voller_Wein_TG2Ren_Special.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
 50 "Unten_Treten" "Versengold_Immer_schoen_nach_unten_treten_TG2Ren_Special.ogg" 1 "none" 1 "none" 1 "none" 1 "none" 1 "none" 1 | 
