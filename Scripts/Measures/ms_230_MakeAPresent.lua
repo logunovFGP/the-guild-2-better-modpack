@@ -8,11 +8,35 @@
 function AIDecide()
 --	NumItems = GetData("NumItems")
 --	return "A"..NumItems
-	return "A0"
+	return 0
 end
 
 function Run()
 
+	-- only for CourtLovers, Liaisons or Spouses
+	if not SimGetCourtLover("", "MyLover") then
+		if not SimGetLiason("", "MyLiaison") then
+			if not SimGetSpouse("", "MySpouse") then
+				MsgBoxNoWait("", "", "@L_MEASURE_MakeAPresent_NAME_+0", "@L_MEASURE_MAKEAPRESENT_ERROR_NOLOVER_+0")
+				StopMeasure()
+			end
+		end
+	end
+	
+	local CheckPresent = false
+	if AliasExists("MyLover") and GetID("MyLover") == GetID("Destination") then
+		CheckPresent = true
+	elseif AliasExists("MyLiaison") and GetID("MyLiaison") == GetID("Destination") then
+		CheckPresent = true
+	elseif AliasExists("MySpouse") and GetID("MySpouse") == GetID("Destination") then
+		CheckPresent = true
+	end
+	
+	if not CheckPresent then
+		MsgBoxNoWait("", "", "@L_MEASURE_MakeAPresent_NAME_+0", "@L_MEASURE_MAKEAPRESENT_ERROR_NOLOVER_+1")
+		StopMeasure()
+	end
+	
 	-- The time in hours until the measure can be repeated
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
@@ -21,6 +45,7 @@ function Run()
 	local DestGender = SimGetGender("Destination")
 	local DestTitle = GetNobilityTitle("Destination")
 	local TitleDifference = DestTitle - GetNobilityTitle("")*2
+	local EmpathySkill = GetSkillValue("", EMPATHY)
 	
 	-- special
 	if not HasProperty("Destination", "CourtingPerso") then
@@ -50,6 +75,139 @@ function Run()
 	-- Courting related
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	local CurrentProgress = 0
+	
+	-- for court lovers you might wanna do Janes Ring, so get the love progress
+	if AliasExists("MyLover") and GetID("Destination") == GetID("MyLover") then
+		CurrentProgress = SimGetProgress("")
+	end
+	
+	if IsGUIDriven() then
+	
+		-- some info at the beginning
+		local KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+0"
+		local DontLikeLabel = "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+0"
+		local HisLabel = "@L_REPLACEMENTS_TEXTVAR_HIS_+0"
+		local EveryManLabel = "@L_REPLACEMENTS_TEXTVAR_EVERYMAN_DAT_+0"
+		
+		-- Gender stuff
+		if DestGender == GL_GENDER_FEMALE then
+			HisLabel = "@L_REPLACEMENTS_TEXTVAR_HER_+0"
+			EveryManLabel = "@L_REPLACEMENTS_TEXTVAR_EVERYWOMAN_DAT_+0"
+		end
+		
+		local EnoughProgress = false
+		if CurrentProgress >= (80 - EmpathySkill) then
+			EnoughProgress = true
+		end
+		local RingLabel = "@L_MEASURE_MAKEAPRESENT_JANESRING_+0"
+		
+		if EnoughProgress then
+			RingLabel = "@L_MEASURE_MAKEAPRESENT_JANESRING_+1"
+		end
+		
+		if Favor >= 60 then
+			if CourtingClass == 1 then 
+				if DestPersonality == 0 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+1"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+1"
+					end
+				elseif DestPersonality == 1 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+2"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+2"
+					end
+				elseif DestPersonality == 2 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+3"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+3"
+					end
+				else
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+4"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+4"
+					end
+				end
+			elseif CourtingClass == 2 then
+				if DestPersonality == 0 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+5"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+5"
+					end
+				elseif DestPersonality == 1 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+6"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+6"
+					end
+				elseif DestPersonality == 2 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+7"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+7"
+					end
+				else
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+8"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+8"
+					end
+				end
+			elseif CourtingClass == 3 then
+				if DestPersonality == 0 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+9"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+9"
+					end
+				elseif DestPersonality == 1 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+10"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+10"
+					end
+				elseif DestPersonality == 2 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+11"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+11"
+					end
+				else
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+12"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+12"
+					end
+				end
+			else
+				if DestPersonality == 0 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+13"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+13"
+					end
+				elseif DestPersonality == 1 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+14"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+14"
+					end
+				elseif DestPersonality == 2 then
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+15"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+15"
+					end
+				else
+					KnowledgeLabel = "@L_MEASURE_MAKEAPRESENT_KNOWLEDGE_+16"
+					if Favor >= 80 then
+						DontLikeLabel =  "@L_MEASURE_MAKEAPRESENT_DONTLIKE_+16"
+					end
+				end
+			end
+		end
+		
+		local Continue = MsgBox("", "Destination", "@P"..
+										"@B[1, @L_REPLACEMENTS_BUTTONS_NEXT_+0]"..
+										"@B[C, @L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
+										"@L_MEASURE_MakeAPresent_NAME_+0",
+										"@L_MEASURE_MAKEAPRESENT_INFO_BODY_+0", GetID("Destination"), HisLabel, EveryManLabel, KnowledgeLabel, DontLikeLabel, RingLabel)
+		
+		if Continue == "C" then
+			StopMeasure()
+		end
+	end
 	
 	-- max 4 presents
 	local PresA, PresB, PresC, PresD
@@ -300,9 +458,6 @@ function Run()
 		end
 	end
 	
-	LogMessage("WrongNum is "..WrongNum)
-	LogMessage("RightNum is "..RightNum)
-	
 	-- get the right stuff 
 	if Favor >= Rand(100) then
 		local RandChoice = Rand(RightNum) + 1
@@ -350,9 +505,6 @@ function Run()
 			end
 		end
 	end
-	
-	LogMessage("PresC is "..PresC)
-	LogMessage("PresD is "..PresD)
 
 	local ItemTexture1 = "Hud/Items/Item_"..PresA..".tga"
 	local Button1 = "@B[0,,%1l,"..ItemTexture1.."]"
@@ -407,12 +559,75 @@ function Run()
 		CourtingProgress = CourtingProgress * 1.5
 	elseif Result == 4 then
 		TheItem = "JanesRing"
-		local EmpathySkill = GetSkillValue("", EMPATHY)
-		if SimGetProgress("") >= (80 - EmpathySkill) then 
+		if CurrentProgress >= (80 - EmpathySkill) then 
 			CourtingProgress = 19 + 1 * EmpathySkill
 		else
 			CourtingProgress = -3
 		end
+	end
+	
+	if GetItemCount("", TheItem, INVENTORY_STD) == 0 then
+		-- enough space to get one?
+		if not CanAddItems("", TheItem, 1, INVENTORY_STD) then
+			MsgQuick("", "@L_MEASURE_MAKEAPRESENT_ERROR_NOSPACE_+0")
+			StopMeasure()
+		end
+		
+		-- do we have one available?
+		local Access, BldID, FoundCount = dyn_HasAccessToItem("", TheItem)
+		if Access then
+			if GetAliasByID(BldID, "AccessBld") then
+				-- send a msg, asking for permission to transport
+				local GetItem = MsgBox("", "AccessBld", "@P"..
+										"@B[1, @L_REPLACEMENTS_BUTTONS_NEXT_+0]"..
+										"@B[C, @L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
+										"@L_MEASURE_MakeAPresent_NAME_+0",
+										"@L_MEASURE_MAKEAPRESENT_GETITEM_BODY_+0", GetID("AccessBld"), FoundCount )
+				
+				if GetItem == "C" then
+					StopMeasure()
+				else
+					if RemoveItems("AccessBld", TheItem, 1, INVENTORY_STD) == 1 then
+						SetMeasureRepeat(TimeOut)
+						AddItems("", TheItem, 1, INVENTORY_STD)
+					end
+				end
+			end
+		else
+			-- can we buy it at local market?
+			if GetNearestSettlement("", "City") then
+				CityGetLocalMarket("City", "Market")
+				if AliasExists("Market") then
+					local PresentCount = GetItemCount("Market", TheItem, INVENTORY_STD)
+					if PresentCount > 0 then
+						local Price = ItemGetPriceBuy(TheItem, "Market")
+						CityGetRandomBuilding("City", GL_BUILDING_CLASS_MARKET, -1, -1, -1, FILTER_IGNORE, "Shop")
+						-- send a msg, asking for permission to buy
+						local GetItem = MsgBox("", "Shop", "@P"..
+										"@B[1, @L_REPLACEMENTS_BUTTONS_NEXT_+0]"..
+										"@B[C, @L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
+										"@L_MEASURE_MakeAPresent_NAME_+0",
+										"@L_MEASURE_MAKEAPRESENT_GETITEM_BODY_+1", GetID("City"), Price)
+				
+						if GetItem == "C" then
+							StopMeasure()
+						else
+							if RemoveItems("Market", TheItem, 1, INVENTORY_STD) == 1 then
+								SetMeasureRepeat(TimeOut)
+								AddItems("", TheItem, 1, INVENTORY_STD)
+								chr_SpendMoney("", Price, "WaresBought", true)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	-- check again, cancel measure here
+	if GetItemCount("", TheItem, INVENTORY_STD) == 0 then
+		MsgQuick("", "@L_MEASURE_MAKEAPRESENT_ERROR_NOACCESS_+0")
+		StopMeasure()
 	end
 	
 	if not GoodPresent then
@@ -512,8 +727,8 @@ function Run()
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					PlayAnimationNoWait("", "talk")
-					DestinationAnimationLength = PlayAnimationNoWait("Destination", "propel")
-					Sleep(DestinationAnimationLength * 0.4)
+					DestinationAnimationLength = PlayAnimationNoWait("Destination", "shake_head")
+					Sleep(DestinationAnimationLength * 0.3)
 					ModifyFavor = -5
 				else
 					ModifyFavor = FavorWon

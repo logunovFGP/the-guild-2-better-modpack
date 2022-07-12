@@ -927,3 +927,25 @@ function GetHighestOfficeLevel(SimAlias)
 	
 	return HighestLevel
 end
+
+-- -----------------------
+-- HasAccessToItem
+-- -----------------------
+function HasAccessToItem(SimAlias, ItemName)
+	GetDynasty(SimAlias, "MyDyn")
+	local	Count = DynastyGetBuildingCount2("MyDyn")
+	local Found = false
+	local BldID = 0
+	local FoundCount = 0
+	for i = 0, Count-1 do
+		if DynastyGetBuilding2("dynasty", i, "Check") then
+			if GetItemCount("Check", ItemName, INVENTORY_STD) > 0 then
+				FoundCount = GetItemCount("Check", ItemName, INVENTORY_STD)
+				Found = true
+				break
+			end
+		end
+	end
+	
+	return Found, BldID, FoundCount
+end
