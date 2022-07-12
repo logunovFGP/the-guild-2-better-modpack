@@ -111,6 +111,9 @@ function Run()
 			end
 			
 			-- Add the achieved progress
+			if AliasExists("cutscene") then
+				DestroyCutscene("cutscene")
+			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			Sleep(0.2)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)

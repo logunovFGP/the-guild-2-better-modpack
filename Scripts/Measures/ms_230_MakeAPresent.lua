@@ -742,6 +742,10 @@ function Run()
 			end
 
 			-- Add the archieved progress
+			if AliasExists("cutscene") then
+				DestroyCutscene("cutscene")
+			end
+			
 			if Slap then
 				ModifyHP("", -30, true, 10)
 				Sleep(0.1)
@@ -802,6 +806,7 @@ function CleanUp()
 	if AliasExists("cutscene") then
 		DestroyCutscene("cutscene")
 	end
+	
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
 	StopAnimation("")

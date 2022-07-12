@@ -490,28 +490,6 @@ function GetBuildingProtFromBurglaryLevel(destination)
 end
 
 -- -----------------------
--- SpeakPoem
--- -----------------------
-function SpeakPoem(GenderDes,OwnMarried,InLove,DesFName,OwnFName)
-
-	local label = "@L_GIVEAPOEM"
-	
-	if (DesFName == OwnFName) or (OwnMarried == false) or (InLove == true) then
-		label = label.."_POETRY"
-	else
-		label = label.."_HOMAGE"
-	end
-	
-	if GenderDes == GL_GENDER_FEMALE then
-		label = label.."_TOFEMALE"
-	else
-		label = label.."_TOMALE"
-	end	
-	
-	return label
-end
-
--- -----------------------
 -- SimModifyFaith
 -- -----------------------
 function SimModifyFaith(Sim,FaithAmount,Religion)

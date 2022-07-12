@@ -3,7 +3,7 @@
 ----	OVERVIEW "as_192_UsePoem"
 ----
 ----	with this artifact, the player can increase the favour of the destination
-----	if the wealth is lower or same or 1 level Higher as the owner. favor of sims of the 
+----	if the title of the destination is not too high
 ----	same gender will not raise.
 ----	
 ----
@@ -13,7 +13,7 @@ function Run()
 
 	if IsStateDriven() then
 		local ItemName = "Poem"
-		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
+		if GetItemCount("", ItemName, INVENTORY_STD) == 0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
@@ -21,7 +21,7 @@ function Run()
 	end
 
 	--how much the favor of the destination to the owner is increased
-	local favormodify = GL_FAVOR_MOD_NORMAL
+	local favormodify = GL_FAVOR_MOD_SMALL + GetSkillValue("", RHETORIC)
 	--how far the victim can be to start this action
 	local MaxDistance = 800
 	--how far from the destination, the owner should stand while reading the poem
@@ -36,7 +36,7 @@ function Run()
 	end
 
 	if GetNobilityTitle("Destination") > (GetNobilityTitle("Owner")+2) then
-		MsgQuick("", "@L_GIVEAPOEM_MESSAGE_FAILURES_+1",GetID("Destination"))
+		MsgQuick("", "@L_GIVEAPOEM_MESSAGE_FAILURES_+1", GetID("Destination"))
 		StopMeasure()
 	end
 		
@@ -50,50 +50,72 @@ function Run()
 	AlignTo("Destination", "Owner")
 	Sleep(0.5)
 	
-	local IsMarried = SimGetSpouse("")
-	local DesFamilyName = SimGetLastname("Destination")
-	local OwnFamilyName = SimGetLastname("")
+	local InLove = false
+	local DesID = GetID("Destination")
 	
-	SimGetBeloved("", "Beloved")
-	local InLove
-	if GetID("Beloved") == GetID("Destination") then
+	if not SimGetSpouse("", "Spouse") and not SimGetLiaison("", "Liaison") and not SimGetCourtLover("", "CourtLover") then
 		InLove = true
-	else
-		InLove = false
+	end
+	
+	if not InLove then
+		if AliasExists("Spouse") and GetID("Spouse") == DesID then
+			InLove = true
+		elseif AliasExists("Liaison") and GetID("Liaison") == DesID then
+			InLove = true
+		elseif AliasExists("CourtLover") and GetID("CourtLover") == DesID then
+			InLove = true
+		end
 	end
 
 	--read the poem
-	local Time
-	Time = PlayAnimationNoWait("","use_book_standing")
-	PlayAnimationNoWait("Destination","cogitate")
-	Sleep(1)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("","Handheld_Device/Anim_openscroll.nif",false)
-	Sleep(1)
-	MsgSayNoWait("", chr_SpeakPoem(SimGetGender("Destination"),IsMarried,InLove,DesFamilyName,OwnFamilyName));
-	Sleep(Time-3)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("","",false)
+	if RemoveItems("", "Poem", 1) > 0 then
+		SetMeasureRepeat(TimeOut)
+		local Time = PlayAnimationNoWait("", "use_book_standing")
+		PlayAnimationNoWait("Destination", "cogitate")
+		Sleep(1)
+		PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+		CarryObject("", "Handheld_Device/Anim_openscroll.nif", false)
+		Sleep(1)
+		MsgSayNoWait("", talk_SpeakPoem(SimGetGender("Destination"), InLove))
+		Sleep(Time-3)
+		PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+		CarryObject("", "", false)
 	
-	if RemoveItems("","Poem",1)>0 then
 		--modify the favor
-		chr_ModifyFavor("Destination","",favormodify)
+		chr_ModifyFavor("Destination", "", favormodify)
+		-- add progress
+		if AliasExists("CourtLover") and GetID("CourtLover") == DesID then
+			feedback_OverheadCourtProgress("Destination", favormodify)
+			gameplayformulas_CourtingProgress("", favormodify) 
+		end
+		
+		-- lovelevel
+		if SimGetSpouse("Destination", "Spouse") then
+			if (GetID("Spouse") == GetID("")) then
+				AddImpact("", "LoveLevel", 4, 24) -- add some love for the next 24 hours
+				AddImpact("Destination", "LoveLevel", 4, 24)
+				if GetImpactValue("Destination", "LoveLevel") >= 10 then
+					MsgNewsNoWait("", "Destination", "", "schedule", -1,
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+				end
+			end
+		end
 		
 		local CurrentSimGender = SimGetGender("Destination")
 		if CurrentSimGender == GL_GENDER_FEMALE then
-			PlayAnimation("Destination","curtsy")
+			PlayAnimation("Destination", "curtsy")
 		else
-			PlayAnimation("Destination","bow")
+			PlayAnimation("Destination", "bow")
 		end
 	
-		if(IsDynastySim("Destination")) then
-			MsgNewsNoWait("Destination","","","intrigue",-1,
-				"@L_ARTEFACTS_192_USEPOEM_MSG_VICTIM_HEAD_+0",
-				"@L_ARTEFACTS_192_USEPOEM_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
+		if (IsDynastySim("Destination") and IsPartyMember("Destination") and GetDynastyID("") ~= GetDynastyID("Destination")) then
+			MsgNewsNoWait("Destination", "", "", "intrigue", -1,
+						"@L_ARTEFACTS_192_USEPOEM_MSG_VICTIM_HEAD_+0",
+						"@L_ARTEFACTS_192_USEPOEM_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 		end
 	
-		SetMeasureRepeat(TimeOut)
-		chr_GainXP("",GetData("BaseXP"))
+		chr_GainXP("", GetData("BaseXP"))
 		
 		Sleep(1)
 	end
@@ -108,8 +130,6 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	--active time immediately
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+1",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

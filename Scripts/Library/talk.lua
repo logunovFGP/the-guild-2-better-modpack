@@ -32,6 +32,28 @@ function ThreatCharacter(Rhetoric)
 end
 
 -- -----------------------
+-- SpeakPoem
+-- -----------------------
+function SpeakPoem(GenderDes, InLove)
+
+	local label = "@L_GIVEAPOEM"
+	
+	if InLove then
+		label = label.."_POETRY"
+	else
+		label = label.."_HOMAGE"
+	end
+	
+	if GenderDes == GL_GENDER_FEMALE then
+		label = label.."_TOFEMALE"
+	else
+		label = label.."_TOMALE"
+	end	
+	
+	return label
+end
+
+-- -----------------------
 -- AskLiaison
 -- -----------------------
 function AskLiaison(Rhetoric, Gender)
