@@ -15,7 +15,7 @@ function Run()
 
 	-- only for CourtLovers, Liaisons or Spouses
 	if not SimGetCourtLover("", "MyLover") then
-		if not SimGetLiason("", "MyLiaison") then
+		if not SimGetLiaison("", "MyLiaison") then
 			if not SimGetSpouse("", "MySpouse") then
 				MsgBoxNoWait("", "", "@L_MEASURE_MakeAPresent_NAME_+0", "@L_MEASURE_MAKEAPRESENT_ERROR_NOLOVER_+0")
 				StopMeasure()
