@@ -477,13 +477,6 @@ function VoteForOffice(Office)
 			if CutsceneLocalPlayerIsWatching("") then
 				HudClearSelection()
 			end
-		else
-			officesession_SimCam("OfficeHolder", 0, 0)
-			-- What? I never did something wrong!
-			MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_1STINTRO_SUB")
-			if CutsceneLocalPlayerIsWatching("") then
-				HudClearSelection()
-			end
 		end
 		
 		officesession_SimCam("Chairman",0,0)
@@ -724,19 +717,53 @@ function VoteForOffice(Office)
 		PlayAnimationNoWait("Applicant"..Winner, "sit_talk_short")		
 		-- old office holder new office holder? Reactions
 		if (OfficeGetHolder("Office", "OfficeHolder") and GetID("OfficeHolder") == GetID("Applicant"..Winner)) then
-			MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION_+3")
+			local WinnerMsg = Rand(3)
+			
+			if WinnerMsg == 0 then
+				MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION_+3")
+			elseif WinnerMsg == 1 then
+				MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_SCHOLAR_GOOD_FAVOR_+0")
+			else
+				MsgSay("OfficeHolder", "@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+3")
+			end
+		-- office holder lost the vote and is present
 		elseif (OfficeGetHolder("Office", "OfficeHolder") and officesession_SimIsInTownhall("OfficeHolder") and wonEllection == false) then
 			MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION")
 			officesession_SimCam("OfficeHolder", 0, 0)
-			-- some insults before I go
-			--if SimGetGender("Applicant"..Winner)==GL_GENDER_FEMALE then
-			--	MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_REASONTOGO_INSULT_FEMALE")
-			--else
-			--	MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_REASONTOGO_INSULT_MALE")
-			--end
-			MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_COMMENTS")
+			
+			local RandMsg = Rand(10)
+			if RandMsg == 0 then
+				local CancelMsg = Rand(4)
+				if CancelMsg == 0 then
+					MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_1STINTRO_SUB_+4")
+				elseif CancelMsg == 1 then
+					MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_1STINTRO_SUB_+3")
+				elseif CancelMsg == 2 then
+					MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_1STINTRO_SUB_+2")
+				else
+					MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_1STINTRO_SUB_+1")
+				end
+			elseif RandMsg == 1 then
+				local CancelMsg = Rand(3)
+				if CancelMsg == 0 then
+					MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_MYRMIDON_BAD_FAVOR_+5")
+				elseif CancelMsg == 1 then
+					MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_MYRMIDON_BAD_FAVOR_+0")
+				end
+			else
+				MsgSay("OfficeHolder", "@L_SESSION_2_CANCEL_COMMENTS")
+			end
 		else
-			MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION") 
+			-- No office holder / not present, show the winner instead
+			if Rand(10) == 0 then
+				if Rand(2) == 0 then
+					MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_WORKLESS_GOOD_FAVOR_+2")
+				else
+					MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_SCHOLAR_GOOD_FAVOR_+0")
+				end
+			else
+				MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION")
+			end
 		end
 		
 		if CutsceneLocalPlayerIsWatching("") then
