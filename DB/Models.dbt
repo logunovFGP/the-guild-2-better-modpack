@@ -1231,10 +1231,10 @@ Data:
 7342   "buildings/resources/"   "clay"   0   0   0   0   0   0   |
 7343   "city/specialbuildings/"   "herbshouse"   0   0   0   0   0   0   |
 7344   "buildings/resources/"   "willowrot"   0   0   0   0   0   0   |
-7345   "city/specialbuildings/"    "statue_angel"                  0              3               0                 0                0                       0                        | 
-7346   "city/specialbuildings/"    "statue_lion"                   0              3               0                 0                0                       0                        | 
-7347   "city/specialbuildings/"    "statue_roman"                  0              3               0                 0                0                       0                        | 
-7348   "city/specialbuildings/"    "statue_saint"                  0              3               0                 0                0                       0                        | 
+7345   "city/Statues/"    "statue_angel"                  0              3               0                 0                0                       0                        | 
+7346   "city/Statues/"    "statue_lion"                   0              3               0                 0                0                       0                        | 
+7347   "city/Statues/"    "statue_roman"                  0              3               0                 0                0                       0                        | 
+7348   "city/Statues/"    "statue_saint"                  0              3               0                 0                0                       0                        | 
 7349   "buildings/resources/"   "charcoal"   0   0   0   0   0   0   |
 7362   "buildings/Tradehouse/"   "Tradehouse"   0   0   0   0   0   0   |
 7364   "weapons/"   "Cannon"   0   0   0   0   0   0   |
@@ -1350,6 +1350,12 @@ Data:
 9016   "Animals/"   "buckelwal"   0    0   0                 0                0                       0                        | 
 9017   "Animals/"   "Carp"   0    0   0                 0                0                       0                        | 
 9018   "Animals/"   "bull"   0    0   0                 0                0                       0                        | 
+9019   "buildings/Worker_Hut/"   "WorkerHut_high_v2"   0   1   0   0   0   0   |
+9020   "buildings/Worker_Hut/"   "WorkerHut_low_v2"   0   1   0   0   0   0   |
+9021   "buildings/Worker_Hut/"   "WorkerHut_med_v2"   0   1   0   0   0   0   |
+9022   "buildings/Worker_Hut/"   "WorkerHut"   0   1   0   0   0   0   |
+9023   "buildings/Robbercamp/"   "Robber_low_01"   0   1   0   0   0   0   |
+
 9067   "city/specialbuildings/Vienna_Buildings/"   "Bank1"                         0              1               0                 0                0                       0                        | 
 9068   "city/specialbuildings/Vienna_Buildings/"   "Bank2"                         0              1               0                 0                0                       0                        | 
 9075   "city/specialbuildings/Vienna_Buildings/"   "WorkerHut1"                    0              1               0                 0                0                       0                        | 
