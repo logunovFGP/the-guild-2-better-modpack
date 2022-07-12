@@ -89,15 +89,23 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
 	elseif (Rhetoric < 6) then
-		label = label.."_NORMAL_RHETORIC"
+		if Rand(4) == 0 then
+			label = label.."_WEAK_RHETORIC"
+		else
+			label = label.."_NORMAL_RHETORIC"
+		end
 	else
-		label = label.."_GOOD_RHETORIC"
+		if Rand(4) == 0 then
+			label = label.."_NORMAL_RHETORIC"
+		else
+			label = label.."_GOOD_RHETORIC"
+		end
 	end	
 	
 	if (Kind == "TALK") or (Kind == "COMPLIMENT") or (Kind == "DANCE") or (Kind == "MAKE_A_PRESENT") then
 		
-		if (CourtingProgress <= 0) then
-			if (CourtingProgress < -6) then
+		if (CourtingProgress < 1) then
+			if (CourtingProgress < -5) then
 				label = label.."_WAY_TOO_PROFOUND_"
 			else
 				label = label.."_PROFOUND_"
@@ -112,8 +120,8 @@ function AnswerCourtingMeasure(Kind, Rhetoric, Gender, CourtingProgress)
 		
 	else
 	
-		if (CourtingProgress <= 0) then
-			if (CourtingProgress <- 6) then
+		if (CourtingProgress < 1) then
+			if (CourtingProgress < -5) then
 				label = label.."_WAY_TOO_OFFENSIVE_"
 			else
 				label = label.."_OFFENSIVE_"
@@ -148,9 +156,17 @@ function AnswerMissingVariation(Gender, Rhetoric)
 	if (Rhetoric < 3) then
 		label = label.."_WEAK_RHETORIC"
 	elseif (Rhetoric < 6) then
-		label = label.."_NORMAL_RHETORIC"
+		if Rand(4) == 0 then
+			label = label.."_WEAK_RHETORIC"
+		else
+			label = label.."_NORMAL_RHETORIC"
+		end
 	else
-		label = label.."_GOOD_RHETORIC"
+		if Rand(4) == 0 then
+			label = label.."_NORMAL_RHETORIC"
+		else
+			label = label.."_GOOD_RHETORIC"
+		end
 	end
 	
 	return label
