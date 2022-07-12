@@ -324,8 +324,32 @@ Translate and add the following lines below:
 18321   "_MEASURE_InviteToDance_TOOLTIP_+0"   "Gather all your courage, approach the person, and - just ask. She can't say more than >No<. And if she says >Yes<, take a turn about the floor, enjoy yourself, and have all kinds of fun. And after the dance, you may have the fortune of looking into happy eyes - those of your partner. Many a tender bond has formed while dancing that has lasted a lifetime.$N$NFor this action you need your talent >Dexterity< and you'll have an advantage if you have a higher title than your destination"   |
 18322   "_MEASURE_BewitchCharacter_TOOLTIP_+0"   "If you want to talk with someone in a private atmosphere, then invite them to the inn for a comfortable chat. And if you are not too clumsy, you can quickly win that person over.$N$NFor this action you need your talent >Charisma< and you'll have an advantage if you have a higher title than your destination"   |
 18323   "_MEASURE_TakeABath_TOOLTIP_+0"   "Taking a bath together is not only cleansing, it can also be very relaxing and extremely pleasant. If you are courting someone, or would like to improve the favour of a well-disposed person of the opposite sex, invite them to take a bath with you here in the inn...$N$NFor this action you need your talent >Charisma< and you'll have an advantage if you have a higher title than your destination"   |
-
-18349   "_TWP_SUPPLYWORKSHOP_CHOOSE_SUPPLIERS_+0"   "Where should the cart get the materials? $N$C[255,20,20]Click a destination to remove it from the list."   |
+18324   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+2"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18325   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+3"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18326   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+4"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18327   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+5"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18328   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+6"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18329   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+7"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18330   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+8"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18331   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+9"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18332   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+10"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18333   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+11"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18334   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+12"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18335   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+13"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18336   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+14"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18337   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+2"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18338   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+3"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18339   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+4"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18340   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+5"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18341   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+6"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18342   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+7"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18343   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+8"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18344   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+9"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18345   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+10"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18346   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+11"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18347   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+12"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18348   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+13"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
+18349   "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+14"   "The title of %>%1l%< offers you the following privileges:$N%5l %6l %7l %8l %9l %10l %11l %12l %13l %14l %15l %16l %17l %18l %19l %20l %21l %22l %23l %24l $N$NThe domicile suitable for your standing is:$N%2l$N$NAs %>%1l%< you are allowed to own %3i businesses. Currently, you own %4i businesses."   |
 // ORIGINAL SOUNDFILES RENAMING AND REORGANIZING by Fajeth
 18350   "_SIM_COMMENTS_WORKER_CLICK_RANDOM_+1"   "#E[NT_NEUTRAL]Your Orders?"   |
 18351   "_SIM_COMMENTS_WORKER_CLICK_FIGHTER_+7"   "#E[NT_NEUTRAL]You want me to thrash someone?"   |
@@ -1089,6 +1113,61 @@ Translate and add the following lines below:
 19192   "_HPFZ_KATASTR_KRANK_NAM_+8"   "the Plague"   |
 19193   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+0"   "A family member got the Plague"   |
 19194   "_HPFZ_KATASTR_STOD_WARNING_HEAD_+1"   "An employee got the Plague"   |
+19195   "_ONSCREENHELP_4_UPGRADES_IMPACT_RogueBonus"   "$LIncreases your income during Rogue-actions by %1i percent !"   |
+19196   "_ONSCREENHELP_4_UPGRADES_IMPACT_DestructionBonus"   "$LIncreases the damage against buildings by %1i percent !"   |
+19197   "_ONSCREENHELP_4_UPGRADES_IMPACT_BONUSSPACE_+0"   "$LThe capacity of your storage slots increases by %1i units !"   |
+19198   "_TWP_SUPPLYWORKSHOP_CHOOSE_SUPPLIERS_+0"   "Where should the cart get the materials? $N$C[255,20,20]Click a destination to remove it from the list."   |
+19199   "_MEASURE_MAKEAPRESENT_ERROR_NOLOVER_+0"   "You can only make gifts to your spouse, liaisons and court lovers! $N$NTo transfer an item use the orange action >Give Item<."   |
+19200   "_MEASURE_MAKEAPRESENT_ERROR_NOLOVER_+1"   "Your target isn't your spouse, nor your liaison nor your love interest! $N$NTo transfer an item use the orange action >Give Item<."   |
+19201   "_MEASURE_MAKEAPRESENT_INFO_BODY_+0"   "You want to make %1SN a present as a sign of affection? Then choose carefully! Presents increase the courting progress by a lot as long as you choose the right present! The higher the favour between you and %1SV, the more you know about %2l preferences. Of course you can also stick to well-tried things and gift something, which would please %3l. However you will have much greater success if you know %1SV really well.$N$NYou think that %1SV %4l, whearas %5l. An engagement ring %6l"   |
+19202   "_REPLACEMENTS_TEXTVAR_HIS_+0"   "his"   |
+19203   "_REPLACEMENTS_TEXTVAR_HIS_+1"   "His"   |
+19204   "_REPLACEMENTS_TEXTVAR_HER_+0"   "her"   |
+19205   "_REPLACEMENTS_TEXTVAR_HER_+1"   "Her"   |
+19206   "_REPLACEMENTS_TEXTVAR_EVERYMAN_DAT_+0"   "every man"   |
+19207   "_REPLACEMENTS_TEXTVAR_EVERYWOMAN_DAT_+0"   "every woman"   |
+19208   "_MEASURE_MAKEAPRESENT_JANESRING_+0"   "wouldn't be appropriate right now."   |
+19209   "_MEASURE_MAKEAPRESENT_JANESRING_+1"   "would be the perfect present right now!"   |
+19210   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+0"   "could like anything, really"   |
+19211   "_MEASURE_MAKEAPRESENT_DONTLIKE_+0"   "you can't really tell anything about any kind of dislikes"   |
+19212   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+1"   "surely would enjoy some tasty sweets"   |
+19213   "_MEASURE_MAKEAPRESENT_DONTLIKE_+1"   "any kind of alcohol wouldn't be your safest bet"   |
+19214   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+2"   "is devoted to alcohol"   |
+19215   "_MEASURE_MAKEAPRESENT_DONTLIKE_+2"   "seafood better shall remain on your plate"   |
+19216   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+3"   "loves any kind of seafood"   |
+19217   "_MEASURE_MAKEAPRESENT_DONTLIKE_+3"   "crops and suchlike don't receive any love"   |
+19218   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+4"   "prefers the simplest of things"   |
+19219   "_MEASURE_MAKEAPRESENT_DONTLIKE_+4"   "sweets only cause tooth rot and pain"   |
+19220   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+5"   "prefers to keep moving"   |
+19221   "_MEASURE_MAKEAPRESENT_DONTLIKE_+5"   "metal and jewellery annoy most of the time"   |
+19222   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+6"   "appreciates a well made piece of metal"   |
+19223   "_MEASURE_MAKEAPRESENT_DONTLIKE_+6"   "woodworks are mocked most of the time"   |
+19224   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+7"   "already as a child was interested in carving toys"   |
+19225   "_MEASURE_MAKEAPRESENT_DONTLIKE_+7"   "vases often went to waste, which often caused only trouble at home"   |
+19226   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+8"   "enjoys to decorate the home"   |
+19227   "_MEASURE_MAKEAPRESENT_DONTLIKE_+8"   "leather goods simply are too transient"   |
+19228   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+9"   "sometimes has quite disturbing preferences"   |
+19229   "_MEASURE_MAKEAPRESENT_DONTLIKE_+9"   "Illness is seen as God's punishment"   |
+19230   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+10"   "is always worried about the well-being of others"   |
+19231   "_MEASURE_MAKEAPRESENT_DONTLIKE_+10"   "Literature, that isn't read by many, is pointless"   |
+19232   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+11"   "loves the smell of ink on paper"   |
+19233   "_MEASURE_MAKEAPRESENT_DONTLIKE_+11"   "flowers most of the time cause hay fever"   |
+19234   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+12"   "values to smell well"   |
+19235   "_MEASURE_MAKEAPRESENT_DONTLIKE_+12"   "bones are giving an uneasy feeling"   |
+19236   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+13"   "likes to mock others"   |
+19237   "_MEASURE_MAKEAPRESENT_DONTLIKE_+13"   "you indeed should not overdo it"   |
+19238   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+14"   "doesn't shy away from most things"   |
+19239   "_MEASURE_MAKEAPRESENT_DONTLIKE_+14"   "some are just blasphemous"   |
+19240   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+15"   "is slightly supersticious"   |
+19241   "_MEASURE_MAKEAPRESENT_DONTLIKE_+15"   "armor is clearly no substitute for talent"   |
+19242   "_MEASURE_MAKEAPRESENT_KNOWLEDGE_+15"   "would even love to sleep in armors"   |
+19243   "_MEASURE_MAKEAPRESENT_DONTLIKE_+15"   "some things are simply without honor"   |
+19244   "_MEASURE_MAKEAPRESENT_ERROR_NOSPACE_+0"   "You don't have enough space in your personal inventory!"   |
+19245   "_MEASURE_MAKEAPRESENT_ERROR_NOACCESS_+0"   "Unfortunately you can't find this present anywhere!"   |
+19246   "_MEASURE_MAKEAPRESENT_GETITEM_BODY_+0"   "You don't have this present with you, however luckily there are %i2 pieces in the storage of %1GG. Would you like to immediately transfer one if it? By doing so the cooldown of this action will begin."   |
+19247   "_MEASURE_MAKEAPRESENT_GETITEM_BODY_+1"   "You don't have this present with you and unfortunately you also have none of it in any of your buildings right now. Luckily you can buy it at the market of %1NAME for an affordable amount of %2t! Would you like to aquire and immediately transfer one pice? By doing so the cooldown of this action will begin."   |
+19248   "_BUILDING_Mercenary2_NAME_+0"   "Mercenary Haunt"   |
+19249   "_BUILDING_Mercenary3_NAME_+0"   "Mercenary Guild"   |
 
 English:
 

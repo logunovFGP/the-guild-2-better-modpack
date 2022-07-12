@@ -63,6 +63,7 @@ _Technik_
 - GameConstants.dbt wurde überarbeitet. Scripte nutzen nun häufiger Konstanten, um Dinge zu vereinheitlichen und besser balancen zu können.
 - Measures.dbt wurde komplett überarbeitet.
 - Impacts.dbt wurde bereinigt.
+- Der Werbungsfortschritt wird nun neu berechnet.
 - Die Möglichkeit, während Cutscenes Komplimente und andere Maßnahmen zu nutzen, wurde gestrichen. Alle Teile aus Scripten, die sich auf diesen Fall beziehen, wurden entfernt.
 - Gildenhaus-Script wurde generalüberholt.
 
@@ -100,6 +101,7 @@ _Design_
 - Beim Kauf eines neuen Adelstitels erhalten nun alle Charaktere einer Spielergruppe Erfahrung, unabhängig davon, wer den Titel beantragt.
 - Die Waffenmodelle wurden teilweise geändert.
 - Im Dynastie-Modus gibt es nun zu Spielbeginn eine Erzählerstimme.
+- Die Söldnerburg wurde mit einem Söldnerhaus ersetzt, dieses kann nun normal in der Stadt platziert werden.
 
 *** Vanilla-Bugs ***
 
@@ -292,6 +294,7 @@ _Allgemein_
 - Das Diplomatie-System wurde völlig überarbeitet, man hat noch deutlich mehr Interaktionsmöglichkeiten, u. A: Geld senden, Zahlung fordern, (positive oder negative) Nachrichten versenden, Informationen
   einsehen oder sogar einen Kriegspakt eingehen. Der Rollenspiel-Aspekt wurde enorm ausgebaut.
 - Ihr bekommt eine Nachricht, wenn eure Angestellten getötet werden oder an einer Krankheit sterben.
+- Das Umwerben wurde komplett umgebaut und einige Maßnahmen (z.B. Geschenke machen) funktionieren gänzlich anders.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.

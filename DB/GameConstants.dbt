@@ -268,6 +268,11 @@ Data:
 261   "GL_DANCE_MINFAVOR"                   50                ""                              | 
 262   "GL_BEWITCH_MINFAVOR"                 65                ""                              | 
 263   "GL_BATH_MINFAVOR"                    75                ""                              | 
+264   "GL_DANCING_COST"                     300               ""                              | 
+265   "GL_BATH_ALONE_COST"                  300               ""                              | 
+266   "GL_BATH_TOGETHER_COST"               500               ""                              | 
+267   "GL_BEWITCH_COST"                     500               ""                              | 
+268   "GL_RENT_SLEEPING_COST"               150               ""                              | 
 
 
 

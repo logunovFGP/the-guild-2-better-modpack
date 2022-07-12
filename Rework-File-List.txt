@@ -114,7 +114,6 @@
 458 Scripts\Measures\ms_036_AttackEnemy.lua
 459 Scripts\Measures\ms_039_BlackmailCharacter.lua
 460 Scripts\Measures\ms_041_BribeCharacter.lua
-462 Scripts\Measures\ms_045_CourtLover.lua
 464 Scripts\Measures\ms_048_HireEmployee.lua
 465 Scripts\Measures\ms_048_HireEmployeeBuildingRandom.lua
 466 Scripts\Measures\ms_049_FireEmployee.lua
@@ -165,7 +164,6 @@
 526 Scripts\Measures\ms_160_GiveAFeast.lua
 527 Scripts\Measures\ms_211_OrderCollectEvidence.lua
 528 Scripts\Measures\ms_220_TrainCharacter.lua
-529 Scripts\Measures\ms_230_MakeAPresent.lua
 532 Scripts\Measures\ms_AddPamphlet.lua
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
@@ -347,7 +345,6 @@
 742 Scripts\Measures\Artefacts\as_184_UseFlowerOfDiscord.lua
 743 Scripts\Measures\Artefacts\as_190_UseMead.lua
 744 Scripts\Measures\Artefacts\as_191_UsePerfume.lua
-745 Scripts\Measures\Artefacts\as_192_UsePoem.lua
 746 Scripts\Measures\Artefacts\as_194_UseThesisPaper.lua
 747 Scripts\Measures\Artefacts\as_195_UseToadExcrements.lua
 748 Scripts\Measures\Artefacts\as_197_UseWalkingStick.lua

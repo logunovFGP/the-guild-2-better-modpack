@@ -63,6 +63,7 @@ _Tech_
 - GameConstants.dbt has been reworked. Scripts use GameConstants much more frequently now to make things more consistent and easier to balance.
 - Measures.dbt has been completely reworked.
 - Impacts.dbt has been cleaned up.
+- Courting Progress is calculated differently.
 - The possibility of using compliments and other actions during cutscenes have caused many issues and thus got removed. All cutscene-only parts of those scripts have been removed.
 - guild house script has been completely revised.
 
@@ -99,6 +100,7 @@ _Design_
 - When aquiring a new nobility title, all members of your party get some xp instead of just the character who initially bought the title.
 - Some weapon models have been changed.
 - In dynasty mode (endless) you will get a voiceline from the narrator at the beginning of the game now.
+- The Mercenary castle has been replaced by a mercenary house and can be placed inside the city.
 
 *** Vanilla-Bugs ***
 
@@ -285,6 +287,7 @@ _General_
 - The Diplomacy feature has been reworked completely and is much bigger now. You have many new interactions, such as 'Send money', 'Demand a payment', Send a (positive/negative) diplomatic message,
   or even create a war pact ... The feature builds heavily on RPG-elements.
 - You get a message when your employee has been killed or died by sickness.
+- The Courting System has been reworked completely and some actions work quite differently than before (e.g. making presents).
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
