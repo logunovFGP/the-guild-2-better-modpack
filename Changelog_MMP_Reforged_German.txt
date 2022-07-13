@@ -179,6 +179,7 @@ _Allgemein_
 - Die Pest endete nie.
 - Als Träger eines Amtes auf Reichsebene kann man sich nun auf andere Ämter derselben Stufe bewerben.
 - Wer mit Aufträgen spielt, erhielt keine vertonte Missionsanweisung zu Spielbeginn.
+- Fehlende Dialoge (vertont!) beim Bonus-Auszahlen bzw. Angestellte antreiben hinzugefügt.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

@@ -3,7 +3,7 @@
 ----	OVERVIEW "ms_032_PropelEmployees"
 ----
 ----	with this measure the player can propel the employees in one of his
-----	workshops. The employee's handicraft-talent is increased while their loyalty
+----	workshops. The employee's productivity is increased while their loyalty
 ----	is lowed.
 ----
 -------------------------------------------------------------------------------
@@ -14,23 +14,22 @@ function Run()
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	-- get the value of the character's skill RHETORIC
-	local	LoyaltyLoss
-
 	if not GetInsideBuilding("", "Building") then
-		MsgDebugMeasure("PropelEmployees - only available inside a building")
-		return
-	end
-	
-	if BuildingGetType("Building") == GL_BUILDING_TYPE_RESIDENCE then
-		SetMeasureRepeat(0.5)
-		return
+		if AliasExists("Destination") then
+			if f_MoveTo("", "Destination", GL_MOVESPEED_RUN, false) then
+				CopyAlias("Destination", "Building")
+			else
+				return
+			end
+		else
+			return
+		end
 	end
 	
 	MeasureSetStopMode(STOP_CANCEL)
 	
-	local	Count = BuildingGetWorkerCount("Building")
-	local	Found = 0
+	local Count = BuildingGetWorkerCount("Building")
+	local Found = 0
 	
 	-- change the check from GetInsideBuilding to SimIsWorkingTime to make it possible to use this measure on outside workers at farms/mines/etc.
 	local Alias
@@ -51,20 +50,27 @@ function Run()
 	end
 
 	-- move player character to propel position
-	if GetLocatorByName("Building", "Propel", "PropelPosition") then
-		f_MoveTo("", "PropelPosition")
+	if not GetLocatorByName("Building", "Propel", "PropelPosition") then
+		GetLocatorByName("Building", "work_01", "PropelPosition")
 	end
 	
+	if not AliasExists("PropelPosition") then
+		return
+	end
+
+	f_MoveTo("", "PropelPosition")
 	MeasureSetNotRestartable()
 	
-	local	Rhetoric = GetSkillValue("", RHETORIC) * 10
-	if (Rhetoric < 20) then
+	local LoyaltyLoss
+	local Rhetoric = GetSkillValue("", RHETORIC)
+
+	if (Rhetoric < 2) then
 		LoyaltyLoss = -15
-	elseif (Rhetoric < 40) then
+	elseif (Rhetoric < 4) then
 		LoyaltyLoss = -12
-	elseif (Rhetoric < 60) then
+	elseif (Rhetoric < 6) then
 		LoyaltyLoss = -9
-	elseif (Rhetoric < 80) then
+	elseif (Rhetoric < 8) then
 		LoyaltyLoss = -6
 	else
 		LoyaltyLoss = -3
@@ -83,37 +89,13 @@ function Run()
 	-- play the animation for the player character
 	PlayAnimationNoWait("", "propel")
 
-	-- get the loss of the employees favor based on the character's skill RHETORIC
-	
--------------------------------------------------------------------
---		Text = "@L%>Listen dunderheads, there is no rest for you before work is done!%<"
---		Text = "@L%>Go to work you lazy bastards, before I forget my decent education!%<"
---		Text = "@L%>Come on you lazy dogs!%<"
---		Text = "@L%>Work faster! The job is done when it is done!%<"
---		Text = "@L%>You can sleep when you are laying in bed, but not in my workshop!%<"
--------------------------------------------------------------------
-	if (Rhetoric < 20) then
-		MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT_+0")
-		LoyaltyLoss = -15
-	elseif (Rhetoric < 40) then
-		MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT_+1")
-		LoyaltyLoss = -12
-	elseif (Rhetoric < 60) then
-		MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT_+2")
-		LoyaltyLoss = -9
-	elseif (Rhetoric < 80) then
-		MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT_+3")
-		LoyaltyLoss = -6
-	else
-		MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT_+4")
-		LoyaltyLoss = -3
-	end
+	MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT")
 
 	-- boost the productivity
-	local	Boost = GetSkillValue("", CRAFTSMANSHIP)
+	local Boost = 0.20 + (GetSkillValue("", CRAFTSMANSHIP)*0.05)
 	local AnimTime = 1
-	local	BoostDuration = duration * GetImpactValue("", "PropelSpeedupTime")*0.01 -- 35
-	LoyaltyLoss = LoyaltyLoss * 0.01 * GetImpactValue("", "PropelFavorMalus") -- 41 
+	local BoostDuration = duration * GetImpactValue("", "PropelSpeedupTime")*0.01 -- ability
+	LoyaltyLoss = math.floor(LoyaltyLoss * 0.01 * GetImpactValue("", "PropelFavorMalus")) -- ability
 	
 	for number=0, Found-1 do
 		Alias = "Worker"..number
@@ -122,7 +104,7 @@ function Run()
 			chr_ModifyFavor(Alias, "Owner", LoyaltyLoss)
 		end
 		
-		AddImpact(Alias, "craftsmanship", Boost, BoostDuration)		
+		AddImpact(Alias, "Productivity", Boost, BoostDuration)	
 	end
 	
 	SetMeasureRepeat(TimeOut)
@@ -131,7 +113,6 @@ function Run()
 	XPAmount = XPAmount * Count
 	chr_GainXP("", XPAmount)
 	Sleep(AnimTime)
-	StopMeasure()
 end
 
 function Listen()
