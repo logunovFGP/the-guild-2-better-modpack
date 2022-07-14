@@ -93,7 +93,6 @@ function Run()
 
 	-- boost the productivity
 	local Boost = 0.20 + (GetSkillValue("", CRAFTSMANSHIP)*0.05)
-	local AnimTime = 1
 	local BoostDuration = duration * GetImpactValue("", "PropelSpeedupTime")*0.01 -- ability
 	LoyaltyLoss = math.floor(LoyaltyLoss * 0.01 * GetImpactValue("", "PropelFavorMalus")) -- ability
 	
@@ -112,7 +111,8 @@ function Run()
 	local XPAmount = GetData("BaseXP")
 	XPAmount = XPAmount * Count
 	chr_GainXP("", XPAmount)
-	Sleep(AnimTime)
+	Sleep(0.5)
+	StopMeasure()
 end
 
 function Listen()

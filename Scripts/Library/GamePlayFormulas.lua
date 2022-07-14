@@ -964,8 +964,8 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 		end
 	end
 	
-	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class)
-	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class)
+	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class) or 0
+	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class) or 1
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
 	
 	if CourtingDiff < 1 then

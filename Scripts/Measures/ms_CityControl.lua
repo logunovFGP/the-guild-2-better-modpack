@@ -1,22 +1,12 @@
 function Run()
-----------------------------------------------------------------------------------------------------
-----	Set GodModule 'true' for city events and desasters					----
-----												----
-	local GodModule = true									----
-----												----
-----												----
-----------------------------------------------------------------------------------------------------
-	if GodModule == false then
-		StopMeasure()
-	end
-	
+
 	GetScenario("World")
 	if HasProperty("World", "static") then
 		StopMeasure()
 	end
 	
-	local CityID = GetProperty("","CityID")
-	if not GetAliasByID(CityID,"MyCity") then
+	local CityID = GetProperty("", "CityID")
+	if not GetAliasByID(CityID, "MyCity") then
 		StopMeasure()
 	end
 

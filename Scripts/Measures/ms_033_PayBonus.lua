@@ -147,6 +147,7 @@ function Run()
 	Sleep(0.6)
 	chr_GainXP("", baseXP)
 	Sleep(AnimTime)
+	StopMeasure()
 end
 
 function CleanUp()

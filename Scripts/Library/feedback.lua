@@ -132,16 +132,20 @@ function MessageCharacter(Owner, Headline, Text, ...)
 end
 
 function MessageOtherCharacters(Owner, Headline, Text, ...)
-
+	
+	if DynastyIsShadow(Owner) then
+		return
+	end
+	
 	local HeaderText = Headline
 	local MessageClass = "intrigue"
 	local OwnerDyn = GetDynastyID(Owner)
 	local Alias
 	local DynCount = ScenarioGetObjects("Dynasty", 100, "Dynasties")
 	
-	for i=0, DynCount do
+	for i=0, DynCount-1 do
 		Alias = "Dynasties"..i
-		if DynastyIsPlayer(Alias) and GetDynastyID(Alias) ~= OwnerDyn then
+		if GetDynastyID(Alias) ~= OwnerDyn then
 			-- copies variable parameters to c	
 			-- attention - GetVariableParameters works only with special function such as (MsgNews/MsgNewsNoWait/MsgBox/MsgBoxNoWait)
 			GetVariableParameters(arg)
@@ -151,14 +155,18 @@ function MessageOtherCharacters(Owner, Headline, Text, ...)
 end
 
 function MessageOtherDynastiesTitle(Owner)
-
+	
+	if DynastyIsShadow(Owner) then
+		return
+	end
+	
 	local OwnerDyn = GetDynastyID(Owner)
 	local Alias
 	local DynCount = ScenarioGetObjects("Dynasty", 100, "Dynasties")
 	
-	for i=0, DynCount do
+	for i=0, DynCount-1 do
 		Alias = "Dynasties"..i
-		if DynastyIsPlayer(Alias) and GetDynastyID(Alias) ~= OwnerDyn then
+		if GetDynastyID(Alias) ~= OwnerDyn then
 			-- check for diplomacy
 			local Diplo = DynastyGetDiplomacyState(Alias, Owner)
 			if Diplo == DIP_FOE then
