@@ -1,18 +1,19 @@
 Translate and add the following lines below:
 
+// MegaMod New and Changed lines
 18000   "MMPversion_+0"   "MegaModPack Reforged V. 0.1"   |
 18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed: %1SN is in love and currently doesn't want to work for you!"   |
 18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed - Your target has already been inspected recently. Try again later."   |
 18003   "_AI_NEWRIVALINTOWN_HEAD_+0"   "You have a new competitor!"   |
-18004   "_AI_NEWRIVALINTOWN_BODY_+0"   "%1SN is not pleased that your %3GG has been built in the same city as %2GG. You are now competing with one another, hopefully it will remain somewhat peaceful between your dynasties ..."   |
+18004   "_AI_NEWRIVALINTOWN_BODY_+0"   "%1SN is not pleased that your %3GG has been built in the same city as %2GG. You are now competing with one another, hopefully it will remain somewhat peaceful between your Dynasties..."   |
 18005   "_AI_NEWRIVALINTOWN_BODY_+1"   "%1SN points out that %3GG is built in the same city as %2GG. Hopefully your relationship will remain peaceful."   |
 18006   "_BUYBUILDING_CREDIT_HEAD_+0"   "Credit account closed"   |
 18007   "_BUYBUILDING_CREDIT_BODY_+0"   "The credit account of %1GG was closed. You received %2t from the account."   |
 18008   "_GENERAL_ERROR_HEAD_+0"   "Action failed"   |
 18009   "_GENERAL_MEASURES_ARTEFACT_FAIL_+0"   "%1SN already has that kind of effect! Wait until it wears off before you use this item again." |
 18010   "_GENERAL_MEASURES_ARTEFACT_FAIL_+1"   "%1GG already has that kind of effect! Wait until it wears off before you use this item again." |
-18011   "_GENERAL_MEASURES_MARRY_FAILURES_+1"   "%4SV wants to marry %1SN, but %1SV has different plans ... Because of the work in %2GG for the %3DN dynasty, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %4SN."   |
-18012   "_GENERAL_MEASURES_MARRY_FAILURES_+2"   "%2SV wants to marry %1SN, but %1SV has different plans ... Because of the work for the city, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %2SN."   |
+18011   "_GENERAL_MEASURES_MARRY_FAILURES_+1"   "%4SV wants to marry %1SN, but %1SV has different plans... Because of the work in %2GG for the %3DN Dynasty, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %4SN."   |
+18012   "_GENERAL_MEASURES_MARRY_FAILURES_+2"   "%2SV wants to marry %1SN, but %1SV has different plans... Because of the work for the city, %1SV has no time for a romantic relationship. Your courtship thus has ended but at least this rejection was a valuable experience for %2SN."   |
 18013   "_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0"   "What a disaster!"   |
 18014   "_MEASURES_HIRERANDOM_NOMONEY_+0"   "You can't hire a new employee, because you are unable to pay them."   |
 18015   "_GENERAL_MEASURES_FAILURES_+27"   "Action failed - you can't hire a man for the profession %1l"   |
@@ -27,9 +28,9 @@ Translate and add the following lines below:
 18024   "_TRADEROUTE_NEXT_BUILDING_+0"   "Choose next building!"   |
 18025   "_TRADEROUTE_STOPED_HEAD_+0"   "A trade route is abandoned"   |
 18026   "_TRADEROUTE_STOPED_BODY_+0"   "Unfortunately, you don't have the necessary coinage to maintain the trade route."   |
-18027   "_TRADEROUTE_ACTIONSELECT_HEAD_+0"   "Select Action"   |
+18027   "_TRADEROUTE_ACTIONSELECT_HEAD_+0"   "Select action"   |
 18028   "_TRADEROUTE_ACTIONSELECT_BODY_+0"   "Choose which action should be performed at %1GG. $N If you mark the waypoint as important, the cart will finish all actions before moving on.$N$NThis waypoint is currently %2l."   |
-18029   "_TRADEROUTE_ACTIONSELECT_OPTION_+0"   "Finish waypoint"   |
+18029   "_TRADEROUTE_ACTIONSELECT_OPTION_+0"   "Finish Waypoint"   |
 18030   "_TRADEROUTE_ACTIONSELECT_OPTION_+1"   "Load"   |
 18031   "_TRADEROUTE_ACTIONSELECT_OPTION_+2"   "Unload"   |
 18032   "_TRADEROUTE_ACTIONSELECT_OPTION_+3"   "Resupply"   |
@@ -43,11 +44,11 @@ Translate and add the following lines below:
 18040   "_TRADEROUTE_INTERVAL_BODY_+0"   "Choose how often the cart should go on this route. $N$N If you have selected any waypoint as important, >constantly< would be your best choice."   |
 18041   "_TRADEROUTE_INITIATE_BODY_+0"   "Choose the next waypoint or send the cart on its way."   |
 18042   "_TRADEROUTE_CATEGORY_HEAD_+0"   "Choose Category"   |
-18043   "_TRADEROUTE_TYPESELECT_HEAD_+0"   "Choose Item"   |
+18043   "_TRADEROUTE_TYPESELECT_HEAD_+0"   "Choose item"   |
 18044   "_TRADEROUTE_TYPESELECT_BODY_+0"   "Choose the item that will be loaded at %1GG."   |
 18045   "_TRADEROUTE_TYPESELECT_BODY_+1"   "Choose the item that will be unloaded at %1GG."   |
 18046   "_TRADEROUTE_TYPESELECT_BODY_+2"   "Choose the item that will be supplied for %1GG."   |
-18047   "_TRADEROUTE_COUNTSELECT_HEAD_+0"   "Choose Amount"   |
+18047   "_TRADEROUTE_COUNTSELECT_HEAD_+0"   "Choose amount"   |
 18048   "_TRADEROUTE_COUNTSELECT_BODY_+0"   "Choose how many %2l should be loaded onto the cart."   |
 18049   "_TRADEROUTE_COUNTSELECT_BODY_+1"   "Choose how many %2l should $C[255,20,20] remain on the cart after unloading."   |
 18050   "_TRADEROUTE_COUNTSELECT_BODY_+2"   "Choose how many %2l you will always expect in your workshop. The cart will unload as many items as necessary."   |
@@ -71,7 +72,7 @@ Translate and add the following lines below:
 18068   "_TRADEROUTE_WARNING_OPTION_+2"   "Never mind, $Nhe is used to that!"   |
 18069   "_TRADEROUTE_WARNING_OPTION_+3"   "Why do you bother me?$NPlease refrain from warning me!"   |
 18070   "_ONSCREENHELP_9_ACTION_IMPACT_robe_TOOLTIP_+0"   "$S[2022] +3 $S[2024] +3"   |
-18071   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills ... An eerie cloak. "   |
+18071   "_ONSCREENHELP_9_ACTION_IMPACT_robe_DESCRIPTION_+0"   "This character wears a sorcerer robe. It increases his mental skills... An eerie cloak. "   |
 18072   "_COURTLOVER_MSG_FAILED_QUICK"   "You fired this person not long ago. Because of that he or she will not talk to you."   |  
 18073   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_TOOLTIP_+0"   "Class talents +1"   |
 18074   "_ONSCREENHELP_9_ACTION_IMPACT_GoodDream_NAME_+0"   "Well-rested"   |
@@ -80,61 +81,10 @@ Translate and add the following lines below:
 18077   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_NAME_+0"   "Rested"   |
 18078   "_ONSCREENHELP_9_ACTION_IMPACT_BadDream_DESCRIPTION_+0"   "This character has slept recently."   |
 18079   "_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2"   "Sleep not possible - %1SN is not tired yet."   |
-18080   "_ABILITIES_BiologyKnowledge_NAME_+0"   "Druidic Secrets"   |
-18081   "_ABILITIES_BiologyKnowledge_DESCRIPTION_+0"   "You have studied the teachings of the druids and taught it to your employees, which makes them more knowledgeable and healthier. In your employment they can gather ingredients 20%% faster and their constitution and arcane knowledge talents increase.$N$NRequirement: Scholar."   |
-18082   "_ABILITIES_Handcrafter_NAME_+0"   "Artisan"   |
-18083   "_ABILITIES_Handcrafter_DESCRIPTION_+0"   "You know that for a businessman (or businesswoman), the more merchandise, the better. Your handicraft talent increases by one for each level of this ability. This also increases your gathering speed. $N$NRequirement: Not Scholar."   |
-18084   "_ABILITIES_Combatant_NAME_+0"   "Warrior"   |
-18085   "_ABILITIES_Combatant_DESCRIPTION_+0"   "You know how to fight. Whether it is with fists, a small dagger or a large axe, you can fight more skillfully than your neighbours. Your martial arts talent increases by one for each level of this ability and you have a small chance to score critical hits when you fight.$N$NRequirement: Martial Arts 2."   |
-18086   "_ABILITIES_SuperParent_NAME_+0"   "Super Parent"   |
-18087   "_ABILITIES_SuperParent_DESCRIPTION_+0"   "Your parenting skills are beyond perfect. Under your always watchful eye your children keep learning new skills. 4 random talents are permanently increased by one point for your children when they turn 12 but your empathy is reduced by 3 because of your constant focus on your children.$N$NRequirement: Empathy 5."   |
-18088   "_ABILITIES_Traveler_NAME_+0"   "Traveler"   |
-18089   "_ABILITIES_Traveler_DESCRIPTION_+0"   "You have traveled far and wide and learnt things about efficient and agile movement. For every level of this ability your dexterity talent increases by one and your movement speed by 15%%.$N$NRequirement: Dexterity 2."   |
-18090   "_ABILITIES_DefenderRogues_NAME_+0"   "Defenders"   |
-18091   "_ABILITIES_DefenderRogues_DESCRIPTION_+0"   "You specialize in defensive tactics. In your leadership your troops are more watchful and better at avoiding and soaking damage. Your employees have better armor value and receive bonuses to their dexterity and empathy talents.$N$NRequirement: Rogue."   |
-18092   "_ABILITIES_CharmingRogues_NAME_+0"   "Charming Rogues"   |
-18093   "_ABILITIES_CharmingRogues_DESCRIPTION_+0"   "You leads your employees by example. With your guidance your employees are able to show more skill in combat and charm in their act. Your employees receive bonuses to their martial arts and charisma talents and are able to perform critical hits.$N$NRequirement: Rogue."   |
-18094   "_ABILITIES_HardWorkers_NAME_+0"   "Hard Workers"   |
-18095   "_ABILITIES_HardWorkers_DESCRIPTION_+0"   "You lead most hard working laborers in the city. Your employees receive bonuses to their constitution and handicraft talents and an additional inventory slot.$N$NRequirement: Patron."   |
-18096   "_ABILITIES_MasterMerchant_NAME_+0"   "Master Merchant"   |
-18097   "_ABILITIES_MasterMerchant_DESCRIPTION_+0"   "You are a true master of bargaining. You receive a large bonus to your bargaining talent.$N$NRequirement: Craftsman."   |
-18098   "_ABILITIES_MasterCrafter_NAME_+0"   "Master Crafter"   |
-18099   "_ABILITIES_MasterCrafter_DESCRIPTION_+0"   "You are a true master of craftmanship. You receive a large bonus to your handicraft talent.$N$NRequirement: Craftsman."   |
-18100   "_ABILITIES_MasterProducer_NAME_+0"   "Master Extractor"   |
-18101   "_ABILITIES_MasterProducer_DESCRIPTION_+0"   "You are a true master at extraction and gathering natural resources. Your employees gather resources 35%% faster.$N$NRequirement: Craftsman."   |
-18102   "_ABILITIES_CombatMaster_NAME_+0"   "Combat Master"   |
-18103   "_ABILITIES_CombatMaster_DESCRIPTION_+0"   "You have become an embodiment of the perfect warrior. Your armor value and ability to perform critical hits both increase considerably.$N$NRequirements: Rogue, Martial Arts 6."   |
-18104   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_DESCRIPTION_+0"   "The employer of this worker knows the secrets of the druids. The worker's gathering is 20%% faster and its constitution and arcane knowledge talents have increased."   |
-18105   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_NAME_+0"   "Druidic Secrets"   |
-18106   "_ONSCREENHELP_9_ACTION_IMPACT_DruidicI_TOOLTIP_+0"   "benefits from druidic secrets"   |
-18107   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_DESCRIPTION_+0"   "The employer of this worker is a good teacher. The worker earns experience 15%% faster."   |
-18108   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_NAME_+0"   "Mentor"   |
-18109   "_ONSCREENHELP_9_ACTION_IMPACT_MentorI_TOOLTIP_+0"   "is being mentored"   |
-18110   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_DESCRIPTION_+0"   "The employer of this worker has developed a secret formula for plant growth. The worker can gather 15%% faster."   |
-18111   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_NAME_+0"   "Master of Manure"   |
-18112   "_ONSCREENHELP_9_ACTION_IMPACT_ManureI_TOOLTIP_+0"   "uses secret formula"   |
-18113   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_DESCRIPTION_+0"   "The employer of this worker is a master orator and keeps training his employees' oratory skills. The worker's bargaining, empathy and rhetoric talents have increased."   |
-18114   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_NAME_+0"   "Oratory Master"   |
-18115   "_ONSCREENHELP_9_ACTION_IMPACT_MarketerI_TOOLTIP_+0"   "is under oratory training"   |
-18116   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_DESCRIPTION_+0"   "The employer of this worker is masterful at arranging burglaries. The worker's stealth talent, burglary and movement speed have increased."   |
-18117   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_NAME_+0"   "Lightining Burglary"   |
-18118   "_ONSCREENHELP_9_ACTION_IMPACT_BurglaryI_TOOLTIP_+0"   "is a fast burglar"   |
-18119   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_DESCRIPTION_+0"   "The employer of this worker is very good at motivating employees to work harder. The worker's inventory size, constitution and handicraft talents have increased."   |
-18120   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_NAME_+0"   "Hard Workers"   |
-18121   "_ONSCREENHELP_9_ACTION_IMPACT_HardWorkersI_TOOLTIP_+0"   "is a hard worker"   |
-18122   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_DESCRIPTION_+0"   "The employer of this worker leads by example. The worker is able to show more skill in combat and charm in its acts. The worker receive bonuses to martial arts and charisma talents and is able to perform critical hits."   |
-18123   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_NAME_+0"   "Charming Rogues"   |
-18124   "_ONSCREENHELP_9_ACTION_IMPACT_CharmingI_TOOLTIP_+0"   "is a charming rogue"   |
-18125   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_DESCRIPTION_+0"   "The employer of this worker specializes in defensive tactics. The worker is more watchful and better at avoiding and soaking damage. The worker has better armor value and receives bonuses to dexterity and empathy talents."   |
-18126   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_NAME_+0"   "Defenders"   |
-18127   "_ONSCREENHELP_9_ACTION_IMPACT_DefendersI_TOOLTIP_+0"   "is skilled at defense"   |
-18128   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_DESCRIPTION_+0"   "The employer of this worker is a true master of extraction and gathering of natural resources. This worker can gather 35%% faster."   |
-18129   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_NAME_+0"   "Master Extractor"   |
-18130   "_ONSCREENHELP_9_ACTION_IMPACT_ProducerI_TOOLTIP_+0"   "is a fast gatherer"   |
-18131   "_HEXERDOKUMENT_VICTIM_HEAD_+0"   "You have an uneasy feeling ..."   |
-18132   "_HEXERDOKUMENT_VICTIM_BODY_+0"   "Your right toe itches: someone is up to something against you, so your deep empathy warns ... But who?"   |
+18131   "_HEXERDOKUMENT_VICTIM_HEAD_+0"   "You have an uneasy feeling..."   |
+18132   "_HEXERDOKUMENT_VICTIM_BODY_+0"   "Your right toe itches: someone is up to something against you, so your deep empathy warns... But who?"   |
 18133   "_HEXERDOKUMENT_VILLAIN_HEAD_+0"   "A witchcraft was successful"   |
-18134   "_HEXERDOKUMENT_VILLAIN_BODY_+0"   "You successfully created uncontrovertible evidence against %1SN. Hopefully %1SV didn't notice anything ..."   |
+18134   "_HEXERDOKUMENT_VILLAIN_BODY_+0"   "You successfully created uncontrovertible evidence against %1SN. Hopefully %1SV didn't notice anything..."   |
 18135   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_TOOLTIP_+0"   "Protected from illness"   |
 18136   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_NAME_+0"   "Well-rested protection"   |
 18137   "_ONSCREENHELP_9_ACTION_IMPACT_ResistDream_DESCRIPTION_+0"   "This character brims of vitality and won't get infected by any diseases for a short time."   |
@@ -146,10 +96,10 @@ Translate and add the following lines below:
 18143   "_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0"   "Supply Workshop"   |
 18144   "_TWP_SUPPLYWORKSHOP_INITIATE_BODY_+0"   "Order your card to supply the workshop with resources for your production."   |
 18145   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0"   "Help"   |
-18146   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1"   "Choose Resources"   |
-18147   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2"   "Choose Suppliers"   |
+18146   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+1"   "Choose resources"   |
+18147   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+2"   "Choose suppliers"   |
 18148   "_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+3"   "Send out"   |
-18149   "_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0"   "Choose Amount"   |
+18149   "_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0"   "Choose amount"   |
 18150   "_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_BODY_+0"   "Choose the amount of resource that you expect to find in your storage."   |
 18151   "_TWP_SUPPLYWORKSHOP_MARKET_+1"   "Market of %1NAME"   |
 18152   "_TWP_SUPPLYWORKSHOP_MARKET_+2"   "Market of %2NAME"   |
@@ -161,8 +111,8 @@ Translate and add the following lines below:
 18158   "_TWP_SUPPLYWORKSHOP_MARKET_+8"   "Market of %8NAME"   |
 18159   "_TWP_SUPPLYWORKSHOP_MARKET_+9"   "Market of %9NAME"   |
 18160   "_TWP_SUPPLYWORKSHOP_MARKET_+10"   "Market of %10NAME"   |
-18161   "_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0"   "Add Supplier"   |
-18162   "_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0"   "Choose Resource"   |
+18161   "_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0"   "Add supplier"   |
+18162   "_TWP_SUPPLYWORKSHOP_CHOOSERESOURCE_HEAD_+0"   "Choose resource"   |
 18163   "_MEASURE_SupplyWorkshop_NAME"   "Supply Workshop"   |
 18164   "_MEASURE_SupplyWorkshop_TOOLTIP"   "Assign your cart to get raw materials for your workshop. You can choose how many materials you want to keep in your storage.$N$NOnce you send out your cart your driver will check the storage from time to time and move when the supplies go down. It's quite a tough task, so your driver will take breaks from time to time."   |
 18165   "_TWP_SALESCART_INITIATE_HEAD_+0"   "Sell products"   |
@@ -186,7 +136,7 @@ Translate and add the following lines below:
 18183   "_IDLE_VISITDOC_NODOC_HEAD_+0"   "A patient is waiting for treatment"   |
 18184   "_IDLE_VISITDOC_NODOC_BODY_+0"   "%1SN is waiting for medical treatment in %2GG, unfortunately none of your workers are currently assigned to treatment, you should change that immediately!"   |
 18185   "Hat_+0"   "Hat"   |
-18186   "_MEASURE_ChangeAppearance_NAME_+0"   "Change Appearance"   |
+18186   "_MEASURE_ChangeAppearance_NAME_+0"   "Change appearance"   |
 18187   "_MEASURE_ChangeAppearance_TOOLTIP_+0"   "You would like to have a new haircut, a pretty hat or even some extra pounds? This action makes it happen! With just a few simple steps you can play with the character of your dreams."   |
 18188   "_IMPORTANTPERSONS_BOOKMARKS_+0"   "Marked characters"   |
 18189   "_MEASURE_SetBookmark_NAME_+0"   "Mark character" |
@@ -220,10 +170,10 @@ Translate and add the following lines below:
 18217   "_MEASURE_Quacksalver_TOOLTIP_+0"   ">Gather round, everyone! I offer you the most wondrous and at the same time most effective cures for whatever ailment may befall you!<$NMaybe you would never fall for such bogus claims yourself. But the common people are desperately eager to buy >miracle cures< from >rhetoricly gifted< quacksalvers against all kinds of afflictions. So why not profit from their ignorance?"   |
 18218   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_DESCRIPTION_+0"   "Tooth rot is a terrible thing. You are in constant pain, unable to eat and speak properly and your breath smells quite awful...$NThe only secure way to treat this is to have the tooth pulled and take some pain medication.$N$NYour rhetoric and charisma talents are reduced by 3. Tooth rot has no maximum duration."   |
 18219   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+0"   "These are scandalous words! Surely, %1SN will be pleased to learn that I got rid of this pamphlet."   |
-18220   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+1"   "A hideous pamphlet which taunts the %1DN dynasty! Let's hope no one saw this."   |
-18221   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+2"   "It's actually not that far from the truth ... But maybe %1SN will reward me if I dispose of this pamphlet."   |
-18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It is truly fitting for %1SN! I think I will keep this for later ..."   |
-18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patrolling, your thug %1SN noticed a disreputable pamphlet against your dynasty and removed it from the notice-board, so that no one can see it anymore to save your reputation from being further damaged. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
+18220   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+1"   "A hideous pamphlet which taunts the %1DN Dynasty! Let's hope no one saw this."   |
+18221   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+2"   "It's actually not that far from the truth... But maybe %1SN will reward me if I dispose of this pamphlet."   |
+18222   "_PATROLTOWN_PAMPHLET_REMOVE_SAY_+3"   "Haha, the finest of amusement! It is truly fitting for %1SN! I think I will keep this for later..."   |
+18223   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_BODY_+0"   "While patrolling, your thug %1SN noticed a disreputable pamphlet against your Dynasty and removed it from the notice-board, so that no one can see it anymore to save your reputation from being further damaged. As a %2ST it's just appropriate to give %1SV a reward. %3t coins should be enough."   |
 18224   "_PATROLTOWN_PAMPHLET_REMOVE_SUCCESS_HEAD_+0"   "A pamphlet has been removed"   |
 18225   "_NETWORK_MAP_NAME_york_+0"   "Yorkshire"   |
 18226   "_NETWORK_MAP_DESC_york_+0"   "Once a roman colony, later called >Jorvik< as the capital of the viking settlers. 1066 norman conquerors called it >York<. The city and its surroundings have quite a history. In the late middle ages York and its surrounding settlements of the Shire have been an important trading region, despite the gradual degradation of the richness and glory of the city."   |
@@ -240,20 +190,20 @@ Translate and add the following lines below:
 18237   "_BUILDING_BUILD_HEAD_+1"   "#E[NT_NEUTRAL]Build completed"   |
 18238   "_HPFZ_KATASTR_STOD_KOPF_+1"   "Beware!"   |
 18239   "_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_HEAD_+0"   "You get slandered!"   |
-18240   "_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_BODY_+0"   "Someone tells terrible lies about %1SN! The town crier already proclaims it in the streets, soon enough the whole city will know it ... Whoever is responsible for this, your enemies could use it to bring you to court, so better be prepared."   |
+18240   "_HPFZ_GENERAL_MEASURES_SLANDER_VICTIM_BODY_+0"   "Someone tells terrible lies about %1SN! The town crier already proclaims it in the streets, soon enough the whole city will know it... Whoever is responsible for this, your enemies could use it to bring you to court, so better be prepared."   |
 18241   "_ONSCREENHELP_9_ACTION_IMPACT_Caries_TOOLTIP_+0"   "is suffering from tooth rot. Talents: $S[2021] -3 $S[2025] -3"   |
-18242   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_DESCRIPTION_+0"   "Bouts of fever, bloody phlegm, painful breathing ...$NThose who have come down with pneumonia are doomed to die soon, unless a skilled healer starts treating them with pain medication immediately.$N$NPneumonia decreases all talents by 5."   |
+18242   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_DESCRIPTION_+0"   "Bouts of fever, bloody phlegm, painful breathing...$NThose who have come down with pneumonia are doomed to die soon, unless a skilled healer starts treating them with pain medication immediately.$N$NPneumonia decreases all talents by 5."   |
 18243   "_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_TOOLTIP_+0"   "has contracted pneumonia. All talents -5"   |
 18244   "_ONSCREENHELP_9_ACTION_IMPACT_Pox_DESCRIPTION_+0"   "Leprosy, while not inherently lethal, is almost as dangerous as the plague. It covers the bodies of those unfortunate enough to contract it with ugly ulcers, damaging their bodies.$NThe only known efficient treatment for leprosy is external and internal application of a >medicine bottle<. If left untreated, the patient will remain a leper forever.$N$NConstitution, Dexterity and Charisma are reduced by 6. Also people who come close to you will lose favor, unless you use perfume against it. Leprosy has no maximum duration."   |
 18245   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_TOOLTIP_+0"   "has contracted the plague. All talents -7"   |
-18246   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_DESCRIPTION_+0"   "The plague is extremely contagious, and lethal in most cases. Some claim that the pestilence is God's punishment for all sinners. Others think it was sent by the Unclean one, Satan himself ...$N$NBe that as it may, the Black Death will kill you fast unless you start treating it with pain medication immediately.$N$NThe Black Death decreases all talents by 7."   |
+18246   "_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_DESCRIPTION_+0"   "The plague is extremely contagious, and lethal in most cases. Some claim that the pestilence is God's punishment for all sinners. Others think it was sent by the Unclean one, Satan himself...$N$NBe that as it may, the Black Death will kill you fast unless you start treating it with pain medication immediately.$N$NThe Black Death decreases all talents by 7."   |
 18247   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_TOOLTIP_+0"   "has sprained an ankle. Talents: $S[2016] -2 $S[2019] -2 $S[2018] -2"   |
 18248   "_ONSCREENHELP_9_ACTION_IMPACT_Sprain_DESCRIPTION_+0"   "Without doubt, someone with a sprained ankle will suffer severe pain whenever he or she tries to move the foot.$NThe treatment of choice for a sprain is a bandage, soaked in cold water.$N$NA sprain reduces your dexterity, fighting and your handicrafts talent by 2."   |
 18249   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_TOOLTIP_+0"   "has caught a cold. All talents -1."   |
 18250   "_ONSCREENHELP_9_ACTION_IMPACT_Cold_DESCRIPTION_+0"   "Dismissed as harmless by many people, a simple cold can quickly develop into a full-blown case of influenza. In order to prevent this, well-trained healers treat colds by wrapping the patient in warm bandages.$N$NIf a healer is too expensive or you don't trust them, you can take a hot bath in the tavern or drink lots of herb tea to get back on your feet.$N$NA cold decreases the value of all your skills by 1."   |
 18251   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_TOOLTIP_+0"   "has contracted influenza. All talents -3."   |
-18252   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   "Influenza is not to be taken lightly. Once in its grip, you will soon feel miserable, sapped, and feeble. The only thing that can help you now is a medicine bottle, dispensed by a healer, or you might develop pneumonia and die ...$N$NInfluenza decreases all talents by 3."   |
-18253   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"   "Through tireless dealing, you have reached the ranks of the upper nobility. You have shown the world what your dynasty is made of, and you have thus a higher credibility during trials."   |
+18252   "_ONSCREENHELP_9_ACTION_IMPACT_Influenza_DESCRIPTION_+0"   "Influenza is not to be taken lightly. Once in its grip, you will soon feel miserable, sapped, and feeble. The only thing that can help you now is a medicine bottle, dispensed by a healer, or you might develop pneumonia and die...$N$NInfluenza decreases all talents by 3."   |
+18253   "_ONSCREENHELP_9_ACTION_IMPACT_GoldenSpoon_DESCRIPTION_+0"   "Through tireless dealing, you have reached the ranks of the upper nobility. You have shown the world what your Dynasty is made of, and you have thus a higher credibility during trials."   |
 18254   "_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_BRIBE_+0"   "Bribery"   |
 18255   "_PREMARRIAGE_PROGRESS_LOSS_HEAD_+0"   "#E[NT_NEUTRAL]Continue courtship"   |
 18256   "_PREMARRIAGE_PROGRESS_LOSS_+0"   "%2SN should not forget the courtship of %1SA %1SN. Why don't you go ahead and visit %1SV right away to emphasize your endeavors?"   |
@@ -263,38 +213,38 @@ Translate and add the following lines below:
 18260   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_KOPF_+0"   "You have counteracted an enemy's spell!"   |
 18261   "_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0"   "%1SN has tried to put a dark spell on your soul but he failed miserably thanks to your remarkable empathic skills. It's time for revenge, accuse him now!"   |
 18262   "_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0"   "You are irresistible!"   |
-18263   "_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0"   "Are you a heartbreaker or do you really mean it? Anyway, %1SV is completely under your spell and wishes nothing more than to spend some hours with you alone ..."   |
+18263   "_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0"   "Are you a heartbreaker or do you really mean it? Anyway, %1SV is completely under your spell and wishes nothing more than to spend some hours with you alone..."   |
 18264   "_RATBOY_MSGMEASURE_+0"   "I like this flute playing!"   |
-18265   "_RATBOY_MSGMEASURE_+1"   "This is so exciting! An adventure ..."   |
+18265   "_RATBOY_MSGMEASURE_+1"   "This is so exciting! An adventure..."   |
 18266   "_GENERAL_MSGMEASURE_COHABIT_+0"   "I am expected at home"   |
 18267   "_FAMILY_2_COHABITATION_FAIL_HEAD_+0"   "Your spouse despises you"   |
 18268   "_FAMILY_2_COHABITATION_FAIL_BODY_+0"   "Oh dear! %1SV seems to be far less irresistable than you might have thought. Maybe you have to bring %2SV into a romantic mood beforehand? Visit a tavern together and make some compliments like in the good old times, that might help!"   |
-18269   "_MEASURE_LISTENQUACKSALVER_YES_+0"   "Give me your ointment, my toe has been itching the whole day ..."   |
+18269   "_MEASURE_LISTENQUACKSALVER_YES_+0"   "Give me your ointment, my toe has been itching the whole day..."   |
 18270   "_MEASURE_LISTENQUACKSALVER_YES_+1"   "I need one of these wonderful cures!"   |
-18271   "_MEASURE_LISTENQUACKSALVER_YES_+2"   "If only I could sleep through the night again ..."   |
+18271   "_MEASURE_LISTENQUACKSALVER_YES_+2"   "If only I could sleep through the night again..."   |
 18272   "_MEASURE_LISTENQUACKSALVER_YES_+3"   "A nice bargain, thanks!"   |
 18273   "_MEASURE_LISTENQUACKSALVER_YES_+4"   "I don't care if it works, I just need my old mother to stop moaning."   |
 18274   "_MEASURE_LISTENQUACKSALVER_YES_+5"   "I'll take one!"   |
 18275   "_MEASURE_LISTENQUACKSALVER_YES_+6"   "Do you have one for me?"   |
 18276   "_MEASURE_LISTENQUACKSALVER_YES_+7"   "Don't push, it's my turn now!"   |
 18277   "_MEASURE_LISTENQUACKSALVER_YES_+8"   "There is nothing better!"   |
-18278   "_MEASURE_LISTENQUACKSALVER_YES_+9"   "I can't resist ..."   |
-18279   "_MEASURE_LISTENQUACKSALVER_NO_+0"   "Humbug ..."   |
+18278   "_MEASURE_LISTENQUACKSALVER_YES_+9"   "I can't resist..."   |
+18279   "_MEASURE_LISTENQUACKSALVER_NO_+0"   "Humbug..."   |
 18280   "_MEASURE_LISTENQUACKSALVER_NO_+1"   "Are you actualy a real healer?"   |
 18281   "_MEASURE_LISTENQUACKSALVER_NO_+2"   "Far too expensive."   |
 18282   "_MEASURE_LISTENQUACKSALVER_NO_+3"   "You are just a show-off!"   |
 18283   "_MEASURE_LISTENQUACKSALVER_NO_+4"   "Your tinctures are giving me a rash!"   |
 18284   "_MEASURE_LISTENQUACKSALVER_NO_+5"   "Your >cures< make me sick."   |
-18285   "_MEASURE_LISTENQUACKSALVER_NO_+6"   "Who needs something like this ..."   |
-18286   "_MEASURE_LISTENQUACKSALVER_NO_+7"   "You are quite a talker ..."   |
+18285   "_MEASURE_LISTENQUACKSALVER_NO_+6"   "Who needs something like this..."   |
+18286   "_MEASURE_LISTENQUACKSALVER_NO_+7"   "You are quite a talker..."   |
 18287   "_MEASURE_LISTENQUACKSALVER_NO_+8"   "You are a swindler!"   |
-18288   "_MEASURE_LISTENQUACKSALVER_NO_+9"   "Please spare me ..."   |
-18289   "_MEASURE_MARRY_CEREMONY_HEAD_+0"   "The Wedding of %1SN"   |
+18288   "_MEASURE_LISTENQUACKSALVER_NO_+9"   "Please spare me..."   |
+18289   "_MEASURE_MARRY_CEREMONY_HEAD_+0"   "The wedding of %1SN"   |
 18290   "_MEASURE_MARRY_CEREMONY_ASK_BODY_+0"   "%1SN and %2SN are about to marry inside of %3GG! Shall %4SN visit the ceremony?"   |
-18291   "_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0"   "%1ST %1SN and %2ST %2SN have just given their marriage vows! For the festive ceremony in %3GG a total of %4i reputable guests have visited the couple. The guild fame of the %1DN dynasty raises accordingly."   |
+18291   "_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0"   "%1ST %1SN and %2ST %2SN have just given their marriage vows! For the festive ceremony in %3GG a total of %4i reputable guests have visited the couple. The guild fame of the %1DN Dynasty raises accordingly."   |
 18292   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_TOOLTIP_+0"   "Has been captured recently"   |
 18293   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_NAME_+0"   "Captured"   |
-18294   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_DESCRIPTION_+0"   "This building has been captured by another dynasty recently and thus can not be sold in the next hours."   |
+18294   "_ONSCREENHELP_9_ACTION_IMPACT_recentlycaptured_DESCRIPTION_+0"   "This building has been captured by another Dynasty recently and thus can not be sold in the next hours."   |
 18295   "_SELLBUILDING_FAIL_HEAD_+0"   "Sale failed"   |
 18296   "_SELLBUILDING_FAIL_BODY_+0"   "%1GG has been captured recently and thus can not be sold in the next hours."   |
 18297   "_MEASURE_USE_LETTER_FROM_ROME_ERROR_INSIDE_+0"   "You can not use the >Letter from Rome< as long as %1SN is inside of %2GG! This item may only be used outside."   |
@@ -307,10 +257,10 @@ Translate and add the following lines below:
 18304   "_INTRIGUE_LETTERFROMROME_FAILED_VICTIM_BODY_+0"   "%1SN starts to read a letter from Rome %2SN. Thanks to your >%3l< it didn't come to that..."   |
 18305   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_HEAD_+0"   "Torrent of hatred has failed"   |
 18306   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_HEAD_SPEECH_+0"   "#E[NT_NEUTRAL]Your intrigue has failed!"   |
-18307   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_BODY_+0"   "Bah, %1SN's bad breath is just incredible ..."   |
+18307   "_INTRIGUE_HASSTIRADE_FAILED_ACTOR_BODY_+0"   "Bah, %1SN's bad breath is just incredible..."   |
 18308   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_HEAD_+0"   "Someone wanted to make a hateful speech"   |
 18309   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_HEAD_SPEECH_+0"   "#E[NT_SEVERE]Someone tried to make a hateful speech against you!"   |
-18310   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_BODY_+0"   "%1SN has started a torrent of hatred against %2SN. Thanks to your >%3l< it didn't come to that ..."   |
+18310   "_INTRIGUE_HASSTIRADE_FAILED_VICTIM_BODY_+0"   "%1SN has started a torrent of hatred against %2SN. Thanks to your >%3l< it didn't come to that..."   |
 18311   "_CHARACTERS_3_TITLES_NAME_+6"   "#E[NT_NEUTRAL]Lesser Female Citizen"   |
 18312   "_CHARACTERS_3_TITLES_NAME_+7"   "#E[NT_NEUTRAL]Lesser Citizen"   |
 18313   "_GEMCDOP"   ""   |
@@ -733,7 +683,7 @@ Translate and add the following lines below:
 18714   "_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_BODY_+0"   "Do you really want to make a demand on the %3l %1DN dynasty? You could get %2t, but the relations to the %1DN dynasty will certainly worsen."   |
 18715   "_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_REQUEST_ENEMIES_+0"   "You can not make a demand on your enemies - after all, you are already at war, what should your enemy be afraid of?"   |
 18716   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_HEAD_+0"   "Answer to your demand"   |
-18717   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_RIVAL_+0"   "%1SN strongly rejects your request. The %1DN family would never voluntarily leave their money to a rival like you. The impudence of your request, however, has a detrimental effect on your relationship."   |
+18717   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_RIVAL_+0"   "%1SN strongly rejects your request. The% 1DN family would never voluntarily leave their money to a rival like you. The impudence of your request, however, has a detrimental effect on your relationship."   |
 18718   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_YES_+0"   "%1SN accepts your demand. If this avoids an armed conflict with your family, the price of %2t is acceptable."   |
 18719   "_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_NO_+0"   "%1SN strongly rejects your request. The demand is an impertinence, the sum of %2t is in no relation to the dangerousness of your family. On the contrary, the %1DN family now seem all the more to seek conflict with you."   |
 18720   "_MEASURE_ADMINISTRATE_DIPLOMACY_CONFIRM_HEAD_+0"   "Change diplomacy status"   |
@@ -1090,7 +1040,7 @@ Translate and add the following lines below:
 19169   "_NAMES_FRENCH_FEMALE_+120"   "Linéa"   |
 19170   "_NAMES_GERMAN_FEMALE_+113"   "Linea"   |
 19171   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0"   "#E[SD_SAD]An employee has died."   |
-19172   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0"   "%1SN, employed at %2GG, has died today. Thus you need to refill the position."   |
+19172   "_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_BODY_+0"   "%1SN, employed at %2GG, has died today. Thus you need to refill the position."   |
 19173   "_INTRIGUE_041_BRIBECHARACTER_FAILURES_+0"   "Bribery not possible - you don't have %1t to bribe %2SN"   |
 19174   "_BUILDING_LEVELUP_HEAD_+2"   "#E[NT_NEUTRAL]Building-Level increased"   |
 19175   "_BUILDING_BUILD_HEAD_+2"   "#E[NT_NEUTRAL]New Building"   |
@@ -1168,89 +1118,90 @@ Translate and add the following lines below:
 19247   "_MEASURE_MAKEAPRESENT_GETITEM_BODY_+1"   "You don't have this present with you and unfortunately you also have none of it in any of your buildings right now. Luckily you can buy it at the market of %1NAME for an affordable amount of %2t! Would you like to aquire and immediately transfer one pice? By doing so the cooldown of this action will begin."   |
 19248   "_BUILDING_Mercenary2_NAME_+0"   "Mercenary Haunt"   |
 19249   "_BUILDING_Mercenary3_NAME_+0"   "Mercenary Guild"   |
+19250   "_MEASURE_INVITETODANCE_ERROR_BLOCKED_+0"   "The Dancing Floor is reserved already! Try again later."   |
+19251   "_GENERAL_MEASURES_033_PAYBONUS_FAILURES_+2"   "Pay out a bonus failed - You can only pay a bonus during regular work time."   |
 
-English:
 
-20000   "_ABILITIES_Motivator_NAME_+0"   "Leader" |
-20001   "_ABILITIES_Motivator_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They look up to you, and do not take it the wrong way when you reprimand them or demand exceptional effort. For every level of this ability, you increase the length of effect for the action >Goad workers< by 50%% and reduces the loss of reputation you suffer towards your employees by 50%% for all actions."   |
-20002   "_ABILITIES_Charming_NAME_+0"   "Irresistible" |
-20003   "_ABILITIES_Charming_DESCRIPTION_+0"   "You posess an inherent attractiveness, people naturally flock to you and you are a born lover. $NFor every level of this ability, the favour bonus of your social interactions and when courting increases. For every level of this ability, the probability that you will father a child or get pregnant increases by 50%%. $N$NRequirements: Charisma 2."   |  
+20000   "_ABILITIES_Motivator_NAME_+0"   "Leader"   |
+20001   "_ABILITIES_Motivator_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They stay loyal to you whatever happens. For every level of this ability, the duration of the action >Goad workers< is increased by 50%% and any loss of favour towards your employees is reduced by 50%% (Minimum 1) for all actions. $N$NRequirements: Rhetoric 2."   |
+20002   "_ABILITIES_Charming_NAME_+0"   "Irresistible"   |
+20003   "_ABILITIES_Charming_DESCRIPTION_+0"   "You possess an inherent attractiveness so that people naturally flock to you and you are a born lover. $NFor every level of this ability, the favour bonus of your social interactions and while courting increases by 30%%. In addition, the probability that you will father a child or get pregnant increases by 50%%. $N$NRequirements: Charisma 2."   |  
 20004   "_ABILITIES_Educated_NAME_+0"   "Educated"   |
-20005   "_ABILITIES_Educated_DESCRIPTION_+0"   "Learning how to read and write at a young age probably caused you to have a higher perception the most people. Documenting your experiences for your posterity is your passion, no matter how trivial they might be. $NFor every level in this ability, you receive 10%% more experience for your actions.$N$NRequirements: Scholar."   |
+20005   "_ABILITIES_Educated_DESCRIPTION_+0"   "Learning how to read and write at a young age made you more perceptive than most people. Documenting your experiences for posterity is your passion, no matter how trivial they might be. $NFor every level of this ability, you receive 10%% more experience for your actions.$N$NRequirements: Scholar."   |
 20006   "_ABILITIES_PackMule_NAME_+0"   "Pack mule"   |
-20007   "_ABILITIES_PackMule_DESCRIPTION_+0"   "You are one of those people who would rather make one trip and lose half your baggage on the way than make the same trip 3 times. However you do it, you somehow manage to stow all your possessions so that you can carry more than other people. $NFor every level of this ability, You gain 1 additional compartment in your personal inventory.. $N$NRequirements: Constitution 2."   |
+20007   "_ABILITIES_PackMule_DESCRIPTION_+0"   "You are one of those people who would rather make one trip and lose half your baggage on the way than make the same trip twice. Somehow you manage to stow all your possessions so that you can carry more than other people. $NFor every level of this ability, You gain 1 additional slot in your personal inventory. $N$NRequirements: Constitution 2."   |
 20008   "_ABILITIES_IronSkin_NAME_+0"   "Unbreakable"   |
 20009   "_ABILITIES_IronSkin_DESCRIPTION_+0"   "You have an extremely resistant hide... in any case, you have such a robust physique that you are significantly harder to damage with weapons or brawling. $NFor every level of this ability, your armour value increases by 5. $N$NRequirements: Rogue."   |
-20010   "_ABILITIES_SleepBonus_NAME_+0"   "Miraculous sleep"   |
-20011   "_ABILITIES_SleepBonus_DESCRIPTION_+0"   "It is stated that >sleep is the best medicine< and you are proof of that. Have a Herb tea first and let your body do the rest. $NYour Character can heal any disease during his slumber, while under the influence of >Herb tea<. $N$NRequirements: Arcane knowledge 2."   |
-20012   "_ABILITIES_Trader_NAME_+0"   "Shopkeeper"   |
-20013   "_ABILITIES_Trader_DESCRIPTION_+0"   "Can you get that cheaper? Possibly, but your goods are of unmatched quality and that shows in the price. Only today i am offering you something only a fool would refuse. You on the other hand, were very wise to pick this ability. $NFor every level of this ability, your bargaining talent increases by 2. $N$NRequirements: Bargaining 2."   |
+20010   "_ABILITIES_SleepBonus_NAME_+0"   "Miraculous Sleep"   |
+20011   "_ABILITIES_SleepBonus_DESCRIPTION_+0"   "It is stated that >sleep is the best medicine< and you are proof of that. Have a Herb tea first and let your body do the rest. $NYour Character can heal any disease during his slumber, while under the influence of >Herb tea<. $N$NRequirements: Arcane Knowledge 2."   |
+20012   "_ABILITIES_Trader_NAME_+0"   "Natural Huckster"   |
+20013   "_ABILITIES_Trader_DESCRIPTION_+0"   "Can I get that cheaper? Well, maybe ... but YOUR goods are of unmatched quality and that shows in the price. Only today am I offering you something only a fool would refuse to buy. You, on the other hand, are by no means a fool as you have already decided to pick this ability, haven't you? $NFor every level of this ability, your bargaining talent increases by 2. $N$NRequirements: Bargaining 2."   |
 20014   "_ABILITIES_Athletics_NAME_+0"   "Athletics"   |
-20015   "_ABILITIES_Athletics_DESCRIPTION_+0"   "You are naturally agile and all of your troubles holding still as a child finally pay off. $NFor every level of this ability, your character's speed of movement increases by 15%% and your dexterity talent increases by 1. $N$NRequirements: Dexterity 2."   |
+20015   "_ABILITIES_Athletics_DESCRIPTION_+0"   "As a child you were always faster than the other kids who tried to catch you. Working on your reflexes and finesse while growing up has finally paid off. $NFor every level of this ability, your character's movement speed increases by 15%% and your dexterity talent increases by 1. $N$NRequirements: Dexterity 2."   |
 20016   "_ABILITIES_Nimble_NAME_+0"   "Nimble"   |
-20017   "_ABILITIES_Nimble_DESCRIPTION_+0"   "For some people a piece of wood is just a piece of wood. However, you are able to create art with it. Other people call it hard work, you call it an opportunity to show your skill.$NFor every level of this ability, your Handicrafts talent increases by 2. $N$NRequirements: Craftsman."   |
+20017   "_ABILITIES_Nimble_DESCRIPTION_+0"   "For some people, a piece of wood is just a piece of wood. You, however, are able to transform it into a piece of art. They call it >hard work< but you call it an >opportunity to show your skill<.$NFor every level of this ability, your Handicrafts talent increases by 2. $N$NRequirements: Craftsman."   |
 20018   "_ABILITIES_NiceGuy_NAME_+0"   "Likeable"   |
-20019   "_ABILITIES_NiceGuy_DESCRIPTION_+0"   "Some say, patrons are simple-minded farmers while others claim they are warm-hearted, social, hardworking members of our community. That does not matter to you. You know your place, make the best out of it and the people around you reward your modesty. $NFor every level of this ability, you increase every amount of favour you gain by 1 and decrease every amount of favour you lose by 1. $N$NRequirements: Patron."   |
+20019   "_ABILITIES_NiceGuy_DESCRIPTION_+0"   "Some say that Patrons are simple-minded farmers. Others claim they are warm-hearted, social and hardworking members of our community. You don't care about all of that. You know your place, make the best out of it and the people around you reward your modesty. $NFor every level of this ability, you increase any favour you gain by 1 and decrease any loss of favour by 1. $N$NRequirements: Patron."   |
 20020   "_ABILITIES_Mentor_NAME_+0"   "Mentor"   |
-20021   "_ABILITIES_Mentor_DESCRIPTION_+0"   "Wandering on the divine path has rewarded you with extensive experience and it doesn't hurt do have others join you on your journey as soon as possible.$N All of your children and your employees recieve an experience bonus of 300 EP.$N$NRequirements: Arcane knowledge 4."   |
+20021   "_ABILITIES_Mentor_DESCRIPTION_+0"   "Wandering on the divine path has rewarded you with extensive experience and it doesn't hurt to have others join you on your journey.$N All of your children and your employees receive an experience bonus of 300 EP.$N$NRequirements: Arcane Knowledge 4."   |
 20022   "_ABILITIES_Safeguard_NAME_+0"   "Safeguard"   |
-20023   "_ABILITIES_Safeguard_DESCRIPTION_+0"   "Nothing escapes your watchful eye, you always check the safety precautions of your buildings several times in a row and your apprentices better not leave the front door open for too long! $N$NFor every level of this ability, your building's burglary protection and fire protection increase by 15%%. $N$NRequirements: None."   |
-20024   "_ABILITIES_Warrior_NAME_+0"   "Fighting spirit"   |
-20025   "_ABILITIES_Warrior_DESCRIPTION_+0"   "Even as a child you never avoided a fight. Bruises, bloody noses, broken bones... All the pain taught you where it really hurts.$NFor every level of this ability, your critical hit damage increases by 50%%. $N$NRequirements: Rogue + Martial arts 4."   |
-20026   "_ABILITIES_Thief_NAME_+0"   "Heart of gold"   |
-20027   "_ABILITIES_Thief_DESCRIPTION_+0"   "You know the true value of life: It is measured in gold. That is why it is right and proper when you take what is offered to you, why let it go to waste? $NFor every level of this ability, you and your employees receive a 10%% bonus from pickpocketing, burglary, jugglery or salacious services and it increases your stealth talent by 1. $N$NRequirements: Rogue + dexterity 4."   |
-20028   "_ABILITIES_FarmBonus_NAME_+0"   "Green thumb"   |
-20029   "_ABILITIES_FarmBonus_DESCRIPTION_+0"   "You are fascinated by watching grass grow. Your commitment to plants helped you notice all sorts of improvements other people overlooked. Now it is time to put them into practice on your own farmlands.$NFor every level of this ability, the productivity of your farms and orchards increases by 25%%. $N$NRequirements: Patron."   |
-20030   "_ABILITIES_PartyBonus_NAME_+0"   "Party animal"   |
-20031   "_ABILITIES_PartyBonus_DESCRIPTION_+0"   "God blessed humanity with two things: Beauties and beer. You know exactly where to get both and there is nothing else you'd rather spend your spare time on.$NFor every level of this ability, your tolerance to alcohol increases by 50%%, making you able to drink more alcohol than other people. Also increses the attractiveness of your feasts by 25%%. $N$NRequirements: Patron + constitution 4."   |
+20023   "_ABILITIES_Safeguard_DESCRIPTION_+0"   "Nothing escapes your watchful eye. You always check the safety precautions of your buildings several times a day and that wastrel of an apprentice better not leave the front door open again! $N$NFor every level of this ability, your building's protection against burglary and fire protection increase by 15%%. $N$NRequirements: None."   |
+20024   "_ABILITIES_Warrior_NAME_+0"   "Fighting Spirit"   |
+20025   "_ABILITIES_Warrior_DESCRIPTION_+0"   "Even as a child you never avoided any kind of confrontation. Bruises, bloody noses, broken bones... All the pain has taught you where to punch to make it really hurt.$NFor every level of this ability, your Critical-Hits' damage increases by 50%%. $N$NRequirements: Rogue + Martial Arts 4."   |
+20026   "_ABILITIES_Thief_NAME_+0"   "Heart of Gold"   |
+20027   "_ABILITIES_Thief_DESCRIPTION_+0"   "You know the true value of life: it's measured in gold. That's why it's just and fair when you take what is offered to you; why let it go to waste? $NFor every level of this ability, you and your employees receive a 10%% bonus income from rogue-actions. In addition it increases your stealth talent by 1. $N$NRequirements: Rogue + Dexterity 4."   |
+20028   "_ABILITIES_FarmBonus_NAME_+0"   "Green Thumb"   |
+20029   "_ABILITIES_FarmBonus_DESCRIPTION_+0"   "You always have been fascinated by watching the growth of plants. Your passion has taught you all kinds of things other people overlooked. Things that obviously would have improved the harvest. Now you possess your own lands and can make it better.$NFor every level of this ability, the productivity of your farms and orchards increases by 25%%. $N$NRequirements: Patron."   |
+20030   "_ABILITIES_PartyBonus_NAME_+0"   "Sturdy Drinker"   |
+20031   "_ABILITIES_PartyBonus_DESCRIPTION_+0"   "God blessed human kind with two things: Beauties and Beer. You know exactly where to get both of them and there is nothing else you'd rather spend your spare time on.$NFor every level of this ability, your sturdiness against alcohol increases by 50%%, making you able to drink more alcohol than other people. In addition it increases the attractiveness of your feasts by 25%%. $N$NRequirements: Patron + Constitution 4."   |
 20032   "_ABILITIES_Preacher_NAME_+0"   "Preacher"   |
-20033   "_ABILITIES_Preacher_DESCRIPTION_+0"   "You have earned a reputation for striking the right note in your sermons at all times. Whether quiet and modest, or eloquent and shrill: people love you.$NFor every level of this ability, the attractiveness of your churches increases by 25%% and your rhetoric talent increases by 1.$N$NRequirements: Scholar + rhetoric 4."   |
-20034   "_ABILITIES_Alchemist_NAME_+0"   "Theory of the four humors"   |
-20035   "_ABILITIES_Alchemist_DESCRIPTION_+0"   "As a scholar, you know all about the interaction of the four humors: blood, yellow bile, black bile and phlegm. Thanks to a strict diet and bloodletting at the right time, many bad illnesses can be avoided.$NFor every level of this ability, your immunity to illnesses increases by 50%%. Additionally increases the life expectancy for your employees by 10 years.$N$NRequirements: Scholar + arcane knowledge 4."   |
-20036   "_ABILITIES_Guildmaster_NAME_+0"   "Guild master"   |
-20037   "_ABILITIES_Guildmaster_DESCRIPTION_+0"   "You know about the true power that resides in guilds, so you are particularly eager to be in their favour. This gives you access to a whole range of privileges other members will need to work much harder for. $NFor every level of this ability, the amount of guild reputation your character acquires increases by 1. $N$NRequirements: Craftsman + charisma 4."   |
+20033   "_ABILITIES_Preacher_DESCRIPTION_+0"   "You have earned a reputation for striking the right note in your sermons at all times. Whether quiet and modest or eloquent and shrill: people love to hear your words.$NFor every level of this ability, the attractiveness of your churches increases by 25%% and your rhetoric talent increases by 1.$N$NRequirements: Scholar + Rhetoric 4."   |
+20034   "_ABILITIES_Alchemist_NAME_+0"   "Theory of the Four Humours"   |
+20035   "_ABILITIES_Alchemist_DESCRIPTION_+0"   "As a Scholar, you know all about the interaction of the Four Humors: blood, yellow bile, black bile and phlegm. Thanks to a strict diet and bloodletting at the right time, many terrible diseases can be avoided.$NFor every level of this ability, your immunity to diseases increases by 50%%. In addition it increases the life expectancy of your employees by 10 years.$N$NRequirements: Scholar + Arcane Knowledge 4."   |
+20036   "_ABILITIES_Guildmaster_NAME_+0"   "Guild Master"   |
+20037   "_ABILITIES_Guildmaster_DESCRIPTION_+0"   "You know about the true power that resides in the Guilds and thus you are particularly eager to rise in their favour. This gives you access to a whole range of privileges other members will need to work much harder for. $NFor every level of this ability, the amount of guild reputation your character acquires is increased by 1. $N$NRequirements: Craftsman + Charisma 4."   |
 20038   "_ABILITIES_CartBonus_NAME_+0"   "Engineer"   |
-20039   "_ABILITIES_CartBonus_DESCRIPTION_+0"   "When your parents told you it would not be possible for you to reinvent the wheel, they were wrong. $NAll of your carts move 20%% faster.$N$NRequirements: Craftsman + handicraft 4."   |
+20039   "_ABILITIES_CartBonus_DESCRIPTION_+0"   "When your parents told you that it wouldn't be possible for you to reinvent the wheel, they were wrong. $NAll of your carts move 20%% faster.$N$NRequirements: Craftsman + Handicraft 4."   |
 20040   "_ABILITIES_Exploiter_NAME_+0"   "Exploiter"   |
-20041   "_ABILITIES_Exploiter_DESCRIPTION_+0"   "Your have earned a reputation of being cheap but nothing could be further from the truth. Something is better than nothing, isn't it? $NFor every level of this ability, you reduce the salaries of your employees by 10%%$N$NRequirements: Bargaining 7."   |
+20041   "_ABILITIES_Exploiter_DESCRIPTION_+0"   "You have earned the reputation of being cheap but nothing could be further from the truth. >Something< is still better than >nothing<, right? $NFor every level of this ability, you reduce the salaries of your employees by 10%%$N$NRequirements: Bargaining 7."   |
 20042   "_ABILITIES_Politician_NAME_+0"   "Politician"   |
-20043   "_ABILITIES_Politician_DESCRIPTION_+0"   "You were born for politics. Competition and other people striving for power should not concern you because you simply belong in this comfortable office chair! $NYou recieve a 10%% bonus when AI-Dynasties are considering whether they are voting in your favour.$N$NRequirements: Charisma 7."   |
+20043   "_ABILITIES_Politician_DESCRIPTION_+0"   "You were born for politics. Competition and others' strive for power does not bother you since you simply belong on this comfortable office chair! $NYou receive a 10%% bonus when AI-controlled Dynasties are considering whether they are voting in your favour.$N$NRequirements: Charisma 7."   |
 20044   "_ABILITIES_Marauder_NAME_+0"   "Marauder"   |
-20045   "_ABILITIES_Marauder_DESCRIPTION_+0"   "Over time you have gained enough experience to know how to get into even the most heavily secured buildings. Even barricades or iron bars can't keep you out. $NFor every level of this ability, you and your employees deal 20%% more damage to buildings and your target's burglary protection against you is 20%% less effective. $N$NRequirements: Rogue + stealth 7."   |
-20046   "_ABILITIES_Innocent_NAME_+0"   "Face of innocence"   |
-20047   "_ABILITIES_Innocent_DESCRIPTION_+0"   "What, you really are alleged of have done all those terrible deeds? That's impossible! How can you claim that our commendable paragon of nobility and perfection should be guilty? $NFor every level of this ability, you crimes fade from witnesses' memories 25%% faster than normal. Additionally you gain a 50%% chance of being released from prison after mere 12 hours.$N$NRequirements: Rogue + charisma 7."   |
-20048   "_ABILITIES_BestHouse_NAME_+0"   "Best house in town"   |
-20049   "_ABILITIES_BestHouse_DESCRIPTION_+0"   "You have earned a reputation for fulfilling any and all of your guest's wishes. People flock to your inns because they are as comfortable as a second home. $N$NFor every level of this ability, the attractiveness of all your taverns increases by 30%%. $N$NRequirements: Patron."   |
-20050   "_ABILITIES_Lucky_NAME_+0"   "Lucky fellow"   |
-20051   "_ABILITIES_Lucky_DESCRIPTION_+0"   "Sometimes, fate decides that some people are luckier that others...$NFor every level of this ability, your luck increases by 2. Luck affects certain random events and sways them in favour of you.$N$NRequirements: Patron."   |
-20052   "_ABILITIES_SixSense_NAME_+0"   "Sixth sense"   |
-20053   "_ABILITIES_SixSense_DESCRIPTION_+0"   "You can tell a person's intention just by looking at them. This makes it impossible to ambush you with poisons or jugglery and let's you see through their lies.$N A certain set of hostile actions have no effect on your character.$N$NRequirements: Scholar + empathy 7."   |
+20045   "_ABILITIES_Marauder_DESCRIPTION_+0"   "Over time, you have gained enough experience to know how to get into even the most heavily secured buildings. Barricades and iron bars are but minor obstacles. $NFor every level of this ability, you and your employees deal 20%% more damage to buildings and your target's protection against burglary is 20%% less effective. $N$NRequirements: Rogue + Stealth 7."   |
+20046   "_ABILITIES_Innocent_NAME_+0"   "Face of Innocence"   |
+20047   "_ABILITIES_Innocent_DESCRIPTION_+0"   "What, you really are alleged of all those terrible deeds? That's impossible! How can someone claim that our commendable paragon of nobility and perfection should be guilty? $NYour crimes fade from witnesses' memories 50%% faster than normal. Additionally you gain a 75%% chance of being released from prison after mere 12 hours.$N$NRequirements: Rogue + Charisma 7."   |
+20048   "_ABILITIES_BestHouse_NAME_+0"   "Best House in Town"   |
+20049   "_ABILITIES_BestHouse_DESCRIPTION_+0"   "You have earned a reputation for indulging your guests with all kind of amenities. People are streaming into your taverns from all walks of life because they know they won't find a better place. $N$NFor every level of this ability, the attractiveness of all your taverns is increased by 30%%. $N$NRequirements: Patron."   |
+20050   "_ABILITIES_Lucky_NAME_+0"   "Lucky Fellow"   |
+20051   "_ABILITIES_Lucky_DESCRIPTION_+0"   "Some things are determined by draw, yet some people seem to have all the luck in the world. $NEvery level of this ability increases your >luck< by 2. Luck affects various random rolls and sways the outcome in your favor.$N$NRequirements: Patron."   |
+20052   "_ABILITIES_SixSense_NAME_+0"   "Sixth Sense"   |
+20053   "_ABILITIES_SixSense_DESCRIPTION_+0"   "You can tell a person's intentions from afar and thus it is impossible to ambush you with poisons or jugglery. You see through lies with ease. $NA certain set of hostile actions have no effect on your character.$N$NRequirements: Scholar + Empathy 7."   |
 20054   "_ABILITIES_Blessed_NAME_+0"   "Blessed"   |
-20055   "_ABILITIES_Blessed_DESCRIPTION_+0"   "You are known as infallibe, virtuos and a rigorous believer. $NAny form of Character assassination, insults and forged evidence have no effect against you.$N$NRequirements: Scholar + charisma 7."   |
-20056   "_ABILITIES_PeaceMaker_NAME_+0"   "Peace maker"   |
-20057   "_ABILITIES_PeaceMaker_DESCRIPTION_+0"   "Even people who dont like you have to admin that you are a truly rightous and act in the interest of your community. Therefore you can end any unjustified strife against you as you wish.$NYou can enter a non-aggression pact with any dynasty.$N$NVoraussetzung: Craftsman."   |
+20055   "_ABILITIES_Blessed_DESCRIPTION_+0"   "You are considered as infallible, virtuous and a true believer. $NAny form of character assassination, insults or forged evidences have no effect against you.$N$NRequirements: Scholar + Charisma 7."   |
+20056   "_ABILITIES_PeaceMaker_NAME_+0"   "Peacemaker"   |
+20057   "_ABILITIES_PeaceMaker_DESCRIPTION_+0"   "One may despise or even fear you, yet no one can call into question that you are truly righteous and work only in the interest of our community. Therefore you can end any unjustified strife against you as you wish.$NYou can enter a non-aggression pact with any dynasty.$N$NRequirements: Craftsman."   |
 20058   "_ABILITIES_WeaponMaster_NAME_+0"   "Master armourer"   |
-20059   "_ABILITIES_WeaponMaster_DESCRIPTION_+0"   "You don't need to be a rogue in order to appreciate the value of a good weapon, especially when you know how to craft it yourself. While crafting weapons for others you've spent a significant amount of time thinking about how to put them to use properly. Only in you mind, of course...$N$NFor every level of this ability, your martial arts talend and dexterity talent increase by 2.$N$NRequirements: Craftsman + martial arts 7."   |
-20060   "_ABILITIES_Eldest_NAME_+0"   "Non-aging"   |
-20061   "_ABILITIES_Eldest_DESCRIPTION_+0"   "Your competitors cheer for the day you finally perish. Make them wait a little bit longer! $NYour life expectancy increases by 12 years.$N$NRequirements: None."   |
+20059   "_ABILITIES_WeaponMaster_DESCRIPTION_+0"   "Who says that you need to be a rogue in order to appreciate the value of a good weapon? As a master craftsman you not only know how to craft it, you also learned how to use it in a way a more ignorant mind couldn't even think of.$N$NFor every level of this ability, your Martial Arts and your Dexterity talent get increased by 2.$N$NRequirements: Craftsman + Martial Arts 7."   |
+20060   "_ABILITIES_Eldest_NAME_+0"   "Elder"   |
+20061   "_ABILITIES_Eldest_DESCRIPTION_+0"   "Your competitors desire the day at which you finally perish. Now they'll need to wait a little bit longer! $NYour life expectancy is increased by 15 years.$N$NRequirements: None."   |
 20062   "_ABILITIES_Halo_NAME_+0"   "Halo"   |
-20063   "_ABILITIES_Halo_DESCRIPTION_+0"   "Everybody is convinced: you are a saint the angels speak through you. God moves in mysterious ways and nobody dares attracting his wrath by judging you. $NYou cannot be sentenced to death, banished or become the suspect of an inquisition trial.$N$NRequirements: None."   |
+20063   "_ABILITIES_Halo_DESCRIPTION_+0"   "Everybody is convinced: you are a saint and the angels speak and act through you. The Lord moves in mysterious ways and nobody dares to attract his wrath by executing you. $NYou cannot be sentenced to death, banished or become the target of an inquisition.$N$NRequirements: None."   |
 20064   "_ABILITIES_Infamous_NAME_+0"   "Infamous"   |
-20065   "_ABILITIES_Infamous_DESCRIPTION_+0"   "Some people enjoy an immaculate reputation in the whole country, when talking about you, however, people only dare to whisper. Nobody knows if any of this is true but it certainly helps among your reputation with other rogues.$NYou gain twice as much favour from other rogues and only lose half as much as normal. (minimum 1). $N$NRequirements: Rogue."   |
+20065   "_ABILITIES_Infamous_DESCRIPTION_+0"   "Some people like to boast of their deeds throughout the entire country. When talking about you, however, people only dare to whisper. Is any of this true? But what does it matter if it helps you to be left alone by other Rogues.$NYou gain twice as much favour from other Rogues and only lose half as much as normal (minimum of 1). $N$NRequirements: Rogue."   |
 20066   "_ABILITIES_EpicCraftsman_NAME_+0"   "Master crafter"   |
-20067   "_ABILITIES_EpicCraftsman_DESCRIPTION_+0"   "Many have tried, many have failed, but you succeded in refining your craftsmanship to perfection. Being a master of your profession allows you to craft the most exclusive and desired goods. $NYou can now craft epic artefacts in your craftsman businesses.$N$NRequirements: Craftsman + Handicrafts 9."   |
+20067   "_ABILITIES_EpicCraftsman_DESCRIPTION_+0"   "Many have tried but only few have managed to bring their handicraft to definite perfection. Being a master of your profession allows you to craft the most exclusive and desired goods. $NYou can now craft epic artefacts in your Craftsman businesses.$N$NRequirements: Craftsman + Handicraft 9."   |
 20068   "_ABILITIES_EpicPatron_NAME_+0"   "Gourmet"   |
-20069   "_ABILITIES_EpicPatron_DESCRIPTION_+0"   "Love goes through the stomach. Your love for adventurous cooking helped you discover the secret to delicacies others can only find in faraway places.$NYou can now craft epic artefacts in your patron businesses.$N$Requirements: Patron + Handicrafts 9."   |
+20069   "_ABILITIES_EpicPatron_DESCRIPTION_+0"   ">Love goes through the stomach<. Your love for adventurous cooking helped you discover the secret to delicacies others can only import from faraway places.$NYou can now craft epic artefacts in your Patron businesses.$N$Requirements: Patron + Handicraft 9."   |
 20070   "_ABILITIES_EpicScholar_NAME_+0"   "Genius"   |
-20071   "_ABILITIES_EpicScholar_DESCRIPTION_+0"   "You've studied so hard and got so far, in the end it really mattered. You acquired secret knowledge about your profession that lets you craft goods nobody else can.$NYou can now craft epic artefacts in your scholar businesses.$N$NRequirements: Scholar + Arcane knowledge 9."   |
+20071   "_ABILITIES_EpicScholar_DESCRIPTION_+0"   "You've studied for so long to get this far and finally you did it! You acquired the most secret knowledge of your profession and now are able to craft goods nobody else can.$NYou can now craft epic artefacts in your Scholar businesses.$N$NRequirements: Scholar + Arcane Knowledge 9."   |
 20072   "_ABILITIES_Famous_NAME_+0"   "Famous"   |
-20073   "_ABILITIES_Famous_DESCRIPTION_+0"   "You know how to catch somebodies eye. Nobody is interested in others as long as you are around and they can see about all the things you have done for the empire!$NYour character gains twice as much imperial reputation as normal.$N$NRequirements: Charisma 9."   |
+20073   "_ABILITIES_Famous_DESCRIPTION_+0"   "You know how to catch someone's eye and how to spread your fame. Who is interested in the deeds of your competitors at all, just look at you and see what you have done for the realm! $NYour character gains twice as much Imperial Fame as normal.$N$NRequirements: Charisma 9."   |
 20074   "_ABILITIES_General_NAME_+0"   "General"   |
-20075   "_ABILITIES_General_DESCRIPTION_+0"   "You are a master of warfare and know how to lead your subordinates into battle. $NYour employee's martial arts talent increases by 2.$N$NRequirements: Martial arts 9."   |
-20076   "_ABILITIES_DoubleLife_NAME_+0"   "Double life"   |
-20077   "_ABILITIES_DoubleLife_DESCRIPTION_+0"   "Honourable member of the community by day, dishonourable master of shadows and intrigues by night. $NAdditionally to your profession guild, you are allowed into the rogue guild and gain their priviledges. $N$NRequirements: No rogue + Stealth 9."   |
-20078   "_ABILITIES_Windwalker_NAME_+0"   "Like the wind"   |
-20079   "_ABILITIES_Windwalker_DESCRIPTION_+0"   "Your reflexes are trained exceedingly well, allowing you to evade and attack with your eyes closed. On top of that: You are less affected with magic and witchcraft.$NEvery ambush with poisons, witchcraft or sorcery towards you gets reflected back to your attacker. You start combat with a guaranteed critical hit.$N$NRequirements: No scholar + Dexterity 9."   |
+20075   "_ABILITIES_General_DESCRIPTION_+0"   "You are a master of military strategy and warfare and know how to lead your subordinates into battle. $NThe Martial Arts talent of all of your employees is increased by 2.$N$NRequirements: Martial Arts 9."   |
+20076   "_ABILITIES_DoubleLife_NAME_+0"   "Double Life"   |
+20077   "_ABILITIES_DoubleLife_DESCRIPTION_+0"   "Honourable member of the community by day, dishonourable master of shadows and intrigue by night. $NIn addition to your character class Guild, you are allowed to join the Guild of Rogues to gain all of their privileges aswell. $N$NRequirements: No Rogue + Stealth 9."   |
+20078   "_ABILITIES_Windwalker_NAME_+0"   "Windwalker"   |
+20079   "_ABILITIES_Windwalker_DESCRIPTION_+0"   "Your reflexes are trained exceedingly well, allowing you to evade attacks with your eyes closed. But not only that: Every ambush with poison or jugglery will be returned against the attacker. You may begin any combat with a guaranteed critical strike of your own.$N$NRequirements: No Scholar + Dexterity 9."   |
 -------
 
 for the polish textfile, change some letters, they will show correctly ingame
