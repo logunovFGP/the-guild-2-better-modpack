@@ -638,7 +638,8 @@ end
 
 -- this function is called right bevor starting the frames
 function GameStart()
-	defaultcampaign_InitiateGodModule()
+	-- deactivated and moved to CityPingHour.lua
+	--defaultcampaign_InitiateGodModule() 
 end
 
 function InitiateGodModule()
