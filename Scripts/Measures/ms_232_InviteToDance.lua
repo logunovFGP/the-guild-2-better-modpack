@@ -156,6 +156,15 @@ function Run()
 			WasCourtLover = 1
 			SetMeasureRepeat(TimeOut)
 			
+			if AliasExists("DestTavern") then
+				if HasProperty("DestTavern", "BlockDancefloor") then
+					local BlockerID = GetProperty("DestTavern", "BlockDancefloor")
+					if GetID("") == BlockerID then
+						RemoveProperty("DestTavern", "BlockDancefloor")
+					end
+				end
+			end
+			
 			if VariationFactor <= 0.5 then
 			
 				local time1 = PlayAnimationNoWait("Destination", "shake_head")
@@ -258,6 +267,15 @@ function Run()
 			outraged = true
 		end
 		
+		if AliasExists("DestTavern") then
+				if HasProperty("DestTavern", "BlockDancefloor") then
+					local BlockerID = GetProperty("DestTavern", "BlockDancefloor")
+					if GetID("") == BlockerID then
+						RemoveProperty("DestTavern", "BlockDancefloor")
+					end
+				end
+			end
+		
 		if slap then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
@@ -325,6 +343,15 @@ end
 function CleanUp()
 	if AliasExists("cutscene") then
 		DestroyCutscene("cutscene")
+	end
+	
+	if AliasExists("DestTavern") then
+		if HasProperty("DestTavern", "BlockDancefloor") then
+			local BlockerID = GetProperty("DestTavern", "BlockDancefloor")
+			if GetID("") == BlockerID then
+				RemoveProperty("DestTavern", "BlockDancefloor")
+			end
+		end
 	end
 	
 	ReleaseAvoidanceGroup("")
