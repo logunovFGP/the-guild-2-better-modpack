@@ -7,6 +7,7 @@ function Prepare()
 	local mapid = gameplayformulas_GetDatabaseIdByName("maps", worldname)
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
+	SetProperty("World", "NameSet", "german")
 	
 
 	--if not IsMultiplayerGame() then
@@ -21,7 +22,7 @@ function Prepare()
 	if not IsMultiplayerGame() then
 		local Options = FindNode("\\Settings\\Options")
 		local Ambient = Options:GetValueInt("Ambient")
-		if Ambient==0 then
+		if Ambient == 0 then
 			SetProperty("World", "ambient", 1)
 		end
 	end
@@ -30,7 +31,7 @@ function Prepare()
 	if not IsMultiplayerGame() then
 		local Options = FindNode("\\Settings\\Options")
 		local Messages = Options:GetValueInt("Messages")
-		if Messages==0 then
+		if Messages == 0 then
 			SetProperty("World", "messages", 1)
 		end
 	end
@@ -38,7 +39,6 @@ function Prepare()
 	local Options = FindNode("\\Settings\\Options")
 	local FrequencyOfficeSessions = Options:GetValueInt("FrequencyOfficeSessions")
 	SetProperty("World", "fos", FrequencyOfficeSessions)
-
 end
 
 

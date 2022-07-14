@@ -7,7 +7,7 @@ function Prepare()
 	local mapid = gameplayformulas_GetDatabaseIdByName("maps", worldname)
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
-	
+	SetProperty("World", "NameSet", "english")
 
 	--if not IsMultiplayerGame() then
 		local Options = FindNode("\\Settings\\Options")

@@ -107,8 +107,6 @@
 451 Scripts\Measures\ms_029b_EvacuateBuildingSim.lua
 452 Scripts\Measures\ms_029_EvacuateBuilding.lua
 453 Scripts\Measures\ms_031_GetCured.lua
-454 Scripts\Measures\ms_032_PropelEmployees.lua
-455 Scripts\Measures\ms_033_PayBonus.lua
 456 Scripts\Measures\ms_035b_AssignCharacterToHome.lua
 457 Scripts\Measures\ms_035_AssignCharacterToBuilding.lua
 458 Scripts\Measures\ms_036_AttackEnemy.lua

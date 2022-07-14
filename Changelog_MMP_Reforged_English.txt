@@ -23,7 +23,7 @@ Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue,
 
 Localization:
 German: Fajeth, ThreeOfMe
-English: Fajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack, Infra
+English: Fajeth, ThreeOfMe, F-Man, jedi93, Serpens66, Edglord_Zack, Infra, Nao
 Spanish: Skip, FalsdasRojas, espyleonheart, Mr. Bear, Magnador, Bassford
 Italian: frankieorabona, Marian, Caligari89
 French: Rico, StalkFire, Techgenieur, Erfive, Craftgeeking

@@ -8,6 +8,7 @@ function Prepare()
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
 	SetProperty("World", "seamap", 1)
+	SetProperty("World", "NameSet", "prussian")
 
 	--if not IsMultiplayerGame() then
 		local Options = FindNode("\\Settings\\Options")

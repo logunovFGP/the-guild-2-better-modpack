@@ -8,6 +8,7 @@ function Prepare()
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
 	SetProperty("World", "seamap", 1)
+	SetProperty("World", "NameSet", "german")
 		
 	ScenarioGetObjectByName("cl_Building", "#munster", "munster")
 	SetName("munster", "@L_MUNSTER_+0")

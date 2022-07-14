@@ -7,6 +7,7 @@ function Prepare()
 	local mapid = gameplayformulas_GetDatabaseIdByName("maps", worldname)
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
+	SetProperty("World", "NameSet", "vienna")
 	
 
 	--if not IsMultiplayerGame() then
