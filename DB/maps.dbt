@@ -8,12 +8,12 @@ Data:
 
 1   "york"                   0   "York"                 16   3   "england"      | 
 2   "ulm"                    0   "Ulm"                  6    3   "germany"      |
-3   "magathaburg"            0   "magathaburg"          10   3   "germany"      |
+3   "magathaburg"            0   "magathaburg"          8    3   "germany"      |
 4   "holyblood"              0   "Holyblood"            16   3   "austria"      |
 5   "seatown"                0   "Seatown"              6    3   "hansa"        |
 6   "fichtenhain"            0   "Fichtenhain"          12   3   "germany"      |
 7   "bingenheim"             0   "Bingenheim"           12   3   "germany"      |
-8   "weilerthal"             0   "Weilerthal"           10   3   "germany"      |
+8   "weilerthal"             0   "Weilerthal"           12   3   "germany"      |
 9   "Novaesium"              0   "Novaesium"            16   3   "germany"      |
 10  "hanse"                  0   "Hanse"                16   3   "hansa"        | 
 11  "newark"                 0   "Newark"               6    3   "england"      | 
