@@ -52,7 +52,8 @@ function Run()
 			button1 = ""
 		end
 		
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) and FameLvL > 0 then
+		local GuildHouseExists = gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] or 0
+		if (GuildHouseExists > 0) and FameLvl > 0 then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
 				button2 = ""
 			end
