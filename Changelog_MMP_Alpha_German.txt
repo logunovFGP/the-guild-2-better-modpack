@@ -1,0 +1,9 @@
+Updates während der Alpha Version (Öffentlicher Release) von Reforged 0.1
+
+Alpha 1 -> Alpha 2:
+
+Features:
+- Erzähler zur Hochzeitseinleidung hinzugefügt
+
+Bugfixes:
+- Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat)

@@ -1,0 +1,11 @@
+Updates during the Alpha Version (Public Releases) of Reforged 0.1
+
+Alpha 1 -> Alpha 2:
+
+Features:
+- Added narrator voice to wedding ceremony invitations
+
+Fixes:
+- Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)
+
+
