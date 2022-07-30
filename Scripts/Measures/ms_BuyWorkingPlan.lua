@@ -137,8 +137,11 @@ function Run()
 	if not f_BeginUseLocator("","OwnerPos",GL_STANCE_STAND,true) then
 		StopMeasure()
 	end
+	-- if elder is unable to move, it may break the measure, just stay where you are in that case 
 	if not f_BeginUseLocator("GuildClerk","ClerkPos",GL_STANCE_STAND,true) then
-		StopMeasure()
+		if not f_BeginUseLocator("GuildClerk","ClerkPos",GL_STANCE_STAND,false) then
+			StopMeasure()
+		end
 	end
 	Sleep(1)
 
@@ -245,3 +248,4 @@ function CleanUp()
 	SetState("", STATE_LOCKED, false)
 	ReleaseAvoidanceGroup("")
 end
+
