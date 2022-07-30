@@ -345,7 +345,7 @@ function ModifyFavor(source, dest, val)
 	if val < 0 then
 		if MyMotivatorLevel > 0 then
 			 -- am I your employee?
-			if SimGetWorkingPlace(source, "WorkPlace") > 0 then
+			if SimGetWorkingPlace(source, "WorkPlace") then
 				if BuildingGetOwner("WorkPlace", "MyBoss") and GetID("MyBoss") == GetID(dest) then
 					val = val - math.floor(val * (MyMotivatorLevel * 0.5))
 					if val > -1 then
@@ -355,7 +355,7 @@ function ModifyFavor(source, dest, val)
 			end
 		elseif YourMotivatorLevel > 0 then
 			 -- Are you my employee?
-			if SimGetWorkingPlace(dest, "WorkPlace") > 0 then
+			if SimGetWorkingPlace(dest, "WorkPlace") then
 				if BuildingGetOwner("WorkPlace", "MyBoss") and GetID("MyBoss") == GetID(source) then
 					val = val - math.floor(val * (YourMotivatorLevel * 0.5))
 					if val > -1 then

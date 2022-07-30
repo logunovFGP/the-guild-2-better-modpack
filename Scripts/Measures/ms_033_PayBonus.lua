@@ -129,7 +129,7 @@ function Run()
 	chr_SpendMoney("Dynasty", Bonus, "LaborBonus")
 
 	-- play animation
-	PlayAnimation("", "use_object_standing")
+	PlayAnimationNoWait("", "use_object_standing")
 
 	-- Play a coin sound for the local player	
 	if dyn_IsLocalPlayer("") then
@@ -140,13 +140,13 @@ function Run()
 
 	for loop_var=0, numFound-1 do
 		Alias = "Worker"..loop_var
-		chr_ModifyFavor(Alias , "Owner", FavorModify)
+		chr_ModifyFavor("Owner" , Alias, FavorModify)
 		AnimTime = PlayAnimationNoWait(Alias, "nod")
 	end
 	
-	Sleep(0.6)
+	Sleep(0.2)
 	chr_GainXP("", baseXP)
-	Sleep(AnimTime)
+	Sleep(AnimTime*0.3)
 	StopMeasure()
 end
 

@@ -94,13 +94,12 @@ function Run()
 	-- boost the productivity
 	local Boost = 0.20 + (GetSkillValue("", CRAFTSMANSHIP)*0.05)
 	local BoostDuration = duration * GetImpactValue("", "PropelSpeedupTime")*0.01 -- ability
-	LoyaltyLoss = math.floor(LoyaltyLoss * 0.01 * GetImpactValue("", "PropelFavorMalus")) -- ability
 	
 	for number=0, Found-1 do
 		Alias = "Worker"..number
 		if LoyaltyLoss ~= 0 then
 			AnimTime = PlayAnimationNoWait(Alias, "devotion")
-			chr_ModifyFavor(Alias, "Owner", LoyaltyLoss)
+			chr_ModifyFavor("Owner", Alias, LoyaltyLoss)
 		end
 		
 		AddImpact(Alias, "Productivity", Boost, BoostDuration)	
