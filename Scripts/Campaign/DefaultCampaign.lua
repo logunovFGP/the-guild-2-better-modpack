@@ -14,20 +14,31 @@ end
 
 function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	
-	local PrimTypes = { GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_TAVERN  } 
-	local Protos = {	GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, -- most important
-				GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_TAILORING, GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH,  GL_BUILDING_TYPE_STONEMASON, -- second important
-				GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NEKRO, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_JUGGLER  } -- least important
+	-- Make sure, PrimTypes have an owner
+	local PrimTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST  } 
 	
-	local NumPrimTypes = 6
-	local NumProtos = 22
+	-- Shadows take Protos of levels 2+3 aswell
+	local Protos = {	GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_TAILORING, -- most important
+				GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_ALCHEMIST,  GL_BUILDING_TYPE_STONEMASON, GL_BUILDING_TYPE_DIVEHOUSE,  -- second important
+				GL_BUILDING_TYPE_NEKRO, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_JUGGLER, GL_BUILDING_TYPE_MERCENARY  } -- least important
+	
+	local NumPrimTypes = 10
+	local NumProtos = 15
 	local Pos = 1
 	
 	if not AliasExists("WorkingHut") then
 		-- first check PrimTypes for that City
 		while PrimTypes[Pos] do
-			if CityGetBuildingCount(City, 2, PrimTypes[Pos], 1, -1, FILTER_HAS_DYNASTY) < 1 then
-				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], -1, -1, FILTER_NO_DYNASTY, "WorkingHut") then
+			if CityGetBuildingCount(City, 2, PrimTypes[Pos], -1, -1, FILTER_HAS_DYNASTY) < 1 then
+				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 3
+					break
+				end
+				
+				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 2
+					break
+				end
+				
+				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 1
 					break
 				end
 			end
@@ -38,24 +49,22 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			end
 		end
 			
-		if not AliasExists("WorkingHut") then -- still no working hut so check rest at random
-			local Start = Rand(NumProtos)+1
-			Pos = Start
+		if not AliasExists("WorkingHut") then -- still no working hut, so check rest in priority order (see Protos-Array)
+			Pos = 1
 			while Protos[Pos] do
-				if CityGetRandomBuilding(City, -1, Protos[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then
+				if CityGetRandomBuilding(City, -1, Protos[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
 					break
-				elseif CityGetRandomBuilding(City, -1, Protos[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then
+				end
+				
+				if CityGetRandomBuilding(City, -1, Protos[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 2
 					break
 				end
 					
 				Pos = Pos + 1
+
 				if Pos > NumProtos then
-					Pos = 1
-				end
-					
-				if Pos == Start then
 					break
-				end
+				end		
 			end
 		end
 	end
@@ -75,8 +84,8 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			Protos = { GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_NEKRO }
 			ProtoCount = 6
 		else -- rogue
-			Protos = { GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER }
-			ProtoCount = 3
+			Protos = { GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, GL_BUILDING_TYPE_MERCENARY }
+			ProtoCount = 4
 		end
 					
 		local Select = Rand(ProtoCount)+1
@@ -122,7 +131,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	local ImpFame = 0
 	local NobLevel = 2 + Rand(3)
 	local XP = GL_STARTUP_XP_SHADOW_DYNASTY
-	local StartMoney = 5000
+	local StartMoney = 10000
 	local OfficeLevel = 0
 		
 	-- add some fame on random
@@ -135,37 +144,37 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		ImpFame = 1+Rand(12)
 		NobLevel = NobLevel + 2
 	end
-				
-	-- start with random equipment
-	local RandomWeapon = Rand(20)
-	if RandomWeapon >= 0 and RandomWeapon <4 then
-		AddItems("boss", "Dagger", 1, INVENTORY_EQUIPMENT)
-	elseif RandomWeapon == 4 then
-		AddItems("boss", "Dagger", 1, INVENTORY_EQUIPMENT)
-		AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
-	elseif RandomWeapon == 5 then
-		AddItems("boss", "Mace", 1, INVENTORY_EQUIPMENT)
-	elseif RandomWeapon == 6 then
-		AddItems("boss", "Mace", 1, INVENTORY_EQUIPMENT)
-		AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
-	elseif RandomWeapon == 7 then
-		AddItems("boss","Longsword", 1, INVENTORY_EQUIPMENT)
-		local Weapon = Rand(5)
-		if Weapon == 0 then
-			AddItems("boss", "Chainmail", 1, INVENTORY_EQUIPMENT)
-		elseif Weapon == 1 then
-			AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
-		end
-	elseif RandomWeapon == 8 then
-		AddItems("boss","Longsword", 1, INVENTORY_EQUIPMENT)
-		if Rand(3) == 0 then
-			AddItems("boss", "Platemail", 1, INVENTORY_EQUIPMENT)
-		end
-	end
 		
 	-- Set office and family
 	if AliasExists("Office") then
 		SimSetOffice("boss", "Office")
+		
+		-- start with random equipment
+		local RandomWeapon = Rand(20)
+		if RandomWeapon >= 0 and RandomWeapon <4 then
+			AddItems("boss", "Dagger", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 4 then
+			AddItems("boss", "Dagger", 1, INVENTORY_EQUIPMENT)
+			AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 5 then
+			AddItems("boss", "Mace", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 6 then
+			AddItems("boss", "Mace", 1, INVENTORY_EQUIPMENT)
+			AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
+		elseif RandomWeapon == 7 then
+			AddItems("boss","Longsword", 1, INVENTORY_EQUIPMENT)
+			local Weapon = Rand(5)
+			if Weapon == 0 then
+				AddItems("boss", "Chainmail", 1, INVENTORY_EQUIPMENT)
+			elseif Weapon == 1 then
+				AddItems("boss", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
+			end
+		elseif RandomWeapon == 8 then
+			AddItems("boss","Longsword", 1, INVENTORY_EQUIPMENT)
+			if Rand(3) == 0 then
+				AddItems("boss", "Platemail", 1, INVENTORY_EQUIPMENT)
+			end
+		end
 			
 		-- Get a residence
 		if not CityGetRandomBuilding(City, -1, GL_BUILDING_TYPE_RESIDENCE, 5, -1, FILTER_NO_DYNASTY, "SleepingHut") then
@@ -308,7 +317,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		CityName = ""
 	end
 	
-	local CityAlias
+	local CityAlias = "CityName"
 	local Section
 	local BeamPos
 	
@@ -322,9 +331,6 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	if Money < 5000 then
 		Money = 5000
 	end
-	
-	CityAlias = "CityName"
-	CityName = ""
 	
 	-- get city name from playerdescnode
 	if PlayerDescNode ~= nil then
@@ -358,18 +364,19 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	if not AliasExists(CityAlias) then
 		-- choose a random start city for AI
 		
-		local CityCount = ScenarioGetObjects("Settlement", 12, "CityList")
+		local CityCount = ScenarioGetObjects("Settlement", 15, "CityList")
 		local FreeResidences = 0
 		local BestSum = -99
-		local BestCity
+		local BestCity = false
 			
 		for cc=0, CityCount-1 do
-			if AliasExists("CityList"..cc) then
-				FreeResidences = CityGetBuildingCount( "CityList"..cc, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_NO_DYNASTY)
+			local Alias = "CityList"..cc
+			if AliasExists(Alias) then
+				FreeResidences = CityGetBuildingCount(Alias, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_NO_DYNASTY)
 				
 				if FreeResidences >= BestSum then
 					BestSum = FreeResidences
-					BestCity = "CityList"..cc
+					BestCity = Alias
 				end
 			end
 		end
@@ -459,7 +466,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 				local RandomProto = Protos[Select]
 				local BuildProto = ScenarioFindBuildingProto(2, RandomProto, 1, -1)
 				
-				if BuildProto and BuildProto~=-1 then
+				if BuildProto and BuildProto~= -1 then
 					if CityBuildNewBuilding(CityAlias, BuildProto, nil, "NewWS") then
 					--	LogMessage("Neubau fertig!")
 						if BuildingBuy("NewWS", "boss", BM_STARTUP) then
@@ -550,8 +557,8 @@ function SetupDiplomacy()
 		
 	for CityNo=0, CityCount-1 do
 	
-		CityID 	= GetID("Cities"..CityNo)
-		Count 	= 0
+		CityID = GetID("Cities"..CityNo)
+		Count = 0
 		
 		for dyn=0, DynCount-1 do
 			if GetData("CityID"..dyn)==CityID then
@@ -579,7 +586,6 @@ function SetupDiplomacy()
 				end
 			end
 		end
-		
 	end
 end
 
@@ -615,6 +621,7 @@ function FindDynasty(DipState, MaxState, StartNo, EndNo, FirstOfType)
 			end
 		end
 	end
+	
 	return Found
 end
 
