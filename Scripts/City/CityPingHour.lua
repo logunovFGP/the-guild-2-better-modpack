@@ -7,16 +7,21 @@ function Run()
 		
 	local currentGameTime = math.mod(GetGametime(), 24)
 	local Level = CityGetLevel("")
+	
+	if Level < 2 then
+		-- kontor city - do nothing here
+		return
+	end
 		
 	-- get important things rolling
 	if GetData("#AldermanChooser") == nil or GetData("#AldermanChooser") == 0 then
-		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
 			SetData("#AldermanChooser", GetID(""))
 		end
 	end
 		
 	if GetData("#ImperialChooser") == nil or GetData("#ImperialChooser") == 0 then
-		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1] > 0) then
 			SetData("#ImperialChooser", GetID(""))
 		end
 	end
@@ -24,24 +29,42 @@ function Run()
 	-- check the town / build new stuff or buy empty buildings
 	if ScenarioGetTimePlayed() > 12 then
 		
-		if Level == 1 then
-			-- kontor city - do nothing here
-			return
-		elseif Level == 2 then
+		if Level == 2 then
 			citypinghour_CheckVillage()
 		elseif Level == 3 then
 			citypinghour_CheckSmallTown()
 		elseif Level == 4 then
 			citypinghour_CheckTown()
-		elseif Level == 5 then
-			citypinghour_CheckCapital()
-		elseif Level == 6 then
+		elseif Level == 5 or Level == 6 then
 			citypinghour_CheckCapital()
 		end
 	end
 		
 	-- get special events rolling
-	if GetRound() > 1 then
+	local CurrentRound = GetRound()
+	
+	if CurrentRound > 0 then -- round 2 +
+		
+		local trys = 3
+		-- infect a random dynasty member of this city
+		
+		for i=1, trys do
+			local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
+			if TargetID > 0 then
+				GetAliasByID(TargetID, "InfectSim")
+				if AliasExists("InfectSim") then
+					if not GetState("InfectSim", STATE_SICK) then
+						if GetImpactValue("InfectSim", "Resist") == 0 then
+							citypinghour_InfectionEvent("InfectSim")
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if CurrentRound > 1 then -- round 3 +
 		
 		if GetData("#MusiciansChooser") == nil then
 			SetData("#MusiciansChooser", GetID(""))
@@ -59,12 +82,14 @@ function Run()
 			end
 		end
 			
-		if GetRound() > 2 then
+		if CurrentRound > 2 then -- round 4 +
 			if currentGameTime == 21 or (currentGameTime > 21 and currentGameTime < 22) then
 				if GetData("#ImperialChooser") == GetID("") then
 					gameplayformulas_CheckImperialOfficer()
 				end
 			end
+			
+			-- ToDo: City Events
 		end
 	end
 		
@@ -73,6 +98,7 @@ function Run()
 			
 		-- Stop rain once a day (Workaround)
 		Weather_SetWeather("Fine", 4.0)
+		
 		-- SetNameSet once a day
 		local NameSet = GetProperty("World", "NameSet") or "english"
 		ScenarioSetNameLanguage(NameSet)
@@ -80,6 +106,10 @@ function Run()
 		-- Update City Balance
 		citypinghour_CityBalance()	
 	end
+end
+
+function InfectionEvent(Target)
+	-- ToDo
 end
 
 function CityBalance()
@@ -93,7 +123,7 @@ function CityBalance()
 	local IncomeTotal = 0
 	local CostTotal = 0
 	local repairTotal = 0
-	local Alias, WorkshopLvl
+	local Alias
 	
 	-- Taxes from market (income)
 	CityGetLocalMarket("", "Market")

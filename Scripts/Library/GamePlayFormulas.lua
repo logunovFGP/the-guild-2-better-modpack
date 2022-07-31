@@ -2,14 +2,14 @@ function Init()
  --needed for caching
 end
 
-function LockPick(LockPickerLevel,LockLevel)
-	if(LockPickerLevel >= LockLevel) then
+function LockPick(LockPickerLevel, LockLevel)
+	if (LockPickerLevel >= LockLevel) then
 		return 1
 	end	
 	return 0	
 end
 
-function CalcBuildProgress(DefaultProgress,Workers)
+function CalcBuildProgress(DefaultProgress, Workers)
 	return DefaultProgress + Workers
 end
 
@@ -18,22 +18,22 @@ function CalcBurnDamageProgress()
 end
 
 function CalcCartBuyPrice(CartType)
-		return 250*(CartType+1) 
+	return 250*(CartType+1) 
 end
 
-function CalcCartSellPrice(CartType,HPRelative)
-		local Price = gameplayformulas_CalcCartBuyPrice(CartType)
-		Price = Price * HPRelative * 0.75
-		return Price
+function CalcCartSellPrice(CartType, HPRelative)
+	local Price = gameplayformulas_CalcCartBuyPrice(CartType)
+	Price = Price * HPRelative * 0.75
+	return Price
 end
 
 -- -----------------------
 -- CalcCartRepairPrice
 -- -----------------------
 function CalcCartRepairPrice(CartType, HPRelative)
-		Price = gameplayformulas_CalcCartBuyPrice(CartType)
-		Price = Price * (1 - HPRelative)
-		return Price
+	Price = gameplayformulas_CalcCartBuyPrice(CartType)
+	Price = Price * (1 - HPRelative)
+	return Price
 end
 
 function CalcFindRange(ObjectAlias)
@@ -123,8 +123,6 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			local time
 			--GetSkillValue(SimAlias,"dex")
 			
-
-
 			if IsMounted(DestAlias) then
 				Unmount(DestAlias)
 			end
@@ -176,9 +174,6 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 			GetFleePosition("", DestAlias, 3400, "DestPos")
 			f_MoveTo(SimAlias,"DestPos",GL_MOVESPEED_RUN)
 			
-			
-			
-
 			AlignTo(SimAlias,DestAlias)
 			Sleep(0.5)
 
@@ -260,37 +255,37 @@ function SimIsGuildmaster()
 		end
 
 		local Class
-		if SimGetClass("")==1 then
+		if SimGetClass("") == 1 then
 			Class = "PatronMaster"
-		elseif SimGetClass("")==2 then
+		elseif SimGetClass("") == 2 then
 			Class = "ArtisanMaster"
-		elseif SimGetClass("")==3 then
+		elseif SimGetClass("") == 3 then
 			Class = "ScholarMaster"
-		elseif SimGetClass("")==4 then
+		elseif SimGetClass("") == 4 then
 			Class = "ChiselerMaster"
 		else
 			return 0
 		end
 	
-		if GetID("")==GetProperty("Guildhouse", Class) then
+		if GetID("") == GetProperty("Guildhouse", Class) then
 			if SimGetGender("") == 0 then
-				if SimGetClass("")==1 then
+				if SimGetClass("") == 1 then
 					return 1
-				elseif SimGetClass("")==2 then
+				elseif SimGetClass("") == 2 then
 					return 2
-				elseif SimGetClass("")==3 then
+				elseif SimGetClass("") == 3 then
 					return 3
-				elseif SimGetClass("")==4 then
+				elseif SimGetClass("") == 4 then
 					return 4
 				end
 			else
-				if SimGetClass("")==1 then
+				if SimGetClass("") == 1 then
 					return 5
-				elseif SimGetClass("")==2 then
+				elseif SimGetClass("") == 2 then
 					return 6
-				elseif SimGetClass("")==3 then
+				elseif SimGetClass("") == 3 then
 					return 7
-				elseif SimGetClass("")==4 then
+				elseif SimGetClass("") == 4 then
 					return 8
 				end
 			end
@@ -303,7 +298,7 @@ function SimIsGuildmaster()
 end
 
 function SimIsAlderman()
-	if chr_GetAlderman()==GetID("") then
+	if chr_GetAlderman() == GetID("") then
 		if SimGetGender("") == 0 then
 			return 1
 		else
@@ -317,7 +312,7 @@ end
 function GetDatabaseIdByName(table, name)
 	local id = 1
 	while id<1000 do
-		if (GetDatabaseValue(table, id, "name")==name) then
+		if (GetDatabaseValue(table, id, "name") == name) then
 			break
 		else
 			id = id + 1
@@ -638,32 +633,32 @@ function CheckPublicBuilding(city,building)
 	else
 		local Level = CityGetLevel(city)
 		if building == GL_BUILDING_TYPE_GUILDHOUSE then
-			if Level==1 then
+			if Level == 1 then
 				return {0, 0}
-			elseif Level==2 then
+			elseif Level == 2 then
 				return {0, 1}
-			elseif Level==3 then
+			elseif Level == 3 then
 				return {1, 2}
-			elseif Level==4 then
+			elseif Level == 4 then
 				return {2, 2}
-			elseif Level==5 then
+			elseif Level == 5 then
 				return {2, 2}
-			elseif Level==6 then
+			elseif Level == 6 then
 				return {2, 2}
 			end
 			
 		elseif building == GL_BUILDING_TYPE_ARSENAL or building == GL_BUILDING_TYPE_SOLDIERPLACE then
-			if Level==1 then
+			if Level == 1 then
 				return {0, 0}
-			elseif Level==2 then
+			elseif Level == 2 then
 				return {0, 0}
-			elseif Level==3 then
+			elseif Level == 3 then
 				return {0, 1}
-			elseif Level==4 then
+			elseif Level == 4 then
 				return {1, 2}
-			elseif Level==5 then
+			elseif Level == 5 then
 				return {2, 2}
-			elseif Level==6 then
+			elseif Level == 6 then
 				return {2, 2}
 			end
 		end
@@ -672,15 +667,15 @@ function CheckPublicBuilding(city,building)
 end
 
 function GetCityUpgradeCost(curLvl)
-	if curLvl==2 then
+	if curLvl == 2 then
 		return 10000
-	elseif curLvl==3 then
+	elseif curLvl == 3 then
 		return 25000
-	elseif curLvl==4 then
+	elseif curLvl == 4 then
 		return 50000
-	elseif curLvl==5 then
+	elseif curLvl == 5 then
 		return 100000
-	elseif curLvl==6 then
+	elseif curLvl == 6 then
 		return 0
 	end
 end
@@ -1142,5 +1137,80 @@ function DecreaseInfectionCountCity(Alias)
 		elseif GetImpactValue(Alias, "Caries") == 1 then
 			chr_DecrementInfectionCount("CariesInfected", "City")
 		end
+	end
+end
+
+function CityGetRandomDynastyID(CityAlias)
+	local DynID = 0
+	local Families = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_HAS_DYNASTY, "Residence")
+	
+	if Families > 1 then
+		local Choice = Rand(Families)
+		if GetDynasty("Residence"..Choice, "RandomDyn") then
+			DynID = GetID("RandomDyn")
+		end
+	end
+	
+	return DynID
+end
+
+function CityGetRandomDynastyMember(CityAlias, OnlyParty, OnlyValid)
+	local DynID = gameplayformulas_CityGetRandomDynastyID(CityAlias) or 0
+	
+	if DynID > 0 then
+		GetAliasByID(DynID, "RandomDyn")
+		if AliasExists("RandomDyn") then
+			if OnlyParty then
+				local PartyCount = DynastyGetMemberCount("RandomDyn")
+				local Choice = 1
+				
+				if PartyCount > 1 then
+					Choice = Rand(PartyCount) + 1
+				end
+				
+				if DynastyGetMember("RandomDyn", Choice, "MemberAlias") then
+					if OnlyValid then
+						if not f_SimIsValid("MemberAlias") then
+							return 0
+						else
+							local SimID = GetID("MemberAlias") or 0
+							return SimID
+						end
+					else
+						local SimID = GetID("MemberAlias") or 0
+						return SimID
+					end
+				else
+					return 0
+				end
+			else
+				local PartyCount = DynastyGetFamilyMemberCount("RandomDyn")
+				local Choice = 1
+				
+				if PartyCount > 1 then
+					Choice = Rand(PartyCount) + 1
+				end
+				
+				if DynastyGetFamilyMember("RandomDyn", Choice, "MemberAlias") then
+					if OnlyValid then
+						if not f_SimIsValid("MemberAlias") then
+							return 0
+						else
+							local SimID = GetID("MemberAlias") or 0
+							return SimID
+						end
+					else
+						local SimID = GetID("MemberAlias") or 0
+						return SimID
+					end
+				else
+					return 0
+				end
+			end
+		else
+			return 0
+		end
+	else
+		return 0
 	end
 end
