@@ -17,12 +17,12 @@ function Run()
 		
 	if GetData("#ImperialChooser") == nil or GetData("#ImperialChooser") == 0 then
 		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-			SetData("#ImperialChooser",GetID(""))
+			SetData("#ImperialChooser", GetID(""))
 		end
 	end
 		
-	-- check the town
-	if ScenarioGetTimePlayed() > 4 then
+	-- check the town / build new stuff or buy empty buildings
+	if ScenarioGetTimePlayed() > 12 then
 		
 		if Level == 1 then
 			-- kontor city - do nothing here
@@ -37,10 +37,6 @@ function Run()
 			citypinghour_CheckCapital()
 		elseif Level == 6 then
 			citypinghour_CheckCapital()
-		end
-			
-		if ScenarioGetTimePlayed() > 16 then
-			citypinghour_CheckCrimes()
 		end
 	end
 		
@@ -75,8 +71,13 @@ function Run()
 	------------------------------------------------------------------------------
 	if (currentGameTime == 1) then	
 			
-		-- check weather (stop raining if it bugs!)
+		-- Stop rain once a day (Workaround)
 		Weather_SetWeather("Fine", 4.0)
+		-- SetNameSet once a day
+		local NameSet = GetProperty("World", "NameSet") or "english"
+		ScenarioSetNameLanguage(NameSet)
+		
+		-- Update City Balance
 		citypinghour_CityBalance()	
 	end
 end
@@ -334,86 +335,6 @@ function CheckMusicians()
 		SetState("Groupie5", STATE_TOWNNPC, true)
 		SimSetBehavior("Groupie5", "Groupie")
 	end
-end
-
-function CheckCrimes()
-
-	ListCrimeReport("crime_report_list")		-- liste mit (DynastyID, ActorID, CrimeTotal) 
-	
-	-- mod
-	local TopBias = -1
-	local TopReport = -1
-	local TopDynastyID = -1
-	local TopActorID = -1
-	local TopCrimeTotal = -1
-	
-	local DepositionTopBias = -1
-	local DepositionTopReport = -1
-	local DepositionTopDynastyID = -1
-	local DepositionTopActorID = -1
-	local DepositionTopCrimeTotal = -1
-		
-	for iReport = 0,ListSize("crime_report_list")-1 do
-	
-		ListGetElement("crime_report_list",iReport,"crime_report")
-		local DynastyID  = GetProperty("crime_report", "DynastyID")
-		local ActorID	 = GetProperty("crime_report", "ActorID")
-		local CrimeTotal = GetProperty("crime_report", "CrimeTotal")
-		
-		if GetAliasByID(ActorID,"_actor") then
-			if SimCanBeCharged("_actor")==0 then
-				if GetAliasByID(DynastyID,"_dyn") then
-					for iMember = 0, DynastyGetMemberCount("_dyn")-1 do
-						if DynastyGetMember("_dyn",iMember,"_sim") then
-							if GetSettlementID("_sim")==GetID("") then
-								local Bias = CrimeTotal * 10	-- 0.. ~200
-								
-								local Hours = GetHoursToNextTrial("")
-								if Hours>16 then 
-									Bias = Bias - Hours * 2	-- 
-								end
-								
-								local DiplomaticState = DynastyGetDiplomacyState("_dyn", "_actor")
-								
-								if DiplomaticState > DIP_NEUTRAL then
-									Bias = 0
-								elseif DiplomaticState == DIP_FOE then
-									Bias = Bias
-								else
-									Bias = Bias * ((100.0-GetFavorToDynasty("_dyn","_actor"))/100)
-								end
-
-								if GetImpactValue("_actor","HaveImmunity")==1 then
-									if Bias>DepositionTopBias and Bias>0 then
-										DepositionTopBias = Bias
-										DepositionTopReport = iReport
-										DepositionTopDynastyID = DynastyID
-										DepositionTopActorID = GetID("_actor")
-										DepositionTopCrimeTotal = CrimeTotal
-									end
-								else
-									if Bias>TopBias and Bias>0 then
-										TopBias = Bias
-										TopReport = iReport
-										TopDynastyID = DynastyID
-										TopActorID = GetID("_actor")
-										TopCrimeTotal = CrimeTotal
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	
-	SetProperty("","Crimes_TopAccuserDynastyID",TopDynastyID)
-	SetProperty("","Crimes_TopActorID",TopActorID)
-	SetProperty("","Crimes_TopBias",TopBias)
-	SetProperty("","Crimes_TopCrimeTotal",TopCrimeTotal)
-
-	SetProperty("","Crimes_DepositionTopActorID",DepositionTopActorID)
 end
 
 function CheckVillage()
