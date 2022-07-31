@@ -426,7 +426,7 @@ Data:
 1546   "CanDoGelage"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND(Object.IsType(100))OR(Object.IsType(11))OR(Object.IsType(101))OR(Object.IsType(36))OR(Object.IsType(21))OR(Object.IsType(102)))"   |
 1547   "IsMineBankhouse"   "__F((Object.BelongsToMe())AND(Object.IsType(43))AND NOT Object.GetState(building))"   |
 1548   "IsMineBankhouseChief"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsType(43)))"   |
-1549   "IsMyFruitfarmer"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==1)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(108)))"   |
+1549   "IsMyFruitfarmer"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==68)AND(Object.MinAge(16))AND(Object.GetWorkBuilding())AND(Object.IsType(108)))"   |
 1550   "TarnenDynNutzer"   "__F((Object.CanBeControlled())AND(Object.IsClass(4))AND(Object.GetOwnedBuildings())AND(Object.IsType(101))AND(Object.HasUpgrade(ShadowCloak))AND NOT(Object.IsInBuilding()))"   |
 1551   "IsDynMember"   "__F((Object.BelongsToMe())AND(Object.CanBeControlled()))"   |
 1552   "CanEmpfangenWuerden"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(111))AND(Object.BelongsToMe())AND(Object.HasUpgrade(ImperialSignet)))"   |
