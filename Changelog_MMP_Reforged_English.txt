@@ -179,6 +179,7 @@ _General_
 - As an epic office bearer you can apply for other epic offices.
 - When playing with missions the quests are now narrated with voice lines at game start.
 - Fixed missing dialog (voice over!) variation during pay bonus / propel employees.
+- Added missing voice over-files of Pirates of the Eastern Sea.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

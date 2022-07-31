@@ -7,3 +7,4 @@ Features:
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat)
+- Fehlende englische Soundfiles aus Seeräuber der Hanse hinzugefügt

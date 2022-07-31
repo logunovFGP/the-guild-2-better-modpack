@@ -7,5 +7,5 @@ Features:
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)
-
+- Added missing soundfiles of Pirates of the Eastern Sea
 
