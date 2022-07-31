@@ -918,7 +918,7 @@ function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 	local EmpathyMod = 0
 	local RhetoricMod = 0
 	local Secret_KnowledgeMod = 0
-	local MovespeedModify = 0
+	local MovespeedMod = 0
 	
 	local BuildingType = BuildingGetType(WorkBuilding)
 	
