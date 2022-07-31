@@ -78,7 +78,7 @@ _Design_
 - State-Icon for 'pregnancy' now is shown on the left-below corner instead of right. Thus, active measusures of that character are not hidden by the pregnancy state symbol.
 - Multiple icons have been reworked or added.
 - Some character textures have been overhauled.
-- The numbers of possible dynasties per map have been adjusted.
+- The number of possible dynasties per map has been adjusted.
 - Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can now longer be played on.
 - The message 'Someone feels neglected' has no voiceover anymore and the text has been changed.
 - To start an affair your residence doesn't matter anymore, instead you simply need the title "Free citizen"
@@ -100,7 +100,7 @@ _Design_
 - When aquiring a new nobility title, all members of your party get some xp instead of just the character who initially bought the title.
 - Some weapon models have been changed.
 - In dynasty mode (endless) you will get a voiceline from the narrator at the beginning of the game now.
-- The Mercenary castle has been replaced by a mercenary house and can be placed inside the city.
+- The Mercenary castle has been replaced by a mercenary house and can be placed inside the city. Graveyard, Windmill and Juggler's tent can be built inside the city walls aswell.
 
 *** Vanilla-Bugs ***
 
