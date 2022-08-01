@@ -202,6 +202,7 @@ Data:
 282   "CanUseFragranceOfHoliness"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(FragranceOfHoliness)>0)AND NOT(Object.GetState(fighting)))"   |
 283   "IsResourceMeasure"   "__F((Object.BelongsToMe())AND(Object.IsResourceMeasure()))"   |
 284   "CanLinger"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==600)AND(Object.IsType(32)))"   |
+285   "IsResourceMeasureMeadow"   "__F((Object.IsResourceMeasure())AND((Object.BelongsToMe())OR NOT(Object.HasDynasty())))"   |
 299   "CanUseDrFaustusElixir"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(DrFaustusElixir)>0)AND NOT(Object.GetState(fighting)))"   |
 300   "CanUseToadSlime"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Toadslime)>0)AND NOT(Object.GetState(fighting)))"   |
 302   "CanPoisonWell"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(16))AND(Object.GetLevel()>=2)ANDObject.HasUpgrade(AlchimistCellar)))"   |
