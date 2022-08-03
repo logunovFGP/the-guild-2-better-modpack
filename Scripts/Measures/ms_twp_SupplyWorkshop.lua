@@ -102,16 +102,19 @@ function ChooseSuppliers(SupplierCount, Suppliers)
 			SupplierCount, Suppliers = helpfuncs_RemoveElementFromList(Suppliers, SupplierCount, Choice)
 		end
 	until Choice == nil or Choice == "C"
-	
 	return SupplierCount, Suppliers
 end
 
 function SelectSupplier(Index)
+	local FreeIndex = Index
+	while AliasExists("Supplier"..FreeIndex) do
+		FreeIndex = FreeIndex + 1
+	end
 	-- filter for waypoint selection
-	InitAlias("Supplier"..Index, MEASUREINIT_SELECTION,
+	InitAlias("Supplier"..FreeIndex, MEASUREINIT_SELECTION,
 		"__F((Object.BelongsToMe()) OR (Object.IsClass(2)) OR (Object.IsClass(5)) AND (Object.Type == Building))",
 		"@L_TRADEROUTE_NEXT_BUILDING_+0",0)
-	return "Supplier"..Index
+	return "Supplier"..FreeIndex
 end
 
 function InitMeasure()

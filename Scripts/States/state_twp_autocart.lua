@@ -49,7 +49,7 @@ function Run()
 			CityGetLocalMarket("MyCity","MyMarket")
 			ProfitCount, Profits = economy_CalcProfits("MyMarket", "MyHome", Count, Items, 400) 
 			if ProfitCount <= 0 then
-				ProfitCount, Profits, CityAlias = state_twp_autocart_CalcProfitsOutside("MyHome", Count, Items)
+				ProfitCount, Profits, CityAlias = economy_CalcProfitsOutside("MyHome", Count, Items)
 			end 
 		end
 		

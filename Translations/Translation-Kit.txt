@@ -118,7 +118,7 @@ Translate and add the following lines below:
 18165   "_TWP_SALESCART_INITIATE_HEAD_+0"   "Sell products"   |
 18166   "_TWP_SALESCART_INITIATE_BODY_+0"   "Assign your cart to sell products from your workshop."   |
 18167   "_TWP_SALESCART_INITIATE_OPTION_+0"   "Protected products"   |
-18168   "_TWP_SALESCART_INITIATE_OPTION_+1"   "Set sales threshold"   |
+18168   "_TWP_SALESCART_INITIATE_OPTION_+1"   "Choose targets"   |
 18169   "_TWP_SALESCART_INITIATE_OPTION_+2"   "Send out"   |
 18170   "_TWP_SALESCART_CHOOSEPRODUCT_HEAD_+0"   "Protected products"   |
 18171   "_TWP_SALESCART_CHOOSEAMOUNT_+0"   "Don't sell anything"   |
@@ -1120,7 +1120,7 @@ Translate and add the following lines below:
 19249   "_BUILDING_Mercenary3_NAME_+0"   "Mercenary Guild"   |
 19250   "_MEASURE_INVITETODANCE_ERROR_BLOCKED_+0"   "The Dancing Floor is reserved already! Try again later."   |
 19251   "_GENERAL_MEASURES_033_PAYBONUS_FAILURES_+2"   "Pay out a bonus failed - You can only pay a bonus during regular work time."   |
-
+19254   "_TWP_SALESCART_CHOOSE_TARGETS_+0"   "Where should the cart sell the goods? $N$C[255,20,20]Click a destination to remove it from the list."   |
 
 20000   "_ABILITIES_Motivator_NAME_+0"   "Leader"   |
 20001   "_ABILITIES_Motivator_DESCRIPTION_+0"   "You are, in every respect, a role model for your employees. They stay loyal to you whatever happens. For every level of this ability, the duration of the action >Goad workers< is increased by 50%% and any loss of favour towards your employees is reduced by 50%% (Minimum 1) for all actions. $N$NRequirements: Rhetoric 2."   |

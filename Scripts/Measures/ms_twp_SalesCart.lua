@@ -23,8 +23,8 @@
 --
 
 function Init()
-	local ProductCount, Products = ms_twp_salescart_InitMeasure()
-	ms_twp_salescart_SetMeasureData(ProductCount, Products)
+	local ProductCount, Products, TargetCount, Targets = ms_twp_salescart_InitMeasure()
+	ms_twp_salescart_SetMeasureData(ProductCount, Products, TargetCount, Targets)
 end
 
 function ChooseProducts(ProductCount, Products)
@@ -91,12 +91,23 @@ function InitMeasure()
 			Products[i] = { Products[i], 0 }
 		end
 	end
+	
+	local TargetCount = 0
+	local Targets = {} -- {Target1, Target2, ...}
+	-- add local market as target for convenience
+	if GetSettlement("MyHome", "MyCity") then
+		if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
+			TargetCount = 1
+			Targets[1] = "MyMarket"
+		end
+	end 
 	 
 	repeat
 		-- First dialog handles control: Help, Choose resources, Choose Suppliers, Start
 		local Options =
 			"@B[1,@L_TWP_SUPPLYWORKSHOP_INITIATE_OPTION_+0,]".. -- Help	
 			"@B[2,@L_TWP_SALESCART_INITIATE_OPTION_+0,]".. -- Choose products
+			"@B[3,@L_TWP_SALESCART_INITIATE_OPTION_+1,]".. -- Choose targets
 			-- "@B[3,@L_TWP_SALESCART_INITIATE_OPTION_+1,]".. -- Sales threshold (not yet implemented)
 			"@B[99,@L_TWP_SALESCART_INITIATE_OPTION_+2,]" -- Start
 			--"@B[C,@LAbort_+0,]" -- Abort by right mouse click
@@ -107,12 +118,14 @@ function InitMeasure()
 			MsgBox("", "Owner", "", "@L_TWP_SALESCART_INITIATE_HEAD_+0", "@L_TWP_SALESCART_HELP_BODY_+0")
 		elseif Choice == 2 then
 			ProductCount, Products = ms_twp_salescart_ChooseProducts(ProductCount, Products)
+		elseif Choice == 3 then
+			TargetCount, Targets = ms_twp_salescart_ChooseTargets(TargetCount, Targets)
 		elseif Choice == nil or Choice == "C" then -- cancel
 			StopMeasure()
 		end
 	until Choice == 99 -- Start measure
 	
-	return ProductCount, Products
+	return ProductCount, Products, TargetCount, Targets
 end
 
 function Run() 
@@ -127,7 +140,8 @@ function Run()
 		return 
 	end 
 
-	local ProductCount, Products = ms_twp_salescart_GetMeasureData()
+	local ProductCount, Products, TargetCount, Targets = ms_twp_salescart_GetMeasureData()
+	-- TODO use selected targets for sales (see AutoCart measure/state)
 	
 	-- 1. Go home.
 	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
@@ -144,18 +158,27 @@ function Run()
 	local NeedCount, Needs
 	while true do 
 		-- 3. Calculate expected profit for each item
-		CityGetLocalMarket("MyCity","MyMarket")
-		local ProfitCount, Profits = economy_CalcProfits("MyMarket", "MyHome", ProductCount, Products, 250)
-		if ProfitCount > 0 then
+		local ProfitCount, Profits = 0, {}
+		local ExpectedTotalProfit = 0
+		local ChosenTarget
+		for i = 1, TargetCount do
+			if Targets[i] and AliasExists(Targets[i]) then
+				local TmpProfitCount, TmpProfits, TmpExpectedTotalProfit = economy_CalcProfits(Targets[i], "MyHome", ProductCount, Products, 250)
+				if TmpExpectedTotalProfit and TmpExpectedTotalProfit > ExpectedTotalProfit then
+					ChosenTarget = Targets[i]
+					ProfitCount, Profits, ExpectedTotalProfit = TmpProfitCount, TmpProfits, TmpExpectedTotalProfit
+				end
+			end
+		end
+		
+		if ProfitCount > 0 and ChosenTarget then
 			-- 4. load the cart, slot by slot
 			cart_LoadItems("", "MyHome", ProfitCount, Profits) 
 			-- 5. go to the market
-			if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MarketBld") then
-				f_MoveTo("","MarketBld", GL_MOVESPEED_RUN)
-			end
+			f_MoveTo("",ChosenTarget, GL_MOVESPEED_RUN)
 			Sleep(3)
 			-- 6. Unload
-			cart_UnloadAll("", "MarketBld")
+			cart_UnloadAll("", ChosenTarget)
 			Sleep(2)
 		else
 			Sleep(120) -- nothing to sell right now, wait a while
@@ -183,10 +206,59 @@ function Abort()
 	StopMeasure()
 end
 
+function ChooseTargets(TargetCount, Target)
+	local Choice
+	local LabelIds = {}
+	repeat
+		local Options = "@P"
+		-- show list of suppliers with option to add another one
+		for i=1, TargetCount do
+			if BuildingGetClass(Target[i]) == GL_BUILDING_CLASS_MARKET then
+				-- use city name for markets
+				Options = Options .. "@B["..i..",@L_TWP_SUPPLYWORKSHOP_MARKET_+"..i..",]"
+				LabelIds[i] = GetSettlementID(Target[i])
+			else
+				-- use Building name (not possible right now, but maybe later)
+				Options = Options .. "@B["..i..",%"..i.."GG,]"
+				LabelIds[i] = GetID(Target[i])
+			end
+		end
+
+		Options = Options .. "@B[A,@L_TWP_SUPPLYWORKSHOP_ADDSUPPLIER_+0,]" .. "@B[C,@L_GENERAL_BUTTONS_OK_+0,]"
+		Choice = MsgBox("","Owner",Options,"@L_TWP_SALESCART_INITIATE_HEAD_+0","_TWP_SALESCART_CHOOSE_TARGETS_+0", helpfuncs_UnpackTable(LabelIds))
+	
+		if Choice == "A" then
+			-- add new Supplier
+			local TargetAlias = ms_twp_salescart_SelectTarget(TargetCount)
+			if TargetAlias and AliasExists(TargetAlias) then
+				TargetCount = TargetCount + 1
+				Target[TargetCount] = TargetAlias
+			end
+		elseif Choice ~= "C" and Choice > 0 then
+			-- delete this target from list and make sure to move other suppliers up by one
+			TargetCount, Target = helpfuncs_RemoveElementFromList(Target, TargetCount, Choice)
+		end
+	until Choice == nil or Choice == "C"
+	return TargetCount, Target
+end
+
+function SelectTarget(Index)
+	local FreeIndex = Index
+	while AliasExists("Target"..FreeIndex) do
+		FreeIndex = FreeIndex + 1
+	end
+	-- filter for waypoint selection
+	InitAlias("Target"..FreeIndex, MEASUREINIT_SELECTION,
+		"__F((Object.IsClass(5)) AND (Object.Type == Building))",
+		"@L_TRADEROUTE_NEXT_BUILDING_+0",0)
+	return "Target"..FreeIndex
+end
+
+
 function CleanUp()
 end
 
-function SetMeasureData(ProductCount, Products)
+function SetMeasureData(ProductCount, Products, TargetCount, Targets)
 	-- filter resources with a minimum of -1
 	local ReducedProductCount = 0
 	for i = 1, ProductCount do
@@ -197,6 +269,10 @@ function SetMeasureData(ProductCount, Products)
 		end
 	end
 	SetData("ProductCount", ReducedProductCount)
+	SetData("TargetCount", TargetCount)
+	for i = 1, TargetCount do
+		SetData("Target"..i, Targets[i])
+	end
 end
 
 function GetMeasureData()
@@ -205,5 +281,10 @@ function GetMeasureData()
 	for i = 1, ProductCount do
 		Products[i] = { GetData("Product"..i), GetData("ProductMin"..i) }
 	end
-	return ProductCount, Products
+	local TargetCount = GetData("TargetCount")
+	local Targets = {}
+	for i = 1, TargetCount do
+		Targets[i] = GetData("Target"..i)
+	end
+	return ProductCount, Products, TargetCount, Targets
 end

@@ -765,15 +765,19 @@ end
 function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThreshold)
 	local Profits = {} -- table of {ItemId, MinAmount, Profit}
 	local ProfitCount = 0
+	local ExpectedTotalProfit = 0
 	local ItemId
 	for i = 1, ProductCount do
 		local ItemId = Products[i][1]
 		local Amount = GetItemCount(HomeAlias, ItemId, INVENTORY_STD) + GetItemCount(HomeAlias, ItemId, INVENTORY_SELL)
 		Amount = Amount - Products[i][2]
+		-- normalize amount to no more than 120 (max cart size)
+		Amount = math.min(Amount, 120)
 		local Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 
 		if Amount > 0 and Profit > ProfitThreshold then
 			ProfitCount = ProfitCount + 1
 			Profits[ProfitCount] = {ItemId, Amount, Profit}
+			ExpectedTotalProfit = ExpectedTotalProfit + Profit
 		end
 	end
  
@@ -783,7 +787,34 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThres
  	
 	-- sort by expected profit, highest first
 	Profits = helpfuncs_QuickSort(Profits, 1, ProfitCount, helpfuncs_SortByThirdValue)
-	return ProfitCount, Profits 
+	return ProfitCount, Profits, ExpectedTotalProfit
+end
+
+--- returns ProfitCount, Profits, CityAlias
+function CalcProfitsOutside(HomeAlias, ProductCount, Products)
+	local Count = ScenarioGetObjects("Settlement", 20, "City")
+	
+	local ProfitCount, Profits, CityAlias
+	for l=0,Count-1 do
+		CityAlias = "City"..l
+		if CityIsKontor(CityAlias) then
+			if CityGetRandomBuilding(CityAlias, -1, GL_BUILDING_TYPE_KONTOR, -1, -1, FILTER_IGNORE, "SomeMarketBld") and not BuildingGetWaterPos("SomeMarketBld", true, "WaterPos") then
+				CityGetLocalMarket(CityAlias, "Market"..l)
+				ProfitCount, Profits = economy_CalcProfits("Market"..l, HomeAlias, ProductCount, Products, 1000)  
+				if ProfitCount > 0 then 
+					return ProfitCount, Profits, CityAlias
+				end
+			end
+		else -- regular settlement
+			CityGetLocalMarket(CityAlias, "Market"..l)
+			ProfitCount, Profits = economy_CalcProfits("Market"..l, HomeAlias, ProductCount, Products, 1000)   
+			if ProfitCount > 0 then 
+				return ProfitCount, Profits, CityAlias
+			end
+		end
+	end
+	
+	return 0, {}, "MyCity"
 end
 
 ---
