@@ -969,8 +969,8 @@ Data:
 3318             490              "ProtectionOfBurglary"      1                     0                 8                    0.25                 3306              0                 150             0          |
 3319             490              "BarleyFlour"               1                     1                 6                    943                  3301              0                 0               0          |
 3320             490              "WheatFlour"                1                     1                 6                    944                  3301              0                 0               0          |
-3310             490              "Worker"                    1                     0                 1                    1                    3310              0                 500             0          |
-3311             490              "InventorySpace"            1                     0                 3                    20                   3315              0                 300             0          |
+3330             490              "Worker"                    1                     0                 1                    1                    3310              0                 500             0          |
+3331             490              "InventorySpace"            1                     0                 3                    20                   3315              0                 300             0          |
 
 // Fruitfarm 491
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
