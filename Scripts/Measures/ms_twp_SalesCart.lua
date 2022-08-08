@@ -163,7 +163,7 @@ function Run()
 		local ChosenTarget
 		for i = 1, TargetCount do
 			if Targets[i] and AliasExists(Targets[i]) then
-				local TmpProfitCount, TmpProfits, TmpExpectedTotalProfit = economy_CalcProfits(Targets[i], "MyHome", ProductCount, Products, 250)
+				local TmpProfitCount, TmpProfits, TmpExpectedTotalProfit = economy_CalcProfits("Market"..i, "MyHome", ProductCount, Products, 250)
 				if TmpExpectedTotalProfit and TmpExpectedTotalProfit > ExpectedTotalProfit then
 					ChosenTarget = Targets[i]
 					ProfitCount, Profits, ExpectedTotalProfit = TmpProfitCount, TmpProfits, TmpExpectedTotalProfit
@@ -271,7 +271,7 @@ function SetMeasureData(ProductCount, Products, TargetCount, Targets)
 	SetData("ProductCount", ReducedProductCount)
 	SetData("TargetCount", TargetCount)
 	for i = 1, TargetCount do
-		SetData("Target"..i, Targets[i])
+		SetData("Target"..i, GetID(Targets[i]))
 	end
 end
 
@@ -284,7 +284,12 @@ function GetMeasureData()
 	local TargetCount = GetData("TargetCount")
 	local Targets = {}
 	for i = 1, TargetCount do
-		Targets[i] = GetData("Target"..i)
+		GetAliasByID(GetData("Target"..i), "Target"..i) -- ID from Data to Alias
+		Targets[i] = "Target"..i -- saving alias
+		-- initialize markets of each target for price calculation
+		if GetSettlement("Target"..i, "SomeCity") then
+			CityGetLocalMarket("SomeCity","Market"..i)
+		end
 	end
 	return ProductCount, Products, TargetCount, Targets
 end

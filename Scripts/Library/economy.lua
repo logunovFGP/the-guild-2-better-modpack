@@ -766,10 +766,10 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThres
 	local Profits = {} -- table of {ItemId, MinAmount, Profit}
 	local ProfitCount = 0
 	local ExpectedTotalProfit = 0
-	local ItemId
+	local ItemId, Amount
 	for i = 1, ProductCount do
-		local ItemId = Products[i][1]
-		local Amount = GetItemCount(HomeAlias, ItemId, INVENTORY_STD) + GetItemCount(HomeAlias, ItemId, INVENTORY_SELL)
+		ItemId = Products[i][1]
+		Amount = GetItemCount(HomeAlias, ItemId, INVENTORY_STD) + GetItemCount(HomeAlias, ItemId, INVENTORY_SELL)
 		Amount = Amount - Products[i][2]
 		-- normalize amount to no more than 120 (max cart size)
 		Amount = math.min(Amount, 120)
