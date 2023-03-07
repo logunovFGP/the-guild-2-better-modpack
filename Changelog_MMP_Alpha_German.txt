@@ -4,6 +4,7 @@ Alpha 1 -> Alpha 2:
 
 Design:
 - Stillstehende Schiffe erzeugen nun nicht mehr ununterbrochen "knarrende Geräusche", stattdessen gibt es stets ein paar Sekunden Stille.
+- Die Spielstart-Welt legt nun zufällig Jahreszeit und Uhrzeit fest.
 
 Features:
 - Erzähler zur Hochzeitseinleidung hinzugefügt

@@ -104,6 +104,7 @@ _Design_
 - Die Söldnerburg wurde mit einem Söldnerhaus ersetzt, dieses kann nun normal in der Stadt platziert werden. Auch Windmühle, Friedhof und Gauklerlager können innerhalb
   der Stadt platziert werden.
 - Stillstehende Schiffe erzeugen nun nicht mehr ununterbrochen "knarrende Geräusche", stattdessen gibt es stets ein paar Sekunden Stille.
+- Die Spielstart-Welt legt nun zufällig Jahreszeit und Uhrzeit fest.
 
 
 *** Vanilla-Bugs ***

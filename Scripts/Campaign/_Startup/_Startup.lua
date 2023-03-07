@@ -4,7 +4,11 @@ end
 
 
 function Prepare()
-	SetTime(EN_SEASON_AUTUMN, 1400, 14, 0)
+	local RandomTime = 4 + Rand(16)
+	local Season = { EN_SEASON_SPRING, EN_SEASON_SUMMER, EN_SEASON_AUTUMN, EN_SEASON_WINTER }
+	local Randomizer = 1 + Rand(4)
+	
+	SetTime(Season[Randomizer], 1400, RandomTime, 0)
 	GetScenario("World")
 	SetProperty("World", "static", 1)
 	
