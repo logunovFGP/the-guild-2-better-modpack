@@ -103,6 +103,8 @@ _Design_
 - The Mercenary castle has been replaced by a mercenary house and can be placed inside the city. Graveyard, Windmill and Juggler's tent can be built inside the city walls aswell.
 - Ships which are not moving no longer will loop their "sounds", but instead include a few seconds of silence.
 - Gamestart-World now picks randomly the season and hour of the day.
+- The targets of the actions 'court someone', 'make a present', 'Use cake' and 'use poem' will now leave the worker hut or residence.
+
 
 *** Vanilla-Bugs ***
 

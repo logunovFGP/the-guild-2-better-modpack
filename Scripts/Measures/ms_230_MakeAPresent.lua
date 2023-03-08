@@ -636,7 +636,21 @@ function Run()
 			CourtingProgress = CourtingProgress * (-1)
 		end
 	end
-
+	
+	-- get target outside of the current building if building is a worker hut or residence
+	if GetInsideBuilding("Destination", "DestBuilding") then
+		if BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING or BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_RESIDENCE then
+			GetOutdoorMovePosition("", "DestBuilding", "MovePos")
+			if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN, 600) then
+				StopMeasure()
+			end
+			BlockChar("Destination")
+			f_ExitCurrentBuilding("Destination")
+			Sleep(1)
+			f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
+		end
+	end
+	
 	-- The distance between both sims to interact with each other
 	local InteractionDistance = 85
 

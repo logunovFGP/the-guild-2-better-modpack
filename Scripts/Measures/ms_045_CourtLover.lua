@@ -152,18 +152,21 @@ function Run()
 	local TitleDifference = (MyTitle - DestinationTitle) * 2
 	local MinimumFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - TitleDifference
 	
-	local InteractionDistance = 128
-
+	-- get target outside of the current building if building is a worker hut or residence
 	if GetInsideBuilding("Destination", "DestBuilding") then
-		GetOutdoorMovePosition("", "DestBuilding", "MovePos")
-		if not f_MoveTo("", "MovePos",GL_MOVESPEED_RUN, 700) then
-			StopMeasure()
+		if BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING or BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_RESIDENCE then
+			GetOutdoorMovePosition("", "DestBuilding", "MovePos")
+			if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN, 600) then
+				StopMeasure()
+			end
+			BlockChar("Destination")
+			f_ExitCurrentBuilding("Destination")
+			Sleep(1)
+			f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
 		end
-		BlockChar("Destination")
-		f_ExitCurrentBuilding("Destination")
-		Sleep(1)
-		f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
 	end
+	
+	local InteractionDistance = 128
 	
 	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
 		StopMeasure("")
@@ -390,6 +393,5 @@ function CleanUp()
 		feedback_OverheadActionName("Destination")
 		SimLock("Destination", 0.3)
 	end
-	
 end
 

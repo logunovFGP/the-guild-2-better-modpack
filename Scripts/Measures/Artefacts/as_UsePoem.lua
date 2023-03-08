@@ -39,7 +39,21 @@ function Run()
 		MsgQuick("", "@L_GIVEAPOEM_MESSAGE_FAILURES_+1", GetID("Destination"))
 		StopMeasure()
 	end
-		
+	
+	-- get target outside of the current building if building is a worker hut or residence
+	if GetInsideBuilding("Destination", "DestBuilding") then
+		if BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING or BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_RESIDENCE then
+			GetOutdoorMovePosition("", "DestBuilding", "MovePos")
+			if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN, 600) then
+				StopMeasure()
+			end
+			BlockChar("Destination")
+			f_ExitCurrentBuilding("Destination")
+			Sleep(1)
+			f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
+		end
+	end
+	
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
 		StopMeasure()
 	end
@@ -116,6 +130,7 @@ function Run()
 		end
 	
 		chr_GainXP("", GetData("BaseXP"))
+		chr_GainXP(Destination, GetData("BaseXP"))
 		
 		Sleep(1)
 	end

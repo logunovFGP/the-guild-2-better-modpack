@@ -11,7 +11,7 @@ function Run()
 
 	if IsStateDriven() then
 		local ItemName = "Cake"
-		if GetItemCount("", ItemName, INVENTORY_STD)==0 then
+		if GetItemCount("", ItemName, INVENTORY_STD) == 0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
 			end
@@ -26,13 +26,25 @@ function Run()
 
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-
-	f_MoveTo("","Destination",GL_MOVESPEED_RUN, 50)
-
-	--failure if destination has high priority measure
-	if GetCurrentMeasurePriority("Destination") >= 20 then
-		MsgQuick("","@L_ARTEFACTS_182_USECAKE_FAILURE_+0", GetID("Destination"), GetID(""))
-		StopMeasure()
+	
+	-- get target outside of the current building if building is a worker hut or residence
+	if GetInsideBuilding("Destination", "DestBuilding") then
+		if BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING or BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_RESIDENCE then
+			GetOutdoorMovePosition("", "DestBuilding", "MovePos")
+			if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN, 600) then
+				StopMeasure()
+			end
+			
+			--failure if destination has high priority measure
+			if GetCurrentMeasurePriority("Destination") >= 20 then
+				MsgQuick("","@L_ARTEFACTS_182_USECAKE_FAILURE_+0", GetID("Destination"), GetID(""))
+				StopMeasure()
+			end
+			BlockChar("Destination")
+			f_ExitCurrentBuilding("Destination")
+			Sleep(1)
+			f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
+		end
 	end
 	
 	--run to destination and start action at MaxDistance
@@ -49,35 +61,35 @@ function Run()
 	local time1
 	local time2
 	time1 = PlayAnimationNoWait("Owner", "use_object_standing")
-	time2 = PlayAnimationNoWait("Destination","cogitate")
+	time2 = PlayAnimationNoWait("Destination", "cogitate")
 	Sleep(1)
-	PlaySound3D("","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("","Handheld_Device/Anim_cake.nif",false)
+	PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("", "Handheld_Device/Anim_cake.nif", false)
 	
 	Sleep(1)
-	CarryObject("","",false)
-	CarryObject("Destination","Handheld_Device/Anim_cake.nif",false)
-	time2 = PlayAnimationNoWait("Destination","fetch_store_obj_R")
+	CarryObject("", "", false)
+	CarryObject("Destination", "Handheld_Device/Anim_cake.nif", false)
+	time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
 	Sleep(1)
 	StopAnimation("")
-	PlaySound3D("Destination","Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("Destination","",false)
+	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+	CarryObject("Destination", "", false)
 	PlayFE("Destination", "smile", 0.5, 2, 0)
 	Sleep(1)
 	--modify the favor	
-	if RemoveItems("","Cake",1)>0 then
+	if RemoveItems("", "Cake", 1) > 0 then
 		local favormodify = ((100 - math.ceil(GetFavorToSim("Destination","Owner")))/4)
-		chr_ModifyFavor("Destination","",favormodify)
+		chr_ModifyFavor("Destination", "", favormodify)
 		
-		MsgNewsNoWait("Destination","","","intrigue",-1,
+		MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 				"@L_ARTEFACTS_182_USECAKE_MSG_VICTIM_HEAD_+0",
 				"@L_ARTEFACTS_182_USECAKE_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 		
 		SetMeasureRepeat(TimeOut)
-		chr_GainXP("",GetData("BaseXP"))
-		Sleep(2)
+		chr_GainXP("", GetData("BaseXP"))
+		chr_GainXP(Destination, GetData("BaseXP"))
+		Sleep(1)
 	end
-	StopMeasure()
 end
 
 -- -----------------------

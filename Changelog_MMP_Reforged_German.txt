@@ -105,6 +105,7 @@ _Design_
   der Stadt platziert werden.
 - Stillstehende Schiffe erzeugen nun nicht mehr ununterbrochen "knarrende Geräusche", stattdessen gibt es stets ein paar Sekunden Stille.
 - Die Spielstart-Welt legt nun zufällig Jahreszeit und Uhrzeit fest.
+- Charaktere kommen nun aus der Arbeiterhütte/Residenz, wenn sie das Ziel von Werbung, Geschenken, Gedichten oder Kuchen sind.
 
 
 *** Vanilla-Bugs ***
