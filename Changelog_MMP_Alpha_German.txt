@@ -8,6 +8,7 @@ Design:
 - Charaktere kommen nun aus der Arbeiterhütte/Residenz, wenn sie das Ziel von Werbung, Geschenken, Gedichten oder Kuchen sind.
 - Debug-Funktionen zur Config.ini hinzugefügt (Standard: aus).
 - Erweiterte Waren-Tooltips sind standardmäßig aktiviert (über config.ini abstellbar).
+- Zufallsereignisse wurden permanent deaktivitert. In einer zukünftigen Version werden sie komplett überarbeitet.
 
 Features:
 - Erzähler zur Hochzeitseinladung hinzugefügt.
@@ -21,3 +22,4 @@ Bugfixes:
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.
 - Fehlende Upgrades in der Windmühle korrigiert.
+- Gunstveränderungen werden nun wieder über den Köpfen deines Ziels angezeigt und nicht über deinem eigenen.

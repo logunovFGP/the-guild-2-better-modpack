@@ -106,6 +106,7 @@ _Design_
 - The targets of the actions 'court someone', 'make a present', 'Use cake' and 'use poem' will now leave the worker hut or residence.
 - Added debug options in config.ini (default: off)
 - Enabled extended goods tooltip by default (you can change this in config.ini)
+- Random events have been deactivated. They will get a complete rework in the future.
 
 
 *** Vanilla-Bugs ***

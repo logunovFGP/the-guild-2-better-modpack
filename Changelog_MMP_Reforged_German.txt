@@ -108,6 +108,7 @@ _Design_
 - Charaktere kommen nun aus der Arbeiterhütte/Residenz, wenn sie das Ziel von Werbung, Geschenken, Gedichten oder Kuchen sind.
 - Debug-Funktionen zur Config.ini hinzugefügt (Standard: aus).
 - Erweiterte Waren-Tooltips sind standardmäßig aktiviert (über config.ini abstellbar).
+- Zufallsereignisse wurden permanent deaktivitert. In einer zukünftigen Version werden sie komplett überarbeitet.
 
 
 *** Vanilla-Bugs ***

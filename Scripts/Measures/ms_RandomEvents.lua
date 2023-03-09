@@ -2,23 +2,7 @@ function Init()
 end
 
 function Run()
-	if not DynastyIsPlayer("") then
-		return
-	end
-
-	GetScenario("scenario")
-	if not HasProperty("scenario", "static") then
-		if ms_randomevents_CheckMessages()==true then
-			local random = Rand(200)
-			if random <= 2 then
-				ms_randomevents_RandomEventNeutral("")
-			elseif random <= 4 then
-				ms_randomevents_RandomEventPositiv("")
-			elseif random <= 6 then
-				ms_randomevents_RandomEventNegativ("")
-			end
-		end
-	end
+	-- Will get a complete rework
 end
 
 function CheckMessages()
