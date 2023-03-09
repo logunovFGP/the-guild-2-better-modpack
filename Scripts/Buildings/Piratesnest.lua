@@ -55,20 +55,24 @@ function PingHour()
 	bld_HandlePingHour("")
 	
 	local Found = false
-	for i=0, BuildingGetCartCount("")-1 do
-		if BuildingGetCart("", i, "Cart") then
-			if CartGetType("Cart") == EN_CT_CORSAIR then
-				Found = true
+	
+	if not HasProperty("", "pirateship") then
+		for i=0, BuildingGetCartCount("")-1 do
+			if BuildingGetCart("", i, "Cart") then
+				if CartGetType("Cart") == EN_CT_CORSAIR then
+					Found = true
+				end
 			end
 		end
 	end
+	
 	if Found then
 		if not HasProperty("", "pirateship") then
 			SetProperty("", "pirateship", 1)
 		end
 	else
 		if HasProperty("", "pirateship") then
-			RemoveProperty("","pirateship")
+			RemoveProperty("", "pirateship")
 		end	
 	end
 end

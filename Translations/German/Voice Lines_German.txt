@@ -1,6 +1,22 @@
+DONE wenn Sounddatei bereits vorhanden. MISS wenn die Datei fehlt. ID entspricht der in Text.dbt.
+Speaker-ID ist für Einträge in der Sounds.dbt und die Nutzung des VoiceOvers in den Scripten.
+1 ist der Erzähler (nur bei _HEAD), 2 sind nur Männer, 3 sind nur Frauen, 4 sind Männer und Frauen, 9 wird auch _BODY Nachrichten vorlesen. 
+
+
 B1 (Kind, Junge)
 
-C1 (Stadtschreier, NPC)
+C1 (Stadtschreier, NPC, Speaker-ID: 10)
+DONE 661   "_MESSAGES_SLANDER_SPEECH_ATTACKCIVILIAN_+0"   "#E[AG_THREATENING]Tragt einen Helm, wenn ihr durch die Gassen geht, diese Person schlägt wieder zu und prügelt unschuldige Bürger!"   |
+DONE 663   "_MESSAGES_SLANDER_SPEECH_MURDER_+0"   #E[AG_THREATENING]Schaut euch lieber zweimal um, wenn ihr durch dunkle Gassen geht. Diese Person hat erst diese Nacht wieder zugeschlagen und einen unserer Mitbürger ermordet!"   |
+DONE 665   "_MESSAGES_SLANDER_SPEECH_ABDUCTION_+0"   "#E[AG_THREATENING]Verschliesst Fenster und Türen, wenn ihr schlaft. Ihr wollt Euch doch nicht von dieser Person entführen lassen!"   |
+DONE 667   "_MESSAGES_SLANDER_SPEECH_THEFT_+0"   "#E[AG_THREATENING]Passt auf euer Hab und Gut auf, denn diese Person ist wieder auf Diebestour!"   |
+DONE 668   "_MESSAGES_SLANDER_SPEECH_ATTACKCART_+0"   "#E[AG_THREATENING]Habt ihr schon gewusst, dass %1ST %1SA %1SV eure Karren überfällt und ausraubt? Draußen vor der Stadt ist's geschehen!"   |
+DONE 669   "_MESSAGES_SLANDER_SPEECH_MARAUDING_+0"   "#E[AG_THREATENING]Habt ihr schon gewusst, dass %1ST %1SA %1SV mitsamt Gesindel marodierend durch die Lande zieht?"   |
+DONE 671   "_MESSAGES_SLANDER_SPEECH_POISON_+0"   "#E[AG_THREATENING]%1ST %1SA %1SV mischt heimlich im Keller Gifte und anderes Gebräu zusammen. Haltet euch von dieser Person fern, wenn euch euer Leben lieb ist!"   |
+DONE 672   "_MESSAGES_SLANDER_SPEECH_SLUGGING_+0"   "#E[AG_THREATENING]%1ST %1SA %1SV verprügelt gerne wehrlose Bürger dieser Stadt. Seht euch vor, sonst seid ihr vielleicht die nächsten!"   |
+DONE 674   "_MESSAGES_SLANDER_SPEECH_RAIDING_+0"   "#E[AG_THREATENING]%1ST %1SA %1SV bricht des Nachts in eure Häuser ein und stiehlt alles was nicht niet- und nagelfest ist!"   |
+DONE 677   "_MESSAGES_SLANDER_SPEECH_INTRO_+0"   "#E[AG_SCREAM]Höret Höret ihr Leut!"   |
+
 
 D1 (Duell, NPC)
 
@@ -11,7 +27,9 @@ G1 (Kind, Mädchen)
 M1-M3 (Männliche Stimme 1-3)
 
 N1 (Erzähler, Speaker-Id: 1)
-DONE "_ALCHEMIST_NEW_RESSOURCE_+0" "#E[NT_NEUTRAL]Ihr habt ein neues Rohstoffvorkommen entdeckt."
+DONE 681   "_MESSAGES_KING_DEAD_HEADER_+0"   "#E[NT_NEUTRAL]Der König ist tot."   |
+DONE 682   "_MESSAGES_KING_DEAD_HEADER_+1"   "#E[NT_NEUTRAL]Die Königin ist tot."   |
+
 
 P1 (Kampagnen-NPC, Kapitel 3)
 

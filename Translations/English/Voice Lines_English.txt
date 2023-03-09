@@ -4,7 +4,7 @@ Speaker-ID is for the entry in Sounds.dbt and the usage of the voice over in the
 
 B1 (Child, Boy)
 
-C1 (Towncrier, NPC)
+C1 (Towncrier, NPC, Speaker-ID: 10)
 
 D1 (Duel, NPC)
 
