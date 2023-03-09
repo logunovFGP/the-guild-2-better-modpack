@@ -11,6 +11,7 @@ Design:
 
 Features:
 - Added narrator voice to wedding ceremony invitations
+- Now visitors of the notice board gain a small amount of experience if they get a laughter from reading pamphlets. Cooldown 12 hours.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)

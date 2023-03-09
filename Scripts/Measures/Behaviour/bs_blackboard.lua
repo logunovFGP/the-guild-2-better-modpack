@@ -15,7 +15,7 @@ function Run()
 	if GetImpactValue("", "BlackboardVisited") == 1 then
 		return ""
 	else
-		AddImpact("", "BlackboardVisited", 1, 6)
+		AddImpact("", "BlackboardVisited", 1, 12)
 	end
 	
 	if GetState("", STATE_IMPRISONED) or GetState("", STATE_CAPTURED) or GetState("", STATE_HIJACKED) then

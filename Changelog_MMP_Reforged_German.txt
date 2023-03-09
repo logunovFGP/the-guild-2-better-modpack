@@ -304,6 +304,7 @@ _Allgemein_
   einsehen oder sogar einen Kriegspakt eingehen. Der Rollenspiel-Aspekt wurde enorm ausgebaut.
 - Ihr bekommt eine Nachricht, wenn eure Angestellten getötet werden oder an einer Krankheit sterben.
 - Das Umwerben wurde komplett umgebaut und einige Maßnahmen (z.B. Geschenke machen) funktionieren gänzlich anders.
+- Besucher des Schwarzen Brettes erhalten nun eine kleine Menge an Erfahrungspunkten, wenn sie durch das Bemerken eines Pamphlets lachen müssen. 12 Stunden Cooldown.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.

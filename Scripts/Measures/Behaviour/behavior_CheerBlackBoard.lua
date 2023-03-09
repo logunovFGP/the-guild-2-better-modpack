@@ -12,6 +12,7 @@ function Run()
 				
 				if GetFavorToSim("", "Victim_"..i) < 80 and GetFavorToSim("", "Victim_"..i) > 25 then
 					chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_SMALL)
+					chr_GainXP("", GL_EXP_GAIN_SIMPLE)
 				end
 			end
 			Found = Found + 1
@@ -24,22 +25,22 @@ function Run()
 		f_MoveTo("", "MovePos", GL_MOVESPEED_WALK, 100)
 		AlignTo("Owner", "Actor")
 		Sleep(2)
-		local lustig = Rand(4)		
+		local funny = Rand(4)		
 		local j = Rand(Found-1)
 		
 		if AliasExists("Victim_"..j) then
 
 			if GetID("") ~= GetID("Victim_"..j) then
 
-	    		if lustig == 0 then
-	    			MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+0", GetID("Victim_"..j))
-	    		elseif lustig == 1 then
-	      			MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+1", GetID("Victim_"..j))
-	    		elseif lustig == 2 then
-	      			MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+2", GetID("Victim_"..j))
+				if funny == 0 then
+					MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+0", GetID("Victim_"..j))
+				elseif funny == 1 then
+					MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+1", GetID("Victim_"..j))
+				elseif funny == 2 then
+					MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+2", GetID("Victim_"..j))
 				else
-	      			MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+3")
-	    		end
+					MsgSay("", "_HPFZ_BEHAVIOUR_CHEERBB_SPRUCH_+3")
+				end
 
 				if Rand(14) > 5 then
 
@@ -57,6 +58,7 @@ function Run()
 					else
 						PlaySound3DVariation("", "CharacterFX/female_joy_loop", 0.7)
 					end
+					
 					PlayAnimation("", "talk_2")
 				end
 			end
