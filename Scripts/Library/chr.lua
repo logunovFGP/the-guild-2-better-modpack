@@ -383,9 +383,9 @@ function ModifyFavor(source, dest, val)
 
 	if DynastyIsPlayer(source) or DynastyIsPlayer(dest) then
 		if (val >0) then
-			feedback_OverheadSkill(dest, "@L$S[2007] +%1n", true, val)
+			feedback_OverheadSkill(source, "@L$S[2007] +%1n", true, val)
 		else
-			feedback_OverheadSkill(dest, "@L$S[2006] %1n", true, val)
+			feedback_OverheadSkill(source, "@L$S[2006] %1n", true, val)
 		end
 	end
 end
