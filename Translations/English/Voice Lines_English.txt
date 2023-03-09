@@ -1,0 +1,54 @@
+DONE if file already exists. MISS if file is still missing. ID is from Text.dbt.
+Speaker-ID is for the entry in Sounds.dbt and the usage of the voice over in the scripts.
+1 is Narrator (only _HEAD), 2 is only males, 3 is only female, 4 is male and female, 9 will read out _BODY messages. 
+
+B1 (Child, Boy)
+
+C1 (Towncrier, NPC)
+
+D1 (Duel, NPC)
+
+F1-F3 (Female Voice 1-3)
+
+G1 (Child, Girl)
+
+M1-M3 (Male Voice 1-3)
+
+N1 (Narrator, Speaker-ID: 1)
+MISS   212   "BUILD_BUILDING_FAILED"   "You need more money to construct this building."   |
+MISS   18001   "_HIRE_ERROR_COURTED_+0"   "Hiring failed"   |
+MISS   18002   "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"   "Inspection failed"   | 
+DONE   18003   "_AI_NEWRIVALINTOWN_HEAD_+0"   "You have a new competitor!"   |
+MISS   18008   "_GENERAL_ERROR_HEAD_+0"   "Action has failed"   |
+MISS   18013   "_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0"   "Such a disaster!"   |
+MISS   18014   "_MEASURES_HIRERANDOM_NOMONEY_+0"   "You can't hire a new employee, because you are unable to pay them."   |
+MISS   18015   "_GENERAL_MEASURES_FAILURES_+27"   "You can't hire a male for this profession!"   |
+MISS   18016   "_TRADEROUTE_INITIATE_HEAD_+0"   "Choose procedure."   |
+MISS   18018   "_TRADEROUTE_INITIATE_HEAD_+2"   "Please choose the desired amount."   |
+MISS   18024   "_TRADEROUTE_NEXT_BUILDING_+0"   "Choose the next building."   |
+MISS   18025   "_TRADEROUTE_STOPED_HEAD_+0"   "A trade route is abandoned."   |
+MISS   18028   "_TRADEROUTE_ACTIONSELECT_BODY_+0" "Select here which actions are to be performed at this building. If you mark the waypoint as important, the cart will not proceed until all actions have been successfully completed."   |
+MISS   18038   "_TRADEROUTE_HELP_BODY_+0"   "Tired of cart management? Then you've come to the right place! The >loading< and >unloading< of goods is easy to use. However, it can sometimes overfill your warehouses with raw materials if you deliver too many goods! So use >supply< whenever you want to supply a business with raw materials. This will always unload only as many goods as necessary. Keep in mind, however, that this will often leave goods on the cart! You can mark a waypoint as >important< to save the poor fellow unnecessary journeys. If you choose this option, the cart will wait at each waypoint until all goods have been loaded or unloaded. Go on then, so that the cart will no longer creak!"   |
+
+
+P1 (Campaign-NPC, Chapter 3)
+
+Q1 (Campain-NPC, Chapter 2)
+
+R1 (Second Campain-NPC, Chapter 1)
+
+S1 (First Campain-NPC, Chapter 1)
+
+T1 (Usher, NPC and narrated body messages)
+
+U1 (Duel, Assistant, NPC)
+
+V1 (Campaign-Narrator, Chapter 1)
+
+X1 (Campaign-Player-Char, Chapter 3)
+
+Y1 (Campaign-Player-Char, Chapter 2)
+
+Z1 (Campaign-Player-Char, Chapter 1)
+
+

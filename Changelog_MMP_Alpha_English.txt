@@ -6,6 +6,8 @@ Design:
 - Ships which are not moving no longer will loop their "sounds", but instead include a few seconds of silence.
 - Gamestart-World now picks randomly the season and hour of the day.
 - The targets of the actions 'court someone', 'make a present', 'Use cake' and 'use poem' will now leave the worker hut or residence.
+- Added debug options in config.ini (default: off)
+- Enabled extended goods tooltip by default (you can change this in config.ini)
 
 Features:
 - Added narrator voice to wedding ceremony invitations

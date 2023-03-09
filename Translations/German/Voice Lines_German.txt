@@ -1,0 +1,36 @@
+B1 (Kind, Junge)
+
+C1 (Stadtschreier, NPC)
+
+D1 (Duell, NPC)
+
+F1-F3 (Weibliche Stimme 1-3)
+
+G1 (Kind, Mädchen)
+
+M1-M3 (Männliche Stimme 1-3)
+
+N1 (Erzähler, Speaker-Id: 1)
+DONE "_ALCHEMIST_NEW_RESSOURCE_+0" "#E[NT_NEUTRAL]Ihr habt ein neues Rohstoffvorkommen entdeckt."
+
+P1 (Kampagnen-NPC, Kapitel 3)
+
+Q1 (Kampagnen-NPC, Kapitel 2)
+
+R1 (Zweiter Kampagnen-NPC, Kapitel 1)
+
+S1 (Erster Kampagnen-NPC, Kapitel 1)
+
+T1 (Stadtschreiber, NPC)
+
+U1 (Duell, Beisitzer, NPC)
+
+V1 (Kampagnen-Erzähler, Kapitel 1)
+
+X1 (Kampagne-Spieler-Char, Kapitel 3)
+
+Y1 (Kampagne-Spieler-Char, Kapitel 2)
+
+Z1 (Kampagne-Spieler-Char, Kapitel 1)
+
+
