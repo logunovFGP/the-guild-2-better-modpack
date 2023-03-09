@@ -20,4 +20,4 @@ Fixes:
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.
-
+- Fixed missing upgrades in the windmill.

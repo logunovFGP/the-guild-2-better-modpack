@@ -20,3 +20,4 @@ Bugfixes:
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.
+- Fehlende Upgrades in der Windmühle korrigiert.
