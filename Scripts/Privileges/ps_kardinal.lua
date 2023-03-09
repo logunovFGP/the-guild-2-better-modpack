@@ -9,11 +9,12 @@ end
 
 function TakeOffice(Messages)
 	if (Messages == 1) then
+		local AthmoLabel = "@L_CHARACTERS_3_OFFICES_NAME_Kardinal_ATHMO_+0"
 		gameplayformulas_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
 		feedback_MessageOffice("",
 			ps_kardinal_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_kardinal_GetPrivilegeList() )

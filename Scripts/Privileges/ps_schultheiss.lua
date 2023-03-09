@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return	"HaveImmunity","EmbezzlePublicMoney","Set_TurnoverTax", "LevelUpCity"
+	return	"HaveImmunity", "EmbezzlePublicMoney", "Set_TurnoverTax", "LevelUpCity"
 end
 
 function InitOffice()
@@ -9,11 +9,12 @@ end
 
 function TakeOffice(Messages)
 	if (Messages == 1) then
+		local AthmoLabel = "@L_CHARACTERS_3_OFFICES_NAME_Schultheiss_ATHMO_+0"
 		gameplayformulas_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
 		feedback_MessageOffice("",
 			ps_schultheiss_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_schultheiss_GetPrivilegeList() )
@@ -24,7 +25,7 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_schultheiss_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )

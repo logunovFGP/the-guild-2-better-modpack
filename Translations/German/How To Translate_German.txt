@@ -12,6 +12,8 @@ Damit sich die Übersetzung trotz Tools und unterschiedlicher Übersetzer mögli
 
 Wenn ihr direkt in der Text.dbt arbeitet, achtet darauf, die Codierung der Datei nicht zu verändern. Wenn ihr außerhalb der Datei arbeitet, achtet darauf, Formatierungen nicht zu zerstören. Ich empfehle euch in einem Notepad alles als ".txt" zu sammeln.
 
+Neue MegaMod-Zeilen starten mit der ID 18000. Wenn ihr eigene Mods schreiben wollt, könnt ihr die IDs 17000+ oder 25000+ nutzen, um die Kompatibilität zu gewährleisten. Wenn ihr eine Vanilla-Zeile ändert (d.h. ID 1-16500) empfehle ich, das Original zu löschen, und eine neue ID für die geänderte Zeile anzulegen.
+
 - Fajeth (08/03/2023)
 
 

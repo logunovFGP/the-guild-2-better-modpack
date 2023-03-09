@@ -1,19 +1,19 @@
 function GetPrivilegeList()
-	return "CurryFavor","PropitiateEnemies"
+	return "CurryFavor", "PropitiateEnemies"
 end
 
 function InitOffice()
 	SetOfficePrivileges( "Office", ps_seneschall_GetPrivilegeList() )
 end
 
-
 function TakeOffice(Messages)
 	if (Messages == 1) then
+		local AthmoLabel = "@L_CHARACTERS_3_OFFICES_NAME_Seneschall_ATHMO_+0"
 		gameplayformulas_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
 		feedback_MessageOffice("",
 			ps_seneschall_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_seneschall_GetPrivilegeList() )
@@ -24,7 +24,7 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_seneschall_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )

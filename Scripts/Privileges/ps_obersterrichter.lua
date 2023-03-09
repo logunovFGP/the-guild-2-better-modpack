@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return "HaveImmunity","Set_SeverityOfLaw","BeVenerability"
+	return "HaveImmunity", "Set_SeverityOfLaw", "BeVenerability"
 end
 
 function InitOffice()
@@ -9,11 +9,12 @@ end
 
 function TakeOffice(Messages)
 	if (Messages == 1) then
+		local AthmoLabel = "@L_CHARACTERS_3_OFFICES_NAME_Obersterrichter_ATHMO_+0"
 		gameplayformulas_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
 		feedback_MessageOffice("",
 			ps_obersterrichter_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_GAIN_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 	
 	-- Remove the "HasRepealedImmunity" impact
@@ -29,7 +30,7 @@ function LooseOffice(Messages)
 		feedback_MessageOffice("",
 			ps_obersterrichter_GetPrivilegeList,
 			"@L_PRIVILEGES_OFFICE_LOST_HEAD_+0",
-			"@L_PRIVILEGES_OFFICE_LOST_BODY",GetID(""),GetSettlementID(""))
+			"@L_PRIVILEGES_OFFICE_LOST_BODY", GetID(""), GetSettlementID(""))
 	end
 
 	RemoveAllObjectDependendImpacts( "", "Office" )

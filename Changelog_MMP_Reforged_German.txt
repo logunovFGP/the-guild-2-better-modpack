@@ -306,6 +306,7 @@ _Allgemein_
 - Ihr bekommt eine Nachricht, wenn eure Angestellten getötet werden oder an einer Krankheit sterben.
 - Das Umwerben wurde komplett umgebaut und einige Maßnahmen (z.B. Geschenke machen) funktionieren gänzlich anders.
 - Besucher des Schwarzen Brettes erhalten nun eine kleine Menge an Erfahrungspunkten, wenn sie durch das Bemerken eines Pamphlets lachen müssen. 12 Stunden Cooldown.
+- Wenn man ein Amt erhält, bekommt man nun zusätzlich eine athmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.

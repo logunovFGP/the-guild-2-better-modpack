@@ -298,7 +298,7 @@ _General_
 - You get a message when your employee has been killed or died by sickness.
 - The Courting System has been reworked completely and some actions work quite differently than before (e.g. making presents).
 - Now visitors of the notice board gain a small amount of experience if they get a laughter from reading pamphlets. Cooldown 12 hours.
-
+- When gaining a new office, you will now get an athmospheric description in addition to the list of privileges.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
