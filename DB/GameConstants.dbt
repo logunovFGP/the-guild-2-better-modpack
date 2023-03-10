@@ -273,6 +273,13 @@ Data:
 266   "GL_BATH_TOGETHER_COST"               500               ""                              | 
 267   "GL_BEWITCH_COST"                     500               ""                              | 
 268   "GL_RENT_SLEEPING_COST"               150               ""                              | 
+269   "GL_MEASURE_PRIORITY_MINIMAL"         1                 ""                              | 
+270   "GL_MEASURE_PRIORITY_VERYLOW"         10                ""                              | 
+271   "GL_MEASURE_PRIORITY_LOW"             20                ""                              | 
+272   "GL_MEASURE_PRIORITY_NORMAL"          30                ""                              | 
+273   "GL_MEASURE_PRIORITY_MEDIUM"          50                ""                              | 
+274   "GL_MEASURE_PRIORITY_HIGH"            80                ""                              | 
+275   "GL_MEASURE_PRIORITY_MAX"             99                ""                              | 
 
 
 
