@@ -109,6 +109,7 @@ _Design_
 - Debug-Funktionen zur Config.ini hinzugefügt (Standard: aus).
 - Erweiterte Waren-Tooltips sind standardmäßig aktiviert (über config.ini abstellbar).
 - Zufallsereignisse wurden permanent deaktivitert. In einer zukünftigen Version werden sie komplett überarbeitet.
+- Das Feature der königlichen Berater wurde entfernt (ohnehin war dieses Feature kaum integriert).
 
 
 *** Vanilla-Bugs ***

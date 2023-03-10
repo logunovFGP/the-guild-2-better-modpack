@@ -107,6 +107,7 @@ _Design_
 - Added debug options in config.ini (default: off)
 - Enabled extended goods tooltip by default (you can change this in config.ini)
 - Random events have been deactivated. They will get a complete rework in the future.
+- Removed the "Imperial Officer"-Mechanic (was mostly unused anyway).
 
 
 *** Vanilla-Bugs ***

@@ -20,12 +20,6 @@ function Run()
 		end
 	end
 		
-	if GetData("#ImperialChooser") == nil or GetData("#ImperialChooser") == 0 then
-		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "Arsenal") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1] > 0) then
-			SetData("#ImperialChooser", GetID(""))
-		end
-	end
-		
 	-- check the town / build new stuff or buy empty buildings
 	if ScenarioGetTimePlayed() > 12 then
 		
@@ -83,11 +77,6 @@ function Run()
 		end
 			
 		if CurrentRound > 2 then -- round 4 +
-			if currentGameTime == 21 or (currentGameTime > 21 and currentGameTime < 22) then
-				if GetData("#ImperialChooser") == GetID("") then
-					gameplayformulas_CheckImperialOfficer()
-				end
-			end
 			
 			-- ToDo: City Events
 		end

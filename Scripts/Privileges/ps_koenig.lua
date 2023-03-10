@@ -16,17 +16,8 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
-	local oldimperialofficer = chr_GetImperialOfficer()
-	if oldimperialofficer == GetID("") then
-		MsgQuick("", "@L_IMPERIALOFFICER_LOOSE_+0")
-		RemoveProperty("", "ImperialOfficer")
-		SetData("#ImperialOfficer", 0)
-	end						
-
 	chr_SetOfficeImpactList( "Office", ps_koenig_GetPrivilegeList() )
-
 	gameplayformulas_CheckImperialOfficer()
-
 end
 
 function LooseOffice(Messages)

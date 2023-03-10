@@ -1146,19 +1146,6 @@ function GetKing()
 	return 0
 end
 
-function GetImperialOfficer()
-	local ImperialOfficer = GetData("#ImperialOfficer")
-	if ImperialOfficer~=nil then
-		if (ImperialOfficer>0) and GetAliasByID(ImperialOfficer, "ImperialOfficer") and GetState("ImperialOfficer", STATE_DEAD)==false then
-			return ImperialOfficer
-		else
-			return 0
-		end
-	else
-		return 0
-	end
-end
-
 function GetWarRiskLevel(val)
 
 	if val < 10 then
