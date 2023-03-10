@@ -3475,3 +3475,15 @@ Data:
 24623        "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+14"   1     13.500   |
 24624        "_FAMILY_2_COHABITATION_BIRTH_MESSAGE_HEAD_SON_+1"   1     2.500   |
 24625        "_FAMILY_2_COHABITATION_BIRTH_MESSAGE_HEAD_DAUGHTER_+1"   1     3.500   |
+24626        "_GENERAL_MEASURES_FAILURES_+27"                             1                 2.500              | 
+24627        "_GENERAL_MEASURES_MARRY_FAILURES_HEAD_+0"                   1                 2.000              | 
+24628        "_HIRE_ERROR_COURTED_+0"                                     1                 1.500              | 
+24629        "_MEASURES_HIRERANDOM_NOMONEY_+0"                            1                 3.500              | 
+24630        "_PRIVILEGES_101_INSPECTBUSINESS_FAILURES_+1"                1                 1.500              | 
+24631        "_TRADEROUTE_ACTIONSELECT_BODY_+0"                           1                10.300              | 
+24632        "_TRADEROUTE_HELP_BODY_+0"                                   1                43.100              | 
+24633        "_TRADEROUTE_INITIATE_HEAD_+0"                               1                 2.300              | 
+24634        "_TRADEROUTE_INITIATE_HEAD_+2"                               1                 1.200              | 
+24635        "_TRADEROUTE_NEXT_BUILDING_+0"                               1                 1.200              | 
+24636        "_TRADEROUTE_STOPED_HEAD_+0"                                 1                 1.500              | 
+

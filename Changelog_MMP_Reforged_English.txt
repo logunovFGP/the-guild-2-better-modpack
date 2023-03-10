@@ -16,7 +16,8 @@ Scripting: Fajeth, ThreeOfMe, F-Man, Serpens66, Nommy, Vivi
 Maps: Fajeth
 GUI: MoK, Fajeth, Napi96
 2D: Fajeth, ThreeOfMe, Jollina, F-Man, Skip, Broliii
-3D Objects: Ictiv 
+3D Objects: Ictiv
+Sound: Fajeth, Nao 
 Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
 Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe, Daimyo21, Settembrini
                   BubblesTheRoo, Craftgeeking, Mr. Bro
@@ -187,7 +188,8 @@ _General_
 - As an epic office bearer you can apply for other epic offices.
 - When playing with missions the quests are now narrated with voice lines at game start.
 - Fixed missing dialog (voice over!) variation during pay bonus / propel employees.
-- Added missing voice over-files of Pirates of the Eastern Sea.
+- Added missing original voice over-files of Pirates of the Eastern Sea.
+- Added completely newly created Voice Over lines for the Narrator.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
