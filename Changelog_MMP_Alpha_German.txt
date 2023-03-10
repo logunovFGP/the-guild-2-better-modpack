@@ -15,6 +15,7 @@ Features:
 - Erzähler zur Hochzeitseinladung hinzugefügt.
 - Besucher des Schwarzen Brettes erhalten nun eine kleine Menge an Erfahrungspunkten, wenn sie durch das Bemerken eines Pamphlets lachen müssen. 12 Stunden Cooldown.
 - Wenn man ein Amt erhält, bekommt man nun zusätzlich eine athmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
+- Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat)

@@ -16,6 +16,7 @@ Features:
 - Now visitors of the notice board gain a small amount of experience if they get a laughter from reading pamphlets. Cooldown 12 hours.
 - When gaining a new office, you will now get an athmospheric description in addition to the list of privileges.
 - Added completely new generated Narrator Voice Overs for the International Audience.
+- Added two new Nobility titles (more or less placeholders) and modified prices/building limit accordingly.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)

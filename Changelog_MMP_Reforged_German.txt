@@ -309,6 +309,8 @@ _Allgemein_
 - Das Umwerben wurde komplett umgebaut und einige Maßnahmen (z.B. Geschenke machen) funktionieren gänzlich anders.
 - Besucher des Schwarzen Brettes erhalten nun eine kleine Menge an Erfahrungspunkten, wenn sie durch das Bemerken eines Pamphlets lachen müssen. 12 Stunden Cooldown.
 - Wenn man ein Amt erhält, bekommt man nun zusätzlich eine athmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
+- Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
+
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
