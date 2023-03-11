@@ -22,10 +22,10 @@ function TakeTitle()
 	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..(currenttitle * 2) - 1
 	local buildingcount = dyn_GetWorkshopCount("TitleHolder")
 
-	local BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+14"
+	local BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+15"
 	
 	if SimGetGender("") == GL_GENDER_FEMALE then
-		BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+14"
+		BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+15"
 	end
 	
 	feedback_MessageCharacter("",
