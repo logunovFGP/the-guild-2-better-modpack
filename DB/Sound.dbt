@@ -3486,4 +3486,8 @@ Data:
 24634        "_TRADEROUTE_INITIATE_HEAD_+2"                               1                 1.200              | 
 24635        "_TRADEROUTE_NEXT_BUILDING_+0"                               1                 1.200              | 
 24636        "_TRADEROUTE_STOPED_HEAD_+0"                                 1                 1.500              | 
+24637        "_CHARACTERS_3_TITLES_NAME_+28"                              1                 1.300              |
+24638        "_CHARACTERS_3_TITLES_NAME_+29"                              1                 1.000              |
+24639        "_CHARACTERS_3_TITLES_NAME_+30"                              1                 1.800              |
+24640        "_CHARACTERS_3_TITLES_NAME_+31"                              1                 1.500              |
 
