@@ -87,6 +87,7 @@ function Init()
 		elseif vorgang == "C" then -- cancel
 			StopMeasure()
 		end
+	
 	until vorgang == 3
 	ms_hpfz_autoroute_SetRouteData(StationCount, Stations)
 	-- how often shall the cart do the route? 8 hours, 4 hours, constantly
@@ -303,8 +304,8 @@ function Wegpunkte(o)
 end
 
 function Run()
-	--workaround for spinning carts...
-	SetProperty("","AutoRoute",1)
+	--ignore workaround for spinning carts...
+	SetProperty("", "AutoRoute", 1)
 	GetHomeBuilding("", "homeBuilding")
 	
 	local StationCount = 0
@@ -320,7 +321,8 @@ function Run()
 			Station = Stations[s][1]
 			
 			-- move to given station. check owner (relevant for buying/selling)
-			f_MoveTo("",Station, GL_MOVESPEED_RUN)
+			MsgMeasure("", "@L_GENERAL_MOVESPEED_VEHICLE_+0")
+			f_MoveTo("", Station, GL_MOVESPEED_RUN)
 			Sleep(1)
 			local SrcID = GetDynastyID("")
 			local DestID = -1
@@ -378,6 +380,7 @@ function Run()
 					if isDone then
 						break
 					else
+						MsgMeasure("", "@L_GENERAL_MSGMEASURE_AUTOROUTE_+0")
 						Sleep(30)
 					end
 				end
@@ -390,6 +393,7 @@ function Run()
 		if warteZeit == 1 then -- execute route only once
 			break
 		end
+		MsgMeasure("", "@L_GENERAL_MSGMEASURE_AUTOROUTE_+1")
 		Sleep(warteZeit*60) -- wait
 	end -- run until cancelled (while true)
 	StopMeasure()
@@ -399,6 +403,7 @@ function CleanUp()
 	--workaround for spinning carts...
 	RemoveProperty("","AutoRoute")
 	----------------------------------
+	MsgMeasure("", "")
 end
 
 function LoadCart(SrcID, DestID, station, type, itemCount)
@@ -541,8 +546,8 @@ function CheckWarning(NumberOfTries, WarningCount, Station)
 end
 
 function UpdateBalance(HomeAlias, Amount)
-  -- only active with TWP mod
-  -- economy_UpdateBalance(HomeAlias, "Autoroute", Amount)
+	-- only active with TWP mod
+	-- economy_UpdateBalance(HomeAlias, "Autoroute", Amount)
 end
 
 ---- Auswahlmenü: Waren einladen
@@ -551,155 +556,157 @@ function ChooseItemsToLoad(CartAlias, BldAlias)
   -- if TWP mod, use economy scripts
   -- return economy_ChooseItemsToLoad(CartAlias, BldAlias)
 
-  local ItemId, AvailableAmount = ms_hpfz_autoroute_ChooseItemFromInventory(BldAlias, CartAlias)
-  if (not ItemId) or ItemId == 0 then
-    return 0, 0
-  end
+	local ItemId, AvailableAmount = ms_hpfz_autoroute_ChooseItemFromInventory(BldAlias, CartAlias)
+	if (not ItemId) or ItemId == 0 then
+		return 0, 0
+	end
 
-  local OptionCount, Option = ms_hpfz_autoroute_GetCartSpaceOptions(CartAlias)
-  local mengenWahl = ""
-  for i=1, OptionCount do
-    mengenWahl = mengenWahl.."@B["..Option[i]..","..Option[i]..",]"
-  end
-  mengenWahl = mengenWahl.."@B[C,@LBack_+0,]"
+	local OptionCount, Option = ms_hpfz_autoroute_GetCartSpaceOptions(CartAlias)
+	local mengenWahl = ""
+	for i=1, OptionCount do
+		mengenWahl = mengenWahl.."@B["..Option[i]..","..Option[i]..",]"
+	end
+	mengenWahl = mengenWahl.."@B[C,@LBack_+0,]"
   
-  local Amount = MsgBox(CartAlias,BldAlias,"@P"..mengenWahl,"@L_TRADEROUTE_COUNTSELECT_HEAD_+0","@L_TRADEROUTE_COUNTSELECT_BODY_+0", GetID(BldAlias), ItemGetLabel(ItemId,false))
-  if Amount and Amount ~= "C" then
-    return ItemId, Amount
-  end
-  return 0, 0
-  
+	local Amount = MsgBox(CartAlias,BldAlias,"@P"..mengenWahl,"@L_TRADEROUTE_COUNTSELECT_HEAD_+0","@L_TRADEROUTE_COUNTSELECT_BODY_+0", GetID(BldAlias), ItemGetLabel(ItemId,false))
+	if Amount and Amount ~= "C" then
+		return ItemId, Amount
+	end
+	return 0, 0
 end
 
 -- returns (OptionCount, Options)
 function GetCartSpaceOptions(CartAlias)
-  local Type = CartGetType(CartAlias)
-  if Type == EN_CT_SMALL then
-    return 4, {1, 5, 10, 20}
-  elseif Type == EN_CT_MIDDLE then
-    return 5, {1, 5, 10, 20, 40}
-  elseif Type == EN_CT_HORSE then
-    return 6, {1, 5, 10, 20, 40, 60}
-  elseif Type == EN_CT_OX then
-    return 7, {1, 5, 10, 20, 40, 80, 120}
-  elseif Type == EN_CT_MERCHANTMAN_SMALL then
-    return 10, {1, 5, 10, 20, 40, 60, 80, 100, 120, 180}
-  elseif Type == EN_CT_MERCHANTMAN_BIG then
-    return 10, {1, 5, 10, 20, 40, 80, 120, 160, 200, 240}
-  end
+	local Type = CartGetType(CartAlias)
+	if Type == EN_CT_SMALL then
+		return 4, {1, 5, 10, 20}
+	elseif Type == EN_CT_MIDDLE then
+		return 5, {1, 5, 10, 20, 40}
+	elseif Type == EN_CT_HORSE then
+		return 6, {1, 5, 10, 20, 40, 60}
+	elseif Type == EN_CT_OX then
+		return 7, {1, 5, 10, 20, 40, 80, 120}
+	elseif Type == EN_CT_MERCHANTMAN_SMALL then
+		return 10, {1, 5, 10, 20, 40, 60, 80, 100, 120, 180}
+	elseif Type == EN_CT_MERCHANTMAN_BIG then
+		return 10, {1, 5, 10, 20, 40, 80, 120, 160, 200, 240}
+	end
 end
 
 ---
 -- returns ItemId, AvailableAmount
 function ChooseItemFromInventory(BldAlias, PlayerAlias)
-  local Inventory = INVENTORY_STD 
-  if GetDynastyID(PlayerAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
-    -- not my own building and not market, use sell inventory
-    Inventory = INVENTORY_SELL
-  end
+	local Inventory = INVENTORY_STD 
+	if GetDynastyID(PlayerAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
+		-- not my own building and not market, use sell inventory
+		Inventory = INVENTORY_SELL
+	end
   
-  local zSlots = InventoryGetSlotCount(BldAlias,Inventory)
-  -- market with too many slots, use Market function with pre-selected category
-  if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET and zSlots > 20 then 
-    return ms_hpfz_autoroute_ChooseItemFromMarket(BldAlias, PlayerAlias)
-  end
+	local zSlots = InventoryGetSlotCount(BldAlias,Inventory)
+	-- market with too many slots, use Market function with pre-selected category
+	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET and zSlots > 20 then 
+		return ms_hpfz_autoroute_ChooseItemFromMarket(BldAlias, PlayerAlias)
+	end
   
-  local itemInfo = {} 
-  local schalter = ""
-  local ItemLabel, ItemTexture, itemNam, itemMen, itemID, itemSchalt
-  local itemTypeCount = 1
+	local itemInfo = {} 
+	local schalter = ""
+	local ItemLabel, ItemTexture, itemNam, itemMen, itemID, itemSchalt
+	local itemTypeCount = 1
 
-  -- initialize item information for every slot
-  for slotNr = 0,zSlots-1 do
-    itemID, itemMen = InventoryGetSlotInfo(BldAlias,slotNr,Inventory)
-    if itemMen and itemMen >= 0 and not ms_hpfz_autoroute_ContainsItemType(itemInfo, itemTypeCount, itemID) then
-      ItemTexture = "Hud/Items/Item_"..ItemGetName(itemID)..".tga"
-      -- result, label, Tooltip, icon
-      ItemLabel = ItemGetLabel(itemID, itemMen == 1)
-      schalter = schalter.."@B[" .. itemID .. "," .. itemMen .. "," .. ItemLabel .. "," .. ItemTexture .."]"
+	-- initialize item information for every slot
+	for slotNr = 0,zSlots-1 do
+		itemID, itemMen = InventoryGetSlotInfo(BldAlias,slotNr,Inventory)
+		if itemMen and itemMen >= 0 and not ms_hpfz_autoroute_ContainsItemType(itemInfo, itemTypeCount, itemID) then
+			ItemTexture = "Hud/Items/Item_"..ItemGetName(itemID)..".tga"
+			-- result, label, Tooltip, icon
+			ItemLabel = ItemGetLabel(itemID, itemMen == 1)
+			schalter = schalter.."@B[" .. itemID .. "," .. itemMen .. "," .. ItemLabel .. "," .. ItemTexture .."]"
 
-      itemInfo[itemTypeCount] = itemID
-      itemTypeCount = itemTypeCount + 1
-    end
-  end
+			itemInfo[itemTypeCount] = itemID
+			itemTypeCount = itemTypeCount + 1
+		end
+	end
   
-  local ItemId = InitData(
-    "@P"..schalter, -- PanelParam
-    0, -- AIFunc
-    "@L_TRADEROUTE_TYPESELECT_HEAD_+0",-- HeaderLabel
-    "Body"-- BodyLabel (obsolete)
-    )-- optional variable list
+	local ItemId = InitData(
+					"@P"..schalter, -- PanelParam
+					0, -- AIFunc
+					"@L_TRADEROUTE_TYPESELECT_HEAD_+0",-- HeaderLabel
+					"Body"-- BodyLabel (obsolete)
+					)-- optional variable list
   
-  if ItemId and ItemId ~= "C" then
-    return ItemId, GetItemCount(BldAlias, ItemId)
-  end
-  return nil, 0
+	if ItemId and ItemId ~= "C" then
+		return ItemId, GetItemCount(BldAlias, ItemId)
+	end
+	return nil, 0
 end
 
 ---
 -- returns ItemId, AvailableAmount
 function ChooseItemFromMarket(BldAlias, PlayerAlias)
-  local katWahl
-  local itemInfo = {} 
-  local schalter = ""
-  local itemNam, itemKat, itemMen, itemID, itemSchalt
-  local zSlots = InventoryGetSlotCount(BldAlias,INVENTORY_STD)
+	local katWahl
+	local itemInfo = {} 
+	local schalter = ""
+	local itemNam, itemKat, itemMen, itemID, itemSchalt
+	local zSlots = InventoryGetSlotCount(BldAlias,INVENTORY_STD)
 
-  repeat  
-    local itemTypeCount = 1
-    katWahl = ms_hpfz_autoroute_SelectCategoryFromMarket(BldAlias, PlayerAlias)
-    if katWahl == 0 then
-      return nil, 0
-    end
-    -- bugfix: when repeating, reinitialize item list
-    itemInfo = {} 
-    schalter = ""
-    -- initialize item information for every slot
-    for slotNr = 0,zSlots-1 do
-      itemID, itemMen = InventoryGetSlotInfo(BldAlias,slotNr,INVENTORY_STD)
-      if itemMen and itemMen >= 0 then
-        if(not ms_hpfz_autoroute_ContainsItemType(itemInfo, itemTypeCount, itemID)) then
-          itemKat = ItemGetCategory(itemID)
-          if itemKat == katWahl then
-            itemNam = ItemGetLabel(itemID,true)
-            itemSchalt = "@B["..itemID..",@L"..itemNam..",]"
-            itemInfo[itemTypeCount] = itemID
-            schalter = schalter..itemSchalt
-            itemTypeCount = itemTypeCount + 1
-          end
-        end
-      end
-    end
+	repeat  
+	local itemTypeCount = 1
+	katWahl = ms_hpfz_autoroute_SelectCategoryFromMarket(BldAlias, PlayerAlias)
+	if katWahl == 0 then
+		return nil, 0
+	end
+	-- bugfix: when repeating, reinitialize item list
+	itemInfo = {} 
+	schalter = ""
+	-- initialize item information for every slot
+	for slotNr = 0,zSlots-1 do
+		itemID, itemMen = InventoryGetSlotInfo(BldAlias,slotNr,INVENTORY_STD)
+		if itemMen and itemMen >= 0 then
+			if(not ms_hpfz_autoroute_ContainsItemType(itemInfo, itemTypeCount, itemID)) then
+				itemKat = ItemGetCategory(itemID)
+				if itemKat == katWahl then
+					itemNam = ItemGetLabel(itemID,true)
+					itemSchalt = "@B["..itemID..",@L"..itemNam..",]"
+					itemInfo[itemTypeCount] = itemID
+					schalter = schalter..itemSchalt
+					itemTypeCount = itemTypeCount + 1
+				end
+			end
+		end
+	end
     
-    local ItemId = MsgBox(PlayerAlias,BldAlias,"@P"..schalter,"@L_TRADEROUTE_TYPESELECT_HEAD_+0","@L_TRADEROUTE_TYPESELECT_BODY_+0", GetID(BldAlias))
-    if ItemId and ItemId ~= "C" then
-      return ItemId, GetItemCount(BldAlias, ItemId)
-    end
-  until (ItemId and ItemId ~= "C")
+	local ItemId = MsgBox(PlayerAlias,BldAlias,"@P"..schalter,"@L_TRADEROUTE_TYPESELECT_HEAD_+0","@L_TRADEROUTE_TYPESELECT_BODY_+0", GetID(BldAlias))
+	if ItemId and ItemId ~= "C" then
+		return ItemId, GetItemCount(BldAlias, ItemId)
+	end
+	
+	until (ItemId and ItemId ~= "C")
 end
 
 function SelectCategoryFromMarket(BldAlias, PlayerAlias)
-  local katSchalter = ""
-  katSchalter = katSchalter.."@B[1,@L_BUILDING_Market_Ressource_NAME_+0,]"
-  katSchalter = katSchalter.."@B[2,@L_BUILDING_Market_Food_NAME_+0,]"
-  katSchalter = katSchalter.."@B[3,@L_BUILDING_Market_Smithy_NAME_+0,]"
-  katSchalter = katSchalter.."@B[4,@L_BUILDING_Market_Textile_NAME_+0,]"
-  katSchalter = katSchalter.."@B[5,@L_BUILDING_Market_Alchemist_NAME_+0,]"
-  katSchalter = katSchalter.."@B[6,@L_BUILDING_Market_NewMarket_NAME_+0,]"
-  katSchalter = katSchalter.."@B[C,@LBack_+0,]"
-  local katWahl = MsgBox(PlayerAlias,BldAlias,"@P"..katSchalter,"@L_TRADEROUTE_CATEGORY_HEAD_+0","")
-  if katWahl ~= "C" then
-    return katWahl
-  end
-  return 0
+	local katSchalter = ""
+	katSchalter = katSchalter.."@B[1,@L_BUILDING_Market_Ressource_NAME_+0,]"
+	katSchalter = katSchalter.."@B[2,@L_BUILDING_Market_Food_NAME_+0,]"
+	katSchalter = katSchalter.."@B[3,@L_BUILDING_Market_Smithy_NAME_+0,]"
+	katSchalter = katSchalter.."@B[4,@L_BUILDING_Market_Textile_NAME_+0,]"
+	katSchalter = katSchalter.."@B[5,@L_BUILDING_Market_Alchemist_NAME_+0,]"
+	katSchalter = katSchalter.."@B[6,@L_BUILDING_Market_NewMarket_NAME_+0,]"
+	katSchalter = katSchalter.."@B[C,@LBack_+0,]"
+	
+	local katWahl = MsgBox(PlayerAlias,BldAlias,"@P"..katSchalter,"@L_TRADEROUTE_CATEGORY_HEAD_+0","")
+	
+	if katWahl ~= "C" then
+		return katWahl
+	end
+	return 0
 end
 
 ---- itemInfo is an array wth IDs
 function ContainsItemType(itemInfo, length, itemID)
-  for i = 1, length - 1 do
-    if itemInfo[i] == itemID then
-      return true
-    end
-  end
-  return false
+	for i = 1, length - 1 do
+		if itemInfo[i] == itemID then
+			return true
+		end
+	end
+	return false
 end
