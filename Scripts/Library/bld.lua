@@ -1071,12 +1071,6 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 		end
 	end
 	
-	-- Check every worker (only once) for illness and equipment 
-	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
-		bld_ResetWorkers(BldAlias)
-		SetProperty(BldAlias, "CheckDefaultWorkers", 1)
-	end
-	
 	-- Improve AI management
 	if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
 	--	bld_SetupAI(BldAlias)
@@ -1104,11 +1098,20 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 end
 
 function HandleSetup(BldAlias)
-	bld_ResetWorkers(BldAlias)
+	-- Check every worker (only once) for illness and equipment 
+	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
+		bld_ResetWorkers(BldAlias)
+		SetProperty(BldAlias, "CheckDefaultWorkers", 1)
+	end
 	economy_CalculateSalesRanking(BldAlias)
 end
 
 function HandleOnLevelUp(BldAlias)
+	-- Check every worker (only once) for illness and equipment 
+	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
+		bld_ResetWorkers(BldAlias)
+		SetProperty(BldAlias, "CheckDefaultWorkers", 1)
+	end
 	economy_CalculateSalesRanking(BldAlias)
 end
 
@@ -1117,4 +1120,30 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	--bld_BuildingWorkersStopWorking(BldAlias) -- this seemed necessary at some point
 	bld_ResetWorkers(BldAlias)
 	economy_ClearBalance(BldAlias)
+end
+
+function GetJobAssignment(BldAlias, WorkerAlias)
+	local Task, Detail, Assignee
+	local WorkerTaskIdx = GetProperty(WorkerAlias, "WorkerTaskIdx")
+	if WorkerTaskIdx then
+		-- remove last task
+		RemoveProperty(BldAlias, "WorkerAssigned"..WorkerTaskIdx)
+		RemoveProperty(WorkerAlias, "WorkerTaskIdx")
+	end
+	
+	for i=0, 10 do
+		Task = GetProperty(BldAlias, "WorkerTask"..i)
+		if not Task then
+			return -- no more tasks available
+		end
+		
+		Assignee = GetProperty(BldAlias, "WorkerAssigned"..i)
+		
+		if not Assignee then
+			SetProperty(BldAlias, "WorkerAssigned"..i, GetID(WorkerAlias))
+			SetProperty(WorkerAlias, "WorkerTaskIdx", i)
+			return Task, GetProperty(BldAlias, "WorkerDetail"..i), i
+		end
+	end
+	return Task, Detail
 end

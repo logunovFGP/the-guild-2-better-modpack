@@ -1340,16 +1340,44 @@ function NeedsTreatment(SimAlias)
 	return false
 end
 
-function FindCrowdedPlace(SimAlias, WorkBuilding, Settlement)
+function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
+	local MaxDistance = 10000
+	local MaxCrowdedLocators = 30
+	local Profession = SimGetProfession(SimAlias)
+	local LocatorName, LocatorRanking
+	
+	-- will contain a computed ranking value for each locator for decision
+	-- LocatorRanking = (10 - Distance/1000) + (5 - OwnWorkersNearby)
+	local LocatorRankingList = {} 
+	for i = 1, MaxCrowdedLocators do
+		RemoveAlias("CrowdedPos")
+		if GetOutdoorLocator("Crowded"..i, 1, "CrowdedPos") and AliasExists("CrowdedPos") then
+			-- check the distance first
+			local DistanceFound = GetDistance(SimAlias, "CrowdedPos")
+			if MaxDistance > DistanceFound then
+				LocatorRanking = math.max(1, 10 - math.floor(DistanceFound/1000))
+				-- check number of own workers nearby
+				local Count = Find("CrowdedPos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == " .. Profession ..") AND (Object.BelongsToMe()))", "Result", 5)
+				LocatorRanking = math.max(1, LocatorRanking + (5 - Count))
+				LocatorRankingList[i] = LocatorRanking
+			end
+		end
+	end
+	local ChosenIndex = helpfuncs_RandWeighted(LocatorRankingList)
+	if ChosenIndex then
+		GetOutdoorLocator("Crowded"..ChosenIndex, 1, ResultLocation)
+		return "Crowded"..ChosenIndex
+	end
 
-end
-
-function FindNewCrowdedPlace(SimAlias, WorkBuilding, Settlement)
-
-end
-
-function RemoveCrowdedPlace(SimAlias, WorkBuilding)
-
+	-- still no Destination? Select Market then
+	if not AliasExists(ResultLocation) then
+		local Market = Rand(5)+1
+		if CityGetRandomBuilding(SettlementAlias, 5, 14, Market, -1, FILTER_IGNORE, ResultLocation) then
+			LogMessage(GetName(SimAlias) .. " did not find a good Crowded locator and will go to the market")
+			return "Market"
+		end
+	end
+	return nil
 end
 
 function GetBribeAmount(SimAlias) 

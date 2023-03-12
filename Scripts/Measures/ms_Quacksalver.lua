@@ -22,7 +22,7 @@ function Run()
 				return
 			end
 			
-			if CityFindCrowdedPlace("City", "", "Destination")==0 then
+			if not CityFindCrowdedPlace("City", "", "Destination") then
 				return
 			end
 		else
@@ -42,7 +42,7 @@ function Run()
 					return
 				end
 				
-				if CityFindCrowdedPlace("City", "", "Destination")==0 then
+				if not CityFindCrowdedPlace("City", "", "Destination") then
 					return
 				end
 			else

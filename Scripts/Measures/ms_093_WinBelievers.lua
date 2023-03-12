@@ -18,7 +18,7 @@ function Run()
 			return
 		end
 
---		if CityFindCrowdedPlace("City", "", "Destination")==0 then
+--		if not chr_CityFindCrowdedPlace("City", "", "Destination") then
 --			return
 --		end
 

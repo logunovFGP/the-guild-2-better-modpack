@@ -12,7 +12,7 @@ function Run()
 	end
 
 	while not HasData("LetsGo") do
-		if CityFindCrowdedPlace("MyCity", "", "PlayPos") > 1 then
+		if chr_CityFindCrowdedPlace("MyCity", "", "PlayPos") then
 			f_MoveTo("", "PlayPos")
 			Sleep(1)
 			local EndTime = GetGametime() + 1

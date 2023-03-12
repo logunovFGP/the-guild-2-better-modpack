@@ -20,37 +20,9 @@ function Run()
 
 	-- Find a good spot for AI
 	if not AliasExists("Destination") then
-		local BestDistance = 10000
-		local Trys = 30
-		local Profession = SimGetProfession("")
-		
-		for i = 1, trys do
-			if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
-				-- check the distance first
-				local DistanceFound = GetDistance("City", "Pos")
-				if DistanceFound < BestDistance then
-					-- Now check whether there are already more than 1 actor of that profession
-					local Count = Find("Pos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == Profession) AND (Object.BelongsToMe()))", "Result", 2)
-					if Count < 2 then
-						BestDistance = DistanceFound
-						CopyAlias("Pos", "Destination")
-						-- stop right here if it is perfect already
-						if BestDistance < 2000 then
-							break
-						end
-					end
-				end
-			end
-		end
-
-		-- still no Destination? Select Market then
-		if not AliasExists("Destination") then
-			local Market = Rand(5)+1
-			if not CityGetRandomBuilding("City", 5, 14, Market, -1, FILTER_IGNORE, "Destination") then
-				StopMeasure()
-				return
-			end
-		end
+		if not chr_CityFindCrowdedPlace("City", "", "Destination") then
+			StopMeasure()
+		end 
 	end
 	
 	-- Move to Destination

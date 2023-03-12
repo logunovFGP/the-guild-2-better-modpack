@@ -139,6 +139,21 @@ end
 -- -----------------------
 function ThiefIdle(Workbuilding)
 	SimGetWorkingPlace("", "WorkingPlace")
+	-- AI controlled thiefs should not go idle
+	local Time = math.mod(GetGametime(), 24)
+	if BuildingGetAISetting("WorkingPlace", "Enable") > 0 then
+		if GetHPRelative("") < 0.7 then
+			-- Heal
+			GetSettlement(Workbuilding, "City")
+			CityGetNearestBuilding("City", "", -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "LingerPlace")
+			MeasureRun("", "LingerPlace", "Linger")
+			return
+		end
+		if thief_CheckInForWork("WorkingPlace", "") then
+			return
+		end
+	end
+	
 	local WhatToDo = Rand(5)
 	if WhatToDo == 0 then
 		if GetFreeLocatorByName("WorkingPlace", "Chair",1,4, "ChairPos") then

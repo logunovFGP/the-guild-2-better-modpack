@@ -20,7 +20,7 @@ function Run()
 			return
 		end
 		
-		if CityFindCrowdedPlace("City", "", "Destination")==0 then
+		if not chr_CityFindCrowdedPlace("City", "", "Destination") then
 			return
 		end	
 	end
@@ -131,7 +131,7 @@ function Run()
 								ScenarioCreatePosition(GetProperty("","MyPosX"), GetProperty("","MyPosZ"), "Destination")
 							else
 								GetNearestSettlement("", "City")
-								CityFindCrowdedPlace("City", "", "Destination")
+								chr_CityFindCrowdedPlace("City", "", "Destination")
 							end
 						end
 
@@ -179,7 +179,7 @@ function Run()
 								ScenarioCreatePosition(GetProperty("","MyPosX"), GetProperty("","MyPosZ"), "Destination")
 							else
 								GetNearestSettlement("", "City")
-								CityFindCrowdedPlace("City", "", "Destination")
+								chr_CityFindCrowdedPlace("City", "", "Destination")
 							end
 						end
 

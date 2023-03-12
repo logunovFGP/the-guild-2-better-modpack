@@ -30,10 +30,11 @@ function Run()
 	"@B[5,@L%5l,@L%5l,Hud/Items/Item_goldhigh.tga]"..
 	"@B[6,@L%6l,@L%6l,Hud/Items/Item_Empfehlung.tga]"..
 	"@B[7,@L%7l,@L%7l,Hud/Items/Item_MiracleCure.tga]"..
-	"@B[8,@L%8l,@L%8l,Hud/Items/Item_HexerdokumentII.tga]",
+	"@B[8,@L%8l,@L%8l,Hud/Items/Item_HexerdokumentII.tga]"..
+	"@B[9,@L%9l,@L%9l,]",
 	-1,
 	"@L_MEASURE_HotTea_TITLE_+0","",
-	"Immortality","Title","Office","XP","Money","Fame","Age","AI")
+	"Immortality","Title","Office","XP","Money","Fame","Age","AI", "Special")
 
 	if result==1 then
 		if SimIsMortal(Target) then
@@ -82,6 +83,29 @@ function Run()
 		elseif freeze == 0 then
 			ScenarioPauseAI(false)
 		end
+	elseif result == 9 then
+		GetPosition(Target, "Pos")
+--		GfxAttachObject("crowdedlocator", "city/Stuff/tradetable.nif")
+		--GfxAttachObject("crowdedlocator", "city/statues/fabianthegolden.nif")
+	  --GfxSetPositionTo("crowdedlocator", "Pos")	
+--		GfxStartParticle("crowdedlocator", "particles/Campfire2.nif", "Pos", 10.0)
+		for i=0, 50 do
+			RemoveAlias("Pos")
+			if GetOutdoorLocator("Crowded"..i, 1, "Pos") and AliasExists("Pos") then
+				local x, y, z = PositionGetVector("Pos")
+				LogMessage("Smoke at Crowded"..i..": "..x..", "..y..", "..z)
+				StartSingleShotParticle("particles/Explosion.nif", "Pos", 4,50)
+--				GfxAttachObject("crowdedlocator"..i, "city/Stuff/tradetable.nif")
+--		  	GfxSetPositionTo("crowdedlocator"..i, "Pos")	
+			end
+		end
+--		local Count = GetOutdoorLocator("Crowded", 50, "Pos")
+--		for i=0,Count-1 do
+--			LogMessage("Smoke at Crowded"..i)
+--			GfxAttachObject("crowdedlocator"..i, "city/freierhandler.nif")
+--		  GfxSetPositionTo("crowdedlocator"..i, "Pos"..i)	
+--			GfxStartParticle("crowdedlocator"..i, "particles/smoke_medium.nif", "Pos"..i, 10)
+--		end
 	end
 end
 

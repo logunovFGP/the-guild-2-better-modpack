@@ -424,8 +424,8 @@ function Worker(ActiveMovement)
 	end
 	
 	local	AtPlace	= SimGetAssignedAreaID("") == SimGetWorkingPlaceID("")
-	
-	if AtPlace then
+	SimGetWorkingPlace("", "WorkingPlace")
+	if AtPlace or BuildingGetAISetting("WorkingPlace", "Enable") > 0 then
 		if SimGetProfession("") == GL_PROFESSION_THIEF then
 			if HasProperty("","SchuldenGeb") then
 				idlelib_ReturnACredit()
