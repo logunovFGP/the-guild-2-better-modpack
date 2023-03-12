@@ -40,6 +40,7 @@ function Run()
 	end
 	
 	if not BedFree then
+		LogMessage("Hospital no free bed found")
 		StopMeasure()
 	end
 	
@@ -60,15 +61,16 @@ function Run()
 		if NumSickSims < 1 then
 			
 			if not AliasExists("") then
+				LogMessage("Hospital: I lost myself")
 				break
 			end			
 
 			-- bored
-			if Rand(3) == 0 then
+			if Rand(9) == 0 then
 				MoveStop("")
 				PlayAnimation("", "cogitate")
 			else
-				Sleep(5)
+				Sleep(6)
 			end
 			
 			-- AI stops measure if no patients are available to do better things
@@ -82,11 +84,13 @@ function Run()
 			
 			-- block the patient
 			if not AliasExists("SickSim0") then
+				LogMessage("Hospital: NoSickSim0 found")
 				return
 			end
 			
 			SetData("Blocked", 0)
 			if not SendCommandNoWait("SickSim0", "BlockMe") then
+				LogMessage("Hospital: Cant block SickSim0")
 				break
 			end
 			
