@@ -6,7 +6,7 @@ end
  
 function Run()
 	-- Variables for every impacts
-	local impactNames = {"Pox", "perfume", "pendel", "kamm"}
+	local impactNames = {"Pox", "perfume", "pendel"}
 	local impactActives = {}	 
 
 	-- Code to initialize the impactActives at 0 for each Impact
