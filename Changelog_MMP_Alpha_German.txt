@@ -10,6 +10,7 @@ Design:
 - Erweiterte Waren-Tooltips sind standardmäßig aktiviert (über config.ini abstellbar).
 - Zufallsereignisse wurden permanent deaktivitert. In einer zukünftigen Version werden sie komplett überarbeitet.
 - Das Feature der königlichen Berater wurde entfernt (ohnehin war dieses Feature kaum integriert).
+- Die Möglichkeit, Verteidigungstürme zu errichten, wurde entfernt.
 
 Features:
 - Erzähler zur Hochzeitseinladung hinzugefügt.

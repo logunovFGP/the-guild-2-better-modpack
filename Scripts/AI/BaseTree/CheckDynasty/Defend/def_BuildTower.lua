@@ -1,4 +1,6 @@
 function Weight()
+	
+	--[[
 	if GetMoney("Dynasty")<3000 then
 		return 0
 	end
@@ -23,6 +25,8 @@ function Weight()
 	SetData("TowerProto", Proto)
 	
 	return 40
+	]]--
+	return 0
 end
 
 function Execute()
