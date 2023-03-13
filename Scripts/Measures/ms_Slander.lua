@@ -105,7 +105,7 @@ function Run()
 	--high crimes
 	elseif result == "H" then
 		Costs = HighPrice
-		Choice = Rand(4)
+		Choice = Rand(5)
 		if Choice == 0 then
 			Evidence = 15	--abduction		8
 			EvidenceLabel = "ABDUCTION"
@@ -142,7 +142,7 @@ function Run()
 		Sleep(0.1) 
 	end
 
-	AddEvidence("", "Bard", "EvidenceVictim", Evidence, "Destination", "Sim0", "Sim1", "Sim2", "Sim3", "Sim4", "Sim5", "Sim6", "Sim7", "Sim8", "Sim9")
+	AddEvidence("", "Destination", "EvidenceVictim", Evidence, "Destination", "Sim0", "Sim1", "Sim2", "Sim3", "Sim4", "Sim5", "Sim6", "Sim7", "Sim8", "Sim9")
 	
 	MsgSay("Bard","@L_MESSAGES_SLANDER_SPEECH_"..EvidenceLabel.."_+0", GetID("Destination"))
 	SetProperty("Bard", "BardIsFree", 1)
