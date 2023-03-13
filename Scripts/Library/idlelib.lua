@@ -156,7 +156,7 @@ function ThiefIdle(Workbuilding)
 	
 	local WhatToDo = Rand(5)
 	if WhatToDo == 0 then
-		if GetFreeLocatorByName("WorkingPlace", "Chair",1,4, "ChairPos") then
+		if GetFreeLocatorByName(Workbuilding, "Chair",1,4, "ChairPos") then
 			if not f_BeginUseLocator("", "ChairPos", GL_STANCE_SIT, true) then
 				RemoveAlias("ChairPos")
 				return
