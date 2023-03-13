@@ -47,7 +47,7 @@ function Run()
 	-- sleep
 	
 	local HasToSleep = 6
-	if GetImpactValue("", "SleepRecoverBonus") >0 then
+	if GetImpactValue("", "SleepBonusI") >0 then
 		HasToSleep = 3.5
 	end
 

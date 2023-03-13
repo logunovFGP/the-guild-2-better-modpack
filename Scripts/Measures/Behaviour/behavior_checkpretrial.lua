@@ -1,5 +1,5 @@
 function Run()
 	MeasureSetNotRestartable()
-	MeasureRun("", nil,"Pretrial",true)
+	MeasureRun("", nil, "Pretrial", true)
 end
 

@@ -36,6 +36,9 @@ function Init() -- this is called before Run
 		GetDynasty("Destination", "TargetDyn")
 		local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 		local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+		if DynastyIsShadow("TargetDyn") then
+			TargetBadge = "@L$S[2045]"
+		end
 		
 		-- First we need to choose what we want to do
 		local Selection = MsgBox("MyBoss", "Destination", "@P"..
@@ -106,6 +109,9 @@ function Status()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	
 	-- timout for changing status multiple times
 	local DestID = GetDynastyID("Destination")
@@ -166,6 +172,10 @@ function Message()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -242,6 +252,9 @@ function Gift()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -307,6 +320,9 @@ function AnswerGift(Amount)
 	GetDynasty("Destination", "TargetDyn")
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	
 	local DesMoney = GetMoney("Destination")
 	local AmountPercent = (Amount*100) / DesMoney
@@ -327,6 +343,9 @@ function RequestAllies()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -425,6 +444,9 @@ function RequestAllies()
 		
 		local EnemyBadgeID = DynastyGetFlagNumber("EnemyDyn") + 29
 		local EnemyBadge = "@L$S[20"..EnemyBadgeID.."]"
+		if DynastyIsShadow("EnemyDyn") then
+			EnemyBadge = "@L$S[2045]"
+		end
 		
 		-- select a random building for the AI attack
 		if not DynastyGetRandomBuilding("EnemyDyn", GL_BUILDING_CLASS_WORKSHOP, -1, "EnemyBuilding") then
@@ -592,6 +614,9 @@ function RequestEnemies()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -696,6 +721,9 @@ function ConfirmFeud()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -760,6 +788,9 @@ function ConfirmNeutral()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -905,6 +936,9 @@ function ConfirmNAP()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -1092,6 +1126,9 @@ function ConfirmAlliance()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	-- own badge
 	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
 	local Badge = "@L$S[20"..BadgeID.."]"
@@ -1588,6 +1625,9 @@ function SpecialCheck()
 	-- target badge
 	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
 	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
+	if DynastyIsShadow("TargetDyn") then
+		TargetBadge = "@L$S[2045]"
+	end
 	local MyDynID = GetID("dynasty")
 	
 	local Enemies = dyn_GetEnemies("Destination") or 0

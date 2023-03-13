@@ -21,8 +21,8 @@ function Run()
 	
 	--Sleep at night?
 	local currentGameTime = math.mod(GetGametime(),24)
-	if (currentGameTime>22 or currentGameTime<4) then
-		if (Value - GetImpactValue("","SleepRecoverBonus")) < 40 then
+	if (currentGameTime >22 or currentGameTime <4) then
+		if (Value - GetImpactValue("","SleepBonusI")) < 40 then
 			idlelib_GoSleep()
 			StopMeasure()
 		else

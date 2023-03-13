@@ -424,43 +424,44 @@ function Worker(ActiveMovement)
 	end
 	
 	local	AtPlace	= SimGetAssignedAreaID("") == SimGetWorkingPlaceID("")
-	SimGetWorkingPlace("", "WorkingPlace")
-	if AtPlace or BuildingGetAISetting("WorkingPlace", "Enable") > 0 then
-		if SimGetProfession("") == GL_PROFESSION_THIEF then
+	if SimGetWorkingPlace("", "WorkingPlace") then
+		if AtPlace or BuildingGetAISetting("WorkingPlace", "Enable") > 0 then
+			if SimGetProfession("") == GL_PROFESSION_THIEF then
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_ThiefIdle("WorkingPlace")
+				return
+			elseif SimGetProfession("") == GL_PROFESSION_ROBBER then
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_RobberIdle("WorkingPlace")
+				--idlelib_GoToDivehouse()
+				return
+			elseif SimGetProfession("") == GL_PROFESSION_MYRMIDON then
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_MyrmidonIdle("WorkingPlace")
+				return
+			elseif SimGetProfession("") == 74 then
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_LeibwacheIdle("WorkingPlace")
+				return
+			elseif SimGetProfession("") == 17 then
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_LeibwacheIdle("WorkingPlace")
+				return
+			end	
+		else
 			if HasProperty("","SchuldenGeb") then
 				idlelib_ReturnACredit()
 			end
-			idlelib_ThiefIdle("WorkingPlace")
-			return
-		elseif SimGetProfession("") == GL_PROFESSION_ROBBER then
-			if HasProperty("","SchuldenGeb") then
-				idlelib_ReturnACredit()
-			end
-			idlelib_RobberIdle("WorkingPlace")
-			--idlelib_GoToDivehouse()
-			return
-		elseif SimGetProfession("") == GL_PROFESSION_MYRMIDON then
-			if HasProperty("","SchuldenGeb") then
-				idlelib_ReturnACredit()
-			end
-			idlelib_MyrmidonIdle("WorkingPlace")
-			return
-		elseif SimGetProfession("") == 74 then
-			if HasProperty("","SchuldenGeb") then
-				idlelib_ReturnACredit()
-			end
-			idlelib_LeibwacheIdle("WorkingPlace")
-			return
-		elseif SimGetProfession("") == 17 then
-			if HasProperty("","SchuldenGeb") then
-				idlelib_ReturnACredit()
-			end
-	    idlelib_LeibwacheIdle("WorkingPlace")
-			return
-		end	
-	else
-		if HasProperty("","SchuldenGeb") then
-			idlelib_ReturnACredit()
 		end
 	end
 	

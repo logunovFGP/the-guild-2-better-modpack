@@ -11,93 +11,72 @@
 -- Run
 -- -----------------------
 function Run()
-	if SimGetCutscene("","cutscene") then
-		SimSetBehavior("", "")
-		return
-	end
-	
-	if not GetProperty("","destination_ID") then
-		LogMessage("No Destination Pretrial")
-		SimResetBehavior("")
-		return
-	end	
 	
 	if DynastyIsPlayer("") then
 		return
 	end
 	
-	GetInsideBuilding("", "Townhall")
+	if not GetInsideBuilding("", "Townhall") then
+		LogMessage("PreTrial, no InsideRoom for"..GetName(""))
+		return
+	end
 	BuildingGetRoom("Townhall", "Judge", "judgeroom")
 
---[[	local CutsceneID = GetProperty("Townhall","NextCutsceneID")
+	local CutsceneID = GetProperty("Townhall","NextCutsceneID")
 	if not GetAliasByID(CutsceneID,"CutsceneAlias") then
 		LogMessage("No Cutscene Alias from Townhall")
 	end
 
-	local judge = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","judge")
-	local accuser = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","accuser")
-	local accused = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","accused")
-	local assessor1 = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","assessor1")
-	local assessor2 = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","assessor2")
+	local judge = behavior_pretrial_GetDataFromCutscene("CutsceneAlias", "judge")
+	local accuser = behavior_pretrial_GetDataFromCutscene("CutsceneAlias"," accuser")
+	local accused = behavior_pretrial_GetDataFromCutscene("CutsceneAlias", "accused")
+	local assessor1 = behavior_pretrial_GetDataFromCutscene("CutsceneAlias", "assessor1")
+	local assessor2 = behavior_pretrial_GetDataFromCutscene("CutsceneAlias", "assessor2")
 	
-	if (HasProperty("","HaveCutscene") == true) then
-		RemoveProperty("","HaveCutscene")
+	if HasProperty("", "HaveCutscene") then
+		LogMessage("PreTrial: remove HaveCutscene")
+		RemoveProperty("", "HaveCutscene")
 	end
-	]]
 	
 	while true do
-	--[[	local IsAtPlace = 0
-		if GetInsideRoom("","InsideRoom") then
-			if (GetID("judgeroom") == GetID("InsideRoom")) then
-				IsAtPlace = 1
-		--		if you are the judge do this
-				if (GetID("") == judge) then
-					behavior_pretrial_ActionsForJudge()
-				end
-		
-		--		if you are the accuser do this
-				if (GetID("") == accuser) then
-					behavior_pretrial_ActionsForAccuser()
-				end
-		
-		--		if you are the accused do this
-				if (GetID("") == accused) then
-					behavior_pretrial_ActionsForAccused()
-				end
-		
-		--		if you are the assessor1 do this
-				if (GetID("") == assessor1) then
-					behavior_pretrial_ActionsForAssessor()
-				end
-		
-		--		if you are the assessor2 do this
-				if (GetID("") == assessor2) then
-					behavior_pretrial_ActionsForAssessor()
-				end
-			end
+	
+		-- if you are the judge do this
+		if (GetID("") == judge) then
+			LogMessage("PreTrial Judge")
+			behavior_pretrial_ActionsForJudge()
 		end
 		
-		if IsAtPlace == 0 then
-			local DistanceToDestination
-			local MoveSpeed = GL_MOVESPEED_WALK
-			if (GetInsideBuilding("","InsideBuilding")) then
-				f_ExitCurrentBuilding("")
-			end
-			DistanceToDestination = GetDistance("", "judgeroom")
-			if DistanceToDestination > 3000 or DistanceToDestination == -1 then
-				MoveSpeed = GL_MOVESPEED_RUN
-			end
-			f_WeakMoveTo("","judgeroom",MoveSpeed)
+		--if you are the accuser do this
+		if (GetID("") == accuser) then
+			LogMessage("PreTrial Accuser")
+			behavior_pretrial_ActionsForAccuser()
 		end
-			]]
-
-		Sleep(Rand(5)+3)
+		
+		--if you are the accused do this
+		if (GetID("") == accused) then
+			LogMessage("PreTrial Accused")
+			behavior_pretrial_ActionsForAccused()
+		end
+		
+		--if you are the assessor1 do this
+		if (GetID("") == assessor1) then
+			LogMessage("PreTrial Assessor 1")
+			behavior_pretrial_ActionsForAssessor()
+		end
+		
+		--if you are the assessor2 do this
+		if (GetID("") == assessor2) then
+			LogMessage("PreTrial Assessor 2")
+			behavior_pretrial_ActionsForAssessor()
+		end
+		
+		Sleep(10)
 	end
 --	Sleep(1000000)
 end
 
-function GetDataFromCutscene(CutsceneAlias,Data)
-	CutsceneGetData(CutsceneAlias,Data)
+function GetDataFromCutscene(CutsceneAlias, Data)
+	CutsceneGetData(CutsceneAlias, Data)
 	local returnData = GetData(Data)
 	return returnData
 end

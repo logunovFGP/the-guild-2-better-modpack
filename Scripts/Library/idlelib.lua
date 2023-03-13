@@ -138,10 +138,9 @@ end
 -- ThiefIdle
 -- -----------------------
 function ThiefIdle(Workbuilding)
-	SimGetWorkingPlace("", "WorkingPlace")
 	-- AI controlled thiefs should not go idle
 	local Time = math.mod(GetGametime(), 24)
-	if BuildingGetAISetting("WorkingPlace", "Enable") > 0 then
+	if BuildingGetAISetting(Workbuilding, "Enable") > 0 then
 		if GetHPRelative("") < 0.7 then
 			-- Heal
 			GetSettlement(Workbuilding, "City")
@@ -149,14 +148,14 @@ function ThiefIdle(Workbuilding)
 			MeasureRun("", "LingerPlace", "Linger")
 			return
 		end
-		if thief_CheckInForWork("WorkingPlace", "") then
+		if thief_CheckInForWork(Workbuilding, "") then
 			return
 		end
 	end
 	
 	local WhatToDo = Rand(5)
 	if WhatToDo == 0 then
-		if GetFreeLocatorByName(Workbuilding, "Chair",1,4, "ChairPos") then
+		if GetFreeLocatorByName(Workbuilding, "Chair", 1, 4, "ChairPos") then
 			if not f_BeginUseLocator("", "ChairPos", GL_STANCE_SIT, true) then
 				RemoveAlias("ChairPos")
 				return
@@ -168,39 +167,39 @@ function ThiefIdle(Workbuilding)
 				elseif WhatToDo2 == 1 then
 					return
 				elseif WhatToDo2 == 2 then
-					PlayAnimation("","sit_talk")
+					PlayAnimation("", "sit_talk")
 				else
-					PlayAnimation("","sit_laugh")					
+					PlayAnimation("", "sit_laugh")					
 				end
 				Sleep(1)
 			end
 		end
 	elseif WhatToDo == 1 then
-		if GetLocatorByName("WorkingPlace", "Chair_Cellwatch", "ChairPos") then
+		if GetLocatorByName(Workbuilding, "Chair_Cellwatch", "ChairPos") then
 			if not f_BeginUseLocator("", "ChairPos", GL_STANCE_SIT, true) then
 				RemoveAlias("ChairPos")
 				return
 			end
-			PlayAnimation("","sit_laugh")
+			PlayAnimation("", "sit_laugh")
 			Sleep(Rand(12)+1)
 		end
 	elseif WhatToDo == 2 then
-		if GetLocatorByName("WorkingPlace", "Fistfight", "ChairPos") then
+		if GetLocatorByName(Workbuilding, "Fistfight", "ChairPos") then
 			if not f_BeginUseLocator("", "ChairPos", GL_STANCE_STAND, true) then
 				RemoveAlias("ChairPos")
 				return
 			end
-			PlayAnimation("","point_at")
-			PlayAnimation("","fistfight_in")
-			PlayAnimation("","fistfight_punch_01")
-			PlayAnimation("","fistfight_punch_05")
-			PlayAnimation("","fistfight_punch_02")
-			PlayAnimation("","fistfight_punch_06")
-			PlayAnimation("","fistfight_punch_03")
-			PlayAnimation("","fistfight_punch_07")
-			PlayAnimation("","fistfight_punch_04")
-			PlayAnimation("","fistfight_punch_08")
-			PlayAnimation("","fistfight_out")
+			PlayAnimation("", "point_at")
+			PlayAnimation("", "fistfight_in")
+			PlayAnimation("", "fistfight_punch_01")
+			PlayAnimation("", "fistfight_punch_05")
+			PlayAnimation("", "fistfight_punch_02")
+			PlayAnimation("", "fistfight_punch_06")
+			PlayAnimation("", "fistfight_punch_03")
+			PlayAnimation("", "fistfight_punch_07")
+			PlayAnimation("", "fistfight_punch_04")
+			PlayAnimation("", "fistfight_punch_08")
+			PlayAnimation("", "fistfight_out")
 		end
 	elseif WhatToDo == 3 then
 		if GetLocatorByName("WorkingPlace", "Pickpocket", "ChairPos") then
@@ -208,7 +207,7 @@ function ThiefIdle(Workbuilding)
 				RemoveAlias("ChairPos")
 				return
 			end
-			PlayAnimation("","pickpocket")
+			PlayAnimation("", "pickpocket")
 		end
 	else
 		if GetLocatorByName("WorkingPlace", "Cell_Outside", "ChairPos") then
@@ -216,7 +215,7 @@ function ThiefIdle(Workbuilding)
 				RemoveAlias("ChairPos")
 				return
 			end
-			PlayAnimation("","sentinel_idle")
+			PlayAnimation("", "sentinel_idle")
 		end
 	end
 end
@@ -225,12 +224,11 @@ end
 -- RobberIdle
 -- -----------------------
 function RobberIdle(Workbuilding)
-	SimGetWorkingPlace("", "WorkingPlace")
-	GetLocatorByName("WorkingPlace", "Entry1", "WaitingPos")
+	GetLocatorByName(Workbuilding, "Entry1", "WaitingPos")
 	
 	if GetDistance("", "WaitingPos") > 115 then
 		local dist = Rand(100)+10	
-		f_MoveTo("Sim","WaitingPos",GL_MOVESPEED_RUN, dist)
+		f_MoveTo("Sim", "WaitingPos", GL_MOVESPEED_RUN, dist)
 	end
 
 	Sleep(5)

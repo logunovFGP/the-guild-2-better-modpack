@@ -23,7 +23,7 @@ function Run()
 			return
 		end
 	end
-	-- hier muss noch der Preis anhand der Taverne und dem Sozialstatus des sims berechnet werden
+	
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	local OverallPrice = 350
@@ -104,7 +104,6 @@ function Run()
 	end
 
 	GfxStopParticle("Steam")
-	end
 	
 	if GetFreeLocatorByName("Tavern", "Stroll", 1, 5, "EndPos") then
 		f_MoveTo("", "EndPos")

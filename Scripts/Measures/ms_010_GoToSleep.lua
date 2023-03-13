@@ -42,8 +42,8 @@ function Run()
 			end
 		end
 	end
-	if GetImpactValue("", "SleepRecoverBonus") > 0 then
-		duration = duration - ((GetImpactValue("", "SleepRecoverBonus")*0.01)*duration)
+	if GetImpactValue("", "SleepBonusI") > 0 then
+		duration = duration - ((GetImpactValue("", "SleepBonusI")*0.01)*duration)
 	end
 	local CurrentHP = GetHP("")
 	local MaxHP = GetMaxHP("")
@@ -191,16 +191,16 @@ function CleanUp()
 				AddImpact("","rhetoric",1,12)
 				AddImpact("","secret_knowledge",1,12)
 			elseif SimGetClass("")==4 then
-				AddImpact("","constitution",1,12)
-				AddImpact("","fighting",1,12)
-				AddImpact("","shadow_arts",1,12)
+				AddImpact("", "constitution",1,12)
+				AddImpact("", "fighting",1,12)
+				AddImpact("", "shadow_arts",1,12)
 			end
 			
-			if Rand(100)>96 then
-				AddImpact("","LifeExpanding",SleepBonus,-1)
-			elseif Rand(3)>1 then
-				AddImpact("","Resist",1,SleepBonus*Factor/50)
-				AddImpact("","ResistDream",1,SleepBonus*Factor/50)
+			if Rand(100) > 96 then
+				AddImpact("", "LifeExpanding", SleepBonus, -1)
+			elseif Rand(3) > 1 then
+				AddImpact("", "Resist",1,SleepBonus*Factor/50)
+				AddImpact("", "ResistDream", 1, SleepBonus*Factor/50)
 			else
 				chr_GainXP("", Factor)
 			end
