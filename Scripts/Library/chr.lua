@@ -1368,9 +1368,8 @@ function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
 		end
 	end
 	local ChosenIndex = helpfuncs_RandWeighted(LocatorRankingList)
-	if ChosenIndex then
-		GetOutdoorLocator(LocatorRankingList[ChosenIndex], 1, ResultLocation)
-		return LocatorRankingList[ChosenIndex]
+	if ChosenIndex and GetOutdoorLocator(LocatorList[ChosenIndex], 1, ResultLocation) and AliasExists(ResultLocation) then
+		return LocatorList[ChosenIndex]
 	end
 
 	-- still no Destination? Select Market then

@@ -1121,29 +1121,3 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	bld_ResetWorkers(BldAlias)
 	economy_ClearBalance(BldAlias)
 end
-
-function GetJobAssignment(BldAlias, WorkerAlias)
-	local Task, Detail, Assignee
-	local WorkerTaskIdx = GetProperty(WorkerAlias, "WorkerTaskIdx")
-	if WorkerTaskIdx then
-		-- remove last task
-		RemoveProperty(BldAlias, "WorkerAssigned"..WorkerTaskIdx)
-		RemoveProperty(WorkerAlias, "WorkerTaskIdx")
-	end
-	
-	for i=0, 10 do
-		Task = GetProperty(BldAlias, "WorkerTask"..i)
-		if not Task then
-			return -- no more tasks available
-		end
-		
-		Assignee = GetProperty(BldAlias, "WorkerAssigned"..i)
-		
-		if not Assignee then
-			SetProperty(BldAlias, "WorkerAssigned"..i, GetID(WorkerAlias))
-			SetProperty(WorkerAlias, "WorkerTaskIdx", i)
-			return Task, GetProperty(BldAlias, "WorkerDetail"..i), i
-		end
-	end
-	return Task, Detail
-end

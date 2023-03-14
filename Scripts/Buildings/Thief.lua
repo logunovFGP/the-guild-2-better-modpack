@@ -18,9 +18,14 @@ end
 
 function PingHour()
 	bld_HandlePingHour("", true)
-	-- at 5am, 11am, 5pm, 11pm
-	if BuildingGetAISetting("", "Enable") > 0 and math.mod(GetGametime(), 6)==4 then
-		thief_UpdateWorkerTasks("")
+	
+	local HijackTargetID = GetProperty("", "HijackingOrder")
+	if HijackTargetID and BuildingHasUpgrade("", "PrisonDoor") then
+		-- check current prisoner and release first if it is someone else
+		if BuildingGetPrisoner("", "Prisoner") and GetID("Prisoner") ~= HijackTargetID then
+			-- release prisoner (building measure)
+			MeasureRun("", nil, "LetAbducteeFree", false)
+		end
 	end
 end
 
@@ -84,9 +89,69 @@ function UpdateWorkerTasks(BldAlias)
 
 end
 
+-- Measures: PickpocketPeople, ScoutAHouse, BurgleAHouse, Hijack, DemandRansom, (LetAbducteeFree--building measure)
+-- During the day: PickpocketPeople, ScoutAHouse, DemandRansom
+-- During the night: BurgleAHouse, Hijack
+function GetWorkerTask(BldAlias, WorkerAlias)
+	local WorkerIndex
+	local WorkerCount = BuildingGetWorkerCount(BldAlias)
+	local WorkerID = GetID(WorkerAlias)
+	for i=0, WorkerCount-1 do
+		if BuildingGetWorker(BldAlias, i, "Worker") and GetID("Worker") == WorkerID then
+			WorkerIndex = i
+		end
+	end
+	
+	if not WorkerIndex then
+		return
+	end
+
+	local Time = math.mod(GetGametime(), 24)
+	local IsDaytime = (4 <= Time and Time <= 20)
+	local BldLvl = BuildingGetLevel(BldAlias)
+	local HijackTargetID = GetProperty(BldAlias, "HijackingOrder")
+	
+	local Tasks = {}
+	if IsDaytime then
+		Tasks = { "PickpocketPeople", "PickpocketPeople", "ScoutAHouse" }
+		if BldLvl >= 2 then
+			Tasks[4] = "DemandRansom" -- special case: will go pocketpicking if idle
+		end
+		if BldLvl >=3 then
+			Tasks[5] = "ScoutAHouse"
+		end
+	else -- night time
+		Tasks = { "PickpocketPeople", "BurgleAHouse", "BurgleAHouse" } -- burglers have a chance of pocketpicking instead
+		if BldLvl >= 2 then
+			Tasks[4] = "PickpocketPeople"
+		end
+		if BldLvl >=3 then
+			Tasks[5] = "BurgleAHouse"
+		end
+		
+		if (not HijackTargetID) and BuildingHasUpgrade(BldAlias, "PrisonDoor") and Rand(10) < 1  then
+			if thief_FindHijackVictim(BldAlias, "HijackVictim") then
+				HijackTargetID = GetID("HijackVictim")
+				SetProperty(BldAlias, "HijackingOrder", HijackTargetID)
+			end
+		end
+	end
+	
+	if HijackTargetID and BuildingHasUpgrade(BldAlias, "PrisonDoor") then
+		GetAliasByID(HijackTargetID, "HijackTarget")
+		Tasks = { "Hijack", "Hijack", "Hijack", "Hijack" }
+		if BldLvl >=3 then
+			Tasks[5] = "Hijack"
+		end
+	end
+	
+	return Tasks[WorkerIndex + 1], HijackTargetID, WorkerIndex
+end
+
 function CheckInForWork(BldAlias, SimAlias)
 	-- Task may be one of: PickpocketPeople, ScoutAHouse, BurgleAHouse, Hijack, DemandRansom
-	local Task, Detail, Index = bld_GetJobAssignment(BldAlias, SimAlias)
+	local Task, Detail, Index = thief_GetWorkerTask(BldAlias, SimAlias)
+	LogMessage("Thief JobAssignment " .. Index .." : " .. Task .. ", " .. (Detail or "")  )
 	if "PickpocketPeople" == Task then
 		thief_StartPickpocket(BldAlias, SimAlias, Detail, Index)
 		return Task
@@ -94,8 +159,13 @@ function CheckInForWork(BldAlias, SimAlias)
 		thief_StartScoutBuilding(BldAlias, SimAlias)
 		return Task
 	elseif "BurgleAHouse" == Task then
-		thief_StartBurgleBuilding(BldAlias, SimAlias)
-		return Task
+		if Rand(10) > 4 then
+			thief_StartBurgleBuilding(BldAlias, SimAlias)
+			return Task
+		else
+			thief_StartPickpocket(BldAlias, SimAlias, nil, Index)
+			return "PickpocketPeople"
+		end
 	elseif "Hijack" == Task then
 		GetAliasByID(Detail, "HijackVictim")
 		SquadCreate(SimAlias, "SquadHijackCharacter", "HijackVictim", "SquadHijackMember", "SquadHijackMember")
@@ -115,16 +185,17 @@ function CheckInForWork(BldAlias, SimAlias)
 end
 
 function StartPickpocket(BldAlias, SimAlias, CrowdedLocator, TaskIndex)
+	CrowdedLocator = CrowdedLocator or GetProperty(SimAlias, "LastPickpocketLocator")
 	if CrowdedLocator and Rand(5) < 3 then -- locator name of destination; occasionally choose a different destination
 		GetOutdoorLocator(CrowdedLocator, 1, "Destination")
 	else -- try to initialize destination
 		GetSettlement(BldAlias, "City")
 		CrowdedLocator = chr_CityFindCrowdedPlace("City", SimAlias, "Destination")
 		if "Market" ~= CrowdedLocator then
-			SetProperty(BldAlias, "WorkerDetail"..TaskIndex, CrowdedLocator)
+			SetProperty(SimAlias, "LastPickpocketLocator", CrowdedLocator)
 		end
 	end
-	--LogMessage("Starting PickpocketMeasure at locator: " .. Detail)
+	--LogMessage("Starting PickpocketMeasure at locator: " .. CrowdedLocator )
 	MeasureCreate("Measure")
 	MeasureAddData("Measure", "TimeOut", 2)
 	MeasureStart("Measure", SimAlias, "Destination", "PickpocketPeople")
@@ -132,12 +203,7 @@ end
 
 -- taken from TWP, needs to be adapted
 function StartBurgleBuilding(BldAlias, WorkerAlias) 
-	--LogMessage("::TOM::Thief Let's burgle")
 	if not GetSettlement(BldAlias, "City") then
-		return false
-	end
-	
-	if BuildingGetLevel(BldAlias) < 2 then	
 		return false
 	end
 	

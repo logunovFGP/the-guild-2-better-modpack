@@ -439,11 +439,17 @@ function Worker(ActiveMovement)
 				idlelib_RobberIdle("WorkingPlace")
 				--idlelib_GoToDivehouse()
 				return
+			elseif SimGetProfession("") == GL_PROFESSION_COCOTTE then
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_CocotteIdle("")
+				return
 			elseif SimGetProfession("") == GL_PROFESSION_MYRMIDON then
 				if HasProperty("","SchuldenGeb") then
 					idlelib_ReturnACredit()
 				end
-				idlelib_MyrmidonIdle("WorkingPlace")
+				idlelib_MyrmidonIdle("")
 				return
 			elseif SimGetProfession("") == 74 then
 				if HasProperty("","SchuldenGeb") then

@@ -236,6 +236,30 @@ function RobberIdle(Workbuilding)
 	Sleep(5)
 end
 
+function CocotteIdle(Cocotte)
+	SimGetWorkingPlace(Cocotte, "Divehouse")
+	-- AI controlled cocottes do not go idle
+	local Lvl = BuildingGetLevel("Divehouse")
+	local GuestCount = BuildingGetSimCount("Divehouse")
+	if BuildingGetAISetting("Divehouse", "Enable") > 0 then
+		-- offer services if not already offered
+		if not HasProperty("Divehouse", "ServiceActive") and not HasProperty("Divehouse", "GoToService") then
+			SetProperty("Divehouse","GoToService",1)
+			MeasureCreate("Measure")
+			MeasureAddData("Measure", "TimeOut", Rand(3)+2)
+			MeasureStart("Measure", Cocotte, "Divehouse", "AssignToServiceDivehouse")
+		elseif Lvl >= 2 and GuestCount > 4 and not HasProperty("Divehouse", "DanceShow") and not HasProperty("Divehouse", "GoToDance") then
+			SetProperty("Divehouse","GoToDance",1)
+			MeasureCreate("Measure")
+			MeasureAddData("Measure", "TimeOut", Rand(3)+3)
+			MeasureStart("Measure", Cocotte, "Divehouse", "AssignToDanceDivehouse")
+		else
+			MeasureRun(Cocotte,"Divehouse","AssignToLaborOfLove",false)
+		end
+	end
+	return 
+end
+
 -- -----------------------
 -- GoHome
 -- -----------------------
@@ -1253,25 +1277,62 @@ end
 -- -----------------------
 -- MyrmidonIdle
 -- -----------------------
-function MyrmidonIdle(Workbuilding)
-	SimGetWorkingPlace("", "WorkingPlace")
-	if GetFreeLocatorByName("WorkingPlace", "backroom_sit_",1,3, "ChairPos") then
-		if not f_BeginUseLocator("", "ChairPos", GL_STANCE_SIT, true) then
+function MyrmidonIdle(MyrmAlias)
+	LogMessage("::TOM::AI Myrmidon going idle: ".. GetName(MyrmAlias))
+	SimGetWorkingPlace(MyrmAlias, "WorkingPlace")
+	GetDynasty("WorkingPlace", "DynAlias")
+	local IsManageEmployee = GetProperty("", "TWP_ManageEmployee") or 0
+	if DynastyIsAI("DynAlias") or IsManageEmployee > 0 then
+		if GetHPRelative(MyrmAlias) < 0.7 then
+			LogMessage("::TOM::AI Myrmidon healing: ".. GetName(MyrmAlias))
+			roguelib_Heal(MyrmAlias, "WorkingPlace")
+		end
+		-- patrol or escort or gather evidence or check outfit
+		local Decision = Rand(11)
+		if Decision < 4 then
+			-- escort
+			local PartyCount = DynastyGetMemberCount("DynAlias")
+			DynastyGetFamilyMember("DynAlias", Rand(PartyCount), "ProtectMe")
+			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." escorting: ".. GetName("ProtectMe"))
+			MeasureRun(MyrmAlias, "ProtectMe", "EscortCharacterOrTransport")
+		elseif Decision < 8 then -- 4, 5, 6, 7
+			-- patrol
+			DynastyGetRandomBuilding("DynAlias", -1, -1, "PatrolPlace")
+			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." patroling: ".. GetName("PatrolPlace"))
+			MeasureRun(MyrmAlias, "PatrolPlace", "PatrolTheTown")
+		elseif Decision < 10 and BuildingHasUpgrade("WorkingPlace", "Commode") then -- 8, 9
+			-- gather evidence
+			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." gathering evidence...")
+			if GetSettlement("WorkingPlace", "City") and chr_CityFindCrowdedPlace("City", MyrmAlias, "GatherDestination") then
+				f_ExitCurrentBuilding(MyrmAlias)
+				f_MoveTo(MyrmAlias, "GatherDestination", GL_MOVESPEED_RUN, 500)
+				MeasureRun(MyrmAlias, 0, "OrderCollectEvidence")
+			end
+		end -- Decision 10
+	elseif GetFreeLocatorByName("WorkingPlace", "backroom_sit_",1,3, "ChairPos") 
+	    or GetFreeLocatorByName("WorkingPlace", "chair",1,4, "ChairPos") then
+		LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." is bored.")
+		if not f_BeginUseLocator(MyrmAlias, "ChairPos", GL_STANCE_SIT, true) then
 			RemoveAlias("ChairPos")
+			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." did not find a chair.")
 			return
 		end
-		while true do
+		for i=1,7 do
 			local WhatToDo2 = Rand(4)
 			if WhatToDo2 == 0 then
 				Sleep(10) 
 			elseif WhatToDo2 == 1 then
-				Sleep(Rand(20)+4)
+				Sleep(5)
 			elseif WhatToDo2 == 2 then
-				PlayAnimation("","sit_talk")
+				PlayAnimation(MyrmAlias,"sit_talk")
 			else
-				PlayAnimation("","sit_laugh")					
+				PlayAnimation(MyrmAlias,"sit_laugh")					
 			end
-			Sleep(1)
+			Sleep(10)
+		end
+		if DynastyIsAI("DynAlias") then
+			-- I'm rested now, check equipment and get going
+			MeasureRun(MyrmAlias, nil, "CheckOutfit")
 		end
 	end
 	Sleep(3)
