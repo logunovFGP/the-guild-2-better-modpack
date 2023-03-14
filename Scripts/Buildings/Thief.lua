@@ -89,22 +89,29 @@ function CheckInForWork(BldAlias, SimAlias)
 	local Task, Detail, Index = bld_GetJobAssignment(BldAlias, SimAlias)
 	if "PickpocketPeople" == Task then
 		thief_StartPickpocket(BldAlias, SimAlias, Detail, Index)
+		return Task
 	elseif "ScoutAHouse" == Task then
 		thief_StartScoutBuilding(BldAlias, SimAlias)
+		return Task
 	elseif "BurgleAHouse" == Task then
 		thief_StartBurgleBuilding(BldAlias, SimAlias)
+		return Task
 	elseif "Hijack" == Task then
 		GetAliasByID(Detail, "HijackVictim")
 		SquadCreate(SimAlias, "SquadHijackCharacter", "HijackVictim", "SquadHijackMember", "SquadHijackMember")
+		return Task
 	elseif "DemandRansom" == Task then
 		if BuildingGetPrisoner(BldAlias, "Victim") and ReadyToRepeat(SimAlias, GetMeasureRepeatName2("DemandRansom")) then
 			MeasureCreate("Measure")
 			MeasureAddData("Measure", "Victim", "Victim")
 			MeasureStart("Measure", "SIM", nil, "DemandRansom")
+			return Task
 		else
 			thief_StartPickpocket(BldAlias, SimAlias, nil, Index)
+			return "PickpocketPeople"
 		end
 	end
+	return nil
 end
 
 function StartPickpocket(BldAlias, SimAlias, CrowdedLocator, TaskIndex)

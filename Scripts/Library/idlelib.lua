@@ -148,11 +148,13 @@ function ThiefIdle(Workbuilding)
 			MeasureRun("", "LingerPlace", "Linger")
 			return
 		end
-		if thief_CheckInForWork(Workbuilding, "") then
+		if Rand(5) > 1 then
+			thief_CheckInForWork(Workbuilding, "")
 			return
 		end
 	end
 	
+	-- aliases are lost if the call to thief script is executed!
 	local WhatToDo = Rand(5)
 	if WhatToDo == 0 then
 		if GetFreeLocatorByName(Workbuilding, "Chair", 1, 4, "ChairPos") then

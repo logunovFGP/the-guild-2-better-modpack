@@ -1013,7 +1013,7 @@ function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 				CharismaMod = CharismaMod + 2
 			end
 			
-			if BuildingHasUpgrade(Workbuilding, "SexyClothes") then
+			if BuildingHasUpgrade(WorkBuilding, "SexyClothes") then
 				CharismaMod = CharismaMod + 3
 			end
 			
@@ -1349,6 +1349,8 @@ function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
 	-- will contain a computed ranking value for each locator for decision
 	-- LocatorRanking = (10 - Distance/1000) + (5 - OwnWorkersNearby)
 	local LocatorRankingList = {} 
+	local LocatorList = {}
+	local LocatorRankingCount = 0
 	for i = 1, MaxCrowdedLocators do
 		RemoveAlias("CrowdedPos")
 		if GetOutdoorLocator("Crowded"..i, 1, "CrowdedPos") and AliasExists("CrowdedPos") then
@@ -1359,21 +1361,23 @@ function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
 				-- check number of own workers nearby
 				local Count = Find("CrowdedPos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == " .. Profession ..") AND (Object.BelongsToMe()))", "Result", 5)
 				LocatorRanking = math.max(1, LocatorRanking + (5 - Count))
-				LocatorRankingList[i] = LocatorRanking
+				LocatorRankingCount = LocatorRankingCount + 1
+				LocatorList[LocatorRankingCount] = "Crowded"..i
+				LocatorRankingList[LocatorRankingCount] = LocatorRanking
 			end
 		end
 	end
 	local ChosenIndex = helpfuncs_RandWeighted(LocatorRankingList)
 	if ChosenIndex then
-		GetOutdoorLocator("Crowded"..ChosenIndex, 1, ResultLocation)
-		return "Crowded"..ChosenIndex
+		GetOutdoorLocator(LocatorRankingList[ChosenIndex], 1, ResultLocation)
+		return LocatorRankingList[ChosenIndex]
 	end
 
 	-- still no Destination? Select Market then
 	if not AliasExists(ResultLocation) then
 		local Market = Rand(5)+1
 		if CityGetRandomBuilding(SettlementAlias, 5, 14, Market, -1, FILTER_IGNORE, ResultLocation) then
-			LogMessage(GetName(SimAlias) .. " did not find a good Crowded locator and will go to the market")
+			LogMessage(GetName(SimAlias) .. " did not find a good Crowded locator and will go to the market. Profession: "..Profession.." City: " .. GetName(SettlementAlias))
 			return "Market"
 		end
 	end
@@ -1400,7 +1404,6 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 	
 	for i=1, CheckNewCount do
 		if WeaponNew == CheckNew[i] then
-			FoundNew = true
 			local FreeSlot = GetRemainingInventorySpace(SimAlias, WeaponNew, INVENTORY_EQUIPMENT)
 			
 			if FreeSlot > 0 then
