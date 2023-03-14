@@ -23,6 +23,6 @@ function Weight()
 end
 
 function Execute()
-	thief_CheckInForWork("WorkBuilding", "SIM")
+	thief_StartPickpocket("WorkBuilding", "SIM")
 end
 

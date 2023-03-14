@@ -103,6 +103,7 @@ function GetWorkerTask(BldAlias, WorkerAlias)
 	end
 	
 	if not WorkerIndex then
+		LogMessage("Thief JobAssignment failed, missing WorkerIndex for " .. GetName(WorkerAlias) .. " of " .. GetName(BldAlias))
 		return
 	end
 
@@ -145,6 +146,9 @@ function GetWorkerTask(BldAlias, WorkerAlias)
 		end
 	end
 	
+	if not Tasks[WorkerIndex+1] then
+		LogMessage("Thief JobAssignment failed, missing Task for " .. WorkerIndex .. ": " .. GetName(WorkerAlias) .. " of " .. GetName(BldAlias))
+	end
 	return Tasks[WorkerIndex + 1], HijackTargetID, WorkerIndex
 end
 
@@ -184,7 +188,7 @@ function CheckInForWork(BldAlias, SimAlias)
 	return nil
 end
 
-function StartPickpocket(BldAlias, SimAlias, CrowdedLocator, TaskIndex)
+function StartPickpocket(BldAlias, SimAlias, CrowdedLocator)
 	CrowdedLocator = CrowdedLocator or GetProperty(SimAlias, "LastPickpocketLocator")
 	if CrowdedLocator and Rand(5) < 3 then -- locator name of destination; occasionally choose a different destination
 		GetOutdoorLocator(CrowdedLocator, 1, "Destination")

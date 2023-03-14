@@ -1278,14 +1278,17 @@ end
 -- MyrmidonIdle
 -- -----------------------
 function MyrmidonIdle(MyrmAlias)
-	LogMessage("::TOM::AI Myrmidon going idle: ".. GetName(MyrmAlias))
+	--LogMessage("::TOM::AI Myrmidon going idle: ".. GetName(MyrmAlias))
 	SimGetWorkingPlace(MyrmAlias, "WorkingPlace")
 	GetDynasty("WorkingPlace", "DynAlias")
-	local IsManageEmployee = GetProperty("", "TWP_ManageEmployee") or 0
+	local IsManageEmployee = GetProperty(MyrmAlias, "TWP_ManageEmployee") or 0
 	if DynastyIsAI("DynAlias") or IsManageEmployee > 0 then
 		if GetHPRelative(MyrmAlias) < 0.7 then
-			LogMessage("::TOM::AI Myrmidon healing: ".. GetName(MyrmAlias))
-			roguelib_Heal(MyrmAlias, "WorkingPlace")
+			-- Heal
+			GetSettlement("WorkingPlace", "City")
+			CityGetNearestBuilding("City", "", -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "LingerPlace")
+			MeasureRun("", "LingerPlace", "Linger")
+			return
 		end
 		-- patrol or escort or gather evidence or check outfit
 		local Decision = Rand(11)
@@ -1293,16 +1296,16 @@ function MyrmidonIdle(MyrmAlias)
 			-- escort
 			local PartyCount = DynastyGetMemberCount("DynAlias")
 			DynastyGetFamilyMember("DynAlias", Rand(PartyCount), "ProtectMe")
-			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." escorting: ".. GetName("ProtectMe"))
+			--LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." escorting: ".. GetName("ProtectMe"))
 			MeasureRun(MyrmAlias, "ProtectMe", "EscortCharacterOrTransport")
 		elseif Decision < 8 then -- 4, 5, 6, 7
 			-- patrol
 			DynastyGetRandomBuilding("DynAlias", -1, -1, "PatrolPlace")
-			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." patroling: ".. GetName("PatrolPlace"))
+			--LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." patroling: ".. GetName("PatrolPlace"))
 			MeasureRun(MyrmAlias, "PatrolPlace", "PatrolTheTown")
 		elseif Decision < 10 and BuildingHasUpgrade("WorkingPlace", "Commode") then -- 8, 9
 			-- gather evidence
-			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." gathering evidence...")
+			--LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." gathering evidence...")
 			if GetSettlement("WorkingPlace", "City") and chr_CityFindCrowdedPlace("City", MyrmAlias, "GatherDestination") then
 				f_ExitCurrentBuilding(MyrmAlias)
 				f_MoveTo(MyrmAlias, "GatherDestination", GL_MOVESPEED_RUN, 500)
@@ -1311,10 +1314,10 @@ function MyrmidonIdle(MyrmAlias)
 		end -- Decision 10
 	elseif GetFreeLocatorByName("WorkingPlace", "backroom_sit_",1,3, "ChairPos") 
 	    or GetFreeLocatorByName("WorkingPlace", "chair",1,4, "ChairPos") then
-		LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." is bored.")
+		--LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." is bored.")
 		if not f_BeginUseLocator(MyrmAlias, "ChairPos", GL_STANCE_SIT, true) then
 			RemoveAlias("ChairPos")
-			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." did not find a chair.")
+			--LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." did not find a chair.")
 			return
 		end
 		for i=1,7 do
