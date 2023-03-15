@@ -77,10 +77,16 @@ function UnloadAll(CartAlias, DestAlias)
 		local ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
 		
 		if ItemId and ItemCount then
-			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then				
-				Transfer(CartAlias,DestAlias,INVENTORY_STD,CartAlias,INVENTORY_STD,ItemId,ItemCount)
+			BuildingGetCity(DestAlias, "MyCity")
+			local ItemStock = GetItemCount(DestAlias, ItemId)
+			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then
+				LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
+				Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
+				LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
+				ItemStock = GetItemCount(DestAlias, ItemId)
+				LogMessage("Stock of "..ItemGetName(ItemId).." is now at "..ItemStock)
 			else
-				Transfer(CartAlias,DestAlias,INVENTORY_SELL,CartAlias,INVENTORY_STD,ItemId,ItemCount)
+				Transfer(CartAlias, DestAlias, INVENTORY_SELL, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 			end
 		end
 		Sleep(0.4)
@@ -124,25 +130,35 @@ end
 -- shopping list must look like: {{ItemId, RequiredAmount}, {ItemId2, RequiredAmount2}, ...}
 -- returns the ShoppingList with reduced item amounts
 function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
+
 	if not Count or Count <= 0 then
 		-- nothing to load...
 		return Count, ShoppingList
 	end
+	
 	local SlotCount, CartSlotSize = cart_GetCartSlotInfo(CartAlias)
 	local BldInv = INVENTORY_STD
 	if GetDynastyID(CartAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
 		-- use sales inventory for workshops of other dynasties
 		BldInv = INVENTORY_SELL
 	end
+	
 	-- loop through slots and try to buy items from shopping list. fills up more than one slot with the same item after finishing the list
 	local CurrentItem = 1 
 	local OpenSlots = SlotCount
 	local ItemId, ReqAmount
+	
 	while OpenSlots > 0 and CurrentItem <= Count do
 		ItemId = ShoppingList[CurrentItem][1]
 		ReqAmount = ShoppingList[CurrentItem][2]
+		BuildingGetCity(BldAlias, "City")
+		local ItemStock = GetItemCount(BldAlias, ItemId)
+		LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
 		if ItemId and ReqAmount > 0 then
 			local Error, ItemTransfered = Transfer(CartAlias,CartAlias,INVENTORY_STD,BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))
+			ItemStock = GetItemCount(BldAlias, ItemId)
+			LogMessage("New stock is now "..ItemStock)
 			-- 6. make sure list is repeated if slots are still available
 			if ItemTransfered and ItemTransfered > 0 then
 				ShoppingList[CurrentItem][2] = ShoppingList[CurrentItem][2] - ItemTransfered -- reduces required amount
