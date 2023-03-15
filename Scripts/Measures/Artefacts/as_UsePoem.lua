@@ -130,7 +130,7 @@ function Run()
 		end
 	
 		chr_GainXP("", GetData("BaseXP"))
-		chr_GainXP(Destination, GetData("BaseXP"))
+		chr_GainXP("Destination", GetData("BaseXP"))
 		
 		Sleep(1)
 	end
