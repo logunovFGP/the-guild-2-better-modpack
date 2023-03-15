@@ -42,6 +42,15 @@ function GetCartSpaceOptions(CartAlias)
 	end
 end
 
+function IsShip(CartAlias)
+	local Type = CartGetType(CartAlias)
+	return Type == EN_CT_MERCHANTMAN_SMALL 
+		or Type == EN_CT_MERCHANTMAN_BIG
+		or Type == EN_CT_CORSAIR
+		or Type == EN_CT_WARSHIP
+		or Type == EN_CT_FISHERBOOT
+end
+
 
 ---- Auswahlmenü: Waren einladen
 -- returns ItemId, Amount

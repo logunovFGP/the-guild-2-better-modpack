@@ -16,7 +16,7 @@ function Init()
 end
 
 function Run() 
-	-- find home: destination should be a market building 
+	-- find home: destination should be a market building
 	if not AliasExists("Destination") and not GetHomeBuilding("", "Destination") then
 		LogMessage("TWP::WorldTrader No destination given, aborting measure.")
 		return
@@ -29,9 +29,16 @@ function Run()
 	
 	-- get home market
 	local HomeMarket = "HomeMarket"
-	if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, HomeMarket) then
-		LogMessage("TWP::WorldTrader Could not get market for settlement %1NAME, aborting measure.", GetID("MyCity"))
-		return
+	if cart_IsShip("") then
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_HARBOR, -1, -1, FILTER_IGNORE, HomeMarket) then
+			LogMessage("TWP::WorldTrader Could not get harbor for settlement %1NAME, aborting measure.", GetID("MyCity"))
+			return
+		end
+	else
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, HomeMarket) then
+			LogMessage("TWP::WorldTrader Could not get market for settlement %1NAME, aborting measure.", GetID("MyCity"))
+			return
+		end
 	end
 	CityGetLocalMarket("MyCity","MyMarket")
 	
@@ -50,16 +57,29 @@ function Run()
 		local Alias = "City"..i
 		if GetID(Alias) ~= GetID("MyCity") then
 			local MarketAlias = "Market"..(MarketCount + 1)
-			if CityIsKontor(Alias) then
-				if CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_KONTOR, -1, -1, FILTER_IGNORE, MarketAlias) and not BuildingGetWaterPos(MarketAlias, true, "WaterPos") then
+			if cart_IsShip("") then
+				if CityIsKontor(Alias) and CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_KONTOR, -1, -1, FILTER_IGNORE, MarketAlias) and BuildingGetWaterPos(MarketAlias, true, "WaterPos") then
+					MarketCount = MarketCount + 1
+					Markets[MarketCount] = MarketAlias
+				elseif CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_HARBOR, -1, -1, FILTER_IGNORE, MarketAlias) then
 					MarketCount = MarketCount + 1
 					Markets[MarketCount] = MarketAlias
 				end
-			elseif CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, MarketAlias) then
-				MarketCount = MarketCount + 1
-				Markets[MarketCount] = MarketAlias
+			else
+				if CityIsKontor(Alias) then
+					if CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_KONTOR, -1, -1, FILTER_IGNORE, MarketAlias) and not BuildingGetWaterPos(MarketAlias, true, "WaterPos") then
+						MarketCount = MarketCount + 1
+						Markets[MarketCount] = MarketAlias
+					end
+				elseif CityGetRandomBuilding(Alias, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, MarketAlias) then
+					MarketCount = MarketCount + 1
+					Markets[MarketCount] = MarketAlias
+				end
 			end
 		end
+	end
+	for i=1, MarketCount do
+		LogMessage("WorldTrader ID: "..GetID("").." knows market: " .. GetName(Markets[i]) .. ", ID: " .. GetID(Markets[i]))
 	end
 	
 	while true do -- aborts on failures

@@ -24,7 +24,8 @@ function Run()
 		RemoveData("ForceWarShip")
 		local CurrentShips = GetProperty("","ShipCount")
 		local CurrentCarts = GetProperty("","CartCount")
-		if state_marinecontrol_CanBuyNewShip() == true then
+		if ReadyToRepeat("", "MarineControlNewShip") and state_marinecontrol_CanBuyNewShip() == true then
+			SetRepeatTimer("", "MarineControlNewShip", 24)
 			state_marinecontrol_BuyNewShip()
 		else
 			for i=0,CurrentShips-1 do
