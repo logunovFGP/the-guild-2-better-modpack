@@ -33,6 +33,7 @@ end
 
 -- spawn at gamestart
 function SpawnItems(City, CityLevel)
+	LogMessage("Marketpinghour SpawnItems")
 	
 	local ItemName = ""
 	local BuildingType = 0

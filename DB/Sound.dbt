@@ -3489,4 +3489,9 @@ Data:
 24638        "_CHARACTERS_3_TITLES_NAME_+29"                              1                 1.000              |
 24639        "_CHARACTERS_3_TITLES_NAME_+30"                              1                 1.800              |
 24640        "_CHARACTERS_3_TITLES_NAME_+31"                              1                 1.500              |
+24641        "_PRIVILEGES_REPEALIMMUNITY_MSG_VICTIM_HEAD_+0"                                     1                 2.708              | 
+24642        "_PRIVILEGES_REPEALIMMUNITY_MSG_LOOSE_HEAD_+0"                                     1                 2.308              | 
+24643        "_TRADEROUTE_INTERVAL_BODY_+0"                                     9                 7.808              | 
+24644        "_TRADEROUTE_INITIATE_BODY_+0"                                     9                 3.300              | 
+
 

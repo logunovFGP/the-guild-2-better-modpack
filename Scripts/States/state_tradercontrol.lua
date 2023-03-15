@@ -20,8 +20,8 @@ function Run()
 		SetProperty("","TradersPlundered",0)
 	end
 	
-	if not HasProperty("","TradersRobberMessageSaid") then
-		SetProperty("","TradersRobberMessageSaid", 0)
+	if not HasProperty("", "TradersRobberMessageSaid") then
+		SetProperty("", "TradersRobberMessageSaid", 0)
 	end
 	
 	if not HasProperty("", "TradersCartCount") then

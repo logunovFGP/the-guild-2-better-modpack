@@ -56,6 +56,13 @@ function Run()
 		
 		--for the ai
 		if not AliasExists("Waypoint1") then
+			
+			if not AliasExists("Destination") then
+				f_Stroll("", 600, 20)
+				Sleep(30)
+				return
+			end
+
 			if (GetOutdoorMovePosition("", "Destination", "Target")) then
 				if not (f_MoveTo("", "Target", GL_MOVESPEED_WALK, 100)) then
 					return

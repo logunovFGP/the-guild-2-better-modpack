@@ -11,8 +11,8 @@ function Run()
 	end
 	
 	feedback_OverheadActionName("Destination")
-	PlayAnimation("","watch_for_guard")
-	if GetImpactValue("Destination","REVOLT")==0 then
+	PlayAnimation("", "watch_for_guard")
+	if GetImpactValue("Destination", "REVOLT") == 0 then
 		CommitAction("rob", "", "", "Destination")
 	end
 	PlayAnimation("","manipulate_bottom_r")
@@ -20,7 +20,7 @@ function Run()
 	
 	if Booty > 0 then
 		--for the mission
-		mission_ScoreCrime("",Booty)
+		mission_ScoreCrime("", Booty)
 		feedback_MessageCharacter("","@L_BATTLE_FIGHTROB_MSG_SUCCESS_OWNER_HEAD_+0",
 						"@L_BATTLE_FIGHTROB_MSG_SUCCESS_OWNER_BODY_+0",GetID("Destination"))
 		MsgNewsNoWait("Destination","","","intrigue",-1,
@@ -30,7 +30,7 @@ function Run()
 	else
 		local Level = SimGetLevel("Destination")
 		local MoneyToSteal = Level*(Rand(100)+10)
-		CreditMoney("", MoneyToSteal,"IncomeRobber")
+		CreditMoney("", MoneyToSteal, "IncomeRobber")
 		chr_GainXP("", GetData("BaseXP"))
 		mission_ScoreCrime("", MoneyToSteal)
 		--MsgQuick("","@L_BATTLE_FIGHTROB_FAILED_+0",GetID("Destination"))
