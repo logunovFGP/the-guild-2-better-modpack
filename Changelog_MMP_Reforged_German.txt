@@ -191,6 +191,7 @@ _Allgemein_
 - Wer mit Aufträgen spielt, erhielt keine vertonte Missionsanweisung zu Spielbeginn.
 - Fehlende Dialoge (vertont!) beim Bonus-Auszahlen bzw. Angestellte antreiben hinzugefügt.
 - Fehlende englische Soundfiles aus Seeräuber der Hanse hinzugefügt.
+- Das Talent "Feilschen" hatte so gut wie keinen Effekt auf das Kaufen/Verkaufen von Waren am Markt. Nun werden die Maßnahmen "Handelsroute" sowie die Karrenaktion "Verschicken und Abladen" stets einen Feilschen-Bonus hervorbringen.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

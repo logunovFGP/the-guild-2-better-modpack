@@ -51,7 +51,6 @@ function IsShip(CartAlias)
 		or Type == EN_CT_FISHERBOOT
 end
 
-
 ---- Auswahlmenü: Waren einladen
 -- returns ItemId, Amount
 function ChooseItemsToLoad(CartAlias, BldAlias)
@@ -79,9 +78,11 @@ function UnloadAll(CartAlias, DestAlias)
 	local	Slots = InventoryGetSlotCount(CartAlias, INVENTORY_STD)
 	
 	--do the transfer
-	local	ItemId
-	local	ItemCount
+	local	ItemId, ItemCount
 	local	Error, ItemTransfered
+	local BargainMoney = 0
+	local EstimatedMoney = 0
+	
 	for i = 1, Slots do
 		local ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
 		
@@ -89,6 +90,18 @@ function UnloadAll(CartAlias, DestAlias)
 			BuildingGetCity(DestAlias, "MyCity")
 			local ItemStock = GetItemCount(DestAlias, ItemId)
 			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then
+				-- Add some bargain-bonus on market buys
+				if BuildingGetClass(DestAlias) == GL_BUILDING_CLASS_MARKET then
+					if GetHomeBuilding(CartAlias, "Business") then
+						if BuildingGetOwner("Business", "MyBoss") then
+							if GetSettlement(CartAlias, "MyCity") then
+								CityGetLocalMarket("MyCity", "MyMarket")
+								EstimatedMoney = ItemGetPriceSell(ItemId, "MyMarket")*ItemCount
+								BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
+							end
+						end
+					end
+				end
 				LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
 				Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 				LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
@@ -156,6 +169,8 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	local CurrentItem = 1 
 	local OpenSlots = SlotCount
 	local ItemId, ReqAmount
+	local BargainMoney = 0
+	local EstimatedMoney = 0
 	
 	while OpenSlots > 0 and CurrentItem <= Count do
 		LogMessage("WorldTrader ID: "..GetID(CartAlias) .. " open slots: " .. OpenSlots)
@@ -165,10 +180,35 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 		local ItemStock = GetItemCount(BldAlias, ItemId)
 		LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
 		if ItemId and ReqAmount > 0 then
-			local Error, ItemTransfered = Transfer(CartAlias,CartAlias,INVENTORY_STD,BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			local Error, ItemTransfered = Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			-- Add some bargain-bonus on market buys
+			if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET then
+				if GetHomeBuilding(CartAlias, "Business") then
+					if BuildingGetOwner("Business", "MyBoss") then
+						if GetSettlement(CartAlias, "MyCity") then
+							CityGetLocalMarket("MyCity", "MyMarket")
+							EstimatedMoney = ItemGetPriceSell(ItemId, "MyMarket")*ItemTransfered
+							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
+						end
+					end
+				end
+			end
 			LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))
 			ItemStock = GetItemCount(BldAlias, ItemId)
 			LogMessage("New stock is now "..ItemStock)
+			
+			if BargainMoney > 0 then
+				local BalanceSheet = "WaresSold"
+				local CartType = CartGetType(CartAlias)
+				if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
+					CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
+				
+					BalanceSheet = "WaresSeaSold"
+				end
+				CreditMoney(CartAlias, BargainMoney, BalanceSheet)
+				ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)", BargainMoney)
+			end
+			
 			-- 6. make sure list is repeated if slots are still available
 			if ItemTransfered and ItemTransfered > 0 then
 				ShoppingList[CurrentItem][2] = ShoppingList[CurrentItem][2] - ItemTransfered -- reduces required amount
