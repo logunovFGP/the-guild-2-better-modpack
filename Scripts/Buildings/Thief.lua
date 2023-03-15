@@ -3,7 +3,6 @@ end
 
 function OnLevelUp()
 	bld_HandleOnLevelUp("")
-	thief_UpdateWorkerTasks("")
 end
 
 function Setup()
@@ -13,7 +12,6 @@ function Setup()
 	else
 		worldambient_CreateAnimal("Dog", "", 1)
 	end
-	thief_UpdateWorkerTasks("")
 end
 
 function PingHour()

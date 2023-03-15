@@ -858,12 +858,14 @@ function GetNeedsForMarket(CityAlias)
 	-- read from properties
 	local CityNeedCount, CityNeeds = 0, {}
 	CityGetLocalMarket(CityAlias, "MarketAlias")
-	local tmp
-	for i=1, 5 do
+	local tmp, Amount
+	for i=1, 6 do
 		tmp = GetProperty("MarketAlias", "twpNeed"..i)
 		if tmp then
 			CityNeedCount = CityNeedCount + 1
-			CityNeeds[CityNeedCount] = { tmp, GetProperty("MarketAlias", "twpNeedAmount"..i) }
+			Amount = GetProperty("MarketAlias", "twpNeedAmount"..i)
+			CityNeeds[CityNeedCount] = { tmp, Amount }
+			LogMessage(GetName(CityAlias) .. " needs: " .. Amount .. " " .. ItemGetName(tmp))
 		end
 	end
 	return CityNeedCount, CityNeeds 
@@ -891,9 +893,10 @@ function CalcSalesForMarket(CityAlias)
 	-- sort list
 	Sales = helpfuncs_QuickSort(Sales, 1, SalesCount, helpfuncs_SortBySecondValue)
 	
-	-- save first five items as properties
-	for i=1, 5 do
+	-- save first six items as properties
+	for i=1, 6 do
 		if i <= SalesCount and Sales[i] then
+			LogMessage(GetName(CityAlias) .. " sells: " .. Sales[i][2] .. " " .. ItemGetName(Sales[i][1]))
 			SetProperty("MarketAlias", "twpSales"..i, Sales[i][1])
 			SetProperty("MarketAlias", "twpSalesAmount"..i, Sales[i][2])
 		else
@@ -909,13 +912,17 @@ function GetSalesForMarket(CityAlias)
 	-- read from properties
 	local SalesCount, Sales = 0, {}
 	CityGetLocalMarket(CityAlias, "MarketAlias")
-	local tmp
+	local ItemId, ItemCount, MaxAmount, Surplus
 	
-	for i=1, 5 do
-		tmp = GetProperty("MarketAlias", "twpSales"..i)
-		if tmp then
+	for i=1, 6 do
+		ItemId = GetProperty("MarketAlias", "twpSales"..i)
+		if ItemId then
 			SalesCount = SalesCount + 1
-			Sales[SalesCount] = { tmp, GetProperty("MarketAlias", "twpSalesAmount"..i) }
+			--Amount = GetProperty("MarketAlias", "twpSalesAmount"..i)
+			ItemCount = GetItemCount("MarketAlias", ItemId)
+			MaxAmount = GetDatabaseValue("Items", ItemId, "max_stock")
+			Surplus = ItemCount - MaxAmount
+			Sales[SalesCount] = { ItemId, Surplus }
 		end
 	end
 	

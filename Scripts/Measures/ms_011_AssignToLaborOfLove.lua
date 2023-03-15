@@ -38,7 +38,7 @@ function Run()
 	
 		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
 			local MyPos = GetProperty("", "OutdoorPos")
-			if GetOutdoorLocator("Crowded"..MyPos, 1, "Pos") < 1 then
+			if GetOutdoorLocator(MyPos, 1, "Pos") < 1 then
 				--no locator found? Select Market then
 				local Market = Rand(5)+1
 				if not CityGetRandomBuilding("City", 5, 14, Market, -1, FILTER_IGNORE, "Pos") then

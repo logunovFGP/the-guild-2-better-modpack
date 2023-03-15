@@ -220,7 +220,7 @@ function CanBuyNewShip()
 		ShipCount = 3
 	elseif CityLevel > 3 then
 		ShipCount = 2
-	elseif CityLevel > 1 then
+	elseif CityLevel > 2 then
 		ShipCount = 1
 	end
 	

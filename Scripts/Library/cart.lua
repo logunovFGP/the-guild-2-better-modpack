@@ -149,6 +149,7 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	local ItemId, ReqAmount
 	
 	while OpenSlots > 0 and CurrentItem <= Count do
+		LogMessage("WorldTrader ID: "..GetID(CartAlias) .. " open slots: " .. OpenSlots)
 		ItemId = ShoppingList[CurrentItem][1]
 		ReqAmount = ShoppingList[CurrentItem][2]
 		BuildingGetCity(BldAlias, "City")

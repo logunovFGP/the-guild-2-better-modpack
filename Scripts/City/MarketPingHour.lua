@@ -21,10 +21,11 @@ function PingHour()
 		return 0
 	end
 	
-	if math.mod(GetGametime(), 24) == 5 then -- at 5 am
+	if math.mod(GetGametime(), 12) == 5 then -- at 5am, 5pm
 		local CityNeedCount, CityNeeds = economy_CalcNeedsForMarket("")
 		if CityNeedCount > 0 then
 			economy_CalcSalesForMarket("")
+			-- additional trade outside of map for items that have notorious shortage
 			marketpinghour_SendFarTrader(CityNeedCount, CityNeeds)
 		end
 	end

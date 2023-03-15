@@ -4,8 +4,15 @@
 -- attention: this function call is unscheduled
 --
 function OnLevelUp()
+	GetSettlement("", "City")
+	local MyID = GetID("")
+	local MarineControlID = GetProperty("City", "MarineControlID")
+	if not MarineControlID then
+		SetProperty("City", "MarineControlID", MyID)
+		MarineControlID = MyID
+	end
 
-	if GetState("", STATE_MARINECONTROL) == false then
+	if GetState("", STATE_MARINECONTROL) == false and MyID == MarineControlID then
 		SetState("", STATE_MARINECONTROL, true)
 	end
 

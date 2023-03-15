@@ -71,7 +71,7 @@ function Run()
 	
 		-- 2. Unload all items.
 		cart_UnloadAll("", HomeMarket)
-		Sleep(10)
+		Sleep(130) -- take a break after the heavy work
 		
 		-- 3. Load some items that are above max for sale
 		-- items for sale should be calculated once per day by market, call economy script instead
@@ -104,13 +104,15 @@ function Run()
 		-- 6. Go to target market, sell loaded items and load needs.
 		if Target and AliasExists(Target) then
 			--cart_NotifyRoute("", HomeMarket, Target)
-			f_MoveTo("", Target, GL_MOVESPEED_RUN)
-			cart_UnloadAll("", Target)
-			cart_LoadItems("", Target, NeedCount, Needs)
+			if f_MoveTo("", Target, GL_MOVESPEED_RUN) then
+				cart_UnloadAll("", Target)
+				Sleep(150) -- take a break
+				cart_LoadItems("", Target, NeedCount, Needs)
+			end
 			--cart_NotifyRoute("", Target, HomeMarket) -- will return at beginning of loop, but current location is only known until this point
 		end
 		
-		Sleep(42)
+		Sleep(40) -- some final 
 	end
 end
 
