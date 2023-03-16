@@ -23,6 +23,7 @@ Bugfixes:
 - Fehlende englische Soundfiles aus Seeräuber der Hanse hinzugefügt.
 - Bewegungsgeschwindigkeits-Erweiterungen funktionierten nicht bei Angestellten.
 - Das Talent "Feilschen" hatte so gut wie keinen Effekt auf das Kaufen/Verkaufen von Waren am Markt. Nun werden die Maßnahmen "Handelsroute" sowie die Karrenaktion "Verschicken und Abladen" stets einen Feilschen-Bonus hervorbringen.
+- Die KI ist nun deutlich besser darin, zu entscheiden, welche Betriebe sie bauen/kaufen will und wird nicht länger Betriebe bauen, die sie schon in der Familie hat bzw. die in der Stadt bereits 3 mal vorkommen.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.

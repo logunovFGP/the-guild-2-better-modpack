@@ -110,6 +110,7 @@ _Design_
 - Random events have been deactivated. They will get a complete rework in the future.
 - Removed the "Imperial Officer"-Mechanic (was mostly unused anyway).
 - Removed the ability to build defensive towers.
+- Shadow Dynasties who have a political office at the beginning of the game, will now have up to 2 (higher leveled) workshops, a higher level residence and are already married with some children. Coloured dynasties will start (as the player) with just 1 level 1 workshop and no family.
 
 *** Vanilla-Bugs ***
 
@@ -260,6 +261,7 @@ _AI_
 - AI did not apply for higher offices when they had to defend their current office.
 - When sending out Employees to gather ressources, those items sometimes got lost in the employee's inventory.
 - AI will only visit the doctor if there is enough time left on the sickness or if it is deadly.
+- AIs will no longer build/buy workshops they already have available to them. They also will prefer to build/buy workshops which the town currently needs. They won't build the 4th church in a city anymore. 
 
 *** Features ***
 
