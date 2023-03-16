@@ -515,6 +515,9 @@ function GetName(SimAlias, WithFlag)
 
 	if WithFlag and GetDynasty(SimAlias, "DynAliasForFlag") then
 		local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") + 29
+		if DynastyIsShadow("DynAliasForFlag") then
+			MyFlag = "@L$S[2045]"
+		end
 		return "$S[20" .. MyFlag .. "] " .. GetName(SimAlias)
 	else 
 		return GetName(SimAlias)
@@ -536,6 +539,26 @@ function GetNameLabel(SimAlias, ParameterIndex)
 	local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") or 16 
 	local Offset = Math.min(16, MyFlag) * 4 + ParameterIndex
 	return MyLabel .. Offset
+end
+
+
+-- ---------------------
+-- Get just the dynasty flag without Name as a label for usage in other text-labels
+-- --------------------
+function GetFlagLabel(SimAlias)
+
+	if GetDynasty(SimAlias, "FlagDyn")
+		local BadgeID = DynastyGetFlagNumber("FlagDyn") + 29
+		local BadgeLabel = "@L$S[20"..BadgeID.."]"
+		if DynastyIsShadow("FlagDyn") then
+			BadgeLabel = "@L$S[2045]"
+		end
+		
+		return BadgeLabel
+	else
+		local BadgeLabel = "@L$S[2045]"
+		return BadgeLabel
+	end
 end
 
 -- -----------------------

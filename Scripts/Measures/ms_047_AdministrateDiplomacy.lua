@@ -28,17 +28,9 @@ function Init() -- this is called before Run
 	end
 
 	if DynastyIsPlayer("") then
-		-- your badge
-		local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-		local Badge = "@L$S[20"..BadgeID.."]"
 		
 		-- target badge
-		GetDynasty("Destination", "TargetDyn")
-		local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-		local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-		if DynastyIsShadow("TargetDyn") then
-			TargetBadge = "@L$S[2045]"
-		end
+		local TargetBadge = dyn_GetFlagLabel("Destination")
 		
 		-- First we need to choose what we want to do
 		local Selection = MsgBox("MyBoss", "Destination", "@P"..
@@ -106,12 +98,8 @@ end
 function Status()
 	-- Change the status
 	
-	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	--- target badge
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	
 	-- timout for changing status multiple times
 	local DestID = GetDynastyID("Destination")
@@ -170,15 +158,9 @@ function Message()
 	-- send a message to gain or reduce favor
 	
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	-- timout for multiple messages
 	local DestID = GetDynastyID("Destination")
@@ -244,20 +226,15 @@ function Message()
 	-- Message the destination
 	MsgNewsNoWait("Destination","MyBoss","","politics",-1,
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_RECEIVE_HEAD_+0",
-				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_"..ResultLabel.."_RECEIVE_"..RhetLabel, GetID("MyBoss"), Badge)
+				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_"..ResultLabel.."_RECEIVE_"..RhetLabel, GetID("MyBoss"), MyBadge)
 end
 
 function Gift()
 	
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	local CState = DynastyGetDiplomacyState("Destination", "MyBoss")
 	
@@ -304,7 +281,7 @@ function Gift()
 	-- message to the destination
 	MsgNewsNoWait("Destination", "MyBoss", "", "politics", -1,
 						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_RECEIVE_HEAD",
-						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_RECEIVE_BODY", GetID("MyBoss"), Amount, Badge)
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_RECEIVE_BODY", GetID("MyBoss"), Amount, MyBadge)
 		
 	if DynastyIsAI("Destination") then
 		-- reaction for AI
@@ -317,12 +294,7 @@ function AnswerGift(Amount)
 	-- AI sends a message depending on how useful the gift is
 	
 	-- target badge
-	GetDynasty("Destination", "TargetDyn")
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	
 	local DesMoney = GetMoney("Destination")
 	local AmountPercent = (Amount*100) / DesMoney
@@ -341,14 +313,9 @@ end
 function RequestAllies()
 
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	local DestID = GetDynastyID("Destination")
 	local resultReq
@@ -391,7 +358,7 @@ function RequestAllies()
 		if DynastyIsPlayer("Destination") then
 			MsgNewsNoWait("Destination", "MyBoss", "", "politics", -1,
 						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_HEAD",
-						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_MONEY_BODY_+0", GetID("MyBoss"), Badge)
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_MONEY_BODY_+0", GetID("MyBoss"), MyBadge)
 		else
 			local AnswerTime = 0.15
 			CreateScriptcall("Answer_Request", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerRequest", "MyBoss", "Destination", Amount)
@@ -470,7 +437,7 @@ function RequestAllies()
 		if DynastyIsPlayer("Destination") then
 			MsgNewsNoWait("Destination", "MyBoss", "", "politics", -1,
 						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_HEAD",
-						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_ATTACK_BUILDING_BODY_+0", GetID("MyBoss"), GetID("EnemyBuilding"), EnemyBadge, Badge)
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_RECEIVE_ATTACK_BUILDING_BODY_+0", GetID("MyBoss"), GetID("EnemyBuilding"), EnemyBadge, MyBadge)
 		else
 			-- AI reaction
 			GetDynasty("Destination", "DesDyn")
@@ -595,31 +562,24 @@ function AnswerRequest(Amount)
 		-- 50% chance to accept
 		if Rand(2) == 0 then
 			--yes
-			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_YES",GetID("Destination"),Amount)
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_YES", GetID("Destination"), Amount)
 			chr_SpendMoney("Destination", Amount, "CostBribes")
 			CreditMoney("", Amount, "IncomeBribes")
 			dyn_ModifyFavor("Destination", "", -GL_FAVOR_MOD_SMALL)
 		else
 			-- no
-			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO",GetID("Destination"))
+			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO", GetID("Destination"))
 		end
 	else
 		-- no
-		MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO_LOWMONEY",GetID("Destination"))
+		MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_NO_LOWMONEY", GetID("Destination"))
 	end
 end
 
 function RequestEnemies()
 	
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
-	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	
 	-- Do you really want to demand money from the target? You will lose some favor
 	local DestID = GetDynastyID("Destination")
@@ -719,14 +679,9 @@ function ConfirmFeud()
 	-- Do you really want to declare war?
 
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	local result
 	
@@ -751,7 +706,7 @@ function ConfirmFeud()
 			-- send a message to the destination
 			MsgNewsNoWait("Destination","MyBoss","","politics",-1,
 						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_FOE_DESTINATION_+0", GetID("MyBoss"), Badge)
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_FOE_DESTINATION_+0", GetID("MyBoss"), MyBadge)
 		end
 			
 		-- write an answer to the player if destination is AI
@@ -786,14 +741,9 @@ function ConfirmNeutral()
 	-- Do you really want a neutral agreement?
 	
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	if DynastyIsPlayer("") then
 		result = MsgBox("MyBoss","Destination","@P"..
@@ -817,7 +767,7 @@ function ConfirmNeutral()
 				-- send a message to the destination
 				MsgNewsNoWait("Destination", "MyBoss", "", "politics", -1,
 						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NEUTRAL_DESTINATION_+0", GetID("MyBoss"), Badge)
+						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NEUTRAL_DESTINATION_+0", GetID("MyBoss"), MyBadge)
 			end			
 			
 			-- write an answer to the player if destination is AI
@@ -856,7 +806,7 @@ function ConfirmNeutral()
 								MsgTimeOut, --TimeOut
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_HEAD_+0",
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ENDFEUD_NEUTRAL_BODY",
-								GetID("MyBoss"), GetID("Destination"), Badge)
+								GetID("MyBoss"), GetID("Destination"), MyBadge)
 				
 			if DestResult == "C" then
 				-- get the saved IDs
@@ -934,14 +884,9 @@ function ConfirmNAP()
 	-- Do you really want a NAP?
 	 
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	if DynastyIsPlayer("") then
 		result = MsgBox("MyBoss", "Destination", "@P"..
@@ -965,7 +910,7 @@ function ConfirmNAP()
 				-- send a message to the destination
 				MsgNewsNoWait("Destination", "MyBoss", "", "politics", -1,
 							"@LDIPLOMATIC_STATE_CHANGED_HEAD",
-							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NAP_DESTINATION_+0", GetID("MyBoss"), Badge)
+							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NAP_DESTINATION_+0", GetID("MyBoss"), MyBadge)
 			end			
 			
 			-- write an answer to the player if destination is AI
@@ -1010,7 +955,7 @@ function ConfirmNAP()
 								MsgTimeOut, --TimeOut
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_NAP_HEAD_+0",
 								VariableMessage,
-								GetID("MyBoss"), GetID("Destination"), Badge)
+								GetID("MyBoss"), GetID("Destination"), MyBadge)
 				
 	
 			if DestResult == "C" then
@@ -1124,14 +1069,9 @@ function ConfirmAlliance()
 	-- Do you really want an Alliance?
 	 
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
 	-- own badge
-	local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-	local Badge = "@L$S[20"..BadgeID.."]"
+	local MyBadge = dyn_GetFlagLabel("MyBoss")
 	
 	if DynastyIsPlayer("") then
 		result = MsgBox("MyBoss", "Destination", "@P"..
@@ -1159,7 +1099,7 @@ function ConfirmAlliance()
 							MsgTimeOut, --TimeOut
 							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_HEAD_+0",
 							"@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_ALLIANCE_BODY",
-							GetID("MyBoss"), GetID("Destination"), Badge)
+							GetID("MyBoss"), GetID("Destination"), MyBadge)
 	
 		if DestResult == "C" then
 			--decline
@@ -1623,11 +1563,8 @@ function SpecialCheck()
 	-- get infos
 	
 	-- target badge
-	local TargetBadgeID = DynastyGetFlagNumber("TargetDyn") + 29
-	local TargetBadge = "@L$S[20"..TargetBadgeID.."]"
-	if DynastyIsShadow("TargetDyn") then
-		TargetBadge = "@L$S[2045]"
-	end
+	local TargetBadge = dyn_GetFlagLabel("Destination")
+	
 	local MyDynID = GetID("dynasty")
 	
 	local Enemies = dyn_GetEnemies("Destination") or 0
