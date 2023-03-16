@@ -15,16 +15,16 @@ end
 function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	
 	-- Make sure, PrimTypes have an owner
-	local PrimTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST  } 
+	local PrimTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_TAVERN, 
+					GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST  } 
 	
 	-- Shadows take Protos of levels 2+3 aswell
 	local Protos = {	GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_TAILORING, -- most important
 				GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_ALCHEMIST,  GL_BUILDING_TYPE_STONEMASON, GL_BUILDING_TYPE_DIVEHOUSE,  -- second important
 				GL_BUILDING_TYPE_NEKRO, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_JUGGLER, GL_BUILDING_TYPE_MERCENARY  } -- least important
 	
-	local NumPrimTypes = 10
+	local NumPrimTypes = 9
 	local NumProtos = 15
-	local Pos = 1
 	
 	if not AliasExists("WorkingHut") then
 		-- first check PrimTypes for that City
@@ -49,8 +49,9 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			end
 		end
 			
-		if not AliasExists("WorkingHut") then -- still no working hut, so check rest in priority order (see Protos-Array)
-			Pos = 1
+		if not AliasExists("WorkingHut") then -- still no working hut, so check Protos-Array, begin with random index
+			local RandomPos = Rand(NumProtos) + 1
+			local Pos = RandomPos
 			while Protos[Pos] do
 				if CityGetRandomBuilding(City, -1, Protos[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
 					break
@@ -66,11 +67,28 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 					break
 				end		
 			end
+			
+			if not AliasExists("WorkingHut") then -- check the rest of the list
+				for i=1, NumProtos do
+					if CityGetRandomBuilding(City, -1, Protos[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
+						break
+					end
+					
+					if CityGetRandomBuilding(City, -1, Protos[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 2
+						break
+					end
+						
+					Pos = Pos + 1
+
+					if Pos > NumProtos then
+						break
+					end	
+				end
+			end
 		end
 	end
 	
-	if not AliasExists("WorkingHut") then
-		-- build a new building then
+	if not AliasExists("WorkingHut") then -- still no working hut, then build a new one.
 		local Class = Rand(4) + 1
 		local Protos = {}
 		local ProtoCount = 0
@@ -100,7 +118,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	end
 	
 	local Gender = Rand(2)
-	local Class = BuildingGetCharacterClass("WorkingHut") or (Rand(4) + 1)
+	local Class = BuildingGetCharacterClass("WorkingHut") or (Rand(4) + 1) -- get the class for our dynasty boss
 		
 	if Class == -1 then
 		return "Illegal character class for building "..GetName("WorkingHut")
@@ -226,9 +244,25 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			SimMarry("boss", "Spouse")
 		end
 				
-		-- get a workshop for the spouse
+		-- get a workshop for the spouse if possible
 		if AliasExists("Spouse") then
 			if CityGetBuildingForCharacter(City, "Spouse", FILTER_NO_DYNASTY, "SpouseShop") then
+				BuildingBuy("SpouseShop", "Spouse", BM_STARTUP)
+			end
+			local BestType = dyn_FindGoodWorkshopType("Spouse", City, false) or 0
+			LogMessage("BestType is "..BestType)
+			
+			if BestType > 0 then
+				if not CityGetRandomBuilding(City, -1, BestType, 3, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- lvl 3
+					CityGetRandomBuilding(City, -1, BestType, 3, -1, FILTER_NO_DYNASTY, "SpouseShop")
+				end
+			end
+			
+			if not AliasExists("SpouseShop") then 
+				CityGetBuildingForCharacter(City, "Spouse", FILTER_NO_DYNASTY, "SpouseShop")
+			end
+			
+			if AliasExists("SpouseShop") then
 				BuildingBuy("SpouseShop", "Spouse", BM_STARTUP)
 			end
 		end

@@ -131,6 +131,327 @@ function GetWorkshopCount(SimAlias)
 end
 
 -- -----------------------
+-- CheckForWorkshop
+-- -----------------------
+function CheckForWorkshop(SimAlias, BuildingType)
+
+	local Found = false
+	local Count = DynastyGetBuildingCount2(SimAlias)
+	for i=0, Count-1 do
+		if DynastyGetBuilding2(SimAlias, i, "CheckWorkshop") then
+			if BuildingGetType("CheckWorkshop") == BuildingType then
+				Found = true
+				break
+			end
+		end
+	end
+	
+	return Found
+end
+
+-- -----------------------
+-- FindGoodWorkshopType
+-- -----------------------
+function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
+	LogMessage("Looking for a good workshop type")
+	
+	if not AliasExists(SimAlias) then
+		LogMessage("Workshop-Type: No Alias")
+		return 0
+	end
+	
+	if not AliasExists(CityAlias) then
+		LogMessage("Workshop-Type: No City Alias")
+		return 0
+	end
+	
+	if not GetDynasty(SimAlias, "MyDyn") then
+		LogMessage("Workshop-Type: No Dynasty found")
+		return 0
+	end
+	
+	local BestType = 0
+	local Count = DynastyGetBuildingCount2(SimAlias)
+	
+	-- get all the group members for their character classes
+	local PartySize = DynastyGetMemberCount(SimAlias)
+	local PartyPatrons = 0
+	local PartyScholars = 0
+	local PartyRogues = 0
+	local PartyCraftsmen = 0
+	local CheckClass = 0
+
+	for i=0, PartySize-1 do
+		DynastyGetMember(SimAlias, i, "CheckSim")
+		CheckClass = SimGetClass("CheckSim")
+		
+		if CheckClass == GL_CLASS_PATRON then
+			PartyPatrons = PartyPatrons + 1
+		elseif CheckClass == GL_CLASS_ARTISAN then
+			PartyCraftsmen = PartyCraftsmen + 1
+		elseif CheckClass == GL_CLASS_SCHOLAR then
+			PartyScholars = PartyScholars + 1
+		elseif CheckClass == GL_CLASS_CHISELER then
+			PartyRogues = PartyRogues + 1
+		end
+	end
+	
+	-- add all the buildings to this list
+	local BuildingList = {}
+	local FoundType
+	local FoundPatrons = 0
+	local FoundScholars = 0
+	local FoundRogues = 0
+	local FoundCraftsmen = 0
+	
+	for i=0, Count-1 do
+		if DynastyGetBuilding2(SimAlias, i, "AddBuilding") then
+			FoundType = BuildingGetType("AddBuilding")
+			BuildingList[i+1] = FoundType
+			local FoundClass = BuildingGetCharacterClass("AddBuilding")
+			if FoundClass == GL_CLASS_PATRON then
+				FoundPatrons = FoundPatrons + 1
+			elseif FoundClass == GL_CLASS_ARTISAN then
+				FoundCraftsmen = FoundCraftsmen + 1
+			elseif FoundClass == GL_CLASS_SCHOLAR then
+				FoundScholars = FoundScholars + 1
+			elseif FoundClass == GL_CLASS_CHISELER then
+				FoundRogues = FoundRogues + 1
+			end
+		end
+	end
+	
+	-- check if we have at least one building for each class of our party
+	local EnoughPatrons = false
+	if PartyPatrons <= FoundPatrons then
+		EnoughPatrons = true
+	end
+	
+	local EnoughScholars = false
+	if PartyScholars <= FoundScholars then
+		EnoughScholars = true
+	end
+	
+	local EnoughCraftsmen = false
+	if PartyCraftsmen <= FoundCraftsmen then
+		EnoughCraftsmen = true
+	end
+	
+	local EnoughRogues = false
+	if PartyRogues <= FoundRogues then
+		EnoughRogues = true
+	end
+	
+	-- First, check if we have classes in our group without a proper workshop.
+	local BestCount = 5
+	
+	if not EnoughPatrons then
+		-- if possible, choose a building which is only present max. once in the city already
+		local PatronBuildingTypes = { GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_FISHINGHUT }
+		local PatronBuildingTypesCount = 6
+		
+		for i=1, PatronBuildingTypesCount do
+			local ChooseType = PatronBuildingTypes[i]
+			local CheckCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_HAS_DYNASTY)
+			if CheckCount < 3 then -- max 2 already existing of the same type in the same city
+				if not BuildNew then
+					local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
+					if AvailableCount <= BestCount then
+						BestType = ChooseType
+						BestCount = CheckCount
+						break
+					end
+				else
+					-- exclude types the AI can't properly build
+					if ChooseType == GL_BUILDING_TYPE_FARM or GL_BUILDING_TYPE_FRUITFARM or GL_BUILDING_TYPE_FISHINGHUT then
+						local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
+						if AvailableCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					else
+						if CheckCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if BestType == 0 then -- still no best type? then check next class
+		if not EnoughScholars then
+			-- if possible, choose a building which is only present max. once in the city already
+			local ScholarBuildingTypes = { GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NEKRO, 
+									GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_HOSPITAL }
+			local ScholarBuildingTypesCount = 6
+			
+			for i=1, ScholarBuildingTypesCount do
+				local ChooseType = ScholarBuildingTypes[i]
+				local CheckCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_HAS_DYNASTY)
+				if CheckCount < 3 then -- max 2 already existing of the same type in the same city
+					if not BuildNew then
+						local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
+						if AvailableCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					else
+						if CheckCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if BestType == 0 then -- still no best type? then check next class
+		if not EnoughCraftsmen then
+			-- if possible, choose a building which is only present max. once in the city already
+			local CraftsmenBuildingTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_TAILORING, GL_BUILDING_TYPE_JOINERY, 
+									GL_BUILDING_TYPE_STONEMASON }
+			local CraftsmenBuildingTypesCount = 6
+			
+			for i=1, CraftsmenBuildingTypesCount do
+				local ChooseType = CraftsmenBuildingTypes[i]
+				local CheckCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_HAS_DYNASTY)
+				if CheckCount < 3 then -- max 2 already existing of the same type in the same city
+					if not BuildNew then
+						local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
+						if AvailableCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					else
+						if CheckCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if BestType == 0 then -- still no best type? then check next class
+		if not EnoughRogues then
+			-- if possible, choose a building which is only present max. once in the city already
+			local RoguesBuildingTypes = { GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, 
+									GL_BUILDING_TYPE_MERCENARY }
+			local RoguesBuildingTypesCount = 6
+			
+			for i=1, RoguesBuildingTypesCount do
+				local ChooseType = RoguesBuildingTypes[i]
+				local CheckCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_HAS_DYNASTY)
+				if CheckCount < 3 then -- max 2 already existing of the same type in the same city
+					if not BuildNew then
+						local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
+						if AvailableCount <= BestCount then
+							BestType = ChooseType
+							BestCount = CheckCount
+							break
+						end
+					else
+						-- exclude types the AI can't properly build
+						if ChooseType == GL_BUILDING_TYPE_ROBBER or GL_BUILDING_TYPE_PIRATESNEST then
+							local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
+							if AvailableCount <= BestCount then
+								BestType = ChooseType
+								BestCount = CheckCount
+								break
+							end
+						else
+							if CheckCount <= BestCount then
+								BestType = ChooseType
+								BestCount = CheckCount
+								break
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if BestType == 0 then
+		-- If we do have buildings for everyone, if you still need more get a random one we don't already own
+		local NewBuildingList = {}
+		local NewBuildingListCount = 0
+		if PartyPatrons > 0 then -- add patron buildings
+			local PatronBuildingTypes = { GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_FISHINGHUT }
+			local PatronBuildingTypesCount = 6
+			
+			for i=1, PatronBuildingTypesCount do
+				if not dyn_CheckForWorkshop(SimAlias, PatronBuildingTypes[i]) then -- only add if we do not have that in our dynasty already
+					NewBuildingList[i] = PatronBuildingTypes[i]
+					NewBuildingListCount = NewBuildingListCount + 1
+				end
+			end
+		end
+		
+		if PartyScholars > 0 then -- add scholar buildings
+			local ScholarBuildingTypes = { GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NEKRO, 
+									GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_HOSPITAL }
+			local ScholarBuildingTypesCount = 6
+			
+			for i=NewBuildingListCount, ScholarBuildingTypesCount do
+				if not dyn_CheckForWorkshop(SimAlias, ScholarBuildingTypes[i]) then -- only add if we do not have that in our dynasty already
+					NewBuildingList[i] = ScholarBuildingTypes[i]
+					NewBuildingListCount = NewBuildingListCount + 1
+				end
+			end
+		end
+		
+		if PartyCraftsmen > 0 then -- add craftsmen buildings
+			local CraftsmenBuildingTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_TAILORING, GL_BUILDING_TYPE_JOINERY, 
+									GL_BUILDING_TYPE_STONEMASON }
+			local CraftsmenBuildingTypesCount = 6
+			
+			for i=NewBuildingListCount, CraftsmenBuildingTypesCount do
+				if not dyn_CheckForWorkshop(SimAlias, CraftsmenBuildingTypes[i]) then -- only add if we do not have that in our dynasty already
+					NewBuildingList[i] = CraftsmenBuildingTypes[i]
+					NewBuildingListCount = NewBuildingListCount + 1
+				end
+			end
+		end
+		
+		if PartyRogues > 0 then -- add rouges buildings
+			local RoguesBuildingTypes = { GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, 
+									GL_BUILDING_TYPE_MERCENARY }
+			local RoguesBuildingTypesCount = 6
+			
+			for i=NewBuildingListCount, RoguesBuildingTypesCount do
+				if not dyn_CheckForWorkshop(SimAlias, RoguesBuildingTypes[i]) then -- only add if we do not have that in our dynasty already
+					NewBuildingList[i] = RoguesBuildingTypes[i]
+					NewBuildingListCount = NewBuildingListCount + 1
+				end
+			end
+		end
+
+		if NewBuildingListCount == 0 then
+			LogMessage("Workshop Type: NewBuildingList is empty")
+			return 0
+		end
+	
+		-- select at random now
+		local Randomizer = Rand(NewBuildingListCount) + 1
+		BestType = NewBuildingList[Randomizer]
+	end
+	
+	--LogMessage("BestType is "..BestType)
+	return BestType
+end
+
+-- -----------------------
 -- MakeDecision
 -- -----------------------
 function MakeDecision(DynastyAlias, Trait, Random)
@@ -547,7 +868,7 @@ end
 -- --------------------
 function GetFlagLabel(SimAlias)
 
-	if GetDynasty(SimAlias, "FlagDyn")
+	if GetDynasty(SimAlias, "FlagDyn") then
 		local BadgeID = DynastyGetFlagNumber("FlagDyn") + 29
 		local BadgeLabel = "@L$S[20"..BadgeID.."]"
 		if DynastyIsShadow("FlagDyn") then

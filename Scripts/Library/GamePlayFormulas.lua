@@ -783,7 +783,7 @@ end
 
 
 -------------------------
--- Important dynasties + players referencing
+-- Important dynasties + players referencing for AI scripts
 -- IDs saved in properties at the scenario
 -------------------------
 function GetImportantDynastiesCount()
@@ -1004,6 +1004,10 @@ function CourtingProgress(SimAlias, Value)
 	SimSetProgress(SimAlias, NewProgress)
 end
 
+-------------------------
+-- City related functions
+-------------------------
+
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
 		if GetImpactValue(Alias, "Sprain") == 1 then
@@ -1124,5 +1128,21 @@ function CityGetRandomDynastyMember(CityAlias, OnlyParty, OnlyValid)
 		end
 	else
 		return 0
+	end
+end
+
+function CityCheckImportantBuilding(CityAlias, BuildingType, BuildingLevel)
+	if CityGetRandomBuilding(CityAlias, -1, BuildingType, BuildingLevel, -1, FILTER_IGNORE, "BuildingExists") then
+		return true
+	else
+		return false
+	end
+end
+
+function CityCheckImportantOwner(CityAlias, BuildingType, BuildingLevel)
+	if CityGetRandomBuilding(CityAlias, -1, BuildingType, BuildingLevel, -1, FILTER_HAS_DYNASTY, "OwnerExists") then
+		return true
+	else
+		return false
 	end
 end
