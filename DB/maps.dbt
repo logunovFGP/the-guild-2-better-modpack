@@ -7,7 +7,7 @@ Table Description:
 Data:
 
 1   "york"                   0   "York"                 16   3   "england"      | 
-2   "ulm"                    0   "Ulm"                  6    3   "germany"      |
+2   "ulm"                    0   "Ulm"                  10   3   "germany"      |
 3   "magathaburg"            0   "magathaburg"          8    3   "germany"      |
 4   "holyblood"              0   "Holyblood"            16   3   "austria"      |
 5   "seatown"                0   "Seatown"              6    3   "hansa"        |

@@ -14,81 +14,63 @@ end
 
 function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	
-	-- Make sure, PrimTypes have an owner
-	local PrimTypes = { GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_RANGERHUT, GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MILL, GL_BUILDING_TYPE_HOSPITAL, GL_BUILDING_TYPE_TAVERN, 
-					GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST  } 
+	-- Priority for having at least one building in the city (highest level is taken)
+	local PrimTypes = {  GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_MINE, GL_BUILDING_TYPE_HOSPITAL, -- every village (2) has these 
+					GL_BUILDING_TYPE_FARM, GL_BUILDING_TYPE_RANGERHUT, -- every small town (3) has these
+					GL_BUILDING_TYPE_FRUITFARM, GL_BUILDING_TYPE_MILL, -- every city (4) has these
+					GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST, -- every free city (5) has these 
+					GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV } -- every imperial city (6) has these
 	
-	-- Shadows take Protos of levels 2+3 aswell
-	local Protos = {	GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_TAILORING, -- most important
-				GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_ALCHEMIST,  GL_BUILDING_TYPE_STONEMASON, GL_BUILDING_TYPE_DIVEHOUSE,  -- second important
+	-- Shadows occupy these aswell with their spouses, if the buildings are at least level 2/3
+	local SpouseTypes = { GL_BUILDING_TYPE_FISHINGHUT, GL_BUILDING_TYPE_SMITHY, GL_BUILDING_TYPE_TAILORING, -- most important
+				GL_BUILDING_TYPE_BAKERY, GL_BUILDING_TYPE_JOINERY, GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_STONEMASON, GL_BUILDING_TYPE_DIVEHOUSE,  -- second important
 				GL_BUILDING_TYPE_NEKRO, GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_JUGGLER, GL_BUILDING_TYPE_MERCENARY  } -- least important
 	
-	local NumPrimTypes = 9
-	local NumProtos = 15
+	local NumPrimTypes = 11
+	local NumSpouseTypes = 13
 	
+	-- Get a working hut
 	if not AliasExists("WorkingHut") then
-		-- first check PrimTypes for that City
-		while PrimTypes[Pos] do
-			if CityGetBuildingCount(City, 2, PrimTypes[Pos], -1, -1, FILTER_HAS_DYNASTY) < 1 then
-				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 3
-					break
-				end
-				
-				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 2
-					break
-				end
-				
-				if CityGetRandomBuilding(City, -1, PrimTypes[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 1
-					break
-				end
-			end
-				
-			Pos = Pos +1
-			if Pos > NumPrimTypes then
-				break
-			end
-		end
-			
-		if not AliasExists("WorkingHut") then -- still no working hut, so check Protos-Array, begin with random index
-			local RandomPos = Rand(NumProtos) + 1
-			local Pos = RandomPos
-			while Protos[Pos] do
-				if CityGetRandomBuilding(City, -1, Protos[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
-					break
-				end
-				
-				if CityGetRandomBuilding(City, -1, Protos[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 2
+		for i=1, NumPrimTypes do
+			if CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], -1, -1, FILTER_HAS_DYNASTY) < 1 then
+				if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 3
+					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 3")
 					break
 				end
 					
-				Pos = Pos + 1
-
-				if Pos > NumProtos then
+				if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 2
+					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 2")
 					break
-				end		
-			end
-			
-			if not AliasExists("WorkingHut") then -- check the rest of the list
-				for i=1, NumProtos do
-					if CityGetRandomBuilding(City, -1, Protos[Pos], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
-						break
-					end
+				end
 					
-					if CityGetRandomBuilding(City, -1, Protos[Pos], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 2
-						break
-					end
-						
-					Pos = Pos + 1
-
-					if Pos > NumProtos then
-						break
-					end	
+				if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 1, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 1
+					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 1")
+					break
 				end
 			end
 		end
 	end
 	
-	if not AliasExists("WorkingHut") then -- still no working hut, then build a new one.
+	-- still no working hut? then check the Spouse-list in priority order
+	if not AliasExists("WorkingHut") then
+		for i=1, NumSpouseTypes do
+			if CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, SpouseTypes[i], -1, -1, FILTER_HAS_DYNASTY) < 2 then
+				if CityGetRandomBuilding(City, -1, SpouseTypes[i], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
+					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 3")
+					break
+				end
+					
+				if CityGetRandomBuilding(City, -1, SpouseTypes[i], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 2
+					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 2")
+					break
+				end
+			end
+		end
+	end
+	
+	-- still no working hut, then build a new one.
+	if not AliasExists("WorkingHut") then 
+		LogMessage("ShadowDynasty No "..Number.." needs to build a new Working Hut")
 		local Class = Rand(4) + 1
 		local Protos = {}
 		local ProtoCount = 0
@@ -153,14 +135,12 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	local OfficeLevel = 0
 		
 	-- add some fame on random
-	if Rand(6) == 0 then
+	if Rand(10) == 0 then
 		Fame = 1+Rand(10)
-		NobLevel = NobLevel +1
 	end
 	
-	if Rand(10) == 0 then
+	if Rand(20) == 0 then
 		ImpFame = 1+Rand(12)
-		NobLevel = NobLevel + 2
 	end
 		
 	-- Set office and family
@@ -226,13 +206,15 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			end
 			
 		elseif OfficeLevel == 2 then
-			NobLevel = 5 + Rand(4)
+			NobLevel = 4 + Rand(2)
+		elseif OfficeLevel == 3 then
+			NobLevel = 5 + Rand(2)
 		else
-			NobLevel = 5 + Rand(5)
+			NobLevel = 6 + Rand(4)
 		end
 		
 		local FirstAge = 16 + Rand(8)
-		local Age = 32 + Rand(8)
+		local Age = 32 + Rand(12)
 		SimSetAge("boss", Age)
 		local SpouseAge = 32 + Rand(12)
 		
@@ -246,23 +228,62 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 				
 		-- get a workshop for the spouse if possible
 		if AliasExists("Spouse") then
-			if CityGetBuildingForCharacter(City, "Spouse", FILTER_NO_DYNASTY, "SpouseShop") then
-				BuildingBuy("SpouseShop", "Spouse", BM_STARTUP)
-			end
-			local BestType = dyn_FindGoodWorkshopType("Spouse", City, false) or 0
-			LogMessage("BestType is "..BestType)
-			
-			if BestType > 0 then
-				if not CityGetRandomBuilding(City, -1, BestType, 3, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- lvl 3
-					CityGetRandomBuilding(City, -1, BestType, 3, -1, FILTER_NO_DYNASTY, "SpouseShop")
+		
+			LogMessage("Find a SpouseShop for "..GetName("Spouse"))
+			-- Get a SpouseShop
+			for i=1, NumPrimTypes do
+				if CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], -1, -1, FILTER_HAS_DYNASTY) < 1 and not dyn_CheckForWorkshop("boss", PrimTypes[i]) then
+					if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 3, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- check level 3
+						LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 3")
+						break
+					end
+						
+					if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 2, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- check level 2
+						LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 2")
+						break
+					end
+					
+					if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 1, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- check level 1
+						LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 1")
+						break
+					end
 				end
 			end
 			
-			if not AliasExists("SpouseShop") then 
+			-- still no working hut? then check the Spouse-list in priority order
+			if not AliasExists("SpouseShop") then
+				LogMessage("Check SpouseList for "..GetName("Spouse"))
+				for i=1, NumSpouseTypes do
+					if not dyn_CheckForWorkshop("boss", SpouseTypes[i]) then
+						if CityGetRandomBuilding(City, -1, SpouseTypes[i], 3, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- level 3
+							LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." for "..GetName("Spouse").." at level 3")
+							break
+						end
+							
+						if CityGetRandomBuilding(City, -1, SpouseTypes[i], 2, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- level 2
+							LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." for "..GetName("Spouse").." at level 2")
+							break
+						end
+					end
+				end
+			end
+					
+			-- if we found something, me might need to change our class
+			if AliasExists("SpouseShop") then
+				local BuildingClass = BuildingGetCharacterClass("SpouseShop")
+				local MyClass = SimGetClass("Spouse")
+				if BuildingClass ~= MyClass then
+					LogMessage("Change Class of "..GetName("Spouse"))
+					SimSetClass("Spouse", BuildingClass)
+				end
+			end
+			
+			if not AliasExists("SpouseShop") then -- if still nothing exist, find the best remaining building
+				LogMessage("Spouse found no SpouseShop before, get a new one!")
 				CityGetBuildingForCharacter(City, "Spouse", FILTER_NO_DYNASTY, "SpouseShop")
 			end
 			
-			if AliasExists("SpouseShop") then
+			if AliasExists("SpouseShop") then -- now buy it if possible
 				BuildingBuy("SpouseShop", "Spouse", BM_STARTUP)
 			end
 		end

@@ -10,16 +10,12 @@ Offen:
 - Das Bedürfnis nach Krediten und Geldgeschäften erhöhte sich nicht.
 - Fehlerhaften Tooltip bei Vergiftung hinzugefügt.
 
-- Türme haben nicht-aggressive Schiffe angegriffen.
-
 - Die KI wird keine offensiven Maßnahmen gegen Charaktere versuchen, die sich gerade
   im Inneren eines Gebäudes aufhalten.
 
 - Beim Würfelspiel wird die KI nicht permanent höhere Rekorde erzielen,
   das Maximum, das sie erreichen kann ist nun wie beim Spieler 40.000 -> Die KI spielt nicht richtig, sondern
   übertrifft den Spieler immer mit Random. Sollte theoretisch komplett redesignt werden.
-
-- Ein Zufallsereignis hatte fehlende Texte.
 
 - Das Bau/Levelup-Verhalten der KI war fehlerhaft/ nicht nachvollziehbar (Spar-Priorities nicht ausgereift)
 
@@ -46,5 +42,3 @@ Nützliche Vanilla-Features + QoL Änderungen:
   Zudem kann man sich nun auch bloß einen Teil des Kreditkontos auszahlen lassen. Gewinne durch Kredite 
   werden nun direkt ausgezahlt, der Rest wandert wie gehabt wieder auf das Konto zu weiteren Verleihung.
   Es existiert nun eine Übersicht über alle Gewinne mit Kreditgeschäften.
-- Erstmals wirkt sich das Talent Feilschen auf Verkäufe am Markt aus! (Allerdings derzeit nur über Maßnahme "Karren verschicken" 
-  oder über Handelsrouten)
