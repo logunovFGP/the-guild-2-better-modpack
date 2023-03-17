@@ -51,7 +51,7 @@ function Run()
 	local ItemId, ItemCount
 	local Amount = 0
 	local Error, ItemTransfered
-	local Money = 0
+	local BargainMoney = 0
 	local EstimatedMoney = 0
 	local Found = false
 	local CurrentSlot = Slots-1
