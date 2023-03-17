@@ -33,3 +33,4 @@ Fixes (Modpack):
 - Slandering would make the TownCrier the offender and not the destination you chose
 - Fixed pre-trial behavior. Sims now are less likely to just wander off to do some unimportant stuff instead of waiting for the beginning of the trial.
 - Fixed bathing alone.
+- Fixed traderoute-exploit.

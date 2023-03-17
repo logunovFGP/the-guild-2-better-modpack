@@ -31,3 +31,4 @@ Bugfixes (MegaMod):
 - Gunstveränderungen werden nun wieder über den Köpfen deines Ziels angezeigt und nicht über deinem eigenen.
 - Beim Rufmord wurde der Stadtschreier als Täter ausgesucht und nicht das gewählte Ziel.
 - Das Verhalten vor Gerichtsverhandlungen wurde repariert. Teilnehmende Charaktere sollten nun nicht mehr vorher durch die Gegend wandern, statt auf den Beginn der Verhandlung zu warten.
+- Handelsrouten-Exploit behoben.
