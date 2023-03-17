@@ -483,6 +483,9 @@ end
 
 function Unload(Station, Type, Count, Threshold)
 	local itemCount = GetItemCount("", Type, INVENTORY_STD) - Count
+	if itemCount <= 0 then
+		return true -- nothing to unload, I'm done here
+	end
 	local BargainMoney = 0
 	local EstimatedMoney = 0
 	if (BuildingGetClass(Station) == GL_BUILDING_CLASS_MARKET) then
