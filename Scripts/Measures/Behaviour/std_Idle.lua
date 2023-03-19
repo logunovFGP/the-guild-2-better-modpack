@@ -47,8 +47,7 @@ function Run()
 	end
 	
 	if not ActiveMovement then
-		local Distance = GetDistance("", "HomeBuilding")
-		if Distance > 1000 then
+		if GetHomeBuilding("", "HomeBuilding") and GetDistance("", "HomeBuilding") > 1000 then
 			idlelib_GoHome()
 			return
 		else

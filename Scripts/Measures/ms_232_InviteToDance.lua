@@ -10,6 +10,8 @@
 -- -----------------------
 -- Run
 -- -----------------------
+LOCATOR_DANCE = "DancePos"
+
 function Run()
 	
 	-- The time in hours until the measure can be repeated
@@ -131,22 +133,22 @@ function Run()
 	if not ai_StartBuildingAction("", "Destination", -1, GL_BUILDING_TYPE_TAVERN) then
 		return
 	end
-
+		
 	---------------------------------------
 	------ Check dancefloor free ------
 	---------------------------------------
-	if not GetLocatorByName("DestTavern", "Social_Dance", "DancePos") or not GetLocatorByName("DestTavern", "Social_Dance2", "DancePos2") then
+	if not GetLocatorByName("DestTavern", "Social_Dance", LOCATOR_DANCE) or not GetLocatorByName("DestTavern", "Social_Dance2", "DancePos2") then
 		MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_+0", GetID("DestTavern"))
 		return
 	end
-	
+		
 	feedback_OverheadActionName("Destination")
 	AlignTo("Destination", "")
 	Sleep(0.5)
  	
  	MeasureSetNotRestartable()
 	local WasCourtLover = 0
-	
+		
 	-------------------------
 	------ Court Lover ------
 	-------------------------
@@ -166,7 +168,7 @@ function Run()
 			end
 			
 			if VariationFactor <= 0.5 then
-			
+		
 				local time1 = PlayAnimationNoWait("Destination", "shake_head")
 				Sleep(time1 * 0.3)
 				ModifyFavor = FavorLoss
@@ -180,28 +182,32 @@ function Run()
 				local DestinationAnimation = ""
 				
 				if (CourtingProgress > 0) then
-				
+		
 					-- Go to the dancefloor
 					if not SendCommandNoWait("Destination", "MoveToPosition") then
 						return
 					end
 					
-					f_BeginUseLocator("", "DancePos", GL_STANCE_STAND, true)
+					f_BeginUseLocator("", LOCATOR_DANCE, GL_STANCE_STAND, true)
 					SetData("Dance2LocatorInUse", 1)
-					
-					while not HasData("DanceLocatorInUse") do
-						Sleep(1)
+					local MaxWaitTime = GetGametime() + 2
+					while not HasData("DanceLocatorInUse") and GetGametime() < MaxWaitTime do
+						Sleep(3)
 					end
-					
+		
 					-- Pay if the tavern does not belong to the owners dynasty
 					if GetDynastyID("DestTavern") ~= GetDynastyID("") then
-						if not chr_SpendMoney("", OverallPrice, "CostSocial", false) then
+						--if not chr_SpendMoney("", OverallPrice, "CostSocial", false) then
+						if GetMoney("") > OverallPrice then
+							chr_SpendMoney("", OverallPrice, "CostSocial", false)
+							CreditMoney("DestTavern", OverallPrice, "Offering")
+						else
 							MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), OverallPrice)
-							return
+							LogMessage(GetName("") .. " cannot afford the dance, abort measure. Current money: " .. GetMoney(""))
+							StopMeasure()
 						end
-						CreditMoney("DestTavern", OverallPrice, "Offering")
 					end	
-					
+		
 					ModifyFavor = FavorWon
 					SetAvoidanceGroup("", "Destination")		
 					ms_232_invitetodance_EnterCutscene()
@@ -230,10 +236,13 @@ function Run()
 			if AliasExists("cutscene") then
 				DestroyCutscene("cutscene")
 			end
+			f_EndUseLocatorNoWait("", LOCATOR_DANCE)
+			f_EndUseLocatorNoWait("Destination", "DancePos2")
 			
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			AddImpact("Destination", "ReceivedDance", 1, 12)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
+			StopMeasure()
 		end
 	end
 	
@@ -303,7 +312,7 @@ function Run()
 				StopMeasure()
 			end
 			
-			f_BeginUseLocator("", "DancePos", GL_STANCE_STAND, true)
+			f_BeginUseLocator("", LOCATOR_DANCE, GL_STANCE_STAND, true)
 			SetData("Dance2LocatorInUse", 1)
 			
 			while not HasData("DanceLocatorInUse") do
@@ -328,10 +337,10 @@ function Run()
 			SetAvoidanceGroup("", "Destination")
 			chr_MultiAnim("", "dance_social_male", "Destination", "dance_social_female", InteractionDistance)
 			MsgSay("Destination", talk_AnswerCourtingMeasure("DANCE", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), 6));
+			f_EndUseLocatorNoWait("", LOCATOR_DANCE)
+			f_EndUseLocatorNoWait("Destination", "DancePos2")
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
-			f_EndUseLocatorNoWait("", "DancePos")
-			f_EndUseLocatorNoWait("Destination", "DancePos2")
 			chr_ModifyFavor("Destination", "", FavorWon)
 		end
 	end
@@ -373,9 +382,9 @@ function MoveToPosition()
 	end
 	
 	SetData("DanceLocatorInUse", 1)
-	while true do
-		Sleep(4)
-	end
+	--while true do
+		Sleep(10)
+	--end
 end
 
 function GetOSHData(MeasureID)
