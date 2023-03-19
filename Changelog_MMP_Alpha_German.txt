@@ -32,3 +32,5 @@ Bugfixes (MegaMod):
 - Beim Rufmord wurde der Stadtschreier als Täter ausgesucht und nicht das gewählte Ziel.
 - Das Verhalten vor Gerichtsverhandlungen wurde repariert. Teilnehmende Charaktere sollten nun nicht mehr vorher durch die Gegend wandern, statt auf den Beginn der Verhandlung zu warten.
 - Handelsrouten-Exploit behoben.
+- Auf der Wien-Karte gab es Wegfindungsprobleme beim Sammeln von Froschaugen.
+
