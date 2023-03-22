@@ -20,7 +20,7 @@ function Run()
 		end
 	end
 		
-	-- check the town / build new stuff or buy empty buildings
+	-- levelup public buildings if necessecary
 	if ScenarioGetTimePlayed() > 12 then
 		
 		if Level == 2 then
@@ -37,9 +37,9 @@ function Run()
 	-- get special events rolling
 	local CurrentRound = GetRound()
 	
-	if CurrentRound > 0 then -- round 2 +
+	if CurrentRound > 0 then -- round 2+
 		
-		local trys = 3
+		local trys = 5
 		-- infect a random dynasty member of this city
 		
 		for i=1, trys do
@@ -70,13 +70,13 @@ function Run()
 			citypinghour_CheckMusicians()
 		end
 			
-		if currentGameTime == 12 or (currentGameTime > 12 and currentGameTime < 13) then
+		if currentGameTime == 12 then
 			if GetData("#AldermanChooser") == GetID("") then
 				citypinghour_CheckAlderman()
 			end
 		end
 			
-		if CurrentRound > 2 then -- round 4 +
+		if CurrentRound > 2 then -- round 4+
 			
 			-- ToDo: City Events
 		end
@@ -362,13 +362,10 @@ function CheckVillage()
 
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_PRISON, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_WELL, 1, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_LINGERPLACE, 1, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, -1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 1)
-
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
@@ -379,15 +376,6 @@ function CheckVillage()
 	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
-	end
-	
-	-- for water-maps
-	GetScenario("World")
-	
-	if HasProperty("World", "seamap") then
-		if GetProperty("World", "seamap") == 1 then
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
-		end
 	end
 end
 
@@ -397,13 +385,10 @@ function CheckSmallTown()
 
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, 2)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_PRISON, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_WELL, 1, 2)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_LINGERPLACE, 1, 2)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 2)
-
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
@@ -415,18 +400,6 @@ function CheckSmallTown()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-	
-	-- for water-maps
-	GetScenario("World")
-	
-	if HasProperty("World", "seamap") then
-		if GetProperty("World", "seamap") == 1 then
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
-		end
-	end
-	
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_RANGERHUT, 1)
 end
 
 function CheckTown()
@@ -435,13 +408,11 @@ function CheckTown()
 
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, 3)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_PRISON, 2)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_WELL, 1, 3)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_LINGERPLACE, 1, 4)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 2)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 3)
-
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
+	
+	
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
 	end
@@ -453,23 +424,6 @@ function CheckTown()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-	
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_RANGERHUT, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_ROBBER, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
-	
-	-- for water-maps
-	GetScenario("World")
-	
-	if HasProperty("World", "seamap") then
-		if GetProperty("World", "seamap") == 1 then
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_PIRATESNEST, 1)
-		end
-	end
-	
-	citypinghour_CheckChurch(1)
 end
 
 function CheckCapital()
@@ -478,12 +432,9 @@ function CheckCapital()
 
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, 4)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_PRISON, 2)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_WELL, 1, 3)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_LINGERPLACE, 1, 5)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 3)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
-	citypinghour_CheckBuilding( GL_BUILDING_CLASS_MARKET, GL_BUILDING_TYPE_HARBOR, 3)
 
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
@@ -496,23 +447,6 @@ function CheckCapital()
 	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
 		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
 	end
-	
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_RANGERHUT, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_HOSPITAL, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_MINE, 1)
-	AICheckWorkingPlace("", GL_BUILDING_TYPE_ROBBER, 1)
-	
-	-- for water-maps
-	GetScenario("World")
-	
-	if HasProperty("World", "seamap") then
-		if GetProperty("World", "seamap") == 1 then
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_FISHINGHUT, 1)
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_PIRATESNEST, 1)
-		end
-	end
-	
-	citypinghour_CheckChurch(2)
 end
 
 function CheckBuilding(Class, Type, Level, Count)
@@ -553,31 +487,6 @@ function CheckBuilding(Class, Type, Level, Count)
 			break
 		end
 		Ist = Ist + 1
-	end
-end
-
-function CheckChurch(MaxCount)
-
-	local ChEv	= CityGetBuildingCount("", -1, GL_BUILDING_TYPE_CHURCH_EV, -1, -1, FILTER_HAS_DYNASTY)
-	local ChCa	= CityGetBuildingCount("", -1, GL_BUILDING_TYPE_CHURCH_CATH, -1, -1, FILTER_HAS_DYNASTY)
-
-	if ChEv + ChCa < MaxCount then
-		-- no church, so create one
-	
-		local TotalChEv	= CityGetBuildingCount("", -1, GL_BUILDING_TYPE_CHURCH_EV, -1, -1, FILTER_NO_DYNASTY)
-		local TotalChCa	= CityGetBuildingCount("", -1, GL_BUILDING_TYPE_CHURCH_CATH, -1, -1, FILTER_NO_DYNASTY)
-	
-		if TotalChEv>0 and TotalChCa == 0 then
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_CHURCH_EV, ChEv+1)
-		elseif TotalChCa>0 and TotalChEv == 0 then
-			AICheckWorkingPlace("", GL_BUILDING_TYPE_CHURCH_CATH, ChCa+1)
-		else
-			if Rand(100) < 50 then
-				AICheckWorkingPlace("", GL_BUILDING_TYPE_CHURCH_EV, ChEv+1)
-			else
-				AICheckWorkingPlace("", GL_BUILDING_TYPE_CHURCH_CATH, ChCa+1)
-			end
-		end
 	end
 end
 
