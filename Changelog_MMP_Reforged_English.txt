@@ -20,7 +20,8 @@ GUI: MoK, Fajeth, Napi96
 Sound: Fajeth, Nao 
 Additional Support: VSX, McCoy!, Sunpack, sublogic, nirvana, Scandal, Napi96, Zbombe, jedi93, barra81, Dogus + The Guild 2 Community!
 Internal Testing: ThreeOfMe, Jollina, VSX, McHedgehoghunter, Yaay, morpheusblue, J E L L Y, OptititPrime237, jooe, Daimyo21, Settembrini
-                  BubblesTheRoo, Craftgeeking, Mr. Bro
+                  BubblesTheRoo, Craftgeeking, Mr. Bro, , Dr.Kulid357
+
 
 Localization:
 German: Fajeth, ThreeOfMe

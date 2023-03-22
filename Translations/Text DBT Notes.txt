@@ -1,2 +1,0 @@
-Colourcode to highlight in Msg-Box / MsgNews: $C[115,5,20] Default Colour: $C[0,0,0] (black)
-Colourcode to highlight in Tooltips or Onscreenshelp or Black background: $C[225,214,158] Default Colour: $C[255,255,255] (white)

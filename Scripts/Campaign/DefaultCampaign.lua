@@ -493,9 +493,11 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		if NumBuildings >0 then
 			for i=0, NumBuildings-1 do
 				if BuildingGetCharacterClass("Building"..i) == Class then
-					if BuildingBuy("Building"..i, "boss", BM_STARTUP) then
-						FoundWS = true
-						break
+					if BuildingGetType("Building"..i) ~= GL_BUILDING_TYPE_RANGERHUT and BuildingGetType("Building"..i) ~= GL_BUILDING_TYPE_MINE then
+						if BuildingBuy("Building"..i, "boss", BM_STARTUP) then
+							FoundWS = true
+							break
+						end
 					end
 				end
 			end
