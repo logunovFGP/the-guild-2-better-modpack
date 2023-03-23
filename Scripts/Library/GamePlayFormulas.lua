@@ -918,31 +918,31 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	local ClassValue = {}
 	
 	if MeasureID == 530 then -- Flirt
-		ClassValue = { 1.5, 1.5, 2.5, 1.5, 0, 0 }
+		ClassValue = { 2, 2, 3, 2, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 540 then -- Hug
-		ClassValue = { 3.5, 2.5, 1.5, 2.5, 0, 0 }
+		ClassValue = { 4, 3, 2, 3, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 570 then -- Kiss
-		ClassValue = { 4, 3, 2, 4, 0, 0 }
+		ClassValue = { 4.5, 3.5, 2.5, 4.5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 2300 then -- Make A Present
-		ClassValue = { 3.5, 3, 4, 2.5, 0, 0 }
+		ClassValue = { 4, 3.5, 4.5, 3, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 2310 then -- Compliment
-		ClassValue = { 1.5, 1, 2.5, 1, 0, 0 }
+		ClassValue = { 2, 1.5, 3, 1.5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 2320 then -- Dancing
-		ClassValue = { 3.5, 2.5, 3.5, 1.5, 0, 0 }
+		ClassValue = { 4, 3, 4, 2, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 1520 then -- Bathing
-		ClassValue = { 4, 3, 2, 4, 0, 0 }
+		ClassValue = { 5, 4, 3, 5, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 1530 then -- Bewitching
-		ClassValue = { 4, 2, 2, 3, 0, 0 }
+		ClassValue = { 5, 3, 3, 4, 0, 0 }
 		Value = ClassValue[Class]
 	elseif MeasureID == 460 then -- Dialog
-		ClassValue = { 0.5, 1, 2, 0.25, 0, 0 }
+		ClassValue = { 1, 1.5, 2.5, 0.75, 0, 0 }
 		Value = ClassValue[Class]
 	end
 
