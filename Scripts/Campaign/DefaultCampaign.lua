@@ -68,6 +68,16 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		end
 	end
 	
+	-- still no working hut? then try lvl 1 spouse list
+	if not AliasExists("WorkingHut") then
+		for i=1, NumSpouseTypes do
+			if CityGetRandomBuilding(City, -1, SpouseTypes[i], 1, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 1
+				LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 1")
+				break
+			end
+		end
+	end
+	
 	-- still no working hut, then build a new one.
 	if not AliasExists("WorkingHut") then 
 		LogMessage("ShadowDynasty No "..Number.." needs to build a new Working Hut")
@@ -276,11 +286,6 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 					LogMessage("Change Class of "..GetName("Spouse"))
 					SimSetClass("Spouse", BuildingClass)
 				end
-			end
-			
-			if not AliasExists("SpouseShop") then -- if still nothing exist, find the best remaining building
-				LogMessage("Spouse found no SpouseShop before, get a new one!")
-				CityGetBuildingForCharacter(City, "Spouse", FILTER_NO_DYNASTY, "SpouseShop")
 			end
 			
 			if AliasExists("SpouseShop") then -- now buy it if possible
