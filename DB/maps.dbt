@@ -17,8 +17,7 @@ Data:
 9   "Novaesium"              0   "Novaesium"            16   3   "germany"      |
 10  "hanse"                  0   "Hanse"                16   3   "hansa"        | 
 11  "newark"                 0   "Newark"               6    3   "england"      | 
-12  "augsburg"               0   "South_Germany"        12   3   "germany"      |
+12  "augsburg"               0   "South_Germany"        8    3   "germany"      |
 13  "lyon_3s"                0   "France_3s"            12   3   "france"       |
-14  "vienna"                 0   "vienna"               16   3   "austria"      |
-15  "calenberg"              0   "Calenberg"            10   3   "germany"      |
+14  "calenberg"              0   "Calenberg"            10   3   "germany"      |
   
