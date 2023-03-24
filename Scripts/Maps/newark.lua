@@ -1,6 +1,6 @@
 -- the "Prepare" function is called directly after the map is loaded from the .wld-file
 function Prepare()
-	ScenarioSetOutdoorScrollBoundaries(-21040, 1388, -18522, -21235, 24090, -6788, 12511, 20432)
+	ScenarioSetOutdoorScrollBoundaries(-27040, 500, -21822, -23235, 25090, -9388, 18511, 24432)
 	ScenarioSetNameLanguage("english")
 	
 	local worldname = "Newark"
