@@ -638,6 +638,10 @@ function Run()
 	end
 	
 	-- get target outside of the current building if building is a worker hut or residence
+	if not CanBeInterruptetBy("Destination", "", "MakeAPresent") then
+		return
+	end
+	
 	if GetInsideBuilding("Destination", "DestBuilding") then
 		if BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING or BuildingGetType("DestBuilding") == GL_BUILDING_TYPE_RESIDENCE then
 			GetOutdoorMovePosition("", "DestBuilding", "MovePos")

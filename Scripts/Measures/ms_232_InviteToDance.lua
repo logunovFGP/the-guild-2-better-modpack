@@ -43,6 +43,10 @@ function Run()
 				return
 			end
 		end
+		
+		if not CanBeInterruptetBy("Destination", "", "InviteToDance") then
+			return
+		end
 
 		if not GetSettlement("", "city") then
 			return
