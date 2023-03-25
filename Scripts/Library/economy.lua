@@ -839,10 +839,11 @@ function CalcNeedsForMarket(CityAlias)
 		CityGetLocalMarket(CityAlias, "MarketAlias")
 		CityNeedCount, CityNeeds = economy_CalcCurrentResourceNeeds("MarketAlias", CityNeedCount, CityNeeds, 0.4)
 		-- save first five needs as properties
-		for i=1, 5 do
+		for i=1, 6 do
 			if i <= CityNeedCount and CityNeeds[i] then
 				SetProperty("MarketAlias", "twpNeed"..i, CityNeeds[i][1])
 				SetProperty("MarketAlias", "twpNeedAmount"..i, CityNeeds[i][2])
+				--LogMessage(GetName(CityAlias) .. " sells: " .. CityNeeds[i][2] .. " " .. ItemGetName(CityNeeds[i][1]))
 			else
 				RemoveProperty("MarketAlias", "twpNeed"..i)
 				RemoveProperty("MarketAlias", "twpNeedAmount"..i)
