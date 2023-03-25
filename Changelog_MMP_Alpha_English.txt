@@ -36,3 +36,5 @@ Fixes (Modpack):
 - Fixed bathing alone.
 - Fixed traderoute-exploit.
 - Fixed Vienna frog eye gathering (pathfinding error)
+- When another dynasty got a new title, the message didn't show the name.
+
