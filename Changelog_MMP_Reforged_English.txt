@@ -82,6 +82,7 @@ _Design_
 - Some character textures have been overhauled.
 - The number of possible dynasties per map has been adjusted.
 - Map duplicates have been removed. Thus multiple old maps, which I don't have the source files from to edit them, can no longer be played on.
+- In addition some maps have been disabled due to design issues or bugs I can not fix.
 - The message 'Someone feels neglected' has no voiceover anymore and the text has been changed.
 - To start an affair your residence doesn't matter anymore, instead you simply need the title "Free citizen"
 - The Action 'Diplomacy' is now a building action instead of a character action.
@@ -285,6 +286,7 @@ _General_
 - Added a new action to mark a dynasty character as important (same category as inventory-action). That character then will appear in the 'Important Persons' list.
 - Thugs on patrol will remove pamphlets of the notice board if they pass it, however it will cost you some coins depending on your title.
 - Added a new map "Yorkshire".
+- Improved all maps in different aspects like building space or pathfinding.
 - New credit scene.
 - Re-added the two additional building-levels for the piratehaven.
 - If slandered, the victim now gets a notification and the evidence against him to his memory book. Also characters in a large area around the town crier get the same evidence.
@@ -307,6 +309,7 @@ _General_
 - Now visitors of the notice board gain a small amount of experience if they get a laughter from reading pamphlets. Cooldown 12 hours.
 - When gaining a new office, you will now get an athmospheric description in addition to the list of privileges.
 - Added two new high-end nobility titles (but privileges will follow later)
+- Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
 
 _Patron_
 - Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.

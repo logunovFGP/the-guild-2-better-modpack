@@ -4,7 +4,7 @@ end
 
 
 function Prepare()
-	local RandomTime = 4 + Rand(16)
+	local RandomTime = 6 + Rand(12)
 	local Season = { EN_SEASON_SPRING, EN_SEASON_SUMMER, EN_SEASON_AUTUMN, EN_SEASON_WINTER }
 	local Randomizer = 1 + Rand(4)
 	

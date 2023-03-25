@@ -117,28 +117,25 @@ end
 function RemovePamphlet(blackboard, cost)
 	
 	--check pamphlets (from di_RemovePamphlet.lua)
+	local Idx = -1
+	
 	for i=0, 3 do
 		if HasProperty(blackboard,"Pamphlet_"..i) then
 			local PamphletID = GetProperty(blackboard, "Pamphlet_"..i)
 			if GetAliasByID(PamphletID, "PamphletVictim") then
 				if (GetDynastyID("PamphletVictim") == GetDynastyID("")) then
-					SetData("PamphletIdx", i)
+					Idx = i
 				end
 			end
 		end
 	end
 	
-	--
-	
-	local Idx
-	if HasData("PamphletIdx") then
-		Idx = GetData("PamphletIdx")
+	if Idx >= 0 then
+		if not HasProperty(blackboard, "Pamphlet_"..Idx) then
+			return		
+		end
 	else
 		return
-	end
-
-	if not HasProperty(blackboard, "Pamphlet_"..Idx) then
-		return		
 	end
 	
 	-- animation stuff
@@ -151,12 +148,12 @@ function RemovePamphlet(blackboard, cost)
 	MsgSay("", "@L_PATROLTOWN_PAMPHLET_REMOVE_SAY", GetID("Boss"))
 	Sleep(1)
 	
+	-- check again
 	if not HasProperty(blackboard, "Pamphlet_"..Idx) then
 		return		
 	end
 	
 	-- remove pamphlet if you have enough money
-	
 	if GetMoney("Boss") >= cost then
 		if BlackBoardRemovePamphlet(blackboard, Idx) then
 			chr_SpendMoney("Boss", cost, "CostBribes", true)

@@ -3,6 +3,7 @@ function Init()
 end
 
 function Run()
+
 	-- get the blackboard
 	if DynastyIsAI("") then
 		GetSettlement("", "BlackBoardCity")
@@ -14,6 +15,7 @@ function Run()
 			return 
 		end
 	end
+	
 	if IsStateDriven() then
 		for i=0, 3 do
 			if HasProperty("BlackBoard", "Pamphlet_"..i) then
@@ -36,7 +38,7 @@ function Run()
 		return
 	end
 
-	if not HasProperty("BlackBoard","Pamphlet_"..Idx) then
+	if not HasProperty("BlackBoard", "Pamphlet_"..Idx) then
 		return		
 	end
 
@@ -45,8 +47,9 @@ function Run()
 	AlignTo("", "BlackBoard")
 	Sleep(1)
 	PlayAnimation("", "manipulate_middle_up_r")
-
 	Sleep(1)
+	
+	-- check again
 	if not HasProperty("BlackBoard", "Pamphlet_"..Idx) then
 		return		
 	end
@@ -60,9 +63,9 @@ function Run()
 			RemoveProperty("BlackBoard", "Pamphlet_"..Idx.."Dur")
 		end
 
-		local MeasureID = GetCurrentMeasureID("")
-		local TimeOut = mdata_GetTimeOut(MeasureID)
-		SetMeasureRepeat(TimeOut)
+		--local MeasureID = GetCurrentMeasureID("")
+		--local TimeOut = mdata_GetTimeOut(MeasureID)
+		--SetMeasureRepeat(TimeOut)
 		chr_GainXP("", GetData("BaseXP"))
 	end
 end

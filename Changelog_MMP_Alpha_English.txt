@@ -18,6 +18,7 @@ Features:
 - When gaining a new office, you will now get an athmospheric description in addition to the list of privileges.
 - Added completely new generated Narrator Voice Overs for the International Audience.
 - Added two new Nobility titles (more or less placeholders) and modified prices/building limit accordingly.
+- Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)

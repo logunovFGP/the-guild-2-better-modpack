@@ -81,6 +81,7 @@ _Design_
 - Einige Charaktertexturen wurden überarbeitet.
 - Die Anzahl möglicher Dynastien je nach Karte wurde angepasst.
 - Karten-Duplikate wurden deaktiviert. Eine Reihe von Karten, bei denen die Rohdaten zum Bearbeiten fehlen, sind daher nicht mehr spielbar.
+- Zusätzlich wurden einige Karten komplett entfernt, die nicht den Qualitätsstandards der Mod entsprechen oder für mich nicht fixbare Bugs enthalten.
 - Die Nachricht "Jemand fühlt sich vernachlässigt" wird nicht mehr vertont und hat einen anderen Text.
 - Um eine Liebschaft einzugehen, ist der Wohnsitz nun irrelevant, stattdessen benötigt man nur den Titel 'Freibürger'
 - Die Fähigkeit "Kama-Sutra-Meister" wurde umbenannt in "Unwiderstehlich"
@@ -290,6 +291,7 @@ _Allgemein_
 - Es gibt nun eine Maßnahme, mit der man Dynastiecharaktere als 'wichtig' markieren kann (Selbe Kategorie wie das Inventar). Sie erscheinen dann separat in der 'Wichtige Personen' Liste.
 - Schergen auf Patrouille werden Pamphlete vom Schwarzen Brett entfernen, wenn sie in der Nähe sind. Das kostet allerdings ein paar Münzen, abhängig vom Titel.
 - Die neue Karte 'Yorkshire' wurde hinzugefügt.
+- Alle Karten wurden hinsichtlich Gebäude-Bauplätzen, Pathfinding oder anderen Aspekten hin verbessert.
 - Neue Credits-Szene.
 - Das Piratennest hat nun wieder zwei weitere Ausbaustufen.
 - Eine Reihe zusätzlicher Sprachdateien mit Originalsprecher Aart Veder aus der ehemaligen HPFZ-Mod und anderen Zusammenschnitten wurde hinzugefügt.
@@ -313,6 +315,7 @@ _Allgemein_
 - Besucher des Schwarzen Brettes erhalten nun eine kleine Menge an Erfahrungspunkten, wenn sie durch das Bemerken eines Pamphlets lachen müssen. 12 Stunden Cooldown.
 - Wenn man ein Amt erhält, bekommt man nun zusätzlich eine athmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
 - Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
+- Familienmitglieder, die sich in der Nähe des Schwarzen Bretts aufhalten, werden Pamphlete gegen die eigene Dynastie automatisch entfernen.
 
 
 _Patron_
