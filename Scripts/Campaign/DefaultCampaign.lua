@@ -34,17 +34,17 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		for i=1, NumPrimTypes do
 			if CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], -1, -1, FILTER_HAS_DYNASTY) < 1 then
 				if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 3
-					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 3")
+					--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 3")
 					break
 				end
 					
 				if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 2
-					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 2")
+					--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 2")
 					break
 				end
 					
 				if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 1, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- check level 1
-					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 1")
+					--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." at level 1")
 					break
 				end
 			end
@@ -56,12 +56,12 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		for i=1, NumSpouseTypes do
 			if CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, SpouseTypes[i], -1, -1, FILTER_HAS_DYNASTY) < 2 then
 				if CityGetRandomBuilding(City, -1, SpouseTypes[i], 3, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 3
-					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 3")
+					--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 3")
 					break
 				end
 					
 				if CityGetRandomBuilding(City, -1, SpouseTypes[i], 2, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 2
-					LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 2")
+					--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 2")
 					break
 				end
 			end
@@ -72,7 +72,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	if not AliasExists("WorkingHut") then
 		for i=1, NumSpouseTypes do
 			if CityGetRandomBuilding(City, -1, SpouseTypes[i], 1, -1, FILTER_NO_DYNASTY, "WorkingHut") then -- level 1
-				LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 1")
+				--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." at level 1")
 				break
 			end
 		end
@@ -80,7 +80,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	
 	-- still no working hut, then build a new one.
 	if not AliasExists("WorkingHut") then 
-		LogMessage("ShadowDynasty No "..Number.." needs to build a new Working Hut")
+		--LogMessage("ShadowDynasty No "..Number.." needs to build a new Working Hut")
 		local Class = Rand(4) + 1
 		local Protos = {}
 		local ProtoCount = 0
@@ -239,22 +239,22 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		-- get a workshop for the spouse if possible
 		if AliasExists("Spouse") then
 		
-			LogMessage("Find a SpouseShop for "..GetName("Spouse"))
+			--LogMessage("Find a SpouseShop for "..GetName("Spouse"))
 			-- Get a SpouseShop
 			for i=1, NumPrimTypes do
 				if CityGetBuildingCount(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], -1, -1, FILTER_HAS_DYNASTY) < 1 and not dyn_CheckForWorkshop("boss", PrimTypes[i]) then
 					if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 3, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- check level 3
-						LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 3")
+						--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 3")
 						break
 					end
 						
 					if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 2, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- check level 2
-						LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 2")
+						--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 2")
 						break
 					end
 					
 					if CityGetRandomBuilding(City, GL_BUILDING_CLASS_WORKSHOP, PrimTypes[i], 1, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- check level 1
-						LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 1")
+						--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..PrimTypes[i].." for "..GetName("Spouse").." at level 1")
 						break
 					end
 				end
@@ -262,16 +262,16 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			
 			-- still no working hut? then check the Spouse-list in priority order
 			if not AliasExists("SpouseShop") then
-				LogMessage("Check SpouseList for "..GetName("Spouse"))
+				--LogMessage("Check SpouseList for "..GetName("Spouse"))
 				for i=1, NumSpouseTypes do
 					if not dyn_CheckForWorkshop("boss", SpouseTypes[i]) then
 						if CityGetRandomBuilding(City, -1, SpouseTypes[i], 3, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- level 3
-							LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." for "..GetName("Spouse").." at level 3")
+							--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." for "..GetName("Spouse").." at level 3")
 							break
 						end
 							
 						if CityGetRandomBuilding(City, -1, SpouseTypes[i], 2, -1, FILTER_NO_DYNASTY, "SpouseShop") then -- level 2
-							LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." for "..GetName("Spouse").." at level 2")
+							--LogMessage("ShadowDynasty No "..Number.." has found Building Type "..SpouseTypes[i].." for "..GetName("Spouse").." at level 2")
 							break
 						end
 					end
@@ -283,7 +283,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 				local BuildingClass = BuildingGetCharacterClass("SpouseShop")
 				local MyClass = SimGetClass("Spouse")
 				if BuildingClass ~= MyClass then
-					LogMessage("Change Class of "..GetName("Spouse"))
+					--LogMessage("Change Class of "..GetName("Spouse"))
 					SimSetClass("Spouse", BuildingClass)
 				end
 			end
