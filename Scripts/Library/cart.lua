@@ -102,11 +102,11 @@ function UnloadAll(CartAlias, DestAlias)
 						end
 					end
 				end
-				LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
+				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
 				Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
-				LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
+				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
 				ItemStock = GetItemCount(DestAlias, ItemId)
-				LogMessage("Stock of "..ItemGetName(ItemId).." is now at "..ItemStock)
+				--LogMessage("Stock of "..ItemGetName(ItemId).." is now at "..ItemStock)
 			else
 				Transfer(CartAlias, DestAlias, INVENTORY_SELL, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 			end
@@ -173,12 +173,12 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	local EstimatedMoney = 0
 	
 	while OpenSlots > 0 and CurrentItem <= Count do
-		LogMessage("WorldTrader ID: "..GetID(CartAlias) .. " open slots: " .. OpenSlots)
+	--	LogMessage("WorldTrader ID: "..GetID(CartAlias) .. " open slots: " .. OpenSlots)
 		ItemId = ShoppingList[CurrentItem][1]
 		ReqAmount = ShoppingList[CurrentItem][2]
 		BuildingGetCity(BldAlias, "City")
 		local ItemStock = GetItemCount(BldAlias, ItemId)
-		LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
+	--	LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
 		if ItemId and ReqAmount > 0 then
 			local Error, ItemTransfered = Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
 			-- Add some bargain-bonus on market buys
@@ -193,9 +193,9 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 					end
 				end
 			end
-			LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))
+			--LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))
 			ItemStock = GetItemCount(BldAlias, ItemId)
-			LogMessage("New stock is now "..ItemStock)
+			--LogMessage("New stock is now "..ItemStock)
 			
 			if BargainMoney > 0 then
 				local BalanceSheet = "WaresSold"
