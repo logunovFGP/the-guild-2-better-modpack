@@ -221,7 +221,7 @@ Data:
 317   "CanRoughUp"   "__F((Object.CanBeControlled()))"   |
 318   "CanBeGathered"   "__F((Object.CanBeGathered()))"   |
 319   "ValidBuildingTargetForEvilMeasures"   "__F(NOT(Object.BelongsToMe())AND(Object.IsClass(1))OR(Object.IsClass(2))AND(Object.ActionAdmissible()))"   |
-320   "InstantDynastyCharStartDialog"   "__F(NOT(Object.IsHostile())AND NOT(Object.GetState(animal))AND NOT(Object.GetState(npc))AND NOT(Object.GetProfession()>0))"   |
+320   "InstantDynastyCharStartDialog"   "__F(NOT(Object.IsHostile())AND NOT(Object.GetState(animal))AND NOT(Object.GetProfession()>0))"   |
 321   "InstantDynastyCharPropelEmployes"   "__F((Object.CanBeControlled())AND (Object.CanWorkHere()))"   |
 322   "InstantAttack"   "__F((Object.CanAttack())AND(Object.ActionAdmissible())AND NOT(Object.HasImpact(Unantastbar))AND(Object.IsHostile())AND(Object.IsClass(4))OR(Object.GetProfession()== 18)OR(Object.GetProfession()== 15))"   |
 323   "InstantSawField"   "__F(NOT(Object.CanBeGathered())AND (Object.IsResourceMeasure()))"   |

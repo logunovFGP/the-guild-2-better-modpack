@@ -893,7 +893,7 @@ function CalcSalesForMarket(CityAlias)
 	end
 	-- sort list
 	Sales = helpfuncs_QuickSort(Sales, 1, SalesCount, helpfuncs_SortBySecondValue)
-	
+	CityGetLocalMarket(CityAlias, "MarketAlias")
 	-- save first six items as properties
 	for i=1, 6 do
 		if i <= SalesCount and Sales[i] then
