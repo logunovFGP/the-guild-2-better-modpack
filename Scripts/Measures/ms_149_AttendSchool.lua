@@ -26,13 +26,13 @@ function Run()
 				StopMeasure()
 			end
 		elseif (choice==2) then
-			if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+		--	if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
 					StopMeasure()
 				end
-			else
-				StopMeasure()
-			end
+		--	else
+		--		StopMeasure()
+		--	end
 		elseif (choice==3) then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding3") then
 				StopMeasure()
@@ -52,15 +52,10 @@ function Run()
 			button1 = ""
 		end
 		
-		local GuildHouseExists = gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] or 0
-		if (GuildHouseExists > 0) and FameLvl > 0 then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
-				button2 = ""
-			end
-		else
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
 			button2 = ""
 		end
-		
+
 		if GetNobilityTitle("") < 5 or GetOutdoorLocator("MapExit1", 1, "DestPos") == 0 or ImpFameLvl < 1 then
 			button3 = ""
 		end

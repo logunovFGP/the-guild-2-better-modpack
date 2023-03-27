@@ -85,6 +85,10 @@ function Run()
 	------------------------------------------------------
 	
 	while true do
+		if not AliasExists("") then
+			break
+		end
+		
 		if GetImpactValue("", "Sprain") == 1 then
 			state_sick_SprainBehaviour()
 		elseif GetImpactValue("", "Cold") == 1 then
@@ -106,6 +110,10 @@ function Run()
 		else
 			break
 		end
+	end
+	
+	if not AliasExists("") then
+		return
 	end
 	
 	SetState("", STATE_SICK, false)

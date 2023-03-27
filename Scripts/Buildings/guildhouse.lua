@@ -8,10 +8,10 @@ function Setup()
 
 	BuildingGetCity("", "City")
 	
-	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+	--if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
 		SetProperty("City", "Guildhall", GetID(""))
 		MeasureRun("", nil, "GuildTrading")
-	end
+	--end
 end
 
 function PingHour()
@@ -438,16 +438,16 @@ function CheckSimsInside()
 	local forceexit = false
 	BuildingGetCity("", "City")
 	
-	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] == 0) then
-		forceexit = true
-	end
+--	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] == 0) then
+--		forceexit = true
+--	end
 
-	BuildingGetInsideSimList("","SimList")
+	BuildingGetInsideSimList("", "SimList")
 
 	local SimCnt = ListSize("SimList")
 
 	for i=0, SimCnt - 1 do
-		ListGetElement("SimList",i,"Sim")
+		ListGetElement("SimList", i, "Sim")
 		
 		if forceexit then
 			if not GetState("Sim", STATE_TOWNNPC) then

@@ -1,49 +1,38 @@
 function Run()
-	SetState("",STATE_TOWNNPC,true)
-	SimSetMortal("",false)
-	GetHomeBuilding("","home")
-	BuildingGetCity("home","homecity")
-	CityGetRandomBuilding("homecity",-1,GL_BUILDING_TYPE_GUILDHOUSE,-1,-1, FILTER_IGNORE,"myguildhouse")
 
-	while true do
-		-- try to walk to the guildhouse
-		if GetID("myguildhouse")~=-1 then
-			if GetLocatorByName("myguildhouse","GuildClerkPos","destpos") then
-				while true do
-					if f_BeginUseLocator("","destpos", GL_STANCE_STAND, true) then
-						break 
-					end
-					Sleep(2)
-				end
+	SetState("", STATE_TOWNNPC, true)
+	SimSetMortal("", false)
+	GetHomeBuilding("", "home")
+	BuildingGetCity("home", "homecity")
+	CityGetRandomBuilding("homecity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "myguildhouse")
 
-				if (gameplayformulas_CheckPublicBuilding("homecity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-					SetExclusiveMeasure("", "StartDialog",EN_PASSIVE)	
-					break
-				else
-					Sleep(25)
-					std_guildclerk_CheckAge()
-				end
-			end
-		end
-
-		while true do
-			Sleep(50)
-			std_guildclerk_CheckAge()
+	local FindLocator = "GuildClerkPos"
+	if GetFreeLocatorByName("myguildhouse", FindLocator, -1, -1, "destpos", false) then
+		if f_BeginUseLocator("", "destpos", GL_STANCE_STAND, true) then
+			SetExclusiveMeasure("", "StartDialog", EN_PASSIVE)
 		end
 	end
 	
-	Sleep(5)
+	if not AliasExists("destpos") then
+		LogMessage("No Guild Clerk post found")
+		StopMeasure()
+	end
+
+	while true do
+		std_guildclerk_CheckAge()
+		Sleep(600)
+	end
 end
 
 function CheckAge()
-	if SimGetAge("")>65 then
+	if SimGetAge("") > 65 then
 		SimSetAge("", 60)
 	end
 end
 
 function CleanUp()
 	if AliasExists("destpos") then
-		f_EndUseLocator("","destpos",GL_STANCE_STAND)
+		f_EndUseLocator("", "destpos", GL_STANCE_STAND)
 	end
 	AllowAllMeasures("")
 end
