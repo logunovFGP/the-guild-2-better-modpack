@@ -240,6 +240,7 @@ _Rogue_
 - Protectionmoney rackets showed the wrong duration in the tooltip.
 - Jugglers got too much xp for production.
 - mercenaries 'offer building protection' action showed no cooldown in the tooltip
+- You can no longer destroy a building completely by plundering it (e.g. counting houses)
 
 _AI_
 - Shadow AI could not start the game as an alchemist.

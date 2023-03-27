@@ -69,7 +69,11 @@ function Run()
 	local Money = Plunder("","Destination",22)
 	if (Money > 0) then
 		AddImpact("Destination","buildingburgledtoday",1,12)
-		ModifyHP("Destination", -(0.05*GetMaxHP("Destination")), false)
+		local Damage = 0.05*GetMaxHP("Destination")
+		if Damage > GetHP("Destination") then
+			Damage = GetHP("Destination")-5
+		end
+		ModifyHP("Destination", -Damage, false)
 		local Time = MoveSetActivity("", "carry")
 		Sleep(2)
 		CarryObject("", "Handheld_Device/ANIM_Bag.nif", false)

@@ -15,8 +15,8 @@ function Run()
 	
 	if DynastyIsAI("") then
 		local 	Att
-		local		Def
-		local		Ok = false
+		local	Def
+		local	Ok = false
 		
 		for trys=0,4 do
 	
@@ -58,8 +58,15 @@ function Run()
 	SendCommandNoWait("","Progress")
 	SendCommandNoWait("Destination","Progress")
 	DynastySetDiplomacyState("Destination","",DIP_FOE)
+	
 	while GetGametime() < EndTime do
-		ModifyHP("Destination",-(0.01*GetMaxHP("Destination")),false)
+		local Damage = 0.1*GetMaxHP("Destination")
+		if Damage > GetHP("Destination") then
+			Damage = GetHP("Destination")-25
+		end
+		
+		ModifyHP("Destination", -Damage, false)
+	
 		StartSingleShotParticle("particles/plunder.nif","ParticleSpawnPos1",8,5)
 		Sleep(1)
 		StartSingleShotParticle("particles/plunder.nif","ParticleSpawnPos2",7,5)
