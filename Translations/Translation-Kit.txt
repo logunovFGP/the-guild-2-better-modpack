@@ -52,7 +52,8 @@ Changing/Creating new lines:
 1. Please highlight game terms (names of items, actions, professions and those from the glossary: LINK) in tooltips or messages with Colour codes. Write game terms in upper case (e.g. Title instead of title, Imperial Fame instead of imperial fame).
 
 -> Colourcode to highlight game terms and speech in Msg-Box / MsgNews: $C[115,5,20] Default Colour: $C[0,0,0] (black)
--> Colourcode to highlight game terms in Tooltips or Onscreenshelp or Black background: $C[225,214,158] Default Colour: $C[255,255,255] (white)
+-> Colourcode to highlight game terms in Tooltips or Black background: $C[225,214,158] Default Colour: $C[255,255,255] (white)
+-> Don't use colourcodes for abilites-description or onscreen help (grey stone background), because the colours will bug after showing the first one correctly.
 
 2. Please choose labels which are easy to recognize. Use _HEAD for headers, _BODY for the main message, _BTN for Buttons _TOOLTIP for tooltips and _VAR for labels you want to use as variables inside of another label.
 
