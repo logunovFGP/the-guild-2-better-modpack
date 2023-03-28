@@ -9,11 +9,12 @@
 
 
 function Init()
-
-	GetDynasty("Destination", "dynasty")
 	
-	if GetImpactValue("Destination", "OfficeTimer") > 0 and ImpactGetMaxTimeleft("Destination", "OfficeTimer") < 2 then
-		return
+	if not ReadyToRepeat("dynasty", "HasBribed_"..GetDynastyID("Destination")) then
+		-- message the player
+		MsgBoxNoWait("", "Destination", "@L_GENERAL_ERROR_HEAD_+0", "@L_INTRIGUE_041_BRIBECHARACTER_FAILURES_+1", GetID("Destination"))
+		SetRepeatTimer("dynasty", "AI_Bribe", 1)
+		StopMeasure()
 	end
 	
 	local Money = chr_GetBribeAmount("Destination") -- base value
@@ -35,7 +36,6 @@ function Init()
 		Button3 = ""
 	end
 	
-	MsgMeasure("", "")
 	local result = InitData("@P"..
 					Button1..
 					Button2..
@@ -47,48 +47,49 @@ function Init()
 
 	if result == 1 then
 		SetData("TFBribe", Choice1)
-		SetData("FavorGain", GL_FAVOR_MOD_SMALL) -- 5
+		SetData("FavorGain", GL_FAVOR_MOD_NORMAL) -- 10
 	elseif result == 2 then
 		SetData("TFBribe", Choice2)
-		SetData("FavorGain", GL_FAVOR_MOD_NORMAL) -- 10
+		SetData("FavorGain", GL_FAVOR_MOD_GREATER) -- 15
 	elseif result == 3 then
 		SetData("TFBribe", Choice3)
-		SetData("FavorGain", GL_FAVOR_MOD_LARGE) -- 20
+		SetData("FavorGain", GL_FAVOR_MOD_VERYLARGE) -- 25
+	elseif result == "C" then
+		SetRepeatTimer("dynasty", "AI_Bribe", 2)
 	end
 end
 
 function AIInitBribe()
 	--AI decides how much money to spend
-	local OwnerMoney = GetMoney("Owner")
-	local DestMoney = GetMoney("Destination")
+	
+	local Money = chr_GetBribeAmount("Destination") -- base value
+	local Choice1 = Money * 0.25
+	local Choice2 = Money * 0.5
+	local Choice3 = Money
+	local MyMoney = GetMoney("Destination") - 1000
 	local Favor = GetFavorToSim("Destination", "Owner")
-	local SpendFactor = 0
+	local SpendFactor = 3
 	
-	if OwnerMoney < DestMoney then
-		SpendFactor = SpendFactor + 1
+	if MyMoney < Choice3 then
+		SpendFactor = 2 
+	elseif MyMoney < Choice2 then 
+		SpendFactor = 1
+	elseif MyMoney < Choice1 then
+		return "C"
 	end
 	
-	if Favor < 50 then
-		SpendFactor = SpendFactor + 1
+	GetDynasty("Destination", "AI_Dyn")
+	local Ambition = dyn_MakeDecision("AI_Dyn", "ambition") 
+	local Greed = dyn_MakeDecision("AI_Dyn", "greed")
+	
+	if Greed > Ambition then
+		SpendFactor = SpendFactor - 1
 	end
 	
-	if OwnerMoney < DestMoney * 0.05 then
-		if SpendFactor > 1 then
-			SpendFactor = 1
-		end
-		
-	elseif OwnerMoney < DestMoney * 0.1 then
-		if SpendFactor > 2 then
-			SpendFactor = 2
-		end
-	end
-	
-	if SpendFactor == 2 then
-		return 3	
-	elseif SpendFactor == 1 then
-		return 2
+	if SpendFactor < 1 then
+		return "C"
 	else
-		return 1
+		return SpendFactor
 	end
 end
 
@@ -96,15 +97,30 @@ function AIDecision()
 	
 	--AI accept or decline money
 	local Money = 0 + GetData("TFBribe")
-	local DestMoney = GetMoney("Destination") / 10
-	local Favor = GetFavorToSim("Destination","Owner")
-	local RhetoricSkill = GetSkillValue("",RHETORIC)
-	local FavorFactor = ((Money / DestMoney) * 100) + Favor + RhetoricSkill
+	local Favor = GetFavorToSim("Destination", "Owner")
+	GetDynasty("Destination", "AI_Dyn")
+	local AcceptChance = dyn_MakeDecision("AI_Dyn", "greed") or 10
+	local DeclineChance = dyn_MakeDecision("AI_Dyn", "bribes") or 10
 	
-	if FavorFactor < 50 then
-		return 2
-	else
+	if Favor >= 60 then
+		AcceptChance = AcceptChance + 10
+	elseif Favor < 40 then
+		DeclineChance = DeclineChance + 20
+	end
+	
+	local MyMoney = GetMoney("Destination")
+	if Money > MyMoney then
+		AcceptChance = AcceptChance + 20
+	elseif Money > (MyMoney / 2) then
+		AcceptChance = AcceptChance + 10
+	elseif Money < (MyMoney / 10) then
+		DeclineChance = DeclineChance + 20
+	end
+	
+	if AcceptChance >= DeclineChance then
 		return 1
+	else
+		return 2
 	end
 end
 
@@ -147,12 +163,9 @@ function Run()
 	end
 	
 	--do visual stuff
-	CommitAction("bribe", "Owner", "Owner", "Destination")
-	--PlayAnimationNoWait("Destination","cogitate")
 	PlayAnimation("", "watch_for_guard")
 	
-	local time1
-	local time2
+	local time1, time2
 	time1 = PlayAnimationNoWait("Owner", "use_object_standing")
 	time2 = PlayAnimationNoWait("Destination", "cogitate")
 	Sleep(1)
@@ -161,12 +174,6 @@ function Run()
 	
 	Sleep(1)
 	CarryObject("", "", false)
-	CarryObject("Destination", "Handheld_Device/ANIM_Smallsack.nif",false)
-	time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
-	Sleep(1)
-	StopAnimation("")
-	PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
-	CarryObject("Destination", "", false)	
 	
 	GetDynasty("", "MyDyn")
 	SetRepeatTimer("MyDyn", GetMeasureRepeatName(), TimeOut)
@@ -181,25 +188,36 @@ function Run()
 				"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_HEAD_+0",
 				"@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_VICTIM_BODY_+0",
 				GetID(""), Money)
-	local Index
-	local ReplacementLabel
+	
+	local Index, ReplacementLabel
+	
 	if not DynastyIsPlayer("Destination") then
 		camera_CutsceneBothLock("cutscene", "Destination")
 	end
 	
 	if Result == 1 then --accept money
+		
+		CarryObject("Destination", "Handheld_Device/ANIM_Smallsack.nif", false)
+		time2 = PlayAnimationNoWait("Destination", "fetch_store_obj_R")
+		Sleep(1)
+		StopAnimation("")
+		PlaySound3D("Destination", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
+		CarryObject("Destination", "", false)	
+		
+		-- set the destination specific timeout
+		SetRepeatTimer("dynasty", "HasBribed_"..GetDynastyID("Destination"), 12)
+		
 		Index = MsgSay("Destination", "@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+"..Index
 		
 		--do the financial stuff
 		chr_SpendMoney("", Money, "CostBribes", true)
-		Sleep(1)
+		Sleep(0.5)
 		chr_RecieveMoney("Destination", Money, "IncomeBribes")
 		
 		--for the mission
 		mission_ScoreCrime("Destination", Money)
 		
-		PlaySound3D("", "Effects/coins_to_moneybag+0.wav", 1.0)
 		Sleep(1)
 		
 		--do the favor stuff
@@ -212,11 +230,18 @@ function Run()
 					"@L_INTRIGUE_041_BRIBECHARACTER_MSG_SUCCESS_BODY_+0", ReplacementLabel, GetID("Destination"))
 		
 	else	--decline money
+		
+		PlayAnimationNoWait("Destination", "propel")
+		
 		Index = MsgSay("Destination", "@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED")
 		ReplacementLabel = "_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED_+"..Index
 		
 		--do the favor stuff
 		chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_SMALL)
+		
+		-- give evidence
+		local EvidenceID = 4
+		AddEvidence("Destination", "", "Destination", EvidenceID, "")
 		
 		--show message
 		MsgNewsNoWait("", "Destination", "", "intrigue", -1,

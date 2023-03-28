@@ -1386,7 +1386,7 @@ function GetBribeAmount(SimAlias)
 	end
 	
 	local Title = GetNobilityTitle(SimAlias)
-	local Amount = (Title * 500) * OfficeLevel
+	local Amount = (Title * 1000) * OfficeLevel
 	
 	return Amount
 end

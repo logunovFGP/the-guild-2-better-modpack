@@ -454,12 +454,19 @@ end
 -- -----------------------
 -- MakeDecision
 -- -----------------------
-function MakeDecision(DynastyAlias, Trait, Random)
+function MakeDecision(DynastyAlias, Trait)
 	-- Trait must match the columns in AIPersonality.dbt
 	
 	if not HasProperty(DynastyAlias, "Personality") then
 		-- choose personality if you have none
-		SetProperty(DynastyAlias, "Personality", (Rand(6)+1))
+		if DynastyIsShadow(DynastyAlias) then
+			SetProperty(DynastyAlias, "Personality", 0)
+			LogMessage("Add PersonalityTrait: 0 to "..GetName(DynastyAlias))
+		else
+			local RandomPerso = Rand(6) + 1
+			SetProperty(DynastyAlias, "Personality", RandomPerso)
+			LogMessage("Add PersonalityTrait: "..RandomPerso.." to "..GetName(DynastyAlias))
+		end
 	end
 	
 	local PersonalityID = GetProperty(DynastyAlias, "Personality")
@@ -469,12 +476,8 @@ function MakeDecision(DynastyAlias, Trait, Random)
 	TraitValue = GetDatabaseValue("AIPersonality", PersonalityID, Trait)
 	
 	-- random check
-	local CheckValue = Rand(Random) 
-	if TraitValue >= CheckValue then
-		return (TraitValue - CheckValue) -- if positive return how much the dynasty wants this decision
-	else
-		return 0
-	end
+	local CheckValue = Rand(TraitValue) 
+	return CheckValue
 end
 
 -- -----------------------
