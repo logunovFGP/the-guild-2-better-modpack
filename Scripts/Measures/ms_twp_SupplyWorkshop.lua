@@ -185,8 +185,8 @@ function Run()
 	
 	local NeedCount, Needs
 	while true do 
-		-- 3. Calculate current demand at workshop (need arises when below 60% (0.6))
-		local NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.6)
+		-- 3. Calculate current demand at workshop (need arises when below 80% (0.8))
+		local NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.8)
 		if NeedCount and NeedCount > 0 then
 			for i = 1, SupplierCount do
 				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
@@ -198,7 +198,7 @@ function Run()
 				end
 			end
 		else
-			Sleep(120) -- nothing to do, wait a while
+			Sleep(75) -- nothing to do, wait a while
 		end	
 		
 		-- return home if necessary
@@ -208,7 +208,7 @@ function Run()
 		end
 		-- Unload at home and rest
 		cart_UnloadAll("", "MyHome")		
-		Sleep(30)
+		Sleep(15)
 	end
 end
 
