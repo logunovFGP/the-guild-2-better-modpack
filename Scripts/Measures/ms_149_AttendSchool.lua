@@ -19,20 +19,16 @@ function Run()
 
 	if IsStateDriven() then
 		--random choice
+		-- TODO: Make clever AIDecision
 		choice = Rand(3) + 1
-		if (choice==1) then
+		if (choice == 1) then
 			if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "DestBuilding1") then
-			--if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, -1, FILTER_IGNORE, "DestBuilding1") then
 				StopMeasure()
 			end
-		elseif (choice==2) then
-		--	if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
-				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
-					StopMeasure()
-				end
-		--	else
-		--		StopMeasure()
-		--	end
+		elseif (choice == 2) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding2") then
+				StopMeasure()
+			end
 		elseif (choice==3) then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding3") then
 				StopMeasure()
@@ -48,7 +44,6 @@ function Run()
 		local button3 = "@B[3,@L_ATTEND_SCHOOL_NEW_OPTION3_+0]"
 		
 		if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "DestBuilding1") then
-		--if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, -1, FILTER_IGNORE, "DestBuilding1") then
 			button1 = ""
 		end
 		
@@ -56,7 +51,7 @@ function Run()
 			button2 = ""
 		end
 
-		if GetNobilityTitle("") < 5 or GetOutdoorLocator("MapExit1", 1, "DestPos") == 0 or ImpFameLvl < 1 then
+		if GetNobilityTitle("") < 5 or ImpFameLvl < 1 then
 			button3 = ""
 		end
 		
@@ -112,7 +107,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	SetState("", STATE_INVISIBLE, true)
+	SetState("", STATE_INVISIBLE, true) -- TODO: make actual school behavior
 	
 	-- wait till school is finished
 	while not CheckGameTimerEnd() do
@@ -149,7 +144,7 @@ function Run()
 		--elseif FameLvl > 6 then
 		--	bonus = 1
 		--end
-		chr_GainXP("",250)
+		chr_GainXP("", 250)
 		--IncrementSkillValue("",5,2+bonus)
 		--IncrementSkillValue("",9,2+bonus)
 		--IncrementSkillValue("",2,1+bonus)
@@ -169,7 +164,7 @@ function Run()
 		--IncrementSkillValue("",4,2+bonus)
 		--IncrementSkillValue("",6,1+bonus)
 		--IncrementSkillValue("",3,2+bonus)
-		chr_GainXP("",500)
+		chr_GainXP("", 500)
 		textLabel = "@L_FAMILY_ATTENDSCHOOL_LORD_END_CERTIFICATE_DOCUMENT_+0"
 	end
 	
@@ -201,9 +196,9 @@ function CleanUp()
 
 	if HasData("StartTime") and not HasData("Finished") then
 		local SchoolEnd = math.floor(0+GetGametime())
-		local SchoolStart = 0+GetData("StartTime")
-		local Difference = 0+ SchoolEnd - SchoolStart
-		local MaxTime = 0+GetData("MaxTime")
+		local SchoolStart = 0 + GetData("StartTime")
+		local Difference = 0 + SchoolEnd - SchoolStart
+		local MaxTime = 0 + GetData("MaxTime")
 		
 		if HasProperty("", "Time_done_school") then
 			Difference = Difference + GetProperty("", "Time_done_school")

@@ -17,11 +17,6 @@ function Run()
 	end
 
 	GetInsideBuilding("", "Guildhouse")
-	BuildingGetCity("Guildhouse", "my_settlement")
-	if (gameplayformulas_CheckPublicBuilding("my_settlement", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
-		MsgQuick("", "@L_MEASURE_CONTRACTGUILDHOUSE_TASK_FAILURE_+1", GetID("my_settlement"))
-		StopMeasure()
-	end
 
 	local npc = GetProperty("Guildhouse", "ArtisanElder")
 	if npc==nil then

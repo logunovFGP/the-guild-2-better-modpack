@@ -7,37 +7,28 @@ end
 function Setup()
 
 	BuildingGetCity("", "City")
-	
-	--if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
-		SetProperty("City", "Guildhall", GetID(""))
-		MeasureRun("", nil, "GuildTrading")
-	--end
+	SetProperty("City", "Guildhall", GetID(""))
+	guildhouse_CheckGuildElders()
+	MeasureRun("", nil, "GuildTrading")
 end
 
 function PingHour()
 
 	BuildingGetCity("", "City")
-	
-	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
-		if not HasProperty("City", "Guildhall") then
-			SetProperty("City", "Guildhall", GetID(""))
-		end
+	if not HasProperty("City", "Guildhall") then
+		SetProperty("City", "Guildhall", GetID(""))
+	end
 		
-		guildhouse_CheckGuildElders()
-		
-		if GetRound() > 0 then
-			local currentGameTime = math.mod(GetGametime(), 24)
-			if (currentGameTime == 11) or ((currentGameTime > 11) and (currentGameTime < 12)) then
-				guildhouse_CheckGuildMasters()
-			end
-		end
-			
-		if GetCurrentMeasureName("") ~= "GuildTrading" then
-			MeasureRun("", nil, "GuildTrading")
+	if GetRound() > 0 then
+		local currentGameTime = math.mod(GetGametime(), 24)
+		if currentGameTime == 12 then
+			guildhouse_CheckGuildMasters()
 		end
 	end
-	
-	guildhouse_CheckSimsInside()
+			
+	if GetCurrentMeasureName("") ~= "GuildTrading" then
+		MeasureRun("", nil, "GuildTrading")
+	end
 end
 
 function CheckGuildElders()
@@ -430,34 +421,5 @@ function CheckGuildMasters()
 					"@L_GUILDHOUSE_MASTERLIST_BODY_+0", GetID("city"), GetYear(), 
 					textArray[1], textArray[2], textArray[3], textArray[4], textArray[5], textArray[6], 
 					textArray[7], textArray[8], textArray[9], textArray[10], textArray[11], textArray[12])
-	end
-end
-
-function CheckSimsInside()
-	
-	local forceexit = false
-	BuildingGetCity("", "City")
-	
---	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] == 0) then
---		forceexit = true
---	end
-
-	BuildingGetInsideSimList("", "SimList")
-
-	local SimCnt = ListSize("SimList")
-
-	for i=0, SimCnt - 1 do
-		ListGetElement("SimList", i, "Sim")
-		
-		if forceexit then
-			if not GetState("Sim", STATE_TOWNNPC) then
-				f_ExitCurrentBuilding("Sim")
-			end
-			
-		elseif (DynastyIsAI("Sim") and not(GetState("Sim", STATE_TOWNNPC))) then
-			if GetCurrentMeasurePriority("Sim") < 2 then
-				f_ExitCurrentBuilding("Sim")
-			end
-		end
 	end
 end

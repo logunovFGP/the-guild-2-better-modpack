@@ -15,7 +15,7 @@ function Run()
 		
 	-- get important things rolling
 	if GetData("#AldermanChooser") == nil or GetData("#AldermanChooser") == 0 then
-		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") and (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+		if CityGetRandomBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 			SetData("#AldermanChooser", GetID(""))
 		end
 	end
@@ -365,18 +365,6 @@ function CheckVillage()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
-	end
 end
 
 function CheckSmallTown()
@@ -388,18 +376,9 @@ function CheckSmallTown()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
-	end
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, 1)
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, 1)
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, 1)
 end
 
 function CheckTown()
@@ -411,19 +390,9 @@ function CheckTown()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 2)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
-	
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
-	end
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, 2)
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, 2)
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, 1)
 end
 
 function CheckCapital()
@@ -435,18 +404,9 @@ function CheckCapital()
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, 3)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_DUELPLACE, 1)
 	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GRAVEYARD, 1)
-
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_GUILDHOUSE)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_ARSENAL)[1])
-	end
-	
-	if (gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1]>0) then
-		citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, gameplayformulas_CheckPublicBuilding("", GL_BUILDING_TYPE_SOLDIERPLACE)[1])
-	end
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_GUILDHOUSE, 2)
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_ARSENAL, 3)
+	citypinghour_CheckBuilding( GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_SOLDIERPLACE, 1)
 end
 
 function CheckBuilding(Class, Type, Level, Count)

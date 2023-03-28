@@ -65,44 +65,32 @@ function Run()
 		
 	end
 	
-	if (choice==1) then
+	if (choice == 1) then
+		-- TODO make apprenticeship in actual businesses
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
-				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_JOINERY, -1, -1, FILTER_IGNORE, "DestBuilding") then
-					if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
-						return -- paranoia-fix - should never happen
-					end
-				end
-			end
-		else
+		
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_JOINERY, -1, -1, FILTER_IGNORE, "DestBuilding") then
-				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
+				´if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 					return -- paranoia-fix - should never happen
 				end
 			end
 		end
-		
-	elseif (choice==2) then
+	elseif (choice == 2) then
+	
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
-				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_IGNORE, "DestBuilding") then
-					if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BAKERY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
-						return -- paranoia-fix - should never happen
-					end
-				end
-			end
-		else
+		
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BAKERY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 					return -- paranoia-fix - should never happen
 				end
 			end
 		end
-		
-	elseif (choice==3) then
+	elseif (choice == 3) then
+	
 		Appmoney = App1
+		
 		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, -1, FILTER_IGNORE, "DestBuilding") then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_CHURCH_EV, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_CHURCH_CATH, -1, -1, FILTER_IGNORE, "DestBuilding") then
@@ -110,24 +98,18 @@ function Run()
 				end
 			end
 		end
-		
-	elseif (choice==4) then
+	elseif (choice == 4) then
+	
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "DestBuilding") then
-				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding") then -- alternative go to townhall
-					return -- paranoia-fix - should never happen
-				end
-			end	
-		else
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding") then -- alternative go to townhall
-				return -- paranoia-fix - should never happen
-			end
-		end
 		
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "DestBuilding") then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding") then -- alternative go to townhall
+				return
+			end	
+		end
 	elseif (choice == 0) then
 		Appmoney = 0
-		GetHomeBuilding("","DestBuilding")
+		GetHomeBuilding("", "DestBuilding")
 	elseif (choice == 5) or (choice == 6) then
 		Appmoney = App2
 	else 
@@ -137,7 +119,7 @@ function Run()
 	if choice < 5 then 
 		GetLocatorByName("DestBuilding", "Entry1", "DestPos")
 	else
-		GetOutdoorLocator("MapExit1",1,"DestPos")
+		GetOutdoorLocator("MapExit1", 1, "DestPos")
 	end
 
 	if not HasProperty("", "ApprenticeshipPayed"..choice) then
@@ -158,54 +140,35 @@ function Run()
 	
 	SetData("MaxTime",Time)
 	local SchoolStart = math.floor(0+GetGametime())
-	SetData("StartTime",SchoolStart)
-	if HasProperty("","Time_done_apprenticeship") then
-		local TimeLeft = 0+GetProperty("","Time_done_apprenticeship")
-		Time = 0+Time - TimeLeft
+	SetData("StartTime", SchoolStart)
+	
+	if HasProperty("", "Time_done_apprenticeship") then
+		local TimeLeft = 0 + GetProperty("", "Time_done_apprenticeship")
+		Time = 0 + Time - TimeLeft
 	end
+	
 	SetMeasureRepeat(Time)
 	StartGameTimer(Time)
 	
 	local EndTime = GetGametime() + Time
-	SetData("EndTime",EndTime)
+	SetData("EndTime", EndTime)
 	SetData("Time", Time)
 	SetProcessMaxProgress("", Time*10)
 	SendCommandNoWait("", "Progress")
 
 	-- get to the destpos a first time
-	if f_MoveTo("","DestPos",GL_MOVESPEED_RUN) then
-		SetState("",STATE_INVISIBLE,true)
-		Sleep(Rand(30)+20)
+	if f_MoveTo("", "DestPos",GL_MOVESPEED_RUN) then
+		SetState("", STATE_INVISIBLE, true)
 	end
 		
 	while not CheckGameTimerEnd() do
-		if choice > 3 or choice == 0 then -- only get next building if choice is 1 or 2
-			Sleep(Rand(30)+20)
-		else
-			if f_MoveTo("", "DestPos",GL_MOVESPEED_RUN) then
-				SetState("", STATE_INVISIBLE,true)
-				Sleep(Rand(30)+20)
-			end
-			
-			SimBeamMeUp("", "DestPos", false)
-			SetState("", STATE_INVISIBLE,false)
-			
-			if (choice==1) then
-				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_JOINERY,GL_BUILDING_TYPE_SMITHY)
-			elseif (choice==2) then
-				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_GUILDHOUSE, GL_BUILDING_TYPE_TAVERN,GL_BUILDING_TYPE_BAKERY)
-			elseif (choice==3) then
-				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_WEDDINGCHAPEL, GL_BUILDING_TYPE_CHURCH_EV,GL_BUILDING_TYPE_CHURCH_CATH)
-			elseif (choice==4) then
-				ms_150_attendapprenticeship_GetNextBuilding(GL_BUILDING_TYPE_ARSENAL, GL_BUILDING_TYPE_TOWNHALL,nil)
-			end
-		end
+		Sleep(30)
 	end	
 		
-	RemoveProperty("","Time_done_apprenticeship")
-	RemoveProperty("","ApprenticeshipPayed")
-	SetProperty("","is_apprentice")
-	SetData("Finished",1)
+	RemoveProperty("", "Time_done_apprenticeship")
+	RemoveProperty("", "ApprenticeshipPayed")
+	SetProperty("", "is_apprentice")
+	SetData("Finished", 1)
 		
 	--create the skill bonus
 	local DestClass = choice
@@ -235,53 +198,31 @@ function Run()
 	
 	-- Certificate -- TODO!
 	MsgNewsNoWait("", "", "panel_nobility_title_deed", "intrigue", -1, "@L_FAMILY_150_ATTENDAPPRENTICESHIP_END_CERTIFICATE_HEADER", "@L_FAMILY_150_ATTENDAPPRENTICESHIP_END_CERTIFICATE_DOCUMENT_NEW_+"..choice,
-		GetID(""),
-		"@L_FAMILY_150_ATTENDAPPRENTICESHIP_END_CERTIFICATE_CLASS_"..ClassName.."_+0",
-		GetID("Settlement"),
-		Gametime2Total(GetGametime()))
+				GetID(""),
+				"@L_FAMILY_150_ATTENDAPPRENTICESHIP_END_CERTIFICATE_CLASS_"..ClassName.."_+0",
+				GetID("Settlement"),
+				Gametime2Total(GetGametime()))
 	
 	ResetProcessProgress("")
 	f_ExitCurrentBuilding("")
-	SimBeamMeUp("","DestPos", false)
-	SetState("",STATE_INVISIBLE,false)
-	PlayAnimation("","cheer_01")
-	if GetHomeBuilding("","Home") then
-		f_MoveToNoWait("","Home",GL_MOVESPEED_WALK)
-	end
-	StopMeasure()
-end
-
-function GetNextBuilding(building1, building2, building3)
-	local found = false
+	SimBeamMeUp("", "DestPos", false)
+	SetState("", STATE_INVISIBLE, false)
+	PlayAnimation("", "cheer_01")
 	
-	while not found do
-		local randNumber = 3
-		if building3 == nil then
-			randNumber = 2
-		end
-		local nextBuilding = Rand(randNumber)+1
-	
-
-		if nextBuilding == 1 then
-			found = CityGetRandomBuilding("MyCity", -1, building1, -1, -1, FILTER_IGNORE, "NextDestBuilding")
-		elseif nextBuilding == 2 then
-			found = CityGetRandomBuilding("MyCity", -1, building2, -1, -1, FILTER_IGNORE, "NextDestBuilding")
-		else
-			found = CityGetRandomBuilding("MyCity", -1, building3, -1, -1, FILTER_IGNORE, "NextDestBuilding")
-		end
+	if GetHomeBuilding("", "Home") then
+		f_MoveToNoWait("", "Home",GL_MOVESPEED_WALK)
 	end
-
-	GetLocatorByName("NextDestBuilding", "Entry1", "DestPos")
 end
 
 function Progress()
+
 	while true do
 		local Time = GetData("Time")
 		local EndTime = GetData("EndTime")
 		local CurrentTime = GetGametime()
 		CurrentTime = EndTime - CurrentTime
 		CurrentTime = Time - CurrentTime
-		SetProcessProgress("",CurrentTime*10)
+		SetProcessProgress("", CurrentTime*10)
 		Sleep(6)
 	end
 end
@@ -290,30 +231,35 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
+
 	ResetProcessProgress("")
-	SetMeasureRepeat(0.001)
+	SetMeasureRepeat(0.01)
+	
 	if HasData("StartTime") and not HasData("Finished") then
 		local SchoolEnd = math.floor(0+GetGametime())
-		local SchoolStart = 0+GetData("StartTime")
-		local Difference = 0+ SchoolEnd - SchoolStart
-		local MaxTime = 0+GetData("MaxTime")
-		if HasProperty("","Time_done_apprenticeship") then
-			Difference = Difference + GetProperty("","Time_done_apprenticeship")
+		local SchoolStart = 0 + GetData("StartTime")
+		local Difference = 0 + SchoolEnd - SchoolStart
+		local MaxTime = 0 +GetData("MaxTime")
+		
+		if HasProperty("", "Time_done_apprenticeship") then
+			Difference = Difference + GetProperty("", "Time_done_apprenticeship")
 		end
+		
 		if Difference < MaxTime then
-			SetProperty("","Time_done_apprenticeship",Difference)
+		
+			SetProperty("", "Time_done_apprenticeship", Difference)
 			feedback_MessageSchedule("",
-				"@L_FAMILY_150_ATTENDAPPRENTICESHIP_NOTFINISHED_HEAD",
-				"@L_FAMILY_150_ATTENDAPPRENTICESHIP_NOTFINISHED_BODY",GetID(""),MaxTime-Difference,GetID("Destination"))
+								"@L_FAMILY_150_ATTENDAPPRENTICESHIP_NOTFINISHED_HEAD",
+								"@L_FAMILY_150_ATTENDAPPRENTICESHIP_NOTFINISHED_BODY", GetID(""), (MaxTime-Difference), GetID("Destination"))
 
-			SimBeamMeUp("","DestPos", false)
-			SetState("",STATE_INVISIBLE,false)
-			if GetHomeBuilding("","Home") and GetInsideBuildingID("") ~= GetID("Home") then
-				f_MoveToNoWait("","Home",GL_MOVESPEED_WALK)
+			SimBeamMeUp("", "DestPos", false)
+			SetState("", STATE_INVISIBLE, false)
+			
+			if GetHomeBuilding("", "Home") and GetInsideBuildingID("") ~= GetID("Home") then
+				f_MoveToNoWait("", "Home", GL_MOVESPEED_WALK)
 			end				
 		end
 	end
-
 end
 
 function GetOSHData(MeasureID)

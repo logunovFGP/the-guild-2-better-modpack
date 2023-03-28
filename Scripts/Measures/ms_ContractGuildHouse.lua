@@ -8,7 +8,7 @@ function Run()
 			StopMeasure()
 		end
 		if GetInsideBuilding("", "Guildhouse") then
-			if not (GetID("Destination")==GetID("Guildhouse")) then
+			if not (GetID("Destination") == GetID("Guildhouse")) then
 				StopMeasure()
 			end
 		else
@@ -16,7 +16,7 @@ function Run()
 		end
 	end
 
-	if BuildingGetType("")==GL_BUILDING_TYPE_GUILDHOUSE then
+	if BuildingGetType("") == GL_BUILDING_TYPE_GUILDHOUSE then
 		CopyAlias("", "Guildhouse")
 	else
 		if not GetInsideBuilding("", "Guildhouse") then
@@ -26,13 +26,8 @@ function Run()
 
 	GetSettlement("Guildhouse", "City")
 
-	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
-		MsgQuick("", "@L_MEASURE_CONTRACTGUILDHOUSE_TASK_FAILURE_+1", GetID("City"))
-		StopMeasure()
-	end
-
 	local ContractCount = GetProperty("Guildhouse", "ContractCount")
-	if ContractCount==nil or ContractCount<1 then
+	if ContractCount == nil or ContractCount < 1 then
 		StopMeasure()
 	end
 	

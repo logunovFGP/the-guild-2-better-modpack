@@ -4,62 +4,59 @@ function Run()
 	GetSettlement("", "City")
 
 	while true do
-		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
-			if GetProperty("WarChooser","WarPhase")==1 and not HasProperty("", "prewar") then
-				SetProperty("", "prewar", 1)
-				state_global_event_PreWar()
-			elseif GetProperty("WarChooser","WarPhase")==2 and HasProperty("", "prewar") then
-				RemoveProperty("", "prewar")
-				SetProperty("","waitingforresult",1)
+		if GetProperty("WarChooser","WarPhase")==1 and not HasProperty("", "prewar") then
+			SetProperty("", "prewar", 1)
+			state_global_event_PreWar()
+		elseif GetProperty("WarChooser","WarPhase")==2 and HasProperty("", "prewar") then
+			RemoveProperty("", "prewar")
+			SetProperty("","waitingforresult",1)
 --				state_global_event_OfficerPromotion()
-			elseif GetProperty("WarChooser","WarPhase")==0 and HasProperty("", "waitingforresult") then
-				RemoveProperty("","waitingforresult")
+		elseif GetProperty("WarChooser","WarPhase")==0 and HasProperty("", "waitingforresult") then
+			RemoveProperty("","waitingforresult")
 			
-				if GetProperty("WarChooser","WarWon")==2 then
-					if HasProperty("", "costs") then
-						local profit = GetProperty("", "costs") * 2.5
-						GetSettlement("", "City")
-						CreditMoney("City", profit, "WarProfit")
-						if HasProperty("City", "Warcosts") then
-							profit = GetProperty("City", "Warcosts") - profit
-						else
-							profit = profit * (-1)
-						end
-						SetProperty("City", "Warcosts", profit)
+			if GetProperty("WarChooser","WarWon")==2 then
+				if HasProperty("", "costs") then
+					local profit = GetProperty("", "costs") * 2.5
+					GetSettlement("", "City")
+					CreditMoney("City", profit, "WarProfit")
+					if HasProperty("City", "Warcosts") then
+						profit = GetProperty("City", "Warcosts") - profit
+					else
+						profit = profit * (-1)
 					end
-				else
-					if HasProperty("", "costs") then
-						local fine = GetProperty("", "costs") * 1.5
-						GetSettlement("", "City")
-						if GetMoney("City")<fine then
-							fine = GetMoney("City")
-						end
-						chr_SpendMoney("City", fine, "WarFine")
-						if HasProperty("City", "Warcosts") then
-							fine = GetProperty("City", "Warcosts") + fine
-						end
-						SetProperty("City", "Warcosts", fine)
-					end
+					SetProperty("City", "Warcosts", profit)
 				end
-			
-				RemoveProperty("", "trooper")
-				RemoveProperty("", "arkebusier")
-				RemoveProperty("", "cannon")
-				RemoveProperty("", "officers")
-				RemoveProperty("", "officer1")
-				RemoveProperty("", "officer2")
-				RemoveProperty("", "officer3")
-				RemoveProperty("", "officer4")
-				RemoveProperty("", "officer5")
-				RemoveProperty("", "captain")
-				RemoveProperty("", "prewar")
-				RemoveProperty("", "costs")
+			else
+				if HasProperty("", "costs") then
+					local fine = GetProperty("", "costs") * 1.5
+					GetSettlement("", "City")
+					if GetMoney("City")<fine then
+						fine = GetMoney("City")
+					end
+					chr_SpendMoney("City", fine, "WarFine")
+					if HasProperty("City", "Warcosts") then
+						fine = GetProperty("City", "Warcosts") + fine
+					end
+					SetProperty("City", "Warcosts", fine)
+				end
 			end
+			
+			RemoveProperty("", "trooper")
+			RemoveProperty("", "arkebusier")
+			RemoveProperty("", "cannon")
+			RemoveProperty("", "officers")
+			RemoveProperty("", "officer1")
+			RemoveProperty("", "officer2")
+			RemoveProperty("", "officer3")
+			RemoveProperty("", "officer4")
+			RemoveProperty("", "officer5")
+			RemoveProperty("", "captain")
+			RemoveProperty("", "prewar")
+			RemoveProperty("", "costs")
 		end
-		Sleep(20)
+		Sleep(30)
 	end
 end
-
 
 function PreWar()
 

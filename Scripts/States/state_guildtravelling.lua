@@ -9,23 +9,14 @@ function Init()
 end
 
 function Run()
-	if GetHomeBuilding("","myhome") then
-		BuildingGetCity("myhome","city")
-		if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_GUILDHOUSE)[1]==0) then
-			SetState("",STATE_GUILDTRAVELLING,false)
-			StopMeasure()
-		end
-	else
-		StopMeasure()
-	end
 
-	if not HasProperty("","TravellerDuration") then
-		SetState("",STATE_GUILDTRAVELLING,false)
+	if not HasProperty("", "TravellerDuration") then
+		SetState("", STATE_GUILDTRAVELLING, false)
 	end
 
 	if not GetInsideBuilding("", "Guildhouse") then
 		if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, false, "Guildhouse") then
-			SetState("",STATE_GUILDTRAVELLING,false)
+			SetState("", STATE_GUILDTRAVELLING, false)
 		end
 	end
 	GetSettlement("Guildhouse", "City")

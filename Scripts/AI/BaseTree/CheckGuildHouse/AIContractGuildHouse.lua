@@ -1,11 +1,7 @@
 function Weight()
 
 	if GetSettlement("SIM", "City") then
-		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
-			if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
-				return 0
-			end
-		else
+		if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 			return 0
 		end
 	else

@@ -458,7 +458,7 @@ function ChangeEnemyHostility(Enemy,Value)
 		end
 		enemyHost3 = enemyHost3 - tmpVal
 		if tmpVal > 0 then
-			for x=1,tmpVal do
+			for x=1, tmpVal do
 				enemyRand = Rand(3) + 1
 				if enemyRand == 1 then
 					if enemyHost1 > 96 then
@@ -483,13 +483,17 @@ function ChangeEnemyHostility(Enemy,Value)
 		end
 
 	elseif Enemy == 4 then
+		
 		tmpVal = enemyHost4 - Value
+		
 		if tmpVal < 1 then
 			tmpVal = Value - enemyHost4
 		end
+		
 		enemyHost4 = enemyHost4 - tmpVal
+		
 		if tmpVal > 0 then
-			for x=1,tmpVal do
+			for x=1, tmpVal do
 				enemyRand = Rand(3) + 1
 				if enemyRand == 1 then
 					if enemyHost1 > 96 then
@@ -514,10 +518,10 @@ function ChangeEnemyHostility(Enemy,Value)
 		end
 	end
 
-	SetProperty("WarChooser","Hostility1",enemyHost1)
-	SetProperty("WarChooser","Hostility2",enemyHost2)
-	SetProperty("WarChooser","Hostility3",enemyHost3)
-	SetProperty("WarChooser","Hostility4",enemyHost4)
+	SetProperty("WarChooser", "Hostility1", enemyHost1)
+	SetProperty("WarChooser", "Hostility2", enemyHost2)
+	SetProperty("WarChooser", "Hostility3", enemyHost3)
+	SetProperty("WarChooser", "Hostility4", enemyHost4)
 		
 	return true	
 end
@@ -526,17 +530,17 @@ function GetEnemyHostilityLevel(Enemy)
 	-- Enemy : 1 to 4
 
 	local warchooserid = GetData("#WarChooser")
-	GetAliasByID(warchooserid,"WarChooser")
-
+	GetAliasByID(warchooserid, "WarChooser")
 	local enemyHost
+	
 	if Enemy == 1 then
-		enemyHost = GetProperty("WarChooser","Hostility1")
+		enemyHost = GetProperty("WarChooser", "Hostility1")
 	elseif Enemy == 2 then
-		enemyHost = GetProperty("WarChooser","Hostility2")
+		enemyHost = GetProperty("WarChooser", "Hostility2")
 	elseif Enemy == 3 then
-		enemyHost = GetProperty("WarChooser","Hostility3")
+		enemyHost = GetProperty("WarChooser", "Hostility3")
 	else
-		enemyHost = GetProperty("WarChooser","Hostility4")
+		enemyHost = GetProperty("WarChooser", "Hostility4")
 	end
 		
 	if enemyHost < 3 then
@@ -554,14 +558,14 @@ function GetEnemyHostilityLevel(Enemy)
 	end
 
 	return 0
-
 end
 
 function GetWarRiskLevel()
+	
 	local warchooserid = GetData("#WarChooser")
-	GetAliasByID(warchooserid,"WarChooser")
+	GetAliasByID(warchooserid, "WarChooser")
 
-	local risk = GetProperty("WarChooser","WarRisk")
+	local risk = GetProperty("WarChooser", "WarRisk")
 		
 	if risk < 5 then
 		return 0
@@ -578,7 +582,6 @@ function GetWarRiskLevel()
 	end
 
 	return 0
-
 end
 
 function CheckDistance(Sim,Victim)
@@ -625,46 +628,7 @@ function StartHighPriorMusic(event, val)
 	end
 end
 
-function CheckPublicBuilding(city,building)
-	-- return {building level in this city, building level in next city level}
 
-	if not AliasExists(city) then
-		return {0, 0}
-	else
-		local Level = CityGetLevel(city)
-		if building == GL_BUILDING_TYPE_GUILDHOUSE then
-			if Level == 1 then
-				return {0, 0}
-			elseif Level == 2 then
-				return {0, 1}
-			elseif Level == 3 then
-				return {1, 2}
-			elseif Level == 4 then
-				return {2, 2}
-			elseif Level == 5 then
-				return {2, 2}
-			elseif Level == 6 then
-				return {2, 2}
-			end
-			
-		elseif building == GL_BUILDING_TYPE_ARSENAL or building == GL_BUILDING_TYPE_SOLDIERPLACE then
-			if Level == 1 then
-				return {0, 0}
-			elseif Level == 2 then
-				return {0, 0}
-			elseif Level == 3 then
-				return {0, 1}
-			elseif Level == 4 then
-				return {1, 2}
-			elseif Level == 5 then
-				return {2, 2}
-			elseif Level == 6 then
-				return {2, 2}
-			end
-		end
-	end
-	return {0, 0}
-end
 
 function GetCityUpgradeCost(curLvl)
 	if curLvl == 2 then

@@ -30,10 +30,6 @@ function Run()
 
 	GetSettlement("Arsenal", "City")
 	GetSettlement("", "settlement")
-	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_ARSENAL)[1]==0) then
-		MsgQuick("", "@L_MEASURE_BUYCANNON_FAILURE_+1", GetID("City"))
-		StopMeasure()
-	end
 
 	if not GetID("City") == GetID("settlement") then
 		MsgQuick("","@L_CONTRACTARSENAL_FAILURE_+0",GetID("settlement"))

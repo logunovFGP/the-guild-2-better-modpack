@@ -13,11 +13,6 @@ function Run()
 	
 	BuildingGetCity("guildhouse", "myCity")
 
-	if (gameplayformulas_CheckPublicBuilding("myCity", GL_BUILDING_TYPE_GUILDHOUSE)[1] == 0) then
-		MsgQuick("dynasty", "@L_MEASURE_CONTRACTGUILDHOUSE_TASK_FAILURE_+1", GetID("myCity"))
-		StopMeasure()
-	end
-
 	local year = GetProperty("guildhouse", "year")
 
 	if year ~= nil then
