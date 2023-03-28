@@ -3,17 +3,11 @@
 -- -----------------------
 function Run()
 	GetNearestSettlement("", "City")
-	if (gameplayformulas_CheckPublicBuilding("city", GL_BUILDING_TYPE_ARSENAL)[1]==0) then
-		MsgQuick("", "@L_MEASURE_BUYCANNON_FAILURE_+1", GetID("City"))
-		StopMeasure()
-	end
 	
 	local Fame = dyn_GetImperialFameLevel("")
 
 	local ImperialOfficer = false
-	if chr_GetImperialOfficer()==GetID("") then
-		ImperialOfficer = true
-	elseif Fame < 2 then
+	if Fame < 2 then
 		MsgQuick("", "@L_MEASURE_BUYCANNON_FAILURE_+0", GetID(""))
 		StopMeasure()
 	end
@@ -142,7 +136,6 @@ function Run()
 
 	AddItems("", Object, amount)
 	dyn_AddImperialFame("", amount)
-	
 end
 
 function CleanUp()
