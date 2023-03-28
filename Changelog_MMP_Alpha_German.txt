@@ -11,6 +11,7 @@ Design:
 - Zufallsereignisse wurden permanent deaktivitert. In einer zukünftigen Version werden sie komplett überarbeitet.
 - Das Feature der königlichen Berater wurde entfernt (ohnehin war dieses Feature kaum integriert).
 - Die Möglichkeit, Verteidigungstürme zu errichten, wurde entfernt.
+- Waffenkammer und Gildenhalle können nun unabhängig vom Stadt-Level genutzt werden.
 
 Features:
 - Erzähler zur Hochzeitseinladung hinzugefügt.

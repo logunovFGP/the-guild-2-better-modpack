@@ -11,6 +11,7 @@ Design:
 - Random events have been deactivated. They will get a complete rework in the future.
 - Removed the "Imperial Officer"-Mechanic (was mostly unused anyway).
 - Removed the ability to build defensive towers.
+- The arsenal and guild hall can now be used without limitations by the city level.
 
 Features:
 - Added narrator voice to wedding ceremony invitations

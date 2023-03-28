@@ -113,6 +113,8 @@ _Design_
 - Removed the "Imperial Officer"-Mechanic (was mostly unused anyway).
 - Removed the ability to build defensive towers.
 - Shadow Dynasties who have a political office at the beginning of the game, will now have up to 2 (higher leveled) workshops, a higher level residence and are already married with some children. Coloured dynasties will start (as the player) with just 1 level 1 workshop and no family.
+- The arsenal and guild hall can now be used without limitations by the city level.
+
 
 *** Vanilla-Bugs ***
 

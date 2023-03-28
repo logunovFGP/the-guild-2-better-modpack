@@ -114,6 +114,7 @@ _Design_
 - Das Feature der königlichen Berater wurde entfernt (ohnehin war dieses Feature kaum integriert).
 - Die Möglichkeit, Verteidigungstürme zu errichten, wurde entfernt.
 - Schattendynastien, die zu Spielstart ein Amt inne haben, starten nun stets mit bis zu zwei wertvolleren Gebäuden einer höheren Ausbaustufe, einem entsprechenden Wohnsitz und einem Ehepartner, während Farb-Dynastien nur einen einzigen Betrieb der ersten Stufe erhalten.
+- Waffenkammer und Gildenhalle können nun unabhängig vom Stadt-Level genutzt werden.
 
 *** Vanilla-Bugs ***
 
