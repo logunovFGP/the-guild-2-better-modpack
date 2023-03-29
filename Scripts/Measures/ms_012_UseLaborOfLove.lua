@@ -4,7 +4,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	SetProperty("Destination","CocotteHasClient",1)
+	SetProperty("Destination", "CocotteHasClient", 1)
 
 	MeasureSetNotRestartable()
 
@@ -26,8 +26,10 @@ function Run()
 	
 		-- calc price depending on the charisma of the cocotte and pay it
 		local charskill = 2
-		charskill = GetSkillValue("Destination",CHARISMA)
-		local MoneyToPay = 25 + 25*charskill
+		charskill = GetSkillValue("Destination", CHARISMA)
+		SimGetWorkingPlace("Destination", "WorkBuilding")
+		local RogueBonus =  GetImpactValue("WorkBuilding", "RogueBonus") + 1 or 1
+		local MoneyToPay = (25 + 25*charskill)*RogueBonus
 
 		if IsDynastySim("") then
 			if not chr_SpendMoney("", 500, "LaborHansel") then

@@ -1,10 +1,12 @@
 function Run()
 
-    if GetImpactValue("","HaveBeenPickpocketed")>0 then
+	if GetImpactValue("","HaveBeenPickpocketed")>0 then
 		return
 	end
-    ai_GetWorkBuilding("Actor", 102, "Juggler")
-    local begbonus = math.floor(GetImpactValue("Juggler",394))
+	
+	ai_GetWorkBuilding("Actor", 102, "Juggler")
+	local begbonus = math.floor(GetImpactValue("Juggler", "RogueBonus"))
+	local RogueBonus
 	local spender = SimGetRank("")
 	local spend
 	if spender == 0 or spender == 1 then

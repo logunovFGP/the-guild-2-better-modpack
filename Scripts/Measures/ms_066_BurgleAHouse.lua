@@ -58,8 +58,9 @@ function Run()
 	
 	--the money the thief steals
 	local Value = 1
+	local RogueBonus =  GetImpactValue("MyThievesGuild", "RogueBonus") + 1 or 1
 	-- added some base earning from burglary (that money is spawned)
-	local ValueBonus = 75
+	local ValueBonus = 75*RogueBonus
 	
 	-- if the building was scouted before you gain some bonus
 	local OwnerDyn = GetDynastyID("")

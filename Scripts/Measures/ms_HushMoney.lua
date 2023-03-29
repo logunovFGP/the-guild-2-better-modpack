@@ -98,7 +98,8 @@ function Run()
 					Sleep(1)	
 					
 					local	MercLevel	= SimGetLevel("")
-					local	VictimSpendValue = Rand(50)+(MercLevel * 50) + 50
+					local RogueBonus =  GetImpactValue("MyHome", "RogueBonus") + 1 or 1
+					local	VictimSpendValue = (Rand(50)+(MercLevel * 50) + 50)*RogueBonus
 										
 					AddImpact(DestAlias, "HaveBeenPickpocketed", 1, TimeToWait)
 					BuildingGetOwner("MyHome", "MercOwner")

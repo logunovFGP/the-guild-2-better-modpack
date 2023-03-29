@@ -36,7 +36,7 @@ function Run()
 
 	while true do
 	
-		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
+		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 			local MyPos = GetProperty("", "OutdoorPos")
 			if GetOutdoorLocator(MyPos, 1, "Pos") < 1 then
 				--no locator found? Select Market then
@@ -84,7 +84,7 @@ function Run()
 			CancelCount = CancelCount +1 -- only for AI
 		end
 		
-		if BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 and not HasProperty("", "OutdoorPos") then -- AI has no fixed pos? then get one.
+		if BuildingGetAISetting("WorkBuilding", "Enable") > 0 and not HasProperty("", "OutdoorPos") then -- AI has no fixed pos? then get one.
 			-- Find a good spot for AI
 			local MaxDistance = 10000
 			local trys = 20
@@ -118,7 +118,7 @@ function Run()
 			end
 		end
 		
-		if CancelCount >= 15 and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
+		if CancelCount >= 15 and BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 			StopMeasure()
 			break
 		end

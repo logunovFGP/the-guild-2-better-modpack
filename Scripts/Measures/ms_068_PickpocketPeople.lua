@@ -30,7 +30,7 @@ function Run()
 
 	while true do
 	
-		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
+		if HasProperty("", "OutdoorPos") and BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 			local MyPos = GetProperty("", "OutdoorPos")
 			if GetOutdoorLocator("Crowded"..MyPos, 1, "Pos") < 1 then
 				--no locator found? Select Market then
@@ -65,7 +65,7 @@ function Run()
 				VictimSkill = Rand(6) + 1
 			end
 			
-			if BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 and not HasProperty("", "OutdoorPos") then -- AI has no fixed pos? then get one.
+			if BuildingGetAISetting("WorkBuilding", "Enable") > 0 and not HasProperty("", "OutdoorPos") then -- AI has no fixed pos? then get one.
 				-- Find a good spot for AI
 				local MaxDistance = 10000
 				local trys = 20
@@ -111,7 +111,8 @@ function Run()
 						AddImpact(DestAlias, "HaveBeenPickpocketed", 1, TimeToWait)
 						
 						local ThiefLevel = SimGetLevel("")
-						local VictimSpendValue = Rand(40) + ThiefLevel * 20 + 25
+						local RogueBonus =  GetImpactValue("WorkBuilding", "RogueBonus") + 1
+						local VictimSpendValue = (Rand(40) + ThiefLevel * 20 + 25)*RogueBonus
 						
 						if Rand(100) > (100-ThiefLevel*2) then
 							VictimSpendValue = VictimSpendValue*3
@@ -165,7 +166,7 @@ function Run()
 							else
 								f_MoveTo("", "WorkBuilding", GL_MOVESPEED_RUN, 0)
 								StopAction("pickpocket", "")
-								if BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
+								if BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 									StopMeasure()
 								else
 									Sleep(20)
@@ -177,7 +178,7 @@ function Run()
 				end
 			end	
 		else
-			if CancelCount >= 15 and BuildingGetAISetting("WorkBuilding", "Produce_Selection") > 0 then
+			if CancelCount >= 15 and BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 				StopMeasure()
 				break
 			end
