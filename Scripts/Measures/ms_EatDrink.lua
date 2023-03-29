@@ -110,17 +110,20 @@ function Run()
 	     RemoveItems("",eat,1,INVENTORY_STD)
 	
 		--non alcoholic drink
-	  elseif eat==123 then
-	     local anym = PlayAnimationNoWait("","use_potion_standing")
-	     Sleep(1)
-		   CarryObject("", "Handheld_Device/ANIM_beaker.nif", false)
-	     PlaySound3D("","CharacterFX/drinking/drinking+2.ogg",1.0)
-		   Sleep(anym-1)
-		   CarryObject("","",false)
-	     heal = 1
-	     caries = 0
-	     HPPlus = Rand(3) + 3
-	     RemoveItems("",eat,1,INVENTORY_STD)
+	  elseif eat == 123 then -- HerbTea
+		local anym = PlayAnimationNoWait("","use_potion_standing")
+		Sleep(1)
+		CarryObject("", "Handheld_Device/ANIM_beaker.nif", false)
+		PlaySound3D("","CharacterFX/drinking/drinking+2.ogg",1.0)
+		Sleep(anym-1)
+		CarryObject("","",false)
+		heal = 1
+		caries = 0
+		HPPlus = Rand(3) + 3
+		if RemoveItems("", eat, 1, INVENTORY_STD) > 0 then
+			-- Heal while sleeping
+			AddImpact("", "HerbTea", 12)
+		end
 	
 		--alcoholic drink
 	  elseif eat==42 or eat==44 or eat==403 then

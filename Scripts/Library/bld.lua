@@ -267,11 +267,11 @@ function GetScaffoldOffsets(Proto)
 		OffsetX = 750
 		OffsetZ = -1900
 	elseif Proto == 1001 then -- Piratenest
-		OffsetX = 750
-		OffsetZ = -1900
+		OffsetX = 790
+		OffsetZ = -2000
 	elseif Proto == 1002 then -- Piratenest
-		OffsetX = 750
-		OffsetZ = -1900
+		OffsetX = 830
+		OffsetZ = -2050
 	end
 	
 	return OffsetX, OffsetZ
@@ -996,82 +996,9 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	chr_CheckWorkerBonuses(BldAlias)
 	
 	-- abilities for buildings (last forever)
-	local Type = BuildingGetType(BldAlias)
-	if Type == GL_BUILDING_TYPE_TAVERN then
-		local BossAbility = GetImpactValue("MyBoss", "BestHouseI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "BestHouseBoost") < BossAbility then
-				AddImpact(BldAlias, "BestHouseBoost", 1, -1)
-				AddImpact(BldAlias, "Attractivity", 0.3, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_FARM then
-		local BossAbility = GetImpactValue("MyBoss", "FarmBonusI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "FarmBoost") < BossAbility then
-				AddImpact(BldAlias, "FarmBoost", 1, -1)
-				AddImpact(BldAlias, "Productivity", 0.25, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_FRUITFARM then
-		local BossAbility = GetImpactValue("MyBoss", "FarmBonusI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "FarmBoost") < BossAbility then
-				AddImpact(BldAlias, "FarmBoost", 1, -1)
-				AddImpact(BldAlias, "Productivity", 0.25, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_ROBBER then
-		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
-				AddImpact(BldAlias, "ThiefBoost", 1, -1)
-				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_DIVEHOUSE then
-		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
-				AddImpact(BldAlias, "ThiefBoost", 1, -1)
-				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_THIEF then
-		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
-				AddImpact(BldAlias, "ThiefBoost", 1, -1)
-				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_PIRATESNEST then
-		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
-				AddImpact(BldAlias, "ThiefBoost", 1, -1)
-				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_JUGGLER then
-		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
-				AddImpact(BldAlias, "ThiefBoost", 1, -1)
-				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
-			end
-		end
-	elseif Type == GL_BUILDING_TYPE_MERCENARY then
-		local BossAbility = GetImpactValue("MyBoss", "ThiefI")
-		if BossAbility > 0 then
-			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
-				AddImpact(BldAlias, "ThiefBoost", 1, -1)
-				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
-			end
-		end
-	end
+	bld_AbilityBoosts(BldAlias, "MyBoss")
 	
-	-- Improve AI management
+	-- Improve AI management (TODO)
 	if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
 	--	bld_SetupAI(BldAlias)
 	end
@@ -1093,6 +1020,95 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 			
 			bld_CheckRivals(BldAlias)
 			bld_CheckRepairs(BldAlias)
+		end
+	end
+end
+
+function AbilityBoosts(BldAlias, BossAlias)
+	
+	local GeneralBossAbility = 0
+	
+	-- all buildings
+	GeneralBossAbility = GetImpactValue(BossAlias, "SafeguardI")
+	if GeneralBossAbility > GetImpactValue(BldAlias, "SafeBoost") then
+		AddImpact(BldAlias, "SafeBoost", 1, -1)
+		AddImpact(BldAlias, "ProtectionOfBurglary", 0.15, -1)
+		AddImpact(BldAlias, "ProtectionFromFire", 0.15, -1)
+	end
+	
+	-- specific buildings
+	local Type = BuildingGetType(BldAlias)
+	if Type == GL_BUILDING_TYPE_TAVERN then
+		local BossAbility = GetImpactValue(BossAlias, "BestHouseI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "BestHouseBoost") < BossAbility then
+				AddImpact(BldAlias, "BestHouseBoost", 1, -1)
+				AddImpact(BldAlias, "Attractivity", 0.3, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_FARM then
+		local BossAbility = GetImpactValue(BossAlias, "FarmBonusI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "FarmBoost") < BossAbility then
+				AddImpact(BldAlias, "FarmBoost", 1, -1)
+				AddImpact(BldAlias, "Productivity", 0.25, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_FRUITFARM then
+		local BossAbility = GetImpactValue(BossAlias, "FarmBonusI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "FarmBoost") < BossAbility then
+				AddImpact(BldAlias, "FarmBoost", 1, -1)
+				AddImpact(BldAlias, "Productivity", 0.25, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_ROBBER then
+		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
+				AddImpact(BldAlias, "ThiefBoost", 1, -1)
+				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_DIVEHOUSE then
+		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
+				AddImpact(BldAlias, "ThiefBoost", 1, -1)
+				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_THIEF then
+		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
+				AddImpact(BldAlias, "ThiefBoost", 1, -1)
+				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_PIRATESNEST then
+		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
+				AddImpact(BldAlias, "ThiefBoost", 1, -1)
+				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_JUGGLER then
+		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
+				AddImpact(BldAlias, "ThiefBoost", 1, -1)
+				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_MERCENARY then
+		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
+				AddImpact(BldAlias, "ThiefBoost", 1, -1)
+				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
+			end
 		end
 	end
 end

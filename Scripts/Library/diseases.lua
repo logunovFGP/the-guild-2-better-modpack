@@ -2,16 +2,16 @@
 -- Init
 -- -----------------------
 function Init()
- --needed for caching
+	--needed for caching
 end
 
-function CheckDisease(Objectalias,Force)
+function CheckDisease(ObjectAlias, Force)
 	
-	if not GetSettlement(Objectalias,"City") then
+	if not GetSettlement(ObjectAlias, "City") then
 		return false
 	end
 	
-	if GetState(Objectalias,STATE_DEAD) then
+	if GetState(ObjectAlias, STATE_DEAD) then
 		return false
 	end
 	
@@ -22,12 +22,12 @@ function CheckDisease(Objectalias,Force)
 		return false
 	end
 
-	if GetImpactValue(Objectalias, "Sickness") > 0 then
+	if GetImpactValue(ObjectAlias, "Sickness") > 0 then
 		return false
 	end
 
 	if not Force then
-		if GetImpactValue(Objectalias, "Resist") > 0 then
+		if GetImpactValue(ObjectAlias, "Resist") > 0 then
 			return false
 		end
 
@@ -36,13 +36,13 @@ function CheckDisease(Objectalias,Force)
 		end
 	end
 	
-	if not HasProperty("City","InfectedSims") then
-		SetProperty("City","InfectedSims",1)
+	if not HasProperty("City", "InfectedSims") then
+		SetProperty("City", "InfectedSims", 1)
 	else
-		CurrentInfected = GetProperty("City","InfectedSims") + 1
+		CurrentInfected = GetProperty("City", "InfectedSims") + 1
 		
 		if (CurrentInfected <= InfectableSims) or Force then
-			SetProperty("City","InfectedSims",CurrentInfected)
+			SetProperty("City", "InfectedSims", CurrentInfected)
 		else
 			return false
 		end
@@ -66,7 +66,7 @@ function Sprain(ObjectAlias, State, Force)
 	local endtime = math.mod(GetGametime(),24)+duration
 
 	if State == true then
-		if not diseases_CheckDisease(ObjectAlias,Force) then
+		if not diseases_CheckDisease(ObjectAlias, Force) then
 			return		
 		end
 
@@ -89,16 +89,16 @@ function Sprain(ObjectAlias, State, Force)
 			
 			--RemoveImpact(ObjectAlias,"MoveSpeed")
 			-- instead of RemoveImpact we add a impact for the rest of the time
-			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias,"SprainTime") then
+			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, "SprainTime") then
 				duration = math.floor(GetProperty(ObjectAlias,"SprainTime")-math.mod(GetGametime(),24))
 				AddImpact(ObjectAlias, "dexterity", 2, duration)
 				AddImpact(ObjectAlias, "craftsmanship", 2, duration)
 				AddImpact(ObjectAlias, "fighting", 2, duration)
-				RemoveProperty(ObjectAlias,"SprainTime")
+				RemoveProperty(ObjectAlias, "SprainTime")
 				MoveSetActivity(ObjectAlias)
 			end
 			
-			if GetSettlement(ObjectAlias,"City") then
+			if GetSettlement(ObjectAlias, "City") then
 				chr_DecrementInfectionCount("SprainInfected", "City")
 			end
 		end
@@ -112,30 +112,26 @@ function Cold(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
 	local duration = 24
-	local modifier = 1
+	local modifier = 1 -- all talents
 	local endtime = math.mod(GetGametime(),24)+duration
+	local TalentList = {"constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", 
+					"rhetoric", "empathy", "bargaining", "secret_knowledge" }
 
 	if State == true then
 		if not diseases_CheckDisease(ObjectAlias, Force) then
 			return		
 		end
+		
 		if not (GetImpactValue(ObjectAlias, "Cold") == 1) then
 			AddImpact(ObjectAlias, "Cold", 1, duration)
 			AddImpact(ObjectAlias, "Sickness", 1, duration)
 			SetState(ObjectAlias, STATE_SICK, true)
 			SetProperty(ObjectAlias, "ColdTime", endtime)
-
-			AddImpact(ObjectAlias,"constitution", -modifier, duration)
-			AddImpact(ObjectAlias,"dexterity", -modifier, duration)
-			AddImpact(ObjectAlias,"charisma", -modifier, duration)
-			AddImpact(ObjectAlias,"fighting", -modifier, duration)
-			AddImpact(ObjectAlias,"craftsmanship", -modifier, duration)
-			AddImpact(ObjectAlias,"shadow_arts", -modifier, duration)
-			AddImpact(ObjectAlias,"rhetoric", -modifier, duration)
-			AddImpact(ObjectAlias,"empathy", -modifier, duration)
-			AddImpact(ObjectAlias,"bargaining", -modifier, duration)
-			AddImpact(ObjectAlias,"secret_knowledge", -modifier, duration)
-
+			
+			-- add malus
+			for i=1, 10 do
+				AddImpact(ObjectAlias, TalentList[i], -modifier, duration)
+			end
 		end
 	else
 		if (GetImpactValue(ObjectAlias,"Cold")==1) then
@@ -143,20 +139,14 @@ function Cold(ObjectAlias, State, Force)
 			RemoveImpact(ObjectAlias,"Sickness")
 			SetState(ObjectAlias,STATE_SICK,false)
 			-- instead of RemoveImpact we add a impact for the rest of the time
-			if math.mod(GetGametime(),24)<GetProperty(ObjectAlias,"ColdTime") then
+			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, "ColdTime") then
 				duration = math.floor(GetProperty(ObjectAlias,"ColdTime")-math.mod(GetGametime(),24))
-			
-				AddImpact(ObjectAlias,"constitution",modifier,duration)
-				AddImpact(ObjectAlias,"dexterity",modifier,duration)
-				AddImpact(ObjectAlias,"charisma",modifier,duration)
-				AddImpact(ObjectAlias,"fighting",modifier,duration)
-				AddImpact(ObjectAlias,"craftsmanship",modifier,duration)
-				AddImpact(ObjectAlias,"shadow_arts",modifier,duration)
-				AddImpact(ObjectAlias,"rhetoric",modifier,duration)
-				AddImpact(ObjectAlias,"empathy",modifier,duration)
-				AddImpact(ObjectAlias,"bargaining",modifier,duration)
-				AddImpact(ObjectAlias,"secret_knowledge",modifier,duration)
-				RemoveProperty(ObjectAlias,"ColdTime")
+				RemoveProperty(ObjectAlias, "ColdTime")
+				
+				-- add bonus
+				for i=1, 10 do
+					AddImpact(ObjectAlias, TalentList[i], modifier, duration)
+				end
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
@@ -175,54 +165,44 @@ function Influenza(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
 	local duration = 16
-	local modifier = 3
+	local modifier = 3 -- all talents
 	local endtime = math.mod(GetGametime(),24)+duration
-
+	local TalentList = {"constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", 
+					"rhetoric", "empathy", "bargaining", "secret_knowledge" }
+		
 	if State == true then
-		if not diseases_CheckDisease(ObjectAlias,Force) then
+		if not diseases_CheckDisease(ObjectAlias, Force) then
 			return		
 		end
-		if not (GetImpactValue(ObjectAlias,"Influenza")==1) then
-			AddImpact(ObjectAlias,"Influenza",1,duration)
-			AddImpact(ObjectAlias,"Sickness",1,duration)
-			SetState(ObjectAlias,STATE_SICK,true)
-			SetProperty(ObjectAlias,"InfluenzaTime",endtime)
+		
+		if not (GetImpactValue(ObjectAlias,"Influenza") == 1) then
+			AddImpact(ObjectAlias, "Influenza", 1, duration)
+			AddImpact(ObjectAlias, "Sickness", 1, duration)
+			SetState(ObjectAlias, STATE_SICK, true)
+			SetProperty(ObjectAlias, "InfluenzaTime", endtime)
 
-			AddImpact(ObjectAlias,"constitution",-modifier,duration)
-			AddImpact(ObjectAlias,"dexterity",-modifier,duration)
-			AddImpact(ObjectAlias,"charisma",-modifier,duration)
-			AddImpact(ObjectAlias,"fighting",-modifier,duration)
-			AddImpact(ObjectAlias,"craftsmanship",-modifier,duration)
-			AddImpact(ObjectAlias,"shadow_arts",-modifier,duration)
-			AddImpact(ObjectAlias,"rhetoric",-modifier,duration)
-			AddImpact(ObjectAlias,"empathy",-modifier,duration)
-			AddImpact(ObjectAlias,"bargaining",-modifier,duration)
-			AddImpact(ObjectAlias,"secret_knowledge",-modifier,duration)
-
+			-- add malus
+			for i=1, 10 do
+				AddImpact(ObjectAlias, TalentList[i], -modifier, duration)
+			end
 		end
 	else
-		if (GetImpactValue(ObjectAlias,"Influenza")==1) then
-			RemoveImpact(ObjectAlias,"Influenza")
-			RemoveImpact(ObjectAlias,"Sickness")
-			SetState(ObjectAlias,STATE_SICK,false)
+		if (GetImpactValue(ObjectAlias,"Influenza") == 1) then
+			RemoveImpact(ObjectAlias, "Influenza")
+			RemoveImpact(ObjectAlias, "Sickness")
+			SetState(ObjectAlias, STATE_SICK,false)
 			-- instead of RemoveImpact we add a impact for the rest of the time
-			if math.mod(GetGametime(),24)<GetProperty(ObjectAlias,"InfluenzaTime") then
-				duration = math.floor(GetProperty(ObjectAlias,"InfluenzaTime")-math.mod(GetGametime(),24))
+			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, "InfluenzaTime") then
+				duration = math.floor(GetProperty(ObjectAlias, "InfluenzaTime")-math.mod(GetGametime(),24))
+				RemoveProperty(ObjectAlias, "InfluenzaTime")
 				
-				AddImpact(ObjectAlias,"constitution",modifier,duration)
-				AddImpact(ObjectAlias,"dexterity",modifier,duration)
-				AddImpact(ObjectAlias,"charisma",modifier,duration)
-				AddImpact(ObjectAlias,"fighting",modifier,duration)
-				AddImpact(ObjectAlias,"craftsmanship",modifier,duration)
-				AddImpact(ObjectAlias,"shadow_arts",modifier,duration)
-				AddImpact(ObjectAlias,"rhetoric",modifier,duration)
-				AddImpact(ObjectAlias,"empathy",modifier,duration)
-				AddImpact(ObjectAlias,"bargaining",modifier,duration)
-				AddImpact(ObjectAlias,"secret_knowledge",modifier,duration)
-				RemoveProperty(ObjectAlias,"InfluenzaTime")
+				-- add bonus
+				for i=1, 10 do
+					AddImpact(ObjectAlias, TalentList[i], modifier, duration)
+				end
 			end
 			
-			if GetSettlement(ObjectAlias,"City") then
+			if GetSettlement(ObjectAlias, "City") then
 				chr_DecrementInfectionCount("InfluenzaInfected", "City")				
 			end
 		end
@@ -262,7 +242,7 @@ function Pox(ObjectAlias, State, Force)
 	
 	local duration = -1
 	local modifier = 6
-
+	
 	if State == true then
 		if not diseases_CheckDisease(ObjectAlias,Force) then
 			return		
@@ -304,52 +284,43 @@ function Pneumonia(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
 	local duration = 24
-	local modifier = 5
+	local modifier = 5 -- all talents
 	local endtime = math.mod(GetGametime(),24)+duration
+	local TalentList = {"constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", 
+					"rhetoric", "empathy", "bargaining", "secret_knowledge" }
 	
 	Sleep(1)
 	if State == true then
-		if not diseases_CheckDisease(ObjectAlias,Force) then
+		if not diseases_CheckDisease(ObjectAlias, Force) then
 			return		
 		end
-		if not (GetImpactValue(ObjectAlias,"Pneumonia")==1) then
+		
+		if not (GetImpactValue(ObjectAlias,"Pneumonia") == 1) then
 			AddImpact(ObjectAlias, "LifeExpanding", -2, -1) -- lose lifetime on infection
-			AddImpact(ObjectAlias, "Pneumonia",1,duration)
-			AddImpact(ObjectAlias, "Sickness",1,duration)
-			SetState(ObjectAlias, STATE_SICK,true)
-			SetProperty(ObjectAlias, "PneumoniaTime",endtime)
+			AddImpact(ObjectAlias, "Pneumonia", 1, duration)
+			AddImpact(ObjectAlias, "Sickness", 1, duration)
+			SetState(ObjectAlias, STATE_SICK, true)
+			SetProperty(ObjectAlias, "PneumoniaTime", endtime)
 
-			AddImpact(ObjectAlias,"constitution",-modifier,duration)
-			AddImpact(ObjectAlias,"dexterity",-modifier,duration)
-			AddImpact(ObjectAlias,"charisma",-modifier,duration)
-			AddImpact(ObjectAlias,"fighting",-modifier,duration)
-			AddImpact(ObjectAlias,"craftsmanship",-modifier,duration)
-			AddImpact(ObjectAlias,"shadow_arts",-modifier,duration)
-			AddImpact(ObjectAlias,"rhetoric",-modifier,duration)
-			AddImpact(ObjectAlias,"empathy",-modifier,duration)
-			AddImpact(ObjectAlias,"bargaining",-modifier,duration)
-			AddImpact(ObjectAlias,"secret_knowledge",-modifier,duration)
+			-- add malus
+			for i=1, 10 do
+				AddImpact(ObjectAlias, TalentList[i], -modifier, duration)
+			end
 		end
 	else
-		if (GetImpactValue(ObjectAlias,"Pneumonia")==1) then
-			RemoveImpact(ObjectAlias,"Pneumonia")
-			RemoveImpact(ObjectAlias,"Sickness")
-			SetState(ObjectAlias,STATE_SICK,false)
+		if (GetImpactValue(ObjectAlias, "Pneumonia")==1) then
+			RemoveImpact(ObjectAlias, "Pneumonia")
+			RemoveImpact(ObjectAlias, "Sickness")
+			SetState(ObjectAlias,STATE_SICK, false)
 			-- instead of RemoveImpact we add a impact for the rest of the time
-			if math.mod(GetGametime(),24)<GetProperty(ObjectAlias,"PneumoniaTime") then
-				duration = math.floor(GetProperty(ObjectAlias,"PneumoniaTime")-math.mod(GetGametime(),24))
+			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, "PneumoniaTime") then
+				duration = math.floor(GetProperty(ObjectAlias, "PneumoniaTime")-math.mod(GetGametime(),24))
+				RemoveProperty(ObjectAlias, "PneumoniaTime")
 				
-				AddImpact(ObjectAlias,"constitution",modifier,duration)
-				AddImpact(ObjectAlias,"dexterity",modifier,duration)
-				AddImpact(ObjectAlias,"charisma",modifier,duration)
-				AddImpact(ObjectAlias,"fighting",modifier,duration)
-				AddImpact(ObjectAlias,"craftsmanship",modifier,duration)
-				AddImpact(ObjectAlias,"shadow_arts",modifier,duration)
-				AddImpact(ObjectAlias,"rhetoric",modifier,duration)
-				AddImpact(ObjectAlias,"empathy",modifier,duration)
-				AddImpact(ObjectAlias,"bargaining",modifier,duration)
-				AddImpact(ObjectAlias,"secret_knowledge",modifier,duration)
-				RemoveProperty(ObjectAlias,"PneumoniaTime")
+				-- add bonus
+				for i=1, 10 do
+					AddImpact(ObjectAlias, TalentList[i], modifier, duration)
+				end
 			end
 
 			if GetSettlement(ObjectAlias,"City") then
@@ -365,51 +336,42 @@ function Blackdeath(ObjectAlias, State, Force)
 	-- State: true = character should get a dysentery, false = the dysentery should heal
 	
 	local duration = 24
-	local modifier = 7
+	local modifier = 7 -- all talents
 	local endtime = math.mod(GetGametime(),24)+duration
+	local TalentList = {"constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", 
+					"rhetoric", "empathy", "bargaining", "secret_knowledge" }
 	
 	if State == true then
-		if not diseases_CheckDisease(ObjectAlias,Force) then
+	
+		if not diseases_CheckDisease(ObjectAlias, Force) then
 			return		
 		end
-		if not (GetImpactValue(ObjectAlias,"Blackdeath")==1) then
-			AddImpact(ObjectAlias,"Blackdeath",1,duration)
-			AddImpact(ObjectAlias,"Sickness",1,duration)
-			SetState(ObjectAlias,STATE_SICK,true)
-			SetProperty(ObjectAlias,"BlackdeathTime",endtime)
+		
+		if not (GetImpactValue(ObjectAlias, "Blackdeath") == 1) then
+			AddImpact(ObjectAlias, "Blackdeath", 1, duration)
+			AddImpact(ObjectAlias, "Sickness", 1, duration)
+			SetState(ObjectAlias, STATE_SICK, true)
+			SetProperty(ObjectAlias, "BlackdeathTime", endtime)
 
-			AddImpact(ObjectAlias,"constitution",-modifier,duration)
-			AddImpact(ObjectAlias,"dexterity",-modifier,duration)
-			AddImpact(ObjectAlias,"charisma",-modifier,duration)
-			AddImpact(ObjectAlias,"fighting",-modifier,duration)
-			AddImpact(ObjectAlias,"craftsmanship",-modifier,duration)
-			AddImpact(ObjectAlias,"shadow_arts",-modifier,duration)
-			AddImpact(ObjectAlias,"rhetoric",-modifier,duration)
-			AddImpact(ObjectAlias,"empathy",-modifier,duration)
-			AddImpact(ObjectAlias,"bargaining",-modifier,duration)
-			AddImpact(ObjectAlias,"secret_knowledge",-modifier,duration)
-
+			-- add malus
+			for i=1, 10 do
+				AddImpact(ObjectAlias, TalentList[i], -modifier, duration)
+			end
 		end
 	else
-		if (GetImpactValue(ObjectAlias,"Blackdeath")==1) then
-			RemoveImpact(ObjectAlias,"Blackdeath")
-			RemoveImpact(ObjectAlias,"Sickness")
-			SetState(ObjectAlias,STATE_SICK,false)
+		if (GetImpactValue(ObjectAlias, "Blackdeath") == 1) then
+			RemoveImpact(ObjectAlias, "Blackdeath")
+			RemoveImpact(ObjectAlias, "Sickness")
+			SetState(ObjectAlias, STATE_SICK, false)
 			-- instead of RemoveImpact we add a impact for the rest of the time
-			if math.mod(GetGametime(),24)<GetProperty(ObjectAlias,"BlackdeathTime") then
+			if math.mod(GetGametime(),24) < GetProperty(ObjectAlias,"BlackdeathTime") then
 				duration = math.floor(GetProperty(ObjectAlias,"BlackdeathTime")-math.mod(GetGametime(),24))
+				RemoveProperty(ObjectAlias, "BlackdeathTime")
 				
-				AddImpact(ObjectAlias,"constitution",modifier,duration)
-				AddImpact(ObjectAlias,"dexterity",modifier,duration)
-				AddImpact(ObjectAlias,"charisma",modifier,duration)
-				AddImpact(ObjectAlias,"fighting",modifier,duration)
-				AddImpact(ObjectAlias,"craftsmanship",modifier,duration)
-				AddImpact(ObjectAlias,"shadow_arts",modifier,duration)
-				AddImpact(ObjectAlias,"rhetoric",modifier,duration)
-				AddImpact(ObjectAlias,"empathy",modifier,duration)
-				AddImpact(ObjectAlias,"bargaining",modifier,duration)
-				AddImpact(ObjectAlias,"secret_knowledge",modifier,duration)
-				RemoveProperty(ObjectAlias,"BlackdeathTime")
+				-- add bonus
+				for i=1, 10 do
+					AddImpact(ObjectAlias, TalentList[i], modifier, duration)
+				end
 			end
 			
 			if GetSettlement(ObjectAlias,"City") then
@@ -527,7 +489,7 @@ function GetTreatmentCost(Disease)
 	elseif Disease == "Caries" then
 		return 800
 	else
-		return 50
+		return 75
 	end
 end
 

@@ -21,6 +21,10 @@ function CalcAttack(fWeaponDamage)
 	
 	if Rand(100) < CritChance then
 		Damage = anims_fight_sim_Round(Damage * 1.5)
+		-- ability
+		local FightCrit = GetImpactValue("", "FightCrit")
+		local CritMultiplier = 1 + 0.5*FightCrit
+		Damage = Damage * CritMultiplier
 	end
 	
 	SetData("FCAttackValue", AttackValue)
