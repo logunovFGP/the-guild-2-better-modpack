@@ -6,8 +6,7 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-	local PercentDamage = 40
-	local PercentInitialDamage = 20
+	local InitDamage = 20
 	MsgMeasure("","")
 	BuildingGetOwner("Destination", "Victim")
 	if (GetImpactValue("Destination","DivineBlessing")==1) then
@@ -52,7 +51,6 @@ function Run()
 			StopMeasure()
 		end
 	end
-
 	
 	-- die measure darf/sollte nicht restarten, da nach einem erwischt/entdeckt werden ansonsten die Measure immer wieder neu
 	-- aufgerufen werden würde, was zu vielen Beweisen führen würde
@@ -92,10 +90,6 @@ function Run()
 	-- wait before bomb explodes
 	Sleep(3)
 	
-	-- start the burn-building measure
-	local Damage = 50
-	SetProperty("Destination", "BurnDamage", Damage)
-	
 	if IsDynastySim("Owner") then
 		xp_OrderASabotage("", GetData("BaseXP"))
 	else
@@ -110,7 +104,7 @@ function Run()
 	if SimGetWorkingPlace("","Base") then
 		if BuildingGetOwner("Base","MrBomb") then
 			MrBombID = GetDynastyID("MrBomb")
-			AddImpact("Destination","buildingbombedby",MrBombID,duration)
+			AddImpact("Destination", "buildingbombedby", MrBombID, duration)
 		end
 	end
 
@@ -120,9 +114,9 @@ function Run()
 	SetMeasureRepeat(TimeOut)
 	DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
 	
-	local BuildingStatus = GetHP("Destination")
-	local Damage = BuildingStatus*(PercentInitialDamage/100)
-	ModifyHP("Destination",-Damage)
+	local BuildingHP = GetMaxHP("Destination")
+	local Damage = BuildingHP*(InitDamage/100)
+	ModifyHP("Destination", -Damage, true)
 
 	StartSingleShotParticle("particles/Explosion.nif", "SabotagePosition", 4,5)
 	PlaySound3D("Destination","fire/Explosion_01.wav", 1.0)
@@ -130,15 +124,13 @@ function Run()
 	
 	SetState("Destination", STATE_BURNING, true)
 	
-
-	
 	feedback_MessageCharacter("Destination",
 		"@L_GENERAL_MEASURES_142_ORDERASABOTAGE_MSG_VICTIM_HEAD_+0",
 		"@L_GENERAL_MEASURES_142_ORDERASABOTAGE_MSG_VICTIM_BODY_+0", GetID("Destination"))
 
 	Sleep(2)
-	StopAction("explosion","")
-	RemoveProperty("Destination","SabotageInProgress")
+	StopAction("explosion", "")
+	RemoveProperty("Destination", "SabotageInProgress")
 end
 
 -- -----------------------

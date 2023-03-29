@@ -90,10 +90,6 @@ function Run()
 	-- wait before bomb explodes
 	Sleep(3)
 	
-	-- start the burn-building measure
-	local Damage = 50
-	SetProperty("Destination", "BurnDamage", Damage)
-	
 	if IsDynastySim("") then
 		xp_OrderASabotage("", GetData("BaseXP"))
 	else
@@ -115,13 +111,10 @@ function Run()
 	PlaySound3D("Destination","fire/Explosion_01.wav", 1.0)
 	GfxDetachObject("tntbarrel")
 	
-	if BuildingGetLevel("Destination") == 1 and Rand(100) < 50 then
-		SetState("Destination", STATE_BURNING, true)
-	end
 	-- determine the start status in percent
-	local BuildingStatus = GetHP("Destination")
+	local BuildingStatus = GetMaxHP("Destination")
 	local Damage = BuildingStatus*(PercentDamage/100)
-	ModifyHP("Destination",-Damage)
+	ModifyHP("Destination", -Damage, true)
 
 	feedback_MessageCharacter("Destination",
 		"@L_GENERAL_MEASURES_142_ORDERASABOTAGE_MSG_VICTIM_HEAD_+0",
