@@ -57,6 +57,8 @@ function Run()
 	local MaxHP = GetMaxHP("")
 	local ToHeal = MaxHP - CurrentHP
 	local HealPerTic = ToHeal / (duration * 12)
+	local MaxProgress = duration * 10
+	SetProcessMaxProgress("", MaxProgress)
 	local UseLocator = false
 	local CurrentTime = GetGametime()
 	
@@ -68,6 +70,7 @@ function Run()
 	while GetGametime() < EndTime do
 		
 		Sleep(5)
+		SetProcessProgress("", (GetGametime()-CurrentTime)*10)
 		-- increase the hp
 		if GetHP("") < MaxHP then
 			ModifyHP("", HealPerTic, false)
@@ -84,6 +87,8 @@ function CleanUp()
 	if AliasExists("SleepPosition") then
 		f_EndUseLocator("", "SleepPosition", GL_STANCE_STAND)
 	end
+	
+	ResetProcessProgress("")
 	
 	local Time = GetGametime()
 	local Start = Time
@@ -110,11 +115,9 @@ function CleanUp()
 		return
 	end
 	
-	Factor = Factor*Factor*100
-	
 	if IsDynastySim("Owner") then
 	
-		if GetImpactValue("", "Sickness") > 0 and Factor > Rand(100) then
+		if GetImpactValue("", "Sickness") > 0 and Factor >= 0.9 then
 			if GetImpactValaue("", "HerbTea") > 0 then -- herb tea helps
 				local CheckDisease = { "Cold", "Sprain", "BurnWound", "Influenza", "Pneumonia", "Pox", "BlackDeath", "Fracture" }
 				local SleepBonus = GetImpactValue("", "SleepBonusI")
@@ -125,7 +128,7 @@ function CleanUp()
 							diseases_Cold("", false)
 						else
 							if SleepBonus > 0 then
-								if CheckDisease[i] == "Sprain") then
+								if CheckDisease[i] == "Sprain" then
 									diseases_Sprain("", false)
 								elseif CheckDisease[i] == "BurnWound" then
 									diseases_BurnWound("", false)
@@ -151,9 +154,9 @@ function CleanUp()
 					end
 				end
 			end
-								
+		end
 		-- good dream bonus
-		if (Factor-20) > Rand(100) then
+		if Factor >= 0.8 then
 			if SimGetClass("") == 1 then
 				AddImpact("", "constitution",1,12)
 				AddImpact("", "empathy",1,12)
@@ -175,14 +178,20 @@ function CleanUp()
 			if Rand(100) > 96 then
 				AddImpact("", "LifeExpanding", 1, -1)
 			end
-			
+			Factor = Factor*100
 			chr_GainXP("", Factor)
 			AddImpact("", "GoodDream", 1, 12)
 		else 
+			Factor = Factor*100
 			chr_GainXP("", Factor)
 			AddImpact("", "BadDream", 1, 12)
 		end
-	end	
+		
+		if IsPartyMember("") then
+			feedback_MessageCharacter("", "@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_HEAD",
+							"@L_GENERAL_MEASURES_010_GOTOSLEEP_WAKEUP_BODY", GetID("Owner"))
+		end
+	end
 end		
 
 function GetOSHData(MeasureID)
