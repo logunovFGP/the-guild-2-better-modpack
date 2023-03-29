@@ -61,6 +61,11 @@ function Run()
 					-- for other dynasties
 					feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_BODY", GetID(""), Age, SettlementId, Badge)
 				end
+				
+			-- message the dynasty leader if you are a former employee
+			elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+				local ReasonLabel = "@L_ILLNESS_REASON_+5"
+				MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
 			end
 		elseif HasProperty("", "WasSick") then -- special msg: Sickness
 			local ReasonToDie = ""

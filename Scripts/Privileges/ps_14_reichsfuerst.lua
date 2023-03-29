@@ -19,21 +19,24 @@ function TakeTitle()
 	local buildinglevel = GetDatabaseValue("NobilityTitle", currenttitle, "maxresidencelevel")
 	local maxworkshops = GetDatabaseValue("NobilityTitle", currenttitle, "maxworkshops")
 	local BuildLabel = "_BUILDING_Residence"..buildinglevel.."_NAME_+0"
-	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..(currenttitle * 2) - 1
 	local buildingcount = dyn_GetWorkshopCount("TitleHolder")
 	DynastyGetMember("TitleHolder", 0, "Boss")
 	
 	local BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_BODY_+14"
 	
+	local GenderLabel = 1
 	if SimGetGender("Boss") == GL_GENDER_FEMALE then
+		GenderLabel = 0
 		BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+14"
 	end
+	
+	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..(currenttitle * 2) - GenderLabel
 	
 	feedback_MessageCharacter("Boss",
 						"@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_PRIVILEGES_HEAD_+0",
 						BodyLabel, TitleLabel, BuildLabel, maxworkshops, buildingcount, chr_GeneratePrivilegeListLabels(ps_14_reichsfuerst_GetCompletePrivilegeList()))
 	-- send msg to other dynasties
-	feedback_MessageOtherDynastiesTitle("Boss")
+	feedback_MessageOtherDynastiesTitle("Boss", currenttitle)
 end
 
 function LooseTitle()

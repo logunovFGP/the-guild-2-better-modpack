@@ -73,15 +73,20 @@ function Run()
 		Sleep(Time-1)
 		
 		if BuildingGetOwner("Actor", "MyBoss") then
-			chr_ModifyFavor("Owner", "MyBoss", GL_FAVOR_MOD_SMALL)
+			if IsDynastySim("Owner") then
+				if GetDynastyID("Actor") ~= GetDynastyID("Owner") then
+					chr_ModifyFavor("Owner", "MyBoss", GL_FAVOR_MOD_SMALL)
+				end
+			end
 		end
 		
 		if not GetState("Actor", STATE_BURNING) then
 			break
 		end
-		local BurnDamge = GetProperty("Actor", "BurningDmg") or 0
-		local NewBurnDamage = math.ceil(BurnDamage / 10) or 0
-		SetProperty("Actor", "BurningDmg", NewBurnDamage)
+		
+		local OldBurningTime = GetProperty("Actor", "BurningTime")
+		local NewBurningTime = OldBurningTime - (OldBurningTime * 0.3)
+		SetProperty("Actor", "BurningTime", NewBurningTime)
 	end
 end
 

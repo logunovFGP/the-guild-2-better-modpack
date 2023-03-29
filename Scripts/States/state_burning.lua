@@ -11,40 +11,39 @@ function Run()
 		FireProt = 0.95
 	end
 	
-	local MaxHP = GetMaxHP("")
-	local RandomFire = 25 + Rand(7)*10
+	-- how dangerous is the fire in general? 1 = minor; 2 = severe, 3 = dangerous, 4 = hell
+	local FireLevel = 1 + Rand(2)
+	if GetImpactValue("", "buildingbombedtoday") > 0 then
+		FireLevel = FireLevel + 1
+	end
 	local Season = GetSeason()
 	
 	-- season may cause more damage or less
 	if Season == EN_SEASON_SUMMER then
-		RandomFire = RandomFire + 20
+		FireLevel = FireLevel + 1
 	elseif Season == EN_SEASON_WINTER then
-		RandomFire = RandomFire - 10
+		FireLevel = FireLevel - 1
 	end
 	
 	-- check for rain for lesser damage
 	local RainValue = Weather_GetValue(0)
-	if RainValue > 0 then
-		if RainValue <= 0.5 then
-			RandomFire = RandomFire - 5
-		else
-			RandomFire = RandomFire - RainValue*10
-		end
+	if RainValue > 0.3 then
+		FireLevel = FireLevel - 1
 	end
 	
-	-- protection may protect 100% against weak fires
-	if RandomFire < (FireProt*100) then
-		return
+	if FireLevel < 1 then
+		FireLevel = 1
 	end
 	
-	-- calculate the actual damage
-	local BaseFireDmg = RandomFire * MaxHP
-	local ActualFireDmg = math.ceil(BaseFireDmg * (1 - FireProt)) -- each % of FireProt reduces the dmg
+	-- calculate the threat
+	local MaxBurnTime = FireLevel * FireLevel
+	local StartTime = GetGametime()
+	local MaxHP = GetMaxHP("")
+	local DamagePerTick = math.ceil((MaxHP * 0.025 + 12*FireLevel) - FireProt*(MaxHP * 0.025 + 12*FireLevel))
 	
-	SetProperty("Owner", "BurningDmg", ActualFireDmg) -- save it to property for firefighting-Measures
+	SetProperty("Owner", "BurningTime", MaxBurnTime) -- save it to property for firefighting-Measures
 	CommitAction("fire", "Owner", "Owner")
 	
-
 	-- count the fire locator
 	local FireLocatorCount = 1
 	while GetFreeLocatorByName("Owner", "Fire"..FireLocatorCount, -1, -1, "FlameLocator"..FireLocatorCount) do
@@ -82,18 +81,8 @@ function Run()
 	else
 		Attach3DSound("", "fire/Fire_l_02.wav", 1.0)
 	end
-	
-	local DPS = math.ceil(ActualFireDmg / 15)
-	if DPS < 20 then
-		DPS = 20
-	end
-	local DmgDealt = 0
 
-	while DmgDealt < ActualFireDmg do
-		
-		if DmgDealt >= GetProperty("Owner", "BurningDmg") then
-			break
-		end
+	while GetGametime() < (StartTime+MaxBurnTime) do
 		
 		Evacuate("Owner")
 		Sleep(5)
@@ -101,15 +90,17 @@ function Run()
 		
 		if BuildingGetType("Owner") == GL_BUILDING_TYPE_WORKER_HOUSING then
 			if GetHPRelative("Owner") >= 0.1 then
-				ModifyHP("Owner", -DPS, false)
+				ModifyHP("Owner", -DamagePerTick, true)
 			end
 		else
-			ModifyHP("Owner", -DPS, false)
+			ModifyHP("Owner", -DamagePerTick, true)
 		end
 		
-		DmgDealt = DmgDealt + DPS
+		Sleep(10)
 		
-		Sleep(5)
+		-- check property for counter measures
+		MaxBurnTime = GetProperty("", "BurningTime")
+		
 		-- fire may spread
 		local BuildingFilter = "__F((Object.GetObjectsByRadius(Building) == 1500)AND NOT(Object.GetState(burning))AND NOT(Object.HasImpact(Extinguished))AND NOT(Object.IsClass(5))AND NOT(Object.IsClass(3))AND NOT(Object.IsClass(6))AND NOT(Object.IsClass(0)))"
 		local NumBuildings = Find("", BuildingFilter, "NexBuilding", -1)
@@ -133,13 +124,11 @@ function Run()
 					if GetPosition("", "ParticleSpawnPos") then
 						StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 4, 5)
 						PlaySound3D(DestAlias, "fire/Explosion_s_01.wav", 1.0)
-						Sleep(2)
 					end
 					SetState(DestAlias, STATE_BURNING, true)
 				end
 			end
 		end
-		
 		Sleep(5)
 	end
 	
@@ -150,7 +139,7 @@ end
 function CleanUp()
 	Detach3DSound("")
 	StopAction("fire", "Owner")
-	if HasProperty("Owner", "BurningDmg") then
-		RemoveProperty("Owner", "BurningDmg")
+	if HasProperty("Owner", "BurningTime") then
+		RemoveProperty("Owner", "BurningTime")
 	end
 end
