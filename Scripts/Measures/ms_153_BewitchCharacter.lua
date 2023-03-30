@@ -152,22 +152,6 @@ function Run()
 		StopMeasure()
 		return
 	end
-	
---	else
---		AnimType = "sit_talk"
---		if not GetLocatorByName("Tavern", "DivanbedAlt1", "Bewitcher") then
---			MsgQuick("", "@L_GENERAL_MEASURES_BEWITCHCHARACTER_FAILURES_+1", GetID("Tavern"))
---			StopMeasure()
---			return
---		end
---		
---		if not GetLocatorByName("Tavern", "DivanbedAlt2", "Bewitched") then
---			MsgQuick("", "@L_GENERAL_MEASURES_BEWITCHCHARACTER_FAILURES_+1", GetID("Tavern"))
---			StopMeasure()
---			return
---		end
---	
---	end
  	
 	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
  		StopMeasure()

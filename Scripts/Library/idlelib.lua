@@ -1006,14 +1006,16 @@ function GoToTavern()
 				f_Stroll("",150,2)
 				return
 			end
+			
 			if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
 				return
 			end			
 		else
-			if not GetFreeLocatorByName("Destination","SitInn",1,12,"SitPos") then
-				f_Stroll("",150,2)
+			if not GetFreeLocatorByName("Destination", "SitInn", 1, 15, "SitPos") then
+				f_Stroll("", 150, 2)
 				return
 			end
+			
 			if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
 				return
 			end

@@ -202,6 +202,7 @@ _Patron_
 - If you wanted to dance with somebody and the dance floor was blocked already, you still would lose your money and cooldown time would begin.
 - Under circumstances the steam-effect of the action 'take a bath alone' would never end.
 - You no longer get the action for dancing/ bathing etc. in unowned taverns.
+- One of the tables in the tavern was never used by customers.
 
 _Scholar_
 - The poisoned cake didn't lower the fighting skill.

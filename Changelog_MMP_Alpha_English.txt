@@ -30,6 +30,7 @@ Fixes:
 - AIs will no longer build/buy workshops they already have available to them. They also will prefer to build/buy workshops which the town currently needs. They won't build the 4th church in a city anymore. 
 - You can no longer destroy a building completely by plundering it (e.g. counting houses)
 - Dynasties will no longer die out within the first round without reason.
+- One of the tables in the tavern was never used by customers.
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.
