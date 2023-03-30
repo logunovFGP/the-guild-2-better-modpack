@@ -188,6 +188,7 @@ function Run()
 		-- 3. Calculate current demand at workshop (need arises when below 80% (0.8))
 		local NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.8)
 		if NeedCount and NeedCount > 0 then
+			MsgMeasure("", "Looking for supplies")
 			for i = 1, SupplierCount do
 				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
 					f_MoveTo("", Suppliers[i], GL_MOVESPEED_RUN)
@@ -198,6 +199,7 @@ function Run()
 				end
 			end
 		else
+			MsgMeasure("", "Supplies are fine, time for a break")
 			Sleep(75) -- nothing to do, wait a while
 		end	
 		
@@ -207,7 +209,8 @@ function Run()
 			StopMeasure() 
 		end
 		-- Unload at home and rest
-		cart_UnloadAll("", "MyHome")		
+		cart_UnloadAll("", "MyHome")
+		MsgMeasure("", "On short break")
 		Sleep(15)
 	end
 end

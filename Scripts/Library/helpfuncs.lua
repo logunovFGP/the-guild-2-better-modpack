@@ -73,32 +73,24 @@ end
 --             should return true when the first is less than or equal to the second and false otherwise. The default is:
 --             function(a,b) return a<=b end
 function QuickSort(t, start, endi, compare)
-	start = start or 1
-	compare = compare or function(a,b) return a<=b end
+  start = start or 1
+  compare = compare or function(a,b) return a<=b end
   
-	-- partition w.r.t. first element
-	if(endi - start < 2) then 
-		return t 
-	end
-  
-	local pivot = start
-	for i = start + 1, endi do
-		-- equivalent of:   if t[i] <= t[pivot] then
-		if compare(t[i], t[pivot]) then
-			local temp = t[pivot + 1]
-			t[pivot + 1] = t[pivot]
-			if(i == pivot + 1) then
-				t[pivot] = temp
-			else
-				t[pivot] = t[i]
-				t[i] = temp
-			end
-			pivot = pivot + 1
-		end
-	end
-	
-	t = helpfuncs_QuickSort(t, start, pivot - 1, compare)
-	return helpfuncs_QuickSort(t, pivot + 1, endi, compare)
+  --partition w.r.t. first element
+  if(endi - start < 1) then return t end
+  local pivot = start
+  for i = start + 1, endi do
+    if compare(t[i], t[pivot]) then
+      if i == pivot + 1 then
+        t[pivot],t[pivot+1] = t[pivot+1],t[pivot]
+      else
+        t[pivot],t[pivot+1],t[i] = t[i],t[pivot],t[pivot+1]
+      end
+      pivot = pivot + 1
+    end
+  end
+  t = helpfuncs_QuickSort(t, start, pivot - 1)
+  return helpfuncs_QuickSort(t, pivot + 1, endi)
 end
 
 function SortBySecondValue(a,b) 

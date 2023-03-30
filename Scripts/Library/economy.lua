@@ -718,8 +718,8 @@ function CalcCurrentResourceNeeds(BldAlias, ResourceCount, Resources, Threshold)
 		local CurrentAmount = GetItemCount(BldAlias, Resources[i][1])
 		local MaxNeed = Resources[i][2]
 		local ActualNeed = MaxNeed - CurrentAmount
-		-- need resources when stores down to 60%
-		if MaxNeed > 0 and ActualNeed > 0 and ActualNeed/MaxNeed >= Threshold then
+		-- need resources when stores below threshold
+		if MaxNeed > 0 and ActualNeed > 0 and CurrentAmount/MaxNeed <= Threshold then
 			NeedCount = NeedCount + 1
 			local InvSpace = GetImpactValue(BldAlias, "BonusSpace") 
 			if InvSpace <= 0 then
@@ -734,8 +734,7 @@ function CalcCurrentResourceNeeds(BldAlias, ResourceCount, Resources, Threshold)
  	end
  	
  	-- 4. sort by actual needs, highest first (SortProfits sorts highest first so it will do)
-	Needs = helpfuncs_QuickSort(Needs, 1, NeedCount, helpfuncs_SortBySecondValue)
-	return NeedCount, Needs 
+	return NeedCount, helpfuncs_QuickSort(Needs, 1, NeedCount, helpfuncs_SortBySecondValue) 
 end
 
 function CheckAvailability(BldAlias, CartAlias, NeedCount, Needs)
