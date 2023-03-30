@@ -13,15 +13,15 @@ function Run()
 		if IsDynastySim("Owner") then
 			MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+0", GetID(""))
 		end
-		StopMeasure()
+		return
 	end
 	
 	if not AliasExists("HomeBuilding") then
-		StopMeasure()
+		return
 	end
 	
 	-- Not sleepy?
-	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "BadDream") > 0 then
+	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "VeryGoodDream") > 0 or GetImpactValue("", "BadDream") > 0 then
 		MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
 		StopMeasure()
 	end
@@ -175,9 +175,6 @@ function CleanUp()
 				AddImpact("", "shadow_arts",1,12)
 			end
 			
-			if Rand(100) > 96 then
-				AddImpact("", "LifeExpanding", 1, -1)
-			end
 			Factor = Factor*100
 			chr_GainXP("", Factor)
 			AddImpact("", "GoodDream", 1, 12)

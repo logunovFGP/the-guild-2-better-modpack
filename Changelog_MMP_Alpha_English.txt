@@ -20,6 +20,7 @@ Features:
 - Added completely new generated Narrator Voice Overs for the International Audience.
 - Added two new Nobility titles (more or less placeholders) and modified prices/building limit accordingly.
 - Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
+- Sleeping in a tavern guarantees a good dream (talent boost). Sleeping in a tavern which is "the best place in town" will give you an even bigger boost.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)
@@ -28,6 +29,7 @@ Fixes:
 - The talent 'bargaining' had little to no effect on market selling. Now, every selling / buying action via Trade Routes or "Unload"-action will add some bargaining profit.
 - AIs will no longer build/buy workshops they already have available to them. They also will prefer to build/buy workshops which the town currently needs. They won't build the 4th church in a city anymore. 
 - You can no longer destroy a building completely by plundering it (e.g. counting houses)
+- Dynasties will no longer die out within the first round without reason.
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.
@@ -38,5 +40,7 @@ Fixes (Modpack):
 - Fixed bathing alone.
 - Fixed traderoute-exploit.
 - Fixed Vienna frog eye gathering (pathfinding error)
-- When another dynasty got a new title, the message didn't show the name.
+- When another dynasty got a new title, the message didn't show the name and the correct title.
+- Fires burnt a bit too hot.
+- Dying employees sent a message which sometimes showed the wrong reason they died.
 

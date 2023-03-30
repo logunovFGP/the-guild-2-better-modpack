@@ -200,7 +200,6 @@ _General_
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
 - If you wanted to dance with somebody and the dance floor was blocked already, you still would lose your money and cooldown time would begin.
-- You can cure some diseases if you sleep in a tavern, especially if you have the 'deep sleep' ability.
 - Under circumstances the steam-effect of the action 'take a bath alone' would never end.
 - You no longer get the action for dancing/ bathing etc. in unowned taverns.
 
@@ -315,7 +314,8 @@ _General_
 - Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
 
 _Patron_
-- Sleeping in taverns can now cure diseases, especially if your character has the 'deep sleep' trait.
+- You can cure some diseases if you sleep in a tavern.
+- Sleeping in a tavern guarantees a good dream (talent boost). Sleeping in a tavern which is "the best place in town" will give you an even bigger boost.
 - Your 'Drunkard Brew Beer' will protect you against 'Letters From Rome' aswell as against 'Torrents of Hatred'
 
 _Scholar_

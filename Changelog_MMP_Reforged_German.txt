@@ -320,7 +320,7 @@ _Allgemein_
 
 
 _Patron_
-- In einer Taverne zu übernachten, kann nun einige Krankheiten heilen, insbesondere, wenn man die Fähigkeit 'Tiefer Schlaf' besitzt.
+- In einer Taverne zu übernachten, kann nun einige Krankheiten heilen und garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.
 - 'Fahnenbräu Pilsener' schützt nun auch vor den Artefakten 'Brief aus Rom' und 'Hasstirade', es werden entsprechende Meldungen verschickt.
 
 _Gelehrter_

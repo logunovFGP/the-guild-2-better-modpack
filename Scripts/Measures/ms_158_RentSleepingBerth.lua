@@ -10,25 +10,25 @@ function Run()
 
 	local MyDynastyID = GetDynastyID("")
 	local Money = GetMoney("")
-	-- hier muss noch der Preis anhand der Preisangabe des Wirtes errechnen
 	local Price = 150
 	
 	-- Not sleepy?
-	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "BadDream") >0 then
+	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "VeryGoodDream") > 0 or GetImpactValue("", "BadDream") >0 then
 		MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
-		StopMeasure()
+		return
 	end
 	
 	-- check both sleeping berths
 	if not GetFreeLocatorByName("Tavern", "Berth", 1, 2, "SleepingBerth") then	
-		MsgQuick("", "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+1", GetID("Tavern"))
+		MsgBoxNoWait("", "Tavern", "@L_GENERAL_ERROR_HEAD_+0", "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+1", GetID("Tavern"))
 		return
 	end
-
+	
+	-- spend money if not same dynasty
 	if GetDynastyID("") ~= GetDynastyID("Tavern") then
 		if not chr_SpendMoney("", Price, "CostSocial") then
-			MsgQuick("", "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+0", Price)
-			StopMeasure()
+			MsgBoxNoWait("", "Tavern", "@L_GENERAL_ERROR_HEAD_+0",  "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+0", Price)
+			return
 		end
 
 		CreditMoney("Tavern", Price, "RentABerth")
@@ -44,7 +44,7 @@ function Run()
 	f_BeginUseLocator("", "SleepingBerth", GL_STANCE_LAY, true)
 		
 	-- sleep
-	local HasToSleep = 6
+	local HasToSleep = 4 -- 2 hours faster than at home
 	SetData("Duration", HasToSleep)
 	local WasSick = false
 	
@@ -55,16 +55,17 @@ function Run()
 	local CurrentHP = GetHP("")
 	local MaxHP = GetMaxHP("")
 	local ToHeal = MaxHP - CurrentHP
-	local HealPerTic = ToHeal / (duration * 12)
+	local HealPerTic = ToHeal / (HasToSleep * 12)
 	local StartTime = GetGametime()
-	
+	local MaxProgress = HasToSleep * 10
+	SetProcessMaxProgress("", MaxProgress)
 	SetData("StartTime", StartTime)
-	
 	local EndTime = GetGametime() + HasToSleep
 	
 	while GetGametime() < EndTime do
 		
 		Sleep(5)
+		SetProcessProgress("", (GetGametime()-StartTime)*10)
 		-- increase the hp
 		if GetHP("") < MaxHP then
 			ModifyHP("", HealPerTic, false)
@@ -73,7 +74,7 @@ function Run()
 	end
 
 	-- Cure some diseases
-	if WasSick == true then
+	if WasSick then
 		if GetImpactValaue("", "HerbTea") > 0 then -- herb tea helps
 			local CheckDisease = { "Cold", "Sprain", "BurnWound", "Influenza", "Pneumonia", "Pox", "BlackDeath", "Fracture" }
 			local SleepBonus = GetImpactValue("", "SleepBonusI")
@@ -84,7 +85,7 @@ function Run()
 						diseases_Cold("", false)
 					else
 						if SleepBonus > 0 then
-							if CheckDisease[i] == "Sprain") then
+							if CheckDisease[i] == "Sprain" then
 								diseases_Sprain("", false)
 							elseif CheckDisease[i] == "BurnWound" then
 								diseases_BurnWound("", false)
@@ -118,36 +119,35 @@ function Run()
 				end
 			end
 		end
-								
-		-- good dream bonus in best house
-		if GetImpactValue("Tavern", "BestHouseBoost") > 0 then
-			if SimGetClass("") == 1 then
-				AddImpact("", "constitution",1,12)
-				AddImpact("", "empathy",1,12)
-				AddImpact("", "bargaining",1,12)
-			elseif SimGetClass("") == 2 then
-				AddImpact("", "constitution",1,12)
-				AddImpact("", "dexterity",1,12)
-				AddImpact("", "craftsmanship",1,12)
-			elseif SimGetClass("") == 3 then
-				AddImpact("", "charisma",1,12)
-				AddImpact("", "rhetoric",1,12)
-				AddImpact("", "secret_knowledge",1,12)
-			elseif SimGetClass("") == 4 then
-				AddImpact("", "constitution",1,12)
-				AddImpact("", "fighting",1,12)
-				AddImpact("", "shadow_arts",1,12)
-			end
-			
-			if Rand(100) > 90 then -- better chance in best tavern
-				AddImpact("", "LifeExpanding", 1, -1)
-			end
-			
-			chr_GainXP("", Factor)
-			AddImpact("", "GoodDream", 1, 12)
-		end
 	end
 	
+	-- good dream bonus in best house
+	local BoostValue = 1
+	if GetImpactValue("Tavern", "BestHouseBoost") > 0 then
+		AddImpact("", "VeryGoodDream", 1, 12)
+		BoostValue = 2
+	else
+		AddImpact("", "GoodDream", 1, 12)
+	end
+	
+	if SimGetClass("") == 1 then
+		AddImpact("", "constitution", BoostValue, 12)
+		AddImpact("", "empathy", BoostValue, 12)
+		AddImpact("", "bargaining", BoostValue, 12)
+	elseif SimGetClass("") == 2 then
+		AddImpact("", "constitution", BoostValue, 12)
+		AddImpact("", "dexterity", BoostValue, 12)
+		AddImpact("", "craftsmanship", BoostValue, 12)
+	elseif SimGetClass("") == 3 then
+		AddImpact("", "charisma", BoostValue, 12)
+		AddImpact("", "rhetoric", BoostValue, 12)
+		AddImpact("", "secret_knowledge", BoostValue, 12)
+	elseif SimGetClass("") == 4 then
+		AddImpact("", "constitution", BoostValue, 12)
+		AddImpact("", "fighting", BoostValue, 12)
+		AddImpact("", "shadow_arts", BoostValue, 12)
+	end
+			
 	-- end sleeping
 	f_EndUseLocator("", "SleepingBerth", GL_STANCE_STAND)
 	
@@ -168,6 +168,8 @@ function CleanUp()
 	if AliasExists("SleepingBerth") then
 		f_EndUseLocator("", "SleepingBerth", GL_STANCE_STAND)
 	end
+	
+	ResetProcessProgress("")
 	feedback_OverheadComment("Owner")
 end
 
