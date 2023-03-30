@@ -71,7 +71,7 @@ function Run()
 		
 		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_JOINERY, -1, -1, FILTER_IGNORE, "DestBuilding") then
-				´if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
+				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 					return -- paranoia-fix - should never happen
 				end
 			end
