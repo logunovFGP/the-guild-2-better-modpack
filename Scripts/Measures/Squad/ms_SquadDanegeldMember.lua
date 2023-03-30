@@ -174,11 +174,7 @@ function Danegeld()
 			if IsPartyMember("") then
 				MsgSay("", "@L_MEASURE_danegeld_THANKS_NO_OWNER")
 			else
-				if SimGetGender("MercOwner") == GL_GENDER_MALE then
-					MsgSay("", "@L_MEASURE_danegeld_THANKS_OWNER_MALE", GetID("MercOwner"))				
-				else
-					MsgSay("", "@L_MEASURE_danegeld_THANKS_OWNER_FEMALE", GetID("MercOwner"))				
-				end
+				MsgSay("", "@L_MEASURE_danegeld_THANKS_OWNER", GetID("MercOwner"))				
 			end
 			
 		else

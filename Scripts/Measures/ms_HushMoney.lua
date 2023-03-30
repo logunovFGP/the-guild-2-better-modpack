@@ -128,12 +128,6 @@ function Run()
 						end
 						
 						chr_SpendMoney(DestAlias, VictimSpendValue,"CostBribes")
-						
-						--if VictimSpendValue>25 then
-						--	feedback_MessageCharacter(DestAlias,
-						--		"Schweigegeld",
-						--		"Schweigegeldnachricht")
-						--end
 					end
 
 					Sleep(0.75)
