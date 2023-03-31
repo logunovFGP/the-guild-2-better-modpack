@@ -101,15 +101,15 @@ function Run()
 		local Money = GetMoney("FormerOwner")
 		local Intimidation = 0
 		if HasProperty("FormerOwner", "intimidated") then
-			if GetProperty("FormerOwner","intimidated") == GetID("dynasty") then
+			if GetProperty("FormerOwner", "intimidated") == GetID("dynasty") then
 				Intimidation = 1
 			end
 		end
 		
 		-- Reaction  from owner depending on favor
-		if GetFavorToDynasty("dynasty", "FormerOwner") > 30 then
+		if GetFavorToDynasty("dynasty", "FormerOwner") > 40 then
 			-- nice reaction
-			if SimGetOfficeLevel("FormerOwner") > 0 then
+			if SimGetOfficeLevel("FormerOwner") > 0 and Intimidation == 0 then
 				-- I'm into politics, i don't sell
 				MsgBoxNoWait("Destination","FormerOwner","@L_MEASURE_TAKEOVERBID_QUESTION_HEAD_+0",
 							"@L_MEASURE_TAKEOVERBID_DECLINE_NICE_POLITICS_+0", GetID("FormerOwner"), 
@@ -123,7 +123,7 @@ function Run()
 				StopMeasure()
 			elseif Money >= 100000 and Intimidation == 1 then
 				-- i am rich, but you broke my legs so i will sell for high money
-				Value = Value*4
+				Value = Value*3
 				local Result2 = MsgNews("Destination", "FormerOwner", "@P"..
 									"@B[1,@L_MEASURE_TAKEOVERBID_BUTTON_YES_+0]"..
 									"@B[C,@L_MEASURE_TAKEOVERBID_BUTTON_NO_+0]",
