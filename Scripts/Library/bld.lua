@@ -32,31 +32,31 @@ function ClearBuildingStash(BldAlias, OwnerAlias)
 			CreditMoney(OwnerAlias, invest, "Credit")
 			-- notify former owner
 			MsgNewsNoWait(OwnerAlias, BldAlias, "", "building", -1, 
-				"@L_BUYBUILDING_CREDIT_HEAD_+0",
-				"@L_BUYBUILDING_CREDIT_BODY_+0", 
-				GetID(BldAlias), invest)
+						"@L_BUYBUILDING_CREDIT_HEAD_+0",
+						"@L_BUYBUILDING_CREDIT_BODY_+0", 
+						GetID(BldAlias), invest)
 		end
-	elseif BuildingGetType(BldAlias) == GL_BUILDING_TYPE_HOSPITAL then
+--	elseif BuildingGetType(BldAlias) == GL_BUILDING_TYPE_HOSPITAL then
 		-- Remove all items from medicine stash and credit base value
-		local Items = {"Salve", "Bandage", "Medicine", "PainKiller", "Soap", "MiracleCure"}
-		local Value = 0
+--		local Items = {"Salve", "Bandage", "Medicine", "PainKiller", "Soap", "MiracleCure"}
+--		local Value = 0
 
-		for i=1, 6 do
-			local ItemProp = Items[i].."s"
-			if HasProperty(BldAlias, ItemProp) then
-				local n = GetProperty(BldAlias, ItemProp)
-				Value = Value + (n * ItemGetBasePrice(Items[i]))
-				RemoveProperty(BldAlias, ItemProp)
-			end	
-		end
+--		for i=1, 6 do
+--			local ItemProp = Items[i].."s"
+--			if HasProperty(BldAlias, ItemProp) then
+--				local n = GetProperty(BldAlias, ItemProp)
+--				Value = Value + (n * ItemGetBasePrice(Items[i]))
+--				RemoveProperty(BldAlias, ItemProp)
+--			end	
+--		end
 
-		if Value > 0 and AliasExists(OwnerAlias) then
-			CreditMoney(OwnerAlias, Value, "misc")
-			MsgNewsNoWait(OwnerAlias, BldAlias, "", "building", -1, 
-				"@L_BUYBUILDING_MEDICINE_HEAD_+0",
-				"@L_BUYBUILDING_MEDICINE_BODY_+0", 
-				GetID(BldAlias), Value)
-		end			
+--		if Value > 0 and AliasExists(OwnerAlias) then
+--			CreditMoney(OwnerAlias, Value, "misc")
+--			MsgNewsNoWait(OwnerAlias, BldAlias, "", "building", -1, 
+--				"@L_BUYBUILDING_MEDICINE_HEAD_+0",
+--				"@L_BUYBUILDING_MEDICINE_BODY_+0", 
+--				GetID(BldAlias), Value)
+--		end			
 	end
 end
 

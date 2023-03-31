@@ -24,6 +24,7 @@ Features:
 - Familienmitglieder, die sich in der Nähe des Schwarzen Bretts aufhalten, werden Pamphlete gegen die eigene Dynastie automatisch entfernen.
 - In einer Taverne zu übernachten, garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.
 - Die KI nutzt deutlich verbesserte Karren-Logiken.
+- Übernahme-Angebote für die Betriebe von Schattendynastien sind nun möglich gegen die Zahlung einer hohen Summe. Die Besitzer können das Angebot ablehnen, wenn sie politische Ambitionen verfolgen oder den potenziellen Käufer nicht mögen.
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat).
@@ -34,6 +35,7 @@ Bugfixes:
 - Durch Gebäudeplünderungen kann ein Gebäude (z.b. Kontor) nicht mehr völlig zerstört werden.
 - Dynastien sterben nicht länger in der ersten Runde ohne Grund aus.
 - Einer der Tische in der Taverne wurde nicht von Kunden benutzt.
+- Wenn man jemandem die Knochen brach, wurde beim Beweis das falsche Opfer angezeigt.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.

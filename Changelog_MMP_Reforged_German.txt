@@ -198,6 +198,7 @@ _Allgemein_
 - Fehlende Dialoge (vertont!) beim Bonus-Auszahlen bzw. Angestellte antreiben hinzugefügt.
 - Fehlende englische Soundfiles aus Seeräuber der Hanse hinzugefügt.
 - Das Talent "Feilschen" hatte so gut wie keinen Effekt auf das Kaufen/Verkaufen von Waren am Markt. Nun werden die Maßnahmen "Handelsroute" sowie die Karrenaktion "Verschicken und Abladen" stets einen Feilschen-Bonus hervorbringen.
+- Wenn man jemandem die Knochen brach, wurde beim Beweis das falsche Opfer angezeigt.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -321,7 +322,7 @@ _Allgemein_
 - Wenn man ein Amt erhält, bekommt man nun zusätzlich eine athmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
 - Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
 - Familienmitglieder, die sich in der Nähe des Schwarzen Bretts aufhalten, werden Pamphlete gegen die eigene Dynastie automatisch entfernen.
-
+- Übernahme-Angebote für die Betriebe von Schattendynastien sind nun möglich gegen die Zahlung einer hohen Summe. Die Besitzer können das Angebot ablehnen, wenn sie politische Ambitionen verfolgen oder den potenziellen Käufer nicht mögen.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen und garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.

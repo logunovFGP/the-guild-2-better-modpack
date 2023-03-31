@@ -199,6 +199,9 @@ _General_
 - Added missing original voice over-files of Pirates of the Eastern Sea.
 - Added completely newly created Voice Over lines for the Narrator.
 - The talent 'bargaining' had little to no effect on market selling. Now, every selling / buying action via Trade Routes or "Unload"-action will add some bargaining profit.
+- If you broke someone's bones, the evidence would show the wrong victim.
+- You can make a takeover bid to buy a desired building from a shadow dynasty for a high amount of money. They may decline if they are into politics or hate you.
+
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

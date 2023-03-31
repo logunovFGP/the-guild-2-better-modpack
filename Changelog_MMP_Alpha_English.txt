@@ -25,6 +25,7 @@ Features:
 - Sleeping in a tavern guarantees a good dream (talent boost). Sleeping in a tavern which is "the best place in town" will give you an even bigger boost.
 - AI now uses vastly improved cart systems
 - Pneumonia now uses Medicine bottles for treatment and BurnWounds need PainKiller
+- You can make a takeover bid to buy a desired building from a shadow dynasty for a high amount of money. They may decline if they are into politics or hate you.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)
@@ -35,6 +36,7 @@ Fixes:
 - You can no longer destroy a building completely by plundering it (e.g. counting houses)
 - Dynasties will no longer die out within the first round without reason.
 - One of the tables in the tavern was never used by customers.
+- If you broke someone's bones, the evidence would show the wrong victim.
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.
