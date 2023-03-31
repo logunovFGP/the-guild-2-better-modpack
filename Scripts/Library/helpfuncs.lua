@@ -89,8 +89,8 @@ function QuickSort(t, start, endi, compare)
       pivot = pivot + 1
     end
   end
-  t = helpfuncs_QuickSort(t, start, pivot - 1)
-  return helpfuncs_QuickSort(t, pivot + 1, endi)
+  t = helpfuncs_QuickSort(t, start, pivot - 1, compare)
+  return helpfuncs_QuickSort(t, pivot + 1, endi, compare)
 end
 
 function SortBySecondValue(a,b) 
