@@ -183,14 +183,16 @@ function Run()
 
 	cart_UnloadAll("", "MyHome")
 	
-	local NeedCount, Needs
+	local NeedCount, Needs, SupplierFound
 	while true do 
 		-- 3. Calculate current demand at workshop (need arises when below 80% (0.8))
-		local NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.8)
+		NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.8)
+		SupplierFound = false
 		if NeedCount and NeedCount > 0 then
 			MsgMeasure("", "Looking for supplies")
 			for i = 1, SupplierCount do
 				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
+					SupplierFound = true
 					f_MoveTo("", Suppliers[i], GL_MOVESPEED_RUN)
 					NeedCount, Needs = cart_LoadItems("", Suppliers[i], NeedCount, Needs)
 					if NeedCount <= 0 then
@@ -199,9 +201,14 @@ function Run()
 				end
 			end
 		else
+			SupplierFound = true -- otherwise, message gets replaced
 			MsgMeasure("", "Supplies are fine, time for a break")
-			Sleep(75) -- nothing to do, wait a while
-		end	
+			Sleep(60) -- nothing to do, wait a while
+		end
+		if not SupplierFound then
+			MsgMeasure("", "Could not find supplies, need to wait")
+			Sleep(35) -- nothing to do, wait a bit
+		end
 		
 		-- return home if necessary
 		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then

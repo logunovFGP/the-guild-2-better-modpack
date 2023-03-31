@@ -87,17 +87,17 @@ function UnloadAll(CartAlias, DestAlias)
 		local ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
 		
 		if ItemId and ItemCount then
-			BuildingGetCity(DestAlias, "MyCity")
+			BuildingGetCity(DestAlias, "BargCity")
 			local ItemStock = GetItemCount(DestAlias, ItemId)
 			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then
 				-- Add some bargain-bonus on market buys
 				if BuildingGetClass(DestAlias) == GL_BUILDING_CLASS_MARKET then
 					if GetHomeBuilding(CartAlias, "Business") then
-						if BuildingGetOwner("Business", "MyBoss") then
-							if GetSettlement(CartAlias, "MyCity") then
-								CityGetLocalMarket("MyCity", "MyMarket")
-								EstimatedMoney = ItemGetPriceSell(ItemId, "MyMarket")*ItemCount
-								BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
+						if BuildingGetOwner("Business", "BargBoss") then
+							if GetSettlement(DestAlias, "BargCity") then
+								CityGetLocalMarket("BargCity", "BargMarket")
+								EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket")*ItemCount
+								BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("BargBoss", BARGAINING)*2)/100))
 							end
 						end
 					end
@@ -184,11 +184,11 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 			-- Add some bargain-bonus on market buys
 			if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET then
 				if GetHomeBuilding(CartAlias, "Business") then
-					if BuildingGetOwner("Business", "MyBoss") then
-						if GetSettlement(CartAlias, "MyCity") then
-							CityGetLocalMarket("MyCity", "MyMarket")
-							EstimatedMoney = ItemGetPriceSell(ItemId, "MyMarket")*ItemTransfered
-							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
+					if BuildingGetOwner("Business", "BargBoss") then
+						if GetSettlement(BldAlias, "BargCity") then
+							CityGetLocalMarket("BargCity", "BargMarket")
+							EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket")*ItemTransfered
+							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("BargBoss", BARGAINING)*2)/100))
 						end
 					end
 				end

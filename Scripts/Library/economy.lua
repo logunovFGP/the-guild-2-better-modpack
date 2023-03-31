@@ -739,8 +739,8 @@ end
 
 function CheckAvailability(BldAlias, CartAlias, NeedCount, Needs)
 	-- can only buy from market if I have enough money
-	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or GetDynastyID("") ~= GetDynastyID(BldAlias) then
-		if GetMoney("") < 200 then
+	if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or GetDynastyID(CartAlias) ~= GetDynastyID(BldAlias) then
+		if GetMoney(CartAlias) < 200 then
 			return false
 		end
 	end
@@ -755,7 +755,10 @@ function CheckAvailability(BldAlias, CartAlias, NeedCount, Needs)
 	for i = 1, NeedCount do
 		if Needs[i][2] > 0 and GetItemCount(BldAlias, Needs[i][1], BldInv) > 0 then
 			IsProducer = BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET or BuildingCanProduce(BldAlias, Needs[i][1]) or BuildingGetType(BldAlias) == GL_BUILDING_TYPE_WAREHOUSE
-			return IsProducer
+			if IsProducer then
+				-- if not producer, still check other Needs
+				return IsProducer
+			end
 		end
 	end
 	return false
