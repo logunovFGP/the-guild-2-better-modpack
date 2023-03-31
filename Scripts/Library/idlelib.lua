@@ -1383,9 +1383,9 @@ function VisitDoc(HospitalID)
 	
 	local MinLevel = 1
 	
-	if GetImpactValue("", "Influenza") > 0 or GetImpactValue("", "Pox") > 0 or GetImpactValue("", "BurnWound") > 0  then
+	if GetImpactValue("", "Influenza") > 0 or GetImpactValue("", "Pox") > 0 or  GetImpactValue("", "Pneumonia") > 0 then
 		MinLevel = 2
-	elseif GetImpactValue("", "Pneumonia") > 0 or GetImpactValue("", "Blackdeath") > 0 or GetImpactValue("", "Caries") > 0 or GetImpactValue("", "Fracture") > 0 then
+	elseif GetImpactValue("", "BurnWound") > 0 or GetImpactValue("", "Blackdeath") > 0 or GetImpactValue("", "Caries") > 0 or GetImpactValue("", "Fracture") > 0 then
 		MinLevel = 3
 	end
 

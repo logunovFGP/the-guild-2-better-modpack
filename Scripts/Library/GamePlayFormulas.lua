@@ -1096,7 +1096,23 @@ function CityGetRandomDynastyMember(CityAlias, OnlyParty, OnlyValid)
 end
 
 function CityCheckImportantBuilding(CityAlias, BuildingType, BuildingLevel)
-	if CityGetRandomBuilding(CityAlias, -1, BuildingType, BuildingLevel, -1, FILTER_IGNORE, "BuildingExists") then
+	--LogMessage("Check for Type "..BuildingType.." in "..GetName(CityAlias).." at level "..BuildingLevel)
+	
+	if BuildingLevel == 1 then
+		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_IGNORE, "BuildingExists") then
+			if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_IGNORE, "BuildingExists") then
+				CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_IGNORE, "BuildingExists")
+			end
+		end
+	elseif BuildingLevel == 2 then
+		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_IGNORE, "BuildingExists") then
+			CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_IGNORE, "BuildingExists")
+		end
+	elseif BuildingLevel == 3 then
+		CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_IGNORE, "BuildingExists")
+	end
+	
+	if AliasExists("BuildingExists") then
 		return true
 	else
 		return false
@@ -1104,9 +1120,87 @@ function CityCheckImportantBuilding(CityAlias, BuildingType, BuildingLevel)
 end
 
 function CityCheckImportantOwner(CityAlias, BuildingType, BuildingLevel)
-	if CityGetRandomBuilding(CityAlias, -1, BuildingType, BuildingLevel, -1, FILTER_HAS_DYNASTY, "OwnerExists") then
+	--LogMessage("Check for Owner for Type "..BuildingType.." in "..GetName(CityAlias).." at level "..BuildingLevel)
+	
+	if BuildingLevel == 1 then
+		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_HAS_DYNASTY, "BuildingExists") then
+			if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_HAS_DYNASTY, "BuildingExists") then
+				CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_HAS_DYNASTY, "BuildingExists")
+			end
+		end
+	elseif BuildingLevel == 2 then
+		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_HAS_DYNASTY, "BuildingExists") then
+			CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_HAS_DYNASTY, "BuildingExists")
+		end
+	elseif BuildingLevel == 3 then
+		CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_HAS_DYNASTY, "BuildingExists")
+	end
+	
+	if AliasExists("BuildingExists") then
 		return true
 	else
 		return false
 	end
 end
+
+function CityCheckHospital(CityAlias, Disease, NeedOwner)
+	
+	local Illness = { "Cold", "Sprain", "Influenza", "Pox", "Pneumonia", "BurnWound", "Fracture", "Caries", "Blackdeath" }
+	local IllnessCount = 9
+	local HospitalLevel = {1, 1, 1, 2, 2, 3, 3, 3, 3 }
+	local Found = false
+	
+	for i=1, IllnessCount do
+		if Disease == Illness[i] then
+			local result = false
+			-- check if city has a hospital on that level available
+			if NeedOwner then
+				--LogMessage("Need Owner")
+				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
+			else
+				--LogMessage("Don't need owner")
+				result = gameplayformulas_CityCheckImportantBuilding(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
+			end
+			
+			Found = result
+			break
+		end
+	end
+	
+	return Found
+end
+
+function CalcIllnessHazard(SimAlias, Disease)
+	local Illness = { "Cold", "Sprain", "Influenza", "Pox", "Pneumonia", "BurnWound", "Fracture", "Caries", "Blackdeath" }
+	local IllnessCount = 9
+	local BaseHazard = { 50, 50, 60, 30, 70, 0, 0, 0, 80 }
+	local Hazard = 0
+	
+	for i=1, IllnessCount do -- check all
+		if Disease == Illness[i] then
+			if BaseHazard[i] > 0 then
+				Hazard = BaseHazard[i]
+				
+				-- age of Sim
+				local Age = SimGetAge(SimAlias)
+				if Age >= 65 then
+					Hazard = Hazard + 20
+				elseif Age >= 55 then
+					Hazard = Hazard + 15
+				elseif Age >= 45 then
+					Hazard = Hazard + 10
+				elseif Age >= 35 then
+					Hazard = Hazard + 5
+				end
+				
+				-- high consti protects you from infections
+				local Constitution = GetSkillValue("", CONSTITUTION) * 5
+				Hazard = Hazard - Constitution
+			end
+			break
+		end
+	end
+	
+	return Hazard
+end
+

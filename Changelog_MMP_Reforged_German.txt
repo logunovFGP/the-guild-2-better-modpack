@@ -115,6 +115,9 @@ _Design_
 - Die Möglichkeit, Verteidigungstürme zu errichten, wurde entfernt.
 - Schattendynastien, die zu Spielstart ein Amt inne haben, starten nun stets mit bis zu zwei wertvolleren Gebäuden einer höheren Ausbaustufe, einem entsprechenden Wohnsitz und einem Ehepartner, während Farb-Dynastien nur einen einzigen Betrieb der ersten Stufe erhalten.
 - Waffenkammer und Gildenhalle können nun unabhängig vom Stadt-Level genutzt werden.
+- Der Erhalt von zufälligen Krankheiten wurde deutlich umgestaltet. Unter anderem erhält man nun keine Krankheiten, wenn kein entsprechendes
+  Hospital in der Stadt vorhanden ist (Die Ausbreitung und Ansteckung von Krankheiten bleibt davon unbeeinflusst).
+- Lungenentzündungen brauchen nun Medizinflaschen für die Behandlung und Brandwunden Schmerzmittel.
 
 *** Vanilla-Bugs ***
 

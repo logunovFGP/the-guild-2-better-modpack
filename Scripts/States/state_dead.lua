@@ -123,13 +123,19 @@ function Run()
 			elseif ReasonToDie == "Blackdeath" then
 				ReasonLabel = "@L_ILLNESS_REASON_+3"
 				local Age = SimGetAge("")
-				if IsDynastySim("") and not DynastyIsShadow("") then
 				
-					local SettlementId = GetSettlementID("")
-					-- your badge
-					local BadgeID = DynastyGetFlagNumber("dynasty") + 29
-					local Badge = "@L$S[20"..BadgeID.."]"
-					if GetSettlement("", "DeadSimsSettlement") then
+				if GetSettlement("", "DeadSimsSettlement") then
+					-- add death counter
+					local DeathCounter = GetProperty("DeadSimsSettlement", "PlagueDeathCounter") or 0
+					SetProperty("DeadSimsSettlement", "PlagueDeathCounter", (DeathCounter + 1))
+					
+					-- send messages
+					if IsDynastySim("") and not DynastyIsShadow("") then
+					
+						local SettlementId = GetSettlementID("")
+						-- your badge
+						local BadgeID = DynastyGetFlagNumber("dynasty") + 29
+						local Badge = "@L$S[20"..BadgeID.."]"
 						local Gender = SimGetGender("")
 						
 						if Gender == GL_GENDER_MALE then
@@ -139,10 +145,11 @@ function Run()
 						end
 						-- for other dynasties
 						feedback_MessageOtherCharacters("", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_OTHER_DYNASTIES_ILLNESS_BODY", GetID(""), Age, SettlementId, ReasonLabel, Badge)
+						
+					 -- message the dynasty leader if you are a former employee
+					elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
+						MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BLACKDEATH_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
 					end
-				 -- message the dynasty leader if you are a former employee
-				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
-					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BLACKDEATH_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
 				end
 			end
 		else -- died by force

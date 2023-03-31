@@ -45,7 +45,7 @@ function Run()
 		-- send personal messages
 		if IsPartyMember("") then
 			feedback_MessageCharacter("", "@L_HPFZ_KATASTR_STOD_WARNING_HEAD_+0",
-								"@L_HPFZ_KATASTR_SICK_BODY_+0", GetID(""))
+								"@L_HPFZ_KATASTR_SICK_BODY_+0", GetID(""), Label)
 		end
 				
 	
@@ -62,7 +62,7 @@ function Run()
 		-- normal disease
 		if IsPartyMember("") then
 			feedback_MessageCharacter("", "@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_HEAD_+0",
-							"@L_HPFZ_KATASTR_SICK_BODY_+0", GetID(""))
+							"@L_HPFZ_KATASTR_SICK_BODY_+0", GetID(""), Label)
 		end
 				
 	
@@ -236,6 +236,7 @@ end
 function PneumoniaBehaviour()
 	
 	MoveSetActivity("", "sick")
+	CommitAction("sickness", "", "") -- it's contagious
 	
 	while GetImpactValue("", "Pneumonia") == 1 do
 		Sleep(30)
@@ -273,7 +274,7 @@ end
 
 function PoxBehaviour()
 
-	CommitAction("sickness", "", "")
+	CommitAction("sickness", "", "") -- it's contagious
 	while GetImpactValue("", "Pox") == 1 do
 		Sleep(30)
 		if (GetState("", STATE_IDLE) and MoveGetStance("") == GL_STANCE_STAND) then
@@ -312,7 +313,22 @@ function BlackdeathBehaviour()
 	
 	-- disease finished
 	if GetSettlement("", "City") then
-		chr_DecrementInfectionCount("BlackdeathInfected", "City")	
+		chr_DecrementInfectionCount("BlackdeathInfected", "City")
+		local BlackdeathCount = GetProperty("City", "BlackdeathInfected") or 0
+		
+		if BlackdeathCount == 0 then
+			-- message everyone that the plague is gone
+			if HasProperty("City", "ActivePlague") then
+				RemoveProperty("City", "ActivePlague")
+			end
+			
+			local DeathCounter = GetProperty("City", "PlagueDeathCounter") or 0
+				
+			MsgNewsNoWait("All", "", "", "intrigue", -1,
+							"@L_HPFZ_KATASTR_STOD_CURED_KOPF_+0",
+							"@L_HPFZ_KATASTR_STOD_CURED_RUMPF_+0",
+							GetID("City"), GetID(""), DeathCounter)
+		end
 	end
 	
 	SetProperty("", "BlackdeathImmunity", 1)

@@ -27,50 +27,40 @@ function Run()
 		end
 	end
 	
+	-- check the disease of the actor
+	local Disease = ""
+	
+	if GetImpactValue("Actor", "Cold") > 0 then
+		Disease = "Cold"
+	elseif GetImpactValue("Actor", "Influenza") > 0 then
+		Disease = "Influenza"
+	elseif GetImpactValue("Actor", "Pneumonia") > 0 then
+		Disease = "Pneumonia"
+	elseif GetImpactValue("Actor", "Pox") > 0 then
+		Disease = "Pox"
+	elseif GetImpactValue("Actor", "Blackdeath") > 0 then
+		Disease = "Blackdeath"
+	end
+	
 	-- check how contagious the disease is
-	local Hazard = 50 -- 50% base chance
-	
-	if GetImpactValue("Actor", "Influenza") then
-		Hazard = Hazard + 10 -- more contagious
-	elseif GetImpactValue("Actor", "Blackdeath") then
-		Hazard = Hazard + 30 -- highly contagious
-	end
-	
-	local Constitution = GetSkillValue("", CONSTITUTION) * 5 -- high consti protects you from infections
-	Hazard = Hazard - Constitution
-	
-	local SimAge = SimGetAge("") 
-	
-	if SimAge > 30 then -- old people have higher chances for infections
-		Hazard = Hazard + 5
-	end
-	
-	if SimAge > 40 then 
-		Hazard = Hazard + 5
-	end
-	
-	if SimAge > 50 then
-		Hazard = Hazard + 5
-	end
-	
-	if SimAge > 60 then
-		Hazard = Hazard + 5
-	end
+	local Hazard = gameplayformulas_CalcIllnessHazard("", "Disease")
 	
 	if Hazard > Rand(100) then -- infected!
 		-- get the correct illness
 		
-		if GetImpactValue("Actor", "Cold") > 0 then
+		if Disease == "Cold" then
 			diseases_Cold("", true)
-		elseif GetImpactValue("Actor", "Influenza") > 0 then
+		elseif Disease == "Influenza" then
 			diseases_Influenza("", true)
-		elseif GetImpactValue("Actor", "Pneumonia") > 0 then
+		elseif Disease == "Pneumonia" then
 			diseases_Influenza("", true)
-		elseif GetImpactValue("Actor", "Blackdeath") > 0 then
+		elseif Disease == "Pox" then
+			diseases_Pox("", true)
+		elseif Disease == "Blackdeath" then
 			if not HasState("", "BlackdeathImmunity") then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("MyHomeCity", "ActivePlague") or 0
-				if CurrentRound < StartingRound + 4 then
+				if CurrentRound < (StartingRound + 4) then
 					diseases_Blackdeath("", true)
 				end
 			end

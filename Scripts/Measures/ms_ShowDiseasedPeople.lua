@@ -17,9 +17,9 @@ function Run()
 	local SpainItemCnt = GetItemCount("", "Bandage")
 	local ColdItemCnt = GetItemCount("", "Bandage")
 	local InfluenzaItemCnt = GetItemCount("", "Medicine")
-	local BurnWoundItemCnt = GetItemCount("", "Medicine")
+	local BurnWoundItemCnt = GetItemCount("", "PainKiller")
 	local PoxItemCnt = GetItemCount("", "Medicine")
-	local PneumoniaItemCnt = GetItemCount("", "PainKiller")
+	local PneumoniaItemCnt = GetItemCount("", "Medicine")
 	local BlackdeathItemCnt = GetItemCount("", "PainKiller")
 	local FractureItemCnt = GetItemCount("", "PainKiller")
 	local CariesItemCnt = GetItemCount("", "PainKiller")
@@ -58,11 +58,11 @@ function Run()
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Sprain_NAME_+0", SprainInfected, SpainItemCnt, ItemGetLabel("Bandage",false), 
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Cold_NAME_+0", ColdInfected, ColdItemCnt, ItemGetLabel("Bandage",false), 
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Influenza_NAME_+0", InfluenzaInfected, InfluenzaItemCnt, ItemGetLabel("Medicine",false), 
-						"@L_ONSCREENHELP_9_ACTION_IMPACT_BurnWound_NAME_+0", BurnWoundInfected, BurnWoundItemCnt, ItemGetLabel("Medicine",false), 
+						"@L_ONSCREENHELP_9_ACTION_IMPACT_BurnWound_NAME_+0", BurnWoundInfected, BurnWoundItemCnt, ItemGetLabel("PainKiller",false), 
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Pox_NAME_+0", PoxInfected, PoxItemCnt, ItemGetLabel("Medicine",false), 
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Fracture_NAME_+0", FractureInfected, FractureItemCnt, ItemGetLabel("PainKiller",false), 
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Caries_NAME_+0", CariesInfected, CariesItemCnt, ItemGetLabel("PainKiller",false),
-						"@L_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_NAME_+0", PneumoniaInfected, PneumoniaItemCnt, ItemGetLabel("PainKiller",false), 
+						"@L_ONSCREENHELP_9_ACTION_IMPACT_Pneumonia_NAME_+0", PneumoniaInfected, PneumoniaItemCnt, ItemGetLabel("Medicine",false), 
 						"@L_ONSCREENHELP_9_ACTION_IMPACT_Blackdeath_NAME_+0", BlackdeathInfected, BlackdeathItemCnt, ItemGetLabel("PainKiller",false)) 
 
 end

@@ -19,10 +19,37 @@ function Run()
 			SetData("#AldermanChooser", GetID(""))
 		end
 	end
+	
+	-- random diseases for dynasty members
+	local trys = 5
 		
+	for i=1, trys do
+		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
+		if TargetID > 0 then
+			GetAliasByID(TargetID, "InfectSim")
+			if AliasExists("InfectSim") then
+				if not GetState("InfectSim", STATE_SICK) then
+					if GetImpactValue("InfectSim", "Resist") == 0 then
+						if GetDynasty("InfectSim", "InfectDyn") then
+							if ReadyToRepeat("InfectDyn", "RandomIllness") then
+								--LogMessage("City "..GetName("").." tries to infect "..GetName("InfectSim"))
+								CopyAlias("InfectSim", "RandomInfected")
+								break
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	if AliasExists("RandomInfected") then
+		citypinghour_InfectionEvent("RandomInfected")
+	end
+	
 	-- levelup public buildings if necessecary
 	if ScenarioGetTimePlayed() > 12 then
-		
+
 		if Level == 2 then
 			citypinghour_CheckVillage()
 		elseif Level == 3 then
@@ -36,27 +63,6 @@ function Run()
 		
 	-- get special events rolling
 	local CurrentRound = GetRound()
-	
-	if CurrentRound > 0 then -- round 2+
-		
-		local trys = 5
-		-- infect a random dynasty member of this city
-		
-		for i=1, trys do
-			local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
-			if TargetID > 0 then
-				GetAliasByID(TargetID, "InfectSim")
-				if AliasExists("InfectSim") then
-					if not GetState("InfectSim", STATE_SICK) then
-						if GetImpactValue("InfectSim", "Resist") == 0 then
-							citypinghour_InfectionEvent("InfectSim")
-							break
-						end
-					end
-				end
-			end
-		end
-	end
 	
 	if CurrentRound > 1 then -- round 3 +
 		
@@ -79,6 +85,7 @@ function Run()
 		if CurrentRound > 2 then -- round 4+
 			
 			-- ToDo: City Events
+			citypinghour_CityEvent("")
 		end
 	end
 		
@@ -98,7 +105,93 @@ function Run()
 end
 
 function InfectionEvent(Target)
-	-- ToDo
+	
+	local Difficulty = ScenarioGetDifficulty()
+	local Round = GetRound()
+	
+	if not GetSettlement(Target, "HomeTown") then
+		return
+	end
+	
+	local Illness = { "Cold", "Sprain", "Influenza", "Pox", "Caries", "Blackdeath" }
+	local IllnessCount = 6
+	local MinDifficulty = { 0, 0, 2, 2, 3, 3 }
+	local MinRound = { 0, 0, 1, 1, 1, 2 }
+	
+	local MyIllnessList = { }
+	local MyIllnessCount = 0
+	
+	-- go through all illnesses and check conditions (difficulty + availabilty of hospital at the needed level)
+	for i=1, IllnessCount do
+		if MinDifficulty[i] <= Difficulty then
+			local IllnessMinRound = MinRound[i] * (5 - Difficulty) -- Blackdeath on diff. 3 at round 4; on diff 4 at round 2
+			if IllnessMinRound <= Round then -- min round reached
+				if gameplayformulas_CityCheckHospital("HomeTown", Illness[i], false) then -- we have a hospital in town that could cure the disease
+					local Index = MyIllnessCount + 1
+					MyIllnessList[Index] = Illness[i]
+					MyIllnessCount = Index
+				end
+			end
+		end
+	end
+	
+	if MyIllnessCount > 0 then
+		local RandomIllness = Rand(MyIllnessCount) + 1
+		local Disease = MyIllnessList[RandomIllness]
+		local Hazard = 0
+		local Infected = false
+		Hazard = gameplayformulas_CalcIllnessHazard(Target, Disease)
+		
+		if Disease == "Cold" then
+			if Hazard > Rand(100) then
+				diseases_Cold(Target, true)
+				Infected = true
+				LogMessage(GetName(Target).." received random illness "..Disease)
+			end
+		elseif Disease == "Influenza" then
+			if Hazard > Rand(100) then
+				diseases_Influenza(Target, true)
+				Infected = true
+				LogMessage(GetName(Target).." received random illness "..Disease)
+			end
+		elseif Disease == "Pneumonia" then
+			if Hazard > Rand(100) then
+				diseases_Influenza(Target, true)
+				Infected = true
+				LogMessage(GetName(Target).." received random illness "..Disease)
+			end
+		elseif Disease == "Pox" then
+			if Hazard > Rand(100) then
+				diseases_Pox(Target, true)
+				Infected = true
+				LogMessage(GetName(Target).." received random illness "..Disease)
+			end
+		elseif Disease == "Blackdeath" then
+			if not HasState(Target, "BlackdeathImmunity") then
+				local CurrentRound = GetRound()
+				local StartingRound = GetProperty("HomeTown", "ActivePlague") or 0
+				if CurrentRound < (StartingRound + 4) then
+					if Hazard > Rand(100) then
+						diseases_Blackdeath(Target, true)
+						Infected = true
+						LogMessage(GetName(Target).." received random illness "..Disease)
+					end
+				end
+			end
+		end
+		
+		if not Infected then
+			LogMessage(GetName(Target).." resisted random illness")
+		else
+			if GetDynasty(Target, "TargetDyn") then
+				SetRepeatTimer("TargetDyn", "RandomIllness", 12)
+			end
+		end
+	end
+end
+
+function CityEvent(Target)
+	--ToDo
 end
 
 function CityBalance()

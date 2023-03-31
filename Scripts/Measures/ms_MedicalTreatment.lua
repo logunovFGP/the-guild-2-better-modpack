@@ -162,7 +162,7 @@ function Run()
 			--PNEUMONIA
 			elseif GetImpactValue("SickSim0", "Pneumonia") == 1 then
 				Disease = "Pneumonia"
-				Medicine = "PainKiller"
+				Medicine = "Medicine"
 				FavorMod = GL_FAVOR_MOD_GREATER
 				Label = "PNEUMONIA"
 			--BLACKDEATH

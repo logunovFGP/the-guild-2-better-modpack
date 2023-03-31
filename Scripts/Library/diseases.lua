@@ -476,12 +476,12 @@ function GetTreatmentCost(Disease)
 		return 250
 	elseif Disease == "Influenza" then
 		return 400
-	elseif Disease == "BurnWound" then
-		return 500
 	elseif Disease == "Pox" then
+		return 700
+	elseif Disease == "BurnWound" then
 		return 750
 	elseif Disease == "Pneumonia" then
-		return 850
+		return 800
 	elseif Disease == "Blackdeath" then
 		return 1000
 	elseif Disease == "Fracture" then

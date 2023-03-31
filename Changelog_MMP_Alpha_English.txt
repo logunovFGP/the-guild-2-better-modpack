@@ -12,6 +12,8 @@ Design:
 - Removed the "Imperial Officer"-Mechanic (was mostly unused anyway).
 - Removed the ability to build defensive towers.
 - The arsenal and guild hall can now be used without limitations by the city level.
+- The logic of when and who receives a random disease has been changed. Now you will not receive a random illness, if there isn't at least
+  one hospital in your town which could cure it (normal spreading of diseases still applies).
 
 Features:
 - Added narrator voice to wedding ceremony invitations
@@ -21,6 +23,8 @@ Features:
 - Added two new Nobility titles (more or less placeholders) and modified prices/building limit accordingly.
 - Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
 - Sleeping in a tavern guarantees a good dream (talent boost). Sleeping in a tavern which is "the best place in town" will give you an even bigger boost.
+- AI now uses vastly improved cart systems
+- Pneumonia now uses Medicine bottles for treatment and BurnWounds need PainKiller
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)
@@ -44,4 +48,6 @@ Fixes (Modpack):
 - When another dynasty got a new title, the message didn't show the name and the correct title.
 - Fires burnt a bit too hot.
 - Dying employees sent a message which sometimes showed the wrong reason they died.
+- Random illnesses are back
+- If you got a disease the message didn't show the name of the disease.
 

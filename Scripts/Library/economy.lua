@@ -899,7 +899,7 @@ function CalcSalesForMarket(CityAlias)
 	-- save first six items as properties
 	for i=1, 6 do
 		if i <= SalesCount and Sales[i] then
-			LogMessage(GetName(CityAlias) .. " sells: " .. Sales[i][2] .. " " .. ItemGetName(Sales[i][1]))
+			--LogMessage(GetName(CityAlias) .. " sells: " .. Sales[i][2] .. " " .. ItemGetName(Sales[i][1]))
 			SetProperty("MarketAlias", "twpSales"..i, Sales[i][1])
 			SetProperty("MarketAlias", "twpSalesAmount"..i, Sales[i][2])
 		else

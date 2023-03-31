@@ -12,6 +12,9 @@ Design:
 - Das Feature der königlichen Berater wurde entfernt (ohnehin war dieses Feature kaum integriert).
 - Die Möglichkeit, Verteidigungstürme zu errichten, wurde entfernt.
 - Waffenkammer und Gildenhalle können nun unabhängig vom Stadt-Level genutzt werden.
+- Der Erhalt von zufälligen Krankheiten wurde deutlich umgestaltet. Unter anderem erhält man nun keine Krankheiten, wenn kein entsprechendes
+  Hospital in der Stadt vorhanden ist (Die Ausbreitung und Ansteckung von Krankheiten bleibt davon unbeeinflusst).
+- Lungenentzündungen brauchen nun Medizinflaschen für die Behandlung und Brandwunden Schmerzmittel.
 
 Features:
 - Erzähler zur Hochzeitseinladung hinzugefügt.
@@ -20,6 +23,7 @@ Features:
 - Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
 - Familienmitglieder, die sich in der Nähe des Schwarzen Bretts aufhalten, werden Pamphlete gegen die eigene Dynastie automatisch entfernen.
 - In einer Taverne zu übernachten, garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.
+- Die KI nutzt deutlich verbesserte Karren-Logiken.
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat).
@@ -42,5 +46,5 @@ Bugfixes (MegaMod):
 - Wenn eine andere Dynastie einen Titel erwarb, zeigte die Nachricht nicht den korrekten Namen und Titel.
 - Feuer brannten ein bisschen zu heiß.
 - Sterbende Angestellte schickten manchmal eine Nachricht, die die falsche Todesursache anzeigte.
-
+- Erhielt man eine Krankheit, so zeigte die Nachricht nicht den Namen der Krankheit an.
 
