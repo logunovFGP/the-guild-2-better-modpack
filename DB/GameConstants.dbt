@@ -280,6 +280,12 @@ Data:
 273   "GL_MEASURE_PRIORITY_MEDIUM"          50                ""                              | 
 274   "GL_MEASURE_PRIORITY_HIGH"            80                ""                              | 
 275   "GL_MEASURE_PRIORITY_MAX"             99                ""                              | 
+276   "GL_RANK_UNDEFINED"                   0                 ""                              | 
+277   "GL_RANK_DESTITUTE"                   1                 ""                              | 
+278   "GL_RANK_POOR"                        2                 ""                              | 
+279   "GL_RANK_MIDDLE"                      3                 ""                              | 
+280   "GL_RANK_RICH"                        4                 ""                              | 
+281   "GL_RANK_WEALTHY"                     5                 ""                              | 
 
 
 
