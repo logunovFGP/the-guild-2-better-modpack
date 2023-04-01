@@ -1035,63 +1035,54 @@ function CityGetRandomDynastyID(CityAlias)
 end
 
 function CityGetRandomDynastyMember(CityAlias, OnlyParty, OnlyValid)
-	local DynID = gameplayformulas_CityGetRandomDynastyID(CityAlias) or 0
 	
-	if DynID > 0 then
-		GetAliasByID(DynID, "RandomDyn")
-		if AliasExists("RandomDyn") then
-			if OnlyParty then
-				local PartyCount = DynastyGetMemberCount("RandomDyn")
-				local Choice = 1
-				
-				if PartyCount > 1 then
-					Choice = Rand(PartyCount) + 1
-				end
-				
-				if DynastyGetMember("RandomDyn", Choice, "MemberAlias") then
-					if OnlyValid then
-						if not f_SimIsValid("MemberAlias") then
-							return 0
-						else
-							local SimID = GetID("MemberAlias") or 0
-							return SimID
-						end
-					else
-						local SimID = GetID("MemberAlias") or 0
-						return SimID
-					end
-				else
-					return 0
+	local MyID = 0
+	
+	if OnlyParty then
+		CityGetDynastyCharList(CityAlias, "DynMember_List") -- all dynasty members in parties, beginning with the players and coloured dyns
+		local lsize = ListSize("DynMember_List")
+		for i=1, 5 do
+			local RandomMember = Rand(lsize)
+			ListGetElement("DynMember_List", lsize, "DynMember")
+			if OnlyValid then
+				if f_SimIsValid("DynMember") then
+					CopyAlias("DynMember", "ChooseMe")
 				end
 			else
-				local PartyCount = DynastyGetFamilyMemberCount("RandomDyn")
-				local Choice = 1
-				
-				if PartyCount > 1 then
-					Choice = Rand(PartyCount) + 1
-				end
-				
-				if DynastyGetFamilyMember("RandomDyn", Choice, "MemberAlias") then
-					if OnlyValid then
-						if not f_SimIsValid("MemberAlias") then
-							return 0
-						else
-							local SimID = GetID("MemberAlias") or 0
-							return SimID
-						end
+				CopyAlias("DynMember", "ChooseMe")
+			end
+			
+			if AliasExists("ChooseMe") then
+				MyID = GetID("ChooseMe")
+				break
+			end
+		end
+		
+		return MyID
+	else
+		local DynID = gameplayformulas_CityGetRandomDynastyID(CityAlias) or 0 -- only gets dynasties with a residence in that city
+		
+		if DynID > 0 then
+			
+			local FamilyCount = DynastyGetFamilyMemberCount("RandomDyn") -- this gets all family members and not just party members
+			local Choice = 1
+					
+			if FamilyCount > 1 then
+				Choice = Rand(FamilyCount) + 1
+			end
+					
+			if DynastyGetFamilyMember("RandomDyn", Choice, "MemberAlias") then
+				if OnlyValid then
+					if not f_SimIsValid("MemberAlias") then
+						return 0
 					else
-						local SimID = GetID("MemberAlias") or 0
-						return SimID
+						MyID = GetID("MemberAlias") or 0
 					end
-				else
-					return 0
 				end
 			end
-		else
-			return 0
 		end
-	else
-		return 0
+
+		return MyID
 	end
 end
 
