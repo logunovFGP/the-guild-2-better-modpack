@@ -102,49 +102,20 @@ function AlignExact(MoverAlias, DestinationAlias, Range, Duration)
 end
 
 -- -----------------------
--- AttemptToBribeIsSuccess
--- -----------------------
-function AttemptToBribeIsSuccess(BriberAlias, TargetAlias)
-
-	local Favor = GetFavorToSim(TargetAlias, BriberAlias)
-	local Alignment = SimGetAlignment(TargetAlias)
-	local SuccessValue = Favor + Alignment * 0.5
-	
-	if(SuccessValue >= 50) then
-		return true
-	end
-	
-	return false
-
-end
-
--- -----------------------
--- GetFavorWonFromBribe
--- -----------------------
-function GetFavorWonFromBribe(TargetAlias, BribeAmount)
-	local wealth = SimGetWealth(TargetAlias)
-	 
-	if (wealth <= 1500) then 
-		wealth = 1500
-	end
-		
-	return ( 250 * BribeAmount / wealth)
-end
-
--- -----------------------
 -- GetTradeBonus
 -- -----------------------
 function GetTradeBonus(BuyerAlias, HowMuch)
-	local Chance = 3 * GetSkillValue(BuyerAlias, BARGAINING)
+	LogMessage("GetTradeBonus is called")
+--	local Chance = 3 * GetSkillValue(BuyerAlias, BARGAINING)
 	
-	if(IsDynastySim(BuyerAlias)) then
-		Chance = Chance + 20
-	end
+--	if(IsDynastySim(BuyerAlias)) then
+--		Chance = Chance + 20
+--	end
 	
-	if(Chance > Rand(199)) then	
-		local Bonus = 0.0025 * HowMuch * (4 * GetSkillValue(BuyerAlias, RHETORIC) + 100 - SimGetAlignment(BuyerAlias))		
-		return Bonus	
-	end
+--	if(Chance > Rand(199)) then	
+--		local Bonus = 0.0025 * HowMuch * (4 * GetSkillValue(BuyerAlias, RHETORIC) + 100 - SimGetAlignment(BuyerAlias))		
+--		return Bonus	
+--	end
 end
 
 -- -----------------------
@@ -462,16 +433,16 @@ function GetBuildingLootLevel(DestAlias, DynastyID)
 	else
 		LootClass = 4
 	end
-	return LootClass
 	
+	return LootClass
 end
 
 -- -----------------------
 -- GetBuildingProtFromBurglaryLevel 
 -- -----------------------
-function GetBuildingProtFromBurglaryLevel(destination)	
+function GetBuildingProtFromBurglaryLevel(Destination)	
 	--the protection of burglary from the target building
-	local ProtectionValue = GetImpactValue(destination, "ProtectionOfBurglary")
+	local ProtectionValue = GetImpactValue(Destination, "ProtectionOfBurglary")
 	ProtectionValue = (ProtectionValue - 100)*100
 	local ProtectionClass = 0
 
@@ -492,14 +463,14 @@ end
 -- -----------------------
 -- SimModifyFaith
 -- -----------------------
-function SimModifyFaith(Sim,FaithAmount,Religion)
+function SimModifyFaith(Sim, FaithAmount, Religion)
 
-	local faith = SimGetFaith(Sim) + FaithAmount
-	SimSetFaith(Sim,faith)
+	local Faith = SimGetFaith(Sim) + FaithAmount
+	SimSetFaith(Sim, Faith)
 	if Religion == 0 then
-		ShowOverheadSymbol(Sim,false,true,0, "@L$S[2015] %1n",FaithAmount)
+		ShowOverheadSymbol(Sim, false, true, 0, "@L$S[2015] %1n", FaithAmount)
 	else
-		ShowOverheadSymbol(Sim,false,true,0, "@L$S[2014] %1n",FaithAmount)
+		ShowOverheadSymbol(Sim, false, true, 0, "@L$S[2014] %1n", FaithAmount)
 	end
 end
 
@@ -550,73 +521,6 @@ function OutputHireError(SimAlias, BuildingAlias, Error)
 	else
 		-- "WrongParams", etc.
 		MsgQuick(BuildingAlias, "@L_GENERAL_MEASURES_FAILURES_+16", GetID(SimAlias))
-	end
-	
-end
-
-function CreateFamily(SimAlias)
-
-	if not AliasExists(SimAlias) then
-		return
-	end
-	
-	local Age = SimGetAge(SimAlias)
-	if Age < 16 then
-		return
-	end
-
-	local Var = 90
-	if Age < 26 then
-		Var = 100 - (26 - Age) * 10
-		if Var > 90 then
-			Var = 90
-		end
-	end
-	
-	local SpouseAlias = SimAlias.."_s"
-	
-	local Married = false
-	if Rand(100) < Var then
-		if BossCreate(HomeAlias, 1-SimGetGender(SimAlias), 0, 2, SpouseAlias) then
-			SimSetAge(SpouseAlias, Rand(9) + Age - 4)
-			if SimMarry(SimAlias, SpouseAlias) then
-				Married = true
-			end
-		end
-	end
-	
-	if not Married then
-		return
-	end
-	
-	Age = math.min( SimGetAge(SimAlias), SimGetAge(SpouseAlias) )
-	
-	local Childs = Rand(3) + 1
-	local Birthday = Rand(16)+16
-	local ChildAge
-	local ChildAlias
-	local CreateChild
-	local ChildWasCreated = false
-	
-	
-	while Childs > 0 and Birthday < Age do
-		ChildAge = Age - Birthday
-		
-		CreateChild = true
-		if Age > 18 then
-			if Rand(100) < 50 and ChildWasCreated then
-				CreateChild = false
-			end
-		end
-		
-		if CreateChild then
-			ChildAlias = SimAlias.."_c"..Childs
-			chr_CreateChild(HomeAlias, SimAlias, SpouseAlias, ChildAge, ChildAlias)
-			chr_CreateFamily(ChildAlias)
-			ChildWasCreated = true
-		end
-		Childs = Childs - 1
-		Birthday = Rand(1)+Birthday + 1
 	end
 end
 
@@ -700,7 +604,6 @@ function MultiAnim(Actor1, Anim1, Actor2, Anim2, Distance, ReturnAfter, Seconds)
 			Sleep(time3 * ReturnAfter)
 			return time3 * (1 - ReturnAfter)
 		end
-		
 	end
 	
 	Sleep(time3)
@@ -736,6 +639,7 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 		local Diff = ScenarioGetDifficulty()
 		local Multiplier = 10/(8-Diff)
 		local CorrectAmount = MoneyToSpend*Multiplier
+		
 		if SpendMoney(SimAlias, CorrectAmount, Reason, Force) then
 			return true
 		else
@@ -925,7 +829,7 @@ function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 	-- abilities
 	BuildingGetOwner(WorkBuilding, "BOwner")
 	chr_CalculateAbilityBonus(SimAlias, "BOwner", HireFire)
-
+	
 	if BuildingType == GL_BUILDING_TYPE_RESIDENCE then
 		if HireFire == "hire" then
 			if BuildingHasUpgrade(WorkBuilding, "CrossedAxes") then
@@ -1094,21 +998,24 @@ function CheckGuildMaster(SimAlias, GuildHouse)
 		return false
 	end
 	
-	local Class
-
-	if SimGetClass(SimAlias) == 1 then
-		Class = "PatronMaster"
-	elseif SimGetClass(SimAlias) == 2 then
-		Class = "ArtisanMaster"
-	elseif SimGetClass(SimAlias) == 3 then
-		Class = "ScholarMaster"
-	elseif SimGetClass(SimAlias) == 4 then
-		Class = "ChiselerMaster"
+	local Class = SimGetClass(SimAlias)
+	local Master
+	
+	if Class > 0 and Class < 5 then
+	
+		local ClassData = {
+					[GL_CLASS_PATRON] = "PatronMaster",
+					[GL_CLASS_ARTISAN] = "ArtisanMaster",
+					[GL_CLASS_SCHOLAR] = "ScholarMaster",
+					[GL_CLASS_CHISELER] = "ChiselerMaster"
+					}
+					
+		Master = ClassData[Class]
 	else
 		return false
 	end
 
-	if GetID(SimAlias) == GetProperty(GuildHouse, Class) then
+	if GetID(SimAlias) == GetProperty(GuildHouse, Master) then
 		return true
 	else
 		return false
@@ -1116,10 +1023,12 @@ function CheckGuildMaster(SimAlias, GuildHouse)
 end
 
 function GetAlderman()
-	local alderman = GetData("#Alderman")
-	if alderman~=nil then
-		if (alderman>0) and GetAliasByID(alderman, "Alderman") and GetState("Alderman", STATE_DEAD)==false then
-			return alderman
+
+	local Alderman = GetData("#Alderman")
+	
+	if Alderman ~= nil then
+		if (Alderman > 0) and GetAliasByID(Alderman, "Alderman") and not GetState("Alderman", STATE_DEAD) then
+			return Alderman
 		else
 			return 0
 		end
@@ -1129,17 +1038,20 @@ function GetAlderman()
 end
 
 function GetKing()
-	local Count = ScenarioGetObjects("cl_Settlement", 99, "Cities")
 
-	for i=0,Count-1 do
-		if CityGetOffice("Cities"..i, 7, 0, "OFFICE") then
+	local Count = ScenarioGetObjects("cl_Settlement", 99, "Cities")
+	local ID = 0
+	
+	for i=0, Count-1 do
+		if CityGetOffice("Cities"..i, 7, 0, "OFFICE") then -- king office
 			if OfficeGetHolder("OFFICE", "OfficeHolder") then
-				return GetID("OfficeHolder")
+				ID = GetID("OfficeHolder")
+				break
 			end
 		end
 	end
 
-	return 0
+	return ID
 end
 
 function GetWarRiskLevel(val)
@@ -1157,7 +1069,6 @@ function GetWarRiskLevel(val)
 	end
 
 	return 0
-
 end
 
 function GetEnemyMoodLevel(val)
@@ -1178,23 +1089,25 @@ function GetEnemyMoodLevel(val)
 end
 
 function DecrementInfectionCount(InfectionName, CityAlias)
-	if HasProperty(CityAlias,InfectionName) then
-		local Infected = GetProperty(CityAlias,InfectionName) - 1
+	
+	if HasProperty(CityAlias, InfectionName) then
+		local Infected = GetProperty(CityAlias, InfectionName) - 1
 		if Infected < 1 then
 			Infected = 0
 		end
-		SetProperty(CityAlias,InfectionName,Infected)
+		SetProperty(CityAlias, InfectionName, Infected)
 	else
-		SetProperty(CityAlias,InfectionName,0)
+		SetProperty(CityAlias, InfectionName, 0)
 	end
 end
 
 function IncrementInfectionCount(InfectionName, CityAlias)
+
 	if HasProperty(CityAlias,InfectionName) then
-		local Infected = GetProperty(CityAlias,InfectionName) + 1
-		SetProperty(CityAlias,InfectionName,Infected)
+		local Infected = GetProperty(CityAlias, InfectionName) + 1
+		SetProperty(CityAlias, InfectionName, Infected)
 	else
-		SetProperty(CityAlias,InfectionName,1)
+		SetProperty(CityAlias, InfectionName, 1)
 	end
 end
 
@@ -1276,13 +1189,13 @@ end
 function CheckCartBonuses(BldAlias)
 	
 	local NumCarts = BuildingGetCartCount(BldAlias)
-	if not BuildingGetOwner(BldAlias,"BOwner") then
+	if not BuildingGetOwner(BldAlias, "BOwner") then
 		return
 	end
 	
 	for i=0 , NumCarts -1 do
 		if BuildingGetCart(BldAlias, i, "Cart") then
-			chr_CalculateCartBonus("Cart","BOwner")
+			chr_CalculateCartBonus("Cart", "BOwner")
 		end
 	end
 end
@@ -1314,7 +1227,7 @@ function NeedsTreatment(SimAlias)
 	local Damage = false
 	local Sickness = { "Cold", "Sprain", "Influenza", "BurnWound", "Caries", "Pox", "Pneumonia", "Blackdeath" }
 	
-	if MyHP < GetMaxHP(SimAlias)/2 then
+	if MyHP < GetMaxHP(SimAlias)/1.3 then
 		return true
 	end
 	
@@ -1337,6 +1250,7 @@ function NeedsTreatment(SimAlias)
 end
 
 function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
+	
 	local MaxDistance = 10000
 	local MaxCrowdedLocators = 30
 	local Profession = SimGetProfession(SimAlias)
@@ -1380,7 +1294,9 @@ function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
 end
 
 function GetBribeAmount(SimAlias) 
+	
 	local OfficeLevel = dyn_GetHighestOfficeLevel(SimAlias)
+	
 	if OfficeLevel < 1 then 
 		OfficeLevel = 1
 	end
@@ -1392,6 +1308,7 @@ function GetBribeAmount(SimAlias)
 end
 
 function CheckWeaponChange(SimAlias, WeaponNew)
+	
 	local WeaponOld = ""
 	local CheckNew = { "Dagger", "Shortsword", "Mace", "Longsword", "Axe", "Excalibur", "EpicAxe" }
 	local CheckNewCount = 7
@@ -1499,3 +1416,87 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 	
 	return ChangeWeapon
 end
+
+-- this replaces the original SimGetRank!!
+function GetRank(SimAlias)
+	if IsDynastySim(SimAlias) then
+		-- rank depends on nobility title
+		local Title = GetNobilityTitle(SimAlias)
+		
+		if Title < 4 then -- below lesser citizen
+			return GL_RANK_POOR -- 2
+		elseif Title < 7 then -- below patrician
+			return GL_RANK_MIDDLE -- 3
+		elseif Title < 10 then -- below  baron
+			return GL_RANK_RICH -- 4
+		else -- baron to arch duke
+			return GL_RANK_WEALTHY -- 5
+		end
+	else
+		if SimGetProfession(SimAlias) < 1 then -- unemployed
+			return GL_RANK_DESTITUTE -- 1
+		else
+			-- rank depends on level
+			local Level = SimGetLevel(SimAlias)
+			if Level < 3 then
+				return GL_RANK_POOR -- 2
+			elseif Level < 5 then
+				return GL_RANK_MIDDLE -- 3
+			else
+				return GL_RANK_RICH -- 4
+			end
+		end
+	end
+end
+
+-- this calculates the sum of money a Sim can/want to spend on needs
+function GetBudget(SimAlias, Type)
+	
+	local Rank = chr_GetRank(SimAlias) or 0
+	local BasicMax = 0
+	local LuxuryMax = 0
+	local BasicCurrent = 0
+	local LuxuryCurrent = 0
+	
+	local RankData = {
+				[GL_RANK_DESTITUTE] = { BasicMax = 10, LuxuryMax = 5 }, -- 1: 580 / 290
+				[GL_RANK_POOR] = { BasicMax = 20, LuxuryMax = 10 },  -- 2: 1160 / 580
+				[GL_RANK_MIDDLE] = { BasicMax = 30, LuxuryMax = 20 }, -- 3: 1740 / 1160
+				[GL_RANK_RICH] = { BasicMax = 50, LuxuryMax = 50 },  -- 4: 2900 / 2900
+				[GL_RANK_WEALTHY] = { BasicMax = 100, LuxuryMax = 150 } -- 5: 5800 / 8700
+				}
+	
+	BasicCurrent = RankData[Rank].BasicMax - GetImpactValue(SimAlias, "BasicPurse")
+	LuxuryCurrent = RankData[Rank].LuxuryMax - GetImpactValue(SimAlias, "LuxuryPurse")
+		
+	if BasicCurrent < 0 then
+		BasicCurrent = 0
+	end
+	
+	if LuxuryCurrent < 0 then
+		LuxuryCurrent = 0
+	end
+	
+	if Type == 1 then
+		return BasicCurrent
+	else
+		return LuxuryCurrent
+	end
+end
+
+-- spend money from your budget, based on "workhours", where 1 hour is worth 58 gold.
+function UseBudget(SimAlias, Type, Amount)
+	
+	if Amount == nil or Amount < 1 or Type == nil or not AliasExists(SimAlias) then
+		return
+	end
+	
+	local Change = math.floor(Amount / 58)
+	
+	if Type == 1 then -- BasePurse
+		AddImpact(SimAlias, "BasicPurse", Change, 24)
+	elseif Type == 2 then -- LuxuryPurse
+		AddImpact(SimAlias, "LuxuryPurse", Change, 24)
+	end
+end
+

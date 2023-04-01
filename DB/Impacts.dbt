@@ -304,4 +304,6 @@ Data:
 423             1                 2                  0                     "BadDream"                          0   "Hud/state/BadDream.tga"              |
 424             1                 2                  0                     "HerbTea"                           0   ""                                    |
 425             1                 2                  0                     "VeryGoodDream"                     0   "Hud/state/GoodDream.tga"             |
+426             1                 2                  0                     "BasicPurse"                        0   ""                                    |
+427             1                 2                  0                     "LuxuryPurse"                       0   ""                                    |
 
