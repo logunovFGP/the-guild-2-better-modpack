@@ -26,21 +26,18 @@ function Run()
 			return
 		end
 	end
-	
+
 	-- check the disease of the actor
-	local Disease = ""
-	
-	if GetImpactValue("Actor", "Cold") > 0 then
-		Disease = "Cold"
-	elseif GetImpactValue("Actor", "Influenza") > 0 then
-		Disease = "Influenza"
-	elseif GetImpactValue("Actor", "Pneumonia") > 0 then
-		Disease = "Pneumonia"
-	elseif GetImpactValue("Actor", "Pox") > 0 then
-		Disease = "Pox"
-	elseif GetImpactValue("Actor", "Blackdeath") > 0 then
-		Disease = "Blackdeath"
-	end
+local Disease = ""
+local list = {"Cold", "Influenza", "Pneumonia", "Pox", "Blackdeath"}
+
+for i = 1, 5 do
+    local disease = list[i]
+    if GetImpactValue("Actor", disease) > 0 then
+        Disease = disease
+        break
+    end
+end
 	
 	-- check how contagious the disease is
 	local Hazard = gameplayformulas_CalcIllnessHazard("", "Disease")

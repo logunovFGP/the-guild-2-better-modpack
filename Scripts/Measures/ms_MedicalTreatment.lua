@@ -116,74 +116,42 @@ function Run()
 			local Disease = false
 			local CanHeal = false
 			local Medicine, Label, FavorMod
-			
-			--SPRAIN
-			if GetImpactValue("SickSim0", "Sprain") == 1 then
-				Disease = "Sprain"
-				Medicine = "Bandage"
-				FavorMod = GL_FAVOR_MOD_SMALL
-				Label = "SPRAIN"
-			--COLD	
-			elseif GetImpactValue("SickSim0", "Cold") == 1 then
-				Disease = "Cold"
-				Medicine = "Bandage"
-				FavorMod = GL_FAVOR_MOD_SMALL
-				Label = "COLD"
-			--INFLUENZA
-			elseif GetImpactValue("SickSim0", "Influenza") == 1 then
-				Disease = "Influenza"
-				Medicine = "Medicine"
-				FavorMod = GL_FAVOR_MOD_SMALL
-				Label = "INFLUENZA"
-			--FRACTURE
-			elseif GetImpactValue("SickSim0", "Fracture") == 1 then
-				Disease = "Fracture"
-				Medicine = "PainKiller"
-				FavorMod = GL_FAVOR_MOD_NORMAL
-				Label = "FRACTURE"
-			--BURNWOUND	
-			elseif GetImpactValue("SickSim0", "BurnWound") == 1 then
-				Disease = "BurnWound"
-				Medicine = "PainKiller"
-				FavorMod = GL_FAVOR_MOD_NORMAL
-				Label = "BURNWOUND"
-			--POX	
-			elseif GetImpactValue("SickSim0", "Pox") == 1 then
-				Disease = "Pox"
-				Medicine = "Medicine"
-				FavorMod = GL_FAVOR_MOD_NORMAL
-				Label = "POX"
-			--CARIES					
-			elseif GetImpactValue("SickSim0", "Caries") == 1 then
-				Disease = "Caries"
-				Medicine = "PainKiller"
-				FavorMod = GL_FAVOR_MOD_NORMAL
-				Label = "CARIES"
-			--PNEUMONIA
-			elseif GetImpactValue("SickSim0", "Pneumonia") == 1 then
-				Disease = "Pneumonia"
-				Medicine = "Medicine"
-				FavorMod = GL_FAVOR_MOD_GREATER
-				Label = "PNEUMONIA"
-			--BLACKDEATH
-			elseif GetImpactValue("SickSim0", "Blackdeath") == 1 then
-				Disease = "Blackdeath"
-				Medicine = "PainKiller"
-				FavorMod = GL_FAVOR_MOD_LARGE
-				Label = "BLACKDEATH"
-			--ELSE (HP LOSS)
-			elseif (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
-				Medicine = "Bandage"
-				FavorMod = GL_FAVOR_MOD_SMALL
-				Label = "HPLOSS"
-			-- NOTHING
-			else
+			local list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
+			local label
+			local sickness = 0
+
+			for i = 1,9 do 
+			  label = list[i]
+			  LogMessage('Hospital: An attempt to GetImpactValue with ["'..label..'"] has been executed!')
+			  LogMessage('GetImpactValue results: '..GetImpactValue("SickSim0", label))
+			  if GetImpactValue("SickSim0", list[i]) == 1 then
+			  	sickness = list[i]
+			  	LogMessage(list[i]..' has been detected!')
+			  	break
+			  end
+			end
+
+			if sickness ~= 0 then
+			  	LogMessage('Hospital: value label set to '..label)
+			    Disease = label
+			    LogMessage('Hospital: value Disease set to '..Disease)
+			    Medicine = diseases[label].medicine
+			    LogMessage('Hospital: Looking for some '..Medicine..'(s)')
+			    FavorMod = diseases[label].favor
+			    LogMessage('Hospital: FavorMod is set to '..FavorMod)
+			    Label = string.upper(label)
+			    LogMessage('Hospital: UPPER LABEL is '..Label)
+			  elseif sickness == 0 and (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
+			  	Medicine = "Bandage"
+			  	FavorMod = GL_FAVOR_MOD_SMALL
+			  	Label = "HPLOSS"
+			  elseif sickness == 0 and (GetHP("SickSim0") == GetMaxHP("SickSim0")) then
 				MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOTHING")
 				Cured = true
 				SimResetBehavior("SickSim0")
 				RemoveProperty("SickSim0", "WaitingForTreatment")
 			end
-			
+
 			if Cured == false then
 				-- TREATMENT
 				if Disease == false then -- special case HP LOSS
@@ -219,31 +187,18 @@ function Run()
 							CreditMoney("Hospital", Costs, "Offering")
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
-							if Disease == "Sprain" then
-								diseases_Sprain("SickSim0",false)
-							elseif Disease == "Cold" then
-								diseases_Cold("SickSim0",false)
-							elseif Disease == "Influenza" then
-								diseases_Influenza("SickSim0",false)
-							elseif Disease == "Fracture" then
-								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								diseases_Fracture("SickSim0",false)
-							elseif Disease == "BurnWound" then
-								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								diseases_BurnWound("SickSim0",false)
-							elseif Disease == "Pox" then
-								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								diseases_Pox("SickSim0",false)
-							elseif Disease == "Caries" then
-								diseases_Caries("SickSim0", false)
-							elseif Disease == "Pneumonia" then
-								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								diseases_Pneumonia("SickSim0", false)
-							elseif Disease == "Blackdeath" then
-								ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								diseases_Blackdeath("SickSim0",false)
-								-- 120 hours immunity to stop black death
-								AddImpact("SickSim0","PlagueImmunity", 1, 120)
+							if Disease ~= false then 
+								local callCore = diseases[Disease].callback
+								callCore("SickSim0",false)
+								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
+								for i = 1,5 do
+								  if Disease == list[i] then
+								  	ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
+								  	  if Disease == "Blackdeath" then
+								  	  	AddImpact("SickSim0","PlagueImmunity", 1, 120)
+								  	  end
+								  end 
+								end
 							else
 								local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
 								ModifyHP("SickSim0", ToHeal, true)
