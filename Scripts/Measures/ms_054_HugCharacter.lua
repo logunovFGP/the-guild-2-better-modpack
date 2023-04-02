@@ -100,7 +100,7 @@ function Run()
 				elseif (CourtingProgress < 1) or Favor < MinimumFavor then
 					TimeOut = TimeOut * 2
 					camera_CutscenePlayerLock("cutscene", "Destination")
-					chr_MultiAnim("", "talk", "Destination", "shake_head", InteractionDistance, 0.4)
+					PlayAnimationNoWait("Destination", "shake_head")
 					ModifyFavor = FavorLoss
 					if CourtingProgress > 0 then
 						CourtingProgress = -1

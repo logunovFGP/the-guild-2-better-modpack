@@ -99,7 +99,7 @@ function Run()
 					ModifyHP("", -30, true, 10)
 				elseif (CourtingProgress < 1) or Favor < MinimumFavor then
 					camera_CutscenePlayerLock("cutscene", "Destination")
-					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
+					PlayAnimationNoWait("Destination", "propel")
 					ModifyFavor = FavorLoss
 					if CourtingProgress > 0 then
 						CourtingProgress = -1
