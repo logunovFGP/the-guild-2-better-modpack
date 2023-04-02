@@ -104,7 +104,7 @@ function Start()
 		
 	SetData("judge",GetID("judge"))
 
-	-- an den Ankläger
+	-- an den Anklï¿½ger
 	if GetID("accuser")>0 then
 	
 		-- Property for AI
@@ -761,7 +761,7 @@ function Go()
 			trial_ModifyTotalEvidenceValue(2)
 		end
 
-		-- Kläger darf Strafmaß wählen
+		-- Klï¿½ger darf Strafmaï¿½ wï¿½hlen
 		trial_Cam("JudgeFromBelowCam")
 		PlayAnimationNoWait("judge", "talk_sit_short")
 		MsgSay("judge","@L_LAWSUIT_5_DEFENSE_A_TO_ACCUSER")
@@ -779,7 +779,7 @@ function Go()
 			"@L_LAWSUIT_5_DEFENSE_A_SCREENPLAYER_ACCUSER_+0",GetID("accused")) --Message Text
 		
 		SetData("AccuserSentence", AccuserSentence)
-		-- Berechne default-Strafmaß
+		-- Berechne default-Strafmaï¿½
 		local SentenceLevel = math.floor(GetData("TotalEvidenceValue") / 3)
 		SetData("DefaultSentence", SentenceLevel)	-- for judge AI func
 		camera_CutsceneDialogCam("","accuser",0,0)
@@ -959,7 +959,7 @@ function Go()
 		trial_UpdatePanelTrial(0)
 
 		if confession == 2 then
-			-- "Das gericht wird jetzt entscheiden, ob das vom Kläger geforderte Strafmaß angemessen ist."
+			-- "Das gericht wird jetzt entscheiden, ob das vom Klï¿½ger geforderte Strafmaï¿½ angemessen ist."
 			trial_PlayRelevantJuryAni("judge",60)
 			MsgSay("judge","@L_LAWSUIT_6_DECISION_A_APPROPRIATEQ_INTRO")
 			DecisionTextLabel = "@L_LAWSUIT_6_DECISION_A_APPROPRIATEQ_SCREENPLAYER_"
@@ -973,7 +973,7 @@ function Go()
 
 		-- Entscheidungen Jury
 		local conviction_cnt = 0
-		--richter und beisitzer dürfen sich entscheiden, wenn sie spieler sind
+		--richter und beisitzer dï¿½rfen sich entscheiden, wenn sie spieler sind
 		SetData("DecisionParam", "judge")
 		SetData("JudgeDecision", -1)
 		
@@ -1046,7 +1046,7 @@ function Go()
 		
 		local DecisionForFinalComment = 0
 		trial_Cam("JudgeFromBelowCam")
-		-- Urteilsverkündung--------------------------------------------
+		-- Urteilsverkï¿½ndung--------------------------------------------
 
 		--MsgSay("judge","@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_+0")
 		if confession == 2 or conviction_cnt >= 2 then
@@ -1141,7 +1141,7 @@ function Go()
 				DecisionForFinalComment = 0
 			end
 
-		else -- gerichtskosten trägt die anklage
+		else -- gerichtskosten trï¿½gt die anklage
 			trial_PlayRelevantJuryAni("judge",0)
 			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY"..GenderType,GetID("accused"))
 			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY_TOBOTH", TrialCosts)
@@ -1884,7 +1884,7 @@ function PlayRelevantJuryAni(sim,quality)
 	PlayAnimationNoWait(sim,AniToPlay)
 end
 
--- abfrage: es gibt einen Spieler, der entweder kläger oder angeklagten kontrolliert
+-- abfrage: es gibt einen Spieler, der entweder klï¿½ger oder angeklagten kontrolliert
 function HumanPlayerWantsInteraction()
 	if DynastyIsPlayer("accuser") then
 		return true
