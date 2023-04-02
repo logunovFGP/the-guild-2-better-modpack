@@ -1500,3 +1500,27 @@ function UseBudget(SimAlias, Type, Amount)
 	end
 end
 
+-- assigns a home if needed
+function CheckHome(SimAlias)
+	if GetHomeBuilding(SimAlias, "HasHome") then
+		return
+	else
+		if IsDynastySim(SimAlias) then
+			-- check for residence
+			if DynastyGetRandomBuilding(SimAlias, GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "DynHome") then
+				LogMessage(GetName(SimAlias).." has no home. Assign dynasty residence")
+				SetHomeBuilding(SimAlias, "DynHome")
+			end
+		end
+		
+		if not GetHomeBuilding(SimAlias, "HasHome") then
+			GetNearestSettlement(SimALias, "NewSettlement")
+			CityGetNearestBuilding("NewSettlement", "", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
+		
+			if AliasExists("NewHome") then
+				LogMessage(GetName(SimAlias).." has no home. Assign worker housing")
+				SetHomeBuilding("", "NewHome")
+			end
+		end
+	end
+end

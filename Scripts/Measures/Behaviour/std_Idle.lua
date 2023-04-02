@@ -1,26 +1,25 @@
 function Run()
-
-	-- get a new home
-	if not GetHomeBuilding("", "HomeBuilding") then
-		if not GetSettlement("", "MyCity") then
-			GetNearestSettlement("", "MyCity")
-		end
-		CityGetNearestBuilding("MyCity", "", -1, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
-		
-		if AliasExists("NewHome") then
-			SetHomeBuilding("", "NewHome")
-		end
+	
+	-- dynasty chars have their own behaviour
+	if IsDynastySim("") and GetDynastyID("") > 0 then
+		MeasureRun("", nil, "DynastyIdle")
+		return
 	end
+
+	chr_CheckHome("") -- make sure we have a home
 	
 	-- cleanup properties etc
 	if HasProperty("", "Berserker") then
 		RemoveProperty("", "Berserker")   
 	end
 	
-	if GetImpactValue("", "Sickness") < 1 then
+	-- cleanup moveset
+	local Sickness = GetImpactValue("", "Sickness")
+	if Sickness < 1 then
 		MoveSetActivity("")
 	end
-
+	
+	-- no children allowed
 	if SimGetAge("") < 16 then
 		return
 	end	
@@ -39,11 +38,13 @@ function Run()
 		Sleep(DoNothing)
 	end 
 	
-	-- Check activity or stand around
+	-- Check activity or go home and do nothing for some time
 	local Activity = idlelib_GetActivity()
 	local ActiveMovement = false
 	if Activity > Rand(100) then
 		ActiveMovement = true
+	else
+		SetProperty("", "_DO_NOTHING_TIME", 3)
 	end
 	
 	if not ActiveMovement then
@@ -51,27 +52,31 @@ function Run()
 			idlelib_GoHome()
 			return
 		else
-			idlelib_DoNothing()
 			return
 		end
 	end
 	
-	if (SimGetGender("") == GL_GENDER_FEMALE) then
-		idlelib_KissMeHonza()
-	end
+	--if (SimGetGender("") == GL_GENDER_FEMALE) then
+	--	idlelib_KissMeHonza()
+	--end
 	
-	if ((GetImpactValue("", "Sickness") > 0) or (GetHP("") < GetMaxHP("")/2)) then
+	-- check for treatment need
+	if chr_NeedsTreatment("") then
 		if gameplayformulas_CheckMoneyForTreatment("") == 1 then
-			if ReadyToRepeat("", "ai_VisitDoc") and chr_NeedsTreatment("") then
+			if ReadyToRepeat("", "ai_VisitDoc") then
 				idlelib_VisitDoc()
 			end
 		end
 	end
-
-	if (GetImpactValue("","Fever")==1) or (GetImpactValue("","Cold")==1) or (GetImpactValue("","BurnWound")==1) or (GetImpactValue("","Caries")==1) then
+	
+	-- check again. If still true, go to the market
+	if chr_NeedsTreatment("") then
 		idlelib_Illness()
+		SetProperty("", "_DO_NOTHING_TIME", 4)
 		return
 	end
+	
+	-- WIP
 	
 	if GetSettlement("","MyCity") then
 		if HasProperty("MyCity","InquisitionOnTheRun") then
