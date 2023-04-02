@@ -849,25 +849,19 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 		end
 	end
 	
-	if MeasureID == 530 then -- Flirt 
-		Skill = CHARISMA
-	elseif MeasureID == 540 then -- Hug
-		Skill = CHARISMA
-	elseif MeasureID == 570 then -- Kiss
-		Skill = EMPATHY
-	elseif MeasureID == 2300 then -- Make A Present
-		Skill = EMPATHY
-	elseif MeasureID == 2310 then -- Compliment
-		Skill = RHETORIC
-	elseif MeasureID == 2320 then -- Dancing
-		Skill = DEXTERITY
-	elseif MeasureID == 1520 then -- Bathing
-		Skill = CHARISMA
-	elseif MeasureID == 1530 then -- Bewitching
-		Skill = RHETORIC
-	elseif MeasureID == 460 then -- Dialog
-		Skill = RHETORIC
-	end
+	local MeasureData = {
+					[460] = RHETORIC, -- StartDialog (talk)
+					[530] = CHARISMA,  -- Flirt 
+					[540] = CHARISMA, -- Hug
+					[570] = EMPATHY, -- Kiss
+					[1520] = CHARISMA, -- Bathing
+					[1530] = RHETORIC, -- Bewitching (sweat talking)
+					[2300] = EMPATHY, -- Make a Present
+					[2310] = RHETORIC, -- Compliment
+					[2320] = DEXTERITY -- Dancing
+					}
+					
+	Skill = MeasureData[MeasureID]
 	
 	local SkillMod = GetSkillValue(SimAlias, Skill)
 	local TitleDiff = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
@@ -878,74 +872,56 @@ end
 
 function GetCourtingMeasureValue(MeasureID, Class)
 	
-	local Value = 0
-	local ClassValue = {}
+	-- get effectiveness of the courting measure based on destination class (or fake class for unemployed)
+	local MeasureData = {
+					[460] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 0.5, GL_CLASS_NPC = 0 }, -- StartDialog (talk)
+					[530] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0 },  -- Flirt 
+					[540] = { GL_CLASS_PATRON = 3, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 3, GL_CLASS_NPC = 0 }, -- Hug
+					[570] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 4, GL_CLASS_NPC = 0 }, -- Kiss
+					[1520] = { GL_CLASS_PATRON = 5, GL_CLASS_ARTISAN = 4, GL_CLASS_SCHOLAR = 2.5, GL_CLASS_CHISELER = 5, GL_CLASS_NPC = 0 }, -- Bathing
+					[1530] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 5, GL_CLASS_CHISELER = 2.5, GL_CLASS_NPC = 0 }, -- Bewitching (sweat talking)
+					[2300] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1.5, GL_CLASS_NPC = 0 }, -- Make a Present
+					[2310] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1, GL_CLASS_NPC = 0 }, -- Compliment
+					[2320] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 4, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0 } -- Dancing
+					}
 	
-	if MeasureID == 530 then -- Flirt
-		ClassValue = { 2, 2, 3, 2, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 540 then -- Hug
-		ClassValue = { 4, 3, 2, 3, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 570 then -- Kiss
-		ClassValue = { 4.5, 3.5, 2.5, 4.5, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 2300 then -- Make A Present
-		ClassValue = { 4, 3.5, 4.5, 3, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 2310 then -- Compliment
-		ClassValue = { 2, 1.5, 3, 1.5, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 2320 then -- Dancing
-		ClassValue = { 4, 3, 4, 2, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 1520 then -- Bathing
-		ClassValue = { 5, 4, 3, 5, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 1530 then -- Bewitching
-		ClassValue = { 5, 3, 3, 4, 0, 0 }
-		Value = ClassValue[Class]
-	elseif MeasureID == 460 then -- Dialog
-		ClassValue = { 1, 1.5, 2.5, 0.75, 0, 0 }
-		Value = ClassValue[Class]
-	end
+	local Value = MeasureData[MeasureID].Class or 0
 
 	return Value
 end
 
 function GetCourtingMeasureVariation(MeasureID, Destination, Class)
+	
 	local Factor = 1
 	local ImpactVal = 0
-	local VariationClass
 	
-	if Class == GL_CLASS_PATRON then
-		VariationClass = 1
-	elseif Class == GL_CLASS_ARTISAN then
-		VariationClass = 0.5
-	elseif Class == GL_CLASS_SCHOLAR then
-		VariationClass = 0.25
-	else
-		VariationClass = 0.5
-	end
+	local ClassData = {
+				[GL_CLASS_PATRON] = 1,
+				[GL_CLASS_ARTISAN] = 0.5,
+				[GL_CLASS_SCHOLAR] = 0.25,
+				[GL_CLASS_CHISELER] = 0.5
+				}
 	
-	if MeasureID == 530 then -- Flirt
+	local VariationClass = ClassData[Class] or 0
+	
+	if MeasureID == 460 then -- Dialog
+		ImpactVal = GetImpactValue(Destination, "ReceivedTalk")*VariationClass
+	elseif MeasureID == 530 then -- Flirt
 		ImpactVal = GetImpactValue(Destination, "ReceivedFlirt")*VariationClass
 	elseif MeasureID == 540 then -- Hug
 		ImpactVal = GetImpactValue(Destination, "ReceivedHug")*VariationClass
 	elseif MeasureID == 570 then -- Kiss
 		ImpactVal = GetImpactValue(Destination, "ReceivedKiss")*VariationClass
-	elseif MeasureID == 2300 then -- Make A Present
-		ImpactVal = GetImpactValue(Destination, "ReceivedPresent")*VariationClass
-	elseif MeasureID == 2310 then -- Compliment
-		ImpactVal = GetImpactValue(Destination, "ReceivedCompliment")*(VariationClass*0.5)
-	elseif MeasureID == 2320 then -- Dancing
-		ImpactVal = GetImpactValue(Destination, "ReceivedDance")*VariationClass
 	elseif MeasureID == 1520 then -- Bathing
 		ImpactVal = GetImpactValue(Destination, "ReceivedBath")*VariationClass
 	elseif MeasureID == 1530 then -- Bewitching
 		ImpactVal = GetImpactValue(Destination, "ReceivedBewitch")*VariationClass
-	elseif MeasureID == 460 then -- Dialog
-		ImpactVal = GetImpactValue(Destination, "ReceivedTalk")*VariationClass
+	elseif MeasureID == 2300 then -- Make A Present
+		ImpactVal = GetImpactValue(Destination, "ReceivedPresent")*VariationClass
+	elseif MeasureID == 2310 then -- Compliment
+		ImpactVal = GetImpactValue(Destination, "ReceivedCompliment")*VariationClass
+	elseif MeasureID == 2320 then -- Dancing
+		ImpactVal = GetImpactValue(Destination, "ReceivedDance")*VariationClass
 	end
 	
 	Factor = Factor - ImpactVal
