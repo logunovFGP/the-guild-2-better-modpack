@@ -1084,7 +1084,7 @@ function Go()
 				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+1",GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_MONEY
 				local PenaltyIncome = GetProperty("settlement", "TrialIncome") or 0
-				PenaltyIncome = PenaltylIncome + PenaltyValue
+				PenaltyIncome = PenaltyIncome + PenaltyValue
 				SetProperty("settlement", "TrialIncome", PenaltyIncome)
 			elseif SentenceLevel==2 then
 				PenaltyValue = 12
@@ -1095,7 +1095,7 @@ function Go()
 				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+4", GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_MONEY
 				local PenaltyIncome = GetProperty("settlement", "TrialIncome") or 0
-				PenaltyIncome = PenaltylIncome + PenaltyValue
+				PenaltyIncome = PenaltyIncome + PenaltyValue
 				SetProperty("settlement", "TrialIncome", PenaltyIncome)
 			elseif SentenceLevel==4 then
 				PenaltyType = PENALTY_TITLE
