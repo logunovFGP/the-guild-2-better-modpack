@@ -683,7 +683,7 @@ function CollectWater()
 			Sleep(2)
 			if (GetImpactValue("Destination","polluted")>0) then
 				if Rand(100)>70 then
-					diseases_Pox("",true)
+					diseases_giveSickness("Pox","",true)
 				else
 					diseases_Fever("",true)
 				end
@@ -866,11 +866,11 @@ function Illness()
 		Sleep(Rand(5)+2)
 		if Rand(100) > 60 then
 			if GetImpactValue("","Cold")==1 then
-				diseases_Cold("",false)
+				diseases_giveSickness("Cold","",false)
 			elseif GetImpactValue("","Caries")==1 then
-				diseases_Caries("",false)
+				diseases_giveSickness("Caries","",false)
 			elseif GetImpactValue("","BurnWound")==1 then
-				diseases_BurnWound("",false)
+				diseases_giveSickness("BurnWound","",false)
 			end
 		end
 		idlelib_GoHome()

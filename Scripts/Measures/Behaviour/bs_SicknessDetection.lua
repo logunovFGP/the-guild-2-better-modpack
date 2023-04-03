@@ -26,21 +26,18 @@ function Run()
 			return
 		end
 	end
-	
+
 	-- check the disease of the actor
-	local Disease = ""
-	
-	if GetImpactValue("Actor", "Cold") > 0 then
-		Disease = "Cold"
-	elseif GetImpactValue("Actor", "Influenza") > 0 then
-		Disease = "Influenza"
-	elseif GetImpactValue("Actor", "Pneumonia") > 0 then
-		Disease = "Pneumonia"
-	elseif GetImpactValue("Actor", "Pox") > 0 then
-		Disease = "Pox"
-	elseif GetImpactValue("Actor", "Blackdeath") > 0 then
-		Disease = "Blackdeath"
-	end
+local Disease = ""
+local list = {"Cold", "Influenza", "Pneumonia", "Pox", "Blackdeath"}
+
+for i = 1, 5 do
+    local disease = list[i]
+    if GetImpactValue("Actor", disease) > 0 then
+        Disease = disease
+        break
+    end
+end
 	
 	-- check how contagious the disease is
 	local Hazard = gameplayformulas_CalcIllnessHazard("", "Disease")
@@ -49,19 +46,19 @@ function Run()
 		-- get the correct illness
 		
 		if Disease == "Cold" then
-			diseases_Cold("", true)
+			diseases_giveSickness("Cold","", true)
 		elseif Disease == "Influenza" then
-			diseases_Influenza("", true)
+			diseases_giveSickness("Influenza","", true)
 		elseif Disease == "Pneumonia" then
-			diseases_Influenza("", true)
+			diseases_giveSickness("Influenza","", true)
 		elseif Disease == "Pox" then
-			diseases_Pox("", true)
+			diseases_giveSickness("Pox","", true)
 		elseif Disease == "Blackdeath" then
 			if not HasState("", "BlackdeathImmunity") then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("MyHomeCity", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then
-					diseases_Blackdeath("", true)
+					diseases_giveSickness("Blackdeath","", true)
 				end
 			end
 			return "flee"

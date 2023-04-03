@@ -109,34 +109,34 @@ function InfectPartyMember()
 		if ScenarioGetDifficulty() > 2 then -- hard settings?
 		
 			if SickChoice < 4 then -- 30%
-				diseases_Cold("CurrentMember", true, true) -- you got lucky
+				diseases_giveSickness("Cold","CurrentMember", true, true) -- you got lucky
 				krankH = 2
 			elseif SickChoice < 6 then --20%
-				diseases_Sprain("CurrentMember", true, true) -- still lucky
+				diseases_giveSickness("Sprain","CurrentMember", true, true) -- still lucky
 				krankH = 1
 			elseif SickChoice < 8 then --20%
-				diseases_Influenza("CurrentMember", true, true) -- influenza? not nice
+				diseases_giveSickness("Influenza","CurrentMember", true, true) -- influenza? not nice
 				krankH = 3
 			elseif SickChoice < 9 then --10%
-				diseases_Pox("CurrentMember", true, true) -- damn!
+				diseases_giveSickness("Pox","CurrentMember", true, true) -- damn!
 				SetState("CurrentMember", STATE_CONTAMINATED, true)
 				krankH = 4
 			elseif SickChoice < 10 then --10%	
-				diseases_Fracture("CurrentMember", true, true) -- that hurts
+				diseases_giveSickness("Fracture","CurrentMember", true, true) -- that hurts
 				krankH = 5
 			else -- 10%
-				diseases_Caries("CurrentMember", true, true) -- c'mon!
+				diseases_giveSickness("Caries","CurrentMember", true, true) -- c'mon!
 				krankH = 6
 			end
 		else -- low settings
 			if SickChoice < 6 then -- 50%
-				diseases_Cold("CurrentMember", true, true) -- you got lucky
+				diseases_giveSickness("Cold","CurrentMember", true, true) -- you got lucky
 				krankH = 2
 			elseif SickChoice < 9 then --40%
-				diseases_Sprain("CurrentMember", true, true) -- still lucky
+				diseases_giveSickness("Sprain","CurrentMember", true, true) -- still lucky
 				krankH = 1
 			else -- 10%
-				diseases_Influenza("CurrentMember", true, true) -- influenza? not nice
+				diseases_giveSickness("Influenza","CurrentMember", true, true) -- influenza? not nice
 				krankH = 3
 			end
 		end
@@ -192,7 +192,7 @@ function TheBlackDeath()
 	local opfer = Rand(2) + 1
 	if CityGetRandomBuilding("MyCity", opfer, -1, -1, -1, FILTER_HAS_DYNASTY, "Ausbruch") then
 		if BuildingGetSim("Ausbruch", 1, "ErstOpfer") then
-			diseases_Blackdeath("ErstOpfer", true, true)
+			diseases_giveSickness("Blackdeath","ErstOpfer", true, true)
 			SetRepeatTimer("MyCity", "Pest", 192)
 		end
 	end

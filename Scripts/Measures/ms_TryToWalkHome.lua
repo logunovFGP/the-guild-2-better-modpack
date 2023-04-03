@@ -102,7 +102,7 @@ function MoveHome()
 		MoveSetActivity("","unconscious")
 		Sleep(10)
 		if Rand(100)>97 then
-			diseases_Sprain("",true)
+			diseases_giveSickness("Sprain","",true)
 		end
 		MoveSetActivity("")
 		Sleep(9)
