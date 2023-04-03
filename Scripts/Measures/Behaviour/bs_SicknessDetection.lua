@@ -46,19 +46,19 @@ end
 		-- get the correct illness
 		
 		if Disease == "Cold" then
-			diseases_Cold("", true)
+			diseases_giveSickness("Cold","", true)
 		elseif Disease == "Influenza" then
-			diseases_Influenza("", true)
+			diseases_giveSickness("Influenza","", true)
 		elseif Disease == "Pneumonia" then
-			diseases_Influenza("", true)
+			diseases_giveSickness("Influenza","", true)
 		elseif Disease == "Pox" then
-			diseases_Pox("", true)
+			diseases_giveSickness("Pox","", true)
 		elseif Disease == "Blackdeath" then
 			if not HasState("", "BlackdeathImmunity") then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("MyHomeCity", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then
-					diseases_Blackdeath("", true)
+					diseases_giveSickness("Blackdeath","", true)
 				end
 			end
 			return "flee"

@@ -164,7 +164,7 @@ function ColdBehaviour()
 	
 	-- incubate
 	if Rand(10) < 4 then
-		diseases_Influenza("", true)
+		diseases_giveSickness("Influenza","", true)
 	end
 end
 
@@ -199,7 +199,7 @@ function InfluenzaBehaviour()
 	
 	-- incubate
 	if Rand(10) < 6 then
-		diseases_Pneumonia("", true)
+		diseases_giveSickness("Pneumonia","", true)
 	end
 end
 
