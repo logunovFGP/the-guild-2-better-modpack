@@ -188,8 +188,9 @@ function Run()
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
 							if Disease ~= false then 
-								local callCore = diseases[Disease].callback
-								callCore("SickSim0",false)
+								--local callCore = diseases[Disease].callback
+								--callCore("SickSim0",false)
+								diseases_giveSickness(Disease,"SickSim0",false)
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
 								  if Disease == list[i] then
@@ -250,29 +251,29 @@ function Run()
 						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
 						
 						if Disease == "Sprain" then
-							diseases_Sprain("SickSim0", false)
+							diseases_giveSickness("Sprain","SickSim0", false)
 						elseif Disease == "Cold" then
-							diseases_Cold("SickSim0", false)
+							diseases_giveSickness("Cold","SickSim0", false)
 						elseif Disease == "Influenza" then
-							diseases_Influenza("SickSim0", false)
+							diseases_giveSickness("Influenza","SickSim0", false)
 						elseif Disease == "Fracture" then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_Fracture("SickSim0",false)
+							diseases_giveSickness("Fracture","SickSim0",false)
 						elseif Disease == "BurnWound" then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_BurnWound("SickSim0",false)
+							diseases_giveSickness("BurnWound","SickSim0",false)
 						elseif Disease == "Pox" then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_Pox("SickSim0",false)
+							diseases_giveSickness("Pox","SickSim0",false)
 						elseif Disease == "Caries" then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_Caries("SickSim0", false)
+							diseases_giveSickness("Caries","SickSim0", false)
 						elseif Disease == "Pneumonia" then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_Pneumonia("SickSim0", false)
+							diseases_giveSickness("Pneumonia","SickSim0", false)
 						elseif Disease == "Blackdeath" then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_Blackdeath("SickSim0", false)
+							diseases_giveSickness("Blackdeath","SickSim0", false)
 						else
 							local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
 							ModifyHP("SickSim0", ToHeal, true)

@@ -87,7 +87,7 @@ function StartDisease()
 	if GetImpactValue("Destination","staffofaesculap")>0 then
 		--no affect
 	else
-		diseases_Blackdeath("Destination",true,true)
+		diseases_giveSickness("Blackdeath","Destination",true,true)
 	end
 end
 

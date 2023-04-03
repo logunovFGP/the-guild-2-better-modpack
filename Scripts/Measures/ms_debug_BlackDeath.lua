@@ -1,13 +1,13 @@
 function Run()
-	diseases_Sprain("",false)	
-	diseases_Cold("",false)
-	diseases_Influenza("",false)
-	diseases_BurnWound("",false)
-	diseases_Pox("",false)
-	diseases_Pneumonia("",false)
-	diseases_Blackdeath("",false)
-	diseases_Fracture("",false)
-	diseases_Caries("",false)
+	diseases_giveSickness("Sprain","",false)	
+	diseases_giveSickness("Cold","",false) -- d
+	diseases_giveSickness("Influenza","",false)
+	diseases_giveSickness("BurnWound","",false)
+	diseases_giveSickness("Pox","",false)
+	diseases_giveSickness("Pneumonia","",false)
+	diseases_giveSickness("Blackdeath","",false)
+	diseases_giveSickness("Fracture","",false)
+	diseases_giveSickness("Caries","",false)
 	
 	local result = InitData("@P"..
 	"@B[btn1,verstauchung,verstauchung,Hud/Buttons/btn_005_GatherVermin.tga]"..
@@ -25,23 +25,23 @@ function Run()
 	"")
 
 	if result=="btn1" then
-		diseases_Sprain("",true,true)
+		diseases_giveSickness("Sprain","",true,true)
 	elseif result=="btn2" then
-		diseases_Cold("",true,true)
+		diseases_giveSickness("Cold","",true,true)
 	elseif result=="btn3" then
-		diseases_Influenza("",true,true)
+		diseases_giveSickness("Influenza","",true,true)
 	elseif result=="btn4" then
-		diseases_BurnWound("",true,true)
+		diseases_giveSickness("BurnWound","",true,true)
 	elseif result=="btn5" then
-		diseases_Pox("",true,true)
+		diseases_giveSickness("Pox","",true,true)
 	elseif result=="btn6" then
-		diseases_Pneumonia("",true,true)
+		diseases_giveSickness("Pneumonia","",true,true)
 	elseif result=="btn7" then
-		diseases_Blackdeath("",true,true)
+		diseases_giveSickness("Blackdeath","",true,true)
 	elseif result=="btn8" then
-		diseases_Fracture("",true,true)
+		diseases_giveSickness("Fracture","",true,true)
 	elseif result=="btn9" then
-		diseases_Caries("",true,true)
+		diseases_giveSickness("Caries","",true,true)
 	elseif result=="btn10" then
 		GetSettlement("","City")
 		local SprainInfected = GetProperty("City","SprainInfected")
