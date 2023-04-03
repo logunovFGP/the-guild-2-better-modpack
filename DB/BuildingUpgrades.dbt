@@ -558,7 +558,7 @@ Data:
 2326             194              "InventorySpace"            1                     0                 3                    20                   2324              0                 300             0          |
 2327             195              "InventorySpace"            1                     0                 3                    20                   2326              0                 300             0          |
 2328             193              "CandleHolder"              1                     0                 4                    0.20                 2302              0                 300             0          |
-2329             194              "SetOfBoolshelves"          1                     0                 4                    0.20                 2328              0                 300             0          |
+2329             194              "SetOfBookshelves"          1                     0                 4                    0.20                 2328              0                 300             0          |
 2330             195              "Batch_of_Books"            1                     0                 4                    0.20                 2329              0                 300             0          |
 2331             193              "ProtectionFromFire"        1                     0                 7                    0.15                 2305              0                 150             0          |
 2332             194              "Firesledge"                1                     0                 7                    0.15                 2331              0                 150             0          |
