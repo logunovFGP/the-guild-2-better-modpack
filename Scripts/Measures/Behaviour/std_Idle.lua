@@ -293,27 +293,27 @@ function Run()
 		end
 		if CityLevel > 4 then
 			if SicknessChance == 1 then
-				diseases_Cold("",true,false)
+				diseases_giveSickness("Cold","",true,false)
 			elseif SicknessChance == 2 then
-				diseases_Sprain("",true,false)
+				diseases_giveSickness("Sprain","",true,false)
 			elseif SicknessChance == 6 then
-				diseases_Fracture("",true,false)
+				diseases_giveSickness("Fracture","",true,false)
 			elseif SicknessChance == 7 then
-				diseases_Influenza("",true,false)
+				diseases_giveSickness("Influenza","",true,false)
 			end
 		elseif CityLevel > 2 then
 			if SicknessChance < 6 then
-				diseases_Cold("",true,false)
+				diseases_giveSickness("Cold","",true,false)
 			elseif SicknessChance < 9 then
-				diseases_Sprain("",true,false)
+				diseases_giveSickness("Sprain","",true,false)
 			elseif SicknessChance < 11 then
-				diseases_Influenza("",true,false)
+				diseases_giveSickness("Influenza","",true,false)
 			end
 		else
 			if SicknessChance < 10 then
-				diseases_Cold("",true,false)
+				diseases_giveSickness("Cold","",true,false)
 			elseif SicknessChance < 15 then
-				diseases_Sprain("",true,false)
+				diseases_giveSickness("Sprain","",true,false)
 			end
 		end
 		
@@ -411,9 +411,9 @@ function Worker(ActiveMovement)
 			end
 			local SicknessChance = Rand(100)
 			if SicknessChance == 1 then
-				diseases_Sprain("",true,false)
+				diseases_giveSickness("Sprain","",true,false)
 			elseif SicknessChance == 2 then
-				diseases_Cold("",true,false)
+				diseases_giveSickness("Cold","",true,false)
 			end
 
 			if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP("")/4)) then
