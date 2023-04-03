@@ -192,8 +192,10 @@ function RemoveElementFromList(List, ListCount, Index)
 	return ListCount-1, List
 end
 
--- This calculates a weighted choice. Expects a simple list with weights and returns the chosen index.
-function RandWeighted(Weights)
+--- This calculates a weighted choice. Expects a simple list with weights and returns the chosen index.
+-- Example for Weights: {10, 10, 10, 20, 50} will yield a chance of 50% to return 5 and a chance of 10% each for 1, 2, 3
+-- If you provide the optional Values, the index will directly be applied to that table, returning Values[i] instead of the index i.
+function RandWeighted(Weights, Values)
 	local Ranking
 	local TotalWeight = 0
 	-- sum up all the weights
@@ -206,7 +208,11 @@ function RandWeighted(Weights)
 	for i, Weight in helpfuncs_myipairs(Weights) do
 		Choice = Choice - Weight 
 		if Choice <= 0 then -- this slice was chosen, return current index
-			return i
+			if Values then
+				return Values[i]
+			else
+				return i
+			end
 		end
 	end
 	return nil -- should not happen, but who knows?

@@ -193,11 +193,7 @@ function Run()
 								diseases_giveSickness(Disease,"SickSim0",false)
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
-<<<<<<< Scripts/Measures/ms_MedicalTreatment.lua
 								  if Disease == sublist[i] then
-=======
-								  if Disease == list[i] then
->>>>>>> Scripts/Measures/ms_MedicalTreatment.lua
 								  	ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
 								  	  if Disease == "Blackdeath" then
 								  	  	AddImpact("SickSim0","PlagueImmunity", 1, 120)
@@ -253,42 +249,13 @@ function Run()
 							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+Costs))
 							
 						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
-<<<<<<< Scripts/Measures/ms_MedicalTreatment.lua
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
-
 						if Disease ~= false then
 						  diseases_giveSickness(Disease,"SickSim0", false)
 						    if not list[Disease] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end
-=======
-						
-						if Disease == "Sprain" then
-							diseases_giveSickness("Sprain","SickSim0", false)
-						elseif Disease == "Cold" then
-							diseases_giveSickness("Cold","SickSim0", false)
-						elseif Disease == "Influenza" then
-							diseases_giveSickness("Influenza","SickSim0", false)
-						elseif Disease == "Fracture" then
-							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_giveSickness("Fracture","SickSim0",false)
-						elseif Disease == "BurnWound" then
-							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_giveSickness("BurnWound","SickSim0",false)
-						elseif Disease == "Pox" then
-							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_giveSickness("Pox","SickSim0",false)
-						elseif Disease == "Caries" then
-							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_giveSickness("Caries","SickSim0", false)
-						elseif Disease == "Pneumonia" then
-							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_giveSickness("Pneumonia","SickSim0", false)
-						elseif Disease == "Blackdeath" then
-							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
-							diseases_giveSickness("Blackdeath","SickSim0", false)
->>>>>>> Scripts/Measures/ms_MedicalTreatment.lua
 						else
 						  local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
 					      ModifyHP("SickSim0", ToHeal, true)
