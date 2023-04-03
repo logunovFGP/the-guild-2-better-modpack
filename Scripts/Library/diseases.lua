@@ -5,172 +5,119 @@ function Init()
 	--needed for caching
 end
 
+-- helper functions
+function ImpactManager(Boolean, ObjectAlias, Sickness, Duration)
+  if Boolean then 
+    AddImpact(ObjectAlias, Sickness, 1, Duration)
+    AddImpact(ObjectAlias, "Sickness", 1, Duration)
+  else
+  	RemoveImpact(ObjectAlias, Sickness)
+    RemoveImpact(ObjectAlias, "Sickness")
+  end
+  SetState(ObjectAlias, STATE_SICK, Boolean)
+end
+
+function NoTime(Boolean, ObjectAlias, Sickness, endtime)
+  if not Sickness == "Caries" and not Sickness == "BurnWound" then
+    if Boolean == true then
+      SetProperty(ObjectAlias, Sickness.."Time", endtime)
+    else
+      RemoveProperty(ObjectAlias, Sickness.."Time")
+    end
+  end
+end
+-- end of helper functions
+
+skills = 
+{
+	["0"] = "constitution",
+	["1"] = "dexterity",
+	["2"] = "charisma",
+	["3"] = "fighting",
+	["4"] = "craftsmanship",
+	["5"] = "shadow_arts",
+	["6"] = "rhetoric",
+	["7"] = "empathy",
+	["8"] = "bargaining",
+	["9"] = "secret_knowledge"
+}
+
 diseases = {
 
 	["Sprain"] 		= {
-	  string="Sprain",
 	  medicine="Bandage",
 	  favor=GL_FAVOR_MOD_SMALL,
 	  cost = 200,
 	  duration = 16,
-	  callback = diseases_Sprain,
-	  listImpact = 
-	  { 3,
-		{"dexterity",-2},
-		{"craftsmanship",-2},
-		{"fighting",-2}
-	  }
+	  serialisedImpacts={-2,"134"},
+	  extraCallback=MoveSetActivity
 	},
 
 	["Cold"] 		= {
-	  string="Cold",
 	  medicine="Bandage",
 	  favor=GL_FAVOR_MOD_SMALL,
 	  cost = 250,
 	  duration = 24,
-	  callback = diseases_Cold,
-	  listImpact = 
-	  {
-	  	10,
-	  	{"constitution",-1},
-	  	{"dexterity",-1},
-	  	{"charisma",-1},
-	  	{"fighting",-1},
-	  	{"craftsmanship",-1},
-	  	{"shadow_arts",-1},
-	  	{"rhetoric",-1},
-	  	{"empathy",-1},
-	  	{"bargaining",-1},
-	  	{"secret_knowledge",-1}
-	  }
+	  serialisedImpacts={-1,"0123456789"}
 	},
 
 	["Influenza"] 	= {
-	  string="Influenza",
 	  medicine="Medicine",
 	  favor=GL_FAVOR_MOD_SMALL,
 	  cost = 400,
 	  duration = 16,
-	  callback = diseases_Influenza,
-	  listImpact = 
-	  {
-	  	10,
-	  	{"constitution",-3},
-	  	{"dexterity",-3},
-	  	{"charisma",-3},
-	  	{"fighting",-3},
-	  	{"craftsmanship",-3},
-	  	{"shadow_arts",-3},
-	  	{"rhetoric",-3},
-	  	{"empathy",-3},
-	  	{"bargaining",-3},
-	  	{"secret_knowledge",-3}
-	  }
+	  serialisedImpacts={-3,"0123456789"}
 	},
 
 	["Pox"] 		= {
-	  string="Pox",
 	  medicine="Medicine",
 	  favor=GL_FAVOR_MOD_NORMAL,
 	  cost = 700,
 	  duration = -1,
-	  callback = diseases_Pox,
-	  listImpact =
-	  { 3,
-	  	{"constitution",-6},
-	  	{"charisma",-6},
-	  	{"dexterity",-6}
-	  }
+	  serialisedImpacts={-6,"012"}
 	},
 
 	["BurnWound"] 	= {
-	  string="BurnWound",
 	  medicine="PainKiller",
 	  favor=GL_FAVOR_MOD_NORMAL,
 	  cost = 750,
-	  duration = 8,
-	  callback = diseases_BurnWound
+	  duration = 8
 	},
 
 	["Pneumonia"] 	= {
-	  string="Pneumonia",
 	  medicine="Medicine",
 	  favor=GL_FAVOR_MOD_GREATER,
 	  cost = 800,
 	  duration = 24,
-	  callback = diseases_Pneumonia,
-	  listImpact = 
-	  {
-	  	10,
-	  	{"constitution",-5},
-	  	{"dexterity",-5},
-	  	{"charisma",-5},
-	  	{"fighting",-5},
-	  	{"craftsmanship",-5},
-	  	{"shadow_arts",-5},
-	  	{"rhetoric",-5},
-	  	{"empathy",-5},
-	  	{"bargaining",-5},
-	  	{"secret_knowledge",-5}
-	  }
+	  serialisedImpacts={-5,"0123456789"}
 	},
 
 	["Blackdeath"] 	= {
-	  string="Blackdeath",
 	  medicine="PainKiller",
 	  favor=GL_FAVOR_MOD_LARGE,
 	  cost = 1000,
 	  duration = 24,
-	  callback = diseases_Blackdeath,
-	  listImpact = 
-	  {
-	  	10,
-	  	{"constitution",-7},
-	  	{"dexterity",-7},
-	  	{"charisma",-7},
-	  	{"fighting",-7},
-	  	{"craftsmanship",-7},
-	  	{"shadow_arts",-7},
-	  	{"rhetoric",-7},
-	  	{"empathy",-7},
-	  	{"bargaining",-7},
-	  	{"secret_knowledge",-7}
-	  }
+	  serialisedImpacts={-7,"0123456789"}
 	},
 
 	["Fracture"] 	= {
-	  string="Fracture",
 	  medicine="PainKiller",
 	  favor=GL_FAVOR_MOD_NORMAL,
 	  cost = 600,
 	  duration = 24,
-	  callback = diseases_Fracture,
-	  listImpact =
-	  { 3,
-	  	{"craftsmanship",-4},
-	  	{"Fighting",-4},
-	  	{"dexterity",-4}
-	  }
+	  serialisedImpacts={-4,"134"}
 	},
 
 	["Caries"] 		= {
-	  string="Caries",
 	  medicine="PainKiller",
 	  favor=GL_FAVOR_MOD_NORMAL,
 	  cost = 800,
 	  duration = 48,
-	  callback = diseases_Caries,
-	  listImpact =
-	  { 2,
-	  	{"rhetoric",-3},
-	  	{"charisma",-3}
-	  }
+	  serialisedImpacts={-3,"26"}
 	}
 
 	}
 
---[[CodeRework: sort diseases-related calls under classes]]
-local diseaseeee = {test = 1}
 function disease_check(ObjectAlias, Force)
 	LogMessage("Ran function check under class diseases")
 
@@ -221,10 +168,15 @@ end
 
 function giveSickness(Sickness, ObjectAlias, State, Force)
 --[[State: true  = character should get potential complications
-	       false = the sickness or injury should heal		 ]]
+	       false = the sickness or injury should heal]]
 
   local ID = diseases[Sickness]
   local endtime = math.mod(GetGametime(),24)+ID.duration
+
+  if not Sickness == "BurnWound" then 
+  	local length = string.len(ID.serialisedImpacts[2])
+    local modifier = ID.serialisedImpacts[1]
+  end 
 
   if Sickness == "Pneumonia" then 
   	Sleep(1)
@@ -236,31 +188,26 @@ function giveSickness(Sickness, ObjectAlias, State, Force)
     end
     if GetImpactValue(ObjectAlias, Sickness) ~= 1 then
       if not Sickness == "BurnWound" then
-        for i = 1,ID.listImpact[1] do
-       	  AddImpact(ObjectAlias, ID.listImpact[i+1][1], ID.listImpact[i+1][2], ID.duration)
+        for i = 1,length do
+          local skill = skills[string.sub(ID.serialisedImpacts[2],i,i)]
+       	  AddImpact(ObjectAlias, skill, modifier, ID.duration)
         end
   	  end
-        AddImpact(ObjectAlias, Sickness, 1, ID.duration)
-        AddImpact(ObjectAlias, "Sickness", 1, ID.duration)
-        SetState(ObjectAlias, STATE_SICK, true)
-        if not Sickness == "Caries" and not Sickness == "BurnWound" then
-          SetProperty(ObjectAlias, Sickness.."Time", endtime)
-        end
-        if Sickness == "Pox" then
+
+  	    diseases_ImpactManager(true, ObjectAlias, Sickness, ID.duration)
+        diseases_NoTime(ObjectAlias, Sickness, endtime, true)
+
+        if Sickness == "Pox" or Sickness == "Blackdeath" then
           AddImpact(ObjectAlias,"LifeExpanding", -1, -1)  -- RemoveImpact later?
         end
         if Sickness == "Pneumonia" then
           AddImpact(ObjectAlias, "LifeExpanding", -2, -1) -- RemoveImpact later?
         end
-        if Sickness == "Blackdeath" then
-          AddImpact(ObjectAlias, "LifeExpanding", -1, -1) -- RemoveImpact later?
-        end
     end
 
   elseif not State and GetImpactValue(ObjectAlias, Sickness) == 1 then
-  	RemoveImpact(ObjectAlias, Sickness)
-  	RemoveImpact(ObjectAlias, "Sickness")
-  	SetState(ObjectAlias, STATE_SICK, false)
+  	diseases_ImpactManager(false, ObjectAlias, Sickness, 0)
+    diseases_NoTime(ObjectAlias, Sickness, 0, false)
 
   	if not Sickness == "BurnWound" then
 
@@ -271,19 +218,16 @@ function giveSickness(Sickness, ObjectAlias, State, Force)
   	    end
   	  end
 
-  	  for i = 1,ID.listImpact[1] do
-	    AddImpact(ObjectAlias, ID.listImpact[i+1][1], math.abs(ID.listImpact[i+1][2]), new_duration)
-  	  end
-
-  	  if not Sickness == "Caries" then
-  	    RemoveProperty(ObjectAlias, Sickness.."Time")
+  	  for i = 1,length do
+  	  	local skill = skills[string.sub(ID.serialisedImpacts[2],i,i)]
+	    AddImpact(ObjectAlias, skill, math.abs(modifier), new_duration)
   	  end
 
     end
 
-  	if Sickness == "Sprain" then 
-  	  MoveSetActivity(ObjectAlias)
-  	end
+    if ID.extraCallback ~= nil then
+      ID.extraCallback(ObjectAlias)
+    end
 
   	if GetSettlement(ObjectAlias,"City") then
   	  chr_DecrementInfectionCount(Sickness.."Infected", "City")
