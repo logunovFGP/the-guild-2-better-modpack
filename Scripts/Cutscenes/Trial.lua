@@ -1225,58 +1225,33 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	PlayAnimationNoWait("accuser", "point_at")
 	PlayAnimationNoWait("accused", "shake_head")
 	
-	if EvidenceType == 1 then
-		-- 1: Sabotage
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_SABOTAGE"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType == 4 then
-		-- 4: bribery
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_BRIBERY"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType == 6 then
-		-- 6: blackmail
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_BLACKMAIL"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType == 7 then
-		-- 7: slugging
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_SLUGGING"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==10 then
-		-- 10: calumny
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_CALUMNY"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==11 then
-		-- 11: poison
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_POISON"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==12 then
-		-- 12: raiding
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_RAIDING"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==13 then
-		-- 13: revolt
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_REVOLT"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==14 then
-		-- 14: marauding
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_MARAUDING"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==15 then
-		-- 15: abduction
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_ABDUCTION"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==16 then
-		-- 16: murder
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_MURDER"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==17 then
-		-- 17: collected evidence
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_SHARED"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==18 or EvidenceType == 3 then
-		-- 18: Attack civilian
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_ATTACK"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==19 then
-		-- 19 : attack cart
-		MsgSay("accuser", "@L_NEWSTUFF_CARTATTACK"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==20 then
-		-- 20 : theft
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_THEFT"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	elseif EvidenceType==21 then
-		-- 21 : attack ship
-		MsgSay("accuser", "@L_NEWSTUFF_CARTATTACK"..GenderType, GetID("accused"), VictimID, EvidenceTime)
-	else
-		-- DEBUG: invalid case
-		MsgSay("accuser", "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_INVALID")
+	local EvidenceData = {
+					[1] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_SABOTAGE",
+					[3] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_ATTACK",
+					[4] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_BRIBERY",
+					[6] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_BLACKMAIL",
+					[7] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_SLUGGING",
+					[10] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_CALUMNY",
+					[11] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_POISON",
+					[12] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_RAIDING",
+					[13] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_REVOLT",
+					[14] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_MARAUDING",
+					[15] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_ABDUCTION",
+					[16] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_MURDER",
+					[17] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_SHARED",
+					[18] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_ATTACK",
+					[19] = "@L_NEWSTUFF_CARTATTACK",
+					[20] = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_THEFT",
+					[21] = "@L_NEWSTUFF_CARTATTACK"
+					}
+					
+	local EvidenceString = EvidenceData[EvidenceType]
+	if EvidenceString == nil then
+		EvidenceString = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_INVALID"
+		GenderType = ""
 	end
+	
+	MsgSay("accuser", EvidenceString..GenderType, GetID("accused"), VictimID, EvidenceTime)
 	
 	StopAnimation("accuser")
 	StopAnimation("accused")
