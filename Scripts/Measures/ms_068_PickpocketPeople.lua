@@ -156,7 +156,7 @@ function Run()
 						SetData("Blocked", 0)
 						if GetNobilityTitle(DestAlias) > 3 then
 							chr_ModifyFavor(DestAlias,"",-GL_FAVOR_MOD_SMALL)
-							CommitAction("pickpocket", "", "", DestAlias)
+						--	CommitAction("pickpocket", "", "", DestAlias)
 							feedback_OverheadComment(DestAlias,
 								"@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)
 							if BuildingHasUpgrade("WorkBuilding", "ShadowCloak") then
@@ -165,7 +165,7 @@ function Run()
 								end
 							else
 								f_MoveTo("", "WorkBuilding", GL_MOVESPEED_RUN, 0)
-								StopAction("pickpocket", "")
+							--	StopAction("pickpocket", "")
 								if BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 									StopMeasure()
 								else
@@ -198,7 +198,7 @@ end
 
 function FastHide()
 
-	StopAction("pickpocket", "")
+	--StopAction("pickpocket", "")
 	GetPosition("", "standPos")
 	PlayAnimationNoWait("", "crouch_down")
 	Sleep(1)
@@ -223,7 +223,7 @@ function CleanUp()
 	
 	GfxDetachAllObjects()
 	StopAnimation("")
-	StopAction("pickpocket", "")
+--	StopAction("pickpocket", "")
 	if HasProperty("", "OutdoorPos") then
 		local MyPos = GetProperty("", "OutdoorPos")
 		RemoveProperty("WorkBuilding", "OutdoorPos"..MyPos)
