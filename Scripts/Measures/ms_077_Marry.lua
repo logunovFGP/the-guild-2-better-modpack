@@ -174,8 +174,7 @@ function Run()
 			end
 			
 			local Difficulty = (GetProperty("Destination", "CourtDiff") / 2)
-			xp_CourtingSuccess("Owner", Difficulty)
-			xp_CourtingSuccess("Destination", Difficulty)
+			xp_CourtingSuccess({"Owner","Destination"}, Difficulty, {0,0})
 			RemoveProperty("Destination", "CourtDiff")
 	
 			MeasureSetNotRestartable()

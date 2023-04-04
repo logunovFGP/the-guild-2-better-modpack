@@ -254,41 +254,31 @@ function SimIsGuildmaster()
 			return 0
 		end
 
-		local Class
-		if SimGetClass("") == 1 then
-			Class = "PatronMaster"
-		elseif SimGetClass("") == 2 then
-			Class = "ArtisanMaster"
-		elseif SimGetClass("") == 3 then
-			Class = "ScholarMaster"
-		elseif SimGetClass("") == 4 then
-			Class = "ChiselerMaster"
-		else
+		local list = {"Patron","Artisan","Scholar","Chiseler"}
+		local Sim = "void"
+		local Sim.found = false
+		for i = 1,4 do
+			if SimGetClass("") == i then
+				Sim = list[i].."Master"
+				Sim.found = true
+			end
+		end
+
+		if Sim.found ~= true then 
 			return 0
 		end
 	
-		if GetID("") == GetProperty("Guildhouse", Class) then
-			if SimGetGender("") == 0 then
-				if SimGetClass("") == 1 then
-					return 1
-				elseif SimGetClass("") == 2 then
-					return 2
-				elseif SimGetClass("") == 3 then
-					return 3
-				elseif SimGetClass("") == 4 then
-					return 4
-				end
-			else
-				if SimGetClass("") == 1 then
-					return 5
-				elseif SimGetClass("") == 2 then
-					return 6
-				elseif SimGetClass("") == 3 then
-					return 7
-				elseif SimGetClass("") == 4 then
-					return 8
+		if GetID("") == GetProperty("Guildhouse", Sim) then
+			for i = 1,4 do 
+				if SimGetClass("") == i then
+					if SimGetGender("") == 0 then
+						return i
+					else
+						return i+4
+					end
 				end
 			end
+
 		else
 			return 0
 		end
@@ -533,15 +523,7 @@ function GetEnemyHostilityLevel(Enemy)
 	GetAliasByID(warchooserid, "WarChooser")
 	local enemyHost
 	
-	if Enemy == 1 then
-		enemyHost = GetProperty("WarChooser", "Hostility1")
-	elseif Enemy == 2 then
-		enemyHost = GetProperty("WarChooser", "Hostility2")
-	elseif Enemy == 3 then
-		enemyHost = GetProperty("WarChooser", "Hostility3")
-	else
-		enemyHost = GetProperty("WarChooser", "Hostility4")
-	end
+	enemyHost = GetProperty("WarChooser", "Hostility"..Enemy)
 		
 	if enemyHost < 3 then
 		return 0
@@ -651,34 +633,27 @@ function CheckMoneyForTreatment(SimAlias)
 	end
 
 	local Costs = 0
-	
-	if GetImpactValue(SimAlias,"Sprain")==1 then
-		Costs = diseases_GetTreatmentCost("Sprain")
-	elseif GetImpactValue(SimAlias,"Cold")==1 then
-		Costs = diseases_GetTreatmentCost("Cold")
-	elseif GetImpactValue(SimAlias,"Influenza")==1 then
-		Costs = diseases_GetTreatmentCost("Influenza")
-	elseif GetImpactValue(SimAlias,"BurnWound")==1 then
-		Costs = diseases_GetTreatmentCost("BurnWound")
-	elseif GetImpactValue(SimAlias,"Pox")==1 then
-		Costs = diseases_GetTreatmentCost("Pox")
-	elseif GetImpactValue(SimAlias,"Pneumonia")==1 then
-		Costs = diseases_GetTreatmentCost("Pneumonia")
-	elseif GetImpactValue(SimAlias,"Blackdeath")==1 then
-		Costs = diseases_GetTreatmentCost("Blackdeath")
-	elseif GetImpactValue(SimAlias,"Fracture")==1 then
-		Costs = diseases_GetTreatmentCost("Fracture")
-	elseif GetImpactValue(SimAlias,"Caries")==1 then
-		Costs = diseases_GetTreatmentCost("Caries")
-	elseif GetHPRelative(SimAlias) < 0.99 then
-		Costs = GetMaxHP(SimAlias)-GetHP(SimAlias)
-	else
-		return 0
+	local Costs.found = false
+
+	for i = 1,9 do
+		if GetImpactValue(SimAlias,diseases.list[i])==1 then
+			Costs = diseases_GetTreatmentCost(diseases.list[i])
+			Costs.found = true
+			LogMessage("Cost of the treatment FOUND!")
+			break
+		end
 	end
-		
-	local Money = GetMoney(SimAlias)
+
+	if Costs.found ~= true then 
+		if GetHPRelative(SimAlias) < 0.99 then
+			Costs = GetMaxHP(SimAlias)-GetHP(SimAlias)
+			LogMessage("Cost of the treatment NOT FOUND, reverting to HP-based calculation!")
+		else
+			return 0
+		end
+	end
 	
-	if Costs > Money then
+	if Costs > GetMoney(SimAlias) then
 		return 0
 	else
 		return 1
@@ -687,34 +662,19 @@ end
 
 function checkBuildingNoRoom(building)
 -- checks if the building is of a type which has no room
-	if (BuildingGetType(building) == GL_BUILDING_TYPE_FARM) or (BuildingGetType(building) == GL_BUILDING_TYPE_ROBBER) or
-			(BuildingGetType(building) == GL_BUILDING_TYPE_MINE) or (BuildingGetType(building) == GL_BUILDING_TYPE_RANGERHUT) or
-			(BuildingGetType(building) == GL_BUILDING_TYPE_MERCENARY) or (BuildingGetType(building) == GL_BUILDING_TYPE_TOWER) or 
-			(BuildingGetType(building) == GL_BUILDING_TYPE_PIRATESNEST) or (BuildingGetType(building) == GL_BUILDING_TYPE_JUGGLER) or 
-			(BuildingGetType(building) == GL_BUILDING_TYPE_FISHINGHUT) or (BuildingGetType(building) == GL_BUILDING_TYPE_WAREHOUSE) or
-			(BuildingGetType(building) == GL_BUILDING_TYPE_MILL) or (BuildingGetType(building) == GL_BUILDING_TYPE_FRUITFARM) then
-		return 1
-	else
-		return 0
+local list = {GL_BUILDING_TYPE_FARM,GL_BUILDING_TYPE_ROBBER,GL_BUILDING_TYPE_MINE,GL_BUILDING_TYPE_RANGERHUT,GL_BUILDING_TYPE_MERCENARY,GL_BUILDING_TYPE_TOWER,GL_BUILDING_TYPE_PIRATESNEST,GL_BUILDING_TYPE_JUGGLER,GL_BUILDING_TYPE_FISHINGHUT,GL_BUILDING_TYPE_WAREHOUSE,GL_BUILDING_TYPE_MILL,GL_BUILDING_TYPE_FRUITFARM}
+	for i = 1,12 do
+		if BuildingGetType(building) == list[i] then 
+			return 1
+		else
+			return 0
+		end
 	end
 end
 
 function GetImperialLevelPoints(FameLevel)
-	local Points = 0
-	
-	if FameLevel == 1 then
-		Points = GL_IMPERIAL_FAME_POINTS_KNOWN
-	elseif FameLevel == 2 then
-		Points = GL_IMPERIAL_FAME_POINTS_NOTED
-	elseif FameLevel == 3 then
-		Points = GL_IMPERIAL_FAME_POINTS_RESPECTED
-	elseif FameLevel == 4 then
-		Points = GL_IMPERIAL_FAME_POINTS_LIKED
-	elseif FameLevel == 5 then
-		Points = GL_IMPERIAL_FAME_POINTS_FAMOUS
-	end
-	
-	return Points
+	local list = {GL_IMPERIAL_FAME_POINTS_KNOWN,GL_IMPERIAL_FAME_POINTS_NOTED,GL_IMPERIAL_FAME_POINTS_RESPECTED,GL_IMPERIAL_FAME_POINTS_LIKED,GL_IMPERIAL_FAME_POINTS_FAMOUS}
+	return list[FameLevel]
 end
 
 ---------------------------------------------------------------------------
@@ -835,8 +795,8 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 		end
 	end
 	
-	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class) or 0
-	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class) or 1
+	local BaseValue,VarText = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class) or 0
+	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class, VarText) or 1
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
 	
 	if CourtingDiff < 1 then
@@ -850,15 +810,15 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	end
 	
 	local MeasureData = {
-					[460] = RHETORIC, -- StartDialog (talk)
-					[530] = CHARISMA,  -- Flirt 
-					[540] = CHARISMA, -- Hug
-					[570] = EMPATHY, -- Kiss
-					[1520] = CHARISMA, -- Bathing
-					[1530] = RHETORIC, -- Bewitching (sweat talking)
-					[2300] = EMPATHY, -- Make a Present
-					[2310] = RHETORIC, -- Compliment
-					[2320] = DEXTERITY -- Dancing
+					[460] = RHETORIC, -- StartDialog (talk) with Ictiv
+					[530] = CHARISMA,  -- Flirt with Dr.Kulid357
+					[540] = CHARISMA, -- Hug Erilambus
+					[570] = EMPATHY, -- Kiss Fajeth
+					[1520] = CHARISMA, -- Bathing with Craftgeeking
+					[1530] = RHETORIC, -- Bewitching (sweat talking) Kodeks
+					[2300] = EMPATHY, -- Make a Present to VSX
+					[2310] = RHETORIC, -- Compliment ThreeOfMe
+					[2320] = DEXTERITY -- Dancing with drouz
 					}
 					
 	Skill = MeasureData[MeasureID]
@@ -874,23 +834,23 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	
 	-- get effectiveness of the courting measure based on destination class (or fake class for unemployed)
 	local MeasureData = {
-					[460] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 0.5, GL_CLASS_NPC = 0 }, -- StartDialog (talk)
-					[530] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0 },  -- Flirt 
-					[540] = { GL_CLASS_PATRON = 3, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 3, GL_CLASS_NPC = 0 }, -- Hug
-					[570] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 4, GL_CLASS_NPC = 0 }, -- Kiss
-					[1520] = { GL_CLASS_PATRON = 5, GL_CLASS_ARTISAN = 4, GL_CLASS_SCHOLAR = 2.5, GL_CLASS_CHISELER = 5, GL_CLASS_NPC = 0 }, -- Bathing
-					[1530] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 5, GL_CLASS_CHISELER = 2.5, GL_CLASS_NPC = 0 }, -- Bewitching (sweat talking)
-					[2300] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1.5, GL_CLASS_NPC = 0 }, -- Make a Present
-					[2310] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1, GL_CLASS_NPC = 0 }, -- Compliment
-					[2320] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 4, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0 } -- Dancing
+					[460] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 0.5, GL_CLASS_NPC = 0, v = 'Talk' }, -- StartDialog (talk)
+					[530] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0, v = 'Flirt' },  -- Flirt 
+					[540] = { GL_CLASS_PATRON = 3, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 3, GL_CLASS_NPC = 0, v = 'Hug' }, -- Hug
+					[570] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 4, GL_CLASS_NPC = 0, v = 'Kiss' }, -- Kiss
+					[1520] = { GL_CLASS_PATRON = 5, GL_CLASS_ARTISAN = 4, GL_CLASS_SCHOLAR = 2.5, GL_CLASS_CHISELER = 5, GL_CLASS_NPC = 0, v = 'Bath' }, -- Bathing
+					[1530] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 5, GL_CLASS_CHISELER = 2.5, GL_CLASS_NPC = 0, v = 'Bewitch' }, -- Bewitching (sweat talking)
+					[2300] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1.5, GL_CLASS_NPC = 0, v = 'Present' }, -- Make a Present
+					[2310] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1, GL_CLASS_NPC = 0, v = 'Compliment' }, -- Compliment
+					[2320] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 4, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0, v = 'Dance' } -- Dancing
 					}
 	
 	local Value = MeasureData[MeasureID].Class or 0
 
-	return Value
+	return Value,MeasureData[MeasureID].v
 end
 
-function GetCourtingMeasureVariation(MeasureID, Destination, Class)
+function GetCourtingMeasureVariation(MeasureID, Destination, Class, String)
 	
 	local Factor = 1
 	local ImpactVal = 0
@@ -903,26 +863,8 @@ function GetCourtingMeasureVariation(MeasureID, Destination, Class)
 				}
 	
 	local VariationClass = ClassData[Class] or 0
-	
-	if MeasureID == 460 then -- Dialog
-		ImpactVal = GetImpactValue(Destination, "ReceivedTalk")*VariationClass
-	elseif MeasureID == 530 then -- Flirt
-		ImpactVal = GetImpactValue(Destination, "ReceivedFlirt")*VariationClass
-	elseif MeasureID == 540 then -- Hug
-		ImpactVal = GetImpactValue(Destination, "ReceivedHug")*VariationClass
-	elseif MeasureID == 570 then -- Kiss
-		ImpactVal = GetImpactValue(Destination, "ReceivedKiss")*VariationClass
-	elseif MeasureID == 1520 then -- Bathing
-		ImpactVal = GetImpactValue(Destination, "ReceivedBath")*VariationClass
-	elseif MeasureID == 1530 then -- Bewitching
-		ImpactVal = GetImpactValue(Destination, "ReceivedBewitch")*VariationClass
-	elseif MeasureID == 2300 then -- Make A Present
-		ImpactVal = GetImpactValue(Destination, "ReceivedPresent")*VariationClass
-	elseif MeasureID == 2310 then -- Compliment
-		ImpactVal = GetImpactValue(Destination, "ReceivedCompliment")*VariationClass
-	elseif MeasureID == 2320 then -- Dancing
-		ImpactVal = GetImpactValue(Destination, "ReceivedDance")*VariationClass
-	end
+
+	ImpactVal = GetImpactValue(Destination, "Received"..String)*VariationClass
 	
 	Factor = Factor - ImpactVal
 	
@@ -950,48 +892,20 @@ end
 
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
-		if GetImpactValue(Alias, "Sprain") == 1 then
-			chr_IncrementInfectionCount("SprainInfected", "City")
-		elseif GetImpactValue(Alias, "Cold") == 1 then
-			chr_IncrementInfectionCount("ColdInfected", "City")
-		elseif GetImpactValue(Alias, "Influenza") == 1 then
-			chr_IncrementInfectionCount("InfluenzaInfected", "City")
-		elseif GetImpactValue(Alias, "BurnWound") == 1 then
-			chr_IncrementInfectionCount("BurnWoundInfected", "City")
-		elseif GetImpactValue(Alias, "Pox") == 1 then
-			chr_IncrementInfectionCount("PoxInfected", "City")
-		elseif GetImpactValue(Alias, "Pneumonia") == 1 then
-			chr_IncrementInfectionCount("PneumoniaInfected", "City")
-		elseif GetImpactValue(Alias, "Blackdeath") == 1 then
-			chr_IncrementInfectionCount("BlackdeathInfected", "City")
-		elseif GetImpactValue(Alias, "Fracture") == 1 then
-			chr_IncrementInfectionCount("FractureInfected", "City")
-		elseif GetImpactValue(Alias, "Caries") == 1 then
-			chr_IncrementInfectionCount("CariesInfected", "City")
+		for i = 1, 9 do 		
+			if GetImpactValue(Alias,diseases.list[i]) == 1 then
+				chr_IncrementInfectionCount(diseases.list[i].."Infected", "City")
+			end
 		end
 	end
 end
 
 function DecreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
-		if GetImpactValue(Alias, "Sprain") == 1 then
-			chr_DecrementInfectionCount("SprainInfected", "City")
-		elseif GetImpactValue(Alias, "Cold") == 1 then
-			chr_DecrementInfectionCount("ColdInfected", "City")
-		elseif GetImpactValue(Alias, "Influenza") == 1 then
-			chr_DecrementInfectionCount("InfluenzaInfected", "City")
-		elseif GetImpactValue(Alias, "BurnWound") == 1 then
-			chr_DecrementInfectionCount("BurnWoundInfected", "City")
-		elseif GetImpactValue(Alias, "Pox") == 1 then
-			chr_DecrementInfectionCount("PoxInfected", "City")
-		elseif GetImpactValue(Alias, "Pneumonia") == 1 then
-			chr_DecrementInfectionCount("PneumoniaInfected", "City")
-		elseif GetImpactValue(Alias, "Blackdeath") == 1 then
-			chr_DecrementInfectionCount("BlackdeathInfected", "City")
-		elseif GetImpactValue(Alias, "Fracture") == 1 then
-			chr_DecrementInfectionCount("FractureInfected", "City")
-		elseif GetImpactValue(Alias, "Caries") == 1 then
-			chr_DecrementInfectionCount("CariesInfected", "City")
+		for i = 1, 9 do 		
+			if GetImpactValue(Alias,diseases.list[i]) == 1 then
+				chr_DecrementInfectionCount(diseases.list[i].."Infected", "City")
+			end
 		end
 	end
 end
@@ -1111,40 +1025,30 @@ function CityCheckImportantOwner(CityAlias, BuildingType, BuildingLevel)
 end
 
 function CityCheckHospital(CityAlias, Disease, NeedOwner)
-	
-	local Illness = { "Cold", "Sprain", "Influenza", "Pox", "Pneumonia", "BurnWound", "Fracture", "Caries", "Blackdeath" }
-	local IllnessCount = 9
 	local HospitalLevel = {1, 1, 1, 2, 2, 3, 3, 3, 3 }
-	local Found = false
-	
-	for i=1, IllnessCount do
-		if Disease == Illness[i] then
-			local result = false
-			-- check if city has a hospital on that level available
-			if NeedOwner then
-				--LogMessage("Need Owner")
+	local result = false
+
+	for i = 1, 9 do 		
+		if Disease == diseases.list[i] then
+			if NeedOwer then 
 				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
 			else
-				--LogMessage("Don't need owner")
 				result = gameplayformulas_CityCheckImportantBuilding(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
 			end
-			
-			Found = result
 			break
 		end
 	end
-	
-	return Found
+
+	return result
 end
 
 function CalcIllnessHazard(SimAlias, Disease)
-	local Illness = { "Cold", "Sprain", "Influenza", "Pox", "Pneumonia", "BurnWound", "Fracture", "Caries", "Blackdeath" }
-	local IllnessCount = 9
+
 	local BaseHazard = { 50, 50, 60, 30, 70, 0, 0, 0, 80 }
 	local Hazard = 0
-	
-	for i=1, IllnessCount do -- check all
-		if Disease == Illness[i] then
+
+	for i = 1, 9 do
+		if Disease == diseases.list[i] then
 			if BaseHazard[i] > 0 then
 				Hazard = BaseHazard[i]
 				
@@ -1170,4 +1074,3 @@ function CalcIllnessHazard(SimAlias, Disease)
 	
 	return Hazard
 end
-

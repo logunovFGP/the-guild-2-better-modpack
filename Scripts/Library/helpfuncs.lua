@@ -226,6 +226,7 @@ end
 -- ##other useful lua functions, that does work:##
 -- string.sub("Hello Lua user", 7)  --> "Lua user"
 -- string.len("abc")                --> 3
+-- string.find()
 
 -- ## in work: ##
 -- function mystringtotable(thestring)   -- -- does not work, don't know why, but it works in fct itself -- does only work for my specific form of the array, but of course it can be generalized... "@LName_+0,@LName_+0,nichts,Der Bertige/@LGender_+0,-,@Lmale&@Lfemale,-"

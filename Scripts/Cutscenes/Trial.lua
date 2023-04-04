@@ -1247,6 +1247,8 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 					
 	local EvidenceString = EvidenceData[EvidenceType]..GenderType or "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_INVALID"
 	MsgSay("accuser", EvidenceString, GetID("accused"), VictimID, EvidenceTime)
+	LogMessage(GetName("accuser")..': "'..EvidenceString)
+	LogMessage("Against "..GetName("accused"))
 	
 	StopAnimation("accuser")
 	StopAnimation("accused")
@@ -1605,24 +1607,11 @@ function SimIsPresent(SimAlias)
 	BuildingGetRoom("courtbuilding", "Judge", "judgeroom")
 	
 	if GetID(SimAlias)>0 then
-		if HasProperty(SimAlias,"DefendTrial") then -- remove AI properties here
-			RemoveProperty(SimAlias,"DefendTrial")
-		end
-		
-		if HasProperty(SimAlias, "TrialOpponent") then
-			RemoveProperty(SimAlias, "TrialOpponent")
-		end
-		
-		if HasProperty(SimAlias, "TrialJudge") then
-			RemoveProperty(SimAlias, "TrialJudge")
-		end
-		
-		if HasProperty(SimAlias, "TrialAssessor1") then
-			RemoveProperty(SimAlias, "TrialAssessor1")
-		end
-		
-		if HasProperty(SimAlias, "TrialAssessor2") then
-			RemoveProperty(SimAlias, "TrialAssessor2")
+		local list = {"DefendTrial","TrialOpponent","TrialJudge","TrialAssessor1","TrialAssessor2"}
+		for i = 1,5 do
+			if HasProperty(SimAlias,list[i]) then -- remove AI properties here
+				RemoveProperty(SimAlias,list[i])
+			end
 		end
 		
 		if GetState(SimAlias, STATE_DEAD) then
@@ -1749,24 +1738,16 @@ function AccuserDecideSentence()
 end
 
 function GetLocalPlayerRepresentative(alias)
-	if DynastyIsPlayer("accuser") then
-		CopyAlias("accuser",alias)
-		return true
-	elseif DynastyIsPlayer("accused") then
-		CopyAlias("accused",alias)
-		return true
-	elseif DynastyIsPlayer("judge") then
-		CopyAlias("judge",alias)
-		return true
-	elseif DynastyIsPlayer("assessor1") then
-		CopyAlias("assessor1",alias)
-		return true
-	elseif DynastyIsPlayer("assessor2") then
-		CopyAlias("assessor2",alias)
-		return true
+	local list = {"accuser","accused","judge","assessor1","assessor2"}
+	for i = 1,5 do
+		if DynastyIsPlayer(list[i]) then
+			CopyAlias(list[i],alias)
+			return true
+		end
 	end
 	return false
 end
+
 function Cam(LocatorName)
 	GetLocatorByName("courtbuilding",LocatorName,"DestPos")
 	CutsceneCameraSetAbsolutePosition("","DestPos")
@@ -1807,8 +1788,7 @@ function CleanUp()
 	RoomLockForCutscene("judgeroom",0)
 	
 	local TargetArray = {"judge","accuser","accused","assessor1","assessor2"}
-	local TargetCount = 5
-	for Voter = 1, TargetCount do
+	for Voter = 1, 5 do
 		if AliasExists(TargetArray[Voter]) and (HasProperty(TargetArray[Voter],"trial_destination_ID") == true) then
 			RemoveProperty(TargetArray[Voter],"trial_destination_ID")
 		end
@@ -1878,24 +1858,24 @@ end
 function EvidenceIntToString(EvidenceType)
 
 	local EvidenceData = {
-					[1] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_SABOTAGE_+0",
-					[4] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_BRIBE_+0",
-					[6] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPEB_BLACKMAIL_+0",
-					[7] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_SLUGGING_+0",
-					[10] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_CALUMNY_+0",
-					[11] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_POISON_+0",
-					[12] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_ASSAULT_+0",
-					[13] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_REVOLT_+0",
-					[14] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_MARAUDER_+0",
-					[15] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_ABDUCTION_+0",
-					[16] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_MURDER_+0",
-					[17] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_ESPIONAGE_+0",
-					[18] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_PERSONASSAULT_+0",
-					[19] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_CARTASSAULT_+0",
-					[20] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_THEFT_+0"
+					[1] = "_SABOTAGE",
+					[4] = "_BRIBE",
+					[6] = "B_BLACKMAIL", -- B_ was already present before edit
+					[7] = "_SLUGGING",
+					[10] = "_CALUMNY",
+					[11] = "_POISON",
+					[12] = "_ASSAULT",
+					[13] = "_REVOLT",
+					[14] = "_MARAUDER",
+					[15] = "_ABDUCTION",
+					[16] = "_MURDER",
+					[17] = "_ESPIONAGE",
+					[18] = "_PERSONASSAULT",
+					[19] = "_CARTASSAULT",
+					[20] = "_THEFT"
 					}
 	
-	local EvidenceString = EvidenceData[EvidenceType]
+	local EvidenceString = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE"..EvidenceData[EvidenceType].."_+0"
 	
 	-- DEBUG: invalid case
 	if EvidenceString == nil then

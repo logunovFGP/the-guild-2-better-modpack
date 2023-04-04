@@ -56,26 +56,20 @@ end
 -- ------------------
 -- CourtingSuccess
 -- ------------------
-function CourtingSuccess(Owner, Difficulty, Ceremony)
-	if AliasExists(Owner) then
-		if Difficulty < 4 then
-			if Ceremony == 1 then
-				chr_GainXP(Owner, 500)
-			else
-				chr_GainXP(Owner, 250)
-			end
-		elseif Difficulty < 7 then
-			if Ceremony == 1 then
-				chr_GainXP(Owner, 1000)
-			else
-				chr_GainXP(Owner, 500)
-			end
-		elseif not Difficulty == nil then
-			if Ceremony == 1 then
-				chr_GainXP(Owner, 1500)
-			else
-				chr_GainXP(Owner, 750)
-			end
+function CourtingSuccess(Targets, Difficulty, Modifiers)
+	local xp = 250
+
+	if Difficulty < 4 then
+		xp = xp*1
+	elseif Difficulty < 7 then
+		xp = xp*2
+	elseif not Difficulty == nil then
+		xp = xp*3
+	end
+
+	for i = 1,2 do 
+		if AliasExists(Targets[i]) then 
+			chr_GainXP(Targets[i], xp*(Modifiers[i]+1))
 		end
 	end
 end

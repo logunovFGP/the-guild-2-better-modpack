@@ -59,8 +59,7 @@ function Run()
 	MsgSay("Destination", talk_AnswerLiaison(GetSkillValue("Destination", RHETORIC), SimGetGender("Destination")));		
 	
 	local Difficulty = GetProperty("Destination", "CourtDiff")
-	xp_CourtingSuccess("", Difficulty, 1)
-	xp_CourtingSuccess("Destination", Difficulty)
+	xp_CourtingSuccess({"","Destination"}, Difficulty, {1,0})
 	RemoveProperty("Destination", "CourtDiff")
 	
 	if AliasExists("Destination") then

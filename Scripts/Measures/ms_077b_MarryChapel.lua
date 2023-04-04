@@ -123,8 +123,7 @@ function Run()
 	end
 			
 	local Difficulty = GetProperty("Destination", "CourtDiff")
-	xp_CourtingSuccess("Owner", Difficulty, 1)
-	xp_CourtingSuccess("Destination", Difficulty, 1)
+	xp_CourtingSuccess({"","Destination"}, Difficulty, {1,1})
 			
 	Sleep(0.5)
 	BuildingGetInsideSimList("Weddingchapel", "GuestList")

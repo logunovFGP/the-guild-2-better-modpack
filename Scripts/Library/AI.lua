@@ -3,7 +3,7 @@
 -- -----------------------
 function StartBuildingAction(FirstSim, SecondSim, BuildingClass, BuildingType, BuildingAlias)
 
-	local	IsOk1
+	local IsOk1
 	local IsOk2
 	local BuildingAlias1
 	local BuildingAlias2
@@ -41,21 +41,11 @@ function StartBuildingAction(FirstSim, SecondSim, BuildingClass, BuildingType, B
 		end
 		
 	elseif not IsOk2 then
-		if not BlockChar(SecondSim) then
-			return false
+		local checkers = {BlockChar(SecondSim),f_MoveToBuildingAction(FirstSim, SecondSim, -1, 200),f_FollowNoWait(SecondSim, FirstSim, GL_MOVESPEED_MOVE, 100),f_MoveTo(FirstSim, BuildingAlias)}
+		for i = 1,4 do
+			if not checkers[i] then return false end
 		end
 
-		if not f_MoveToBuildingAction(FirstSim, SecondSim, -1, 200) then
-			return false
-		end
-
-		if not f_FollowNoWait(SecondSim, FirstSim, GL_MOVESPEED_MOVE, 100) then
-			return false
-		end
-		
-		if not f_MoveTo(FirstSim, BuildingAlias) then
-			return false
-		end
 	else
 		if not BlockChar(SecondSim) then
 			return false
@@ -103,8 +93,8 @@ end
 -- -----------------------
 function GoInsideBuilding(SimAlias, CityObject, BuildingClass, BuildingType, BuildingAlias)
 
-	local	IsOk
-	local	InsideAlias
+	local IsOk
+	local InsideAlias
 	local CityID = -1
 	
 	if AliasExists(CityObject) then
