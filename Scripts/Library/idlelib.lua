@@ -470,7 +470,7 @@ function SitDown()
 					end
 				
 				elseif LingerLevel ~= 1 then -- lingerplace crates
-					LingerLevel.list =
+					local list =
 					{
 						{3,3,4},
 						{2,2,4},
@@ -478,22 +478,22 @@ function SitDown()
 						{5,3,5}
 					}
 
-					LingerLevel.subList =
+					local subList =
 					{
 						{"Sit","SitGround","Stand"},
 						{GL_STANCE_SITBENCH,GL_STANCE_SITGROUND,GL_STANCE_STAND},						
 						{1,0,2}
 					}
 
-					local data = LingerLevel.list[LingerLevel-1]							
+					local data = list[LingerLevel-1]							
 					local found = false
 
 					for i = 1,3 do
-						if GetFreeLocatorByName("Destination", "idle_"..LingerLevel.subList[1][i], 1, data[i], "SitPos") then
-							f_BeginUseLocator("", "SitPos", LingerLevel.subList[2][i], true)
+						if GetFreeLocatorByName("Destination", "idle_"..subList[1][i], 1, data[i], "SitPos") then
+							f_BeginUseLocator("", "SitPos", subList[2][i], true)
 							SetProperty("Destination", "Guests", GuestCount)
 							GuestCount = GuestCount + 1
-							Stance = LingerLevel.subList[3][i]
+							Stance = subList[3][i]
 							found = true
 						end
 					end

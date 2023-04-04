@@ -187,11 +187,17 @@ end
 -- PlayerLock
 -- -----------------------
 
-function CameraChecker(CameraType,ID)
-	local random = GFXRand(6)
+function CameraChecker(CameraType)
 	if not CameraType then
-		local cameraList = {"Far_HCenterYLeft","Far_HUpYRight", "Mid_HCenterYLeft","Far_HCenterYRight","Mid_HCenterYRight","Far_HUpYLeft","Mid_HCenterYCenter","Up_HSkyYRight","Up_HSkyYLeft","Mid_HBottomYCenter","Mid_HBottomYLeft","Mid_HBottomYRight","Close_HCenterYCenter","Close_HBottomYCenter","Close_HCenterYLeft","Close_HBottomYLeft","Close_HCenterYRight","Close_HBottomYRight"}
-		CameraType = cameraList[random]
+		local random = GFXRand(6)
+		local camList = {"Far_HCenterYLeft","Far_HUpYRight", "Mid_HCenterYLeft","Far_HCenterYRight","Mid_HCenterYRight","Far_HUpYLeft","Mid_HCenterYCenter","Up_HSkyYRight","Up_HSkyYLeft","Mid_HBottomYCenter","Mid_HBottomYLeft","Mid_HBottomYRight","Close_HCenterYCenter","Close_HBottomYCenter","Close_HCenterYLeft","Close_HBottomYLeft","Close_HCenterYRight","Close_HBottomYRight"}
+		local res
+		res = camList[random+1]
+		LogMessage('CameraChecker in list: '..res)
+		return res
+	else
+		LogMessage('CameraChecker: '..CameraType)
+		return CameraType
 	end
 end
 
@@ -199,8 +205,7 @@ function PlayerLock(Player, FocusSim, CameraType)
 	if not camera_AllowToSwitch(Player) then
 		return
 	end
-	CameraChecker(CameraType,random)
-	CameraLock(CameraType, FocusSim)
+	CameraLock(camera_CameraChecker(CameraType), FocusSim)
 end
 
 -- -----------------------
@@ -208,8 +213,7 @@ end
 -- -----------------------
 function CutscenePlayerLock(Cutscene, FocusSim, CameraType)
 	Assert(GetID(Cutscene)~=-1, "!cutscene")		-- MMTODO: testing cutscenes
-	CameraChecker(CameraType,random)
-	CutsceneCameraSetRelativePosition(Cutscene,CameraType, FocusSim)
+	CutsceneCameraSetRelativePosition(Cutscene,camera_CameraChecker(CameraType),FocusSim)
 end
 
 -- -----------------------

@@ -256,15 +256,15 @@ function SimIsGuildmaster()
 
 		local list = {"Patron","Artisan","Scholar","Chiseler"}
 		local Sim = "void"
-		local Sim.found = false
+		local found = false
 		for i = 1,4 do
 			if SimGetClass("") == i then
 				Sim = list[i].."Master"
-				Sim.found = true
+				found = true
 			end
 		end
 
-		if Sim.found ~= true then 
+		if found ~= true then 
 			return 0
 		end
 	
@@ -633,18 +633,18 @@ function CheckMoneyForTreatment(SimAlias)
 	end
 
 	local Costs = 0
-	local Costs.found = false
+	local found = false
 
 	for i = 1,9 do
 		if GetImpactValue(SimAlias,diseases.list[i])==1 then
 			Costs = diseases_GetTreatmentCost(diseases.list[i])
-			Costs.found = true
+			found = true
 			LogMessage("Cost of the treatment FOUND!")
 			break
 		end
 	end
 
-	if Costs.found ~= true then 
+	if found ~= true then 
 		if GetHPRelative(SimAlias) < 0.99 then
 			Costs = GetMaxHP(SimAlias)-GetHP(SimAlias)
 			LogMessage("Cost of the treatment NOT FOUND, reverting to HP-based calculation!")
@@ -786,6 +786,7 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local Skill = 0
 	local Class = SimGetClass(Destination)
+	LogMessage("GetCourtingProgress Class = "..Class)
 	if Class == 0 then
 		if HasProperty(Destination, "FakeClass") then
 			Class = GetProperty(Destination, "FakeClass")
@@ -795,8 +796,8 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 		end
 	end
 	
-	local BaseValue,VarText = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class) or 0
-	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class, VarText) or 1
+	local BaseValue = gameplayformulas_GetCourtingMeasureValue(MeasureID, Class)
+	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class) or 1
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
 	
 	if CourtingDiff < 1 then
@@ -834,23 +835,22 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	
 	-- get effectiveness of the courting measure based on destination class (or fake class for unemployed)
 	local MeasureData = {
-					[460] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 0.5, GL_CLASS_NPC = 0, v = 'Talk' }, -- StartDialog (talk)
-					[530] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0, v = 'Flirt' },  -- Flirt 
-					[540] = { GL_CLASS_PATRON = 3, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 3, GL_CLASS_NPC = 0, v = 'Hug' }, -- Hug
-					[570] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 4, GL_CLASS_NPC = 0, v = 'Kiss' }, -- Kiss
-					[1520] = { GL_CLASS_PATRON = 5, GL_CLASS_ARTISAN = 4, GL_CLASS_SCHOLAR = 2.5, GL_CLASS_CHISELER = 5, GL_CLASS_NPC = 0, v = 'Bath' }, -- Bathing
-					[1530] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 5, GL_CLASS_CHISELER = 2.5, GL_CLASS_NPC = 0, v = 'Bewitch' }, -- Bewitching (sweat talking)
-					[2300] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1.5, GL_CLASS_NPC = 0, v = 'Present' }, -- Make a Present
-					[2310] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1, GL_CLASS_NPC = 0, v = 'Compliment' }, -- Compliment
-					[2320] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 4, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0, v = 'Dance' } -- Dancing
+					[460] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 0.5, GL_CLASS_NPC = 0}, -- StartDialog (talk)
+					[530] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0},  -- Flirt 
+					[540] = { GL_CLASS_PATRON = 3, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 3, GL_CLASS_NPC = 0}, -- Hug
+					[570] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 4, GL_CLASS_NPC = 0}, -- Kiss
+					[1520] = { GL_CLASS_PATRON = 5, GL_CLASS_ARTISAN = 4, GL_CLASS_SCHOLAR = 2.5, GL_CLASS_CHISELER = 5, GL_CLASS_NPC = 0}, -- Bathing
+					[1530] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 5, GL_CLASS_CHISELER = 2.5, GL_CLASS_NPC = 0}, -- Bewitching (sweat talking)
+					[2300] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1.5, GL_CLASS_NPC = 0}, -- Make a Present
+					[2310] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1, GL_CLASS_NPC = 0}, -- Compliment
+					[2320] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 4, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0} -- Dancing
 					}
 	
 	local Value = MeasureData[MeasureID].Class or 0
-
-	return Value,MeasureData[MeasureID].v
+	return Value
 end
 
-function GetCourtingMeasureVariation(MeasureID, Destination, Class, String)
+function GetCourtingMeasureVariation(MeasureID, Destination, Class)
 	
 	local Factor = 1
 	local ImpactVal = 0
@@ -862,9 +862,21 @@ function GetCourtingMeasureVariation(MeasureID, Destination, Class, String)
 				[GL_CLASS_CHISELER] = 0.5
 				}
 	
+	local v = {
+		[460] = 'Talk',
+		[530] = 'Flirt',
+		[540] = 'Hug',
+		[570] = 'Kiss',
+		[1520] = 'Bath',
+		[1530] = 'Bewitch',
+		[2300] = 'Present',
+		[2310] = 'Compliment',
+		[2320] = 'Dance'
+	}
+
 	local VariationClass = ClassData[Class] or 0
 
-	ImpactVal = GetImpactValue(Destination, "Received"..String)*VariationClass
+	ImpactVal = GetImpactValue(Destination, "Received"..v[MeasureID])*VariationClass
 	
 	Factor = Factor - ImpactVal
 	

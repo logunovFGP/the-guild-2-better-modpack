@@ -7,7 +7,8 @@ end
 
 function Setup()
 	bld_HandleSetup("")
-	worldambient_CreateAnimal({"Cat","Dog"}[Rand(2)+1], "", 1)
+	local list = {"Cat","Dog"}
+	worldambient_CreateAnimal(list[Rand(2)+1], "", 1)
 end
 
 function UpdateBalance(Alias)
