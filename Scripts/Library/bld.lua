@@ -507,15 +507,7 @@ function ResetWorkers(BldAlias)
 				
 				-- heal default worker.
 				if GetImpactValue("Worker", "Sickness") > 0 then
-					diseases_giveSickness("Sprain","Worker", false)
-					diseases_giveSickness("Cold","Worker", false)
-					diseases_giveSickness("Influenza","Worker", false)
-					diseases_giveSickness("BurnWound","Worker", false)
-					diseases_giveSickness("Pox","Worker", false)
-					diseases_giveSickness("Pneumonia","Worker", false)
-					diseases_giveSickness("Blackdeath","Worker", false)
-					diseases_giveSickness("Fracture","Worker", false)
-					diseases_giveSickness("Caries","Worker", false)
+					diseases_removeSickness("Worker")
 					MoveSetActivity("")
 				end
 				

@@ -38,15 +38,7 @@ function Run()
 				ModifyHP("Sim"..i, GetMaxHP("Sim"..i))
 			end
 			if GetImpactValue("Sim"..i,"Sickness") >0 then
-				diseases_giveSickness("Sprain","Sim"..i, false)	
-				diseases_giveSickness("Cold","Sim"..i, false)
-				diseases_giveSickness("Influenza","Sim"..i, false)
-				diseases_giveSickness("BurnWound","Sim"..i, false)
-				diseases_giveSickness("Pox","Sim"..i, false)
-				diseases_giveSickness("Pneumonia","Sim"..i, false)
-				diseases_giveSickness("Blackdeath","Sim"..i, false)
-				diseases_giveSickness("Fracture","Sim"..i, false)
-				diseases_giveSickness("Caries","Sim"..i, false)
+				removeSickness("Sim"..i)
 				MoveSetActivity("Sim"..i)
 				if GetCurrentMeasureName("Sim"..i) == "idle" then
 					StopMeasure("Sim"..i)

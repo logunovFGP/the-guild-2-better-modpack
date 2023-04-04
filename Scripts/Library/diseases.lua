@@ -118,7 +118,16 @@ diseases = {
 
 	}
 
-function disease_check(ObjectAlias, Force)
+diseases.list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries",
+["1"]="Sprain",["2"]="Cold",["3"]="Influenza",["4"]="Pox",["5"]="BurnWound",["6"]="Pneumonia",["7"]="Blackdeath",["8"]="Fracture",["9"]="Caries"}
+
+function removeSickness(ObjectAlias)
+	for i = 1,9 do
+		diseases_giveSickness(diseases.list[i],ObjectAlias, false)
+	end
+end
+
+function checkSickness(ObjectAlias, Force)
 	LogMessage("Ran function check under class diseases")
 
 	if not GetSettlement(ObjectAlias, "City") then
@@ -167,8 +176,9 @@ function disease_check(ObjectAlias, Force)
 end
 
 function giveSickness(Sickness, ObjectAlias, State, Force)
---[[State: true  = character should get potential complications
-	       false = the sickness or injury should heal]]
+--[[State: 
+true  = character should get potential complications
+false = the sickness or injury should heal]]
 
   local ID = diseases[Sickness]
   local endtime = math.mod(GetGametime(),24)+ID.duration
@@ -183,7 +193,7 @@ function giveSickness(Sickness, ObjectAlias, State, Force)
   end
 
   if State then
-    if not Sickness == "BurnWound" and not disease_check(ObjectAlias, Force) then
+    if not Sickness == "BurnWound" and not checkSickness(ObjectAlias, Force) then
   	  return
     end
     if GetImpactValue(ObjectAlias, Sickness) ~= 1 then
