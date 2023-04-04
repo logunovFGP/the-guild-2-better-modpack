@@ -1245,13 +1245,8 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 					[21] = "@L_NEWSTUFF_CARTATTACK"
 					}
 					
-	local EvidenceString = EvidenceData[EvidenceType]
-	if EvidenceString == nil then
-		EvidenceString = "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_INVALID"
-		GenderType = ""
-	end
-	
-	MsgSay("accuser", EvidenceString..GenderType, GetID("accused"), VictimID, EvidenceTime)
+	local EvidenceString = EvidenceData[EvidenceType]..GenderType or "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_INVALID"
+	MsgSay("accuser", EvidenceString, GetID("accused"), VictimID, EvidenceTime)
 	
 	StopAnimation("accuser")
 	StopAnimation("accused")

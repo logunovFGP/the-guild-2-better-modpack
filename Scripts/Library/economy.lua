@@ -144,9 +144,9 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 	end
 	
 	-- pricing gives bonus/penalty on total ranking 
-  local Pricing = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 100 -- 100, 125, 150, 175, 200
-  local PricingBonus = 100 + (150 - Pricing)/2 -- 125, 112.5, 100, 87.5, 75
-  Ranking = math.floor(Ranking * PricingBonus / 100)
+	local Pricing = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 100 -- 100, 125, 150, 175, 200
+	local PricingBonus = 100 + (150 - Pricing)/2 -- 125, 112.5, 100, 87.5, 75
+	Ranking = math.floor(Ranking * PricingBonus / 100)
 	
 	SetProperty(BldAlias, "SalescounterRanking", Ranking)
 	return Ranking, RankingGoods, RankingCrafty, RankingCharisma, Attractivity
