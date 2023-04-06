@@ -2,6 +2,21 @@
 --- Main Body
 ----------------------------------------------------------------------------------
 -- Setup / Termin / Einladung
+
+function returnMembers()
+	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"CutsceneAlias")
+	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"trial_destination_ID")
+	GetAliasByID(GetProperty("CutsceneAlias","NextCutsceneID"),"CutsceneAlias")
+	local list = { {"judge","accuser","accused","assessor1","assessor2"}, {} }
+
+	for i = 1, 5 do
+		CutsceneGetData("CutsceneAlias",list[1][i])
+		list[2][i] = GetData(list[1][i])
+	end
+
+  return list[2]
+end
+
 function Start()
 
 	-- get trial roles

@@ -1,30 +1,17 @@
 function Weight()
-	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"CutsceneAlias")
-	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"trial_destination_ID")
-
-	local CutsceneID = GetProperty("CutsceneAlias","NextCutsceneID")
-	GetAliasByID(CutsceneID,"CutsceneAlias")
-
-	local judge = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","judge")
-	local accuser = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","accuser")
-	local accused = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","accused")
-	local assessor1 = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","assessor1")
-	local assessor2 = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","assessor2")
+	local TargetArray = Trial_returnMembers()
 	
-	if (accuser ~= GetID("SIM")) then
-		GetAliasByID(accuser,"Trial_ThirdManTarget")
+	if (TargetArray[2] ~= GetID("SIM")) then
+		GetAliasByID(TargetArray[2],"Trial_ThirdManTarget")
 	else
-		GetAliasByID(accused,"Trial_ThirdManTarget")
+		GetAliasByID(TargetArray[3],"Trial_ThirdManTarget")
 	end
-
-	local TargetArray = {judge,accuser,accused,assessor1,assessor2}
-	local TargetCount = 5
 
 	local MaxFavor = 100
 	local MinFavor = 51
 	local ModifyFavorJury = -1
 
-	for UseTarget = 1, TargetCount do
+	for UseTarget = 1, 5 do
 		CurrentJury = TargetArray[UseTarget]
 		if (CurrentJury ~= GetID("SIM")) then
 			GetAliasByID(CurrentJury,"TA_CurrentJury")
