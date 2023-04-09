@@ -10,7 +10,7 @@ function Run()
 
 	if not(GetHomeBuilding("", "HomeBuilding")) then
 		LogMessage("GoToSleep - No homebuilding found for sleeping")
-		if IsDynastySim("Owner") then
+		if IsPartyMember("") then
 			MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+0", GetID(""))
 		end
 		return
@@ -22,7 +22,9 @@ function Run()
 	
 	-- Not sleepy?
 	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "VeryGoodDream") > 0 or GetImpactValue("", "BadDream") > 0 then
-		MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
+		if IsPartyMember("") then
+			MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
+		end
 		StopMeasure()
 	end
 
@@ -46,7 +48,9 @@ function Run()
 	else
 		if GetDynastyID("") ~= -1 and IsDynastySim("Owner") then
 			-- member from a dynasty must sleep in the right way
-			MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
+			if IsPartyMember("") then
+				MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
+			end
 			StopMeasure()
 		end
 	end
