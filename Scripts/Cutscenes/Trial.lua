@@ -1220,7 +1220,7 @@ function Go()
 	EndCutscene("")
 
 	if debugTrial then
-		ms_debug_trials_triggerDebug()
+		Sleep(1) ms_debug_trials_triggerDebug()
 	end
 end
 
@@ -1630,6 +1630,10 @@ function SimIsPresent(SimAlias)
 				RemoveProperty(SimAlias,list[i])
 			end
 		end
+
+		if debugTrial then
+			return 1
+		end
 		
 		if GetState(SimAlias, STATE_DEAD) then
 			return 2 -->sim is dead
@@ -1772,7 +1776,7 @@ end
 
 function SimSitDown(LocatorName)
 	if GetLocatorByName("courtbuilding", LocatorName, LocatorName) then
-		if debugTrial then SimBeamMeUp("", LocatorName, false) end
+		if debugTrial then SimBeamMeUp("", LocatorName, false) Sleep(1) end
 		f_BeginUseLocator("",LocatorName, GL_STANCE_SIT, true)
 	end
 
