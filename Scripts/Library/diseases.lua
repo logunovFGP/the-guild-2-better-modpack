@@ -45,50 +45,67 @@ skills =
 diseases = {}
 allDiseases = {}
 
-disease = {}
-
-local newDisease = function(name, medicine, favor, cost, duration, impacts, callback)
+local newDisease = function(name, medicine, favor, cost, duration, impacts1, impacts2, callback)
     local self = {
         name = name,
         medicine = medicine,
         favor = favor,
         cost = cost,
         duration = duration,
-        serialisedImpacts = impacts,
+        impacts1 = impacts1,
+      	impacts2 = impacts2,
         callback = callback
     }
 
-    local getName = function() -- example
-        return self.name
-    end
+    -- for the following functions I decided to go for <self.function> instead of <local function> because it seemed to break calls
 
-    local infectSim = function(ObjectAlias)
-        LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " is suffering from: " .. self.name)
+    self.infectSim = function(ObjectAlias)
+        LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " is suffering from: " .. (self.name))
         diseases_giveSickness(self,ObjectAlias)
     end
 
-    local cureSim = function(ObjectAlias)
+    self.cureSim = function(ObjectAlias)
         diseases_removeSickness(self,ObjectAlias)
     end
 
+    self.getName = function()
+	    return self.name
+	  end
+
+	  self.getMedicine = function()
+	  	return self.medicine
+		end
+
+		self.getFavor = function()
+			return self.favor
+		end
+
+		self.getCost = function()
+			return self.cost
+		end
+
+		self.getDuration = function()
+			return self.duration
+		end
+
+		self.getCallback = function()
+			return self.callback or nil
+		end
+
     LogMessage("CodeRework, Medical. Class " .. self.name .. " has successfully been created!")
-    return {
-        getName = getName,
-        infectSim = infectSim,
-        cureSim = cureSim
-    }
+    return self
 
 end
-
-Sprain 			 = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,{-2,"134"},MoveSetActivity)
-Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,{-1,"0123456789"},nil)
-Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,{-3,"0123456789"},nil)
-Pox          = newDisease("Pox","Medicine",GL_FAVOR_MOD_NORMAL,700,-1,{-6,"012"},nil)
-BurnWound    = newDisease("BurnWound","PainKiller",GL_FAVOR_MOD_NORMAL,750,8,{1,"0"},nil)
-Pneumonia    = newDisease("Pneumonia","Medicine",GL_FAVOR_MOD_GREATER,800,24,{-5,"0123456789"},nil)
-Blackdeath   = newDisease("Blackdeath","PainKiller",GL_FAVOR_MOD_LARGE,1000,24,{-7,"0123456789"},nil)
-Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,600,24,{-4,"134"},nil)
-Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,{-3,"26"},nil)
+--edd
+Sprain 			 = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,"134",MoveSetActivity)
+Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,"0123456789",nil)
+Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,-3,"0123456789",nil)
+Pox          = newDisease("Pox","Medicine",GL_FAVOR_MOD_NORMAL,700,-1,-6,"012",nil)
+BurnWound    = newDisease("BurnWound","PainKiller",GL_FAVOR_MOD_NORMAL,750,8,1,"0000",nil)
+Pneumonia    = newDisease("Pneumonia","Medicine",GL_FAVOR_MOD_GREATER,800,24,-5,"0123456789",nil)
+Blackdeath   = newDisease("Blackdeath","PainKiller",GL_FAVOR_MOD_LARGE,1000,24,-7,"0123456789",nil)
+Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,600,24,-4,"134",nil)
+Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,-3,"26",nil)
 allDiseases = {Sprain,Cold,Influenza,Pox,BurnWound,Pneumonia,Blackdeath,Fracture,Caries}
 
 -- this list will be removed
@@ -96,46 +113,47 @@ diseases.list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blac
 ["1"]="Sprain",["2"]="Cold",["3"]="Influenza",["4"]="Pox",["5"]="BurnWound",["6"]="Pneumonia",["7"]="Blackdeath",["8"]="Fracture",["9"]="Caries"}
 
 function removeSickness(Illness,ObjectAlias)
-	if GetImpactValue(ObjectAlias, Illness.name) == 1 then
+
+	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) == 1 then
 
 		local length, modifier
 
-	  if Illness.name ~= "BurnWound" then 
-	  	length = string.len(Illness.serialisedImpacts[2])
-	    modifier = Illness.serialisedImpacts[1]
+	  if Illness:getName() ~= "BurnWound" then 
+	  	length = string.len(Illness.impacts2)
+	    modifier = Illness.impacts1
 	  end 
 
-	  if Illness.name == "Pneumonia" then 
+	  if Illness:getName() == "Pneumonia" then 
 	  	Sleep(1)
 	  end
 
-  	LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness.name)
+  	LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness:getName()--[[()]])
 
-  	diseases_ImpactManager(false, ObjectAlias, Illness.name, 0)
-    diseases_NoTime(ObjectAlias, Illness.name, 0, false)
+  	diseases_ImpactManager(false, ObjectAlias, Illness:getName(), 0)
+    diseases_NoTime(ObjectAlias, Illness:getName(), 0, false)
 
-  	if not Illness.name == "BurnWound" then
+  	if not Illness:getName() == "BurnWound" then
 
-  	  local new_duration = Illness.duration
-  	  if not Illness.name == "Pox" then
-  	    if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, Illness.name.."Time") then
-  	  	  new_duration = math.floor(GetProperty(ObjectAlias,Illness.name.."Time")-math.mod(GetGametime(),24))
+  	  local new_duration = Illness.getDuration()
+  	  if not Illness:getName() == "Pox" then
+  	    if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, Illness:getName().."Time") then
+  	  	  new_duration = math.floor(GetProperty(ObjectAlias,Illness:getName().."Time")-math.mod(GetGametime(),24))
   	    end
   	  end
 
   	  for i = 1,length do
-  	  	local skill = skills[string.sub(Illness.serialisedImpacts[2],i,i)]
+  	  	local skill = skills[string.sub(Illness.impacts2,i,i)]
 	    	AddImpact(ObjectAlias, skill, math.abs(modifier), new_duration)
   	  end
 
     end
 
-    if Illness.extraCallback ~= nil then
-      Illness.extraCallback(ObjectAlias)
+    if Illness.getCallback() ~= nil then
+      Illness.callback(ObjectAlias)
     end
 
   	if GetSettlement(ObjectAlias,"City") then
-  	  chr_DecrementInfectionCount(Illness.name.."Infected", "City")
+  	  chr_DecrementInfectionCount(Illness:getName().."Infected", "City")
   	end
 	end
 end
@@ -174,7 +192,6 @@ function checkSickness(ObjectAlias)
 	if GetImpactValue("City", "Sickness") > 1 then
 		return false
 	end
-
 	
 	if not HasProperty("City", "InfectedSims") then
 		SetProperty("City", "InfectedSims", 1)
@@ -193,43 +210,51 @@ function checkSickness(ObjectAlias)
 end
 
 function giveSickness(Illness, ObjectAlias)
+	if Illness:getName() == nil then 
+		LogMessage("Illness is nil!") 
+		return		
+	end
+	local length, modifier = 0,0
+	local skill, tempdur
+	local endtime
 
-	local length, modifier, skill
-  local endtime = math.mod(GetGametime(),24)+Illness.duration
-
-  if Illness.name ~= "BurnWound" then 
-		length = string.len(Illness.serialisedImpacts[2])
-		modifier = Illness.serialisedImpacts[1]
-  end 
-
-  if Illness.name == "Pneumonia" then 
+  if Illness:getName() == "Pneumonia" then 
 		Sleep(1)
   end
 
-  if not Illness.name == "BurnWound" and not diseases_checkSickness(ObjectAlias) then
+  if Illness:getName() ~= "BurnWound" then 
+		length = string.len(Illness.impacts2)
+		modifier = Illness.impacts1
+  end 
+
+  if not Illness:getName() == "BurnWound" and not diseases_checkSickness(ObjectAlias) then
 		return 
   end
+
+	tempdur = Illness.getDuration()
+
+  endtime = math.mod(GetGametime(),24)+tempdur
   
-	if GetImpactValue(ObjectAlias, Illness.name) ~= 1 then
+	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) ~= 1 then
 
 		if length then
       for i = 1,length do
-        if Illness.name == 'BurnWound' then 
+        if Illness:getName() == 'BurnWound' then 
         	break 
         end
-	        skill = skills[string.sub(Illness.serialisedImpacts[2],i,i)]
-	       	AddImpact(ObjectAlias, skill, modifier, Illness.duration)
+	        skill = skills[string.sub(Illness.impacts2,i,i)]
+	       	AddImpact(ObjectAlias, skill, modifier, Illness.getDuration())
   	  end
   	end
 
-		diseases_ImpactManager(true, ObjectAlias, Illness.name, Illness.duration)
-		diseases_NoTime(ObjectAlias, Illness.name, endtime, true)
+		diseases_ImpactManager(true, ObjectAlias, Illness:getName(), Illness.getDuration())
+		diseases_NoTime(ObjectAlias, Illness:getName(), endtime, true)
 
-		if Illness.name == "Pox" or Illness.name == "Blackdeath" then
+		if Illness:getName() == "Pox" or Illness:getName() == "Blackdeath" then
 			AddImpact(ObjectAlias,"LifeExpanding", -1, -1) 
 		end
 
-		if Illness.name == "Pneumonia" then
+		if Illness:getName() == "Pneumonia" then
 			AddImpact(ObjectAlias, "LifeExpanding", -2, -1) 
 		end
   end

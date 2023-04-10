@@ -18,16 +18,15 @@ function Run()
 	"What disease would you like to have?",
 	"")
 
-	local data = allDiseases[result] or false
-	if not data == false then
-		data.infectSim("")
+	if allDiseases[result] ~= nil then
+		allDiseases[result].infectSim("")
 	elseif result == 10 then
 
 		GetSettlement("","City")
 
 		local infections = {}
 		for i = 1,9 do
-			infections[i] = GetProperty("City",allDiseases[i].name.."Infected") or 0
+			infections[i] = GetProperty("City",allDiseases[i].getName().."Infected") or 0
 		end
 
 		local InfectableSims = (CityGetCitizenCount("City") / 4) or 0

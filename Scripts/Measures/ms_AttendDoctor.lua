@@ -31,23 +31,23 @@ function Run()
 	if (GetDynastyID("Destination") ~= GetID("dynasty")) then
 		local Costs = 0
 		if GetImpactValue("", "Sprain") == 1 then
-			Costs = Sprain.cost
+			Costs = Sprain:getCost()
 		elseif GetImpactValue("", "Cold") == 1 then
-			Costs = Cold.cost
+			Costs = Cold:getCost()
 		elseif GetImpactValue("", "Influenza") == 1 then
-			Costs = Influenza.cost
+			Costs = Influenza:getCost()
 		elseif GetImpactValue("", "BurnWound") == 1 then
-			Costs = BurnWound.cost
+			Costs = BurnWound:getCost()
 		elseif GetImpactValue("", "Pox") == 1 then
-			Costs = Pox.cost
+			Costs = Pox:getCost()
 		elseif GetImpactValue("", "Pneumonia") == 1 then
-			Costs = Pneumonia.cost
+			Costs = Pneumonia:getCost()
 		elseif GetImpactValue("", "Blackdeath") == 1 then
-			Costs = Blackdeath.cost
+			Costs = Blackdeath:getCost()
 		elseif GetImpactValue("", "Fracture") == 1 then
-			Costs = Fracture.cost
+			Costs = Fracture:getCost()
 		elseif GetImpactValue("", "Caries") == 1 then
-			Costs = Caries.cost
+			Costs = Caries:getCost()
 		elseif GetHPRelative("") < 0.99 then
 			Costs = GetMaxHP("") -GetHP("")
 		else
@@ -80,23 +80,23 @@ end
 function GetOSHData(MeasureID)
 local Costs = 0
 	if GetImpactValue("", "Sprain") == 1 then
-		Costs = Sprain.cost
+		Costs = Sprain:getCost()
 	elseif GetImpactValue("", "Cold") == 1 then
-		Costs = Cold.cost
+		Costs = Cold:getCost()
 	elseif GetImpactValue("", "Influenza") == 1 then
-		Costs = Influenza.cost
+		Costs = Influenza:getCost()
 	elseif GetImpactValue("", "BurnWound") == 1 then
-		Costs = BurnWound.cost
+		Costs = BurnWound:getCost()
 	elseif GetImpactValue("", "Pox") == 1 then
-		Costs = Pox.cost
+		Costs = Pox:getCost()
 	elseif GetImpactValue("", "Pneumonia") == 1 then
-		Costs = Pneumonia.cost
+		Costs = Pneumonia:getCost()
 	elseif GetImpactValue("", "Blackdeath") == 1 then
-		Costs = Blackdeath.cost
+		Costs = Blackdeath:getCost()
 	elseif GetImpactValue("", "Fracture") == 1 then
-		Costs = Fracture.cost
+		Costs = Fracture:getCost()
 	elseif GetImpactValue("", "Caries") == 1 then
-		Costs = Caries.cost
+		Costs = Caries:getCost()
 	elseif GetHPRelative("") < 0.99 then
 		Costs = GetMaxHP("")-GetHP("")
 	end

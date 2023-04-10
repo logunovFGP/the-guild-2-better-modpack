@@ -636,10 +636,9 @@ function CheckMoneyForTreatment(SimAlias)
 	local found = false
 
 	for i = 1,9 do
-		if GetImpactValue(SimAlias,allDiseases[i].name)==1 then
-			Costs = allDiseases[i].cost
+		if GetImpactValue(SimAlias,allDiseases[i]:getName()) and GetImpactValue(SimAlias,allDiseases[i]:getName())==1 then
+			Costs = allDiseases[i]:getCost()
 			found = true
-			LogMessage("Cost of the treatment FOUND!")
 			break
 		end
 	end
@@ -647,7 +646,6 @@ function CheckMoneyForTreatment(SimAlias)
 	if found ~= true then 
 		if GetHPRelative(SimAlias) < 0.99 then
 			Costs = GetMaxHP(SimAlias)-GetHP(SimAlias)
-			LogMessage("Cost of the treatment NOT FOUND, reverting to HP-based calculation!")
 		else
 			return 0
 		end
@@ -905,8 +903,8 @@ end
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
 		for i = 1, 9 do 		
-			if GetImpactValue(Alias,allDiseases[i]:getName()) == 1 then
-				chr_IncrementInfectionCount(allDiseases[i]:getName().."Infected", "City")
+			if GetImpactValue(Alias,allDiseases[i].getName()) == 1 then
+				chr_IncrementInfectionCount(allDiseases[i].getName().."Infected", "City")
 			end
 		end
 	end
@@ -915,8 +913,8 @@ end
 function DecreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
 		for i = 1, 9 do 		
-			if GetImpactValue(Alias,allDiseases[i].name) == 1 then
-				chr_DecrementInfectionCount(allDiseases[i].name.."Infected", "City")
+			if GetImpactValue(Alias,allDiseases[i].getName()) and GetImpactValue(Alias,allDiseases[i].getName()) == 1 then
+				chr_DecrementInfectionCount(allDiseases[i].getName().."Infected", "City")
 			end
 		end
 	end
@@ -1041,7 +1039,7 @@ function CityCheckHospital(CityAlias, Disease, NeedOwner)
 	local result = false
 
 	for i = 1, 9 do 		
-		if Disease == allDiseases[i].name then
+		if Disease == allDiseases[i].getName() then
 			if NeedOwer then 
 				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
 			else
@@ -1060,7 +1058,7 @@ function CalcIllnessHazard(SimAlias, Disease)
 	local Hazard = 0
 
 	for i = 1, 9 do
-		if Disease == allDiseases[i].name then
+		if Disease == allDiseases[i].getName() then
 			if BaseHazard[i] > 0 then
 				Hazard = BaseHazard[i]
 				

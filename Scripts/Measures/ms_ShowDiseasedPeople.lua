@@ -19,7 +19,7 @@ function Run()
 
 	for i = 1,9 do
 	  local index = diseases_infect[i]
-	  index.ItemCnt = GetItemCount("", diseases[index.string].medicine)
+	  index.ItemCnt = GetItemCount("", allDiseases[i]:getMedicine())
 	  if HasProperty("City",index.string.."Infected") then
 		index.infected = GetProperty("City",index.string.."Infected")
 	  end
