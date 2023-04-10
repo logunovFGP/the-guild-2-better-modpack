@@ -68,7 +68,10 @@ function Start()
 		for i = 1,5 do
 			SimBeamMeUp(trialData.list[i], "destpos", false)
 			if trialData.Attending[i] ~= nil then 
-				SimBeamMeUp(trialData.Attending[i], "Room", false)
+				SimBeamMeUp(trialData.Attending[i], "Room", false) 
+				local LocatorNameTemp = locations[trialData.Attending[i]]
+				GetLocatorByName("courtbuilding", LocatorNameTemp, LocatorNameTemp)
+				SimBeamMeUp(trialData.Attending[i], LocatorNameTemp, false)
 				LogMessage("Our "..trialData.Attending[i].." was teleported to the Court Room.")
 			end
 		end
@@ -1643,8 +1646,7 @@ function SimIsPresent(SimAlias)
 			return 0 -->sim is not useful
 		end
 
-		if not GetInsideRoom(SimAlias,"currentroom") then
-			if debugTrial then return 1 end
+		if not GetInsideRoom(SimAlias,"currentroom") then 
 			return 0 -->sim is not in building
 		end
 		if GetID("currentroom")==GetID("judgeroom") then
@@ -1773,7 +1775,6 @@ end
 
 function SimSitDown(LocatorName)
 	if GetLocatorByName("courtbuilding", LocatorName, LocatorName) then
-		if debugTrial then SimBeamMeUp("", LocatorName, false) Sleep(1) end
 		f_BeginUseLocator("",LocatorName, GL_STANCE_SIT, true)
 	end
 
@@ -1782,7 +1783,6 @@ end
 
 function SimStandAt(LocatorName)
 	if(GetLocatorByName("courtbuilding", LocatorName, LocatorName)) then
-		if debugTrial then SimBeamMeUp("", LocatorName, false) end
 		f_MoveTo("",LocatorName)
 	end
 	CutsceneSendEventTrigger("owner", "Reached")
