@@ -1630,10 +1630,6 @@ function SimIsPresent(SimAlias)
 				RemoveProperty(SimAlias,list[i])
 			end
 		end
-
-		if debugTrial then
-			return 1
-		end
 		
 		if GetState(SimAlias, STATE_DEAD) then
 			return 2 -->sim is dead
@@ -1648,6 +1644,7 @@ function SimIsPresent(SimAlias)
 		end
 
 		if not GetInsideRoom(SimAlias,"currentroom") then
+			if debugTrial then return 1 end
 			return 0 -->sim is not in building
 		end
 		if GetID("currentroom")==GetID("judgeroom") then
