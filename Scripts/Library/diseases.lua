@@ -112,6 +112,37 @@ allDiseases = {Sprain,Cold,Influenza,Pox,BurnWound,Pneumonia,Blackdeath,Fracture
 diseases.list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries",
 ["1"]="Sprain",["2"]="Cold",["3"]="Influenza",["4"]="Pox",["5"]="BurnWound",["6"]="Pneumonia",["7"]="Blackdeath",["8"]="Fracture",["9"]="Caries"}
 
+
+-- Suggestion ToM: only expose a single table as global variable
+Disease = {}
+Disease.Sprain       = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,"134",MoveSetActivity)
+Disease.Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,"0123456789",nil)
+Disease.Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,-3,"0123456789",nil)
+Disease.Pox          = newDisease("Pox","Medicine",GL_FAVOR_MOD_NORMAL,700,-1,-6,"012",nil)
+Disease.BurnWound    = newDisease("BurnWound","PainKiller",GL_FAVOR_MOD_NORMAL,750,8,1,"0000",nil)
+Disease.Pneumonia    = newDisease("Pneumonia","Medicine",GL_FAVOR_MOD_GREATER,800,24,-5,"0123456789",nil)
+Disease.Blackdeath   = newDisease("Blackdeath","PainKiller",GL_FAVOR_MOD_LARGE,1000,24,-7,"0123456789",nil)
+Disease.Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,600,24,-4,"134",nil)
+Disease.Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,-3,"26",nil)
+DiseaseNames = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
+
+--- This will return an iterator over all diseases.
+-- Example: 
+-- for k, v in diseases_GetDiseaseIterator() do
+--		LogMessage(k .. " = " .. v.getName() .. v.getMedicine()) -- 1 = SprainBandage
+-- end
+function GetDiseaseIterator()
+	return diseases_DiseaseIterator, Disease, 0
+end
+
+function DiseaseIterator(t, i)
+	i = i + 1
+	local v = DiseaseNames[i]
+	if v then
+		return i, t[v]
+	end
+end
+
 function removeSickness(Illness,ObjectAlias)
 
 	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) == 1 then
