@@ -507,7 +507,7 @@ function ResetWorkers(BldAlias)
 				
 				-- heal default worker.
 				if GetImpactValue("Worker", "Sickness") > 0 then
-					Sprain.cureSim("Worker")
+					diseases_removeAllSickness("")
 					MoveSetActivity("")
 				end
 				

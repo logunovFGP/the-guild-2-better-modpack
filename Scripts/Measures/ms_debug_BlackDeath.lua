@@ -1,13 +1,6 @@
 function Run()
-	Sprain.cureSim("")
-	Cold.cureSim("")
-	Influenza.cureSim("")
-	Pox.cureSim("")
-	BurnWound.cureSim("")
-	Pneumonia.cureSim("")
-	Blackdeath.cureSim("")
-	Fracture.cureSim("")
-	Caries.cureSim("")
+	diseases_removeAllSickness("")
+
 
 
 	local result = InitData("@P"..

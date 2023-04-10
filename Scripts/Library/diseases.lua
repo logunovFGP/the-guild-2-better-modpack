@@ -140,6 +140,12 @@ function removeSickness(Illness,ObjectAlias)
 	end
 end
 
+function removeAllSickness(ObjectAlias)
+	for i = 1,9 do
+		allDiseases[i].cureSim(ObjectAlias)
+	end
+end
+
 function checkSickness(ObjectAlias)
 
 	if not GetSettlement(ObjectAlias, "City") then
