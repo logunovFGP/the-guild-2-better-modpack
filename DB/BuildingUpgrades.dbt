@@ -830,7 +830,6 @@ Data:
 3034             380              "ProtectionFromBurglary"    1                     0                 8                    0.25                 3006              0                 150             0          |
 3035             381              "ProtectionOfBurglary"      1                     0                 8                    0.25                 3034              0                 150             0          |
 3036             382              "kapitanwillibald"          1                     0                 8                    0.25                 3035              0                 150             0          |
-3045             380              "ScoopAndBucket"            1                     1                 15                   20                   3007              0                 0               0          |
 3046             380              "gablingtable"              1                     0                 10                   0.25                 3008              0                 250             0          |
 3047             380              "grimbergen"                1                     0                 10                   0.25                 3008              0                 250             0          |
 3048             381              "gemaelde"                  1                     0                 10                   0.25                 3046              0                 250             0          |
