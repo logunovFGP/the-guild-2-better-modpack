@@ -129,23 +129,23 @@ function CleanUp()
 				for i=1, 7 do
 					if GetImpactValue("", CheckDisease[i]) > 0 then
 						if CheckDisease[i] == "Cold" then
-							Cold.infectSim("",false)
+							Cold.cureSim("")
 						else
 							if SleepBonus > 0 then
 								if CheckDisease[i] == "Sprain" then
-									Sprain.infectSim("",false)
+									Sprain.cureSim("")
 								elseif CheckDisease[i] == "BurnWound" then
-									BurnWound.infectSim("",false)
+									BurnWound.cureSim("")
 								elseif CheckDisease[i] == "Influenza" then
-									Influenza.infectSim("",false)
+									Influenza.cureSim("")
 								elseif CheckDisease[i] == "Pneumonia" then
-									Pneumonia.infectSim("",false)
+									Pneumonia.cureSim("")
 								elseif CheckDisease[i] == "Pox" then
-									Pox.infectSim("",false)
+									Pox.cureSim("")
 								elseif CheckDisease[i] == "BlackDeath" then
-									Blackdeath.infectSim("",false)
+									Blackdeath.cureSim("")
 								elseif CheckDisease[i] == "Fracture" then
-									Fracture.infectSim("",false)									
+									Fracture.cureSim("")									
 								end
 							end
 						end
@@ -154,7 +154,7 @@ function CleanUp()
 			else -- no tea? then healing is random at 33 %
 				if Rand(100) >= 66 then
 					if GetImpactValue("", "Cold") > 0 then
-						Cold.infectSim("",false)
+						Cold.cureSim("")
 					end
 				end
 			end

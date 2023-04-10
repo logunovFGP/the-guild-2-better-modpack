@@ -109,34 +109,34 @@ function InfectPartyMember()
 		if ScenarioGetDifficulty() > 2 then -- hard settings?
 		
 			if SickChoice < 4 then -- 30%
-				Cold.infectSim("CurrentMember",true,true) -- you got lucky
+				Cold.infectSim("CurrentMember") -- you got lucky
 				krankH = 2
 			elseif SickChoice < 6 then --20%
-				Sprain.infectSim("CurrentMember",true,true) -- still lucky
+				Sprain.infectSim("CurrentMember") -- still lucky
 				krankH = 1
 			elseif SickChoice < 8 then --20%
-				Influenza.infectSim("CurrentMember",true,true) -- influenza? not nice
+				Influenza.infectSim("CurrentMember") -- influenza? not nice
 				krankH = 3
 			elseif SickChoice < 9 then --10%
-				Pox.infectSim("CurrentMember",true,true) -- damn!
+				Pox.infectSim("CurrentMember") -- damn!
 				SetState("CurrentMember", STATE_CONTAMINATED, true)
 				krankH = 4
 			elseif SickChoice < 10 then --10%	
-				Fracture.infectSim("CurrentMember",true,true) -- that hurts
+				Fracture.infectSim("CurrentMember") -- that hurts
 				krankH = 5
 			else -- 10%
-				Caries.infectSim("CurrentMember",true,true) -- c'mon!
+				Caries.infectSim("CurrentMember") -- c'mon!
 				krankH = 6
 			end
 		else -- low settings
 			if SickChoice < 6 then -- 50%
-				Cold.infectSim("CurrentMember",true,true) -- you got lucky
+				Cold.infectSim("CurrentMember") -- you got lucky
 				krankH = 2
 			elseif SickChoice < 9 then --40%
-				Sprain.infectSim("CurrentMember",true,true) -- still lucky
+				Sprain.infectSim("CurrentMember") -- still lucky
 				krankH = 1
 			else -- 10%
-				Influenza.infectSim("CurrentMember",true,true) -- influenza? not nice
+				Influenza.infectSim("CurrentMember") -- influenza? not nice
 				krankH = 3
 			end
 		end
@@ -192,7 +192,7 @@ function TheBlackDeath()
 	local opfer = Rand(2) + 1
 	if CityGetRandomBuilding("MyCity", opfer, -1, -1, -1, FILTER_HAS_DYNASTY, "Ausbruch") then
 		if BuildingGetSim("Ausbruch", 1, "ErstOpfer") then
-			Blackdeath.infectSim("ErstOpfer",true,true)
+			Blackdeath.infectSim("ErstOpfer")
 			SetRepeatTimer("MyCity", "Pest", 192)
 		end
 	end

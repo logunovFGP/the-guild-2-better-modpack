@@ -189,7 +189,7 @@ function Run()
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
 							if Disease ~= false then 
-								Disease.infectSim("SickSim0",false)
+								Disease.cureSim("SickSim0")
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
 								  if Disease.name == sublist[i] then
@@ -251,7 +251,7 @@ function Run()
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 						if Disease ~= false then
-							Disease.infectSim("SickSim0",false)
+							Disease.cureSim("SickSim0")
 						    if not list[(Disease.name)] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end

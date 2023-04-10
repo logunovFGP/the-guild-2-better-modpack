@@ -1,6 +1,15 @@
 function Run()
-	diseases_removeSickness("")
-	
+	Sprain.cureSim("")
+	Cold.cureSim("")
+	Influenza.cureSim("")
+	Pox.cureSim("")
+	BurnWound.cureSim("")
+	Pneumonia.cureSim("")
+	Blackdeath.cureSim("")
+	Fracture.cureSim("")
+	Caries.cureSim("")
+
+
 	local result = InitData("@P"..
 	"@B[1,verstauchung,verstauchung,Hud/Buttons/btn_005_GatherVermin.tga]"..
 	"@B[2,erkaeltung,erkaeltung,Hud/Buttons/btn_009_dine.tga]"..
@@ -18,7 +27,7 @@ function Run()
 
 	local data = allDiseases[result] or false
 	if not data == false then
-		data.infectSim("",true)
+		data.infectSim("")
 	elseif result == 10 then
 
 		GetSettlement("","City")

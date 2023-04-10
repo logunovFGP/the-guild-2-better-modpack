@@ -38,7 +38,7 @@ function Run()
 				ModifyHP("Sim"..i, GetMaxHP("Sim"..i))
 			end
 			if GetImpactValue("Sim"..i,"Sickness") >0 then
-				removeSickness("Sim"..i)
+				Sprain.cureSim("Sim"..i)				
 				MoveSetActivity("Sim"..i)
 				if GetCurrentMeasureName("Sim"..i) == "idle" then
 					StopMeasure("Sim"..i)

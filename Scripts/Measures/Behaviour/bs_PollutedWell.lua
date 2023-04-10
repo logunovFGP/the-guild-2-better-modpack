@@ -17,9 +17,9 @@ function Run()
 					local zuf = Rand(100) +1
 					
 					if zuf>90 then
-						Influenza.infectSim("",true)
+						Influenza.infectSim("")
 					else
-						Cold.infectSim("",true)
+						Cold.infectSim("")
 					end
 				end
 			end

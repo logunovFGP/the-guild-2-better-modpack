@@ -905,8 +905,8 @@ end
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
 		for i = 1, 9 do 		
-			if GetImpactValue(Alias,allDiseases[i].name) == 1 then
-				chr_IncrementInfectionCount(allDiseases[i].name.."Infected", "City")
+			if GetImpactValue(Alias,allDiseases[i]:getName()) == 1 then
+				chr_IncrementInfectionCount(allDiseases[i]:getName().."Infected", "City")
 			end
 		end
 	end
