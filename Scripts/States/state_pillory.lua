@@ -29,7 +29,7 @@ function Run()
 		end
 	end
 	
-	if GetImpactValue("", "Escapee") then
+	if (GetImpactValue("", "Escapee")==1) then
 		local NewTime = Rand(6)+6
 		if NewTime < Time then
 			Time = NewTime

@@ -6,6 +6,35 @@ function Init()  --needed for caching
 
 end
 
+function diff(list,remove)
+	local indexToRemove = nil
+
+	for i = 1, math.huge do
+		if not list[i] then
+			break
+		end
+		if list[i] == remove then
+			indexToRemove = i
+			break
+		end
+	end
+
+	if indexToRemove then
+		local last = nil
+		for i = indexToRemove, math.huge do
+			if not list[i + 1] then
+				last = i
+				break
+			end
+			list[i] = list[i + 1]
+		end
+		list[last] = nil
+	end
+
+	return list
+end
+
+
 -- help functions to deal with arrays and strings... because the lua table and alot of other lua functions do not work -.-
 function iter(a, i)
 	i = i + 1

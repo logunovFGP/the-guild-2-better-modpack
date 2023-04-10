@@ -12,7 +12,7 @@ function Run()
 		else
 			PlaySound3DVariation("","CharacterFX/female_pain_short",1)
 		end
-		diseases_giveSickness("BurnWound","",true)	
+		BurnWound.infectSim("",true)
 	end
 	
 	return "Flee"

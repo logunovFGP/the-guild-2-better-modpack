@@ -117,6 +117,7 @@ function Run()
 			local CanHeal = false
 			local Medicine, Label, FavorMod
 			local list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
+			local dislist = {Sprain,Cold,Influenza,Pox,BurnWound,Pneumonia,Blackdeath,Fracture,Caries}
 			local label
 			local sickness = 0
 
@@ -125,7 +126,7 @@ function Run()
 			  LogMessage('Hospital: An attempt to GetImpactValue with ["'..label..'"] has been executed!')
 			  LogMessage('GetImpactValue results: '..GetImpactValue("SickSim0", label))
 			  if GetImpactValue("SickSim0", list[i]) == 1 then
-			  	sickness = list[i]
+			  	sickness = dislist[i]
 			  	LogMessage(list[i]..' has been detected!')
 			  	break
 			  end
@@ -135,11 +136,11 @@ function Run()
 			  	LogMessage('Hospital: value label set to '..label)
 			    Disease = label
 			    LogMessage('Hospital: value Disease set to '..Disease)
-			    Medicine = diseases[label].medicine
+			    Medicine = sickness.medicine
 			    LogMessage('Hospital: Looking for some '..Medicine..'(s)')
-			    FavorMod = diseases[label].favor
+			    FavorMod = sickness.favor
 			    LogMessage('Hospital: FavorMod is set to '..FavorMod)
-			    Label = string.upper(label)
+			    Label = string.upper(sickness.name)
 			    LogMessage('Hospital: UPPER LABEL is '..Label)
 			  elseif sickness == 0 and (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
 			  	Medicine = "Bandage"
@@ -157,7 +158,7 @@ function Run()
 				if Disease == false then -- special case HP LOSS
 					Costs = GetMaxHP("SickSim0") - GetHP("SickSim0")
 				else
-					Costs = diseases_GetTreatmentCost(Disease)
+					Costs = sickness.cost
 				end
 				
 				local NumOfMeds = 0
@@ -188,9 +189,7 @@ function Run()
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
 							if Disease ~= false then 
-								--local callCore = diseases[Disease].callback
-								--callCore("SickSim0",false)
-								diseases_giveSickness(Disease,"SickSim0",false)
+								Disease.infectSim("SickSim0",false)
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
 								  if Disease == sublist[i] then
@@ -252,7 +251,7 @@ function Run()
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 						if Disease ~= false then
-						  diseases_giveSickness(Disease,"SickSim0", false)
+							Disease.infectSim("SickSim0",false)
 						    if not list[Disease] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end

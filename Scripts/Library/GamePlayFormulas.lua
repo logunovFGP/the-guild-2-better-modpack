@@ -636,8 +636,8 @@ function CheckMoneyForTreatment(SimAlias)
 	local found = false
 
 	for i = 1,9 do
-		if GetImpactValue(SimAlias,diseases.list[i])==1 then
-			Costs = diseases_GetTreatmentCost(diseases.list[i])
+		if GetImpactValue(SimAlias,allDiseases[i].name)==1 then
+			Costs = allDiseases[i].cost
 			found = true
 			LogMessage("Cost of the treatment FOUND!")
 			break
@@ -905,8 +905,8 @@ end
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
 		for i = 1, 9 do 		
-			if GetImpactValue(Alias,diseases.list[i]) == 1 then
-				chr_IncrementInfectionCount(diseases.list[i].."Infected", "City")
+			if GetImpactValue(Alias,allDiseases[i].name) == 1 then
+				chr_IncrementInfectionCount(allDiseases[i].name.."Infected", "City")
 			end
 		end
 	end
@@ -915,8 +915,8 @@ end
 function DecreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
 		for i = 1, 9 do 		
-			if GetImpactValue(Alias,diseases.list[i]) == 1 then
-				chr_DecrementInfectionCount(diseases.list[i].."Infected", "City")
+			if GetImpactValue(Alias,allDiseases[i].name) == 1 then
+				chr_DecrementInfectionCount(allDiseases[i].name.."Infected", "City")
 			end
 		end
 	end
@@ -1041,7 +1041,7 @@ function CityCheckHospital(CityAlias, Disease, NeedOwner)
 	local result = false
 
 	for i = 1, 9 do 		
-		if Disease == diseases.list[i] then
+		if Disease == allDiseases[i].name then
 			if NeedOwer then 
 				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
 			else
@@ -1060,7 +1060,7 @@ function CalcIllnessHazard(SimAlias, Disease)
 	local Hazard = 0
 
 	for i = 1, 9 do
-		if Disease == diseases.list[i] then
+		if Disease == allDiseases[i].name then
 			if BaseHazard[i] > 0 then
 				Hazard = BaseHazard[i]
 				

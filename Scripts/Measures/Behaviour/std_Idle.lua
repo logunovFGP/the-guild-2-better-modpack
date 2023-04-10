@@ -293,27 +293,27 @@ function Run()
 		end
 		if CityLevel > 4 then
 			if SicknessChance == 1 then
-				diseases_giveSickness("Cold","",true,false)
+				Cold.infectSim("",true,false)
 			elseif SicknessChance == 2 then
-				diseases_giveSickness("Sprain","",true,false)
+				Sprain.infectSim("",true,false)
 			elseif SicknessChance == 6 then
-				diseases_giveSickness("Fracture","",true,false)
+				Fracture.infectSim("",true,false)
 			elseif SicknessChance == 7 then
-				diseases_giveSickness("Influenza","",true,false)
+				Influenza.infectSim("",true,false)
 			end
 		elseif CityLevel > 2 then
 			if SicknessChance < 6 then
-				diseases_giveSickness("Cold","",true,false)
+				Cold.infectSim("",true,false)
 			elseif SicknessChance < 9 then
-				diseases_giveSickness("Sprain","",true,false)
+				Sprain.infectSim("",true,false)
 			elseif SicknessChance < 11 then
-				diseases_giveSickness("Influenza","",true,false)
+				Influenza.infectSim("",true,false)
 			end
 		else
 			if SicknessChance < 10 then
-				diseases_giveSickness("Cold","",true,false)
+				Cold.infectSim("",true,false)
 			elseif SicknessChance < 15 then
-				diseases_giveSickness("Sprain","",true,false)
+				Sprain.infectSim("",true,false)
 			end
 		end
 		
@@ -409,11 +409,11 @@ function Worker(ActiveMovement)
 			else
 				f_MoveTo("", "WorkingPlace", GL_MOVESPEED_RUN)
 			end
-			local SicknessChance = Rand(100)
-			if SicknessChance == 1 then
-				diseases_giveSickness("Sprain","",true,false)
-			elseif SicknessChance == 2 then
-				diseases_giveSickness("Cold","",true,false)
+			local Rand = Rand(100)
+			if Rand == 1 then
+				Sprain.infectSim("",true,false)
+			elseif Rand == 2 then
+				Cold.infectSim("",true,false)
 			end
 
 			if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP("")/4)) then
