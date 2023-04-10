@@ -104,7 +104,7 @@ function Run()
 			
 			Sleep(1)
 			MeasureSetNotRestartable()
-			SetState("", STATE_DUEL, true) -- no measure cancel
+			SetState("", STATE_DUEL, true) -- no measure cancel!
 			
 			-- Dialog
 			MsgSay("SickSim0", "@L_MEDICUS_TREATMENT_PATIENT")
@@ -134,8 +134,8 @@ function Run()
 
 			if sickness ~= 0 then
 			  	LogMessage('Hospital: value label set to '..label)
-			    Disease = label
-			    LogMessage('Hospital: value Disease set to '..Disease)
+			    Disease = sickness
+			    LogMessage('Hospital: value Disease set to '..(Disease.name))
 			    Medicine = sickness.medicine
 			    LogMessage('Hospital: Looking for some '..Medicine..'(s)')
 			    FavorMod = sickness.favor
@@ -192,9 +192,9 @@ function Run()
 								Disease.infectSim("SickSim0",false)
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
-								  if Disease == sublist[i] then
+								  if Disease.name == sublist[i] then
 								  	ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								  	  if Disease == "Blackdeath" then
+								  	  if Disease.name == "Blackdeath" then
 								  	  	AddImpact("SickSim0","PlagueImmunity", 1, 120)
 								  	  end
 								  end 
@@ -252,7 +252,7 @@ function Run()
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 						if Disease ~= false then
 							Disease.infectSim("SickSim0",false)
-						    if not list[Disease] == nil then
+						    if not list[(Disease.name)] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end
 						else

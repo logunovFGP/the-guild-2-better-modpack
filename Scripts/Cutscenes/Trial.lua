@@ -15,7 +15,7 @@ function returnMembers()
 	end
 
   return list[2]
-end
+end --eed
 
 function Start()
 	-- get trial roles
@@ -52,52 +52,26 @@ function Start()
 	
 	local TrialCount = GetProperty("courtbuilding", "UpcomingTrials")
 
-	local debug = true
+	local debug = debugTrial
 
 	if debug then 
-		
-		local list = {"judge","accuser","accused","assessor1","assessor2"}
-		local global_list = {}
-		local OK   = 'hud/buttons/btn_Ok.tga'
 
-		for i = 1, 5 do 
-			if load[i] == OK then
-				LogMessage("TRIAL | Fortunately, our "..list[i].." will be attending the trial.")
-				global_list[i] = list[i]
-			else
-				LogMessage("TRIAL | Unfortunately, our "..list[i].." will be missing the trial...")
-				global_list[i] = nil
-			end
-		end
-
-		LogMessage("Global list:")
-
-		for i = 1, 5 do
-			if global_list[i] ~= nil then
-				LogMessage(i..": "..global_list[i])
-			else
-				LogMessage(i..": nil")
-			end
-		end 
+		trialData.debug()
 
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", math.mod(GetGametime(),24), 0, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=4, mintimeinfuture=6
 		CityGetRandomBuilding("Settlement",GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"CouncilBuilding")
 		GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos")
 		BuildingGetRoom("CouncilBuilding", "Judge", "Room")
 
-		local exit = {"judge","accuser","accused","assessor1","assessor2"}
 		local locations = {["judge"]="JudgeChairPos",["accuser"]="AccuserStandPos",["accused"]="AccusedStandPos",["assessor1"]="RightAssessorChairPos",["assessor2"]="LeftAssessorChairPos"}
 		LogMessage("Teleporting the usual trial participants to the Town Hall before sorting them out.")
 		for i = 1,5 do
-			SimBeamMeUp(exit[i], "destpos", false)
-			if global_list[i] ~= nil then 
-				SimBeamMeUp(global_list[i], "Room", false)
-				--SimBeamMeUp(global_list[i], locations[global_list[i]], false)
-				LogMessage("Our "..global_list[i].." was teleported to the Court Room.")
+			SimBeamMeUp(trialData.list[i], "destpos", false)
+			if trialData.Attending[i] ~= nil then 
+				SimBeamMeUp(trialData.Attending[i], "Room", false)
+				LogMessage("Our "..trialData.Attending[i].." was teleported to the Court Room.")
 			end
 		end
-
-		global_list = {}
 
 	-- No trials ahead, take the first slot
 	elseif TrialCount == 0 then
@@ -406,8 +380,6 @@ function Go()
 		Sleep(time - 7)
 		CarryObject("judge", "", false)
 		Sleep(0.5)
---		PlayAnimationNoWait("judge", "talk_sit_short")
---		MsgSay("judge", "@L_LAWSUIT_3_INTRO_START")
 	else
 		-- assessor starts
 		MsgSay("assessor1","@L_LAWSUIT_3_INTRO_START")
@@ -452,11 +424,10 @@ function Go()
 
 	--accused has immunity
 	if GetImpactValue("accused","HaveImmunity") == 1 and GetImpactValue("accused","HasRepealedImmunity") < 1 then
-		feedback_MessagePolitics("accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("accused","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
+		local list = {"accuser","accused","judge","assessor1","assessor2"}
+		for i = 1, 5 do
+			feedback_MessagePolitics(list[i],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
+		end
 		BuildingFindSimByProperty("courtbuilding","BUILDING_NPC", 2,"guard")
 		MsgSay("guard","@L_LAWSUIT_1_INSTALL_USHER_IMMUNITY_+0", GetID("accused"))
 		MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_CLOSE_+0")
@@ -552,7 +523,7 @@ function Go()
 		if (RawPenalty <16) then
 			-- give the accused a chance to surrender himself or pay a fee
 			CreateCutscene("queries", "myquery")
-			LogMessage("Trial: Cutscene created: Outlaw my decide to surrender or pay a fee")
+			LogMessage("Trial: Cutscene created: Outlaw may decide to surrender or pay a fee")
 			CopyAliasToCutscene("accused", "myquery", "Sim")
 			CopyAliasToCutscene("accuser", "myquery", "Accuser")
 			CopyAliasToCutscene("assessor1", "myquery", "Assessor1")
@@ -1248,8 +1219,8 @@ function Go()
 	end
 	EndCutscene("")
 
-	if debug then
-		global_list = {}
+	if debugTrial then
+		ms_debug_trials_triggerDebug()
 	end
 end
 
@@ -1497,7 +1468,7 @@ function UpdatePanelTrial(time)
 	local Assessor2Pos = trial_GetSubjectiveSentence("assessor2")
 	local TotalEV = GetData("TotalEvidenceValue")
 	local AccuserSentence = GetData("AccuserSentence")
-	LogMessage("TRIAL | 1453. AccuserSentence is: "..AccuserSentence)
+	LogMessage("TRIAL | 1453. AccuserSentence is: "..(AccuserSentence or '<void>'))
 	if AccuserSentence == nil then
 		AccuserSentence = 0
 	--elseif AccuserSentence == "C" then 
@@ -1801,7 +1772,7 @@ end
 
 function SimSitDown(LocatorName)
 	if GetLocatorByName("courtbuilding", LocatorName, LocatorName) then
-		SimBeamMeUp("", LocatorName, false)
+		if debugTrial then SimBeamMeUp("", LocatorName, false) end
 		f_BeginUseLocator("",LocatorName, GL_STANCE_SIT, true)
 	end
 
@@ -1810,7 +1781,7 @@ end
 
 function SimStandAt(LocatorName)
 	if(GetLocatorByName("courtbuilding", LocatorName, LocatorName)) then
-		SimBeamMeUp("", LocatorName, false)
+		if debugTrial then SimBeamMeUp("", LocatorName, false) end
 		f_MoveTo("",LocatorName)
 	end
 	CutsceneSendEventTrigger("owner", "Reached")
