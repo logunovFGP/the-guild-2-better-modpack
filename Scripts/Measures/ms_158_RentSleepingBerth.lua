@@ -14,20 +14,26 @@ function Run()
 	
 	-- Not sleepy?
 	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "VeryGoodDream") > 0 or GetImpactValue("", "BadDream") >0 then
-		MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
+		if IsPartyMember("") then
+			MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+2", GetID(""))
+		end
 		return
 	end
 	
 	-- check both sleeping berths
-	if not GetFreeLocatorByName("Tavern", "Berth", 1, 2, "SleepingBerth") then	
-		MsgBoxNoWait("", "Tavern", "@L_GENERAL_ERROR_HEAD_+0", "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+1", GetID("Tavern"))
+	if not GetFreeLocatorByName("Tavern", "Berth", 1, 2, "SleepingBerth") then
+		if IsPartyMember("") then
+			MsgBoxNoWait("", "Tavern", "@L_GENERAL_ERROR_HEAD_+0", "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+1", GetID("Tavern"))
+		end
 		return
 	end
 	
 	-- spend money if not same dynasty
 	if GetDynastyID("") ~= GetDynastyID("Tavern") then
 		if not chr_SpendMoney("", Price, "CostSocial") then
-			MsgBoxNoWait("", "Tavern", "@L_GENERAL_ERROR_HEAD_+0",  "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+0", Price)
+			if IsPartyMember("") then
+				MsgBoxNoWait("", "Tavern", "@L_GENERAL_ERROR_HEAD_+0",  "@L_TAVERN_158_RENTSLEEPINGBERTH_FAILURES_+0", Price)
+			end
 			return
 		end
 
