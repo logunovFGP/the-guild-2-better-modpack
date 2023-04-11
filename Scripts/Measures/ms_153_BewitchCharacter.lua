@@ -99,8 +99,18 @@ function Run()
 	local FavorLoss = -5
 	
 	-- Courting related
+	local Class = SimGetClass("Destination")
+	if Class == 0 then
+		if HasProperty("Destination", "FakeClass") then
+			Class = GetProperty("Destination", "FakeClass")
+		else
+			Class = Rand(4) + 1
+			SetProperty("Destination", "FakeClass", Class)
+		end
+	end
+	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
-	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
 	
 	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
 	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
@@ -239,8 +249,9 @@ function Run()
 			
 			-- Add the archieved progress
 			SetMeasureRepeat(TimeUntilRepeat)
+			Sleep(0.3)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			AddImpact("Destination", "ReceivedBewitch", 1, 8)
+			AddImpact("Destination", "ReceivedBewitch", 1, 6)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end

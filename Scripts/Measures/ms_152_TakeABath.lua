@@ -22,11 +22,21 @@ function Run()
 	local MinimumFavor = GL_BATH_MINFAVOR + TitleDifference - (CharismaSkill * 2)
 	local FavorWon = 15 + (CharismaSkill * 0.5)+ Rand(6)
 	local FavorLoss = -10
+
+		-- Courting related
+	local Class = SimGetClass("Destination")
+	if Class == 0 then
+		if HasProperty("Destination", "FakeClass") then
+			Class = GetProperty("Destination", "FakeClass")
+		else
+			Class = Rand(4) + 1
+			SetProperty("Destination", "FakeClass", Class)
+		end
+	end
 	
-	-- Courting related
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
-	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
-	
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class)
+
 	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
 	FavorWon = FavorWon + FavorWon * (FlirtBonus * 0.01)	
 	CourtingProgress = CourtingProgress * (FlirtBonus * 0.01)
@@ -277,11 +287,12 @@ function Run()
 					
 			end
 			
-			-- Add the achieved progress
-			chr_ModifyFavor("Destination", "", ModifyFavor)
-			AddImpact("Destination", "ReceivedBath", 1, 12)
-			gameplayformulas_CourtingProgress("", CourtingProgress) 
 			SetMeasureRepeat(TimeUntilRepeat)
+			-- Add the achieved progress
+			Sleep(0.3)
+			chr_ModifyFavor("Destination", "", ModifyFavor)
+			AddImpact("Destination", "ReceivedBath", 1, 6)
+			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end
 	
