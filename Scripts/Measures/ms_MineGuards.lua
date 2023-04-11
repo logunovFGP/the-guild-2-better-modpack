@@ -39,6 +39,7 @@ function Run()
 			StopMeasure()
 		else			
 			local PosX, PosY, PosZ = GetWorldPositionXYZ("Mine")
+			SetProperty("Guard"..i, "ProtectMine", GetID("Mine"))
 			SetProperty("Guard"..i, "DestX", PosX+(400-Rand(600)))
 			SetProperty("Guard"..i, "DestZ", PosZ+(200-Rand(400)))
 			SetProperty("Guard"..i, "CurMeasID", CurMeasID)

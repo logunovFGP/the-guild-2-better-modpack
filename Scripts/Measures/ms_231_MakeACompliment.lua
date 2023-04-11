@@ -37,8 +37,18 @@ function Run()
 	local ModifyFavor = 0
 	
 	-- Courting related
+	local Class = SimGetClass("Destination")
+	if Class == 0 then
+		if HasProperty("Destination", "FakeClass") then
+			Class = GetProperty("Destination", "FakeClass")
+		else
+			Class = Rand(4) + 1
+			SetProperty("Destination", "FakeClass", Class)
+		end
+	end
+	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
-	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
 	
 	local	time1 = 0
 	
@@ -117,9 +127,9 @@ function Run()
 				DestroyCutscene("cutscene")
 			end
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			Sleep(0.2)
+			Sleep(0.3)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)
-			AddImpact("Destination", "ReceivedCompliment", 1, 4)
+			AddImpact("Destination", "ReceivedCompliment", 1, 3)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end			
 	end

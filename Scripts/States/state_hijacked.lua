@@ -23,9 +23,9 @@ function Run()
 	xp_HijackCharacter("BuildingOwner", SimGetLevel(""))
 	
 	
-	local Time = mdata_GetDuration(10920) --ms_HijackCharacter
-	if GetImpactValue("", "Escapee")==1 then
-		Time = Rand(4)+4
+	local Time = 24
+	if GetImpactValue("", "InnocentI") >= 1 and Rand(100) < 75 then
+		Time = 12
 	end
 	
 	SimSetBehavior("", "Hijacked")
@@ -45,7 +45,6 @@ function Run()
 		if HasProperty("","ForceFree") then
 			break
 		end
-		
 	end
 	
 	

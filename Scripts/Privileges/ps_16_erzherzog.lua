@@ -26,7 +26,7 @@ function TakeTitle()
 	
 	local GenderLabel = 1
 	if SimGetGender("Boss") == GL_GENDER_FEMALE then
-		GenderLabel = 0
+		GenderLabel = 2
 		BodyLabel = "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_NEW_FEMALE_BODY_+16"
 	end
 	

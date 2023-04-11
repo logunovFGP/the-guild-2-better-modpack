@@ -72,9 +72,8 @@ function Run()
 	local FavorWon = 10
 	local ModifyFavor = 0
 	
-	-- Courting related
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
-	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination") 
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", CourtingClass) 
 	local CurrentProgress = 0
 	
 	-- for court lovers you might wanna do Janes Ring, so get the love progress
@@ -97,7 +96,7 @@ function Run()
 		end
 		
 		local EnoughProgress = false
-		if CurrentProgress >= (80 - EmpathySkill) then
+		if CurrentProgress >= (80 - (EmpathySkill * 2)) then
 			EnoughProgress = true
 		end
 		local RingLabel = "@L_MEASURE_MAKEAPRESENT_JANESRING_+0"
@@ -553,15 +552,15 @@ function Run()
 	elseif Result == 2 then
 		TheItem = PresC
 		GoodPresent = CheckPresC
-		CourtingProgress = CourtingProgress * 1.5
+		CourtingProgress = CourtingProgress * 2
 	elseif Result == 3 then
 		TheItem = PresD
 		GoodPresent = CheckPresD
-		CourtingProgress = CourtingProgress * 1.5
+		CourtingProgress = CourtingProgress * 2
 	elseif Result == 4 then
 		TheItem = "JanesRing"
-		if CurrentProgress >= (80 - EmpathySkill) then 
-			CourtingProgress = 19 + 1 * EmpathySkill
+		if CurrentProgress >= (80 - (EmpathySkill * 2)) then 
+			CourtingProgress = 19 + 2 * EmpathySkill
 		else
 			CourtingProgress = -3
 		end
@@ -728,8 +727,6 @@ function Run()
 				local DestinationAnimationLength = PlayAnimationNoWait("Destination", "shake_head")
 				Sleep(DestinationAnimationLength * 0.4)
 
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 
 			else
@@ -754,10 +751,7 @@ function Run()
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
 
-				feedback_OverheadCourtProgress("Destination", CourtingProgress)
-
 				MsgSay("Destination", talk_AnswerCourtingMeasure("MAKE_A_PRESENT", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
-
 			end
 
 			-- Add the archieved progress
@@ -769,8 +763,10 @@ function Run()
 				ModifyHP("", -30, true, 10)
 				Sleep(0.1)
 			end
+			feedback_OverheadCourtProgress("Destination", CourtingProgress)
+			Sleep(0.3)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			AddImpact("Destination", "ReceivedPresent", 1, 8)
+			AddImpact("Destination", "ReceivedPresent", 1, 4)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end

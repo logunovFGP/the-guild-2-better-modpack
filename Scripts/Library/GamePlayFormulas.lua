@@ -798,10 +798,10 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class) or 1
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
 	
+	LogMessage(GetName(SimAlias).." wants to court "..GetName(Destination).." with Class "..Class)
+	
 	if CourtingDiff < 1 then
-		if CourtingDiff < 0.25 then
-			CourtingDiff = 0.25
-		elseif CourtingDiff < 0.5 then
+		if CourtingDiff < 0.5 then
 			CourtingDiff = 0.5
 		else
 			CourtingDiff = 0.75
@@ -824,8 +824,23 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local SkillMod = GetSkillValue(SimAlias, Skill)
 	local TitleDiff = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
+	local FavorBonus = 0
+	local Favor = GetFavorToSim(Destination, SimAlias)
 	
-	local Progress = math.floor((((BaseValue*SkillMod + Rand(6) - Rand(6)) / CourtingDiff) + TitleDiff) * VariationMod)
+	if Favor > 50 then
+		FavorBonus = math.ceil(Favor/10)
+	end
+	
+	LogMessage("FavorBonus is "..FavorBonus)
+	LogMessage("BaseValue is "..BaseValue)
+	LogMessage("SkillMod is "..SkillMod)
+	local RandomVal = Rand(6) - Rand(6)
+	LogMessage("RandomVal is "..RandomVal)
+	LogMessage("TitleDiff is "..TitleDiff)
+	LogMessage("CourtingDiff is "..CourtingDiff)
+	LogMessage("VariationMod is "..VariationMod)
+	
+	local Progress = math.floor((((BaseValue * SkillMod + RandomVal) / CourtingDiff) + FavorBonus + TitleDiff) * VariationMod)
 	return Progress
 end
 
@@ -833,18 +848,30 @@ function GetCourtingMeasureValue(MeasureID, Class)
 	
 	-- get effectiveness of the courting measure based on destination class (or fake class for unemployed)
 	local MeasureData = {
-					[460] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 0.5, GL_CLASS_NPC = 0}, -- StartDialog (talk)
-					[530] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0},  -- Flirt 
-					[540] = { GL_CLASS_PATRON = 3, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 3, GL_CLASS_NPC = 0}, -- Hug
-					[570] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 2, GL_CLASS_CHISELER = 4, GL_CLASS_NPC = 0}, -- Kiss
-					[1520] = { GL_CLASS_PATRON = 5, GL_CLASS_ARTISAN = 4, GL_CLASS_SCHOLAR = 2.5, GL_CLASS_CHISELER = 5, GL_CLASS_NPC = 0}, -- Bathing
-					[1530] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 5, GL_CLASS_CHISELER = 2.5, GL_CLASS_NPC = 0}, -- Bewitching (sweat talking)
-					[2300] = { GL_CLASS_PATRON = 2, GL_CLASS_ARTISAN = 1.5, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1.5, GL_CLASS_NPC = 0}, -- Make a Present
-					[2310] = { GL_CLASS_PATRON = 1, GL_CLASS_ARTISAN = 2, GL_CLASS_SCHOLAR = 3, GL_CLASS_CHISELER = 1, GL_CLASS_NPC = 0}, -- Compliment
-					[2320] = { GL_CLASS_PATRON = 4, GL_CLASS_ARTISAN = 3, GL_CLASS_SCHOLAR = 4, GL_CLASS_CHISELER = 2, GL_CLASS_NPC = 0} -- Dancing
+					[460] = { patron = 1, craftsman = 1.5, scholar = 2, rogue = 0.5, npc = 0 }, -- StartDialog (talk)
+					[530] = { patron = 2, craftsman = 2, scholar = 2, rogue = 2, npc = 0 },  -- Flirt 
+					[540] = { patron = 3, craftsman = 3, scholar = 2, rogue = 3, npc = 0 }, -- Hug
+					[570] = { patron = 4, craftsman = 3, scholar = 2, rogue = 4, npc = 0 }, -- Kiss
+					[1520] = { patron = 5, craftsman = 4, scholar = 2.5, rogue = 5, npc = 0 }, -- Bathing
+					[1530] = { patron = 4, craftsman = 3, scholar = 5, rogue = 2.5, npc = 0 }, -- Bewitching (sweat talking)
+					[2300] = { patron = 2, craftsman = 1.5, scholar = 3, rogue = 1.5, npc = 0 }, -- Make a Present
+					[2310] = { patron = 1, craftsman = 2, scholar = 3, rogue = 1, npc = 0 }, -- Compliment
+					[2320] = { patron = 4, craftsman = 3, scholar = 4, rogue = 2, npc = 0 } -- Dancing
 					}
+	local Value = 0
 	
-	local Value = MeasureData[MeasureID].Class or 0
+	if Class == GL_CLASS_PATRON then
+		Value = MeasureData[MeasureID].patron
+	elseif Class == GL_CLASS_ARTISAN then 
+		Value = MeasureData[MeasureID].craftsman
+	elseif Class == GL_CLASS_SCHOLAR then
+		Value = MeasureData[MeasureID].scholar
+	elseif Class == GL_CLASS_CHISELER then
+		Value = MeasureData[MeasureID].rogue
+	else
+		Value = MeasureData[MeasureID].npc
+	end
+
 	return Value
 end
 

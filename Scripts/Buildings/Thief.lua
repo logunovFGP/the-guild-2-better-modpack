@@ -191,8 +191,7 @@ function FindHijackVictim(BldAlias, RetAlias)
 		return false
 	end
 	
-	if DynastyGetDiplomacyState("SIM", "HIJ_VICTIM") > DIP_NEUTRAL then
-	-- [string "scripts/buildings/thief.lua"]:194 no alias object with the name SIM found at c-call DynastyGetDiplomacyState
+	if DynastyGetDiplomacyState(BldAlias, "HIJ_VICTIM") > DIP_NEUTRAL then
 		return false
 	end
 	

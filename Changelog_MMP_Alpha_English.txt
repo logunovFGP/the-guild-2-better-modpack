@@ -37,6 +37,7 @@ Fixes:
 - Dynasties will no longer die out within the first round without reason.
 - One of the tables in the tavern was never used by customers.
 - If you broke someone's bones, the evidence would show the wrong victim.
+- You could lure mine guards away by cancelling hostile actions - they would leave the mine and you could continue to attack the mine.
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.
@@ -52,4 +53,6 @@ Fixes (Modpack):
 - Dying employees sent a message which sometimes showed the wrong reason they died.
 - Random illnesses are back
 - If you got a disease the message didn't show the name of the disease.
+- Embezzling public money always resulted in 0 coins.
+- The Divehouse had a wrong upgrade.
 
