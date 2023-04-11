@@ -42,14 +42,8 @@ function Run()
 	end
 	
 	-- ability bonus
-	local NewTime = Time
-	if (GetImpactValue("", "Escapee")==1) then
-		NewTime = Rand(6)+6
-	elseif (GetImpactValue("", "Escapee")==2) then
-		NewTime = Rand(3)+3
-	end
-	if NewTime < Time then
-		Time = NewTime
+	if GetImpactValue("", "InnocentI") >= 1 and Rand(100) < 75 then
+		Time = 12
 	end
 	
 	SimSetBehavior("Owner", "Prison")

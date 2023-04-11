@@ -29,13 +29,6 @@ function Run()
 		end
 	end
 	
-	if GetImpactValue("", "Escapee") then
-		local NewTime = Rand(6)+6
-		if NewTime < Time then
-			Time = NewTime
-		end
-	end
-	
 	CommitAction("pillory","","")
 
 	feedback_MessageCharacter("",

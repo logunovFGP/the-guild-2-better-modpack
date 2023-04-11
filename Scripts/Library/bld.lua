@@ -825,6 +825,10 @@ function CheckCarts(BldAlias)
 	if CartCount > 2 and BuildingGetCart(BldAlias, 2, "CartAlias") then
 		bld_RemoveCart(BldAlias, "CartAlias") -- remove third cart
 	end
+	if GL_BUILDING_TYPE_ROBBER == BuildingGetType(BldAlias) then
+		-- no state_autocart for robbers
+		return
+	end
 	
 	CartCount = BuildingGetCartCount(BldAlias)
 	for i=0, CartCount - 1 do

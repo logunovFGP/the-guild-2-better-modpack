@@ -191,7 +191,7 @@ function FindHijackVictim(BldAlias, RetAlias)
 		return false
 	end
 	
-	if DynastyGetDiplomacyState("SIM", "HIJ_VICTIM") > DIP_NEUTRAL then
+	if DynastyGetDiplomacyState(BldAlias, "HIJ_VICTIM") > DIP_NEUTRAL then
 		return false
 	end
 	

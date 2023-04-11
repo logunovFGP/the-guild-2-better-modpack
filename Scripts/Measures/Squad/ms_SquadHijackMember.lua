@@ -222,13 +222,13 @@ end
 
 function CleanUp()
 	MoveSetActivity("")
-	if GetID("")==GetProperty("Victim","LeaderID") then
+	if AliasExists("Victim") and  GetID("")==GetProperty("Victim","LeaderID") then
 		RemoveProperty("Victim","LeaderID")
 	end
 	
 	if HasData("VictimHidden") then	
 		if AliasExists("Base") then
-			if GetState("Victim",STATE_UNCONSCIOUS) then
+			if AliasExists("Victim") and GetState("Victim",STATE_UNCONSCIOUS) then
 				if GetInsideBuildingID("")~=GetID("Base") then
 					GetPosition("","LayDownPos")
 					SetState("Victim",STATE_DUEL,false)
@@ -238,9 +238,10 @@ function CleanUp()
 				end
 			end
 		end
-		
-		RemoveImpact("Victim", "Hidden")
-		SetInvisible("Victim", false) 
+		if AliasExists("Victim") then
+			RemoveImpact("Victim", "Hidden")
+			SetInvisible("Victim", false) 
+		end
 	end
 	
 	if HasData("DontLeave") then
