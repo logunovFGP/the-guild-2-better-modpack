@@ -26,14 +26,6 @@ function Run()
 		
 		CarryObject("", "Handheld_Device/ANIM_Shield3.nif", true)
 		
-		-- go back to mine if too far away
-		FindNearestBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MINE, -1, false, "Mine")
-		local Distance = GetDistance("", "Mine")
-		
-		if Distance > 1500 then
-			f_MoveToNoWait("", "Mine", GL_MOVESPEED_WALK, (500+Rand(300)))
-		end
-		
 		--Detect enemy and fighting Sims
 		local SimFilter = "__F((Object.GetObjectsByRadius(Sim)==1500)AND(Object.IsHostile())AND(Object.GetState(fighting))AND NOT(Object.CanBeControlled())AND NOT(Object.BelongsToMe()))"
 		local NumOfSims = Find("", SimFilter, "HostileSim", -1) 
@@ -73,6 +65,20 @@ function Run()
 		-- Fight until the fight is over even if the measure is over
 		while GetState("", STATE_FIGHTING) do
 			Sleep(20)
+		end
+		
+		-- go back to mine if too far away
+		local MineID = GetProperty("", "ProtectMine") or 0
+		if MineID == 0 then
+			FindNearestBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MINE, -1, false, "Mine")
+		else
+			GetAliasByID(MineID, "Mine")
+		end
+		
+		local Distance = GetDistance("", "Mine")
+		
+		if Distance > 1500 then
+			f_MoveToNoWait("", "Mine", GL_MOVESPEED_WALK, (500+Rand(300)))
 		end
 		
 		NextAnim = Rand(3)
