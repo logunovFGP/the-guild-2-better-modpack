@@ -164,11 +164,11 @@ function MessageOtherDynastiesTitle(Owner, NewTitle)
 	local Alias
 	local DynCount = ScenarioGetObjects("Dynasty", 100, "Dynasties")
 	
-	local GenderLabel = -1
+	local GenderLabel = 1
 	if SimGetGender(Owner) == GL_GENDER_FEMALE then
-		GenderLabel = 0
+		GenderLabel = 2
 	end
-	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..((NewTitle-1) * 2) - GenderLabel
+	local TitleLabel = "_CHARACTERS_3_TITLES_NAME_+"..(NewTitle * 2) - GenderLabel
 	
 	
 	for i=0, DynCount-1 do
@@ -177,9 +177,9 @@ function MessageOtherDynastiesTitle(Owner, NewTitle)
 			-- check for diplomacy
 			local Diplo = DynastyGetDiplomacyState(Alias, Owner)
 			if Diplo == DIP_FOE then
-				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_ENEMY_+0", GetID(Owner), TitleLabel)
+				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+2", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_ENEMY_+0", GetID(Owner), TitleLabel)
 			elseif Diplo == DIP_ALLIANCE then
-				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_BLOODBAND_+0", GetID(Owner), TitleLabel)
+				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+1", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_BLOODBAND_+0", GetID(Owner), TitleLabel)
 			else -- neutral
 				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_NEUTRAL_+0", GetID(Owner), TitleLabel)
 			end			
