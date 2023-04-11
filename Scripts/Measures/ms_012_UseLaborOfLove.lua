@@ -112,7 +112,7 @@ function Run()
 		end
 	elseif(Idx == 4) then
 		-- Influenza infection
-	  	Influenza.infectSim("")
+	  	Disease.infectSim("","Influenza")
 	elseif(Idx == 5)  then
 	 	-- decreaset movespeed
 	  	AddImpact("", "MoveSpeed", 0.8, 3)

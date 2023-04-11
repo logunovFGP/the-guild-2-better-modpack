@@ -109,34 +109,34 @@ function InfectPartyMember()
 		if ScenarioGetDifficulty() > 2 then -- hard settings?
 		
 			if SickChoice < 4 then -- 30%
-				Cold.infectSim("CurrentMember") -- you got lucky
+				Disease.infectSim("CurrentMember","Cold") -- you got lucky
 				krankH = 2
 			elseif SickChoice < 6 then --20%
-				Sprain.infectSim("CurrentMember") -- still lucky
+				Disease.infectSim("CurrentMember","Sprain") -- still lucky
 				krankH = 1
 			elseif SickChoice < 8 then --20%
-				Influenza.infectSim("CurrentMember") -- influenza? not nice
+				Disease.infectSim("CurrentMember","Influenza") -- influenza? not nice
 				krankH = 3
 			elseif SickChoice < 9 then --10%
-				Pox.infectSim("CurrentMember") -- damn!
+				Disease.infectSim("CurrentMember","Pox") -- damn!
 				SetState("CurrentMember", STATE_CONTAMINATED, true)
 				krankH = 4
 			elseif SickChoice < 10 then --10%	
-				Fracture.infectSim("CurrentMember") -- that hurts
+				Disease.infectSim("CurrentMember","Fracture") -- that hurts
 				krankH = 5
 			else -- 10%
-				Caries.infectSim("CurrentMember") -- c'mon!
+				Disease.infectSim("CurrentMember","Caries") -- c'mon!
 				krankH = 6
 			end
 		else -- low settings
 			if SickChoice < 6 then -- 50%
-				Cold.infectSim("CurrentMember") -- you got lucky
+				Disease.infectSim("CurrentMember","Cold") -- you got lucky
 				krankH = 2
 			elseif SickChoice < 9 then --40%
-				Sprain.infectSim("CurrentMember") -- still lucky
+				Disease.infectSim("CurrentMember","Sprain") -- still lucky
 				krankH = 1
 			else -- 10%
-				Influenza.infectSim("CurrentMember") -- influenza? not nice
+				Disease.infectSim("CurrentMember","Influenza") -- influenza? not nice
 				krankH = 3
 			end
 		end

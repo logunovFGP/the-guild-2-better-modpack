@@ -137,44 +137,44 @@ function InfectionEvent(Target)
 	
 	if MyIllnessCount > 0 then
 		local RandomIllness = Rand(MyIllnessCount) + 1
-		local Disease = MyIllnessList[RandomIllness]
+		local Illness = MyIllnessList[RandomIllness]
 		local Hazard = 0
 		local Infected = false
-		Hazard = gameplayformulas_CalcIllnessHazard(Target, Disease)
+		Hazard = gameplayformulas_CalcIllnessHazard(Target, Illness)
 		
-		if Disease == "Cold" then
+		if Illness == "Cold" then
 			if Hazard > Rand(100) then
-				Cold.infectSim(Target)
+				Disease.infectSim(Target,"Cold")
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Disease)
+				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
-		elseif Disease == "Influenza" then
+		elseif Illness == "Influenza" then
 			if Hazard > Rand(100) then
-				Influenza.infectSim(Target)
+				Disease.infectSim(Target,"Influenza")
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Disease)
+				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
-		elseif Disease == "Pneumonia" then
+		elseif Illness == "Pneumonia" then
 			if Hazard > Rand(100) then
-				Influenza.infectSim(Target)
+				Disease.infectSim(Target,"Influenza")
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Disease)
+				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
-		elseif Disease == "Pox" then
+		elseif Illness == "Pox" then
 			if Hazard > Rand(100) then
-				Pox.infectSim(Target)
+				Disease.infectSim(Target,"Pox")
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Disease)
+				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
-		elseif Disease == "Blackdeath" then
+		elseif Illness == "Blackdeath" then
 			if not HasState(Target, "BlackdeathImmunity") then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("HomeTown", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then
 					if Hazard > Rand(100) then
-						Blackdeath.infectSim(Target)
+						Disease.infectSim(Target,"Blackdeath")
 						Infected = true
-						LogMessage(GetName(Target).." received random illness "..Disease)
+						LogMessage(GetName(Target).." received random illness "..Illness)
 					end
 				end
 			end

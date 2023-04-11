@@ -115,11 +115,11 @@ function BuildingImpacts()
 					if CheckSkill("Sim", 1, 4) then
 						if IsDynastySim("Sim") then
 							if not (GetImpactValue("Sim","Cold") == 1) then
-								Cold.infectSim("Sim")
+								Disease.infectSim("Sim","Cold")
 							end
 						else
 							if not GetState("Sim", STATE_SICK) then
-								Influenza.infectSim("Sim")
+								Disease.infectSim("Sim","Influenza")
 							end
 						end		 
 					end
@@ -134,11 +134,11 @@ function BuildingImpacts()
 					if CheckSkill("Sim", 1, 4) then
 						if IsDynastySim("Sim") then
 							if not (GetImpactValue("Sim", "Cold") == 1) then
-								Cold.infectSim("Sim")
+								Disease.infectSim("Sim","Cold")
 							end
 						else
 							if not GetState("Sim", STATE_SICK) then
-								Influenza.infectSim("Sim")
+								Disease.infectSim("Sim","Influenza")
 							end
 						end		 
 					end

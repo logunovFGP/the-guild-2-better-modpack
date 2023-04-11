@@ -293,27 +293,27 @@ function Run()
 		end
 		if CityLevel > 4 then
 			if SicknessChance == 1 then
-				Cold.infectSim("")
+				Disease.infectSim("","Cold")
 			elseif SicknessChance == 2 then
-				Sprain.infectSim("")
+				Disease.infectSim("","Sprain")
 			elseif SicknessChance == 6 then
 				Fracture.infectSim("")
 			elseif SicknessChance == 7 then
-				Influenza.infectSim("")
+				Disease.infectSim("","Influenza")
 			end
 		elseif CityLevel > 2 then
 			if SicknessChance < 6 then
-				Cold.infectSim("")
+				Disease.infectSim("","Cold")
 			elseif SicknessChance < 9 then
-				Sprain.infectSim("")
+				Disease.infectSim("","Sprain")
 			elseif SicknessChance < 11 then
-				Influenza.infectSim("")
+				Disease.infectSim("","Influenza")
 			end
 		else
 			if SicknessChance < 10 then
-				Cold.infectSim("")
+				Disease.infectSim("","Cold")
 			elseif SicknessChance < 15 then
-				Sprain.infectSim("")
+				Disease.infectSim("","Sprain")
 			end
 		end
 		
@@ -411,9 +411,9 @@ function Worker(ActiveMovement)
 			end
 			local Rand = Rand(100)
 			if Rand == 1 then
-				Sprain.infectSim("")
+				Disease.infectSim("","Sprain")
 			elseif Rand == 2 then
-				Cold.infectSim("")
+				Disease.infectSim("","Cold")
 			end
 
 			if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP("")/4)) then

@@ -43,7 +43,6 @@ skills =
 }
 
 diseases = {}
-allDiseases = {}
 
 local newDisease = function(name, medicine, favor, cost, duration, impacts1, impacts2, callback)
     local self = {
@@ -114,7 +113,25 @@ diseases.list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blac
 
 
 -- Suggestion ToM: only expose a single table as global variable
-Disease = {}
+
+Disease = 
+{
+-- inserting functions directly within Disease causes the game to crash on boot.
+}
+
+Disease.infectSim = 
+	function(ObjectAlias,Class)
+		local Result = Disease[Class]
+    LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " is suffering from: " .. Result:getName())
+    diseases_giveSickness(Result,ObjectAlias)
+  end
+
+Disease.cureSim = 
+  function(ObjectAlias,Class)
+  	local Result = Disease[Class]
+    diseases_removeSickness(Result,ObjectAlias)
+  end
+
 Disease.Sprain       = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,"134",MoveSetActivity)
 Disease.Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,"0123456789",nil)
 Disease.Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,-3,"0123456789",nil)
@@ -126,11 +143,11 @@ Disease.Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,60
 Disease.Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,-3,"26",nil)
 DiseaseNames = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
 
+--attempt to index local `Result' (a nil value)
+
 --- This will return an iterator over all diseases.
 -- Example: 
--- for k, v in diseases_GetDiseaseIterator() do
---		LogMessage(k .. " = " .. v.getName() .. v.getMedicine()) -- 1 = SprainBandage
--- end
+
 function GetDiseaseIterator()
 	return diseases_DiseaseIterator, Disease, 0
 end
@@ -163,7 +180,7 @@ function removeSickness(Illness,ObjectAlias)
   	diseases_ImpactManager(false, ObjectAlias, Illness:getName(), 0)
     diseases_NoTime(ObjectAlias, Illness:getName(), 0, false)
 
-  	if not Illness:getName() == "BurnWound" then
+  	if Illness:getName() ~= "BurnWound" then
 
   	  local new_duration = Illness.getDuration()
   	  if not Illness:getName() == "Pox" then
@@ -173,8 +190,8 @@ function removeSickness(Illness,ObjectAlias)
   	  end
 
   	  for i = 1,length do
-  	  	local skill = skills[string.sub(Illness.impacts2,i,i)]
-	    	AddImpact(ObjectAlias, skill, math.abs(modifier), new_duration)
+	  	  local skill = skills[string.sub(Illness.impacts2,i,i)]
+		    AddImpact(ObjectAlias, skill, -modifier, new_duration)
   	  end
 
     end
@@ -190,8 +207,10 @@ function removeSickness(Illness,ObjectAlias)
 end
 
 function removeAllSickness(ObjectAlias)
-	for i = 1,9 do
-		allDiseases[i].cureSim(ObjectAlias)
+	for k, v in diseases_GetDiseaseIterator() do		
+		if GetImpactValue(ObjectAlias, v.getName()) == 1 then
+			Disease.cureSim(ObjectAlias,v.getName())
+		end		
 	end
 end
 

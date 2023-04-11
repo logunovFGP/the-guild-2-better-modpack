@@ -46,13 +46,13 @@ end
 		-- get the correct illness
 		
 		if Disease == "Cold" then
-			Cold.infectSim("")
+			Disease.infectSim("","Cold")
 		elseif Disease == "Influenza" then
-			Influenza.infectSim("")
+			Disease.infectSim("","Influenza")
 		elseif Disease == "Pneumonia" then
-			Influenza.infectSim("")
+			Disease.infectSim("","Influenza")
 		elseif Disease == "Pox" then
-			Pox.infectSim("")
+			Disease.infectSim("","Pox")
 		elseif Disease == "Blackdeath" then
 			if not HasState("", "BlackdeathImmunity") then
 				local CurrentRound = GetRound()

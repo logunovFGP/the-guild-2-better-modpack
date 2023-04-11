@@ -102,7 +102,7 @@ function MoveHome()
 		MoveSetActivity("","unconscious")
 		Sleep(10)
 		if Rand(100)>97 then
-			Sprain.infectSim("")
+			Disease.infectSim("","Sprain")
 		end
 		MoveSetActivity("")
 		Sleep(9)

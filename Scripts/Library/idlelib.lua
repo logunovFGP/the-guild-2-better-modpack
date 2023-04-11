@@ -634,7 +634,7 @@ function CollectWater()
 			Sleep(2)
 			if (GetImpactValue("Destination","polluted")>0) then
 				if Rand(100)>70 then
-					Pox.infectSim("")
+					Disease.infectSim("","Pox")
 				else
 					diseases_Fever("",true)
 				end

@@ -44,7 +44,7 @@ function Run()
 			Sleep(0.2)
 			
 			-- set fracture for the victim
-			Fracture.infectSim("Destination")
+			Disease.infectSim("Destination","Fracture")
 			
 			-- set property for TakeOverBid
 			SetProperty("Destination", "intimidated", GetDynastyID(""))
