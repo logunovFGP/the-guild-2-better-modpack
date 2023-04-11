@@ -49,4 +49,6 @@ Bugfixes (MegaMod):
 - Feuer brannten ein bisschen zu heiß.
 - Sterbende Angestellte schickten manchmal eine Nachricht, die die falsche Todesursache anzeigte.
 - Erhielt man eine Krankheit, so zeigte die Nachricht nicht den Namen der Krankheit an.
+- Öffentliche Gelder veruntreuen brachte kein Geld ein.
+- Die Pinte hatte ein falsches Upgrade.
 
