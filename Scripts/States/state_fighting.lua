@@ -1,20 +1,21 @@
 function Init()
+
 	SetStateImpact("no_idle") 
 	SetStateImpact("no_hire")
 	SetStateImpact("no_fire")	
 	SetStateImpact("no_measure_attach")
 	SetStateImpact("no_action")
+	SetStateImpact("no_cancel_button")
 	SetState("", STATE_HIDDEN, false)
 end
-
 
 function Run()
 
 	if IsType("", "cl_Sim") then
 		if DynastyIsAI("") then
 			-- check starting the rage ability
-			if GetImpactValue("", "Rage")~=0 then
-				if GetMeasureRepeat("", "Rage")==0 then
+			if GetImpactValue("", "Rage") ~= 0 then
+				if GetMeasureRepeat("", "Rage") == 0 then
 					chr_StartRage("")
 				end
 			end
@@ -39,10 +40,13 @@ function Run()
 end
 
 function CleanUp()
+
 	BattleLeave("")
+	
 	if not (GetState("", STATE_UNCONSCIOUS)) then
 		SimResumePreFightMeasure("");
 	end
+	
 	if IsType("", "Building") then
 		SetRepeatTimer("", GetMeasureRepeatName2("RenovateBuilding"), 1)
 	end

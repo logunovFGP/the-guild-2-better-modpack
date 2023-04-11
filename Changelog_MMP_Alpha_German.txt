@@ -36,6 +36,7 @@ Bugfixes:
 - Dynastien sterben nicht länger in der ersten Runde ohne Grund aus.
 - Einer der Tische in der Taverne wurde nicht von Kunden benutzt.
 - Wenn man jemandem die Knochen brach, wurde beim Beweis das falsche Opfer angezeigt.
+- Man konnte die Minenwachen austricksen, indem man feindliche Aktionen unterbrach, womit man sie problemlos von der Mine weglocken konnte, um sie dann anschließend erneut zu überfallen.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.

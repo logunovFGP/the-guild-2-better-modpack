@@ -10,7 +10,6 @@
 function Run()
 	
 	GetAliasByID(GetProperty("", "DynID"), "Dynasty")
-	
 	SetProperty("", "NotAffectable", 1)
 		
 	-- Check if the guard is here the first time
@@ -21,47 +20,59 @@ function Run()
 		SetProperty("", "EndTime", EndTime)
 	end
 	
-		-- Do the timer loop
+	-- Do the timer loop
 	local EndTime = GetProperty("", "EndTime")
 	while GetGametime() < EndTime do
 		
 		CarryObject("", "Handheld_Device/ANIM_Shield3.nif", true)
+		
+		-- go back to mine if too far away
+		FindNearestBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MINE, -1, false, "Mine")
+		local Distance = GetDistance("", "Mine")
+		
+		if Distance > 1500 then
+			f_MoveToNoWait("", "Mine", GL_MOVESPEED_WALK, (500+Rand(300)))
+		end
+		
 		--Detect enemy and fighting Sims
 		local SimFilter = "__F((Object.GetObjectsByRadius(Sim)==1500)AND(Object.IsHostile())AND(Object.GetState(fighting))AND NOT(Object.CanBeControlled())AND NOT(Object.BelongsToMe()))"
 		local NumOfSims = Find("", SimFilter, "HostileSim", -1) 
+		
 		if NumOfSims > 0 then
 			local EnemyID = GetDynastyID("HostileSim")
 			local BossID = GetProperty("", "DynID")
+			
 			if EnemyID ~= GetDynastyID("") and EnemyID ~= BossID then
 				gameplayformulas_SimAttackWithRangeWeapon("", "HostileSim")
-				BattleJoin("","HostileSim", false)
+				BattleJoin("", "HostileSim", false)
 			end
-			return
 		end
 		
 		--Detect robbers
 		local SimFilter = "__F((Object.GetObjectsByRadius(Sim)==1000)AND(Object.GetProfession()==15)OR(Object.GetProfession()==26)AND NOT(Object.CanBeControlled())AND NOT(Object.BelongsToMe())AND NOT(Object.HasProperty(Guarding)))"
 		local NumOfSims = Find("", SimFilter, "RobberSim", -1) 
+		
 		if NumOfSims > 0 then
 			local EnemyID = GetDynastyID("RobberSim")
 			local BossID = GetProperty("", "DynID")
+			
 			if EnemyID ~= GetDynastyID("") and EnemyID ~= BossID then
-				if GetCurrentMeasureName("RobberSim")=="PlunderBuilding" then
+				if GetCurrentMeasureName("RobberSim") == "PlunderBuilding" then
 					gameplayformulas_SimAttackWithRangeWeapon("", "RobberSim")
 					BattleJoin("", "RobberSim", false)
-				elseif GetCurrentMeasureName("RobberSim")=="SquadWaylayMember"  and SimGetProfession("RobberSim")==GL_PROFESSION_ROBBER then
+				elseif GetCurrentMeasureName("RobberSim") == "SquadWaylayMember"  and SimGetProfession("RobberSim")==GL_PROFESSION_ROBBER then
 					gameplayformulas_SimAttackWithRangeWeapon("", "RobberSim")
 					BattleJoin("", "RobberSim", false)
-				elseif GetCurrentMeasureName("RobberSim")=="BurgleAHouse" then
+				elseif GetCurrentMeasureName("RobberSim") == "BurgleAHouse" then
 					gameplayformulas_SimAttackWithRangeWeapon("", "RobberSim")
 					BattleJoin("", "RobberSim", false)
 				end
 			end
-			return
-		end	
+		end
+		
 		-- Fight until the fight is over even if the measure is over
 		while GetState("", STATE_FIGHTING) do
-			Sleep(10)
+			Sleep(20)
 		end
 		
 		NextAnim = Rand(3)
@@ -71,7 +82,7 @@ function Run()
 		elseif NextAnim == 1 then
 			LoopAnimation("", "sentinal_idle", 12)
 		else
-			Sleep(10)		
+			Sleep(20)		
 		end
 	end
 	
@@ -95,7 +106,6 @@ function Progress()
 		SetProcessProgress("", CurrentTime*10)
 		Sleep(3)
 	end
-
 end
 
 -- -----------------------
