@@ -116,6 +116,24 @@ function DiseaseIterator(t, i)
 	end
 end
 
+function GetSkillIterator(Disease)
+	return diseases_SkillIterator, Disease, 0
+end
+
+function SkillIterator(t, i)
+	i = i + 1
+	local v = Disease[t].getImpacts()[2]
+	
+	if v[i] then
+		LogMessage('Test:'..v[i])
+
+		return i, v[i]
+	end
+	if not v[i] then
+		LogMessage(i.." Not found")
+	end
+end
+
 function removeSickness(Illness,ObjectAlias)
 
 	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) == 1 then
@@ -140,9 +158,7 @@ function removeSickness(Illness,ObjectAlias)
 
   	  local impacts = Illness.getImpacts()
 
-
-  	  for k, v in impacts[2] do
-  	  	local skill = v
+  	  for k, v in diseases_GetSkillIterator(Illness.getName()) do
 		    AddImpact(ObjectAlias, v, -impacts[1], new_duration)
   	  end
 
@@ -230,17 +246,23 @@ function giveSickness(Illness, ObjectAlias)
   end
 
 	tempdur = Illness.getDuration()
+	LogMessage("Check in giveSickness: "..Illness:getName())
 
   endtime = math.mod(GetGametime(),24)+tempdur
   
 	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) ~= 1 then
 
   	if Illness:getName() ~= "BurnWound" then
-  		local impacts = Illness.getImpacts()
-  		local list = impacts[2]
-  		LogMessage(list[1])
-  	  for k, v in list do
-  	  	LogMessage(v)
+  		local impacts
+  		local listSkills
+
+  		impacts = Illness.getImpacts()
+  		listSkills = impacts[2]
+  		LogMessage(listSkills[1])
+  		LogMessage(listSkills[2])
+  		LogMessage(listSkills[3])
+
+  	  for k, v in diseases_GetSkillIterator(Illness.getName()) do
 		    AddImpact(ObjectAlias, v, impacts[1], Illness.getDuration())
   	  end
   	end

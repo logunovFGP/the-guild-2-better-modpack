@@ -113,7 +113,7 @@ function Run()
 			PlayAnimation("", "manipulate_middle_twohand")
 			local Costs = 50
 			local Cured = false
-			local Disease = false
+			local Illness = false
 			local CanHeal = false
 			local Medicine, Label, FavorMod
 
@@ -130,7 +130,7 @@ function Run()
 			end
 
 			if sickness ~= 0 then
-			    Disease = true
+			    Illness = true
 			    Medicine = sickness:getMedicine()
 			    FavorMod = sickness:getFavor()
 			    Label = string.upper(sickness:getName())
@@ -147,7 +147,7 @@ function Run()
 
 			if Cured == false then
 				-- TREATMENT
-				if Disease == false then -- special case HP LOSS
+				if Illness == false then -- special case HP LOSS
 					Costs = GetMaxHP("SickSim0") - GetHP("SickSim0")
 				else
 					Costs = sickness:getCost()
@@ -180,8 +180,8 @@ function Run()
 							CreditMoney("Hospital", Costs, "Offering")
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
-							if Disease ~= false then 
-								sickness.cureSim("SickSim0")
+							if Illness ~= false then 
+								Disease.cureSim("SickSim0",sickness:getName())
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
 								  if sickness.getName() == sublist[i] then
@@ -242,8 +242,8 @@ function Run()
 						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
-						if Disease ~= false then
-							sickness.cureSim("SickSim0")
+						if Illness ~= false then
+							Disease.cureSim("SickSim0",sickness:getName())
 						    if not list[sickness.getName()] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end

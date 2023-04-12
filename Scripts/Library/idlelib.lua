@@ -805,10 +805,7 @@ function Illness()
 			local list = {"Cold","Caries","BurnWound"}
 			for i = 1,3 do
 				if GetImpactValue("",list[i])==1 then
-					if list[i] == "Cold" then Cold.cureSim("")
-					elseif list[i] == "Caries" then Caries.cureSim("")
-					elseif list[i] == "BurnWound" then BurnWound.cureSim("")
-					end
+					Disease.cureSim("",list[i])
 				end
 			end
 		end

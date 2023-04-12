@@ -88,24 +88,10 @@ function Run()
 			for i=1, 7 do
 				if GetImpactValue("", CheckDisease[i]) > 0 then
 					if CheckDisease[i] == "Cold" then
-						Cold.cureSim("")
+						Disease.cureSim("","Cold")
 					else
 						if SleepBonus > 0 then
-							if CheckDisease[i] == "Sprain" then
-								Sprain.cureSim("")
-							elseif CheckDisease[i] == "BurnWound" then
-								BurnWound.cureSim("")
-							elseif CheckDisease[i] == "Influenza" then
-								Influenza.cureSim("")
-							elseif CheckDisease[i] == "Pneumonia" then
-								Pneumonia.cureSim("")
-							elseif CheckDisease[i] == "Pox" then
-								Pox.cureSim("")
-							elseif CheckDisease[i] == "BlackDeath" then
-								Blackdeath.cureSim("")
-							elseif CheckDisease[i] == "Fracture" then
-								Fracture.cureSim("")
-							end
+							Disease.cureSim("",CheckDisease[i])
 						end
 					end
 				end
@@ -113,15 +99,15 @@ function Run()
 		else -- no tea? then healing is random at 66 % (tavern value)
 			if Rand(100) > 33 then
 				if GetImpactValue("", "Cold") > 0 then
-					Cold.cureSim("")
+					Disease.cureSim("","Cold")
 				end
 					
 				if GetImpactValue("", "Sprain") > 0 then
-					Sprain.cureSim("")
+					Disease.cureSim("","Sprain")
 				end
 					
 				if GetImpactValue("", "Influenza") > 0 then
-					Influenza.cureSim("")
+					Disease.cureSim("","Influenza")
 				end
 			end
 		end
