@@ -52,4 +52,4 @@ Bugfixes (MegaMod):
 - Erhielt man eine Krankheit, so zeigte die Nachricht nicht den Namen der Krankheit an.
 - Öffentliche Gelder veruntreuen brachte kein Geld ein.
 - Die Pinte hatte ein falsches Upgrade.
-
+- Man konnte unendlich oft Bewusstlose ausrauben.

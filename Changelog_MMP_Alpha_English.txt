@@ -55,4 +55,4 @@ Fixes (Modpack):
 - If you got a disease the message didn't show the name of the disease.
 - Embezzling public money always resulted in 0 coins.
 - The Divehouse had a wrong upgrade.
-
+- You could rob unconcious people infinitely.

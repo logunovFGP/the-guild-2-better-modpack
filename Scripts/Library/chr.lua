@@ -1524,3 +1524,13 @@ function CheckHome(SimAlias)
 		end
 	end
 end
+
+-- returns the current skill level of a sim with a maximum of 15
+function GetSkillValue(SimAlias, Skill)
+	local Value = GetSkillValue(SimAlias, Skill) or 1
+	if Value > 15 then
+		Value = 15
+	end
+	
+	return Value
+end
