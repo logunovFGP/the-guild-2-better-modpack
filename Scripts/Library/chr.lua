@@ -1514,7 +1514,7 @@ function CheckHome(SimAlias)
 		end
 		
 		if not GetHomeBuilding(SimAlias, "HasHome") then
-			GetNearestSettlement(SimALias, "NewSettlement")
+			GetNearestSettlement(SimAlias, "NewSettlement")
 			CityGetNearestBuilding("NewSettlement", "", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_WORKER_HOUSING, -1, -1, FILTER_IGNORE, "NewHome")
 		
 			if AliasExists("NewHome") then
