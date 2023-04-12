@@ -199,6 +199,9 @@ _Allgemein_
 - Fehlende englische Soundfiles aus Seeräuber der Hanse hinzugefügt.
 - Das Talent "Feilschen" hatte so gut wie keinen Effekt auf das Kaufen/Verkaufen von Waren am Markt. Nun werden die Maßnahmen "Handelsroute" sowie die Karrenaktion "Verschicken und Abladen" stets einen Feilschen-Bonus hervorbringen.
 - Wenn man jemandem die Knochen brach, wurde beim Beweis das falsche Opfer angezeigt.
+- Man konnte die Minenwachen austricksen, indem man feindliche Aktionen unterbrach, womit man sie problemlos von der Mine weglocken konnte, um sie dann anschließend erneut zu überfallen.
+- Wenn ihr jemanden heiratet, der einen höheren Titel hat, erhaltet ihr nun auch dann den nächst höheren Titel, wenn ihr bereits über dem Titel "Gemeiner" seid.
+- Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)

@@ -200,7 +200,9 @@ _General_
 - Added completely newly created Voice Over lines for the Narrator.
 - The talent 'bargaining' had little to no effect on market selling. Now, every selling / buying action via Trade Routes or "Unload"-action will add some bargaining profit.
 - If you broke someone's bones, the evidence would show the wrong victim.
-- You can make a takeover bid to buy a desired building from a shadow dynasty for a high amount of money. They may decline if they are into politics or hate you.
+- You could lure mine guards away by cancelling hostile actions - they would leave the mine and you could continue to attack the mine.
+- When you marry someone above your title you will now gain the next higher title, even if you are above commoner.
+- You would generate evidence when you robbed unconcious persons even if you didn't manage to steal anything.
 
 
 _Patron_
@@ -319,6 +321,8 @@ _General_
 - When gaining a new office, you will now get an athmospheric description in addition to the list of privileges.
 - Added two new high-end nobility titles (but privileges will follow later)
 - Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
+- You can make a takeover bid to buy a desired building from a shadow dynasty for a high amount of money. They may decline if they are into politics or hate you.
+
 
 _Patron_
 - You can cure some diseases if you sleep in a tavern.

@@ -186,6 +186,14 @@ function Run()
 				DynastyForceCalcDiplomacy("Destination")
 				-- add the new property
 				dyn_AddAlly("", "Destination")
+				
+				-- get a new title if the nob title is higher than yours
+				local MyTitle = GetNobilityTitle("") or 1
+				local SpouseTitle = GetNobilityTitle("Destination") or 1
+				
+				if MyTitle > 2 and SpouseTitle > MyTitle then
+					SetNobilityTitle("", (MyTitle + 1), true)
+				end
 			end
 			
 			-- remember old dynastyID
