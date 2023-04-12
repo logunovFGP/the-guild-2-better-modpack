@@ -247,7 +247,6 @@ function Run()
 	
 	MeasureSetNotRestartable()
 	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
-	RemoveProperty("Destination", "courted")
 			
 	if IsDynastySim("Destination") then
 		DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), 24)
@@ -259,6 +258,10 @@ function Run()
 			
 	AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
 	AddImpact("Destination", "LoveLevel", 10, 24)
+	
+	-- remember old dynastyID
+	local OldDyn = GetDynastyID("Destination")
+	SetProperty("Destination", "FamilyID", OldDyn)	
 			
 	if GetImpactValue("Destination", "LoveLevel") >= 10 then
 		MsgNewsNoWait("", "Destination", "", "schedule", -1,
@@ -272,13 +275,9 @@ function Run()
 	RemoveProperty("Weddingchapel", "Wedding")
 	SimResetBehavior("Destination")
 	RemoveProperty("", "WeddingPaid")
-	
-	-- remember old dynastyID
-	local OldDyn = GetDynastyID("Destination")
-	SetProperty("Destination", "FamilyID", OldDyn)	
-		
-	SimMarry("", "Destination")	-- the destination is removed through this function
 	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
+	
+	SimMarry("", "Destination")	-- the destination is removed through this function
 	StopMeasure()
 end
 

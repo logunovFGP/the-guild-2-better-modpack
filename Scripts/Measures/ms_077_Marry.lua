@@ -188,9 +188,12 @@ function Run()
 				dyn_AddAlly("", "Destination")
 			end
 			
+			-- remember old dynastyID
+			local OldDyn = GetDynastyID("Destination")
+			SetProperty("Destination", "FamilyID", OldDyn)
+			
 			AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
 			AddImpact("Destination", "LoveLevel", 10, 24)
-			RemoveProperty("Destination", "courted")
 			SetState("Destination", STATE_INLOVE, false)
 
 			if GetImpactValue("Destination", "LoveLevel") >= 10 then -- you are irresistable!
@@ -198,10 +201,6 @@ function Run()
 							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
 							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
 			end
-			
-			-- remember old dynastyID
-			local OldDyn = GetDynastyID("Destination")
-			SetProperty("Destination", "FamilyID", OldDyn)
 			
 			SimMarry("", "Destination")	-- the destination is removed through this function
 
