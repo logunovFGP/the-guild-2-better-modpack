@@ -23,7 +23,7 @@ function Run()
 	-- The minimum favor for this action to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local RhetoricSkill = GetSkillValue("", RHETORIC)
-	local MinimumFavor = GL_FLIRT_MINFAVOR + TitleDifference - (RhetoricSkill * 2)
+	local MinimumFavor = GL_FLIRT_MINFAVOR + TitleDifference - (RhetoricSkill * 3)
 	local Favor = 0
 	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
 		Favor = 100

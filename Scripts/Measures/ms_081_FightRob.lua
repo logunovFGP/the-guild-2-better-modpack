@@ -14,12 +14,11 @@ function Run()
 	
 	local Booty = Plunder("", "Destination", 1)
 	local Rank = chr_GetRank("Destination") or 1
-	LogMessage("Rank is "..Rank)
+	
 	local XP = GetData("BaseXP") * Rank
 	if Rank < 3 then
 		XP = XP / 2
 	end
-	LogMessage("XP is "..XP)
 	
 	if Booty > 0 then -- you can steal multiple times if the character has items in the inventory
 		-- start crime action

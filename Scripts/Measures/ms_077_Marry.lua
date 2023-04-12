@@ -169,14 +169,14 @@ function Run()
 			ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
 			ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
 			
-			if not HasProperty("Destination", "CourtDiff") then			
-				CalculateCourtingDifficulty("", "Destination")
+			if not HasProperty("", "CourtingDiff") then			
+				gameplayformulas_CalcCourtingDifficulty("Destination", "")
 			end
 			
-			local Difficulty = (GetProperty("Destination", "CourtDiff") / 2)
+			local Difficulty = GetProperty("", "CourtingDiff")
 			xp_CourtingSuccess("Owner", Difficulty)
 			xp_CourtingSuccess("Destination", Difficulty)
-			RemoveProperty("Destination", "CourtDiff")
+			RemoveProperty("", "CourtingDiff")
 	
 			MeasureSetNotRestartable()
 			RemoveProperty("Destination", "courted")
@@ -189,7 +189,7 @@ function Run()
 			AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
 			AddImpact("Destination", "LoveLevel", 10, 24)
 
-			if GetImpactValue("Destination","LoveLevel") >= 10 then
+			if GetImpactValue("Destination", "LoveLevel") >= 10 then -- you are irresistable!
 				MsgNewsNoWait("", "Destination", "", "schedule", -1,
 							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
 							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
@@ -198,8 +198,7 @@ function Run()
 
 		else
 		
-			MsgQuick("", "@L_MEASURE_WEDDING_FAILURE_+0",GetID(""), GetID("Destination"))
-
+			MsgQuick("", "@L_MEASURE_WEDDING_FAILURE_+0", GetID(""), GetID("Destination"))
 		end
 
 	--------------------------------

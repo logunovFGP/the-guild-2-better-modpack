@@ -19,11 +19,11 @@ function Run()
 	-- The minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = GetSkillValue("", CHARISMA)*2
-	local MinimumFavor = GL_BATH_MINFAVOR + TitleDifference - (CharismaSkill * 2)
+	local MinimumFavor = GL_BATH_MINFAVOR + TitleDifference - (CharismaSkill * 3)
 	local FavorWon = 15 + (CharismaSkill * 0.5)+ Rand(6)
 	local FavorLoss = -10
 
-		-- Courting related
+	-- Courting related
 	local Class = SimGetClass("Destination")
 	if Class == 0 then
 		if HasProperty("Destination", "FakeClass") then
@@ -37,9 +37,9 @@ function Run()
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class)
 
-	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
-	FavorWon = FavorWon + FavorWon * (FlirtBonus * 0.01)	
-	CourtingProgress = CourtingProgress * (FlirtBonus * 0.01)
+	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
+	FavorWon = FavorWon * (1 + FlirtBonus)	
+	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 
 	if IsStateDriven() then
 		if not GetSettlement("","city") then
@@ -203,6 +203,8 @@ function Run()
 						CreditMoney("Tavern",GetData("Price"),"Offering")
 					end
 					
+					AddImpact("Destination", "ReceivedBath", 1, 6)
+					
 					-- player goes to his position after his partner went to his one
 					if f_MoveToNoWait("Destination", "BathPosition2", GL_WALKSPEED_RUN) then
 						f_MoveTo("", "BathPosition1")
@@ -284,14 +286,12 @@ function Run()
 			
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)					
 				MsgSay("Destination", talk_AnswerCourtingMeasure("TAKE_A_BATH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
-					
 			end
 			
 			SetMeasureRepeat(TimeUntilRepeat)
 			-- Add the achieved progress
 			Sleep(0.3)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
-			AddImpact("Destination", "ReceivedBath", 1, 6)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end

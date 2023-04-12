@@ -112,9 +112,9 @@ function Run()
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
 	
-	local FlirtBonus = GetImpactValue("", "FlirtBonus")		-- 52
-	FavorWon = FavorWon + FavorWon * FlirtBonus * 0.01
-	CourtingProgress = CourtingProgress * (FlirtBonus * 0.01)
+	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
+	FavorWon = FavorWon * (1 + FlirtBonus)	
+	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 	
 	-- Get the tavern
 	if not GetInsideBuilding("", "Tavern") then

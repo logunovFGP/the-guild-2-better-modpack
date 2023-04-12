@@ -118,11 +118,11 @@ function Run()
 	ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
 	ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
 			
-	if not HasProperty("Destination", "CourtDiff") then			
-		CalculateCourtingDifficulty("", "Destination")
+	if not HasProperty("", "CourtingDiff") then			
+		gameplayformulas_CalcCourtingDifficulty("Destination", "")
 	end
 			
-	local Difficulty = GetProperty("Destination", "CourtDiff")
+	local Difficulty = GetProperty("", "CourtingDiff")
 	xp_CourtingSuccess("Owner", Difficulty, 1)
 	xp_CourtingSuccess("Destination", Difficulty, 1)
 			

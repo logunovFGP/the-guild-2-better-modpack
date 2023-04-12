@@ -21,7 +21,7 @@ function Run()
 	-- the minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local DexteritySkill = (GetSkillValue("", DEXTERITY))*2
-	local MinimumFavor = GL_DANCE_MINFAVOR + TitleDifference - (DexteritySkill*2)
+	local MinimumFavor = GL_DANCE_MINFAVOR + TitleDifference - (DexteritySkill * 3)
 	local FavorWon = 5 + DexteritySkill
 	local FavorLoss = -5
 	local ModifyFavor = 0

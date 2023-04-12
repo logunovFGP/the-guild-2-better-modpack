@@ -839,7 +839,7 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	local VariationMod = gameplayformulas_GetCourtingMeasureVariation(MeasureID, Destination, Class) or 1
 	local CourtingDiff = GetProperty(Destination, "CourtDiff") or 1
 	
-	LogMessage(GetName(SimAlias).." wants to court "..GetName(Destination).." with Class "..Class)
+	--LogMessage(GetName(SimAlias).." wants to court "..GetName(Destination).." with Class "..Class)
 	
 	if CourtingDiff < 1 then
 		if CourtingDiff < 0.5 then
@@ -865,23 +865,24 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local SkillMod = GetSkillValue(SimAlias, Skill)
 	local TitleDiff = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
-	local FavorBonus = 0
 	local Favor = GetFavorToSim(Destination, SimAlias)
+	local FavorBonus = math.ceil(Favor/10)
 	
-	if Favor > 50 then
-		FavorBonus = math.ceil(Favor/10)
+	if Favor < 50 then
+		FavorBonus = FavorBonus * -1
 	end
 	
-	LogMessage("FavorBonus is "..FavorBonus)
-	LogMessage("BaseValue is "..BaseValue)
-	LogMessage("SkillMod is "..SkillMod)
+	--LogMessage("FavorBonus is "..FavorBonus)
+	--LogMessage("BaseValue is "..BaseValue)
+	--LogMessage("SkillMod is "..SkillMod)
 	local RandomVal = Rand(6) - Rand(6)
-	LogMessage("RandomVal is "..RandomVal)
-	LogMessage("TitleDiff is "..TitleDiff)
-	LogMessage("CourtingDiff is "..CourtingDiff)
-	LogMessage("VariationMod is "..VariationMod)
+	--LogMessage("RandomVal is "..RandomVal)
+	--LogMessage("TitleDiff is "..TitleDiff)
+	--LogMessage("CourtingDiff is "..CourtingDiff)
+	--LogMessage("VariationMod is "..VariationMod)
 	
-	local Progress = math.floor((((BaseValue * SkillMod + RandomVal) / CourtingDiff) + FavorBonus + TitleDiff) * VariationMod)
+	local Progress = math.floor((((BaseValue * 2 + SkillMod * (BaseValue / 2 ) + RandomVal) / CourtingDiff) + FavorBonus + TitleDiff) * VariationMod)
+	--LogMessage("Progress is "..Progress)
 	return Progress
 end
 
@@ -1197,3 +1198,22 @@ function CalcIllnessHazard(SimAlias, Disease)
 	return Hazard
 end
 
+function CalcCourtingDifficulty(Destination, SimAlias)
+	local MyTitle = GetNobilityTitle(SimAlias) or 1
+	local DestTitle = GetNobilityTitle(Destination) or 1
+	local DestOfficeLevel = SimGetOfficeLevel(Destination)
+	
+	if DestOfficeLevel < 0 then
+		DestOfficeLevel = 0
+	end
+	
+	local Diff = 0.75 + (DestTitle * 0.25) - (MyTitle * 0.25) + DestOfficeLevel * 0.5
+	if Diff < 0.25 then 
+		Diff = 0.25
+	elseif Diff > 5 then
+		Diff = 5
+	end
+	
+	LogMessage("CourtingDiff between "..GetName(Destination).." and "..GetName(SimAlias).." is "..Diff)
+	SetProperty(SimAlias, "CourtingDiff", Diff)
+end
