@@ -73,6 +73,9 @@ function Run()
 			
 			if Money > 0 then
 				chr_SpendMoney("Destination", MoneyToSteal, "CostRobbers", false) -- dynasty chars lose that money for real
+				MsgNewsNoWait("Destination", "", "", "intrigue", -1,
+					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_HEAD_+0",
+					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_BODY_+1", GetID("Destination"), GetID(""), MoneyToSteal)
 			end
 			
 			Sleep(0.25)
