@@ -253,6 +253,8 @@ function Run()
 		DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), 24)
 		DynastyForceCalcDiplomacy("")
 		DynastyForceCalcDiplomacy("Destination")
+		-- add the new property
+		dyn_AddAlly("", "Destination")
 	end
 			
 	AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
@@ -265,10 +267,16 @@ function Run()
 	end
 			
 	RemoveProperty("Destination", "Wedding")
+	RemoveProperty("Destination", "courted")
+	SetState("Destination", STATE_INLOVE, false)
 	RemoveProperty("Weddingchapel", "Wedding")
 	SimResetBehavior("Destination")
 	RemoveProperty("", "WeddingPaid")
-			
+	
+	-- remember old dynastyID
+	local OldDyn = GetDynastyID("Destination")
+	SetProperty("Destination", "FamilyID", OldDyn)	
+		
 	SimMarry("", "Destination")	-- the destination is removed through this function
 	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
 	StopMeasure()

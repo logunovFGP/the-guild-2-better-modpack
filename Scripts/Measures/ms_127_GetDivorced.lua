@@ -32,12 +32,11 @@ function Run()
 	-- Divorce
 	----------
 	
-	local Wealth = SimGetWealth("")
-	local LooseMoney = math.ceil(Wealth*0.05)
+	local Cost = chr_GetBribeAmount("")
 	
 	local result = MsgNews("", 0, "@B[A, @L_REPLACEMENTS_BUTTONS_JA]@B[C, @L_REPLACEMENTS_BUTTONS_NEIN]@P",  
 					ms_127_GetDivorced_AI, "default", -1, "@L_GENERAL_MEASURES_GETDIVORCED_HEAD_+0", 
-					"@L_GENERAL_MEASURES_GETDIVORCED_BODY_+0", GetID("Spouse"), LooseMoney)
+					"@L_GENERAL_MEASURES_GETDIVORCED_BODY_+0", GetID("Spouse"), Cost)
 	
 	if (result ~= "A") then
 		return false
@@ -48,21 +47,30 @@ function Run()
 	MsgSay("Spouse", "@L_FAMILY_5_DIVORCE_TALK_2")
 	MsgSay("", "@L_FAMILY_5_DIVORCE_TALK_3")	
 	
-	
-	
-	-- Massive favor loss from the ex-spouse
-	local FavorLossPercent = GL_PERCENT_FAVOR_LOSS_AFTER_DIVORCE
-	local CurrentFavor = GetFavorToSim("Spouse", "")
-	local Factor = (100 - FavorLossPercent) * 0.01
-	SetFavorToSim("Spouse", "", Factor * CurrentFavor)
-	
-	-- Ex spouse gets compensation
-	chr_SpendMoney("", LooseMoney, "CostBribes")
+	chr_SpendMoney("", Cost, "CostFee")
 	-- Ex-spouse leaves the building
 	f_ExitCurrentBuilding("Spouse")
-
-	SimGetDivorced("", "Spouse")
+		
+	-- change alliance status
+	local OldDyn = GetProperty("Spouse", "FamilyID") or 0
+	if OldDyn > 0 then
+		if GetAliasByID(OldDyn, "OldFamily") then
+			local CurrentState = DynastyGetDiplomacyState("", "OldFamily")
+			if CurrentState > DIP_NEUTRAL then
+				-- set the new status and favor here
+				DynastySetDiplomacyState("", "OldFamily", DIP_NEUTRAL)
+				DynastyForceCalcDiplomacy("")
+				if GetFavorToDynasty("", "OldFamily") > 50 then
+					SetFavorToDynasty("", "OldFamily", 50)
+				end
+				if CurrentState == DIP_ALLIANCE then
+					dyn_RemoveAlly("", "OldFamily")
+				end
+			end
+		end
+	end
 	
+	SimGetDivorced("", "Spouse")
 end
 
 function CleanUp()

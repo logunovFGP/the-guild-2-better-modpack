@@ -1534,3 +1534,4 @@ function GetSkillValue(SimAlias, Skill)
 	
 	return Value
 end
+
