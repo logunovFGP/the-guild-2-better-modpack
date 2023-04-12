@@ -24,8 +24,8 @@ function Run()
 		GetSettlement("","City")
 
 		local infections = {}
-		for i = 1,9 do
-			infections[i] = GetProperty("City",allDiseases[i].getName().."Infected") or 0
+		for k, v in diseases_GetDiseaseIterator() do
+			infections[k] = GetProperty("City",(v:getName()).."Infected") or 0
 		end
 
 		local InfectableSims = (CityGetCitizenCount("City") / 4) or 0

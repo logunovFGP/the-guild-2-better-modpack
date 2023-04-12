@@ -5,7 +5,6 @@ function Init()
 	--needed for caching
 end
 
--- helper functions
 function ImpactManager(Boolean, ObjectAlias, Sickness, Duration)
   if Boolean then 
     AddImpact(ObjectAlias, Sickness, 1, Duration)
@@ -26,21 +25,6 @@ function NoTime(Boolean, ObjectAlias, Sickness, endtime)
     end
   end
 end
--- end of helper functions
-
-skills = 
-{
-	["0"] = "constitution",
-	["1"] = "dexterity",
-	["2"] = "charisma",
-	["3"] = "fighting",
-	["4"] = "craftsmanship",
-	["5"] = "shadow_arts",
-	["6"] = "rhetoric",
-	["7"] = "empathy",
-	["8"] = "bargaining",
-	["9"] = "secret_knowledge"
-}
 
 diseases = {}
 
@@ -57,15 +41,6 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
     }
 
     -- for the following functions I decided to go for <self.function> instead of <local function> because it seemed to break calls
-
-    self.infectSim = function(ObjectAlias)
-        LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " is suffering from: " .. (self.name))
-        diseases_giveSickness(self,ObjectAlias)
-    end
-
-    self.cureSim = function(ObjectAlias)
-        diseases_removeSickness(self,ObjectAlias)
-    end
 
     self.getName = function()
 	    return self.name
@@ -87,6 +62,10 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 			return self.duration
 		end
 
+		self.getImpacts = function()
+			return {self.impacts1,self.impacts2}
+		end
+
 		self.getCallback = function()
 			return self.callback or nil
 		end
@@ -95,24 +74,6 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
     return self
 
 end
---edd
-Sprain 			 = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,"134",MoveSetActivity)
-Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,"0123456789",nil)
-Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,-3,"0123456789",nil)
-Pox          = newDisease("Pox","Medicine",GL_FAVOR_MOD_NORMAL,700,-1,-6,"012",nil)
-BurnWound    = newDisease("BurnWound","PainKiller",GL_FAVOR_MOD_NORMAL,750,8,1,"0000",nil)
-Pneumonia    = newDisease("Pneumonia","Medicine",GL_FAVOR_MOD_GREATER,800,24,-5,"0123456789",nil)
-Blackdeath   = newDisease("Blackdeath","PainKiller",GL_FAVOR_MOD_LARGE,1000,24,-7,"0123456789",nil)
-Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,600,24,-4,"134",nil)
-Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,-3,"26",nil)
-allDiseases = {Sprain,Cold,Influenza,Pox,BurnWound,Pneumonia,Blackdeath,Fracture,Caries}
-
--- this list will be removed
-diseases.list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries",
-["1"]="Sprain",["2"]="Cold",["3"]="Influenza",["4"]="Pox",["5"]="BurnWound",["6"]="Pneumonia",["7"]="Blackdeath",["8"]="Fracture",["9"]="Caries"}
-
-
--- Suggestion ToM: only expose a single table as global variable
 
 Disease = 
 {
@@ -132,21 +93,16 @@ Disease.cureSim =
     diseases_removeSickness(Result,ObjectAlias)
   end
 
-Disease.Sprain       = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,"134",MoveSetActivity)
-Disease.Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,"0123456789",nil)
-Disease.Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,-3,"0123456789",nil)
-Disease.Pox          = newDisease("Pox","Medicine",GL_FAVOR_MOD_NORMAL,700,-1,-6,"012",nil)
-Disease.BurnWound    = newDisease("BurnWound","PainKiller",GL_FAVOR_MOD_NORMAL,750,8,1,"0000",nil)
-Disease.Pneumonia    = newDisease("Pneumonia","Medicine",GL_FAVOR_MOD_GREATER,800,24,-5,"0123456789",nil)
-Disease.Blackdeath   = newDisease("Blackdeath","PainKiller",GL_FAVOR_MOD_LARGE,1000,24,-7,"0123456789",nil)
-Disease.Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,600,24,-4,"134",nil)
-Disease.Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,-3,"26",nil)
-DiseaseNames = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
-
---attempt to index local `Result' (a nil value)
-
---- This will return an iterator over all diseases.
--- Example: 
+Disease.Sprain       = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,{"dexterity","fighting","craftsmanship"},MoveSetActivity)
+Disease.Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,{"constitution","dexterity","charisma","fighting","craftsmanship","shadow_arts","rhetoric","empathy","bargaining","secret_knowledge"},nil)
+Disease.Influenza 	 = newDisease("Influenza","Medicine",GL_FAVOR_MOD_SMALL,400,16,-3,{"constitution","dexterity","charisma","fighting","craftsmanship","shadow_arts","rhetoric","empathy","bargaining","secret_knowledge"},nil)
+Disease.Pox          = newDisease("Pox","Medicine",GL_FAVOR_MOD_NORMAL,700,-1,-6,{"constitution","dexterity","charisma"},nil)
+Disease.BurnWound    = newDisease("BurnWound","PainKiller",GL_FAVOR_MOD_NORMAL,750,8,1,nil,nil)
+Disease.Pneumonia    = newDisease("Pneumonia","Medicine",GL_FAVOR_MOD_GREATER,800,24,-5,{"constitution","dexterity","charisma","fighting","craftsmanship","shadow_arts","rhetoric","empathy","bargaining","secret_knowledge"},nil)
+Disease.Blackdeath   = newDisease("Blackdeath","PainKiller",GL_FAVOR_MOD_LARGE,1000,24,-7,{"constitution","dexterity","charisma","fighting","craftsmanship","shadow_arts","rhetoric","empathy","bargaining","secret_knowledge"},nil)
+Disease.Fracture     = newDisease("Fracture","PainKiller",GL_FAVOR_MOD_NORMAL,600,24,-4,{"dexterity","fighting","craftsmanship"},nil)
+Disease.Caries       = newDisease("Caries","PainKiller",GL_FAVOR_MOD_NORMAL,800,48,-3,{"charisma","rhetoric"},nil)
+Disease.Names = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
 
 function GetDiseaseIterator()
 	return diseases_DiseaseIterator, Disease, 0
@@ -154,7 +110,7 @@ end
 
 function DiseaseIterator(t, i)
 	i = i + 1
-	local v = DiseaseNames[i]
+	local v = Disease.Names[i]
 	if v then
 		return i, t[v]
 	end
@@ -163,13 +119,6 @@ end
 function removeSickness(Illness,ObjectAlias)
 
 	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) == 1 then
-
-		local length, modifier
-
-	  if Illness:getName() ~= "BurnWound" then 
-	  	length = string.len(Illness.impacts2)
-	    modifier = Illness.impacts1
-	  end 
 
 	  if Illness:getName() == "Pneumonia" then 
 	  	Sleep(1)
@@ -189,9 +138,12 @@ function removeSickness(Illness,ObjectAlias)
   	    end
   	  end
 
-  	  for i = 1,length do
-	  	  local skill = skills[string.sub(Illness.impacts2,i,i)]
-		    AddImpact(ObjectAlias, skill, -modifier, new_duration)
+  	  local impacts = Illness.getImpacts()
+
+
+  	  for k, v in impacts[2] do
+  	  	local skill = v
+		    AddImpact(ObjectAlias, v, -impacts[1], new_duration)
   	  end
 
     end
@@ -264,7 +216,7 @@ function giveSickness(Illness, ObjectAlias)
 		LogMessage("Illness is nil!") 
 		return		
 	end
-	local length, modifier = 0,0
+
 	local skill, tempdur
 	local endtime
 
@@ -272,10 +224,6 @@ function giveSickness(Illness, ObjectAlias)
 		Sleep(1)
   end
 
-  if Illness:getName() ~= "BurnWound" then 
-		length = string.len(Illness.impacts2)
-		modifier = Illness.impacts1
-  end 
 
   if not Illness:getName() == "BurnWound" and not diseases_checkSickness(ObjectAlias) then
 		return 
@@ -287,13 +235,13 @@ function giveSickness(Illness, ObjectAlias)
   
 	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) ~= 1 then
 
-		if length then
-      for i = 1,length do
-        if Illness:getName() == 'BurnWound' then 
-        	break 
-        end
-	        skill = skills[string.sub(Illness.impacts2,i,i)]
-	       	AddImpact(ObjectAlias, skill, modifier, Illness.getDuration())
+  	if Illness:getName() ~= "BurnWound" then
+  		local impacts = Illness.getImpacts()
+  		local list = impacts[2]
+  		LogMessage(list[1])
+  	  for k, v in list do
+  	  	LogMessage(v)
+		    AddImpact(ObjectAlias, v, impacts[1], Illness.getDuration())
   	  end
   	end
 

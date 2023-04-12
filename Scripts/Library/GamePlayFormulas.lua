@@ -635,9 +635,9 @@ function CheckMoneyForTreatment(SimAlias)
 	local Costs = 0
 	local found = false
 
-	for i = 1,9 do
-		if GetImpactValue(SimAlias,allDiseases[i]:getName()) and GetImpactValue(SimAlias,allDiseases[i]:getName())==1 then
-			Costs = allDiseases[i]:getCost()
+	for k, v in diseases_GetDiseaseIterator() do
+		if GetImpactValue(SimAlias,v.getName()) and GetImpactValue(SimAlias,v.getName())==1 then
+			Costs = v.getCost()
 			found = true
 			break
 		end
@@ -929,9 +929,9 @@ end
 
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
-		for i = 1, 9 do 		
-			if GetImpactValue(Alias,allDiseases[i].getName()) == 1 then
-				chr_IncrementInfectionCount(allDiseases[i].getName().."Infected", "City")
+		for k, v in diseases_GetDiseaseIterator() do
+			if GetImpactValue(Alias,v.getName()) == 1 then
+				chr_IncrementInfectionCount(v.getName().."Infected", "City")
 			end
 		end
 	end
@@ -939,9 +939,9 @@ end
 
 function DecreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
-		for i = 1, 9 do 		
-			if GetImpactValue(Alias,allDiseases[i].getName()) and GetImpactValue(Alias,allDiseases[i].getName()) == 1 then
-				chr_DecrementInfectionCount(allDiseases[i].getName().."Infected", "City")
+		for k, v in diseases_GetDiseaseIterator() do
+			if GetImpactValue(Alias,v.getName()) and GetImpactValue(Alias,v.getName()) == 1 then
+				chr_DecrementInfectionCount(v.getName().."Infected", "City")
 			end
 		end
 	end
@@ -1065,12 +1065,12 @@ function CityCheckHospital(CityAlias, Disease, NeedOwner)
 	local HospitalLevel = {1, 1, 1, 2, 2, 3, 3, 3, 3 }
 	local result = false
 
-	for i = 1, 9 do 		
-		if Disease == allDiseases[i].getName() then
+	for k, v in diseases_GetDiseaseIterator() do
+		if Disease == v.getName() then
 			if NeedOwer then 
-				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
+				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[k])
 			else
-				result = gameplayformulas_CityCheckImportantBuilding(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[i])
+				result = gameplayformulas_CityCheckImportantBuilding(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[k])
 			end
 			break
 		end
@@ -1084,10 +1084,10 @@ function CalcIllnessHazard(SimAlias, Disease)
 	local BaseHazard = { 50, 50, 60, 30, 70, 0, 0, 0, 80 }
 	local Hazard = 0
 
-	for i = 1, 9 do
-		if Disease == allDiseases[i].getName() then
-			if BaseHazard[i] > 0 then
-				Hazard = BaseHazard[i]
+	for k, v in diseases_GetDiseaseIterator() do
+		if Disease == v.getName() then
+			if BaseHazard[k] > 0 then
+				Hazard = BaseHazard[k]
 				
 				-- age of Sim
 				local Age = SimGetAge(SimAlias)

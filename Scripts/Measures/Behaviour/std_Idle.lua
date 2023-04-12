@@ -297,7 +297,7 @@ function Run()
 			elseif SicknessChance == 2 then
 				Disease.infectSim("","Sprain")
 			elseif SicknessChance == 6 then
-				Fracture.infectSim("")
+				Disease.infectSim("","Fracture")
 			elseif SicknessChance == 7 then
 				Disease.infectSim("","Influenza")
 			end

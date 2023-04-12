@@ -119,12 +119,12 @@ function Run()
 
 			local label
 			local sickness = 0
-
-			for i = 1,9 do 
-			  label = allDiseases[i]:getName()
-			  if GetImpactValue("SickSim0", allDiseases[i]:getName()) and GetImpactValue("SickSim0", allDiseases[i]:getName()) == 1 then
-			  	sickness = allDiseases[i]
-			  	LogMessage(allDiseases[i]:getName()..' has been detected!')
+			
+			for k, v in diseases_GetDiseaseIterator() do
+			  label = v:getName()
+			  if GetImpactValue("SickSim0", label) and GetImpactValue("SickSim0", label) == 1 then
+			  	sickness = v
+			  	LogMessage(label..' has been detected!')
 			  	break
 			  end
 			end
