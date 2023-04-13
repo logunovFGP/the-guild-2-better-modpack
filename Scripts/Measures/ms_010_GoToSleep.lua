@@ -122,7 +122,7 @@ function CleanUp()
 	if IsDynastySim("Owner") then
 	
 		if GetImpactValue("", "Sickness") > 0 and Factor >= 0.9 then
-			if GetImpactValaue("", "HerbTea") > 0 then -- herb tea helps
+			if GetImpactValue("", "HerbTea") > 0 then -- herb tea helps
 				local CheckDisease = { "Cold", "Sprain", "BurnWound", "Influenza", "Pneumonia", "Pox", "BlackDeath", "Fracture" }
 				local SleepBonus = GetImpactValue("", "SleepBonusI")
 				
