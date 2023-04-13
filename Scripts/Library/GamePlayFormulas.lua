@@ -59,7 +59,6 @@ end
 -- -----------------------
 -- Fighting
 -- -----------------------
-
 function CalcDamage(fWeaponDamage)
 	return gameplayformulas_GetDamage("", fWeaponDamage)
 end
@@ -249,7 +248,6 @@ end
 -- -----------------------
 -- Guilds
 -- -----------------------
-
 function SimIsGuildmaster()
 
 	if not GetSettlement("", "City") then
@@ -317,41 +315,9 @@ function SimIsAlderman()
 	end
 end
 
-function GetTotalOfficeIncome(city)
-	local citylvl = CityGetLevel(city)
-	local highestlvl = CityGetHighestOfficeLevel(city)
-	local officecount = 0
-	local costs = 0
-	local id = 1
-	local OfficeNameLabel = ""
-	local officelabel = ""
-
-	for o=1, highestlvl do
-		officecount = CityGetOfficeCountAtLevel(city, o)
-		for i=0, officecount-1 do
-			if CityGetOffice(city, o, i, "office") then
-				if OfficeGetHolder("office", "holder") then
-					OfficeNameLabel = OfficeGetTextLabel("office")
-					local a,b = string.find(OfficeNameLabel, "_CHARACTERS_3_OFFICES_NAME_")
-					officelabel = string.sub(OfficeNameLabel, b+1 , string.len(OfficeNameLabel)-3)
-
-					id = 1
-					while id<37 do
-						if (GetDatabaseValue("Offices", id, "title") == officelabel) then
-							costs = costs + GetDatabaseValue("Offices", id, "income")
-							break
-						else
-							id = id + 1
-						end
-					end
-				end
-			end
-		end
-	end
-
-	return costs
-end
-
+-- -----------------------
+-- War
+-- -----------------------
 function ChangeWarRisk(Value)
 	local warchooserid = GetData("#WarChooser")
 	GetAliasByID(warchooserid,"WarChooser")
@@ -580,7 +546,10 @@ function GetWarRiskLevel()
 	return 0
 end
 
-function CheckDistance(Sim,Victim)
+-- -----------------------
+-- AI Decisions
+-- -----------------------
+function CheckDistance(Sim, Victim)
 	local Dist = 0
 	local MaxDist = 5000
 
@@ -604,20 +573,6 @@ function GetMaxFavByDiffForAttack()
 		return 35
 	else
 		return 30
-	end
-end
-
-function GetCityUpgradeCost(curLvl)
-	if curLvl == 2 then
-		return 10000
-	elseif curLvl == 3 then
-		return 25000
-	elseif curLvl == 4 then
-		return 50000
-	elseif curLvl == 5 then
-		return 100000
-	elseif curLvl == 6 then
-		return 0
 	end
 end
 
@@ -676,6 +631,10 @@ function checkBuildingNoRoom(building)
 	end
 end
 
+---------------------------------------------------------------------------
+-- These functions are referenced by the Dynasty Overview HUD and my not be removed
+---------------------------------------------------------------------------
+
 function GetImperialLevelPoints(FameLevel)
 	local Points = 0
 	
@@ -694,9 +653,6 @@ function GetImperialLevelPoints(FameLevel)
 	return Points
 end
 
----------------------------------------------------------------------------
--- These functions are referenced by the Dynasty Overview HUD and my not be removed
----------------------------------------------------------------------------
 function GetFameDynasty()
 	if IsDynastySim("") and GetDynasty("", "family") then
 		return dyn_GetFameLevel("")
@@ -722,82 +678,9 @@ function GetImpFameDynasty()
 end
 ---------------------------------------------------------------------------
 
-
 -------------------------
--- Important dynasties + players referencing for AI scripts
--- IDs saved in properties at the scenario
--------------------------
-function GetImportantDynastiesCount()
-	GetScenario("World")
-	local DynastyCount = GetProperty("World", "ImportantDynCount") or 1
-	
-	return DynastyCount
-end
-
-function GetRandomImportantDynasty()
-	GetScenario("World")
-	local DynastyCount = GetProperty("World", "ImportantDynCount") or 1
-	local DynArray = {}
-	
-	if DynastyCount > 0 then
-		for i=1, DynastyCount do
-			local DynID = GetProperty("World", "ImportantDyn"..i) or 0
-			DynArray[i] = DynID
-		end
-	end
-	
-	local Random = Rand(DynastyCount) + 1
-	return DynArray[Random]
-end
-
-function SaveImportantDynasty(DynAlias)
-	local DynID = GetID(DynAlias)
-	GetScenario("World")
-	local DynastyCount = GetProperty("World", "ImportantDynCount") or 0
-	local NewCount = DynastyCount + 1
-	
-	SetProperty("World", "ImportantDynCount", NewCount)
-	SetProperty("World", "ImportantDyn"..NewCount, DynID)
-end
-
-function GetPlayerCount()
-	GetScenario("World")
-	local PlayerCount = GetProperty("World", "PlayerCount") or 1
-	
-	return PlayerCount
-end
-
-function GetRandomPlayer()
-	GetScenario("World")
-	local PlayerCount = GetProperty("World", "PlayerCount") or 1
-	local PlayerArray = {}
-	
-	if PlayerCount > 0 then
-		for i=1, PlayerCount do
-			local DynID = GetProperty("World", "PlayerDyn"..i) or 0
-			PlayerArray[i] = DynID
-		end
-	end
-	
-	local Random = Rand(PlayerCount) + 1
-	return PlayerArray[Random]
-end
-
-function SavePlayerDynasty(DynAlias)
-	local DynID = GetID(DynAlias)
-	GetScenario("World")
-	local PlayerCount = GetProperty("World", "PlayerCount") or 0
-	local NewCount = PlayerCount + 1
-	
-	SetProperty("World", "PlayerCount", NewCount)
-	SetProperty("World", "PlayerDyn"..NewCount, DynID)
-end
-
---------------------------
-
--------------------------
--- Courting progress Rework
--- Allows changes in calculation and even additions to courting measures
+-- Courting --
+-- This rework allows changes in the calculation and even additions of courting measures
 -------------------------
 function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
@@ -858,7 +741,9 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	--LogMessage("CourtingDiff is "..CourtingDiff)
 	--LogMessage("VariationMod is "..VariationMod)
 	
-	local Progress = math.floor((((BaseValue * 2 + SkillMod * (BaseValue / 2 ) + RandomVal) / CourtingDiff) + FavorBonus + TitleDiff) * VariationMod)
+	local FlirtBonus = GetImpactValue(SimAlias, "FlirtBonus") -- ability
+	
+	local Progress = math.floor(((((BaseValue * 2 + SkillMod * (BaseValue / 2 ) + RandomVal) / CourtingDiff) + FavorBonus + TitleDiff) * (1 + FlirtBonus)) * VariationMod)
 	--LogMessage("Progress is "..Progress)
 	return Progress
 end
@@ -937,6 +822,7 @@ function GetCourtingMeasureVariation(MeasureID, Destination, Class)
 	return Factor
 end
 
+-- set the progress
 function CourtingProgress(SimAlias, Value)
 	local OldProgress = SimGetProgress(SimAlias)
 	local NewProgress = OldProgress + Value
@@ -948,9 +834,184 @@ function CourtingProgress(SimAlias, Value)
 	SimSetProgress(SimAlias, NewProgress)
 end
 
+-- for AI and automation
+function FindCourtingMeasure(SimAlias, CourtLover)
+	
+	local MeasureData= {
+					["StartDialog"] = { measureID = 460, minFavor = GL_STARTDIALOG_MINFAVOR },
+					["Flirt"] = { measureID = 530, minFavor = GL_FLIRT_MINFAVOR },
+					["HugCharacter"] = { measureID = 540, minFavor = GL_HUG_MINFAVOR },
+					["KissCharacter"] = { measureID = 570, minFavor = GL_KISS_MINFAVOR },
+					["TakeABath"] = { measureID = 1520, minFavor = GL_BATH_MINFAVOR },
+					["BewitchCharacter"] = { measureID = 1530, minFavor = GL_BEWITCH_MINFAVOR },
+					["MakeACompliment"] = { measureID = 2310, minFavor = GL_COMPLIMENT_MINFAVOR },
+					["InviteToDance"] = { measureID = 2320, minFavor = GL_DANCE_MINFAVOR }
+					}
+	
+	local BestProgress = 0
+	local MeasureName = "none"
+	
+	local AvailableMeasures = { "StartDialog", "Flirt", "HugCharacter", "KissCharacter", "TakeABath", "BewitchCharacter", "InviteToDance", "MakeACompliment" }
+	local MeasureCount = 8
+	
+	-- check each entry and calculate favorgain / availability
+	for i=1, MeasureCount do
+		local Check = AvailableMeasures[i]
+		local Progress = 0
+		local MeasureID = MeasureData[Check].measureID or 0
+		
+		if MeasureID > 0 then
+			Progress = gameplayformulas_GetCourtingProgress(SimAlias, CourtLover, MeasureID)
+				
+			-- check for tavern measures
+			if Check == "InviteToDance" then
+				if GetMoney(SimAlias) < 1000 then
+					Progress = 0
+				end
+			elseif Check == "TakeABath" then
+				if GetSettlement(SimAlias, "MyCity") then
+					if not gameplayformulas_CityCheckImportantOwner("MyCity", GL_BUILDING_TYPE_TAVERN, 2) then
+						Progress = 0
+					end
+				else
+					Progress = 0
+				end
+				
+				if GetMoney(SimAlias) < 1000 then
+					Progress = 0
+				end
+			elseif Check == "BewitchCharacter" then
+				if GetSettlement(SimAlias, "MyCity") then
+					if not gameplayformulas_CityCheckImportantOwner("MyCity", GL_BUILDING_TYPE_TAVERN, 3) then
+						Progress = 0
+					end
+				else
+					Progress = 0
+				end
+				
+				if GetMoney(SimAlias) < 1000 then
+					Progress = 0
+				end
+			end
+			
+			-- cooldown?
+			if GetMeasureRepeat(SimAlias, Check) > 0 then
+				Progress = 0
+			end
+			
+			-- minfavor?
+			local CheckFavor = MeasureData[Check].minFavor or 50
+			if GetFavorToSim(SimAlias, CourtLover) < CheckFavor then
+				Progress = 0
+			end
+			
+			-- best progress?
+			if Progress > BestProgress then
+				MeasureName = Check
+				BestProgress = Progress
+			end
+		end
+	end
+	
+	return MeasureName
+end
+
+function CalcCourtingDifficulty(Destination, SimAlias)
+	local MyTitle = GetNobilityTitle(SimAlias) or 1
+	local DestTitle = GetNobilityTitle(Destination) or 1
+	local DestOfficeLevel = SimGetOfficeLevel(Destination)
+	
+	if DestOfficeLevel < 0 then
+		DestOfficeLevel = 0
+	end
+	
+	local Diff = 0.75 + (DestTitle * 0.25) - (MyTitle * 0.25) + DestOfficeLevel * 0.5
+	if Diff < 0.25 then 
+		Diff = 0.25
+	elseif Diff > 5 then
+		Diff = 5
+	end
+	
+	LogMessage("CourtingDiff between "..GetName(Destination).." and "..GetName(SimAlias).." is "..Diff)
+	SetProperty(SimAlias, "CourtingDiff", Diff)
+end
+
+-------------------------
+-- Favor related functions for social interaction
+-------------------------
+function CalcFavorWon(SimAlias, Destination, MeasureID)
+	local FavorWon = 0
+	
+	local MeasureData = {
+					
+					}
+	
+	local FlirtBonus = GetImpactValue(SimAlias, "FlirtBonus") -- ability
+	FavorWon = FavorWon * (1 + FlirtBonus)	
+	
+	return FavorWon
+end
+
+function CalcFavorLoss(SimAlias, Destination, MeasureID)
+
+end
+
+function CalcMinFavor(SimAlias, Destination, MeasureID)
+
+end
+
 -------------------------
 -- City related functions
 -------------------------
+
+function GetTotalOfficeIncome(city)
+	local citylvl = CityGetLevel(city)
+	local highestlvl = CityGetHighestOfficeLevel(city)
+	local officecount = 0
+	local costs = 0
+	local id = 1
+	local OfficeNameLabel = ""
+	local officelabel = ""
+
+	for o=1, highestlvl do
+		officecount = CityGetOfficeCountAtLevel(city, o)
+		for i=0, officecount-1 do
+			if CityGetOffice(city, o, i, "office") then
+				if OfficeGetHolder("office", "holder") then
+					OfficeNameLabel = OfficeGetTextLabel("office")
+					local a,b = string.find(OfficeNameLabel, "_CHARACTERS_3_OFFICES_NAME_")
+					officelabel = string.sub(OfficeNameLabel, b+1 , string.len(OfficeNameLabel)-3)
+
+					id = 1
+					while id<37 do
+						if (GetDatabaseValue("Offices", id, "title") == officelabel) then
+							costs = costs + GetDatabaseValue("Offices", id, "income")
+							break
+						else
+							id = id + 1
+						end
+					end
+				end
+			end
+		end
+	end
+
+	return costs
+end
+
+function GetCityUpgradeCost(curLvl)
+	if curLvl == 2 then
+		return 10000
+	elseif curLvl == 3 then
+		return 25000
+	elseif curLvl == 4 then
+		return 50000
+	elseif curLvl == 5 then
+		return 100000
+	elseif curLvl == 6 then
+		return 0
+	end
+end
 
 function IncreaseInfectionCountCity(Alias)
 	if GetSettlement(Alias, "City") then
@@ -1173,106 +1234,5 @@ function CalcIllnessHazard(SimAlias, Disease)
 	end
 	
 	return Hazard
-end
-
-function CalcCourtingDifficulty(Destination, SimAlias)
-	local MyTitle = GetNobilityTitle(SimAlias) or 1
-	local DestTitle = GetNobilityTitle(Destination) or 1
-	local DestOfficeLevel = SimGetOfficeLevel(Destination)
-	
-	if DestOfficeLevel < 0 then
-		DestOfficeLevel = 0
-	end
-	
-	local Diff = 0.75 + (DestTitle * 0.25) - (MyTitle * 0.25) + DestOfficeLevel * 0.5
-	if Diff < 0.25 then 
-		Diff = 0.25
-	elseif Diff > 5 then
-		Diff = 5
-	end
-	
-	LogMessage("CourtingDiff between "..GetName(Destination).." and "..GetName(SimAlias).." is "..Diff)
-	SetProperty(SimAlias, "CourtingDiff", Diff)
-end
-
-function FindCourtingMeasure(SimAlias, CourtLover)
-	
-	local MeasureData= {
-					["StartDialog"] = { measureID = 460, minFavor = GL_STARTDIALOG_MINFAVOR },
-					["Flirt"] = { measureID = 530, minFavor = GL_FLIRT_MINFAVOR },
-					["HugCharacter"] = { measureID = 540, minFavor = GL_HUG_MINFAVOR },
-					["KissCharacter"] = { measureID = 570, minFavor = GL_KISS_MINFAVOR },
-					["TakeABath"] = { measureID = 1520, minFavor = GL_BATH_MINFAVOR },
-					["BewitchCharacter"] = { measureID = 1530, minFavor = GL_BEWITCH_MINFAVOR },
-					["MakeACompliment"] = { measureID = 2310, minFavor = GL_COMPLIMENT_MINFAVOR },
-					["InviteToDance"] = { measureID = 2320, minFavor = GL_DANCE_MINFAVOR }
-					}
-	
-	local BestProgress = 0
-	local MeasureName = "none"
-	
-	local AvailableMeasures = { "StartDialog", "Flirt", "HugCharacter", "KissCharacter", "TakeABath", "BewitchCharacter", "InviteToDance", "MakeACompliment" }
-	local MeasureCount = 8
-	
-	-- check each entry and calculate favorgain / availability
-	for i=1, MeasureCount do
-		local Check = AvailableMeasures[i]
-		local Progress = 0
-		local MeasureID = MeasureData[Check].measureID or 0
-		
-		if MeasureID > 0 then
-			Progress = gameplayformulas_GetCourtingProgress(SimAlias, CourtLover, MeasureID)
-				
-			-- check for tavern measures
-			if Check == "InviteToDance" then
-				if GetMoney(SimAlias) < 1000 then
-					Progress = 0
-				end
-			elseif Check == "TakeABath" then
-				if GetSettlement(SimAlias, "MyCity") then
-					if not gameplayformulas_CityCheckImportantOwner("MyCity", GL_BUILDING_TYPE_TAVERN, 2) then
-						Progress = 0
-					end
-				else
-					Progress = 0
-				end
-				
-				if GetMoney(SimAlias) < 1000 then
-					Progress = 0
-				end
-			elseif Check == "BewitchCharacter" then
-				if GetSettlement(SimAlias, "MyCity") then
-					if not gameplayformulas_CityCheckImportantOwner("MyCity", GL_BUILDING_TYPE_TAVERN, 3) then
-						Progress = 0
-					end
-				else
-					Progress = 0
-				end
-				
-				if GetMoney(SimAlias) < 1000 then
-					Progress = 0
-				end
-			end
-			
-			-- cooldown?
-			if GetMeasureRepeat(SimAlias, Check) > 0 then
-				Progress = 0
-			end
-			
-			-- minfavor?
-			local CheckFavor = MeasureData[Check].minFavor or 50
-			if GetFavorToSim(SimAlias, CourtLover) < CheckFavor then
-				Progress = 0
-			end
-			
-			-- best progress?
-			if Progress > BestProgress then
-				MeasureName = Check
-				BestProgress = Progress
-			end
-		end
-	end
-	
-	return MeasureName
 end
 
