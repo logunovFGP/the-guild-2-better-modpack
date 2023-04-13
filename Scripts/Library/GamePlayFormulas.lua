@@ -56,6 +56,10 @@ function CalcSightRange(ObjectAlias)
 	return BaseRange + (Level * 50) + (Skillvalue * 100)
 end
 
+-- -----------------------
+-- Fighting
+-- -----------------------
+
 function CalcDamage(fWeaponDamage)
 	return gameplayformulas_GetDamage("", fWeaponDamage)
 end
@@ -242,6 +246,10 @@ function SimAttackWithRangeWeapon(SimAlias,DestAlias)
 	end
 end
 
+-- -----------------------
+-- Guilds
+-- -----------------------
+
 function SimIsGuildmaster()
 
 	if not GetSettlement("", "City") then
@@ -307,18 +315,6 @@ function SimIsAlderman()
 	else
 		return 0
 	end
-end
-
-function GetDatabaseIdByName(table, name)
-	local id = 1
-	while id<1000 do
-		if (GetDatabaseValue(table, id, "name") == name) then
-			break
-		else
-			id = id + 1
-		end
-	end
-	return id
 end
 
 function GetTotalOfficeIncome(city)
@@ -610,25 +606,6 @@ function GetMaxFavByDiffForAttack()
 		return 30
 	end
 end
-
-function BlockMusicForConcert(force)
-	SetData("#BlockMusicForConcert",force)
-	if force==1 then
-		StartHighPriorMusic(39, true)
-	end
-end
-
-function StartHighPriorMusic(event, val)
-	if GetData("#BlockMusicForConcert")==nil or GetData("#BlockMusicForConcert")==0 then
-		if val then
-			StartHighPriorMusic(event, val)
-		else
-			StartHighPriorMusic(event)
-		end
-	end
-end
-
-
 
 function GetCityUpgradeCost(curLvl)
 	if curLvl == 2 then
@@ -1298,3 +1275,4 @@ function FindCourtingMeasure(SimAlias, CourtLover)
 	
 	return MeasureName
 end
+

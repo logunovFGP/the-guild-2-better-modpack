@@ -58,7 +58,7 @@ function War()
 	GetScenario("scenario")
 	local mapid = GetProperty("scenario", "mapid")
 	local scenarioname = GetDatabaseValue("maps", mapid, "lordship")
-	local lordid = gameplayformulas_GetDatabaseIdByName("Lordship", scenarioname)
+	local lordid = f_GetDatabaseIdByName("Lordship", scenarioname)
 
 	----------------
 	-- find an enemy
@@ -137,7 +137,7 @@ function War()
 
 	SetProperty("","WarPhase", 2)
 	
-	gameplayformulas_StartHighPriorMusic(38,true)
+	f_StartHighPriorMusic(38,true)
 	
 	MsgBoxNoWait("All", nil,
 						"@L_WAR_BEGINS_HEAD_+0",

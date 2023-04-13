@@ -435,7 +435,7 @@ function StartConcert()
 				--	if CameraIndoorGetBuilding("BuildingCam") then
 				--		if GetID("stageobj")==GetID("BuildingCam") then
 							ResetGamespeed()
---							gameplayformulas_BlockMusicForConcert(1)
+--							f_BlockMusicForConcert(1)
 				--		end
 				--	end
 				--end
@@ -528,7 +528,7 @@ function Drey_Weyber()
 		if std_musician_HasHumanPartyMembers("") then
 			StartHighPriorMusic(48, true) -- drey weiber
 		else
-			gameplayformulas_BlockMusicForConcert(1)
+			f_BlockMusicForConcert(1)
 			Attach3DSound("", "versengold/Versengold__Drey_Weiber__TG2Ren_Special.wav", 1.0)
 		end
 	end
@@ -536,7 +536,7 @@ function Drey_Weyber()
 	while true do
 		if GetID("") == GetID("#Musician1") then
 			if GetGametime() > EndTime then
-				gameplayformulas_BlockMusicForConcert(0)
+				f_BlockMusicForConcert(0)
 				StartHighPriorMusic(39, true) -- Silence
 				Detach3DSound("")
 				SetData("#MusicStage", 0)
@@ -692,7 +692,7 @@ function Immer_schoen_nach_unten_treten()
 		if std_musician_HasHumanPartyMembers("") then
 			StartHighPriorMusic(50, true) -- unten treten
 		else
-			gameplayformulas_BlockMusicForConcert(1)
+			f_BlockMusicForConcert(1)
 			Attach3DSound("", "versengold/Versengold__Immer_schoen_nach_unten_treten__TG2Ren_Special.wav", 1.0)
 		end
 	end
@@ -700,7 +700,7 @@ function Immer_schoen_nach_unten_treten()
 	while true do
 		if GetID("") == GetID("#Musician1") then
 			if GetGametime() > EndTime then
-				gameplayformulas_BlockMusicForConcert(0)
+				f_BlockMusicForConcert(0)
 				StartHighPriorMusic(39, true) -- Silence
 				Detach3DSound("")
 				SetData("#MusicStage",0)
@@ -859,7 +859,7 @@ function Ich_und_ein_Fass_voller_Wein()
 		if std_musician_HasHumanPartyMembers("") then
 			StartHighPriorMusic(49, true) -- fass wein
 		else
-			gameplayformulas_BlockMusicForConcert(1)
+			f_BlockMusicForConcert(1)
 			Attach3DSound("", "versengold/Versengold__Ich_und_ein_Fass_voller_Wein__TG2Ren_Special.wav", 1.0)
 		end
 	end
@@ -867,7 +867,7 @@ function Ich_und_ein_Fass_voller_Wein()
 	while true do
 		if GetID("") == GetID("#Musician1") then
 			if GetGametime() > EndTime then
-				gameplayformulas_BlockMusicForConcert(0)
+				f_BlockMusicForConcert(0)
 				StartHighPriorMusic(39, true) -- Silence
 				Detach3DSound("")
 				SetData("#MusicStage",0)

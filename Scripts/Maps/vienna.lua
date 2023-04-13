@@ -4,7 +4,7 @@ function Prepare()
 	ScenarioSetNameLanguage("vienna")
 	
 	local worldname = "vienna"
-	local mapid = gameplayformulas_GetDatabaseIdByName("maps", worldname)
+	local mapid = f_GetDatabaseIdByName("maps", worldname)
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)
 	SetProperty("World", "NameSet", "vienna")

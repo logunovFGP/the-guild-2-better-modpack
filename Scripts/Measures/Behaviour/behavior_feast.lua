@@ -89,7 +89,7 @@ function Host()
 	
 	SetProperty("PartyLocation","GoDance",1)
 	SetProperty("PartyLocation","DanceFinished",0)
-	gameplayformulas_StartHighPriorMusic(MUSIC_PARTY)
+	f_StartHighPriorMusic(MUSIC_PARTY)
 	if GetFreeLocatorByName("PartyLocation","Dance",1,7,"DancePos") then
 		if f_BeginUseLocator("","DancePos",GL_STANCE_STAND,true) then
 			if SimGetGender("")==GL_GENDER_MALE then

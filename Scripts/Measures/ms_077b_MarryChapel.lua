@@ -48,7 +48,7 @@ function Run()
 	AlignTo("", "Destination")
 	AlignTo("Destination", "")
 			
-	gameplayformulas_StartHighPriorMusic(MUSIC_MARRIAGE)
+	f_StartHighPriorMusic(MUSIC_MARRIAGE)
 			
 	BuildingFindSimByProperty("Weddingchapel", "BUILDING_NPC", 11, "Priest")			
 	GetLocatorByName("Weddingchapel", "WeddingPriest", "PriestPos")

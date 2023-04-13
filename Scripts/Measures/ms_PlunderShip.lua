@@ -169,9 +169,9 @@ function Run()
 	
 	GetLocalPlayerDynasty("LocalPlayerDynasty")
 	if (GetID("LocalPlayerDynasty") == GetDynastyID("")) then
-		gameplayformulas_StartHighPriorMusic(MUSIC_ENEMY_SHIP_PLUNDERED)
+		f_StartHighPriorMusic(MUSIC_ENEMY_SHIP_PLUNDERED)
 	elseif (GetID("LocalPlayerDynasty") == GetDynastyID("Destination")) then
-		gameplayformulas_StartHighPriorMusic(MUSIC_SHIP_PLUNDERED)
+		f_StartHighPriorMusic(MUSIC_SHIP_PLUNDERED)
 	end
 	
 	local Money = Plunder("","Destination",22)

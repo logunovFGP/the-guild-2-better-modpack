@@ -147,7 +147,7 @@ function Run()
 				PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
 			end
 			
-			gameplayformulas_StartHighPriorMusic(MUSIC_MARRIAGE)
+			f_StartHighPriorMusic(MUSIC_MARRIAGE)
 
 			SetAvoidanceGroup("", "Destination")
 			CreateCutscene("default", "cutscene")
