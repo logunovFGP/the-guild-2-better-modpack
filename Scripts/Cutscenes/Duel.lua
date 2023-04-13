@@ -192,7 +192,7 @@ function Go()
 		
 	--make light
 	CutsceneCameraSetRelativePosition("", "DuelView", "challenger")
-	gameplayformulas_StartHighPriorMusic(MUSIC_FIGHT)
+	f_StartHighPriorMusic(MUSIC_FIGHT)
 	duel_Torch(1)
 	MoveSetActivity("challenged", "duel")
 	local ActivityTime = MoveSetActivity("challenger", "duel")

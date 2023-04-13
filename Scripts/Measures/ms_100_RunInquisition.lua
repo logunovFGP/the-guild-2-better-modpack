@@ -135,7 +135,7 @@ function Run()
 	CommitAction("pillory", "Destination", "Destination")
 	SetData("Action_Started", "Pillory")
 	SetProperty("Destination", "NoEscape", 1)
-	gameplayformulas_StartHighPriorMusic(MUSIC_EXECUTION)
+	f_StartHighPriorMusic(MUSIC_EXECUTION)
 	
 --	CreateCutscene("default","cutscene")
 --	CutsceneAddSim("cutscene","")

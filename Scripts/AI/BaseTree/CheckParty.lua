@@ -60,6 +60,11 @@ function CheckMember(SimAlias)
 		return -1
 	end
 	
+	local Heir = GetProperty("dynasty", "Heir") or 0
+	if GetID(SimAlias) == Heir then 
+		return 1000
+	end
+	
 	local Weight
 	Weight = 2*(72 - (Age - 16)) + SimGetLevel(SimAlias) * 10
 	
@@ -67,7 +72,8 @@ function CheckMember(SimAlias)
 end
 
 function Execute()
-	LogMessage("Dynasty added "..GetName("SIM").." to group of Dynasty "..GetID("dynasty"))
+	LogMessage("Dynasty added "..GetName("SIM").." to group of Dynasty "..GetName("dynasty"))
 	DynastyAddMember("dynasty", "SIM")
+	SetRepeatTimer("dynasty", "AI_CheckPartyMember", 1)
 end
 

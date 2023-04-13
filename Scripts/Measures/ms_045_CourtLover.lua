@@ -29,17 +29,26 @@ function AIInit()
 			Alias = "Partner"..i
 			Skip = false
 			
-			-- check dynasty decision and employee status
-			if GetDynasty(Alias, "DestDyn") and GetImpactValue("DestDyn", "NoPlayerCourt") == 1 then
-				Skip = true
-			elseif SimGetWorkingPlaceID(Alias) > 0 then
+			-- check party or heir
+			if HasProperty(Alias, "DynastyHeir") or (IsPartyMember(Alias) and not DynastyIsShadow(Alias)) then
 				Skip = true
 			end
 			
-			-- check class
-			local DestClass = SimGetClass(Alias)
-			if DestClass > 4 or DestClass == MyClass then
-				Skip = true
+			if not Skip then
+				-- check dynasty decision and employee status
+				if GetDynasty(Alias, "DestDyn") and GetImpactValue("DestDyn", "NoPlayerCourt") == 1 then
+					Skip = true
+				elseif SimGetWorkingPlaceID(Alias) > 0 then
+					Skip = true
+				end
+			end
+			
+			if not Skip then
+				-- check class
+				local DestClass = SimGetClass(Alias)
+				if DestClass > 4 or DestClass == MyClass then
+					Skip = true
+				end
 			end
 			
 			-- check min favor
@@ -49,7 +58,7 @@ function AIInit()
 			end
 	
 			local TitleDifference = (MyTitle - DestinationTitle) * 2
-			local MinFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - TitleDifference
+			local MinFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - (TitleDifference * 2)
 			
 			if GetFavorToSim(Alias, "") < MinFavor then
 				Skip = true
@@ -127,7 +136,7 @@ function Run()
 	-- at the "Marry" measure
 	-- The reason why the property must live that long is that the xp points which are spent at the ArrangeLiaison- or Marry measue
 	-- have to know the difficulty
-	CalculateCourtingDifficulty("", "Destination")
+	gameplayformulas_CalcCourtingDifficulty("Destination", "")
 	
 	-- Display the court lover sheet
 	SetProperty("", "LoverID", GetID("Destination"))
@@ -229,10 +238,23 @@ function Run()
 	
 	-- check if the favor is high enough for courting
 	local success = (GetFavorToSim("Destination", "") >= MinimumFavor)
+	local ReasonHeir = false
 	
 	-- fail if the Dest is employed already
 	if SimGetWorkingPlaceID("Destination") > 0 then
 		success = false
+	end
+	
+	-- fail if heir
+	if HasProperty("Destination", "DynastyHeir") then
+		success = false
+		ReasonHeir = true
+	end
+	
+	-- fail if group members for coloured
+	if IsPartyMember("Destination") and not DynastyIsShadow("Destination") then
+		success = false
+		ReasonHeir = true
 	end
 	
 	-- Proposal
@@ -294,9 +316,7 @@ function Run()
 
 			StopAnimation("")
 			PlayAnimationNoWait("", "bow")
-			
 			Sleep(DestinationAnimationLength*0.15)
-			
 		else
 
 			-- Show the appropriate Animation	and save the animation lenghts
@@ -315,16 +335,13 @@ function Run()
 
 			StopAnimation("")
 			PlayAnimationNoWait("", "curtsy")
-			
 			Sleep(DestinationAnimationLength*0.15)
-			
 		end
 
 		-- adds property so that CourtLover cannot be hired
 		SetProperty("Destination", "courted", 1)
 		SetState("Destination", STATE_INLOVE, true)
 		SetData("CourtLoverSet", 1)
-		
 		DestroyCutscene("cutscene")
 
 		feedback_MessageCharacter("", 
@@ -335,7 +352,6 @@ function Run()
 	else
 		
 		camera_CutscenePlayerLock("cutscene", "Destination")		
-		
 		chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_SMALL)
 		
 		local Time1 = PlayAnimationNoWait("Destination", "propel")
@@ -364,9 +380,15 @@ function Run()
 		
 		Sleep(Time1*0.3)
 		
-		feedback_MessageCharacter("", 
-			"@L_COURTLOVER_MSG_FAILED_HEAD_+0",
-			"@L_COURTLOVER_MSG_FAILED_BODY_+0", GetID("Destination"), GetID("Owner"))
+		if ReasonHeir then
+			feedback_MessageCharacter("", 
+							"@L_COURTLOVER_MSG_FAILED_HEAD_+0",
+							"@L_COURTLOVER_MSG_FAILED_BODY_+1", GetID("Destination"), GetID("Owner"))
+		else
+			feedback_MessageCharacter("", 
+							"@L_COURTLOVER_MSG_FAILED_HEAD_+0",
+							"@L_COURTLOVER_MSG_FAILED_BODY_+0", GetID("Destination"), GetID("Owner"))
+		end
 
 	end
 end
@@ -391,7 +413,7 @@ function CleanUp()
 	-- Remove the difficulty which was set in the court lover panel and used und the setcourtlover-function
 	if AliasExists("Destination") then
 		if not HasData("CourtLoverSet") then			
-			RemoveProperty("Destination", "CourtDiff")
+			RemoveProperty("", "CourtingDiff")
 		end
 		MoveSetActivity("Destination")
 		feedback_OverheadActionName("Destination")

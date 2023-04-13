@@ -24,7 +24,7 @@ function Run()
 	-- The minimum favor for this action to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = GetSkillValue("", CHARISMA)
-	local MinimumFavor = GL_HUG_MINFAVOR + TitleDifference - CharismaSkill
+	local MinimumFavor = GL_HUG_MINFAVOR + TitleDifference - (CharismaSkill * 3)
 	local Favor = 0
 	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
 		Favor = 100

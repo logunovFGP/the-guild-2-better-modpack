@@ -41,7 +41,7 @@ function Run()
 		GetScenario("scenario")
 		local mapid = GetProperty("scenario", "mapid")
 		local scenarioname = GetDatabaseValue("maps", mapid, "lordship")
-		local lordid = gameplayformulas_GetDatabaseIdByName("Lordship", scenarioname)
+		local lordid = f_GetDatabaseIdByName("Lordship", scenarioname)
 		local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+1"
 		MsgBoxNoWait("",false,
 			"@L_MEASURE_LEVELUPCITY_HEAD_+0",

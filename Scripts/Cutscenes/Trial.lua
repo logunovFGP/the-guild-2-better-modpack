@@ -1412,7 +1412,7 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	end
 end
 
-function ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue)
+function ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderType)
 	
 	local Found = 0
 	
@@ -1428,7 +1428,7 @@ function ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue)
 		camera_CutsceneDialogCam("", "accuser", 0, 0)
 		PlayAnimationNoWait("accuser", "point_at")
 		PlayAnimationNoWait("accused", "shake_head")
-		MsgSay("accuser", "@L_LAWSUIT_ACCUSAL_D_ACCUSER_MORE_SAME_TYPE", GetID("accused"), Found)
+		MsgSay("accuser", "@L_LAWSUIT_ACCUSAL_D_ACCUSER_MORE_SAME_TYPE"..GenderType, GetID("accused"), Found)
 		StopAnimation("accuser")
 	else
 		return

@@ -851,7 +851,7 @@ function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 						-- we found the same type building
 						if GetSettlementID("TargetBuilding") == GetSettlementID("Building") then
 							-- workshops in same city
-							CopyAlias("Building", "RivalBuilding")
+							CopyAlias("TargetBuilding", "RivalBuilding")
 							break
 						end
 					end

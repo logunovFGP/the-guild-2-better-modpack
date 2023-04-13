@@ -97,7 +97,7 @@ function Run()
 			SetState("Destination", STATE_IMPRISONED, true)
 		end
 			
-		gameplayformulas_StartHighPriorMusic(MUSIC_DUNGEON) 
+		f_StartHighPriorMusic(MUSIC_DUNGEON) 
 		StopMeasure()
 	
 	--if the destination has penalty pillory
@@ -159,7 +159,7 @@ function Run()
 		CommitAction("pillory","Destination","Destination")
 		SetData("Action_Started", "Pillory")
 		SetProperty("Destination","NoEscape",1)
-		gameplayformulas_StartHighPriorMusic(MUSIC_EXECUTION)
+		f_StartHighPriorMusic(MUSIC_EXECUTION)
 		local ActivityTime = MoveSetActivity("Destination","execute")
 		
 		

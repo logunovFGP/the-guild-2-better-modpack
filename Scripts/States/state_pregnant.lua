@@ -66,7 +66,7 @@ function Run()
 	
 	MeasureStart("Measure", "NewBorn", "", "SetChildName")	
 	SetData("GetUp",1)
-	gameplayformulas_StartHighPriorMusic(MUSIC_BIRTH)
+	f_StartHighPriorMusic(MUSIC_BIRTH)
 end
 
 -- -----------------------

@@ -12,7 +12,7 @@ function GetCompletePrivilegeList()
 end
 
 function TakeTitle()
-	gameplayformulas_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
+	f_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
 	chr_SetNobilityImpactList("TitleHolder", ps_05_buerger_GetPrivilegeList())
 
 	local currenttitle = GetNobilityTitle("TitleHolder") + 1

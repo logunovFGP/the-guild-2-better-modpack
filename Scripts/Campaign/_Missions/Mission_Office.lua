@@ -88,15 +88,15 @@ function End()
 		end
 		
 		if Extinct then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			MsgBoxNoWait("Actor", nil, "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", LastMemberID)
 		elseif Bankrupt then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			MsgBoxNoWait("Actor", nil, "@L_TOOMUCHDEBT_2_HEAD", "@L_TOOMUCHDEBT_2_BODY", GetID("Actor"))
 		else
 			SetProperty("World", "Finito", GetID("Actor"))
 			if (GetID("LocalPlayerDynasty") == GetID("Actor")) then
-				gameplayformulas_StartHighPriorMusic(MUSIC_GAME_WON)
+				f_StartHighPriorMusic(MUSIC_GAME_WON)
 				MsgBoxNoWait("Actor", nil, "@L_MISSIONS_MISSIONS_OFFICE_+0", "@L_MISSIONS_MISSIONS_OFFICE_+2", mission_office_GetOfficeLabel())
 			else
 				StartHighPriorMusic(MUSIC_GAME_LOST)
@@ -110,17 +110,17 @@ function End()
 		-- ----------------
 		local ShowStats = 0
 		if Extinct then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", LastMemberID) == "S" then
 				ShowStats = 1
 			end
 		elseif Bankrupt then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_TOOMUCHDEBT_2_HEAD", "@L_TOOMUCHDEBT_2_BODY", GetID("Actor")) == "S" then
 				ShowStats = 1
 			end
 		else
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_WON)
+			f_StartHighPriorMusic(MUSIC_GAME_WON)
 			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_MISSIONS_MISSIONS_OFFICE_+0", "@L_MISSIONS_MISSIONS_OFFICE_+2", mission_office_GetOfficeLabel()) == "S" then
 				ShowStats = 1
 				Won = 1

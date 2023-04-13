@@ -37,6 +37,8 @@ Bugfixes:
 - Einer der Tische in der Taverne wurde nicht von Kunden benutzt.
 - Wenn man jemandem die Knochen brach, wurde beim Beweis das falsche Opfer angezeigt.
 - Man konnte die Minenwachen austricksen, indem man feindliche Aktionen unterbrach, womit man sie problemlos von der Mine weglocken konnte, um sie dann anschließend erneut zu überfallen.
+- Wenn ihr jemanden heiratet, der einen höheren Titel hat, erhaltet ihr nun auch dann den nächst höheren Titel, wenn ihr bereits über dem Titel "Gemeiner" seid.
+- Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.
@@ -52,4 +54,6 @@ Bugfixes (MegaMod):
 - Erhielt man eine Krankheit, so zeigte die Nachricht nicht den Namen der Krankheit an.
 - Öffentliche Gelder veruntreuen brachte kein Geld ein.
 - Die Pinte hatte ein falsches Upgrade.
+- Man konnte unendlich oft Bewusstlose ausrauben.
+- Man konnte kein Lösegeld verlangen.
 

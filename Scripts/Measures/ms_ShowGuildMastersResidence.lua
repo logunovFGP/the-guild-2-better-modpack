@@ -3,15 +3,11 @@
 -- -----------------------
 function Run()
 
-	BuildingGetCity("", "myCity")
+	if not BuildingGetCity("", "myCity") then
+		return
+	end
 	
-	if CityGetRandomBuilding("myCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "guildhouse") then
-		MsgBoxNoWait("dynasty", false,
-					"@L_GUILDHOUSE_MASTERLIST_HEAD_+0",
-					"@L_GUILDHOUSE_MASTERLIST_BODY_+3",
-					GetID("myCity"))
-		StopMeasure()
-	else
+	if not CityGetRandomBuilding("myCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "guildhouse") then
 		MsgBoxNoWait("dynasty", false,
 					"@L_GUILDHOUSE_MASTERLIST_HEAD_+0",
 					"@L_GUILDHOUSE_MASTERLIST_BODY_+2",

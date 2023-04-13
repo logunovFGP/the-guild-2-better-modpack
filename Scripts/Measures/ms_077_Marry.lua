@@ -147,7 +147,7 @@ function Run()
 				PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
 			end
 			
-			gameplayformulas_StartHighPriorMusic(MUSIC_MARRIAGE)
+			f_StartHighPriorMusic(MUSIC_MARRIAGE)
 
 			SetAvoidanceGroup("", "Destination")
 			CreateCutscene("default", "cutscene")
@@ -169,13 +169,14 @@ function Run()
 			ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
 			ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
 			
-			if not HasProperty("Destination", "CourtDiff") then			
-				CalculateCourtingDifficulty("", "Destination")
+			if not HasProperty("", "CourtingDiff") then			
+				gameplayformulas_CalcCourtingDifficulty("Destination", "")
 			end
 			
-			local Difficulty = (GetProperty("Destination", "CourtDiff") / 2)
-			xp_CourtingSuccess({"Owner","Destination"}, Difficulty, {0,0})
-			RemoveProperty("Destination", "CourtDiff")
+			local Difficulty = GetProperty("", "CourtingDiff")
+			xp_CourtingSuccess("Owner", Difficulty)
+			xp_CourtingSuccess("Destination", Difficulty)
+			RemoveProperty("", "CourtingDiff")
 	
 			MeasureSetNotRestartable()
 			RemoveProperty("Destination", "courted")
@@ -183,22 +184,37 @@ function Run()
 				DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), 24)
 				DynastyForceCalcDiplomacy("")
 				DynastyForceCalcDiplomacy("Destination")
+				-- add the new property
+				dyn_AddAlly("", "Destination")
+				
+				-- get a new title if the nob title is higher than yours
+				local MyTitle = GetNobilityTitle("") or 1
+				local SpouseTitle = GetNobilityTitle("Destination") or 1
+				
+				if MyTitle > 2 and SpouseTitle > MyTitle then
+					SetNobilityTitle("", (MyTitle + 1), true)
+				end
 			end
-	
+			
+			-- remember old dynastyID
+			local OldDyn = GetDynastyID("Destination")
+			SetProperty("Destination", "FamilyID", OldDyn)
+			
 			AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
 			AddImpact("Destination", "LoveLevel", 10, 24)
+			SetState("Destination", STATE_INLOVE, false)
 
-			if GetImpactValue("Destination","LoveLevel") >= 10 then
+			if GetImpactValue("Destination", "LoveLevel") >= 10 then -- you are irresistable!
 				MsgNewsNoWait("", "Destination", "", "schedule", -1,
 							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
 							"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
 			end
+			
 			SimMarry("", "Destination")	-- the destination is removed through this function
 
 		else
 		
-			MsgQuick("", "@L_MEASURE_WEDDING_FAILURE_+0",GetID(""), GetID("Destination"))
-
+			MsgQuick("", "@L_MEASURE_WEDDING_FAILURE_+0", GetID(""), GetID("Destination"))
 		end
 
 	--------------------------------

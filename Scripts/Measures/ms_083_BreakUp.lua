@@ -13,12 +13,8 @@ function Run()
 	
 	if SimGetCourtLover("", "CourtLover") then
 		SetState("CourtLover", STATE_INLOVE, false)
-		RemoveProperty("CourtLover", "CourtDiff")
+		RemoveProperty("", "CourtingDiff")
 		RemoveProperty("CourtLover", "courted")
-		SimReleaseCourtLover("")
-		return
-	elseif SimGetLiaison("", "Liaison") then
-		-- todo
 		SimReleaseCourtLover("")
 		return
 	end

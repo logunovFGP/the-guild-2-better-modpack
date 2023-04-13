@@ -48,7 +48,7 @@ function Run()
 	AlignTo("", "Destination")
 	AlignTo("Destination", "")
 			
-	gameplayformulas_StartHighPriorMusic(MUSIC_MARRIAGE)
+	f_StartHighPriorMusic(MUSIC_MARRIAGE)
 			
 	BuildingFindSimByProperty("Weddingchapel", "BUILDING_NPC", 11, "Priest")			
 	GetLocatorByName("Weddingchapel", "WeddingPriest", "PriestPos")
@@ -118,12 +118,13 @@ function Run()
 	ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
 	ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
 			
-	if not HasProperty("Destination", "CourtDiff") then			
-		CalculateCourtingDifficulty("", "Destination")
+	if not HasProperty("", "CourtingDiff") then			
+		gameplayformulas_CalcCourtingDifficulty("Destination", "")
 	end
 			
-	local Difficulty = GetProperty("Destination", "CourtDiff")
-	xp_CourtingSuccess({"","Destination"}, Difficulty, {1,1})
+	local Difficulty = GetProperty("", "CourtingDiff")
+	xp_CourtingSuccess("Owner", Difficulty, 1)
+	xp_CourtingSuccess("Destination", Difficulty, 1)
 			
 	Sleep(0.5)
 	BuildingGetInsideSimList("Weddingchapel", "GuestList")
@@ -246,16 +247,29 @@ function Run()
 	
 	MeasureSetNotRestartable()
 	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
-	RemoveProperty("Destination", "courted")
 			
 	if IsDynastySim("Destination") then
 		DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), 24)
 		DynastyForceCalcDiplomacy("")
 		DynastyForceCalcDiplomacy("Destination")
+		-- add the new property
+		dyn_AddAlly("", "Destination")
+		
+		-- get a new title if the nob title is higher than yours
+		local MyTitle = GetNobilityTitle("") or 1
+		local SpouseTitle = GetNobilityTitle("Destination") or 1
+				
+		if MyTitle > 2 and SpouseTitle > MyTitle then
+			SetNobilityTitle("", (MyTitle + 1), true)
+		end
 	end
 			
 	AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
 	AddImpact("Destination", "LoveLevel", 10, 24)
+	
+	-- remember old dynastyID
+	local OldDyn = GetDynastyID("Destination")
+	SetProperty("Destination", "FamilyID", OldDyn)	
 			
 	if GetImpactValue("Destination", "LoveLevel") >= 10 then
 		MsgNewsNoWait("", "Destination", "", "schedule", -1,
@@ -264,12 +278,14 @@ function Run()
 	end
 			
 	RemoveProperty("Destination", "Wedding")
+	RemoveProperty("Destination", "courted")
+	SetState("Destination", STATE_INLOVE, false)
 	RemoveProperty("Weddingchapel", "Wedding")
 	SimResetBehavior("Destination")
 	RemoveProperty("", "WeddingPaid")
-			
-	SimMarry("", "Destination")	-- the destination is removed through this function
 	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
+	
+	SimMarry("", "Destination")	-- the destination is removed through this function
 	StopMeasure()
 end
 
@@ -441,7 +457,7 @@ function VisitCeremony()
 		RemoveProperty("", "CeremonySeat")
 	end
 	
-	LogMessage(GetName("").." ist eingetroffen, Sitz wählen")
+	LogMessage(GetName("").." ist eingetroffen, Sitz wï¿½hlen")
 	if GetFreeLocatorByName("Weddingchapel", "Sit", MySeat, MySeat, "SitPos") then
 		LogMessage(GetName("").." hat seinen Sitz gefunden")
 		f_MoveTo("", "SitPos", GL_MOVESPEED_WALK)

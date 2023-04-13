@@ -38,6 +38,8 @@ Fixes:
 - One of the tables in the tavern was never used by customers.
 - If you broke someone's bones, the evidence would show the wrong victim.
 - You could lure mine guards away by cancelling hostile actions - they would leave the mine and you could continue to attack the mine.
+- When you marry someone above your title you will now gain the next higher title, even if you are above commoner.
+- You would generate evidence when you robbed unconcious persons even if you didn't manage to steal anything.
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.
@@ -55,4 +57,4 @@ Fixes (Modpack):
 - If you got a disease the message didn't show the name of the disease.
 - Embezzling public money always resulted in 0 coins.
 - The Divehouse had a wrong upgrade.
-
+- You could rob unconcious people infinitely.

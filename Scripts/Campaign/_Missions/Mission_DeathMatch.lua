@@ -85,14 +85,14 @@ function End()
 		-- ---------------
 		DynastyAvoidControl("Actor")
 		if Extinct then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			MsgBoxNoWait("Actor", nil, "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", LastMemberID)
 		elseif Bankrupt then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			MsgBoxNoWait("Actor", nil, "@L_TOOMUCHDEBT_2_HEAD", "@L_TOOMUCHDEBT_2_BODY", GetID("Actor"))
 		else
 			-- No need to check for other players because there are no other players left in deathmatch
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_WON)
+			f_StartHighPriorMusic(MUSIC_GAME_WON)
 			MsgBoxNoWait("Actor", nil, "@L_MISSIONS_SPECIAL_DEATHMATCH_+0", "@L_MISSIONS_MISSIONS_WIN_+1")
 		end
 		
@@ -103,17 +103,17 @@ function End()
 		-- ----------------
 		local ShowStats = 0
 		if Extinct then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", LastMemberID) == "S" then
 				ShowStats = 1
 			end
 		elseif Bankrupt then
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_LOST)
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_TOOMUCHDEBT_2_HEAD", "@L_TOOMUCHDEBT_2_BODY", GetID("Actor")) == "S" then
 				ShowStats = 1
 			end
 		else
-			gameplayformulas_StartHighPriorMusic(MUSIC_GAME_WON)
+			f_StartHighPriorMusic(MUSIC_GAME_WON)
 			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_MISSIONS_SPECIAL_DEATHMATCH_+0", "@L_MISSIONS_MISSIONS_WIN_+1") == "S" then
 				ShowStats = 1
 				Won = 1

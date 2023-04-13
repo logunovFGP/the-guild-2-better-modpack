@@ -33,7 +33,7 @@ function Run()
 	
 	local scenarioname = GetDatabaseValue("maps", mapid, "lordship")
 	local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+1"
-	local lordid = gameplayformulas_GetDatabaseIdByName("Lordship", scenarioname)
+	local lordid = f_GetDatabaseIdByName("Lordship", scenarioname)
 
 	local wuerdentrager = ""
 	local val

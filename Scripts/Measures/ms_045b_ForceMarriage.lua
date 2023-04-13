@@ -13,6 +13,7 @@ function Run()
 	end
 
 	if GetState("Destination", STATE_NPCFIGHTER) then
+		MsgQuick("", "@L_COURTLOVER_MSG_FAILED_QUICK")
 		return
 	end
 	

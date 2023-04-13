@@ -3,7 +3,7 @@ function GetPrivilegeList()
 end
 
 function TakeTitle()
-	gameplayformulas_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
+	f_StartHighPriorMusic(MUSIC_POSITIVE_EVENT)
 	chr_SetNobilityImpactList("TitleHolder", ps_landgraf_GetPrivilegeList())
 
 	local TitleLabel
