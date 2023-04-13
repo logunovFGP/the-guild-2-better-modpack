@@ -1100,7 +1100,7 @@ function CityCheckImportantBuilding(CityAlias, BuildingType, BuildingLevel)
 		end
 	elseif BuildingLevel == 2 then
 		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_IGNORE, "BuildingExists") then
-			CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_IGNORE, "BuildingExists")
+			CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_IGNORE, "BuildingExists")
 		end
 	elseif BuildingLevel == 3 then
 		CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_IGNORE, "BuildingExists")
@@ -1119,12 +1119,12 @@ function CityCheckImportantOwner(CityAlias, BuildingType, BuildingLevel)
 	if BuildingLevel == 1 then
 		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_HAS_DYNASTY, "BuildingExists") then
 			if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_HAS_DYNASTY, "BuildingExists") then
-				CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_HAS_DYNASTY, "BuildingExists")
+				CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_HAS_DYNASTY, "BuildingExists")
 			end
 		end
 	elseif BuildingLevel == 2 then
 		if not CityGetRandomBuilding(CityAlias, -1, BuildingType, 2, -1, FILTER_HAS_DYNASTY, "BuildingExists") then
-			CityGetRandomBuilding(CityAlias, -1, BuildingType, 1, -1, FILTER_HAS_DYNASTY, "BuildingExists")
+			CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_HAS_DYNASTY, "BuildingExists")
 		end
 	elseif BuildingLevel == 3 then
 		CityGetRandomBuilding(CityAlias, -1, BuildingType, 3, -1, FILTER_HAS_DYNASTY, "BuildingExists")
@@ -1216,4 +1216,79 @@ function CalcCourtingDifficulty(Destination, SimAlias)
 	
 	LogMessage("CourtingDiff between "..GetName(Destination).." and "..GetName(SimAlias).." is "..Diff)
 	SetProperty(SimAlias, "CourtingDiff", Diff)
+end
+
+function FindCourtingMeasure(SimAlias, CourtLover)
+	
+	local MeasureData= {
+					["StartDialog"] = 460,
+					["Flirt"] = 530,
+					["HugCharacter"] = 540,
+					["KissCharacter"] = 570,
+					["TakeABath"] = 1520,
+					["BewitchCharacter"] = 1530,
+					["MakeACompliment"] = 2310,
+					["InviteToDance"] = 2320
+					}
+	
+	local BestProgress = 0
+	local MeasureName = "none"
+	
+	local AvailableMeasures = { "StartDialog", "Flirt", "HugCharacter", "KissCharacter", "TakeABath", "BewitchCharacter", "InviteToDance", "MakeACompliment" }
+	local MeasureCount = 8
+	
+	-- check each entry and calculate favorgain / availability
+	for i=1, MeasureCount do
+		local Check = AvailableMeasures[i]
+		local Progress = 0
+		local MeasureID = MeasureData[Check] or 0
+		
+		if MeasureID > 0 then
+			Progress = gameplayformulas_GetCourtingProgress(SimAlias, CourtLover, MeasureID)
+				
+			-- check for tavern measures
+			if Check == "InviteToDance" then
+				if GetMoney(SimAlias) < 1000 then
+					Progress = 0
+				end
+			elseif Check == "TakeABath" then
+				if GetSettlement(SimAlias, "MyCity") then
+					if not gameplayformulas_CityCheckImportantOwner("MyCity", GL_BUILDING_TYPE_TAVERN, 2) then
+						Progress = 0
+					end
+				else
+					Progress = 0
+				end
+				
+				if GetMoney(SimAlias) < 1000 then
+					Progress = 0
+				end
+			elseif Check == "BewitchCharacter" then
+				if GetSettlement(SimAlias, "MyCity") then
+					if not gameplayformulas_CityCheckImportantOwner("MyCity", GL_BUILDING_TYPE_TAVERN, 3) then
+						Progress = 0
+					end
+				else
+					Progress = 0
+				end
+				
+				if GetMoney(SimAlias) < 1000 then
+					Progress = 0
+				end
+			end
+			
+			-- cooldown?
+			if GetMeasureRepeat(SimAlias, Check) > 0 then
+				Progress = 0
+			end
+			
+			-- best progress?
+			if Progress > BestProgress then
+				MeasureName = Check
+				BestProgress = Progress
+			end
+		end
+	end
+	
+	return MeasureName
 end
