@@ -1221,14 +1221,14 @@ end
 function FindCourtingMeasure(SimAlias, CourtLover)
 	
 	local MeasureData= {
-					["StartDialog"] = 460,
-					["Flirt"] = 530,
-					["HugCharacter"] = 540,
-					["KissCharacter"] = 570,
-					["TakeABath"] = 1520,
-					["BewitchCharacter"] = 1530,
-					["MakeACompliment"] = 2310,
-					["InviteToDance"] = 2320
+					["StartDialog"] = { measureID = 460, minFavor = GL_STARTDIALOG_MINFAVOR },
+					["Flirt"] = { measureID = 530, minFavor = GL_FLIRT_MINFAVOR },
+					["HugCharacter"] = { measureID = 540, minFavor = GL_HUG_MINFAVOR },
+					["KissCharacter"] = { measureID = 570, minFavor = GL_KISS_MINFAVOR },
+					["TakeABath"] = { measureID = 1520, minFavor = GL_BATH_MINFAVOR },
+					["BewitchCharacter"] = { measureID = 1530, minFavor = GL_BEWITCH_MINFAVOR },
+					["MakeACompliment"] = { measureID = 2310, minFavor = GL_COMPLIMENT_MINFAVOR },
+					["InviteToDance"] = { measureID = 2320, minFavor = GL_DANCE_MINFAVOR }
 					}
 	
 	local BestProgress = 0
@@ -1241,7 +1241,7 @@ function FindCourtingMeasure(SimAlias, CourtLover)
 	for i=1, MeasureCount do
 		local Check = AvailableMeasures[i]
 		local Progress = 0
-		local MeasureID = MeasureData[Check] or 0
+		local MeasureID = MeasureData[Check].measureID or 0
 		
 		if MeasureID > 0 then
 			Progress = gameplayformulas_GetCourtingProgress(SimAlias, CourtLover, MeasureID)
@@ -1279,6 +1279,12 @@ function FindCourtingMeasure(SimAlias, CourtLover)
 			
 			-- cooldown?
 			if GetMeasureRepeat(SimAlias, Check) > 0 then
+				Progress = 0
+			end
+			
+			-- minfavor?
+			local CheckFavor = MeasureData[Check].minFavor or 50
+			if GetFavorToSim(SimAlias, CourtLover) < CheckFavor then
 				Progress = 0
 			end
 			
