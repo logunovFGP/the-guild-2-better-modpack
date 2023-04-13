@@ -79,9 +79,9 @@ function Run()
 	
 	ms_048_hireemployeebuildingrandom_DecideYou()
 	
-	if BuildingGetType("") == 2 then
+	if BuildingGetType("") == GL_BUILDING_TYPE_RESIDENCE then
 		ms_048_hireemployeebuildingrandom_CheckSoeldner("", "RandWorker")
-	elseif BuildingGetType("") == 111 then
+	elseif BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
 		ms_048_hireemployeebuildingrandom_CheckLeibwache("RandWorker")
 	end	
 end

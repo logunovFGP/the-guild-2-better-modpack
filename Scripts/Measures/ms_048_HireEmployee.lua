@@ -64,15 +64,15 @@ function Run()
 		end
 	end
 
-	if BuildingGetType("Destination") == 2 then
+	if BuildingGetType("Destination") == GL_BUILDING_TYPE_RESIDENCE then
 		ms_048_hireemployee_CheckSoeldner()
-	elseif BuildingGetType("Destination") == 111 then
+	elseif BuildingGetType("Destination") == GL_BUILDING_TYPE_ESTATE then
 		ms_048_hireemployee_CheckLeibwache()
 	end	
 	
 	MoveSetActivity("")
 	chr_CalculateBuildingBonus("", "Destination", "hire")
-	CreateScriptcall( "GiveBack", 0.001, "Measures/ms_048_HireEmployee.lua", "GiveXPBack", "", "Destination", XP) -- use scriptcall, because this function is stopped after SimHire	
+	CreateScriptcall( "GiveBack", 0.001, "Measures/ms_048_HireEmployee.lua", "GiveXPBack", "", "Destination", XP) -- use scriptcall, because Destination is lost after SimHire	
 
 	local	Error = SimHire("", "Destination")
 	if Error~="" then
@@ -80,18 +80,7 @@ function Run()
 		return
 	else
 		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
-		if BuildingHasUpgrade("Destination", "CrossedAxes") == true then
-			chr_SpendMoney("BOwner", 4900, "LaborHansel")
-		elseif BuildingHasUpgrade("Destination", "HarkingHorn") then
-			chr_SpendMoney("BOwner", 2400, "LaborHansel")
-		end
-		
-		if BuildingGetType("Destination") == GL_BUILDING_TYPE_ESTATE then
-			chr_SpendMoney("BOwner", 4900, "LaborHansel")
-		end
-
 	end
-	
 end
 
 function CheckSoeldner()
@@ -118,5 +107,21 @@ end
 function GiveXPBack(params)
 	if SimGetLevel("") == 1 then  -- sometimes the level is not reduced to 1
 		IncrementXPQuiet("", params) -- after hiring, the sim looses all his XP, so we give it back
+	end
+	
+	-- pay extra money if needed
+	if AliasExists("Destination") and IsType("Destination", "Building") then
+		if BuildingGetOwner("Destination", "BOwner") then
+			
+			if BuildingHasUpgrade("Destination", "CrossedAxes") == true then
+				chr_SpendMoney("BOwner", 4900, "LaborHansel")
+			elseif BuildingHasUpgrade("Destination", "HarkingHorn") then
+				chr_SpendMoney("BOwner", 2400, "LaborHansel")
+			end
+				
+			if BuildingGetType("Destination") == GL_BUILDING_TYPE_ESTATE then
+				chr_SpendMoney("BOwner", 4900, "LaborHansel")
+			end
+		end
 	end
 end
