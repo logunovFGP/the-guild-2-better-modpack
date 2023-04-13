@@ -457,7 +457,7 @@ function VisitCeremony()
 		RemoveProperty("", "CeremonySeat")
 	end
 	
-	LogMessage(GetName("").." ist eingetroffen, Sitz wählen")
+	LogMessage(GetName("").." ist eingetroffen, Sitz wï¿½hlen")
 	if GetFreeLocatorByName("Weddingchapel", "Sit", MySeat, MySeat, "SitPos") then
 		LogMessage(GetName("").." hat seinen Sitz gefunden")
 		f_MoveTo("", "SitPos", GL_MOVESPEED_WALK)

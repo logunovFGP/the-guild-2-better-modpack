@@ -443,7 +443,6 @@ function SitDown()
 				local GuestCount = GetProperty("Destination", "Guests") or 0
 				
 				if LingerLevel == 1 then -- lingerplace with fire
-					-- locators: campfire, idle_Sit1-Sit6, idle_SitGround1-3, idle_Stand1-4, Entry1
 					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 6, "SitPos") then
 						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
 						Stance = 1
@@ -470,87 +469,39 @@ function SitDown()
 						return
 					end
 				
-				elseif LingerLevel == 2 then -- lingerplace crates
-					-- locators: idle_Sit1-3, idle_SitGround1-2, idle_Stand1-4, Entry1
-					-- locators: campfire, idle_Sit1-Sit6, idle_SitGround1-3, idle_Stand1-4, Entry1
-					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 3, "SitPos") then
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						Stance = 1
-					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 3, "SitPos") then
-						Stance = 0
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
-					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
-						Stance = 2
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
-					else
+				elseif LingerLevel ~= 1 then -- lingerplace crates
+					local list =
+					{
+						{3,3,4},
+						{2,2,4},
+						{2,2,4},
+						{5,3,5}
+					}
+
+					local subList =
+					{
+						{"Sit","SitGround","Stand"},
+						{GL_STANCE_SITBENCH,GL_STANCE_SITGROUND,GL_STANCE_STAND},						
+						{1,0,2}
+					}
+
+					local data = list[LingerLevel-1]							
+					local found = false
+
+					for i = 1,3 do
+						if GetFreeLocatorByName("Destination", "idle_"..subList[1][i], 1, data[i], "SitPos") then
+							f_BeginUseLocator("", "SitPos", subList[2][i], true)
+							SetProperty("Destination", "Guests", GuestCount)
+							GuestCount = GuestCount + 1
+							Stance = subList[3][i]
+							found = true
+						end
+					end
+
+					if not found then
 						return
 					end
-				elseif LingerLevel == 3 then -- lingerplace bank
-					-- locators: idle_Sit1-2, idle_SitGround1-2, idle_Stand1-4, Entry1
-					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 2, "SitPos") then
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						Stance = 1
-					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 2, "SitPos") then
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						Stance = 0
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
-					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						Stance = 2
-						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
-					else
-						return
-					end
-				elseif LingerLevel == 4 then -- lingerplace barrel
-					-- locators: idle_Sit1-2, idle_SitGround1-2, idle_Stand1-4, Entry
-					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 2, "SitPos") then
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						Stance = 1
-					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 2, "SitPos") then
-						Stance = 0
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
-					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 4, "SitPos") then
-						Stance = 2
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
-					else
-						return
-					end
-				elseif LingerLevel == 5 then -- lingerplace statue
-					-- locators: idle_Sit1-5, idle_SitGround1-3, idle_Stand1-5, Entry1
-					if GetFreeLocatorByName("Destination", "idle_Sit", 1, 5, "SitPos") then
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						Stance = 1
-					elseif GetFreeLocatorByName("Destination", "idle_SitGround", 1, 3, "SitPos") then
-						Stance = 0
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						f_BeginUseLocator("", "SitPos", GL_STANCE_SITGROUND, true)
-					elseif GetFreeLocatorByName("Destination", "idle_Stand", 1, 5, "SitPos") then
-						Stance = 2
-						GuestCount = GuestCount + 1
-						SetProperty("Destination", "Guests", GuestCount)
-						f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
-					else
-						return
-					end
+
 				end
 					
 				local EndTime = GetGametime()+2
@@ -683,7 +634,7 @@ function CollectWater()
 			Sleep(2)
 			if (GetImpactValue("Destination","polluted")>0) then
 				if Rand(100)>70 then
-					diseases_giveSickness("Pox","",true)
+					Disease.infectSim("","Pox")
 				else
 					diseases_Fever("",true)
 				end
@@ -741,23 +692,9 @@ function BuySomethingAtTheMarket(art)
 					    SatisfyNeed("",7,0.5)
 					end
 				
-				local Choice = Rand(6)
-				local Ware
-				if Choice == 0 then
-					Ware = "Handheld_Device/ANIM_holzscheite.nif"
-				elseif Choice == 1 then
-					Ware = "Handheld_Device/ANIM_Boxvegetable.nif"
-				elseif Choice == 2 then
-					Ware = "Handheld_Device/ANIM_Breadbasket.nif"
-				elseif Choice == 3 then
-					Ware = "Handheld_Device/ANIM_Barrel.nif"
-				elseif Choice == 4 then
-				    Ware = "Handheld_Device/ANIM_Bottlebox.nif"
-				else
-				    Ware = "Handheld_Device/ANIM_Tailorbasket.nif"
-				end
+				local list = {"holzscheite","Boxvegetable","Breadbasket","Barrel","Bottlebox","Tailorbasket"}
 				PlaySound3DVariation("","Effects/digging_box",1)
-				CarryObject("",Ware,false)	
+				CarryObject("","ANIM_"..list[Rand(6)+1]..".nif",false)	
 				if not f_MoveTo("", "HomeBuilding") then
 				    MoveSetActivity("")
 				    CarryObject("","",false)
@@ -851,7 +788,7 @@ function Illness()
 		local ItemToBuy
 		if GetImpactValue("","Caries")==1 then
 			ItemToBuy = "HerbTea" --buy herbtea
-		elseif  GetImpactValue("","Fever")==1 or GetImpactValue("","Cold")==1 then
+		elseif GetImpactValue("","Fever")==1 or GetImpactValue("","Cold")==1 then
 			ItemToBuy = "Blanket" --or blanket
 		else
 			ItemToBuy = "Soap" -- or soap
@@ -865,12 +802,11 @@ function Illness()
 		PlayAnimation("", "talk")
 		Sleep(Rand(5)+2)
 		if Rand(100) > 60 then
-			if GetImpactValue("","Cold")==1 then
-				diseases_giveSickness("Cold","",false)
-			elseif GetImpactValue("","Caries")==1 then
-				diseases_giveSickness("Caries","",false)
-			elseif GetImpactValue("","BurnWound")==1 then
-				diseases_giveSickness("BurnWound","",false)
+			local list = {"Cold","Caries","BurnWound"}
+			for i = 1,3 do
+				if GetImpactValue("",list[i])==1 then
+					Disease.cureSim("",list[i])
+				end
 			end
 		end
 		idlelib_GoHome()
@@ -1035,6 +971,7 @@ function GoToTavern()
 		else
 	    verweile = Rand(6)+2
 		end
+
 		if HasProperty("Destination","DanceShow") then
 	    verweile = verweile + 3
 		end
@@ -1387,11 +1324,20 @@ function VisitDoc(HospitalID)
 	end
 	
 	local MinLevel = 1
-	
-	if GetImpactValue("", "Influenza") > 0 or GetImpactValue("", "Pox") > 0 or  GetImpactValue("", "Pneumonia") > 0 then
-		MinLevel = 2
-	elseif GetImpactValue("", "BurnWound") > 0 or GetImpactValue("", "Blackdeath") > 0 or GetImpactValue("", "Caries") > 0 or GetImpactValue("", "Fracture") > 0 then
-		MinLevel = 3
+	local impactLevels = {
+	    {"Influenza",2},
+	    {"Pox",2},
+	    {"Pneumonia",2},
+	    {"BurnWound",3},
+	    {"Blackdeath",3},
+	    {"Caries",3},
+	    {"Fracture",3},
+	}
+
+	for i = 1,7 do
+		if GetImpactValue("", impactLevels[i][1]) > 0 then
+			MinLevel = impactLevels[i][2]
+		end
 	end
 
 	if not AliasExists("Destination") then	
@@ -1584,13 +1530,6 @@ function GoToDivehouse()
 					    GetFreeLocatorByName("Destination", "Sit", 5, 7, "SitPos")
 					else
 					    GetFreeLocatorByName("Destination", "Sit", 8, 11, "SitPos")
-	
-	
-	
-	
-	
-	
-	
 					end
 		        	if not f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true) then
 			        	return
@@ -2048,6 +1987,7 @@ function ReturnACredit()
 				RemoveProperty("", "TimeBank")
 			end
 			Sleep(playTime-1)
+
 			f_ExitCurrentBuilding("")
 
 			idlelib_GoToRandomPosition()
@@ -2125,34 +2065,33 @@ function BeADiceChamp()
 				    f_Stroll("",300,10)
 				    return
 			    end
-			  if not f_BeginUseLocator("Owner","StandPos",GL_STANCE_STAND,true) then
+			  	if not f_BeginUseLocator("Owner","StandPos",GL_STANCE_STAND,true) then
 					return
 				else
-	        Sleep(1)
-          PlaySound3D("","measures/shake_dices/shake_dices+0.wav", 1.0)
-          local wfallen = PlayAnimationNoWait("","manipulate_middle_low_r")
-          Sleep(wfallen-1)
-          PlaySound3D("","measures/throw_dices/throw_dices+0.wav", 1.0)
+				    Sleep(1)
+			        PlaySound3D("","measures/shake_dices/shake_dices+0.wav", 1.0)
+			        local wfallen = PlayAnimationNoWait("","manipulate_middle_low_r")
+			        Sleep(wfallen-1)
+			        PlaySound3D("","measures/throw_dices/throw_dices+0.wav", 1.0)
 					CreditMoney("Destination",Rand(20)+5,"tip")
 					local newwinner = GetName("")
 					local bonus
 					if HasProperty("Destination","BestDicePlayer") then
-					  local altpoint = GetProperty("Destination","BestDicePott")
+						local altpoint = GetProperty("Destination","BestDicePott")
 						bonus = { 2, 5, 10 }
 						local neuPott = altpoint + ((altpoint / 100) * bonus[Rand(3)+1])
 						RemoveProperty("Destination","BestDicePlayer")
 						RemoveProperty("Destination","BestDicePott")
-
-	        	SetProperty("Destination","BestDicePlayer",newwinner)
-		        SetProperty("Destination","BestDicePott",neuPott)
+			        	SetProperty("Destination","BestDicePlayer",newwinner)
+				        SetProperty("Destination","BestDicePott",neuPott)
 					else
 						bonus = {50,300,700}
 						local newpoints = Rand(300) + bonus[Rand(3)+1]
-	          SetProperty("Destination","BestDicePlayer",newwinner)
-		        SetProperty("Destination","BestDicePott",newpoints)
-          end
-					f_EndUseLocator("","StandPos",GL_STANCE_STAND)
-			  end
+			          	SetProperty("Destination","BestDicePlayer",newwinner)
+				        SetProperty("Destination","BestDicePott",newpoints)
+          			end
+				f_EndUseLocator("","StandPos",GL_STANCE_STAND)
+				end
 			end			
 		end
 	end
@@ -2170,37 +2109,37 @@ function LeibwacheIdle(Workbuilding)
 			    RemoveAlias("WachPos")
 			  	return
 		    end
-			  if Rand(2) == 0 then
+			    if Rand(2) == 0 then
 					Sleep(10) 
-			  else
+			    else
 					PlayAnimationNoWait("","sentinel_idle")
-			  end
+			    end
 			else
 				f_Stroll("",300,10)
 			end
-		else	
+		else
 	    if GetFreeLocatorByName("WorkingPlace", "Walledge",1,4, "WachPos") then
 		  	if not f_BeginUseLocator("", "WachPos", GL_STANCE_STAND, true) then
 			  	RemoveAlias("WachPos")
 			    return
 		    end
-			  local WhatToDo2 = Rand(3)
-			  if WhatToDo2 == 0 then
-					Sleep(10) 
-			  elseif WhatToDo2 == 1 then
-				  PlayAnimationNoWait("","sentinel_idle")
-			  else
-				  CarryObject("","",false)
-		      CarryObject("","Handheld_Device/ANIM_telescope.nif",false)
-		      PlayAnimation("","scout_object")
-		      CarryObject("","",false)					
-			  end
+			local WhatToDo2 = Rand(3)
+			if WhatToDo2 == 0 then
+				Sleep(10) 
+			elseif WhatToDo2 == 1 then
+				PlayAnimationNoWait("","sentinel_idle")
 			else
-			  f_Stroll("",300,10)
-		  end
+				CarryObject("","",false)
+			    CarryObject("","Handheld_Device/ANIM_telescope.nif",false)
+			    PlayAnimation("","scout_object")
+			    CarryObject("","",false)					
+			end
+		else
+			f_Stroll("",300,10)
+		end
     end
     Sleep(3)
-		f_EndUseLocator("", "WachPos", GL_STANCE_STAND)
+	f_EndUseLocator("", "WachPos", GL_STANCE_STAND)
 	end
 
 end

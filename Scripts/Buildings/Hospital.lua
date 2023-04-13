@@ -7,45 +7,27 @@ end
 
 function Setup()
 	bld_HandleSetup("")
-	-- create ambient animals
-	if Rand(2)==0 then
-		worldambient_CreateAnimal("Cat", "", 1)
-	else
-		worldambient_CreateAnimal("Dog", "", 1)
-	end
+	local list = {"Cat","Dog"}
+	worldambient_CreateAnimal(list[Rand(2)+1], "", 1)
 end
 
 function UpdateBalance(Alias)
-	local RoundIncome
-	local LastIncome
-	local MedicalIncome
-	local QuackIncome
-	local SoapIncome
-	
-	if HasProperty(Alias, "RoundIncome") then
-		RoundIncome = GetProperty(Alias, "RoundIncome")
+	local list = {"RoundIncome","MedicalIncome","QuackIncome","SoapIncome",0,0,0,0}
+
+	for i = 1, 4 do 
+		if HasProperty(Alias, list[i]) then
+			list[i+4] = GetProperty(Alias, list[i])
+		end
+
+		if not i == 1 then
+			SetProperty(Alias, "Last"..list[i], list[i+4])
+		else
+			SetProperty(Alias, "LastIncome", list[5])
+		end
+
+		SetProperty(Alias, list[i], 0)
 	end
-	
-	if HasProperty(Alias, "MedicalIncome") then
-		MedicalIncome = GetProperty(Alias, "MedicalIncome")
-	end
-	
-	if HasProperty(Alias, "QuackIncome") then
-		QuackIncome = GetProperty(Alias, "QuackIncome")
-	end
-	
-	if HasProperty(Alias, "SoapIncome") then
-		SoapIncome = GetProperty(Alias, "SoapIncome")
-	end
-	
-	SetProperty(Alias, "LastIncome", RoundIncome)
-	SetProperty(Alias, "RoundIncome", 0)
-	SetProperty(Alias, "LastMedicalIncome",MedicalIncome)
-	SetProperty(Alias, "MedicalIncome", 0)
-	SetProperty(Alias, "LastQuackIncome",QuackIncome)
-	SetProperty(Alias, "QuackIncome", 0)
-	SetProperty(Alias, "LastSoapIncome", SoapIncome)
-	SetProperty(Alias, "SoapIncome", 0)
+
 end
 
 function CheckForStuckedMedics(Alias)

@@ -17,12 +17,12 @@ function Run()
 	  {infected = 0, string = "Caries", 	ItemCnt = 0}
 	}
 
-	for i = 1,9 do
-	  local index = diseases_infect[i]
-	  index.ItemCnt = GetItemCount("", diseases[index.string].medicine)
-	  if HasProperty("City",index.string.."Infected") then
-		index.infected = GetProperty("City",index.string.."Infected")
-	  end
+	for k, v in diseases_GetDiseaseIterator() do
+		local index = diseases_infect[k]
+		index.ItemCnt = GetItemCount("", v:getMedicine())
+			if HasProperty("City",(v:getName()).."Infected") then
+				index.infected = GetProperty("City",index.string.."Infected")
+			end
 	end
 
 	local index = diseases_infect

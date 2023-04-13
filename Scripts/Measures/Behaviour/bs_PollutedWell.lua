@@ -17,9 +17,9 @@ function Run()
 					local zuf = Rand(100) +1
 					
 					if zuf>90 then
-						diseases_giveSickness("Influenza","", true)
+						Disease.infectSim("","Influenza")
 					else
-						diseases_giveSickness("Cold","", true)
+						Disease.infectSim("","Cold")
 					end
 				end
 			end

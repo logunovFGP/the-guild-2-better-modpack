@@ -104,7 +104,7 @@ function Run()
 			
 			Sleep(1)
 			MeasureSetNotRestartable()
-			SetState("", STATE_DUEL, true) -- no measure cancel
+			SetState("", STATE_DUEL, true) -- no measure cancel!
 			
 			-- Dialog
 			MsgSay("SickSim0", "@L_MEDICUS_TREATMENT_PATIENT")
@@ -113,34 +113,27 @@ function Run()
 			PlayAnimation("", "manipulate_middle_twohand")
 			local Costs = 50
 			local Cured = false
-			local Disease = false
+			local Illness = false
 			local CanHeal = false
 			local Medicine, Label, FavorMod
-			local list = {"Sprain","Cold","Influenza","Pox","BurnWound","Pneumonia","Blackdeath","Fracture","Caries"}
+
 			local label
 			local sickness = 0
-
-			for i = 1,9 do 
-			  label = list[i]
-			  LogMessage('Hospital: An attempt to GetImpactValue with ["'..label..'"] has been executed!')
-			  LogMessage('GetImpactValue results: '..GetImpactValue("SickSim0", label))
-			  if GetImpactValue("SickSim0", list[i]) == 1 then
-			  	sickness = list[i]
-			  	LogMessage(list[i]..' has been detected!')
+			
+			for k, v in diseases_GetDiseaseIterator() do
+			  label = v:getName()
+			  if GetImpactValue("SickSim0", label) and GetImpactValue("SickSim0", label) == 1 then
+			  	sickness = v
+			  	LogMessage(label..' has been detected!')
 			  	break
 			  end
 			end
 
 			if sickness ~= 0 then
-			  	LogMessage('Hospital: value label set to '..label)
-			    Disease = label
-			    LogMessage('Hospital: value Disease set to '..Disease)
-			    Medicine = diseases[label].medicine
-			    LogMessage('Hospital: Looking for some '..Medicine..'(s)')
-			    FavorMod = diseases[label].favor
-			    LogMessage('Hospital: FavorMod is set to '..FavorMod)
-			    Label = string.upper(label)
-			    LogMessage('Hospital: UPPER LABEL is '..Label)
+			    Illness = true
+			    Medicine = sickness:getMedicine()
+			    FavorMod = sickness:getFavor()
+			    Label = string.upper(sickness:getName())
 			  elseif sickness == 0 and (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
 			  	Medicine = "Bandage"
 			  	FavorMod = GL_FAVOR_MOD_SMALL
@@ -154,10 +147,10 @@ function Run()
 
 			if Cured == false then
 				-- TREATMENT
-				if Disease == false then -- special case HP LOSS
+				if Illness == false then -- special case HP LOSS
 					Costs = GetMaxHP("SickSim0") - GetHP("SickSim0")
 				else
-					Costs = diseases_GetTreatmentCost(Disease)
+					Costs = sickness:getCost()
 				end
 				
 				local NumOfMeds = 0
@@ -187,15 +180,13 @@ function Run()
 							CreditMoney("Hospital", Costs, "Offering")
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
-							if Disease ~= false then 
-								--local callCore = diseases[Disease].callback
-								--callCore("SickSim0",false)
-								diseases_giveSickness(Disease,"SickSim0",false)
+							if Illness ~= false then 
+								Disease.cureSim("SickSim0",sickness:getName())
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
-								  if Disease == sublist[i] then
+								  if sickness.getName() == sublist[i] then
 								  	ms_medicaltreatment_LayToBed("","SickSim0",BedNumber)
-								  	  if Disease == "Blackdeath" then
+								  	  if sickness.getName() == "Blackdeath" then
 								  	  	AddImpact("SickSim0","PlagueImmunity", 1, 120)
 								  	  end
 								  end 
@@ -251,9 +242,9 @@ function Run()
 						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
-						if Disease ~= false then
-						  diseases_giveSickness(Disease,"SickSim0", false)
-						    if not list[Disease] == nil then
+						if Illness ~= false then
+							Disease.cureSim("SickSim0",sickness:getName())
+						    if not list[sickness.getName()] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end
 						else

@@ -2,8 +2,22 @@
 --- Main Body
 ----------------------------------------------------------------------------------
 -- Setup / Termin / Einladung
-function Start()
 
+function returnMembers()
+	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"CutsceneAlias")
+	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"trial_destination_ID")
+	GetAliasByID(GetProperty("CutsceneAlias","NextCutsceneID"),"CutsceneAlias")
+	local list = { {"judge","accuser","accused","assessor1","assessor2"}, {} }
+
+	for i = 1, 5 do
+		CutsceneGetData(GetProperty("Townhall","NextCutsceneID"),list[1][i])
+		list[2][i] = GetData(list[1][i])
+	end
+
+  return list[2]
+end --eed
+
+function Start()
 	-- get trial roles
 	CityAssignTrialRoles("", "settlement")
 	
@@ -37,9 +51,33 @@ function Start()
 	end
 	
 	local TrialCount = GetProperty("courtbuilding", "UpcomingTrials")
-	
+
+	local debug = debugTrial
+
+	if debug then 
+
+		trialData.debug()
+
+		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", math.mod(GetGametime(),24), 0, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=4, mintimeinfuture=6
+		CityGetRandomBuilding("Settlement",GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"CouncilBuilding")
+		GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos")
+		BuildingGetRoom("CouncilBuilding", "Judge", "Room")
+
+		local locations = {["judge"]="JudgeChairPos",["accuser"]="AccuserStandPos",["accused"]="AccusedStandPos",["assessor1"]="RightAssessorChairPos",["assessor2"]="LeftAssessorChairPos"}
+		LogMessage("Teleporting the usual trial participants to the Town Hall before sorting them out.")
+		for i = 1,5 do
+			SimBeamMeUp(trialData.list[i], "destpos", false)
+			if trialData.Attending[i] ~= nil then 
+				SimBeamMeUp(trialData.Attending[i], "Room", false) 
+				local LocatorNameTemp = locations[trialData.Attending[i]]
+				GetLocatorByName("courtbuilding", LocatorNameTemp, LocatorNameTemp)
+				SimBeamMeUp(trialData.Attending[i], LocatorNameTemp, false)
+				LogMessage("Our "..trialData.Attending[i].." was teleported to the Court Room.")
+			end
+		end
+
 	-- No trials ahead, take the first slot
-	if TrialCount == 0 then
+	elseif TrialCount == 0 then
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", 4, 6, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=4, mintimeinfuture=6
 	-- else take the second slot
 	elseif TrialCount == 1 then
@@ -52,8 +90,7 @@ function Start()
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", 11, 6, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=11, mintimeinfuture=6
 	end
 	
-	SetProperty("courtbuilding", "UpcomingTrials", TrialCount+1)
-	
+
 	
 	local EventTime = SettlementEventGetTime("trial_date")
 	local EventTimeInvite = EventTime/60
@@ -290,7 +327,7 @@ function EverybodySitDown()
 	-- sit down
 	local wait_cnt = 0
 	wait_cnt = wait_cnt + trial_SitAt("assessor2", "LeftAssessorChairPos")
-	wait_cnt = wait_cnt + trial_SitAt("assessor1"," RightAssessorChairPos")
+	wait_cnt = wait_cnt + trial_SitAt("assessor1", "RightAssessorChairPos")
 	wait_cnt = wait_cnt + trial_SitAt("judge", "JudgeChairPos")
 	wait_cnt = wait_cnt + trial_StandAt("accuser", "AccuserStandPos")
 	wait_cnt = wait_cnt + trial_StandAt("accused", "AccusedStandPos")
@@ -346,8 +383,6 @@ function Go()
 		Sleep(time - 7)
 		CarryObject("judge", "", false)
 		Sleep(0.5)
---		PlayAnimationNoWait("judge", "talk_sit_short")
---		MsgSay("judge", "@L_LAWSUIT_3_INTRO_START")
 	else
 		-- assessor starts
 		MsgSay("assessor1","@L_LAWSUIT_3_INTRO_START")
@@ -392,51 +427,62 @@ function Go()
 
 	--accused has immunity
 	if GetImpactValue("accused","HaveImmunity") == 1 and GetImpactValue("accused","HasRepealedImmunity") < 1 then
-		feedback_MessagePolitics("accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("accused","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
-		feedback_MessagePolitics("assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
+		local list = {"accuser","accused","judge","assessor1","assessor2"}
+		for i = 1, 5 do
+			feedback_MessagePolitics(list[i],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_RICHTER_MESSAGES_+0","@L_NEWSTUFF_TRIALCANCELLED_IMMUNITY_+0", GetID("accused"))
+		end
 		BuildingFindSimByProperty("courtbuilding","BUILDING_NPC", 2,"guard")
 		MsgSay("guard","@L_LAWSUIT_1_INSTALL_USHER_IMMUNITY_+0", GetID("accused"))
 		MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_CLOSE_+0")
 		EndCutscene("")
 	end
 
-	--accuser is lost and jailed somewhere
-	if trial_SimIsPresent("accuser") == 0 and GetState("accuser", STATE_HIJACKED) then
-		PlayAnimationNoWait("judge", "sit_talk")
-		MsgSay("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER")
-		feedback_MessagePolitics("accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+0",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+1", GetID("accuser"), GetID("accused"))
-		feedback_MessagePolitics("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+3", GetID("judge"), GetID("accuser"), GetID("accused"))
-		feedback_MessagePolitics("accused","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+3", GetID("accused"), GetID("accuser"), GetID("accused"))
-		feedback_MessagePolitics("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+3", GetID("assessor1"), GetID("accuser"), GetID("accused"))
-		feedback_MessagePolitics("assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_KLAEGER_MESSAGES_+3", GetID("assessor2"), GetID("accuser"), GetID("accused"))
-		EndCutscene("")
+	local list = {"accuser","accused","KLAEGER","ANGEKLAGTER","judge","assessor1","assessor2"}
+	local callbacks = 
+	{
+		{
+			{GetID("accuser"), GetID("accused"), nil},
+			{GetID("judge"), GetID("accuser"), GetID("accused")},
+			{GetID("assessor1"), GetID("accuser"), GetID("accused")},
+			{GetID("assessor2"), GetID("accuser"), GetID("accused")},
+			{GetID("accused"), GetID("accuser"), GetID("accused")}
+		},
+		{
+			{GetID("accused"), nil, nil},
+			{GetID("accused"), nil, nil},
+			{GetID("accused"), nil, nil},
+			{GetID("accused"), nil, nil},
+			{GetID("accused"), nil, nil}
+		}
+	}
+	for i = 1, 2 do
+		LogMessage("RUNNING")
+		if trial_SimIsPresent(list[i]) == 0 and GetState(list[i], STATE_HIJACKED) then
+			local newlist = helpfuncs_diff({"judge","assessor1","assessor2","accuser","accused"},list[i])
+			LogMessage("newlist="..newlist)
+
+			PlayAnimationNoWait("judge", "sit_talk")
+			MsgSay("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2])
+
+			feedback_MessagePolitics(list[i],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+0",
+			"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+1", callbacks[i][1][1], callbacks[i][1][2])
+			local newlist = {"judge","assessor1","assessor2"}
+
+			for dest = 5, 7 do 
+				feedback_MessagePolitics(list[dest],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+2",
+				"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+3", callbacks[i][2][1], callbacks[i][2][2], callbacks[i][2][3])
+			end
+
+			local newlist = helpfuncs_diff({"accuser","accused"},list[i])
+			LogMessage("newlist="..newlist)
+
+			feedback_MessagePolitics(newlist[1],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+2",
+			"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+3", callbacks[i][5][1], callbacks[i][5][2], callbacks[i][5][3])
+
+			EndCutscene("")
+		end
 	end
-	
-	--accused is lost and jailed somewhere
-	if trial_SimIsPresent("accused") == 0 and GetState("accused", STATE_HIJACKED) then
-		PlayAnimationNoWait("judge", "sit_talk")
-		MsgSay("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER")
-		feedback_MessagePolitics("accused","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+0",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+1", GetID("accused"))
-		feedback_MessagePolitics("judge","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+3", GetID("accused"))
-		feedback_MessagePolitics("accuser","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+3", GetID("accused"))
-		feedback_MessagePolitics("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+3", GetID("accused"))
-		feedback_MessagePolitics("assessor2","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+2",
-						"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_ANGEKLAGTER_MESSAGES_+3", GetID("accused"))
-		EndCutscene("")
-	end
-	
+
 	--judge is not in here
 	if trial_SimIsPresent("judge")==0 then
 		MsgSay("assessor1","@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_RICHTER", GetID("judge"), fine)
@@ -480,7 +526,7 @@ function Go()
 		if (RawPenalty <16) then
 			-- give the accused a chance to surrender himself or pay a fee
 			CreateCutscene("queries", "myquery")
-			LogMessage("Trial: Cutscene created: Outlaw my decide to surrender or pay a fee")
+			LogMessage("Trial: Cutscene created: Outlaw may decide to surrender or pay a fee")
 			CopyAliasToCutscene("accused", "myquery", "Sim")
 			CopyAliasToCutscene("accuser", "myquery", "Accuser")
 			CopyAliasToCutscene("assessor1", "myquery", "Assessor1")
@@ -658,11 +704,6 @@ function Go()
 		local EvidenceQuality
 		local EvidenceValue
 		local EvidenceTime
-	
-		local CrimeType1 = 0
-		local CrimeType2 = 0
-		local CrimeType3 = 0
-		local CrimeType4 = 0
 		
 		for i=0, NumCrimes -1 do
 			
@@ -681,33 +722,10 @@ function Go()
 			end
 			
 			-- only talk once about every crime type (max 3)
-			if CrimeType1 == 0 then
-			
-				CrimeType1 = EvidenceType
-				trial_ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue, GenderType, EvidenceTime, NumCrimes-1, i)
-				-- More evidences of the same type?
-				trial_ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderType)
-				
-			elseif CrimeType2 == 0 and EvidenceType ~= CrimeType1 then
-			
-				CrimeType2 = EvidenceType
-				trial_ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue, GenderType, EvidenceTime, NumCrimes-1, i)
-				-- More evidences of the same type?
-				trial_ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderType)
-				
-			elseif CrimeType3 == 0 and EvidenceType ~= CrimeType1 and EvidenceType ~= CrimeType2 then
-			
-				CrimeType3 = EvidenceType
-				trial_ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue, GenderType, EvidenceTime, NumCrimes-1, i)
-				-- More evidences of the same type?
-				trial_ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderType)
-				
-			elseif CrimeType4 == 0 and EvidenceType ~= CrimeType1 and EvidenceType ~= CrimeType2 and EvidenceType ~= CrimeType3 then
-				CrimeType4 = EvidenceType
-				trial_ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue, GenderType, EvidenceTime, NumCrimes-1, i)
-				-- More evidences of the same type?
-				trial_ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderType)
-			end
+			trial_ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue, GenderType, EvidenceTime, NumCrimes-1, i)
+			-- More evidences of the same type?
+			trial_ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderType)
+
 		end
 
 		trial_Cam("TrialMainCam")
@@ -769,6 +787,7 @@ function Go()
 		MsgSay("judge", "@L_LAWSUIT_5_DEFENSE_A_TO_ACCUSER")
 
 		trial_Cam("TrialMainCam")
+		LogMessage("TRIAL: Accuser is deciding which sanction to suggest.")
 		local AccuserSentence = MsgSayInteraction("accuser", "accuser", 0,
 										-- PanelParam
 										"@B[1,@L_LAWSUIT_5_DEFENSE_A_SCREENPLAYER_ACCUSER_+1]"..
@@ -788,6 +807,7 @@ function Go()
 		local SentenceAnnouncer = "accuser"
 		
 		if AccuserSentence=="C" then	
+			LogMessage("TRIAL: Accuser decided to let the Jury decide on a sanction.")
 			trial_PlayRelevantTalkAni("accuser")
 			MsgSay("accuser","@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_NOCOMMENT_+0")
 
@@ -804,6 +824,7 @@ function Go()
 			if not (SentenceLevel>=1 and SentenceLevel<=6) then
 				SentenceLevel = trial_GetSubjectiveSentence("judge")/6+1
 			end
+			SetData("AccuserSentence", SentenceLevel)
 		else
 			SentenceLevel = AccuserSentence
 		end
@@ -814,26 +835,19 @@ function Go()
 			SentenceLevel = 6
 		end
 			
-		PlayAnimationNoWait(SentenceAnnouncer, "talk")
-		if AccuserSentence==1 then
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_MONEY"..GenderType)
-			SentenceLevel = 1
-		elseif AccuserSentence==2 then
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_PILLORY"..GenderType)
-			SentenceLevel = 2
-		elseif AccuserSentence==3 then
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_MOREMONEY"..GenderType)
-			SentenceLevel = 3
-		elseif AccuserSentence==4 then
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_TITLE"..GenderType)
-			SentenceLevel = 4
-		elseif AccuserSentence==5 then
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_PRISON"..GenderType)
-			SentenceLevel = 5
-		elseif AccuserSentence==6 then
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_DEATH"..GenderType)
-			SentenceLevel = 6
+		PlayAnimationNoWait(SentenceAnnouncer, "talk") -- ERROR TO CHECK ON CONC FIELD
+
+		local list = {"MONEY","PILLORY","MOREMONEY","TITLE","PRISON","DEATH"}
+		
+		if not AccuserSentence == "C" then
+			SentenceLevel = AccuserSentence	
+			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..list[AccuserSentence]..GenderType) -- END OF ERROR TO CHECK ON CONC FIELD
+			LogMessage("@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..list[AccuserSentence]..GenderType)
+		elseif AccuserSentence == "C" then
+			SentenceLevel = AccuserSentence
 		end
+		
+
 		SetData("AccuserSentence",SentenceLevel)
 		
 		-- accused may speak now
@@ -962,14 +976,14 @@ function Go()
 
 		trial_UpdatePanelTrial(0)
 
+		trial_PlayRelevantJuryAni("judge",60)
+
 		if confession == 2 then
 			-- The court decides whether the proposed sentence is just
-			trial_PlayRelevantJuryAni("judge",60)
 			MsgSay("judge","@L_LAWSUIT_6_DECISION_A_APPROPRIATEQ_INTRO")
 			DecisionTextLabel = "@L_LAWSUIT_6_DECISION_A_APPROPRIATEQ_SCREENPLAYER_"
 			AnnouncementLabel = "@L_LAWSUIT_6_DECISION_A_APPROPRIATEQ_ANNOUNCEMENTS_"
 		else
-			trial_PlayRelevantJuryAni("judge",60)
 			MsgSay("judge","@L_LAWSUIT_6_DECISION_A_GUILTYQ_INTRO")
 			DecisionTextLabel = "@L_LAWSUIT_6_DECISION_A_GUILTYQ_SCREENPLAYER_"
 			AnnouncementLabel = "@L_LAWSUIT_6_DECISION_A_GUILTYQ_ANNOUNCEMENTS_"
@@ -1207,6 +1221,10 @@ function Go()
 		SimResetBehavior("executioner")
 	end
 	EndCutscene("")
+
+	if debugTrial then
+		Sleep(1) ms_debug_trials_triggerDebug()
+	end
 end
 
 -- Helping functions
@@ -1247,6 +1265,8 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 					
 	local EvidenceString = EvidenceData[EvidenceType]..GenderType or "@L_LAWSUIT_4_ACCUSAL_C_CHARGES_INVALID"
 	MsgSay("accuser", EvidenceString, GetID("accused"), VictimID, EvidenceTime)
+	LogMessage(GetName("accuser")..': '..EvidenceString)
+	LogMessage("Against "..GetName("accused"))
 	
 	StopAnimation("accuser")
 	StopAnimation("accused")
@@ -1451,9 +1471,11 @@ function UpdatePanelTrial(time)
 	local Assessor2Pos = trial_GetSubjectiveSentence("assessor2")
 	local TotalEV = GetData("TotalEvidenceValue")
 	local AccuserSentence = GetData("AccuserSentence")
-
+	LogMessage("TRIAL | 1453. AccuserSentence is: "..(AccuserSentence or '<void>'))
 	if AccuserSentence == nil then
 		AccuserSentence = 0
+	--elseif AccuserSentence == "C" then 
+
 	elseif AccuserSentence > 0 then
 		AccuserSentence = AccuserSentence*3+1
 	end
@@ -1605,24 +1627,11 @@ function SimIsPresent(SimAlias)
 	BuildingGetRoom("courtbuilding", "Judge", "judgeroom")
 	
 	if GetID(SimAlias)>0 then
-		if HasProperty(SimAlias,"DefendTrial") then -- remove AI properties here
-			RemoveProperty(SimAlias,"DefendTrial")
-		end
-		
-		if HasProperty(SimAlias, "TrialOpponent") then
-			RemoveProperty(SimAlias, "TrialOpponent")
-		end
-		
-		if HasProperty(SimAlias, "TrialJudge") then
-			RemoveProperty(SimAlias, "TrialJudge")
-		end
-		
-		if HasProperty(SimAlias, "TrialAssessor1") then
-			RemoveProperty(SimAlias, "TrialAssessor1")
-		end
-		
-		if HasProperty(SimAlias, "TrialAssessor2") then
-			RemoveProperty(SimAlias, "TrialAssessor2")
+		local list = {"DefendTrial","TrialOpponent","TrialJudge","TrialAssessor1","TrialAssessor2"}
+		for i = 1,5 do
+			if HasProperty(SimAlias,list[i]) then -- remove AI properties here
+				RemoveProperty(SimAlias,list[i])
+			end
 		end
 		
 		if GetState(SimAlias, STATE_DEAD) then
@@ -1637,7 +1646,7 @@ function SimIsPresent(SimAlias)
 			return 0 -->sim is not useful
 		end
 
-		if not GetInsideRoom(SimAlias,"currentroom") then
+		if not GetInsideRoom(SimAlias,"currentroom") then 
 			return 0 -->sim is not in building
 		end
 		if GetID("currentroom")==GetID("judgeroom") then
@@ -1749,24 +1758,16 @@ function AccuserDecideSentence()
 end
 
 function GetLocalPlayerRepresentative(alias)
-	if DynastyIsPlayer("accuser") then
-		CopyAlias("accuser",alias)
-		return true
-	elseif DynastyIsPlayer("accused") then
-		CopyAlias("accused",alias)
-		return true
-	elseif DynastyIsPlayer("judge") then
-		CopyAlias("judge",alias)
-		return true
-	elseif DynastyIsPlayer("assessor1") then
-		CopyAlias("assessor1",alias)
-		return true
-	elseif DynastyIsPlayer("assessor2") then
-		CopyAlias("assessor2",alias)
-		return true
+	local list = {"accuser","accused","judge","assessor1","assessor2"}
+	for i = 1,5 do
+		if DynastyIsPlayer(list[i]) then
+			CopyAlias(list[i],alias)
+			return true
+		end
 	end
 	return false
 end
+
 function Cam(LocatorName)
 	GetLocatorByName("courtbuilding",LocatorName,"DestPos")
 	CutsceneCameraSetAbsolutePosition("","DestPos")
@@ -1776,6 +1777,7 @@ function SimSitDown(LocatorName)
 	if GetLocatorByName("courtbuilding", LocatorName, LocatorName) then
 		f_BeginUseLocator("",LocatorName, GL_STANCE_SIT, true)
 	end
+
 	CutsceneSendEventTrigger("owner", "Reached")
 end
 
@@ -1807,8 +1809,7 @@ function CleanUp()
 	RoomLockForCutscene("judgeroom",0)
 	
 	local TargetArray = {"judge","accuser","accused","assessor1","assessor2"}
-	local TargetCount = 5
-	for Voter = 1, TargetCount do
+	for Voter = 1, 5 do
 		if AliasExists(TargetArray[Voter]) and (HasProperty(TargetArray[Voter],"trial_destination_ID") == true) then
 			RemoveProperty(TargetArray[Voter],"trial_destination_ID")
 		end
@@ -1864,38 +1865,33 @@ end
 
 -- is there a player who actively participates?
 function HumanPlayerWantsInteraction()
-	if DynastyIsPlayer("accuser") then
+	if DynastyIsPlayer("accuser") or DynastyIsPlayer("accused") then
 		return true
 	end
-
-	if DynastyIsPlayer("accused") then
-		return true
-	end
-
 	return false
 end
 
 function EvidenceIntToString(EvidenceType)
 
 	local EvidenceData = {
-					[1] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_SABOTAGE_+0",
-					[4] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_BRIBE_+0",
-					[6] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPEB_BLACKMAIL_+0",
-					[7] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_SLUGGING_+0",
-					[10] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_CALUMNY_+0",
-					[11] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_POISON_+0",
-					[12] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_ASSAULT_+0",
-					[13] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_REVOLT_+0",
-					[14] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_MARAUDER_+0",
-					[15] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_ABDUCTION_+0",
-					[16] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_MURDER_+0",
-					[17] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_ESPIONAGE_+0",
-					[18] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_PERSONASSAULT_+0",
-					[19] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_CARTASSAULT_+0",
-					[20] = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE_THEFT_+0"
+					[1] = "_SABOTAGE",
+					[4] = "_BRIBE",
+					[6] = "B_BLACKMAIL", -- B_ was already present before edit
+					[7] = "_SLUGGING",
+					[10] = "_CALUMNY",
+					[11] = "_POISON",
+					[12] = "_ASSAULT",
+					[13] = "_REVOLT",
+					[14] = "_MARAUDER",
+					[15] = "_ABDUCTION",
+					[16] = "_MURDER",
+					[17] = "_ESPIONAGE",
+					[18] = "_PERSONASSAULT",
+					[19] = "_CARTASSAULT",
+					[20] = "_THEFT"
 					}
 	
-	local EvidenceString = EvidenceData[EvidenceType]
+	local EvidenceString = "@L_TRIAL_START_QUESTION_TO_JUDGE_EVIDENCETYPE"..EvidenceData[EvidenceType].."_+0"
 	
 	-- DEBUG: invalid case
 	if EvidenceString == nil then

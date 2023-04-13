@@ -31,23 +31,23 @@ function Run()
 	if (GetDynastyID("Destination") ~= GetID("dynasty")) then
 		local Costs = 0
 		if GetImpactValue("", "Sprain") == 1 then
-			Costs = diseases_GetTreatmentCost("Sprain")
+			Costs = Sprain:getCost()
 		elseif GetImpactValue("", "Cold") == 1 then
-			Costs = diseases_GetTreatmentCost("Cold")
+			Costs = Cold:getCost()
 		elseif GetImpactValue("", "Influenza") == 1 then
-			Costs = diseases_GetTreatmentCost("Influenza")
+			Costs = Influenza:getCost()
 		elseif GetImpactValue("", "BurnWound") == 1 then
-			Costs = diseases_GetTreatmentCost("BurnWound")
+			Costs = BurnWound:getCost()
 		elseif GetImpactValue("", "Pox") == 1 then
-			Costs = diseases_GetTreatmentCost("Pox")
+			Costs = Pox:getCost()
 		elseif GetImpactValue("", "Pneumonia") == 1 then
-			Costs = diseases_GetTreatmentCost("Pneumonia")
+			Costs = Pneumonia:getCost()
 		elseif GetImpactValue("", "Blackdeath") == 1 then
-			Costs = diseases_GetTreatmentCost("Blackdeath")
+			Costs = Blackdeath:getCost()
 		elseif GetImpactValue("", "Fracture") == 1 then
-			Costs = diseases_GetTreatmentCost("Fracture")
+			Costs = Fracture:getCost()
 		elseif GetImpactValue("", "Caries") == 1 then
-			Costs = diseases_GetTreatmentCost("Caries")
+			Costs = Caries:getCost()
 		elseif GetHPRelative("") < 0.99 then
 			Costs = GetMaxHP("") -GetHP("")
 		else
@@ -78,25 +78,25 @@ end
 -- GetOSHData
 -- -----------------------
 function GetOSHData(MeasureID)
-	local Costs = 0
+local Costs = 0
 	if GetImpactValue("", "Sprain") == 1 then
-		Costs = diseases_GetTreatmentCost("Sprain")
+		Costs = Sprain:getCost()
 	elseif GetImpactValue("", "Cold") == 1 then
-		Costs = diseases_GetTreatmentCost("Cold")
+		Costs = Cold:getCost()
 	elseif GetImpactValue("", "Influenza") == 1 then
-		Costs = diseases_GetTreatmentCost("Influenza")
+		Costs = Influenza:getCost()
 	elseif GetImpactValue("", "BurnWound") == 1 then
-		Costs = diseases_GetTreatmentCost("BurnWound")
+		Costs = BurnWound:getCost()
 	elseif GetImpactValue("", "Pox") == 1 then
-		Costs = diseases_GetTreatmentCost("Pox")
+		Costs = Pox:getCost()
 	elseif GetImpactValue("", "Pneumonia") == 1 then
-		Costs = diseases_GetTreatmentCost("Pneumonia")
+		Costs = Pneumonia:getCost()
 	elseif GetImpactValue("", "Blackdeath") == 1 then
-		Costs = diseases_GetTreatmentCost("Blackdeath")
+		Costs = Blackdeath:getCost()
 	elseif GetImpactValue("", "Fracture") == 1 then
-		Costs = diseases_GetTreatmentCost("Fracture")
+		Costs = Fracture:getCost()
 	elseif GetImpactValue("", "Caries") == 1 then
-		Costs = diseases_GetTreatmentCost("Caries")
+		Costs = Caries:getCost()
 	elseif GetHPRelative("") < 0.99 then
 		Costs = GetMaxHP("")-GetHP("")
 	end

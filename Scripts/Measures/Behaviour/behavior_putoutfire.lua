@@ -66,7 +66,7 @@ function Run()
 		Sleep(1)
 		
 		if Rand(100) < 4 then
-			diseases_giveSickness("BurnWound","", true)	
+			Disease.infectSim("","BurnWound")
 		end
 		
 		PlaySound3DVariation("", "measures/putoutfire", 1)

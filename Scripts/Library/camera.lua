@@ -186,111 +186,34 @@ end
 -- -----------------------
 -- PlayerLock
 -- -----------------------
-function PlayerLock(Player, FocusSim, CameraType)
-	
-	local random = GFXRand(6)
 
+function CameraChecker(CameraType)
+	if not CameraType then
+		local random = GFXRand(6)
+		local camList = {"Far_HCenterYLeft","Far_HUpYRight", "Mid_HCenterYLeft","Far_HCenterYRight","Mid_HCenterYRight","Far_HUpYLeft","Mid_HCenterYCenter","Up_HSkyYRight","Up_HSkyYLeft","Mid_HBottomYCenter","Mid_HBottomYLeft","Mid_HBottomYRight","Close_HCenterYCenter","Close_HBottomYCenter","Close_HCenterYLeft","Close_HBottomYLeft","Close_HCenterYRight","Close_HBottomYRight"}
+		local res
+		res = camList[random+1]
+		LogMessage('CameraChecker in list: '..res)
+		return res
+	else
+		LogMessage('CameraChecker: '..CameraType)
+		return CameraType
+	end
+end
+
+function PlayerLock(Player, FocusSim, CameraType)
 	if not camera_AllowToSwitch(Player) then
 		return
 	end
-	
-	if not CameraType then
-		
-		if random == 0 then
-			CameraType = "Far_HCenterYLeft"
-		elseif random == 1 then
-			CameraType = "Far_HUpYRight"
-		elseif random == 2 then
-			CameraType = "Mid_HCenterYLeft"
-		elseif random == 3 then
-			CameraType = "Far_HCenterYRight"
-		elseif random == 4 then
-			CameraType = "Mid_HCenterYRight"
-		elseif random == 5 then
-			CameraType = "Far_HUpYLeft"
-		elseif random == 6 then
-			CameraType = "Mid_HCenterYCenter" -- Köpfe gucken durch die cam
-		elseif random == 7 then
-			CameraType = "Up_HSkyYRight" -- zu steil
-		elseif random == 8 then
-			CameraType = "Up_HSkyYLeft"
-		elseif random == 9 then
-			CameraType = "Mid_HBottomYCenter"
-		elseif random == 10 then
-			CameraType = "Mid_HBottomYLeft"
-		elseif random == 11 then
-			CameraType = "Mid_HBottomYRight"
-		elseif random == 12 then
-			CameraType = "Close_HCenterYCenter"
-		elseif random == 13 then
-			CameraType = "Close_HBottomYCenter"
-		elseif random == 14 then
-			CameraType = "Close_HCenterYLeft"
-		elseif random == 15 then
-			CameraType = "Close_HBottomYLeft"
-		elseif random == 16 then
-			CameraType = "Close_HCenterYRight"
-		elseif random == 17 then
-			CameraType = "Close_HBottomYRight"
-		end
-		
-	end
-
-	CameraLock(CameraType, FocusSim)
+	CameraLock(camera_CameraChecker(CameraType), FocusSim)
 end
 
 -- -----------------------
 -- PlayerLock
 -- -----------------------
 function CutscenePlayerLock(Cutscene, FocusSim, CameraType)
-
 	Assert(GetID(Cutscene)~=-1, "!cutscene")		-- MMTODO: testing cutscenes
-	
-	local random = GFXRand(6)
-
-	if not CameraType then
-		
-		if random == 0 then
-			CameraType = "Far_HCenterYLeft"
-		elseif random == 1 then
-			CameraType = "Far_HUpYRight"
-		elseif random == 2 then
-			CameraType = "Mid_HCenterYLeft"
-		elseif random == 3 then
-			CameraType = "Far_HCenterYRight"
-		elseif random == 4 then
-			CameraType = "Mid_HCenterYRight"
-		elseif random == 5 then
-			CameraType = "Far_HUpYLeft"
-		elseif random == 6 then
-			CameraType = "Mid_HCenterYCenter" -- Köpfe gucken durch die cam
-		elseif random == 7 then
-			CameraType = "Up_HSkyYRight" -- zu steil
-		elseif random == 8 then
-			CameraType = "Up_HSkyYLeft"
-		elseif random == 9 then
-			CameraType = "Mid_HBottomYCenter"
-		elseif random == 10 then
-			CameraType = "Mid_HBottomYLeft"
-		elseif random == 11 then
-			CameraType = "Mid_HBottomYRight"
-		elseif random == 12 then
-			CameraType = "Close_HCenterYCenter"
-		elseif random == 13 then
-			CameraType = "Close_HBottomYCenter"
-		elseif random == 14 then
-			CameraType = "Close_HCenterYLeft"
-		elseif random == 15 then
-			CameraType = "Close_HBottomYLeft"
-		elseif random == 16 then
-			CameraType = "Close_HCenterYRight"
-		elseif random == 17 then
-			CameraType = "Close_HBottomYRight"
-		end
-		
-	end
-
-	CutsceneCameraSetRelativePosition(Cutscene,CameraType, FocusSim)
+	CutsceneCameraSetRelativePosition(Cutscene,camera_CameraChecker(CameraType),FocusSim)
 end
 
 -- -----------------------
@@ -328,14 +251,11 @@ end
 -- PlayerLockBlend
 -- -----------------------
 function PlayerLockBlend(Player, FocusSim, CameraType, BlendTime, Type)
-	
 	if not camera_AllowToSwitch(Player) then
 		return
 	end
-	
 	CameraBlend(BlendTime, Type)
 	CameraLock(CameraType, FocusSim)
-	
 end
 
 -- -----------------------

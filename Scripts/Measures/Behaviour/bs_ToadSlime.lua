@@ -7,7 +7,7 @@ function Run()
 	if GetDynastyID("") < 0 then
 		if SimGetWorkingPlaceID("") == -1 then
 			if not GetState("", STATE_SICK) then
-				diseases_giveSickness("Influenza","",true)
+				Disease.infectSim("","Influenza")
 			end
 		end
 	end	

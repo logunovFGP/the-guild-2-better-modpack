@@ -2,30 +2,18 @@ function Weight()
 	if (SimGetCutscene("SIM","MyCutscene")) then
 		return 0
 	end
-	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"CutsceneAlias")
 
-	local CutsceneID = GetProperty("CutsceneAlias","NextCutsceneID")
-	GetAliasByID(CutsceneID,"CutsceneAlias")
+	local TargetArray = Trial_returnMembers()
 
-	local judge = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","judge")
-	local accuser = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","accuser")
-	local accused = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","accused")
-	local assessor1 = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","assessor1")
-	local assessor2 = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","assessor2")
-
-	local TargetArray = {judge,accuser,accused,assessor1,assessor2}
-	local TargetCount = 5
-
-	local MaxFavor = 51
 	local ModifyRhetoric = 0
 
-	for UseTarget = 1, TargetCount do
+	for UseTarget = 1, 5 do
 		CurrentJury = TargetArray[UseTarget]
 		if (CurrentJury ~= GetID("SIM")) then
 			GetAliasByID(CurrentJury,"TA_CurrentJury")
 			if (DynastyIsPlayer("TA_CurrentJury") == false) then
 				local Favor	= GetFavorToSim("TA_CurrentJury","SIM")
-				if (Favor < MaxFavor) then
+				if (Favor < 51) then
 					if CheckSkill("SIM",RHETORIC, GetSkillValue("TA_CurrentJury",EMPATHY)) == false then
 						ModifyRhetoric = 1
 						break

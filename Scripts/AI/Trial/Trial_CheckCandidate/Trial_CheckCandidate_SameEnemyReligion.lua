@@ -1,30 +1,15 @@
 function Weight()
-	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"CutsceneAlias")
-	GetAliasByID(GetProperty("SIM","trial_destination_ID"),"trial_destination_ID")
-
-	local CutsceneID = GetProperty("CutsceneAlias","NextCutsceneID")
-	GetAliasByID(CutsceneID,"CutsceneAlias")
-
-	local judge = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","judge")
-	local accuser = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","accuser")
-	local accused = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","accused")
-	local assessor1 = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","assessor1")
-	local assessor2 = trial_checkcandidate_differentgender_GetDataFromCutscene("CutsceneAlias","assessor2")
-
-	local TargetArray = {judge,accuser,accused,assessor1,assessor2}
-	local TargetCount = 5
+	local TargetArray = Trial_returnMembers()
 	
-	local MaxFavor = 100
-	local MinFavor = 51
 	local ModifyFavorJury = 0
 	
-	if (accuser ~= GetID("SIM")) then
-		GetAliasByID(accuser,"Trial_LetterTarget")
+	if (TargetArray[2][2] ~= GetID("SIM")) then
+		GetAliasByID(TargetArray[2],"Trial_LetterTarget")
 	else
-		GetAliasByID(accused,"Trial_LetterTarget")
+		GetAliasByID(TargetArray[3],"Trial_LetterTarget")
 	end	
 	
-	for UseTarget = 1, TargetCount do
+	for UseTarget = 1, 5 do
 		CurrentJury = TargetArray[UseTarget]
 		if (CurrentJury ~= GetID("SIM")) then
 			GetAliasByID(CurrentJury,"TA_CurrentJury")
@@ -32,7 +17,7 @@ function Weight()
 				GetInsideBuilding("","InsideBuilding")
 				if (GetID("trial_destination_ID") == GetID("InsideBuilding")) then
 					local Favor	= GetFavorToSim("TA_CurrentJury","Trial_LetterTarget")
-					if (Favor < MaxFavor) and (Favor > MinFavor) then
+					if (Favor < 100) and (Favor > 51) then
 						if (SimGetReligion("TA_CurrentJury") == SimGetReligion("Trial_LetterTarget")) then
 							ModifyFavorJury = ModifyFavorJury + 1
 						end

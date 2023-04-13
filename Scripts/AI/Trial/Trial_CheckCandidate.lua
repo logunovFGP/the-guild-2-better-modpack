@@ -28,12 +28,10 @@ function Weight()
 			local accuser = trial_checkcandidate_GetDataFromCutscene("CutsceneAlias","accuser")
 			local accused = trial_checkcandidate_GetDataFromCutscene("CutsceneAlias","accused")
 			
-			if GetID("SIM") == accused then
+			if GetID("SIM") == accused or GetID("SIM") == accuser then
 				return 100
 			end
-			if GetID("SIM") == accuser then
-				return 100
-			end
+
 		end
 	end
 	return 0

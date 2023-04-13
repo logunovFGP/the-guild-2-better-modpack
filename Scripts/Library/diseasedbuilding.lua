@@ -3,13 +3,13 @@ function onEnter()
 	if CheckSkill("", 1, 4) then
 		if IsDynastySim("") then
 			if not GetState("", STATE_SICK) then
-				diseases_giveSickness("Cold","", true)
+				Disease.infectSim("","Cold")
 				feedback_MessageCharacter("","@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_HEAD_+0",
 							"@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_BODY_+0",GetID(""))
 			end
 		else
 			if not GetState("", STATE_SICK) then
-				diseases_giveSickness("Influenza","", true)
+				Disease.infectSim("","Influenza")
 				feedback_MessageCharacter("","@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_WORKER_HEAD_+0",
 							"@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_WORKER_BODY_+0",GetID(""))
 				--SimStopMeasure("")
@@ -22,13 +22,13 @@ function onExit()
 	if CheckSkill("", 1, 4) then
 		if IsDynastySim("") then
 			if not GetState("", STATE_SICK) then
-				diseases_giveSickness("Cold","", true)
+				Disease.infectSim("","Cold")
 				feedback_MessageCharacter("","@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_HEAD_+0",
 							"@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_DYNSIM_BODY_+0",GetID(""))
 			end
 		else
 			if not GetState("", STATE_SICK) then
-				diseases_giveSickness("Influenza","", true)
+				Disease.infectSim("","Influenza")
 				feedback_MessageCharacter("","@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_WORKER_HEAD_+0",
 							"@L_ARTEFACTS_178_USETOADSLIME_MSG_VICTIM_WORKER_BODY_+0",GetID(""))
 				--SimStopMeasure("")
