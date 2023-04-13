@@ -1,6 +1,6 @@
 function Weight()
 	
-	local trys = 0
+	--[[local trys = 0
 	while not AliasExists("Target") do
 		trys = trys + 1
 		local TargetID = gameplayformulas_GetRandomPlayer()
@@ -45,6 +45,7 @@ function Weight()
 		end
 		return 100
 	end
+	]]
 	
 	return 0
 end
