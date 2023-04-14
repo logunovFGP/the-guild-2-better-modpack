@@ -28,13 +28,13 @@ function Run()
 	end
 
 	-- check the disease of the actor
-local Disease = ""
+local Sickness = ""
 local list = {"Cold", "Influenza", "Pneumonia", "Pox", "Blackdeath"}
 
 for i = 1, 5 do
-    local disease = list[i]
-    if GetImpactValue("Actor", disease) > 0 then
-        Disease = disease
+    local index = list[i]
+    if GetImpactValue("Actor", index) > 0 then
+        Sickness = index
         break
     end
 end
@@ -45,20 +45,20 @@ end
 	if Hazard > Rand(100) then -- infected!
 		-- get the correct illness
 		
-		if Disease == "Cold" then
-			Disease.infectSim("","Cold")
-		elseif Disease == "Influenza" then
-			Disease.infectSim("","Influenza")
-		elseif Disease == "Pneumonia" then
-			Disease.infectSim("","Influenza")
-		elseif Disease == "Pox" then
-			Disease.infectSim("","Pox")
-		elseif Disease == "Blackdeath" then
+		if Sickness == "Cold" then
+			Disease.Cold:infectSim("")
+		elseif Sickness == "Influenza" then
+			Disease.Influenza:infectSim("")
+		elseif Sickness == "Pneumonia" then
+			Disease.Influenza:infectSim("")
+		elseif Sickness == "Pox" then
+			Disease.Pox:infectSim("")
+		elseif Sickness == "Blackdeath" then
 			if not HasState("", "BlackdeathImmunity") then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("MyHomeCity", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then
-					Blackdeath.infectSim("")
+					Disease.Blackdeath:infectSim("")
 				end
 			end
 			return "flee"

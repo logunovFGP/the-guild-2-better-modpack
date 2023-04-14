@@ -87,7 +87,7 @@ function StartDisease()
 	if GetImpactValue("Destination","staffofaesculap")>0 then
 		--no affect
 	else
-		Disease.infectSim("Destination","Blackdeath")
+		Disease.Blackdeath:infectSim("Destination")
 	end
 end
 

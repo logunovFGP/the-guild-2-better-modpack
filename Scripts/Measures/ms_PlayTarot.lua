@@ -93,7 +93,7 @@ function TheDestiny(x)
 	    local Filter = "__F((Object.GetObjectsByRadius(Building)==20000)AND NOT(Object.BelongsToMe())AND(Object.HasDynasty()))"
 	    Find("", Filter,"Opfer", -1)
 		DynastyGetRandomVictim("Opfer",100,"Pest")
-		Disease.infectSim("Pest","Blackdeath")
+		Disease.Blackdeath:infectSim("Pest")
 		return
 		
 	elseif x == 15 then
@@ -109,7 +109,7 @@ function TheDestiny(x)
 		
 	elseif x == 20 then
 		DynastyGetRandomVictim("Owner",100,"Pest")
-		Disease.infectSim("Pest","Blackdeath")
+		Disease.Blackdeath:infectSim("Pest")
 		return
 		
 	else

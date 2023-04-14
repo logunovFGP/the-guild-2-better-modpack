@@ -155,7 +155,7 @@ function Run()
 	  if caries>0 then
 	     local ill = Rand(10)
 	     if caries>=ill then
-	        Disease.infectSim("","Caries")
+	        Disease.Caries:infectSim("")
 	        SetState("",STATE_SICK,true)
 	        MsgSay("", "_EATDRINK_SPRUCH_+3")
 	     end

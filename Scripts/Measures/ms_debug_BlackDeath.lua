@@ -17,7 +17,7 @@ function Run()
 	"")
 
 	if result ~= 10 and result ~= "C" then
-		Disease.infectSim("",result)
+		Disease[result]:infectSim("")
 		
 	elseif result == 10 then
 

@@ -124,7 +124,6 @@ function Run()
 			  label = v:getName()
 			  if GetImpactValue("SickSim0", label) and GetImpactValue("SickSim0", label) == 1 then
 			  	sickness = v
-			  	LogMessage(label..' has been detected!')
 			  	break
 			  end
 			end
@@ -181,7 +180,7 @@ function Run()
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
 							
 							if Illness ~= false then 
-								Disease.cureSim("SickSim0",sickness:getName())
+								Disease[sickness:getName()]:cureSim("SickSim0")
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
 								  if sickness.getName() == sublist[i] then
@@ -243,7 +242,7 @@ function Run()
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 						if Illness ~= false then
-							Disease.cureSim("SickSim0",sickness:getName())
+							Disease[sickness:getName()]:cureSim("SickSim0")
 						    if not list[sickness.getName()] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end

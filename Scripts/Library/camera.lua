@@ -193,10 +193,10 @@ function CameraChecker(CameraType)
 		local camList = {"Far_HCenterYLeft","Far_HUpYRight", "Mid_HCenterYLeft","Far_HCenterYRight","Mid_HCenterYRight","Far_HUpYLeft","Mid_HCenterYCenter","Up_HSkyYRight","Up_HSkyYLeft","Mid_HBottomYCenter","Mid_HBottomYLeft","Mid_HBottomYRight","Close_HCenterYCenter","Close_HBottomYCenter","Close_HCenterYLeft","Close_HBottomYLeft","Close_HCenterYRight","Close_HBottomYRight"}
 		local res
 		res = camList[random+1]
-		LogMessage('CameraChecker in list: '..res)
+		-- LogMessage('CameraChecker in list: '..res)
 		return res
 	else
-		LogMessage('CameraChecker: '..CameraType)
+		-- LogMessage('CameraChecker: '..CameraType)
 		return CameraType
 	end
 end

@@ -109,34 +109,34 @@ function InfectPartyMember()
 		if ScenarioGetDifficulty() > 2 then -- hard settings?
 		
 			if SickChoice < 4 then -- 30%
-				Disease.infectSim("CurrentMember","Cold") -- you got lucky
+				Disease.Cold:infectSim("CurrentMember") -- you got lucky
 				krankH = 2
 			elseif SickChoice < 6 then --20%
-				Disease.infectSim("CurrentMember","Sprain") -- still lucky
+				Disease.Sprain:infectSim("CurrentMember") -- still lucky
 				krankH = 1
 			elseif SickChoice < 8 then --20%
-				Disease.infectSim("CurrentMember","Influenza") -- influenza? not nice
+				Disease.Influenza:infectSim("CurrentMember") -- influenza? not nice
 				krankH = 3
 			elseif SickChoice < 9 then --10%
-				Disease.infectSim("CurrentMember","Pox") -- damn!
+				Disease.Pox:infectSim("CurrentMember") -- damn!
 				SetState("CurrentMember", STATE_CONTAMINATED, true)
 				krankH = 4
 			elseif SickChoice < 10 then --10%	
-				Disease.infectSim("CurrentMember","Fracture") -- that hurts
+				Disease.Fracture:infectSim("CurrentMember") -- that hurts
 				krankH = 5
 			else -- 10%
-				Disease.infectSim("CurrentMember","Caries") -- c'mon!
+				Disease.Caries:infectSim("CurrentMember") -- c'mon!
 				krankH = 6
 			end
 		else -- low settings
 			if SickChoice < 6 then -- 50%
-				Disease.infectSim("CurrentMember","Cold") -- you got lucky
+				Disease.Cold:infectSim("CurrentMember") -- you got lucky
 				krankH = 2
 			elseif SickChoice < 9 then --40%
-				Disease.infectSim("CurrentMember","Sprain") -- still lucky
+				Disease.Sprain:infectSim("CurrentMember") -- still lucky
 				krankH = 1
 			else -- 10%
-				Disease.infectSim("CurrentMember","Influenza") -- influenza? not nice
+				Disease.Influenza:infectSim("CurrentMember") -- influenza? not nice
 				krankH = 3
 			end
 		end
@@ -192,7 +192,7 @@ function TheBlackDeath()
 	local opfer = Rand(2) + 1
 	if CityGetRandomBuilding("MyCity", opfer, -1, -1, -1, FILTER_HAS_DYNASTY, "Ausbruch") then
 		if BuildingGetSim("Ausbruch", 1, "ErstOpfer") then
-			Blackdeath.infectSim("ErstOpfer")
+			Disease.Blackdeath:infectSim("ErstOpfer")
 			SetRepeatTimer("MyCity", "Pest", 192)
 		end
 	end

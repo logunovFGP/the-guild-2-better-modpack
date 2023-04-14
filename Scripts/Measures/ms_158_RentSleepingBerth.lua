@@ -88,10 +88,10 @@ function Run()
 			for i=1, 7 do
 				if GetImpactValue("", CheckDisease[i]) > 0 then
 					if CheckDisease[i] == "Cold" then
-						Disease.cureSim("","Cold")
+						Disease.Cold:cureSim("")
 					else
 						if SleepBonus > 0 then
-							Disease.cureSim("",CheckDisease[i])
+							Disease[CheckDisease[i]]:cureSim("")
 						end
 					end
 				end
@@ -99,15 +99,15 @@ function Run()
 		else -- no tea? then healing is random at 66 % (tavern value)
 			if Rand(100) > 33 then
 				if GetImpactValue("", "Cold") > 0 then
-					Disease.cureSim("","Cold")
+					Disease.Cold:cureSim("")
 				end
 					
 				if GetImpactValue("", "Sprain") > 0 then
-					Disease.cureSim("","Sprain")
+					Disease.Sprain:cureSim("")
 				end
 					
 				if GetImpactValue("", "Influenza") > 0 then
-					Disease.cureSim("","Influenza")
+					Disease.Influenza:cureSim("")
 				end
 			end
 		end

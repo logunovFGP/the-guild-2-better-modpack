@@ -66,7 +66,7 @@ function Run()
 		Sleep(1)
 		
 		if Rand(100) < 4 then
-			Disease.infectSim("","BurnWound")
+			Disease.BurnWound:infectSim("")
 		end
 		
 		PlaySound3DVariation("", "measures/putoutfire", 1)

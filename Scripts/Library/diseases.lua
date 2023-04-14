@@ -26,8 +26,6 @@ function NoTime(Boolean, ObjectAlias, Sickness, endtime)
   end
 end
 
-diseases = {}
-
 local newDisease = function(name, medicine, favor, cost, duration, impacts1, impacts2, callback)
     local self = {
         name = name,
@@ -70,6 +68,14 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 			return self.callback or nil
 		end
 
+		self.cureSim = function(targetSickness, targetObject)
+			diseases_removeSickness(targetSickness, targetObject)
+		end
+
+    self.infectSim = function(targetSickness, targetObject)
+      diseases_giveSickness(targetSickness, targetObject)
+    end
+
     LogMessage("CodeRework, Medical. Class " .. self.name .. " has successfully been created!")
     return self
 
@@ -79,19 +85,6 @@ Disease =
 {
 -- inserting functions directly within Disease causes the game to crash on boot.
 }
-
-Disease.infectSim = 
-	function(ObjectAlias,Class)
-		local Result = Disease[Class]
-    LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " is suffering from: " .. Result:getName())
-    diseases_giveSickness(Result,ObjectAlias)
-  end
-
-Disease.cureSim = 
-  function(ObjectAlias,Class)
-  	local Result = Disease[Class]
-    diseases_removeSickness(Result,ObjectAlias)
-  end
 
 Disease.Sprain       = newDisease("Sprain","Bandage",GL_FAVOR_MOD_SMALL,200,16,-2,{"dexterity","fighting","craftsmanship"},MoveSetActivity)
 Disease.Cold 		  	 = newDisease("Cold","Bandage",GL_FAVOR_MOD_SMALL,250,24,-1,{"constitution","dexterity","charisma","fighting","craftsmanship","shadow_arts","rhetoric","empathy","bargaining","secret_knowledge"},nil)
@@ -123,14 +116,8 @@ end
 function SkillIterator(t, i)
 	i = i + 1
 	local v = Disease[t].getImpacts()[2]
-	
 	if v[i] then
-		LogMessage('Test:'..v[i])
-
 		return i, v[i]
-	end
-	if not v[i] then
-		LogMessage(i.." Not found")
 	end
 end
 
@@ -142,7 +129,7 @@ function removeSickness(Illness,ObjectAlias)
 	  	Sleep(1)
 	  end
 
-  	LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness:getName()--[[()]])
+  	LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness:getName())
 
   	diseases_ImpactManager(false, ObjectAlias, Illness:getName(), 0)
     diseases_NoTime(ObjectAlias, Illness:getName(), 0, false)
@@ -177,7 +164,7 @@ end
 function removeAllSickness(ObjectAlias)
 	for k, v in diseases_GetDiseaseIterator() do		
 		if GetImpactValue(ObjectAlias, v.getName()) == 1 then
-			Disease.cureSim(ObjectAlias,v.getName())
+			Disease[v.getName()]:cureSim(ObjectAlias)
 		end		
 	end
 end
@@ -233,6 +220,9 @@ function giveSickness(Illness, ObjectAlias)
 		return		
 	end
 
+	LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been infected with: " .. Illness:getName())
+
+
 	local skill, tempdur
 	local endtime
 
@@ -246,7 +236,6 @@ function giveSickness(Illness, ObjectAlias)
   end
 
 	tempdur = Illness.getDuration()
-	LogMessage("Check in giveSickness: "..Illness:getName())
 
   endtime = math.mod(GetGametime(),24)+tempdur
   
@@ -258,9 +247,6 @@ function giveSickness(Illness, ObjectAlias)
 
   		impacts = Illness.getImpacts()
   		listSkills = impacts[2]
-  		LogMessage(listSkills[1])
-  		LogMessage(listSkills[2])
-  		LogMessage(listSkills[3])
 
   	  for k, v in diseases_GetSkillIterator(Illness.getName()) do
 		    AddImpact(ObjectAlias, v, impacts[1], Illness.getDuration())

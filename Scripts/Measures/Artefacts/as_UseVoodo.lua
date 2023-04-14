@@ -77,17 +77,17 @@ function Run()
 				-- make sick
 				local SickChoice = Rand(8)+1
 				if SickChoice == 1 then
-					Disease.infectSim("Destination","Sprain")
+					Disease.Sprain:infectSim("Destination")
 				elseif SickChoice == 2 then
-					Disease.infectSim("Destination","Cold")
+					Disease.Cold:infectSim("Destination")
 				elseif SickChoice == 3 then
-					Disease.infectSim("Destination","Influenza")
+					Disease.Influenza:infectSim("Destination")
 				elseif SickChoice == 5 then
-					Disease.infectSim("Destination","Pox")
+					Disease.Pox:infectSim("Destination")
 				elseif SickChoice == 7 then
-					Disease.infectSim("Destination","Fracture")
+					Disease.Fracture:infectSim("Destination")
 				elseif SickChoice == 8 then
-					Disease.infectSim("Destination","Caries")
+					Disease.Caries:infectSim("Destination")
 				end
 				SetState("Destination", STATE_SICK, true)
 			else

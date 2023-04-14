@@ -144,25 +144,25 @@ function InfectionEvent(Target)
 		
 		if Illness == "Cold" then
 			if Hazard > Rand(100) then
-				Disease.infectSim(Target,"Cold")
+				Disease.Cold:infectSim(Target)
 				Infected = true
 				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Influenza" then
 			if Hazard > Rand(100) then
-				Disease.infectSim(Target,"Influenza")
+				Disease.Influenza:infectSim(Target)
 				Infected = true
 				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Pneumonia" then
 			if Hazard > Rand(100) then
-				Disease.infectSim(Target,"Influenza")
+				Disease.Influenza:infectSim(Target)
 				Infected = true
 				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Pox" then
 			if Hazard > Rand(100) then
-				Disease.infectSim(Target,"Pox")
+				Disease.Pox:infectSim(Target)
 				Infected = true
 				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
@@ -172,7 +172,7 @@ function InfectionEvent(Target)
 				local StartingRound = GetProperty("HomeTown", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then
 					if Hazard > Rand(100) then
-						Disease.infectSim(Target,"Blackdeath")
+						Disease.Blackdeath:infectSim(Target)
 						Infected = true
 						LogMessage(GetName(Target).." received random illness "..Illness)
 					end

@@ -634,7 +634,7 @@ function CollectWater()
 			Sleep(2)
 			if (GetImpactValue("Destination","polluted")>0) then
 				if Rand(100)>70 then
-					Disease.infectSim("","Pox")
+					Disease.Pox:infectSim("")
 				else
 					diseases_Fever("",true)
 				end
@@ -805,7 +805,7 @@ function Illness()
 			local list = {"Cold","Caries","BurnWound"}
 			for i = 1,3 do
 				if GetImpactValue("",list[i])==1 then
-					Disease.cureSim("",list[i])
+					Disease[list[i]]:cureSim("")
 				end
 			end
 		end
