@@ -1,6 +1,6 @@
 function Run()
  
-	local	GuardsCalled = false
+	local GuardsCalled = false
 
 	while not ActionIsStopped("Action") do
 	
@@ -18,13 +18,15 @@ function Run()
 		end
 		
 		if not GuardsCalled then
-			ShowOverheadSymbol("Owner", true, true, "OverheadSymbolID",
-							"@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
+			if SimGetAge("") < 16 then
+				ShowOverheadSymbol("Owner", true, true,"OverheadSymbolID", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
+			else
+				MsgSay("", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
+			end
 			CommitAction("call_guards", "Owner", "Owner")
 			GuardsCalled = true
 			Sleep(5)
 			StopAction("call_guards", "Owner")
-			RemoveOverheadSymbols("Owner")
 		end
 		
 		if Rand(100) < 25 then
@@ -34,9 +36,13 @@ function Run()
 				PlaySound3DVariation("", "CharacterFX/female_anger_loop", 1)
 			end
 			PlayAnimation("Owner", "cheer_02")
-		end		
+		end
 		
 		Sleep(1)
+		-- scream again from time to time
+		if Rand (10) == 0 then
+			GuardsCalled = false
+		end
 	end
 end
 

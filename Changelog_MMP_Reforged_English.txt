@@ -251,6 +251,7 @@ _Rogue_
 - Jugglers got too much xp for production.
 - mercenaries 'offer building protection' action showed no cooldown in the tooltip
 - You can no longer destroy a building completely by plundering it (e.g. counting houses)
+- Kidnappung caused no evidence to appear.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.

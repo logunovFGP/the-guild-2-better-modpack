@@ -40,6 +40,7 @@ Bugfixes:
 - Man konnte die Minenwachen austricksen, indem man feindliche Aktionen unterbrach, womit man sie problemlos von der Mine weglocken konnte, um sie dann anschließend erneut zu überfallen.
 - Wenn ihr jemanden heiratet, der einen höheren Titel hat, erhaltet ihr nun auch dann den nächst höheren Titel, wenn ihr bereits über dem Titel "Gemeiner" seid.
 - Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
+- Entführungen erzeugten keine entsprechenden Beweise.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.

@@ -19,12 +19,9 @@ Offen:
 
 - Das Bau/Levelup-Verhalten der KI war fehlerhaft/ nicht nachvollziehbar (Spar-Priorities nicht ausgereift)
 
-- Diverse Bugs beim Wegelagern wurden behoben.
-
 
 
 Kritische Balance-Änderungen:
-- Bestechungsgelder richten sich nach dem Barvermögen des Ziels, nicht mehr nach dem Wohlstand.
 - Die Produkt-KI aller Betriebe wurde signifikant verbessert (dynamischen Prio-System)
 - Lösegeldforderungen werden nun nicht immer akzeptiert, vor allem nicht, 
   wenn sie sehr hoch sind.

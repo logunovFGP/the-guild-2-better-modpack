@@ -5,6 +5,7 @@ function Run()
 	end
 	
 	local	VictimID = GetProperty("Squad", "VictimID")
+
 	if not VictimID then
 		return
 	end
@@ -13,21 +14,20 @@ function Run()
 		return
 	end
 	
-	local IsLeader
-	local	LeaderID
+	local IsLeader, LeaderID
 	
 	while true do
 	
 		IsLeader = false
-		LeaderID = GetProperty("Squad", "LeaderID")
-		if not LeaderID or LeaderID=="" then
+		LeaderID = GetProperty("Squad", "LeaderID") or 0
+		if LeaderID == 0 then
 			SetProperty("Squad", "LeaderID", GetID(""))
 			IsLeader = true
 		else
-			IsLeader = (LeaderID==GetID(""))
+			IsLeader = (LeaderID == GetID(""))
 		end
 	
-		local 	Phase = GetProperty("Squad", "Phase")
+		local Phase = GetProperty("Squad", "Phase")
 	
 		if not IsLeader then
 		
@@ -39,7 +39,7 @@ function Run()
 			
 				while HasProperty("Squad", "LeaderID") do
 					Phase = GetProperty("Squad", "Phase")
-					if Phase==2 then
+					if Phase == 2 then
 						local TargetID = GetProperty("Squad", "TargetID")
 						if TargetID and GetAliasByID(TargetID, "Target") then
 							if not GetState("Target", STATE_UNCONSCIOUS) then
@@ -58,11 +58,11 @@ function Run()
 		
 			-- Leader stuff
 			
-			if Phase==0 then
+			if Phase == 0 then
 				ms_squadwarmember_Phase0()
-			elseif Phase==1 then
+			elseif Phase == 1 then
 				ms_squadwarmember_Phase1()
-			elseif Phase==2 then
+			elseif Phase == 2 then
 				ms_squadwarmember_Phase2()
 			end
 		end
@@ -71,7 +71,7 @@ function Run()
 end
 
 
--- Phase0 - Sammeln am eigenen Wohnhaus bis genug Leute da sind
+-- Phase0 - gather at residence
 function Phase0()
 
 	if SimGetWorkingPlace("", "Place") then
@@ -83,10 +83,9 @@ function Phase0()
 	
 	while true do
 	
-		local	Att
-		local	Def
+		local Att, Def
 		
-		Att,Def = ai_CheckForces("", "Victim", 2000)
+		Att, Def = ai_CheckForces("", "Victim", 2000)
 		if Att*1.3 < Def then
 			SetProperty("Squad", "Phase", 1)
 			return
@@ -97,11 +96,10 @@ function Phase0()
 end
 
 
--- Phase1 - Marschbefehl und warten bis genug da sind - eventl. draussen vor dem Haus aufstellen
+-- Phase1 - lets go
 function Phase1()
-	local	WaitTime = GetData("WaitTime", WaitTime)
-	local	Att
-	local	Def
+	local WaitTime = GetData("WaitTime", WaitTime)
+	local Att, Def
 	
 	if GetInsideBuilding("Victim", "Build") then
 	
@@ -120,14 +118,14 @@ function Phase1()
 				
 				if GetInsideBuildingID("Victim")==GetID("Build") and GetDynastyID("Build")==GetDynastyID("Victim") then
 				
-					Att,Def = ai_CheckForces("", "Build", 2000)
+					Att, Def = ai_CheckForces("", "Victim", 2000)
 					if Att*1.6 < Def then
 				
 						SetProperty("Squad", "Phase", 2)
 						SetProperty("Squad", "TargetID", GetID("Build"))
 
 						SetData("DontLeave", 1)
-						if not MeasureRun("","Build","AttackEnemy",true) then
+						if not MeasureRun("", "Build", "AttackEnemy", true) then
 							return false
 						end
 						return
@@ -139,26 +137,26 @@ function Phase1()
 		end
 		
 		
-		WaitTime = GetGametime()+0.5+Rand(20)*0.1
+		WaitTime = GetGametime() + 0.5 + Rand(20)*0.1
 		SetData("WaitTime", WaitTime)
 		return
 	end
 	
 	if f_Follow("", "Victim", GL_MOVESPEED_RUN, 1000, true) then
 		local	Distance = CalcDistance("", "Victim")
-		if Distance<0 or Distance>400 then
+		if Distance < 0 or Distance > 400 then
 			return
 		end
 		
-		Att,Def = ai_CheckForces("", "Victim", 2000)
+		Att, Def = ai_CheckForces("", "Victim", 2000)
 		if Att*1.3 < Def then
 		
 			SetProperty("Squad", "Phase", 2)
 			SetProperty("Squad", "TargetID", GetID("Victim"))
 
 			SetData("DontLeave", 1)
-			if not GetState("Victim",STATE_CUTSCENE) then
-				if not MeasureRun("","Victim","AttackEnemy",true) then
+			if not GetState("Victim", STATE_CUTSCENE) then
+				if not MeasureRun("", "Victim", "AttackEnemy", true) then
 					return false
 				end
 			end
@@ -174,7 +172,7 @@ function Phase2()
 
 		SetData("DontLeave", 1)
 		if not GetState("Victim",STATE_CUTSCENE) then
-			if not MeasureRun("","Victim","Kill",true) then
+			if not MeasureRun("", "Victim", "Kill", true) then
 				return false
 			end
 		end
@@ -189,11 +187,14 @@ function CleanUp()
 		if AliasExists("Squad") then
 	
 			local LeaderID = GetProperty("Squad", "LeaderID")
-			if LeaderID==GetID("") then
+
+			if LeaderID == GetID("") then
 				RemoveProperty("Squad", "LeaderID")
 			end
+
 			SquadRemoveMember("", true)
-			if SquadGetMemberCount("Squad", true)<1 then
+
+			if SquadGetMemberCount("Squad", true) < 1 then
 				SquadDestroy("Squad")
 				return
 			end

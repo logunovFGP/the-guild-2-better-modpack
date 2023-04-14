@@ -249,6 +249,7 @@ _Gauner_
 - Bei Schutzgelderpressungen wurde die falsche Dauer im Tooltip angezeigt.
 - Bei der Söldnermaßnahme 'Gebäudeschutz anbieten' wurde kein Cooldown im Tooltip angezeigt.
 - Durch Gebäudeplünderungen kann ein Gebäude (z.b. Kontor) nicht mehr völlig zerstört werden.
+- Entführungen erzeugten keine entsprechenden Beweise.
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.
