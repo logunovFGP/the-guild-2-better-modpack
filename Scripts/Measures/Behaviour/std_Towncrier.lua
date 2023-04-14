@@ -45,8 +45,8 @@ function Run()
 			GetOutdoorMovePosition("", "Market", "crypos")
 			f_MoveTo("", "crypos")
 			AlignTo("", "homecity")
-			if SimGetAge("") > 30 then
-				SimSetAge("", 30)
+			if SimGetAge("") > 35 then
+				SimSetAge("", 35)
 			end
 			
 			Sleep(10)
@@ -82,6 +82,6 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	RemoveImpact("","FinnishQuest")
+	RemoveImpact("", "FinnishQuest")
 end
 

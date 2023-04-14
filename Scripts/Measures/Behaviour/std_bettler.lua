@@ -1,7 +1,7 @@
 function Init()
 
-	SetState("",STATE_TOWNNPC,true)
-	MoveSetActivity("","sick")
+	SetState("", STATE_TOWNNPC,true)
+	MoveSetActivity("", "sick")
 	BaseFE("", "sad", 1.0, -1)
 	SimSetMortal("", false)
 	
@@ -10,7 +10,7 @@ end
 function Run()
 
     while true do
-		GetLocalPlayerDynasty("player")
+
 	    local offset = math.mod(GetID("Owner"), 30) * 0.1
 	    local zielArt
 		local zielTyp

@@ -32,6 +32,7 @@ function Run()
 	local	IdleStep = 3
 		
 	while true do
+
 		ToDo = ms_squaddanegeldmember_WhatToDo()
 		Success = false
 		
@@ -67,12 +68,12 @@ function Wait(IdleStep)
 		end		
 	end
 		
-	if (IdleStep>2) then
+	if (IdleStep > 2) then
 		ms_squaddanegeldmember_IdleStuff()
 		IdleStep = 0
 	end
 
-	Sleep(1 + Rand(3))
+	Sleep(2 + Rand(5))
 end
 
 function IdleStuff()
@@ -141,7 +142,7 @@ function Danegeld()
 		BuildingGetOwner("MyMercenarycamp", "MercOwner")
 	end
 
-	if GetImpactValue("Victim","HaveBeenPickpocketed") >0 then
+	if GetImpactValue("Victim", "HaveBeenPickpocketed") > 0 then
 		return false
 	end
 	
@@ -199,7 +200,7 @@ function Scan(Member)
 	local DanegeldFilterCart = "__F((Object.GetObjectsByRadius(Cart) == "..DanegeldRadius..")AND NOT(Object.BelongsToMe())AND(Object.ActionAdmissible())AND NOT(Object.HasImpact(HaveBeenPickpocketed)))"
 	
 	-- Danegeld on sims deactivated
-	local NumVictimSims = 0 --Find("Destination",DanegeldFilterSim,"VictimSim", -1)
+	local NumVictimSims = 0 --Find("Destination", DanegeldFilterSim, "VictimSim", -1)
 	local NumVictimCarts = Find("Destination", DanegeldFilterCart, "VictimCart", -1)
 	local NumOwnMercenaries = SquadGetMemberCount("")
 	

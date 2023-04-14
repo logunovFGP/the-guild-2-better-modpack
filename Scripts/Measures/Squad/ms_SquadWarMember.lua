@@ -58,7 +58,6 @@ function Run()
 		
 			-- Leader stuff
 			
-			
 			if Phase==0 then
 				ms_squadwarmember_Phase0()
 			elseif Phase==1 then
@@ -68,9 +67,7 @@ function Run()
 			end
 		end
 		Sleep(2 + Rand(20)*0.1)
-		
 	end
-	
 end
 
 

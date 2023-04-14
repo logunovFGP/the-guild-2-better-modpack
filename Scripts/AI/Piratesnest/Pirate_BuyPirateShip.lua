@@ -7,8 +7,8 @@ function Weight()
 	if not ReadyToRepeat("PirateHarbor", "ai_BuyPirateShip") then
 		return 0
 	end
-	
-	if HasProperty("PirateHarbor", "pirateship") then
+
+	if GetMoney("PirateHarbor") < 3000 then
 		return 0
 	end
 	
@@ -16,17 +16,14 @@ function Weight()
 	local Found = false
 	if not HasProperty("PirateHarbor", "pirateship") then
 	
-		for i=0, BuildingGetCartCount("")-1 do
-			if BuildingGetCart("", i, "Cart") then
+		for i=0, BuildingGetCartCount("PirateHarbor")-1 do
+			if BuildingGetCart("PirateHarbor", i, "Cart") then
 				if CartGetType("Cart") == EN_CT_CORSAIR then
 					Found = true
+					break
 				end
 			end
 		end
-	end
-	
-	if GetMoney("PirateHarbor") < 1000 then
-		return 0
 	end
 	
 	if Found then

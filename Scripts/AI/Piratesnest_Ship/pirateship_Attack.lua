@@ -46,6 +46,10 @@ function Weight()
 	-- no attacks on friendly dynasties
 	local TargetID = GetDynastyID("MyTarget")
 
+	if (TargetID == GetDynastyID("SHIP")) then
+		return 0
+	end
+
 	if TargetID > 0 then
 		if GetDynasty("MyTarget", "TargetDynasty") then
 			GetDynasty("SHIP", "MyDynasty")

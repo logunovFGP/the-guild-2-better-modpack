@@ -9,19 +9,10 @@ function Run()
 		return
 	end
 
---	if GetLocalPlayerDynasty("LocalPlayer") then
---		if GetID("LocalPlayer") == GetID("dynasty") then
---			GetPosition("Destination", "SquadPos")
---			GfxAttachObject("Flag", "Editor/Settlement.nif")
---			GfxSetPositionTo("Flag", "SquadPos")
---			GfxScale("Flag", 0.2)
---		end
---	end
-
 	local Target
 	local Count
 	while (true) do
-		Sleep(1)
+		Sleep(4)
 		Count = SquadGetMemberCount("", true)
 		if Count==0 then
 			StopMeasure()

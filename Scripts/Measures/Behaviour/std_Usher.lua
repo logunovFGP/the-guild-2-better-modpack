@@ -40,7 +40,7 @@ end
 
 function CheckAge()
 	if SimGetAge("") > 55 then
-		SimSetAge("", 30)
+		SimSetAge("", 40)
 	end
 end
 

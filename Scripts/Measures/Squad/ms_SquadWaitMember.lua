@@ -3,18 +3,19 @@ function Run()
 	Sleep(0.5)
 	MeasureSetNotRestartable()
 	local	Member = GetData("Member")
-	if not Member or Member==-1 then
+	if not Member or Member == -1 then
 		return
 	end
 		
 	while true do
 
 		SquadSetReady("Destination", Member, false)
-		
 		SquadGetLeader("Destination", "Leader")
+
 		if not f_Follow("", "Leader",GL_MOVESPEED_WALK, 150, true) then
 			return
 		end
+
 		f_FollowNoWait("", "Leader", GL_MOVESPEED_WALK, 150)
 		SquadSetReady("Destination", Member, true)
 		SquadWaitSim("")

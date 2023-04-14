@@ -487,7 +487,7 @@ function GetBootyCount(Destination, InventoryType)
 	
 	for Number = 0, Slots-1 do
 		ItemId, ItemCount = InventoryGetSlotInfo(Destination, Number, InventoryType)
-		if ItemId and ItemCount then
+		if ItemId and ItemCount and ItemID ~= 999 then
 			Total = Total + ItemGetBasePrice(ItemId) * ItemCount
 		end
 	end

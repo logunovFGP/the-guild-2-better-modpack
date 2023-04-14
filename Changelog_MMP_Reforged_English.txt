@@ -346,6 +346,7 @@ _Craftsman_
 _Rogue_
 - The mercenarys 'offer building protection' icon is now shown while your mercenary protects a building.
 - Mercenarys can protect own buildings.
+- Highwaymen will comment on their actions and act more intelligently. Friends and allies will be ignored when raiding.
 
 _AI_
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.

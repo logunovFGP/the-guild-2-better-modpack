@@ -25,6 +25,7 @@ Features:
 - In einer Taverne zu übernachten, garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.
 - Die KI nutzt deutlich verbesserte Karren-Logiken.
 - Übernahme-Angebote für die Betriebe von Schattendynastien sind nun möglich gegen die Zahlung einer hohen Summe. Die Besitzer können das Angebot ablehnen, wenn sie politische Ambitionen verfolgen oder den potenziellen Käufer nicht mögen.
+- Wegelagerer werden ihre Aktionen kommentieren und intelligenter agieren. Freunde und Verbündete werden beim Überfallen ignoriert.
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat).

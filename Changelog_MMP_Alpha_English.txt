@@ -26,6 +26,7 @@ Features:
 - AI now uses vastly improved cart systems
 - Pneumonia now uses Medicine bottles for treatment and BurnWounds need PainKiller
 - You can make a takeover bid to buy a desired building from a shadow dynasty for a high amount of money. They may decline if they are into politics or hate you.
+- Highwaymen will comment on their actions and act more intelligently. Friends and allies will be ignored when raiding.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)

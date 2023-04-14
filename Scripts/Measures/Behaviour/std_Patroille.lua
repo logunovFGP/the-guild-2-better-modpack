@@ -1,7 +1,7 @@
 function Run()
 
-	local		Number = 1
-	local		Point
+	local Number = 1
+	local Point
 	
 	while true do
 	
@@ -14,7 +14,7 @@ function Run()
 				f_MoveTo("", "Position")
 			end
 			
-			Sleep(Rand(12)+1)
+			Sleep(Rand(15)+1)
 			Number = Number + 1
 			
 		else
@@ -32,7 +32,7 @@ function Run()
 				end
 			end
 		end
-		Sleep(1+Rand(5))
+		Sleep(2+Rand(10))
 	end
 end
 

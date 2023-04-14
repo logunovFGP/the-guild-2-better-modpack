@@ -1,7 +1,8 @@
 function Run()
-	SetState("",STATE_TOWNNPC,true)
-	GetHomeBuilding("","home")
-	BuildingGetCity("home","homecity")
+	SetState("", STATE_TOWNNPC, true)
+	SetProperty("", "Vendor", 1)	
+	GetHomeBuilding("", "home")
+	BuildingGetCity("home", "homecity")
 	SetExclusiveMeasure("", "StartDialog",EN_PASSIVE)	
 	Sleep(Rand(3)+1)
 	if CityGetRandomBuilding("homecity",-1,14,1,-1, FILTER_IGNORE,"mymarket_resource") then

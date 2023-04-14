@@ -349,6 +349,7 @@ _Handwerker_
 _Gauner_
 - Die Maßnahme 'Gebäudeschutz anbieten' zeigt nun ein Icon, während der Söldner ein Gebäude beschützt. Die Maßnahme wurde als grüne Maßnahme eingeordnet.
 - Söldner können ihren 'Gebäudeschutz anbieten' nun auch auf eigene Gebäude anwenden.
+- Wegelagerer werden ihre Aktionen kommentieren und intelligenter agieren. Freunde und Verbündete werden beim Überfallen ignoriert.
 
 _KI_
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
