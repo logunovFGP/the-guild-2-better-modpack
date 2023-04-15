@@ -15,18 +15,18 @@ function Run()
 		return false
 	end
 	
-	local Label			= ItemGetLabel(ItemID, true)
-	local Time			= ItemGetProductionTime(ItemID)
-	local Count			= ItemGetProductionAmount(ItemID)
-	local	PropName	= "Gather_"..ItemID
+	local Label = ItemGetLabel(ItemID, true)
+	local Time = ItemGetProductionTime(ItemID) - 0.5
+	local Count = ItemGetProductionAmount(ItemID)
+	local PropName = "Gather_"..ItemID
 	
-	if not GetProperty("", PropName) then
+	if not HasProperty("", PropName) then
 		SetProperty("", PropName, 0)
 	end
 
 	while true do
 	
-		while GetRemainingInventorySpace("",ItemID) < Count do
+		while GetRemainingInventorySpace("", ItemID) < 1 do
 			if not f_MoveTo("", "WaterPos", GL_MOVESPEED_RUN) then
 				return
 			end
@@ -45,14 +45,12 @@ function Run()
 			break
 		end
 
-		while GetRemainingInventorySpace("",ItemID) >= Count do
+		while GetRemainingInventorySpace("",ItemID) >= 1 do
 
 			local	Diff
 			local	StartTime
 			local	CurrentTime = GetGametime()
 			StartTime = CurrentTime
-			
-			
 			
 			while true do
 				Sleep(2)
@@ -72,15 +70,16 @@ function Run()
 				end
 			end
 			
-			local Removed = RemoveItems("Destination", ItemID, Count)
-			if Removed>0 then
-				AddItems("", ItemID, Removed)
+			local RemainingSpace = GetRemainingInventorySpace("", ItemID)
+			if RemainingSpace >= Count then
+				AddItems("", ItemID, (Rand(Count)+1))
+			else
+				AddItems("", ItemID, RemainingSpace)
 			end
 		end
 	end
 end
 
 function CleanUp()
-
 end
 

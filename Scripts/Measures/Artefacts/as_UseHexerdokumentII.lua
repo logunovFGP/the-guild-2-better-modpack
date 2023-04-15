@@ -20,9 +20,9 @@ function Run()
 		
 		-- create evidence with random false victim
 		while true do
-			ScenarioGetRandomObject("cl_Sim","CurrentRandomSim")
-			if GetDynasty("CurrentRandomSim","CDynasty") then
-				CopyAlias("CurrentRandomSim","EvidenceVictim")
+			ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
+			if GetDynasty("CurrentRandomSim", "CDynasty") then
+				CopyAlias("CurrentRandomSim", "EvidenceVictim")
 				break
 			end
 			Sleep(0.2)
@@ -65,11 +65,13 @@ function Run()
 		CarryObject("", "Handheld_Device/ANIM_openscroll.nif", false)
 		Sleep(1)
 		PlayAnimationNoWait("", "pray_standing")
+		
 		if SimGetGender("") == 1 then
 			PlaySound3DVariation("", "CharacterFX/male_neutral")
 		else
 			PlaySound3DVariation("", "CharacterFX/female_neutral")
 		end
+		
 		Sleep(5)
 		StartSingleShotParticle("particles/rage.nif", "ParticleSpawnPos", 1, 5)
 		PlaySound3D("", "Effects/mystic_gift+0.wav", 1.0)
@@ -77,7 +79,7 @@ function Run()
 		CarryObject("", "", false)
 			
 		-- XP
-		chr_GainXP("Owner",GetData("BaseXP"))
+		chr_GainXP("Owner", GetData("BaseXP"))
 		Sleep(0.5)
 			
 		-- Maybe send a message to the victim (difficulty: 3)	

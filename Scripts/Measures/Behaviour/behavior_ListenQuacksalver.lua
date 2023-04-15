@@ -8,7 +8,6 @@ function Run()
 
 	local ActionName = GetData("Action_Name")
 	local Timer = 0
-
 	SetRepeatTimer("Owner", "Listen2Quacksalver", 8)
 
 	--listen
@@ -25,8 +24,8 @@ function Run()
 		Sleep(4)
 		local Value = Rand(100)
 			
-	if Value < 50 then
-			if SimGetGender("")==GL_GENDER_MALE then
+		if Value < 50 then
+			if SimGetGender("") == GL_GENDER_MALE then
 				if Rand(2) == 0 then
 					PlayAnimationNoWait("Owner", "cheer_01")
 				else
@@ -51,7 +50,7 @@ function Run()
 		local MoneyToGet = RhetoricSkillActor * 20
 		local RandomTime = 1+Rand(5)
 		Sleep(RandomTime)
-		if RhetoricSkillActor >=(GetSkillValue("", EMPATHY)+Rand(3)) then
+		if chr_SkillCheck("Actor", RHETORIC, 1, "", EMPATHY) then
 			MsgSayNoWait("", "@L_MEASURE_LISTENQUACKSALVER_YES")
 			PlayAnimation("", "nod")
 			if RemoveItems("Actor", "MiracleCure", 1, INVENTORY_STD) == 1 then

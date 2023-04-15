@@ -12,7 +12,7 @@ function Run()
 		return ""
 	end
 	
-	if GetCurrentMeasurePriority("") >= 40 then
+	if GetCurrentMeasurePriority("") >= 50 then
 		return ""
 	end
 	

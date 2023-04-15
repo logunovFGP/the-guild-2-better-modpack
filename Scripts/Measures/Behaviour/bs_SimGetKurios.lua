@@ -2,7 +2,7 @@ function Run()
    	
 	if not GetState("", STATE_IDLE) then
 		return ""
-	end	
+	end
 	
 	if GetState("",STATE_ROBBERGUARD) then
 		return ""
@@ -13,18 +13,13 @@ function Run()
 		return ""
 	end
 	
-	if SimGetProfession("")==42 then --juggler
+	if SimGetProfession("")== GL_PROFESSION_JUGGLER then
 		return ""
 	end
 
-	if SimGetClass("")==3 then
+	if not ReadyToRepeat("", "SimGetKurios") then
 		return ""
 	end
-
-	if not ReadyToRepeat("","SimGetKurios") then
-		return ""
-	end
-
 
 	if IsPartyMember("") then
 		return ""

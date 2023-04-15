@@ -20,7 +20,7 @@ function Run()
 			if GetDistance("", "GuardPosition") > 100 then
 				Name = GetName("GuardPosition")
 --				MsgMeasure("","Moving to ("..Name..")")
-				f_MoveTo("","GuardPosition",GL_MOVESPEED_WALK, "MoveResult")
+				f_MoveTo("","GuardPosition",GL_MOVESPEED_WALK)
 			end
 		
 			AlignTo("", "GuardBuilding", true)

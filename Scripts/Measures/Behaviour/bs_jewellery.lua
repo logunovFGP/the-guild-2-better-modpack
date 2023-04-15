@@ -17,7 +17,7 @@ function Run()
 		
 	elseif GetProperty("Actor", "jewellery") == 7 then
 		if not (SimGetGender("") == SimGetGender("Actor")) then
-			chr_ModifyFavor("", "Actor", GL_FAVOR_MOD_SMALL+2)
+			chr_ModifyFavor("", "Actor", GL_FAVOR_MOD_SMALL + 2)
 		end
 		return ""
 	elseif GetProperty("Actor", "jewellery") == 6 then
@@ -36,7 +36,7 @@ function Run()
 	end
 
 	if kamm > 0 then
-		if SimGetOfficeLevel("") <0 then
+		if SimGetOfficeLevel("") > 0 then
 			modval = modval + 3
 		end
 		chr_ModifyFavor("","Actor", modval)

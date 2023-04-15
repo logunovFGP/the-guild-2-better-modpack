@@ -14,7 +14,7 @@ function Run()
 		end
 
 		while true do
-			Sleep(100)
+			Sleep(120)
 		end
 	end
 	
