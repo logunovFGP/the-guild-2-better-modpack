@@ -68,6 +68,8 @@ _Tech_
 - Courting Progress is calculated differently.
 - The possibility of using compliments and other actions during cutscenes have caused many issues and thus got removed. All cutscene-only parts of those scripts have been removed.
 - guild house script has been completely revised.
+- Disease scripts and functions completely reworked.
+- Misc. changes to the library functions and files.
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
@@ -252,6 +254,7 @@ _Rogue_
 - mercenaries 'offer building protection' action showed no cooldown in the tooltip
 - You can no longer destroy a building completely by plundering it (e.g. counting houses)
 - Kidnappung caused no evidence to appear.
+- Jugglers gained no xp during production.
 
 _AI_
 - Shadow AI could not start the game as an alchemist.

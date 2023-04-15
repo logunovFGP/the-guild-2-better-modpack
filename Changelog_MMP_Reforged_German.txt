@@ -67,6 +67,8 @@ _Technik_
 - Der Werbungsfortschritt wird nun neu berechnet.
 - Die Möglichkeit, während Cutscenes Komplimente und andere Maßnahmen zu nutzen, wurde gestrichen. Alle Teile aus Scripten, die sich auf diesen Fall beziehen, wurden entfernt.
 - Gildenhaus-Script wurde generalüberholt.
+- Krankheits-Scripts und Funktionen wurden komplett überarbeitet und neu strukturiert.
+- Diverse Änderungen und Umstrukturierungen der library-Funktionen und Dateien.
 
 _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
@@ -250,6 +252,7 @@ _Gauner_
 - Bei der Söldnermaßnahme 'Gebäudeschutz anbieten' wurde kein Cooldown im Tooltip angezeigt.
 - Durch Gebäudeplünderungen kann ein Gebäude (z.b. Kontor) nicht mehr völlig zerstört werden.
 - Entführungen erzeugten keine entsprechenden Beweise.
+- Gaukler bekamen während der Produktion keine EP.
 
 _KI_
 - Schattendynastien konnten bei Spielstart nicht als Alchemist spawnen.

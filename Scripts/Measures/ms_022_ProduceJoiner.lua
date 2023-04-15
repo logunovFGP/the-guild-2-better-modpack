@@ -1,15 +1,15 @@
 function GetLocator()
 
 	local LocatorArray = {
-		"LathePos", ms_022_producejoiner_UseLatheMachine, "Lathe",
-		"SawPos", ms_022_producejoiner_UseSaw, "",
-		"SawPos", ms_022_producejoiner_UseSaw, "",
-		"FilePos", ms_022_producejoiner_UseFile, "",
-		"PlanerPos", ms_022_producejoiner_UsePlaner, "Planer",
-		"AutomaticSawPos", ms_022_producejoiner_UseAutomaticSaw, "AutomaticSaw",
-		"AutomaticHammerOvenPos", ms_022_producejoiner_UseAutomaticHammer, "AutomaticHammer",
-		"StrainPos", ms_022_producejoiner_UseStrainingMachine, "StrainingMachine",
-	}
+				"LathePos", ms_022_producejoiner_UseLatheMachine, "Lathe",
+				"SawPos", ms_022_producejoiner_UseSaw, "",
+				"SawPos", ms_022_producejoiner_UseSaw, "",
+				"FilePos", ms_022_producejoiner_UseFile, "",
+				"PlanerPos", ms_022_producejoiner_UsePlaner, "Planer",
+				"AutomaticSawPos", ms_022_producejoiner_UseAutomaticSaw, "AutomaticSaw",
+				"AutomaticHammerOvenPos", ms_022_producejoiner_UseAutomaticHammer, "AutomaticHammer",
+				"StrainPos", ms_022_producejoiner_UseStrainingMachine, "StrainingMachine"
+				}
 	local	LocatorCount = 8
 
 	local Position = (Rand(LocatorCount))*3+1

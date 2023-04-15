@@ -1,18 +1,18 @@
 	function GetLocator()
 
 	local LocatorArray = {
-		"IronMachine_fire", ms_022_producetailor_UseIronMachine, "IronMachine",
-		"SewingMachine_cloth", ms_022_producetailor_UseSewingMachine, "SewingMachine",	
-		"Bobbin", ms_022_producetailor_UseBobbin, "",
-		"Dressform2", ms_022_producetailor_UseDressform, "Dressform",
-		"Hallstand_01", ms_022_producetailor_UseHallstand_01, "",
-		"Hallstand_02", ms_022_producetailor_UseHallstand_02, "jerkinnailer",
-		"Thimble", ms_022_producetailor_UseThimble, "Thimble",
-	}
-	local	LocatorCount = 7
+				"IronMachine_fire", ms_022_producetailor_UseIronMachine, "IronMachine",
+				"SewingMachine_cloth", ms_022_producetailor_UseSewingMachine, "SewingMachine",	
+				"Bobbin", ms_022_producetailor_UseBobbin, "",
+				"Dressform2", ms_022_producetailor_UseDressform, "Dressform",
+				"Hallstand_01", ms_022_producetailor_UseHallstand_01, "",
+				"Hallstand_02", ms_022_producetailor_UseHallstand_02, "jerkinnailer",
+				"Thimble", ms_022_producetailor_UseThimble, "Thimble"
+				}
+	local LocatorCount = 7
 	
 	local Position = (Rand(LocatorCount))*3+1
-	return	LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
+	return LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
 end
 
 

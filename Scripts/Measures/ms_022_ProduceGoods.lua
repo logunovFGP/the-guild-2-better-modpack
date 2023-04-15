@@ -270,14 +270,14 @@ end
 function GetLocator()
 
 	local LocatorArray = {
-		"Work_01", ms_022_producegoods_UseLocator, "",
-		"Work_02", ms_022_producegoods_UseLocator, "",
-		"Work_03", ms_022_producegoods_UseLocator, "",
-		"Work_04", ms_022_producegoods_UseLocator, "",
-		"Work_05", ms_022_producegoods_UseLocator, "",
-		"Work_06", ms_022_producegoods_UseLocator, "",
-		"Work_07", ms_022_producegoods_UseLocator, "",
-		"Work_08", ms_022_producegoods_UseLocator, "", }
+				"Work_01", ms_022_producegoods_UseLocator, "",
+				"Work_02", ms_022_producegoods_UseLocator, "",
+				"Work_03", ms_022_producegoods_UseLocator, "",
+				"Work_04", ms_022_producegoods_UseLocator, "",
+				"Work_05", ms_022_producegoods_UseLocator, "",
+				"Work_06", ms_022_producegoods_UseLocator, "",
+				"Work_07", ms_022_producegoods_UseLocator, "",
+				"Work_08", ms_022_producegoods_UseLocator, "" }
 	
 	local	LocatorCount = 8
 	local Position = (Rand(LocatorCount))*3+1

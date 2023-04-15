@@ -48,10 +48,16 @@ function Run()
 			PlaySound3D("","fire/Explosion_01.wav", 1.0)
 			StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1,5)
 			ModifyHP("", -(0.5*GetMaxHP("")), true, 1)
+			
+			if not AliasExists("Destination") then
+				StopMeasure()
+			end			
+
 			if GetImpactValue("Destination","buildingburgledtoday") ~=0 then
 				local TimeLeft = ImpactGetMaxTimeleft("Destination", "BoobyTrap")
 				AddImpact("Destination", "buildingburgledtoday", 1, TimeLeft)
 			end
+
 			CommitAction("explosion", "", "", "Destination", "Destination")
 			StopMeasure()
 		end
@@ -121,7 +127,7 @@ function CleanUp()
 			RemoveProperty("Destination", "CanEnter_"..GetID(""))
 		end
 	end
-	if GetInsideBuilding("","CurrentBuilding") then
+	if GetInsideBuilding("", "CurrentBuilding") then
 		if (GetID("CurrentBuilding") == GetID("Destination")) then
 			if GetOutdoorMovePosition("", "Destination", "DoorPos") then
 				SimBeamMeUp("", "DoorPos", false) -- false added

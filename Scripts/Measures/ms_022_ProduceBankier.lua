@@ -236,19 +236,18 @@ end
 
 function UseTresor()
 
-    if BuildingGetOwner("WorkBuilding","Meister") then
-	    if GetFavorToSim("","Meister") < 30 then
+    if BuildingGetOwner("WorkBuilding", "Meister") then
+	    if GetFavorToSim("", "Meister") <= 30 then
 		    if Rand(20) > 16 then
 				PlayAnimation("", "pickpocket")
 				local Amount = 10 + Rand(50)
-				chr_SpendMoney("Meister", Amount, "bank")
+				chr_SpendMoney("Meister", Amount, "CostThiefs")
 			end
 		end
 	end
-	GetLocatorByName("WorkBuilding","Work9","WorkPosi")
-	f_BeginUseLocator("","WorkPosi",GL_STANCE_STAND,true)
+	GetLocatorByName("WorkBuilding", "Work9", "WorkPosi")
+	f_BeginUseLocator("", "WorkPosi", GL_STANCE_STAND, true)
 
 	PlayAnimation("", "cogitate")
-	PlayAnimation("","manipulate_bottom_r")
-	
+	PlayAnimation("", "manipulate_bottom_r")
 end

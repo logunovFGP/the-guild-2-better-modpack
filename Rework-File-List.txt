@@ -87,14 +87,6 @@
 
 382 Scripts\Library\idlelib.lua
 
-432 Scripts\Measures\ms_010_GoToSleep.lua
-433 Scripts\Measures\ms_022_Fishing.lua
-435 Scripts\Measures\ms_022_ProduceAlchemist.lua
-436 Scripts\Measures\ms_022_ProduceBakery.lua
-437 Scripts\Measures\ms_022_ProduceBankier.lua
-438 Scripts\Measures\ms_022_ProduceChurch.lua
-439 Scripts\Measures\ms_022_ProduceFisher.lua
-440 Scripts\Measures\ms_022_ProduceGaukler.lua
 442 Scripts\Measures\ms_022_ProduceHospital.lua
 443 Scripts\Measures\ms_022_ProduceJoiner.lua
 444 Scripts\Measures\ms_022_ProduceMill.lua

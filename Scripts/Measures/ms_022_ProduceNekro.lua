@@ -7,7 +7,7 @@ function GetLocator()
 		"Work4", ms_022_producenekro_UseKessel, "",
 		"Work5", ms_022_producenekro_UseSargB, "",
 		"Work6", ms_022_producenekro_UseWerktisch, "",
-		"Work7", ms_022_producenekro_UseWerkhilfe, "werkhilfe",
+		"Work7", ms_022_producenekro_UseWerkhilfe, "werkhilfe"
 		}
 
 	local	LocatorCount = 7
@@ -140,75 +140,108 @@ function KnochenGraben()
 		local ItemID = SimGetProduceItemID("")
 		local platzSim = 0
 		local platzGeb = 0
+		local ProdCount = 0
+		local ProdTime = 0
+
 		if ItemID == 973 then
-	   		platzSim = GetRemainingInventorySpace("", 973, INVENTORY_STD)
-        	platzGeb = GetRemainingInventorySpace("WorkBuilding", 973, INVENTORY_STD)
+	   		platzSim = GetRemainingInventorySpace("", "Knochen", INVENTORY_STD)
+        		platzGeb = GetRemainingInventorySpace("WorkBuilding","Knochen", INVENTORY_STD)
+			ProdCount = ItemGetProductionAmount("Knochen")
+			ProdTime = ItemGetProductionTime("Knochen")
 		elseif ItemID == 972 then
 	   		platzSim = GetRemainingInventorySpace("", 972, INVENTORY_STD)
-        	platzGeb = GetRemainingInventorySpace("WorkBuilding", 972, INVENTORY_STD)
+        		platzGeb = GetRemainingInventorySpace("WorkBuilding", 972, INVENTORY_STD)
+			ProdCount = ItemGetProductionAmount("Schadel")
+			ProdTime = ItemGetProductionTime("Schadel")
 		elseif ItemID == 971 then
-	    	platzSim = GetRemainingInventorySpace("", 971, INVENTORY_STD)
-        	platzGeb = GetRemainingInventorySpace("WorkBuilding", 971, INVENTORY_STD)
+	    		platzSim = GetRemainingInventorySpace("", 971, INVENTORY_STD)
+        		platzGeb = GetRemainingInventorySpace("WorkBuilding", 971, INVENTORY_STD)
+			ProdCount = ItemGetProductionAmount("Leichenhemd")
+			ProdTime = ItemGetProductionTime("Leichenhemd")
 		end
 	
-		if platzSim < 5 and platzGeb < 5 then
+		if platzSim < ProdCount and platzGeb < ProdCount then
 			MsgQuick("", "_HPFZ_PRODUCENEKRO_FEHLER_+0")
 			return false
-		elseif platzSim < 5 then
+		elseif platzSim < ProdCount then
+			TransferItems("", "WorkBuilding")
+		end
+		
+		-- animation
+		-- spawn the resource object
+		local RandomPlace = Rand(3)
+		if RandomPlace == 0 then
+			GetFleePosition("", "WorkBuilding", (1200+Rand(1000)), "MovePos")
+		elseif RandomPlace == 1 then
+			GetFreeLocatorByName("WorkBuilding", "walledge", 4, 4, "MovePos")
+		else
+			GetFreeLocatorByName("WorkBuilding", "walledge", 3, 3, "MovePos")
+		end
+		local x = 0-Rand(300)
+		local z = 0-Rand(750)
+		PositionModify("MovePos", x, 0, z)
+			
+		if not f_MoveTo("", "MovePos", GL_MOVESPEED_WALK) then
+			local Rand1 = -200 +Rand(400)
+			local Rand2 = 200 -Rand(400)
+			PositionModify("MovePos", Rand1, 0, Rand2)
+			
+			if GetDistance("", "WorkBuilding") > 1500 then
+				CopyAlias("WorkBuilding", "MovePos")
+				f_MoveTo("", "MovePos", GL_MOVESPEED_WALK, 750)
+			else
+				f_MoveTo("", "MovePos", GL_MOVESPEED_WALK)
+			end
+		end
+		
+		CarryObject("", "Handheld_Device/ANIM_torchparticles.nif", false)
+		PositionModify("MovePos", -50, 0, 50)
+		GfxAttachObject("resource", "buildings/graveyard/graveyard.nif")
+		GfxSetPositionTo("resource", "MovePos")
+		
+		PlayAnimationNoWait("", "watch_for_guard")
+		local spruch = Rand(4)
+		if spruch == 1 then
+			MsgSay("", "_HPFZ_PRODUCENEKRO_SPRUCH_+0")
+		elseif spruch == 2 then
+			MsgSay("", "_HPFZ_PRODUCENEKRO_SPRUCH_+1")
+		elseif spruch == 3 then
+			MsgSay("", "_HPFZ_PRODUCENEKRO_SPRUCH_+2")
+		else
+			MsgSay("", "_HPFZ_PRODUCENEKRO_SPRUCH_+3")
+		end
+			
+		-- return when full
+		while GetRemainingInventorySpace("", ItemID, INVENTORY_STD) >= ProdCount do
+			SetData("Endtime",(math.mod(GetGametime(),24)+(ProdTime/2)))
+			PlayAnimation("", "knee_work_in")
+			
+			while true do
+				LoopAnimation("", "knee_work_loop", 5)
+				if (math.mod(GetGametime(),24) > GetData("Endtime")) then
+					break
+				end
+			end
+			AddItems("", ItemID, ProdCount, INVENTORY_STD)
+		end
+		
+		CarryObject("", "", false)		
+		PlayAnimation("", "knee_work_out")
+		MoveSetActivity("", "carry")
+		GfxDetachObject("resource")
+		Sleep(2)
+		CarryObject("", "Handheld_Device/ANIM_Bag.nif", false)
+		
+		-- add the items to the building
+		GetOutdoorMovePosition("", "WorkBuilding", "LagerPos")
+		if not f_MoveToSilent("", "LagerPos", GL_MOVESPEED_WALK) then
+			SimBeamMeUp("", "LagerPos", false)
+		end
+		
 		TransferItems("", "WorkBuilding")
-	end 
-	
-	CarryObject("", "Handheld_Device/ANIM_torchparticles.nif", false)
-	GetFreeLocatorByName("WorkBuilding", "bomb", 1, 3, "GehPunkt")
-	--GetPosition("WorkBuilding","GehPunkt")
-	local range = 300
-	local x,y,z = PositionGetVector("GehPunkt")
-	x = x + ((Rand(range))-range)
-	z = z + ((Rand(range))-range)
-	PositionModify("GehPunkt",x,y,z)
-	SetPosition("GehPunkt",x,y,z)
-	--if not f_MoveToSilent("","GehPunkt",GL_MOVESPEED_WALK) then
-	if not f_MoveTo("","GehPunkt",GL_MOVESPEED_WALK) then
-	    --MsgQuick("","_HPFZ_PRODUCEMILL_FEHLER_+1")
-		SimBeamMeUp("","GehPunkt",false)
-		--return false
-	end
-	PlayAnimationNoWait("","watch_for_guard")
-	local spruch = Rand(4)
-	if spruch == 1 then
-        MsgSay("","_HPFZ_PRODUCENEKRO_SPRUCH_+0")
-	elseif spruch == 2 then
-		MsgSay("","_HPFZ_PRODUCENEKRO_SPRUCH_+1")
-	elseif spruch == 3 then
-		MsgSay("","_HPFZ_PRODUCENEKRO_SPRUCH_+2")
-	else
-		MsgSay("","_HPFZ_PRODUCENEKRO_SPRUCH_+3")
-	end
-	PlayAnimation("","knee_work_in")
-	LoopAnimation("","knee_work_loop",Rand(6)+21)
-	CarryObject("","",false)
-    PlayAnimation("","knee_work_out")
-	MoveSetActivity("","carry")
-	Sleep(2)
-	CarryObject("","Handheld_Device/ANIM_Bag.nif", false)
-	if ItemID == 973 then
-	    AddItems("",973,5,INVENTORY_STD)
-	elseif ItemID == 972 then
-	    AddItems("",972,5,INVENTORY_STD)
-	elseif ItemID == 971 then
-	    AddItems("",971,5,INVENTORY_STD)
-	end
-	GetLocatorByName("WorkBuilding","Work2","LagerPos")
-	--if not f_MoveToSilent("","WorkBuilding",GL_MOVESPEED_WALK) then
-	if not f_MoveTo("","LagerPos",GL_MOVESPEED_WALK) then
-	    --MsgQuick("","_HPFZ_PRODUCEMILL_FEHLER_+1")
-		SimBeamMeUp("","LagerPos",false)
-		--return false
-	end
-    TransferItems("", "WorkBuilding")
-	MoveSetActivity("")
-	Sleep(2)
-    CarryObject("", "", false)
+		MoveSetActivity("", "")
+		Sleep(2)
+		CarryObject("", "", false)
 	end
 end
 
@@ -218,7 +251,7 @@ function CleanUp()
 		local ItemId, Found
 		local Count = InventoryGetSlotCount("", INVENTORY_STD)
 
-		for i=0,Count-1 do
+		for i=0, Count-1 do
 			ItemId, Found = InventoryGetSlotInfo("", i, INVENTORY_STD)
 
 			if ItemId and ItemId>0 and Found>0 then
