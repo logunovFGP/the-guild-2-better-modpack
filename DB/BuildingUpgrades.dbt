@@ -574,10 +574,10 @@ Data:
 2342             194              "AboutTalents1"             1                     0                 6                    165                  2338              0                 300             0          |
 2343             195              "LetterOfIndulgence"        1                     0                 6                    166                  2341              0                 300             0          |
 2344             195              "LetterFromRome"            1                     0                 6                    167                  2341              0                 300             0          |
-2345             193              "baptismal_font_catholic"   1                     0                 15                   870                  2307              0                 300              0          |
+2345             193              "baptismal_font_catholic"   1                     0                 15                   870                  2307              0                 300             0          |
 2346             193              "Scriptorium"               1                     1                 0                    0                    2346              26                0               0          |
 2347             194              "Confessional"              1                     1                 0                    0                    2346              0                 0               0          |
-2348             194              "Feretory"                  1                     0                 15                   930                  2349              0                 0               0          |
+2348             194              "Feretory"                  1                     0                 15                   930                  2349              0                 300             0          |
 2349             193              "Altar"                     1                     1                 15                   910                  2307              0                 0               0          |
 2350             193              "church_window"             1                     0                 10                   0.25                 2308              0                 300             0          |
 2351             194              "saints_statue"             1                     0                 10                   0.25                 2350              0                 300             0          |
@@ -944,7 +944,7 @@ Data:
 3253             443              "Saloon"                    1                     1                 0                    0                    3238              25                0               0          |
 3254             443              "StrongBox"                 1                     0                 15                   860                  3251              0                 1000            0          |
 3255             443              "HarkingHorn"               2                     0                 27                   1                    3252              0                 1500            0          |
-//3256             444              "AmatoryCorner"             1                     0                 15                   590                  3255              0                 1000            0          |
+//3256           444              "AmatoryCorner"             1                     0                 15                   590                  3255              0                 1000            0          |
 3257             444              "CrossedAxes"               2                     0                 23                   2                    3255              0                 3000            0          |
 
 // Windmill 490
