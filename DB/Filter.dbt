@@ -154,7 +154,7 @@ Data:
 227   "CanReleaseAbductee"   "__F((Object.CanBeControlled())AND(Object.BuildingHasPrisoner()))"   |
 228   "CanGoToSchool"   "__F((Object.BelongsToMe())AND(Object.HasBehavior(Schooldays))AND(Object.Property.EduLevel==0))"   |
 229   "CanGoToApprenticeship"   "__F((Object.BelongsToMe())AND(Object.HasBehavior(Apprenticeship))AND(Object.LacksProperty('is_apprentice')))"   |
-230   "CanGoToUniversity"   "__F((Object.BelongsToMe())AND(Object.IsClass(3))AND(Object.HasBehavior(University))AND(Object.Property.EduLevel>0)AND(Object.Property.EduLevel<3))"   |
+230   "CanGoToUniversity"   "__F((Object.BelongsToMe())AND(Object.IsClass(3))AND(Object.MinAge(12))AND(Object.Property.EduLevel>0)AND(Object.Property.EduLevel<3))"   |
 231   "IsUniversity"   "__F((Object.IsType(27))AND (Object.GetLevel()==2))"   |
 232   "CanBeUsedForApprenticeship"   "__F((Object.CompareHPRelative()>30)AND(Object.IsClass(2))AND NOT(Object.IsHostile())AND NOT(Object.IsType(38))AND(Object.HasDynasty()))"   |
 233   "IsMySimInTownHallHasOffice"   "__F((Object.CanBeControlled())AND (Object.HasOfficeAccess('leave'))AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
