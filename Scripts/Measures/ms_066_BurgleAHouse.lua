@@ -10,7 +10,7 @@
 
 function Run()
 
-	if not BuildingGetOwner("Destination","BOwner") then
+	if not BuildingGetOwner("Destination", "BOwner") then
 		MsgQuick("", "@L_THIEF_066_BURGLEAHOUSE_FAILURES_+3", GetID("Destination"))
 		StopMeasure()
 	end
@@ -103,8 +103,6 @@ function Run()
 		StopMeasure()
 	end
 	
-	
-
 	--add the BurgleTime Property to the Destination Building
 	local ProtectionValue = GetImpactValue("Destination","ProtectionOfBurglary") - 100
 	local TimeToBurgle = 400 * (1 + ProtectionValue*3)
@@ -119,26 +117,26 @@ function Run()
 	if SpeedupTime > 0 then
 		Skill = Skill + (Skill*SpeedupTime)
 	end
-		
-	--start the action
-	if BuildingGetOwner("Destination","BOwner") then
-		CommitAction("burgleahouse", "", "", "Destination", "Destination")
-	else
-		if BuildingGetSim("Destination",0,"DummyOwner") then
-			CommitAction("burgleahouse", "", "", "DummyOwner", "Destination")
-		end
-	end
 	
 	-- do some animation stuff while trying to get into the house
 	AlignTo("","Destination")
 	Sleep(0.7)
 	
 	--do he progress bar stuff
-	SetProcessMaxProgress("",TimeToBurgle)
-	SetProcessProgress("",0)
+	SetProcessMaxProgress("", TimeToBurgle)
+	SetProcessProgress("", 0)
 	
 	--hide the thief
-	SetState("",STATE_HIDDEN,true)
+	SetState("", STATE_HIDDEN, true)
+	
+	--start the action
+	if BuildingGetOwner("Destination", "BOwner") then
+		CommitAction("burgleahouse", "", "", "Destination", "Destination")
+	else
+		if BuildingGetSim("Destination",0,"DummyOwner") then
+			CommitAction("burgleahouse", "", "", "DummyOwner", "Destination")
+		end
+	end
 	
 	while GetProperty("Destination","TimeToBurgle"..GetID("dynasty")) < TimeToBurgle do
 		local NewValue = GetProperty("Destination","TimeToBurgle"..GetID("dynasty")) + Skill
@@ -159,6 +157,7 @@ function Run()
 	if not AliasExists("Destination") then
 		StopMeasure()
 	end
+	
 	if GetImpactValue("Destination","BoobyTrap")~=0 then
 		GetPosition("","ParticleSpawnPos")
 		PlaySound3D("","fire/Explosion_01.wav", 1.0)
@@ -196,8 +195,8 @@ function Run()
 	if GetImpactValue("Destination","buildingburgledtoday")==0 then
 		--set the impact
 		AddImpact("Destination","buildingburgledtoday",1,TimeOut)
-		SetProperty("","Bandleader",1)
-		SetProperty("","ThiefReady",1)
+		SetProperty("", "Bandleader", 1)
+		SetProperty("", "ThiefReady", 1)
 		StopAction("burgleahouse", "")
 		--if there is haul, take it
 		if(Value > 0) then
@@ -225,7 +224,7 @@ function Run()
 			--check how many thieves has stolen something
 			local NumThieves = 0
 			local k = 1
-			for k=1,3 do
+			for k=1, 3 do
 				if HasProperty("Destination","Thief"..k.."Haul"..OwnerID) then 
 					NumThieves = NumThieves + 1
 				end
@@ -243,10 +242,11 @@ function Run()
 				--check if all present thieves have stolen something
 				NumThieves = NumThieves - (count +1)
 				
-				for i=0,count-1 do
+				for i=0, count-1 do
 					if HasProperty("Thief"..i,"ThiefReady") then	
 						RemoveProperty("Thief"..i,"ThiefReady")
 						SetProperty("Thief"..i,"ThiefWaiting",1)
+						chr_GainXP("Thief"..i, GetData("BaseXP"))
 					elseif HasProperty("Thief"..i,"ThiefWaiting") then
 						
 					end
@@ -281,6 +281,7 @@ function Run()
 				local VicMoney = GetMoney("Victim")
 				if VicMoney > (Value + ValueBonus) then
 					chr_SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
+					Sleep(0.4)
 					chr_RecieveMoney("Owner", Value + ValueBonus, "IncomeThiefs")
 					mission_ScoreCrime("", Value + ValueBonus)
 				else
@@ -342,10 +343,7 @@ function Run()
 	GetFleePosition("", "Destination", 1000, "Away")
 	f_MoveToNoWait("", "Away", GL_MOVESPEED_RUN)
 	Sleep(1)
-	--IncrementXP("Owner",GetData("BaseXP"))
 end
-
-
 
 -- -----------------------
 -- GetMaxHaulValue 
@@ -354,7 +352,7 @@ end
 
 function GetMaxHaulValue(DestAlias, DynastyID, ThiefLevel)
 
-	local BaseValue		= BuildingGetPriceProto(BuildingGetProto(DestAlias))
+	local BaseValue	= BuildingGetPriceProto(BuildingGetProto(DestAlias))
 	
 	if BaseValue < 1000 then
 		return 0
@@ -430,10 +428,14 @@ function CleanUp()
 	if GetData("ReleaseLocator")==1 then
 		f_EndUseLocator("", "SabotagePosition", GL_STANCE_STAND)
 	end
+	
+	if HasProperty("", "Bandleader") then
+		RemoveProperty("", "Bandleader")
+	end
+	
 	StopAction("burgleahouse", "")
 	RemoveProperty("","ThiefReady")
 	RemoveProperty("","ThiefWaiting")
 	RemoveProperty("","ThiefGoHome")
-	RemoveProperty("","Bandleader")
 end
 

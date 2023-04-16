@@ -657,7 +657,7 @@ end
 -- -----------------------
 -- GainXP
 -- -----------------------
-function GainXP(SimAlias, XPAmount)
+function GainXP(SimAlias, XPAmount, Quiet)
 	
 	local Options = FindNode("\\Settings\\Options")
 	local YPR = Options:GetValueInt("YearsPerRound")
@@ -667,7 +667,11 @@ function GainXP(SimAlias, XPAmount)
 	
 	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplicator/5)
 	
-	if DynastyIsPlayer(SimAlias) then
+	if Quiet == nil then
+		Quiet = false
+	end
+	
+	if DynastyIsPlayer(SimAlias) and not Quiet then
 		IncrementXP(SimAlias, SchoeneRundeZahl)
 		PlaySound3D(SimAlias, "gainxp/gain_xp.ogg", 1)
 	else
