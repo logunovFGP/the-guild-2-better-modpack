@@ -1058,6 +1058,9 @@ end
 function GetAllyCounter(SimAlias)
 
 	GetDynasty(SimAlias, "MyDyn")
+	if not HasProperty("MyDyn", "AllyCounter") then
+		SetProperty("MyDyn", "AllyCounter", 0)
+	end
 	local Allies = GetProperty("MyDyn", "AllyCounter") or 0
 	
 	return Allies

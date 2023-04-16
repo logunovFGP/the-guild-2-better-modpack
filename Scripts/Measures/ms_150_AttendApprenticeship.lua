@@ -41,13 +41,13 @@ function Run()
 		local button4 = "@B[4,@L_ATTEND_APPRENTICE_NEW_OPTION_+4]" -- Guard
 		local button5 = "@B[0,@L_ATTEND_APPRENTICE_NEW_OPTION_+0]" -- Self
 		
-		if GetNobilityTitle("boss") > 7 then -- new options if player has a higher title
+		if GetNobilityTitle("") > 7 then -- new options if player has a higher title
 			button1 = "@B[5,@L_ATTEND_APPRENTICE_NEW_OPTION_+5]" -- Purveyor to the court
 			button2 = "@B[6,@L_ATTEND_APPRENTICE_NEW_OPTION_+6]" -- Baker to the court
 			button3 = "@B[7,@L_ATTEND_APPRENTICE_NEW_OPTION_+7]" -- Advisor
 			button4 = "@B[8,@L_ATTEND_APPRENTICE_NEW_OPTION_+8]" -- Army
 			button5 = ""
-			GetOutdoorLocator("MapExit1",1,"Exit")
+			GetOutdoorLocator("MapExit1", 1, "Exit")
 		else
 			App3 = App1
 			App2 = App1
@@ -223,7 +223,7 @@ function Progress()
 		CurrentTime = EndTime - CurrentTime
 		CurrentTime = Time - CurrentTime
 		SetProcessProgress("", CurrentTime*10)
-		Sleep(6)
+		Sleep(10)
 	end
 end
 
