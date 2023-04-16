@@ -8,15 +8,6 @@
 -------------------------------------------------------------------------------
 
 function Run()
-	if (GetState("", STATE_CUTSCENE)) then
-		ms_103_curryfavor_Cutscene()
-	else
-		ms_103_curryfavor_Normal()
-	end
-end
-
-
-function Normal()
 
 	--how far the Destination can be to start this action
 	local MaxDistance = 1000
@@ -28,7 +19,7 @@ function Normal()
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	local OwnerRhetoric = (GetSkillValue("",RHETORIC))
-	local DestinationRhetoric = (GetSkillValue("Destination",RHETORIC))
+	local DestinationRhetoric = (GetSkillValue("Destination", RHETORIC))
 	local OwnerGender = (SimGetGender(""))
 	local DestinationGender = (SimGetGender("Destination"))
 	
@@ -36,6 +27,7 @@ function Normal()
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
 		StopMeasure()
 	end
+	
 	SetData("CameraActive", 1)
 	CreateCutscene("default", "cutscene")
 	CutsceneAddSim("cutscene", "")
@@ -74,13 +66,13 @@ function Normal()
 		RhethoricType = "_GOOD_RHETORIC"
 	end
 	camera_CutsceneBothLock("cutscene", "Destination")	
-	PlayAnimationNoWait("Destination","talk")
+	PlayAnimationNoWait("Destination", "talk")
 	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
-	PlayAnimation("Destination","bow")
-	chr_GainXP("",GetData("BaseXP"))
+	PlayAnimation("Destination", "bow")
+	chr_GainXP("", GetData("BaseXP"))
 	MsgNewsNoWait("Destination","","","intrigue",-1,
 		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_HEAD_+0",
-		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_BODY_+0",GetID("Destination"),GetID(""))
+		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 	
 	--force dynasty relations to alliance
 	DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), duration)
@@ -89,70 +81,6 @@ function Normal()
 	StopMeasure()
 
 end
-
-
-
-function Cutscene()
-
-	if SimGetCutscene("","cutscene") then
-		CutsceneSetMeasureLockTime("cutscene", 2.0)
-	end
-	
-	Sleep(1)
-
-	--how far the Destination can be to start this action
-	local MaxDistance = 1000
-	--how far from the destination, the owner should stand while the owner is talking
-	local ActionDistance = 40
-	--how long the friendship will be 
-	--time before privilege can be used again
-	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-	
-	local OwnerRhetoric = (GetSkillValue("",RHETORIC))
-	local DestinationRhetoric = (GetSkillValue("Destination",RHETORIC))
-	local OwnerGender = (SimGetGender(""))
-	local DestinationGender = (SimGetGender("Destination"))
-	
-	--run to destination and start action at MaxDistance
---	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
---		StopMeasure()
---	end
-	
-	SetMeasureRepeat(TimeOut)
-
-	--combine textlabel by checking rhetoric skill and gender for text2
-	local RhethoricType
-	if DestinationRhetoric < 4 then
-		RhethoricType = "_WEAK_RHETORIC"
-	elseif OwnerRhetoric < 7 then
-		RhethoricType = "_NORMAL_RHETORIC"
-	else
-		RhethoricType = "_GOOD_RHETORIC"
-	end
-	
-	MsgNewsNoWait("Destination","","","intrigue",-1,
-		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_HEAD_+0",
-		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_BODY_+0",GetID("Destination"),GetID(""))
-	
-	--force dynasty relations to alliance
-	DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), duration)
-	DynastyForceCalcDiplomacy("")
-	DynastyForceCalcDiplomacy("Destination")
-	chr_GainXP("",GetData("BaseXP"))
-	if SimGetCutscene("","cutscene") then
-		CutsceneCallUnscheduled("cutscene", "UpdatePanel")
-		Sleep(0.1)
-	else
-		return
-	end
-	
-	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
-	
-	StopMeasure()		
-end
-
 -- -----------------------
 -- CleanUp
 -- -----------------------

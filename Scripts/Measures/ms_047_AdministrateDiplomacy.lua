@@ -144,13 +144,12 @@ function Status()
 		StopMeasure()
 	end
 
-	local result = InitData("@P"..Buttons, 1,"@LAdministrateDiplomacySheet", "")
+	local result = InitData("@P"..Buttons, 1, "@LAdministrateDiplomacySheet", "")
 	
 	if result == "C" then
 		StopMeasure()
 	end
 	
-	SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
 	SetData("InitResult", result)
 end
 
@@ -697,6 +696,8 @@ function ConfirmFeud()
 		
 	if result == 1 then 
 		--Yes, declare war
+		local DestID = GetDynastyID("Destination")
+		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
 			
 		MsgBoxNoWait("MyBoss", "Destination",
 					"@LDIPLOMATIC_STATE_CHANGED_HEAD",
@@ -756,10 +757,14 @@ function ConfirmNeutral()
 	end
 						
 	if result == 1 then
+	
+		local DestID = GetDynastyID("Destination")
+		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		
 		-- check if we downgrade the status. No agreement needed then
 		if CState > DIP_NEUTRAL then
 				
-			MsgBoxNoWait("MyBoss","Destination",
+			MsgBoxNoWait("MyBoss", "Destination",
 						"@LDIPLOMATIC_STATE_CHANGED_HEAD",
 						"@L_MEASURE_ADMINISTRATE_DIPLOMACY_CHANGED_NEUTRAL_+0", GetID("Destination"), TargetBadge)
 								
@@ -899,6 +904,10 @@ function ConfirmNAP()
 	end
 						
 	if result == 1 then
+	
+		local DestID = GetDynastyID("Destination")
+		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		
 		-- check if we downgrade the status. No agreement needed then
 		if CState > DIP_NAP then
 				
@@ -1084,6 +1093,10 @@ function ConfirmAlliance()
 	end
 						
 	if result == 1 then
+		
+		local DestID = GetDynastyID("Destination")
+		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		
 		-- send a message to the destination and ask
 		
 		-- we need to save the ID here because the MyBoss-Alias gets lost after AIDecision
@@ -1091,7 +1104,7 @@ function ConfirmAlliance()
 		SetData("MyDestID", (GetID("Destination")))
 		
 		local MsgTimeOut = 1 --60sec wait-time to answer
-		local DestResult = MsgNews("Destination","MyBoss",
+		local DestResult = MsgNews("Destination", "MyBoss",
 							"@B[A,@L_FAMILY_2_COHABITATION_BIRTH_BAPTISM_BTN_+1]"..
 							"@B[C,@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_VICTIM_BTN_+1]",
 							ms_047_administratediplomacy_AIDecision,  --AIFunc

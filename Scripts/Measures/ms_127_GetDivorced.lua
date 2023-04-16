@@ -58,11 +58,14 @@ function Run()
 			local CurrentState = DynastyGetDiplomacyState("", "OldFamily")
 			if CurrentState > DIP_NEUTRAL then
 				-- set the new status and favor here
+				DynastySetMinDiplomacyState("", "OldFamily", DIP_FOE, GetID(""), 12)
 				DynastySetDiplomacyState("", "OldFamily", DIP_NEUTRAL)
 				DynastyForceCalcDiplomacy("")
+				
 				if GetFavorToDynasty("", "OldFamily") > 50 then
 					SetFavorToDynasty("", "OldFamily", 50)
 				end
+				
 				if CurrentState == DIP_ALLIANCE then
 					dyn_RemoveAlly("", "OldFamily")
 				end
