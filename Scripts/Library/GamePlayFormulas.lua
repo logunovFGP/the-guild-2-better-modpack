@@ -644,7 +644,7 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local Skill = 0
 	local Class = SimGetClass(Destination)
-	LogMessage("GetCourtingProgress Class = "..Class)
+	--LogMessage("GetCourtingProgress Class = "..Class)
 	if Class == 0 then
 		if HasProperty(Destination, "FakeClass") then
 			Class = GetProperty(Destination, "FakeClass")
