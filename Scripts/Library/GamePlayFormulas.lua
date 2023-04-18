@@ -885,7 +885,7 @@ function CalcCourtingDifficulty(Destination, SimAlias)
 		Diff = 5
 	end
 	
-	LogMessage("CourtingDiff between "..GetName(Destination).." and "..GetName(SimAlias).." is "..Diff)
+	--LogMessage("CourtingDiff between "..GetName(Destination).." and "..GetName(SimAlias).." is "..Diff)
 	SetProperty(SimAlias, "CourtingDiff", Diff)
 end
 

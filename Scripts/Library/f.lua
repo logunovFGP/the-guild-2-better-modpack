@@ -473,3 +473,30 @@ function GetDatabaseIdByName(table, name)
 	end
 	return id
 end
+
+function GetLocalPolitician(SimAlias, SameDyn, ResultAlias)
+	
+	if not GetSettlement(SimAlias, "City") then
+		return false
+	end
+	
+	local OffLevel = CityGetHighestOfficeLevel("City")
+	
+	while OffLevel > 0 do
+		local Offices = SettlementGetOfficeCnt("City", OffLevel)
+		if Offices > 1 then
+			RandomOff = Rand(Offices)
+		else
+			RandomOff = 0
+		end
+		
+		if not SettlementGetOfficeHolder("City", OffLevel, RandomOff, "Mayor") then
+			Offlevel = OffLevel  -1
+		else
+			CopyAlias("Mayor", ResultAlias)
+			return true
+		end
+	end
+	
+	return false
+end

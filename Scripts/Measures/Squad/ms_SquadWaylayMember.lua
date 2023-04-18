@@ -3,7 +3,7 @@ function Run()
 	Sleep(0.5)
 	MeasureSetNotRestartable()
 	local	Member = GetData("Member")
-	if not Member or Member==-1 then
+	if not Member or Member == -1 then
 		return
 	end
 	
@@ -37,9 +37,9 @@ function Run()
 		ToDo = ms_squadwaylaymember_WhatToDo()
 		Success = false
 		
-		if HasProperty("","Plunder") then
-			local victim = GetProperty("","Plunder")
-			GetAliasByID(victim,"Victim")
+		if HasProperty("", "Plunder") then
+			local victim = GetProperty("", "Plunder")
+			GetAliasByID(victim, "Victim")
 			if AliasExists("Victim") then
 				ToDo = "plunder"
 			end
@@ -72,33 +72,36 @@ function Wait()
 	-- normal wait behavior
 	local	Distance = GetDistance("", "Destination")
 	if Distance > 900 then
-		local Range = Rand(400)
+		local Range = Rand(300)
 		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN, Range) then
 			if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 				return
 			end
-		end		
+		end	
+
+		-- stroll a bit
+		f_Stroll("", 300, 2)
 	end
 	
 	-- spawn the bush
 	if GetData("Tarnung") == 0 then
-		Sleep(1.5)
-		PlayAnimation("","crouch_down")
-		GetPosition("","standPos")
+		Sleep(1)
+		PlayAnimation("", "crouch_down")
+		GetPosition("", "standPos")
 		if Rand(2) == 0 then
-			GfxAttachObject("tarn","Outdoor/Bushes/bush_09_big.nif")
+			GfxAttachObject("tarn", "Outdoor/Bushes/bush_09_big.nif")
 		else
-			GfxAttachObject("tarn","Outdoor/Bushes/bush_10_big.nif")
+			GfxAttachObject("tarn", "Outdoor/Bushes/bush_10_big.nif")
 		end
-		GfxSetPositionTo("tarn","standPos")
-		SetData("Tarnung",1)
+		GfxSetPositionTo("tarn", "standPos")
+		SetData("Tarnung", 1)
 	end
 	
-	PlayAnimationNoWait("","crouch_down")	
+	PlayAnimationNoWait("", "crouch_down")	
 	SetState("", STATE_HIDDEN, true)
-	ms_squadwaylaymember_IdleStuff()
 	SetProperty("", "WaylayReady", 1)
-	Sleep(1 + Rand(20)*0.1)
+	ms_squadwaylaymember_IdleStuff()
+	Sleep(2 + Rand(25)*0.1)
 	RemoveProperty("", "WaylayReady")
 end
 
@@ -132,24 +135,25 @@ function WhatToDo()
 	end
 	
 	if Items > 0 then
-		return "return"
-	end
-	
-	-- Check the building's inventory to add new stuff - no need to waylay if it is full. We use a dummy item
-	if not CanAddItems("MyRobbercamp", "PoisonedCake", 1, INVENTORY_STD) then
-		return "wait"
+		-- Check the building's inventory to add new stuff - no need to waylay if it is full. We use a dummy item
+		if not CanAddItems("MyRobbercamp", "PoisonedCake", 1, INVENTORY_STD) then
+			return "wait"
+		else
+			return "return"
+		end
 	end
 	
 	if not HasProperty("Squad", "PrimaryTarget") then
 		
+		-- are we already plundering a cart?
 		local BootyFilterCart = "__F((Object.GetObjectsByRadius(Cart) == 2500)AND NOT(Object.BelongsToMe()))"
 		local NumVictimCarts = Find("", BootyFilterCart, "VictimCart", -1)
-		local ToDo 
+		local ToDo = false
 		if NumVictimCarts >0 then
 			for i=0, NumVictimCarts-1 do
 				if CartGetOperator("VictimCart"..i, "Operator"..i) then
 					if GetState("Operator"..i, STATE_DRIVERATTACKED) then
-						CopyAlias("VictimCart"..i,"Victim")
+						CopyAlias("VictimCart"..i, "Victim")
 						SetProperty("Squad", "PrimaryTarget", GetID("Victim"))
 						ToDo = true
 						break
@@ -158,22 +162,23 @@ function WhatToDo()
 			end
 		end
 		
-		if ToDo == true then
+		if ToDo then
 			return "plunder"
-		end
-		
-		if ToDo == false and GetHPRelative("") < 0.76 then
-			return "rest"
+		else  
+			if GetHPRelative("") < 0.76 then
+				return "rest"
+			end
 		end
 	
 		local Target = ms_squadwaylaymember_Scan("")
 		if Target then
 			return "attack"
 		end
+		
 		return "wait"
 	end
 	
-	local TargetID = GetProperty("Squad", "PrimaryTarget")
+	local TargetID = GetProperty("Squad", "PrimaryTarget") or 0
 	if TargetID < 1 then
 		RemoveProperty("Squad", "PrimaryTarget")
 		return "wait"
@@ -185,9 +190,6 @@ function WhatToDo()
 	end
 	
 	if chr_GetBootyCount("Victim", INVENTORY_STD) <= 200 then
-		if GetState("Victim", STATE_CHECKFORSPINNINGS) then
-			MsgSay("", "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_NOBOOTY")
-		end
 		RemoveProperty("Squad", "PrimaryTarget")
 		return "wait"
 	end
@@ -234,15 +236,16 @@ function ReturnToBase()
 		if ItemId and ItemId>0 and ItemId ~= 999 and Found > 0 then
 			RemainingSpace = GetRemainingInventorySpace("MyRobbercamp", ItemId)
 			while Found > RemainingSpace do
-				MsgQuick("MyRobbercamp","@L_GENERAL_INFORMATION_INVENTORY_INVENTORY_FULL_+1", GetID("MyRobbercamp"), ItemGetLabel(ItemId, false))
+				MsgQuick("MyRobbercamp", "@L_GENERAL_INFORMATION_INVENTORY_INVENTORY_FULL_+1", GetID("MyRobbercamp"), ItemGetLabel(ItemId, false))
 				Sleep(15)
 			end
+			
 			if CanAddItems("MyRobbercamp", ItemId, Found, INVENTORY_STD) then
 				Removed = RemoveItems("", ItemId, Found)
-				AddItems("MyRobbercamp", ItemId, Removed)
+				local Added = AddItems("MyRobbercamp", ItemId, Removed)
 				MessageItem = ItemId
-				MessageCount = Found
-				if Booty == false then
+				MessageCount = Added
+				if Added > 0 then
 					Booty = true
 				end
 			end
@@ -251,10 +254,12 @@ function ReturnToBase()
 	
 	-- send a message to the player (only 1 message every 2 hours)
 	if Booty and GetImpactValue("MyRobbercamp", "BootyMsg") < 1 then
+		
 		local Label = ItemGetLabel(MessageItem, false)
 		if Found == 1 then
 			Label = ItemGetLabel(MessageItem, true)
 		end
+		
 		MsgNewsNoWait("MyRobbercamp", "MyRobbercamp", "", "building", -1, "@L_ROBBER_135_WAYLAYFORBOOTY_BOOTY_HEAD_+0", "@L_ROBBER_135_WAYLAYFORBOOTY_BOOTY_BODY_+0", GetID("MyRobbercamp"), MessageCount, Label)
 		AddImpact("MyRobbercamp", "BootyMsg", 1, 2)
 	end
@@ -287,20 +292,32 @@ function Attack()
 	SetProperty("Squad", "PrimaryTarget", GetID("Victim"))
 	SetProperty("", "Plunder", GetID("Victim"))
 	
-	if IsType("Victim","Cart") then
+	-- check if Victim has no dynasty (= worldtrader). Select the local politician for evidence then
+	if GetDynastyID("Victim") < 1 then
+		f_GetLocalPolitician("", false, "Mayor") -- false means: not from my own dynasty
+	end
+	
+	if IsType("Victim", "Cart") then
 		-- spawn escorts if they have any, if not, nothing will happen by setting the state true
 		SetState("Victim", STATE_ACTIVE_ESCORT, true)
 		if GetImpactValue("Victim", "messagesent") == 0 then
 			GetPosition("Victim", "ParticleSpawnPos")
 			PlaySound3D("Victim", "fire/Explosion_01.wav", 1.0)
 			StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1, 5)
-			CommitAction("attackcart", "", "Victim", "Victim")
-
 			AddImpact("Victim", "messagesent", 1, 3)
-			feedback_MessageMilitary("Victim",
-				"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+0",
-				"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_BODY_+0")
-		
+			
+			if AliasExists("Mayor") then
+				CommitAction("attackcart", "", "Mayor", "Victim")
+				GetSettlement("Mayor", "MayorTown")
+				MsgNewsNoWait("Mayor", "Victim", "", "military", -1, 
+									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+0",
+									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_BODY_+1", GetID("Mayor"), GetID("MayorTown"))
+			else
+				CommitAction("attackcart", "", "Victim", "Victim")
+				feedback_MessageMilitary("Victim",
+									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+0",
+									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_BODY_+0")
+			end
 		end
 
 		if CartGetOperator("Victim", "Operator") then
@@ -322,8 +339,8 @@ function Plunder()
 		if not GetState("Operator", STATE_DRIVERATTACKED) then
 			if HasProperty("Squad", "PrimaryTarget") and GetID("Victim") == GetProperty("Squad", "PrimaryTarget") then
 				RemoveProperty("Squad", "PrimaryTarget")
-				return
 			end
+			return
 		end
 	end
 	
@@ -331,13 +348,13 @@ function Plunder()
 		return
 	end
 
-	SetProperty("","DontLeave", 1)
+	SetProperty("", "DontLeave", 1)
 	StopAction("attackcart", "")
 	CommitAction("plunder", "", "Victim", "Victim")
 	Sleep(2)
 	
-	if IsType("Victim","Cart") then
-		ItemValue = Plunder("", "Victim",10)
+	if IsType("Victim", "Cart") then
+		ItemValue = Plunder("", "Victim", 10)
 		local XPValue = math.floor(10+(ItemValue*0.1))
 		chr_GainXP("", XPValue)
 		if ItemValue > 0 then
@@ -357,8 +374,8 @@ function Scan(Member)
 	
 	-- constants
 	local MinBooty = 200
-	local BootyRadius = 1000
-	local RobberRadius = 1000
+	local BootyRadius = 1200
+	local RobberRadius = 1200
 	
 	local Count
 	local BootyFilterCart = "__F((Object.GetObjectsByRadius(Cart) == "..BootyRadius..")AND NOT(Object.BelongsToMe())AND(Object.ActionAdmissible()))"
@@ -371,25 +388,53 @@ function Scan(Member)
 		return
 	end
 
-	local CurrentTargetValue = 0
 	local MaxTargetValue = 0
 	
-	for FoundObject =0, NumVictimCarts-1 do
-		if GetDynastyID(Member) ~= GetDynastyID("VictimCart"..FoundObject) and GetState("VictimCart"..FoundObject, STATE_CHECKFORSPINNINGS) then
-			if DynastyGetDiplomacyState("dynasty","VictimCart"..FoundObject) < DIP_NAP then -- check diplomatic state
-				if GetFavorToDynasty("VictimCart"..FoundObject, "dynasty") < 80 then -- don't attack friends 
-					CurrentTargetValue = chr_GetBootyCount("VictimCart"..FoundObject, INVENTORY_STD)
-					if (CurrentTargetValue >= MaxTargetValue) then
+	if not SquadGet(Member, "Squad") then
+		return
+	end
+	
+	local SquadMemberCount = SquadGetMemberCount("Squad")
+	local RandomMember = 0
+	
+	if SquadMemberCount > 1 then
+		RandomMember = Rand(SquadMemberCount)
+	end
+	
+	SquadGetMember("Squad", RandomMember, "Robber")
+	
+	for FoundObject =0, NumVictimCarts-1 do -- found the best cart to attack
+		
+		local VictimDyn = GetDynastyID("VictimCart"..FoundObject)
+		local CurrentTargetValue = chr_GetBootyCount("VictimCart"..FoundObject, INVENTORY_STD)
+		
+		if CurrentTargetValue >= MaxTargetValue then
+		
+			if VictimDyn < 1 then
+				f_GetLocalPolitician(Member, false, "Mayor") -- false means: not from my own dynasty
+			end
+			
+			if AliasExists("Mayor") then
+				VictimDyn = GetDynastyID("Mayor")
+			end
+			
+			if GetDynastyID(Member) ~= VictimDyn then
+				if DynastyGetDiplomacyState("dynasty","VictimCart"..FoundObject) < DIP_NAP then -- check diplomatic state
+					if GetFavorToDynasty("VictimCart"..FoundObject, "dynasty") < 80 then -- don't attack friends 
 						CopyAlias("VictimCart"..FoundObject, "Victim")
 						MaxTargetValue = CurrentTargetValue
+					else
+						if GetID(Member) == GetID("Robber") then
+							AlignTo(Member, "VictimCart")
+							MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
+						end
 					end
 				else
-					AlignTo(Member, "VictimCart")
-					MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
+					if GetID(Member) == GetID("Robber") then
+						AlignTo(Member, "VictimCart")
+						MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
+					end
 				end
-			else
-				AlignTo(Member, "VictimCart")
-				MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
 			end
 		end
 	end
@@ -400,10 +445,10 @@ function Scan(Member)
 		
 	--check if booty is enough
 	if MaxTargetValue < MinBooty then
-	--	if Rand(4) == 0 then
+		if GetID(Member) == GetID("Robber") then
 			AlignTo(Member, "Victim")
 			MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_NOBOOTY")
-	--	end
+		end
 		return
 	end
 	
@@ -414,7 +459,7 @@ function Scan(Member)
 	
 	Attack = false
 
-	if Def>0 then
+	if Def > 0 then
 
 		local	Quote = Att / Def
 	
@@ -429,20 +474,26 @@ function Scan(Member)
 	end
 	
 	if not Attack then
-		AlignTo(Member, "Victim")
-		MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_DANGER")
+		if GetID(Member) == GetID("Robber") then
+			AlignTo(Member, "Victim")
+			MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_DANGER")
+		end
 		return
 	end
 		
 	--start attack
 
-	AlignTo("Member", "Victim")
+	AlignTo(Member, "Victim")
 	Sleep(1)
 	
 	return "Victim"
 end
 
 function Rest()
+
+	GfxDetachAllObjects()
+	SetData("Tarnung", 0)
+	SetState("", STATE_HIDDEN, false)
 	
 	local duration = 4
 	local CurrentHP = GetHP("")

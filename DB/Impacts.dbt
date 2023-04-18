@@ -306,4 +306,5 @@ Data:
 425             1                 2                  0                     "VeryGoodDream"                     0   "Hud/state/GoodDream.tga"             |
 426             1                 2                  0                     "BasicPurse"                        0   ""                                    |
 427             1                 2                  0                     "LuxuryPurse"                       0   ""                                    |
+428             1                 2                  0                     "WaitTime"                          0   ""                                    |
 

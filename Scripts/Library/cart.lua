@@ -113,6 +113,10 @@ function UnloadAll(CartAlias, DestAlias)
 		end
 		Sleep(0.4)
 	end
+	
+	if GetImpactValue(CartAlias, "WaitTime") == 0 then
+		AddImpact(CartAlias, "WaitTime", 1, 2)
+	end
 end
 
 --- debug function to notify player of current route
