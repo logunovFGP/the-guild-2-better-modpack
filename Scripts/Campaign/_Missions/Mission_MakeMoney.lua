@@ -58,95 +58,59 @@ function CheckEnd()
   end
 end
 
--- ---------------
--- End
--- ---------------
 function End()
 
-	local Won = 0
-	local Extinct = HasData("extinct")
-	local Bankrupt = HasData("bankrupt")
-	local LastMemberID = GetProperty("Actor", "LastMemberID")
-	
 	if IsMultiplayerGame() then
-		
-		-- ---------------
-		-- Multiplayer end
-		-- ---------------
 
 		if HasProperty("World", "Finito") then
-			local	Winner = GetProperty("World", "Finito")
-			MsgBoxNoWait("Actor", nil, "@L_MISSIONS_MISSIONS_LOOSE_HEAD", "@L_MISSIONS_MISSIONS_LOOSE_MULTIPLAYER_BODY", Winner)
-			DynastyAvoidControl("Actor")
+			if MsgBox("Actor", nil, "@P@B[1,Let's go for a few more rounds...]@B[2,This game's over. Let's stop now.]", "@L_MISSIONS_MISSIONS_LOOSE_HEAD", "@L_MISSIONS_MISSIONS_LOOSE_MULTIPLAYER_BODY", GetProperty("World", "Finito")) == 2 then
+				DynastyAvoidControl("Actor")
+			end
 			return
 		end
 
-		if Extinct then
+		if HasData("extinct") then 
+			MsgBoxNoWait("Actor", nil, "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", GetProperty("Actor", "LastMemberID"))
 			f_StartHighPriorMusic(MUSIC_GAME_LOST)
-			MsgBoxNoWait("Actor", nil, "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", LastMemberID)
-		elseif Bankrupt then
-			f_StartHighPriorMusic(MUSIC_GAME_LOST)
+		elseif HasData("bankrupt") then 
 			MsgBoxNoWait("Actor", nil, "@L_TOOMUCHDEBT_2_HEAD", "@L_TOOMUCHDEBT_2_BODY", GetID("Actor"))
+			f_StartHighPriorMusic(MUSIC_GAME_LOST)
 		else
 			SetProperty("World", "Finito", GetID("Actor"))
-			
 			if (GetID("LocalPlayerDynasty") == GetID("Actor")) then
 				f_StartHighPriorMusic(MUSIC_GAME_WON)
-				local MoneyLimit = GetData("MoneyLimit")
-				MsgBoxNoWait("Actor", nil, "@L_MISSIONS_MISSIONS_MAKEMONEY_+0", "@L_MISSIONS_MISSIONS_MAKEMONEY_+2", MoneyLimit)
+					if MsgBox("Actor", nil, "@P@B[1,Let's go for a few more rounds...]@B[2,This game's over. Let's stop now.]", "@L_MISSIONS_MISSIONS_MAKEMONEY_+0", "@L_MISSIONS_MISSIONS_MAKEMONEY_+2", GetData("MoneyLimit")) == 2 then
+						DynastyAvoidControl("Actor")
+					end	
 			else
 				f_StartHighPriorMusic(MUSIC_GAME_LOST)
 			end
+		end
 			
-		end
-		DynastyAvoidControl("Actor")
-		
 	else
-	
-		-- ----------------
-		-- Singleplayer end
-		-- ----------------
-		local ShowStats = 0
-		if Extinct then
-			f_StartHighPriorMusic(MUSIC_GAME_LOST)
-			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_HEAD", "@L_FAMILY_6_DEATH_MSG_DEAD_END_OWNER_BODY", LastMemberID) == "S" then
-				ShowStats = 1
-			end
-		elseif Bankrupt then
-			f_StartHighPriorMusic(MUSIC_GAME_LOST)
-			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_TOOMUCHDEBT_2_HEAD", "@L_TOOMUCHDEBT_2_BODY", GetID("Actor")) == "S" then
-				ShowStats = 1
-			end
+
+		Include ( "campaign/_missions/Mission_Manager.lua" )
+
+		if HasData("extinct") then
+			MissionManager.setEnding(1)
+		elseif HasData("bankrupt") then
+			MissionManager.setEnding(2)
 		else
+			MissionManager.setEnding(3)
+			MissionManager.setMessage({"@L_MISSIONS_MISSIONS_MAKEMONEY_+0", "@L_MISSIONS_MISSIONS_MAKEMONEY_+2", GetData("MoneyLimit")})
 			f_StartHighPriorMusic(MUSIC_GAME_WON)
-			local MoneyLimit = GetData("MoneyLimit")
-			if MsgBox("Actor", nil, "@P@B[M,@L_INTERFACE_BUTTONS_ENDGAME]@B[S,@L_INTERFACE_BUTTONS_STATISTICS]", "@L_MISSIONS_MISSIONS_MAKEMONEY_+0", "@L_MISSIONS_MISSIONS_MAKEMONEY_+2", MoneyLimit) == "S" then
-				ShowStats = 1
-				Won = 1
+		end
+
+		local query = MsgBox("Actor", nil, "@P@B[1,@L_INTERFACE_BUTTONS_ENDGAME]@B[2,@L_INTERFACE_BUTTONS_STATISTICS]@B[3,Let's go for a few more rounds...]", MissionManager.getMsg(1), MissionManager.getMsg(2), MissionManager.getMsg(3))
+			if query < 3 then
+				MissionManager.toggleEnding(true)
+				if query == 2 then
+					MissionManager.toggleStats(true)
+				end
 			end
-		end
-					
-		-- Show the statistics screen or not
-		if ShowStats == 1 then
-			ShowStatistics()
-			while HudPanelIsVisible("StatisticsSheetGold") or
-				HudPanelIsVisible("StatisticsSheetAsset") or
-				HudPanelIsVisible("StatisticsSheetSkill") or
-				HudPanelIsVisible("StatisticsSheetAlign") or
-				HudPanelIsVisible("StatisticsSheetPoints") or
-				HudPanelIsVisible("StatisticsBalanceLast") or
-				HudPanelIsVisible("StatisticsBalanceTotal") do
-					Sleep(1.0)
-			end
-		end
-		
-		-- End the game
-		if Won == 0 then
-			CampaignExit(false)
-		else
-			CampaignExit(true)
-		end
-		
+
+		MissionManager.initEnding()
+
 	end
 	
 end
