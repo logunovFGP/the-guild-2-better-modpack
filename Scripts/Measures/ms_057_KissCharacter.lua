@@ -74,6 +74,7 @@ function Run()
 	-- do it
 	camera_CutsceneBothLock("cutscene", "")
 	chr_MultiAnim("", "kiss_male", "Destination", "kiss_female", InteractionDistance)
+	SetMeasureRepeat(TimeOut)
 	
 	local WasCourtLover = 0	
 	
@@ -87,8 +88,6 @@ function Run()
 			local Slap = false
 	
 			if VariationFactor <= 0.5 then
-				TimeOut = TimeOut * 2
-				SetMeasureRepeat(TimeOut)
 				ModifyFavor = FavorLoss
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")

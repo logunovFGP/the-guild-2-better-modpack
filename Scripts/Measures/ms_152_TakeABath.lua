@@ -155,7 +155,7 @@ function Run()
 	feedback_OverheadActionName("Destination")
 	AlignTo("", "Destination")
 	Sleep(0.5)
-	
+	SetMeasureRepeat(TimeUntilRepeat)
 	local WasCourtLover = 0
 	
 	-------------------------
@@ -288,7 +288,6 @@ function Run()
 				MsgSay("Destination", talk_AnswerCourtingMeasure("TAKE_A_BATH", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 			end
 			
-			SetMeasureRepeat(TimeUntilRepeat)
 			-- Add the achieved progress
 			Sleep(0.3)
 			chr_ModifyFavor("Destination", "", ModifyFavor)
@@ -448,7 +447,6 @@ function Run()
 			Sleep(3.0)
 			
 		end
-		SetMeasureRepeat(TimeUntilRepeat)
 	end
 
 	if GetFreeLocatorByName("Tavern", "Stroll", 1, 5, "EndPos") then

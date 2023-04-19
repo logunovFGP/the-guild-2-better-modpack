@@ -109,11 +109,10 @@ function Run()
 	
 	-- hello, I need to talk to you
 	MsgSay("", "@L_STARTDIALOG_START_"..ReplaceAge.."_"..ReplaceGender)
-
+	SetMeasureRepeat(TimeOut)
+	
 	-- Destination doesn't want to talk
 	if Favor < MinimumFavor then
-		TimeOut = TimeOut * 2
-		SetMeasureRepeat(TimeOut)
 		MsgSay("Destination", "@L_STARTDIALOG_NO")
 		chr_ModifyFavor("Destination","", FavorLoss)
 		Sleep(0.3)
@@ -125,7 +124,6 @@ function Run()
 	feedback_OverheadActionName("Destination")
 	AlignTo("Owner", "Destination")
 	AlignTo("Destination", "Owner")
-	SetMeasureRepeat(TimeOut)
 	Sleep(1)
 	Talk("", "Destination", true)
 
@@ -183,12 +181,13 @@ function Run()
 				MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
 			end
 
-			Sleep(3.0)
+			Sleep(0.4)
 			
 			-- Add the achieved progress
 			if AliasExists("cutscene") then
 				DestroyCutscene("cutscene")
 			end
+			
 			chr_ModifyFavor("Destination", "", ModifyFavor)
 			Sleep(0.3)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)

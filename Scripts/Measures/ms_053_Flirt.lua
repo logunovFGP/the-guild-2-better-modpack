@@ -78,8 +78,8 @@ function Run()
 	camera_CutscenePlayerLock("cutscene", "")
 	MsgSay("", talk_FlirtSaying2(GetSkillValue("", RHETORIC), OwnerGender))
 	
+	SetMeasureRepeat(TimeOut)
 	local WasCourtLover = 0
-	
 	-------------------------
 	------ Court Lover ------
 	-------------------------
@@ -90,8 +90,6 @@ function Run()
 			local Slap = false
 		
 			if VariationFactor <= 0.5 then
-				TimeOut = TimeOut * 2
-				SetMeasureRepeat(TimeOut)
 				ModifyFavor = FavorLoss
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
@@ -101,7 +99,6 @@ function Run()
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
-				SetMeasureRepeat(TimeOut)
 				if (CourtingProgress < -5) or Favor < MinimumFavor then
 					camera_CutsceneBothLock("cutscene", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
@@ -147,8 +144,6 @@ function Run()
 			
 			-- Set the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again
 			chr_ModifyFavor("Destination", "", FavorLoss)
-			TimeOut = TimeOut * 2
-			SetMeasureRepeat(TimeOut)
 			
 			if (IsMale) then				
 				camera_CutsceneBothLock("cutscene", "Destination")
@@ -166,7 +161,6 @@ function Run()
 			MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
 			
 		else
-			SetMeasureRepeat(TimeOut)
 			camera_CutscenePlayerLock("cutscene", "Destination")
 			
 			if (IsMale) then

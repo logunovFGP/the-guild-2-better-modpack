@@ -148,6 +148,8 @@ function Run()
 			end
 			
 			f_StartHighPriorMusic(MUSIC_MARRIAGE)
+			SetState("", STATE_DUEL, true)
+			SetState("Destination", STATE_DUEL, true)
 
 			SetAvoidanceGroup("", "Destination")
 			CreateCutscene("default", "cutscene")
@@ -199,6 +201,8 @@ function Run()
 			-- remember old dynastyID
 			local OldDyn = GetDynastyID("Destination")
 			SetProperty("Destination", "FamilyID", OldDyn)
+			SetState("", STATE_DUEL, false)
+			SetState("Destination", STATE_DUEL, false)
 			
 			AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
 			AddImpact("Destination", "LoveLevel", 10, 24)
@@ -235,5 +239,7 @@ function CleanUp()
 	MoveSetActivity("")
 	MoveSetActivity("Destination")
 	ReleaseAvoidanceGroup("")
+	SetState("", STATE_DUEL, false)
+	SetState("Destination", STATE_DUEL, false)
 end
 

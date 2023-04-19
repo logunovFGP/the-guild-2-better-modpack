@@ -176,20 +176,17 @@ function Run()
 			end
 			
 			SetData("Cohabit1LocatorInUse", 1)
-			PlaySound3D("", "measures/cohabit/cohabit+0.wav", 1)
 			Sleep(1.5)
 			PlaySound3DVariation("", "CharacterFX/female_cohabit", 1)
 			Sleep(2)
 			PlaySound3DVariation("", "CharacterFX/male_cohabit", 1)
 			Sleep(3)
 			if Rand(2) == 0 then
-				PlaySound3D("", "measures/cohabit/cohabit+0.wav", 1)
 				PlaySound3DVariation("", "CharacterFX/female_cohabit", 1)
 			else
-				PlaySound3D("", "measures/cohabit/cohabit+0.wav", 1)
 				PlaySound3DVariation("", "CharacterFX/male_cohabit", 1)
 			end
-			Sleep(6)
+			Sleep(5)
 			
 			-----------------------------
 			------ Pregnant chance ------

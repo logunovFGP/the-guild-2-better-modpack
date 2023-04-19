@@ -66,6 +66,8 @@ function Run()
 	SetAvoidanceGroup("", "Destination")
 	MoveSetActivity("", "converse")
 	MoveSetActivity("Destination", "converse")
+	SetState("", STATE_DUEL, true)
+	SetState("Destination", STATE_DUEL, true)
 	
 	CreateCutscene("default", "cutscene")
 	CutsceneAddSim("cutscene", "")
@@ -75,7 +77,7 @@ function Run()
 	-- do it
 	camera_CutsceneBothLock("cutscene", "")	
 	chr_MultiAnim("", "hug_male", "Destination", "hug_female", InteractionDistance, 0.6)
-	
+	SetMeasureRepeat(TimeOut)
 	local WasCourtLover = 0
 	
 	-------------------------
@@ -88,8 +90,6 @@ function Run()
 			local Slap = false
 			
 			if VariationFactor <= 0.5 then
-				TimeOut = TimeOut * 2
-				SetMeasureRepeat(TimeOut)
 				ModifyFavor = FavorLoss
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
@@ -99,16 +99,13 @@ function Run()
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
-				SetMeasureRepeat(TimeOut)
 				if (CourtingProgress < -5) then
-					TimeOut = TimeOut * 2
 					camera_CutsceneBothLock("cutscene", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyFavor = FavorLoss
 					Slap = true
 					ModifyHP("", -30, true, 10)
 				elseif (CourtingProgress < 1) or Favor < MinimumFavor then
-					TimeOut = TimeOut * 2
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					PlayAnimationNoWait("Destination", "shake_head")
 					ModifyFavor = FavorLoss
@@ -147,7 +144,6 @@ function Run()
 		-- React negativ if  the favor is not high enough
 		if Favor < MinimumFavor then
 			if Rand(20) > 14 then
-				TimeOut = TimeOut * 2
 				Slap = true
 			end
 			ModifyFavor = FavorLoss
@@ -155,14 +151,12 @@ function Run()
 			Outraged = true
 			ModifyFavor = FavorLoss
 		elseif VariationFactor <= 0.5 then
-			TimeOut = TimeOut * 2
 			MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			Outraged = true
 			ModifyFavor = FavorLoss
 		end
 		
 		camera_CutsceneBothLock("cutscene", "Destination")
-		SetMeasureRepeat(TimeOut)				
 
 		if Slap then
 			
@@ -199,6 +193,9 @@ function Run()
 			end
 		end
 	end
+	
+	SetState("", STATE_DUEL, false)
+	SetState("Destination", STATE_DUEL, false)
 end
 
 -- -----------------------
@@ -213,9 +210,11 @@ function CleanUp()
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
 	StopAnimation("")
+	SetState("", STATE_DUEL, false)
 	
 	if AliasExists("Destination") then
 		MoveSetActivity("Destination")
+		SetState("Destination", STATE_DUEL, false)
 		if  GetDynastyID("") ~= GetDynastyID("Destination") then
 			SimLock("Destination", 0.3)
 		end
