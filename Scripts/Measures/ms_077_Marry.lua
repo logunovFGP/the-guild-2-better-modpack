@@ -225,7 +225,8 @@ function Run()
 	--  visit the wedding chapel --
 	--------------------------------
 	elseif choice == 1 then
-		MeasureRun("", 0, "MarryChapel", true)
+		LogMessage("Marry choice 1")
+		MeasureRun("", "Destination", "MarryChapel", true)
 		return
 	end
 end

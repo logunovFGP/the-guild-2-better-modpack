@@ -1,15 +1,12 @@
 function Run()
+	LogMessage("Try to marry chapel")
 	-- Get the court lover and call it "Destination" because the older version of the measure worked with a selection
 	if not SimGetCourtLover("", "Destination") then
+		LogMessage("No Court Lover found MarryChapel")
 		return
 	end
 	
 	local Title = GetNobilityTitle("")
-	
-	-- Get the court lover and call it "Destination" because the older version of the measure worked with a selection
-	if not SimGetCourtLover("", "Destination") then
-		return
-	end
 	
 	if IsDynastySim("Destination") then
 		if GetNobilityTitle("Destination") > Title then
@@ -21,6 +18,7 @@ function Run()
 	local InteractionDistance = 128
 	
 	if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel") then
+		LogMessage("No Chapel found - MarryChapel")
 		return
 	end
 	
@@ -28,7 +26,6 @@ function Run()
 		
 	SetProperty("Weddingchapel", "Wedding", 1)
 	BlockChar("Destination")
-	SimSetBehavior("Destination", "")
 		
 	ms_077b_marrychapel_GotoChurch()
 	
@@ -394,7 +391,8 @@ function InviteGuests(Church, Sim1, Sim2)
 end
 
 function GotoChurch()
-
+	
+	LogMessage("GoToChurch")
 	f_MoveToNoWait("", "Weddingchapel", GL_MOVESPEED_WALK)
 	f_MoveTo("Destination","Weddingchapel", GL_MOVESPEED_WALK)
 	
@@ -457,7 +455,7 @@ function VisitCeremony()
 		RemoveProperty("", "CeremonySeat")
 	end
 	
-	LogMessage(GetName("").." ist eingetroffen, Sitz w�hlen")
+	LogMessage(GetName("").." is here. Choose seat")
 	if GetFreeLocatorByName("Weddingchapel", "Sit", MySeat, MySeat, "SitPos") then
 		LogMessage(GetName("").." hat seinen Sitz gefunden")
 		f_MoveTo("", "SitPos", GL_MOVESPEED_WALK)
