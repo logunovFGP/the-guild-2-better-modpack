@@ -3,17 +3,21 @@ function Weight()
 	if not GetSettlement("SIM", "City") then
 		return 0
 	end
+	
+	if IsDynastySim("SIM") or SimGetGender("SIM", GL_GENDER_MALE) then
+		return 0
+	end
 
-	if SimGetWorkingPlace("SIM","MyWork") then
+	if SimGetWorkingPlace("SIM", "MyWork") then
 		if BuildingGetLevel("MyWork") < 2 then
-		    return 0
+			return 0
 		end
 	else
-	    return 0
+		return 0
 	end
 	
 	if not BuildingHasUpgrade("MyWork", "SexyClothes") then
-	    return 0
+		return 0
 	end
 
 	if IsDynastySim("SIM") then

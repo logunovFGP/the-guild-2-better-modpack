@@ -4,6 +4,10 @@ function Weight()
 		return 0
 	end
 	
+	if IsDynastySim("SIM") or SimGetGender("SIM", GL_GENDER_MALE) then
+		return 0
+	end
+	
 	if not SimGetWorkingPlace("SIM", "WorkBuilding") then
 		return 0
 	end
