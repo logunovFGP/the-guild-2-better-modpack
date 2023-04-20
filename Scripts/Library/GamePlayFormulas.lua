@@ -893,24 +893,50 @@ end
 -- Favor related functions for social interaction
 -------------------------
 function CalcFavorWon(SimAlias, Destination, MeasureID)
-	local FavorWon = 0
 	
+	-- all social measures which can increase favor
 	local MeasureData = {
-					
+					[460] = { measureName = "StartDialog", baseValue =  1, lossValue = -5, minFavor = GL_STARTDIALOG_MINFAVOR, talent = RHETORIC },
+					[530] = { measureName = "Flirt", baseValue =  5, lossValue = -10, minFavor = GL_FLIRT_MINFAVOR, talent = CHARISMA }, 
+					[540] = { measureName = "HugCharacter", baseValue =  3, lossValue = -5, minFavor = GL_HUG_MINFAVOR, talent = CHARISMA },
+					[570] = { measureName = "KissCharacter", baseValue =  0, lossValue = -15, minFavor = GL_KISS_MINFAVOR, talent = EMPATHY },
+					[1520] = { measureName = "TakeABath", baseValue =  5, lossValue = -15, minFavor = GL_BATH_MINFAVOR, talent = CHARISMA }, 
+					[1530] = { measureName = "BewitchCharacter", baseValue =  5, lossValue = -10, minFavor = GL_BEWITCH_MINFAVOR, talent = RHETORIC },
+					[2300] = { measureName = "MakeAPresent", baseValue =  5, lossValue = -5, minFavor = GL_PRESENT_MINFAVOR, talent = EMPATHY }, 
+					[2310] = { measureName = "MakeACompliment", baseValue =  3, lossValue = -5, minFavor = GL_COMPLIMENT_MINFAVOR, talent = RHETORIC },
+					[2320] = { measureName = "InviteToDance", baseValue =  5, lossValue = -5, minFavor = GL_DANCE_MINFAVOR, talent = DEXTERITY }
 					}
+					
 	
-	local FlirtBonus = GetImpactValue(SimAlias, "FlirtBonus") -- ability
-	FavorWon = FavorWon * (1 + FlirtBonus)	
+	local Success = false
+	
+	local FlirtBonus = GetImpactValue(SimAlias, "FlirtBonus") -- ability multiplier
+	local CharismaBonus = chr_GetSkillValue(SimAlias, CHARISMA)
+	local TalentBonus = chr_GetSkillValue(SimAlias, MeasureData[MeasureID].talent)
+	TalentBonus = TalentBonus + Rand(TalentBonus)
+	local EmpathyMalus = chr_GetSkillValue(Destination, EMPATHY)
+	local TitleBonus = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
+	
+	local Favor = 0
+	if SimGetSpouse(SimAlias, "Spouse") and GetID(Destination) == GetID("Spouse") then
+		Favor = 100
+	else
+		Favor = GetFavorToSim(SimAlias, Destination)
+	end
+	
+	
+	if Favor >= (MeasureData[MeasureID].minFavor - (TitleBonus * 2) + (EmpathyMalus) * 2 - TalentBonus) then
+		Success = true
+	end
+	
+	local FavorWon = 0
+	if Success then 
+		FavorWon = (MeasureData[MeasureID].baseValue + CharismaBonus + TalentBonus - EmpathyMalus )*(1 + FlirtBonus)
+	else
+		FavorWon = MeasureData[MeasureID].lossValue
+	end
 	
 	return FavorWon
-end
-
-function CalcFavorLoss(SimAlias, Destination, MeasureID)
-
-end
-
-function CalcMinFavor(SimAlias, Destination, MeasureID)
-
 end
 
 -------------------------

@@ -19,20 +19,7 @@ function Run()
 	
 	local OwnerGender = SimGetGender("")
 	local DestGender = SimGetGender("Destination")
-	
-	-- The minimum favor for this action to success
-	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
-	local RhetoricSkill = GetSkillValue("", RHETORIC)
-	local MinimumFavor = GL_FLIRT_MINFAVOR + TitleDifference - (RhetoricSkill * 3)
-	local Favor = 0
-	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
-		Favor = 100
-	else
-		Favor = GetFavorToSim("Destination", "")
-	end
-	local FavorWon = 7 + (RhetoricSkill * 0.75)
-	local FavorLoss = -10
-	local ModifyFavor = 0
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	-- Courting related
 	local Class = SimGetClass("Destination")
@@ -47,12 +34,7 @@ function Run()
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
-	
 	local	time1 = 0
-	
-	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
-	FavorWon = FavorWon * (1 + FlirtBonus)	
-	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 
 	-- The distance between both sims to interact with each other
 	local InteractionDistance = 128
@@ -78,19 +60,24 @@ function Run()
 	camera_CutscenePlayerLock("cutscene", "")
 	MsgSay("", talk_FlirtSaying2(GetSkillValue("", RHETORIC), OwnerGender))
 	
-	SetMeasureRepeat(TimeOut)
 	local WasCourtLover = 0
 	-------------------------
 	------ Court Lover ------
 	-------------------------
 	if SimGetCourtLover("", "CourtLover") then
 		if GetID("CourtLover") == GetID("Destination") then
-		
+			
+			SetMeasureRepeat(TimeOut)
 			WasCourtLover = 1
+			
+			if CourtingProgress < FavorWon then
+				FavorWon = CourtingProgress
+			end
+			
 			local Slap = false
 		
 			if VariationFactor <= 0.5 then
-				ModifyFavor = FavorLoss
+				FavorWon = -5
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
 				
@@ -99,10 +86,9 @@ function Run()
 				
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
-				if (CourtingProgress < -5) or Favor < MinimumFavor then
+				if (CourtingProgress < -6) then
 					camera_CutsceneBothLock("cutscene", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
-					ModifyFavor = FavorLoss
 					Slap = true
 					if CourtingProgress > -5 then
 						CourtingProgress = -6
@@ -111,9 +97,7 @@ function Run()
 				elseif (CourtingProgress < 1) then
 					camera_CutscenePlayerLock("cutscene", "Destination")
 					PlayAnimationNoWait("Destination", "propel")
-					ModifyFavor = FavorLoss
 				else
-					ModifyFavor = FavorWon
 					camera_CutscenePlayerLock("cutscene", "Destination")
 				end
 				
@@ -125,8 +109,8 @@ function Run()
 				DestroyCutscene("cutscene")
 			end
 			
-			chr_ModifyFavor("Destination", "", ModifyFavor)
-			Sleep(0.3)
+			chr_ModifyFavor("Destination", "", FavorWon)
+			Sleep(0.4)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)
 			AddImpact("Destination", "ReceivedFlirt", 1, 3)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
@@ -137,15 +121,13 @@ function Run()
 	------ No Court Lover ------
 	----------------------------
 	if (WasCourtLover == 0) then
-	
+		
+		SetMeasureRepeat(TimeOut*2)
 		local IsMale = (OwnerGender == GL_GENDER_MALE)
 		local Slap = false
-		if Favor < MinimumFavor then
+		if FavorWon < 0 then
 			
-			-- Set the favor loss prior to the animations so that the player cannot cancel the measure and try it instantly again
-			chr_ModifyFavor("Destination", "", FavorLoss)
-			
-			if (IsMale) then				
+			if (IsMale and FavorWon < -5) then				
 				camera_CutsceneBothLock("cutscene", "Destination")
 				PlayAnimationNoWait("", "got_a_slap")
 				PlayAnimationNoWait("Destination", "give_a_slap")
@@ -170,9 +152,6 @@ function Run()
 			end		
 			
 			MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, 10))			
-			
-			-- Set the favor won after the animation so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
-			chr_ModifyFavor("Destination", "", FavorWon)
 			AddImpact("Destination", "ReceivedFlirt", 1, 4)
 			
 			-- ToDo: Make this feature optional
@@ -188,6 +167,8 @@ function Run()
 				end
 			end
 		end
+		
+		chr_ModifyFavor("Destination", "", FavorWon)
 	end
 end
 
