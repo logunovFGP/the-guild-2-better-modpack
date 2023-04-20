@@ -51,11 +51,13 @@ function Run()
 
 	-- move player character to propel position
 	if not GetLocatorByName("Building", "Propel", "PropelPosition") then
-		GetLocatorByName("Building", "work_01", "PropelPosition")
-	end
-	
-	if not AliasExists("PropelPosition") then
-		return
+		if not GetLocatorByName("Building", "work_01", "PropelPosition") then
+			if not GetLocatorByName("Building", "stroll4", "PropelPosition") then
+				if not GetLocatorByName("Building", "stroll1", "PropelPosition") then
+					LogMessage("No PropelPosition found for "..GetName("Building"))
+				end
+			end
+		end
 	end
 
 	f_MoveTo("", "PropelPosition")
