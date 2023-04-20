@@ -225,8 +225,10 @@ function Run()
 	--  visit the wedding chapel --
 	--------------------------------
 	elseif choice == 1 then
-		LogMessage("Marry choice 1")
+		LogMessage("Wedding Ceremony: "..GetName("").." and "..GetName("Destination").." are happily getting married in the chapel!")
+		Sleep(1)
 		MeasureRun("", "Destination", "MarryChapel", true)
+		Sleep(1)
 		return
 	end
 end
