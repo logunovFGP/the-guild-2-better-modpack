@@ -102,7 +102,7 @@ function End()
 		end
 
 		local query = MsgBox("Actor", nil, "@P@B[1,@L_INTERFACE_BUTTONS_ENDGAME]@B[2,@L_INTERFACE_BUTTONS_STATISTICS]@B[3,Let's go for a few more rounds...]", MissionManager.getMsg(1), MissionManager.getMsg(2), MissionManager.getMsg(3))
-			if query < 3 then
+			if query < 3 and not query == "C" then
 				MissionManager.toggleEnding(true)
 				if query == 2 then
 					MissionManager.toggleStats(true)
