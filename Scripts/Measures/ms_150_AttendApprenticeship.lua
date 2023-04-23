@@ -212,6 +212,7 @@ function Run()
 	if GetHomeBuilding("", "Home") then
 		f_MoveToNoWait("", "Home",GL_MOVESPEED_WALK)
 	end
+	StopMeasure()
 end
 
 function Progress()

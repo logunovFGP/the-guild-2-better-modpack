@@ -133,7 +133,7 @@ function Run()
 		local Outraged = false
 		
 		-- React negativ if the destination married or if the favor is not high enough
-		if SimGetSpouse("Destination", "Spouse") and not SimGetLiason("Destination", "Liason") then
+		if SimGetSpouse("Destination", "Spouse") and not SimGetLiaison("Destination", "Liason") then
 			if (GetID("Spouse") ~= GetID("")) then
 				Outraged = true
 				FavorWon = -10

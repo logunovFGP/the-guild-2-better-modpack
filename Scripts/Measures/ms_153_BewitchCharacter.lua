@@ -170,6 +170,9 @@ function Run()
 	 	
 	local WasCourtLover = 0
 	
+	-- avoid cheating
+	SetState("", STATE_DUEL, true)
+	
 	-------------------------
 	------ Court Lover ------
 	-------------------------
@@ -340,10 +343,10 @@ function Run()
 			
 		end
 	end
-	chr_GainXP("",GetData("BaseXP"))
+	
+	SetState("", STATE_DUEL, false)
+	chr_GainXP("", GetData("BaseXP"))
 	StopMeasure()
-	
-	
 end
 
 function MoveToPosition()

@@ -15,9 +15,9 @@ Data:
 8            "Edelmann"          100000          "privileges/ps_08_edelmann.lua"        4              10                      1                |
 9            "Freiherr"          200000          "privileges/ps_09_freiherr.lua"        5              15                      2                |
 10           "Baron"             300000          "privileges/ps_10_baron.lua"           5              20                      2                |
-11           "Graf"              500000          "privileges/ps_11_graf.lua"            5              25                      3                |
-12           "Markgraf"          700000          "privileges/ps_12_markgraf.lua"        5              35                      3                |
-13           "Fuerst"            1000000         "privileges/ps_13_fuerst.lua"          5              45                      4                |
-14           "Reichsfuerst"      1300000         "privileges/ps_14_reichsfuerst.lua"    5              55                      4                |
-15           "Herzog"            1600000         "privileges/ps_15_herzog.lua"          5              75                      5                |
-16           "Erzherzog"         2000000         "privileges/ps_16_erzherzog.lua"       5              100                     5                |
+11           "Graf"              400000          "privileges/ps_11_graf.lua"            5              25                      3                |
+12           "Markgraf"          500000          "privileges/ps_12_markgraf.lua"        5              30                      3                |
+13           "Fuerst"            600000          "privileges/ps_13_fuerst.lua"          5              35                      4                |
+14           "Reichsfuerst"      700000          "privileges/ps_14_reichsfuerst.lua"    5              40                      4                |
+15           "Herzog"            850000          "privileges/ps_15_herzog.lua"          5              50                      5                |
+16           "Erzherzog"         1000000         "privileges/ps_16_erzherzog.lua"       5              100                     5                |

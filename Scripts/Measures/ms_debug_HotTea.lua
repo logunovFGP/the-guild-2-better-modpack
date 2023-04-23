@@ -68,8 +68,8 @@ function Run()
 		CreditMoney(Target, 120000, "HotTea")
 		MsgQuick("", "Geld, Geld, Geld!")
 	elseif result==6 then
-		chr_SimAddFame(Target,25)
-		chr_SimAddImperialFame(Target,25)
+		dyn_AddFame(Target,25)
+		dyn_AddImperialFame(Target,25)
 	elseif result==7 then
 		local Text = helpfuncs_MsgString("", "Change age", "Please choose the new age for %1SN.", {GetID(Target)})
 		local NewAge = Text + 0

@@ -296,7 +296,7 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 		-- Create childs
 		if AliasExists("boss") and AliasExists("Spouse") then
 			local ChildCount = 1+Rand(5) -- how many children?
-			local FirstAge = 15+Rand(8)
+			local FirstAge = 15+Rand(9)
 			local ChildAge = FirstAge
 				
 			for i=1, ChildCount do
@@ -317,7 +317,11 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 							
 				SetHomeBuilding("Shadowchild", "SleepingHut")
 				DoNewBornStuff("Shadowchild")
-				SimSetAge("Shadowchild", (FirstAge-SimGetChildCount("boss")))
+				SimSetAge("Shadowchild", (FirstAge-(SimGetChildCount("boss")+Rand(3))))
+				if SimGetAge("Shadowchild") >= 15 then
+					local RandomClass = Rand(4) + 1
+					SimSetClass("Shadowchild", RandomClass)
+				end
 			end
 		end
 				

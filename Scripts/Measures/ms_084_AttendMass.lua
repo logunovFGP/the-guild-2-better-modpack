@@ -108,8 +108,8 @@ end
 function CleanUp()
 	SetAvoidanceRange("",-1)
 	AddImpact("","WasInChurch",1,4)
-	if SimIsInside("") and IsGUIDriven() then
-		SetState("", STATE_EXPEL, true)
+	if SimIsInside("") and not IsGUIDriven() then
+		f_ExitCurrentBuilding("")
 	end
 end
 

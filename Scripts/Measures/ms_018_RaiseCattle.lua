@@ -85,11 +85,13 @@ function Init()
 	filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==58))"	
 	end
 	if filter then
-	    local k = Find("Destination",filter,"PflegeViehs",6)
-	    for l=0, k do
-		    InternalDie("PflegeViehs"..l)
-	        InternalRemove("PflegeViehs"..l)
-	    end
+		local k = Find("Destination",filter,"PflegeViehs",6)
+		for l=0, k do
+			if AliasExists("PflegeViehs"..l) then
+				InternalDie("PflegeViehs"..l)
+				InternalRemove("PflegeViehs"..l)
+			end
+		end
 	end	
 	
 	SetData("Selection", Selection)	

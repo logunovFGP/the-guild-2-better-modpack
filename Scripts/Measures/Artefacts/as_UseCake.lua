@@ -82,6 +82,7 @@ function Run()
 	Sleep(1)
 	--modify the favor	
 	if RemoveItems("", "Cake", 1) > 0 then
+		SetMeasureRepeat(TimeOut)
 		local favormodify = ((100 - math.ceil(GetFavorToSim("Destination","Owner")))/4)
 		chr_ModifyFavor("Destination", "", favormodify)
 		
@@ -89,9 +90,8 @@ function Run()
 				"@L_ARTEFACTS_182_USECAKE_MSG_VICTIM_HEAD_+0",
 				"@L_ARTEFACTS_182_USECAKE_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 		
-		SetMeasureRepeat(TimeOut)
 		chr_GainXP("", GetData("BaseXP"))
-		chr_GainXP(Destination, GetData("BaseXP"))
+		chr_GainXP("Destination", GetData("BaseXP"))
 		Sleep(1)
 	end
 end

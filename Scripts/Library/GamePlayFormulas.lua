@@ -897,10 +897,10 @@ function CalcFavorWon(SimAlias, Destination, MeasureID)
 	-- all social measures which can increase favor
 	local MeasureData = {
 					[460] = { measureName = "StartDialog", baseValue =  1, lossValue = -5, minFavor = GL_STARTDIALOG_MINFAVOR, talent = RHETORIC },
-					[530] = { measureName = "Flirt", baseValue =  5, lossValue = -10, minFavor = GL_FLIRT_MINFAVOR, talent = CHARISMA }, 
+					[530] = { measureName = "Flirt", baseValue =  5, lossValue = -5, minFavor = GL_FLIRT_MINFAVOR, talent = CHARISMA }, 
 					[540] = { measureName = "HugCharacter", baseValue =  3, lossValue = -5, minFavor = GL_HUG_MINFAVOR, talent = CHARISMA },
-					[570] = { measureName = "KissCharacter", baseValue =  0, lossValue = -15, minFavor = GL_KISS_MINFAVOR, talent = EMPATHY },
-					[1520] = { measureName = "TakeABath", baseValue =  5, lossValue = -15, minFavor = GL_BATH_MINFAVOR, talent = CHARISMA }, 
+					[570] = { measureName = "KissCharacter", baseValue =  0, lossValue = -10, minFavor = GL_KISS_MINFAVOR, talent = EMPATHY },
+					[1520] = { measureName = "TakeABath", baseValue =  5, lossValue = -10, minFavor = GL_BATH_MINFAVOR, talent = CHARISMA }, 
 					[1530] = { measureName = "BewitchCharacter", baseValue =  5, lossValue = -10, minFavor = GL_BEWITCH_MINFAVOR, talent = RHETORIC },
 					[2300] = { measureName = "MakeAPresent", baseValue =  5, lossValue = -5, minFavor = GL_PRESENT_MINFAVOR, talent = EMPATHY }, 
 					[2310] = { measureName = "MakeACompliment", baseValue =  3, lossValue = -5, minFavor = GL_COMPLIMENT_MINFAVOR, talent = RHETORIC },

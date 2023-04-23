@@ -491,14 +491,15 @@ function CleanUp()
 		GetAliasByID(GetData("WhoUsesPreBathPosStand"), "StandUser")
 		f_EndUseLocator("StandUser", "PreBathPosStand")
 	end
-
+	
+	SetState("", STATE_LOCKED, false)
+	if AliasExists("Destination") then
+		SetState("Destination", STATE_LOCKED, false)
+	end
+	
 	if IsStateDriven() then
 		MeasureRun("", nil, "DynastyIdle")
 	end
-	
-	SetState("", STATE_LOCKED, false)
-	SetState("Destination", STATE_LOCKED, false)
-
 end
 
 function GetOSHData(MeasureID)

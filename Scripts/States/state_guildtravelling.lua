@@ -72,7 +72,8 @@ function Run()
 	if not GetSettlementID("")==GetID("city") then
 		ContractFame = ContractFame - 2
 	end
-	chr_SimAddFame("",ContractFame)
+	
+	dyn_AddFame("", ContractFame)
 	chr_GainXP("",ContractFame*10)
 
 	MsgBoxNoWait("", "",

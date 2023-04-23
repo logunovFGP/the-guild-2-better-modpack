@@ -74,6 +74,10 @@ function Run()
 			MsgSayNoWait("", "@L_PIRATE_LABOROFLOVE_PROPOSE")
 			Sleep(AnimTime)
 			
+			if not ReadyToRepeat(DestAlias, GetMeasureRepeatName2("UseLaborOfLove")) then
+				AddImpact(DestAlias, "FullOfLove, 1, 6)
+			end
+			
 			-- Try to attract him. Bonus for high charisma.
 			if Rand(101) > (50-GetSkillValue("", CHARISMA)) then
 				MeasureRun(DestAlias, "", "UseLaborOfLove")

@@ -4,6 +4,8 @@ function Run()
 		StopMeasure()
 	end
 	
+	local TimeOut = mdata_GetTimeOut(MeasureID)
+	
 	SetProperty("Destination", "CocotteHasClient", 1)
 
 	MeasureSetNotRestartable()
@@ -43,6 +45,7 @@ function Run()
 		CreditMoney("Destination", MoneyToPay , "LaborOfLove")
 	end
 	MsgSay("","@L_PIRATE_LABOROFLOVE_TALK_START")
+	SetMeasureRepeat(TimeOut)
 	
 	-- Do some animation
 	PlayAnimationNoWait("","seduce_m_in")
@@ -56,9 +59,9 @@ function Run()
 	
 	if HasProperty("Destination","ThiefOfLove") then
 	  	
-		local empskill = GetSkillValue("", EMPATHY)
-		local chakill = GetSkillValue("Destination", CHARISMA)
-		local spender = SimGetRank("")
+		local empskill = chr_GetSkillValue("", EMPATHY)
+		local chakill = chr_GetSkillValue("Destination", CHARISMA)
+		local spender = chr_GetRank("")
 		local spend
 
 		if spender == 0 or spender == 1 then

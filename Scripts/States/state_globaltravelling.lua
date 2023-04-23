@@ -235,7 +235,7 @@ function Run()
 	local willDie = false
 	if death > randdeath then
 		if fame > 0 then
-			chr_SimAddImperialFame("",fame)
+			dyn_AddImperialFame("", fame)
 
 			if DynastyIsPlayer("") then
 				feedback_MessageCharacter("","@L_WAR_END_DEAD_HEAD_+0","@L_WAR_END_DEAD_BODY_+0",GetID(""))
@@ -252,7 +252,7 @@ function Run()
 		f_MoveTo("","Position",GL_MOVESPEED_RUN)
 	
 		if fame > 0 then
-			chr_SimAddImperialFame("",fame)
+			dyn_AddImperialFame("",fame)
 			Sleep(2)
 			chr_GainXP("", GetData("BaseXP"))
 	

@@ -144,7 +144,6 @@ function Run()
 			end
 
 			MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), DestGender, -10))
-			
 		else
 			camera_CutscenePlayerLock("cutscene", "Destination")
 			
@@ -161,9 +160,9 @@ function Run()
 			if SimGetSpouse("Destination", "Spouse") then
 				if (GetID("Spouse") == GetID("")) then
 					AddImpact("","LoveLevel", 2, 24) -- add some love for the next 24 hours
-					AddImpact("Destination", "LoveLevel", 2, 24)
-					if GetImpactValue("Destination","LoveLevel") >= 10 then
-						MsgNewsNoWait("", "Destination", "", "schedule", -1,
+					AddImpact("Destination", "LoveLevel",  2, 24)
+					if GetImpactValue("Destination", "LoveLevel") >= 10 then
+						MsgNewsNoWait("", "Destination", "",  "schedule", -1,
 									"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
 									"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
 					end

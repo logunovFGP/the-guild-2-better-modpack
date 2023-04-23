@@ -130,32 +130,34 @@ function Run()
 	local CheerCount = 0
 	for i = 0, SimCnt-1 do
 		ListGetElement("GuestList", i, "SimToCheck")
-		if IsDynastySim("SimToCheck") and not GetState("SimToCheck", STATE_NPC) then
-			if GetID("SimToCheck") ~= GetID("") and GetID("SimToCheck") ~= GetID("Destination") then
-				chr_GainXP("SimToCheck", GL_EXP_GAIN_RARE)
-				ReleaseLocator("SimToCheck")
-				if GetDynasty("SimToCheck", "CheckDyn") then
-					if GetImpactValue("CheckDyn", "Ceremony") == 0 then
-						AddImpact("CheckDyn", "Ceremony", 1, 6)
+		if AliasExists("SimToCheck") then
+			if IsDynastySim("SimToCheck") and not GetState("SimToCheck", STATE_NPC) then
+				if GetID("SimToCheck") ~= GetID("") and GetID("SimToCheck") ~= GetID("Destination") then
+					chr_GainXP("SimToCheck", GL_EXP_GAIN_RARE)
+					ReleaseLocator("SimToCheck")
+					if GetDynasty("SimToCheck", "CheckDyn") then
+						if GetImpactValue("CheckDyn", "Ceremony") == 0 then
+							AddImpact("CheckDyn", "Ceremony", 1, 6)
+						end
 					end
-				end
-					
-				ModifyFavorToSim("SimToCheck", "", GL_FAVOR_MOD_VERYSMALL)
-				GuestCount = GuestCount + 1
-					
-				if CheerCount == 0 then
-					
-					CopyAlias("SimToCheck", "CommentSim")
-					CheerCount = CheerCount + 1
-				elseif CheerCount == 1 then
-					if Rand(3) == 0 then
-						CopyAlias("SimToCheck", "CheerSim1")
+						
+					ModifyFavorToSim("SimToCheck", "", GL_FAVOR_MOD_VERYSMALL)
+					GuestCount = GuestCount + 1
+						
+					if CheerCount == 0 then
+						
+						CopyAlias("SimToCheck", "CommentSim")
 						CheerCount = CheerCount + 1
-					end
-				elseif CheerCount == 1 then
-					if Rand(3) == 0 then
-						CopyAlias("SimToCheck", "CheerSim2")
-						CheerCount = CheerCount + 1
+					elseif CheerCount == 1 then
+						if Rand(3) == 0 then
+							CopyAlias("SimToCheck", "CheerSim1")
+							CheerCount = CheerCount + 1
+						end
+					elseif CheerCount == 1 then
+						if Rand(3) == 0 then
+							CopyAlias("SimToCheck", "CheerSim2")
+							CheerCount = CheerCount + 1
+						end
 					end
 				end
 			end
