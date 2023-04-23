@@ -49,6 +49,8 @@ function Run()
 		TimeOut = GetGametime() + TimeOut
 	end
 
+	SetProperty("Divehouse", "ServiceActive", 1)
+
 	SetData("IsProductionMeasure", 0)
 	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
 	SetData("IsProductionMeasure", 1)
@@ -81,7 +83,9 @@ function Run()
 			ms_009_assigntoservicedivehouse_Serve()
 		end
 
-		if not DynastyIsPlayer("Boss") then
+		IncrementXPQuiet("", 5)
+
+		if BuildingGetAISetting("Divehouse", "Enable") > 0 then
 			if NumGuests == 0 then
 				BreakNumber = BreakNumber + 1
 			else
@@ -198,14 +202,13 @@ function CleanUp()
 		if HasProperty("Divehouse", "ServiceActive") then
 			RemoveProperty("Divehouse", "ServiceActive")
 		end
-	end
 
-	if HasProperty("Divehouse", "GoToService") then
-		RemoveProperty("Divehouse", "GoToService")
+		if HasProperty("Divehouse", "GoToService") then
+			RemoveProperty("Divehouse", "GoToService")
+		end
 	end
 	
 	CarryObject("", "", false)
 	StopAnimation("")
 	MoveSetActivity("")
---	SimSetProduceItemID("", -1)
 end
