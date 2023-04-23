@@ -181,7 +181,7 @@ function Run()
 				DestroyCutscene("cutscene")
 			end
 			
-			chr_ModifyFavor("Destination", "", FavorGain)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			Sleep(0.3)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)
 			AddImpact("Destination", "ReceivedTalk", 1, 3)
