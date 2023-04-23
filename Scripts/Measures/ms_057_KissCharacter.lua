@@ -19,6 +19,7 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)	
 	
+	local IsMale = (SimGetGender("") == GL_GENDER_MALE) -- male charactes may get slapped
 	local DestGender = SimGetGender("Destination")
 	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
@@ -34,6 +35,16 @@ function Run()
 	end
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	
+	-- if Favor is below MinFavor, FavorWon will be lower than CourtingProgress and the action will be rejected
+	if FavorWon < CourtingProgress then
+		CourtingProgress = FavorWon
+	end
+	
+	if CourtingProgress < 1 and FavorWon > 0 then
+		FavorWon = -2
+	end
+	
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
 	local	time1 = 0
 	
@@ -64,6 +75,7 @@ function Run()
 	-------------------------
 	if (SimGetCourtLover("", "CourtLover")) then
 		if GetID("CourtLover") == GetID("Destination") then
+			
 			SetMeasureRepeat(TimeOut)
 			WasCourtLover = 1
 			local Slap = false
@@ -73,7 +85,7 @@ function Run()
 			end
 			
 			if VariationFactor <= 0.5 then
-				FavorWon = -5
+				FavorWon = -1
 				CourtingProgress = -5
 				camera_CutscenePlayerLock("cutscene", "Destination")
 				
@@ -83,7 +95,7 @@ function Run()
 				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
 			else
 				
-				if (CourtingProgress < -5) then
+				if (CourtingProgress < -6 and IsMale) then
 					camera_CutsceneBothLock("cutscene", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
 					ModifyHP("", -30, true, 10)

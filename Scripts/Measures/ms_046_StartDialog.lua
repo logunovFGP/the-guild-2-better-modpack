@@ -43,6 +43,16 @@ function Run()
 	end
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
+	
+	-- if Favor is below MinFavor, FavorWon will be lower than CourtingProgress and the action will be rejected
+	if FavorWon < CourtingProgress then
+		CourtingProgress = FavorWon
+	end
+	
+	if CourtingProgress < 1 and FavorWon > 0 then
+		FavorWon = -2
+	end
+	
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
 	local time1, time2 = 0, 0
 	
