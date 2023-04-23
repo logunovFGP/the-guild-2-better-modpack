@@ -107,6 +107,7 @@ function Run()
 	XPAmount = XPAmount * Count
 	chr_GainXP("", XPAmount)
 	Sleep(0.5)
+	StopMeasure()
 end
 
 function Listen()

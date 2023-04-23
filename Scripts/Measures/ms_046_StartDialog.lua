@@ -29,7 +29,7 @@ function Run()
 	
 	local DestGender = SimGetGender("Destination")
 	local Age = SimGetAge("Destination")
-	local FavorWon = gameplayformulas_CalcFavorWon("", Destination, MeasureID)
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	-- Courting related
 	local Class = SimGetClass("Destination")
@@ -167,7 +167,7 @@ function Run()
 	--		camera_CutscenePlayerLock("cutscene", "Destination")
 
 			if VariationFactor <= 0.5 then
-				FavorWon = -5
+				FavorWon = -1
 				CourtingProgress = -5
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 			else
@@ -181,7 +181,7 @@ function Run()
 				DestroyCutscene("cutscene")
 			end
 			
-			chr_ModifyFavor("Destination", "", ModifyFavor)
+			chr_ModifyFavor("Destination", "", FavorGain)
 			Sleep(0.3)
 			feedback_OverheadCourtProgress("Destination", CourtingProgress)
 			AddImpact("Destination", "ReceivedTalk", 1, 3)

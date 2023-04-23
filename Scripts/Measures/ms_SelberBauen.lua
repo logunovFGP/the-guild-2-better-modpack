@@ -1,7 +1,7 @@
 function Run()
 	
 	-- find the building
-	local MyBuildingSites =  "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==5000)AND(Object.BelongsToMe())AND(Object.GetState(building))OR(Object.GetState(levelingup)))"
+	local MyBuildingSites =  "__F((Object.BelongsToMe())AND(Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==6000)AND(Object.BelongsToMe())AND(Object.GetState(building))OR(Object.GetState(levelingup)))"
 	local BuildingSite = Find("", MyBuildingSites, "Building", 5)
 	local BestDistance = 0
 	
@@ -9,7 +9,7 @@ function Run()
 	for i=0, BuildingSite-1 do
 		local Alias = "Building"..i
 		if AliasExists(Alias) then
-			Distance = GetDistance("Owner", Alias)
+			local Distance = GetDistance("Owner", Alias)
 			if BestDistance == 0 or Distance < BestDistance then
 				BestDistance = Distance
 				CopyAlias(Alias, "Destination")
@@ -18,6 +18,7 @@ function Run()
 	end
 	
 	if not AliasExists("Destination") then
+		LogMessage("SelberBauen no Destination")
 		return
 	end
 	
