@@ -59,23 +59,17 @@ function Run()
 			end
 		end
 	end
-
-	f_MoveTo("", "PropelPosition")
+	
+	if AliasExists("PropelPosition") then
+		f_MoveTo("", "PropelPosition")
+	end
 	MeasureSetNotRestartable()
 	
-	local LoyaltyLoss
-	local Rhetoric = GetSkillValue("", RHETORIC)
-
-	if (Rhetoric < 2) then
-		LoyaltyLoss = -15
-	elseif (Rhetoric < 4) then
-		LoyaltyLoss = -12
-	elseif (Rhetoric < 6) then
-		LoyaltyLoss = -9
-	elseif (Rhetoric < 8) then
-		LoyaltyLoss = -6
-	else
-		LoyaltyLoss = -3
+	local Rhetoric = chr_GetSkillValue("", RHETORIC)
+	local LoyaltyLoss = 16 - Rhetoric
+	
+	if LoyaltyLoss < 2 then
+		LoyaltyLoss = 2
 	end
 	
 	for number=0, Found-1 do
@@ -92,35 +86,34 @@ function Run()
 	PlayAnimationNoWait("", "propel")
 
 	MsgSay("", "@L_GENERAL_MEASURES_032_PROPELEMPLOYEES_STATEMENT")
-
+	SetMeasureRepeat(TimeOut)
+	
 	-- boost the productivity
-	local Boost = 0.20 + (GetSkillValue("", CRAFTSMANSHIP)*0.05)
+	local Boost = 0.20 + (chr_GetSkillValue("", CRAFTSMANSHIP)*0.05)
 	local BoostDuration = duration * GetImpactValue("", "PropelSpeedupTime")*0.01 -- ability
 	
 	for number=0, Found-1 do
 		Alias = "Worker"..number
-		if LoyaltyLoss ~= 0 then
+		if LoyaltyLoss > 0 then
 			AnimTime = PlayAnimationNoWait(Alias, "devotion")
-			chr_ModifyFavor("Owner", Alias, LoyaltyLoss)
+			chr_ModifyFavor(Alias, "", -LoyaltyLoss)
 		end
 		
 		AddImpact(Alias, "Productivity", Boost, BoostDuration)	
 	end
 	
-	SetMeasureRepeat(TimeOut)
 	Sleep(0.5)
 	local XPAmount = GetData("BaseXP")
 	XPAmount = XPAmount * Count
 	chr_GainXP("", XPAmount)
 	Sleep(0.5)
-	StopMeasure()
 end
 
 function Listen()
 	-- simplified this logic to make it possible to propel on farms or alchemist huts if the workers are outside building
 	AlignTo("", "Owner")
 	while true do
-		Sleep(42)
+		Sleep(15)
 	end
 end
 
