@@ -5,12 +5,11 @@ function Weight()
 		return 0
 	end
 	
-	if GetItemCount("", Item,INVENTORY_STD)>0 then
+	if GetItemCount("SIM", Item, INVENTORY_STD)>0 then
 		return 50
 	end
 
-	local Price = ai_CanBuyItem("SIM", Item)
-	if Price<0 then
+	if GetMoney("SIM") < 2000 then
 		return 0
 	end
 

@@ -12,9 +12,9 @@ function Weight()
 		if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 			if chr_CheckGuildMaster("SIM", "Guildhouse") then
 				Price = (Title * Title) * 30
-				if chr_GetAlderman() == GetID("") then
+				if chr_GetAlderman() == GetID("SIM") then
 					Price = (Title * Title) * 15
-					if GetItemCount("", Item, INVENTORY_STD) >0 then
+					if GetItemCount("SIM", Item, INVENTORY_STD) >0 then
 						return 100
 					else
 						value = value + 40
@@ -28,7 +28,7 @@ function Weight()
 				return 0
 			end
 			
-			if GetItemCount("", Item, INVENTORY_STD) > 0 then
+			if GetItemCount("SIM", Item, INVENTORY_STD) > 0 then
 				value = value + 30
 				return value
 			end

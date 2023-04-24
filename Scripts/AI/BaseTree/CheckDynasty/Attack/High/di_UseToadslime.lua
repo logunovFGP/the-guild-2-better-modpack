@@ -3,20 +3,9 @@ function Weight()
 	if GetMeasureRepeat("SIM", "Use"..Item)>0 then
 		return 0
 	end
-
-	if GetItemCount("", Item, INVENTORY_STD)==0 then
-		local Price = ai_CanBuyItem("SIM", Item)
-		local Round = GetRound()
-		if not HasProperty("dynasty", "ItemBudget"..Round) then
-			ai_CalcItemBudget("dynasty")
-		end
-		
-		if GetProperty("dynasty", "ItemBudget"..Round) < Price then
-			return 0
-		end
-		if Price<0 then
-			return 0
-		end
+	
+	if GetMoney("dynasty") < 2000 then
+		return 0
 	end
 
 	local NumDynasties = ScenarioGetObjects("cl_Dynasty",99,"OutPutDyn")

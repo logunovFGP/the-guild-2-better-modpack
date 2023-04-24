@@ -4,19 +4,8 @@ function Weight()
 		return 0
 	end
 
-	if GetItemCount("", Item, INVENTORY_STD)==0 then
-		local Price = ai_CanBuyItem("SIM", Item)
-		local Round = GetRound()
-		if not HasProperty("dynasty", "ItemBudget"..Round) then
-			ai_CalcItemBudget("dynasty")
-		end
-		
-		if GetProperty("dynasty", "ItemBudget"..Round) < Price then
-			return 0
-		end
-		if Price<0 then
-			return 0
-		end
+	if GetItemCount("SIM", Item, INVENTORY_STD) > 0 then
+		return 100
 	end
 
 	local NumDynasties = ScenarioGetObjects("cl_Dynasty",99,"OutPutDyn")
@@ -27,10 +16,10 @@ function Weight()
 	for i=0,NumDynasties-1 do
 		Count = DynastyGetMemberCount("OutPutDyn"..i)
 		VictimNo = Rand(Count)
-		if (DynastyGetMember("OutPutDyn"..i, VictimNo, "Victim")) then
-			if GetSettlementID("Victim")==MySettlementID then	
+		if (DynastyGetMember("OutPutDyn"..i, VictimNo, "NewVictim")) then
+			if GetSettlementID("NewVictim")==MySettlementID then	
 				local DipToSim = DynastyGetDiplomacyState("dynasty","OutPutDyn"..i)
-				if (DipToSim==DIP_FOE) and not (GetImpactValue("Victim","poisoned")>0) and not (GetDistance("","Victim")>1500) then
+				if (DipToSim==DIP_FOE) and not (GetImpactValue("NewVictim","poisoned")>0) and not (GetDistance("SIM","NewVictim")>1500) then
 					return 100
 				end
 			end
@@ -41,5 +30,8 @@ function Weight()
 end
 
 function Execute()
-	MeasureRun("SIM", "Victim", "UseParalysisPoison")
+	if not AliasExists("NewVictim") then
+		CopyAlias("Victim", "NewVictim")
+	end
+	MeasureRun("SIM", "NewVictim", "UseParalysisPoison")
 end

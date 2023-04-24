@@ -5,24 +5,15 @@ function Weight()
 		return 0
 	end
 
-	if gameplayformulas_CheckDistance("","Victim")==0 then
+	if gameplayformulas_CheckDistance("SIM", "Victim") == 0 then
 		return 0
 	end
 	
-	if GetItemCount("", Item, INVENTORY_STD)>0 then
-		return 50
+	if GetItemCount("SIM", Item, INVENTORY_STD) >0 then
+		return 100
 	end
 
-	local Price = ai_CanBuyItem("SIM", Item)
-	local Round = GetRound()
-	if not HasProperty("dynasty", "ItemBudget"..Round) then
-		ai_CalcItemBudget("dynasty")
-	end
-	
-	if GetProperty("dynasty", "ItemBudget"..Round) < Price then
-		return 0
-	end
-	if Price<0 then
+	if GetMoney("SIM") < 2500 then
 		return 0
 	end
 
