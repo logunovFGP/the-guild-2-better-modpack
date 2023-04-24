@@ -22,6 +22,7 @@ function Run()
 	local IsMale = (SimGetGender("") == GL_GENDER_MALE) -- male charactes may get slapped
 	local OwnerGender = SimGetGender("")
 	local DestGender = SimGetGender("Destination")
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	-- Courting related
 	local Class = SimGetClass("Destination")
