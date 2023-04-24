@@ -26,17 +26,19 @@ function Run()
 		SetProperty("Destination", "BauPos4", 1)
 	end
 
-	if DynastyIsPlayer("") == true then	
+	if IsPartyMember("") then	
 		local neuwert
-		if SimGetClass("") == 2 then
+		if SimGetClass("") == GL_CLASS_ARTISAN then
 			neuwert = impiwert + 2
 			AddImpact("Destination", "BauArbeiter", neuwert, -1)
+			SetProperty("Destination", "BauIntervall", neuwert)
+			ms_bauarbeit_Arbeiter(BauPos)
 		else
 			neuwert = impiwert + 1
 			AddImpact("Destination", "BauArbeiter", neuwert, -1)
+			SetProperty("Destination", "BauIntervall", neuwert)
+			ms_bauarbeit_Meister(BauPos)
 		end
-		SetProperty("Destination", "BauIntervall", neuwert)
-		ms_bauarbeit_Arbeiter(BauPos)
 	else
 		
 		local baufast = 1 -- fallback
@@ -58,7 +60,8 @@ end
 
 function Meister(Pos)
 
-	local doWork = { ms_bauarbeit_MasterA }
+	local doWork = { ms_bauarbeit_MasterA,
+				ms_bauarbeit_WorkD}
 	CarryObject("", "Handheld_Device/Anim_scroll.nif", false)				 		 
 	while GetImpactValue("Destination", "BauArbeiter") > 2 do
 		if not GetStateImpact("Destination", "upgrading") then
@@ -66,12 +69,15 @@ function Meister(Pos)
 			break
 		end
 		
-		doWork[1](Pos)
+		local Random = Rand(2) +1
+		doWork[Random](Pos)
 	end
 
 	CarryObject("", "", false)
-	CarryObject("", "", true)	
-	ms_bauarbeit_GoHome()
+	CarryObject("", "", true)
+	if not IsPartyMember("") then
+		ms_bauarbeit_GoHome()
+	end
 end
 
 function Arbeiter(Pos)
@@ -95,7 +101,7 @@ function Arbeiter(Pos)
 		end
 	end
 
-	if not DynastyIsPlayer("") then
+	if not IsPartyMember("") then
 		ms_bauarbeit_GoHome()
 	end
 	
@@ -130,8 +136,12 @@ function MasterA(Pos)
 		CarryObject("", "Handheld_Device/Anim_scroll.nif", false)
 	end
 	
+	if not GetStateImpact("Destination", "upgrading") then
+		return
+	end
+	
 	local spruch = Rand(4)
-	if SimGetProfession("") == 60 then
+	if SimGetProfession("") == 60 or IsPartyMember("") then
 		if spruch == 0 then
 			MsgSay("", "@L_HPFZ_BAUARBEIT_SPRUCH_+0")
 		elseif spruch == 1 then
@@ -173,12 +183,20 @@ function WorkA(Pos)
 		end
 	end
 	
+	if not GetStateImpact("Destination", "upgrading") then
+		return
+	end
+	
 	SetContext("", "rangerhut")
 	CarryObject("", "Handheld_Device/Anim_Hammer.nif", false)
 	AlignTo("", "Destination")
 	Sleep(1)
 	PlayAnimation("", "hammer_in")
-	LoopAnimation("", "hammer_loop", 20)
+	LoopAnimation("", "hammer_loop", 10)
+	if not GetStateImpact("Destination", "upgrading") then
+		return
+	end
+	LoopAnimation("", "hammer_loop", 10)
 	PlayAnimation("", "hammer_out")
 end
 
@@ -202,6 +220,9 @@ function WorkB(Pos)
 	CarryObject("", "Handheld_Device/ANIM_Chisel.nif", false)
 	AlignTo("", "Destination")
 	Sleep(1)
+	if not GetStateImpact("Destination", "upgrading") then
+		return
+	end
 	PlayAnimation("", "knee_work_in")
 	LoopAnimation("", "knee_work_loop", 10)
 	PlayAnimation("", "knee_work_out")
@@ -230,7 +251,11 @@ function WorkC(Pos)
 	AlignTo("", "Destination")
 	Sleep(1)
 	PlayAnimation("", "chop_in")
-	LoopAnimation("", "chop_loop", 20)
+	LoopAnimation("", "chop_loop", 10)
+	if not GetStateImpact("Destination", "upgrading") then
+		return
+	end
+	LoopAnimation("", "chop_loop", 10)
 	PlayAnimation("", "chop_out")
 end
 
@@ -254,6 +279,9 @@ function WorkD(Pos)
 	CarryObject("", "Handheld_Device/ANIM_Chisel.nif", false)
 	AlignTo("", "Destination")
 	Sleep(1)
+	if not GetStateImpact("Destination", "upgrading") then
+		return
+	end
 	PlayAnimation("", "manipulate_top_r")
 	PlayAnimation("", "manipulate_middle_twohand")
 end
@@ -267,13 +295,15 @@ function GoHome()
 		f_WeakMoveTo("", "Haia", GL_MOVESPEED_RUN, 20)
 	end
 	
-	if not DynastyIsPlayer("") then
-		InternalDie("")
-		InternalRemove("")
-	end
+	InternalDie("")
+	InternalRemove("")
 end
 
 function CleanUp()
+	
+	StopAnimation("")
+	CarryObject("", "", false)
+	CarryObject("", "", true)
 	
 	if AliasExists("Destination") then
 		
