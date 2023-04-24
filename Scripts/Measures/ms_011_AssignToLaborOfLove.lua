@@ -75,7 +75,7 @@ function Run()
 			Sleep(AnimTime)
 			
 			if not ReadyToRepeat(DestAlias, GetMeasureRepeatName2("UseLaborOfLove")) then
-				AddImpact(DestAlias, "FullOfLove, 1, 6)
+				AddImpact(DestAlias, "FullOfLove", 1, 6)
 			end
 			
 			-- Try to attract him. Bonus for high charisma.
