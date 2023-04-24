@@ -1144,7 +1144,12 @@ function ConfirmAlliance()
 			elseif ReasonToDecline == 3 then -- You are a rival, i will not ally with you
 				GetDynasty("MyBoss", "MyDyn")
 				GetDynasty("Destination", "DestDyn")
-				local RivalID = ai_DynastyCheckForRival("DestDyn", "MyDyn")
+				local RivalID = 0
+				if HasData("RivalID") then
+					RivalID = GetData("RivalID")
+				else
+					RivalID = ai_DynastyCheckForRival("DestDyn", "MyDyn")
+				end
 				GetAliasByID(RivalID, "RivalAlias")
 				
 				if IsType("RivalAlias", "Sim") then -- political ambitions
@@ -1205,6 +1210,9 @@ end
 
 function AIDecision()
 	-- Is the AI going to accept my offer?
+	--LogMessage("Self is "..GetName(""))
+	--LogMessage("MyBoss is "..GetName("MyBoss"))
+	--LogMessage("Destination is "..GetName("Destination"))
 	local CState = DynastyGetDiplomacyState("Destination", "MyBoss")
 	local OfferedState = GetData("Offer")
 	
@@ -1216,7 +1224,7 @@ function AIDecision()
 		return "A"
 	end
 	
-	local DesiredState = ai_DynastyGetBestDiplomacyState("MyBoss", "Destination")
+	local DesiredState = ai_DynastyGetBestDiplomacyState("Destination", "MyBoss")
 	local CurrentFavor = GetFavorToDynasty("AskerDyn", "DestinationDyn")
 	local MinFavor = 0
 	local IsRival = ai_DynastyCheckForRival("DestinationDyn", "AskerDyn")
@@ -1229,7 +1237,7 @@ function AIDecision()
 	end
 	
 	if not AliasExists("MyBoss") then
-		LogMessage("Diplomacy: My Boss missing")
+		LogMessage("Diplomacy: MyBoss missing")
 	end
 	
 	if OfferedState == "ALLIANCE" then
@@ -1249,7 +1257,7 @@ function AIDecision()
 	elseif OfferedState == "NEUTRAL" and DesiredState == "NAP" then
 		return "A"
 	else 
-		if RivalAllowed or IsRival==0 then
+		if RivalAllowed or IsRival == 0 then
 			if CurrentFavor >= MinFavor then
 				if DesiredState ~= "ALLIANCE" then -- special thoughts about alliances
 					if CurrentFavor < 90 then
@@ -1277,6 +1285,7 @@ function AIDecision()
 				return "C" -- no
 			end
 		else
+			SetData("RivalID", IsRival)
 			SetData("ReasonToDecline", 3) -- rival
 			return "C" -- no 
 		end

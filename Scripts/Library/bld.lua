@@ -428,7 +428,6 @@ function CheckRivals(BldAlias)
 		return
 	end
 	
-	
 	local BuildType = BuildingGetType(BldAlias)
 	local BuildID = GetID(BldAlias)
 	

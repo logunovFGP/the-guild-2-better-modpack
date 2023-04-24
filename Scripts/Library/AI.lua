@@ -833,25 +833,28 @@ end
 
 function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 	
+	LogMessage("Check Rival. "..GetName(DynastyAlias).." checks for "..GetName(TargetDynasty))
 	local IsRival = 0 -- no rival
 	local MyCount = DynastyGetMemberCount(DynastyAlias)
-	local TargetCount = DynastyGetMemberCount(TargetDynasty)
-	
 	local MyBuildings = DynastyGetBuildingCount2(DynastyAlias)
+	
+	local TargetCount = DynastyGetMemberCount(TargetDynasty)
 	local TargetBuildings = DynastyGetBuildingCount2(TargetDynasty)
 	
-	-- Check for same buisnesses
+	local Type, TargetType
+	-- Check for same buisnesses in the dynasties
 	
 	if MyBuildings > 0 and TargetBuildings > 0 then
-		for i=0, MyCount-1 do
+		for i=0, MyBuildings-1 do
 			if DynastyGetBuilding2(DynastyAlias, i, "Building") then -- check every building
-				local Type = BuildingGetType("Building")
+				Type = BuildingGetType("Building")
+				
 				if Type ~= GL_BUILDING_TYPE_RESIDENCE then -- we don't look for houses
 					if DynastyGetRandomBuilding(TargetDynasty, GL_BUILDING_CLASS_WORKSHOP, Type, "TargetBuilding") then
-						-- we found the same type building
 						if GetSettlementID("TargetBuilding") == GetSettlementID("Building") then
 							-- workshops in same city
 							CopyAlias("TargetBuilding", "RivalBuilding")
+							LogMessage("CheckForRival: Your "..GetName("TargetBuilding").." has Type "..BuildingGetType("TargetBuilding").." same as my "..GetName("Building").." which has Type "..Type)
 							break
 						end
 					end
@@ -875,6 +878,7 @@ function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 						if SimGetOfficeLevel("TargetMember"..i) == (OfficeLevel+1) then 
 							if GetSettlementID("TargetMember"..i) == GetSettlementID("Member"..i) then
 								-- you have the office I want and we live in the same city
+								LogMessage(GetName("TargetMember"..i).." holds the office seat I want!")
 								CopyAlias("TargetMember"..i, "RivalOfficeHolder")
 								break
 							end
@@ -893,14 +897,19 @@ function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 end
 
 function DynastyCalcThreat(SimAlias, TargetAlias)
+
 	local MyMoney = GetMoney(SimAlias)
 	local TargetMoney = GetMoney(TargetAlias)
+	
 	local MyTitle = GetNobilityTitle(SimAlias)
 	local TargetTitle = GetNobilityTitle(TargetAlias)
+	
 	local MyEnemyCount = dyn_GetEnemies(SimAlias) or 0
 	local TargetEnemyCount = dyn_GetEnemies(TargetAlias) or 0
+	
 	local HighestOffice = dyn_GetHighestOfficeLevel(SimAlias) or 0
 	local HighestOfficeTarget = dyn_GetHighestOfficeLevel(TargetAlias) or 0
+	
 	local ThreatLevel = 0
 	local Difference = 0
 	
@@ -937,14 +946,16 @@ end
 
 function DynastyGetBestDiplomacyState(SimAlias, TargetAlias)
 
-	if not (GetDynasty(SimAlias, "MyDyn") and GetDynasty(TargetAlias, "TargetDyn")) then
+	if not (GetDynasty(SimAlias, "MyDynasty") and GetDynasty(TargetAlias, "TargetDynasty")) then
 		return false
 	end
 	
-	local CurrentStatus = DynastyGetDiplomacyState("MyDyn", "TargetDyn")
-	local Favor = GetFavorToDynasty("MyDyn", "TargetDyn")
+	--LogMessage(GetName(SimAlias).." asks for "..GetName("MyDynasty").." and "..GetName(TargetAlias).." asks for "..GetName("TargetDynasty"))
+	
+	local CurrentStatus = DynastyGetDiplomacyState("MyDynasty", "TargetDynasty")
+	local Favor = GetFavorToDynasty("MyDynasty", "TargetDynasty")
 	local Threat = ai_DynastyCalcThreat(SimAlias, TargetAlias)
-	local IsRival = ai_DynastyCheckForRival("MyDyn", "TargetDyn")
+	local IsRival = ai_DynastyCheckForRival("MyDynasty", "TargetDynasty")
 	
 	if CurrentStatus == DIP_ALLIANCE then
 		
