@@ -1105,6 +1105,22 @@ function AbilityBoosts(BldAlias, BossAlias)
 				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
 			end
 		end
+	elseif Type == GL_BUILDING_TYPE_CHURCH_EV then
+		local BossAbility = GetImpactValue(BossAlias, "PreacherI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "PreacherBoost") < BossAbility then
+				AddImpact(BldAlias, "PreacherBoost", 1, -1)
+				AddImpact(BldAlias, "Attractivity", 0.25, -1)
+			end
+		end
+	elseif Type == GL_BUILDING_TYPE_CHURCH_CATH then
+		local BossAbility = GetImpactValue(BossAlias, "PreacherI")
+		if BossAbility > 0 then
+			if GetImpactValue(BldAlias, "PreacherBoost") < BossAbility then
+				AddImpact(BldAlias, "PreacherBoost", 1, -1)
+				AddImpact(BldAlias, "Attractivity", 0.25, -1)
+			end
+		end
 	end
 end
 

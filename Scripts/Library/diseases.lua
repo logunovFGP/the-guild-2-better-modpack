@@ -193,7 +193,13 @@ function checkSickness(ObjectAlias)
 	if GetImpactValue(ObjectAlias, "Resist") > 0 then
 		return false
 	end
-
+	
+	-- ability
+	local Alchemist = GetImpactValue(ObjectAlias, "IllnessResist")
+	if (Rand(100) + 1) <= Alchemist then
+		return false
+	end
+	
 	if GetImpactValue("City", "Sickness") > 1 then
 		return false
 	end

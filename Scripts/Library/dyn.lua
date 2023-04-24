@@ -510,16 +510,20 @@ function AddFame(SimAlias, Amount)
 	
 	local fame = 0 + dyn_GetFame(SimAlias)
 	
+	-- amount is increased by abilities
+	local GuildAbil = GetImpactValue(SimAlias, "GuildMasterI")
+	Amount = Amount + GuildAbil
+	
+	-- new family fame
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "Fame", (fame+Amount))
 	end
 	
-	-- save the fame earned by the sim
+	-- save personal fame
 	if not HasProperty(SimAlias, "GuildFame") then
 		SetProperty(SimAlias, "GuildFame", 0)
 	end
-	
-	local SimFame = 0 + GetProperty(SimAlias, "GuildFame")
+	local SimFame = GetProperty(SimAlias, "GuildFame") or 0
 	SetProperty(SimAlias, "GuildFame", (SimFame+Amount))
 end
 
