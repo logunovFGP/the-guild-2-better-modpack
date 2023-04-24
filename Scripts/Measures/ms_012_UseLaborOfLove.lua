@@ -4,6 +4,7 @@ function Run()
 		StopMeasure()
 	end
 	
+	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
 	SetProperty("Destination", "CocotteHasClient", 1)
