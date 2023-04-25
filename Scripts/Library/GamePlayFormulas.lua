@@ -892,22 +892,43 @@ end
 -------------------------
 -- Favor related functions for social interaction
 -------------------------
+
+function CalcMinFavor(SimAlias, Destination, MeasureID)
+	
+	local MeasureData = {
+					[460] = { minFavor = GL_STARTDIALOG_MINFAVOR, talent = RHETORIC },
+					[530] = { minFavor = GL_FLIRT_MINFAVOR, talent = CHARISMA }, 
+					[540] = { minFavor = GL_HUG_MINFAVOR, talent = CHARISMA },
+					[570] = { minFavor = GL_KISS_MINFAVOR, talent = EMPATHY },
+					[1520] = { minFavor = GL_BATH_MINFAVOR, talent = CHARISMA }, 
+					[1530] = { minFavor = GL_BEWITCH_MINFAVOR, talent = RHETORIC },
+					[2300] = { minFavor = GL_PRESENT_MINFAVOR, talent = EMPATHY }, 
+					[2310] = { minFavor = GL_COMPLIMENT_MINFAVOR, talent = RHETORIC },
+					[2320] = { minFavor = GL_DANCE_MINFAVOR, talent = DEXTERITY }
+					}
+					
+	local TitleDifference = (GetNobilityTitle(Destination) - GetNobilityTitle(SimAlias)) * 3
+	local TalentBonus = chr_GetSkillValue(Destination, EMPATHY) - chr_GetSkillValue(SimAlias, CHARISMA) 
+	local Result = MeasureData[MeasureID].minFavor + TitleDifference + TalentBonus - chr_GetSkillValue(SimAlias, MeasureData[MeasureID].talent) * 2
+	
+	return Result
+end
+
 function CalcFavorWon(SimAlias, Destination, MeasureID)
 	
 	-- all social measures which can increase favor
 	local MeasureData = {
-					[460] = { measureName = "StartDialog", baseValue =  1, lossValue = -5, minFavor = GL_STARTDIALOG_MINFAVOR, talent = RHETORIC },
-					[530] = { measureName = "Flirt", baseValue =  5, lossValue = -5, minFavor = GL_FLIRT_MINFAVOR, talent = CHARISMA }, 
-					[540] = { measureName = "HugCharacter", baseValue =  3, lossValue = -5, minFavor = GL_HUG_MINFAVOR, talent = CHARISMA },
-					[570] = { measureName = "KissCharacter", baseValue =  0, lossValue = -10, minFavor = GL_KISS_MINFAVOR, talent = EMPATHY },
-					[1520] = { measureName = "TakeABath", baseValue =  5, lossValue = -10, minFavor = GL_BATH_MINFAVOR, talent = CHARISMA }, 
-					[1530] = { measureName = "BewitchCharacter", baseValue =  5, lossValue = -10, minFavor = GL_BEWITCH_MINFAVOR, talent = RHETORIC },
-					[2300] = { measureName = "MakeAPresent", baseValue =  5, lossValue = -5, minFavor = GL_PRESENT_MINFAVOR, talent = EMPATHY }, 
-					[2310] = { measureName = "MakeACompliment", baseValue =  3, lossValue = -5, minFavor = GL_COMPLIMENT_MINFAVOR, talent = RHETORIC },
-					[2320] = { measureName = "InviteToDance", baseValue =  5, lossValue = -5, minFavor = GL_DANCE_MINFAVOR, talent = DEXTERITY }
+					[460] = { measureName = "StartDialog", baseValue =  2, lossValue = -5, talent = RHETORIC },
+					[530] = { measureName = "Flirt", baseValue =  8, lossValue = -5, talent = CHARISMA }, 
+					[540] = { measureName = "HugCharacter", baseValue =  5, lossValue = -5, talent = CHARISMA },
+					[570] = { measureName = "KissCharacter", baseValue =  10, lossValue = -10, talent = EMPATHY },
+					[1520] = { measureName = "TakeABath", baseValue =  10, lossValue = -10, talent = CHARISMA }, 
+					[1530] = { measureName = "BewitchCharacter", baseValue =  10, lossValue = -10, talent = RHETORIC },
+					[2300] = { measureName = "MakeAPresent", baseValue =  10, lossValue = -5, talent = EMPATHY }, 
+					[2310] = { measureName = "MakeACompliment", baseValue =  5, lossValue = -5, talent = RHETORIC },
+					[2320] = { measureName = "InviteToDance", baseValue =  8, lossValue = -5, talent = DEXTERITY }
 					}
 					
-	
 	local Success = false
 	
 	local FlirtBonus = GetImpactValue(SimAlias, "FlirtBonus") -- ability multiplier
@@ -924,8 +945,8 @@ function CalcFavorWon(SimAlias, Destination, MeasureID)
 		Favor = GetFavorToSim(SimAlias, Destination)
 	end
 	
-	
-	if Favor >= (MeasureData[MeasureID].minFavor - (TitleBonus * 2) + (EmpathyMalus) * 2 - TalentBonus) then
+	local MinimumFavor = gameplayformulas_CalcMinFavor(SimAlias, Destination, MeasureID)
+	if Favor >= MinimumFavor then
 		Success = true
 	end
 	

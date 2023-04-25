@@ -27,8 +27,25 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	local DestGender = SimGetGender("Destination")
+	local IsLover = false
+	if SimGetSpouse("", "Spouse") and GetID("Spouse") == GetID("Destination") then
+		IsLover = true
+	elseif SimGetLiaison("", "Liaison") and GetID("Liaison") == GetID("Destination") then
+		IsLover = true
+	end
+	
+	local IsCourtLover = false
+	if not IsLover then 
+		if SimGetCourtLover("", "CourtLover") then
+			if GetID("CourtLover") == GetID("Destination") then
+				IsCourtLover = true
+			end
+	end	end
+	
 	local Age = SimGetAge("Destination")
+	local DestGender = SimGetGender("Destination")
+	local CurrentFavor = GetFavorToSim("", "Destination")
+	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
 	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	-- Courting related
@@ -44,22 +61,25 @@ function Run()
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	
-	-- if Favor is below MinFavor, FavorWon will be lower than CourtingProgress and the action will be rejected
-	if FavorWon < CourtingProgress then
-		CourtingProgress = FavorWon
+	if IsLover or IsCourtLover then
+		if FavorWon < 0 then
+			CourtingProgress = FavorWon
+		end
+		
+		if CourtingProgress < 1 and FavorWon > 0 then
+			FavorWon = -2
+		end
 	end
 	
-	if CourtingProgress < 1 and FavorWon > 0 then
-		FavorWon = -2
-	end
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) -- only for courting
+	local EnoughVariation = (VariationFactor > 0.5)
 	
-	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
 	local time1, time2 = 0, 0
 	
 	-- The distance between both sims to interact with each other
 	local InteractionDistance = 128
 
-	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
+	if not ai_StartInteraction("", "Destination", 800, InteractionDistance) then
 		return
 	end
 	
@@ -83,145 +103,96 @@ function Run()
 	MoveSetActivity("", "converse")
 	MoveSetActivity("Destination", "converse")
 	
-	-- dialog related
-	local ReplaceAge = ""
-	local ReplaceGender = ""
-	
-	if DestGender == GL_GENDER_MALE then
-		ReplaceGender = "MALE"
-	else
-		ReplaceGender = "FEMALE"
-	end
-	
-	if Age < 16 then
-		ReplaceAge = "YOUNG"
-	else
-		ReplaceAge = "ADULT"
-	end
-	
-	-- hello, I need to talk to you
-	MsgSay("", "@L_STARTDIALOG_START_"..ReplaceAge.."_"..ReplaceGender)
-	
+	-- this will remove any question marks etc.
 	feedback_OverheadActionName("Owner")
 	feedback_OverheadActionName("Destination")
 	AlignTo("Owner", "Destination")
 	AlignTo("Destination", "Owner")
-	Sleep(1)
-	Talk("", "Destination", true)
+	SetMeasureRepeat(TimeOut)
+	SetState("", STATE_DUEL, true) -- no cancel-cheat allowed
 	
-	local Friendly = false
-	if FavorWon >= 10 then
-		Friendly = true
+	-- hello, I need to talk to you
+	MsgSay("", talk_StartDialog(IsLover, Age, DestGender));
+	
+	-- Does the destination want to talk?
+	local Started = false
+	if CurrentFavor >= MinFavor or IsLover then
+		Started = true
 	end
+		
+	MsgSay("Destination", talk_AnswerDialog(IsLover, Age, Started));
 	
-	if SimGetGender("") == GL_GENDER_MALE then
-		if Friendly then
-			PlaySound3DVariation("", "CharacterFX/male_friendly", 0.5)
-		else
-			PlaySound3DVariation("", "CharacterFX/male_neutral", 0.5)
-		end
+	if not Started then
+		IsLover = false
+		ms_046_startdialog_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
 	else
-		if Friendly then
-			PlaySound3DVariation("", "CharacterFX/female_friendly", 0.5)
-		else
-			PlaySound3DVariation("", "CharacterFX/female_neutral", 0.5)
-		end
-	end
+		Sleep(1)
+		Talk("", "Destination", true)
 	
-	time1 = PlayAnimationNoWait("Owner", "talk")
-	Sleep(0.7)
-	
-	if DestGender == GL_GENDER_MALE then
-  		if Friendly then
-			PlaySound3DVariation("Destination", "CharacterFX/male_friendly", 0.5)
-		else
-			PlaySound3DVariation("Destination", "CharacterFX/male_neutral", 0.5)
+		-- sfx
+		local Friendly = false
+		if FavorWon >= 10 then
+			Friendly = true
 		end
-	else
-  		if Friendly then
-			PlaySound3DVariation("Destination", "CharacterFX/female_friendly",0.5)
-		else
-			PlaySound3DVariation("Destination", "CharacterFX/female_neutral", 0.5)
-		end
-	end
-
-	time2 = PlayAnimation("Destination", "talk")
-	local WasCourtLover = false
-	-------------------------
-	------ Court Lover ------
-	-------------------------
-
-	if SimGetCourtLover("", "CourtLover") then
-		if GetID("CourtLover") == GetID("Destination") then
-			
-			WasCourtLover = true
-			SetMeasureRepeat(TimeOut)
-			
-			if CourtingProgress < FavorWon then
-				FavorWon = CourtingProgress
+		
+		if SimGetGender("") == GL_GENDER_MALE then
+			if Friendly then
+				PlaySound3DVariation("", "CharacterFX/male_friendly", 0.5)
+			else
+				PlaySound3DVariation("", "CharacterFX/male_neutral", 0.5)
 			end
-			
-			MoveSetActivity("", "converse")
-			MoveSetActivity("Destination", "converse")
+		else
+			if Friendly then
+				PlaySound3DVariation("", "CharacterFX/female_friendly", 0.5)
+			else
+				PlaySound3DVariation("", "CharacterFX/female_neutral", 0.5)
+			end
+		end
+		
+		time1 = PlayAnimationNoWait("Owner", "talk")
+		Sleep(0.7)
+		
+		if DestGender == GL_GENDER_MALE then
+			if Friendly then
+				PlaySound3DVariation("Destination", "CharacterFX/male_friendly", 0.5)
+			else
+				PlaySound3DVariation("Destination", "CharacterFX/male_neutral", 0.5)
+			end
+		else
+			if Friendly then
+				PlaySound3DVariation("Destination", "CharacterFX/female_friendly",0.5)
+			else
+				PlaySound3DVariation("Destination", "CharacterFX/female_neutral", 0.5)
+			end
+		end
 
-	--		camera_CutscenePlayerLock("cutscene", "Destination")
-
+		time2 = PlayAnimation("Destination", "talk")
+		
+		local Positive = true
+		-- Result
+		if IsCourtLover or IsLover then -- need variation
+			AddImpact("Destination", "ReceivedTalk", 1, 3)
 			if VariationFactor <= 0.5 then
 				FavorWon = -1
 				CourtingProgress = -5
-				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
+				
+				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)));
+				
+				ms_046_startdialog_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
 			else
-				MsgSay("Destination", talk_AnswerCourtingMeasure("TALK", GetSkillValue("Destination", RHETORIC), SimGetGender("Destination"), CourtingProgress));
+				Positive = (CourtingProgress > 0)
+				MsgSay("Destination", talk_FavorDialog(IsLover, Age, Positive));
+				ms_046_startdialog_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
 			end
 
-			Sleep(0.4)
+		else -- social talk is harder, no need of variation
 			
-			-- Add the achieved progress
-			if AliasExists("cutscene") then
-				DestroyCutscene("cutscene")
-			end
+			Positive = (FavorWon > 0)
+			MsgSay("Destination", talk_FavorDialog(IsLover, Age, Positive));
 			
-			chr_ModifyFavor("Destination", "", FavorWon)
-			Sleep(0.3)
-			feedback_OverheadCourtProgress("Destination", CourtingProgress)
-			AddImpact("Destination", "ReceivedTalk", 1, 3)
-			gameplayformulas_CourtingProgress("", CourtingProgress) 
-		end
-		return
-	end
-
-	----------------------------
-	------ No Court Lover ------
-	----------------------------
-	if not WasCourtLover then
-	
-		SetMeasureRepeat(TimeOut*2)
-		
-		-- Postiv
-		if FavorWon > 0 then
-			
-			chr_ModifyFavor("Destination", "", FavorWon)
-			
-			if Age < 16 then
-				MsgSay("Destination", "@L_STARTDIALOG_FAVOR_POS_YOUNG")
-			else
-				MsgSay("Destination", "@L_STARTDIALOG_FAVOR_POS_ADULT")
-			end
-			
-			if SimGetSpouse("Destination", "Spouse") then
-				if (GetID("Spouse") == GetID("")) then
-					AddImpact("", "LoveLevel", 1, 24) -- add some love for the next 24 hours
-					AddImpact("Destination","LoveLevel", 1, 24)
-					if GetImpactValue("Destination", "LoveLevel") >= 10 then
-						MsgNewsNoWait("", "Destination", "", "schedule", -1,
-								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
-								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
-					end
-				end
-			end
-			
-			if FavorWon >= 10 then
-				-- Zufällige Person aus der Umgebung auswählen
+			-- special: get evidence
+			if FavorWon >= 12 then
+				-- choose a random person in the area
 				if IsDynastySim("") and IsDynastySim("Destination") then
 					local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim) == 2000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)
 
@@ -230,7 +201,7 @@ function Run()
 
 						--check for favor to create evidence
 						if GetDynastyID(DestAlias) ~= GetDynastyID("") and GetDynastyID(DestAlias) ~= GetDynastyID("Destination") then
-							if GetFavorToSim("Destination", DestAlias) < 20 or GetFavorToSim("", DestAlias) < 20 then
+							if GetFavorToSim("Destination", DestAlias) < 30 then
 								MsgSay("Destination", "@L_STARTDIALOG_EVIDENCE")
 
 								local Random = Rand(11)
@@ -259,7 +230,7 @@ function Run()
 								-- create victim
 								while true do
 									ScenarioGetRandomObject("cl_Sim", "CurrentRandomSim")
-									if GetDynasty("CurrentRandomSim", "CDynasty") and GetID("CDynasty") ~= GetDynastyID(DestAlias) then
+									if GetDynasty("CurrentRandomSim", "CDynasty") and GetID("CDynasty") ~= GetDynastyID(DestAlias) and GetID("CDynasty") ~= GetDynastyID("") then
 										CopyAlias("CurrentRandomSim", "EvidenceVictim")
 										break
 									end
@@ -272,15 +243,53 @@ function Run()
 					end
 				end
 			end
-		else
+			
+			ms_046_startdialog_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+		end
+	end
+end
 
-			-- Negative
+function End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+	
+	if not Started then
+		chr_ModifyFavor("Destination", "", FavorWon)
+		
+		if IsCourtLover then 
+			Sleep(0.4)
+			feedback_OverheadCourtProgress("Destination", CourtingProgress)
+			gameplayformulas_CourtingProgress("", CourtingProgress)
+		end
+		
+		MsgNewsNoWait("", "Destination", "", "default", -1,
+					"@L_COURTLOVER_MSG_FAILED_HEAD_+0",
+					"@L_SOCIAL_INTERACTION_DIALOG_FAIL_BEFORE_START_BODY_+0", GetID("Destination"), GetID(""), MinFavor)
+	else
+		if FavorWon > 0 then -- success
 			chr_ModifyFavor("Destination", "", FavorWon)
-
-			if Age < 16 then
-				MsgSay("Destination", "@L_STARTDIALOG_FAVOR_NEG_YOUNG")
-			else
-				MsgSay("Destination", "@L_STARTDIALOG_FAVOR_NEG_ADULT")
+			
+			if IsCourtLover then 
+				Sleep(0.4)
+				feedback_OverheadCourtProgress("Destination", CourtingProgress)
+				gameplayformulas_CourtingProgress("", CourtingProgress)
+			elseif IsLover then
+				AddImpact("", "LoveLevel", 1, 24) -- add some love for the next 24 hours
+				AddImpact("Destination", "LoveLevel", 1, 24)
+				if GetImpactValue("Destination", "LoveLevel") >= 10 then
+					MsgNewsNoWait("", "Destination", "", "schedule", -1,
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
+								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+				end
+			end
+			Sleep(0.4)
+			chr_GainXP("", GL_EXP_GAIN_SIMPLE) -- gain XP for success
+		else 
+			chr_ModifyFavor("Destination", "", FavorWon)
+			SetData("Fail", 1)
+			
+			if IsCourtLover then 
+				Sleep(0.4)
+				feedback_OverheadCourtProgress("Destination", CourtingProgress)
+				gameplayformulas_CourtingProgress("", CourtingProgress)
 			end
 		end
 	end
@@ -290,7 +299,8 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-
+	
+	SetState("", STATE_DUEL, false)
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
 	StopAnimation("")
@@ -299,7 +309,7 @@ function CleanUp()
 	if (AliasExists("Destination")) then
 		RemoveProperty("Destination", "InTalk")
 		MoveSetActivity("Destination")
-		if GetDynastyID("") ~= GetDynastyID("Destination") then
+		if GetDynastyID("") ~= GetDynastyID("Destination") and not HasData("Fail") then
 			SimLock("Destination", 0.3)
 		end
 	end

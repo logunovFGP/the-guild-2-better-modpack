@@ -18,9 +18,11 @@ function Init()
 	end
 	
 	local Money = chr_GetBribeAmount("Destination") -- base value
-	local Choice1 = Money * 0.25
-	local Choice2 = Money * 0.5
+	local Choice1 = Money * 0.33
+	local Choice2 = Money * 0.66
 	local Choice3 = Money
+	
+	Money = 50*math.floor(Money/50)
 	
 	local Button1 = "@B[1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+0,Hud/Buttons/btn_Money_Small.tga]"
 	local Button2 = "@B[2,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1,@L_INTRIGUE_041_BRIBECHARACTER_SCREENPLAY_ACTOR_CHOICE_+1,Hud/Buttons/btn_Money_Medium.tga]"
@@ -47,10 +49,10 @@ function Init()
 
 	if result == 1 then
 		SetData("TFBribe", Choice1)
-		SetData("FavorGain", GL_FAVOR_MOD_NORMAL) -- 10
+		SetData("FavorGain", GL_FAVOR_MOD_GREATER) -- 15
 	elseif result == 2 then
 		SetData("TFBribe", Choice2)
-		SetData("FavorGain", GL_FAVOR_MOD_GREATER) -- 15
+		SetData("FavorGain", GL_FAVOR_MOD_LARGE) -- 20
 	elseif result == 3 then
 		SetData("TFBribe", Choice3)
 		SetData("FavorGain", GL_FAVOR_MOD_VERYLARGE) -- 25

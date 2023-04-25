@@ -98,9 +98,9 @@ function PflegeVieh(Animal)
 					StuckCounter = StuckCounter + 1
 				end
 					
-				LoopAnimation("", ""..Animal.."_walk", 1, 1)
+				LoopAnimation("", ""..Animal.."_walk", 0.75, 1)
 				CurrentDistance = GetDistance("", "NewPos")
-				if CurrentDistance <= 50 or CurrentDistance == StuckCheck then
+				if CurrentDistance <= 100 or CurrentDistance == StuckCheck then
 					break
 				end
 			end
@@ -218,9 +218,9 @@ function WaldVieh(Animal)
 					StuckCounter = StuckCounter + 1
 				end
 					
-				LoopAnimation("", ""..Animal..""..Animation, 1, 1)
+				LoopAnimation("", ""..Animal..""..Animation, 0.75, 1)
 				CurrentDistance = GetDistance("", "NewPos")
-				if CurrentDistance <= 50 or CurrentDistance == StuckCheck then
+				if CurrentDistance <= 100 or CurrentDistance == StuckCheck then
 					break
 				end
 			end
@@ -321,9 +321,9 @@ function KleinVieh(Animal)
 					StuckCounter = StuckCounter + 1
 				end
 					
-				LoopAnimation("", ""..Animal..""..Animation, 1, 1)
+				LoopAnimation("", ""..Animal..""..Animation, 0.75, 1)
 				CurrentDistance = GetDistance("", "NewPos")
-				if CurrentDistance <= 50 or CurrentDistance == StuckCheck then
+				if CurrentDistance <= 100 or CurrentDistance == StuckCheck then
 					break
 				end
 			end
@@ -436,9 +436,9 @@ function HausVieh(Animal)
 					StuckCounter = StuckCounter + 1
 				end
 					
-				LoopAnimation("", ""..Animal..""..Animation, 1, 1)
+				LoopAnimation("", ""..Animal..""..Animation, 0.75, 1)
 				CurrentDistance = GetDistance("", "NewPos")
-				if CurrentDistance <= 50 or CurrentDistance == StuckCheck then
+				if CurrentDistance <= 100 or CurrentDistance == StuckCheck then
 					break
 				end
 			end
