@@ -126,6 +126,7 @@ function PingHour()
 	bld_HandlePingHour("", true)
 	
 	if BuildingGetAISetting("", "Produce_Selection") > 0 then
+		economy_CalcProductionPriorities("")
 		farm_SellOtherStuff("")
 	end
 end

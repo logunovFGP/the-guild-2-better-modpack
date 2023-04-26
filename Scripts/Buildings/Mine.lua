@@ -108,6 +108,7 @@ function PingHour()
 	-- Improve AI management
 	if BuildingGetAISetting("", "Produce_Selection") > 0 then
 	--	bld_SetupAI("")
-		mine_SellOtherStuff("")
+		economy_CalcProductionPriorities("")
+		mine_SellOtherStuff("") 
 	end
 end
