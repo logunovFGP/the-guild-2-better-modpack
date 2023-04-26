@@ -57,11 +57,6 @@ function Weight()
 			
 				if AliasExists("ResourceAlias") then
 
-					-- resource found
-					if HasProperty("ResourceAlias","ToBeSowed") then
-						return 0
-					end
-
 					Distance = GetDistance("ResourceAlias", "WorkBuilding")
 					if Distance<4000 and GetCurrentMeasureID("ResourceAlias")<1 then
 					
