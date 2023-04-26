@@ -286,6 +286,7 @@ Data:
 279   "GL_RANK_MIDDLE"                      3                 ""                              | 
 280   "GL_RANK_RICH"                        4                 ""                              | 
 281   "GL_RANK_WEALTHY"                     5                 ""                              | 
+282   "GL_PROPEL_EMPLOYEES_FAVOR_LOSS"      16                ""                              | 
 
 
 

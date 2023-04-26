@@ -286,8 +286,8 @@ function ModifyFavor(source, dest, val)
 	
 	
 	-- Nice Guy ability
-	local MyNiceGuyLevel = GetImpactValue(source, "NiceGuyI")
-	local YourNiceGuyLevel = GetImpactValue(dest, "NiceGuyI")
+	local MyNiceGuyLevel = GetImpactValue(source, "NiceGuyI")*2
+	local YourNiceGuyLevel = GetImpactValue(dest, "NiceGuyI")*2
 
 	if MyNiceGuyLevel > 0 then
 		if val > 0 then

@@ -66,7 +66,7 @@ function Run()
 	MeasureSetNotRestartable()
 	
 	local Rhetoric = chr_GetSkillValue("", RHETORIC)
-	local LoyaltyLoss = 16 - Rhetoric
+	local LoyaltyLoss = GL_PROPEL_EMPLOYEES_FAVOR_LOSS - Rhetoric -- base with 1 rhetoric: 15
 	
 	if LoyaltyLoss < 2 then
 		LoyaltyLoss = 2
