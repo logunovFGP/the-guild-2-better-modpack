@@ -40,7 +40,8 @@ function Run()
 			if GetID("CourtLover") == GetID("Destination") then
 				IsCourtLover = true
 			end
-	end	end
+		end
+	end
 	
 	local Age = SimGetAge("Destination")
 	local DestGender = SimGetGender("Destination")
@@ -120,7 +121,7 @@ function Run()
 		Started = true
 	end
 		
-	MsgSay("Destination", talk_AnswerDialog(IsLover, Age, Started));
+	MsgSay("Destination", talk_AnswerDialog(IsLover, Age, DestGender, Started));
 	
 	if not Started then
 		IsLover = false
@@ -150,7 +151,7 @@ function Run()
 		end
 		
 		time1 = PlayAnimationNoWait("Owner", "talk")
-		Sleep(0.7)
+		Sleep(1)
 		
 		if DestGender == GL_GENDER_MALE then
 			if Friendly then
@@ -181,17 +182,17 @@ function Run()
 				ms_046_startdialog_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
 			else
 				Positive = (CourtingProgress > 0)
-				MsgSay("Destination", talk_FavorDialog(IsLover, Age, Positive));
+				MsgSay("Destination", talk_FavorDialog(Age, DestGender, Positive));
 				ms_046_startdialog_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
 			end
 
 		else -- social talk is harder, no need of variation
 			
 			Positive = (FavorWon > 0)
-			MsgSay("Destination", talk_FavorDialog(IsLover, Age, Positive));
+			MsgSay("Destination", talk_FavorDialog(Age, DestGender, Positive));
 			
 			-- special: get evidence
-			if FavorWon >= 12 then
+			if FavorWon >= 12 and Age >= 16 then
 				-- choose a random person in the area
 				if IsDynastySim("") and IsDynastySim("Destination") then
 					local NumOfObjects = Find("", "__F((Object.GetObjectsByRadius(Sim) == 2000)AND(Object.IsDynastySim())AND NOT(Object.GetState(child))AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal)))","Sims",-1)

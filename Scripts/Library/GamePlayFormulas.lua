@@ -908,8 +908,8 @@ function CalcMinFavor(SimAlias, Destination, MeasureID)
 					}
 					
 	local TitleDifference = (GetNobilityTitle(Destination) - GetNobilityTitle(SimAlias)) * 3
-	local TalentBonus = chr_GetSkillValue(Destination, EMPATHY) - chr_GetSkillValue(SimAlias, CHARISMA) 
-	local Result = MeasureData[MeasureID].minFavor + TitleDifference + TalentBonus - chr_GetSkillValue(SimAlias, MeasureData[MeasureID].talent) * 2
+	local TalentBonus = (chr_GetSkillValue(Destination, EMPATHY) - chr_GetSkillValue(SimAlias, CHARISMA) + chr_GetSkillValue(Destination, MeasureData[MeasureID].talent) - chr_GetSkillValue(SimAlias, MeasureData[MeasureID].talent)) * 2
+	local Result = MeasureData[MeasureID].minFavor + TitleDifference + TalentBonus
 	
 	return Result
 end
@@ -935,8 +935,8 @@ function CalcFavorWon(SimAlias, Destination, MeasureID)
 	local CharismaBonus = chr_GetSkillValue(SimAlias, CHARISMA)
 	local TalentBonus = chr_GetSkillValue(SimAlias, MeasureData[MeasureID].talent)
 	TalentBonus = TalentBonus + Rand(TalentBonus)
-	local EmpathyMalus = chr_GetSkillValue(Destination, EMPATHY)
-	local TitleBonus = GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)
+	local EmpathyMalus = chr_GetSkillValue(Destination, EMPATHY) * 2
+	local TitleBonus = (GetNobilityTitle(SimAlias) - GetNobilityTitle(Destination)) * 2
 	
 	local Favor = 0
 	if SimGetSpouse(SimAlias, "Spouse") and GetID(Destination) == GetID("Spouse") then
@@ -953,6 +953,10 @@ function CalcFavorWon(SimAlias, Destination, MeasureID)
 	local FavorWon = 0
 	if Success then 
 		FavorWon = (MeasureData[MeasureID].baseValue + CharismaBonus + TalentBonus - EmpathyMalus )*(1 + FlirtBonus)
+		
+		if FavorWon > 0 and FavorWon < 3 then -- minimum 3 favor gain to have success
+			FavorWon = MeasureData[MeasureID].lossValue
+		end
 	else
 		FavorWon = MeasureData[MeasureID].lossValue
 	end

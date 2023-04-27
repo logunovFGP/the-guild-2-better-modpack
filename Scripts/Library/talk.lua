@@ -18,22 +18,64 @@ end
 -- -----------------------
 function StartDialog(IsLover, Age, Gender)
 	
-	local label = "@L_STARTDIALOG_START_"
+	local label = ""
 	
 	if Age < 16 then
-		label = label.."TOYOUNG"
+		if Gender == GL_GENDER_MALE then
+			label = "@L_STARTDIALOG_START_TOYOUNG_MALE"
+		else
+			label = "@L_STARTDIALOG_START_TOYOUNG_FEMALE"
+		end
 	else
-		label = label.."TOADULT"
-	end
-	
-	if Gender == GL_GENDER_MALE then
-		label = label.."_MALE"
-	else
-		label = label.."_FEMALE"
-	end
-	
-	if IsLover then
-		label = label.."_LOVER"
+		if IsLover then -- special label
+			local Count = 1
+			local Labels = {
+						"@L_STARTDIALOG_START_TOADULT_LOVER_+0"
+						}
+						
+			if Gender == GL_GENDER_MALE then
+				local AddCount = 1
+				local AddLabels = {
+								"@L_FLIRT_SAYING1_GOOD_RHETORIC_TOMALE_+1"
+								}
+				for i = 1, AddCount do
+					Count = Count + 1
+					Labels[Count] = AddLabels[i]
+				end
+			else
+				local AddCount = 1
+				local AddLabels = {
+								"@L_FLIRT_SAYING1_GOOD_RHETORIC_TOFEMALE_+1",
+								}
+				for i = 1, AddCount do
+					Count = Count + 1
+					Labels[Count] = AddLabels[i]
+				end
+			end
+			
+			Count = Rand(Count) + 1
+			label = Labels[Count]
+		else
+			if Gender == GL_GENDER_MALE then
+				local Count = 3
+				local Labels = {
+							"@L_FLIRT_SAYING1_NORMAL_RHETORIC_TOMALE",
+							"@L_FLIRT_SAYING1_WEAK_RHETORIC_TOMALE",
+							"@L_COURTLOVER_BEGIN_QUESTION_TOMALE_1ST_GOOD_RHETORIC_+1"
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			else
+				local Count = 3
+				local Labels = {
+							"@L_FLIRT_SAYING1_NORMAL_RHETORIC_TOFEMALE",
+							"@L_FLIRT_SAYING1_WEAK_RHETORIC_TOFEMALE",
+							"@L_COURTLOVER_BEGIN_QUESTION_TOFEMALE_1ST_GOOD_RHETORIC_+1",
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			end
+		end
 	end
 	
 	return label
@@ -42,24 +84,108 @@ end
 -- -----------------------
 -- AnswerDialog
 -- -----------------------
-function AnswerDialog(IsLover, Age, Positive)
+function AnswerDialog(IsLover, Age, Gender, Positive)
 	
-	local label = "@L_STARTDIALOG_ANSWER_"
+	local label = ""
 	
 	if Age < 16 then
-		label = label.."YOUNG"
+		if Positive then
+			local Count = 5
+			local Labels = {
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+2",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+3",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+9",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+0",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+1"
+						}
+						
+			Count = Rand(Count) + 1
+			label = Labels[Count]
+		else
+			local Count = 5
+			local Labels = {
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+0",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+2",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+4",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+8",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+9"
+						}
+			Count = Rand(Count) + 1
+			label = Labels[Count]
+		end
 	else
-		label = label.."ADULT"
-	end
-	
-	if Positive then
-		label = label.."_POSITIVE"
-	else
-		label = label.."_NEGATIVE"
-	end
-	
-	if IsLover then
-		label = label.."_LOVER"
+		if Positive then
+			if IsLover then -- special labels
+				if Gender == GL_GENDER_MALE then
+					local Count = 3
+					local Labels = { 
+								"@L_COURTLOVER_BEGIN_ANSWER_SUCCESS_MALE_GOOD_RHETORIC",
+								"@L_COURTLOVER_BEGIN_ANSWER_SUCCESS_MALE_NORMAL_RHETORIC",
+								"@L_FAMILY_2_COHABITATION_ANSWER_POSITIVE_GOOD_RHETORIC_+2"
+								}
+					
+					Count = Rand(Count) + 1
+					label = Labels[Count]
+				else
+					local Count = 3
+					local Labels = {
+								"@L_COURTLOVER_BEGIN_ANSWER_SUCCESS_FEMALE_WEAK_RHETORIC_+0",
+								"@L_COURTLOVER_BEGIN_ANSWER_SUCCESS_FEMALE_NORMAL_RHETORIC_+1",
+								"@L_FAMILY_2_COHABITATION_ANSWER_POSITIVE_GOOD_RHETORIC_+2"
+								}
+					Count = Rand(Count) + 1
+					label = Labels[Count]
+				end
+			else
+			
+				local Count = 5
+				local Labels = {
+							"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_RANDOM_+8",
+							"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_RANDOM_+11", 
+							"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_RANDOM_+0",
+							"@L_SIM_COMMENTS_WORKER_CLICK_ARTISAN_+5",
+							"@L_SIM_COMMENTS_WORKER_CLICK_PATRON_+7"
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			end
+		else
+			local Count = 3
+			local Labels = {
+						"@L_SIM_COMMENTS_WORKER_ORDER_PATRON_BAD_FAVOR_+3",
+						"@L_SIM_COMMENTS_WORKER_ORDER_FIGHTER_BAD_FAVOR_+6",
+						"@L_SIM_COMMENTS_WORKER_ORDER_MYRMIDON_BAD_FAVOR_+2",
+						}
+			
+			if Gender == GL_GENDER_MALE then
+				local AddCount = 3
+				local AddLabel = { 
+								"@L_SOCIAL_ANSWER_TALK_NORMAL_RHETORIC_WAY_TOO_PROFOUND_+1",
+								"@L_SOCIAL_ANSWER_DANCE_NORMAL_RHETORIC_PROFOUND_+1",
+								"@L_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_WAY_TOO_PROFOUND_+1"
+								}
+				
+				for i = 1, AddCount do
+					Count = Count +1
+					Labels[Count] = AddLabel[i]
+				end
+			else
+				local AddCount = 3
+				local AddLabel = {
+								"@L_SOCIAL_ANSWER_TALK_NORMAL_RHETORIC_WAY_TOO_PROFOUND_+0",
+								"@L_SOCIAL_ANSWER_DANCE_NORMAL_RHETORIC_PROFOUND_+0",
+								"@L_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_WAY_TOO_PROFOUND_+0"
+								}
+								
+				for i = 1, AddCount do
+					Count = Count +1
+					Labels[Count] = AddLabel[i]
+				end
+			end
+			
+			Count = Rand(Count) + 1
+			label = Labels[Count]
+		end
 	end
 	
 	return label
@@ -68,24 +194,462 @@ end
 -- -----------------------
 -- FavorDialog
 -- -----------------------
-function FavorDialog(IsLover, Age, Positive)
+function FavorDialog(Age, Gender, Positive)
 	
-	local label = "@L_STARTDIALOG_FAVOR_"
+	local label = ""
 	
 	if Age < 16 then
-		label = label.."YOUNG"
+		if Positive then
+			local Count = 4
+			local Labels = {
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+4",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+5",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+6",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_CLICK_CHILD_+8"
+						}
+			Count = Rand(Count) + 1
+			label = Labels[Count]
+		else
+			local Count = 3
+			local Labels = {
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+3",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+5",
+						"@L_SIM_COMMENTS_OWN_DYNASTY_ORDER_CHILD_+6"
+						}
+			Count = Rand(Count) + 1
+			label = Labels[Count]
+		end
 	else
-		label = label.."ADULT"
+		if Positive then
+			if Gender == GL_GENDER_MALE then
+				local Count = 4
+				local Labels = {
+							"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_VERY_WELL_RECEIVED_+1",
+							"@L_SOCIAL_ANSWER_BEWITCH_GOOD_RHETORIC_WELL_RECEIVED_+1",
+							"@L_SOCIAL_ANSWER_TALK_NORMAL_RHETORIC_VERY_WELL_RECEIVED_+1",
+							"@L_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_VERY_WELL_RECEIVED_+1"
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			else
+				local Count = 4
+				local Labels = {
+							"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_VERY_WELL_RECEIVED_+0",
+							"@L_SOCIAL_ANSWER_BEWITCH_GOOD_RHETORIC_WELL_RECEIVED_+0",
+							"@L_SOCIAL_ANSWER_TALK_NORMAL_RHETORIC_VERY_WELL_RECEIVED_+0",
+							"@L_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_VERY_WELL_RECEIVED_+0"
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			end
+		else
+			if Gender == GL_GENDER_MALE then
+				local Count = 5
+				local Labels = {
+							"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_OFFENSIVE_+1",
+							"@L_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_PROFOUND_+1",
+							"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_PROFOUND_+1",
+							"@L_SOCIAL_ANSWER_BEWITCH_WEAK_RHETORIC_OFFENSIVE_+1",
+							"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_OFFENSIVE_+1"
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			else
+				local Count = 5
+				local Labels = {
+							"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_OFFENSIVE_+0",
+							"@L_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_PROFOUND_+0",
+							"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_PROFOUND_+0",
+							"@L_SOCIAL_ANSWER_BEWITCH_WEAK_RHETORIC_OFFENSIVE_+0",
+							"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_OFFENSIVE_+0"
+							}
+				Count = Rand(Count) + 1
+				label = Labels[Count]
+			end
+		end
 	end
 	
-	if Positive then
-		label = label.."_POSITIVE"
+	return label
+end
+
+-- -----------------------
+-- StartCompliment / Flirt
+-- -----------------------
+function StartCompliment(IsLover, Rhetoric, Gender)
+	
+	local label = "@L_FLIRT_SAYING1_"
+	
+	if Rhetoric > 4 then
+		if Rand(3) == 0 then
+			label = label.."NORMAL_RHETORIC"
+		else
+			label = label.."GOOD_RHETORIC"
+		end
 	else
-		label = label.."_NEGATIVE"
+		if Rand(3) == 0 then
+			label = label.."NORMAL_RHETORIC"
+		else
+			label = label.."WEAK_RHETORIC"
+		end
 	end
 	
-	if IsLover then
-		label = label.."_LOVER"
+	if Gender == GL_GENDER_MALE then
+		if IsLover then -- special label (informal choice)
+			if Rhetoric > 4 then
+				if Rand(2) == 0 then
+					label = "@L_FLIRT_SAYING1_GOOD_RHETORIC_TOMALE_+0"
+				else
+					label = "@L_FLIRT_SAYING1_GOOD_RHETORIC_TOMALE_+1"
+				end
+			else
+				if Rand(2) == 0 then
+					label = "@L_FLIRT_SAYING1_WEAK_RHETORIC_TOMALE_+2"
+				else
+					label = "@L_FLIRT_SAYING1_NORMAL_RHETORIC_TOMALE_+0"
+				end
+			end
+		else
+			label = label.."_TOMALE"
+		end
+	else
+		if IsLover then -- special label (informal choice)
+			if Rhetoric > 4 then
+				if Rand(2) == 0 then
+					label = "@L_FLIRT_SAYING1_GOOD_RHETORIC_TOFEMALE_+0"
+				else
+					label = "@L_FLIRT_SAYING1_GOOD_RHETORIC_TOFEMALE_+1"
+				end
+			else
+				if Rand(2) == 0 then
+					label = "@L_FLIRT_SAYING1_WEAK_RHETORIC_TOFEMALE_+2"
+				else
+					label = "@L_FLIRT_SAYING1_NORMAL_RHETORIC_TOFEMALE_+0"
+				end
+			end
+		else
+			label = label.."_TOFEMALE"
+		end
+	end
+	
+	return label
+end
+
+-- -----------------------
+-- AnswerCompliment / Flirt
+-- -----------------------
+function AnswerCompliment(IsLover, Rhetoric, Gender, IsPositive)
+	
+	local label = "@L_FLIRT_ANSWER_"
+	
+	if IsPositive then
+		if IsLover then -- special label
+			if Gender == GL_GENDER_MALE then
+				local Choice = Rand(5) + 1
+				local Labels = { "@L_FAMILY_2_COHABITATION_ANSWER_POSITIVE_NORMAL_RHETORIC_+0",
+							"@L_FAMILY_2_COHABITATION_ANSWER_POSITIVE_GOOD_RHETORIC_+2",
+							"@L_FLIRT_ANSWER_GOOD_RHETORIC_TOMALE_+1",
+							"@L_FLIRT_ANSWER_GOOD_RHETORIC_TOMALE_+2",
+							"@L_FLIRT_ANSWER_NORMAL_RHETORIC_TOMALE_+0" }
+				label = Labels[Choice]
+			else
+				local Choice = Rand(5) + 1
+				local Labels = { "@L_FAMILY_2_COHABITATION_ANSWER_POSITIVE_NORMAL_RHETORIC_+0",
+							"@L_FAMILY_2_COHABITATION_ANSWER_POSITIVE_GOOD_RHETORIC_+2",
+							"@L_FLIRT_ANSWER_GOOD_RHETORIC_TOFEMALE_+1",
+							"@L_FLIRT_ANSWER_GOOD_RHETORIC_TOFEMALE_+2",
+							"@L_FLIRT_ANSWER_NORMAL_RHETORIC_TOMFEALE_+0" }
+				label = Labels[Choice]
+			end
+		else
+			if Rhetoric > 4 then
+				if Rand(3) == 0 then
+					label = label.."NORMAL_RHETORIC"
+				else
+					label = label.."GOOD_RHETORIC"
+				end
+			else
+				if Rand(3) == 0 then
+					label = label.."NORMAL_RHETORIC"
+				else
+					label = label.."WEAK_RHETORIC"
+				end
+			end
+			
+			if Gender == GL_GENDER_MALE then
+				label = label.."_TOMALE"
+			else
+				label = label.."_TOFEMALE"
+			end
+		end
+	else
+		if IsLover then -- special label
+			if Rand(2) == 0 then
+				label = "@L_FAMILY_2_COHABITATION_ANSWER_NEGATIVE_NORMAL_RHETORIC_+1"
+			else
+				label = "@L_FAMILY_2_COHABITATION_ANSWER_OUTRAGED_WEAK_RHETORIC"
+			end
+		else
+			if Gender == GL_GENDER_MALE then
+				local Choice = 7
+				local Labels = { "@L_FAMILY_2_COHABITATION_ANSWER_OUTRAGED_WEAK_RHETORIC_+0",
+							"@L_FAMILY_2_COHABITATION_ANSWER_OUTRAGED_WEAK_RHETORIC_+2",
+							"@L_SOCIAL_ANSWER_TALK_NORMAL_RHETORIC_WAY_TOO_PROFOUND_+1",
+							"@L_COURTLOVER_BEGIN_ANSWER_FAILED_MALE_WEAK_RHETORIC_+0",
+							"@L_COURTLOVER_BEGIN_ANSWER_FAILED_MALE_NORMAL_RHETORIC_+1",
+							"@L_COURTLOVER_BEGIN_ANSWER_FAILED_MALE_GOOD_RHETORIC_+1",
+							"@L_ATTENDTRIAL_ACCUSER_TEXT1_ANSWER_+2"
+								}
+				if Rhetoric > 4 then
+					Choice = Choice + 1
+					Labels[Choice] = "@L_SOCIAL_ANSWER_TALK_GOOD_RHETORIC_WAY_TOO_PROFOUND_+1"
+				else
+					Choice = Choice + 1
+					Labels[Choice] = "_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_WAY_TOO_PROFOUND_+1"
+				end
+				
+				Choice = Rand(Choice) + 1
+				label = Labels[Choice]
+			else
+				local Choice = 7
+				local Labels = { "@L_FAMILY_2_COHABITATION_ANSWER_OUTRAGED_WEAK_RHETORIC_+0",
+							"@L_FAMILY_2_COHABITATION_ANSWER_OUTRAGED_WEAK_RHETORIC_+2",
+							"@L_SOCIAL_ANSWER_TALK_NORMAL_RHETORIC_WAY_TOO_PROFOUND_+0",
+							"@L_COURTLOVER_BEGIN_ANSWER_FAILED_FEMALE_WEAK_RHETORIC_+0",
+							"@L_COURTLOVER_BEGIN_ANSWER_FAILED_FEMALE_GOOD_RHETORIC_+0",
+							"@L_COURTLOVER_BEGIN_ANSWER_FAILED_FEMALE_GOOD_RHETORIC_+1",
+							"@L_ATTENDTRIAL_ACCUSER_TEXT1_ANSWER_+2"
+								}
+				if Rhetoric > 4 then
+					Choice = Choice + 1
+					Labels[Choice] = "@L_SOCIAL_ANSWER_TALK_GOOD_RHETORIC_WAY_TOO_PROFOUND_+0"
+				else
+					Choice = Choice + 1
+					Labels[Choice] = "_SOCIAL_ANSWER_TALK_WEAK_RHETORIC_WAY_TOO_PROFOUND_+0"
+				end
+				
+				Choice = Rand(Choice) + 1
+				label = Labels[Choice]
+			end
+		end
+	end
+	
+	return label
+end
+
+-- -----------------------
+-- CommitCompliment / Flirt
+-- -----------------------
+function CommitCompliment(Rhetoric, Gender, Type)
+	
+	local label = ""
+	if Type == "FLIRT" then
+		label = "@L_FLIRT_SAYING2_"
+	else
+		label = "@L_COMPLIMENT_"
+	end
+	
+	if Rhetoric > 4 then
+		if Rand(3) == 0 then
+			label = label.."NORMAL_RHETORIC"
+		else
+			label = label.."GOOD_RHETORIC"
+		end
+	else
+		if Rand(3) == 0 then
+			label = label.."NORMAL_RHETORIC"
+		else
+			label = label.."WEAK_RHETORIC"
+		end
+	end
+	
+	if Gender == GL_GENDER_MALE then
+		label = label.."_TOMALE"
+	else
+		label = label.."_TOFEMALE"
+	end
+	
+	return label
+end
+
+-- -----------------------
+-- FavorCompliment / Flirt
+-- -----------------------
+function FavorCompliment(Rhetoric, Gender, IsPositive)
+	
+	local label = ""
+	
+	if IsPositive then
+		
+		local Count = 1
+		local Labels = {
+					"@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_SUCCESS_+0"
+					}
+		if Gender == GL_GENDER_MALE then
+			--male
+			local AddCount = 5
+			local AddLabels = {
+						"@L_SOCIAL_ANSWER_COMPLIMENT_WEAK_RHETORIC_WELL_RECEIVED_+1",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_WEAK_RHETORIC_VERY_WELL_RECEIVED_+1",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_WELL_RECEIVED_+1",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_WELL_RECEIVED_+1",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_VERY_WELL_RECEIVED_+1"
+						}
+			-- rhetoric based
+			if Rhetoric > 4 then
+				local RhetLabels = { 
+								"@L_SOCIAL_ANSWER_HUG_GOOD_RHETORIC_WELL_RECEIVED_+1",
+								"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_VERY_WELL_RECEIVED_+1"
+								}
+				for i=1, 2 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			else
+				local RhetLabels = { 
+								"@L_SOCIAL_ANSWER_SUCCEEDED_KISS_MALE_WEAK_RHETORIC_+1",
+								"@L_SOCIAL_ANSWER_SUCCEEDED_KISS_MALE_WEAK_RHETORIC_+0"
+								}
+				for i=1, 2 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			end
+			
+			for i=1, AddCount do
+				Count = Count + 1
+				Labels[Count] = AddLabels[i]
+			end
+		else
+			--female
+			local AddCount = 5
+			local AddLabels = { 
+						"@L_SOCIAL_ANSWER_COMPLIMENT_WEAK_RHETORIC_WELL_RECEIVED_+0",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_WEAK_RHETORIC_VERY_WELL_RECEIVED_+0",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_WELL_RECEIVED_+0",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_WELL_RECEIVED_+0",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_VERY_WELL_RECEIVED_+0"  
+						}
+			-- rhetoric based
+			if Rhetoric > 4 then
+				local RhetLabels = { 
+								"@L_SOCIAL_ANSWER_HUG_GOOD_RHETORIC_WELL_RECEIVED_+0",
+								"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_VERY_WELL_RECEIVED_+0"
+								}
+				for i=1, 2 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			else
+				local RhetLabels = { 
+								"@L_SOCIAL_ANSWER_SUCCEEDED_KISS_FEMALE_WEAK_RHETORIC_+1",
+								"@L_SOCIAL_ANSWER_SUCCEEDED_KISS_FEMALE_WEAK_RHETORIC_+0"
+								}
+				for i=1, 2 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			end
+			
+			for i=1, AddCount do
+				Count = Count + 1
+				Labels[Count] = AddLabels[i]
+			end
+		end
+		
+		Count = Rand(Count) + 1
+		label = Labels[Count]
+	else
+		local Count = 3
+		local Labels = {
+					"@L_INTRIGUE_041_BRIBECHARACTER_SPEAK_FAILED",
+					"@L_PROCLAMATION_NEGATIVE_+2",
+					"@L_PROCLAMATION_NEGATIVE_+3"
+					}
+		if Gender == GL_GENDER_MALE then
+			--male
+			local AddCount = 6
+			local AddLabels = {
+						"@L_SOCIAL_ANSWER_HUG_WEAK_RHETORIC_OFFENSIVE_+1",
+						"@L_SOCIAL_ANSWER_HUG_NORMAL_RHETORIC_WAY_TOO_OFFENSIVE_+1",
+						"@L_SOCIAL_ANSWER_BEWITCH_WEAK_RHETORIC_WAY_TOO_OFFENSIVE_+1",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_WEAK_RHETORIC_WAY_TOO_PROFOUND_+1",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_WAY_TOO_PROFOUND_+1",
+						"@L_SOCIAL_ANSWER_FAILED_BEFORE_START_SLAP_MALE_NORMAL_RHETORIC_+0"
+						}
+			-- rhetoric based
+			if Rhetoric > 4 then
+				local RhetLabels = { 
+								"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_PROFOUND_+1",
+								"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_PROFOUND_+1",
+								"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_WAY_TOO_PROFOUND_+1",
+								"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_WAY_TOO_OFFENSIVE_+1",
+								"@L_SOCIAL_ANSWER_BEWITCH_GOOD_RHETORIC_WAY_TOO_OFFENSIVE_+1",
+								"@L_SOCIAL_ANSWER_FAILED_BEFORE_START_OUTRAGED_MALE_GOOD_RHETORIC_+0"
+								}
+				for i=1, 6 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			else
+				local RhetLabels = { 
+								"@L_SIM_COMMENTS_WORKER_ORDER_FIGHTER_BAD_FAVOR_+7",
+								"@L_SIM_COMMENTS_WORKER_ORDER_PATRON_BAD_FAVOR_+4",
+								"@L_SIM_COMMENTS_WORKER_CLICK_EASTEREGG_+4"
+								}
+				for i=1, 3 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			end
+			
+			for i=1, AddCount do
+				Count = Count + 1
+				Labels[Count] = AddLabels[i]
+			end
+		else
+			--female
+			local AddCount = 6
+			local AddLabels = { 
+						"@L_SOCIAL_ANSWER_HUG_WEAK_RHETORIC_OFFENSIVE_+0",
+						"@L_SOCIAL_ANSWER_HUG_NORMAL_RHETORIC_WAY_TOO_OFFENSIVE_+0",
+						"@L_SOCIAL_ANSWER_BEWITCH_WEAK_RHETORIC_WAY_TOO_OFFENSIVE_+0",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_WEAK_RHETORIC_WAY_TOO_PROFOUND_+0",
+						"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_WAY_TOO_PROFOUND_+0",
+						"@L_SOCIAL_ANSWER_FAILED_BEFORE_START_SLAP_FEMALE_NORMAL_RHETORIC_+0"  
+						}
+			-- rhetoric based
+			if Rhetoric > 4 then
+				local RhetLabels = { 
+								"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_PROFOUND_+0",
+								"@L_SOCIAL_ANSWER_COMPLIMENT_NORMAL_RHETORIC_PROFOUND_+0" ,
+								"@L_SOCIAL_ANSWER_COMPLIMENT_GOOD_RHETORIC_WAY_TOO_PROFOUND_+0",
+								"@L_SOCIAL_ANSWER_BEWITCH_NORMAL_RHETORIC_WAY_TOO_OFFENSIVE_+0",
+								"@L_SOCIAL_ANSWER_BEWITCH_GOOD_RHETORIC_WAY_TOO_OFFENSIVE_+0",
+								"@L_SOCIAL_ANSWER_FAILED_BEFORE_START_OUTRAGED_FEMALE_GOOD_RHETORIC_+0"
+								}
+				for i=1, 6 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			else
+				local RhetLabels = { 
+								"@L_SIM_COMMENTS_WORKER_ORDER_FIGHTER_BAD_FAVOR_+7",
+								"@L_SIM_COMMENTS_WORKER_ORDER_PATRON_BAD_FAVOR_+4",
+								"@L_SIM_COMMENTS_WORKER_CLICK_EASTEREGG_+4"
+								}
+				for i=1, 3 do
+					AddCount = AddCount + 1
+					AddLabels[AddCount] = RhetLabels[i]
+				end
+			end
+			
+			for i=1, AddCount do
+				Count = Count + 1
+				Labels[Count] = AddLabels[i]
+			end
+		end
+		Count = Rand(Count) + 1
+		label = Labels[Count]
 	end
 	
 	return label
