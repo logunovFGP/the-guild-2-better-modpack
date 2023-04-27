@@ -136,5 +136,6 @@ function Run()
 
 	local ToSow = GetData("Selection")
 	ResourceSow("Destination", ToSow)
+	SetProperty("Destination", "ResourceItemID", ResourceGetTypeItem("Destination", ToSow))
 	Sleep(1)
 end

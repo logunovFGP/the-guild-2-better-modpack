@@ -108,4 +108,10 @@ function PingHour()
 	--	bld_SetupAI("")
 		fruitfarm_SellOtherStuff("")
 	end
+	
+	if math.mod(GetGametime(), 24) == 5 and BuildingGetOwner("", "FruitfarmBoss") and DynastyIsAI("FruitfarmBoss") then
+		-- make sure the fruitfarm has fruit and honey resources
+		bld_CheckResource("", "Fruit")
+		bld_CheckResource("", "Honey")
+	end
 end

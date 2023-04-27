@@ -129,4 +129,14 @@ function PingHour()
 		economy_CalcProductionPriorities("")
 		farm_SellOtherStuff("")
 	end
+	
+	if math.mod(GetGametime(), 24) == 5 and BuildingGetOwner("", "FruitfarmBoss") and DynastyIsAI("FruitfarmBoss") then
+		-- make sure the farm has resources
+		local Resources = { "Wheat", "Barley", "Wool", "Leather", "Beef" }
+		for i = 1, 5 do
+			if BuildingCanProduce("", Resources[i]) then
+				bld_CheckResource("", Resources[i])
+			end
+		end
+	end
 end

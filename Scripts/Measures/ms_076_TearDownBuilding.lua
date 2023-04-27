@@ -3,7 +3,6 @@ function AIDecision()
 end
 
 function Run()
-
 	if not chr_CheckDestroy() then
 		return
 	end

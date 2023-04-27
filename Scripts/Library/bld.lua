@@ -1148,3 +1148,38 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	bld_ResetWorkers(BldAlias)
 	economy_ClearBalance(BldAlias)
 end
+
+FILTER_RESOURCE_BY_ITEM = "__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.Property.ResourceItemID==%d))"
+function CheckResource(BldAlias, Resource)
+	-- find resource
+	local Radius = 4000
+	local FilterByItem = string.format(FILTER_RESOURCE_BY_ITEM, Radius, ItemGetID(Resource))
+	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 2)
+	if Count > 0 then
+		return Count
+	end
+	
+	-- resource not found, maybe there is an empty one around?
+	local FilterByEmpty= string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND NOT(Object.Property.ResourceItemID>0))", Radius)
+	Count = Find(BldAlias, FilterByEmpty, "ResourceSearchResult", 10)
+	for i = 0, Count - 1 do
+		-- check for correct type
+		if AliasExists("ResourceSearchResult"..i)
+				and ResourceCanBeChanged("ResourceSearchResult"..i)
+				and ResourceGetEntry("ResourceSearchResult"..i, Resource) > 0 then
+			local ToSow = ResourceGetEntry("ResourceSearchResult"..i, Resource)
+			ResourceSow("ResourceAlias", ToSow)
+			SetProperty("ResourceAlias", "ResourceItemID", ItemGetID(Resource))
+			return
+		end
+	end
+	
+	-- none around, build new
+	local Proto = FindResourceProto(ItemGetID(Resource))
+	if BuildingGetCity(BldAlias, "BuildCity") 
+			and BuildingGetOwner(BldAlias, "BuildOwner")
+			and CityBuildNewBuilding("BuildCity", Proto, "BuildOwner", "ResourceAlias", BldAlias) then
+		ResourceSow("ResourceAlias", ResourceGetEntry("ResourceAlias", Resource))
+		SetProperty("ResourceAlias", "ResourceItemID", ItemGetID(Resource))
+	end
+end
