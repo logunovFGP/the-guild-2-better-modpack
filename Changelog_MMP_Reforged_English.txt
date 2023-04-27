@@ -326,7 +326,7 @@ _General_
 - Added two new high-end nobility titles (but privileges will follow later)
 - Family members who are near the noticeboard and find a pamphlet against your dynasty will now immediately remove it.
 - You can make a takeover bid to buy a desired building from a shadow dynasty for a high amount of money. They may decline if they are into politics or hate you.
-
+- You can give your carts an individual name now.
 
 _Patron_
 - You can cure some diseases if you sleep in a tavern.

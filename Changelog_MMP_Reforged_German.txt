@@ -330,6 +330,7 @@ _Allgemein_
 - Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
 - Familienmitglieder, die sich in der Nähe des Schwarzen Bretts aufhalten, werden Pamphlete gegen die eigene Dynastie automatisch entfernen.
 - Übernahme-Angebote für die Betriebe von Schattendynastien sind nun möglich gegen die Zahlung einer hohen Summe. Die Besitzer können das Angebot ablehnen, wenn sie politische Ambitionen verfolgen oder den potenziellen Käufer nicht mögen.
+- Man kann nun Karren einen individuellen Namen geben.
 
 _Patron_
 - In einer Taverne zu übernachten, kann nun einige Krankheiten heilen und garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.
