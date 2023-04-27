@@ -77,9 +77,9 @@ function Run()
 			end
 		end
 	end
-	for i=1, MarketCount do
-		LogMessage("WorldTrader ID: "..GetID("").." knows market: " .. GetName(Markets[i]) .. ", ID: " .. GetID(Markets[i]))
-	end
+	--for i=1, MarketCount do
+		--LogMessage("WorldTrader ID: "..GetID("").." knows market: " .. GetName(Markets[i]) .. ", ID: " .. GetID(Markets[i]))
+	--end
 	
 	while true do -- aborts on failures
 		

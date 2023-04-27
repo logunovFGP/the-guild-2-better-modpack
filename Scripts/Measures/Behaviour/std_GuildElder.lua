@@ -13,7 +13,7 @@ function Run()
 		return
 	end
 	
-	local FindLocator = { "PatronElder", "ArtisanElder", "ScholarElder", "ChiselerElder" }
+	local FindLocator = { "patronelder", "artisanelder", "scholarelder", "chiselerelder" }
 	for i=1, 4 do
 		if GetFreeLocatorByName("myguildhouse", FindLocator[i], -1, -1, "destpos", false) then
 			if f_BeginUseLocator("", "destpos", GL_STANCE_STAND, true) then
