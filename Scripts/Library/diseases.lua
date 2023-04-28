@@ -28,7 +28,7 @@ function NoTime(Boolean, ObjectAlias, Sickness, Endtime)
 	end
 end
 
-local newDisease = function(name, medicine, favor, cost, duration, impacts1, impacts2, callback)
+local newDisease = function(name, medicine, favor, cost, duration, impacts1, impacts2)
 	
 	local self = {
 			name = name,
@@ -37,8 +37,7 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 			cost = cost,
 			duration = duration,
 			impacts1 = impacts1,
-			impacts2 = impacts2,
-			callback = callback
+			impacts2 = impacts2
 			}
 
     -- for the following functions I decided to go for <self.function> instead of <local function> because it seemed to break calls
@@ -67,10 +66,6 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 		return { self.impacts1, self.impacts2 }
 	end
 
-	self.getCallback = function()
-		return self.callback or nil
-	end
-
 	self.cureSim = function(targetSickness, targetObject)
 		diseases_removeSickness(targetSickness, targetObject)
 	end
@@ -79,23 +74,23 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 		diseases_giveSickness(targetSickness, targetObject)
 	end
 
-	-- LogMessage("CodeRework, Medical. Class " .. self.name .. " has successfully been created!")
+	LogMessage("CodeRework, Medical. Class " .. self.name .. " has successfully been created!")
 	return self
 end
 
 -- global variable to start the functions
 Disease = { } -- inserting functions directly within Disease causes the game to crash on boot.
 
-Disease.Sprain		= newDisease("Sprain", "Bandage", GL_FAVOR_MOD_SMALL, 200, 16, -2, { "dexterity", "fighting", "craftsmanship" }, MoveSetActivity)
-Disease.Cold		= newDisease("Cold", "Bandage", GL_FAVOR_MOD_SMALL, 250, 24, -1, { "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" }, nil)
-Disease.Influenza	= newDisease("Influenza", "Medicine", GL_FAVOR_MOD_SMALL, 400, 16, -3, { "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" }, nil)
-Disease.Pox		= newDisease("Pox", "Medicine", GL_FAVOR_MOD_NORMAL, 700, -1, -6, { "constitution", "dexterity", "charisma" }, nil)
-Disease.BurnWound	= newDisease("BurnWound", "PainKiller", GL_FAVOR_MOD_NORMAL, 750, 8, 1, nil, nil)
-Disease.Pneumonia	= newDisease("Pneumonia", "Medicine", GL_FAVOR_MOD_GREATER, 800, 24, -5, { "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" }, nil)
-Disease.Blackdeath	= newDisease("Blackdeath", "PainKiller", GL_FAVOR_MOD_LARGE, 1000, 24, -7, { "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" }, nil)
-Disease.Fracture	= newDisease("Fracture", "PainKiller", GL_FAVOR_MOD_NORMAL, 600, 24, -4, { "dexterity", "fighting", "craftsmanship" }, nil)
-Disease.Caries		= newDisease("Caries", "PainKiller", GL_FAVOR_MOD_NORMAL, 800, 48, -3, { "charisma", "rhetoric" }, nil)
-Disease.Names		= { "Sprain", "Cold", "Influenza", "Pox", "BurnWound", "Pneumonia", "Blackdeath", "Fracture", "Caries" }
+Disease.Sprain		= newDisease("Sprain",		"Bandage",		GL_FAVOR_MOD_SMALL,		200,	16,	-2,	{ "dexterity", "fighting", "craftsmanship" })
+Disease.Cold		= newDisease("Cold",		"Bandage",		GL_FAVOR_MOD_SMALL,		250,	24,	-1,	{ "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" })
+Disease.Influenza	= newDisease("Influenza",	"Medicine",		GL_FAVOR_MOD_SMALL,		400,	16,	-3,	{ "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" })
+Disease.Pox			= newDisease("Pox",			"Medicine",		GL_FAVOR_MOD_NORMAL,	700,	-1,	-6,	{ "constitution", "dexterity", "charisma" })
+Disease.BurnWound	= newDisease("BurnWound",	"PainKiller",	GL_FAVOR_MOD_NORMAL,	750,	8,	1,	nil)
+Disease.Pneumonia	= newDisease("Pneumonia",	"Medicine",		GL_FAVOR_MOD_GREATER,	800,	24,	-5,	{ "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" })
+Disease.Blackdeath	= newDisease("Blackdeath",	"PainKiller",	GL_FAVOR_MOD_LARGE,		1000,	24,	-7,	{ "constitution", "dexterity", "charisma", "fighting", "craftsmanship", "shadow_arts", "rhetoric", "empathy", "bargaining", "secret_knowledge" })
+Disease.Fracture	= newDisease("Fracture",	"PainKiller",	GL_FAVOR_MOD_NORMAL,	600,	24,	-4,	{ "dexterity", "fighting", "craftsmanship" })
+Disease.Caries		= newDisease("Caries",		"PainKiller",	GL_FAVOR_MOD_NORMAL,	800,	48,	-3, { "charisma", "rhetoric" })
+Disease.Names		= { "Sprain", "Cold","Influenza", "Pox", "BurnWound", "Pneumonia", "Blackdeath", "Fracture", "Caries" }
 
 function GetDiseaseIterator()
 	return diseases_DiseaseIterator, Disease, 0
@@ -125,10 +120,6 @@ function removeSickness(Illness, ObjectAlias)
 
 	if GetImpactValue(ObjectAlias, Illness:getName()) and GetImpactValue(ObjectAlias, Illness:getName()) == 1 then
 
-		if Illness:getName() == "Pneumonia" then 
-			Sleep(1)
-		end
-
 		--LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness:getName())
 
 		diseases_ImpactManager(false, ObjectAlias, Illness:getName(), 0)
@@ -149,10 +140,6 @@ function removeSickness(Illness, ObjectAlias)
 				AddImpact(ObjectAlias, v, -impacts[1], new_duration)
 			end
 
-		end
-
-		if Illness.getCallback() ~= nil then
-			Illness.callback(ObjectAlias)
 		end
 
 		if GetSettlement(ObjectAlias,"City") then

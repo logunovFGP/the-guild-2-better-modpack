@@ -115,14 +115,12 @@ function Run()
 			local Cured = false
 			local Illness = false
 			local CanHeal = false
-			local Medicine, Label, FavorMod
-
-			local label
+			local Medicine, FavorMod
+			local Label
 			local sickness = 0
 			
 			for k, v in diseases_GetDiseaseIterator() do
-			  label = v:getName()
-			  if GetImpactValue("SickSim0", label) and GetImpactValue("SickSim0", label) == 1 then
+			  if GetImpactValue("SickSim0", v:getName()) and GetImpactValue("SickSim0", v:getName()) == 1 then
 			  	sickness = v
 			  	break
 			  end
@@ -166,7 +164,7 @@ function Run()
 				if CanHeal ~= false then
 					if DynastyIsPlayer("SickSim0") then
 						-- only Players need to pay
-						if chr_SpendMoney("SickSim0", Costs, "Offering") then
+						if chr_SpendMoney("SickSim0", sickness:getCost(), "Offering") then
 							-- remove medicine
 							if CanHeal == 1 then
 								RemoveItems("Hospital",Medicine,1,INVENTORY_STD)
@@ -176,10 +174,10 @@ function Run()
 								SetProperty("Hospital",Medicine.."s",(NumOfMeds-1))
 							end
 							
-							CreditMoney("Hospital", Costs, "Offering")
-							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_"..Label)
+							CreditMoney("Hospital", sickness:getCost(), "Offering")
 							
 							if Illness ~= false then 
+								MsgSayNoWait("", "@L_MEDICUS_TREATMENT_DOC_"..string.upper(sickness:getName()))
 								Disease[sickness:getName()]:cureSim("SickSim0")
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
@@ -191,6 +189,7 @@ function Run()
 								  end 
 								end
 							else
+								MsgSayNoWait("", "@L_MEDICUS_TREATMENT_DOC_HPLOSS") 
 								local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
 								ModifyHP("SickSim0", ToHeal, true)
 							end
@@ -199,13 +198,11 @@ function Run()
 								RemoveData("LayStill")
 							end
 							
-							-- modify the favor to the boss
 							if BuildingGetOwner("Hospital", "MyBoss") then
-								chr_ModifyFavor("SickSim0", "MyBoss", FavorMod)
+								chr_ModifyFavor("SickSim0", "MyBoss", sickness:getFavor())
 							end
 							Cured = true
 						else
-							-- no money
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
 						end
 					else
@@ -220,7 +217,7 @@ function Run()
 							SetProperty("Hospital", Medicine.."s",(GetProperty("Hospital",Medicine.."s")-1))
 						end
 							
-						CreditMoney("Hospital",Costs,"Offering")
+						CreditMoney("Hospital",sickness:getCost(),"Offering")
 						-- for the balance
 							local TotalIncome = 0
 							if HasProperty("Hospital", "TotalIncome") then
@@ -234,11 +231,12 @@ function Run()
 							if HasProperty("Hospital", "MedicalIncome") then
 								MedicalIncome = GetProperty("Hospital","MedicalIncome")
 							end
-							SetProperty("Hospital", "TotalIncome",(TotalIncome+Costs))
-							SetProperty("Hospital", "RoundIncome",(RoundIncome+Costs))
-							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+Costs))
-							
-						MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
+							SetProperty("Hospital", "TotalIncome",(TotalIncome+sickness:getCost()))
+							SetProperty("Hospital", "RoundIncome",(RoundIncome+sickness:getCost()))
+							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+sickness:getCost()))
+
+							MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
+
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 						if Illness ~= false then
@@ -257,7 +255,7 @@ function Run()
 						
 						-- modify the favor to the boss
 							if BuildingGetOwner("Hospital", "MyBoss") then
-								chr_ModifyFavor("SickSim0", "MyBoss", FavorMod)
+								chr_ModifyFavor("SickSim0", "MyBoss", sickness:getFavor())
 							end
 						Cured = true
 					end
@@ -285,18 +283,16 @@ function Run()
 
 
 			if not Cured then
-			 	-- search for another hospital
 			 	SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
 			 	SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
 			else
-				MoveSetActivity("SickSim0")
+				MoveSetActivity("SickSim0","")
 				AddImpact("SickSim0", "Resist", 1, 6)
 			end
 			if HasProperty("SickSim0", "WaitingForTreatment") then
 				RemoveProperty("SickSim0", "WaitingForTreatment")
 			end
 			SetData("Blocked", 1)
-			Sleep(2)
 			SetState("", STATE_DUEL, false)
 		end
 	end
@@ -313,9 +309,9 @@ function BlockMe()
 	if HasProperty("", "WaitingForTreatment") then
 		RemoveProperty("", "WaitingForTreatment")
 	end
-	
+
 	SetState("", STATE_DUEL, false)
-	CreateScriptcall("SendHome", 0.001, "Measures/ms_MedicalTreatment.lua", "LeaveBuilding", "")
+	CreateScriptcall("SendHome", 0, "Measures/ms_MedicalTreatment.lua", "LeaveBuilding", "")
 	return
 end
 
