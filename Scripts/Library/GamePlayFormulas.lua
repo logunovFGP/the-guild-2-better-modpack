@@ -670,8 +670,8 @@ function GetCourtingProgress(SimAlias, Destination, MeasureID)
 	
 	local MeasureData = {
 					[460] = RHETORIC, -- StartDialog (talk) with Ictiv
-					[530] = CHARISMA,  -- Flirt with Dr.Kulid357
-					[540] = CHARISMA, -- Hug Erilambus
+					[530] = RHETORIC,  -- Flirt with Dr.Kulid357
+					[540] = EMPATHY, -- Hug Erilambus
 					[570] = EMPATHY, -- Kiss Fajeth
 					[1520] = CHARISMA, -- Bathing with Craftgeeking
 					[1530] = RHETORIC, -- Bewitching (sweat talking) Kodeks
@@ -919,8 +919,8 @@ function CalcFavorWon(SimAlias, Destination, MeasureID)
 	-- all social measures which can increase favor
 	local MeasureData = {
 					[460] = { measureName = "StartDialog", baseValue =  2, lossValue = -5, talent = RHETORIC },
-					[530] = { measureName = "Flirt", baseValue =  8, lossValue = -5, talent = CHARISMA }, 
-					[540] = { measureName = "HugCharacter", baseValue =  5, lossValue = -5, talent = CHARISMA },
+					[530] = { measureName = "Flirt", baseValue =  8, lossValue = -5, talent = RHETORIC }, 
+					[540] = { measureName = "HugCharacter", baseValue =  5, lossValue = -5, talent = EMPATHY },
 					[570] = { measureName = "KissCharacter", baseValue =  10, lossValue = -10, talent = EMPATHY },
 					[1520] = { measureName = "TakeABath", baseValue =  10, lossValue = -10, talent = CHARISMA }, 
 					[1530] = { measureName = "BewitchCharacter", baseValue =  10, lossValue = -10, talent = RHETORIC },
