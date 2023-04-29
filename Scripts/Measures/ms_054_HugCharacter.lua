@@ -19,21 +19,27 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	local DestGender = SimGetGender("Destination")
-	
-	-- The minimum favor for this action to success
-	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
-	local CharismaSkill = GetSkillValue("", CHARISMA)
-	local MinimumFavor = GL_HUG_MINFAVOR + TitleDifference - (CharismaSkill * 3)
-	local Favor = 0
-	if SimGetSpouse("", "Spouse") and GetID("Destination") == GetID("Spouse") then
-		Favor = 100
-	else
-		Favor = GetFavorToSim("Destination", "")
+	local IsMale = (SimGetGender("") == GL_GENDER_MALE) -- male charactes may get slapped
+	local IsLover = false
+	if SimGetSpouse("", "Spouse") and GetID("Spouse") == GetID("Destination") then
+		IsLover = true
+	elseif SimGetLiaison("", "Liaison") and GetID("Liaison") == GetID("Destination") then
+		IsLover = true
 	end
-	local FavorWon = 5 + (CharismaSkill * 0.5)
-	local FavorLoss = -5
-	local ModifyFavor = 0
+	
+	local IsCourtLover = false
+	if not IsLover then 
+		if SimGetCourtLover("", "CourtLover") then
+			if GetID("CourtLover") == GetID("Destination") then
+				IsCourtLover = true
+			end
+		end
+	end
+	
+	local DestGender = SimGetGender("Destination")
+	local CurrentFavor = GetFavorToSim("", "Destination")
+	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	-- Courting related
 	local Class = SimGetClass("Destination")
@@ -47,18 +53,26 @@ function Run()
 	end
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
-	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
+	
+	if IsLover or IsCourtLover then
+		if FavorWon < 0 then
+			CourtingProgress = FavorWon
+		end
+		
+		if CourtingProgress < 1 and FavorWon > 0 then
+			FavorWon = -2
+		end
+	end
+	
+	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) -- only for courting
+	local EnoughVariation = (VariationFactor > 0.5)
 	
 	local time1 = 0
-	
-	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
-	FavorWon = FavorWon * (1 + FlirtBonus)
-	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 	
 	-- The distance between both sims to interact with each other
 	local InteractionDistance = 128
 
-	if not ai_StartInteraction("", "Destination", 500, InteractionDistance) then
+	if not ai_StartInteraction("", "Destination", 800, InteractionDistance) then
 		MsgQuick("", "@L_GENERAL_MEASURES_HUGCHARACTER_FAILURES_+0", GetID("Destination"))
 		return
 	end
@@ -66,136 +80,131 @@ function Run()
 	SetAvoidanceGroup("", "Destination")
 	MoveSetActivity("", "converse")
 	MoveSetActivity("Destination", "converse")
-	SetState("", STATE_DUEL, true)
-	SetState("Destination", STATE_DUEL, true)
+	
+	AlignTo("Owner", "Destination")
+	AlignTo("Destination", "Owner")
+	SetMeasureRepeat(TimeOut)
 	
 	CreateCutscene("default", "cutscene")
 	CutsceneAddSim("cutscene", "")
 	CutsceneAddSim("cutscene", "Destination")
 	CutsceneCameraCreate("cutscene", "")			
 	
-	-- do it
-	camera_CutsceneBothLock("cutscene", "")	
-	chr_MultiAnim("", "hug_male", "Destination", "hug_female", InteractionDistance, 0.6)
-	SetMeasureRepeat(TimeOut)
-	local WasCourtLover = 0
-	
-	-------------------------
-	------ Court Lover ------
-	-------------------------
-	if (SimGetCourtLover("", "CourtLover")) then
-		if GetID("CourtLover") == GetID("Destination") then
-			
-			WasCourtLover = 1
-			local Slap = false
-			
-			if VariationFactor <= 0.5 then
-				ModifyFavor = FavorLoss
-				CourtingProgress = -5
-				camera_CutscenePlayerLock("cutscene", "Destination")
-				
-				time1 = PlayAnimationNoWait("Destination", "shake_head")
-				Sleep(time1 * 0.2)
-				
-				MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
-			else
-				if (CourtingProgress < -5) then
-					camera_CutsceneBothLock("cutscene", "Destination")
-					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
-					ModifyFavor = FavorLoss
-					Slap = true
-					ModifyHP("", -30, true, 10)
-				elseif (CourtingProgress < 1) or Favor < MinimumFavor then
-					camera_CutscenePlayerLock("cutscene", "Destination")
-					PlayAnimationNoWait("Destination", "shake_head")
-					ModifyFavor = FavorLoss
-					if CourtingProgress > 0 then
-						CourtingProgress = -1
-					end
-				else
-					ModifyFavor = FavorWon
-					camera_CutscenePlayerLock("cutscene", "Destination")
-				end
-
-				MsgSay("Destination", talk_AnswerCourtingMeasure("HUG", GetSkillValue("Destination", RHETORIC), DestGender, CourtingProgress))
-			end
-			
-			-- Add the achieved progress
-			if AliasExists("cutscene") then
-				DestroyCutscene("cutscene")
-			end
-			
-			chr_ModifyFavor("Destination", "", ModifyFavor)
-			Sleep(0.3)
-			feedback_OverheadCourtProgress("Destination", CourtingProgress)
-			AddImpact("Destination", "ReceivedHug", 1, 3)
-			gameplayformulas_CourtingProgress("", CourtingProgress) 
-		end
+	-- does the destination want to be touched?
+	local Started = false
+	if CurrentFavor >= MinFavor or IsLover then
+		Started = true
+	else
+		camera_CutscenePlayerLock("cutscene", "Destination")	
+		MsgSay("Destination", talk_RejectKiss(DestGender, SimGetGender(""), false));
+		IsLover = false
+		ms_054_hugcharacter_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+		return
 	end
 	
-	----------------------------
-	------ No Court Lover ------
-	----------------------------
-	if (WasCourtLover == 0) then
-		
-		local Slap = false
-		local Outraged = false
-		
-		-- React negativ if  the favor is not high enough
-		if Favor < MinimumFavor then
-			if Rand(20) > 14 then
-				Slap = true
+	-- do it
+	camera_CutsceneBothLock("cutscene", "")
+	chr_MultiAnim("", "hug_male", "Destination", "hug_female", InteractionDistance, 0.6)
+	
+	-- result
+	local Positive = true
+
+	if IsCourtLover or IsLover then -- need variation
+		AddImpact("Destination", "ReceivedHug", 1, 3)
+		camera_CutscenePlayerLock("cutscene", "Destination")
+		if VariationFactor <= 0.5 then
+			FavorWon = -1
+			CourtingProgress = -5
+			
+			MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)));
+			
+			ms_054_hugcharacter_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+		else
+			Positive = (CourtingProgress > 0)
+			
+			if (CourtingProgress < -6 and IsMale) then
+				camera_CutsceneBothLock("cutscene", "Destination")
+				chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
+				ModifyHP("", -30, true, 10)
+			elseif (CourtingProgress < 1) then
+				camera_CutscenePlayerLock("cutscene", "Destination")
+				PlayAnimationNoWait("Destination", "propel")
+			else
+				camera_CutscenePlayerLock("cutscene", "Destination")
 			end
-			ModifyFavor = FavorLoss
-		elseif Rand(10) == 5 then
-			Outraged = true
-			ModifyFavor = FavorLoss
-		elseif VariationFactor <= 0.5 then
-			MsgSay("Destination", talk_AnswerMissingVariation(DestGender, GetSkillValue("Destination", RHETORIC)))
-			Outraged = true
-			ModifyFavor = FavorLoss
+			
+			MsgSay("Destination", talk_FavorKiss(DestGender, Positive, false, IsLover));
+			ms_054_hugcharacter_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+		end
+
+	else -- social talk is harder, no need of variation
+		camera_CutscenePlayerLock("cutscene", "Destination")
+		Positive = (FavorWon > 0)
+			
+		if (FavorWon < -6 and IsMale) then
+			camera_CutsceneBothLock("cutscene", "Destination")
+			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
+			ModifyHP("", -30, true, 10)
+		elseif (FavorWon < 1) then
+			camera_CutscenePlayerLock("cutscene", "Destination")
+			PlayAnimationNoWait("Destination", "propel")
+		else
+			camera_CutscenePlayerLock("cutscene", "Destination")
+		end
+			
+		MsgSay("Destination", talk_FavorKiss(DestGender, Positive, false, IsLover));
+		ms_054_hugcharacter_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+	end
+end
+
+function End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
+	
+	if AliasExists("cutscene") then
+		DestroyCutscene("cutscene")
+	end
+	
+	if not Started then
+		chr_ModifyFavor("Destination", "", FavorWon)
+		
+		if IsCourtLover then 
+			Sleep(0.4)
+			feedback_OverheadCourtProgress("Destination", CourtingProgress)
+			gameplayformulas_CourtingProgress("", CourtingProgress)
 		end
 		
-		camera_CutsceneBothLock("cutscene", "Destination")
-
-		if Slap then
+		MsgNewsNoWait("", "Destination", "", "default", -1,
+					"@L_COURTLOVER_MSG_FAILED_HEAD_+0",
+					"@L_SOCIAL_INTERACTION_HUG_FAIL_BEFORE_START_BODY_+0", GetID("Destination"), GetID(""), MinFavor)
+	else
+		if FavorWon > 0 then -- success
+			chr_ModifyFavor("Destination", "", FavorWon)
 			
-			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination", "", (ModifyFavor*2))
-			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
-			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Slap"))
-		elseif Outraged then
-			
-			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination", "", ModifyFavor)
-			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)
-			MsgSay("Destination", talk_SocialMeasureFailedBeforeStart(DestGender, GetSkillValue("Destination", RHETORIC), "Outraged"))
-		else
-			ModifyFavor = FavorWon
-			chr_MultiAnim("", "bow", "Destination", "curtsy", InteractionDistance, 1.0, true)
-			MsgSay("Destination", talk_AnswerCourtingMeasure("HUG", GetSkillValue("Destination", RHETORIC), DestGender, 6))
-			
-			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the success in order to save time (cheat)
-			chr_ModifyFavor("Destination", "", ModifyFavor)
-			AddImpact("Destination", "ReceivedHug", 1, 4)
-			
-			-- lovelevel
-			if SimGetSpouse("Destination", "Spouse") then
-				if (GetID("Spouse") == GetID("")) then
-					AddImpact("", "LoveLevel", 1, 24) -- add some love for the next 24 hours
-					AddImpact("Destination", "LoveLevel", 1, 24)
-					if GetImpactValue("Destination", "LoveLevel") >= 10 then
-						MsgNewsNoWait("", "Destination", "", "schedule", -1,
+			if IsCourtLover then 
+				Sleep(0.4)
+				feedback_OverheadCourtProgress("Destination", CourtingProgress)
+				gameplayformulas_CourtingProgress("", CourtingProgress)
+			elseif IsLover then
+				AddImpact("", "LoveLevel", 2, 24) -- add some love for the next 24 hours
+				AddImpact("Destination", "LoveLevel", 2, 24)
+				if GetImpactValue("Destination", "LoveLevel") >= 10 then
+					MsgNewsNoWait("", "Destination", "", "schedule", -1,
 								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
 								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
-					end
 				end
+			end
+			Sleep(0.4)
+			chr_GainXP("", GL_EXP_GAIN_SIMPLE) -- gain XP for success
+		else 
+			chr_ModifyFavor("Destination", "", FavorWon)
+			SetData("Fail", 1)
+			
+			if IsCourtLover then 
+				Sleep(0.4)
+				feedback_OverheadCourtProgress("Destination", CourtingProgress)
+				gameplayformulas_CourtingProgress("", CourtingProgress)
 			end
 		end
 	end
-	
-	SetState("", STATE_DUEL, false)
-	SetState("Destination", STATE_DUEL, false)
 end
 
 -- -----------------------
@@ -210,12 +219,10 @@ function CleanUp()
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")
 	StopAnimation("")
-	SetState("", STATE_DUEL, false)
 	
-	if AliasExists("Destination") then
+	if (AliasExists("Destination")) then
 		MoveSetActivity("Destination")
-		SetState("Destination", STATE_DUEL, false)
-		if  GetDynastyID("") ~= GetDynastyID("Destination") then
+		if GetDynastyID("") ~= GetDynastyID("Destination") and not HasData("Fail") then
 			SimLock("Destination", 0.3)
 		end
 	end
