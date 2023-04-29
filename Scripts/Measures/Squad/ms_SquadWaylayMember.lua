@@ -354,12 +354,12 @@ function Plunder()
 	Sleep(2)
 	
 	if IsType("Victim", "Cart") then
-		ItemValue = Plunder("", "Victim", 10)
-		local XPValue = math.floor(10+(ItemValue*0.1))
+		ItemValue = chr_Plunder("", "Victim")
+		local XPValue = math.floor((25 + ItemValue*0.15)/25)
 		chr_GainXP("", XPValue)
 		if ItemValue > 0 then
 			--for the mission
-			mission_ScoreCrime("Dynasty", ItemValue)
+			mission_ScoreCrime("dynasty", ItemValue)
 		end
 	end
 	

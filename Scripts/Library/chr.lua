@@ -479,21 +479,62 @@ end
 -- for the robbers
 -- -----------------------
 function GetBootyCount(Destination, InventoryType)
+	
 	local Slots = InventoryGetSlotCount(Destination, InventoryType)
-	local Number
-	local ItemId
-	local ItemCount
+	local ItemID, ItemCount
 	local Total = 0
 	
 	for Number = 0, Slots-1 do
-		ItemId, ItemCount = InventoryGetSlotInfo(Destination, Number, InventoryType)
-		if ItemId and ItemCount and ItemID ~= 999 then
-			Total = Total + ItemGetBasePrice(ItemId) * ItemCount
+		ItemID, ItemCount = InventoryGetSlotInfo(Destination, Number, InventoryType)
+		if ItemID and ItemCount and ItemID ~= 999 then
+			-- check for engineer ability
+			if GetImpactValue(Destination, "CartBoost") > 0 then
+				ItemCount = ItemCount - 1
+			end
+			
+			Total = Total + ItemGetBasePrice(ItemID) * ItemCount
 		end
 	end
 	
 	return Total
 end
+
+function Plunder(SimAlias, Destination)
+	
+	local Slots = InventoryGetSlotCount(Destination, INVENTORY_STD)
+	local ItemID, ItemCount
+	local Value = 0
+	
+	for Number = 0, Slots-1 do
+		ItemID, ItemCount = InventoryGetSlotInfo(Destination, Number, INVENTORY_STD)
+		if ItemID and ItemCount and ItemID ~= 999 then
+			-- check for engineer ability
+			if GetImpactValue(Destination, "CartBoost") > 0 then
+				ItemCount = ItemCount - 1
+			end
+			
+			if ItemCount > 10 then
+				ItemCount = 10
+			end
+			
+			if ItemCount > 0 then
+			
+				local Plunder = AddItems(SimAlias, ItemID, ItemCount, INVENTORY_STD)
+				RemoveItems(Destination, ItemID, Plunder, INVENTORY_STD)
+				
+				Value = Value + ItemGetBasePrice(ItemID) * Plunder
+			end
+		end
+	end
+	
+	-- do anim
+	MoveSetActivity(SimAlias, "carry")
+	Sleep(2)
+	CarryObject(SimAlias, "Handheld_Device/ANIM_Bag.nif", false)
+	Sleep(0.5)
+	
+	return Value
+end 
 
 function OutputHireError(SimAlias, BuildingAlias, Error)
 
