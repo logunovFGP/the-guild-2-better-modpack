@@ -3,7 +3,7 @@ function Run()
 	SetProperty("", "StartWorkingTime", 1)
 	
 	while true do
-		-- boost the productivity of employees. Check stats every 60 seconds.
+		-- boost the productivity of employees. Check stats every 30 seconds.
 		if not IsDynastySim("") then
 			if SimGetWorkingPlace("", "WorkingPlace") then
 				local ProdSkillBonus = 0
@@ -13,7 +13,7 @@ function Run()
 			
 				-- get Boss' stats
 				if BuildingGetOwner("WorkingPlace", "Boss") then	
-					ProdSkillBonus = (GetSkillValue("Boss", CRAFTSMANSHIP) - 1)*0.05
+					ProdSkillBonus = (GetSkillValue("Boss", CRAFTSMANSHIP) - 1)*0.1
 				end
 				
 				-- get own stats
@@ -23,7 +23,7 @@ function Run()
 				AddImpact("", "Productivity", ProdSkillBonus, -1)
 			end
 		end	
-		Sleep(60)
+		Sleep(30)
 	end
 end
 
