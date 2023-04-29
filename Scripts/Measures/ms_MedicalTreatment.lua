@@ -5,6 +5,36 @@
 ----	with this measure, the player can assign a sim to treat sick sims in hospital
 ----
 -------------------------------------------------------------------------------
+
+local function switch(c)
+  local self = {casevar = c}
+
+    self.caseof = function (self,code)
+      return code[self.casevar]()
+    end
+
+    return self
+end
+				
+local function ManageMedicine(checker,treatment,property) 
+
+	switch(checker): caseof(
+	{
+		function() -- 1
+			RemoveItems("Hospital",treatment,1,INVENTORY_STD)
+		end,
+
+		function() -- 2
+			RemoveItems("Hospital",treatment,1,INVENTORY_SELL)
+		end,
+
+		function() -- 3
+			SetProperty("Hospital",treatment.."s",property-1)
+		end
+	})
+
+end
+
 function Run()
 
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
@@ -111,73 +141,64 @@ function Run()
 			MsgSay("", "@L_MEDICUS_TREATMENT_DOC_INTRO")
 			f_MoveTo("SickSim0", "Owner", GL_MOVESPEED_WALK, 60)
 			PlayAnimation("", "manipulate_middle_twohand")
-			local Costs = 50
+
 			local Cured = false
 			local Illness = false
 			local CanHeal = false
-			local Medicine, FavorMod
-			local Label
 			local sickness = 0
+			local Costs
+			local Med
+			local FavorMod
 			
 			for k, v in diseases_GetDiseaseIterator() do
-			  if GetImpactValue("SickSim0", v:getName()) and GetImpactValue("SickSim0", v:getName()) == 1 then
-			  	sickness = v
-			  	break
-			  end
+				if GetImpactValue("SickSim0", v:getName()) and GetImpactValue("SickSim0", v:getName()) == 1 then
+					sickness = v
+					Illness = true
+					Costs = v:getCost()
+					Med = v:getMedicine()
+					FavorMod = v:getFavor()
+					LogMessage("Medicine: "..(Med)..", FavorMod: "..(FavorMod)..", Costs: "..(Costs))
+				break
+				end
 			end
 
-			if sickness ~= 0 then
-			    Illness = true
-			    Medicine = sickness:getMedicine()
-			    FavorMod = sickness:getFavor()
-			    Label = string.upper(sickness:getName())
-			  elseif sickness == 0 and (GetHP("SickSim0") < GetMaxHP("SickSim0")) then
-			  	Medicine = "Bandage"
-			  	FavorMod = GL_FAVOR_MOD_SMALL
-			  	Label = "HPLOSS"
-			  elseif sickness == 0 and (GetHP("SickSim0") == GetMaxHP("SickSim0")) then
-				MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOTHING")
-				Cured = true
-				SimResetBehavior("SickSim0")
-				RemoveProperty("SickSim0", "WaitingForTreatment")
+			if not Illness then
+				if (GetHP("SickSim0") == GetMaxHP("SickSim0")) then
+					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOTHING")
+					Cured = true
+					SimResetBehavior("SickSim0")
+					RemoveProperty("SickSim0", "WaitingForTreatment")
+				else 
+					Costs = (GetMaxHP("SickSim0") - GetHP("SickSim0"))
+					Med = "Bandage"
+					FavorMod = GL_FAVOR_MOD_SMALL
+				end
 			end
 
 			if Cured == false then
-				-- TREATMENT
-				if Illness == false then -- special case HP LOSS
-					Costs = GetMaxHP("SickSim0") - GetHP("SickSim0")
-				else
-					Costs = sickness:getCost()
-				end
-				
+
+				LogMessage( GetProperty("Hospital",Med.."s") )
 				local NumOfMeds = 0
-				
-				if GetItemCount("Hospital",Medicine,INVENTORY_STD)>0 then
+				if GetItemCount("Hospital",Med,INVENTORY_STD)>0 then
 					CanHeal = 1
-				elseif GetItemCount("Hospital",Medicine,INVENTORY_SELL)>0 then
+				elseif GetItemCount("Hospital",Med,INVENTORY_SELL)>0 then
 					CanHeal = 2
-				elseif HasProperty("Hospital",Medicine.."s") and GetProperty("Hospital",Medicine.."s")>0 then 
-					NumOfMeds = GetProperty("Hospital",Medicine.."s")
+				elseif HasProperty("Hospital",Med.."s") and GetProperty("Hospital",Med.."s")>0 then 
+					NumOfMeds = GetProperty("Hospital",Med.."s")
 					CanHeal = 3
 				end
-				
+
 				if CanHeal ~= false then
+					
 					if DynastyIsPlayer("SickSim0") then
-						-- only Players need to pay
-						if chr_SpendMoney("SickSim0", sickness:getCost(), "Offering") then
-							-- remove medicine
-							if CanHeal == 1 then
-								RemoveItems("Hospital",Medicine,1,INVENTORY_STD)
-							elseif CanHeal == 2 then
-								RemoveItems("Hospital",Medicine,1,INVENTORY_SELL)
-							elseif CanHeal == 3 then
-								SetProperty("Hospital",Medicine.."s",(NumOfMeds-1))
-							end
-							
-							CreditMoney("Hospital", sickness:getCost(), "Offering")
+						
+						if chr_SpendMoney("SickSim0", Costs, "Offering") then
+							ManageMedicine(CanHeal,Med,NumOfMeds)
+							CreditMoney("Hospital", Costs, "Offering")
 							
 							if Illness ~= false then 
 								MsgSayNoWait("", "@L_MEDICUS_TREATMENT_DOC_"..string.upper(sickness:getName()))
+								Sleep(2)
 								Disease[sickness:getName()]:cureSim("SickSim0")
 								local sublist = {"Fracture","BurnWound","Pox","Pneumonia","Blackdeath"}
 								for i = 1,5 do
@@ -190,8 +211,8 @@ function Run()
 								end
 							else
 								MsgSayNoWait("", "@L_MEDICUS_TREATMENT_DOC_HPLOSS") 
-								local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
-								ModifyHP("SickSim0", ToHeal, true)
+								Sleep(2)
+								ModifyHP("SickSim0", GetMaxHP("SickSim0") - GetHP("SickSim0"), true)
 							end
 						
 							if HasData("LayStill") then
@@ -199,7 +220,7 @@ function Run()
 							end
 							
 							if BuildingGetOwner("Hospital", "MyBoss") then
-								chr_ModifyFavor("SickSim0", "MyBoss", sickness:getFavor())
+								chr_ModifyFavor("SickSim0", "MyBoss", FavorMod)
 							end
 							Cured = true
 						else
@@ -207,17 +228,9 @@ function Run()
 						end
 					else
 						-- heal the AI
-						
-						-- remove medicine
-						if CanHeal == 1 then
-							RemoveItems("Hospital", Medicine,1,INVENTORY_STD)
-						elseif CanHeal == 2 then
-							RemoveItems("Hospital", Medicine,1,INVENTORY_SELL)
-						elseif CanHeal == 3 then
-							SetProperty("Hospital", Medicine.."s",(GetProperty("Hospital",Medicine.."s")-1))
-						end
-							
-						CreditMoney("Hospital",sickness:getCost(),"Offering")
+						local data = GetProperty("Hospital",Med.."s")
+						ManageMedicine(CanHeal,Med,data) 							
+						CreditMoney("Hospital",Costs,"Offering")
 						-- for the balance
 							local TotalIncome = 0
 							if HasProperty("Hospital", "TotalIncome") then
@@ -231,22 +244,26 @@ function Run()
 							if HasProperty("Hospital", "MedicalIncome") then
 								MedicalIncome = GetProperty("Hospital","MedicalIncome")
 							end
-							SetProperty("Hospital", "TotalIncome",(TotalIncome+sickness:getCost()))
-							SetProperty("Hospital", "RoundIncome",(RoundIncome+sickness:getCost()))
-							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+sickness:getCost()))
+							SetProperty("Hospital", "TotalIncome",(TotalIncome+Costs))
+							SetProperty("Hospital", "RoundIncome",(RoundIncome+Costs))
+							SetProperty("Hospital", "MedicalIncome",(MedicalIncome+Costs))
 
-							MsgSay("","@L_MEDICUS_TREATMENT_DOC_"..Label)
+							
 
 
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 						if Illness ~= false then
+							MsgSayNoWait("","@L_MEDICUS_TREATMENT_DOC_"..string.upper(sickness:getName()))
+
 							Disease[sickness:getName()]:cureSim("SickSim0")
 						    if not list[sickness.getName()] == nil then
 						      ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 						    end
 						else
-						  local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
-					      ModifyHP("SickSim0", ToHeal, true)
+							MsgSayNoWait("", "@L_MEDICUS_TREATMENT_DOC_HPLOSS") 
+
+							local ToHeal = GetMaxHP("SickSim0") - GetHP("SickSim0")
+							ModifyHP("SickSim0", ToHeal, true)
 					    end
 						
 						if HasData("LayStill") then
@@ -255,22 +272,23 @@ function Run()
 						
 						-- modify the favor to the boss
 							if BuildingGetOwner("Hospital", "MyBoss") then
-								chr_ModifyFavor("SickSim0", "MyBoss", sickness:getFavor())
+								chr_ModifyFavor("SickSim0", "MyBoss", FavorMod)
 							end
 						Cured = true
 					end
 				else
 					--not enough mats
-					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel(Medicine,false))
+					MsgSayNoWait("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel(Med,false))
+					Sleep(2)
 					if GetImpactValue("Hospital","hospitalmessagesent")==0 then
 						AddImpact("Hospital","hospitalmessagesent",1,4)
 						feedback_MessageWorkshop("Hospital","@L_MEDICUS_TREATMENT_MSG_NOMATS_HEAD_+0",
 									"@L_MEDICUS_TREATMENT_MSG_NOMATS_BODY_+0",
-									GetID("Hospital"),ItemGetLabel(Medicine,false))
+									GetID("Hospital"),ItemGetLabel(Med,false))
 					end
 					
 					-- if bandages are missing, AI stops to produce something
-					if Medicine == "Bandage" then
+					if Med == "Bandage" then
 						if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
 							if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > 1 then
 								SimSetProduceItemID("", -1, -1)
@@ -289,9 +307,11 @@ function Run()
 				MoveSetActivity("SickSim0","")
 				AddImpact("SickSim0", "Resist", 1, 6)
 			end
+
 			if HasProperty("SickSim0", "WaitingForTreatment") then
 				RemoveProperty("SickSim0", "WaitingForTreatment")
 			end
+
 			SetData("Blocked", 1)
 			SetState("", STATE_DUEL, false)
 		end
@@ -316,6 +336,7 @@ function BlockMe()
 end
 
 function LeaveBuilding()
+	Sleep(3)
 	f_ExitCurrentBuilding("")
 	if DynastyIsAI("") then
 		if Rand(2) == 0 then
@@ -328,6 +349,7 @@ end
 
 function LayToBed(Doc, SickSim, BedNumber)
 	GetLocatorByName("Hospital", "Bed"..BedNumber,"BedPos")
+
 	if not f_BeginUseLocator(SickSim, "BedPos", GL_STANCE_LAY, true) then
 		return
 	end
@@ -362,10 +384,12 @@ end
 
 function CleanUp()
 	SetData("Blocked",1)
+
 	if HasData("BedNumber") then
 		RemoveProperty("Hospital","Locator"..(GetData("BedNumber")))
 		RemoveData("BedNumber")
 	end
+
 	RemoveData("LayStill")
 	StopAnimation("")
 	f_EndUseLocator("", "TreatmentPos", GL_STANCE_STAND)
@@ -380,4 +404,3 @@ function CleanUp()
 		SetState("SickSim0", STATE_DUEL, false)
 	end
 end
-
