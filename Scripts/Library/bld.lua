@@ -1168,8 +1168,8 @@ function CheckResource(BldAlias, Resource)
 				and ResourceCanBeChanged("ResourceSearchResult"..i)
 				and ResourceGetEntry("ResourceSearchResult"..i, Resource) > 0 then
 			local ToSow = ResourceGetEntry("ResourceSearchResult"..i, Resource)
-			ResourceSow("ResourceAlias", ToSow)
-			SetProperty("ResourceAlias", "ResourceItemID", ItemGetID(Resource))
+			ResourceSow("ResourceSearchResult"..i, ToSow)
+			SetProperty("ResourceSearchResult"..i, "ResourceItemID", ItemGetID(Resource))
 			return
 		end
 	end
