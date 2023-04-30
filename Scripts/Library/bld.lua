@@ -1149,24 +1149,24 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	economy_ClearBalance(BldAlias)
 end
 
-FILTER_RESOURCE_BY_ITEM = "__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.Property.ResourceItemID==%d))"
 function CheckResource(BldAlias, Resource)
 	-- find resource
 	local Radius = 4000
-	local FilterByItem = string.format(FILTER_RESOURCE_BY_ITEM, Radius, ItemGetID(Resource))
-	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 2)
+	local FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND(Object.Property.ResourceItemID==%d))", Radius, ItemGetID(Resource))
+	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
+	
 	if Count > 0 then
 		return Count
 	end
-	
+
 	-- resource not found, maybe there is an empty one around?
-	local FilterByEmpty= string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND NOT(Object.Property.ResourceItemID>0))", Radius)
+	local FilterByEmpty= string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND NOT(Object.HasProperty(ResourceItemID)))", Radius)
 	Count = Find(BldAlias, FilterByEmpty, "ResourceSearchResult", 10)
 	for i = 0, Count - 1 do
 		-- check for correct type
 		if AliasExists("ResourceSearchResult"..i)
 				and ResourceCanBeChanged("ResourceSearchResult"..i)
-				and ResourceGetEntry("ResourceSearchResult"..i, Resource) > 0 then
+				and ResourceGetEntry("ResourceSearchResult"..i, ItemGetID(Resource)) >=0 then
 			local ToSow = ResourceGetEntry("ResourceSearchResult"..i, Resource)
 			ResourceSow("ResourceSearchResult"..i, ToSow)
 			SetProperty("ResourceSearchResult"..i, "ResourceItemID", ItemGetID(Resource))
