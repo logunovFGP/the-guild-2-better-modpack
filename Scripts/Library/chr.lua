@@ -489,10 +489,12 @@ function GetBootyCount(Destination, InventoryType)
 		if ItemID and ItemCount and ItemID ~= 999 then
 			-- check for engineer ability
 			if GetImpactValue(Destination, "CartBoost") > 0 then
-				ItemCount = ItemCount - 1
+				ItemCount = ItemCount - 5
 			end
 			
-			Total = Total + ItemGetBasePrice(ItemID) * ItemCount
+			if ItemCount > 0 then
+				Total = Total + ItemGetBasePrice(ItemID) * ItemCount
+			end
 		end
 	end
 	
@@ -510,7 +512,7 @@ function Plunder(SimAlias, Destination)
 		if ItemID and ItemCount and ItemID ~= 999 then
 			-- check for engineer ability
 			if GetImpactValue(Destination, "CartBoost") > 0 then
-				ItemCount = ItemCount - 1
+				ItemCount = ItemCount - 5
 			end
 			
 			if ItemCount > 10 then
