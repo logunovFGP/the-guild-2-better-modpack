@@ -160,7 +160,6 @@ function Run()
 			end
 
 			if found == false then
-				LogMessage("2- Name: "..v.Name..", Medicine: "..(v.Med)..", FavorMod: "..(v.Favour)..", Cost: "..(v.Cost))
 				if (GetHP("SickSim0") == GetMaxHP("SickSim0")) then
 					cured = true
 					MsgSay("","@L_MEDICUS_TREATMENT_DOC_NOTHING")					
@@ -203,8 +202,9 @@ function Run()
 
 					if chr_SpendMoney("SickSim0", v.Cost, "Offering") then
 						ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
-					elseif not chr_SpendMoney("SickSim0", v.Cost, "Offering") then
+					else
 						MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
+						ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
 						return
 					end
 
