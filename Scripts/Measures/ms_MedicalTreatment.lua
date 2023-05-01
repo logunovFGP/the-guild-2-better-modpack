@@ -101,7 +101,7 @@ function Run()
 				Sleep(6)
 			end
 
-			if BuildingGetAISetting("Hospital", "Produce_Selection") and BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
+			if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
 				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > 1 then
 					SimSetProduceItemID("", -1, -1)
 					StopMeasure()
@@ -115,9 +115,9 @@ function Run()
 				return
 			end
 
-			if not GetState("SickSim0", STATE_SICK) then
-				ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
-			end
+			--if not GetState("SickSim0", STATE_SICK) then
+				--ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
+			--end
 			
 			SetData("Blocked", 0)
 			if not SendCommandNoWait("SickSim0", "BlockMe") then
@@ -151,9 +151,8 @@ function Run()
 					v.MedsAmount= 0
 					v.Name		= x:getName()
 					v.Cost		= x:getCost()
-					v.Med		= x:getMedicine()
+					v.Med			= x:getMedicine()
 					v.Favour	= x:getFavor()
-					LogMessage("1- Name: "..v.Name..", Medicine: "..(v.Med)..", FavorMod: "..(v.Favour)..", Cost: "..(v.Cost))
 					found = true
 					break
 				end
@@ -180,7 +179,6 @@ function Run()
 					v.MedsAmount = GetProperty("Hospital",v.Med.."s")
 					CanHeal = 3
 				else
-
 					MsgSayNoWait("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel(v.Med,false))
 					Sleep(2)
 
@@ -200,12 +198,16 @@ function Run()
 
 				if CanHeal ~= false then
 
-					if chr_SpendMoney("SickSim0", v.Cost, "Offering") then
-						ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
+					if DynastyIsPlayer("SickSim0") or IsDynastySim("SickSim0") then 
+						if chr_SpendMoney("SickSim0", v.Cost, "Offering") then
+							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
+						else
+							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
+							ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
+							return
+						end
 					else
-						MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-						ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
-						return
+							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 					end
 
 					CreditMoney("Hospital", v.Cost, "Offering")
@@ -247,8 +249,8 @@ function Run()
 
 					else
 						MsgSayNoWait("", "@L_MEDICUS_TREATMENT_DOC_HPLOSS") 
-						Sleep(2)
 						ModifyHP("SickSim0", GetMaxHP("SickSim0") - GetHP("SickSim0"), true)
+						Sleep(2)
 					end
 						
 					if HasData("LayStill") then
@@ -272,9 +274,10 @@ function Run()
 
 				end
 
-			end		
+			end
 
 		Sleep(1)
+
 		if cured == false then
 			SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
 			SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
