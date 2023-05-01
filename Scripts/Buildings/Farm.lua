@@ -130,7 +130,7 @@ function PingHour()
 		farm_SellOtherStuff("")
 	end
 	
-	if math.mod(GetGametime(), 24) == 5 and BuildingGetOwner("", "FruitfarmBoss") and DynastyIsAI("FruitfarmBoss") then
+	if math.mod(GetGametime(), 24) == 5 and BuildingGetOwner("", "FarmBoss") and DynastyIsAI("FarmBoss") then
 		-- make sure the farm has resources
 		local Resources = { "Wheat", "Barley", "Wool", "Leather", "Beef" }
 		for i = 1, 5 do
