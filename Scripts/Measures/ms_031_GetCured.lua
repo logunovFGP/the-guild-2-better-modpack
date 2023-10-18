@@ -14,24 +14,27 @@ function Run()
 	local HealPerTic = ToHeal / (duration * 12)
 	local UseLocator = false
 
-    SimGetWorkingPlace("","APlatz")
-	f_MoveTo("","APlatz",GL_MOVESPEED_RUN,100)
+    	SimGetWorkingPlace("", "APlatz")
+	local Offset = Rand(150)
+	f_MoveTo("", "APlatz", GL_MOVESPEED_RUN, (150+Offset))
 	
 	local CurrentTime = GetGametime()
 	local EndTime = CurrentTime + duration
-	local Time = MoveSetStance("",GL_STANCE_SITGROUND)
+	local Time = MoveSetStance("", GL_STANCE_SITGROUND)
 	Sleep(Time)
-	while GetGametime()<EndTime do
+
+	while GetGametime() < EndTime do
 		Sleep(5)
 		if GetHP("") < MaxHP then
 			ModifyHP("", HealPerTic,false)
+		else
+			break
 		end
-
 	end
-	Time = MoveSetStance("",GL_STANCE_STAND)
+
+	Time = MoveSetStance("", GL_STANCE_STAND)
 	Sleep(Time)
 end
 
-function CleanUp()
-	
+function CleanUp()	
 end

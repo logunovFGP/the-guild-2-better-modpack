@@ -1,5 +1,5 @@
 function Run()
- f_ExitCurrentBuilding("Owner")
+	f_ExitCurrentBuilding("Owner")
 end
 
 function CleanUp()

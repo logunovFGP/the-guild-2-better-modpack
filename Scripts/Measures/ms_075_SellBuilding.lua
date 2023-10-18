@@ -1,7 +1,7 @@
 function Run()
 
     if GetImpactValue("", "recentlycaptured") >0 then
-		MsgBoxNoWait("","","@L_SELLBUILDING_FAIL_HEAD_+0",
+		MsgBoxNoWait("", "", "@L_SELLBUILDING_FAIL_HEAD_+0",
 					"@L_SELLBUILDING_FAIL_BODY_+0", GetID(""))
 		StopMeasure()
 		return
@@ -17,7 +17,7 @@ function Run()
 		return
 	end
 	
-	local Result = MsgNews("","","@P"..
+	local Result = MsgNews("", "", "@P"..
 			"@B[1,@L_REPLACEMENTS_BUTTONS_JA_+0]"..
 			"@B[C,@L_REPLACEMENTS_BUTTONS_NEIN_+0]",
 			ms_075_sellbuilding_AIDecision,  --AIFunc
@@ -25,7 +25,7 @@ function Run()
 			2, --TimeOut
 			"@L_INTERFACE_SELLBUILDING_MSG_HEAD_+0",
 			"@L_INTERFACE_SELLBUILDING_MSG_BODY_+0",
-			GetID(""),Cost)
+			GetID(""), Cost)
 			
 	if Result == "C" then
 		BuildingSetForSale("", false)

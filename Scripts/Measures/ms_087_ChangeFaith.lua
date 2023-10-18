@@ -1,3 +1,7 @@
+function AIDecide()
+	return 1
+end
+
 function Run()
 	if GetInsideBuilding("", "church") then
 		local ChurchReligion = BuildingGetReligion("church")
@@ -91,10 +95,6 @@ function Run()
 		end
 	end
 	StopMeasure()
-end
-
-function AIDecide()
-	return 1
 end
 
 function CleanUp()

@@ -13,20 +13,20 @@ function Run()
 
 	if AliasExists("Destination") then
 	
-		if GetHomeBuilding("","OldHome") then
-			if GetState("OldHome",STATE_FEAST) then
+		if GetHomeBuilding("", "OldHome") then
+			if GetState("OldHome", STATE_FEAST) then
 				MsgQuick("", "@L_GENERAL_MEASURES_035_ASSIGNCHARACTERTOBUILDING_FAILURES_+1", GetID(""))
 				return
 			end
 		end
 		
-		if BuildingGetType("Destination")~=GL_BUILDING_TYPE_RESIDENCE then
+		if BuildingGetType("Destination") ~= GL_BUILDING_TYPE_RESIDENCE then
 			MsgQuick("", "@L_GENERAL_MEASURES_035_ASSIGNCHARACTERTOBUILDING_FAILURES_+0", GetID(""))
 			return
 		end
 
-		if GetSettlementID("")~=GetSettlementID("Destination") then
-			if SimGetOfficeID("")~=-1 then
+		if GetSettlementID("") ~= GetSettlementID("Destination") then
+			if SimGetOfficeID("") ~= -1 then
 				MsgQuick("", "@L_GENERAL_MEASURES_035_ASSIGNCHARACTERTOBUILDING_FAILURES_+2", GetID(""))
 				return
 			end

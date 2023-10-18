@@ -4,6 +4,12 @@ function Run()
 		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0","@L_MEASURES_HIRERANDOM_NOMONEY_+0")
 		StopMeasure()
 	end
+
+	-- check for maximum of 10 thugs for dynasty
+	if BuildingGetType("") == 2 and DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= 10 then
+		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURES_HIRERANDOM_NOTHUGS_+0")
+		StopMeasure()
+	end
 	
 	local Button1 = "@B[B,@L_HPFZ_EINSTELLEN_+0]"
 	local Button2 = "@B[N,@L_HPFZ_EINSTELLEN_+1]"

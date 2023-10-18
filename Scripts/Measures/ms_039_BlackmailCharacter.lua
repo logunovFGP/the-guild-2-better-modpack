@@ -23,7 +23,8 @@ function Run()
 	
 	-- check for evidences against the destination
 	local Sum = GetEvidenceAlignmentSum("", "Destination")
-	if(Sum < 3) then
+	
+	if Sum < 3 then
 		feedback_MessageCharacter("Owner",
 			"@L_INTRIGUE_039_BLACKMAILCHARACTER_NO_EVIDENCE_HEAD_+0",
 			"@L_INTRIGUE_039_BLACKMAILCHARACTER_NO_EVIDENCE_BODY_+0", GetID("Destination"))
@@ -32,7 +33,7 @@ function Run()
 	
 	-- check if the owner has RattleTheChains impact
 	local Chain_factor = 1
-	if GetImpactValue("","RattleTheChains")==1 then
+	if GetImpactValue("", "RattleTheChains") == 1 then
 		Chain_factor = 2
 	end
 	
@@ -47,7 +48,7 @@ function Run()
 		StopMeasure()
 	end	
 
-	CommitAction("blackmail","Owner","Owner","Destination")
+	CommitAction("blackmail","Owner","Destination","Destination")
 	
 	-- Discuss the conditions
 	PlayAnimationNoWait("", "talk")
@@ -60,20 +61,18 @@ function Run()
 	ModifyFavor = ModifyFavor / Chain_factor
 	chr_ModifyFavor("Destination","",-ModifyFavor)
 	
-	----	Das Diplomatieverhältnis zwischen den beiden Dynastien wird 
-	----	für 8h auf "Blutbande" gestellt.
-	
-	--force dynasty relations to alliance
+	-- allies for 8h
+	-- force dynasty relations to alliance
 	DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), duration)
 	DynastyForceCalcDiplomacy("")
 	DynastyForceCalcDiplomacy("Destination")
 	
 	SetMeasureRepeat(TimeOut)
 	
-	MsgNewsNoWait("","Destination","","intrigue",-1,
+	MsgNewsNoWait("", "Destination", "", "intrigue", -1,
 		"@L_INTRIGUE_039_BLACKMAILCHARACTER_SUCCESS_ACTOR_HEAD_+0",
 		"@L_INTRIGUE_039_BLACKMAILCHARACTER_SUCCESS_ACTOR_BODY_+0", GetID("Destination"))
-	MsgNewsNoWait("Destination","","","intrigue",-1,
+	MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 		"@L_INTRIGUE_039_BLACKMAILCHARACTER_SUCCESS_VICTIM_HEAD_+0",
 		"@L_INTRIGUE_039_BLACKMAILCHARACTER_SUCCESS_VICTIM_BODY_+0", GetID(""))
 	
@@ -86,7 +85,7 @@ function Run()
 	
 	-- The blackmailed wants to get away
 	GetFleePosition("Destination", "Owner", 300, "Away")
-	f_MoveTo("Destination","Away")
+	f_MoveTo("Destination", "Away")
 
 	StopMeasure()
 end
@@ -102,8 +101,8 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 

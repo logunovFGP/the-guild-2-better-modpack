@@ -20,13 +20,6 @@ function GetLocator()
 	return	LocatorArray[Position], LocatorArray[Position+1], LocatorArray[Position+2]
 end
 
-function UsePedestral()
-	PlayAnimation("", "manipulate_middle_low_r")
-	PlayAnimation("", "manipulate_middle_low_l")
-	Sleep(0.3)
-	PlayAnimation("", "fetch_store_obj_L")
-end
-
 function UseAnvil()
 
 	SetContext("", "smithy")
@@ -202,7 +195,7 @@ function UseShelfInTheWall()
 	Sleep(0.7)
 	MoveSetActivity("")
 	Sleep(2)
-	CarryObject("","",false)
+	CarryObject("", "", false)
 	Sleep(2)
 end
 

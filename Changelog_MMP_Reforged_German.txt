@@ -204,6 +204,7 @@ _Allgemein_
 - Man konnte die Minenwachen austricksen, indem man feindliche Aktionen unterbrach, womit man sie problemlos von der Mine weglocken konnte, um sie dann anschließend erneut zu überfallen.
 - Wenn ihr jemanden heiratet, der einen höheren Titel hat, erhaltet ihr nun auch dann den nächst höheren Titel, wenn ihr bereits über dem Titel "Gemeiner" seid.
 - Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
+- Charaktere "folgen" nun natürlicher und bleiben seltener stecken.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -347,6 +348,7 @@ _Gelehrter_
 - Kunden von Quacksalbern werden nun kommentieren, ob sie eine Wunderkur kaufen oder nicht.
 - Der 'Brief aus Rom' kann fehlschlagen, wenn der Anwender einen niedrigen Schattenkunst-Wert / das Ziel hohe Empathie hat. In diesem Fall erhält das Opfer 
   einen Beweis wegen (versuchten) Rufmordes ...
+- Es ist nun möglich, die Gebäude anderer Dynastien zu segnen und vor Sabotage zu schützen.
 
 _Handwerker_
 -
@@ -423,6 +425,8 @@ _Allgemein_
 - Für Löschversuche erhöht sich die Gunst zum Besitzer eines Gebäudes um jeweils 5.
 - Man kann nicht länger mit Angestellten flirten/reden.
 - Man kann nun Personen desselben Geschlechtes freundlich umarmen.
+- Jede Dynastie ist auf 10 Schergen beschränkt, unabhängig davon, wieviele Wohngebäude man besitzt.
+- Der Abriss eines Gebäudes gibt nur noch 35% statt 50% des Gebäudewertes (plus Items)
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.
@@ -447,3 +451,4 @@ _Gauner_
 - Die Gewinne der Liebesdienste wurden geändert.
 - Die Sichtbarkeit von Verbrechen (z.B. für Wachen) wurde erhöht. Knochenbrechen gilt für die Wachen nun ebenfalls als Verbrechen.
 - Das Würfelspiel hat nun eine Goldobergrenze von 10.000 statt 100.000
+- Lösegeldforderungen (durch Entführung) wurden gesenkt, dafür erfolgt die Maßnahme augenblicklich und erfordert es nicht länger, einen Gauner zum Haus des Opfers zu schicken.

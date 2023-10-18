@@ -6,7 +6,7 @@ function Run()
 		return
 	end
 	
-	if HasProperty("","PlunderInProgress") then
+	if HasProperty("", "PlunderInProgress") then
 		return
 	end
 	

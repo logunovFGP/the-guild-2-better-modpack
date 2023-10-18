@@ -47,7 +47,7 @@ function Normal()
 	local ObserverFavor = 5
 	SetData("ObserverFavor",ObserverFavor)
 	--how long message for destination will be displayed
-	local MsgTimeOut = 0.5 --15 sekunden
+	local MsgTimeOut = 0.5
 	
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
@@ -64,7 +64,7 @@ function Normal()
 	end
 	MeasureSetNotRestartable()
 	-- check if the destination has BeVenerability impact
-	if GetImpactValue("Destination","BeVenerability")==1 then
+	if GetImpactValue("Destination", "BeVenerability") == 1 then
 		MsgQuick("", "@L_PRIVILEGES_121_BEVENERABILITY_FAILURES_+0", GetID("Destination"))
 		StopMeasure()
 	end
@@ -72,20 +72,20 @@ function Normal()
 	Sleep(0.75)
 	
 	--check if destination has drunken boozybreathbeer
-	if GetImpactValue("Destination","boozybreathbeer")==1 then	
+	if GetImpactValue("Destination","boozybreathbeer") == 1 then	
 		GetPosition("Destination", "ParticleSpawnPos")
-		StartSingleShotParticle("particles/BoozyBreathBeer.nif", "ParticleSpawnPos",2.7,3)
-		PlaySound3DVariation("Destination","measures/boozybreathbeer",1)
+		StartSingleShotParticle("particles/BoozyBreathBeer.nif", "ParticleSpawnPos", 2.7, 3)
+		PlaySound3DVariation("Destination", "measures/boozybreathbeer", 1)
 		feedback_OverheadComment("",
 			"@L_INTRIGUE_055_INSULTCHARACTER_BOOZYBREATHBEER_+0", false, true)
 		GetFleePosition("", "Destination", 1000, "Away")
 		f_MoveTo("", "Away", GL_MOVESPEED_RUN)
 		
-		MsgNewsNoWait("","Destination","","intrigue",-1,
+		MsgNewsNoWait("", "Destination", "","intrigue", -1,
 			"@L_INTRIGUE_055_INSULTCHARACTER_FAILED_ACTOR_HEAD_+0",
 			"@L_INTRIGUE_055_INSULTCHARACTER_FAILED_ACTOR_BODY_+0", GetID("Destination"))
 		
-		MsgNewsNoWait("Destination","","","intrigue",-1,
+		MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 			"@L_INTRIGUE_055_INSULTCHARACTER_FAILED_VICTIM_HEAD_+0",
 			"@L_INTRIGUE_055_INSULTCHARACTER_FAILED_VICTIM_BODY_+0", GetID("Owner"),GetID("Destination"),ItemGetLabel("BoozyBreathBeer", true))			
 		StopMeasure()
@@ -94,10 +94,9 @@ function Normal()
 	--cutscene init
 	CreateCutscene("default","cutscene")
 	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","Destination")
+	CutsceneAddSim("cutscene", "Destination")
 	CutsceneCameraCreate("cutscene","")		
-	camera_CutsceneBothLock("cutscene", "")	-- irgend ein befehl um die cutscene camera zu setzen
-	
+	camera_CutsceneBothLock("cutscene", "")
 	
 	local CurrentRound = GetRound()
 	if not HasProperty("", "LastTimeInsulted") then
@@ -113,7 +112,7 @@ function Normal()
 		if (GetImpactValue("", "Insulter") == 0) then
 			local TimesInsulted = GetProperty("", "TimesInsulted") + 1
 			SetProperty("", "TimesInsulted", TimesInsulted)
-			if TimesInsulted > 7 then
+			if TimesInsulted > 3 then
 				AddImpact("","Insulter",1,48) 
 				SetProperty("", "TimesInsulted", 0)
 				MsgNewsNoWait("","","","intrigue",-1,
@@ -122,6 +121,7 @@ function Normal()
 			end
 		end
 	end
+
 	SetProperty("", "LastTimeInsulted", CurrentRound)
 	--do visual stuff
 	local time1 = PlayAnimationNoWait("", "insult_character")
@@ -136,6 +136,7 @@ function Normal()
 	if not (GetImpactValue("", "Insulter") == 0) then
 		ChooseText = ChooseText.."@C[A,@L_DUELL_1_DIALOGMSG_INSULTEDONE_+2]"
 	end
+	
 	local Result = MsgSayInteraction("Destination","Destination","",
 				ChooseText,
 				ms_055_insultcharacter_AIDecide,  --AIFunc
@@ -162,12 +163,12 @@ function Normal()
 	--destination is a n00b and defeats
 	elseif Result == "B" then
 		camera_CutsceneBothLock("cutscene", "Destination")
-		MsgSay("Destination","@L_DUELL_1_DIALOGMSG_INSULTEDONE_SATISFACTION_NO")
+		MsgSay("Destination", "@L_DUELL_1_DIALOGMSG_INSULTEDONE_SATISFACTION_NO")
 		camera_CutsceneBothLock("cutscene", "")
-		MsgSay("","@L_DUELL_1_DIALOGMSG_INSULTEDONE_SATISFACTION_NO_SUB")
-		MsgNewsNoWait("","Destination","","intrigue",-1,
+		MsgSay("", "@L_DUELL_1_DIALOGMSG_INSULTEDONE_SATISFACTION_NO_SUB")
+		MsgNewsNoWait("", "Destination", "", "intrigue", -1,
 				"@L_DUELL_1_DIALOGMSG_INSULTER_+0",
-				"@L_DUELL_1_DIALOGMSG_INSULTER_NO_+0",GetID(""),GetID("Destination"),ReplacementLabel)
+				"@L_DUELL_1_DIALOGMSG_INSULTER_NO_+0", GetID(""), GetID("Destination"), ReplacementLabel)
 		
 		--find sims in range and decrease favor to destination
 		SendCommandNoWait("Destination","DecreaseFavor")
@@ -180,21 +181,15 @@ function Normal()
 		MsgSay("","@L_DUELL_1_DIALOGMSG_INSULTEDONE_SATISFACTION_NO_SUB") 
 		MsgNewsNoWait("","Destination","","intrigue",-1,
 				"@L_DUELL_1_DIALOGMSG_INSULTER_+0",
-				"@L_DUELL_1_DIALOGMSG_INSULTER_NOTINSANE_+0",GetID(""),GetID("Destination"),ReplacementLabel) 
+				"@L_DUELL_1_DIALOGMSG_INSULTER_NOTINSANE_+0", GetID(""), GetID("Destination"), ReplacementLabel) 
 	end
 	
 	Sleep(1)	
 	ModifyFavor = ModifyFavor / Chain_factor
 	chr_ModifyFavor("Destination","",-ModifyFavor)
 	
-	
-	
-	
 	StopMeasure()
 end
-
-
-
 
 function Cutscene()
 
@@ -270,10 +265,9 @@ function Cutscene()
 	StopMeasure()
 end
 
-
-
 function DecreaseFavor()
-local ObserverFavor = GetData("ObserverFavor")
+
+	local ObserverFavor = GetData("ObserverFavor")
 	local Radius = 1000
 	local Count = Find("", "__F( (Object.GetObjectsByRadius(Sim) == "..Radius..")","Sim", -1)
 	for i=0,Count-1 do 

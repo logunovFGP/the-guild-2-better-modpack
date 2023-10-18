@@ -11,7 +11,7 @@ function Run()
 	end
 	
 	local ItemID = ResourceGetItemId("Destination")
-	if ItemID==-1 then
+	if ItemID == -1 then
 		return false
 	end
 	
@@ -45,7 +45,7 @@ function Run()
 			break
 		end
 
-		while GetRemainingInventorySpace("",ItemID) >= 1 do
+		while GetRemainingInventorySpace("", ItemID) >= 1 do
 
 			local	Diff
 			local	StartTime

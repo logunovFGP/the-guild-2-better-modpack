@@ -3,11 +3,12 @@ function AIDecision()
 end
 
 function Run()
+
 	if not chr_CheckDestroy() then
 		return
 	end
 
-	local Value	= BuildingGetValue("")/2
+	local Value = BuildingGetValue("")* 0.35
 	local Result = MsgNews("","","@P"..
 			"@B[1,@L_REPLACEMENTS_BUTTONS_JA_+0]"..
 			"@B[C,@L_REPLACEMENTS_BUTTONS_NEIN_+0]",
@@ -24,7 +25,7 @@ function Run()
 
 	MeasureSetNotRestartable()
 	
-		-- kill spawned animals
+	-- kill spawned animals
 	local filter ="__F( (Object.GetObjectsByRadius(Sim)==1300)AND(Object.GetProfession()<59)AND(Object.GetProfession()>54))"
 
 	if filter then
@@ -42,5 +43,4 @@ function Run()
 	end
 	CreditMoney("", Value, "BuildingSold")
 	SetState("", STATE_DEAD, true)
-	
 end

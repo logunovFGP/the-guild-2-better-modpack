@@ -205,7 +205,7 @@ _General_
 - You could lure mine guards away by cancelling hostile actions - they would leave the mine and you could continue to attack the mine.
 - When you marry someone above your title you will now gain the next higher title, even if you are above commoner.
 - You would generate evidence when you robbed unconcious persons even if you didn't manage to steal anything.
-
+- Characters "follow" in a more natural way now and should get stuck less often.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
@@ -343,6 +343,7 @@ _Scholar_
 - Leprosy-infected now lose favor with other characters, unless they use perfume.
 - During Quacksalvery customers will now comment on whether they buy miracle cures or not.
 - The 'Letter from Rome' might fail if you have a low shadow arts skill / your target a high empathy. In that case the victim gets evidence against you ...
+- It's now possible to bless the buildings of other dynasties and protect them against sabotage.
 
 _Craftsman_
 -
@@ -416,6 +417,8 @@ _General_
 - Every attempt on firefighting raises favor towards the owner of the building by 5.
 - You can no longer talk/flirt with employees.
 - You can hug a person of the same sex now.
+- Every dynasty is limited to max. 10 thugs (no matter how many residences you build)
+- Tearing down a building will now only reward you with 35% of that building's value (plus items) instead of 50%
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
@@ -441,3 +444,5 @@ _Rogue_
 - Wenches work 24 Hours per day like other rogue professions.
 - The visibility of crimes (guard detection) has been increased. Breaking bones is now considered a crime for the guards aswell.
 - Dicegame has now a cap of 10.000 Gold instead of 100.000
+- Ransoms (abductions) have been lowered, however demanding a ransom from your victim is now instant and doesn't require your thief to run around the map.
+

@@ -16,7 +16,7 @@ function Run()
 	end
 
 	--timeout before building can be burgled again
-	local TimeOut = 48
+	local TimeOut = 24
 	local OwnerID = GetID("dynasty")
 
 	-- Get the Owner of the Building
@@ -158,14 +158,15 @@ function Run()
 		StopMeasure()
 	end
 	
-	if GetImpactValue("Destination","BoobyTrap")~=0 then
-		GetPosition("","ParticleSpawnPos")
-		PlaySound3D("","fire/Explosion_01.wav", 1.0)
+	-- traps
+	if GetImpactValue("Destination","BoobyTrap") ~= 0 then
+		GetPosition("", "ParticleSpawnPos")
+		PlaySound3D("", "fire/Explosion_01.wav", 1.0)
 		StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1,5)
-		ModifyHP("",-(0.5*GetMaxHP("")),true,1)
-		if GetImpactValue("Destination","buildingburgledtoday")~=0 then
-			local TimeLeft = ImpactGetMaxTimeleft("Destination","BoobyTrap")
-			AddImpact("Destination","buildingburgledtoday",1,TimeLeft)
+		ModifyHP("", -(0.5*GetMaxHP("")), true, 1)
+		if GetImpactValue("Destination","buildingburgledtoday") ~= 0 then
+			local TimeLeft = ImpactGetMaxTimeleft("Destination", "BoobyTrap")
+			AddImpact("Destination", "buildingburgledtoday", 1, TimeLeft)
 		end
 		CommitAction("explosion", "", "", "Destination", "Destination")
 		StopMeasure()
@@ -375,7 +376,6 @@ function GetMaxHaulValue(DestAlias, DynastyID, ThiefLevel)
 	end
 	
 	return LootValue
-	
 end
 
 -- -----------------------
@@ -383,15 +383,15 @@ end
 -- -----------------------
 function CleanUp()
 	StopAction("explosion", "")
-	CarryObject("","",false)
+	CarryObject("", "", false)
 	ResetProcessProgress("")
-	SetState("",STATE_HIDDEN,false)
+	SetState("", STATE_HIDDEN, false)
 	local ThiefProperty
 	
 	if HasData("ThiefProperty") then
 		ThiefProperty = GetData("ThiefProperty")
-		if HasProperty("",ThiefProperty) then
-			RemoveProperty("",ThiefProperty)
+		if HasProperty("", ThiefProperty) then
+			RemoveProperty("", ThiefProperty)
 		end
 	end
 	
@@ -399,15 +399,15 @@ function CleanUp()
 	
 	if AliasExists("Destination") then
 		for k=1,3 do
-			if HasProperty("Destination","Thief"..k.."Haul"..OwnerID) then 
-				RemoveProperty("Destination","Thief"..k.."Haul"..OwnerID)
+			if HasProperty("Destination", "Thief"..k.."Haul"..OwnerID) then 
+				RemoveProperty("Destination", Thief"..k.."Haul"..OwnerID)
 			end
 		end
 		if HasData("finished") then
-			RemoveProperty("Destination","TimeToBurgle"..GetID("dynasty"))
+			RemoveProperty("Destination", "TimeToBurgle"..GetID("dynasty"))
 		end
-		if HasProperty("Destination","NumThieves"..OwnerID) then
-			RemoveProperty("Destination","NumThieves"..OwnerID)
+		if HasProperty("Destination", "NumThieves"..OwnerID) then
+			RemoveProperty("Destination", "NumThieves"..OwnerID)
 		end
 	end
 	
@@ -420,12 +420,12 @@ function CleanUp()
 			SetProperty("Thief"..i,"ThiefGoHome")					
 		end
 		
-		if SetProperty("Thief"..0,"Bandleader",1) then
-		elseif SetProperty("Thief"..1,"Bandleader",1)then
+		if SetProperty("Thief"..0, "Bandleader", 1) then
+		elseif SetProperty("Thief"..1, "Bandleader", 1)then
 		end
 	end
 	
-	if GetData("ReleaseLocator")==1 then
+	if GetData("ReleaseLocator") == 1 then
 		f_EndUseLocator("", "SabotagePosition", GL_STANCE_STAND)
 	end
 	

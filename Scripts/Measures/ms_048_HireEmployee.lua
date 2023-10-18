@@ -18,8 +18,14 @@ function Run()
 		return
 	end
 
+	-- check for maximum of 10 thugs for dynasty
+	if BuildingGetType("Destination") == 2 and DynastyGetWorkerCount("Destination", GL_PROFESSION_MYRMIDON) >= 10 then
+		MsgBoxNoWait("Destination","", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURES_HIRERANDOM_NOTHUGS_+0")
+		StopMeasure()
+	end
+
 	local Handsel = SimGetHandsel("", "Destination")
-	local Level	= SimGetLevel("")
+	local Level = SimGetLevel("")
 	local Salary = SimGetWage("")
 	local XP = GetDatabaseValue("CharLevels", Level-1, "xp")  -- XP which was needed for the current level
 

@@ -17,11 +17,11 @@ function Run()
 		fDistance = 1000
 	end
 	
-	local	DataValue
-	local	Temp
+	local DataValue, Temp
+	
 	for l=0, 4 do
 		Temp = "EscortedBy_"..l
-		if not HasProperty("Destination", Temp ) then
+		if not HasProperty("Destination", Temp) then
 			DataValue = Temp
 			break
 		end
@@ -116,10 +116,23 @@ function Run()
 					end
 				end
 			else
-				if not f_Follow("", "Destination", GL_MOVESPEED_RUN, fDistance, true) then
-					f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN, fDistance)
+				-- speed me up
+				if GetImpactValue("", "MoveSpeed") < 1.2 then
+					AddImpact("", "MoveSpeed", 1.2, 4)
 				end
-				Sleep(1)
+				
+				local CurrentDistance = GetDistance("", "Destination")
+				if CurrentDistance > 200 and CurrentDistance < 750 then
+					if not f_Follow("", "Destination", GL_MOVESPEED_WALK, fDistance, true) then
+						f_MoveTo("", "InsideTarget", GL_MOVESPEED_WALK, fDistance)
+					end
+				elseif CurrentDistance >= 750 then
+					if not f_Follow("", "Destination", GL_MOVESPEED_RUN, fDistance, true) then
+						f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN, fDistance)
+					end
+				end
+				
+				Sleep(2)
 			end
 		end
 		

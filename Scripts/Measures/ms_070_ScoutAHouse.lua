@@ -11,11 +11,11 @@
 function Run()
 	if not IsGUIDriven() then  
 		local DynID = GetDynastyID("")
-		SetProperty("Destination","AIScouted"..DynID,1)
+		SetProperty("Destination", "AIScouted"..DynID, 1)
 	end
 	
 	--get the shadow art skill from the thief
-	local Skill = GetSkillValue("","6")
+	local Skill = GetSkillValue("", "6")
 	
 	--time needed to spy out the building, 0.125 to 1 hours
 	local Time = 0.25
@@ -28,17 +28,18 @@ function Run()
 	else
 		Time = 1
 	end
-	SetData("Time",Time)
+
+	SetData("Time", Time)
 	--move to the building
-	f_MoveTo("","Destination",GL_MOVESPEED_RUN,100)
+	f_MoveTo("", "Destination", GL_MOVESPEED_RUN,100)
 	StartGameTimer(Time)
 	local StartTime = GetGametime()
 	local EndTime = StartTime + Time
-	SetData("EndTime",EndTime)
-	SetProcessMaxProgress("",Time*10)
+	SetData("EndTime", EndTime)
+	SetProcessMaxProgress("", Time*10)
 	--hide the thief
-	SetState("",STATE_HIDDEN,true)
-	SendCommandNoWait("","Progress")
+	SetState("", STATE_HIDDEN,true)
+	SendCommandNoWait("", "Progress")
 	
 	--do the visual stuff
 	while not (CheckGameTimerEnd()) do
@@ -52,7 +53,7 @@ function Run()
 				if CheckGameTimerEnd() then
 					break
 				end
-				AlignTo("","Destination")
+				AlignTo("", "Destination")
 				Sleep(Rand(3))
 			end
 		end
@@ -89,6 +90,7 @@ function Run()
 	if (bSuccess) then
 		local iFlagID = DynastyGetFlagNumber("Dyn")
 		AddImpact("Destination", "Scouted", iFlagID , -1)
+		chr_GainXP("", GetData("BaseXP"))
 	end	
 	
 	CreateScriptcall(scriptcall, 48, "Measures/ms_070_ScoutAHouse.lua", "ExpireValues", "Owner", "Destination", OwnerDyn)
@@ -97,7 +99,7 @@ function Run()
 	if IsGUIDriven() then
 		feedback_MessageCharacter("Owner",
 			"@L_THIEF_070_SCOUTAHOUSE_MSG_ACTOR_HEAD_+0",
-			"@L_THIEF_070_SCOUTAHOUSE_MSG_ACTOR_BODY_+0", GetID("Destination"),ProtectionLabel,ValueLabel)
+			"@L_THIEF_070_SCOUTAHOUSE_MSG_ACTOR_BODY_+0", GetID("Destination"), ProtectionLabel,ValueLabel)
 	end
 
 	--stop hiding

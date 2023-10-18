@@ -13,8 +13,8 @@ function Run()
 	local UpgradeMoney = 0
 	local OldProto	= BuildingGetProto("")
 	local OldPrice	= GetDatabaseValue("Buildings", OldProto, "price")
-	local Price			= GetDatabaseValue("Buildings", Proto, "price")
-	UpgradeMoney		= Price - OldPrice
+	local Price = GetDatabaseValue("Buildings", Proto, "price")
+	UpgradeMoney = Price - OldPrice
 	
 	if not chr_SpendMoney("Owner", UpgradeMoney, "BuildingLevelup") then
 		MsgQuick("", "@L_GENERAL_MEASURES_073_LEVELUPBUILDING_FAILURES_+1", UpgradeMoney, GetID("Owner"))

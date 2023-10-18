@@ -12,10 +12,18 @@ function Init()
 		return
 	end
 	
-	local iRanking = GetNobilityTitle("VictimDyn")
-	local fMoney = math.floor(iRanking * (GetMoney("VictimDyn")/50))
-	if fMoney<100 then
-		fMoney=100
+	local iRanking = GetNobilityTitle("VictimDyn") * 250 - 250
+	local VictimMoney = GetMoney("VictimDyn") - 500
+
+	if VictimMoney < iRanking then
+		iRanking = iRanking / 2
+	elseif VictimMoney > (iRanking + 1000) then
+		iRanking = iRanking * 2
+	end
+
+	local fMoney = iRanking
+	if fMoney < 200 then
+		fMoney= 200
 	end
 	
 	local Sum1 = math.floor(fMoney * 0.5)
@@ -23,7 +31,7 @@ function Init()
 	local Sum3 = fMoney
 	local Sum4 = math.floor(fMoney * 1.25)
 	local Sum5 = math.floor(fMoney * 1.5)
-	local OutTime = GetProperty("Victim","HijackedEndTime")
+	local OutTime = GetProperty("Victim", "HijackedEndTime")
 	OutTime = Gametime2Total(OutTime)
 
 	local result = InitData("@P"..
@@ -59,61 +67,66 @@ function AIInitDemandRansom()
 end
 
 function AIInitDemandRansomAnswer()
-	return "O"
-end
+	local Demand = GetData("TFRansom")
+	local MyMoney = GetMoney("")
 
+	if Demand > MyMoney then
+		return "C"
+	else
+		if Demand < 5000 then
+			return "O"
+		else
+			if Rand(2) == 0 then
+				return "O"
+			else
+				return "C"
+			end
+		end
+	end
+end
 
 function Run()
 	
---	local MeasureID = GetCurrentMeasureID("")
---	local TimeOut = mdata_GetTimeOut(MeasureID)
 	SetRepeatTimer("Base", GetMeasureRepeatName2("DemandRansom"), 6)
 	
 	local fMoney = GetData("TFRansom")
 
-	if not fMoney then
+	if fMoney == nil then
 		if not DynastyIsAI("") or not AliasExists("Victim") then
 			return
 		end
 
-		local iRanking = GetNobilityTitle("Victim")
-		local fMoney = math.floor(iRanking * (GetMoney("Victim")/50))
-		if fMoney<100 then
-			fMoney=100
+		local iRanking = GetNobilityTitle("Victim") * 250 - 250
+		local VictimMoney = GetMoney("Victim") - 500
+
+		if VictimMoney < iRanking then
+			iRanking = iRanking / 2
+		elseif VictimMoney > (iRanking + 1000) then
+			iRanking = iRanking * 2
 		end
-		fMoney = math.floor(fMoney * 0.75)
+
+		local fMoney = iRanking
+		if fMoney < 200 then
+			fMoney= 200
+		end
 	end
 	
 	if not SimGetWorkingPlace("", "Base") then
 		return
 	end	
 	
-	if not GetHomeBuilding("Victim", "VictimHome") then
-		return
-	end
-
-	if not GetOutdoorMovePosition("", "VictimHome", "DoorPos") then
-		return
-	end
-	f_MoveTo("", "DoorPos", GL_MOVESPEED_RUN)
-
-	CarryObject("", "Handheld_Device/ANIM_flag.nif",false)	
-	f_Stroll("", 300,3)
-	PlayAnimation("", "talk")
-	CarryObject("","",false)
-	
 	--ask again for prisoner to avoid exploit
 	if not BuildingGetPrisoner("Base", "Victim") then
 		StopMeasure()
 	end
 	
-	local result = MsgNews("Victim","","@P"..
+	local result = MsgNews("Victim", "", "@P"..
 				"@B[O,@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_VICTIM_BTN_+0]"..
 				"@B[C,@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_VICTIM_BTN_+1]",
 				ms_069_demandransom_AIInitDemandRansomAnswer,"default",8,
 				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_VICTIM_HEAD_+0",
 				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_VICTIM_BODY_+0",
-				 GetID("Victim"),fMoney)
+				 GetID("Victim"), fMoney)
 				 
 	if result=="O" then
 		--wants to pay
@@ -123,32 +136,29 @@ function Run()
 			mission_ScoreCrime("",fMoney)
 			feedback_MessageCharacter("",
 				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_SUCCESS_HEAD_+0",
-				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_SUCCESS_BODY_+0",GetID("Victim"), fMoney)
-			if not MeasureRun("Base", NIL, "LetAbducteeFree",false) then
-				SetProperty("Victim","ForceFree",1)
+				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_SUCCESS_BODY_+0", GetID("Victim"), fMoney)
+			if not MeasureRun("Base", nil, "LetAbducteeFree", false) then
+				SetProperty("Victim", "ForceFree", 1)
 			end
 		else
 			--can't pay
 			feedback_MessageCharacter("",
 				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_TIMEOUT_HEAD_+0",
-				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_TIMEOUT_BODY_+0",GetID("Victim"),GetID("Victim"))		
+				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_TIMEOUT_BODY_+0", GetID("Victim"),GetID("Victim"))		
 		end
 	else
 		--doesnt wanna pay
 		feedback_MessageCharacter("",
 			"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_TIMEOUT_HEAD_+0",
-			"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_TIMEOUT_BODY_+0",GetID("Victim"),GetID("Victim"))		
+			"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_TIMEOUT_BODY_+0", GetID("Victim"),GetID("Victim"))		
 	end
- 
-	f_MoveTo("", "Base", GL_MOVESPEED_RUN)
 end
 
 function CleanUp()
-
 end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 
