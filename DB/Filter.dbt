@@ -145,7 +145,7 @@ Data:
 216   "CanReceivePoem"   "__F((Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.HasDifferentSex())AND NOT(Object.BelongsToMe())OR(Object.IsMySpouse()))"   |
 217   "CanQuestGather"   "__F((Object.CanBeControlled())AND(Object.Property.CanGather==1))"   |
 218   "CanBeAMaster"   "__F((Object.HasMinNobilityTitle(2)))"   |
-219   "IsMySimInTownhallCanRunOffice"   "__F((Object.CanBeControlled())AND(Object.HasMinNobilityTitle(4))AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
+219   "IsMySimInTownhallCanRunOffice"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
 220   "CanDuel"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.HasMinNobilityTitle(6)))"   |
 221   "CanDivorce"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.IsDynastySim())AND(Object.IsMarried()))"   |
 223   "CanUseTreasureMap"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(TreasureMap)>0))"   |

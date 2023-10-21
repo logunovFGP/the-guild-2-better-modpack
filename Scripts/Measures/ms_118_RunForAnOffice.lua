@@ -15,7 +15,12 @@ function Run()
 		StopMeasure()
 	end
 	
-	if GetNobilityTitle("") < 5 and OfficeGetLevel("destination") > 1 then
+	local MyTitle = GetNobilityTitle("")
+	
+	if MyTitle < 4 then
+		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+6")
+		StopMeasure()
+	elseif MyTitle < 5 and OfficeGetLevel("destination") > 1 then
 		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+5")
 		StopMeasure()
 	end
