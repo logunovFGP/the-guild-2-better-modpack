@@ -18,7 +18,7 @@ function Run()
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	local OwnerRhetoric = (GetSkillValue("",RHETORIC))
+	local OwnerRhetoric = (GetSkillValue("", RHETORIC))
 	local DestinationRhetoric = (GetSkillValue("Destination", RHETORIC))
 	local OwnerGender = (SimGetGender(""))
 	local DestinationGender = (SimGetGender("Destination"))
@@ -53,7 +53,7 @@ function Run()
 		RhethoricType = "_GOOD_RHETORIC"
 	end
 	
-	PlayAnimationNoWait("","talk")
+	PlayAnimationNoWait("", "talk")
 	MsgSay("","@L_PRIVILEGES_103_CURRYFAVOR_ACTOR"..RhethoricType)
 	
 	--combine textlabel by checking rhetoric skill and gender for text2
@@ -67,7 +67,7 @@ function Run()
 	end
 	camera_CutsceneBothLock("cutscene", "Destination")	
 	PlayAnimationNoWait("Destination", "talk")
-	MsgSay("Destination","@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
+	MsgSay("Destination", "@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
 	PlayAnimation("Destination", "bow")
 	chr_GainXP("", GetData("BaseXP"))
 	MsgNewsNoWait("Destination","","","intrigue",-1,
@@ -92,9 +92,9 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 
 

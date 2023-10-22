@@ -2,10 +2,10 @@ function Run()
 	if GetData("Cancel")=="Cancel" then
 		StopMeasure()
 	end
+
 	if not ai_GoInsideBuilding("", "",-1, GL_BUILDING_TYPE_TOWNHALL) then
 		StopMeasure()
 	end
-	
 	
 	
 	local MeasureID = GetCurrentMeasureID("")
@@ -86,26 +86,6 @@ function AIFunction()
     if GetProperty("","Class") == 3 then
 	    return (Rand(2)+1)
 	end	
-	
-	-- causes oos in MP
-	if not IsMultiplayerGame() then
-		GetLocalPlayerDynasty("Konkurrent")
-		if DynastyGetDiplomacyState("","Konkurrent") == 0 then
-			return 2
-		end
-		
-		if DynastyGetDiplomacyState("","Konkurrent") == 3 then
-			return 0
-		end
-		
-		if GetFavorToDynasty("","Konkurrent") < 10 then
-			return (Rand(2)+1)
-		end
-		
-		if GetFavorToDynasty("","Konkurrent") > 90 then
-			return Rand(2)
-	end
-	end
 	
 	return Rand(3)
 end

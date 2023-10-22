@@ -71,6 +71,7 @@ function Run()
 
 	local fame = dyn_GetFameLevel("")
 	dyn_RemoveFame("", fame)
+	chr_GainXP("", GetData("BaseXP"))
 end
 
 function CleanUp()

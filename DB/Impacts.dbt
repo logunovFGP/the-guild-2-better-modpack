@@ -148,7 +148,6 @@ Data:
 204             1                 3                  0                     "HaveImmunity"                      0   "Hud/state/passive/HaveImmunity.tga"  |
 205             1                 3                  0                     "DemolishBuilding"                  0   ""                                    |
 206             1                 3                  0                     "PurchaseForLowerPricesAtPrimaryProducers"   0   "Hud/state/passive/PurchaseForLowerPricesAtPrimaryProducers.tga"   |
-207             1                 3                  0                     "UncannyGlare"                      0   ""                                    |
 208             1                 3                  0                     "AimForInquisitionalProceeding"     0   "Hud/state/passive/AimForInquisitionalProceeding.tga"   |
 209             1                 3                  0                     "Set_ChurchTithe"                   0   ""                                    |
 210             1                 3                  0                     "AbsolveSinner"                     0   ""                                    |
@@ -307,4 +306,5 @@ Data:
 426             1                 2                  0                     "BasicPurse"                        0   ""                                    |
 427             1                 2                  0                     "LuxuryPurse"                       0   ""                                    |
 428             1                 2                  0                     "WaitTime"                          0   ""                                    |
+429             1                 2                  0                     "AffectedByUncannyClare"            0   "Hud/state/affectedbyuncannyglare.tga"       |
 

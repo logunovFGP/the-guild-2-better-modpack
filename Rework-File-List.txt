@@ -85,24 +85,6 @@
 137 Scripts\AI\Favor\fv_UseShellchain.lua
 138 Scripts\AI\Favor\fv_UseSilverRing.lua
 
-486 Scripts\Measures\ms_090_BuyHolyIndulgence.lua
-490 Scripts\Measures\ms_092_SingForPeacefulness.lua
-491 Scripts\Measures\ms_093_WinBelievers.lua
-492 Scripts\Measures\ms_098_AbsolveSinner.lua
-493 Scripts\Measures\ms_101_InspectBusiness.lua
-494 Scripts\Measures\ms_103_CurryFavor.lua
-495 Scripts\Measures\ms_104_DeliverTheFalseGauntlet.lua
-496 Scripts\Measures\ms_105_TortureCharacter.lua
-497 Scripts\Measures\ms_106_DemolishBuilding.lua
-498 Scripts\Measures\ms_107_OrderABrainWash.lua
-500 Scripts\Measures\ms_109_Set_SeverityOfLaw.lua
-501 Scripts\Measures\ms_110_Set_ChurchTithe.lua
-502 Scripts\Measures\ms_111_Set_TurnoverTax.lua
-503 Scripts\Measures\ms_112_DetainCharacter.lua
-505 Scripts\Measures\ms_115_ImposeASalesFreeze.lua
-506 Scripts\Measures\ms_115_ImposeASalesFreezeAlderman.lua
-507 Scripts\Measures\ms_116_PropitiateEnemies.lua
-509 Scripts\Measures\ms_128_HaveAStabbingGaze.lua
 510 Scripts\Measures\ms_131_ApplyDeposition.lua
 511 Scripts\Measures\ms_132_ChargeCharacter.lua
 512 Scripts\Measures\ms_133_LeaveOffice.lua

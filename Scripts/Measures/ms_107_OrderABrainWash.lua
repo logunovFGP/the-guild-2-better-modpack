@@ -169,7 +169,8 @@ function Run()
 	DynastyForceCalcDiplomacy("MrBrainwash")
 	DynastyForceCalcDiplomacy("Destination")
 	AddImpact("Destination","brainwashed",1,duration)
-	
+	chr_GainXP("MrBrainwash", GetData("BaseXP"))	
+
 	StopMeasure()
 
 end

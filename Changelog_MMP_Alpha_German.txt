@@ -42,6 +42,7 @@ Bugfixes:
 - Wenn ihr jemanden heiratet, der einen höheren Titel hat, erhaltet ihr nun auch dann den nächst höheren Titel, wenn ihr bereits über dem Titel "Gemeiner" seid.
 - Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
 - Entführungen erzeugten keine entsprechenden Beweise.
+- Der stechende Blick des Henkers erzeugte kein Einfluss-Icon, das anzeigt, dass die Rhetorik des Ziels temporär reduziert ist.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.
@@ -62,3 +63,4 @@ Bugfixes (MegaMod):
 
 Balancing:
 - Jede Dynastie ist auf 10 Schergen beschränkt, unabhängig davon, wieviele Wohngebäude man besitzt.
+- Kosten und Gewinne durch die Benutzung von Ablassbriefen wurden erhöht.

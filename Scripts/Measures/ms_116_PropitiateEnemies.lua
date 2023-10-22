@@ -31,9 +31,7 @@ function Run()
 	local MaxDistance = 3000
 	--how far from the destination, the owner should stand while reading the letter from rome
 	local ActionDistance = 120
-	--how long the friendship will be 
 	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	--amount of favor
 	local ModifyValue = (GetSkillValue("",RHETORIC)*2)
@@ -81,10 +79,6 @@ function Run()
 	--modify the favor
 	chr_ModifyFavor("Destination2","Destination",ModifyValue)
 	
-
-	-- reset the timer for this action
-	
-	
 	-- let the other sim be locked/waiting for a moment
 	SimLock("Destination2", 1)
 	
@@ -96,12 +90,10 @@ function Run()
 		"@L_PRIVILEGES_116_PROPITIATEENEMIES_MSG_VICTIM_2_HEAD",
 		"@L_PRIVILEGES_116_PROPITIATEENEMIES_MSG_VICTIM_2_BODY",GetID(""),GetID("Destination2"),GetID("Destination"))
 	
-	chr_GainXP("",GetData("BaseXP"))
+	chr_GainXP("", GetData("BaseXP"))
 	StopMeasure()
 
 end
-
-
 
 function CleanUp()
 	if HasData("CameraActive") then
@@ -115,7 +107,5 @@ end
 function GetOSHData(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 

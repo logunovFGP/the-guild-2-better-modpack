@@ -31,7 +31,7 @@ function Run()
 	GetSettlement("", "InspectingCity")
 	GetPosition("InspectingCity", "CityPos")
 	
-	if GetDistance("Destination", "CityPos") > 8000 then
+	if GetDistance("Destination", "CityPos") > 9000 then
 		MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+23")
 		StopMeasure()
 	end
@@ -196,9 +196,9 @@ end
 
 function GetOSHData(MeasureID)
 	--can be used again in:
-	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
+	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
+	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
 end
 
 

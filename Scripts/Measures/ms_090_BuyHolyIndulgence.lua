@@ -10,23 +10,23 @@ function Run()
 	local TextPrefix = "@L_CHURCH_090_BUYHOLYINDULGENCE"
 	
 	if GetItemCount("", "LetterOfIndulgence", INVENTORY_STD) <= 0 then
-		MsgQuick("","@L_REPLACEMENTS_FAILURE_MSG_NOITEM_+0")
+		MsgQuick("", "@L_REPLACEMENTS_FAILURE_MSG_NOITEM_+0")
 		StopMeasure()
 	end
 
-	SimGetCrimeList("","CrimeList")
-	if ListSize("CrimeList")==0 then
+	SimGetCrimeList("", "CrimeList")
+	if ListSize("CrimeList") == 0 then
 		MsgQuick("", "@L_CHURCH_090_BUYHOLYINDULGENCE_FAILURES_+0", GetID(""))
 		return
-	elseif GetInsideBuilding("","church") then
+	elseif GetInsideBuilding("", "church") then
 		local Cost = 0
 		local NumEvidences = ListSize("CrimeList")
-		for i=0,NumEvidences-1,1 do
-			ListGetElement("CrimeList",i,"tmp")
+		for i=0, NumEvidences-1,1 do
+			ListGetElement("CrimeList", i, "tmp")
 			Cost = Cost + CrimeGetEvidenceValue("tmp")
 		end
 
-		Cost = Cost*200
+		Cost = Cost*250
 		
 		local Decision = MsgNews("","","@P"..
 			"@B[1,"..TextPrefix.."_BTN_+0]"..
@@ -45,30 +45,33 @@ function Run()
 		if (money < Cost) then
 			MsgQuick("", "@L_CHURCH_090_BUYHOLYINDULGENCE_FAILURES_+1", Cost)
 		else
-			RemoveItems("", "LetterOfIndulgence", 1, INVENTORY_STD)
-			if GetFreeLocatorByName("church","HolyIndulgence",-1,-1,"HolyIndulgencePos") then
-				f_BeginUseLocator("","HolyIndulgencePos",GL_STANCE_KNEEL,true)
-				SetData("Blocked", 1)
-				PlayAnimation("","knee_pray")
-				GetPosition("", "ParticleSpawnPos")
-				StartSingleShotParticle("particles/absolvesinner.nif", "ParticleSpawnPos",1.4,4)
-				Sleep(3)
-				f_EndUseLocator("","HolyIndulgencePos",GL_STANCE_STAND)
-				SetData("Blocked",0)
-			end
-			SpendMoney("", Cost, "CostIndulgence")
-			CreditMoney("church", (Cost*0.1), "IncomeIndulgence")
-			SetMeasureRepeat(TimeOut)
-			for i=0,ListSize("CrimeList")-1,1 do
-				ListGetElement("CrimeList",i,"tmp")
-				CrimeForfeit("tmp",2)		
-			end
-			local baseXP = GetData("BaseXP")
-			baseXP = baseXP * NumEvidences
-			chr_GainXP("", baseXP)
-			feedback_MessagePolitics("",
-				""..TextPrefix.."_SUCCESS_MSG_HEAD",
-				""..TextPrefix.."_SUCCESS_MSG_BODY",GetID(""),GetID("church"),Cost)
+			if RemoveItems("", "LetterOfIndulgence", 1, INVENTORY_STD) > 0 then
+				if GetFreeLocatorByName("church", "HolyIndulgence", -1, -1, "HolyIndulgencePos") then
+					f_BeginUseLocator("", "HolyIndulgencePos", GL_STANCE_KNEEL, true)
+					SetData("Blocked", 1)
+					PlayAnimation("", "knee_pray")
+					GetPosition("", "ParticleSpawnPos")
+					StartSingleShotParticle("particles/absolvesinner.nif", "ParticleSpawnPos", 1.4, 4)
+					Sleep(3)
+					f_EndUseLocator("", "HolyIndulgencePos", GL_STANCE_STAND)
+					SetData("Blocked", 0)
+				end
+				SpendMoney("", Cost, "CostIndulgence")
+				CreditMoney("church", (Cost*0.5), "IncomeIndulgence")
+				SetMeasureRepeat(TimeOut)
+				for i=0,ListSize("CrimeList")-1,1 do
+					ListGetElement("CrimeList", i, "tmp")
+					CrimeForfeit("tmp", 2)		
+				end
+				local baseXP = GetData("BaseXP")
+				baseXP = baseXP * NumEvidences
+				chr_GainXP("", baseXP)
+				feedback_MessagePolitics("",
+							""..TextPrefix.."_SUCCESS_MSG_HEAD",
+							""..TextPrefix.."_SUCCESS_MSG_BODY", GetID(""), GetID("church"), Cost)
+			else
+				MsgQuick("", "@L_REPLACEMENTS_FAILURE_MSG_NOITEM_+0")
+			end		
 		end
 	end
 end
@@ -76,7 +79,7 @@ end
 function CleanUp()
 	StopAnimation("")
 	if GetData("Blocked") == 1 then
-		f_EndUseLocator("","HolyIndulgencePos",GL_STANCE_STAND)
+		f_EndUseLocator("", "HolyIndulgencePos", GL_STANCE_STAND)
 	end
 end
 

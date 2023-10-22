@@ -206,6 +206,7 @@ _General_
 - When you marry someone above your title you will now gain the next higher title, even if you are above commoner.
 - You would generate evidence when you robbed unconcious persons even if you didn't manage to steal anything.
 - Characters "follow" in a more natural way now and should get stuck less often.
+- Piercing Gazes didn't show the impact icon on the target whose rhetoric was reduced.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.
@@ -431,6 +432,7 @@ _Scholar_
 - Sorcerer's robe no longer will give you a malus.
 - The Arcane Knowledge talent no longer effects producitivity of employees: instead, like all other classes, handicraft is used.
 - Medical treatments cost more.
+- Cost and profit of the usage of letters of indulgence have been increased
 
 _Craftsman_
 - mine and wood cutter start with higher inventory space per slot.

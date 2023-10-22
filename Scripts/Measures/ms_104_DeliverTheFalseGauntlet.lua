@@ -9,23 +9,15 @@
 
 function Init()
 	if not AliasExists("Believer") then
-		InitAlias("Believer",MEASUREINIT_SELECTION, "__F(NOT(Object.BelongsToMe()))",
-					"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_TARGET2"
-					,ms_104_deliverthefalsegauntlet_AIInit)
+		InitAlias("Believer", MEASUREINIT_SELECTION, "__F(NOT(Object.BelongsToMe()))",
+					"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_TARGET2",
+					ms_104_deliverthefalsegauntlet_AIInit)
 		MsgMeasure("","")
 	end
 
 end
 
 function Run()
-	if (GetState("", STATE_CUTSCENE)) then
-		ms_104_deliverthefalsegauntlet_Cutscene()
-	else
-		ms_104_deliverthefalsegauntlet_Normal()
-	end
-end
-
-function Normal()
 
 	--how far the Destination can be to start this action
 	local MaxDistance = 3000
@@ -35,12 +27,12 @@ function Normal()
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	--amount of favor
-	local ModifyValue = (GetSkillValue("",RHETORIC)*2)
+	local ModifyValue = (GetSkillValue("", RHETORIC)*2)
 	if ModifyValue < 5 then
 		ModifyValue = 5	
 	end
 	local OwnerRhetoric = (GetSkillValue("",RHETORIC))
-	local BelieverRhetoric = (GetSkillValue("Believer",RHETORIC))
+	local BelieverRhetoric = (GetSkillValue("Believer", RHETORIC))
 	local BelieverGender = (SimGetGender("Believer"))
 	local DestinationGender = (SimGetGender("Destination"))
 
@@ -49,18 +41,18 @@ function Normal()
 		StopMeasure()
 	end
 	
-	SetData("CameraActive",1)
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","Believer")
-	CutsceneCameraCreate("cutscene","")		
+	SetData("CameraActive", 1)
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Believer")
+	CutsceneCameraCreate("cutscene", "")		
 	camera_CutsceneBothLock("cutscene", "")
 	
 	AlignTo("Owner", "Believer")
 	AlignTo("Believer", "Owner")
 	Sleep(0.5)
 	
-	local time1 = PlayAnimationNoWait("Owner", "talk_short")
+	time1 = PlayAnimationNoWait("Owner", "talk_short")
 	Sleep(time1)
 	
 	
@@ -80,9 +72,10 @@ function Normal()
 	else
 		GenderType = "_TOMALE"
 	end
+
 	time1 = PlayAnimationNoWait("Believer", "talk_short")
 	Sleep(time1)
-	MsgSay("","@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_ACTOR"..RhethoricType..GenderType, GetID("Destination"))
+	MsgSay("", "@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_ACTOR"..RhethoricType..GenderType, GetID("Destination"))
 	
 	
 	--combine textlabel by checking rhetoric skill and gender
@@ -101,105 +94,28 @@ function Normal()
 	else
 		GenderType2 = "_ABOUTMALE"
 	end
+
 	camera_CutsceneBothLock("cutscene", "Believer")
-	MsgSay("Believer","@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_DESTINATION_SUCCESS"..RhethoricType2..GenderType2)
+	MsgSay("Believer", "@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_DESTINATION_SUCCESS"..RhethoricType2..GenderType2)
 	
 	Sleep(time1)
 	
 	--modify the favor
-	ModifyFavorToDynasty("Believer","Destination",-ModifyValue)
+	ModifyFavorToDynasty("Believer", "Destination", -ModifyValue)
 	
 	-- reset the timer for this action
-	SetMeasureRepeat(TimeOut)
+	SetRepeatTimer("", GetMeasureRepeatName2("DeliverTheFalseGauntlet"), TimeOut)
 	chr_GainXP("",GetData("BaseXP"))
 	-- let the other sim be locked/waiting for a moment
 	SimLock("Believer", 1)
 	
-	MsgNewsNoWait("Believer","Destination","","intrigue",-1,
-		"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_BELIEVER_HEADLINE",
-			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_BELIEVER_BODY",GetID(""),GetID("Destination"))
+	MsgNewsNoWait("Believer", "Destination", "", "intrigue", -1,
+			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_BELIEVER_HEADLINE",
+			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_BELIEVER_BODY", GetID(""), GetID("Destination"))
 
-	MsgNewsNoWait("Destination","Believer","","intrigue",-1,
-		"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_VICTIM_HEADLINE",
-			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_VICTIM_BODY",GetID(""),GetID("Believer"))
-	
-	StopMeasure()
-
-end
-
-
-
-function Cutscene()
-	if SimGetCutscene("","cutscene") then
-		CutsceneSetMeasureLockTime("cutscene", 2.0)
-	end
-	
-	Sleep(1)
-
-	--how far the Destination can be to start this action
-	local MaxDistance = 3000
-	--how far from the destination, the owner should stand while reading the letter from rome
-	local ActionDistance = 40
-	--how long the friendship will be 
-	--time before privilege can be used again
-	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
-		
-	--amount of favor
-	local ModifyValue = (GetSkillValue("",RHETORIC)*2)
-	if ModifyValue < 5 then
-		ModifyValue = 5	
-	end
-	local OwnerRhetoric = (GetSkillValue("",RHETORIC))
-	local BelieverRhetoric = (GetSkillValue("Believer",RHETORIC))
-	local BelieverGender = (SimGetGender("Believer"))
-	local DestinationGender = (SimGetGender("Destination"))
-
-	--run to destination and start action at MaxDistance
---	if not ai_StartInteraction("", "Believer", MaxDistance, ActionDistance, nil) then
---		StopMeasure()
---	end
-	
-	
-	--modify the favor
-	ModifyFavorToDynasty("Believer","Destination",-ModifyValue)
-	
-	if SimGetCutscene("","cutscene") then
-		CutsceneCallUnscheduled("cutscene", "UpdatePanel")
-		Sleep(0.1)
-	else
-		return
-	end	
-
-	SetMeasureRepeat(TimeOut)
-	chr_GainXP("",GetData("BaseXP"))
-	
-	MsgNewsNoWait("Believer","Destination","","intrigue",-1,
-		"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_BELIEVER_HEADLINE",
-			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_BELIEVER_BODY",GetID(""),GetID("Destination"))
-
-	MsgNewsNoWait("Destination","Believer","","intrigue",-1,
-		"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_VICTIM_HEADLINE",
-			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_VICTIM_BODY",GetID(""),GetID("Believer"))
-			
-	
-	local RhethoricType2
-	if BelieverRhetoric < 4 then
-		RhethoricType2 = "_WEAK_RHETORIC"
-	elseif OwnerRhetoric < 7 then
-		RhethoricType2 = "_NORMAL_RHETORIC"
-	else
-		RhethoricType2 = "_GOOD_RHETORIC"
-	end
-	
-	local GenderType2
-	if DestinationGender == 0 then
-		GenderType2 = "_ABOUTFEMALE"
-	else
-		GenderType2 = "_ABOUTMALE"
-	end
-	MsgSay("Believer","@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_DESTINATION_SUCCESS"..RhethoricType2..GenderType2)
+	MsgNewsNoWait("Destination", "Believer", "", "intrigue", -1,
+			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_VICTIM_HEADLINE",
+			"@L_PRIVILEGES_104_DELIVERTHEFALSEGAUNTLET_MSG_VICTIM_BODY", GetID(""), GetID("Believer"))
 	
 	StopMeasure()
 

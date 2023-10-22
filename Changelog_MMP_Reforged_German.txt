@@ -205,6 +205,7 @@ _Allgemein_
 - Wenn ihr jemanden heiratet, der einen höheren Titel hat, erhaltet ihr nun auch dann den nächst höheren Titel, wenn ihr bereits über dem Titel "Gemeiner" seid.
 - Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
 - Charaktere "folgen" nun natürlicher und bleiben seltener stecken.
+- Der stechende Blick des Henkers erzeugte kein Einfluss-Icon, das anzeigt, dass die Rhetorik des Ziels temporär reduziert ist.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
@@ -438,9 +439,10 @@ _Gelehrter_
 - Die 'Hexerrobe' verursacht keinen Malus mehr.
 - Gelehrte nutzen nun wieder Handwerkskunst und nicht Geheimwissen, um die Produktivität ihrer Angestellten zu erhöhen.
 - Behandlungskosten wurden erhöht.
+- Kosten und Gewinne durch die Benutzung von Ablassbriefen wurden erhöht.
 
 _Handwerker_
--
+- Mine und Holzfäller haben zu Spielbeginn höhere Lagermengen.
 
 _Gauner_
 - Das Charisma von Dirnen hat nun Einfluss darauf, wie erfolgreich sie beim 'Anlocken' von Kundschaft sind.
