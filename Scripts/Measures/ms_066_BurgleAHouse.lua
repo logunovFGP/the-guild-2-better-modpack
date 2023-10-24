@@ -22,17 +22,17 @@ function Run()
 	-- Get the Owner of the Building
 	if not BuildingGetOwner("Destination", "Victim") then
 		--no owner found, workers hut is target
-		CopyAlias("Destination","Victim")
+		CopyAlias("Destination", "Victim")
 	end
 	
 	-- Get my working place
-	if not SimGetWorkingPlace("","MyThievesGuild") then
+	if not SimGetWorkingPlace("", "MyThievesGuild") then
 		if IsPartyMember("") then
-			local NextBuilding = ai_GetNearestDynastyBuilding("",GL_BUILDING_CLASS_WORKSHOP,GL_BUILDING_TYPE_THIEF)
+			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF)
 			if not NextBuilding then
 				StopMeasure()
 			end
-			CopyAlias(NextBuilding,"MyThievesGuild")
+			CopyAlias(NextBuilding, "MyThievesGuild")
 		else
 			StopMeasure()
 		end
@@ -41,10 +41,10 @@ function Run()
 	-- Combine the Thief Property by ThievesGuild ID and Destination ID
 	local DestID = GetID("Destination")
 	local ThiefProperty = "Thief"..OwnerID.."on"..DestID
-	SetData("ThiefProperty",ThiefProperty)
+	SetData("ThiefProperty", ThiefProperty)
 	
 	-- Set the Property
-	SetProperty("",ThiefProperty,1)
+	SetProperty("", ThiefProperty, 1)
 	
 	-- die measure darf/sollte nicht restarten, da nach einem erwischt/entdeckt werden ansonsten die Measure immer wieder neu
 	-- aufgerufen werden würde, was zu vielen Beweisen führen würde
@@ -131,17 +131,17 @@ function Run()
 	
 	--start the action
 	if BuildingGetOwner("Destination", "BOwner") then
-		CommitAction("burgleahouse", "", "", "Destination", "Destination")
+		CommitAction("burgleahouse", "", "Destination", "Destination")
 	else
 		if BuildingGetSim("Destination",0,"DummyOwner") then
-			CommitAction("burgleahouse", "", "", "DummyOwner", "Destination")
+			CommitAction("burgleahouse", "", "DummyOwner", "Destination")
 		end
 	end
 	
 	while GetProperty("Destination","TimeToBurgle"..GetID("dynasty")) < TimeToBurgle do
 		local NewValue = GetProperty("Destination","TimeToBurgle"..GetID("dynasty")) + Skill
-		SetProperty("Destination","TimeToBurgle"..GetID("dynasty"),NewValue)
-		SetProcessProgress("",NewValue)
+		SetProperty("Destination","TimeToBurgle"..GetID("dynasty"), NewValue)
+		SetProcessProgress("", NewValue)
 		if not AliasExists("Destination") then
 			StopMeasure()
 		end
@@ -162,13 +162,13 @@ function Run()
 	if GetImpactValue("Destination","BoobyTrap") ~= 0 then
 		GetPosition("", "ParticleSpawnPos")
 		PlaySound3D("", "fire/Explosion_01.wav", 1.0)
-		StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1,5)
+		StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1, 5)
 		ModifyHP("", -(0.5*GetMaxHP("")), true, 1)
 		if GetImpactValue("Destination","buildingburgledtoday") ~= 0 then
 			local TimeLeft = ImpactGetMaxTimeleft("Destination", "BoobyTrap")
 			AddImpact("Destination", "buildingburgledtoday", 1, TimeLeft)
 		end
-		CommitAction("explosion", "", "", "Destination", "Destination")
+		CommitAction("explosion", "", "Destination", "Destination")
 		StopMeasure()
 	end
 	

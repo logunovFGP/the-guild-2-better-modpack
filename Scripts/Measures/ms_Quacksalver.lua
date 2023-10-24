@@ -70,8 +70,8 @@ function Run()
 			StopMeasure()
 		end
 		
-	  GetPosition("","MyPos")
-	  local x,y,z = PositionGetVector("MyPos")
+		GetPosition("","MyPos")
+		local x,y,z = PositionGetVector("MyPos")
 		SetProperty("","MyQuacksalvePosX",x)
 		SetProperty("","MyQuacksalvePosZ",z)
 

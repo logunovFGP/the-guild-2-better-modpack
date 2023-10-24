@@ -1,15 +1,14 @@
 function Run()
 
-  while GetState("",STATE_HPFZ_HYPNOSE)==true do
-  	   CommitAction("bard","","")
-       CarryObject("","Handheld_Device/Doll_med_01.nif", false)
-       PlayAnimation("","chop_in")
-       LoopAnimation("","chop_loop", 20)
-       PlayAnimation("","chop_out")
-	   StopAction("bard","")
-       state_hpfz_hypnose_rundgang()
-  end
-
+	while GetState("", STATE_HPFZ_HYPNOSE) do
+		CommitAction("bard", "", "")
+		CarryObject("","Handheld_Device/Doll_med_01.nif", false)
+		PlayAnimation("","chop_in")
+		LoopAnimation("","chop_loop", 20)
+		PlayAnimation("","chop_out")
+		StopAction("bard","")
+		state_hpfz_hypnose_rundgang()
+	end
 end
 
 function rundgang()

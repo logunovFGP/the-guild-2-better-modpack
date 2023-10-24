@@ -17,18 +17,18 @@ function Run()
 				break
 			end
 		end		
-	local zielloc = Rand(50)+20
-	if not f_MoveTo("","Destination",GL_MOVESPEED_RUN,zielloc) then
-		StopMeasure()
-	end
+		local zielloc = Rand(50)+20
+		if not f_MoveTo("","Destination",GL_MOVESPEED_RUN,zielloc) then
+			StopMeasure()
+		end
 
 		local MeasureID = GetCurrentMeasureID("")
 		local duration = mdata_GetDuration(MeasureID)		
 		local EndTime = GetGametime() + duration		
 		
-	    GetPosition("","MovePos")
-	    GfxAttachObject("tarottisch", "city/Stuff/tarottable.nif")
-	    GfxSetPositionTo("tarottisch", "MovePos")	
+		GetPosition("","MovePos")
+		GfxAttachObject("tarottisch", "city/Stuff/tarottable.nif")
+		GfxSetPositionTo("tarottisch", "MovePos")	
 		SetProperty("","Signal","JugglerTarot")
 		CommitAction("kurios", "", "")
 		SetRepeatTimer("", GetMeasureRepeatName(), 1)

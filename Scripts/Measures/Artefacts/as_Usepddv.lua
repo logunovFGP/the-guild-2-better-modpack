@@ -43,7 +43,7 @@ function Run()
 		-- ani stuff
 		GetPosition("Destination", "ParticleSpawnPos")
 		PlayAnimationNoWait("Destination", "cogitate")
-		CommitAction("poison", "", "", "Destination")
+		CommitAction("poison", "", "Destination", "Destination")
 		PlayAnimationNoWait("", "use_object_standing")
 		Sleep(1)
 		PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)

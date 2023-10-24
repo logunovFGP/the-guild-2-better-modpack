@@ -98,18 +98,18 @@ function GoInsideBuilding(SimAlias, CityObject, BuildingClass, BuildingType, Bui
 	local CityID = -1
 	
 	if AliasExists(CityObject) then
-		if not GetSettlement(CityObject, "__GIB_City") then
+		if not GetNearestSettlement(CityObject, "__GIB_City") then
 			return false
 		end
 	else
-		if not GetSettlement(SimAlias, "__GIB_City") then
+		if not GetNearestSettlement(SimAlias, "__GIB_City") then
 			return false
 		end
 	end
 	
 	IsOk, InsideAlias = ai_CheckInsideBuilding(SimAlias, BuildingClass, BuildingType, BuildingAlias)
 	if IsOk then
-		if GetSettlementID(InsideAlias)==GetID("__GIB_City") then
+		if GetSettlementID(InsideAlias) == GetID("__GIB_City") then
 			CopyAlias(InsideAlias, BuildingAlias)
 			return true
 		end

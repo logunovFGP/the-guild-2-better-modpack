@@ -23,7 +23,7 @@ function Run()
 	if Booty > 0 then -- you can steal multiple times if the character has items in the inventory
 		-- start crime action
 		if GetImpactValue("Destination", "REVOLT") == 0 then
-			CommitAction("rob", "", "", "Destination")
+			CommitAction("rob", "", "Destination", "Destination")
 			Sleep(0.75)
 		end
 		--for the mission
@@ -63,7 +63,7 @@ function Run()
 			
 			-- start crime action
 			if GetImpactValue("Destination", "REVOLT") == 0 then
-				CommitAction("rob", "", "", "Destination")
+				CommitAction("rob", "", "Destination", "Destination")
 				Sleep(0.75)
 			end
 			

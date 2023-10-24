@@ -101,9 +101,9 @@ function Run()
 						PlayAnimationNoWait("Owner", "manipulate_bottom_r")
 						if AddImpact(DestAlias,"HaveBeenAusraubed",1,TimeToWait) then
 							CommitAction("rob", "", "", DestAlias)
-						    Plunder("Owner", "Destination", 8)
-						    local PiratLevel = SimGetLevel("")
-						    local Beute = Rand(40) + 200 + PiratLevel * 20
+							Plunder("Owner", "Destination", 8)
+							local PiratLevel = SimGetLevel("")
+							local Beute = Rand(40) + 200 + PiratLevel * 20
 						
 						    if Rand(100 ) > (100-PiratLevel*2) then
 							    Beute = Beute*3

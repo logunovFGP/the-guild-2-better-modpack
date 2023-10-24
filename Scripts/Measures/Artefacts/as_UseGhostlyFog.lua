@@ -45,10 +45,10 @@ function Run()
 	
 	--play the animation and start particles
 	GetPosition("Destination", "ParticleSpawnPos")
-	local time2 = PlayAnimationNoWait("Destination","cogitate")
+	local time2 = PlayAnimationNoWait("Destination", "cogitate")
 	--play animation and spawn particles
-	if RemoveItems("","Ghostlyfog",1)>0 then
-		CommitAction("poison","","","Destination")
+	if RemoveItems("", "Ghostlyfog", 1) > 0 then
+		CommitAction("poison","","Destination","Destination")
 		local Time
 		Time = PlayAnimationNoWait("","use_object_standing")
 		Sleep(1)

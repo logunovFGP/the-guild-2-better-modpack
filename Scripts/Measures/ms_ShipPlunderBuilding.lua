@@ -48,9 +48,10 @@ function Run()
 	else
 		StopMeasure()
 	end
+	
 	PlaySound3DVariation("Destination","measures/plunderbuilding",1)
 	PlaySound3DVariation("","Locations/alarm_horn_single",1)
-	CommitAction("burgleahouse","","", "Destination","Destination")
+	CommitAction("burgleahouse", "", "Destination", "Destination")
 	local EndTime = GetGametime() + duration
 	SetData("Time",duration)
 	SetData("EndTime",EndTime)
@@ -96,13 +97,12 @@ function Run()
 		mission_ScoreCrime("",Money)
 		SetMeasureRepeat(TimeOut)
 	else
-		MsgQuick("","@L_BATTLE_061_PLUNDERBUILDING_FAILURES_+1")
+		MsgQuick("", "@L_BATTLE_061_PLUNDERBUILDING_FAILURES_+1")
 	end
 	
-	RemoveProperty("Destination","PlunderInProgress")
+	RemoveProperty("Destination", "PlunderInProgress")
 	StopMeasure()
 	
-
 end
 
 -- -----------------------
@@ -115,7 +115,7 @@ function Progress()
 		local CurrentTime = GetGametime()
 		CurrentTime = EndTime - CurrentTime
 		CurrentTime = Time - CurrentTime
-		SetProcessProgress("",CurrentTime*10)
+		SetProcessProgress("", CurrentTime*10)
 		Sleep(3)
 	end
 end
@@ -139,7 +139,6 @@ function CleanUp()
 	StopAction("burgleahouse","")
 	
 end
-
 
 function GetOSHData(MeasureID)
 	--can be used again in:

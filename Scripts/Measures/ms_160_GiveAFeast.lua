@@ -4,12 +4,12 @@ end
 
 function Run()
 	local money = SimGetWealth("")
-	if not GetHomeBuilding("","MyHome") then
+	if not GetHomeBuilding("", "MyHome") then
 		StopMeasure()
 	end
 
 	-- Essen & trinken bestellen
-	local Res1 = MsgNews("","",
+	local Res1 = MsgNews("", "",
 		"@B[1, @L_FEAST_1_PLAN_A_ORDERMENUE_+2]"..
 		"@B[2, @L_FEAST_1_PLAN_A_ORDERMENUE_+3]"..
 		"@B[3, @L_FEAST_1_PLAN_A_ORDERMENUE_+4]"..
@@ -31,22 +31,22 @@ function Run()
 	end
 
 	local FoodLevel = 0 
-	if Res1==1 then
+	if Res1 == 1 then
 		FoodLevel = 5		
-	elseif Res1==2 then
+	elseif Res1 == 2 then
 		FoodLevel = 4		
-	elseif Res1==3 then
+	elseif Res1 == 3 then
 		FoodLevel = 3		
-	elseif Res1==4 then
+	elseif Res1 == 4 then
 		FoodLevel = 2		
-	elseif Res1==5 then
+	elseif Res1 == 5 then
 		FoodLevel = 1		
 	else
 		return
 	end		
 
 	-- musiker bestellen
-	local Res2 = MsgNews("","",
+	local Res2 = MsgNews("", "",
 		"@B[1, @L_FEAST_1_PLAN_B_ORDERMUSICIANS_+1]"..
 		"@B[2, @L_FEAST_1_PLAN_B_ORDERMUSICIANS_+2]"..
 		"@B[3, @L_FEAST_1_PLAN_B_ORDERMUSICIANS_+3]"..
@@ -80,7 +80,7 @@ function Run()
 	local PriceForInvite = FoodLevel*money*0.001
 	local PriceForFeast = MusicLevel*money*0.005
 	-- zusammenfassung: und ja/nein
-	local Res3 = MsgNews("","",
+	local Res3 = MsgNews("", "",
 		"@B[1, @L_FEAST_1_PLAN_BTN_+0]@B[2, @L_FEAST_1_PLAN_BTN_+1]@P",
 		ms_160_giveafeast_AIFunc,
 		"politics",
@@ -95,19 +95,19 @@ function Run()
 		StopMeasure()
 	end
 	
-	if not chr_SpendMoney("", PriceForFeast ,"CostSocial") then
+	if not chr_SpendMoney("", PriceForFeast, "CostSocial") then
 		
 		StopMeasure()
 	end
 	
-	SetState("MyHome",STATE_FEAST,true)
-	SetProperty("","Host")
-	SetProperty("MyHome","InvitationsLeft",6)
-	SetProperty("MyHome","CanInvite",1)
-	SetProperty("MyHome","MusicLevel",MusicLevel)
-	SetProperty("MyHome","FoodLevel",FoodLevel)
-	SetProperty("MyHome","BaseMoney",money)
-	SetProperty("MyHome","PriceForInvite",PriceForInvite)
+	SetState("MyHome", STATE_FEAST, true)
+	SetProperty("", "Host")
+	SetProperty("MyHome", "InvitationsLeft", 6)
+	SetProperty("MyHome", "CanInvite", 1)
+	SetProperty("MyHome", "MusicLevel", MusicLevel)
+	SetProperty("MyHome", "FoodLevel", FoodLevel)
+	SetProperty("MyHome", "BaseMoney", money)
+	SetProperty("MyHome", "PriceForInvite", PriceForInvite)
 	
 	StopMeasure()
 end

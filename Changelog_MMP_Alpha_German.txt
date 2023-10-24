@@ -43,6 +43,9 @@ Bugfixes:
 - Man generierte Beweise beim Ausrauben einer bewusstlosen Person, selbst, wenn das Opfer gar nichts zum Stehlen dabei hatte.
 - Entführungen erzeugten keine entsprechenden Beweise.
 - Der stechende Blick des Henkers erzeugte kein Einfluss-Icon, das anzeigt, dass die Rhetorik des Ziels temporär reduziert ist.
+- Einen neuen Titel in einer anderen Stadt zu beantragen führt nun nicht länger dazu, dass der Sim zurück in seine Heimatstadt rennt.
+- Wenn man einen schwangeren Charakter anklagen wollte, sprach der Stadtschreiber fälschlicherweise davon, dass diese sich gegenwärtig im Gefängnis befände.
+- Einige Verbrechen haben keine korrekten Beweise erzeugt.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.

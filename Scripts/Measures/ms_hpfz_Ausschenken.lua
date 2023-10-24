@@ -78,9 +78,9 @@ function Run()
 		
 		local EndTime = GetGametime() + duration
 	
-	    GetPosition("","MovePos")
-	    GfxAttachObject("wein1", "city/Stuff/workbarrel.nif")
-	    GfxSetPositionTo("wein1", "MovePos")	
+		GetPosition("","MovePos")
+		GfxAttachObject("wein1", "city/Stuff/workbarrel.nif")
+		GfxSetPositionTo("wein1", "MovePos")	
 
 		CommitAction("ausschenken", "", "")
 

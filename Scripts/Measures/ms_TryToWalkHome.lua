@@ -38,7 +38,7 @@ function Run()
 end
 
 function DanceABit()
-	CommitAction("bard","","")
+	CommitAction("bard", "", "")
 	if SimGetGender("")==GL_GENDER_MALE then
 		PlaySound3DVariation("","CharacterFX/male_joy_loop",1)
 	else

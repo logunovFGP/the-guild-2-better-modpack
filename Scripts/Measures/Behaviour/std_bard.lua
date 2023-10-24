@@ -82,7 +82,7 @@ function Run()
 		end
 		
 		if GetOutdoorMovePosition("Owner", "SingingPos", "MoveToPosition") then
-			f_MoveTo("","MoveToPosition",GL_MOVESPEED_WALK, 500)
+			f_MoveTo("", "MoveToPosition",GL_MOVESPEED_WALK, 500)
 			std_bard_CheckSleep()
 		end
 

@@ -63,7 +63,7 @@ function Run()
 	if CityGetPenalty("CityAlias", "Destination", PENALTY_PRISON, true, "Penalty") then
 		SetData("arrester",1)
 		RemoveProperty("Destination","NoEscape")
-		CommitAction("gauntlet", "Destination", "Destination", "")
+		CommitAction("gauntlet", "Destination", "Destination")
 		SetData("Action_Started", "gauntlet")
 		
 		f_FollowNoWait("", "Destination", GL_MOVESPEED_WALK, 160)
@@ -154,9 +154,9 @@ function Run()
 			SimBeamMeUp("Destination","ExecPos",false)
 		end
 		
-		f_MoveTo("","Destination",GL_MOVESPEED_WALK,300)
+		f_MoveTo("", "Destination", GL_MOVESPEED_WALK,300)
 		--BattleWeaponStore("")
-		CommitAction("pillory","Destination","Destination")
+		CommitAction("pillory", "Destination", "Destination")
 		SetData("Action_Started", "Pillory")
 		SetProperty("Destination","NoEscape",1)
 		f_StartHighPriorMusic(MUSIC_EXECUTION)

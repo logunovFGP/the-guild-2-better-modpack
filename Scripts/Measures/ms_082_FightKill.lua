@@ -35,23 +35,23 @@ function Run()
 		local Action = GetProperty("Destination","KillAction_start")
 		if Action == 2 then
 			MeasureSetNotRestartable()
-			feedback_MessageCharacter("","@L_BATTLE_FIGHTKILL_MSG_SUCCESS_OWNER_HEAD_+0",
-								"@L_BATTLE_FIGHTKILL_MSG_SUCCESS_OWNER_BODY_+0",GetID("Destination"))
+			feedback_MessageCharacter("", "@L_BATTLE_FIGHTKILL_MSG_SUCCESS_OWNER_HEAD_+0",
+								"@L_BATTLE_FIGHTKILL_MSG_SUCCESS_OWNER_BODY_+0", GetID("Destination"))
 
-			if not HasProperty("Destination","MessageRecieved") then
-				SetProperty("Destination","MessageRecieved",1)
-				MsgNewsNoWait("Destination","","","intrigue",-1,
+			if not HasProperty("Destination", "MessageRecieved") then
+				SetProperty("Destination", "MessageRecieved", 1)
+				MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 								"@L_BATTLE_FIGHTKILL_MSG_SUCCESS_VICTIM_HEAD_+0",
-								"@L_BATTLE_FIGHTKILL_MSG_SUCCESS_VICTIM_BODY_+0",GetID("Destination"),GetID(""))
+								"@L_BATTLE_FIGHTKILL_MSG_SUCCESS_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 			end
 
 			local VictimLevel = SimGetLevel("Destination")
 			local baseXP = GetData("BaseXP")
 			baseXP = baseXP * VictimLevel
 
-			if GetDynastyID("")>0 then
-				if GetImpactValue("Destination","REVOLT")==0 then
-					CommitAction("murder","","Destination","Destination")
+			if GetDynastyID("") > 0 then
+				if GetImpactValue("Destination", "REVOLT") == 0 then
+					CommitAction("murder", "", "Destination", "Destination")
 				else
 					Bounty = SimGetLevel("Destination")*500
 					chr_RecieveMoney("", Bounty, "IncomeOther")

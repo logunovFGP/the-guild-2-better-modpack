@@ -85,21 +85,6 @@
 137 Scripts\AI\Favor\fv_UseShellchain.lua
 138 Scripts\AI\Favor\fv_UseSilverRing.lua
 
-510 Scripts\Measures\ms_131_ApplyDeposition.lua
-511 Scripts\Measures\ms_132_ChargeCharacter.lua
-512 Scripts\Measures\ms_133_LeaveOffice.lua
-514 Scripts\Measures\ms_142_OrderASabotage_Bomb.lua
-515 Scripts\Measures\ms_142_OrderASabotage_CombustionBomb.lua
-516 Scripts\Measures\ms_143_OrderAShadowing.lua
-517 Scripts\Measures\ms_145_OrderASpying.lua
-518 Scripts\Measures\ms_146_AlertTheGuard.lua
-522 Scripts\Measures\ms_155_ArrangeDanceShow.lua
-523 Scripts\Measures\ms_157_AssignEmployeeToService.lua
-525 Scripts\Measures\ms_160b_InviteToFeast.lua
-526 Scripts\Measures\ms_160_GiveAFeast.lua
-527 Scripts\Measures\ms_211_OrderCollectEvidence.lua
-528 Scripts\Measures\ms_220_TrainCharacter.lua
-532 Scripts\Measures\ms_AddPamphlet.lua
 533 Scripts\Measures\ms_AdministrateDiplomacy.lua
 534 Scripts\Measures\ms_AdministrateWar.lua
 536 Scripts\Measures\ms_AIBuyArmor.lua

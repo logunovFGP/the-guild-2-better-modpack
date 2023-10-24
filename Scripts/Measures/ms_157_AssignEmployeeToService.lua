@@ -23,10 +23,20 @@ function Run()
 		else
 			return
 		end
-	end
+	else
+		if not f_MoveTo("", "Tavern", GL_MOVESPEED_RUN) then
+			StopMeasure()
+		end
 
-	if not AliasExists("Tavern") then
-		return
+		if not GetInsideBuilding("", "CurrentBuilding") then
+			StopMeasure()
+		end
+
+		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_TAVERN then
+			CopyAlias("CurrentBuilding", "Tavern")
+		else
+			StopMeasure()
+		end
 	end
 
 	SetProperty("Tavern", "ServiceActive", 1)
@@ -112,7 +122,12 @@ end
 
 function CleanUp()
 	if AliasExists("Tavern") then
-		RemoveProperty("Tavern", "ServiceActive")
+		SimGetWorkingPlace("","Tavern")
 	end
+
+	StopAnimation("")
+	MoveSetActivity("", "")
+	RemoveProperty("Tavern", "ServiceActive")
+	RemoveProperty("Tavern", "GoToService")
 end
 

@@ -41,7 +41,7 @@ function Run()
 		end
 	else
 		if GetOutdoorMovePosition("","Destination","SabotagePosition") then
-			if not f_MoveTo("","SabotagePosition") then
+			if not f_MoveTo("", "SabotagePosition") then
 				MsgQuick("","@L_GENERAL_MEASURES_142_ORDERASABOTAGE_FAILURES_+1",GetID("Destination"))
 				MsgMeasure("","")
 				StopMeasure()
@@ -55,7 +55,7 @@ function Run()
 	-- die measure darf/sollte nicht restarten, da nach einem erwischt/entdeckt werden ansonsten die Measure immer wieder neu
 	-- aufgerufen werden würde, was zu vielen Beweisen führen würde
 	MeasureSetNotRestartable()
-	CommitAction("lay_bomb", "", "", "Destination", "Destination")
+	CommitAction("lay_bomb", "", "Destination", "Destination")
 	
 	-- Attach the bomb model to the myrmidon
 	CarryObject("", "Handheld_Device/ANIM_Bomb.nif", false)
@@ -101,7 +101,7 @@ function Run()
 		end
 	end
 
-	CommitAction("explosion", "", "", "Destination", "Destination")
+	CommitAction("explosion", "", "Destination", "Destination")
 	AddImpact("Destination","buildingbombedtoday",1,duration)
 	SetMeasureRepeat(TimeOut)
 	DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)

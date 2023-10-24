@@ -114,9 +114,7 @@ function Run()
 				"@L_GENERAL_MEASURES_211_ORDERCOLLECTEVIDENCE_MSG_FAILED_HEAD_+0",
 				"@L_GENERAL_MEASURES_211_ORDERCOLLECTEVIDENCE_MSG_FAILED_BODY_+0",GetID(""))
 		end
-	end
-	
-	--MeasureRun("","Destination",2110)	
+	end	
 end
 
 function BlockMe()

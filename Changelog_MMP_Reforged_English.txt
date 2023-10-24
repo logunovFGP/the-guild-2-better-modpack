@@ -207,6 +207,9 @@ _General_
 - You would generate evidence when you robbed unconcious persons even if you didn't manage to steal anything.
 - Characters "follow" in a more natural way now and should get stuck less often.
 - Piercing Gazes didn't show the impact icon on the target whose rhetoric was reduced.
+- Going to a townhall of another city and then trying to aquire a new title will no longer let your character run back home.
+- Charging a pregnant character caused the town clerk to say that she can't be charged because she is "in jail".
+- Some crimes didn't create proper evicendes.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

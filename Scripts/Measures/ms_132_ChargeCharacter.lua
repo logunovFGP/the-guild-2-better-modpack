@@ -4,11 +4,11 @@ function Run()
 		return
 	end
 
-	if not GetInsideBuilding("","councilbuilding") then
+	if not GetInsideBuilding("", "councilbuilding") then
 		return
 	end
 
-	if GetSettlementID("")~=GetSettlementID("councilbuilding") then
+	if GetSettlementID("") ~= GetSettlementID("councilbuilding") then
 		MsgQuick("","@L_NEWSTUFF_TRIAL_INSTALL_WRONGTOWNHALL")
 		return
 	end
@@ -19,18 +19,18 @@ function Run()
 		
 	end
 	
-	if HasProperty("councilbuilding","CityLevelUpAhead") then
+	if HasProperty("councilbuilding", "CityLevelUpAhead") then
 		MsgQuick("", "@L_REPLACEMENTS_FAILURE_MSG_OFFICE_ACTION_IMPOSSIBLE_CITYLEVELUP_+2")
 		return
 	end
 	
-	if not IsGUIDriven() and Rand(100)>25 then 
+	if not IsGUIDriven() and Rand(100) > 25 then 
 		if ms_132_chargecharacter_HasImmunity() then
 			StopMeasure()
 		end
 		
-		GetSettlement("councilbuilding","CityAlias")
-		if not GetOfficeTypeHolder("CityAlias",3,"judge") then
+		GetSettlement("councilbuilding", "CityAlias")
+		if not GetOfficeTypeHolder("CityAlias", 3, "judge") then
 			StopMeasure()
 		end
 		
@@ -39,21 +39,21 @@ function Run()
 		end
 		
 		local success = SimCanBeCharged("destination")
-		if success==0 then
-			SimChargeCharacter("","destination")
+		if success == 0 then
+			SimChargeCharacter("", "destination")
 		end
 		StopMeasure()
 	end
 	
 	if not GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos") then
-		MsgQuick("","@L_LAWSUIT_1_INSTALL_FAILURES_+0")
+		MsgQuick("", "@L_LAWSUIT_1_INSTALL_FAILURES_+0")
 		return
 	end
 
 	while true do
-		if f_BeginUseLocator("","destpos", GL_STANCE_STAND, true) then
+		if f_BeginUseLocator("", "destpos", GL_STANCE_STAND, true) then
 			break
-			--MsgQuick("","@L_LAWSUIT_1_INSTALL_FAILURES_+0")
+			--MsgQuick("", "@L_LAWSUIT_1_INSTALL_FAILURES_+0")
 			--return
 		end
 		Sleep(2)
@@ -64,14 +64,14 @@ function Run()
 	BuildingFindSimByProperty("councilbuilding","BUILDING_NPC", 1,"Usher")
 
 	--cutscene cam
-	CreateCutscene("default","cutscene")
-	CutsceneAddSim("cutscene","")
-	CutsceneAddSim("cutscene","Usher")
-	CutsceneCameraCreate("cutscene","")
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSim("cutscene", "")
+	CutsceneAddSim("cutscene", "Usher")
+	CutsceneCameraCreate("cutscene", "")
 	camera_CutsceneBothLock("cutscene", "")
 
-	PlayAnimationNoWait("","talk")
-	MsgSay("","@L_LAWSUIT_1_INSTALL_ACCUSER_+0",GetID("destination"))
+	PlayAnimationNoWait("", "talk")
+	MsgSay("", "@L_LAWSUIT_1_INSTALL_ACCUSER_+0", GetID("destination"))
 
 	--WalkTo Scribe locator
 
@@ -82,50 +82,55 @@ function Run()
 
 	-- if destination has privilege Immunity
 	if ms_132_chargecharacter_HasImmunity() then
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_IMMUNITY_+0",GetID("destination"))
-		f_StrollNoWait("",250,1)
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_IMMUNITY_+0", GetID("destination"))
+		f_StrollNoWait("", 250, 1)
 		StopMeasure()
 	end
-	GetSettlement("councilbuilding","CityAlias")
+	GetSettlement("councilbuilding", "CityAlias")
 
-	if not GetOfficeTypeHolder("CityAlias",3,"judge") then
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_NOJUDGE_+0")
-		f_StrollNoWait("",250,1)
+	if not GetOfficeTypeHolder("CityAlias", 3, "judge") then
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOJUDGE_+0")
+		f_StrollNoWait("", 250, 1)
 		StopMeasure()
 	end
 	if GetID("") == GetID("judge") then
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_YOUAREJUDGE_+0")
-		f_StrollNoWait("",250,1)
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_YOUAREJUDGE_+0")
+		f_StrollNoWait("", 250, 1)
 		StopMeasure()
 	end
 	local success = SimCanBeCharged("destination")
 
-	if success==0 then
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_SUCCESS_+0",GetID("destination"))
-		SimChargeCharacter("","destination")
-	elseif success==1 then
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_TRIAL_+0",GetID("destination"))
-	elseif success==2 then
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_JAIL_+0",GetID("destination"))
+	if success == 0 then
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_SUCCESS_+0", GetID("destination"))
+		SimChargeCharacter("", "destination")
+	elseif success == 1 then
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_TRIAL_+0", GetID("destination"))
+	elseif success == 2 then
+		-- bug, pregnant characters also return 2
+		if GetState("destination", STATE_PREGNANT) then
+			MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0", GetID("destination"))
+		else
+			MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_JAIL_+0", GetID("destination"))
+		end
 	else
-		MsgSay("Usher","@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0",GetID("destination"))
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0", GetID("destination"))
 	end
-	f_StrollNoWait("",250,1)
+	f_StrollNoWait("", 250, 1)
 
 end
 
 function HasImmunity()
- if ( GetImpactValue("destination","HaveImmunity")==1 and GetImpactValue("destination","HasRepealedImmunity") < 1 ) then
-	return true
- else
-	return false
- end
+	if ( GetImpactValue("destination","HaveImmunity") == 1 and GetImpactValue("destination", "HasRepealedImmunity") < 1 ) then
+		return true
+ 	else
+		return false
+ 	end
 end
 
 function CleanUp()
 	DestroyCutscene("cutscene")
-	if GetData("ReleaseLocator")==1 then
-		f_EndUseLocatorNoWait("","destpos", GL_STANCE_STAND)
+	if GetData("ReleaseLocator") == 1 then
+		f_EndUseLocatorNoWait("", "destpos", GL_STANCE_STAND)
 	end
 end
 

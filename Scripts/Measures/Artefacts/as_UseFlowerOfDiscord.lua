@@ -65,8 +65,8 @@ function Run()
 	local time2 = PlayAnimationNoWait("Believer", "talk")
 	time1 = math.max(time1, time2)
 	Sleep(time1)
-	if RemoveItems("","FlowerOfDiscord",1)>0 then
-		CommitAction("poison", "", "", "Destination")
+	if RemoveItems("", "FlowerOfDiscord",1) > 0 then
+		CommitAction("poison", "", "Destination", "Destination")
 		GetPosition("Believer", "ParticleSpawnPos")
 		StartSingleShotParticle("particles/flowerofdiscord.nif", "ParticleSpawnPos",2.7,5)
 		PlaySound3D("Believer","Locations/destillery/destillery+0.wav", 1.0)
