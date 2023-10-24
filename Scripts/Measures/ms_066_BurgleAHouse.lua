@@ -73,25 +73,25 @@ function Run()
 	-- Try to block and move to the locator
 	if GetFreeLocatorByName("Destination", "Bomb", 1, 3, "SabotagePosition") then
 		if not f_BeginUseLocator("", "SabotagePosition", GL_STANCE_STAND, true) then
-			if GetOutdoorMovePosition("","Destination","SabotagePosition") then
-				if not f_MoveTo("","SabotagePosition", GL_MOVESPEED_RUN) then
-					MsgQuick("","@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2",GetID("Destination"))
+			if GetOutdoorMovePosition("", "Destination", "SabotagePosition") then
+				if not f_MoveTo("", "SabotagePosition", GL_MOVESPEED_RUN) then
+					MsgQuick("", "@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2", GetID("Destination"))
 					StopMeasure()
 				end
 			else
-				MsgQuick("","@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2",GetID("Destination"))
+				MsgQuick("", "@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2", GetID("Destination"))
 				StopMeasure()
 			end
 		end
 	else
-		if GetOutdoorMovePosition("","Destination","SabotagePosition") then
-			if not f_MoveTo("","SabotagePosition", GL_MOVESPEED_RUN) then
-				MsgQuick("","@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2",GetID("Destination"))
-				MsgMeasure("","")
+		if GetOutdoorMovePosition("", "Destination", "SabotagePosition") then
+			if not f_MoveTo("", "SabotagePosition", GL_MOVESPEED_RUN) then
+				MsgQuick("", "@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2", GetID("Destination"))
+				MsgMeasure("", "")
 				StopMeasure()
 			end				
 		else
-			MsgQuick("","@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2",GetID("Destination"))
+			MsgQuick("", "@L_THIEF_066_BURGLEAHOUSE_FAILURES_+2", GetID("Destination"))
 			StopMeasure()
 		end
 	end
@@ -107,12 +107,12 @@ function Run()
 	local ProtectionValue = GetImpactValue("Destination","ProtectionOfBurglary") - 100
 	local TimeToBurgle = 400 * (1 + ProtectionValue*3)
 	
-	if not HasProperty("Destination","TimeToBurgle"..GetID("dynasty")) then
-		SetProperty("Destination","TimeToBurgle"..GetID("dynasty"),0)
+	if not HasProperty("Destination", "TimeToBurgle"..GetID("dynasty")) then
+		SetProperty("Destination", "TimeToBurgle"..GetID("dynasty"),0)
 	end
 	
 	--get the burgle skill , dexterity skill of the thief
-	local Skill = GetSkillValue("",2)*10			-- from 40 to 100
+	local Skill = GetSkillValue("", 2)*10			-- from 40 to 100
 	local SpeedupTime = GetImpactValue("", "BurglarySpeedup") / 100	-- 43  --0.25 wenn aktiv
 	if SpeedupTime > 0 then
 		Skill = Skill + (Skill*SpeedupTime)
@@ -147,9 +147,9 @@ function Run()
 		end
 		local AnimTime = PlayAnimationNoWait("", "burgle")
 		Sleep(1)
-		CarryObject("","Handheld_Device/Anim_Crowbar.nif",false)
+		CarryObject("", "Handheld_Device/Anim_Crowbar.nif", false)
 		Sleep(AnimTime-2)
-		CarryObject("","",false)
+		CarryObject("", "", false)
 		Sleep(2)
 	end
 	ResetProcessProgress("")
@@ -159,7 +159,7 @@ function Run()
 	end
 	
 	-- traps
-	if GetImpactValue("Destination","BoobyTrap") ~= 0 then
+	if GetImpactValue("Destination", "BoobyTrap") ~= 0 then
 		GetPosition("", "ParticleSpawnPos")
 		PlaySound3D("", "fire/Explosion_01.wav", 1.0)
 		StartSingleShotParticle("particles/Explosion.nif", "ParticleSpawnPos", 1, 5)
@@ -173,19 +173,19 @@ function Run()
 	end
 	
 	--save the haul amount
-	if not HasProperty("Destination","NumThieves"..OwnerID) then
-		SetProperty("Destination","NumThieves"..OwnerID,1)
+	if not HasProperty("Destination", "NumThieves"..OwnerID) then
+		SetProperty("Destination", "NumThieves"..OwnerID, 1)
 	end
 	--local LocatorName = GetName("SabotagePosition")
-	if GetProperty("Destination","NumThieves"..OwnerID)==1 then
-		SetProperty("Destination","Thief1Haul"..OwnerID,Value)
-		SetProperty("Destination","NumThieves"..OwnerID,GetProperty("Destination","NumThieves"..OwnerID)+1)
-	elseif GetProperty("Destination","NumThieves"..OwnerID)==2 then
-		SetProperty("Destination","Thief2Haul"..OwnerID,Value)
-		SetProperty("Destination","NumThieves"..OwnerID,GetProperty("Destination","NumThieves"..OwnerID)+1)
-	elseif GetProperty("Destination","NumThieves"..OwnerID)==3 then
-		SetProperty("Destination","Thief3Haul"..OwnerID,Value)
-		SetProperty("Destination","NumThieves"..OwnerID,GetProperty("Destination","NumThieves"..OwnerID)+1)
+	if GetProperty("Destination", "NumThieves"..OwnerID) == 1 then
+		SetProperty("Destination", "Thief1Haul"..OwnerID,Value)
+		SetProperty("Destination", "NumThieves"..OwnerID,GetProperty("Destination", "NumThieves"..OwnerID)+1)
+	elseif GetProperty("Destination", "NumThieves"..OwnerID) == 2 then
+		SetProperty("Destination", "Thief2Haul"..OwnerID,Value)
+		SetProperty("Destination", "NumThieves"..OwnerID,GetProperty("Destination", "NumThieves"..OwnerID)+1)
+	elseif GetProperty("Destination", "NumThieves"..OwnerID) == 3 then
+		SetProperty("Destination", "Thief3Haul"..OwnerID,Value)
+		SetProperty("Destination", "NumThieves"..OwnerID,GetProperty("Destination", "NumThieves"..OwnerID)+1)
 	else
 		--something went wrong
 		MsgDebugMeasure("too many Bomb Locators found")
@@ -193,9 +193,9 @@ function Run()
 	end
 	
 	--add the impact, the first thief
-	if GetImpactValue("Destination","buildingburgledtoday")==0 then
+	if GetImpactValue("Destination", "buildingburgledtoday")==0 then
 		--set the impact
-		AddImpact("Destination","buildingburgledtoday",1,TimeOut)
+		AddImpact("Destination", "buildingburgledtoday", 1, TimeOut)
 		SetProperty("", "Bandleader", 1)
 		SetProperty("", "ThiefReady", 1)
 		StopAction("burgleahouse", "")
@@ -233,7 +233,7 @@ function Run()
 			
 			--look how many thieves of the own dynasty are trying to burgle this building
 			local Filter = "__F((Object.GetObjectsByRadius(Sim) == "..Radius..") AND (Object.Property."..ThiefProperty.."==1) AND NOT(Object.Property.Bandleader ==1))"
-			count = Find("Owner", Filter,"Thief", -1)
+			count = Find("Owner", Filter, "Thief", -1)
 			
 			--owner must be the only thief
 			if count == 0 then
@@ -257,25 +257,25 @@ function Run()
 			--if all thieves have finished their "work"
 			if NumThieves == 0 then
 				
-				count = Find("Owner", Filter,"Thief", -1)
+				count = Find("Owner", Filter, "Thief", -1)
 				if count > 0 then
-					for i=0,count-1 do
-						if HasProperty("Thief"..i,"ThiefWaiting") then
-							SetProperty("Thief"..i,"ThiefGoHome",1)
+					for i=0, count-1 do
+						if HasProperty("Thief"..i, "ThiefWaiting") then
+							SetProperty("Thief"..i, "ThiefGoHome", 1)
 							
 						end				
 					end
 				end
-				SetProperty("","ThiefGoHome",1)
+				SetProperty("", "ThiefGoHome",1)
 				break
 			end
-			PlayAnimation("","watch_for_guard")	
+			PlayAnimation("", "watch_for_guard")	
 		end
 	--the other thieves
 	else
 		--debug
 		--MsgSay("","Ich auch!")
-		if not HasProperty("","ThiefReady") then
+		if not HasProperty("", "ThiefReady") then
 			StopAction("burgleahouse", "")
 			if(Value > 0) then
 
@@ -293,48 +293,48 @@ function Run()
 	
 				--Plunder("", "Destination",10)			
 			end
-			SetProperty("","ThiefReady",1)
+			SetProperty("", "ThiefReady", 1)
 		end
 	end
 	
 	--wait until all thieves have finished
-	while not HasProperty("","ThiefGoHome") do
-		PlayAnimation("","watch_for_guard")
+	while not HasProperty("", "ThiefGoHome") do
+		PlayAnimation("", "watch_for_guard")
 	end
 	
-	if HasProperty("","Bandleader") then
-		RemoveProperty("","Bandleader")
+	if HasProperty("", "Bandleader") then
+		RemoveProperty("", "Bandleader")
 		if not IsGUIDriven() then
 			local DynID = GetDynastyID("")
-			RemoveProperty("Destination","AIScouted"..DynID)
+			RemoveProperty("Destination", "AIScouted"..DynID)
 		end
 		
 		--determine money stolen
 		local HaulBonus = 0
 		local Haul = 0
 		for i=1,3 do
-			if HasProperty("Destination","Thief"..i.."Haul"..OwnerID) then
-				Haul = Haul + GetProperty("Destination","Thief"..i.."Haul"..OwnerID)
+			if HasProperty("Destination", "Thief"..i.."Haul"..OwnerID) then
+				Haul = Haul + GetProperty("Destination", "Thief"..i.."Haul"..OwnerID)
 				HaulBonus = HaulBonus + ValueBonus
-				RemoveProperty("Destination","Thief"..i.."Haul"..OwnerID)
+				RemoveProperty("Destination", "Thief"..i.."Haul"..OwnerID)
 			end
 		end
 		
 		local OwnerDyn = GetDynastyID("")
-		if HasProperty("Destination","ScoutedBy"..OwnerDyn) then
-			RemoveProperty("Destination","ScoutedBy"..OwnerDyn)
-			RemoveProperty("Destination","ScoutedProt"..OwnerDyn)
-			RemoveProperty("Destination","ScoutedLoot"..OwnerDyn)
+		if HasProperty("Destination", "ScoutedBy"..OwnerDyn) then
+			RemoveProperty("Destination", "ScoutedBy"..OwnerDyn)
+			RemoveProperty("Destination", "ScoutedProt"..OwnerDyn)
+			RemoveProperty("Destination", "ScoutedLoot"..OwnerDyn)
 			RemoveImpact("Destination", "Scouted")
 		end
 		
 		feedback_MessageCharacter("Owner",
-			"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_HEAD_+0",
-			"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_BODY_+0",GetID("Destination"), Haul + HaulBonus )
+							"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_HEAD_+0",
+							"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_BODY_+0", GetID("Destination"), Haul + HaulBonus )
 		
 		feedback_MessageCharacter("Destination",
-			"@L_THIEF_066_BURGLEAHOUSE_MSG_VICTIM_SUCCESS_HEAD_+0",
-			"@L_THIEF_066_BURGLEAHOUSE_MSG_VICTIM_SUCCESS_BODY_+0",GetID("Destination"), Haul)
+							"@L_THIEF_066_BURGLEAHOUSE_MSG_VICTIM_SUCCESS_HEAD_+0",
+							"@L_THIEF_066_BURGLEAHOUSE_MSG_VICTIM_SUCCESS_BODY_+0", GetID("Destination"), Haul)
 	end
 	
 	SetData("finished",1)
@@ -369,7 +369,7 @@ function GetMaxHaulValue(DestAlias, DynastyID, ThiefLevel)
 	end
 
 	local LootFactor	= ((101 - GetImpactValue(DestAlias,"ProtectionOfBurglary"))*100 + 10*ThiefLevel )
-	local LootValue		=	(BaseValue * LootFactor / 100)
+	local LootValue = (BaseValue * LootFactor / 100)
 	
 	if LootValue > 1500 then
 		LootValue = 1500
@@ -398,20 +398,22 @@ function CleanUp()
 	local OwnerID = GetID("dynasty")
 	
 	if AliasExists("Destination") then
-		for k=1,3 do
+		for k=1, 3 do
 			if HasProperty("Destination", "Thief"..k.."Haul"..OwnerID) then 
-				RemoveProperty("Destination", Thief"..k.."Haul"..OwnerID)
+				RemoveProperty("Destination", "Thief"..k.."Haul"..OwnerID)
 			end
 		end
+		
 		if HasData("finished") then
 			RemoveProperty("Destination", "TimeToBurgle"..GetID("dynasty"))
 		end
+		
 		if HasProperty("Destination", "NumThieves"..OwnerID) then
 			RemoveProperty("Destination", "NumThieves"..OwnerID)
 		end
 	end
 	
-	if HasProperty("","Bandleader") then
+	if HasProperty("", "Bandleader") then
 		
 		local Radius = 2000
 		local Filter = "__F((Object.GetObjectsByRadius(Sim) == "..Radius..") AND (Object.Property."..ThiefProperty.."==1) AND NOT(Object.Property.Bandleader ==1))"
@@ -421,7 +423,7 @@ function CleanUp()
 		end
 		
 		if SetProperty("Thief"..0, "Bandleader", 1) then
-		elseif SetProperty("Thief"..1, "Bandleader", 1)then
+		elseif SetProperty("Thief"..1, "Bandleader", 1) then
 		end
 	end
 	
@@ -434,8 +436,8 @@ function CleanUp()
 	end
 	
 	StopAction("burgleahouse", "")
-	RemoveProperty("","ThiefReady")
-	RemoveProperty("","ThiefWaiting")
-	RemoveProperty("","ThiefGoHome")
+	RemoveProperty("", "ThiefReady")
+	RemoveProperty("", "ThiefWaiting")
+	RemoveProperty("", "ThiefGoHome")
 end
 
