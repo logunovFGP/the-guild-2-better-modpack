@@ -67,7 +67,7 @@ function Run()
 	--idle behaviours
 	local Hour = math.mod(GetGametime(), 24)
 	local Action = Rand(6)
-	if BuildingGetType("Residence")== 2 then -- residence, all normal
+	if BuildingGetType("Residence") == GL_BUILDING_TYPE_RESIDENCE then -- residence, all normal
 		if Hour < 8 or Hour > 20 then -- it's late go home or stay there
 			if GetInsideBuildingID("")~=GetID("Residence") then
 				f_MoveTo("", "Residence", GL_MOVESPEED_RUN)

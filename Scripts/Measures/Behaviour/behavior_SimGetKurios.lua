@@ -11,10 +11,12 @@ function Run()
 		local ActionName = GetData("Action_Name")
 
 		if Rand(2) == 0 then
-			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETTAROT_SPRUCH_+0")
+			MsgSayNoWait("Owner", "_REN_BEHAVIOUR_GETTAROT_SPRUCH_+0")
 		else
-			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETTAROT_SPRUCH_+4")
+			MsgSayNoWait("Owner", "_REN_BEHAVIOUR_GETTAROT_SPRUCH_+4")
 		end
+		
+		Sleep(1)
 
 		local begbonus = math.floor(GetImpactValue("Juggler", "RogueBonus"))
 		local spender = chr_GetRank("")
@@ -22,25 +24,26 @@ function Run()
 		local charm = GetSkillValue("Actor", CHARISMA)
 		
 		if spender == 0 or spender == 1 then
-			spend = 3+Rand(4)
+			spend = 5
 		elseif spender == 2 then
-			spend = 6+Rand(7)
+			spend = 10
 		elseif spender == 3 then
-			spend = 12+Rand(13)
+			spend = 20
 		elseif spender == 4 then
-			spend = 24+Rand(25)
+			spend = 40
 		elseif spender == 5 then
-			spend = 48+Rand(49)
+			spend = 80
 		end
 
-		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(10)*charm
+		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(15)*charm
 		CreditMoney("Actor", getbeg, "Offering")
 		IncrementXPQuiet("Actor", 5)
 
 		if dyn_IsLocalPlayer("Actor") then
 			ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 		end
-
+		
+		SetRepeatTimer("Owner", "SimGetKurios", 2)
 		SatisfyNeed("Owner", 5, 0.25)
 
 		PlayAnimation("Owner", "manipulate_middle_low_r")
@@ -48,10 +51,10 @@ function Run()
 		local getit = Rand(3)
 		
 		if getit == 0 then
-			if SimGetGender("") == GL_GENDER_MALE then
-				PlaySound3DVariation("", "CharacterFX/male_neutral", 1)
+			if SimGetGender("Owner") == GL_GENDER_MALE then
+				PlaySound3DVariation("Owner", "CharacterFX/male_neutral", 1)
 			else
-				PlaySound3DVariation("", "CharacterFX/female_neutral", 1)
+				PlaySound3DVariation("Owner", "CharacterFX/female_neutral", 1)
 			end
 			
 			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETTAROT_SPRUCH_+1")
@@ -76,6 +79,7 @@ function Run()
 		else
 			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETFORTUNE_SPRUCH_+2")
 		end
+		Sleep(1)
 
 		local begbonus = math.floor(GetImpactValue("Juggler", "RogueBonus"))
 		local spender = chr_GetRank("")
@@ -83,47 +87,49 @@ function Run()
 		local charm = GetSkillValue("Actor", CHARISMA)
    
 		if spender == 0 or spender == 1 then
-			spend = 10+Rand(6)
+			spend = 10
 		elseif spender == 2 then
-			spend = 20+Rand(11)
+			spend = 20
 		elseif spender == 3 then
-			spend = 40+Rand(21)
+			spend = 40
 		elseif spender == 4 then
-			spend = 80+Rand(41)
+			spend = 80
 		elseif spender == 5 then
-			spend = 100+Rand(51)
+			spend = 160
 		end
 
 		local getbeg = math.floor(spend + ((spend / 100) * begbonus)+Rand(20)*charm)
 		local warte = PlayAnimation("Owner", "manipulate_middle_low_r")
 		Sleep(1)
    		CreditMoney("Actor", getbeg, "Offering")
-		IncrementXPQuiet("Actor",2)
+		IncrementXPQuiet("Actor", 5)
+		IncrementXPQuiet("Owner", 20)
 		
 		if dyn_IsLocalPlayer("Actor") then
 			ShowOverheadSymbol("Actor",false,true,0,"%1t",getbeg)
 		end
 
 		SatisfyNeed("Owner",5,0.25)
+		SetRepeatTimer("Owner", "SimGetKurios", 6)
 		Sleep(warte-1)
 		
 		local getit = Rand(6)
 		if getit == 0 then
-			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETFORTUNE_SPRUCH_+8")
+			MsgSayNoWait("Owner", "_REN_BEHAVIOUR_GETFORTUNE_SPRUCH_+8")
 			PlayAnimation("Owner", "talk_short")
 		elseif getit == 1 then
-			if SimGetGender("")==GL_GENDER_MALE then
-				PlaySound3DVariation("","CharacterFX/male_anger",1)
+			if SimGetGender("") == GL_GENDER_MALE then
+				PlaySound3DVariation("Owner", "CharacterFX/male_anger",1)
 			else
-				PlaySound3DVariation("","CharacterFX/female_anger",1)
+				PlaySound3DVariation("Owner", "CharacterFX/female_anger",1)
 			end
 			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETFORTUNE_SPRUCH_+3")
 			PlayAnimation("Owner", "talk_negative")
 		elseif getit == 2 then
-			if SimGetGender("")==GL_GENDER_MALE then
-				PlaySound3DVariation("","CharacterFX/male_rejoice",1)
+			if SimGetGender("Owner") == GL_GENDER_MALE then
+				PlaySound3DVariation("Owner","CharacterFX/male_rejoice",1)
 			else
-				PlaySound3DVariation("","CharacterFX/female_rejoice",1)
+				PlaySound3DVariation("Owner","CharacterFX/female_rejoice",1)
 			end
 			MsgSayNoWait("Owner","_REN_BEHAVIOUR_GETFORTUNE_SPRUCH_+4")
 			PlayAnimation("Owner", "giggle")

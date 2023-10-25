@@ -4,17 +4,10 @@ function Run()
 		return ""
 	end
 	
-	if GetState("",STATE_ROBBERGUARD) then
-		return ""
-	end
-
-	-- doesn't effect thugs
-	if SimGetProfession("") == GL_PROFESSION_MYRMIDON then
-		return ""
-	end
-	
-	if SimGetProfession("")== GL_PROFESSION_JUGGLER then
-		return ""
+	if SimGetClass("") == 4 then --rogues are barely affected by this
+		if Rand(8) > 0 then
+			return ""
+		end
 	end
 
 	if not ReadyToRepeat("", "SimGetKurios") then
@@ -25,5 +18,5 @@ function Run()
 		return ""
 	end
 	
-    return "SimGetKurios"
+	return "SimGetKurios"
 end

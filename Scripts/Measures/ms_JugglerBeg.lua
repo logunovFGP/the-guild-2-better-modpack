@@ -8,24 +8,14 @@ function Run()
 		f_ExitCurrentBuilding("")
 	end
 
-	local TimeOut
-	TimeOut = GetData("TimeOut")
-	if TimeOut then
-		TimeOut = GetGametime() + TimeOut
-	end
 	
 	while true do
-		if TimeOut then
-			if TimeOut < GetGametime() then
-				break
-			end
-		end
+		
 		local zielloc = Rand(50)+20
 		f_MoveTo("", "Destination", GL_MOVESPEED_RUN, zielloc)
 
 		local MeasureID = GetCurrentMeasureID("")
-		local duration = mdata_GetDuration(MeasureID)	
-		local EndTime = GetGametime() + duration
+		local EndTime = GetGametime() + 1
 		local uprogramm = 1
 		
 		if BuildingHasUpgrade("Juggler", "flote") == true then
@@ -46,12 +36,17 @@ function Run()
 		SetData("IsProductionMeasure", 1)
 		
 		CommitAction("beg", "", "")
-		SetRepeatTimer("", GetMeasureRepeatName(), 1)
 		
 		while GetGametime() < EndTime do
 			local modus = Rand(uprogramm)
 			local dauer = Rand(5)+5
 			if modus == 0 then
+				Sleep(2)
+				local SimFilter = "__F( (Object.GetObjectsByRadius(Sim)==1200)AND(Object.GetState(idle))AND NOT(Object.GetState(townnpc)))"
+				local NumSims = Find("", SimFilter, "Sims", -1)
+				if NumSims > 0 then
+					AlignTo("", "Sims"..Rand(NumSims))
+				end
 				local Fasel = Rand(3)
 				if Fasel == 0 then
 					MsgSayNoWait("", "_REN_MEASURE_BEG_SPRUCH_+0")
@@ -59,24 +54,29 @@ function Run()
 					MsgSayNoWait("", "_REN_MEASURE_BEG_SPRUCH_+1")
 				elseif Fasel == 2 then
 					MsgSayNoWait("", "_REN_MEASURE_BEG_SPRUCH_+2")
-				end			
+				end	
+				
 				if SimGetGender("") == 1 then
-					PlaySound3DVariation("","CharacterFX/male_friendly",1)
 					if dauer < 7 then
-					PlayAnimation("","talk_positive")
+						if Rand(3) == 0 then
+							PlayAnimation("", "talk_positive")
+						else 
+							PlayAnimation("", "talk")
+						end
 					else
-						PlayAnimation("","talk_2")
+						PlayAnimation("", "talk_2")
 					end
 				else
-					PlaySound3DVariation("", "CharacterFX/female_joy_loop",1)
 					PlayAnimation("", "dance_female_"..Rand(2)+1)
+					PlayAnimation("", "dance_female_"..Rand(2)+1)
+					Sleep(2)
 				end			
 			elseif modus == 1 then
 				local AnimTime = PlayAnimationNoWait("", "play_instrument_01_in")
 				Sleep(1)
 				CarryObject("", "Handheld_Device/ANIM_Flute.nif", false)
 				Sleep(AnimTime-1)
-				LoopAnimation("","play_instrument_01_loop",dauer)
+				LoopAnimation("", "play_instrument_01_loop",dauer)
 				AnimTime = PlayAnimationNoWait("", "play_instrument_01_out")
 				Sleep(1.5)
 				CarryObject("", "", false)

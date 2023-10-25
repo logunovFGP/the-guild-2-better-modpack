@@ -18,7 +18,7 @@ function Run()
 			end
 		end		
 		local zielloc = Rand(50)+20
-		if not f_MoveTo("","Destination",GL_MOVESPEED_RUN,zielloc) then
+		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN, zielloc) then
 			StopMeasure()
 		end
 
@@ -29,32 +29,32 @@ function Run()
 		GetPosition("","MovePos")
 		GfxAttachObject("tarottisch", "city/Stuff/tarottable.nif")
 		GfxSetPositionTo("tarottisch", "MovePos")	
-		SetProperty("","Signal","JugglerTarot")
+		SetProperty("", "Signal", "JugglerTarot")
 		CommitAction("kurios", "", "")
-		SetRepeatTimer("", GetMeasureRepeatName(), 1)
+		
 		while GetGametime() < EndTime do
-			if SimGetGender("")==GL_GENDER_MALE then
-				PlaySound3DVariation("","CharacterFX/male_friendly",1)
+			if SimGetGender("") == GL_GENDER_MALE then
+				PlaySound3DVariation("", "CharacterFX/male_friendly", 1)
 			else
-				PlaySound3DVariation("","CharacterFX/female_friendly",1)
+				PlaySound3DVariation("", "CharacterFX/female_friendly", 1)
 			end
       
-      local beweg = Rand(3)
+			local beweg = Rand(3)
 			if beweg == 0 then
-			    MsgSayNoWait("Owner","_REN_MEASURE_LAYTAROT_SPRUCH_+0")
-			    PlayAnimation("","manipulate_middle_twohand")
+				MsgSayNoWait("Owner", "_REN_MEASURE_LAYTAROT_SPRUCH_+0")
+				PlayAnimation("", "manipulate_middle_twohand")
 			elseif beweg == 1 then
-			    MsgSayNoWait("Owner","_REN_MEASURE_LAYTAROT_SPRUCH_+1")
-			    PlayAnimation("","preach")
+				MsgSayNoWait("Owner", "_REN_MEASURE_LAYTAROT_SPRUCH_+1")
+				PlayAnimation("", "preach")
 			else
-			    MsgSayNoWait("Owner","_REN_MEASURE_LAYTAROT_SPRUCH_+2")
-			    PlayAnimation("","point_at")
+			    MsgSayNoWait("Owner", "_REN_MEASURE_LAYTAROT_SPRUCH_+2")
+			    PlayAnimation("", "point_at")
 			end
 			Sleep(4)
 		end
 		GfxDetachAllObjects()
 		StopAction("kurios", "")
-		RemoveProperty("","Signal")
+		RemoveProperty("", "Signal")
 		Sleep(2)
 	end
 	
@@ -66,7 +66,7 @@ function CleanUp()
         GfxDetachAllObjects()
 	StopAnimation("")
 	StopAction("kurios", "")
-	RemoveProperty("","Signal")
+	RemoveProperty("", "Signal")
 end
 
 function GetOSHData(MeasureID)

@@ -52,8 +52,8 @@ end
 
 function FindConcertDestination(CityIndex)
 	-- find a destination for the next concert
-  local TavernCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HAS_DYNASTY, "tavern")
-  local DivehouseCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_DIVEHOUSE, -1, -1, FILTER_HAS_DYNASTY, "divehouse")
+	local TavernCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_HAS_DYNASTY, "tavern")
+	local DivehouseCount = CityGetBuildings("city"..CityIndex, GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_DIVEHOUSE, -1, -1, FILTER_HAS_DYNASTY, "divehouse")
 
 	if TavernCount <= 0 and DivehouseCount <= 0 then
 		return
@@ -64,7 +64,7 @@ function FindConcertDestination(CityIndex)
 	std_musician_ChooseBestPlace("tavern", TavernCount, curFee, bestFee)
 	std_musician_ChooseBestPlace("divehouse", DivehouseCount, curFee, bestFee)
 
-	BuildingGetOwner("bestDest","BuildingOwner")
+	BuildingGetOwner("bestDest", "BuildingOwner")
 	if GetMoney("BuildingOwner") > bestFee then
 		if bestFee > 0 then
 			chr_SpendMoney("BuildingOwner", bestFee, "Versengold")
@@ -77,35 +77,35 @@ function FindConcertDestination(CityIndex)
 	if AliasExists("Destination") then
 		SetData("#MusicStage", GetID("Destination"))
 		feedback_MessageWorkshop("BuildingOwner",
-			"@L_MESSAGES_UPCOMING_CONCERT_OWNER_HEADER_+0",
-			"@L_MESSAGES_UPCOMING_CONCERT_OWNER_BODY_+0",
-				GetID("Destination"))
+							"@L_MESSAGES_UPCOMING_CONCERT_OWNER_HEADER_+0",
+							"@L_MESSAGES_UPCOMING_CONCERT_OWNER_BODY_+0",
+							GetID("Destination"))
 	end
 end
 
 function ChooseBestPlace(AliasPrefix, count, curFee, bestFee)
 	local Alias
-	for l=0,count-1 do
+	for l=0, count-1 do
 		Alias	= AliasPrefix..l
-		if HasProperty(Alias,"MusiciansFee") then
-			curFee = GetProperty(Alias,"MusiciansFee")
+		if HasProperty(Alias, "MusiciansFee") then
+			curFee = GetProperty(Alias, "MusiciansFee")
 		else
 			curFee = 0
 		end
 		
 		if not AliasExists("bestDest") then
 			CopyAlias(Alias, "bestDest")
-			if HasProperty(Alias,"MusiciansFee") then
-				bestFee = GetProperty(Alias,"MusiciansFee")
+			if HasProperty(Alias, "MusiciansFee") then
+				bestFee = GetProperty(Alias, "MusiciansFee")
 			else
 				bestFee = 0
 			end
-		elseif GetID(Alias)~=GetID("bestDest") then
+		elseif GetID(Alias) ~= GetID("bestDest") then
 			if curFee > bestFee then
 				bestFee = curFee
 				CopyAlias(Alias, "bestDest")
 			elseif curFee == bestFee then
-				if Rand(10)<5 then
+				if Rand(10) < 5 then
 					bestFee = curFee
 					CopyAlias(Alias, "bestDest")
 				end
@@ -119,45 +119,45 @@ function Rest()
 	local Stance = 2
 
 	local place = GetData("#RestPlace")
-	GetAliasByID(place,"placeobj")
+	GetAliasByID(place, "placeobj")
 
 	if AliasExists("placeobj") then
 
 		Sleep(Rand(3)+1)
 	
-		SetProperty("","Moving",1)
-		if not f_MoveTo("","placeobj",GL_MOVESPEED_RUN) then
+		SetProperty("", "Moving", 1)
+		if not f_MoveTo("", "placeobj", GL_MOVESPEED_RUN) then
 
-			GetFleePosition("","placeobj",150,"MovePos")
+			GetFleePosition("", "placeobj", 150, "MovePos")
 			if f_MoveTo("", "MovePos", nil, 150) then
 				LogMessage(GetID("").." can't move to "..GetID("placeobj"));
 				--SimBeamMeUp("", "MovePos")
 			end
 		end
-		RemoveProperty("","Moving")
+		RemoveProperty("", "Moving")
 
 		--0=sitground, 1=sitbench, 2=stand
 		if ((season == EN_SEASON_WINTER) and (Rand(10) > 3)) then
-			if GetFreeLocatorByName("placeobj","idle_Stand",1,5,"SitPos") then
+			if GetFreeLocatorByName("placeobj", "idle_Stand", 1, 5, "SitPos") then
 				Stance = 2
-				f_BeginUseLocator("","SitPos",GL_STANCE_STAND,true)
+				f_BeginUseLocator("", "SitPos", GL_STANCE_STAND, true)
 			end
 		else
-			if GetFreeLocatorByName("placeobj","idle_Sit",1,5,"SitPos") then
-				f_BeginUseLocator("","SitPos",GL_STANCE_SITBENCH,true)
+			if GetFreeLocatorByName("placeobj", "idle_Sit", 1, 5, "SitPos") then
+				f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH,true)
 				Stance = 1
-				if GetLocatorByName("placeobj","campfire","CampFirePos") then
-					if GetImpactValue("placeobj","torch")==0 then
-						AddImpact("placeobj","torch",1,1)
-						GfxStartParticle("Campfire","particles/Campfire2.nif", "CampFirePos",3)
+				if GetLocatorByName("placeobj", "campfire", "CampFirePos") then
+					if GetImpactValue("placeobj", "torch") == 0 then
+						AddImpact("placeobj", "torch", 1, 1)
+						GfxStartParticle("Campfire", "particles/Campfire2.nif", "CampFirePos", 3)
 					end
 				end
-			elseif GetFreeLocatorByName("placeobj","idle_SitGround",1,5,"SitPos") then
+			elseif GetFreeLocatorByName("placeobj", "idle_SitGround", 1, 5, "SitPos") then
 				Stance = 0
-				f_BeginUseLocator("","SitPos",GL_STANCE_SITGROUND,true)
-			elseif GetFreeLocatorByName("placeobj","idle_Stand",1,5,"SitPos") then
+				f_BeginUseLocator("","SitPos",GL_STANCE_SITGROUND, true)
+			elseif GetFreeLocatorByName("placeobj", "idle_Stand", 1, 5, "SitPos") then
 				Stance = 2
-				f_BeginUseLocator("","SitPos",GL_STANCE_STAND,true)
+				f_BeginUseLocator("", "SitPos",GL_STANCE_STAND, true)
 			end
 		end
 		
@@ -165,9 +165,9 @@ function Rest()
 		local RestEndTime = GetGametime() + TimeToRest
 	
 		while true do
-			if GetGametime() >= RestEndTime or GetData("#MusicStage")>0 or GetData("#RestPlace")==0 or GetData("#RestPlace")~=GetID("placeobj") then
+			if GetGametime() >= RestEndTime or GetData("#MusicStage") > 0 or GetData("#RestPlace") == 0 or GetData("#RestPlace") ~= GetID("placeobj") then
 				std_musician_ResetComeOver()
-				if GetID("")==GetID("#Musician1") then
+				if GetID("") == GetID("#Musician1") then
 					SetData("#RestPlace",0)
 				end
 				break
@@ -219,14 +219,14 @@ function Rest()
 				end
 
 			elseif Stance ~= 2 then
-				Sleep(2)
+				Sleep(3)
 				local AnimTime = 0
 				local idx = Rand(7)
 				if idx == 0 and Stance ~= 0 then
 					if Rand(2) == 0 then
 						PlaySound3DVariation("", "CharacterFX/male_anger", 1)
 					end
-					PlayAnimation("","bench_sit_offended")
+					PlayAnimation("", "bench_sit_offended")
 				elseif idx == 1 and Stance ~= 0 then
 					if Rand(2) == 0 then
 						PlaySound3DVariation("", "CharacterFX/male_amazed", 1)
@@ -236,27 +236,27 @@ function Rest()
 					if Rand(2) == 0 then
 						PlaySound3DVariation("", "CharacterFX/male_neutral", 1)
 					end
-					PlayAnimation("","bench_talk")
+					PlayAnimation("", "bench_talk")
 				elseif idx == 3 then
 					MoveSetStance("", GL_STANCE_STAND)
 					Sleep(1)
 					AnimTime = PlayAnimationNoWait("", "clink_glasses")
 					Sleep(1)
-					CarryObject("", "Handheld_Device/ANIM_beaker.nif",false)
+					CarryObject("", "Handheld_Device/ANIM_beaker.nif", false)
 					Sleep(AnimTime-2)
-					if Rand(10) == 0 then
-						PlaySound3DVariation("","CharacterFX/male_belch",1)
+					if Rand(12) == 0 then
+						PlaySound3DVariation("", "CharacterFX/male_belch", 1)
 					end
-					CarryObject("","",false)
+					CarryObject("", "", false)
 					Sleep(1)
 					
 					if Stance == 0 then
-						MoveSetStance("",GL_STANCE_SITGROUND)
+						MoveSetStance("", GL_STANCE_SITGROUND)
 					elseif Stance == 1 then
-						MoveSetStance("",GL_STANCE_SITBENCH)
+						MoveSetStance("", GL_STANCE_SITBENCH)
 					end
 				else
-					MoveSetStance("",GL_STANCE_STAND)	
+					MoveSetStance("", GL_STANCE_STAND)	
 					Sleep(1)
 					local idx_advanced = Rand(5)
 					if idx_advanced == 0 then
@@ -266,21 +266,21 @@ function Rest()
 						PlayAnimation("", "propel")
 					elseif idx_advanced == 1 then
 						PlayAnimation("", "shake_head")
-					elseif idx_advanced==2 then
-						if Rand(2) == 0 then
+					elseif idx_advanced == 2 then
+						if Rand(4) == 0 then
 							PlaySound3DVariation("", "CharacterFX/male_anger_loop", 1)
 						end
-						PlayAnimation("","insult_character")
-					elseif idx_advanced==3 then
-						if Rand(2) == 0 then
+						PlayAnimation("", "insult_character")
+					elseif idx_advanced == 3 then
+						if Rand(4) == 0 then
 							PlaySound3DVariation("", "CharacterFX/male_joy_loop", 1)
 						end
 						PlayAnimation("", "talk_2")
 					else
-						if Rand(2) == 0 then
+						if Rand(4) == 0 then
 							PlaySound3DVariation("", "CharacterFX/male_anger_loop", 1)
 						end
-						PlayAnimation("","threat")
+						PlayAnimation("", "threat")
 					end
 					
 					if Stance == 0 then
