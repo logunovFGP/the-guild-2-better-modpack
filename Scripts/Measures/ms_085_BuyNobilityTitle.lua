@@ -114,14 +114,21 @@ function Run()
 			end
 		end
 	else
-		if not ai_GoInsideBuilding("", "", -1, GL_BUILDING_TYPE_TOWNHALL) then
-			return
-		end
-	
 		local MsgTimeOut = 1
 		-- Check if the sim is inside the townhall
-		if not GetInsideBuilding("", "councilbuilding") then
-			StopMeasure()
+		if GetInsideBuilding("", "CheckB") then
+			if BuildingGetType("CheckB") == GL_BUILDING_TYPE_TOWNHALL then
+				CopyAlias("CheckB", "councilbuilding")
+			else
+				-- find nearest townhall
+				FindNearestBuilding("", -1, GL_BUILDING_TYPE_TOWNHALL, -1, false, "councilbuilding")
+			end
+			
+			if not AliasExists("councilbuilding") then
+				StopMeasure()
+			else
+				f_MoveTo("", "councilbuilding")
+			end
 		end
 		
 		-- Check if the desk is busy
@@ -132,7 +139,7 @@ function Run()
 		end
 		
 		while true do
-			if f_BeginUseLocator("","destpos", GL_STANCE_STAND, true) then
+			if f_BeginUseLocator("", "destpos", GL_STANCE_STAND, true) then
 				break
 			end
 		
@@ -329,7 +336,7 @@ function Run()
 		SetData("CutsceneCleared", 1)
 		StopAnimation("")
 
-		if(GetLocatorByName("councilbuilding", "LookAtBoardPos", "LookAtBoardPos")) then
+		if (GetLocatorByName("councilbuilding", "LookAtBoardPos", "LookAtBoardPos")) then
 			f_MoveTo("", "LookAtBoardPos")
 		end	
 		
