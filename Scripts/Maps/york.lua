@@ -3,7 +3,7 @@ function Prepare()
 	ScenarioSetOutdoorScrollBoundaries(-44695, -44812, 47081, -44812, 47081, 43979, -44695, 43979)
 	ScenarioSetNameLanguage("english")
 	
-	local worldname = "york"
+	local worldname = "York"
 	local mapid = f_GetDatabaseIdByName("maps", worldname)
 	GetScenario("World")
 	SetProperty("World", "mapid", mapid)

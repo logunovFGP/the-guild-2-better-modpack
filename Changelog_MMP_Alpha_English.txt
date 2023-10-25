@@ -65,6 +65,7 @@ Fixes (Modpack):
 - Embezzling public money always resulted in 0 coins.
 - The Divehouse had a wrong upgrade.
 - You could rob unconcious people infinitely.
+- York didn't show the lordship name correctly.
 
 Balancing:
 - Every dynasty is limited to max. 10 thugs (no matter how many residences you build)
