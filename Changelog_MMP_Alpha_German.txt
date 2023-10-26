@@ -27,6 +27,7 @@ Features:
 - Übernahme-Angebote für die Betriebe von Schattendynastien sind nun möglich gegen die Zahlung einer hohen Summe. Die Besitzer können das Angebot ablehnen, wenn sie politische Ambitionen verfolgen oder den potenziellen Käufer nicht mögen.
 - Wegelagerer werden ihre Aktionen kommentieren und intelligenter agieren. Freunde und Verbündete werden beim Überfallen ignoriert.
 - Es ist nun möglich, die Gebäude anderer Dynastien zu segnen und vor Sabotage zu schützen.
+- Die Bettel-Aktion der Gaukler wurde etwas aufgehübscht.
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat).
@@ -68,3 +69,5 @@ Bugfixes (MegaMod):
 Balancing:
 - Jede Dynastie ist auf 10 Schergen beschränkt, unabhängig davon, wieviele Wohngebäude man besitzt.
 - Kosten und Gewinne durch die Benutzung von Ablassbriefen wurden erhöht.
+- Gaukler Einkommen wurde ausbalanciert.
+- Abklingzeit auf Gauklermaßnahmen entfernt. Reichweite etwas gesenkt.

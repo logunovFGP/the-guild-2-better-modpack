@@ -79,7 +79,6 @@ function HandelStuff()
 		CreditMoney("Actor",Eingenommen,"Offering")
 		IncrementXPQuiet("Actor",5)
 		ShowOverheadSymbol("Actor",false,true,0,"%1t",Eingenommen)
-		SatisfyNeed("Owner", 6, -0.5)
     RemoveItems("Actor", Lager, 1)
 	end
 

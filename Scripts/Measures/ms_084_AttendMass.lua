@@ -86,10 +86,8 @@ function Run()
 			if BoughtHousels >= 1 then
 				HouselTaken = true
 			end
-			SatisfyNeed("", 4, -0.25)
 		end
-
-		SatisfyNeed("", 4, Progress)
+		
 		if GetDynastyID("Destination") ~= GetDynastyID("") then
 			CreditMoney("Destination", Money, "Offering")
 		end

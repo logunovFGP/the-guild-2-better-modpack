@@ -1582,3 +1582,64 @@ function GetSkillValue(SimAlias, Skill)
 	return Value
 end
 
+-- this searches an owned building nearby depending on it's attractiveness and regular customer preferences
+function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, MaxRange, OutputAlias)
+	if not GetNearestSettlement(SimAlias, "City") then
+		return false
+	end
+	
+	local BuildingCount = CityGetBuildings("City", GL_BUILDING_CLASS_WORKSHOP, BuildingType, -1, -1, FILTER_HAS_DYNASTY, "Building") or 0
+	local CheckBld
+	local BestScore = 0
+	local RegularID = 0
+	
+	if HasProperty(SimAlias, "Regular_"..BuildingType) then
+		RegularID = GetProperty(SimAlias, "Regular_"..BuildingType)
+	end
+	
+	if BuildingCount > 1 then
+		for i=0, BuildingCount-1 do
+			CheckBld = "Building"..i
+			if AliasExists(CheckBld) then
+				local FavorBonus = 0
+				if BuildingGetOwner(CheckBld, "CheckBoss") then
+					FavorBonus = GetFavorToSim("CheckBoss", SimAlias)
+				end
+				
+				local Score = GetImpactValue(CheckBld, "Attractivity") + FavorBonus
+				
+				if GetID(CheckBld) == RegularID then
+					Score = Score * 3
+				elseif GetDynastyID(CheckBld) == GetDynastyID(SimAlias) then
+					Score = Score * 5
+				end
+			end
+			
+			if HasUpgrade == 0 or BuildingHasUpgrade(CheckBld, HasUpgrade) then
+			
+				local Distance = GetDistance(SimAlias, CheckBld)
+				if Distance <= MinDistance then
+					BestScore = Score
+					CopyAlias(CheckBld, OutputAlias)
+					break
+				elseif Distance > MaxRange then
+					Score = 0
+				end
+				
+				if Score > BestScore then
+					CopyAlias(CheckBld, OutputAlias)
+					BestScore = Score
+				end
+			end
+		end
+	end
+	
+	if BestScore > 0 then
+		return true
+	else
+		return false
+	end
+end
+	
+
+

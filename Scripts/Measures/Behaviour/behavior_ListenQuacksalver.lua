@@ -79,8 +79,6 @@ function Run()
 				if dyn_IsLocalPlayer("Actor") then
 					ShowOverheadSymbol("Actor", false, true, 0, "%1t", MoneyToGet)
 				end
-			else
-				SatisfyNeed("", 6, -0.5)
 			end
 		else
 			MsgSayNoWait("", "@L_MEASURE_LISTENQUACKSALVER_NO")

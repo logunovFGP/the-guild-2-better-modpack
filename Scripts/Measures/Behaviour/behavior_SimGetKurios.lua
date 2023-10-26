@@ -35,7 +35,7 @@ function Run()
 			spend = 80
 		end
 
-		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(15)*charm
+		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(12)*charm
 		CreditMoney("Actor", getbeg, "Offering")
 		IncrementXPQuiet("Actor", 5)
 
@@ -44,7 +44,6 @@ function Run()
 		end
 		
 		SetRepeatTimer("Owner", "SimGetKurios", 2)
-		SatisfyNeed("Owner", 5, 0.25)
 
 		PlayAnimation("Owner", "manipulate_middle_low_r")
 		Sleep(1)
@@ -98,7 +97,7 @@ function Run()
 			spend = 160
 		end
 
-		local getbeg = math.floor(spend + ((spend / 100) * begbonus)+Rand(20)*charm)
+		local getbeg = math.floor(spend + ((spend / 100) * begbonus)+Rand(12)*charm)
 		local warte = PlayAnimation("Owner", "manipulate_middle_low_r")
 		Sleep(1)
    		CreditMoney("Actor", getbeg, "Offering")
@@ -109,7 +108,6 @@ function Run()
 			ShowOverheadSymbol("Actor",false,true,0,"%1t",getbeg)
 		end
 
-		SatisfyNeed("Owner",5,0.25)
 		SetRepeatTimer("Owner", "SimGetKurios", 6)
 		Sleep(warte-1)
 		

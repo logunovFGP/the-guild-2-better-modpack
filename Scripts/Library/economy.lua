@@ -210,8 +210,8 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 	if not Count or not Items then
 		Count, Items = economy_GetItemsForSale(BldAlias)
 	end
-	IgnoreMoney = IgnoreMoney or (not IsDynastySim(BuyerAlias))
 	Budget = Budget or 0
+	IgnoreMoney = IgnoreMoney
 	
 	local ItemId, Available, ItemPrice, ItemCount
 	for i=1, Count do
@@ -227,9 +227,10 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 					local TotalPrice = ItemCount * ItemPrice 
 					CreditMoney(BldAlias, TotalPrice, "WaresSold")
 					ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
-					economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
+				--	economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
 					if not IgnoreMoney then
 						chr_SpendMoney(BuyerAlias, TotalPrice, "WaresBought")
+						chr_UseBudget(BuyerAlias, 1, TotalPrice)
 					end
 					return ItemId, ItemCount, TotalPrice
 				end

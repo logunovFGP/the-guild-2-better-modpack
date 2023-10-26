@@ -7,29 +7,29 @@
 -------------------------------------------------------------------------------
 
 local function switch(c)
-  local self = {casevar = c}
+	local self = { casevar = c }
 
-    self.caseof = function (self,code)
-      return code[self.casevar]()
-    end
+	self.caseof = function (self, code)
+	return code[self.casevar]()
+end
 
     return self
 end
 				
-function ManageMedicine(checker,treatment,property) 
+function ManageMedicine(checker, treatment, property) 
 
 	switch(checker): caseof(
 	{
 		function() -- 1
-			RemoveItems("Hospital",treatment,1,INVENTORY_STD)
+			RemoveItems("Hospital", treatment, 1, INVENTORY_STD)
 		end,
 
 		function() -- 2
-			RemoveItems("Hospital",treatment,1,INVENTORY_SELL)
+			RemoveItems("Hospital", treatment, 1, INVENTORY_SELL)
 		end,
 
 		function() -- 3
-			SetProperty("Hospital",treatment.."s",property-1)
+			SetProperty("Hospital", treatment.."s", property-1)
 		end
 	})
 

@@ -1201,3 +1201,17 @@ function CalcIllnessHazard(SimAlias, Disease)
 	
 	return Hazard
 end
+
+function GetDayTime()
+	local CurrentTime = math.mod(GetGametime(), 24)
+	
+	if CurrentTime >= 5 and CurrentTime <= 10 then
+		return "MORNING"
+	elseif CurrentTime >= 11 and CurrentTime <= 16 then
+		return "DAY"
+	elseif CurrentTime >= 17 and CurrentTime <= 22 then
+		return "EVENING"
+	else
+		return "NIGHT"
+	end
+end

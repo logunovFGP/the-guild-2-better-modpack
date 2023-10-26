@@ -95,7 +95,4 @@ function CleanUp()
 		end
 		RemoveProperty("","Tips")
 	end
-
-	SatisfyNeed("", 2, 0.2)
-	SatisfyNeed("", 8, 0.2)
 end

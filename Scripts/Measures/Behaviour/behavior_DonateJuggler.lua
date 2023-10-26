@@ -30,7 +30,7 @@ function Run()
 		spend = 32
 	end
 
-	local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(10)*charm
+	local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(8)*charm
 	CreditMoney("Actor", getbeg, "Offering")
 	ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 	

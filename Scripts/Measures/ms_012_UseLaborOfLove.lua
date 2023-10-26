@@ -143,9 +143,6 @@ function Run()
 		chr_GainXP("", GetData("BaseXP"))
 	end
 
-	-- satisfy the pleasure need
-	SatisfyNeed("", 2, 0.5)
-
 	MsgSay("Destination", "@L_PIRATE_LABOROFLOVE_TALK_END")
 	AddImpact("", "FullOfLove", 1, 4)
 	--DestroyCutscene("cutscene")

@@ -356,6 +356,7 @@ _Rogue_
 - The mercenarys 'offer building protection' icon is now shown while your mercenary protects a building.
 - Mercenarys can protect own buildings.
 - Highwaymen will comment on their actions and act more intelligently. Friends and allies will be ignored when raiding.
+- Begging has a bit more animation around it.
 
 _AI_
 - Improved hospital AI: No more than 2 employees will be assigned to treat patients.
@@ -450,4 +451,6 @@ _Rogue_
 - The visibility of crimes (guard detection) has been increased. Breaking bones is now considered a crime for the guards aswell.
 - Dicegame has now a cap of 10.000 Gold instead of 100.000
 - Ransoms (abductions) have been lowered, however demanding a ransom from your victim is now instant and doesn't require your thief to run around the map.
+- Rebalanced juggler income.
+- Removed cooldowns on juggler actions. Decreased range of juggler actions.
 

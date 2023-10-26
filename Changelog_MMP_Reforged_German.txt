@@ -361,6 +361,7 @@ _Gauner_
 - Die Maßnahme 'Gebäudeschutz anbieten' zeigt nun ein Icon, während der Söldner ein Gebäude beschützt. Die Maßnahme wurde als grüne Maßnahme eingeordnet.
 - Söldner können ihren 'Gebäudeschutz anbieten' nun auch auf eigene Gebäude anwenden.
 - Wegelagerer werden ihre Aktionen kommentieren und intelligenter agieren. Freunde und Verbündete werden beim Überfallen ignoriert.
+- Das Betteln der Gaukler wurde etwas aufgehübscht.
 
 _KI_
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).
@@ -457,3 +458,6 @@ _Gauner_
 - Die Sichtbarkeit von Verbrechen (z.B. für Wachen) wurde erhöht. Knochenbrechen gilt für die Wachen nun ebenfalls als Verbrechen.
 - Das Würfelspiel hat nun eine Goldobergrenze von 10.000 statt 100.000
 - Lösegeldforderungen (durch Entführung) wurden gesenkt, dafür erfolgt die Maßnahme augenblicklich und erfordert es nicht länger, einen Gauner zum Haus des Opfers zu schicken.
+- Gaukler Einkommen wurde ausbalanciert.
+- Abklingzeit auf Gauklermaßnahmen entfernt. Reichweite etwas gesenkt.
+

@@ -47,9 +47,6 @@ function Run()
 --		Talk("", "Destination")
 --	end
 
-	SatisfyNeed("", 3, 1.0)
-	SatisfyNeed("Destination", 3, 1.0)
-
 end
 
 function CleanUp()

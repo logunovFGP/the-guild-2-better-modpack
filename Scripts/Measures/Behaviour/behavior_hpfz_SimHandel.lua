@@ -20,7 +20,6 @@ function Run()
 		if ItemCat > 0 then
 			 behavior_hpfz_simhandel_KundeReaktion(ItemCat)
 		end
-		SatisfyNeed("Owner",7,0.10)
 	end
 
 end
