@@ -433,6 +433,7 @@ _Allgemein_
 - Man kann nun Personen desselben Geschlechtes freundlich umarmen.
 - Jede Dynastie ist auf 10 Schergen beschränkt, unabhängig davon, wieviele Wohngebäude man besitzt.
 - Der Abriss eines Gebäudes gibt nur noch 35% statt 50% des Gebäudewertes (plus Items)
+- Kontor-Preise und Angebote neu ausbalanciert.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

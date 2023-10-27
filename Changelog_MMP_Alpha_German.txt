@@ -72,3 +72,4 @@ Balancing:
 - Kosten und Gewinne durch die Benutzung von Ablassbriefen wurden erhöht.
 - Gaukler Einkommen wurde ausbalanciert.
 - Abklingzeit auf Gauklermaßnahmen entfernt. Reichweite etwas gesenkt.
+- Kontor-Preise und Angebote neu ausbalanciert.

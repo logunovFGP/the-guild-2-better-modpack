@@ -425,6 +425,7 @@ _General_
 - You can hug a person of the same sex now.
 - Every dynasty is limited to max. 10 thugs (no matter how many residences you build)
 - Tearing down a building will now only reward you with 35% of that building's value (plus items) instead of 50%
+- Counting House prices and offers rebalanced.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

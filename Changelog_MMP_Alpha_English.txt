@@ -74,3 +74,4 @@ Balancing:
 - Cost and profit of the usage of letters of indulgence have been increased.
 - Rebalanced juggler income.
 - Removed cooldowns on juggler actions. Decreased range of juggler actions.
+- Counting House prices and offers rebalanced.

@@ -9,12 +9,11 @@ function Run()
 	local	Selection = Rand(2)
 	SetData("Selection", Selection)
 	
-	if Selection==0 then
+	if Selection == 0 then
 		state_kontor_event_NeedItems()
-	elseif Selection==1 then
+	elseif Selection == 1 then
 		state_kontor_event_OfferItems()
 	end
-
 end
 
 function CleanUp()
@@ -25,9 +24,9 @@ function CleanUp()
 	end
 
 	local Selection = GetData("Selection")
-	if Selection==0 then
+	if Selection == 0 then
 		state_kontor_event_NeedItemsCleanUp()
-	elseif Selection==1 then
+	elseif Selection == 1 then
 		state_kontor_event_OfferItemsCleanUp()
 	end
 
@@ -35,9 +34,6 @@ function CleanUp()
 	local ID = "Event"..GetID("")
 	HudRemoveCountdown(ID,false)
 end
-
-
-
 
 -- *******************************************
 --
@@ -56,11 +52,16 @@ function NeedItems()
 	end
 	
 	local BasePrice = ItemGetBasePrice(Item)
-	if BasePrice<1 then
+	if BasePrice < 1 then
 		return
 	end
 	
-	local Needed = Rand(12)*5 + 10
+	local Needed = Rand(15)*5 + 10
+	
+	if ItemGetType(Item) == 8 then
+		Needed = Needed * 3
+	end
+	
 	SetData("Item", Item)
 	SetProperty("", "EventItem", Item)
 	
@@ -68,7 +69,7 @@ function NeedItems()
 	local Gametime	= Rand(12) + 12
 	local DestTime  = CurrentTime + Gametime
 	local	ToDo	= Gametime2Realtime(Gametime)
-	local ItemLabel	= ItemGetLabel(Item, false)
+	local ItemLabel = ItemGetLabel(Item, false)
 	local	Count
 	local	Success 	= false
 	local ID = "Event"..GetID("")
@@ -76,7 +77,7 @@ function NeedItems()
 	-- message to insert here: start of the event
 	GetSettlement("", "City")
 
-	MsgNewsNoWait("All","","@C[@L_KONTOR_MISSIONS_NEED_ITEMS_COOLDOWN_+0,%5i,%6l]","economie",-1,
+	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_NEED_ITEMS_COOLDOWN_+0,%5i,%6l]", "economie", -1,
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_HEAD_+"..random,
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_TEXT_+"..random,
 			       GetID("City"), Needed, ItemLabel, Gametime, DestTime,ID)
@@ -91,7 +92,7 @@ function NeedItems()
 			break
 		end
 		
-		if Count==0 then
+		if Count == 0 then
 			AddItems("", Item, 1, INVENTORY_STD)
 		end
 		
@@ -130,7 +131,7 @@ function NeedItemsFindItem(event)
 		Items = { 
 			"BuildMaterial", "Pinewood", 
 			"Oakwood", "Tool",
-			"Beschlag", "Holzzapfen"
+			"Beschlag", "Holzzapfen", "Granite"
 			}
 	elseif event == 2 then
 		Items = { 
@@ -155,7 +156,7 @@ function NeedItemsFindItem(event)
 		Items = { 
 			"Iron", "Silver", "Gold", 
 			"Pinewood", "Oakwood", "Wool", "Fungi", 
-			"Ektoplasma", "Charcoal"
+			"Charcoal", "Granite"
 			}
 	end
 
@@ -164,7 +165,7 @@ function NeedItemsFindItem(event)
 		Count = Count + 1
 	end
 
-	local	Sel	= Rand(Count-1)+1
+	local	Sel = Rand(Count-1)+1
 	return Items[Sel]
 end
 
@@ -176,8 +177,6 @@ function NeedItemsCleanUp()
 		CitySetFixedPrice("", Item, -1, -1, -1)
 	end
 end
-
-
 
 -- *******************************************
 --
@@ -200,17 +199,17 @@ function OfferItems()
 		return
 	end
 	
-	local Offering = Rand(12)*5 + 10
+	local Offering = Rand(15)*5 + 10
 	SetData("Item", Item)
 	SetProperty("", "EventItem", Item)
 	
 	local CurrentTime = GetGametime()
 	local Gametime	= Rand(12)+12
-	local DestTime     = CurrentTime + Gametime
-	local	ToDo			= Gametime2Realtime(Gametime)
-	local ItemLabel	= ItemGetLabel(Item, false)
+	local DestTime = CurrentTime + Gametime
+	local	ToDo	= Gametime2Realtime(Gametime)
+	local ItemLabel = ItemGetLabel(Item, false)
 	local	Count
-	local	Success 	= false
+	local	Success = false
 	local ID = "Event"..GetID("")
 	
 	GetSettlement("", "City")
@@ -226,6 +225,9 @@ function OfferItems()
 	Count = GetItemCount("", Item, INVENTORY_STD)
 	RemoveItems("", Item, Count, INVENTORY_STD)
 	
+	if ItemGetType(Item) == 8 then
+		Offering = Offering * 3
+	end
 	AddItems("", Item, Offering, INVENTORY_STD)
 	
 	while ToDo>0 do
@@ -287,7 +289,7 @@ function OfferItemsFindItem(event)
 			"Iron", "Silver", "Gold",
 			"Pinewood", "Oakwood", "Leather",
 			"Beschlag", "Holzzapfen",
-			"Wool", "Ektoplasma", "Charcoal", "Fungi"
+			"Wool", "Gemstone", "Charcoal", "Fungi", "Honey", "Fruit"
 			}
 	end
 
