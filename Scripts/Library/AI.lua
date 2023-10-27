@@ -1163,10 +1163,45 @@ function ChoosePersonality(Dynasty)
 	end
 end
 
+-- -----------------------
+-- MakeDecision - this is for AI functions.
+-- -----------------------
+function MakeDecision(DynastyAlias, Trait1, Mod1, Trait2, Mod2)
+	-- Trait must match the columns in AIPersonality.dbt. Trait2 is optional if AI has to weight their traits against each other
+	
+	if not HasProperty(DynastyAlias, "AI_PERSONA") then
+		ai_ChoosePersonality(DynastyAlias)
+	end
+	
+	local PersonalityID = GetProperty(DynastyAlias, "AI_PERSONA")
+	local CheckValue = 0
+	
+	-- get the needed trait
+	local Trait1Val = 0
+	Trait1Val = GetDatabaseValue("AIPersonality", PersonalityID, Trait) + Mod1 or 0
+	local CheckTrait1 = Rand(Trait1Val)
+	
+	local Trait2Val = 0
+	if Trait2 ~= nil then
+		Trait2Val = GetDatabaseValue("AIPersonality", PersonalityID, Trait2) + Mod2 or 0
+		local CheckTrait2 = Rand(Trait2Val)
+		-- compare
+		if CheckTrait1 >= CheckTrait2 then
+			return true
+		else
+			return false
+		end
+	end
+	
+	-- random check
+	local CheckValue = Rand(TraitValue) 
+	return CheckValue
+end
+
 -------------------------------------------------------
--- CheckPersonality - choose one if not available
+-- CheckPersonalityWeight - this is for the base tree
 -------------------------------------------------------
-function CheckPersonality(Dynasty, ActionCategory)
+function CheckPersonalityWeight(Dynasty, ActionCategory)
 	
 	if not HasProperty(Dynasty, "AI_PERSONA") then
 		ai_ChoosePersonality(Dynasty)

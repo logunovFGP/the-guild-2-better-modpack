@@ -71,6 +71,8 @@ function AIInitBribe()
 	local MyMoney = GetMoney("Destination") - 1000
 	local Favor = GetFavorToSim("Destination", "Owner")
 	local SpendFactor = 3
+	GetDynasty("Destination", "AI_Dyn")
+	local PersonalityCheck= ai_MakeDecision("AI_Dyn", "ambition", 0, "greed", 0)
 	
 	if MyMoney < Choice3 then
 		SpendFactor = 2 
@@ -80,11 +82,7 @@ function AIInitBribe()
 		return "C"
 	end
 	
-	GetDynasty("Destination", "AI_Dyn")
-	local Ambition = dyn_MakeDecision("AI_Dyn", "ambition") 
-	local Greed = dyn_MakeDecision("AI_Dyn", "greed")
-	
-	if Greed > Ambition then
+	if not PersonalityCheck then
 		SpendFactor = SpendFactor - 1
 	end
 	
@@ -101,25 +99,26 @@ function AIDecision()
 	local Money = 0 + GetData("TFBribe")
 	local Favor = GetFavorToSim("Destination", "Owner")
 	GetDynasty("Destination", "AI_Dyn")
-	local AcceptChance = dyn_MakeDecision("AI_Dyn", "greed") or 10
-	local DeclineChance = dyn_MakeDecision("AI_Dyn", "bribes") or 10
+	local AcceptMod = 0
 	
 	if Favor >= 60 then
-		AcceptChance = AcceptChance + 10
+		AcceptMod = AcceptMod + 10
 	elseif Favor < 40 then
-		DeclineChance = DeclineChance + 20
+		AcceptMod = AcceptMod - 20
 	end
 	
 	local MyMoney = GetMoney("Destination")
 	if Money > MyMoney then
-		AcceptChance = AcceptChance + 20
+		AcceptMod = AcceptMod + 20
 	elseif Money > (MyMoney / 2) then
-		AcceptChance = AcceptChance + 10
+		AcceptMod = AcceptMod + 10
 	elseif Money < (MyMoney / 10) then
-		DeclineChance = DeclineChance + 20
+		AcceptMod = AcceptMod - 20
 	end
 	
-	if AcceptChance >= DeclineChance then
+	local result = ai_MakeDecision("AI_Dyn", "bribes", AcceptMod) 
+	
+	if result then
 		return 1
 	else
 		return 2

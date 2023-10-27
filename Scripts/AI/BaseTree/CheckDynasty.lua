@@ -1,4 +1,8 @@
 function Weight()
+
+	if not HasProperty("dynasty", "AI_PERSONA") then
+		ai_ChoosePersonality("dynasty")
+	end
 	
 	if not ReadyToRepeat("dynasty", "AI_CheckDynasty") then
 		return 0

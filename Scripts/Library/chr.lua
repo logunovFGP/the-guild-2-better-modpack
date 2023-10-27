@@ -1506,15 +1506,23 @@ function GetBudget(SimAlias, Type)
 	local LuxuryCurrent = 0
 	
 	local RankData = {
-				[GL_RANK_DESTITUTE] = { BasicMax = 10, LuxuryMax = 5 }, -- 1: 580 / 290
-				[GL_RANK_POOR] = { BasicMax = 20, LuxuryMax = 10 },  -- 2: 1160 / 580
-				[GL_RANK_MIDDLE] = { BasicMax = 30, LuxuryMax = 20 }, -- 3: 1740 / 1160
-				[GL_RANK_RICH] = { BasicMax = 50, LuxuryMax = 50 },  -- 4: 2900 / 2900
-				[GL_RANK_WEALTHY] = { BasicMax = 100, LuxuryMax = 150 } -- 5: 5800 / 8700
+				[GL_RANK_DESTITUTE] = { BasicMax = 12, LuxuryMax = 6 }, -- 1: 696 / 348
+				[GL_RANK_POOR] = { BasicMax = 24, LuxuryMax = 12 },  -- 2: 1392 / 696
+				[GL_RANK_MIDDLE] = { BasicMax = 48, LuxuryMax = 32 }, -- 3: 2784 /1856
+				[GL_RANK_RICH] = { BasicMax = 72, LuxuryMax = 72 },  -- 4: 4176 / 4176
+				[GL_RANK_WEALTHY] = { BasicMax = 120, LuxuryMax = 240 } -- 5: 6960 / 13920
 				}
 	
 	BasicCurrent = RankData[Rank].BasicMax - GetImpactValue(SimAlias, "BasicPurse")
 	LuxuryCurrent = RankData[Rank].LuxuryMax - GetImpactValue(SimAlias, "LuxuryPurse")
+	
+	-- greed reduces the purses a character has (20-90% reduction)
+	if IsDynastySim(SimAlias) then
+		if GetDynasty(SimAlias, "MyDyn") then
+			BasicCurrent = math.floor(BasicCurrent * ai_CheckPersonalityWeight("MyDyn", "greed") / 100)
+			LuxuryCurrent = math.floor(LuxuryCurrent * ai_CheckPersonalityWeight("MyDyn", "greed") / 100)
+		end
+	end
 		
 	if BasicCurrent < 0 then
 		BasicCurrent = 0
@@ -1525,9 +1533,9 @@ function GetBudget(SimAlias, Type)
 	end
 	
 	if Type == 1 then
-		return BasicCurrent
+		return BasicCurrent * 58
 	else
-		return LuxuryCurrent
+		return LuxuryCurrent * 58
 	end
 end
 
@@ -1538,12 +1546,17 @@ function UseBudget(SimAlias, Type, Amount)
 		return
 	end
 	
+	if IsDynastySim(SimAlias) then
+		chr_SpendMoney(SimAlias, Amount, "misc", true)
+		-- ToDo: statistics
+	end
+	
 	local Change = math.floor(Amount / 58)
 	
 	if Type == 1 then -- BasePurse
-		AddImpact(SimAlias, "BasicPurse", Change, 24)
+		AddImpact(SimAlias, "BasicPurse", Change, 12)
 	elseif Type == 2 then -- LuxuryPurse
-		AddImpact(SimAlias, "LuxuryPurse", Change, 24)
+		AddImpact(SimAlias, "LuxuryPurse", Change, 12)
 	end
 end
 
