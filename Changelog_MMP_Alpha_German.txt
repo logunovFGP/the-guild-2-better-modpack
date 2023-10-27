@@ -28,6 +28,7 @@ Features:
 - Wegelagerer werden ihre Aktionen kommentieren und intelligenter agieren. Freunde und Verbündete werden beim Überfallen ignoriert.
 - Es ist nun möglich, die Gebäude anderer Dynastien zu segnen und vor Sabotage zu schützen.
 - Die Bettel-Aktion der Gaukler wurde etwas aufgehübscht.
+- Das Würfelspiel in der Pinte wurde überarbeitet. Nun spielt man gegen tatsächliche Gegner in der Pinte und kann so auch einige EP verdienen. Der Pinten-Besitzer erhält auch einen Anteil. Das Spiel nutzt nun auch das neue KI Geldbeutel-System.
 
 Bugfixes:
 - Angestellte antreiben / Bonus auszahlen wurde repariert (inkl. des Fehlers, der in Verbindung mit der Anführer-Fertigkeit auftrat).

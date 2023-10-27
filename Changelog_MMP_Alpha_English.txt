@@ -29,6 +29,7 @@ Features:
 - Highwaymen will comment on their actions and act more intelligently. Friends and allies will be ignored when raiding.
 - It's now possible to bless the buildings of other dynasties and protect them against sabotage.
 - Begging has a bit more animation around it.
+- The dice game in the pub has been reworked. Now you actually play against someone inside the pub and can earn some XP with it. Pub owners get a cut. The system uses the fake-purse system.
 
 Fixes:
 - Fixed Pay Bonus / Propel Employees bugs (including the one with motivator skill)

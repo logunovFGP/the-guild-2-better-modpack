@@ -389,6 +389,13 @@ function CleanUp()
 	StopAnimation("")
 	ReleaseLocator("")
 	ReleaseLocator("Destination")
+	
+	if (AliasExists("Destination")) then
+		MoveSetActivity("Destination")
+		if GetDynastyID("") ~= GetDynastyID("Destination") then
+			SimLock("Destination", 0.5)
+		end
+	end
 
 	if IsStateDriven() then
 		f_ExitCurrentBuilding("")

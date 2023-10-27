@@ -830,7 +830,7 @@ function CleanUp()
 	if AliasExists("Destination") then
 		AlignTo("Destination","")
 		MoveSetActivity("Destination")
-		SimLock("Destination", 0.4)
+		SimLock("Destination", 0.5)
 	end
 
 end

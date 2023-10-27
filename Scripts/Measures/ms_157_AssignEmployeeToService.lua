@@ -123,11 +123,11 @@ end
 function CleanUp()
 	if AliasExists("Tavern") then
 		SimGetWorkingPlace("","Tavern")
+		RemoveProperty("Tavern", "ServiceActive")
+		RemoveProperty("Tavern", "GoToService")
 	end
 
 	StopAnimation("")
 	MoveSetActivity("", "")
-	RemoveProperty("Tavern", "ServiceActive")
-	RemoveProperty("Tavern", "GoToService")
 end
 

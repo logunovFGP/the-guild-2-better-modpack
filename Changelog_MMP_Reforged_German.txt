@@ -362,6 +362,7 @@ _Gauner_
 - Söldner können ihren 'Gebäudeschutz anbieten' nun auch auf eigene Gebäude anwenden.
 - Wegelagerer werden ihre Aktionen kommentieren und intelligenter agieren. Freunde und Verbündete werden beim Überfallen ignoriert.
 - Das Betteln der Gaukler wurde etwas aufgehübscht.
+- Das Würfelspiel in der Pinte wurde überarbeitet. Nun spielt man gegen tatsächliche Gegner in der Pinte und kann so auch einige EP verdienen. Der Pinten-Besitzer erhält auch einen Anteil. Das Spiel nutzt nun auch das neue KI Geldbeutel-System.
 
 _KI_
 - Heiler-KI verbessert (es werden nie mehr als 2 Heiler zum Behandeln eingeteilt).

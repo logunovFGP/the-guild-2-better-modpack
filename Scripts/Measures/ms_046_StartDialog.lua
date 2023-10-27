@@ -311,7 +311,7 @@ function CleanUp()
 		RemoveProperty("Destination", "InTalk")
 		MoveSetActivity("Destination")
 		if GetDynastyID("") ~= GetDynastyID("Destination") and not HasData("Fail") then
-			SimLock("Destination", 0.3)
+			SimLock("Destination", 0.5)
 		end
 	end
 end

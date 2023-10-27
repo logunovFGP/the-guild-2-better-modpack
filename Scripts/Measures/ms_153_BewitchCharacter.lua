@@ -376,10 +376,12 @@ function CleanUp()
 		f_EndUseLocator("Destination", "Bewitched", GL_STANCE_STAND)
 	end
 	
-	if AliasExists("Destination") then
-		SimLock("Destination", 0.4)
+	if (AliasExists("Destination")) then
+		MoveSetActivity("Destination")
+		if GetDynastyID("") ~= GetDynastyID("Destination") then
+			SimLock("Destination", 0.5)
+		end
 	end
-
 	if IsStateDriven() then
 		MeasureRun("", nil, "DynastyIdle")
 	end
