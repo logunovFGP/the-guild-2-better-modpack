@@ -706,6 +706,10 @@ function GainXP(SimAlias, XPAmount, Quiet)
 	local YPR = Options:GetValueInt("YearsPerRound")
 	local Multiplicator = 1
 	
+	if XPAmount == 0 or XPAmount == nil then
+		XPAmount = 25
+	end
+	
 	Multiplicator = 0.5*YPR
 	
 	local SchoeneRundeZahl = 5*math.floor(XPAmount*Multiplicator/5)

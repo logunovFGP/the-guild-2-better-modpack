@@ -74,7 +74,7 @@ function Run()
 	end
 	
 	dyn_AddFame("", ContractFame)
-	chr_GainXP("",ContractFame*10)
+	chr_GainXP("", GL_EXP_GAIN_RARE)
 
 	MsgBoxNoWait("", "",
 						"@L_GUILDHOUSE_MISSIONS_TASK_FINISH_HEAD_+0",

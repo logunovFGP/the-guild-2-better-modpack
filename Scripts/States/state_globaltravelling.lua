@@ -242,22 +242,22 @@ function Run()
 			end
 		end
 
-		SetProperty("","WarVictim",1)
+		SetProperty("", "WarVictim", 1)
 
 	else
 	
 		SetInvisible("", false)
 		RemoveImpact("", "Hidden")
 	
-		f_MoveTo("","Position",GL_MOVESPEED_RUN)
+		f_MoveTo("", "Position", GL_MOVESPEED_RUN)
 	
 		if fame > 0 then
-			dyn_AddImperialFame("",fame)
+			dyn_AddImperialFame("", fame)
 			Sleep(2)
-			chr_GainXP("", GetData("BaseXP"))
+			chr_GainXP("", GL_EXP_GAIN_HIGH_RISK)
 	
 			if DynastyIsPlayer("") then
-				feedback_MessageCharacter("","@L_WAR_END_ALIVE_HEAD_+0","@L_WAR_END_ALIVE_BODY_+0",GetID(""))
+				feedback_MessageCharacter("", "@L_WAR_END_ALIVE_HEAD_+0","@L_WAR_END_ALIVE_BODY_+0",GetID(""))
 			end
 
 		else
