@@ -75,3 +75,5 @@ Balancing:
 - Rebalanced juggler income.
 - Removed cooldowns on juggler actions. Decreased range of juggler actions.
 - Counting House prices and offers rebalanced.
+- Highwaymen won't attack if a character has detected them before.
+

@@ -42,9 +42,10 @@ New Music pieces: The Guild 1 soundtrack + songs by Alexander Nakarada (https://
 Installation:
 
 Install The Guild 2 - Renaissance.
-Patch it up to Version 4.211 (Patch can be found at www.gilde2.de) unless you have the Steamversion (which is automaticly patched).
+Patch it up to Version 4.211, unless you have the Steamversion (which is automaticly patched).
 Delete the 'Scripts' folder in your main game directory.
-Extract the FMMP.zip to your main game directory, overwrite everything.
+Extract the content of FMMP.zip to your main game directory, overwrite everything. Make sure, DB/Scripts/sfx etc. extract directly into the main folder!
+--> During the alpha: Open Translations/YOURLANGUAGE and copy everything you find in there and paste it into your main folder aswell <--
 Make sure the language in your DB/text.dbt matches your language setting in your config.ini
 
 Enjoy!
@@ -455,4 +456,5 @@ _Rogue_
 - Ransoms (abductions) have been lowered, however demanding a ransom from your victim is now instant and doesn't require your thief to run around the map.
 - Rebalanced juggler income.
 - Removed cooldowns on juggler actions. Decreased range of juggler actions.
+- Highwaymen won't attack if a character has detected them before.
 

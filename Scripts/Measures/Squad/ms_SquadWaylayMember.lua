@@ -171,7 +171,7 @@ function WhatToDo()
 		end
 	
 		local Target = ms_squadwaylaymember_Scan("")
-		if Target then
+		if Target and GetState("", STATE_HIDDEN) then -- only surprise attacks
 			return "attack"
 		end
 		

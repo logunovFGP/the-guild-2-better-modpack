@@ -43,9 +43,10 @@ Zusätzliche Musik: Gilde 1 Soundtrack + Alexander Nakarada (https://www.serpent
 Installation:
 
 Installiere Die Gilde 2 - Renaissance.
-Installiere Patchversion 4.211 (z.B. von www.gilde2.de) sofern du nicht die Steamversion hast (die automatisch aktualisiert wird).
+Installiere Patchversion 4.211, sofern du nicht die Steamversion hast (die automatisch aktualisiert wird).
 Lösche den 'Scripts' Ordner aus dem Spielverzeichnis
-Entpacke die FMMP.zip in das Spielverzeichnis, überschreibe alles.
+Entpacke den Inhalt der FMMP.zip in das Spielverzeichnis, überschreibe alles. Stelle dabei sicher, dass kein neuer Unterordner entsteht, sondern dass DB/Scripts/sfx etc ins Hauptverzeichnis gelangen!
+--> Während der Alpha: Öffne Translations/DEINESPRACHE und kopiere den gesamten Inhalt ins Hauptverzeichnis <--
 Stelle sicher, dass die Sprache in der DB/text.dbt dem Eintrag 'language' in deiner config.ini entspricht.
 
 *** Allgemeines ***
@@ -462,4 +463,4 @@ _Gauner_
 - Lösegeldforderungen (durch Entführung) wurden gesenkt, dafür erfolgt die Maßnahme augenblicklich und erfordert es nicht länger, einen Gauner zum Haus des Opfers zu schicken.
 - Gaukler Einkommen wurde ausbalanciert.
 - Abklingzeit auf Gauklermaßnahmen entfernt. Reichweite etwas gesenkt.
-
+- Wegelagerer werden keine Karren überfallen, wenn sie zuvor von jemandem aufgedeckt wurden.

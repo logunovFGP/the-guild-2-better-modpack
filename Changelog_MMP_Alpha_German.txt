@@ -73,3 +73,5 @@ Balancing:
 - Gaukler Einkommen wurde ausbalanciert.
 - Abklingzeit auf Gauklermaßnahmen entfernt. Reichweite etwas gesenkt.
 - Kontor-Preise und Angebote neu ausbalanciert.
+- Wegelagerer werden keine Karren überfallen, wenn sie zuvor von jemandem aufgedeckt wurden.
+
