@@ -694,7 +694,7 @@ Data:
 2624             270              "Worker"                    1                     0                 1                    1                    2600              0                 500             0          |
 2625             270              "InventorySpace"            1                     0                 3                    20                   2604              0                 300             0          |
 
-// Mine 290
+// Mine 290-292
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
 2700             290              "Arbeiterslot"              1                     1                 0                    0                    0                 0                 0               0          |
 2701             290              "Produkte"                  1                     1                 0                    0                    0                 0                 0               0          |
@@ -705,20 +705,22 @@ Data:
 2706             290              "Einbruchschutz"            1                     1                 0                    0                    0                 0                 0               0          |
 2707             290              "Talentbonus"               1                     1                 0                    0                    0                 0                 0               0          |
 2709             290              "Worker"                    1                     1                 1                    2                    2700              0                 0               0          |
-2710             290              "Worker"                    1                     0                 1                    1                    2700              0                 500             0          |
+2710             290              "Worker"                    1                     0                 1                    1                    2700              0                 250             0          |
 2711             290              "InventorySlot"             1                     1                 2                    6                    2703              0                 0               0          |
 2712             290              "InventorySlot"             1                     0                 2                    1                    2703              0                 150             0          |
-2713             290              "InventorySlot"             1                     0                 2                    1                    2703              0                 150             0          |
+2713             291              "InventorySlot"             1                     0                 2                    1                    2711              0                 150             0          |
 2714             290              "InventorySpace"            1                     1                 3                    60                   2704              0                 0               0          |
 2715             290              "InventorySpace"            1                     0                 3                    20                   2704              0                 300             0          |
 2718             290              "ProtectionFromBurglary"    1                     0                 8                    0.25                 2706              0                 150             0          |
 2719             290              "Iron"                      1                     1                 6                    241                  2701              0                 0               0          |
-2720             290              "Silver"                    1                     1                 6                    242                  2701              0                 0               0          |
-2721             290              "Gold"                      1                     1                 6                    243                  2701              0                 0               0          |
-2722             290              "Gemstone"                  1                     1                 6                    244                  2701              0                 0               0          |
-2723             290              "Worker"                    1                     0                 1                    1                    2700              0                 500             0          |
-2724             290              "Worker"                    1                     0                 1                    1                    2700              0                 500             0          |
-2725             290              "InventorySpace"            1                     0                 3                    20                   2704              0                 300             0          |
+2720             291              "Silver"                    1                     1                 6                    242                  2701              0                 0               0          |
+2721             292              "Gold"                      1                     1                 6                    243                  2720              0                 0               0          |
+2722             292              "Gemstone"                  1                     0                 6                    244                  2721              0                 2500            0          |
+2723             291              "Worker"                    1                     0                 1                    1                    2709              0                 500             0          |
+2724             292              "Worker"                    1                     0                 1                    1                    2723              0                 500             0          |
+2725             291              "InventorySpace"            1                     0                 3                    20                   2714              0                 300             0          |
+2726             291              "ProtectionFromBurglary"    1                     0                 8                    0.25                 2718              0                 300             0          |
+2727             292              "ProtectionFromBurglary"    1                     0                 8                    0.25                 2726              0                 500             0          |
 
 // Warehouse 365
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
