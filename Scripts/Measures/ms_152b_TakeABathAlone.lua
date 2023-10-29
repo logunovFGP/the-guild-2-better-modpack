@@ -4,12 +4,6 @@
 function Run()
 
 	if IsStateDriven() then
-	--	local ItemName = "Phiole"
-	--	if GetItemCount("", ItemName, INVENTORY_STD)==0 then
-	--		if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
-	--			return
-	--		end
-	--	end
 		
 		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 			return
@@ -27,7 +21,6 @@ function Run()
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	local OverallPrice = 350
-	SetData("Price", OverallPrice)
 	
 	-- Stop a possibly following courtlover from following
 	if SimGetCourtLover("", "CourtLover") then
@@ -75,16 +68,11 @@ function Run()
 	
 	-- Pay if the tavern does not belong to the owners dynasty
 	if GetDynastyID("Tavern") ~= GetDynastyID("") then
-		if not chr_SpendMoney("", GetData("Price"), "CostSocial") then
+		if not chr_SpendMoney("", OverallPrice, "CostSocial") then
 			MsgQuick("", "_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 			return
 		end
-		CreditMoney("Tavern", GetData("Price"), "Offering")
-	--	local OldBalance = 0
-	--	if HasProperty("Tavern", "BalanceBathingFee") then
-	--		OldBalance = GetProperty("Tavern", "BalanceBathingFee")
-	--	end
-	--	SetProperty("Tavern", "BalanceBathingFee", (OldBalance+OverallPrice))
+		CreditMoney("Tavern", OverallPrice "Offering")
 	end
 
 	-- Bathing
@@ -108,7 +96,6 @@ function Run()
 	if GetFreeLocatorByName("Tavern", "Stroll", 1, 5, "EndPos") then
 		f_MoveTo("", "EndPos")
 	end
-	
 end
 
 -- -----------------------
@@ -132,6 +119,6 @@ end
 function GetOSHData(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 350)
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 350) -- check OverallPrice!
 end
 

@@ -11,7 +11,10 @@
 -- Run
 -- -----------------------
 function Run()
-
+	
+	-- price
+	local Price = 500
+	
 	-- The time in hours until the measure can be repeated
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeUntilRepeat = mdata_GetTimeOut(MeasureID)
@@ -122,8 +125,8 @@ function Run()
 	
 	if GetDynastyID("Tavern") ~= GetDynastyID("") then
 		local Money = GetMoney("") or 0
-		if Money < 500 then
-			MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+1", 500)
+		if Money < Price then
+			MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+1", Price)
 			StopMeasure()
 		end
 	end
@@ -195,12 +198,12 @@ function Run()
 				else
 					-- Pay if the tavern does not belong to the owners dynasty
 					if GetDynastyID("Tavern") ~= GetDynastyID("") then
-						if not chr_SpendMoney("", 500, "CostSocial") then
+						if not chr_SpendMoney("", Price, "CostSocial") then
 							MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 							StopMeasure()
 							return
 						end
-						CreditMoney("Tavern",GetData("Price"),"Offering")
+						CreditMoney("Tavern", Price, "Offering")
 					end
 					
 					AddImpact("Destination", "ReceivedBath", 1, 6)
@@ -318,7 +321,7 @@ function Run()
 			
 			-- Pay if the tavern does not belong to the owners dynasty
 			if GetDynastyID("Tavern") ~= GetDynastyID("") then
-				if not chr_SpendMoney("", 500, "CostSocial") then
+				if not chr_SpendMoney("", Price, "CostSocial") then
 					MsgQuick("", "@L_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 					StopMeasure()
 					return
@@ -512,6 +515,6 @@ end
 function GetOSHData(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 500)
+	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 500) -- check local Price in Run()
 end
 
