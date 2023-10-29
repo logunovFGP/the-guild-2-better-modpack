@@ -66,6 +66,7 @@ Bugfixes (MegaMod):
 - Man konnte unendlich oft Bewusstlose ausrauben.
 - Man konnte kein Lösegeld verlangen.
 - York hat das Herrscher-Tag nicht richtig angezeigt.
+- Beim Baden erhielt die Taverne das Geld nicht.
 
 Balancing:
 - Jede Dynastie ist auf 10 Schergen beschränkt, unabhängig davon, wieviele Wohngebäude man besitzt.

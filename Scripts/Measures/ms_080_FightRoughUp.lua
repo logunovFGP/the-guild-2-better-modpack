@@ -38,9 +38,7 @@ function Run()
 			end
 			
 			-- Favor
-			if GetDynasty("Destination", "TargetDyn") then
-				ModifyFavorToDynasty("", "TargetDyn", -20)
-			end
+			ModifyFavorToDynasty("", "TargetDyn", -GL_FAVOR_MOD_VERYLARGE)
 			Sleep(0.2)
 			
 			-- set fracture for the victim
@@ -62,10 +60,17 @@ function Run()
 			StopAction("slugging", "")
 		end
 	end
-	RemoveProperty("Destination", "RoughUp_start")
+	
+	if AliasExists("Destination") then
+		RemoveProperty("Destination", "RoughUp_start")
+	end
 end
 
 function CleanUp()
-	RemoveProperty("Destination", "RoughUp_start")
+	if AliasExists("Destination") then
+		if HasProperty("Destination", "RoughUp_start") then
+			RemoveProperty("Destination", "RoughUp_start")
+		end
+	end
 	StopAction("slugging", "")
 end

@@ -68,6 +68,7 @@ Fixes (Modpack):
 - The Divehouse had a wrong upgrade.
 - You could rob unconcious people infinitely.
 - York didn't show the lordship name correctly.
+- Money gains for the tavern during bathing was bugged.
 
 Balancing:
 - Every dynasty is limited to max. 10 thugs (no matter how many residences you build).
