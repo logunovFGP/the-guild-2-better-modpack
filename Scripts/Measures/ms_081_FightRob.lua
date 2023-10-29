@@ -10,7 +10,7 @@ function Run()
 	
 	feedback_OverheadActionName("Destination")
 	PlayAnimation("", "watch_for_guard")
-	PlayAnimation("","manipulate_bottom_r")
+	PlayAnimation("", "manipulate_bottom_r")
 	
 	local Booty = Plunder("", "Destination", 1)
 	local Rank = chr_GetRank("Destination") or 1
@@ -35,12 +35,12 @@ function Run()
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 		chr_GainXP("", XP)
 	else
-		local MoneyToSteal = chr_GetBudget("Destination", 2) * 58 -- 2: luxury budget . Multiply with 58 for actual coins
+		local MoneyToSteal = chr_GetBudget("Destination", 2)
 		
-		-- base value is half of the maximum. you can steal more if you are a skilled thief
+		-- base value is 33% of the maximum. you can steal more if you are a skilled thief
 		local SkillBonus = chr_GetSkillValue("", SHADOW_ARTS) * 0.03
 		local AbilityBoost = GetImpactValue("", "ThiefBoost")
-		MoneyToSteal = ((MoneyToSteal / 2) * (1 + SkillBonus)) * (1 + AbilityBoost)
+		MoneyToSteal = ((MoneyToSteal / 3) * (1 + SkillBonus)) * (1 + AbilityBoost)
 		
 		-- get the actual money available (0 for non-dynasty characters)
 		local Money = GetMoney("Destination") or 0
@@ -48,10 +48,10 @@ function Run()
 			Money = 0
 		end
 		
-		-- reserve 10% of the actual money for fairplay reasons
+		-- reserve 33% of the actual money for fairplay reasons
 		if Money > 0 then
-			if MoneyToSteal > (Money * 0.9) then
-				MoneyToSteal = Money * 0.9
+			if MoneyToSteal > (Money * 0.66) then
+				MoneyToSteal = Money * 0.66
 			end
 		end
 		
@@ -67,11 +67,10 @@ function Run()
 				Sleep(0.75)
 			end
 			
-			chr_UseBudget("Destination", 2, MoneyToSteal) -- budget
+			chr_UseBudget("Destination", 2, MoneyToSteal, "CostRobbers") -- budget; dynasty chars lose it for real
 			AddImpact("Destination", "recentlyrobbed", 1, 12) -- timeout for robbing this character is 12 hours
 			
 			if Money > 0 then
-				chr_SpendMoney("Destination", MoneyToSteal, "CostRobbers", false) -- dynasty chars lose that money for real
 				MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_HEAD_+0",
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_BODY_+1", GetID("Destination"), GetID(""), MoneyToSteal)

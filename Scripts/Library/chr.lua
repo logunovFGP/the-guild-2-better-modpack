@@ -1544,14 +1544,17 @@ function GetBudget(SimAlias, Type)
 end
 
 -- spend money from your budget, based on "workhours", where 1 hour is worth 58 gold.
-function UseBudget(SimAlias, Type, Amount)
+function UseBudget(SimAlias, Type, Amount, Balance)
 	
 	if Amount == nil or Amount < 1 or Type == nil or not AliasExists(SimAlias) then
 		return
 	end
 	
+	if not Balance or Balance == nil then
+		Balance = "misc"
+	
 	if IsDynastySim(SimAlias) then
-		chr_SpendMoney(SimAlias, Amount, "misc", true)
+		chr_SpendMoney(SimAlias, Amount, Balance, true)
 		-- ToDo: statistics
 	end
 	
