@@ -1552,6 +1552,7 @@ function UseBudget(SimAlias, Type, Amount, Balance)
 	
 	if not Balance or Balance == nil then
 		Balance = "misc"
+	end
 	
 	if IsDynastySim(SimAlias) then
 		chr_SpendMoney(SimAlias, Amount, Balance, true)
