@@ -112,7 +112,7 @@ function Run()
 	AddImpact("Destination","buildingbombedtoday",1,duration)
 	
 	SetMeasureRepeat(TimeOut)
-	DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
+--	DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
 	
 	local BuildingHP = GetMaxHP("Destination")
 	local Damage = BuildingHP*(InitDamage/100)

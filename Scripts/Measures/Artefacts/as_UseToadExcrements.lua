@@ -79,7 +79,7 @@ function Run()
 		
 			Sleep(1.0)
 		
-			DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
+--			DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
 			SetMeasureRepeat(TimeOut)
 		
 			feedback_MessageWorkshop("Owner",

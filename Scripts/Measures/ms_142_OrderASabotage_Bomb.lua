@@ -104,7 +104,7 @@ function Run()
 	CommitAction("explosion", "", "Destination", "Destination")
 	AddImpact("Destination","buildingbombedtoday",1,duration)
 	SetMeasureRepeat(TimeOut)
-	DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
+	--DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
 	
 	
 	StartSingleShotParticle("particles/Explosion.nif", "SabotagePosition", 4,5)
