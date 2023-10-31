@@ -80,7 +80,10 @@ function Run()
 
 	if choice < 3 or IsStateDriven() then
 		GetLocatorByName("DestBuilding"..choice, "Entry1", "DestPos") 
-	end -- else DestPos is mapexit!
+	else
+		-- else DestPos is mapexit!
+		GetOutdoorLocator("MapExit1", 1, "DestPos")
+	end 
 	
 	if not HasProperty("", "SchoolPayed") then	
 		if not chr_SpendMoney("Dynasty", Schoolmoney, "CostEducation") then
