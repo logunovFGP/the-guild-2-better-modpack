@@ -74,6 +74,9 @@ function Run()
 		StopMeasure()
 	end 
 	
+	if not AliasExists("Child") then
+		StopMeasure()
+	end
 	if not f_BeginUseLocatorWeak("Child", "ChildPos", GL_STANCE_STAND, true) then
 		StopMeasure()
 	end
