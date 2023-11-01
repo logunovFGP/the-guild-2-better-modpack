@@ -179,6 +179,35 @@ function AttendFestivity(DestinationID)
 	DestroyCutscene("")
 end	
 
+function AttendWedding(DestinationID)
+	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL")
+
+	if not DynastyIsPlayer("Sim") then
+		MeasureRun("Sim", "Destination", "AttendWedding", true)
+		DestroyCutscene("")
+		return
+	end
+
+	local bRun = true
+	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
+		if MsgNews("Sim","destination",
+					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
+					queries_AIReturnO,"politics", 1, "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+0", "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+1", GetID("Sim")) =="C" then
+			bRun = false
+		end
+	end
+
+	if (bRun==true) then
+		MeasureRun("Sim", "Destination", "AttendWedding", true)
+	end
+
+	DestroyCutscene("")
+end
+
+function StartWedding(DestinationID)
+	MeasureRun("Sim", "Destination", "StartWedding", true)
+	DestroyCutscene("")
+end	
 
 function Attend(DestinationID)
 	local bRun = true

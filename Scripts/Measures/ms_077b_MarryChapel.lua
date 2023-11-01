@@ -1,480 +1,454 @@
+--[[ Code Rework.
+
+Changelog:
+- Fixed multiple bugs & optimised overall code.
+- Created cutscene event for ceremonies.
+- Added guests' reactions based on personality & favour.
+
+Bugs fixed:
+- Unlike previous dev. version, wedding ceremonies won't cause game crash when saving or loading anymore.
+- Fixed an issue where Sims would never sit down on a given bench.
+
+TODO: Royal Weddings;
+TODO: Rhetoric challenge;
+TODO: EventSchedules.
+
+Preparations.
+
+	[Royal Weddings]
+
+	The entire country is made aware of the wedding to come (shall the Sim be considered Royal) with a MsgNews. Town Criers will spread the news in immersive in-game dialogs throughout the different town centers. Special NPCs will spawn at the town which is considered to be holding the Royal's main residence (Royal Guards) and will be protecting the Residence, the Royal and their soon-to-be spouse/husband.
+
+	Both the Royal and the spouse/husband will be able to interact with one another in order to get ready for the ceremony, most especially the Rhetoric challenge. Three choices are available based on money spendings (from the cheapest to the most expensive):
+	- train / prepare speech without help at the main residence;
+	- train / prepare speech with a famous writer who is commissioned for this very event;
+	- train / prepare speech at the court of some nobles' in a foreign Kingdom (Sims temporarily leave the map).
+
+	Any of these three choices will be situational, and will vary according to the Sims' skills and reputation. For example, the first choice may be convenient if the Sims' skills in rhetoric are high enough. On the other hand, the third choice may be valuable to gain favours from another country.
+
+	Note: a Royal can be assigned a fiancé(e) from abroad and / or get married to a foreign Royal with a special action measure. 
+
+	In the case of a Royal assigning a foreign Royal fiancé(e) to their own children, the Royal adult will be introduced to several candidates and will have to choose one of them. Both fiancés will be required to spend time together in both respective kingdoms and will require private tutorship as a special education, until they reach adulthood and can get married.
+
+	In the case of an adult Royal seeking mariage with another adult foreign Royal, the process will be similar to the exception of the tutorship and time spent together. The Royal seeking mariage may chose to purposedly not meet their soon-to-be spouse / husband, which would be an option for a political wedding. Should the Royal seek true love, they may chose to meet the new "candidate" beforehand.
+
+	Rhetoric challenge: Royals will be asked to deliver a speech to the people and may chose to do so in different locations:
+	- during the wedding ceremony at the chapel: the speech will have a limited audience, which may upset the commoners and satisfy the wealthiest;
+	- upon exiting the chapel: which will have no favour modifier to either the commoners nor the wealthiest;
+	- at the town's market: this will grant a positive favour modifier to the commoners;
+	- in the town hall's meeting room: positive bonus for all holders of political offices and wealthy sims attending.
+
+	The town criers reportedly give updates on the ceremony. Certain actions may modify the favour of a large group of sims, should they hear about it.
+]]
+
+local function GetCost()
+	return ( math.max(GetNobilityTitle(""), IsDynastySim("Destination") and GetNobilityTitle("Destination") or 0) *2) *300
+end
+
+local function CutsceneAddSims(data, list)
+	for i = 1, list[1] do
+		CutsceneAddSim(data, list[i+1])
+	end
+end
+
 function Run()
-	LogMessage("Try to marry chapel")
-	-- Get the court lover and call it "Destination" because the older version of the measure worked with a selection
-	if not SimGetCourtLover("", "Destination") then
-		LogMessage("No Court Lover found MarryChapel")
+	LogMessage("CodeRework, Ceremony :: Starting!")
+
+	if not SimGetCourtLover("", "Destination") or not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL") then
 		return
 	end
-	
-	local Title = GetNobilityTitle("")
-	
-	if IsDynastySim("Destination") then
-		if GetNobilityTitle("Destination") > Title then
-			Title = GetNobilityTitle("Destination")
-		end
-	end
-	
-	local Cost = (Title * 2) * 300
-	local InteractionDistance = 128
-	
-	if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel") then
-		LogMessage("No Chapel found - MarryChapel")
-		return
-	end
-	
-	ms_077b_marrychapel_InviteGuests("Weddingchapel", "", "Destination")
-		
-	SetProperty("Weddingchapel", "Wedding", 1)
-	BlockChar("Destination")
-		
-	ms_077b_marrychapel_GotoChurch()
-	
+
+	LogMessage("Marriage cost: "..GetCost())
+
 	if not HasProperty("", "WeddingPaid") then
-		if not chr_SpendMoney("dynasty", Cost, "Wedding") then
+		if not chr_SpendMoney("", GetCost(), "Wedding") then
 			if not HasProperty("", "Tutorial") then
 				MsgQuick("","@L_MEASURE_WEDDING_FAILURE_+1", GetID(""))
-				LogMessage("Cost fail Marriage")
-				StopMeasure()
+				SetProperty("", "WEDDING_IS_OVER", 1) 
+				RemoveProperty("","WEDDING_DATE")
+	        	RemoveProperty("","WEDDING_HOUR")
+	        	RemoveProperty("","WEDDING_FORCED")
+	        	RemoveProperty("","WEDDING_GUESTS(Amount)")
+				RemoveProperty("Destination","WEDDING_DATE")
+				RemoveProperty("Destination","WEDDING_HOUR")
+				RemoveProperty("Destination","WEDDING_FORCED")
+				RemoveProperty("Destination","WEDDING_GUESTS(Amount)")
+				StopMeasure("")
+				StopMeasure("Destination")
 			end
 		end
-		
 		SetProperty("", "WeddingPaid", 1)
 	end
-	
-		
-	AlignTo("", "Destination")
-	AlignTo("Destination", "")
-			
-	f_StartHighPriorMusic(MUSIC_MARRIAGE)
-			
-	BuildingFindSimByProperty("Weddingchapel", "BUILDING_NPC", 11, "Priest")			
-	GetLocatorByName("Weddingchapel", "WeddingPriest", "PriestPos")
-			
+
+	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "Priest")	
+
+	SetProperty("#WEDDING_CHAPEL", "WedSim01", GetName(""))
+	SetProperty("#WEDDING_CHAPEL", "WedSim02", GetName("Destination"))
+
+	GetLocatorByName("#WEDDING_CHAPEL", "WeddingPriest", "PriestPos")
+	GetLocatorByName("#WEDDING_CHAPEL", "Exit1", "E1")
+	GetLocatorByName("#WEDDING_CHAPEL", "Exit2", "E2")
+	GetLocatorByName("#WEDDING_CHAPEL", "Front1", "MarryPos1") 
+	GetLocatorByName("#WEDDING_CHAPEL", "Front2", "MarryPos2") 
+
+	SetProperty("#WEDDING_CHAPEL", "Wedding", 1)
+	BlockChar("Destination")
 	f_MoveTo("Priest", "PriestPos")
-	Sleep(5)
-			
+	ms_077b_marrychapel_GotoChurch()
+	ms_077b_marrychapel_StartCutscene()
+end
+
+function StartCutscene()
+	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL")
+	f_MoveTo("Priest", "PriestPos")
 	SetAvoidanceGroup("", "Destination")
 
+    GetLocatorByName("#WEDDING_CHAPEL", "Front1", "MarryPos1")
+    GetLocatorByName("#WEDDING_CHAPEL", "Front2", "MarryPos2")
+
+	--f_MoveToNoWait("", "MarryPos1", GL_MOVESPEED_WALK)
+	--f_MoveToNoWait("Destination", "MarryPos2", GL_MOVESPEED_WALK)
+
+	Sleep(0.25)
+	AlignTo("", "Destination")
+	AlignTo("Destination", "")
+	
+	CreateCutscene("default", "cutscene")
+	CutsceneAddSims("cutscene", {3, "", "Destination", "Priest"})
+
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "#SIMS")
+	ListNew("#GUESTS")
+
+	for i = 1, ListSize("#SIMS")-1 do
+		ListGetElement("#SIMS", i, "#GUEST"..i)
+		if HasProperty("#GUEST"..i, "WEDDING_HOUR(GUEST)") then
+			ListAdd("#GUESTS", "#GUEST"..i)
+			SetProperty("", "WEDDING_GUESTS(Amount)", i)
+		end
+	end
+
+	for i = 1, ListSize("#GUESTS") do
+		ListGetElement("#GUESTS", i, "#GUEST"..i)
+		CutsceneAddSim("cutscene", "#GUEST"..i)
+		LogMessage("Added guest "..GetName("#GUEST"..i).." to the cutscene!")
+	end
+
+	CutsceneCameraCreate("cutscene", "")
+
+	BuildingLockForCutscene("#WEDDING_CHAPEL","cutscene")
+
+	f_StartHighPriorMusic(MUSIC_MARRIAGE)
+
+	--filterGuests({GetName(""),GetName("Destination"),GetName("Priest")})
+
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_INTRO(DOWN)","")
+	CutsceneCameraBlend("cutscene", 5, 1)
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_INTRO(UP)","")
+	Sleep(5.5)
+
+	PlayFE("", "smile", 2, 2.5, 0)
+	PlayFE("Destination", "smile", 2, 2.5, 0)
+
+	Sleep(1.5)
 	AlignTo("", "Priest")
 	AlignTo("Destination", "Priest")
-	Sleep(20)
+	Sleep(1.5)
 
-	if SimGetGender("") == GL_GENDER_MALE then
-		AlignTo("Priest", "")
-		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID(""), GetID("Destination"))
-		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(""), GetID("Destination"))
-		MsgSay("", "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
-		AlignTo("Priest", "Destination")
-		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID("Destination"), GetID(""))
-		MsgSay("Destination", "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
-		Sleep(1)
+	f_MoveToNoWait("", "MarryPos1", GL_MOVESPEED_WALK)	
+	f_MoveToNoWait("Destination", "MarryPos2", GL_MOVESPEED_WALK)
 
-		-- kiss your wife good man...
-		AlignTo("Priest", "")
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID(""))
-		AlignTo("", "Destination")
-		AlignTo("Destination", "")
-		Sleep(1)
-				
-		ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
-		ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
-			
-		AnimLength = chr_MultiAnim("", "kiss_male", "Destination", "kiss_female", InteractionDistance, 1.0, true)
-				
-		Sleep(AnimLength * 0.5)
-	else
-		AlignTo("Priest", "Destination")
-		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID("Destination"), GetID(""))
-		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID("Destination"), GetID(""))
-		MsgSay("Destination","_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
-		AlignTo("Priest", "")
-		Sleep(1)
-		MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(""), GetID("Destination"))
-		MsgSay("", "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
-		Sleep(1)
+	Sleep(0.5)
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_INTRO(BACK)","")
+	Sleep(0.5)
+	CutsceneCameraBlend("cutscene", 15, 1)
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_PRIEST(FAR)","Priest")
 
-		-- kiss your husband good woman...
-		AlignTo("Priest", "Destination")
-		MsgSay("Priest","_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID("Destination"))
-		AlignTo("", "Destination")
-		AlignTo("Destination", "")
-		Sleep(1)
-				
-		ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
-		ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
-				
-		AnimLength = chr_MultiAnim("Destination", "kiss_male", "", "kiss_female", InteractionDistance, 1.0, true)
-		Sleep(AnimLength * 0.5)
-	end
-			
+	f_BeginUseLocator("Destination", "MarryPos2", GL_STANCE_STAND, true)
+	f_BeginUseLocator("", "MarryPos1", GL_STANCE_STAND, true)
+
+	Sleep(1)
+
+	local list = { {"Destination",""}, {"","Destination"} }
+
+	-- We are gathered together today to join %1ST %1SN and %2ST %2SN in the bonds of holy matrimony.
+	MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID(list[SimGetGender("")+1][1]), GetID(list[SimGetGender("")+1][2]))
+
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_PRIEST","Priest")
+
+	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded wife, to love and honour, til death do you part? If so, answer with: yes.
+	MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(list[SimGetGender("")+1][1]), GetID(list[SimGetGender("")+1][2]))
+
+	CutsceneCameraBlend("cutscene", 2, 1)
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_RIGHT","Priest")
+	Sleep(1.25)
+	PlayAnimationNoWait("Destination","giggle")
+	PlayAnimationNoWait("","curtsy")
+
+	-- Yes, I do.
+	MsgSay(list[SimGetGender("")+1][1], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
+
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_PRIEST(FAR)","Priest")
+
+	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded husband, to love and honour, til death do you part? If so, answer with: yes.
+	MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(list[SimGetGender("")+1][2]), GetID(list[SimGetGender("")+1][1]))
+
+	CutsceneCameraBlend("cutscene", 2, 1)
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_LEFT","Priest")
+	Sleep(1.25)
+	PlayAnimationNoWait("","giggle")
+	PlayAnimationNoWait("Destination","nod")
+
+	-- Yes, I do.
+	MsgSay(list[SimGetGender("")+1][2], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
+
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_PRIEST(FAR)","Priest")
+
+	-- I hereby declare you man and wife. You may now kiss the bride, %1ST %1SV.
+	MsgSay("Priest", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID(list[SimGetGender("")+1][1]))
+
+	CutsceneCameraBlend("cutscene", 8, 1)
+	CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_PRIEST(UP)","Priest")
+
+	AlignTo("", "Destination")
+	AlignTo("Destination", "")
+	Sleep(1)
+
+	ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
+	ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
+
+	AnimLength = chr_MultiAnim(list[SimGetGender("")+1][1], "kiss_male", list[SimGetGender("")+1][2], "kiss_female", 128, 1.0, true)
+	Sleep(AnimLength * 0.25)
+
 	ShowOverheadSymbol("Destination", false, true, 0, "@L$S[2001]")
 	ShowOverheadSymbol("", false, true, 0, "@L$S[2001]")
-			
+
 	if not HasProperty("", "CourtingDiff") then			
 		gameplayformulas_CalcCourtingDifficulty("Destination", "")
 	end
-			
+
 	local Difficulty = GetProperty("", "CourtingDiff")
 	xp_CourtingSuccess("Owner", Difficulty, 1)
 	xp_CourtingSuccess("Destination", Difficulty, 1)
-			
-	Sleep(0.5)
-	BuildingGetInsideSimList("Weddingchapel", "GuestList")
-	local SimCnt = ListSize("GuestList")
-	local GuestCount = 0
-	local CheerCount = 0
-	for i = 0, SimCnt-1 do
-		ListGetElement("GuestList", i, "SimToCheck")
-		if AliasExists("SimToCheck") then
-			if IsDynastySim("SimToCheck") and not GetState("SimToCheck", STATE_NPC) then
-				if GetID("SimToCheck") ~= GetID("") and GetID("SimToCheck") ~= GetID("Destination") then
-					chr_GainXP("SimToCheck", GL_EXP_GAIN_RARE)
-					ReleaseLocator("SimToCheck")
-					if GetDynasty("SimToCheck", "CheckDyn") then
-						if GetImpactValue("CheckDyn", "Ceremony") == 0 then
-							AddImpact("CheckDyn", "Ceremony", 1, 6)
-						end
-					end
-						
-					ModifyFavorToSim("SimToCheck", "", GL_FAVOR_MOD_VERYSMALL)
-					GuestCount = GuestCount + 1
-						
-					if CheerCount == 0 then
-						
-						CopyAlias("SimToCheck", "CommentSim")
-						CheerCount = CheerCount + 1
-					elseif CheerCount == 1 then
-						if Rand(3) == 0 then
-							CopyAlias("SimToCheck", "CheerSim1")
-							CheerCount = CheerCount + 1
-						end
-					elseif CheerCount == 1 then
-						if Rand(3) == 0 then
-							CopyAlias("SimToCheck", "CheerSim2")
-							CheerCount = CheerCount + 1
-						end
+
+	Sleep(0.25)
+
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "#ALL_SIMS")
+
+	for i = 0, ListSize("#ALL_SIMS") -1 do
+		ListGetElement("#ALL_SIMS", i, "#SIM")
+		if IsDynastySim("#SIM") and not GetState("#SIM", STATE_NPC) then
+			if GetID("#SIM") ~= GetID("") and GetID("#SIM") ~= GetID("Destination") then
+				chr_GainXP("#SIM", GL_EXP_GAIN_RARE)
+				ReleaseLocator("#SIM")
+				if GetDynasty("#SIM", "CheckDyn") then
+					if GetImpactValue("CheckDyn", "Ceremony") == 0 then
+						AddImpact("CheckDyn", "Ceremony", 1, 6)
 					end
 				end
 			end
 		end
+
+		ModifyFavorToSim("#SIM", "", GL_FAVOR_MOD_VERYSMALL)
 	end
-			
-	-- few sims might cheer
-	if CheerCount > 1 then
-		if Rand(2) == 0 then
-			MsgSay("CheerSim1", "@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+11")
-		else
-			MsgSay("CheerSim1", "@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+0")
+
+	local GuestAmount = GetProperty("","WEDDING_GUESTS(Amount)")
+
+	if GuestAmount > 8 then
+    	dyn_AddFame("", 3)
+	elseif GuestAmount > 5 then
+	    dyn_AddFame("", 2)
+	elseif GuestAmount > 2 then
+	    dyn_AddFame("", 1)
+	end
+
+	MsgNewsNoWait("All", "", "", "politics", -1,"@L_MEASURE_MARRY_CEREMONY_HEAD_+0","@L_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0",GetID(""),GetID("Destination"),GetID("#WEDDING_CHAPEL"),GuestAmount)
+
+	Sleep(0.5)
+
+	local function createReacting()
+		ListNew("#REACT_GUESTS")
+
+		local COUNT = Rand(GetProperty("","#WEDDING_GUESTS(Amount)"))+1
+		LogMessage("A total of "..COUNT.." guests will be reacting to this cutscene!")
+
+		for INDEX = 0, COUNT-1 do
+			local CONFLICTING = false
+			ListGetElement("#GUESTS", INDEX, "#REACT")
+			LogMessage("Currently processing "..GetName("#REACT").." (Sim "..INDEX..").")
+			if ListSize("#REACT_GUESTS") > 0 then
+				for CHECK = 0, ListSize("#REACT_GUESTS")-1 do
+					ListGetElement("#REACT_GUESTS", CHECK, "#VERIFY")
+					if GetName("#VERIFY") == GetName("#REACT") then 
+						CONFLICTING = true
+					end
+				end
+			end
+			if not CONFLICTING then 
+				LogMessage("Script confirmed no double data for "..GetName("#REACT").." (Sim "..INDEX..").")
+				ListAdd("#REACT_GUESTS", "#REACT")
+			end
 		end
-		Sleep(0.2)
-	end
-		
-	if CheerCount == 3 then
-		if Rand(2) == 0 then
-			MsgSay("CheerSim2", "@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+7")
-		else
-			MsgSay("CheerSim2", "@L_CHURCH_091_PREPAREWORSHIP_WORSHIPPING_COMMENT_+1")
+
+		local COUNT = 0
+
+		for RESULT = 0, ListSize("#REACT_GUESTS")-1 do
+			COUNT = RESULT
 		end
+
+		return COUNT
 	end
-			
-	Sleep(0.2)
-			
-	-- guest gives a comment
-	if CheerCount > 0 then
-		local TextLabel = "@L_FAMILY_1_MARRIAGE_COMMENT"
-		
-		if DynastyGetDiplomacyState("", "CommentSim") == DIP_FOE or GetFavorToDynasty("", "CommentSim") < 40 then -- enemy
-			TextLabel = TextLabel.."_NEGATIVE"
-		elseif SimGetAlignment("") >= 70 then -- bad guy
-			TextLabel = TextLabel.."_NEGATIVE"
-		elseif GetFavorToDynasty("", "CommentSim") <= 55 and DynastyGetDiplomacyState("", "CommentSim") < DIP_ALLIANCE then -- indifferent
+
+	LogMessage("CodeRework, Ceremony :: [createReacting] is running...")
+
+	local COUNT = createReacting()
+
+	-- Next expansion
+	local ROYAL = 
+	{
+		["ROYAL"] = 
+			{
+				["POSITIVE"] =
+					{
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+6",
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+5",
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+8",
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+10",
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+9",
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+2",
+						"@L_PRIVILEGES_FLAMINGSPEECH_COMMENTS_+1"
+					},
+
+				["NEGATIVE"] =
+					{
+						"@L_FEAST_4_GOODBYE_B_COMMENTS_NEUTRAL_+0",
+						"@L_FEAST_4_GOODBYE_B_COMMENTS_BAD_+0",
+						"@L_FEAST_4_GOODBYE_B_COMMENTS_BAD_+2",
+						"@L_FEAST_4_GOODBYE_B_COMMENTS_BAD_+3"
+					}
+			}
+	}
+
+	for INDEX = 0, COUNT do
+		ListGetElement("#REACT_GUESTS", INDEX, "#SIM")
+		CutsceneCameraSetRelativePosition("cutscene","#CHAPEL_GUEST","#SIM")
+
+		local DIALOG, EMOTE = "_POSITIVE", "bench_talk_short"
+
+		if DynastyGetDiplomacyState("","#SIM") == DIP_FOE or GetFavorToDynasty("", "#SIM") < 40 or SimGetAlignment("") >= 70 then
+			DIALOG = "_NEGATIVE"
+			EMOTE = "bench_talk_offended"
+		elseif GetFavorToDynasty("", "#SIM") <= 55 and DynastyGetDiplomacyState("", "#SIM") < DIP_ALLIANCE then
 			if Rand(2) == 0 then
-				TextLabel = TextLabel.."_NEGATIVE"
-			else
-				TextLabel = TextLabel.."_POSITIVE"
+				DIALOG = "_NEGATIVE"
+				EMOTE = "bench_talk_offended"
 			end
-		else -- friend
-			TextLabel = TextLabel.."_POSITIVE"
 		end
-			
-		local RhetoricSkill = GetSkillValue("CommentSim", RHETORIC)
-		if RhetoricSkill >= 7 then
-			if Rand(4) == 0 then
-				TextLabel = TextLabel.."_NORMAL_RHETORIC"
-			else
-				TextLabel = TextLabel.."_GOOD_RHETORIC"
-			end
-		elseif RhetoricSkill >= 4 then
-			if Rand(4) == 0 then
-				TextLabel = TextLabel.."_WEAK_RHETORIC"
-			else
-				TextLabel = TextLabel.."_NORMAL_RHETORIC"
-			end
+
+		local SKILL = GetSkillValue("#SIM", RHETORIC)
+
+		if SKILL >= 7 then
+			DIALOG = DIALOG.."_GOOD_RHETORIC"
+		elseif SKILL >= 4 then
+			DIALOG = DIALOG.."_NORMAL_RHETORIC"
 		else
-			TextLabel = TextLabel.."_NORMAL_RHETORIC"
+			DIALOG = DIALOG.."_WEAK_RHETORIC"
 		end
-				
-		MsgSay("CommentSim", TextLabel)
-		MsgNewsNoWait("", "CommentSim", "", "intrigue", -1, 
-					"@L_MEASURE_MARRY_CEREMONY_HEAD_+0",
-					TextLabel, GetID(""))
+
+		Sleep(0.25)
+		DIALOG = "@L_FAMILY_1_MARRIAGE_COMMENT"..DIALOG
+
+		PlayAnimationNoWait("#SIM", EMOTE)
+		MsgSay("#SIM", DIALOG)
 	end
-	
-	local GuestFame = 0
-	if GuestCount > 2 then
-		GuestFame = 1
-	elseif GuestCount > 5 then
-		GuestFame = 2
-	elseif GuestCount > 8 then
-		GuestFame = 3
-	else
-		GuestFame = 5
-	end
-	
-	dyn_AddFame("", GuestCount)
-	MsgNewsNoWait("All", "", "", "politics", -1, 
-				"@L_MEASURE_MARRY_CEREMONY_HEAD_+0",
-				"@L_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0",
-				GetID(""), GetID("Destination"), GetID("Weddingchapel"), GuestCount)
-			
+
 	RemoveProperty("Destination", "CourtDiff")
-	
 	MeasureSetNotRestartable()
-	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
-			
-	if IsDynastySim("Destination") then
-		DynastySetMinDiplomacyState("", "Destination", DIP_ALLIANCE, GetID(""), 24)
-		DynastyForceCalcDiplomacy("")
-		DynastyForceCalcDiplomacy("Destination")
-		-- add the new property
-		dyn_AddAlly("", "Destination")
-		
-		-- get a new title if the nob title is higher than yours
-		local MyTitle = GetNobilityTitle("") or 1
-		local SpouseTitle = GetNobilityTitle("Destination") or 1
-				
-		if MyTitle > 2 and SpouseTitle > MyTitle then
-			SetNobilityTitle("", (MyTitle + 1), true)
-		end
-	end
-			
-	AddImpact("", "LoveLevel", 10, 24) -- add some love for the next 24 hours
+	PlaySound3D("#WEDDING_CHAPEL", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
+
+	AddImpact("", "LoveLevel", 10, 24)
 	AddImpact("Destination", "LoveLevel", 10, 24)
-	
-	-- remember old dynastyID
-	local OldDyn = GetDynastyID("Destination")
-	SetProperty("Destination", "FamilyID", OldDyn)	
-			
+
 	if GetImpactValue("Destination", "LoveLevel") >= 10 then
-		MsgNewsNoWait("", "Destination", "", "schedule", -1,
-					"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0",
-					"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
+		MsgNewsNoWait("", "Destination", "", "schedule", -1,"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0","@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
 	end
-			
+
+	CutsceneCameraBlend("cutscene", 4, 0)
+	CutsceneCameraSetRelativePosition("cutscene","Far_HUpYLeft","")
+	Sleep(6)
+
+	SetProperty("", "WEDDING_IS_OVER", 1)
+	SetProperty("Destination", "WEDDING_IS_OVER", 1)
+
+	RemoveProperty("","WEDDING_DATE")
+	RemoveProperty("","WEDDING_HOUR")
+	RemoveProperty("","WEDDING_FORCED")
+	RemoveProperty("","WEDDING_GUESTS(Amount)")
+	RemoveProperty("Destination","WEDDING_DATE")
+	RemoveProperty("Destination","WEDDING_HOUR")
+	RemoveProperty("Destination","WEDDING_FORCED")
+	RemoveProperty("Destination","WEDDING_GUESTS(Amount)")
+
 	RemoveProperty("Destination", "Wedding")
 	RemoveProperty("Destination", "courted")
+
+	RemoveProperty("Destination", "WEDDING_DATE")
+	RemoveProperty("", "WEDDING_DATE")
+
+	RemoveProperty("","#WEDDING_MAIN") 
+
 	SetState("Destination", STATE_INLOVE, false)
-	RemoveProperty("Weddingchapel", "Wedding")
+	RemoveProperty("", "#WEDDING_FORCED", 1)
+	RemoveProperty("Destination", "#WEDDING_FORCED", 1)
+
+	RemoveProperty("#WEDDING_CHAPEL", "Wedding")
 	SimResetBehavior("Destination")
 	RemoveProperty("", "WeddingPaid")
-	PlaySound3D("Weddingchapel", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
-	
-	SimMarry("", "Destination")	-- the destination is removed through this function
-	StopMeasure()
-end
+	PlaySound3D("#WEDDING_CHAPEL", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
 
-function AIInitAnswer()
-	
-	local Timer = 0
-	if GetImpactValue("GuestAlias", "OfficeTimer") > 0 then
-		Timer = ImpactGetMaxTimeleft("GuestAlias", "OfficeTimer")
-		if Timer <= 4 then
-			return "C"
-		end
-	end
-	
-	if GetImpactValue("GuestAlias", "TrialTimer") > 0 then
-		Timer = ImpactGetMaxTimeleft("GuestAlias", "TrialTimer")
-		if Timer <= 4 then
-			return "C"
-		end
-	end
-	
-	if GetImpactValue("GuestAlias", "DuelTimer") > 0 then
-		Timer = ImpactGetMaxTimeleft("GuestAlias", "DuelTimer")
-		if Timer <= 4 then
-			return "C"
-		end
-	end
-		
-	if DynastyGetDiplomacyState("GuestAlias", "") < DIP_ALLIANCE or GetFavorToDynasty("", "GuestAlias") >= 60 or SimGetOfficeLevel("") > 0 then
-		return "O"
-	else
-		if Rand(3) == 0 then
-			return "O"
-		else
-			return "C"
-		end
-	end
-end
+	ClearImportantPersonSection("Wedding")
+	SimMarry("", "Destination")
 
-function InviteGuests(Church, Sim1, Sim2)
-	
-	LogMessage("Start Invites")
-	
-	local InviterTitle = GetNobilityTitle(Sim1)
-	if GetNobilityTitle(Sim2) > InviterTitle then
-		InviterTitle = GetNobilityTitle(Sim2)
-	end
-	
-	-- Dynasties will not get invited if the title is below theirs minus MinTitleSub
-	local MinTitleSub = 2
-	
-	-- max family member invitations
-	local MaxInvitePerFamily = 2
-	
-	-- invite guests
-	if GetSettlement(Sim1, "MyCity") then
-		local Guests = CityGetBuildings("MyCity", GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_HAS_DYNASTY, "Residence")
-		LogMessage(Guests.." potencial guests found")
-		local IncomingGuests = 0
-		local SeatNumber = 29
-		for i = 0, Guests-1 do
-			if GetDynasty("Residence"..i, "GuestDyn") then
-				if GetImpactValue("GuestDyn", "Ceremony") < 1 then
-					local FamilyCount = DynastyGetFamilyMemberCount("GuestDyn")
-					local FamilyGuests = 0
-					-- invite family members who have time
-					for u = 0, FamilyCount-1 do
-						if DynastyGetFamilyMember("GuestDyn", u, "GuestAlias") then
-							if GetID("GuestAlias") ~= GetID(Sim1) and GetID("GuestAlias") ~= GetID(Sim2) and GetID("GuestDyn") == GetDynastyID("GuestAlias") then
-								local MinTitle = GetNobilityTitle("GuestAlias") - MinTitleSub
-								if InviterTitle >= MinTitle and f_SimIsValid("GuestAlias") then
-									if not GetState("GuestAlias", STATE_SICK) then
-										if CanBeInterruptetBy("GuestAlias", Sim1, "Flirt") then
-											LogMessage("Invitation started")
-											local Invitation = MsgNews("GuestAlias", "", "@P"..
-																	"@B[O, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+0]"..
-																	"@B[C, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+1]", 
-																	ms_077b_marrychapel_AIInitAnswer, "politics", 2, 
-																	"@L_FAMILY_1_MARRIAGE_MESSAGE_HEAD_LEAVE_+0",
-																	"@L_MEASURE_MARRY_CEREMONY_ASK_BODY_+0",
-																	GetID(Sim1), GetID(Sim2), GetID(Church), GetID("GuestAlias"))
-											if Invitation == "O" then	
-												FamilyGuests = FamilyGuests + 1
-												IncomingGuests = IncomingGuests + 1
-												SetProperty("GuestAlias", "CeremonySeat", SeatNumber)
-												SeatNumber = SeatNumber - 1
-												LogMessage(GetName("GuestAlias").." kommt zur Hochzeit!")
-												SendCommandNoWait("GuestAlias", "VisitCeremony")
-											end
-												
-											if GetImpactValue("GuestDyn", "Ceremony") == 0 then
-												AddImpact("GuestDyn", "Ceremony", 1, 0.2)
-											end
-										end
-									end
-								end
-							end
-						end
-						if FamilyGuests == MaxInvitePerFamily then
-							break
-						end
-					end
-				end
-			end
-		end
-	end		
+	DestroyCutscene("cutscene")
+
 end
 
 function GotoChurch()
-	
-	LogMessage("GoToChurch")
-	f_MoveToNoWait("", "Weddingchapel", GL_MOVESPEED_WALK)
-	f_MoveTo("Destination","Weddingchapel", GL_MOVESPEED_WALK)
-	
-	if not GetInsideBuilding("", "CheckInside") then
-		if GetDistance("", "Weddingchapel") > 200 then
-			SimBeamMeUp("", "Weddingchapel", false)
-		end
-	end
-	
-	if not GetInsideBuilding("Destination", "CheckInside") then
-		if GetDistance("Destination", "Weddingchapel") > 200 then
-			SimBeamMeUp("Destination", "Weddingchapel", false)
-		end
-	end
-	 --f_FollowNoWait("", "Destination", GL_MOVESPEED_WALK, 250, true)		
-	-------------------
-	-- Go to the church
-	-------------------
-	
-	--get the locators
-	GetLocatorByName("Weddingchapel", "Front1", "MarryPos1") 
-	GetLocatorByName("Weddingchapel", "Front2", "MarryPos2")
+	LogMessage("GotoChurch()")
+    --f_MoveToNoWait("", "#WEDDING_CHAPEL", GL_MOVESPEED_WALK)
+    --f_MoveTo("Destination", "#WEDDING_CHAPEL", GL_MOVESPEED_WALK)
 
-	--if another marriage is running
-	while true do
-		if LocatorStatus("Weddingchapel", "Front1", true) == 1 then
-			break
+--[[if GetSettingNumber("DEBUG", "UseDebugMeasures", 0) == 1 then
+		if GetProperty("","DEBUG_WEDDING_TELEPORT_GUESTS") == 1 then
+			SimBeamMeUp("", "#WEDDING_CHAPEL", false)
+			SimBeamMeUp("Destination", "#WEDDING_CHAPEL", false)
 		end
-		Sleep(5)
-	end
+	end]]
 
-	--move the sims
-	SendCommandNoWait("Destination", "GoToMarryPos")
-	
-	f_MoveTo("", "MarryPos1")
-	f_BeginUseLocator("", "MarryPos1", GL_STANCE_STAND, true)
+	GetLocatorByName("#WEDDING_CHAPEL", "Exit1", "E1")
+	GetLocatorByName("#WEDDING_CHAPEL", "Exit2", "E2")
 
-	--wait until both have arrived
-	while not HasData("There") do
-		Sleep(1)
-	end
+    SendCommandNoWait("Destination", "GoToMarryPos")
+    f_MoveTo("", "E1")
+    f_BeginUseLocator("", "E1", GL_STANCE_STAND, true)
+
+    while not HasData("There") do
+        Sleep(1)
+        LogMessage("Awaiting Sim at Locator E2.")
+    end
 end
 
 function GoToMarryPos()	
-	f_MoveTo("", "MarryPos2")
-	f_BeginUseLocator("", "MarryPos2", GL_STANCE_STAND, true) 
-	
+    if GetState("", STATE_SICK) then -- temporary
+        SimBeamMeUp("", "E2", false)
+    end
+
+	LogMessage("GoToMarryPos()")
+	f_MoveTo("", "E2")
+	f_BeginUseLocator("", "E2", GL_STANCE_STAND, true) 
 	SetData("There", 1)
 	while true do
 		Sleep(5)
 	end
-end
-
-function VisitCeremony()
-	f_MoveTo("", "Weddingchapel", GL_MOVESPEED_RUN)
-	
-	local MySeat = Rand(29) + 1
-	if HasProperty("", "CeremonySeat") then
-		MySeat = GetProperty("", "CeremonySeat")
-		RemoveProperty("", "CeremonySeat")
-	end
-	
-	LogMessage(GetName("").." is here. Choose seat")
-	if GetFreeLocatorByName("Weddingchapel", "Sit", MySeat, MySeat, "SitPos") then
-		LogMessage(GetName("").." hat seinen Sitz gefunden")
-		f_MoveTo("", "SitPos", GL_MOVESPEED_WALK)
-		f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH)
-	else
-		GetFreeLocatorByName("Weddingchapel", "Sit", 8, 29, "SitPos")
-		f_MoveTo("", "SitPos", GL_MOVESPEED_WALK)
-		f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH)
-	end
-	
-	while true do
-		Sleep(5)
-		if not HasProperty("Weddingchapel", "Wedding") then
-			break
-		end
-	end
-	f_EndUseLocator("", "SitPos")
 end
 
 function CleanUp()
@@ -485,4 +459,5 @@ function CleanUp()
 	MoveSetActivity("")
 	MoveSetActivity("Destination")
 	ReleaseAvoidanceGroup("")
+	RemoveProperty("","AttendingWedding") 
 end
