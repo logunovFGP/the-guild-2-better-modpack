@@ -83,6 +83,9 @@ function ImportantPersonsSetupSections()
 	CreateImportantPersonSection("Nap", "@L_IMPORTANTPERSONS_TOPICS_+9")
 	CreateImportantPersonSection("Neutral", "@L_IMPORTANTPERSONS_TOPICS_+10")
 	CreateImportantPersonSection("Enemies", "@L_IMPORTANTPERSONS_TOPICS_+4")
+
+	-- weddings
+	CreateImportantPersonSection("Wedding", "@L_LOAD_ERROR_HUD_+0")
 	
 end
 
@@ -125,6 +128,30 @@ function IsBookmarked(Alias)
 	end
 	
 	return false
+end
+
+function IsWedding(Alias)
+	if HasProperty(Alias, "AttendingWedding") then
+		return true
+	end
+	return false
+end
+
+function ImportantPersonsGather_Wedding()
+
+		-- Define the criteria sims must meet to be included.
+		local SimListFilterFunction = gathering_IsWedding
+	  
+		-- Define the sims list sort order.
+		local SimListSortCompareFunction = 
+		function(a,b) 
+			return SimGetAge(a) <= SimGetAge(b) 
+		end
+	  
+	  -- Find, sort and add the sims.
+	  gathering_PopulateImportantPersonSection("Wedding", SimListFilterFunction, SimListSortCompareFunction, false)
+
+	  SetImportantPersonToSection(GetID("Spouse"), "Family", GetDynastyID(""))
 end
 
 -- Called by game to populate the "Creditors" section... at the moment sorted by level and age 
