@@ -5,7 +5,7 @@ function Run()
 		f_FollowNoWait("", "RatBoy", GL_MOVESPEED_RUN,Rand(200)+200, false, false)
 	end
 
-	MsgMeasure("", "@L_RATBOY_MSGMEASURE_+0)
+	MsgMeasure("", "@L_RATBOY_MSGMEASURE_+0")
 	
 	while HasProperty("RatBoy", "ImYourDestiny") do
 		if HasProperty("RatBoy", "LetsGo") then
@@ -17,7 +17,7 @@ function Run()
 				end
 			end
 			
-			MsgMeasure("", "@L_RATBOY_MSGMEASURE_+1)
+			MsgMeasure("", "@L_RATBOY_MSGMEASURE_+1")
 
 			f_MoveTo("", "MapExit", GL_MOVESPEED_WALK)
 			

@@ -18,7 +18,7 @@ function Run()
 		MeasureRun("",Protectorate,"Protectorate",true)
 	else
 		local VictimID = GetProperty("", "Victim")
-		if not (GetAliasByID(VictimID,"Victim") and not GetState("Victim", STATE_DEAD) then
+		if not (GetAliasByID(VictimID,"Victim") and not GetState("Victim", STATE_DEAD)) then
 			RemoveProperty("", "Victim")
 		end
 	end

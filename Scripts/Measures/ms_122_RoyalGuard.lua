@@ -38,6 +38,7 @@ function Run()
 				SimSetBehavior("Guard"..i, "RoyalGuardDuty")
 			end
 		end
+	end
 end
 
 function GetOSHData(MeasureID)

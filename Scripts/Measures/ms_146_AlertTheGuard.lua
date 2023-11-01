@@ -17,13 +17,14 @@ function Run()
 		if SimGetAge("") < 16 then
 			ShowOverheadSymbol("Owner", true, true, "OverheadSymbolID", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
 		else
-			MsgSay("", @L_GENERAL_MEASURES_146_ALERTTHEGUARD")
+			MsgSay("", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
 		end
 	end
 
 	CommitAction("call_guards", "Owner", "Owner")
 	Sleep(5)
 end
+
 
 function CleanUp()
 	StopAction("call_guards","Owner")
