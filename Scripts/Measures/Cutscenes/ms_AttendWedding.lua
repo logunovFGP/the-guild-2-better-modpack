@@ -129,31 +129,6 @@ function Run()
 	end
 
 	if isInside then
-		repeat
-			local isOver = false
-			Sleep(5)
-			GetAliasByID(GetProperty("","WEDDING_SIM1(GUEST)"),"#SIM1")
-			GetAliasByID(GetProperty("","WEDDING_SIM2(GUEST)"),"#SIM2")
-
-			if HasProperty("","WEDDING_HOUR(GUEST)") then
-				if GetProperty("#SIM1","WEDDING_IS_OVER") == 1 or GetProperty("#SIM2","WEDDING_IS_OVER") == 1 then
-					RemoveProperty("","AttendingWedding")
-					RemoveProperty("","WEDDING_HOUR(GUEST)")
-					RemoveProperty("","WEDDING_SIM1(GUEST)")
-					RemoveProperty("","WEDDING_SIM2(GUEST)")
-					LogMessage(GetName("").." is leaving the ceremony.")
-					ExitCurrentBuilding("")
-					--MoveSetActivity("")
-					isOver = true
-					StopMeasure("")
-					break
-				end
-			end
-
-		until (isOver == true)
-	end
-
-	if isInside then
 
 		repeat
 			Sleep(1)
@@ -221,8 +196,27 @@ function Run()
 						f_BeginUseLocator("", "#POS", GL_STANCE_SITBENCH, true)
 
 						repeat
+							local isOver = false
 							Sleep(5)
-						until (isOver() == true)
+							--GetAliasByID(GetProperty("","WEDDING_SIM1(GUEST)"),"#SIM1")
+							--GetAliasByID(GetProperty("","WEDDING_SIM2(GUEST)"),"#SIM2")
+
+							if HasProperty("","WEDDING_HOUR(GUEST)") then
+								if HasProperty("#WEDDING_CHAPEL","DEBUG_IS_OVER") and GetProperty("#WEDDING_CHAPEL","DEBUG_IS_OVER") == 1 then
+									RemoveProperty("","AttendingWedding")
+									RemoveProperty("","WEDDING_HOUR(GUEST)")
+									RemoveProperty("","WEDDING_SIM1(GUEST)")
+									RemoveProperty("","WEDDING_SIM2(GUEST)")
+									LogMessage(GetName("").." is leaving the ceremony.")
+									f_ExitCurrentBuilding("")
+									MoveSetActivity("")
+									isOver = true
+									StopMeasure("")
+									break
+								end
+							end
+
+						until (isOver == true)
 
 						canStart = true
 						break

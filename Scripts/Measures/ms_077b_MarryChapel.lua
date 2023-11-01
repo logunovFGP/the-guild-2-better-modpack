@@ -376,6 +376,7 @@ function StartCutscene()
 	CutsceneCameraSetRelativePosition("cutscene","Far_HUpYLeft","")
 	Sleep(6)
 
+	SetProperty("#WEDDING_CHAPEL","DEBUG_IS_OVER", 1)
 	SetProperty("", "WEDDING_IS_OVER", 1)
 	SetProperty("Destination", "WEDDING_IS_OVER", 1)
 
