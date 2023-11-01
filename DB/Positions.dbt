@@ -47,3 +47,16 @@ Data:
 40           "TestTopView"                   64               1300             240              77               180              0                | 
 41           "DuelView"                      -520             265              480              17               130              0                | 
 42           "ExecutionView"                 -63              150              360              6                -182             0                | 
+43           "SideFootLowView"               -75              10               0              0                90              0                | 
+44           "SideFootUpView"                -75              175              0              0                90              0                |
+45           "Far_HCenterYCenter"            0                150              300              10               180              0                | 
+46           "BackView"                      25               250              450              25               0                0                | 
+47           "#CHAPEL_INTRO(DOWN)"  -130  90	75	  -10  120	 0	 | 
+48           "#CHAPEL_INTRO(UP)"	-100  115	0     10   100	 0	 |
+49           "#CHAPEL_INTRO(BACK)"	25	  250	450	  25   0 	 0	 | 
+50           "#CHAPEL_PRIEST"		0     150   175   0    180   0   | 
+51           "#CHAPEL_RIGHT"		-100  115   225   10   130   0   | 
+52           "#CHAPEL_LEFT"			100   115   225   10   230   0   | 
+53           "#CHAPEL_PRIEST(FAR)"	0     90    350   0    180   0   | 
+54           "#CHAPEL_PRIEST(UP)"	0     160   950   15   180   0   | 
+55           "#CHAPEL_GUEST"		0     140   125   0    180   0   | 
