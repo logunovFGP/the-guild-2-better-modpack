@@ -967,20 +967,20 @@ function GoToTavern()
 		local basicvalue = 1
 
 		if Hour > 6 and Hour < 20 then
-	    verweile = Rand(3)+2
+			verweile = Rand(3)+2
 		else
-	    verweile = Rand(6)+2
+			verweile = Rand(6)+2
 		end
 
-		if HasProperty("Destination","DanceShow") then
-	    verweile = verweile + 3
+		if HasProperty("Destination", "DanceShow") then
+			verweile = verweile + 3
 		end
-		if HasProperty("Destination","ServiceActive") then
-	    verweile = verweile + 2
+		if HasProperty("Destination", "ServiceActive") then
+			verweile = verweile + 2
 		end
-		if HasProperty("Destination","Versengold") then
+		if HasProperty("Destination", "Versengold") then
 			basicvalue = basicvalue + 1
-	    verweile = verweile + 3
+			verweile = verweile + 3
 		end
 		
 		while verweile > 0 do
@@ -1036,7 +1036,8 @@ function GoToTavern()
 				Sleep(5)	
 			end
 			
-			if SimGetNeed("", 8) > 0.3 or  SimGetNeed("", 1) > 0.3 then
+	--		if SimGetNeed("", 8) > 0.3 or  SimGetNeed("", 1) > 0.3 then
+			if Rand(2) == 0 then
 				local NumItems = 1
 				if HasProperty("Destination","DanceShow") then
 					NumItems = 2
@@ -1054,13 +1055,16 @@ function GoToTavern()
 				local Choice = Items[Rand(2)+1]	
 				local ItemCount, TotalPrice = economy_BuyItems("Destination", "", Choice, NumItems, true)
 				if ItemCount > 0 then
-					SatisfyNeed("", needo, 0.3)
+					--SatisfyNeed("", needo, 0.3)
 					if HasProperty("Destination","ServiceActive") then
 						local TavernLevel = BuildingGetLevel("Destination")
 						local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
-						local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-						CreditMoney("Destination", Tip, "tip")
+						local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
+						CreditMoney("Destination", Tip, "WaresSold")
 					end
+				else
+					local Tip = 3 * chr_GetRank("") + 1
+					CreditMoney("Destination", Tip, "WaresSold")
 				end
 			end
 

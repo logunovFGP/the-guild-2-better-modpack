@@ -75,4 +75,5 @@ Balancing:
 - Abklingzeit auf Gauklermaßnahmen entfernt. Reichweite etwas gesenkt.
 - Kontor-Preise und Angebote neu ausbalanciert.
 - Wegelagerer werden keine Karren überfallen, wenn sie zuvor von jemandem aufgedeckt wurden.
-
+- Einige Item-Rezepte (und Preise) wurden mittels eines "Hotfixes" angepasst, um die Spielbarkeit zu erhöhen, bis die finale Item-Balance in 1.0 erscheint.
+- Tavernen erhalten einen "Hotfix", der bewirkt, dass Gäste stets kleine Trinkgelder springen lassen, und dass sie häufiger Essen / Trinken aus der Taverne kaufen. Dies wird durch ein ausgearbeitetes Frezeit-Verhalten Rework bald ersetzt.
