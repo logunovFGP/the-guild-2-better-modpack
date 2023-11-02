@@ -14,17 +14,16 @@ function Round(fValue)
 end
 
 function CalcAttack(fWeaponDamage)
-	local AttackValue = GetSkillValue("", FIGHTING)
-	local Damage = gameplayformulas_CalcDamage(fWeaponDamage) --fWeaponDamage + (SimGetLevel("") + AttackValue)*0.5
-	local CritChance = 2*GetSkillValue("", SHADOW_ARTS)
+	local AttackValue = chr_GetSkillValue("", FIGHTING) * 5
+	local Damage = gameplayformulas_CalcDamage(fWeaponDamage)
+	local CritChance = 2*chr_GetSkillValue("", SHADOW_ARTS)
 	CritChance = CritChance + GetImpactValue("", "FightCrit")
 	
 	if Rand(100) < CritChance then
-		Damage = anims_fight_sim_Round(Damage * 1.5)
-		-- ability
-		local FightCrit = GetImpactValue("", "FightCrit")
-		local CritMultiplier = 1 + 0.5*FightCrit
-		Damage = Damage * CritMultiplier
+		
+		local FightCrit = GetImpactValue("", "FightCrit") -- ability
+		local CritMultiplier = 1.5 + 0.25*FightCrit -- 150%-200%
+		Damage = anims_fight_sim_Round(Damage * CritMultiplier)
 	end
 	
 	SetData("FCAttackValue", AttackValue)
@@ -34,11 +33,12 @@ end
 function CalcDefend(a_fAttackValue, a_fDamage)
 	local bDefenseResult = 0
 	local Damage = a_fDamage
-	local fDefenseValue = GetSkillValue("", DEXTERITY)
+	local fDefenseValue = chr_GetSkillValue("", DEXTERITY) * 5
 	
-	local ToHit	= 73 + ( a_fAttackValue - fDefenseValue)*3
+	local AttackChance = Rand(60) + a_fAttackValue
+	local DefChance = Rand(50) + fDefenseValue
 	
-	if Rand(100) > ToHit then
+	if DefChance > AttackChance then
 		Damage = 0
 		bDefenseResult = 1
 	end
