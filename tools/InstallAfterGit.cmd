@@ -12,8 +12,13 @@ IF NOT EXIST GuildII.exe (
 	echo Found GuildII.exe in parent folder.
 )
 
-echo Update mod ...
-git pull
+git clone https://gitlab.com/fajeth-modpack/megamodpack-reforged.git MMP-Reforged-TMP
+
+echo Remove Scripts folder ...
+rmdir Scripts /s /q
+echo Copy Mod into game folder ...
+robocopy MMP-Reforged-TMP . /is /it /im /e /move /log:reforged-installer.log
+rmdir MMP-Reforged-TMP /s /q
 
 echo ++++++++++++++++++++++++++++++++
 echo -------Available languages:-----
@@ -23,8 +28,8 @@ SET /P language=Choose your language:
 echo Copy translation ...
 robocopy Translations/%language% . /is /it /im /e /xf .gitkeep /xf *.txt /log+:reforged-installer.log
 
-echo Update done. Enjoy the Reforged!
+echo Done. Enjoy the Reforged!
 ENDLOCAL
 pause
-
+exit
 

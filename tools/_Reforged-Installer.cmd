@@ -33,23 +33,7 @@ IF %ERRORLEVEL% NEQ 0 (
 	exit
 )
 
-git clone https://gitlab.com/fajeth-modpack/megamodpack-reforged.git MMP-Reforged-TMP
+start cmd /K InstallAfterGit.cmd
 
-echo Remove Scripts folder ...
-rmdir Scripts /s /q
-echo Copy Mod into game folder ...
-robocopy MMP-Reforged-TMP . /e /move /log:reforged-installer.log
-rmdir MMP-Reforged-TMP /s /q
-
-echo ++++++++++++++++++++++++++++++++
-echo -------Available languages:-----
-for /D %%d in (Translations/*) do echo %%d
-echo --------------SELECT-------------
-SET /P language=Choose your language: 
-echo Copy translation ...
-robocopy Translations/%language% . /xf .gitkeep /xf *.txt /log+:reforged-installer.log
-
-echo Done. Enjoy the Reforged!
 ENDLOCAL
-pause
-
+exit
