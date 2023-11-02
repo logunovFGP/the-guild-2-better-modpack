@@ -77,3 +77,4 @@ Balancing:
 - Wegelagerer werden keine Karren überfallen, wenn sie zuvor von jemandem aufgedeckt wurden.
 - Einige Item-Rezepte (und Preise) wurden mittels eines "Hotfixes" angepasst, um die Spielbarkeit zu erhöhen, bis die finale Item-Balance in 1.0 erscheint.
 - Tavernen erhalten einen "Hotfix", der bewirkt, dass Gäste stets kleine Trinkgelder springen lassen, und dass sie häufiger Essen / Trinken aus der Taverne kaufen. Dies wird durch ein ausgearbeitetes Frezeit-Verhalten Rework bald ersetzt.
+- Ein Gebäude kann nun alle 24 Std. erobert werden (vorher 48). Eine Dynastie kann nur alle 48 Std. die Gebäude-erobern-Maßnahme nutzen (vorher 24). Ein Gebäude kann nur erobert werden, wenn man einen Charakter in der Gruppe hat, der dazu privilegiert ist, das Gebäude zu besitzen, und wenn man gemäß seines Titels ein weiteres Gebäude besitzen darf.

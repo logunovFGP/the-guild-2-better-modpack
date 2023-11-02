@@ -22,6 +22,35 @@ function Run()
 		return
 	end
 	
+	if BuildingGetClass("Destination") == 2 then
+		if not CanBuildWorkshop("dynasty") then
+			MsgQuick("dynasty", "@L_GENERAL_MEASURES_FAILURES_+24", GetMaxWorkshopCount("dynasty"))
+			return
+		end
+	end
+	
+	if not AliasExists("Destination") then 
+	
+		local Class	= BuildingGetCharacterClass("")
+		local Count = DynastyGetMemberCount("dynasty")
+
+		for Number = 0, Count-1 do
+			if DynastyGetMember("dynasty", Number, "Member") then
+				if Class == GL_CLASS_NONE or Class == SimGetClass("Member") then
+					if BuildingCanBeOwnedBy("", "Member") then
+						CopyAlias("Member", "NewOwner")
+						break;
+					end
+				end
+			end
+		end
+	end
+	
+	if not AliasExists("NewOwner") then
+		MsgQuick("dynasty", "@L_GENERAL_MEASURES_071_BUYBUILDING_FAILURES_+0", GetID(""))
+		return
+	end
+	
 	if not f_MoveTo("", "Destination") then
 		GetOutdoorMovePosition("", "Destination", "MovePos")
 		if not f_MoveTo("", "Destination") then
@@ -64,18 +93,18 @@ function Run()
 	CommitAction("attackbuilding", "", "OldBuildingOwner", "OldBuildingOwner")
 	CarryObject("", "Handheld_Device/ANIM_Flag.nif", false)
 	
-	LoopAnimation("", "capture_building", 31)
+	LoopAnimation("", "capture_building", 30)
 	CarryObject("", "", false)
 	
 	Sleep (5)
 	
-	if not (BuildingBuy("InsideBuilding","AttackerOwner", BM_CAPTURE)) then
+	if not (BuildingBuy("InsideBuilding", "NewOwner", BM_CAPTURE)) then
 		MsgQuick("", "@L_BATTLE_043_CAPTUREBUILDING_FAILURES_+3")
 		return
 	end
 	
-	AddImpact("InsideBuilding", "recentlycaptured", 1, 48)
-	SetRepeatTimer("Dynasty", GetMeasureRepeatName2("CaptureBuilding"), TimeOut)
+	AddImpact("InsideBuilding", "recentlycaptured", 1, 24)
+	SetRepeatTimer("dynasty", GetMeasureRepeatName2("CaptureBuilding"), TimeOut)
 	
 	if GetImpactValue("Destination", "messagesent") == 0 then
 		SetData("Success", "1")

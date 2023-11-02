@@ -428,6 +428,7 @@ _General_
 - Tearing down a building will now only reward you with 35% of that building's value (plus items) instead of 50%
 - Counting House prices and offers rebalanced.
 - Some market production times and recipes got a "hotfix", to improve playability until the final item balance comes in 1.0
+- Every building can now be recaptured after 24 hours (48 before). Every dynasty will have a cooldown of 48 hours after running the capture building action (24 before). To capture a building you must have a character who is allowed to own it and you also need to have the right to own another building by your title.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.
