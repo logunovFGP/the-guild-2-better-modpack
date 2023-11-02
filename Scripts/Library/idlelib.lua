@@ -993,7 +993,8 @@ function GoToTavern()
 			local AnimTime
 			local AnimType = Rand(3)
 			PlaySound3DVariation("","Locations/tavern_people",1)
-			if SimGetNeed("", 8) >  SimGetNeed("", 1) then
+			local WhatToBuy = "drink"
+			if Rand(3) > 0 then
 				AnimTime = PlayAnimationNoWait("","sit_drink")
 				Sleep(1)
 				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false)
@@ -1001,32 +1002,32 @@ function GoToTavern()
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
 				CarryObject("","",false)
+				
 				if SimGetGender("")==GL_GENDER_MALE then
 					PlaySound3DVariation("","CharacterFX/male_belch",1)
 				else
 					PlaySound3DVariation("","CharacterFX/female_belch",1)
 				end
-				SatisfyNeed("", 8, 0.1)
 				Sleep(1.5)
 			else
+				WhatToBuy = "eat"
 				PlayAnimation("","sit_eat")
-				SatisfyNeed("", 1, 0.1)
 			end
 			
 			if AnimType == 0 then
 				PlayAnimation("","sit_talk")
 			elseif AnimType == 1 then
-				AnimTime = PlayAnimationNoWait("","sit_cheer")
+				AnimTime = PlayAnimationNoWait("", "sit_cheer")
 				Sleep(1)
 				PlaySound3D("","Locations/tavern/cheers_01.wav",1)
-				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false)
+				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif", false)
 				Sleep(1)
-				PlaySound3DVariation("","CharacterFX/drinking",1)
+				PlaySound3DVariation("", "CharacterFX/drinking", 1)
 				Sleep(AnimTime-1.5)
-				CarryObject("","",false)
+				CarryObject("", "", false)
 				Sleep(1.5)
 			else
-				PlayAnimationNoWait("","sit_laugh")
+				PlayAnimationNoWait("", "sit_laugh")
 				Sleep(2)
 				if Rand(2)==0 then
 					PlaySound3D("","Locations/tavern/laugh_01.wav",1)
@@ -1037,35 +1038,33 @@ function GoToTavern()
 			end
 			
 	--		if SimGetNeed("", 8) > 0.3 or  SimGetNeed("", 1) > 0.3 then
-			if Rand(2) == 0 then
-				local NumItems = 1
-				if HasProperty("Destination","DanceShow") then
-					NumItems = 2
-				end
+			local NumItems = 1
+			if HasProperty("Destination","DanceShow") then
+				NumItems = 2
+			end
 				
-				local Items, needo
-				if SimGetNeed("", 8) >  SimGetNeed("", 1) then
-				  Items = { "SmallBeer", "WheatBeer" }
-					needo = 8
-				else
-				  Items = { "GrainPap", "RoastBeef" }
-					needo = 1
-				end
+			local Items, needo
+			if WhatToBuy == "drink" then
+				Items = { "SmallBeer", "WheatBeer" }
+				needo = 8
+			else
+				Items = { "GrainPap", "RoastBeef" }
+				needo = 1
+			end
 				
-				local Choice = Items[Rand(2)+1]	
-				local ItemCount, TotalPrice = economy_BuyItems("Destination", "", Choice, NumItems, true)
-				if ItemCount > 0 then
-					--SatisfyNeed("", needo, 0.3)
-					if HasProperty("Destination","ServiceActive") then
-						local TavernLevel = BuildingGetLevel("Destination")
-						local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
-						local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-						CreditMoney("Destination", Tip, "WaresSold")
-					end
-				else
-					local Tip = 3 * chr_GetRank("") + 1
+			local Choice = Items[Rand(2)+1]	
+			local ItemCount, TotalPrice = economy_BuyItems("Destination", "", Choice, NumItems, true)
+			if ItemCount > 0 then
+				--SatisfyNeed("", needo, 0.3)
+				if HasProperty("Destination","ServiceActive") then
+					local TavernLevel = BuildingGetLevel("Destination")
+					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
+					local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
 					CreditMoney("Destination", Tip, "WaresSold")
 				end
+			else
+				local Tip = 3 * chr_GetRank("") + 1
+				CreditMoney("Destination", Tip, "WaresSold")
 			end
 
 			verweile = verweile - 1

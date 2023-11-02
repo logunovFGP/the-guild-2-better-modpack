@@ -16,7 +16,8 @@ function Run()
 	local Rank = chr_GetRank("Destination") or 1
 	
 	local XP = GetData("BaseXP") * Rank
-	if Rank < 3 then
+	local LevelDiff = SimGetLevel("") - SimGetLevel("Destination")
+	if LevelDiff > 3 or Rank < 3 then
 		XP = XP / 2
 	end
 	
@@ -37,26 +38,30 @@ function Run()
 	else
 		local MoneyToSteal = chr_GetBudget("Destination", 2)
 		
-		-- base value is 33% of the maximum. you can steal more if you are a skilled thief
+		-- base value is 50% of the maximum. you can steal more if you are a skilled thief
 		local SkillBonus = chr_GetSkillValue("", SHADOW_ARTS) * 0.03
 		local AbilityBoost = GetImpactValue("", "ThiefBoost")
-		MoneyToSteal = ((MoneyToSteal / 3) * (1 + SkillBonus)) * (1 + AbilityBoost)
+		local Multiplier = 0.50 + SkillBonus
+		MoneyToSteal = (MoneyToSteal * Multiplier) * (1 + AbilityBoost)
 		
 		-- get the actual money available (0 for non-dynasty characters)
-		local Money = GetMoney("Destination") or 0
-		if not IsDynastySim("Destination") then
-			Money = 0
+		local Money = 0
+		if IsDynastySim("Destination") then
+			Money = GetMoney("Destination")
 		end
 		
-		-- reserve 33% of the actual money for fairplay reasons
+		-- reserve 25% of the actual money for fairplay reasons
 		if Money > 0 then
-			if MoneyToSteal > (Money * 0.66) then
-				MoneyToSteal = Money * 0.66
+			if MoneyToSteal > (Money * 0.75) then
+				MoneyToSteal = Money * 0.75
 			end
 		end
 		
 		local RecentlyRobbed = GetImpactValue("Destination", "recentlyrobbed")
-		MoneyToSteal = MoneyToSteal - RecentlyRobbed*MoneyToSteal
+		if RecentlyRobbed > 0 then
+			MoneyToSteal = 0
+		end
+		
 		--LogMessage("MoneyToSteal final is "..MoneyToSteal)
 		
 		if MoneyToSteal >= 50 then
