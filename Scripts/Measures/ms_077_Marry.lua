@@ -227,7 +227,7 @@ function Run()
 	--  visit the wedding chapel --
 	--------------------------------
 	elseif choice == 1 then
-		LogMessage("Wedding Ceremony: "..GetName("").." and "..GetName("Destination").." are happily getting married in the chapel!")
+
 		Sleep(1)
 		--MeasureRun("", "Destination", "MarryChapel", true)
 		--Sleep(1)
@@ -246,34 +246,6 @@ function Run()
 				-- Possible slots: 06:00 | 12:00 | 18:00 | 00:00
 
 				FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL")
-
-				--[[
-
-				LIST OF ADDED PROPERTIES
-					#WEDDING_CHAPEL
-						* AMOUNT
-						* YEAR
-						* HOUR_ADDON
-						* SLOT_OVER(INDEX)
-
-					#GROOM
-						* WEDDING_IS_OVER
-						* WEDDING_DATE
-						* WEDDING_HOUR
-						* WEDDING_FORCED
-						* WEDDING_GUESTS(Amount)
-
-					#BRIDE
-						* WEDDING_IS_OVER
-						* WEDDING_DATE
-						* WEDDING_HOUR
-						* WEDDING_FORCED
-						* WEDDING_GUESTS(Amount)
-
-					[Exception]
-						* WEDDING_MAIN -> #GROOM or #BRIDE (Sim who proposed to other Sim)
-
-				]]
 
 				-- Init. properties (if unexisting)
 				if not HasProperty("#WEDDING_CHAPEL", "AMOUNT") then 
@@ -381,38 +353,23 @@ function Run()
 end
 
 local function AIInitAnswer()
+	local list, timer = {"Office","Trial","Duel"}
+	LogMessage("local function AIInitAnswer()")
 
-	local Timer = 0
-	if GetImpactValue("GuestAlias", "OfficeTimer") > 0 then
-		Timer = ImpactGetMaxTimeleft("GuestAlias", "OfficeTimer")
-		if Timer <= 4 then
-			return "C"
-		end
-	end
-	
-	if GetImpactValue("GuestAlias", "TrialTimer") > 0 then
-		Timer = ImpactGetMaxTimeleft("GuestAlias", "TrialTimer")
-		if Timer <= 4 then
-			return "C"
-		end
-	end
-	
-	if GetImpactValue("GuestAlias", "DuelTimer") > 0 then
-		Timer = ImpactGetMaxTimeleft("GuestAlias", "DuelTimer")
-		if Timer <= 4 then
-			return "C"
+	for i = 1, 3 do
+		if GetImpactValue("Guest", list[i].."Timer") > 0 then
+			if ImpactGetMaxTimeleft("Guest", list[i].."Timer") <= 4 then
+				return "C"
+			end
 		end
 	end
 		
-	if DynastyGetDiplomacyState("GuestAlias", "") < DIP_ALLIANCE or GetFavorToDynasty("", "GuestAlias") >= 60 or SimGetOfficeLevel("") > 0 then
+	if Rand(3) == 0 then
 		return "O"
 	else
-		if Rand(3) == 0 then
-			return "O"
-		else
-			return "C"
-		end
+		return "C"
 	end
+
 end
 
 function InviteGuests(Chapel, Sim1, Sim2, Hour)
@@ -431,41 +388,50 @@ LogMessage("InviteGuests() func.")
             "@L_MEASURE_MARRY_CEREMONY_ASK_BODY_+0",
             GetID(Sim1), GetID(Sim2), GetID(Chapel), GetID(GuestAlias))
 
-        	if Invitation == "O" then 
-        		return true 
-        	else 
-        		return false 
+        	if Invitation == "O" then
+        		setProperties("Guest")
+        		SimAddDate("Guest", "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", date-120, "AttendWedding")
+        		SimAddDatebookEntry("Guest", date, "#WEDDING_CHAPEL","@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
+        	else
+        		return false
         	end
+    end
 
+    local function returnSim(index, dynasty)
+		if not DynastyGetFamilyMember(dynasty, index, "Guest") then
+			return false
+		end
+
+		if GetID("Guest") == GetID(Sim1) or GetID("Guest") == GetID(Sim2) then
+			return false
+		end
+
+		if GetID(dynasty) ~= GetDynastyID("Guest") then
+			return false
+		end
+
+		if canInviteGuest("Guest", "GuestDyn") then
+			return inviteGuest("Guest")
+		end
+    end
+
+    local function setProperties(GuestAlias)
+		SetProperty(GuestAlias, "AttendingWedding",    1			)
+		SetProperty(GuestAlias, "WEDDING_HOUR(GUEST)", Hour			)
+		SetProperty(GuestAlias, "WEDDING_SIM1(GUEST)", GetID(Sim1)	)
+		SetProperty(GuestAlias, "WEDDING_SIM2(GUEST)", GetID(Sim2)	)
     end
 
     if GetSettlement(Sim1, "MyCity") then
         for i = 0, CityGetBuildings("MyCity", GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_HAS_DYNASTY, "Residence") - 1 do
-            if GetDynasty("Residence"..i, "GuestDyn") and GetImpactValue("GuestDyn", "Ceremony") < 1 then
-                local FamilyGuests = 0
+            if GetDynasty("Residence"..i, "GuestDyn") then
+                local limit, date = 0, GetProperty(Sim1,"WEDDING_DATE")
                 for u = 0, DynastyGetFamilyMemberCount("GuestDyn") - 1 do
-                    if DynastyGetFamilyMember("GuestDyn", u, "GuestAlias") and
-                       GetID("GuestAlias") ~= GetID(Sim1) and GetID("GuestAlias") ~= GetID(Sim2) and
-                       GetID("GuestDyn") == GetDynastyID("GuestAlias") and canInviteGuest("GuestAlias", "GuestDyn") then
-                        if inviteGuest("GuestAlias") then
-                        	LogMessage(GetName("GuestAlias").." will be attending the ceremony.")
-                        	SetProperty("GuestAlias","AttendingWedding",1)
-                        	SetProperty("GuestAlias","WEDDING_HOUR(GUEST)",Hour)
-                        	SetProperty("GuestAlias","WEDDING_SIM1(GUEST)",GetID(Sim1))
-                        	SetProperty("GuestAlias","WEDDING_SIM2(GUEST)",GetID(Sim2))
-                            FamilyGuests = FamilyGuests + 1
-                            local date = GetProperty(Sim1,"WEDDING_DATE")
-                            SimAddDate("GuestAlias", "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", date-120, "AttendWedding")
-                            SimAddDatebookEntry("GuestAlias", date, "#WEDDING_CHAPEL","Wedding ceremony...","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
-                        else
-                        	LogMessage(GetName("GuestAlias").." will NOT be attending the ceremony.")
-                        end
-                        if GetImpactValue("GuestDyn", "Ceremony") == 0 then
-                            AddImpact("GuestDyn", "Ceremony", 1, 0.2)
-                        end
-                    end
-                    if FamilyGuests == 2 then
-                        break
+                    if returnSim(u, "GuestDyn") then
+                    	limit = limit + 1
+                    	if limit == 2 then
+                        	break
+                    	end
                     end
                 end
             end
