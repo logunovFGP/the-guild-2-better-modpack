@@ -375,6 +375,13 @@ end
 function InviteGuests(Chapel, Sim1, Sim2, Hour)
 LogMessage("InviteGuests() func.")
 
+    local function setProperties(GuestAlias)
+		SetProperty(GuestAlias, "AttendingWedding",    1			)
+		SetProperty(GuestAlias, "WEDDING_HOUR(GUEST)", Hour			)
+		SetProperty(GuestAlias, "WEDDING_SIM1(GUEST)", GetID(Sim1)	)
+		SetProperty(GuestAlias, "WEDDING_SIM2(GUEST)", GetID(Sim2)	)
+    end
+
     local function canInviteGuest(GuestAlias, GuestDyn)
         return math.max(GetNobilityTitle(Sim1), GetNobilityTitle(Sim2)) >= GetNobilityTitle(GuestAlias) - 2 and f_SimIsValid(GuestAlias) and not GetState(GuestAlias, STATE_SICK) and CanBeInterruptetBy(GuestAlias, Sim1, "Flirt")
     end
@@ -390,8 +397,8 @@ LogMessage("InviteGuests() func.")
 
         	if Invitation == "O" then
         		setProperties("Guest")
-        		SimAddDate("Guest", "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", date-120, "AttendWedding")
-        		SimAddDatebookEntry("Guest", date, "#WEDDING_CHAPEL","@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
+        		SimAddDate("Guest", "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", GetProperty(Sim1,"WEDDING_DATE")-120, "AttendWedding")
+        		SimAddDatebookEntry("Guest", GetProperty(Sim1,"WEDDING_DATE"), "#WEDDING_CHAPEL","@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
         	else
         		return false
         	end
@@ -415,17 +422,10 @@ LogMessage("InviteGuests() func.")
 		end
     end
 
-    local function setProperties(GuestAlias)
-		SetProperty(GuestAlias, "AttendingWedding",    1			)
-		SetProperty(GuestAlias, "WEDDING_HOUR(GUEST)", Hour			)
-		SetProperty(GuestAlias, "WEDDING_SIM1(GUEST)", GetID(Sim1)	)
-		SetProperty(GuestAlias, "WEDDING_SIM2(GUEST)", GetID(Sim2)	)
-    end
-
     if GetSettlement(Sim1, "MyCity") then
         for i = 0, CityGetBuildings("MyCity", GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_HAS_DYNASTY, "Residence") - 1 do
             if GetDynasty("Residence"..i, "GuestDyn") then
-                local limit, date = 0, GetProperty(Sim1,"WEDDING_DATE")
+                local limit = 0
                 for u = 0, DynastyGetFamilyMemberCount("GuestDyn") - 1 do
                     if returnSim(u, "GuestDyn") then
                     	limit = limit + 1
