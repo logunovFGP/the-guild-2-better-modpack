@@ -417,7 +417,7 @@ function InviteGuests(Chapel, Sim1, Sim2, Hour)
 LogMessage("InviteGuests() func.")
 
     local function canInviteGuest(GuestAlias, GuestDyn)
-        return true --math.max(GetNobilityTitle(Sim1), GetNobilityTitle(Sim2)) >= GetNobilityTitle(GuestAlias) - 2 and f_SimIsValid(GuestAlias) and not GetState(GuestAlias, STATE_SICK) and CanBeInterruptetBy(GuestAlias, Sim1, "Flirt")
+        return math.max(GetNobilityTitle(Sim1), GetNobilityTitle(Sim2)) >= GetNobilityTitle(GuestAlias) - 2 and f_SimIsValid(GuestAlias) and not GetState(GuestAlias, STATE_SICK) and CanBeInterruptetBy(GuestAlias, Sim1, "Flirt")
     end
 
     local function inviteGuest(GuestAlias)
