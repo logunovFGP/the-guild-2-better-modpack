@@ -99,7 +99,9 @@ function Run()
 	local choice
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel")
+
 	if AliasExists("Weddingchapel") then
+
 		if DynastyIsAI("") then
 			if Cost > (GetMoney("") - 1000) then
 				choice = 0
@@ -405,7 +407,7 @@ local function AIInitAnswer()
 	if DynastyGetDiplomacyState("GuestAlias", "") < DIP_ALLIANCE or GetFavorToDynasty("", "GuestAlias") >= 60 or SimGetOfficeLevel("") > 0 then
 		return "O"
 	else
-		if Rand(1) == 0 then
+		if Rand(3) == 0 then
 			return "O"
 		else
 			return "C"
@@ -471,9 +473,6 @@ LogMessage("InviteGuests() func.")
     end
 end
 		
--- -----------------------
--- CleanUp
--- -----------------------
 function CleanUp()
 	EndCutscene("")
 	DestroyCutscene("cutscene")
@@ -483,4 +482,3 @@ function CleanUp()
 	SetState("", STATE_DUEL, false)
 	SetState("Destination", STATE_DUEL, false)
 end
-
