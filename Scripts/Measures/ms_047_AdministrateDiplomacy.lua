@@ -557,9 +557,9 @@ function AnswerRequest(Amount)
 	end
 	
 	-- only send money if we have enough
-	if GetMoney("Destination") > 3500*OurTitle then
-		-- 50% chance to accept
-		if Rand(2) == 0 then
+	if GetMoney("Destination") > 2500*OurTitle then
+		-- 66% chance to accept
+		if Rand(3) > 0 then
 			--yes
 			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_YES", GetID("Destination"), Amount)
 			chr_SpendMoney("Destination", Amount, "CostBribes")

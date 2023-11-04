@@ -933,6 +933,7 @@ function GetEnemies(SimAlias)
 	local NumEnemies = 0
 	
 	GetDynasty(SimAlias, "MyDyn")
+	dyn_RecountEnemies(SimAlias)
 	local EnemyCounter = dyn_GetEnemyCounter(SimAlias)
 	
 	for i=1, EnemyCounter do
