@@ -1,21 +1,13 @@
 function Run()
-	if not ai_GoInsideBuilding("", "", -1, GL_BUILDING_TYPE_TOWNHALL) then
+	
+	-- get your town hall
+	GetSettlement("", "MyCity")
+	if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "Townhall") then
 		return
 	end
 
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
-	if not GetSettlement("","city") then
-		StopMeasure()
-	end
-	if not GetInsideBuilding("","Townhall") then
-		StopMeasure()
-	end
-	GetSettlement("Townhall","city2")
-	if not GetID("city")==GetID("city2") then
-		StopMeasure()
-	end
-
 	local Level = CityGetLevel("city")
 	local CityTreasure = GetMoney("city")
 	local CityUpgradeCost = gameplayformulas_GetCityUpgradeCost(Level)
@@ -35,17 +27,17 @@ function Run()
 	if nomorelvlup==true then
 		MsgBoxNoWait("",false,
 			"@L_MEASURE_LEVELUPCITY_HEAD_+0",
-			"@L_MEASURE_LEVELUPCITY_BODY_+5",GetID("city"),citylabel)
+			"@L_MEASURE_LEVELUPCITY_BODY_+5", GetID("city"), citylabel)
 			
-	elseif HasProperty("city","LevelUpPaid") and GetProperty("city","LevelUpPaid")==1 then
+	elseif HasProperty("city", "LevelUpPaid") and GetProperty("city","LevelUpPaid") == 1 then
 		GetScenario("scenario")
 		local mapid = GetProperty("scenario", "mapid")
 		local scenarioname = GetDatabaseValue("maps", mapid, "lordship")
 		local lordid = f_GetDatabaseIdByName("Lordship", scenarioname)
 		local lordlabel = "@L_SCENARIO_LORD_"..GetDatabaseValue("maps", mapid, "lordship").."_+1"
-		MsgBoxNoWait("",false,
+		MsgBoxNoWait("", false,
 			"@L_MEASURE_LEVELUPCITY_HEAD_+0",
-			"@L_MEASURE_LEVELUPCITY_BODY_+4", GetID("city"),citylabel,lordlabel)
+			"@L_MEASURE_LEVELUPCITY_BODY_+4", GetID("city"), citylabel, lordlabel)
 	
 	elseif HasProperty("city","LevelUpCity") and GetProperty("city","LevelUpCity")==1 then
 		if CityTreasure<CityUpgradeCost then

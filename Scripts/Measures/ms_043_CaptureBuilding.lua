@@ -51,9 +51,9 @@ function Run()
 		return
 	end
 	
-	if not f_MoveTo("", "Destination") then
+	if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 		GetOutdoorMovePosition("", "Destination", "MovePos")
-		if not f_MoveTo("", "Destination") then
+		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 			StopMeasure()
 		end
 	end
