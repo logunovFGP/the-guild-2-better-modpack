@@ -29,25 +29,22 @@ function Run()
 		end
 	end
 	
-	if not AliasExists("Destination") then 
-	
-		local Class	= BuildingGetCharacterClass("")
-		local Count = DynastyGetMemberCount("dynasty")
+	local Class	= BuildingGetCharacterClass("Destination")
+	local Count = DynastyGetMemberCount("dynasty")
 
-		for Number = 0, Count-1 do
-			if DynastyGetMember("dynasty", Number, "Member") then
-				if Class == GL_CLASS_NONE or Class == SimGetClass("Member") then
-					if BuildingCanBeOwnedBy("", "Member") then
-						CopyAlias("Member", "NewOwner")
-						break;
-					end
+	for Number = 0, Count-1 do
+		if DynastyGetMember("dynasty", Number, "Member") then
+			if Class == GL_CLASS_NONE or Class == SimGetClass("Member") then
+				if BuildingCanBeOwnedBy("Destination", "Member") then
+					CopyAlias("Member", "NewOwner")
+					break;
 				end
 			end
 		end
 	end
 	
 	if not AliasExists("NewOwner") then
-		MsgQuick("dynasty", "@L_GENERAL_MEASURES_071_BUYBUILDING_FAILURES_+0", GetID(""))
+		MsgQuick("dynasty", "@L_GENERAL_MEASURES_043_CAPTUREBUILDING_FAILURES_+0", GetID("Destination"))
 		return
 	end
 	
