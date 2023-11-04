@@ -299,6 +299,8 @@ function CheckGuildMasters()
 	local textArray = {"", "", "", "", "", "", "", "", "", "", "", "" }
 	local Gender, GenderLabel
 	local GenderArray = { "FEMALE", "MALE"}
+	local NewYear = GetYear()
+	SetProperty("", "year", NewYear)
 	
 	for w=1, 4 do -- send messages to all 4 winners
 		if w == 1 then -- patron
@@ -322,7 +324,7 @@ function CheckGuildMasters()
 				
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_PATRON_"..GenderLabel.."_+0")
+									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_PATRON_"..GenderLabel.."_+0")
 				
 			else
 				textArray[1] = "@L_GUILDHOUSE_MASTERLIST_PATRON_MALE_+0"
@@ -350,7 +352,7 @@ function CheckGuildMasters()
 				
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_ARTISAN_"..GenderLabel.."_+0")
+									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_ARTISAN_"..GenderLabel.."_+0")
 				
 			else
 				textArray[3] = "@L_GUILDHOUSE_MASTERLIST_ARTISAN_MALE_+0"
@@ -378,7 +380,7 @@ function CheckGuildMasters()
 				GenderLabel = GenderArray[Gender]
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0")
+									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0")
 				
 			else
 				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_MALE_+0"
@@ -407,7 +409,7 @@ function CheckGuildMasters()
 		
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
-									GetID("Winner"), GetYear(), "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0")
+									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0")
 				
 			else
 				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_MALE_+0"
@@ -418,7 +420,7 @@ function CheckGuildMasters()
 
 	if PlayerCity then
 		MsgNewsNoWait("All", "", "", "politics", -1, "@L_GUILDHOUSE_MASTERLIST_HEAD_+0",
-					"@L_GUILDHOUSE_MASTERLIST_BODY_+0", GetID("city"), GetYear(), 
+					"@L_GUILDHOUSE_MASTERLIST_BODY_+0", GetID("city"), NewYear, 
 					textArray[1], textArray[2], textArray[3], textArray[4], textArray[5], textArray[6], 
 					textArray[7], textArray[8], textArray[9], textArray[10], textArray[11], textArray[12])
 	end
