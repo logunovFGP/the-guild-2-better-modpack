@@ -91,7 +91,7 @@ function Run()
 
 	bld_HandleNewOwner("", "FormerOwner") 
 	SetState("", STATE_SELLFLAG, false)
-	if DynastyIsPlayer("") then
+	if DynastyIsPlayer("") and not IsMultiplayerGame() then
 		PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.4, 1, "c4")
 	end
 end

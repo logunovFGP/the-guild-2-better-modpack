@@ -222,7 +222,9 @@ function BuyIt(NewOwner, FormerOwner, Money)
 			MsgBoxNoWait(NewOwner, "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_071_BUYBUILDING_FAILURES_+2", GetID(NewOwner), GetID(""))
 			return
 		else 
-			PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.4, 1, "c4")
+			if not IsMultiplayerGame() then
+				PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.4, 1, "c4")
+			end
 			chr_SpendMoney(NewOwner, Money, "BuildingBought")
 			CreditMoney(FormerOwner, Money, "BuildingSold")
 						
