@@ -36,6 +36,11 @@ function Run()
 
 	if TimeOut < 0 then
 		while true do
+			
+			if not AliasExists("Destination") then
+				break
+			end
+			
 			if GetInsideBuilding("Destination", "InsideTarget") then -- don't follow inside!
 				if HasProperty("", "CityBodyguard") or HasProperty("", "KIbodyguard") then
 					break
@@ -135,8 +140,7 @@ function Run()
 				Sleep(2)
 			end
 		end
-		
-		return
+		StopMeasure()
 	end
 	
 --	Sleep(Gametime2Realtime(TimeOut))
@@ -151,11 +155,12 @@ end
 function CleanUp()
 	local DataValue = GetData("Property")
 
-	if DataValue then
-		RemoveProperty("Destination", DataValue)
-	end
-
 	if AliasExists("Destination") and HasProperty("Destination", "KIbodyguard") then
+	
+		if DataValue then
+			RemoveProperty("Destination", DataValue)
+		end
+		
 		if GetProperty("Destination", "KIbodyguard") > 1 then
 			SetProperty("Destination", "KIbodyguard", 1)
 		else

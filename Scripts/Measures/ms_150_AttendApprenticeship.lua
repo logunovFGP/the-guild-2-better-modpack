@@ -185,7 +185,7 @@ function Run()
 	
 	local ClassNr = GetDatabaseValue("Apprentice", choice, "class")
 	if ClassNr == 0 then
-		ClassNr = SimGetClass("boss")
+		ClassNr = Rand(4) + 1
 	end
 	SimSetClass("", ClassNr)
 	

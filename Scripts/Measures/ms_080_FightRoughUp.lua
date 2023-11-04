@@ -37,8 +37,15 @@ function Run()
 				StopMeasure()
 			end
 			
+			SetRepeatTimer("", GetMeasureRepeatName2("RoughUp"), 2)
+			
 			-- Favor
-			ModifyFavorToDynasty("", "TargetDyn", -GL_FAVOR_MOD_VERYLARGE)
+			if not GetDynasty("Destination", "TargetDyn") then
+				ModifyFavorToSim("", "Destination", -GL_FAVOR_MOD_VERYLARGE)
+			else
+				ModifyFavorToDynasty("", "TargetDyn", -GL_FAVOR_MOD_VERYLARGE)
+			end
+			
 			Sleep(0.2)
 			
 			-- set fracture for the victim
@@ -47,11 +54,11 @@ function Run()
 			-- set property for TakeOverBid
 			SetProperty("Destination", "intimidated", GetDynastyID(""))
 			
-			chr_GainXP("", GetData("BaseXP"))
+			-- special xp gain, depends on level diff
+			xp_CommitCrime("", "Destination")
 			
 			-- make sure victim get's evidence for this
 			AddEvidence("Destination", "", "Destination", 7, "") -- Slugging
-			SetRepeatTimer("", GetMeasureRepeatName2("RoughUp"), 2)
 			feedback_MessageCharacter("", "@L_BATTLE_FIGHTROUGHUP_MSG_SUCCESS_OWNER_HEAD_+0",
 								"@L_BATTLE_FIGHTROUGHUP_MSG_SUCCESS_OWNER_BODY_+0", GetID(""), GetID("Destination"))
 			MsgNewsNoWait("Destination", "", "", "intrigue", -1,

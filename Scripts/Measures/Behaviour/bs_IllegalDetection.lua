@@ -1,7 +1,7 @@
 function Run()
 
 	if HasProperty("", "NotAffectable") then
-		return "-"
+		return ""
 	end
 
 	if ActionIsStopped("Action") then
@@ -11,7 +11,7 @@ function Run()
 	end
 
 	if GetState("", STATE_NPC) then
-		return "-"
+		return ""
 	end
 	
 	if GetState("", STATE_ROBBERGUARD) then
@@ -23,6 +23,11 @@ function Run()
 	end
 
 	if BattleIsFighting("") then
+		return ""
+	end
+	
+	-- check distance
+	if GetDistance("", "Actor") > 3000 then
 		return ""
 	end
 	

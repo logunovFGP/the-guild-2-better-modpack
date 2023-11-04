@@ -15,6 +15,29 @@ function AttackEnemy(Owner, OwnLevel, EnemyLevel)
 end
 
 -- ------------------
+-- CommitCrime
+-- ------------------
+function CommitCrime(Owner, Target)
+	local baseXP = GL_EXP_GAIN_RARE
+	local MyLevel = SimGetLevel(Owner)
+	local VictimLevel = SimGetLevel(Target)
+	local LevelDiff = MyLevel - VictimLevel
+	
+	if LevelDiff > 2 then
+		baseXP = GL_EXP_GAIN_COMMON
+	elseif LevelDiff < 2 then
+		baseXP = GL_EXP_GAIN_HIGH_RISK
+	end
+	
+	if not IsDynastySim(Target) then
+		baseXP = math.floor(baseXP / 2)
+	end
+	
+	chr_GainXP(Owner, baseXP)
+end
+
+
+-- ------------------
 -- BuyNobilityTitle
 -- ------------------
 function BuyNobilityTitle(Owner, BaseXP, Title)

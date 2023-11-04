@@ -388,10 +388,10 @@ function CleanUp()
 	ReleaseAvoidanceGroup("")
 	StopAnimation("")
 	ReleaseLocator("")
-	ReleaseLocator("Destination")
 	
 	if (AliasExists("Destination")) then
 		MoveSetActivity("Destination")
+		ReleaseLocator("Destination")
 		if GetDynastyID("") ~= GetDynastyID("Destination") then
 			SimLock("Destination", 0.5)
 		end

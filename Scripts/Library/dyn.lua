@@ -620,20 +620,24 @@ end
 -- -----------------------
 function ModifyFavor(source, dest, val)
 	
+	if not AliasExists(source) or not AliasExists(dest) then
+		return
+	end
+	
 	local SourceTitle = 0
 	local DestinationTitle = 0
 	local Diplo = DynastyGetDiplomacyState(source, dest)
 		
 	if Diplo == DIP_ALLIANCE and val < 0 then
 	-- harder to lose if you are friends
-		val = math.floor(val / 2)
+		val = math.floor(val / 2) or 0
 	elseif Diplo == DIP_FOE and val > 0 then
 	-- harder to gain if you are enemies
-		val = math.floor(val / 2)
+		val = math.floor(val / 2) or 0
 	else
 		-- check title-difference
-		SourceTitle = 0 + GetNobilityTitle(source)
-		DestinationTitle = 0 + GetNobilityTitle(dest)
+		SourceTitle = GetNobilityTitle(source) or 0
+		DestinationTitle = GetNobilityTitle(dest) or 0
 			
 		if val > 0 then
 		-- harder to gain favor

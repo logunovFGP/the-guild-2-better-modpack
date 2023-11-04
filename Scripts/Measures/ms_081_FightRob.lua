@@ -13,13 +13,6 @@ function Run()
 	PlayAnimation("", "manipulate_bottom_r")
 	
 	local Booty = Plunder("", "Destination", 1)
-	local Rank = chr_GetRank("Destination") or 1
-	
-	local XP = GetData("BaseXP") * Rank
-	local LevelDiff = SimGetLevel("") - SimGetLevel("Destination")
-	if LevelDiff > 3 or Rank < 3 then
-		XP = XP / 2
-	end
 	
 	if Booty > 0 then -- you can steal multiple times if the character has items in the inventory
 		-- start crime action
@@ -34,7 +27,7 @@ function Run()
 		MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_HEAD_+0",
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
-		chr_GainXP("", XP)
+		xp_CommitCrime("", "Destination")
 	else
 		local MoneyToSteal = chr_GetBudget("Destination", 2)
 		
@@ -85,7 +78,7 @@ function Run()
 			chr_RecieveMoney("", MoneyToSteal, "IncomeRobber")
 			Sleep(0.4)
 			mission_ScoreCrime("", MoneyToSteal)
-			chr_GainXP("", XP)
+			xp_CommitCrime("", "Destination")
 		else
 			MsgQuick("", "@L_BATTLE_FIGHTROB_FAILED_+0", GetID("Destination"))
 		end

@@ -9,7 +9,7 @@ function Run()
 	end
 
 	if GetSettlementID("") ~= GetSettlementID("councilbuilding") then
-		MsgQuick("","@L_NEWSTUFF_TRIAL_INSTALL_WRONGTOWNHALL")
+		MsgQuick("", "@L_NEWSTUFF_TRIAL_INSTALL_WRONGTOWNHALL")
 		return
 	end
 	
@@ -93,6 +93,7 @@ function Run()
 		f_StrollNoWait("", 250, 1)
 		StopMeasure()
 	end
+	
 	if GetID("") == GetID("judge") then
 		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_YOUAREJUDGE_+0")
 		f_StrollNoWait("", 250, 1)
