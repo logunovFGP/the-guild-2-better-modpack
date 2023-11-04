@@ -429,6 +429,7 @@ _General_
 - Counting House prices and offers rebalanced.
 - Some market production times and recipes got a "hotfix", to improve playability until the final item balance comes in 1.0
 - Every building can now be recaptured after 12 hours (48 before). To capture a building you must have a character who is allowed to own it and you also need to have the right to own another building by your title.
+- You can no longer sell a building you captured.
 
 _Patron_
 - 'Sweet talking' needs 300 instead of 200 Gold. Tavern keepers will get that money.

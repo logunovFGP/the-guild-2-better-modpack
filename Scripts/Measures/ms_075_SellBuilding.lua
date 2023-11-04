@@ -1,9 +1,8 @@
 function Run()
 
-    if GetImpactValue("", "recentlycaptured") >0 then
+	if HasProperty("", "Captured") then
 		MsgBoxNoWait("", "", "@L_SELLBUILDING_FAIL_HEAD_+0",
 					"@L_SELLBUILDING_FAIL_BODY_+0", GetID(""))
-		StopMeasure()
 		return
 	end
 		
