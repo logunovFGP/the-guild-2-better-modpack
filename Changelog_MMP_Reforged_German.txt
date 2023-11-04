@@ -436,7 +436,7 @@ _Allgemein_
 - Der Abriss eines Gebäudes gibt nur noch 35% statt 50% des Gebäudewertes (plus Items)
 - Kontor-Preise und Angebote neu ausbalanciert.
 - Einige Item-Rezepte (und Preise) wurden mittels eines "Hotfixes" angepasst, um die Spielbarkeit zu erhöhen, bis die finale Item-Balance in 1.0 erscheint.
-- Ein Gebäude kann nun alle 24 Std. erobert werden (vorher 48). Eine Dynastie kann nur alle 48 Std. die Gebäude-erobern-Maßnahme nutzen (vorher 24). Ein Gebäude kann nur erobert werden, wenn man einen Charakter in der Gruppe hat, der dazu privilegiert ist, das Gebäude zu besitzen, und wenn man gemäß seines Titels ein weiteres Gebäude besitzen darf.
+- Ein Gebäude kann nun alle 12 Std. erobert werden (vorher 48). Ein Gebäude kann nur erobert werden, wenn man einen Charakter in der Gruppe hat, der dazu privilegiert ist, das Gebäude zu besitzen, und wenn man gemäß seines Titels ein weiteres Gebäude besitzen darf.
 
 _Patron_
 - Die Maßnahme 'Becircen' kostet nun 300 statt 200 Gold und wird dem Tavernenbesitzer gutgeschrieben.

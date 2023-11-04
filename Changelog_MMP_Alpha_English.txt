@@ -79,4 +79,4 @@ Balancing:
 - Highwaymen won't attack if a character has detected them before.
 - Some market production times and recipes got a "hotfix", to improve playability until the final item balance comes in 1.0
 - Taverns got a "hotfix", in which guests will always give small tips or buy food/drink with some extra tips when they stay in a tavern. Will be replaced by a free time behavior rework soon.
-- Every building can now be recaptured after 24 hours (48 before). Every dynasty will have a cooldown of 48 hours after running the capture building action (24 before). To capture a building you must have a character who is allowed to own it and you also need to have the right to own another building by your title.
+- Every building can now be recaptured after 12 hours (48 before). To capture a building you must have a character who is allowed to own it and you also need to have the right to own another building by your title.
