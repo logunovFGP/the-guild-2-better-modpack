@@ -100,7 +100,8 @@ function Run()
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel")
 
-	if AliasExists("Weddingchapel") then
+	-- TODO: temporarily deactivate wedding at the chapel due to crashes
+	if AliasExists("TODO") then
 
 		if DynastyIsAI("") then
 			if Cost > (GetMoney("") - 1000) then
