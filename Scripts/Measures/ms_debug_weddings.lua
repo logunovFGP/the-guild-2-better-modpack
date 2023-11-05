@@ -1,18 +1,16 @@
 function Run()
 
-	local result = InitData("@P"..
-	"@B[1,Start!,Run the cutscene!,Hud/MouseIcons_highlighted/btn_marry.tga]",
-	nil,
-	"Select the options for the debug measure, then Start!",
-	"")
-
-	if result ~= "C" then
-
+	if not SimGetCourtLover("", "#Courted") then
+		MsgQuick("", "No courted Sim found for "..GetName("").."!")
+		return
 	end
 
-end
+	CreateCutscene("WeddingCeremony", "Wedding")
 
-function Start()
+	CopyAliasToCutscene("", "Wedding", "#MAIN")
+	CopyAliasToCutscene("#Courted", "Wedding", "#COURTED")
+
+	CutsceneCallScheduled("Wedding", "Start")
 end
 
 function CleanUp()
