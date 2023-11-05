@@ -44,9 +44,10 @@ function Run()
 	repeat
 		if GetInsideBuilding("", "#BUILDING") ~= false then
 			if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
-				isInside = true
-				CutsceneCallThread("Wedding", "ChatterGuests", "")
-				break
+				--isInside = true
+				--weddingceremony_ChatterGuests("")
+				Sleep(5)
+				--break
 			else
 				Sleep(1)
 			end

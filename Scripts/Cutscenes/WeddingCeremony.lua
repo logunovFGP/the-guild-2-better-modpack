@@ -1,4 +1,6 @@
 function CleanUp()
+	LogMessage("CleanUp() in WeddingCeremony.lua")
+
 	ListClear("Visitors")
 	ListClear("Reacting")
 
@@ -22,6 +24,9 @@ function CleanUp()
 		end
 		if HasProperty("#SIM"..i,"Busy") then
 			RemoveProperty("#SIM"..i,"Busy")
+		end
+		if HasProperty("#SIM"..i,"AttendingWedding") then
+			RemoveProperty("#SIM"..i,"AttendingWedding")
 		end
 	end
 
@@ -63,10 +68,10 @@ function Start()
 
 	local eventDate = SettlementEventGetTime("ceremony_date")
 
-	SimAddDatebookEntry("#MAIN", "#WEDDING_CHAPEL","You are getting married!","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
+	SimAddDatebookEntry("#MAIN", eventDate, "#WEDDING_CHAPEL","You are getting married!","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
 	SimAddDate("#MAIN","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", eventDate -120, "AttendWedding")
 
-	SimAddDatebookEntry("#COURTED", "#WEDDING_CHAPEL","You are getting married!","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
+	SimAddDatebookEntry("#COURTED", eventDate, "#WEDDING_CHAPEL","You are getting married!","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
 	SimAddDate("#COURTED","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", eventDate -120, "AttendWedding")
 
 	CutsceneCallThread("", "InviteGuests", "#WEDDING_CHAPEL")
@@ -75,7 +80,7 @@ function Start()
 	SetData("WaitTime", WaitTime)
 
 	CutsceneAddEvent("", "SitGuests", WaitTime)
-end
+end 
 
 -- Call Threads
 function UpcomingCeremonies()
@@ -112,7 +117,7 @@ function InitSims()
 			CutsceneAddSim("","#SIM"..i)
 		end
 	end
-	ListClear("temp")
+	ListClear("tmp")
 
 	CutsceneAddSim("","#MAIN")
 	CutsceneAddSim("","#COURTED")
@@ -129,7 +134,7 @@ function InviteGuests()
         local Invitation = MsgNews(GuestAlias, "", "@P"..
             "@B[O, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+0]"..
             "@B[C, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+1]", 
-            AIInitAnswer, "politics", 2, 
+            weddingceremony_AIInitAnswer, "politics", 2, 
             "@L_FAMILY_1_MARRIAGE_MESSAGE_HEAD_LEAVE_+0",
             "@L_MEASURE_MARRY_CEREMONY_ASK_BODY_+0",
             GetID("#MAIN"), GetID("#COURTED"), GetID("#WEDDING_CHAPEL"), GetID(GuestAlias))
@@ -137,6 +142,9 @@ function InviteGuests()
         	if Invitation == "O" then
         		SimAddDate(GuestAlias, "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", SettlementEventGetTime("ceremony_date")-120, "AttendWedding")
         		SimAddDatebookEntry(GuestAlias, SettlementEventGetTime("ceremony_date"), "#WEDDING_CHAPEL", "@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
+        		SetProperty(GuestAlias, "AttendingWedding", 1)
+        		MsgNewsNoWait("#MAIN", GuestAlias, "", "politics", -1, "Answer to the Wedding invitation","I will be happy to attend your Wedding Ceremony.")
+
         	else
         		return false
         	end
@@ -144,6 +152,10 @@ function InviteGuests()
 
     local function returnSim(index, dynasty)
 		if not DynastyGetFamilyMember(dynasty, index, "Guest") then
+			return false
+		end
+
+		if SimGetAge("Guest") < 16 then
 			return false
 		end
 
@@ -187,40 +199,53 @@ function EndCeremony()
 end
 
 function SitGuests()
-	for i = 0, ListSize("Visitors") -1 do
-		Sleep(0.1)
-		ListGetElement("Visitors", i, "#SIM"..i)
+	FindNearestBuilding("#MAIN", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL")
+	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 
-		if GetInsideBuilding("#SIM"..i, "#WEDDING_CHAPEL") then
-			LogMessage(GetName("#SIM"..i).." is attending the Wedding Ceremony.")
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "Sit_Visitors")
+	ListRemove("Sit_Visitors", "#PRIEST")
+	ListRemove("Sit_Visitors", "#MAIN")
+	ListRemove("Sit_Visitors", "#COURTED")
 
-			local allSeats = {}
+	for i = 0, ListSize("Sit_Visitors") -1 do
+		ListGetElement("Sit_Visitors", i, "#SIM"..i)
 
-			for i = 1, 29 do 
-				if LocatorStatus("#WEDDING_CHAPEL", "Sit"..i, true) == 1 then
-					allSeats[i] = false
-				else
-					allSeats[i] = true
+		if SimGetAge("#SIM"..i) > 15 then
+			Sleep(0.1)
+
+			if GetInsideBuilding("#SIM"..i, "#WEDDING_CHAPEL") then
+				LogMessage(GetName("#SIM"..i).." is attending the Wedding Ceremony.")
+
+				local allSeats = {}
+
+				for i = 1, 29 do 
+					if LocatorStatus("#WEDDING_CHAPEL", "Sit"..i, true) == 1 then
+						allSeats[i] = false
+					else
+						allSeats[i] = true
+					end
 				end
+
+				local Seat = Rand(29) +1
+
+				repeat
+					if allSeats[Seat] == false then
+						LogMessage("Seat ("..Seat..") assigned to "..GetName("#SIM"..i)..".")
+						allSeats[Seat] = true
+						break
+					else
+						LogMessage("Seat ("..Seat..") is already occupied! Restarting rolls.")
+					end
+					Seat = Rand(29)+1
+				until (allSeats[Seat] == true)
+
+				GetFreeLocatorByName("#WEDDING_CHAPEL", "Sit", Seat, Seat, "#POS", false)
+				f_MoveToNoWait("#SIM"..i, "#POS", GL_MOVESPEED_WALK)	
+				f_BeginUseLocatorNoWait("#SIM"..i, "#POS", GL_STANCE_SITBENCH,true)
 			end
-
-			local Seat = Rand(29) +1
-
-			repeat
-				if allSeats[Seat] == false then
-					LogMessage("Seat ("..Seat..") assigned to "..GetName("#SIM"..i)..".")
-					allSeats[Seat] = true
-					break
-				else
-					LogMessage("Seat ("..Seat..") is already occupied! Restarting rolls.")
-				end
-				Seat = Rand(29)+1
-			until (allSeats[Seat] == true)
-
-			GetFreeLocatorByName("#WEDDING_CHAPEL", "Sit", Seat, Seat, "#POS", false)
-			f_BeginUseLocator("#SIM"..i, "#POS", GL_STANCE_SITBENCH, true)
 		end
 	end
+	ListClear("Sit_Visitors")
 end
 
 function ChatterGuests()
@@ -243,7 +268,7 @@ function ChatterGuests()
 
 				LoopAnimation("", "talk", -1)
 
-				local dialog = returnDialog("")
+				local dialog = weddingceremony_returnDialog("")
 				MsgSay("", dialog[1], dialog[2])
 
 				StopAnimation("")
@@ -271,10 +296,10 @@ end
 
 -- Utilies
 local function GetCost()
-	return ( math.max(GetNobilityTitle(""), IsDynastySim("Destination") and GetNobilityTitle("Destination") or 0) *2) *300
+	return ( math.max(GetNobilityTitle("#MAIN"), IsDynastySim("#COURTED") and GetNobilityTitle("#COURTED") or 0) *2) *300
 end
 
-local function AIInitAnswer()
+function AIInitAnswer()
 	local list, timer = {"Office","Trial","Duel"}
 	LogMessage("local function AIInitAnswer()")
 
@@ -293,7 +318,7 @@ local function AIInitAnswer()
 	end
 end
 
-local function returnDialog(Sim)
+function returnDialog(Sim)
 	CopyAlias("#MAIN","#SIM1")
 	CopyAlias("#COURTED","#SIM2")
 
@@ -360,7 +385,7 @@ function BeginCeremony()
 		end
 	end
 
-	BuildingLockForCutscene("WEDDING_CHAPEL","")
+	BuildingLockForCutscene("#WEDDING_CHAPEL","")
 
 	GetLocatorByName("#WEDDING_CHAPEL", "WeddingPriest", "PriestPos")
 	GetLocatorByName("#WEDDING_CHAPEL", "Exit1", "E1")
@@ -372,7 +397,7 @@ function BeginCeremony()
 
 	f_MoveToNoWait("#PRIEST", "PriestPos")
 
-    SendCommandNoWait("#COURTED", "GoToMarryPos")
+    CutsceneCallThread("", "GoToMarryPos", "#COURTED")
 
     f_MoveTo("#MAIN", "E1")
     f_BeginUseLocator("#MAIN", "E1", GL_STANCE_STAND, true)
@@ -423,12 +448,12 @@ function BeginCeremony()
 	local list = { {"#COURTED","#MAIN"}, {"#MAIN","#COURTED"} }
 
 	-- We are gathered together today to join %1ST %1SN and %2ST %2SN in the bonds of holy matrimony.
-	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID(list[SimGetGender("")+1][1]), GetID(list[SimGetGender("")+1][2]))
+	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
 	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST","#PRIEST")
 
 	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded wife, to love and honour, til death do you part? If so, answer with: yes.
-	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(list[SimGetGender("")+1][1]), GetID(list[SimGetGender("")+1][2]))
+	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
 	CutsceneCameraBlend("", 2, 1)
 	CutsceneCameraSetRelativePosition("","#CHAPEL_RIGHT","#PRIEST")
@@ -437,12 +462,12 @@ function BeginCeremony()
 	PlayAnimationNoWait("#MAIN","curtsy")
 
 	-- Yes, I do.
-	MsgSay(list[SimGetGender("")+1][1], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
+	MsgSay(list[SimGetGender("#MAIN")+1][1], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 
 	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(FAR)","#PRIEST")
 
 	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded husband, to love and honour, til death do you part? If so, answer with: yes.
-	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(list[SimGetGender("")+1][2]), GetID(list[SimGetGender("")+1][1]))
+	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(list[SimGetGender("#MAIN")+1][2]), GetID(list[SimGetGender("#MAIN")+1][1]))
 
 	CutsceneCameraBlend("", 2, 1)
 	CutsceneCameraSetRelativePosition("","#CHAPEL_LEFT","#PRIEST")
@@ -451,12 +476,12 @@ function BeginCeremony()
 	PlayAnimationNoWait("#COURTED","nod")
 
 	-- Yes, I do.
-	MsgSay(list[SimGetGender("")+1][2], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
+	MsgSay(list[SimGetGender("#MAIN")+1][2], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 
 	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(FAR)","#PRIEST")
 
 	-- I hereby declare you man and wife. You may now kiss the bride, %1ST %1SV.
-	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID(list[SimGetGender("")+1][1]))
+	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID(list[SimGetGender("#MAIN")+1][1]))
 
 	CutsceneCameraBlend("", 8, 1)
 	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(UP)","#PRIEST")
@@ -468,7 +493,7 @@ function BeginCeremony()
 	ShowOverheadSymbol("#MAIN", false, true, 0, "@L$S[2001]")
 	ShowOverheadSymbol("#COURTED", false, true, 0, "@L$S[2001]")
 
-	AnimLength = chr_MultiAnim(list[SimGetGender("")+1][1], "kiss_male", list[SimGetGender("")+1][2], "kiss_female", 128, 1.0, true)
+	AnimLength = chr_MultiAnim(list[SimGetGender("#MAIN")+1][1], "kiss_male", list[SimGetGender("#MAIN")+1][2], "kiss_female", 128, 1.0, true)
 	Sleep(AnimLength * 0.25)
 
 	ShowOverheadSymbol("#COURTED", false, true, 0, "@L$S[2001]")
