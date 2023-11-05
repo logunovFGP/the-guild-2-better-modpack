@@ -49,7 +49,14 @@ function Run()
 				Sleep(Time-2.5)
 				Sleep(1.5)
 				f_EndUseLocator("", "TakeBookPos")
+			else
+				Found = 0
 			end
+		end
+		
+		if Found == 0 then
+			MsgQuick("", "@L_GENERAL_MEASURES_220_TRAINCHARACTER_FAILURES_+0", GetID("Owner"))
+			StopMeasure()
 		end
 		
 		if GetLocatorByName("HomeBuilding", "manipulate_middle_twohand_pos_012", "TablePos") then
@@ -60,12 +67,14 @@ function Run()
 					PlayAnimation("", "manipulate_middle_twohand")
 				end
 				f_EndUseLocator("", "TablePos")
+			else
+				Found = 0
 			end
 		end
 		
-		chr_GainXP("", 10)
-		
-		if Found == 0 then
+		if Found == 1 then
+			chr_GainXP("", 10)
+		else
 			MsgQuick("", "@L_GENERAL_MEASURES_220_TRAINCHARACTER_FAILURES_+0", GetID("Owner"))
 			StopMeasure()
 		end
