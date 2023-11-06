@@ -59,6 +59,6 @@ Data:
 52           "#CHAPEL_LEFT"			100   115   225   10   230   0   | 
 53           "#CHAPEL_PRIEST(FAR)"	0     90    350   0    180   0   | 
 54           "#CHAPEL_PRIEST(UP)"	0     160   950   15   180   0   | 
-55           "#CHAPEL_GUEST"		0     140   125   0    180   0   | 
+55           "#CHAPEL_GUEST"		0     125   95    0    180   0   | 
 56           "#CHAPEL_INTRO(01)"	0     125   450   0    0     0   | 
-57           "#CHAPEL_INTRO(02)"	0     250   250   25   0     0   | 
+57           "#CHAPEL_INTRO(02)"	0     250   100   15   0     0   | 
