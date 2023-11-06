@@ -2,11 +2,6 @@ function Run()
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL")
 
-	if HasProperty("","WEDDING_FORCED") and not DynastyIsPlayer("") then
-		LogMessage("Blocked "..GetName("").." to the ms_AttendWedding.lua measure.")
-		BlockChar("")
-	end
-
 	if not HasProperty("","#WEDDING_FORCED") then 
 		if GetState("", STATE_CUTSCENE) then
 			return
@@ -39,7 +34,7 @@ function Run()
 		else
 			GetLocatorByName("#WEDDING_CHAPEL", "Exit2", "#POS")
 		end
-		f_MoveToNoWait("", "#POS", GL_MOVESPEED_RUN)
+		f_MoveTo("", "#POS", GL_MOVESPEED_RUN)
 	else
 		f_MoveTo("", "destination", GL_MOVESPEED_RUN)
 	end
@@ -47,27 +42,27 @@ function Run()
 	local isInside = false
 
 	repeat
+		Sleep(5)
 		if GetInsideBuilding("", "#BUILDING") ~= false then
 			if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
-				--isInside = true
 				if not HasProperty("","#WEDDING_FORCED") then
-					--ms_attendwedding_ChatterGuests("")
+					if HasProperty("","WEDDING_canChat") and not HasProperty("","Busy") then
+						ms_attendwedding_ChatterGuests("")
+					end
+					if not HasProperty("","WEDDING_canChat") then
+						Sleep(1)
+						break
+					end
 				end
-				Sleep(5)
-				--break
-			else
-				Sleep(1)
 			end
-		else
-			Sleep(1)
 		end
-	until (HasProperty("","AttendingWedding") == false and HasProperty("","WEDDING_FORCED") == false)
+	until (HasProperty("","WEDDING_canChat") == false)
 end
 
 function ChatterGuests()
-	if not HasProperty("","Busy") then
-		BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 
+	if not HasProperty("","Busy") and HasProperty("","AttendingWedding") then
+		BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 		BuildingGetInsideSimList("#WEDDING_CHAPEL", "#SIMS")
 		ListRemove("#SIMS","#PRIEST")
 
@@ -76,7 +71,7 @@ function ChatterGuests()
 		if count > 1 then 
 			ListGetElement("#SIMS", Rand(count), "#DEST")
 
-			if SimGetAge("#DEST") > 15 and not HasProperty("#DEST","Busy") then
+			if GetID("") ~= GetID("#DEST") and SimGetAge("#DEST") > 15 and not HasProperty("#DEST","Busy") and HasProperty("#DEST","AttendingWedding") then
 
 				MoveStop("#DEST")
 
@@ -109,7 +104,7 @@ function ChatterGuests()
 				RemoveProperty("#DEST","Busy")
 				RemoveProperty("","Busy")
 
-				Sleep(Rand(10)+10)
+				Sleep(Rand(5)+5)
 			end
 		end
 	end

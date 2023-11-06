@@ -237,6 +237,9 @@ function Run()
 		SetProperty("","WEDDING_FORCED",1)
 		SetProperty("Destination","WEDDING_FORCED",1)
 
+		SetProperty("","WEDDING_canChat",1)
+		SetProperty("Destination","WEDDING_canChat",1)
+		
 		CreateCutscene("WeddingCeremony", "Wedding")
 
 		CopyAliasToCutscene("", "Wedding", "#MAIN")
