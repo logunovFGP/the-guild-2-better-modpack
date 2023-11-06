@@ -185,6 +185,14 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	--	LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
 		if ItemId and ReqAmount > 0 then
 			local Error, ItemTransfered = Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			if ItemTransfered < ReqAmount and GetDynastyID(CartAlias) == GetDynastyID(BldAlias) then
+				-- also check INV_SELL for own buildings
+				local Error2, ItemTransfered2 = Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, INVENTORY_SELL, ItemId, math.min((CartSlotSize-ItemTransfered), (ReqAmount-ItemTransfered)))
+				if ItemTransfered2 then
+					ItemTransfered = ItemTransfered + ItemTransfered2
+				end
+			end
+			
 			-- Add some bargain-bonus on market buys
 			if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET then
 				if GetHomeBuilding(CartAlias, "Business") then

@@ -819,14 +819,20 @@ function GetNeedForMedicine(HospAlias, ItemName)
 	end
 end
 
+---- 1. Make sure the building has at least 2 carts
+--   2. Make sure the carts are ox carts (resource buildings) or horse carts (producers) for buildings tier 2/3
+--   3. Make sure the carts are running the auto cart state (overrides default AI behaviour)
 function CheckCarts(BldAlias)
+	-- 1. Make sure the building has at least 2 carts
 	local CartCount = BuildingGetCartCount(BldAlias)
-	if CartCount > 2 and BuildingGetCart(BldAlias, 2, "CartAlias") then
-		bld_RemoveCart(BldAlias, "CartAlias") -- remove third cart
-	end
+	
 	if GL_BUILDING_TYPE_ROBBER == BuildingGetType(BldAlias) then
-		-- no state_autocart for robbers
+		-- no state_autocart or forced carts for robbers
 		return
+	end
+	
+	if CartCount < 2 then
+		bld_BuyCart(BldAlias, "CartAlias", bld_GetIdealCartType(BldAlias))
 	end
 	
 	CartCount = BuildingGetCartCount(BldAlias)
@@ -838,6 +844,39 @@ function CheckCarts(BldAlias)
 					SetState("CartAlias", 54, true)
 				end
 			end
+		end
+	end
+end
+
+function GetIdealCartType(BldAlias)
+	local BldType = BuildingGetType(BldAlias)
+	
+	-- resource buildings with only one level
+	if GL_BUILDING_TYPE_RANGERHUT == BldType 
+			or GL_BUILDING_TYPE_FRUITFARM == BldType 
+			or GL_BUILDING_TYPE_MILL == BldType then
+		return EN_CT_OX
+	end
+	
+	-- resource buildings with more levels and normal workshops, currently lvl 1
+	local Lvl = BuildingGetLevel(BldAlias)
+	if Lvl <= 1 then
+		return EN_CT_MIDDLE
+	end
+	
+	if GL_BUILDING_TYPE_FARM == BldType or GL_BUILDING_TYPE_MINE == BldType then 
+		return EN_CT_OX
+	end
+	
+	-- producers with more levels
+	return EN_CT_HORSE
+end
+
+function BuyCart(BldAlias, CartAlias, CartType)
+	CartType = CartType or EN_CT_MIDDLE
+	if GetOutdoorMovePosition(nil, "", "GroundPos") then
+		if ScenarioCreateCart(CartType, BldAlias, "GroundPos", "NewCart") then
+			return CopyAlias("NewCart", CartAlias)
 		end
 	end
 end

@@ -35,8 +35,8 @@ function CalcDefend(a_fAttackValue, a_fDamage)
 	local Damage = a_fDamage
 	local fDefenseValue = chr_GetSkillValue("", DEXTERITY) * 5
 	
-	local AttackChance = Rand(60) + a_fAttackValue
-	local DefChance = Rand(50) + fDefenseValue
+	local AttackChance = 1 + Rand(50) + a_fAttackValue
+	local DefChance = 1 + Rand(50) + fDefenseValue
 	
 	if DefChance > AttackChance then
 		Damage = 0

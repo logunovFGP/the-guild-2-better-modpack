@@ -1,25 +1,20 @@
 function Run()
 	local MeasureID = GetCurrentMeasureID("")
-	local Duration = mdata_GetDuration(MeasureID)
 	
 	if not GetInsideBuilding("", "HomeBuilding") then
 		return
 	end
 	
-	local TimeToStudy = Duration
-	SetData("TimeToStudy", TimeToStudy)
-	SetData("StartTime", GetGametime())
-	SendCommandNoWait("", "Progress")
-	
+	local MaxStudyAI = 3
+	local EndTime = GetGametime() + MaxStudyAI
 	local Found = 0
-	SetData("Learning", 1)
 	
-	while (GetData("Learning") == 1) do
+	while true do
 		if GetLocatorByName("HomeBuilding", "TakeBook", "TakeBookPos") then
 			if f_BeginUseLocator("", "TakeBookPos", GL_STANCE_STAND, true) then
 				Found = 1
 				local Time = PlayAnimationNoWait("", "manipulate_middle_up_r")
-				Sleep(2.5)
+				Sleep(2)
 				CarryObject("", "Handheld_Device/ANIM_Closedbook.nif", false)
 				Sleep(Time-2.5)
 				
@@ -36,7 +31,7 @@ function Run()
 					CarryObject("", "Handheld_Device/ANIM_book.nif", false)
 					Sleep(Time-2)
 					CarryObject("", "Handheld_Device/ANIM_Closedbook.nif", false)
-					Sleep(1.8)
+					Sleep(1.5)
 				end
 				Sleep(1)
 				f_EndUseLocator("","ReadBookPos")
@@ -49,26 +44,13 @@ function Run()
 				
 				f_BeginUseLocator("", "TakeBookPos", GL_STANCE_STAND, true)
 				Time = PlayAnimationNoWait("", "manipulate_middle_up_r")
-				Sleep(2.5)
+				Sleep(2)
 				CarryObject("", "", false)
 				Sleep(Time-2.5)
-				Sleep(2)
+				Sleep(1.5)
 				f_EndUseLocator("", "TakeBookPos")
-			end
-		end
-		
-		if (GetData("Learning")) == 0 then
-			break
-		end
-		
-		if GetLocatorByName("HomeBuilding", "manipulate_middle_twohand_pos_012", "TablePos") then
-			if f_BeginUseLocator("", "TablePos", GL_STANCE_STAND, true) then
-				Found = 1
-				for i = 0, 3 do
-					PlayAnimation("", "cogitate")
-					PlayAnimation("", "manipulate_middle_twohand")
-				end
-				f_EndUseLocator("", "TablePos")
+			else
+				Found = 0
 			end
 		end
 		
@@ -77,45 +59,37 @@ function Run()
 			StopMeasure()
 		end
 		
+		if GetLocatorByName("HomeBuilding", "manipulate_middle_twohand_pos_012", "TablePos") then
+			if f_BeginUseLocator("", "TablePos", GL_STANCE_STAND, true) then
+				Found = 1
+				for i = 0, 2 do
+					PlayAnimation("", "cogitate")
+					PlayAnimation("", "manipulate_middle_twohand")
+				end
+				f_EndUseLocator("", "TablePos")
+			else
+				Found = 0
+			end
+		end
+		
+		if Found == 1 then
+			chr_GainXP("", 10)
+		else
+			MsgQuick("", "@L_GENERAL_MEASURES_220_TRAINCHARACTER_FAILURES_+0", GetID("Owner"))
+			StopMeasure()
+		end
+		
+		if GetGametime() >= EndTime and DynastyIsAI("") then
+			break
+		end
+		
 		PlayAnimation("", "cogitate")
 	end
 
 	StopMeasure()
 end
 
-function Progress()
-	local TimeToStudy = GetData("TimeToStudy")
-	local MaxProgress = TimeToStudy * 10
-	SetProcessMaxProgress("", MaxProgress)
-	local ProgressStartTime = GetGametime()
-	local ProgressEndTime = GetGametime() + TimeToStudy
-	
-	while (GetGametime() < ProgressEndTime) do
-		SetProcessProgress("", (GetGametime()-ProgressStartTime)*10)
-		Sleep(1)
-	end
-	
-	SetData("Learning",0)
-end
-
 function CleanUp()
-
-	SetData("Learning", 0)
-	local MeasureID = GetCurrentMeasureID("")
-	local Time = GetGametime()
-	local Start = GetData("StartTime")
-	local Duration = mdata_GetDuration(MeasureID)
-	local Factor = (Time - Start) / Duration
-	
-	if Factor > 1 then
-		Factor = 1
-	end
-	
-	chr_GainXP("", GetData("BaseXP")*Factor)
-
-	ResetProcessProgress("")
-	StopAnimation("")
-	CarryObject("", "", false)
 	
 	if AliasExists("TablePos") then
 		f_EndUseLocator("", "TablePos")
@@ -128,11 +102,4 @@ function CleanUp()
 	if AliasExists("ReadBookPos") then
 		f_EndUseLocator("", "ReadBookPos")
 	end
-	
 end
-
-function GetOSHData(MeasureID)
-	--active time:
-	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0", Gametime2Total(mdata_GetDuration(MeasureID)))
-end
-
