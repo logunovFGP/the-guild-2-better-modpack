@@ -85,7 +85,7 @@ function ImportantPersonsSetupSections()
 	CreateImportantPersonSection("Enemies", "@L_IMPORTANTPERSONS_TOPICS_+4")
 
 	-- weddings
-	CreateImportantPersonSection("Wedding", "@L_LOAD_ERROR_HUD_+0")
+	CreateImportantPersonSection("Wedding", "@L_WEDDING_PEOPLE_+0")
 	
 end
 

@@ -1,15 +1,21 @@
 function CleanUp()
 	LogMessage("CleanUp() in WeddingCeremony.lua")
 
+	RemoveProperty("#MAIN","OCCURING_MARRIAGE")
+	RemoveProperty("#COURTED","OCCURING_MARRIAGE")
+
 	f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
 	f_EndUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND)
 
 	ReleaseAvoidanceGroup("#COURTED")
 	ReleaseAvoidanceGroup("#MAIN")
 
-	ListClear("Visitors")
+	if AliasExists("Visitors") then
+		ListClear("Visitors")
+	end
 
 	BuildingGetInsideSimList("#WEDDING_CHAPEL", "tmp")
+	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 	ListRemove("tmp","#PRIEST")
 
 	for i = 0, ListSize("tmp") -1 do
@@ -40,10 +46,15 @@ function CleanUp()
 				RemoveProperty("#SIM"..i,"SIM2")
 			end
 
-			f_ExitCurrentBuilding("#SIM"..i)
-			ReleaseAvoidanceGroup("#SIM"..i)
-			MoveSetActivity("#SIM"..i)
-			SimStopMeasure("#SIM"..i)
+			if GetInsideBuilding("#SIM"..i, "#BUILDING") ~= false then
+				if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
+					f_ExitCurrentBuilding("#SIM"..i)
+					ReleaseAvoidanceGroup("#SIM"..i)
+					MoveSetActivity("#SIM"..i)
+					SimStopMeasure("#SIM"..i)
+				end
+			end
+
 		end
 
 	end
@@ -63,17 +74,51 @@ function Start()
 		return
 	end
 
-	if not HasProperty("#WEDDING_CHAPEL", "UpcomingCeremony") then
-		SetProperty("#WEDDING_CHAPEL", "UpcomingCeremony", 0)
+    local timer = 
+    	{
+    		getCurrentRound = math.floor( GetGametime() / 24 ),
+    		getCurrentTime = math.mod(GetGametime(),24),
+    		getEventDate = 0
+    	}
+
+    LogMessage("Current Round: "..timer.getCurrentRound)
+    LogMessage("Current Game Time: "..timer.getCurrentTime.."h00.")
+
+	local found = false
+
+	while not found do
+	    local slotKey = "CEREMONY_SLOT#"..timer.getCurrentRound.."#"..timer.getEventDate
+
+	    if not HasProperty("#WEDDING_CHAPEL", slotKey) then
+	        local currentTime = math.floor(GetGametime() / 24)
+	        local timeDifference = timer.getEventDate - timer.getCurrentTime
+
+	        if timer.getCurrentRound == currentTime and timeDifference < 4 then
+	            LogMessage("4H PREP TIME IMPOSSIBLE FOR: " .. slotKey)
+	            SetProperty("#WEDDING_CHAPEL", slotKey, 0)
+	            timer.getEventDate = timer.getEventDate + 6
+
+	            if timer.getEventDate > 24 - 1 then
+	                timer.getEventDate = 0
+	                timer.getCurrentRound = timer.getCurrentRound + 1
+	            end
+	        else
+	            LogMessage("SLOT FOUND: " .. slotKey)
+	            SetProperty("#WEDDING_CHAPEL", slotKey, timer.getEventDate)
+	            found = true
+	        end
+	    else
+	        LogMessage("ALREADY TAKEN: " .. slotKey)
+	        timer.getEventDate = timer.getEventDate + 6
+
+	        if timer.getEventDate > 24 - 1 then
+	            timer.getEventDate = 0
+	            timer.getCurrentRound = timer.getCurrentRound + 1
+	        end
+	    end
 	end
 
-	if not HasProperty("#WEDDING_CHAPEL", "UpcomingCeremonyHour") then
-		SetProperty("#WEDDING_CHAPEL", "UpcomingCeremonyHour", 12)
-	end
-
-	CutsceneCallThread("", "UpcomingCeremonies", "#WEDDING_CHAPEL")
-
-	local v = GetProperty("#WEDDING_CHAPEL","UpcomingCeremonyHour")
+	local v = GetProperty("#WEDDING_CHAPEL","CEREMONY_SLOT#"..timer.getCurrentRound.."#"..timer.getEventDate)
 
 	LogMessage("Hour of the next Wedding Ceremony: "..v.."h00.")
 
@@ -88,29 +133,15 @@ function Start()
 	SimAddDate("#COURTED","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", eventDate -120, "AttendWedding")
 
 	CutsceneCallThread("", "InviteGuests", "#WEDDING_CHAPEL")
+
+	local ID = "Event"..GetID("#MAIN")
+	local DestTime = math.mod(GetGametime(),24) + eventDate/60 - math.mod(GetGametime(),24)
+
+	MsgNewsNoWait("#MAIN", "#MAIN", "@C[@L_WEDDING_COOLDOWN_+0,%3i,%4l]", "default", -1,"@L_WEDDING_COOLDOWN_HEAD_+0","@L_WEDDING_COOLDOWN_BODY_TO_SELF_+0",GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
+	MsgNewsNoWait("#COURTED", "#COURTED", "@C[@L_WEDDING_COOLDOWN_+0,%3i,%4l]", "default", -1,"@L_WEDDING_COOLDOWN_HEAD_+0","@L_WEDDING_COOLDOWN_BODY_TO_COURTED_+0",GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
 end 
 
 -- Call Threads
-function UpcomingCeremonies()
-	SetProperty("", "UpcomingCeremony", GetProperty("", "UpcomingCeremony") +1)
-	if GetProperty("", "UpcomingCeremony") > 4 then
-		SetProperty("", "UpcomingCeremony", 1)
-	end
-	local list = {12,18,0,6}
-	SetProperty("", "UpcomingCeremonyHour", list[GetProperty("#WEDDING_CHAPEL", "UpcomingCeremony")])
-end
-
-function CancelCeremony()
-	for i = 0, ListSize("Visitors") -1 do
-		ListGetElement("Visitors", i, "#SIM")
-		SimStopMeasure("#SIM")
-	end
-	ListClear("Visitors")
-	SimStopMeasure("#MAIN")
-	SimStopMeasure("#COURTED")
-	StopMeasure()
-	StopScheduledScript()
-end
 
 function InitSims()
 	BuildingFindSimByProperty("", "BUILDING_NPC", 11, "#PRIEST")
@@ -155,9 +186,11 @@ function InviteGuests()
         		SimAddDatebookEntry(GuestAlias, SettlementEventGetTime("ceremony_date"), "#WEDDING_CHAPEL", "@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
         		SetProperty(GuestAlias, "AttendingWedding", 1)
         		MsgNewsNoWait("#MAIN", GuestAlias, "", "politics", -1, "Answer to the Wedding invitation","I will be happy to attend your Wedding Ceremony.")
+        		MsgNewsNoWait("#COURTED", GuestAlias, "", "politics", -1, "Answer to the Wedding invitation","I will be happy to attend your Wedding Ceremony.")
         		SetProperty(GuestAlias,"SIM1",GetID("#MAIN"))
         		SetProperty(GuestAlias,"SIM2",GetID("#COURTED"))
         		SetProperty(GuestAlias,"WEDDING_canChat",1)
+        		MsgNewsNoWait(GuestAlias, GuestAlias, "@C[@L_WEDDING_COOLDOWN_BODY_+0,%3i,%4l]", "default", -1,"@L_WEDDING_COOLDOWN_HEAD_+0","@L_WEDDING_COOLDOWN_BODY_+0",GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
         	else
         		return false
         	end
@@ -245,7 +278,6 @@ end
 
 function AIInitAnswer()
 	local list, timer = {"Office","Trial","Duel"}
-	LogMessage("local function AIInitAnswer()")
 
 	for i = 1, 3 do
 		if GetImpactValue("Guest", list[i].."Timer") > 0 then
@@ -272,20 +304,20 @@ function BeginCeremony()
 
 	if not GetInsideBuilding("#MAIN", "#WEDDING_CHAPEL") then
 		MsgQuick("#MAIN", GetName("#MAIN").." is missing!")
-		CutsceneCallThread("", "CancelCeremony", "#WEDDING_CHAPEL")
+		CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
 		return
 	end
 
 	if not GetInsideBuilding("#COURTED", "#WEDDING_CHAPEL") then
 		MsgQuick("#MAIN", GetName("#COURTED").." is missing!")
-		CutsceneCallThread("", "CancelCeremony", "#WEDDING_CHAPEL")
+		CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
 		return
 	end
 
 	if not chr_SpendMoney("#MAIN", GetCost(), "Wedding") then
 		if not HasProperty("", "Tutorial") then
 			MsgQuick("#MAIN","@L_MEASURE_WEDDING_FAILURE_+1", GetID(""))
-			CutsceneCallThread("", "CancelCeremony", "#WEDDING_CHAPEL")
+			CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
 			return
 		end
 	end

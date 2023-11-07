@@ -234,11 +234,19 @@ function Run()
 			return
 		end
 
+		if HasProperty("","OCCURING_MARRIAGE") or HasProperty("Destination","OCCURING_MARRIAGE") then
+			MsgQuick("","A wedding ceremony is already planned for at least one of these characters!")
+			return
+		end
+
 		SetProperty("","WEDDING_FORCED",1)
 		SetProperty("Destination","WEDDING_FORCED",1)
 
 		SetProperty("","WEDDING_canChat",1)
 		SetProperty("Destination","WEDDING_canChat",1)
+
+		SetProperty("","OCCURING_MARRIAGE",GetID("Destination"))
+		SetProperty("Destination","OCCURING_MARRIAGE",GetID(""))
 		
 		CreateCutscene("WeddingCeremony", "Wedding")
 
