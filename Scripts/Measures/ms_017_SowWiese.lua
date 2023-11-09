@@ -136,5 +136,14 @@ function Run()
 	local ToSow = GetData("Selection")
 	ResourceSow("Destination", ToSow)
 	SetProperty("Destination", "ResourceItemID", ResourceGetTypeItem("Destination", ToSow))
+	RemoveProperty("Destination", "ToBeSowed")
 	Sleep(1)
+end
+
+function CleanUp()
+	CarryObject("", "", true)
+	CarryObject("", "", false)
+	RemoveProperty("Destination", "ToBeSowed")
+	MoveSetActivity("")
+	StopAnimation("")
 end

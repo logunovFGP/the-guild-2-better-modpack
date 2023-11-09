@@ -1188,37 +1188,104 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	economy_ClearBalance(BldAlias)
 end
 
-function CheckResource(BldAlias, Resource)
-	-- find resource
+function IsResourceAvailable(BldAlias, ResourceItem)
 	local Radius = 4000
-	local FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND(Object.Property.ResourceItemID==%d))", Radius, ItemGetID(Resource))
-	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
+	local IgnoreOwnership = (GL_BUILDING_TYPE_FRUITFARM == BuildingGetType(BldAlias) and DynastyIsAI(BldAlias))
+	local DynFilter = "AND(Object.CanBeControlled())"
+	if IgnoreOwnership then
+		DynFilter = ""
+	end
 	
-	if Count > 0 then
-		return Count
+	local AvailableResourceCount = 0
+	local FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))%s)", Radius, DynFilter)
+	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
+	for i=0, Count - 1 do
+		local ResItemId = GetProperty("ResourceSearchResult"..i, "ResourceItemID") or -1
+		LogMessage("Checking resource ".. GetID("ResourceSearchResult"..i) .. " with this current item: " .. ResItemId)
+		if AliasExists("ResourceSearchResult"..i) -- safety check
+				and ResourceCanBeChanged("ResourceSearchResult"..i) -- it's a changeable resource like a field or meadow
+				and ResItemId == ItemGetID(ResourceItem) then
+			AvailableResourceCount = AvailableResourceCount + 1
+		end
+	end
+	if AvailableResourceCount > 0 then
+		return AvailableResourceCount
+	end
+	return nil
+end
+
+function CheckResource(BldAlias, ResourceProto, ResourceCount)
+	local IgnoreOwnership = (GL_BUILDING_TYPE_FRUITFARM == BuildingGetType(BldAlias) and DynastyIsAI(BldAlias))
+	--ResourceProto = ResourceProto or FindResourceProto(ItemGetID(Resource))
+	--ResourceGetTypeCount("Destination")
+	
+	-- 1. Find out how many buildings of this type we need
+	-- ResourceCount = ResourceCount
+	
+	-- 2. Find out how many buildings are available nearby
+	local Radius = 4000
+	local DynFilter = "AND(Object.CanBeControlled())"
+	if IgnoreOwnership then
+		DynFilter = ""
+	end
+	
+	local AvailableResourceCount = 0
+	local FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))%s)", Radius, DynFilter)
+	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
+	for i=0, Count - 1 do
+		if AliasExists("ResourceSearchResult"..i) -- safety check
+				and ResourceCanBeChanged("ResourceSearchResult"..i) -- it's a changeable resource like a field or meadow
+				and ResourceProto == BuildingGetProto("ResourceSearchResult"..i) then
+			AvailableResourceCount = AvailableResourceCount + 1
+		end
+	end
+	if AvailableResourceCount >= ResourceCount then
+		-- there are enough resources for production, nothing else to do here (sowing is sim measure)
+		return AvailableResourceCount
 	end
 
-	-- resource not found, maybe there is an empty one around?
-	local FilterByEmpty= string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND NOT(Object.HasProperty(ResourceItemID)))", Radius)
+	-- 3. Not enough resources around or owned, maybe there is one available to buy?
+	local FilterByEmpty= string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))AND(Object.IsBuyable()))", Radius)
 	Count = Find(BldAlias, FilterByEmpty, "ResourceSearchResult", 10)
 	for i = 0, Count - 1 do
-		-- check for correct type
-		if AliasExists("ResourceSearchResult"..i)
-				and ResourceCanBeChanged("ResourceSearchResult"..i)
-				and ResourceGetEntry("ResourceSearchResult"..i, ItemGetID(Resource)) >=0 then
-			local ToSow = ResourceGetEntry("ResourceSearchResult"..i, Resource)
-			ResourceSow("ResourceSearchResult"..i, ToSow)
-			SetProperty("ResourceSearchResult"..i, "ResourceItemID", ItemGetID(Resource))
-			return
+		if AliasExists("ResourceSearchResult"..i) -- safety check
+				and ResourceCanBeChanged("ResourceSearchResult"..i) -- it's a changeable resource like a field or meadow
+				and ResourceProto == BuildingGetProto("ResourceSearchResult"..i) then
+			BuildingGetOwner(BldAlias, "CheckResourceBldOwner")
+			if BuildingBuy("ResourceSearchResult"..i, "CheckResourceBldOwner", BM_NORMAL) then
+				AvailableResourceCount = AvailableResourceCount + 1
+			end
+			if AvailableResourceCount >= ResourceCount then
+				-- there are enough resources for production, nothing else to do here (sowing is sim measure)
+				return AvailableResourceCount
+			end
 		end
 	end
 	
-	-- none around, build new
-	local Proto = FindResourceProto(ItemGetID(Resource))
-	if BuildingGetCity(BldAlias, "BuildCity") 
-			and BuildingGetOwner(BldAlias, "BuildOwner")
-			and CityBuildNewBuilding("BuildCity", Proto, "BuildOwner", "ResourceAlias", BldAlias) then
-		ResourceSow("ResourceAlias", ResourceGetEntry("ResourceAlias", Resource))
-		SetProperty("ResourceAlias", "ResourceItemID", ItemGetID(Resource))
+	-- 4. No more resource buildings aroung, try to build new
+	while AvailableResourceCount < ResourceCount do
+		if BuildingGetCity(BldAlias, "BuildCity") 
+				and BuildingGetOwner(BldAlias, "CheckResourceBldOwner")
+				and CityBuildNewBuilding("BuildCity", ResourceProto, "CheckResourceBldOwner", "ResourceAlias", BldAlias) then
+			AvailableResourceCount = AvailableResourceCount + 1
+		else
+			break
+		end
+	end
+	
+	if AvailableResourceCount >= ResourceCount then
+		-- there are enough resources for production, nothing else to do here (sowing is sim measure)
+		return AvailableResourceCount
+	end
+	
+	-- 5. No way to get more resource buildings, initiate regular crop change
+	local FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))%s)", Radius, DynFilter)
+	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
+	for i=0, Count - 1 do
+		if AliasExists("ResourceSearchResult"..i) -- safety check
+				and ResourceCanBeChanged("ResourceSearchResult"..i) -- it's a changeable resource like a field or meadow
+				and ResourceProto == BuildingGetProto("ResourceSearchResult"..i) then
+			SetProperty(BldAlias, "CropChangeResource", GetID("ResourceSearchResult"..i))
+		end
 	end
 end
