@@ -1,68 +1,5 @@
 function CleanUp()
-	LogMessage("CleanUp() in WeddingCeremony.lua")
-
-	RemoveProperty("#MAIN","OCCURING_MARRIAGE")
-	RemoveProperty("#COURTED","OCCURING_MARRIAGE")
-
-	f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
-	f_EndUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND)
-
-	ReleaseAvoidanceGroup("#COURTED")
-	ReleaseAvoidanceGroup("#MAIN")
-
-	if AliasExists("Visitors") then
-		ListClear("Visitors")
-	end
-
-	BuildingGetInsideSimList("#WEDDING_CHAPEL", "tmp")
-	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
-	ListRemove("tmp","#PRIEST")
-
-	for i = 0, ListSize("tmp") -1 do
-		ListGetElement("tmp", i, "#SIM"..i)
-
-		if SimGetAge("#SIM"..i) > 15 then
-			LogMessage("CleanUp [ '"..GetName("#SIM"..i).."']")
-
-			if HasProperty("#SIM"..i,"WEDDING_FORCED") then
-				RemoveProperty("#SIM"..i,"WEDDING_FORCED")
-			end
-			if HasProperty("#SIM"..i,"WEDDING_canChat") then
-				RemoveProperty("#SIM"..i,"WEDDING_canChat")
-			end
-			if HasProperty("#SIM"..i,"WEDDING_IGNORE") then
-				RemoveProperty("#SIM"..i,"WEDDING_IGNORE")
-			end
-			if HasProperty("#SIM"..i,"Busy") then
-				RemoveProperty("#SIM"..i,"Busy")
-			end
-			if HasProperty("#SIM"..i,"AttendingWedding") then
-				RemoveProperty("#SIM"..i,"AttendingWedding")
-			end
-			if HasProperty("#SIM"..i,"SIM1") then
-				RemoveProperty("#SIM"..i,"SIM1")
-			end
-			if HasProperty("#SIM"..i,"SIM2") then
-				RemoveProperty("#SIM"..i,"SIM2")
-			end
-
-			if GetInsideBuilding("#SIM"..i, "#BUILDING") ~= false then
-				if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
-					f_ExitCurrentBuilding("#SIM"..i)
-					ReleaseAvoidanceGroup("#SIM"..i)
-					MoveSetActivity("#SIM"..i)
-					SimStopMeasure("#SIM"..i)
-				end
-			end
-
-		end
-
-	end
-
-	ListClear("tmp")
-
-	EndCutscene("")
-	DestroyCutscene("")
+	LogMessage("CleanUp() - Cache, in WeddingCeremony.lua")
 end
 
 -- Init.
@@ -237,7 +174,73 @@ end
 
 function EndCeremony()
 	LogMessage("EndCeremony() called in WeddingCeremony.lua")
-	StopScheduledScript()
+
+	--StopScheduledScript()
+	--LogMessage("CleanUp() in WeddingCeremony.lua")
+
+	RemoveProperty("#MAIN","OCCURING_MARRIAGE")
+	RemoveProperty("#COURTED","OCCURING_MARRIAGE")
+
+	f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
+	f_EndUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND)
+
+	ReleaseAvoidanceGroup("#COURTED")
+	ReleaseAvoidanceGroup("#MAIN")
+
+	if AliasExists("Visitors") then
+		ListClear("Visitors")
+	end
+
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "tmp")
+	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
+	ListRemove("tmp","#PRIEST")
+
+	if GetInsideRoom("#PRIEST","#CHAPEL") then
+		RoomLockForCutscene("#CHAPEL",0)
+	end
+
+	for i = 0, ListSize("tmp") -1 do
+		ListGetElement("tmp", i, "#SIM"..i)
+
+		if SimGetAge("#SIM"..i) > 15 then
+			LogMessage("CleanUp [ '"..GetName("#SIM"..i).."']")
+
+			if HasProperty("#SIM"..i,"WEDDING_FORCED") then
+				RemoveProperty("#SIM"..i,"WEDDING_FORCED")
+			end
+			if HasProperty("#SIM"..i,"WEDDING_canChat") then
+				RemoveProperty("#SIM"..i,"WEDDING_canChat")
+			end
+			if HasProperty("#SIM"..i,"WEDDING_IGNORE") then
+				RemoveProperty("#SIM"..i,"WEDDING_IGNORE")
+			end
+			if HasProperty("#SIM"..i,"Busy") then
+				RemoveProperty("#SIM"..i,"Busy")
+			end
+			if HasProperty("#SIM"..i,"AttendingWedding") then
+				RemoveProperty("#SIM"..i,"AttendingWedding")
+			end
+			if HasProperty("#SIM"..i,"SIM1") then
+				RemoveProperty("#SIM"..i,"SIM1")
+			end
+			if HasProperty("#SIM"..i,"SIM2") then
+				RemoveProperty("#SIM"..i,"SIM2")
+			end
+
+			if GetInsideBuilding("#SIM"..i, "#BUILDING") ~= false then
+				if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
+					f_ExitCurrentBuilding("#SIM"..i)
+					ReleaseAvoidanceGroup("#SIM"..i)
+					MoveSetActivity("#SIM"..i)
+					SimStopMeasure("#SIM"..i)
+				end
+			end
+
+		end
+
+	end
+
+	ListClear("tmp")
 end
 
 function SitGuest()
@@ -305,12 +308,16 @@ function BeginCeremony()
 	if not GetInsideBuilding("#MAIN", "#WEDDING_CHAPEL") then
 		MsgQuick("#MAIN", GetName("#MAIN").." is missing!")
 		CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+		EndCutscene("")
+		DestroyCutscene("")
 		return
 	end
 
 	if not GetInsideBuilding("#COURTED", "#WEDDING_CHAPEL") then
 		MsgQuick("#MAIN", GetName("#COURTED").." is missing!")
 		CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+		EndCutscene("")
+		DestroyCutscene("")
 		return
 	end
 
@@ -318,6 +325,8 @@ function BeginCeremony()
 		if not HasProperty("", "Tutorial") then
 			MsgQuick("#MAIN","@L_MEASURE_WEDDING_FAILURE_+1", GetID(""))
 			CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+			EndCutscene("")
+			DestroyCutscene("")
 			return
 		end
 	end
@@ -338,8 +347,11 @@ function BeginCeremony()
 	RemoveProperty("#MAIN","WEDDING_canChat")
 	RemoveProperty("#COURTED","WEDDING_canChat")
 
-	BuildingLockForCutscene("#WEDDING_CHAPEL","")
 	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
+
+	if GetInsideRoom("#PRIEST","#CHAPEL") then
+		RoomLockForCutscene("#CHAPEL","")
+	end
 
 	GetLocatorByName("#WEDDING_CHAPEL", "WeddingPriest", "PriestPos", false)
 	GetLocatorByName("#WEDDING_CHAPEL", "Exit1", "E1")
@@ -615,6 +627,10 @@ function BeginCeremony()
 	SimResetBehavior("#COURTED")
 
 	CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+	
+	EndCutscene("")
+	DestroyCutscene("")
+
 end
 
 -- Misc.
