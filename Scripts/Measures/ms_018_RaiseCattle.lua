@@ -76,24 +76,6 @@ function Init()
 		return
 	end
 
-	local filter
-	if ResourceGetItemId("Destination") == 8 then
-		filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==55))"
-	elseif ResourceGetItemId("Destination") == 10 then
-	filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==57))"
-	elseif ResourceGetItemId("Destination") == 11 then
-	filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==58))"	
-	end
-	if filter then
-		local k = Find("Destination",filter,"PflegeViehs",6)
-		for l=0, k do
-			if AliasExists("PflegeViehs"..l) then
-				InternalDie("PflegeViehs"..l)
-				InternalRemove("PflegeViehs"..l)
-			end
-		end
-	end	
-	
 	SetData("Selection", Selection)	
 	
 end
@@ -154,11 +136,30 @@ function Run()
 		return
 	end
 	
-    if not f_MoveTo("","Destination",GL_MOVESPEED_RUN) then
-	    StopMeasure()
-	end	
+	if not f_MoveTo("","Destination",GL_MOVESPEED_RUN) then
+		StopMeasure()
+	end
 	
-    SetContext("", "sow")
+	-- remove animals first
+	local filter
+	local OldItemID = GetProperty("Destination", "ResourceItemID") or -1
+	
+	if ResourceGetItemId("Destination") == 8 then
+		filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==55))"
+	elseif ResourceGetItemId("Destination") == 10 then
+	filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==57))"
+	elseif ResourceGetItemId("Destination") == 11 then
+	filter ="__F( (Object.GetObjectsByRadius(Sim)==700)AND(Object.GetProfession()==58))"	
+	end
+	if filter then
+	    local k = Find("Destination",filter,"PflegeViehs",6)
+	    for l=0, k-1 do
+		    InternalDie("PflegeViehs"..l)
+	        InternalRemove("PflegeViehs"..l)
+	    end
+	end
+
+	SetContext("", "sow")
 	CarryObject("", "Handheld_Device/ANIM_Seed.nif", true)
 	PlayAnimation("", "sow_field_in")
 	LoopAnimation("", "sow_field_loop", 2)

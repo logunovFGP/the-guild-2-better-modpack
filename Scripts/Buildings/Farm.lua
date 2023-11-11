@@ -3,10 +3,20 @@ end
 
 function OnLevelUp()
 	bld_HandleOnLevelUp("")
+	if BuildingGetOwner("", "FarmBoss") and DynastyIsAI("FarmBoss") then
+		-- make sure the fruitfarm has fruit and honey resources
+		bld_CheckResource("", 635, 2)
+		bld_CheckResource("", 618, 3)
+	end
 end
 
 function Setup()
 	bld_HandleSetup("")
+	if BuildingGetOwner("", "FarmBoss") and DynastyIsAI("FarmBoss") then
+		-- make sure the fruitfarm has fruit and honey resources
+		bld_CheckResource("", 635, 2)
+		bld_CheckResource("", 618, 3)
+	end
 	-- create ambient animals
 	--worldambient_CreateAnimal("Cock", "", 1)
 	--worldambient_CreateAnimal("Chicken", "", 3)
@@ -130,13 +140,9 @@ function PingHour()
 		farm_SellOtherStuff("")
 	end
 	
-	if math.mod(GetGametime(), 24) == 5 and BuildingGetOwner("", "FarmBoss") and DynastyIsAI("FarmBoss") then
+	if math.mod(GetGametime(), 24) == 6 and BuildingGetOwner("", "FarmBoss") and DynastyIsAI("FarmBoss") then
 		-- make sure the farm has resources
-		local Resources = { "Wheat", "Barley", "Wool", "Leather", "Beef" }
-		for i = 1, 5 do
-			if BuildingCanProduce("", Resources[i]) then
-				bld_CheckResource("", Resources[i])
-			end
-		end
+		bld_CheckResource("", 635, 2)
+		bld_CheckResource("", 618, 3)
 	end
 end
