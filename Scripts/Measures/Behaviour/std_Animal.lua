@@ -211,7 +211,6 @@ function HofVieh()
 	end
 	
 	RemoveAlias("TierPosX")
-	end
 end
 
 function KleinVieh()
