@@ -481,6 +481,7 @@ function GetLocalPolitician(SimAlias, SameDyn, ResultAlias)
 	end
 	
 	local OffLevel = CityGetHighestOfficeLevel("City")
+	local RandomOff= 0
 	
 	while OffLevel > 0 do
 		local Offices = SettlementGetOfficeCnt("City", OffLevel)
@@ -491,7 +492,7 @@ function GetLocalPolitician(SimAlias, SameDyn, ResultAlias)
 		end
 		
 		if not SettlementGetOfficeHolder("City", OffLevel, RandomOff, "Mayor") then
-			Offlevel = OffLevel  -1
+			OffLevel = OffLevel  -1
 		else
 			CopyAlias("Mayor", ResultAlias)
 			return true
