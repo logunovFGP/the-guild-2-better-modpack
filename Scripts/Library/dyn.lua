@@ -1332,3 +1332,19 @@ function GetRandomWorkshopForSim(SimAlias, WorkshopAlias)
 	-- none found, return
 	return false
 end
+
+function GetIdleMyrmidon(Dynasty, MyrmAlias) 
+	local Count = DynastyGetWorkerCount(Dynasty, GL_PROFESSION_MYRMIDON)
+	for i=0,Count-1 do
+		if DynastyGetWorker(Dynasty, GL_PROFESSION_MYRMIDON, i, "CHECKME") then
+			if GetState("CHECKME", STATE_IDLE) 
+					or GetCurrentMeasureName("CHECKME") == "EscortCharacterOrTransport" 
+					or GetCurrentMeasureName("CHECKME") == "PatrolTheTown" 
+					or GetCurrentMeasureName("CHECKME") == "OrderCollectEvidence" then
+				CopyAlias("CHECKME", MyrmAlias)
+				return GetID(MyrmAlias)
+			end
+		end
+	end
+	return false
+end

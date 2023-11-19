@@ -566,6 +566,10 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		SetProperty(DynastyAlias, "PlayerDesc", PlayerDescLabel)
 		local MissionType = PlayerDescNode:GetValueInt("MissionType")
 		local MissionSubtype = PlayerDescNode:GetValueInt("MissionSubType")
+		
+		-- save mission to scenario (used for AI decisions in TWP)
+		GetScenario("Scenario")
+		SetProperty("Scenario", "AITWP_Mission", MissionType)
 	
 		if (MissionType == 0) then			-- ausloeschung
 			StartMission("Mission_DeathMatch", DynastyAlias)
@@ -649,6 +653,42 @@ function SetupDiplomacy()
 						DynastySetDiplomacyState(Alias, Friend, DIP_NAP)
 					end
 					Friends = Friends + 1
+				end
+			end
+		end
+	end
+	
+	
+	local EnemyCount = Difficulty
+		
+	for CityNo=0, CityCount-1 do
+	
+		CityID = GetID("Cities"..CityNo)
+		Count = 0
+		
+		for dyn=0, DynCount-1 do
+			if GetData("CityID"..dyn)==CityID then
+				CopyAlias("DynList"..dyn, "Dynasties"..Count)
+				Count = Count + 1
+			end
+		end
+		
+		local Alias
+		
+		for dyn=0,Count-1 do
+		
+			Alias = "Dynasties"..dyn
+			
+			local Enemies = defaultcampaign_GetStateCount(Alias, DIP_FOE, Count)
+			
+			while Enemies < EnemyCount do
+			
+				if Enemies < EnemyCount and Rand(3) == 0 then
+					local Friend = defaultcampaign_FindDynasty(DIP_FOE, EnemyCount, dyn+1, Count, Enemies == 0)
+					if Friend then
+						DynastySetDiplomacyState(Alias, Friend, DIP_FOE)
+					end
+					Enemies = Enemies + 1
 				end
 			end
 		end

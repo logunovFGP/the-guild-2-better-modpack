@@ -1215,3 +1215,43 @@ function GetDayTime()
 		return "NIGHT"
 	end
 end
+
+function CheckPublicBuilding(city,building)
+	-- return {building level in this city, building level in next city level}
+
+	if not AliasExists(city) then
+		return {0, 0}
+	else
+		local Level = CityGetLevel(city)
+		if building==GL_BUILDING_TYPE_BANK then
+			if Level==1 then
+				return {0, 0}
+			elseif Level==2 then
+				return {0, 1}
+			elseif Level==3 then
+				return {1, 2}
+			elseif Level==4 then
+				return {2, 2}
+			elseif Level==5 then
+				return {2, 2}
+			elseif Level==6 then
+				return {2, 2}
+			end
+		elseif building==GL_BUILDING_TYPE_SCHOOL or building==GL_BUILDING_TYPE_SOLDIERPLACE then
+			if Level==1 then
+				return {0, 0}
+			elseif Level==2 then
+				return {0, 0}
+			elseif Level==3 then
+				return {0, 1}
+			elseif Level==4 then
+				return {1, 2}
+			elseif Level==5 then
+				return {2, 2}
+			elseif Level==6 then
+				return {2, 2}
+			end
+		end
+	end
+	return {0, 0}
+end

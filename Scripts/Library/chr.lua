@@ -1740,3 +1740,17 @@ function DynastyGetImperialFameLevel(SimAlias)
 
 end
 
+function DynastyGetWorkhopCount(SimAlias)
+	local buildingcount = 0
+	local Count = DynastyGetBuildingCount2(SimAlias)
+	local Class
+	for l=0,Count-1 do
+		if DynastyGetBuilding2(SimAlias, l, "Check") then
+			Class = BuildingGetClass("Check")
+			if Class == GL_BUILDING_CLASS_WORKSHOP then
+				buildingcount = buildingcount + 1
+			end
+		end
+	end
+	return buildingcount
+end
