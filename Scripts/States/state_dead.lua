@@ -18,7 +18,7 @@ function Init()
 	SetState("", STATE_CAPTURED, false)
 	SetState("", STATE_IMPRISONED, false)
 	SetState("", STATE_WORKING, false)
-	SetState("", STATE_SICK, false)
+	diseases_removeAllSickness("")
 	SetState("", STATE_DUEL, false)
 	
 	if GetState("", STATE_ROBBERGUARD) then
