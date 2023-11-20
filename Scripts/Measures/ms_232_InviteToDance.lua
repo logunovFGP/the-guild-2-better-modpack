@@ -27,11 +27,8 @@ function Run()
 	
 	-- the minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
-	local DexteritySkill = (GetSkillValue("", DEXTERITY))*2
-	local MinimumFavor = GL_DANCE_MINFAVOR + TitleDifference - (DexteritySkill * 3)
-	local FavorWon = 5 + DexteritySkill
-	local FavorLoss = -5
-	local ModifyFavor = 0
+	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	local OverallPrice = GL_DANCING_COST
 	
@@ -48,10 +45,6 @@ function Run()
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
-	
-	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
-	FavorWon = FavorWon * (1 + FlirtBonus)	
-	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 	
 	if IsStateDriven() then -- AI
 
@@ -192,7 +185,6 @@ function Run()
 		
 				local time1 = PlayAnimationNoWait("Destination", "shake_head")
 				Sleep(time1 * 0.3)
-				ModifyFavor = FavorLoss
 				CourtingProgress = -5
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)
@@ -229,7 +221,6 @@ function Run()
 						end
 					end	
 		
-					ModifyFavor = FavorWon
 					SetAvoidanceGroup("", "Destination")		
 					ms_232_invitetodance_EnterCutscene()
 --					camera_CutsceneBothLock("", "Destination")
@@ -237,15 +228,12 @@ function Run()
 					
 				elseif (CourtingProgress < -5) then
 					ms_232_invitetodance_EnterCutscene()
-					ModifyFavor = FavorLoss*2
 --					camera_CutsceneBothLock("", "Destination")
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
-					ModifyFavor = FavorLoss
 				else
 					ms_232_invitetodance_EnterCutscene()
 --					camera_CutscenePlayerLock("", "Destination")
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
-					ModifyFavor = FavorLoss
 				end
 				
 				feedback_OverheadCourtProgress("Destination", CourtingProgress)				
@@ -261,7 +249,7 @@ function Run()
 			f_EndUseLocatorNoWait("Destination", "DancePos2")
 			
 			Sleep(0.3)
-			chr_ModifyFavor("Destination", "", ModifyFavor)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			AddImpact("Destination", "ReceivedDance", 1, 6)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 			StopMeasure()
@@ -290,7 +278,7 @@ function Run()
 								"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("Destination"))
 				end
 			end
-		elseif GetFavorToSim("Destination", "") < MinimumFavor then
+		elseif GetFavorToSim("Destination", "") < MinFavor then
 			if Rand(20) > 10 then
 				slap = true
 			end
@@ -310,7 +298,7 @@ function Run()
 		if slap then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination", "", FavorLoss)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			ms_232_invitetodance_EnterCutscene()
 --			camera_CutsceneBothLock("", "Destination")
 			chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 1.0, true)
@@ -319,7 +307,7 @@ function Run()
 		elseif outraged then
 			
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination", "", FavorLoss)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			ms_232_invitetodance_EnterCutscene()
 			camera_CutscenePlayerLock("", "Destination")
 			chr_MultiAnim("", "devotion", "Destination", "propel", InteractionDistance, 1.0, true)

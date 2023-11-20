@@ -1347,7 +1347,7 @@ function AIAbstimmung(Params)
 		end
 		
 		--favor
-		local Favor = GetFavorToSim(VoterAlias,CurrentApplicant)
+		local Favor = GetFavorToSim(VoterAlias, CurrentApplicant)
 		
 		-- rhetoric of Applicant
 		local RhetSkill = GetSkillValue(CurrentApplicant, RHETORIC)
@@ -1371,7 +1371,7 @@ function AIAbstimmung(Params)
 		local CurrentOfficeBonus = 1
 		if SimGetOffice(CurrentApplicant, "ExistingSimOffice") then
 			if (GetID("ExistingSimOffice") == GetID(GetData("CurrentOffice"))) then
-				if GetFavorToSim(VoterAlias,CurrentApplicant) >= 50 then
+				if GetFavorToSim(VoterAlias, CurrentApplicant) >= 50 then
 					CurrentOfficeBonus = 1.05
 				else
 					CurrentOfficeBonus = 0.95

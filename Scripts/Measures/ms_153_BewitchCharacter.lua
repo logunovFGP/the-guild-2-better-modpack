@@ -94,9 +94,8 @@ function Run()
 	-- The minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = (GetSkillValue("", CHARISMA)*2)
-	local MinimumFavor = GL_BEWITCH_MINFAVOR + TitleDifference - CharismaSkill
-	local FavorWon = 10 + (CharismaSkill/2) + Rand(7)
-	local FavorLoss = -5
+	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
 	-- Courting related
 	local Class = SimGetClass("Destination")
@@ -111,10 +110,6 @@ function Run()
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class) 
-	
-	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
-	FavorWon = FavorWon * (1 + FlirtBonus)	
-	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 	
 	-- Get the tavern
 	if not GetInsideBuilding("", "Tavern") then
@@ -180,7 +175,6 @@ function Run()
 		if GetID("CourtLover") == GetID("Destination") then
 					
 			WasCourtLover = 1
-			local ModifyFavor = FavorWon
 			
 			if VariationFactor <= 0.5 then
 				
@@ -194,10 +188,8 @@ function Run()
 	
 				if (CourtingProgress < -5) then
 					chr_MultiAnim("", "got_a_slap", "Destination", "give_a_slap", InteractionDistance, 0.4)
-					ModifyFavor = FavorLoss
 				elseif (CourtingProgress < 1) then
 					chr_MultiAnim("", "talk", "Destination", "cheer_01", InteractionDistance, 0.4)
-					ModifyFavor = FavorLoss
 				else
 					
 					-- Go to the divanbed
@@ -253,7 +245,7 @@ function Run()
 			-- Add the archieved progress
 			SetMeasureRepeat(TimeUntilRepeat)
 			Sleep(0.3)
-			chr_ModifyFavor("Destination", "", ModifyFavor)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			AddImpact("Destination", "ReceivedBewitch", 1, 6)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
@@ -265,7 +257,7 @@ function Run()
 	if (WasCourtLover == 0) then
 	
 		-- check if the favor is high enough for bathing
-		local success = (GetFavorToSim("Destination", "Owner") > MinimumFavor)
+		local success = (GetFavorToSim("Destination", "Owner") > MinFavor)
 		if success then
 			
 			if SimGetSpouse("Destination", "Spouse") then

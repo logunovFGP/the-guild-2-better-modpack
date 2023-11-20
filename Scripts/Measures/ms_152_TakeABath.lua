@@ -22,9 +22,8 @@ function Run()
 	-- The minimum favor of the destination sim to success
 	local TitleDifference = (GetNobilityTitle("Destination") - GetNobilityTitle(""))*2
 	local CharismaSkill = GetSkillValue("", CHARISMA)*2
-	local MinimumFavor = GL_BATH_MINFAVOR + TitleDifference - (CharismaSkill * 3)
-	local FavorWon = 15 + (CharismaSkill * 0.5)+ Rand(6)
-	local FavorLoss = -10
+	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
+	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 
 	-- Courting related
 	local Class = SimGetClass("Destination")
@@ -39,10 +38,6 @@ function Run()
 	
 	local CourtingProgress = gameplayformulas_GetCourtingProgress("", "Destination", MeasureID)
 	local VariationFactor = gameplayformulas_GetCourtingMeasureVariation(MeasureID, "Destination", Class)
-
-	local FlirtBonus = GetImpactValue("", "FlirtBonus") -- ability
-	FavorWon = FavorWon * (1 + FlirtBonus)	
-	CourtingProgress = CourtingProgress * (1 + FlirtBonus)
 
 	if IsStateDriven() then
 		if not GetSettlement("","city") then
@@ -173,7 +168,6 @@ function Run()
 			SetState("Destination", STATE_LOCKED, true)
 		
 			WasCourtLover = 1
-			local ModifyFavor = FavorWon
 			
 			if VariationFactor <= 0.5 then
 				
@@ -185,16 +179,14 @@ function Run()
 				MsgSay("Destination", talk_AnswerMissingVariation(SimGetGender("Destination"), GetSkillValue("Destination", RHETORIC)));
 			else
 				
-				if (CourtingProgress < -5) or (GetFavorToSim("Destination", "") < MinimumFavor) then
+				if (CourtingProgress < -5) or (GetFavorToSim("Destination", "") < MinFavor) then
 					PlayAnimationNoWait("", "got_a_slap")
 					DestinationAnimationLength = PlayAnimationNoWait("Destination", "give_a_slap")
 					Sleep(DestinationAnimationLength * 0.4)
-					ModifyFavor = FavorLoss
 				elseif (CourtingProgress < 1) then
 					PlayAnimationNoWait("", "talk")
 					DestinationAnimationLength = PlayAnimationNoWait("Destination", "cheer_01")
 					Sleep(DestinationAnimationLength * 0.4)
-					ModifyFavor = FavorLoss
 				else
 					-- Pay if the tavern does not belong to the owners dynasty
 					if GetDynastyID("Tavern") ~= GetDynastyID("") then
@@ -293,7 +285,7 @@ function Run()
 			
 			-- Add the achieved progress
 			Sleep(0.3)
-			chr_ModifyFavor("Destination", "", ModifyFavor)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
 		end
 	end
@@ -304,7 +296,7 @@ function Run()
 	if (WasCourtLover == 0) then
 		
 		-- Check if the favor is high enough for bathing
-		local success = (GetFavorToSim("Destination", "") > MinimumFavor)
+		local success = (GetFavorToSim("Destination", "") > MinFavor)
 		if success then
 			
 			if SimGetSpouse("Destination", "Spouse") then
@@ -438,7 +430,7 @@ function Run()
 		else
 		
 			-- Set the favor here so that the player will not be able to cancel the measure if he recognizes the defeat (cheat)
-			chr_ModifyFavor("Destination", "", FavorLoss)
+			chr_ModifyFavor("Destination", "", FavorWon)
 			ModifyHP("", 5, true)
 			ModifyHP("Destination", 5, true)
 			

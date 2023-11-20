@@ -45,7 +45,7 @@ function Run()
 	
 	local Age = SimGetAge("Destination")
 	local DestGender = SimGetGender("Destination")
-	local CurrentFavor = GetFavorToSim("", "Destination")
+	local CurrentFavor = GetFavorToSim("Destination", "")
 	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
 	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	

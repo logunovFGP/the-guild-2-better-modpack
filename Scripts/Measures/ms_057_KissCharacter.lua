@@ -34,7 +34,7 @@ function Run()
 	end
 	
 	local DestGender = SimGetGender("Destination")
-	local CurrentFavor = GetFavorToSim("", "Destination")
+	local CurrentFavor = GetFavorToSim("Destination", "")
 	local MinFavor = gameplayformulas_CalcMinFavor("", "Destination", MeasureID)
 	local FavorWon = gameplayformulas_CalcFavorWon("", "Destination", MeasureID)
 	
@@ -94,6 +94,7 @@ function Run()
 		camera_CutscenePlayerLock("cutscene", "Destination")	
 		MsgSay("Destination", talk_RejectKiss(DestGender, SimGetGender(""), true));
 		IsLover = false
+		LogMessage("Check Kissing MinFavor = "..MinFavor.." . CurrentFavor is "..CurrentFavor)
 		ms_057_kisscharacter_End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgress)
 		return
 	end

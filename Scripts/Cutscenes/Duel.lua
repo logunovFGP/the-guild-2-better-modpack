@@ -664,7 +664,7 @@ function EndDuel()
 	end
 	
 	-- reset the favor and state
-	if GetFavorToSim("challenger","challenged") ~= 50 then
+	if GetFavorToSim("challenger", "challenged") ~= 50 then
 		SetFavorToSim("challenger", "challenged", 50)
 		dyn_AddFondness("challenger", "challenged")
 	end

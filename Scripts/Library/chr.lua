@@ -1624,7 +1624,7 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 			if AliasExists(CheckBld) then
 				local FavorBonus = 0
 				if BuildingGetOwner(CheckBld, "CheckBoss") then
-					FavorBonus = GetFavorToSim("CheckBoss", SimAlias)
+					FavorBonus = GetFavorToSim(SimAlias, "CheckBoss")
 				end
 				
 				local Score = GetImpactValue(CheckBld, "Attractivity") + FavorBonus

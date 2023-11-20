@@ -717,7 +717,7 @@ function GetCourtingMeasureValue(MeasureID, Class)
 					[570] = { patron = 4, craftsman = 3, scholar = 2, rogue = 4, npc = 0 }, -- Kiss
 					[1520] = { patron = 5, craftsman = 4, scholar = 2.5, rogue = 5, npc = 0 }, -- Bathing
 					[1530] = { patron = 4, craftsman = 3, scholar = 5, rogue = 2.5, npc = 0 }, -- Bewitching (sweat talking)
-					[2300] = { patron = 2, craftsman = 1.5, scholar = 3, rogue = 1.5, npc = 0 }, -- Make a Present
+					[2300] = { patron = 3, craftsman = 2.5, scholar = 4, rogue = 2.5, npc = 0 }, -- Make a Present
 					[2310] = { patron = 1, craftsman = 2, scholar = 3, rogue = 1, npc = 0 }, -- Compliment
 					[2320] = { patron = 4, craftsman = 3, scholar = 4, rogue = 2, npc = 0 } -- Dancing
 					}
@@ -854,7 +854,7 @@ function FindCourtingMeasure(SimAlias, CourtLover)
 			
 			-- minfavor?
 			local CheckFavor = MeasureData[Check].minFavor or 50
-			if GetFavorToSim(SimAlias, CourtLover) < CheckFavor then
+			if GetFavorToSim(CourtLover, SimAlias) < CheckFavor then
 				Progress = 0
 			end
 			
@@ -942,7 +942,7 @@ function CalcFavorWon(SimAlias, Destination, MeasureID)
 	if SimGetSpouse(SimAlias, "Spouse") and GetID(Destination) == GetID("Spouse") then
 		Favor = 100
 	else
-		Favor = GetFavorToSim(SimAlias, Destination)
+		Favor = GetFavorToSim(Destination, SimAlias)
 	end
 	
 	local MinimumFavor = gameplayformulas_CalcMinFavor(SimAlias, Destination, MeasureID)
