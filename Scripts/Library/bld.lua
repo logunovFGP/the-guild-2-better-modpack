@@ -825,13 +825,49 @@ end
 function CheckCarts(BldAlias)
 	-- 1. Make sure the building has at least 2 carts
 	local CartCount = BuildingGetCartCount(BldAlias)
+	local BldType = BuildingGetType(BldAlias)
+	local BestCount = 2
 	
-	if GL_BUILDING_TYPE_ROBBER == BuildingGetType(BldAlias) then
+	if BldType == GL_BUILDING_TYPE_ROBBER or BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_MERCENARY then
 		-- no state_autocart or forced carts for robbers
 		return
 	end
 	
-	if CartCount < 2 then
+	if BldType == GL_BUILDING_TYPE_DIVEHOUSE then
+		BestCount = 1
+	end
+	
+	-- special case pirate
+	if BldType == GL_BUILDING_TYPE_PIRATESNEST then
+		if not ReadyToRepeat(BldAlias, "ai_BuyPirateShip") then
+			return 
+		end
+
+		if GetMoney(BldAlias) < 3000 then
+			return
+		end
+	
+		-- be safe
+		local ShipFound = false
+	
+		for i=0, BuildingGetCartCount(BldAlias)-1 do
+			if BuildingGetCart(BldAlias, i, "Cart") then
+				if CartGetType("Cart") == EN_CT_CORSAIR then
+					ShipFound = true
+					break
+				end
+			end
+		end
+	
+		if not ShipFound then
+			SetRepeatTimer(BldAlias, "ai_BuyPirateShip", 12)
+			BuildingBuyCart(BldAlias, EN_CT_CORSAIR, true, "PirateShip")
+		end
+		
+		return
+	end
+	
+	if CartCount < BestCount then
 		bld_BuyCart(BldAlias, "CartAlias", bld_GetIdealCartType(BldAlias))
 	end
 	

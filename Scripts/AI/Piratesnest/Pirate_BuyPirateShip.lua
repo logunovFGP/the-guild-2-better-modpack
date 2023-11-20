@@ -14,14 +14,12 @@ function Weight()
 	
 	-- be safe
 	local Found = false
-	if not HasProperty("PirateHarbor", "pirateship") then
 	
-		for i=0, BuildingGetCartCount("PirateHarbor")-1 do
-			if BuildingGetCart("PirateHarbor", i, "Cart") then
-				if CartGetType("Cart") == EN_CT_CORSAIR then
-					Found = true
-					break
-				end
+	for i=0, BuildingGetCartCount("PirateHarbor")-1 do
+		if BuildingGetCart("PirateHarbor", i, "Cart") then
+			if CartGetType("Cart") == EN_CT_CORSAIR then
+				Found = true
+				break
 			end
 		end
 	end
@@ -34,8 +32,7 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("PirateHarbor", "ai_BuyPirateShip", 24)
+	SetRepeatTimer("PirateHarbor", "ai_BuyPirateShip", 12)
 	BuildingBuyCart("PirateHarbor", EN_CT_CORSAIR, true, "PirateShip")
-	SetProperty("PirateHarbor", "pirateship", 1)
 end
 
