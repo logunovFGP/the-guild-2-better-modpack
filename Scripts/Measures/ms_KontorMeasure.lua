@@ -84,7 +84,7 @@ function CheckItem(Item, Wanted, FirstTime)
 	
 	local Base = ItemGetBasePrice(Item)
 	if Count < Wanted then
-		if Base < 300 or ScenarioGetTimePlayed() > (36 + Rand(25)) then
+		if Base < 300 or ScenarioGetTimePlayed() > (48 + Rand(25)) then
 			if not FirstTime then
 				if Rand(100) >= Var then
 					AddItems("", Item, Grow, INVENTORY_STD)
@@ -100,9 +100,9 @@ function CheckItem(Item, Wanted, FirstTime)
 		local PriceIn = Base * 0.5 -- 0.25
 		Count = GetItemCount("", Item, INVENTORY_STD)
 	
-		local	Quote = 0.55 + 0.85*(1 - Count / Wanted) -- 0.5 + 0.75
+		local	Quote = 0.55 + 0.86*(1 - Count / Wanted) -- 0.5 + 0.75
 		if Base >= 300 then
-			Quote = 1 + 0.60*(1 - Count / Wanted)
+			Quote = 1.05 + 0.65*(1 - Count / Wanted)
 		end
 		local PriceOut = Base * Quote
 	

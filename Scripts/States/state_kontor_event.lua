@@ -80,7 +80,7 @@ function NeedItems()
 	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_NEED_ITEMS_COOLDOWN_+0,%5i,%6l]", "economie", -1,
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_HEAD_+"..random,
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_TEXT_+"..random,
-			       GetID("City"), Needed, ItemLabel, Gametime, DestTime,ID)
+			       GetID("City"), Needed, ItemLabel, Gametime, DestTime, ID)
 
 	CitySetFixedPrice("", Item, BasePrice*2, BasePrice*2, Gametime)
 
@@ -214,12 +214,12 @@ function OfferItems()
 	
 	GetSettlement("", "City")
 
-	MsgNewsNoWait("All","","@C[@L_KONTOR_MISSIONS_OFFER_ITEMS_COOLDOWN_+0,%5i,%6l]","economie",-1,
+	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_OFFER_ITEMS_COOLDOWN_+0,%5i,%6l]", "economie", -1,
 			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_HEAD_+"..random,
 			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_TEXT_+"..random,
-			       GetID("City"), Offering, ItemLabel, Gametime,DestTime,ID)
+			       GetID("City"), Offering, ItemLabel, Gametime, DestTime, ID)
 	
-	CitySetFixedPrice("", Item, BasePrice*0.5, BasePrice*0.8, Gametime)
+	CitySetFixedPrice("", Item, BasePrice*0.5, BasePrice*0.85, Gametime)
 
 	-- first remove all items of this type	
 	Count = GetItemCount("", Item, INVENTORY_STD)
