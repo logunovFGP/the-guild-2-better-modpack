@@ -84,15 +84,6 @@ function Check()
 end
 
 function Attack()
-
-	if DynastyIsAI("") then
-		local Att, Def
-		Att, Def = ai_CheckForces("", "Victim", 1500)
-		if Def < Att*1.25 then
-			Sleep(5 + Rand(50)*0.1)
-			return
-		end
-	end
 	
 	--check if destination has drunken boozybreathbeer
 	if GetImpactValue("Victim","boozybreathbeer") == 1 then	

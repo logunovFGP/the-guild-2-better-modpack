@@ -12,28 +12,6 @@ function Run()
 	end
 	MeasureSetNotRestartable()
 	
-	
-	if DynastyIsAI("") then
-		local 	Att
-		local	Def
-		local	Ok = false
-		
-		for trys=0,4 do
-	
-			Att, Def = ai_CheckForces("", "Destination", 1500)
-			if Att*1.25 < Def then
-				Ok = true
-				break
-			end
-			Sleep(Rand(10)+10)
-		end
-		
-		if not Ok then
-			StopMeasure()
-			return
-		end
-	end
-	
 	SetProperty("Destination","PlunderInProgress",1)
 	
 	if GetImpactValue("Destination","buildingburgledtoday")==0 then

@@ -79,20 +79,6 @@ function Phase0()
 			f_MoveTo("", "MoveToPos", GL_MOVESPEED_RUN, 500)
 		end
 	end
-	
-	
-	while true do
-	
-		local Att, Def
-		
-		Att, Def = ai_CheckForces("", "Victim", 2000)
-		if Att*1.3 < Def then
-			SetProperty("Squad", "Phase", 1)
-			return
-		end
-		Sleep(2)
-	end
-	
 end
 
 
@@ -118,17 +104,13 @@ function Phase1()
 				
 				if GetInsideBuildingID("Victim")==GetID("Build") and GetDynastyID("Build")==GetDynastyID("Victim") then
 				
-					Att, Def = ai_CheckForces("", "Victim", 2000)
-					if Att*1.6 < Def then
-				
-						SetProperty("Squad", "Phase", 2)
-						SetProperty("Squad", "TargetID", GetID("Build"))
+					SetProperty("Squad", "Phase", 2)
+					SetProperty("Squad", "TargetID", GetID("Build"))
 
-						SetData("DontLeave", 1)
-						if not MeasureRun("", "Build", "AttackEnemy", true) then
-							return false
-						end
-						return
+					SetData("DontLeave", 1)
+					if not MeasureRun("", "Build", "AttackEnemy", true) then
+						return false
+					end
 					end
 				end
 			end
@@ -148,17 +130,13 @@ function Phase1()
 			return
 		end
 		
-		Att, Def = ai_CheckForces("", "Victim", 2000)
-		if Att*1.3 < Def then
 		
-			SetProperty("Squad", "Phase", 2)
-			SetProperty("Squad", "TargetID", GetID("Victim"))
-
-			SetData("DontLeave", 1)
-			if not GetState("Victim", STATE_CUTSCENE) then
-				if not MeasureRun("", "Victim", "AttackEnemy", true) then
-					return false
-				end
+		SetProperty("Squad", "Phase", 2)
+		SetProperty("Squad", "TargetID", GetID("Victim"))
+		SetData("DontLeave", 1)
+		if not GetState("Victim", STATE_CUTSCENE) then
+			if not MeasureRun("", "Victim", "AttackEnemy", true) then
+				return false
 			end
 			return
 		end

@@ -58,7 +58,7 @@ function Run()
 		end
 		
 		if not Success then
-			Sleep(4)
+			Sleep(2)
 		end
 	end
 end
@@ -101,20 +101,26 @@ function Wait()
 	SetState("", STATE_HIDDEN, true)
 	SetProperty("", "WaylayReady", 1)
 	ms_squadwaylaymember_IdleStuff()
-	Sleep(2 + Rand(25)*0.1)
+	Sleep(2)
 	RemoveProperty("", "WaylayReady")
 end
 
 function IdleStuff()
-	if Rand(3) == 0 then
+	local RandomAni = Rand(5)
+	if RandomAni == 0 then
 		PlayAnimationNoWait("", "sentinel_idle")
-	elseif Rand(3) == 1 then
+	elseif RandomAni == 1 then
 		CarryObject("", "Handheld_Device/ANIM_telescope.nif", false)
 		PlayAnimation("", "scout_object")
 		CarryObject("", "", false)
+	elseif RandomAni == 2 or RandomAni == 3 then
+		PlayAnimation("", "cogitate")
+	else
+		Sleep(1)
 	end
+	
 	GfxSetRotation("", 0, Rand(360), 0, false)
-	Sleep(2 + Rand(3))
+	Sleep(2)
 end
 
 function WhatToDo()
@@ -171,7 +177,7 @@ function WhatToDo()
 		end
 	
 		local Target = ms_squadwaylaymember_Scan("")
-		if Target and GetState("", STATE_HIDDEN) then -- only surprise attacks
+		if Target then -- only surprise attacks
 			return "attack"
 		end
 		
@@ -244,9 +250,10 @@ function ReturnToBase()
 				Removed = RemoveItems("", ItemId, Found)
 				local Added = AddItems("MyRobbercamp", ItemId, Removed)
 				MessageItem = ItemId
-				MessageCount = Added
+				MessageCount = Removed
 				if Added > 0 then
 					Booty = true
+					IncrementXPQuiet("", 15) 
 				end
 			end
 		end
@@ -307,9 +314,9 @@ function Attack()
 			AddImpact("Victim", "messagesent", 1, 3)
 			
 			if AliasExists("Mayor") then
-				CommitAction("attackcart", "", "Mayor", "Victim")
+				CommitAction("attackcart", "", "Mayor", "")
 				GetSettlement("Mayor", "MayorTown")
-				MsgNewsNoWait("Mayor", "Victim", "", "military", -1, 
+				MsgNewsNoWait("Mayor", "", "", "military", -1, 
 									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+0",
 									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_BODY_+1", GetID("Mayor"), GetID("MayorTown"))
 			else
@@ -353,14 +360,12 @@ function Plunder()
 	CommitAction("plunder", "", "Victim", "Victim")
 	Sleep(2)
 	
-	if IsType("Victim", "Cart") then
-		ItemValue = chr_Plunder("", "Victim")
-		local XPValue = math.floor((25 + ItemValue*0.15)/25)
-		chr_GainXP("", XPValue)
-		if ItemValue > 0 then
-			--for the mission
-			mission_ScoreCrime("dynasty", ItemValue)
-		end
+	ItemValue = chr_Plunder("", "Victim")
+	local XPValue = math.floor((25 + ItemValue*0.2)/25)
+	chr_GainXP("", XPValue)
+	if ItemValue > 0 then
+		--for the mission
+		mission_ScoreCrime("dynasty", ItemValue)
 	end
 	
 	StopAction("plunder", "")
@@ -374,23 +379,24 @@ function Scan(Member)
 	
 	-- constants
 	local MinBooty = 200
-	local BootyRadius = 1200
-	local RobberRadius = 1200
+	local BootyRadius = 1500
 	
 	local Count
 	local BootyFilterCart = "__F((Object.GetObjectsByRadius(Cart) == "..BootyRadius..")AND NOT(Object.BelongsToMe())AND(Object.ActionAdmissible()))"
 
-	local NumVictimCarts = Find("Destination", BootyFilterCart, "VictimCart", -1)
+	local NumVictimCarts = Find(Member, BootyFilterCart, "VictimCart", -1)
 	local NumOwnRobbers = SquadGetMemberCount("")
 	local Attack = true
 	
 	if NumVictimCarts <= 0 then
+		LogMessage("SWL: No Carts")
 		return
 	end
 
 	local MaxTargetValue = 0
 	
 	if not SquadGet(Member, "Squad") then
+		LogMessage("No Squad")
 		return
 	end
 	
@@ -403,43 +409,54 @@ function Scan(Member)
 	
 	SquadGetMember("Squad", RandomMember, "Robber")
 	
-	for FoundObject =0, NumVictimCarts-1 do -- found the best cart to attack
-		
-		local VictimDyn = GetDynastyID("VictimCart"..FoundObject)
-		local CurrentTargetValue = chr_GetBootyCount("VictimCart"..FoundObject, INVENTORY_STD)
-		
-		if CurrentTargetValue >= MaxTargetValue then
-		
-			if VictimDyn < 1 then
-				f_GetLocalPolitician(Member, false, "Mayor") -- false means: not from my own dynasty
-			end
+	LogMessage("SWL: Scanning")
+	if GetState(Member, STATE_HIDDEN) then
+		LogMessage("SWL: Hidden")
+		for FoundObject =0, NumVictimCarts-1 do -- found the best cart to attack
 			
-			if AliasExists("Mayor") then
-				VictimDyn = GetDynastyID("Mayor")
-			end
+			local VictimDyn = GetDynastyID("VictimCart"..FoundObject)
+			local CurrentTargetValue = chr_GetBootyCount("VictimCart"..FoundObject, INVENTORY_STD)
 			
-			if GetDynastyID(Member) ~= VictimDyn then
-				if DynastyGetDiplomacyState("dynasty","VictimCart"..FoundObject) < DIP_NAP then -- check diplomatic state
-					if GetFavorToDynasty("VictimCart"..FoundObject, "dynasty") < 80 then -- don't attack friends 
-						CopyAlias("VictimCart"..FoundObject, "Victim")
-						MaxTargetValue = CurrentTargetValue
+			if CurrentTargetValue >= MaxTargetValue then
+				LogMessage("SWL: Loot detected")
+				if VictimDyn < 1 then
+					f_GetLocalPolitician(Member, false, "Mayor") -- false means: not from my own dynasty
+					LogMessage("SWL: Mayor found")
+				end
+				
+				if AliasExists("Mayor") then
+					VictimDyn = GetDynastyID("Mayor")
+				end
+				
+				if GetDynastyID(Member) ~= VictimDyn then
+					if DynastyGetDiplomacyState("dynasty","VictimCart"..FoundObject) < DIP_NAP then -- check diplomatic state
+						LogMessage("SWL: Scan: no NAP+")
+						if GetFavorToDynasty("VictimCart"..FoundObject, "dynasty") < 85 then -- don't attack friends 
+							LogMessage("SWL: No friend")
+							CopyAlias("VictimCart"..FoundObject, "Victim")
+							MaxTargetValue = CurrentTargetValue
+						else
+							if GetID(Member) == GetID("Robber") then
+								AlignTo(Member, "VictimCart")
+								MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
+							end
+						end
 					else
 						if GetID(Member) == GetID("Robber") then
 							AlignTo(Member, "VictimCart")
 							MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
 						end
 					end
-				else
-					if GetID(Member) == GetID("Robber") then
-						AlignTo(Member, "VictimCart")
-						MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_FRIENDS")
-					end
 				end
 			end
 		end
+	else
+		LogMessage("Not hidden")
+		PlayAnimation(Member, "cheer_01")
 	end
 	
 	if not AliasExists("Victim") then
+		LogMessage("SWL: No victim found")
 		return
 	end
 		
@@ -449,43 +466,15 @@ function Scan(Member)
 			AlignTo(Member, "Victim")
 			MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_NOBOOTY")
 		end
-		return
-	end
-	
-	--check the forces
-	
-	local Att, Def
-	Att, Def = ai_CheckForces(Member, "Victim", BootyRadius)
-	
-	Attack = false
-
-	if Def > 0 then
-
-		local	Quote = Att / Def
-	
-		--we are more, so attack 'em
-		if Quote < 0.5 then
-			Attack = true
-		elseif Quote > 2 then
-			Attack = false
-		else
-			Attack =  (MaxTargetValue > MinBooty + 1500*Quote)
-		end
-	end
-	
-	if not Attack then
-		if GetID(Member) == GetID("Robber") then
-			AlignTo(Member, "Victim")
-			MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_DONT_ATTACK_DANGER")
-		end
+		LogMessage("SWL: No booty")
 		return
 	end
 		
 	--start attack
 
 	AlignTo(Member, "Victim")
-	Sleep(1)
-	
+	Sleep(0.5)
+	LogMessage("SWL: Attack!")
 	return "Victim"
 end
 
