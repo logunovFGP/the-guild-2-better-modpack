@@ -1282,3 +1282,60 @@ function HasAccessToItem(SimAlias, ItemName)
 	
 	return Found, BldID, FoundCount
 end
+
+function GetIdleMember(Dynasty, MemberAlias)
+	local Count = DynastyGetMemberCount(Dynasty)
+	for i=0, Count-1 do
+		if DynastyGetMember(Dynasty, i, "Member") then
+			if AliasExists("Member") and dyn_IsIdleMember("Member") then
+				CopyAlias("Member", MemberAlias)
+				return GetID("Member")
+			end
+		end
+	end
+	return false
+end
+
+function IsIdleMember(MemberAlias)
+	if GetState(MemberAlias, STATE_DYING) or GetState(MemberAlias, STATE_DEAD) then
+		return false
+	end
+	if GetStateImpact(MemberAlias, "no_idle") or GetStateImpact(MemberAlias, "no_control") then
+		return false
+	end
+	
+	GetDynasty(MemberAlias, "dyn")
+	if not CanBeControlled(MemberAlias, "dyn") then
+		return false
+	end
+	-- no measures while waiting for trial or office session
+	if SimGetBehavior(MemberAlias)=="CheckPresession" or SimGetBehavior(MemberAlias)=="CheckPretrial" then
+		-- TODO also check Presession?
+		return false
+	end
+	-- no measures just before duel
+	if GetImpactValue(MemberAlias, "DuelTimer") >= 1 and ImpactGetMaxTimeleft(MemberAlias, "DuelTimer") <= 3 then
+		return false
+	end
+	
+	local CurMeasureID = GetCurrentMeasureID(MemberAlias)
+	if CurMeasureID == 0 or CurMeasureID == 3202 or CurMeasureID == 3200 -- idle measures
+			or (CurMeasureID == 220 and Rand(10) < 3) then -- chance of 30% to interrupt production
+		return true
+	end
+	return false
+end
+
+function GetRandomWorkshopForSim(SimAlias, WorkshopAlias)
+	local BldCount = DynastyGetBuildingCount(SimAlias, GL_BUILDING_CLASS_WORKSHOP, -1)
+	
+	for i = 1, BldCount do
+		DynastyGetRandomBuilding(SimAlias, GL_BUILDING_CLASS_WORKSHOP, -1, "RandBuild")
+		if BuildingGetOwner("RandBuild", "BldOwner") and GetID(SimAlias) == GetID("BldOwner") then
+			CopyAlias("RandBuild", WorkshopAlias)
+			return true
+		end
+	end
+	-- none found, return
+	return false
+end
