@@ -678,22 +678,73 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	end
 	
 	-- check if AI
-	if DynastyIsAI(SimAlias) then
-		local Diff = ScenarioGetDifficulty()
-		local Multiplier = 10/(8-Diff)
-		local CorrectAmount = MoneyToSpend*Multiplier
-		
-		if SpendMoney(SimAlias, CorrectAmount, Reason, Force) then
-			return true
-		else
-			return false
-		end
+	if not DynastyIsAI(SimAlias) then
+		return SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
+	end
+	
+	-- counter hardcoded AI cheat
+	local Diff = ScenarioGetDifficulty()
+	local Multiplier = 10/(8-Diff)
+	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
+	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
+	if not GetDynasty(SimAlias, "CrdAlias") then
+		return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
+	end
+	
+	-- debugging
+--	local MoneyBefore = GetMoney(SimAlias)
+--	local Result = SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
+--	if Result and (MoneyBefore - MoneyToSpend) ~= GetMoney(SimAlias) then
+--		local Msg = "Amount was not spent by AI: "..MoneyToSpend.." for "..Reason .. ". Spent value: " .. math.abs((GetMoney(SimAlias) - MoneyBefore))
+--		MsgBoxNoWait("All", SimAlias, "SpendMoney failed assertion", Msg)
+--		LogMessage("AIToM::SpendMoney:: "..Msg)
+--	end
+	
+	-- workaround for AI not spending the money
+--	local MoneyBefore = GetMoney(SimAlias)
+--	if MoneyBefore < MoneyToSpend and not Force then
+--		return false
+--	end
+--	-- save to property for later transfer
+--	local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
+--	SetProperty("CrdAlias", "AI_DynMoney", Current - MoneyToSpend)
+	return Result
+end
+
+function CreditMoney(Alias, Amount, Purpose)
+	if DynastyIsPlayer(Alias) or IsGUIDriven() then
+		-- call hardcoded CreditMoney since it works for these cases
+		-- LogMessage("AITWP::CreditMoney::"..Purpose.." on "..GetName(Alias))
+		return CreditMoney(Alias, Amount, Purpose)
 	else
-		if SpendMoney(SimAlias, MoneyToSpend, Reason, Force) then
-			return true
-		else
-			return false
+		-- don't care about non-dynasty characters
+		if not GetDynasty(Alias, "CrdAlias") then
+			return CreditMoney(Alias, Amount, Purpose)
 		end
+
+		local MoneyBefore = GetMoney(Alias)
+		if (MoneyBefore + Amount) ~= GetMoney(Alias) then
+--			local Msg = "Amount was not credited to AI: "..Amount.." for "..Purpose .. ". Credited value: " .. (GetMoney(Alias) - MoneyBefore)
+--			LogMessage("AIToM::CreditMoney:: ".. Msg)
+			
+			-- workaround save to property for later transfer
+			local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
+			SetProperty("CrdAlias", "AI_DynMoney", Current + Amount)
+			return true
+		end
+	end
+end
+
+function GiveMoney(Target)
+	local Current = GetProperty(Target, "AI_DynMoney") or 0
+	Current = math.floor(Current)
+	SetProperty(Target, "AI_DynMoney", 0)
+	if Current > 0 then
+		CreditMoney(Target, Current, "Income")
+		--LogMessage("::AITWP::GiveMoney "..GetName(Target).." received "..Current)
+	elseif Current < 0 then
+		SpendMoney(Target, math.abs(Current), "Expense")
+		--LogMessage("::AITWP::GiveMoney "..GetName(Target).." spent "..Current)
 	end
 end
 
@@ -1662,5 +1713,31 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 	end
 end
 	
+function DynastyGetImperialFameLevel(SimAlias)
 
+	local fame = 0
+
+	if IsDynastySim(SimAlias) and GetDynasty(SimAlias, "family") then
+		if GetProperty("family","ImperialFame") then
+			fame = GetProperty("family","ImperialFame")
+		end
+	end
+
+	if fame == 0 then
+		return 0
+	elseif fame < 21 then
+		return 1
+	elseif fame < 51 then
+		return 2
+	elseif fame < 101 then
+		return 3
+	elseif fame < 201 then
+		return 4
+	else
+		return 5
+	end
+
+	return 0
+
+end
 

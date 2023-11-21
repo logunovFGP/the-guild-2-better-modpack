@@ -76,6 +76,13 @@ end
 function UnloadAll(CartAlias, DestAlias)
 	Sleep(2) 
 	local	Slots = InventoryGetSlotCount(CartAlias, INVENTORY_STD)
+	local BalanceSheet = "WaresSold"
+	local CartType = CartGetType(CartAlias)
+	if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
+		CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
+	
+		BalanceSheet = "WaresSeaSold"
+	end
 	
 	--do the transfer
 	local	ItemId, ItemCount
@@ -98,12 +105,20 @@ function UnloadAll(CartAlias, DestAlias)
 								CityGetLocalMarket("BargCity", "BargMarket")
 								EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket")*ItemCount
 								BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("BargBoss", BARGAINING)*2)/100))
+								if DynastyIsAI("BargBoss") then -- make sure the AI actually pays for the goods
+									chr_CreditMoney("BargBoss", EstimatedMoney, BalanceSheet)
+								end
+								if BargainMoney > 0 then
+									CreditMoney(CartAlias, BargainMoney, BalanceSheet)
+									ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)", BargainMoney)
+								end
 							end
 						end
 					end
 				end
 				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
-				Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
+				
+				local Error, ItemTransfered = Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
 				ItemStock = GetItemCount(DestAlias, ItemId)
 				--LogMessage("Stock of "..ItemGetName(ItemId).." is now at "..ItemStock)
@@ -156,10 +171,17 @@ end
 -- shopping list must look like: {{ItemId, RequiredAmount}, {ItemId2, RequiredAmount2}, ...}
 -- returns the ShoppingList with reduced item amounts
 function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
-
 	if not Count or Count <= 0 then
 		-- nothing to load...
 		return Count, ShoppingList
+	end
+	
+	local BalanceSheet = "WaresBought"
+	local CartType = CartGetType(CartAlias)
+	if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
+		CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
+	
+		BalanceSheet = "WaresSeaBought"
 	end
 	
 	local SlotCount, CartSlotSize = cart_GetCartSlotInfo(CartAlias)
@@ -199,8 +221,15 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 					if BuildingGetOwner("Business", "BargBoss") then
 						if GetSettlement(BldAlias, "BargCity") then
 							CityGetLocalMarket("BargCity", "BargMarket")
-							EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket")*ItemTransfered
+							EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket") * ItemTransfered
 							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("BargBoss", BARGAINING)*2)/100))
+							if DynastyIsAI("BargBoss") then -- make sure the AI actually pays for the goods
+								chr_SpendMoney("BargBoss", EstimatedMoney, BalanceSheet)
+							end
+							if BargainMoney > 0 then
+								CreditMoney(CartAlias, BargainMoney, BalanceSheet)
+								ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)", BargainMoney)
+							end
 						end
 					end
 				end
@@ -208,19 +237,7 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 			--LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))
 			ItemStock = GetItemCount(BldAlias, ItemId)
 			--LogMessage("New stock is now "..ItemStock)
-			
-			if BargainMoney > 0 then
-				local BalanceSheet = "WaresSold"
-				local CartType = CartGetType(CartAlias)
-				if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
-					CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
-				
-					BalanceSheet = "WaresSeaSold"
-				end
-				CreditMoney(CartAlias, BargainMoney, BalanceSheet)
-				ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)", BargainMoney)
-			end
-			
+
 			-- 6. make sure list is repeated if slots are still available
 			if ItemTransfered and ItemTransfered > 0 then
 				ShoppingList[CurrentItem][2] = ShoppingList[CurrentItem][2] - ItemTransfered -- reduces required amount
