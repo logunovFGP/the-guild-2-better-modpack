@@ -320,61 +320,6 @@ function MultiMoveTo(...)
 	return true 
 end
 
-function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
-	local ErrorNumber, Done = Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
-	
-	if ErrorNumber ~= TRANSFER_SUCCESS then
-		ai_TransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
-		return Done
-	end
-	return Done
-end
-
-function TransferError(ErrorNumber, BuyerAlias, SellerAlias, ItemId, ItemCount)
-
-	if ErrorNumber==TRANSFER_SUCCESS then
-		return
-	end
-
-	local TransferErrorList= 
-	{
-		[TRANSFER_RESULT_UNKNOWN] = "Unknown Error";
-		[TRANSFER_ERROR_ILLEGAL] = "Illegal";
-		[TRANSFER_ERROR_NO_MARKET] = "No market";
-		[TRANSFER_ERROR_ILLEGAL_ITEM] = "Illegal item";
-		[TRANSFER_ERROR_OUT_OF_RANGE] = "Out of range";
-		[TRANSFER_ERROR_ILLEGAL_EXECUTER] = "Illegal executer";
-		[TRANSFER_ERROR_NO_ITEM_AT_SOURCE] = "No item at source";
-		[TRANSFER_ERROR_NO_SPACE_AT_DEST] = "No space at destination";
-		[TRANSFER_ERROR_ACCESS_DENIED] = "Access denied";
-		[TRANSFER_ERROR_NOT_COMPLETE_TRANSFER] = "not enough items for a complete transfer";
-		[TRANSFER_ERROR_NOT_ENOUGH_MONEY] = "not enough money";
-		[TRANSFER_ERROR_INVALID_ITEM] = "Invalid item"
-	}
-	
-	local Text = TransferErrorList[ErrorNumber]
-	if Text then
-		local	BuyerName = "(unknown)"
-		if AliasExists(BuyerAlias) then
-			BuyerName = GetName(BuyerAlias)
-		end
-
-		local	SellerName = "(unknown)"
-		if AliasExists(SellerAlias) then
-			SellerName = GetName(SellerAlias)
-		end
-		
-		local	ItemName = ItemGetName(ItemId)
-		if not ItemName then
-			ItemName = "(unknown)"
-		end
-		
-		if not ItemCount then
-			ItemCount = -1
-		end
-	end
-end
-
 function CanBuyItem(SimAlias, Item, Count, CityAlias, PlaceAlias)
 	Count = Count or 1
 	PlaceAlias = PlaceAlias or "__AI_CBI_PLACE"
@@ -424,10 +369,10 @@ function BuyItem(SimAlias, Item, ItemCount)
 		return false
 	end
 	
-	local Done
+	local E, Done
 	
 	if eInv == INVENTORY_STD then -- market
-		Done = ai_Transfer(SimAlias, SimAlias, INVENTORY_STD, PlaceAlias, eInv, Item, ItemCount)
+		E, Done = f_Transfer(SimAlias, SimAlias, INVENTORY_STD, PlaceAlias, eInv, Item, ItemCount)
 	else
 		Done = economy_BuyItems(PlaceAlias, SimAlias, Item, ItemCount, INVENTORY_STD)
 	end

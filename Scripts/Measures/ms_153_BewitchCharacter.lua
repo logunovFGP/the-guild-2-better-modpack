@@ -134,7 +134,7 @@ function Run()
 				return
 			end
 		end
-		CreditMoney("Tavern",GetData("Price"),"Offering")
+		chr_CreditMoney("Tavern",GetData("Price"),"Offering")
 		-- for the balance
 	--	local OldBalance = 0
 	--	if HasProperty("Tavern", "BalanceBewitchingFee") then

@@ -198,7 +198,7 @@ function Run()
 			Bonus = 0
 		end	
 		Money = Rand(400)+Level * Bonus * 200
-		CreditMoney("dynasty",Money,"IncomeRobbers")
+		chr_CreditMoney("dynasty",Money,"IncomeRobbers")
 		ShowOverheadSymbol("", false, false, 0, "@L%1t",Money)
 	end
 	

@@ -226,7 +226,7 @@ function BuyIt(NewOwner, FormerOwner, Money)
 				PlaySound("fanfare/FanfarPositiveShort_s_01.ogg", 0.4, 1, "c4")
 			end
 			chr_SpendMoney(NewOwner, Money, "BuildingBought")
-			CreditMoney(FormerOwner, Money, "BuildingSold")
+			chr_CreditMoney(FormerOwner, Money, "BuildingSold")
 						
 			if HasProperty(FormerOwner, "intimidated") then
 				RemoveProperty(FormerOwner, "intimidated")

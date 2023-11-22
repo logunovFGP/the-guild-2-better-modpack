@@ -194,7 +194,7 @@ end
 -- RecieveMoney 
 -- -----------------------
 function RecieveMoney(ObjectAlias, val, topic)
-	CreditMoney(ObjectAlias, val, topic)
+	chr_CreditMoney(ObjectAlias, val, topic)
 	ShowOverheadSymbol(ObjectAlias, false, false, 0, "@L%1t", val)
 	return val
 end
@@ -687,9 +687,7 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	local Multiplier = 10/(8-Diff)
 	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
 	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
-	if not GetDynasty(SimAlias, "CrdAlias") then
-		return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
-	end
+	return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
 	
 	-- debugging
 --	local MoneyBefore = GetMoney(SimAlias)
@@ -701,6 +699,10 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 --	end
 	
 	-- workaround for AI not spending the money
+--	if not GetDynasty(SimAlias, "CrdAlias") then
+--		return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
+--	end
+--	
 --	local MoneyBefore = GetMoney(SimAlias)
 --	if MoneyBefore < MoneyToSpend and not Force then
 --		return false
@@ -708,7 +710,7 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 --	-- save to property for later transfer
 --	local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
 --	SetProperty("CrdAlias", "AI_DynMoney", Current - MoneyToSpend)
-	return Result
+--	return Result
 end
 
 function CreditMoney(Alias, Amount, Purpose)
@@ -722,16 +724,10 @@ function CreditMoney(Alias, Amount, Purpose)
 			return CreditMoney(Alias, Amount, Purpose)
 		end
 
-		local MoneyBefore = GetMoney(Alias)
-		if (MoneyBefore + Amount) ~= GetMoney(Alias) then
---			local Msg = "Amount was not credited to AI: "..Amount.." for "..Purpose .. ". Credited value: " .. (GetMoney(Alias) - MoneyBefore)
---			LogMessage("AIToM::CreditMoney:: ".. Msg)
-			
-			-- workaround save to property for later transfer
-			local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
-			SetProperty("CrdAlias", "AI_DynMoney", Current + Amount)
-			return true
-		end
+		-- workaround: save to property for later transfer
+		local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
+		SetProperty("CrdAlias", "AI_DynMoney", Current + Amount)
+		return true
 	end
 end
 

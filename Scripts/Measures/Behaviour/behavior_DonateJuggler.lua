@@ -31,7 +31,7 @@ function Run()
 	end
 
 	local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(8)*charm
-	CreditMoney("Actor", getbeg, "Offering")
+	chr_CreditMoney("Actor", getbeg, "Offering")
 	ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 	
 	if IsDynastySim("Owner") then
@@ -55,7 +55,7 @@ function Run()
 		
 		-- again
 		spend = (spender * spender + charm)*3 + Rand(((charm + spender * spender)*3))
-		CreditMoney("Actor", getbeg, "Offering")
+		chr_CreditMoney("Actor", getbeg, "Offering")
 		ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 		
 		if IsDynastySim("Owner") then

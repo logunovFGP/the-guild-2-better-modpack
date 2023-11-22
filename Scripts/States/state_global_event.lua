@@ -18,7 +18,7 @@ function Run()
 				if HasProperty("", "costs") then
 					local profit = GetProperty("", "costs") * 2.5
 					GetSettlement("", "City")
-					CreditMoney("City", profit, "WarProfit")
+					chr_CreditMoney("City", profit, "WarProfit")
 					if HasProperty("City", "Warcosts") then
 						profit = GetProperty("City", "Warcosts") - profit
 					else

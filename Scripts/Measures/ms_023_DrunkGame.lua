@@ -86,7 +86,7 @@ function Run()
 	    end		
 
 	if trunkwahl ~= 77 then
-		CreditMoney("Tave",kosten,"Offering")
+		chr_CreditMoney("Tave",kosten,"Offering")
 		chr_SpendMoney("Owner", kosten, "Offering")
             if alcpegel <= 40 then
 			    MsgSayNoWait("","@L_MEASURE_DRUNKGAME_SPRUCHA")

@@ -139,18 +139,18 @@ function RandomEventPositiv(SimAlias)
 	local RandEvent = Rand(17)
   
 	if RandEvent == 0 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		CityGetRandomBuilding("HomeTown",2,reli,-1,-1,FILTER_IGNORE,"HomeTown")											   
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+0",cash)
 
 	elseif RandEvent == 1 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+1",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+1",cash)
 
 	elseif RandEvent == 2 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEUTRAL_MESSAGE_HEAD_+2",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+2",cash)
 
@@ -161,12 +161,12 @@ function RandomEventPositiv(SimAlias)
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+3",mod,xpplus)
 
 	elseif RandEvent == 4 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+4",cash)
 
 	elseif RandEvent == 5 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+5",cash)
 
@@ -190,7 +190,7 @@ function RandomEventPositiv(SimAlias)
 	                    "@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+7",Skills[RandSkill])
 ]]--
 	elseif RandEvent == 8 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEUTRAL_MESSAGE_HEAD_+2",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+8",cash)
 
@@ -221,22 +221,22 @@ function RandomEventPositiv(SimAlias)
 		end  
   
 	elseif RandEvent == 11 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+11",cash)	
 
 	elseif RandEvent == 12 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+12",cash)	
 
 	elseif RandEvent == 13 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_NEUTRAL_MESSAGE_HEAD_+2",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+13",cash)
 
 	elseif RandEvent == 14 then
-		CreditMoney("PlayerSim", cash, "GameStart")
+		chr_CreditMoney("PlayerSim", cash, "GameStart")
 		MsgNewsNoWait("PlayerSim","PlayerSim","","default",-1,"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+0",
 					"@L_RANDOM_EVENT_POSITIV_MESSAGE_BODY_+14",cash)
 

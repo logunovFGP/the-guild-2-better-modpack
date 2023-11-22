@@ -274,7 +274,7 @@ function DoBuyGoods(Target, CheckOnly)
 								Total = Total + (PriceOut - PriceIn)
 							else
 					
-								Result, Done = Transfer("", "", INVENTORY_STD, Source, InventoryType, ItemId, Count)
+								Result, Done = f_Transfer("", "", INVENTORY_STD, Source, InventoryType, ItemId, Count)
 								if Done<1 then
 									break
 								end

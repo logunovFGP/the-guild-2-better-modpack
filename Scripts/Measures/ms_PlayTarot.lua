@@ -34,7 +34,7 @@ function Run()
 	    StopMeasure()
 	else
 	    GetDynasty("Destination","kasse")
-	    CreditMoney("kasse",spend,"Offering")
+	    chr_CreditMoney("kasse",spend,"Offering")
         ShowOverheadSymbol("Destination",false,true,0,"%1t",spend)
        chr_SpendMoney("Owner", spend, "Offering")
 		
@@ -79,7 +79,7 @@ function TheDestiny(x)
 			if pay > 25 then
 				pay = 25
 			end
-		CreditMoney("Owner",pay,"Offering")
+		chr_CreditMoney("Owner",pay,"Offering")
 		return
 		
 	elseif x == 12 then

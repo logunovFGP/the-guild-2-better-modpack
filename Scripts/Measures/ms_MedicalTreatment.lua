@@ -210,7 +210,7 @@ function Run()
 							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 					end
 
-					CreditMoney("Hospital", v.Cost, "Offering")
+					chr_CreditMoney("Hospital", v.Cost, "Offering")
 					local TotalIncome = 0
 					local RoundIncome = 0
 					local MedicalIncome = 0

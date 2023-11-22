@@ -213,7 +213,7 @@ function Run()
 						--if not chr_SpendMoney("", OverallPrice, "CostSocial", false) then
 						if GetMoney("") > OverallPrice then
 							chr_SpendMoney("", OverallPrice, "CostSocial", false)
-							CreditMoney("DestTavern", OverallPrice, "Offering")
+							chr_CreditMoney("DestTavern", OverallPrice, "Offering")
 						else
 							MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), OverallPrice)
 							LogMessage(GetName("") .. " cannot afford the dance, abort measure. Current money: " .. GetMoney(""))
@@ -332,11 +332,11 @@ function Run()
 			--LogMessage("Now pay the dance")
 			-- Pay if the tavern does not belong to the owners dynasty
 			if GetDynastyID("DestTavern") ~= GetDynastyID("") then
-				if not SpendMoney("", 250, "CostSocial") then
+				if not chr_SpendMoney("", 250, "CostSocial") then
 					MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), 250)
 					return
 				end
-				CreditMoney("DestTavern", 250, "Offering")
+				chr_CreditMoney("DestTavern", 250, "Offering")
 		--		local OldBalance = 0
 		--		if HasProperty("Tavern", "BalanceDancingFee") then
 		--			OldBalance = GetProperty("Tavern", "BalanceDancingFee")

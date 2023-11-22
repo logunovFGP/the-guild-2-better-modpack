@@ -575,7 +575,7 @@ function Graveyard()
 		MoveSetStance("",GL_STANCE_STAND)
 		SatisfyNeed("", 4, 0.2)
 		if BuildingGetOwner("Destination", "Sitzer") then
-			CreditMoney("Destination", Rand(5)+1, "tip")
+			chr_CreditMoney("Destination", Rand(5)+1, "tip")
 		end
 		Sleep(6)
 	end
@@ -1060,11 +1060,11 @@ function GoToTavern()
 					local TavernLevel = BuildingGetLevel("Destination")
 					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
 					local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-					CreditMoney("Destination", Tip, "WaresSold")
+					chr_CreditMoney("Destination", Tip, "WaresSold")
 				end
 			else
 				local Tip = 3 * chr_GetRank("") + 1
-				CreditMoney("Destination", Tip, "WaresSold")
+				chr_CreditMoney("Destination", Tip, "WaresSold")
 			end
 
 			verweile = verweile - 1
@@ -1640,7 +1640,7 @@ function GoToDivehouse()
 			    Sleep(1)
 			    CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
 				end
-				CreditMoney("Destination",grundBetrag,"Offering")
+				chr_CreditMoney("Destination",grundBetrag,"Offering")
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1665,7 +1665,7 @@ function GoToDivehouse()
 			    PlaySound3D("","Locations/tavern/cheers_01.wav",1)
 			    CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
 				end
-				CreditMoney("Destination",grundBetrag,"Offering")
+				chr_CreditMoney("Destination",grundBetrag,"Offering")
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1699,7 +1699,7 @@ function GoToDivehouse()
 					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")	
 
 					local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-					CreditMoney("Destination",Tip,"tip")
+					chr_CreditMoney("Destination",Tip,"tip")
 				end
 			end
 			verweile = verweile - 1
@@ -1973,11 +1973,11 @@ function ReturnACredit()
 			
 			if not HasProperty("Destination","KreditKonto") then
 				local bankkonto = schuld + ecost
-				CreditMoney("Destination",bankkonto,"tip")
+				chr_CreditMoney("Destination",bankkonto,"tip")
 			else
 				local bankkonto = GetProperty("Destination","KreditKonto") + schuld
 				SetProperty("Destination","KreditKonto",bankkonto)
-				CreditMoney("Destination",ecost,"tip")
+				chr_CreditMoney("Destination",ecost,"tip")
 			end
 
 			if HasProperty("","SchuldenMeng") then
@@ -2029,7 +2029,7 @@ function BeADrunkChamp()
             PlaySound3DVariation("","CharacterFX/female_belch",1)
           end
 			    CarryObject("","",false)
-					CreditMoney("Destination",Rand(90)+10,"tip")
+					chr_CreditMoney("Destination",Rand(90)+10,"tip")
 					local newwinner = GetName("")
 					if HasProperty("Destination","BestDrunkPlayer") then
 				    local altpoint = GetProperty("Destination","BestDrunkPoints")
@@ -2076,7 +2076,7 @@ function BeADiceChamp()
 			        local wfallen = PlayAnimationNoWait("","manipulate_middle_low_r")
 			        Sleep(wfallen-1)
 			        PlaySound3D("","measures/throw_dices/throw_dices+0.wav", 1.0)
-					CreditMoney("Destination",Rand(20)+5,"tip")
+					chr_CreditMoney("Destination",Rand(20)+5,"tip")
 					local newwinner = GetName("")
 					local bonus
 					if HasProperty("Destination","BestDicePlayer") then

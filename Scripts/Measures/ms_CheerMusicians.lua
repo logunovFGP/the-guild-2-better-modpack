@@ -89,7 +89,7 @@ function CleanUp()
 			local stage = GetData("#MusicStage")
 			if GetAliasByID(stage,"stageobj") then
 				if BuildingGetOwner("stageobj","BuildingOwner") then
-					CreditMoney("BuildingOwner", tips, "Versengold")
+					chr_CreditMoney("BuildingOwner", tips, "Versengold")
 				end
 			end
 		end

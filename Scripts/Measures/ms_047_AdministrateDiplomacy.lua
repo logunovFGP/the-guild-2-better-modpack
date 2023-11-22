@@ -275,7 +275,7 @@ function Gift()
 	end
 	
 	chr_SpendMoney("MyBoss", Amount, "CostBribes")
-	CreditMoney("Destination", Amount, "IncomeBribes")
+	chr_CreditMoney("Destination", Amount, "IncomeBribes")
 	
 	-- message to the destination
 	MsgNewsNoWait("Destination", "MyBoss", "", "politics", -1,
@@ -563,7 +563,7 @@ function AnswerRequest(Amount)
 			--yes
 			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_MONEY_YES", GetID("Destination"), Amount)
 			chr_SpendMoney("Destination", Amount, "CostBribes")
-			CreditMoney("", Amount, "IncomeBribes")
+			chr_CreditMoney("", Amount, "IncomeBribes")
 			dyn_ModifyFavor("Destination", "", -GL_FAVOR_MOD_SMALL)
 		else
 			-- no
@@ -665,7 +665,7 @@ function AnswerRequestEnemies(ReqMoney)
 			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_YES", GetID("Destination"), ReqMoney)
 			dyn_ModifyFavor("Destination", "MyBoss", GL_FAVOR_MOD_SMALL) -- small bonus
 			chr_SpendMoney("Destination", ReqMoney, "CostBribes")
-			CreditMoney("", ReqMoney, "IncomeBribes")
+			chr_CreditMoney("", ReqMoney, "IncomeBribes")
 		else
 			-- decline
 			MsgNewsNoWait("", "Destination", "", "politics", -1, "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_ANSWER_REQUEST_ENEMIES_NO", GetID("Destination"), ReqMoney)
@@ -1460,7 +1460,7 @@ function Demand(RequestedState)
 		elseif accept == 1 then
 			if GetMoney("MyBoss") >= MoneyToPay then
 				chr_SpendMoney("MyBoss", MoneyToPay, "CostBribes")
-				CreditMoney("Destination", MoneyToPay, "IncomeBribes")
+				chr_CreditMoney("Destination", MoneyToPay, "IncomeBribes")
 				
 				-- set the new status and favor here
 				DynastySetDiplomacyState("MyBoss", "Destination", NewDip)
@@ -1507,7 +1507,7 @@ function Demand(RequestedState)
 		elseif Choice == 1 then
 			if GetMoney("MyBoss") >= MoneyToPay then
 				chr_SpendMoney("MyBoss", MoneyToPay, "CostBribes")
-				CreditMoney("Destination", MoneyToPay, "IncomeBribes")
+				chr_CreditMoney("Destination", MoneyToPay, "IncomeBribes")
 				
 				-- set the new status and favor here
 				DynastySetDiplomacyState("MyBoss", "DestDyn", NewDip)

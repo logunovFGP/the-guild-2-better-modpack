@@ -41,6 +41,6 @@ function Run()
 	if BuildingGetOwner("", "FormerOwner") then
 		bld_ClearBuildingStash("", "FormerOwner")
 	end
-	CreditMoney("", Value, "BuildingSold")
+	chr_CreditMoney("", Value, "BuildingSold")
 	SetState("", STATE_DEAD, true)
 end

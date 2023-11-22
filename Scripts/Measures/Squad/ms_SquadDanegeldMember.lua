@@ -163,7 +163,7 @@ function Danegeld()
 
 			--money = money + (SimGetLevel("") * 10)
 
-			CreditMoney("MercOwner", money, "IncomeBribes")
+			chr_CreditMoney("MercOwner", money, "IncomeBribes")
 			IncrementXPQuiet("", 15)
 
 			PlayAnimationNoWait("", "fetch_store_obj_R")

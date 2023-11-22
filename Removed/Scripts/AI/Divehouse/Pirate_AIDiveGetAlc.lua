@@ -40,9 +40,9 @@ function Execute()
 	smbeer = GetItemCount("Markt", 42, INVENTORY_STD)
 	wbeer = GetItemCount("Markt", 44, INVENTORY_STD)
 	if smbeer > 5 then
-	    Transfer(nil, "Divehouse", INVENTORY_SELL, "Markt", INVENTORY_STD, 42, Rand(smbeer)+5)
+	    Transfer("Divehouse", "Divehouse", INVENTORY_SELL, "Markt", INVENTORY_STD, 42, Rand(smbeer)+5)
 	elseif wbeer > 5 then
-	    Transfer(nil, "Divehouse", INVENTORY_SELL, "Markt", INVENTORY_STD, 44, Rand(wbeer)+5)
+	    Transfer("Divehouse", "Divehouse", INVENTORY_SELL, "Markt", INVENTORY_STD, 44, Rand(wbeer)+5)
 	else
 	    return
 	end

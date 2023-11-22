@@ -65,7 +65,7 @@ function Run()
 		LogMessage("1 < 2 but ".."2 > 1")
 		LogMessage("3 %< 4 but ".."5 %> 3")
 	elseif result==5 then
-		CreditMoney(Target, 120000, "HotTea")
+		chr_CreditMoney(Target, 120000, "HotTea")
 		MsgQuick("", "Geld, Geld, Geld!")
 	elseif result==6 then
 		dyn_AddFame(Target,25)

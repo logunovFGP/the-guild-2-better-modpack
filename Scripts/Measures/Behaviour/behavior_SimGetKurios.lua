@@ -36,7 +36,7 @@ function Run()
 		end
 
 		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(12)*charm
-		CreditMoney("Actor", getbeg, "Offering")
+		chr_CreditMoney("Actor", getbeg, "Offering")
 		IncrementXPQuiet("Actor", 5)
 
 		if dyn_IsLocalPlayer("Actor") then
@@ -100,7 +100,7 @@ function Run()
 		local getbeg = math.floor(spend + ((spend / 100) * begbonus)+Rand(12)*charm)
 		local warte = PlayAnimation("Owner", "manipulate_middle_low_r")
 		Sleep(1)
-   		CreditMoney("Actor", getbeg, "Offering")
+   		chr_CreditMoney("Actor", getbeg, "Offering")
 		IncrementXPQuiet("Actor", 5)
 		IncrementXPQuiet("Owner", 20)
 		

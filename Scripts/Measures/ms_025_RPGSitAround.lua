@@ -146,7 +146,7 @@ function PayTavern(Cost, Tavern)
 	--if not enough money don't pay, just stop measure by standing up
 		if (GetMoney("") >= Cost) then
 				chr_SpendMoney("", Cost, "Misc")
-				CreditMoney(Tavern,Cost,"Misc")
+				chr_CreditMoney(Tavern,Cost,"Misc")
 				feedback_OverheadMoney("", -Cost)
 				PlaySound3D("","Effects/coins_to_counter+0.wav", 1.0)
 		else

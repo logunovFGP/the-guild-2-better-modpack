@@ -43,7 +43,7 @@ function Run()
 			ShowOverheadSymbol("", false, false, 0, "%1t", -500)
 		end
 
-		CreditMoney("Destination", MoneyToPay , "LaborOfLove")
+		chr_CreditMoney("Destination", MoneyToPay , "LaborOfLove")
 	end
 	MsgSay("","@L_PIRATE_LABOROFLOVE_TALK_START")
 	SetMeasureRepeat(TimeOut)
@@ -81,7 +81,7 @@ function Run()
 			chr_SpendMoney("", spend, "LaborHansel")
 		end
 
-		CreditMoney("Destination", spend, "LaborOfLove")
+		chr_CreditMoney("Destination", spend, "LaborOfLove")
 		IncrementXPQuiet("", 15)
 	end
 

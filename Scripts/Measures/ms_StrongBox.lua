@@ -68,13 +68,13 @@ function Run()
 				DynID,strongboxvalue,"@L_RESIDENCE_STRONGBOX_BODY_+4",value1,value2,value3)
 			
 			if value == "B1" then
-				CreditMoney("dynasty",value1,"strongbox")
+				chr_CreditMoney("dynasty",value1,"strongbox")
 				SetProperty("", "strongbox", strongboxvalue - value1)
 			elseif value == "B2" then
-				CreditMoney("dynasty",value2,"strongbox")
+				chr_CreditMoney("dynasty",value2,"strongbox")
 				SetProperty("", "strongbox", strongboxvalue - value2)
 			elseif value == "B3" then
-				CreditMoney("dynasty",strongboxvalue,"strongbox")
+				chr_CreditMoney("dynasty",strongboxvalue,"strongbox")
 				SetProperty("", "strongbox", 0)
 			end
 		end

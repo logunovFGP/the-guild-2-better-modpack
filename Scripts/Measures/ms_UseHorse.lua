@@ -86,7 +86,7 @@ function CleanUp()
 			local NewDistance = math.floor(GetDistance("", "Destination")/4000)
 			local refunds = GetData("costs") - 250 - 250*NewDistance
 			if refunds > 0 then
-				CreditMoney("", refunds, "")
+				chr_CreditMoney("", refunds, "")
 				MsgQuick("","@L_USE_HORSE_CANCEL_+0", GetID(""), refunds)
 			end
 		end

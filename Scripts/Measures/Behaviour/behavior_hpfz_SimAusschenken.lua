@@ -76,7 +76,7 @@ function HandelStuff()
 		
 		local GPreis = ItemGetBasePrice(Lager)
 		Eingenommen = GPreis + (Gewinn * Feilschen)
-		CreditMoney("Actor",Eingenommen,"Offering")
+		chr_CreditMoney("Actor",Eingenommen,"Offering")
 		IncrementXPQuiet("Actor",5)
 		ShowOverheadSymbol("Actor",false,true,0,"%1t",Eingenommen)
     RemoveItems("Actor", Lager, 1)

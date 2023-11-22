@@ -97,33 +97,14 @@ function UnloadAll(CartAlias, DestAlias)
 			BuildingGetCity(DestAlias, "BargCity")
 			local ItemStock = GetItemCount(DestAlias, ItemId)
 			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then
-				-- Add some bargain-bonus on market buys
-				if BuildingGetClass(DestAlias) == GL_BUILDING_CLASS_MARKET then
-					if GetHomeBuilding(CartAlias, "Business") then
-						if BuildingGetOwner("Business", "BargBoss") then
-							if GetSettlement(DestAlias, "BargCity") then
-								CityGetLocalMarket("BargCity", "BargMarket")
-								EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket")*ItemCount
-								BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("BargBoss", BARGAINING)*2)/100))
-								if DynastyIsAI("BargBoss") then -- make sure the AI actually pays for the goods
-									chr_CreditMoney("BargBoss", EstimatedMoney, BalanceSheet)
-								end
-								if BargainMoney > 0 then
-									CreditMoney(CartAlias, BargainMoney, BalanceSheet)
-									ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)", BargainMoney)
-								end
-							end
-						end
-					end
-				end
 				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
 				
-				local Error, ItemTransfered = Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
+				local Error, ItemTransfered = f_Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
 				ItemStock = GetItemCount(DestAlias, ItemId)
 				--LogMessage("Stock of "..ItemGetName(ItemId).." is now at "..ItemStock)
 			else
-				Transfer(CartAlias, DestAlias, INVENTORY_SELL, CartAlias, INVENTORY_STD, ItemId, ItemCount)
+				f_Transfer(CartAlias, DestAlias, INVENTORY_SELL, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 			end
 		end
 		Sleep(0.4)
@@ -176,14 +157,6 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 		return Count, ShoppingList
 	end
 	
-	local BalanceSheet = "WaresBought"
-	local CartType = CartGetType(CartAlias)
-	if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
-		CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
-	
-		BalanceSheet = "WaresSeaBought"
-	end
-	
 	local SlotCount, CartSlotSize = cart_GetCartSlotInfo(CartAlias)
 	local BldInv = INVENTORY_STD
 	if GetDynastyID(CartAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
@@ -206,34 +179,15 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 		local ItemStock = GetItemCount(BldAlias, ItemId)
 	--	LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
 		if ItemId and ReqAmount > 0 then
-			local Error, ItemTransfered = Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			local Error, ItemTransfered = f_Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
 			if ItemTransfered < ReqAmount and GetDynastyID(CartAlias) == GetDynastyID(BldAlias) then
 				-- also check INV_SELL for own buildings
-				local Error2, ItemTransfered2 = Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, INVENTORY_SELL, ItemId, math.min((CartSlotSize-ItemTransfered), (ReqAmount-ItemTransfered)))
+				local Error2, ItemTransfered2 = f_Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, INVENTORY_SELL, ItemId, math.min((CartSlotSize-ItemTransfered), (ReqAmount-ItemTransfered)))
 				if ItemTransfered2 then
 					ItemTransfered = ItemTransfered + ItemTransfered2
 				end
 			end
-			
-			-- Add some bargain-bonus on market buys
-			if BuildingGetClass(BldAlias) == GL_BUILDING_CLASS_MARKET then
-				if GetHomeBuilding(CartAlias, "Business") then
-					if BuildingGetOwner("Business", "BargBoss") then
-						if GetSettlement(BldAlias, "BargCity") then
-							CityGetLocalMarket("BargCity", "BargMarket")
-							EstimatedMoney = ItemGetPriceSell(ItemId, "BargMarket") * ItemTransfered
-							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("BargBoss", BARGAINING)*2)/100))
-							if DynastyIsAI("BargBoss") then -- make sure the AI actually pays for the goods
-								chr_SpendMoney("BargBoss", EstimatedMoney, BalanceSheet)
-							end
-							if BargainMoney > 0 then
-								CreditMoney(CartAlias, BargainMoney, BalanceSheet)
-								ShowOverheadSymbol(CartAlias, false, false, 0, "@L(+ %1t)", BargainMoney)
-							end
-						end
-					end
-				end
-			end
+
 			--LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))
 			ItemStock = GetItemCount(BldAlias, ItemId)
 			--LogMessage("New stock is now "..ItemStock)

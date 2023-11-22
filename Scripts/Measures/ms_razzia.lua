@@ -88,7 +88,7 @@ MeasureSetNotRestartable()
 				local money = (((GetSkillValue("", EMPATHY)) + (GetSkillValue("", FIGHTING)))*75)
 				MsgSay("", "_MERCENARY_RAZZIA_SPEECH_ATTACK_END_+0")
 				PlayAnimation("","manipulate_bottom_r")
-				CreditMoney("", money,"")
+				chr_CreditMoney("", money,"")
 				chr_SpendMoney("Destination", money, "CostRobbers")
 				feedback_MessageMilitary("",
 				"@L_MERCENARY_RAZZIA_MSG_END_HEAD_+0",
@@ -142,7 +142,7 @@ MeasureSetNotRestartable()
 		Sleep(Time-2)
 	end
 	local money2 = (((GetSkillValue("", EMPATHY)) + (GetSkillValue("", FIGHTING)))*125)
-	CreditMoney("", money2,"")
+	chr_CreditMoney("", money2,"")
 	feedback_MessageMilitary("",
 		"@L_MERCENARY_RAZZIA_MSG_END_HEAD_+1",
 		"@L_MERCENARY_RAZZIA_MSG_END_BODY_+2",

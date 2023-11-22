@@ -67,7 +67,7 @@ function Run()
 		end
 	end
 
-	CreditMoney("", ContractMoney, "GuildContract")
+	chr_CreditMoney("", ContractMoney, "GuildContract")
 
 	if not GetSettlementID("")==GetID("city") then
 		ContractFame = ContractFame - 2

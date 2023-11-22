@@ -155,7 +155,7 @@ function Dance()
 			chr_SpendMoney(DestAlias, spend, "LaborOfLove")
 		end
 		
-		CreditMoney("", spend, "LaborOfLove")
+		chr_CreditMoney("", spend, "LaborOfLove")
 		IncrementXPQuiet("", 10)
 		AddImpact(DestAlias,"FullOfLove",1,2)
 		end

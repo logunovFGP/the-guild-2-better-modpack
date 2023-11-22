@@ -195,7 +195,7 @@ function Run()
 							StopMeasure()
 							return
 						end
-						CreditMoney("Tavern", Price, "Offering")
+						chr_CreditMoney("Tavern", Price, "Offering")
 					end
 					
 					AddImpact("Destination", "ReceivedBath", 1, 6)

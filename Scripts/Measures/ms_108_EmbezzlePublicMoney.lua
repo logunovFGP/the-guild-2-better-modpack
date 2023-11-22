@@ -40,7 +40,7 @@ function Run()
 	
 	SetMeasureRepeat(TimeOut)
 	chr_SpendMoney("city", money, "CostThiefs")
-	CreditMoney("", money, "IncomeThiefs")
+	chr_CreditMoney("", money, "IncomeThiefs")
 	
 	feedback_MessageCharacter("Owner",
 						"@L_PRIVILEGES_108_EMBEZZLEPUBLICMONEY_SUCCESS_HEAD_+0",

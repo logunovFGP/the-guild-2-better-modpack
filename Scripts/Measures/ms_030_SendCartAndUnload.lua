@@ -86,7 +86,7 @@ function Run()
 			
 				BalanceSheet = "WaresSeaSold"
 			end
-			CreditMoney("", BargainMoney, BalanceSheet)
+			chr_CreditMoney("", BargainMoney, BalanceSheet)
 			ShowOverheadSymbol("", false, false, 0, "@L(+ %1t)", BargainMoney)
 		end
 		Sleep(0.5)

@@ -501,3 +501,121 @@ function GetLocalPolitician(SimAlias, SameDyn, ResultAlias)
 	
 	return false
 end
+
+function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
+	local RequiresPayment = (GetDynastyID(Buyer) ~= GetDynastyID(Seller))
+	local UseBuyPrice = BuildingGetClass(Seller) == GL_BUILDING_CLASS_MARKET
+	local UseSellPrice = BuildingGetClass(Buyer) == GL_BUILDING_CLASS_MARKET
+	
+	local PriceBefore = ItemGetBasePrice(Item)
+	if UseBuyPrice 
+			and GetHomeBuilding(Buyer, "TransferHomeBld")
+			and BuildingGetOwner("TransferHomeBld", "TransferBargOwner")
+			and GetSettlement(Seller, "TransferBargCity") then
+		CityGetLocalMarket("TransferBargCity", "TransferBargMarket")
+		PriceBefore = ItemGetPriceBuy(Item, "TransferBargMarket")
+	end
+	
+	if UseSellPrice 
+			and GetHomeBuilding(Seller, "TransferHomeBld")
+			and BuildingGetOwner("TransferHomeBld", "TransferBargOwner")
+			and GetSettlement(Buyer, "TransferBargCity") then
+		CityGetLocalMarket("TransferBargCity", "TransferBargMarket")
+		PriceBefore = ItemGetPriceSell(Item, "TransferBargMarket")
+	end
+	
+	local ErrorNumber, TransfItemCount = Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
+	--LogTransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
+	if not RequiresPayment then
+		return ErrorNumber, TransfItemCount
+	end
+
+	local PriceAfter = ItemGetBasePrice(Item)
+	if UseBuyPrice and AliasExists("TransferBargMarket") then
+		PriceAfter = ItemGetPriceBuy(Item, "TransferBargMarket")
+	end
+	
+	if UseSellPrice and AliasExists("TransferBargMarket") then
+		PriceAfter = ItemGetPriceSell(Item, "TransferBargMarket")
+	end
+	
+	-- average price per item
+	local Price = (PriceBefore + PriceAfter) / 2 -- still an estimate, but closer then just taking one of the two
+	
+	-- total price for all transfered items
+	local TotalPrice = math.floor(TransfItemCount * Price)
+	
+	-- Calc bargaining bonus
+	local BargainMoney = math.floor(TotalPrice*((GetSkillValue("TransferBargOwner", BARGAINING)*2)/100))
+	
+	-- give normal bargaining bonus for player
+	if DynastyIsPlayer("TransferBargOwner") then
+		local BalanceSheet = "WaresSold"
+		if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
+			CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
+			BalanceSheet = "WaresSeaSold"
+		end
+		chr_CreditMoney("TransferBargOwner", BargainMoney, BalanceSheet)
+		Sleep(0.5)
+		ShowOverheadSymbol(Executer, false, false, 0, "@L(+ %1t)", BargainMoney)
+		return ErrorNumber, TransfItemCount, TotalPrice
+	end
+	
+	-- use workaround for AI: SpendMoney and CreditMoney
+	if UseSellPrice then
+		-- Selling action (can only be at market)
+		TotalPrice = math.max(0, TotalPrice + BargainMoney)
+		chr_CreditMoney("TransferBargOwner", TotalPrice, "WaresSold")
+	else
+		-- buying action (may be at market or other workshop)
+		TotalPrice = math.max(0, TotalPrice - BargainMoney)
+		chr_SpendMoney(Buyer, TotalPrice, "WaresBought")
+		if BuildingGetClass(Seller) ~= GL_BUILDING_CLASS_MARKET and DynastyIsAI(Seller) then
+			chr_CreditMoney(Seller, TotalPrice, "WaresSold")
+		end
+	end
+	return ErrorNumber, TransfItemCount, TotalPrice
+end
+
+function LogTransferError(ErrorNumber, BuyerAlias, SellerAlias, ItemId, ItemCount)
+	if ErrorNumber==TRANSFER_SUCCESS then
+		return
+	end
+
+	local TransferErrorList= 
+	{
+		[TRANSFER_RESULT_UNKNOWN] = "Unknown Error";
+		[TRANSFER_ERROR_ILLEGAL] = "Illegal";
+		[TRANSFER_ERROR_NO_MARKET] = "No market";
+		[TRANSFER_ERROR_ILLEGAL_ITEM] = "Illegal item";
+		[TRANSFER_ERROR_OUT_OF_RANGE] = "Out of range";
+		[TRANSFER_ERROR_ILLEGAL_EXECUTER] = "Illegal executer";
+		[TRANSFER_ERROR_NO_ITEM_AT_SOURCE] = "No item at source";
+		[TRANSFER_ERROR_NO_SPACE_AT_DEST] = "No space at destination";
+		[TRANSFER_ERROR_ACCESS_DENIED] = "Access denied";
+		[TRANSFER_ERROR_NOT_COMPLETE_TRANSFER] = "not enough items for a complete transfer";
+		[TRANSFER_ERROR_NOT_ENOUGH_MONEY] = "not enough money";
+		[TRANSFER_ERROR_INVALID_ITEM] = "Invalid item"
+	}
+	
+	local Text = TransferErrorList[ErrorNumber]
+	if Text then
+		local	BuyerName = "(unknown)"
+		if AliasExists(BuyerAlias) then
+			BuyerName = GetName(BuyerAlias)
+		end
+
+		local	SellerName = "(unknown)"
+		if AliasExists(SellerAlias) then
+			SellerName = GetName(SellerAlias)
+		end
+		
+		local	ItemName = ItemGetName(ItemId) or "(unknown)"
+		ItemCount = ItemCount or -1
+
+		local Msg = string.format("LogTransferError::%i %s : Transfer %i %s from %s to %s", ErrorNumber, Text, ItemCount, ItemName, SellerName, BuyerName)
+		LogMessage("LogTransferError::" .. ErrorNumber .. " " .. Text)
+	end
+end
+
+

@@ -29,7 +29,7 @@ function ClearBuildingStash(BldAlias, OwnerAlias)
 		local invest = GetProperty(BldAlias, "BankAccount")
 		RemoveProperty(BldAlias, "BankAccount")
 		if AliasExists(OwnerAlias) then
-			CreditMoney(OwnerAlias, invest, "Credit")
+			chr_CreditMoney(OwnerAlias, invest, "Credit")
 			-- notify former owner
 			MsgNewsNoWait(OwnerAlias, BldAlias, "", "building", -1, 
 						"@L_BUYBUILDING_CREDIT_HEAD_+0",
@@ -932,7 +932,7 @@ function RemoveCart(BldAlias, CartAlias)
 				end
 			end
 			if not HasItems then -- only remove cart if it is empty
-				CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
+				chr_CreditMoney(BldAlias, 250, "misc") -- add some money for compensation (needs testing)
 				InternalRemove("CartAlias")
 			end
 		end

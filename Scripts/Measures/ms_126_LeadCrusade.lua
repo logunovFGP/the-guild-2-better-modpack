@@ -172,7 +172,7 @@ function Run()
 	feedback_MessagePolitics("","@L_PRIVILEGES_LEADCRUSADE_MSG_CRUSADE_END_HEAD_+0",
 					"@L_PRIVILEGES_LEADCRUSADE_MSG_CRUSADE_END_BODY_+1",Reward,ItemGetLabel(ItemReward))
 	AddItems("", ItemReward, 1, INVENTORY_STD)
-	CreditMoney("", Reward, "IncomeOther")
+	chr_CreditMoney("", Reward, "IncomeOther")
 	
 	local xp = GetData("BaseXP")+25*Skill
 	chr_GainXP("", xp)

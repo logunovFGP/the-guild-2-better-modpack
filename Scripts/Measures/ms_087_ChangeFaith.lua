@@ -73,7 +73,7 @@ function Run()
 						MsgQuick("","@L_GENERAL_INFORMATION_INVENTORY_NOT_ENOUGH_MONEY")
 						StopMeasure()
 					else
-						CreditMoney("church", 100, "IncomeEducation")
+						chr_CreditMoney("church", 100, "IncomeEducation")
 						feedback_MessagePolitics("", ""..Prefix.."MSG_HEAD", ""..Prefix.."MSG_BODY", GetID(""), GetID("church"))
 						SetMeasureRepeat(TimeOut)
 						chr_GainXP("", GetData("BaseXP"))

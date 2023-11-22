@@ -150,12 +150,12 @@ function Run()
 	    invest = BigMoney
 	elseif kreditR == 4 then
 		invest = GetProperty("BuildingPointer","KreditKonto")
-		CreditMoney("BankChief",invest,"Credit")
+		chr_CreditMoney("BankChief",invest,"Credit")
 		SetProperty("BuildingPointer","KreditKonto",0)
 		StopMeasure()
 	elseif kreditR == 5 then
 		invest = GetProperty("BuildingPointer","KreditKonto")
-		CreditMoney("BankChief",invest,"Credit")
+		chr_CreditMoney("BankChief",invest,"Credit")
 		RemoveProperty("BuildingPointer","KreditKonto")
 		StopMeasure()
 	elseif kreditR == 6 then

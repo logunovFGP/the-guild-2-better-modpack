@@ -1,6 +1,6 @@
 function Run()
 
-CreditMoney("",500,"misc")
+chr_CreditMoney("",500,"misc")
 
 end
 

@@ -1209,9 +1209,9 @@ function Go()
 		local TrialIncome = GetProperty("settlement", "TrialIncome") or 0
 		TrialIncome = TrialIncome - TrialCosts
 		SetProperty("settlement", "TrialIncome", TrialIncome)
-		CreditMoney("judge", JudgeMoney, "Office")
-		CreditMoney("assessor1", AssessorMoney, "Office")
-		CreditMoney("assessor2", AssessorMoney, "Office")
+		chr_CreditMoney("judge", JudgeMoney, "Office")
+		chr_CreditMoney("assessor1", AssessorMoney, "Office")
+		chr_CreditMoney("assessor2", AssessorMoney, "Office")
 	end
 
 	--Be done

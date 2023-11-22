@@ -57,7 +57,7 @@ function Run()
 					SetData("Blocked", 0)
 				end
 				SpendMoney("", Cost, "CostIndulgence")
-				CreditMoney("church", (Cost*0.5), "IncomeIndulgence")
+				chr_CreditMoney("church", (Cost*0.5), "IncomeIndulgence")
 				SetMeasureRepeat(TimeOut)
 				for i=0,ListSize("CrimeList")-1,1 do
 					ListGetElement("CrimeList", i, "tmp")
