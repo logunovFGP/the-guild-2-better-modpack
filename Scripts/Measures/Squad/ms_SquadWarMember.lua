@@ -111,13 +111,11 @@ function Phase1()
 					if not MeasureRun("", "Build", "AttackEnemy", true) then
 						return false
 					end
-					end
 				end
 			end
 			
 			return
 		end
-		
 		
 		WaitTime = GetGametime() + 0.5 + Rand(20)*0.1
 		SetData("WaitTime", WaitTime)
