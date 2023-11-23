@@ -1,5 +1,5 @@
 function Weight()
-	if not ReadyToRepeat("dynasty", "AI_Expand") then
+	if not ReadyToRepeat("dynasty", "BasicAI_Expand") then
 		return 0
 	end
 
@@ -13,5 +13,5 @@ end
 function Execute()
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 48 - Difficulty * 6 -- easy: 2 days, medium: 3 days, hard: 1 days
-	SetRepeatTimer("dynasty", "AI_Expand", Timer)
+	SetRepeatTimer("dynasty", "BasicAI_Expand", Timer)
 end

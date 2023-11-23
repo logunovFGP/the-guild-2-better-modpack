@@ -1,5 +1,5 @@
 function Weight()
-	if not ReadyToRepeat("dynasty", "AI_HomeLevelUp") then
+	if not ReadyToRepeat("dynasty", "BasicAI_HomeLevelUp") then
 		return 0
 	end
 	
@@ -58,7 +58,7 @@ function Execute()
 	
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 96 - Difficulty*12
-	SetRepeatTimer("dynasty", "AI_HomeLevelUp", Timer)	
+	SetRepeatTimer("dynasty", "BasicAI_HomeLevelUp", Timer)	
 	
 	local BuildLevel = GetData("Level")
 	local Proto = ScenarioFindBuildingProto(1, 2, BuildLevel+1,-1)

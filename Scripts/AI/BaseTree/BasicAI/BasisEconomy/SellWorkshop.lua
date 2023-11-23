@@ -5,7 +5,7 @@ function Weight()
 		return 0
 	end
 	
-	if not ReadyToRepeat("dynasty", "AI_SellShop") then
+	if not ReadyToRepeat("dynasty", "BasicAI_SellShop") then
 		return 0
 	end
 
@@ -17,17 +17,11 @@ function Weight()
 		return 0
 	end
 	
---	if BuildingGetOwner("sd_Workshop", "MyOwner") then
---		if SimGetOfficeID("MyOwner") >= 0 then
---			return 0
---		end
---	end
-	
 	return 2
 end
 
 function Execute()
-	SetRepeatTimer("dynasty", "AI_SellShop", 12)
+	SetRepeatTimer("dynasty", "BasicAI_SellShop", 12)
 	BuildingSetForSale("sd_Workshop", true)
 	SetState("sd_Workshop", STATE_SELLFLAG, true)
 end

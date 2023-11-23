@@ -8,7 +8,7 @@ function Weight()
 		return 20
 	end
 	
-	if not ReadyToRepeat("dynasty", "AI_NobilityTitle") then
+	if not ReadyToRepeat("dynasty", "BasicAI_NobilityTitle") then
 		return 0
 	end
 	
@@ -43,7 +43,7 @@ end
 function Execute()
 	local Difficulty = ScenarioGetDifficulty()
 	local Repeat = 48 - Difficulty*6 
-	SetRepeatTimer("dynasty", "AI_NobilityTitle", Repeat)
+	SetRepeatTimer("dynasty", "BasicAI_NobilityTitle", Repeat)
 	
 	MeasureRun("SIM", nil, "BuyNobilityTitle", false)
 	return
