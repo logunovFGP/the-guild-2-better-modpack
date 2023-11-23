@@ -51,8 +51,6 @@ function Run()
 	local ItemId, ItemCount
 	local Amount = 0
 	local Error, ItemTransfered
-	local BargainMoney = 0
-	local EstimatedMoney = 0
 	local Found = false
 	local CurrentSlot = Slots-1
 	
@@ -60,36 +58,11 @@ function Run()
 		ItemId, ItemCount = InventoryGetSlotInfo("", CurrentSlot, InventoryType)
 		
 		if ItemId and ItemCount then
-			-- Add some bargain-bonus on market sells
-			if BuildingGetClass("Destination") == GL_BUILDING_CLASS_MARKET then
-				if GetHomeBuilding("", "Business") then
-					if BuildingGetOwner("Business", "MyBoss") then
-						if GetSettlement("", "MyCity") then
-							CityGetLocalMarket("MyCity", "MyMarket")
-							EstimatedMoney = ItemGetPriceSell(ItemId, "MyMarket")*ItemCount
-							BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
-						end
-					end
-				end
-			end
-			Error, ItemTransfered = Transfer("", "Destination", INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
+			Error, ItemTransfered = f_Transfer("", "Destination", INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
 			Amount = Amount + ItemTransfered
 			Found = true
 		end
 		CurrentSlot = CurrentSlot - 1
-		Sleep(0.5)
-		if BargainMoney > 0 then
-			local BalanceSheet = "WaresSold"
-			local CartType = CartGetType("")
-			if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
-				CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
-			
-				BalanceSheet = "WaresSeaSold"
-			end
-			chr_CreditMoney("", BargainMoney, BalanceSheet)
-			ShowOverheadSymbol("", false, false, 0, "@L(+ %1t)", BargainMoney)
-		end
-		Sleep(0.5)
 	end
 	
 	if not HasData("IsShip") then

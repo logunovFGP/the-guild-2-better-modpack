@@ -148,8 +148,8 @@ function Equip(SimAlias, SourceAlias, MoveToAlias, ItemId)
 	local InUse = InventoryGetSlotInfo("", Slot-1, INVENTORY_EQUIPMENT)
 	if InUse and InUse>0 then
 		-- das alte item verkaufen
-		Transfer("", SourceAlias, INVENTORY_STANDARD, "", INVENTORY_EQUIPMENT, InUse, 1)
+		f_Transfer("", SourceAlias, INVENTORY_STANDARD, "", INVENTORY_EQUIPMENT, InUse, 1)
 	end
-	Transfer("", "", INVENTORY_EQUIPMENT, SourceAlias, INVENTORY_STANDARD, ItemId, 1)
+	f_Transfer("", "", INVENTORY_EQUIPMENT, SourceAlias, INVENTORY_STANDARD, ItemId, 1)
 	
 end

@@ -86,12 +86,9 @@ function UnloadAll(CartAlias, DestAlias)
 	
 	--do the transfer
 	local	ItemId, ItemCount
-	local	Error, ItemTransfered
-	local BargainMoney = 0
-	local EstimatedMoney = 0
 	
 	for i = 1, Slots do
-		local ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
+		ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
 		
 		if ItemId and ItemCount then
 			BuildingGetCity(DestAlias, "BargCity")
@@ -168,8 +165,6 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	local CurrentItem = 1 
 	local OpenSlots = SlotCount
 	local ItemId, ReqAmount
-	local BargainMoney = 0
-	local EstimatedMoney = 0
 	
 	while OpenSlots > 0 and CurrentItem <= Count do
 	--	LogMessage("WorldTrader ID: "..GetID(CartAlias) .. " open slots: " .. OpenSlots)

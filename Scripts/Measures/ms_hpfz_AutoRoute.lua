@@ -407,29 +407,8 @@ function LoadCart(SrcID, DestID, station, type, itemCount)
 	local BargainMoney = 0
 	local EstimatedMoney = 0
 	local prevCount = GetItemCount("", type, INVENTORY_STD)
-	Transfer("", "", INVENTORY_STD, station, INVENTORY_STD, type, itemCount)
-	local actualCount = GetItemCount("", type, INVENTORY_STD) - prevCount
-	if SrcID ~= DestID and actualCount > 0 then
-		GetDynasty("", "bsitzer") -- Dynastie des Karrens
-		-- add bargaining bonus
-		if BuildingGetClass(station) == GL_BUILDING_CLASS_MARKET then
-			if GetHomeBuilding("", "Business") then
-				if BuildingGetOwner("Business", "MyBoss") then
-					if GetSettlement(station, "MyCity") then
-						CityGetLocalMarket("MyCity", "MyMarket")
-						EstimatedMoney = ItemGetPriceBuy(type, "MyMarket")*actualCount
-						BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
-					end
-				end
-			end
-		end
-	end
-	ms_hpfz_autoroute_UpdateBalance("homeBuilding", 0 - math.abs(EstimatedMoney))
-	if BargainMoney > 0 then
-		Sleep(0.5)
-		chr_CreditMoney("homeBuilding", BargainMoney, "WaresSold")
-		ShowOverheadSymbol("", false, false, 0, "@L(+ %1t)", BargainMoney)
-	end
+	local Error, ItemsTransfered, Price = f_Transfer("", "", INVENTORY_STD, station, INVENTORY_STD, type, itemCount)
+	ms_hpfz_autoroute_UpdateBalance("homeBuilding", 0 - math.abs(Price))
 end
 
 function SetRouteData(StationCount, Stations)
@@ -486,35 +465,20 @@ function Unload(Station, Type, Count, Threshold)
 	if itemCount <= 0 then
 		return true -- nothing to unload, I'm done here
 	end
-	local BargainMoney = 0
-	local EstimatedMoney = 0
-	if (BuildingGetClass(Station) == GL_BUILDING_CLASS_MARKET) then
-		if GetHomeBuilding("", "Business") then
-			if BuildingGetOwner("Business", "MyBoss") then
-				if GetSettlement(Station, "MyCity") then
-					CityGetLocalMarket("MyCity", "MyMarket")
-					-- check threshold
-					if Threshold > 0 then
-						local Ratio = ItemGetPriceSell(Type, Station)*100/ItemGetBasePrice(Type)
-						if Ratio < Threshold then
-							return false
-						end
-					end
-					-- check threshold
-					EstimatedMoney = ItemGetPriceSell(Type, "MyMarket")*itemCount
-					BargainMoney = math.floor(EstimatedMoney*((GetSkillValue("MyBoss", BARGAINING)*2)/100))
-				end
-			end
+	if Threshold > 0 and (BuildingGetClass(Station) == GL_BUILDING_CLASS_MARKET) 
+			and GetHomeBuilding("", "Business") 
+			and BuildingGetOwner("Business", "MyBoss") 
+			and GetSettlement(Station, "MyCity") then
+		CityGetLocalMarket("MyCity", "MyMarket")
+		-- check threshold
+		local Ratio = ItemGetPriceSell(Type, Station)*100/ItemGetBasePrice(Type)
+		if Ratio < Threshold then
+			return false
 		end
 	end
 	
-	Transfer("", Station, INVENTORY_STD, "", INVENTORY_STD, Type, itemCount)
-	ms_hpfz_autoroute_UpdateBalance("homeBuilding", math.abs(EstimatedMoney))
-	if BargainMoney > 0 then
-		Sleep(0.5)
-		chr_CreditMoney("homeBuilding", BargainMoney, "WaresSold")
-		ShowOverheadSymbol("", false, false, 0, "@L(+ %1t)", BargainMoney)
-	end
+	local Error, ItemsTransfered, Price = f_Transfer("", Station, INVENTORY_STD, "", INVENTORY_STD, Type, itemCount)
+	ms_hpfz_autoroute_UpdateBalance("homeBuilding", math.abs(Price))
 	if GetItemCount("", Type, INVENTORY_STD) > Count then
 		return false
 	end

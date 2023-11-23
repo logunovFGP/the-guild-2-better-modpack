@@ -50,7 +50,7 @@ function Execute()
 			Price = ItemGetPriceSell("SmallBeer", "Market") * NeedSmallBeer
 			if GetMoney("Divehouse") > Price then
 				if SpendMoney("Divehouse", Price, "misc") then
-						Transfer("Divehouse", nil, INVENTORY_STD, "Market", INVENTORY_STD, "SmallBeer", NeedSmallBeer)
+						f_Transfer("Divehouse", nil, INVENTORY_STD, "Market", INVENTORY_STD, "SmallBeer", NeedSmallBeer)
 						AddItems("Divehouse", "SmallBeer", NeedSmallBeer, INVENTORY_STD)
 				end
 			end
@@ -63,7 +63,7 @@ function Execute()
 			Price = ItemGetPriceSell("WheatBeer", "Market") * NeedWheatBeer
 			if GetMoney("Divehouse") > Price then
 				if SpendMoney("Divehouse", Price, "misc") then
-					Transfer("Divehouse", nil, INVENTORY_STD, "Market", INVENTORY_STD, "WheatBeer", NeedWheatBeer)
+					f_Transfer("Divehouse", nil, INVENTORY_STD, "Market", INVENTORY_STD, "WheatBeer", NeedWheatBeer)
 					AddItems("Divehouse", "WheatBeer", NeedWheatBeer, INVENTORY_STD)
 				end
 			end

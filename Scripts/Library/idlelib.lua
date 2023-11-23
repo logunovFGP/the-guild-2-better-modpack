@@ -796,7 +796,7 @@ function Illness()
 		
 		if ItemToBuy and CityGetRandomBuilding("City", 5, GL_BUILDING_TYPE_MARKET,-1,-1, FILTER_IGNORE, "Destination") then
 			f_MoveTo("","Destination", GL_MOVESPEED_RUN, 100)
-			Transfer(nil, nil, INVENTORY_STD, "Market", INVENTORY_STD, ItemToBuy,1)
+			f_Transfer("", "", INVENTORY_STD, "Market", INVENTORY_STD, ItemToBuy,1)
 		end
 		
 		PlayAnimation("", "talk")
@@ -1178,9 +1178,9 @@ function RepairHome(Building)
 	if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID(Building) then
 		-- buy some material at market		
 		if Rand(100)<50 then
-			Transfer(nil,nil,INVENTORY_STD,"Destination",INVENTORY_STD,"BuildMaterial",1)
+			f_Transfer("","",INVENTORY_STD,"Destination",INVENTORY_STD,"BuildMaterial",1)
 		else
-			Transfer(nil,nil,INVENTORY_STD,"Destination",INVENTORY_STD,"Tool",1)
+			f_Transfer("","",INVENTORY_STD,"Destination",INVENTORY_STD,"Tool",1)
 		end
 		
 		MoveSetActivity("","carry")

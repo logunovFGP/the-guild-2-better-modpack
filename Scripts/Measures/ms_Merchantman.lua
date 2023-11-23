@@ -311,7 +311,7 @@ function SellGoods()
 	for Number = Slots-1, 0, -1 do
 		ItemId, ItemCount = InventoryGetSlotInfo("", Number, InventoryType)
 		if ItemId and ItemCount then
-			Transfer("", Target, INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
+			f_Transfer("", Target, INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
 		end
 	end
 	Sleep(1)
