@@ -408,7 +408,9 @@ function LoadCart(SrcID, DestID, station, type, itemCount)
 	local EstimatedMoney = 0
 	local prevCount = GetItemCount("", type, INVENTORY_STD)
 	local Error, ItemsTransfered, Price = f_Transfer("", "", INVENTORY_STD, station, INVENTORY_STD, type, itemCount)
-	ms_hpfz_autoroute_UpdateBalance("homeBuilding", 0 - math.abs(Price))
+	if Price then
+		ms_hpfz_autoroute_UpdateBalance("homeBuilding", 0 - math.abs(Price))
+	end
 end
 
 function SetRouteData(StationCount, Stations)
@@ -478,7 +480,9 @@ function Unload(Station, Type, Count, Threshold)
 	end
 	
 	local Error, ItemsTransfered, Price = f_Transfer("", Station, INVENTORY_STD, "", INVENTORY_STD, Type, itemCount)
-	ms_hpfz_autoroute_UpdateBalance("homeBuilding", math.abs(Price))
+	if Price then
+		ms_hpfz_autoroute_UpdateBalance("homeBuilding", math.abs(Price))
+	end
 	if GetItemCount("", Type, INVENTORY_STD) > Count then
 		return false
 	end
