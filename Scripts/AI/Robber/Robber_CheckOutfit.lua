@@ -7,8 +7,12 @@ function Weight()
 	if not SimGetWorkingPlace("SIM", "Place") then
 		return 0
 	end
+	
+	if not BuildingGetOwner("Place", "RobberBoss") then
+		return 0
+	end
 
-	if GetMoney("Place") < 3000 then
+	if GetMoney("RobberBoss") < 3000 then
 		return 0
 	end
 

@@ -8,7 +8,11 @@ function Weight()
 		return 0
 	end
 	
-	if GetMoney("Divehouse") < 2000 then
+	if not BuildingGetOwner("Divehouse", "DiveBoss") then
+		return 0
+	end
+	
+	if GetMoney("DiveBoss") < 2000 then
 		return 0
 	end
 
@@ -48,8 +52,8 @@ function Execute()
 	if NeedSmallBeer > 0 then
 		if GetItemCount("Market", "SmallBeer", INVENTORY_STD) >= NeedSmallBeer then
 			Price = ItemGetPriceSell("SmallBeer", "Market") * NeedSmallBeer
-			if GetMoney("Divehouse") > Price then
-				if SpendMoney("Divehouse", Price, "misc") then
+			if GetMoney("DiveBoss") > Price then
+				if SpendMoney("DiveBoss", Price, "misc") then
 						f_Transfer("Divehouse", nil, INVENTORY_STD, "Market", INVENTORY_STD, "SmallBeer", NeedSmallBeer)
 						AddItems("Divehouse", "SmallBeer", NeedSmallBeer, INVENTORY_STD)
 				end
@@ -61,8 +65,8 @@ function Execute()
 	if NeedWheatBeer > 0 then
 		if GetItemCount("Market", "WheatBeer", INVENTORY_STD) >= NeedWheatBeer then
 			Price = ItemGetPriceSell("WheatBeer", "Market") * NeedWheatBeer
-			if GetMoney("Divehouse") > Price then
-				if SpendMoney("Divehouse", Price, "misc") then
+			if GetMoney("DiveBoss") > Price then
+				if SpendMoney("DiveBoss", Price, "misc") then
 					f_Transfer("Divehouse", nil, INVENTORY_STD, "Market", INVENTORY_STD, "WheatBeer", NeedWheatBeer)
 					AddItems("Divehouse", "WheatBeer", NeedWheatBeer, INVENTORY_STD)
 				end

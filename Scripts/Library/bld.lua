@@ -843,7 +843,11 @@ function CheckCarts(BldAlias)
 			return 
 		end
 
-		if GetMoney(BldAlias) < 3000 then
+		if not BuildingGetOwner(BldAlias, "CheckCartsMyBoss") then
+			return
+		end
+		
+		if GetMoney("CheckCartsMyBoss") < 3000 then
 			return
 		end
 	

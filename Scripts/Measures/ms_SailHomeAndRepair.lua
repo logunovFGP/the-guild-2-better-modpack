@@ -22,7 +22,13 @@ function Run()
 	local CrewUpgrade = false
 	local ShipUpgrade = false
 	local IsDynastyShip = false
-	local Budget = GetMoney("MyHarbour")
+	
+	local Budget
+	if not BuildingGetOwner("MyHarbour", "MyHarbourBoss") then
+		Budget = 10000 -- for non dynasty ships
+	else
+		Budget = GetMoney("MyHarbour")
+	end
 	
 	local CartType = CartGetType("")
 	local RepairPrice = gameplayformulas_CalcCartRepairPrice(CartType, GetHPRelative(""))

@@ -7,7 +7,11 @@ function Weight()
 		return 0
 	end
 
-	if GetMoney("Place") < 3000 then
+	if not BuildingGetOwner("Place", "RobberBoss") then
+		return 0
+	end
+
+	if GetMoney("RobberBoss") < 3000 then
 		return 0
 	end
 

@@ -16,7 +16,7 @@ function Weight()
 		return 0
 	end
 
-	if GetMoney("Divehouse") < 2000 then
+	if GetMoney("DiveBoss") < 2000 then
 		return 0
 	end
 	
