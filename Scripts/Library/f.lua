@@ -503,9 +503,13 @@ function GetLocalPolitician(SimAlias, SameDyn, ResultAlias)
 end
 
 function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
+	if IsType(Buyer, "Market") or IsType(Seller, "Market") then
+		LogMessage("f_Transfer was called with market type instead of market building!")
+	end
+
 	local RequiresPayment = (GetDynastyID(Buyer) ~= GetDynastyID(Seller))
-	local UseBuyPrice = BuildingGetClass(Seller) == GL_BUILDING_CLASS_MARKET
-	local UseSellPrice = BuildingGetClass(Buyer) == GL_BUILDING_CLASS_MARKET
+	local UseBuyPrice = IsType(Seller, "Market") or BuildingGetClass(Seller) == GL_BUILDING_CLASS_MARKET
+	local UseSellPrice = IsType(Buyer, "Market") or BuildingGetClass(Buyer) == GL_BUILDING_CLASS_MARKET
 	
 	local PriceBefore = ItemGetBasePrice(Item)
 	if UseBuyPrice 
@@ -527,6 +531,16 @@ function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	local ErrorNumber, TransfItemCount = Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	--LogTransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
 	if not RequiresPayment then
+		return ErrorNumber, TransfItemCount
+	end
+	
+	if not AliasExists("TransferBargOwner") then
+		if not ErrorNumber or ErrorNumber == 0 then
+			LogTransferError(1, Buyer, Seller, Item, ItemCount)
+		else
+			LogTransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
+		end
+
 		return ErrorNumber, TransfItemCount
 	end
 
@@ -570,7 +584,7 @@ function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 		-- buying action (may be at market or other workshop)
 		TotalPrice = math.max(0, TotalPrice - BargainMoney)
 		chr_SpendMoney(Buyer, TotalPrice, "WaresBought")
-		if BuildingGetClass(Seller) ~= GL_BUILDING_CLASS_MARKET and DynastyIsAI(Seller) then
+		if BuildingGetClass(Seller) ~= GL_BUILDING_CLASS_MARKET and not IsType(Seller, "Market") and DynastyIsAI(Seller) then
 			chr_CreditMoney(Seller, TotalPrice, "WaresSold")
 		end
 	end
