@@ -714,21 +714,24 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 end
 
 function CreditMoney(Alias, Amount, Purpose)
-	if DynastyIsPlayer(Alias) or IsGUIDriven() then
-		-- call hardcoded CreditMoney since it works for these cases
-		-- LogMessage("AITWP::CreditMoney::"..Purpose.." on "..GetName(Alias))
+	-- don't care about non-dynasty characters
+	if not GetDynasty(Alias, "CrdAlias") then
 		return CreditMoney(Alias, Amount, Purpose)
-	else
-		-- don't care about non-dynasty characters
-		if not GetDynasty(Alias, "CrdAlias") then
-			return CreditMoney(Alias, Amount, Purpose)
-		end
-
-		-- workaround: save to property for later transfer
-		local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
-		SetProperty("CrdAlias", "AI_DynMoney", Current + Amount)
-		return true
 	end
+	
+	if DynastyIsPlayer("CrdAlias") then
+		return CreditMoney(Alias, Amount, Purpose)
+	end
+	
+	if IsGUIDriven() then
+		-- call hardcoded CreditMoney since it works for these cases
+		return CreditMoney(Alias, Amount, Purpose)
+	end
+
+	-- workaround: save to property for later transfer
+	local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
+	SetProperty("CrdAlias", "AI_DynMoney", Current + Amount)
+	return true
 end
 
 function GiveMoney(Target)
