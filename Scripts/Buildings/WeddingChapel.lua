@@ -21,6 +21,7 @@ function CheckOrphans()
 	if not HasProperty("", "Sleeping") then
 		SetProperty("", "Sleeping", 0)
 	end
+	local OrphanAdded = false
 	if GetProperty("", "Orphan1") == nil then
 		GetLocatorByName("", "OrphanSpawnPoint", "SpawnPos1")
 		SimCreate(605, "", "SpawnPos1", "Orphan1")
@@ -41,8 +42,9 @@ function CheckOrphans()
 		SetState("Orphan1", STATE_TOWNNPC,true)
 		SimSetBehavior("Orphan1", "Orphan")
 		SetProperty("", "Orphan1", GetID("Orphan1"))
+		OrphanAdded = true
 	end
-	if GetProperty("", "Orphan2") == nil then
+	if not OrphanAdded and GetProperty("", "Orphan2") == nil then
 		GetLocatorByName("", "OrphanSpawnPoint", "SpawnPos2")
 		SimCreate(605, "", "SpawnPos2", "Orphan2")
 		if SimGetGender("Orphan2") == GL_GENDER_MALE then
