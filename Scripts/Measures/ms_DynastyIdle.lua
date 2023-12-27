@@ -47,7 +47,7 @@ function Run()
 	
 	-- WIP 
 	
-	local	Value = Rand(80)
+	local	Value = Rand(120)
 	
 	if Value < 10 then
 	  idlelib_GoTownhall()
@@ -98,7 +98,7 @@ function Run()
 		idlelib_UseCocotte()
 	elseif Value < 80 then
 		idlelib_CollectWater()
-	else
+	elseif Value < 100 then
 	  if SimGetClass("") == 4 then
 		  idlelib_GoToDivehouse()
 		else
@@ -107,6 +107,10 @@ function Run()
 			else
 		    idlelib_GoToTavern()
 			end
+		end
+	else
+		if dyn_GetRandomWorkshopForSim("", "MyWorkshop") then
+			f_MoveTo("", "MyWorkshop")
 		end
 	end
 end
