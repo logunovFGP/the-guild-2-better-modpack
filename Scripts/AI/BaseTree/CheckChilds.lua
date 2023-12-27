@@ -25,7 +25,7 @@ function Weight()
 						local Measure = GetCurrentMeasureName("Child")
 						
 						-- idle?
-						if Measure == "Schooldays" or Measure == "Apprenticeship" or Measure == "University" then
+						if Measure ~= "Schooldays" and Measure ~= "Apprenticeship" and Measure ~= "University" then
 					
 							-- check for school
 							if EduLevel == 0 and ChildAge >= GL_AGE_FOR_SCHOOL and ChildAge < GL_AGE_FOR_APPRENTICESHIP and GetMoney("Parent") > GL_SCHOOLMONEY then
