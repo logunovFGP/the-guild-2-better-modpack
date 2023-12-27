@@ -40,7 +40,7 @@ function Weight()
 							end
 							
 							-- check for university
-							if SimGetClass("Child") == 3 and EduLevel > 0 and EduLevel < 3 and GetMoney("Parent") > GL_UNIVERSITYMONEY then
+							if SimGetClass("Child") == 3 and EduLevel > 0 and EduLevel < 3 and GetMoney("Parent") > GL_UNIVERSITYMONEY and ChildAge >= GL_AGE_FOR_UNIVERSITY then
 								SetData("ToDo", "Uni")
 								return 100
 							end
