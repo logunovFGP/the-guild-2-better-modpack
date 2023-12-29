@@ -21,50 +21,54 @@ function Run()
 	local App2 = GL_APPRENTICESHIPMONEY * FameLvl
 	local App3 = GL_APPRENTICESHIPMONEY * ImpFameLvl
 	local BuildingType
-	local choice = 0
+	local choice = GetProperty("","Apprenticeship_Choice")
 
-	if IsStateDriven() then
-		--random choice
-		choice = Rand(4) + 1
-		
-		if GetNobilityTitle("") > 7 then
-			choice = choice + 4
-		end
-		
-	else
-		--GetLocalPlayerDynasty("Player")
-		GetDynasty("", "dynasty")
-		DynastyGetMember("dynasty",0,"boss")
-		
-		local button1 = "@B[1,@L_ATTEND_APPRENTICE_NEW_OPTION_+1]" -- Guild manufacturer
-		local button2 = "@B[2,@L_ATTEND_APPRENTICE_NEW_OPTION_+2]" -- Guild patron
-		local button3 = "@B[3,@L_ATTEND_APPRENTICE_NEW_OPTION_+3]" -- Church
-		local button4 = "@B[4,@L_ATTEND_APPRENTICE_NEW_OPTION_+4]" -- Guard
-		local button5 = "@B[0,@L_ATTEND_APPRENTICE_NEW_OPTION_+0]" -- Self
-		
-		if GetNobilityTitle("boss") > 7 then -- new options if player has a higher title
-			button1 = "@B[5,@L_ATTEND_APPRENTICE_NEW_OPTION_+5]" -- Purveyor to the court
-			button2 = "@B[6,@L_ATTEND_APPRENTICE_NEW_OPTION_+6]" -- Baker to the court
-			button3 = "@B[7,@L_ATTEND_APPRENTICE_NEW_OPTION_+7]" -- Advisor
-			button4 = "@B[8,@L_ATTEND_APPRENTICE_NEW_OPTION_+8]" -- Army
-			button5 = ""
-			GetOutdoorLocator("MapExit1",1,"Exit")
+	if not choice then
+		if IsStateDriven() then
+			--random choice
+			choice = Rand(4) + 1
+			
+			if GetNobilityTitle("") > 7 then
+				choice = choice + 4
+			end
+			
 		else
-			App3 = App1
-			App2 = App1
+			--GetLocalPlayerDynasty("Player")
+			GetDynasty("", "dynasty")
+			DynastyGetMember("dynasty",0,"boss")
+			
+			local button1 = "@B[1,@L_ATTEND_APPRENTICE_NEW_OPTION_+1]" -- Guild manufacturer
+			local button2 = "@B[2,@L_ATTEND_APPRENTICE_NEW_OPTION_+2]" -- Guild patron
+			local button3 = "@B[3,@L_ATTEND_APPRENTICE_NEW_OPTION_+3]" -- Church
+			local button4 = "@B[4,@L_ATTEND_APPRENTICE_NEW_OPTION_+4]" -- Guard
+			local button5 = "@B[0,@L_ATTEND_APPRENTICE_NEW_OPTION_+0]" -- Self
+			
+			if GetNobilityTitle("boss") > 7 then -- new options if player has a higher title
+				button1 = "@B[5,@L_ATTEND_APPRENTICE_NEW_OPTION_+5]" -- Purveyor to the court
+				button2 = "@B[6,@L_ATTEND_APPRENTICE_NEW_OPTION_+6]" -- Baker to the court
+				button3 = "@B[7,@L_ATTEND_APPRENTICE_NEW_OPTION_+7]" -- Advisor
+				button4 = "@B[8,@L_ATTEND_APPRENTICE_NEW_OPTION_+8]" -- Army
+				button5 = ""
+				GetOutdoorLocator("MapExit1",1,"Exit")
+			else
+				App3 = App1
+				App2 = App1
+			end
+			
+			choice = MsgBox("boss", "", "@P"..
+							button1..
+							button2..
+							button3..
+							button4..
+							"@B[0,@L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
+						"@L_ATTEND_APPRENTICESHIP_NEW_HEAD_+0",
+						"@L_ATTEND_APPRENTICESHIP_NEW_BODY_+0",
+						GetID(""),App1,App2,App3)
+			
 		end
-		
-		choice = MsgBox("boss", "", "@P"..
-						button1..
-						button2..
-						button3..
-						button4..
-						"@B[0,@L_REPLACEMENTS_BUTTONS_CANCEL_+0]",
-					"@L_ATTEND_APPRENTICESHIP_NEW_HEAD_+0",
-					"@L_ATTEND_APPRENTICESHIP_NEW_BODY_+0",
-					GetID(""),App1,App2,App3)
-		
 	end
+	SetProperty("","Apprenticeship_Choice", choice)
+
 	if (choice==1) then
 		Appmoney = App1
 		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1]>0) then
@@ -306,10 +310,14 @@ function CleanUp()
 			SetState("",STATE_INVISIBLE,false)
 			if GetHomeBuilding("","Home") and GetInsideBuildingID("") ~= GetID("Home") then
 				f_MoveToNoWait("","Home",GL_MOVESPEED_WALK)
-			end				
+			end
+			--  attempt to restart apprenticeship
+			MeasureRun("", nil, "AttendApprenticeship")
 		end
+	else
+		RemoveProperty("", "Apprenticeship_Choice")
 	end
-
+	
 end
 
 function GetOSHData(MeasureID)
