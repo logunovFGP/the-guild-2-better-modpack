@@ -24,7 +24,7 @@ function Run()
 	local trys = 5
 		
 	for i=1, trys do
-		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
+		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", false, true) or 0
 		if TargetID > 0 then
 			GetAliasByID(TargetID, "InfectSim")
 			if AliasExists("InfectSim") then
@@ -116,7 +116,7 @@ function InfectionEvent(Target)
 	local Illness = { "Cold", "Sprain", "Influenza", "Pox", "Caries", "Blackdeath" }
 	local IllnessCount = 6
 	local MinDifficulty = { 0, 0, 2, 2, 3, 3 }
-	local MinRound = { 0, 0, 1, 1, 1, 2 }
+	local MinRound = { 0, 0, 1, 1, 2, 3 }
 	
 	local MyIllnessList = { }
 	local MyIllnessCount = 0
@@ -127,9 +127,8 @@ function InfectionEvent(Target)
 			local IllnessMinRound = MinRound[i] * (5 - Difficulty) -- Blackdeath on diff. 3 at round 4; on diff 4 at round 2
 			if IllnessMinRound <= Round then -- min round reached
 				if gameplayformulas_CityCheckHospital("HomeTown", Illness[i], false) then -- we have a hospital in town that could cure the disease
-					local Index = MyIllnessCount + 1
-					MyIllnessList[Index] = Illness[i]
-					MyIllnessCount = Index
+					MyIllnessCount = MyIllnessCount + 1
+					MyIllnessList[MyIllnessCount] = Illness[i]
 				end
 			end
 		end

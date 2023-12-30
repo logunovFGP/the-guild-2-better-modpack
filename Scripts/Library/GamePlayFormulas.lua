@@ -31,7 +31,7 @@ end
 -- CalcCartRepairPrice
 -- -----------------------
 function CalcCartRepairPrice(CartType, HPRelative)
-	Price = gameplayformulas_CalcCartBuyPrice(CartType)
+	local Price = gameplayformulas_CalcCartBuyPrice(CartType)
 	Price = Price * (1 - HPRelative)
 	return Price
 end
@@ -1157,7 +1157,7 @@ function CityCheckHospital(CityAlias, Disease, NeedOwner)
 
 	for k, v in diseases_GetDiseaseIterator() do
 		if Disease == v.getName() then
-			if NeedOwer then 
+			if NeedOwner then 
 				result = gameplayformulas_CityCheckImportantOwner(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[k])
 			else
 				result = gameplayformulas_CityCheckImportantBuilding(CityAlias, GL_BUILDING_TYPE_HOSPITAL, HospitalLevel[k])
