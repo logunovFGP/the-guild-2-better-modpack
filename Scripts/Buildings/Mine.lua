@@ -103,7 +103,7 @@ function SellOtherStuff(BldAlias)
 end
 
 function PingHour()
-	bld_HandlePingHour("")	
+	bld_HandlePingHour("", true)	
 	
 	-- Improve AI management
 	if BuildingGetAISetting("", "Produce_Selection") > 0 then
