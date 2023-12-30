@@ -63,13 +63,13 @@ function Run()
 			  MsgNewsNoWait("","","","default",-1,
 			  	"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+2",
 			    "@L_TAROTCARDS_FATE_POSITIV_+0")
-				local fame = 6 - chr_SimGetFameLevel("")
+				local fame = math.max(0, 6 - chr_SimGetFameLevel(""))
 				dyn_AddFame("",fame)
 			elseif tarot==1 then
 			  MsgNewsNoWait("","","","default",-1,
 			  	"@L_RANDOM_EVENT_POSITIV_MESSAGE_HEAD_+2",
 			    "@L_TAROTCARDS_FATE_POSITIV_+1")
-				local fame = 6 - chr_SimGetImperialFameLevel("")
+				local fame = math.max(0, 6 - chr_SimGetImperialFameLevel(""))
 				dyn_AddImperialFame("",fame)
 			else
 			  MsgNewsNoWait("","","","default",-1,

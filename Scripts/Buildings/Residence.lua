@@ -68,6 +68,10 @@ function PingHour()
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses("")
 	
+	if BuildingGetOwner("", "MyBoss") and DynastyIsAI("MyBoss") then
+		bld_CheckRepairs("")
+	end
+	
 	GetScenario("World")
 	if HasProperty("World", "messages") then
 		if GetProperty("World", "messages") == 1 then

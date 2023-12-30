@@ -316,7 +316,7 @@ function CityBalance()
 	for f=0, FreeBuildings-1 do
 		Alias = "FreeBuilding"..f
 		if not BuildingGetOwner(Alias, "Sim") and (GetHP(Alias) < GetMaxHP(Alias)) then
-			cost = BuildingGetRepairPrice(Alias)
+			local cost = BuildingGetRepairPrice(Alias)
 			if GetMoney("") > cost then
 				ModifyHP(Alias, (GetMaxHP(Alias) - GetHP(Alias)), false)
 				repairTotal = repairTotal + cost
@@ -558,8 +558,9 @@ function CheckAlderman()
 			SimCount = DynastyGetMemberCount(Alias)
 			for e=0, SimCount do
 				DynastyGetMember(Alias, e, "Sim"..e)
+				-- select the strongest sim of the dynasty
 				if HasProperty("Sim"..e, "PatronMaster") or HasProperty("Sim"..e, "ArtisanMaster") or HasProperty("Sim"..e, "ScholarMaster") or HasProperty("Sim"..e, "ChiselerMaster") then
-					SimPrioNew = SimGetLevel("Sim"..e) + SimGetOfficeLevel("Sim"..e)*3	
+					SimPrioNew = GetProperty("Sim"..e, "GuildFame")	
 					if SimPrioNew > SimPrio then
 						SimPrio = SimPrioNew
 						CopyAlias("Sim"..e, "Candidate"..i)
@@ -570,7 +571,7 @@ function CheckAlderman()
 			if AliasExists("Candidate"..i) then
 				SimArrayCount = SimArrayCount + 1
 				SimArray[SimArrayCount] = GetID("Candidate"..i)
-				SimFameArray[SimArrayCount] = dyn_GetFame("Candidate"..i)
+				SimFameArray[SimArrayCount] = SimPrio -- sim fame
 			end
 		end
 	end

@@ -1087,7 +1087,7 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 			bld_CheckCarts(BldAlias) 
 		end
 		
-		if DynastyIsAI("MyHome") then
+		if DynastyIsAI("MyBoss") then
 			if ForceLevelUp then
 				bld_ForceLevelUp(BldAlias)
 			end

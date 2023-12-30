@@ -491,9 +491,6 @@ function AddFame(SimAlias, Amount)
 	end
 	
 	-- save personal fame
-	if not HasProperty(SimAlias, "GuildFame") then
-		SetProperty(SimAlias, "GuildFame", 0)
-	end
 	local SimFame = GetProperty(SimAlias, "GuildFame") or 0
 	SetProperty(SimAlias, "GuildFame", (SimFame+Amount))
 end
@@ -511,11 +508,7 @@ function RemoveFame(SimAlias, Amount)
 	end
 	
 	-- save the fame earned by the sim
-	if not HasProperty(SimAlias, "GuildFame") then
-		SetProperty(SimAlias, "GuildFame", 0)
-	end
-	
-	local SimFame = 0 + GetProperty(SimAlias, "GuildFame")
+	local SimFame = GetProperty(SimAlias, "GuildFame") or 0
 	SetProperty(SimAlias, "GuildFame", (SimFame-Amount))
 end
 
@@ -1319,8 +1312,8 @@ function IsIdleMember(MemberAlias)
 	end
 	
 	local CurMeasureID = GetCurrentMeasureID(MemberAlias)
-	if CurMeasureID == 0 or CurMeasureID == 3202 or CurMeasureID == 3200 -- idle measures
-			or (CurMeasureID == 220 and Rand(10) < 3) then -- chance of 30% to interrupt production
+	if CurMeasureID == 0 or CurMeasureID == 30002 or CurMeasureID == 20008 or CurMeasureID == 30000 -- idle measures
+			or (CurMeasureID == 220 and Rand(10) < 3) or (CurMeasureID == 1360 and Rand(10) < 3) then -- chance of 30% to interrupt production or treatment measure
 		return true
 	end
 	return false
