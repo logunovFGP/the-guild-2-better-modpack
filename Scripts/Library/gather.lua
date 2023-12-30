@@ -134,6 +134,7 @@ function Run(SimAlias, ResourceAlias, mode)
 				end
 			end
 			AddItems(WorkerAlias, ItemID, Count)
+			IncrementXPQuiet(WorkerAlias, Count)
 		end
 
 		if AliasExists("WorkPosition") then
