@@ -102,7 +102,7 @@ function Run()
 			end
 
 			if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
-				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > 1 then
+				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") >= 1 then
 					SimSetProduceItemID("", -1, -1)
 					StopMeasure()
 				end

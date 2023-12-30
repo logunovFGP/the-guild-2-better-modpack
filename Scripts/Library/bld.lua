@@ -383,7 +383,7 @@ function CalcTreatmentNeed(BldAlias, SimAlias)
 	local NumSickSims = Find(SimAlias, SickSimFilter,"SickSim", -1)
 	local Producer = BuildingGetProducerCount(BldAlias, PT_MEASURE, "MedicalTreatment")
 	
-	local HealerCount = 1
+	local HealerCount = 0
 	if NumSickSims > 6 and MedicineNeed < 100 then
 		HealerCount = 3
 	elseif NumSickSims > 3 and MedicineNeed < 100 then
