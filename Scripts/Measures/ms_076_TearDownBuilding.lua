@@ -8,7 +8,7 @@ function Run()
 		return
 	end
 
-	local Value = BuildingGetValue("")* 0.35
+	local Value = BuildingGetValue("") * 0.6
 	local Result = MsgNews("","","@P"..
 			"@B[1,@L_REPLACEMENTS_BUTTONS_JA_+0]"..
 			"@B[C,@L_REPLACEMENTS_BUTTONS_NEIN_+0]",
