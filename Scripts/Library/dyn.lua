@@ -1312,7 +1312,7 @@ function IsIdleMember(MemberAlias)
 	end
 	
 	local CurMeasureID = GetCurrentMeasureID(MemberAlias)
-	if CurMeasureID == 0 or CurMeasureID == 30002 or CurMeasureID == 20008 or CurMeasureID == 30000 -- idle measures
+	if CurMeasureID == 0 or CurMeasureID == 30002 or CurMeasureID == 20008 or CurMeasureID == 30000 or CurMeasureID == 20001 -- idle measures 20001
 			or (CurMeasureID == 220 and Rand(10) < 3) or (CurMeasureID == 1360 and Rand(10) < 3) then -- chance of 30% to interrupt production or treatment measure
 		return true
 	end

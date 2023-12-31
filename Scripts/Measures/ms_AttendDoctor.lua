@@ -28,8 +28,8 @@ function Run()
 		end
 	end
 	
+	local Costs = 0
 	if (GetDynastyID("Destination") ~= GetID("dynasty")) then
-		local Costs = 0
 		if GetImpactValue("", "Sprain") == 1 then
 			Costs = Disease.Sprain:getCost()
 		elseif GetImpactValue("", "Cold") == 1 then

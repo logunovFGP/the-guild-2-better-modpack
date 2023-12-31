@@ -110,7 +110,7 @@ function Run()
 				ListGetElement("SimsList", i, "Sim")
 				if IsDynastySim("Sim") and (GetDynastyID("Sim") ~= GetDynastyID("")) then
 					if MoveGetStance("Sim")==GL_STANCE_SIT then
-						if not (GetName("") == GetName("Sim")) then
+						if not (GetName("") == GetName("Sim")) and Rand(5) < 2 then
 							chr_ModifyFavor("Sim","",favorbonus)
 						end
 					end

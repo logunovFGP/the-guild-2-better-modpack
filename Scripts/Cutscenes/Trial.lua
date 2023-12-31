@@ -1342,7 +1342,7 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	end
 		
 	-- final calculation
-	BelieveFactor = RhetoricSkill + IsVictim + ItemBuff + GoldenSpoon + AlignmentBonus + OfficeBonus + FriendBonus + Rand(3)
+	BelieveFactor = RhetoricSkill + IsVictim + ItemBuff + GoldenSpoon + AlignmentBonus + OfficeBonus + FriendBonus + Rand(5)
 	
 	-- if we don't have very good evidence, it is a bit harder
 	if EvidenceQuality == 0 then

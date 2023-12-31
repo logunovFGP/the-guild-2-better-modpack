@@ -1005,7 +1005,7 @@ function MakeDecision(DynastyAlias, Trait1, Mod1, Trait2, Mod2)
 	
 	-- get the needed trait
 	local Trait1Val = 0
-	Trait1Val = GetDatabaseValue("AIPersonality", PersonalityID, Trait) + Mod1 or 0
+	Trait1Val = GetDatabaseValue("AIPersonality", PersonalityID, Trait1) + Mod1 or 0
 	local CheckTrait1 = Rand(Trait1Val)
 	
 	local Trait2Val = 0

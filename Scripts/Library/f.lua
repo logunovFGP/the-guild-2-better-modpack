@@ -536,9 +536,9 @@ function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	
 	if not AliasExists("TransferBargOwner") then
 		if not ErrorNumber or ErrorNumber == 0 then
-			LogTransferError(1, Buyer, Seller, Item, ItemCount)
+			f_LogTransferError(1, Buyer, Seller, Item, ItemCount)
 		else
-			LogTransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
+			f_LogTransferError(ErrorNumber, Buyer, Seller, Item, ItemCount)
 		end
 
 		return ErrorNumber, TransfItemCount

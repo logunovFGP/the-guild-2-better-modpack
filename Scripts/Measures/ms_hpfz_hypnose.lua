@@ -7,7 +7,7 @@ function Run()
 		LoopAnimation("","chop_loop", 20)
 		PlayAnimation("","chop_out")
 		StopAction("bard","")
-		state_hpfz_hypnose_rundgang()
+		ms_hpfz_hypnose_rundgang()
 	end
 end
 

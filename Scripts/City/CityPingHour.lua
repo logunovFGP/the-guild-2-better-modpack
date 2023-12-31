@@ -27,16 +27,13 @@ function Run()
 		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", false, true) or 0
 		if TargetID > 0 then
 			GetAliasByID(TargetID, "InfectSim")
-			if AliasExists("InfectSim") then
+			if AliasExists("InfectSim") and GetDynasty("InfectSim", "InfectDyn") and ReadyToRepeat("InfectDyn", "RandomIllness") then
+				SetRepeatTimer("InfectDyn", "RandomIllness", 24)
 				if not GetState("InfectSim", STATE_SICK) then
 					if GetImpactValue("InfectSim", "Resist") == 0 then
-						if GetDynasty("InfectSim", "InfectDyn") then
-							if ReadyToRepeat("InfectDyn", "RandomIllness") then
-								--LogMessage("City "..GetName("").." tries to infect "..GetName("InfectSim"))
-								CopyAlias("InfectSim", "RandomInfected")
-								break
-							end
-						end
+						--LogMessage("City "..GetName("").." tries to infect "..GetName("InfectSim"))
+						CopyAlias("InfectSim", "RandomInfected")
+						break
 					end
 				end
 			end
@@ -183,7 +180,7 @@ function InfectionEvent(Target)
 			LogMessage(GetName(Target).." resisted random illness")
 		else
 			if GetDynasty(Target, "TargetDyn") then
-				SetRepeatTimer("TargetDyn", "RandomIllness", 12)
+				SetRepeatTimer("TargetDyn", "RandomIllness", 24)
 			end
 		end
 	end

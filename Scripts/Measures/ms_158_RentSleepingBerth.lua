@@ -81,7 +81,7 @@ function Run()
 
 	-- Cure some diseases
 	if WasSick then
-		if GetImpactValaue("", "HerbTea") > 0 then -- herb tea helps
+		if GetImpactValue("", "HerbTea") > 0 then -- herb tea helps
 			local CheckDisease = { "Cold", "Sprain", "BurnWound", "Influenza", "Pneumonia", "Pox", "BlackDeath", "Fracture" }
 			local SleepBonus = GetImpactValue("", "SleepBonusI")
 	

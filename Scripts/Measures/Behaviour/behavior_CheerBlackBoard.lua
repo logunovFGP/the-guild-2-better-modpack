@@ -16,7 +16,7 @@ function Run()
 			if IsDynastySim("") then
 				if GetDynastyID("") ~= GetDynastyID("Victim_"..i) then -- is that my family?
 					if CheckFav < MaxFav and CheckFav > MinFav then -- does this effect me?
-						chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_SMALL)
+						chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_VERYSMALL)
 						Sleep(0.15)
 						chr_GainXP("", GL_EXP_GAIN_SIMPLE)
 						Sleep(0.1)
@@ -24,7 +24,7 @@ function Run()
 				end
 			else
 				if CheckFav < MaxFav and CheckFav > MinFav then -- does this effect me?
-					chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_SMALL)
+					chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_VERYSMALL)
 					Sleep(0.15)
 					chr_GainXP("", GL_EXP_GAIN_SIMPLE)
 					Sleep(0.1)

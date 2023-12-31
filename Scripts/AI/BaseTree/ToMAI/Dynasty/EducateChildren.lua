@@ -51,7 +51,7 @@ function Execute()
 		end
 		
 		-- check for university
-		if Age >= 15 and SimGetClass("sim") == 3 then 
+		if Age >= 15 and SimGetClass("sim") == 3 and "AttendUniversity" ~= GetCurrentMeasureName("sim") then 
 			if Education == 1 or Education == 2 then
 				MeasureRun("sim", "School", "AttendUniversity")
 				return
