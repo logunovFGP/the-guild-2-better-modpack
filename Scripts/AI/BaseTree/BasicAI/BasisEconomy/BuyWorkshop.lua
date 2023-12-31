@@ -13,7 +13,11 @@ function Weight()
 		return 0
 	end
 
-	if not dyn_GetIdleMember("dynasty", "SIM") or not AliasExists("SIM") then
+	if not (dyn_GetIdleMember("dynasty", "SIM") or DynastyGetMemberRandom("dynasty", "SIM")) then
+		return 0
+	end
+	
+	if not AliasExists("SIM") then
 		return 0
 	end
 	
