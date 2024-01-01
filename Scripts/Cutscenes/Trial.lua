@@ -1274,11 +1274,21 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	AlignTo("accuser", "judge")
 	AlignTo("accused", "judge")
 	
-	local BelieveFactor -- if BelieveFactor is 10+ the evidence is very good, below 4 can not believed
-	LogMessage("Trial: BelieveFactor")
+	local BelieveFactor = EvidenceValue * (EvidenceQuality / 100) * 2 -- if BelieveFactor is 10+ the evidence is very good, below 4 can not believed
+	LogMessage("Trial: BelieveFactor base value: " .. BelieveFactor)
 	
 	-- Main factor is Rhetoric
 	local RhetoricSkill = GetSkillValue("accuser", RHETORIC)
+	local RhetoricBonus = 0
+	if RhetoricSkill < 4 then
+		RhetoricBonus = -2
+	elseif RhetoricSkill >= 7 then
+		RhetoricBonus = 2
+	elseif RhetoricSkill >= 10 then
+		RhetoricBonus = 4
+	elseif RhetoricSkill >= 13 then
+		RhetoricBonus = 6
+	end
 		
 	-- Are we the victim?
 	local IsVictim = 0
@@ -1290,8 +1300,11 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 		
 	-- Do we get a bonus for fragrance of holiness?
 	local ItemBuff = 0
-	if GetImpactValue("accuser", "fragranceofholiness") > 0 and GetImpactValue("accused", "fragranceofholiness") == 0 then
+	if GetImpactValue("accuser", "fragranceofholiness") > 0 then
 		ItemBuff = 4
+	end
+	if GetImpactValue("accused", "fragranceofholiness") > 0 then
+		ItemBuff = ItemBuff - 4
 	end
 		
 	-- Are we very noble?
@@ -1342,18 +1355,9 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	end
 		
 	-- final calculation
-	BelieveFactor = RhetoricSkill + IsVictim + ItemBuff + GoldenSpoon + AlignmentBonus + OfficeBonus + FriendBonus + Rand(5)
+	BelieveFactor = RhetoricBonus + IsVictim + ItemBuff + GoldenSpoon + AlignmentBonus + OfficeBonus + FriendBonus + Rand(3)
 	
-	-- if we don't have very good evidence, it is a bit harder
-	if EvidenceQuality == 0 then
-		BelieveFactor = 0
-	elseif EvidenceQuality < 50 then
-		BelieveFactor = BelieveFactor - 2
-	elseif EvidenceQuality < 100 then
-		BelieveFactor = BelieveFactor - 1
-	end
-	
-	LogMessage("Trial: Final BelieveFactor is "..BelieveFactor)
+	LogMessage("Trial: Final BelieveFactor is " .. BelieveFactor)
 	SetData("BF_accuser", BelieveFactor)
 
 	local QualityType
