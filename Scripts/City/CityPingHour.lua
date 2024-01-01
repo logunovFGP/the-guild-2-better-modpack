@@ -163,7 +163,8 @@ function InfectionEvent(Target)
 				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Blackdeath" then
-			if not HasState(Target, "BlackdeathImmunity") then
+			local BlackdeathImmunity = GetProperty(Target, "BlackdeathImmunity") or 0
+			if BlackdeathImmunity <= 0 then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("HomeTown", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then

@@ -54,7 +54,8 @@ end
 		elseif Sickness == "Pox" then
 			Disease.Pox:infectSim("")
 		elseif Sickness == "Blackdeath" then
-			if not HasState("", "BlackdeathImmunity") then
+			local BlackdeathImmunity = GetProperty("", "BlackdeathImmunity") or 0
+			if BlackdeathImmunity <= 0 then
 				local CurrentRound = GetRound()
 				local StartingRound = GetProperty("MyHomeCity", "ActivePlague") or 0
 				if CurrentRound < (StartingRound + 4) then
