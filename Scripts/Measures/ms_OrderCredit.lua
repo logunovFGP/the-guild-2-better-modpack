@@ -126,16 +126,20 @@ function Run()
 	layCred = layCred.."@B[2,@L_MEASURE_ORDERCREDIT_STUFF_+1]"
 	layCred = layCred.."@B[3,@L_MEASURE_ORDERCREDIT_STUFF_+2]"
 
-	kreditR = MsgNews(
-		"",
-		"",
-		"@P"..layCred..xtra.."@B[6,@L_MEASURE_ORDERCREDIT_STUFF_+4]"..Comment,
-		ms_ordercredit_aidecide,
-		"intrigue",
-		1,
-		"@L_MEASURE_ORDERCREDIT_HEAD_+0",
-		xtrb,
-		MinMoney, MedMoney, BigMoney, KontoStand, TakeLoanSimCount, RentMoney)
+	if IsGUIDriven() then
+		kreditR = MsgNews(
+			"",
+			"",
+			"@P"..layCred..xtra.."@B[6,@L_MEASURE_ORDERCREDIT_STUFF_+4]"..Comment,
+			ms_ordercredit_aidecide,
+			"intrigue",
+			1,
+			"@L_MEASURE_ORDERCREDIT_HEAD_+0",
+			xtrb,
+			MinMoney, MedMoney, BigMoney, KontoStand, TakeLoanSimCount, RentMoney)
+	else
+		kreditR = MinMoney
+	end
 
 	if kreditR=="C" then
 		StopMeasure()
