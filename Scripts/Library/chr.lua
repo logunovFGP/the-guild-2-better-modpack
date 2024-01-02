@@ -735,16 +735,34 @@ function CreditMoney(Alias, Amount, Purpose)
 end
 
 function GiveMoney(Target)
+	DynastyGetMember(Target, 0, "FirstMember")
+	local MoneyOnLastCheck = GetProperty(Target, "AI_DynMoney_LastCheck")
+	local CurrentMoney = GetMoney("FirstMember")
+	local CheatingMoney = 0
+	if MoneyOnLastCheck and (MoneyOnLastCheck + 1000) < CurrentMoney then
+		CheatingMoney = CurrentMoney - MoneyOnLastCheck
+		aitwp_Log("Removing cheating money from AI: " .. CheatingMoney, Target, true)
+		local Diff = ScenarioGetDifficulty()
+		local Multiplier = 10/(8-Diff)
+		CheatingMoney = math.floor(CheatingMoney * Multiplier)
+		SpendMoney(Target, math.abs(CheatingMoney), "misc")
+	end
+	
 	local Current = GetProperty(Target, "AI_DynMoney") or 0
 	Current = math.floor(Current)
 	SetProperty(Target, "AI_DynMoney", 0)
 	if Current > 0 then
 		CreditMoney(Target, Current, "Income")
-		--LogMessage("::AITWP::GiveMoney "..GetName(Target).." received "..Current)
-	elseif Current < 0 then
-		SpendMoney(Target, math.abs(Current), "Expense")
-		--LogMessage("::AITWP::GiveMoney "..GetName(Target).." spent "..Current)
+		LogMessage("::AITWP::GiveMoney "..GetName(Target).." received "..Current)
+	elseif Current < 0 then -- should currently not happen since SpendMoney is handled directly
+		LogMessage("::AITWP::GiveMoney "..GetName(Target).." spent "..Current)
+		local Diff = ScenarioGetDifficulty()
+		local Multiplier = 10/(8-Diff)
+		Current = math.floor(Current * Multiplier)
+		SpendMoney(Target, math.abs(Current), "misc")
 	end
+	local CurrentMoney = GetMoney("FirstMember")
+	SetProperty(Target, "AI_DynMoney_LastCheck", CurrentMoney)
 end
 
 -- -----------------------
