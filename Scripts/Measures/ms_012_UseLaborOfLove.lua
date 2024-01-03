@@ -114,7 +114,7 @@ function Run()
 		if IsPartyMember("") then
 	  		feedback_MessageCharacter("", HeaderLabel, "@L_PIRATE_LABOROFLOVE_MSG_BODY_+3")
 		end
-	elseif(Idx == 4) then
+	elseif(Idx == 4) and not GetState("", STATE_SICK) then
 		-- Influenza infection
 	  	Disease.Influenza:infectSim("")
 	elseif(Idx == 5)  then

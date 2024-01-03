@@ -140,7 +140,6 @@ function InfectPartyMember()
 				krankH = 3
 			end
 		end
-	ms_citycontrol_Warnung(1, "CurrentMember", krankH) -- send a message to the poor guy
 	end
 	
 	RemoveAlias("CurrentMember")	-- cleanup
@@ -199,9 +198,6 @@ function TheBlackDeath()
 end
 
 function Warnung(danger, opfer, zusatz)
-
-	local krankNam = { "@L_HPFZ_KATASTR_KRANK_NAM_+0", "@L_HPFZ_KATASTR_KRANK_NAM_+1", "@L_HPFZ_KATASTR_KRANK_NAM_+2", "@L_HPFZ_KATASTR_KRANK_NAM_+3", "@L_HPFZ_KATASTR_KRANK_NAM_+4", "@L_HPFZ_KATASTR_KRANK_NAM_+5" }
-	
 	if danger == 2 then
 		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_RATTE_KOPF",
 					"@L_HPFZ_KATASTR_RATTE_RUMPF")

@@ -24,7 +24,7 @@ function Run()
 	local trys = 5
 		
 	for i=1, trys do
-		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", false, true) or 0
+		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
 		if TargetID > 0 then
 			GetAliasByID(TargetID, "InfectSim")
 			if AliasExists("InfectSim") and GetDynasty("InfectSim", "InfectDyn") and ReadyToRepeat("InfectDyn", "RandomIllness") then

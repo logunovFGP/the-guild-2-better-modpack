@@ -200,7 +200,7 @@ function Run()
         	end				
 				else
 					if SimGetGender("")==GL_GENDER_MALE then
-						CocotteResult = idlelib_UseCocotte()
+						idlelib_UseCocotte()
 					else
 						idlelib_KissMeHonza()
 					end
@@ -283,13 +283,16 @@ function Run()
 	end
 
 	if not IsPartyMember("") then
-	
 		GetSettlement("","City")
 		local CityLevel = CityGetLevel("City")
 		local SicknessChance = Rand(100)
-		local Season = GetSeason()
-		if season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
-			SicknessChance = Rand(50)
+		if GetState("InfectSim", STATE_SICK) then
+			SicknessChance = 0
+		else
+			local Season = GetSeason()
+			if Season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
+				SicknessChance = Rand(50)
+			end
 		end
 		if CityLevel > 4 then
 			if SicknessChance == 1 then
