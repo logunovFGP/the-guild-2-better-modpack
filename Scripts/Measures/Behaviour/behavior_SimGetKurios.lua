@@ -35,7 +35,7 @@ function Run()
 			spend = 80
 		end
 
-		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(12)*charm
+		local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(10)*charm
 		chr_CreditMoney("Actor", getbeg, "Offering")
 		IncrementXPQuiet("Actor", 5)
 
@@ -97,7 +97,7 @@ function Run()
 			spend = 160
 		end
 
-		local getbeg = math.floor(spend + ((spend / 100) * begbonus)+Rand(12)*charm)
+		local getbeg = math.floor(spend + ((spend / 100) * begbonus)+Rand(10)*charm)
 		local warte = PlayAnimation("Owner", "manipulate_middle_low_r")
 		Sleep(1)
    		chr_CreditMoney("Actor", getbeg, "Offering")
