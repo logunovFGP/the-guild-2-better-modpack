@@ -105,7 +105,10 @@ function Run()
 		if not IsMarket then
 			BuildingGetOwner(HomeAlias, "MyBoss")
 			local Difficulty = ScenarioGetDifficulty()
-			BargainingCheck = chr_SkillCheck("MyBoss", BARGAINING, Difficulty, nil, nil, true)
+			BargainingCheck = chr_SkillCheck("MyBoss", BARGAINING, Difficulty, nil, nil, true) -- returns boolean
+			if BargainingCheck then
+				BargainingCheck = GetSkillValue("MyBoss", BARGAINING)
+			end
 			Budget = math.min(Budget, GetMoney("MyBoss"))
 		end
 		

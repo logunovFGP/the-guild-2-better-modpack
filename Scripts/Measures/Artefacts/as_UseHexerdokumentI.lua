@@ -71,7 +71,7 @@ function Run()
 		Sleep(0.5)
 
 		-- Maybe send a message to the victim (difficulty: 3)	
-		if chr_SkillCheck("Destination", EMPATHY, 3, "", SHADOW_ARTS, false) > 0 then
+		if chr_SkillCheck("Destination", EMPATHY, 3, "", SHADOW_ARTS, false) then
 			MsgNewsNoWait("Destination", "Destination", "", "intrigue", -1,
 					"@L_HEXERDOKUMENT_VICTIM_HEAD_+0",
 					"@L_HEXERDOKUMENT_VICTIM_BODY_+0")
