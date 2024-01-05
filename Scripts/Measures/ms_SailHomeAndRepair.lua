@@ -1,7 +1,9 @@
 function Run()
 	GetHomeBuilding("", "MyHarbour")
-	if not f_MoveTo("", "MyHarbour", GL_MOVESPEED_RUN) then
-		return
+	if not IsInLoadingRange("", "MyHarbour") then
+		if not f_MoveTo("", "MyHarbour", GL_MOVESPEED_RUN) then
+			return
+		end
 	end
 	
 	--arm the ship
@@ -208,7 +210,7 @@ function Run()
 	
 	if GetHPRelative("") < 1 then
 		
-		if IsDynastyShip then
+		if IsDynastyShip and not DynastyIsAI("") then
 			if HasData("RestoreBudget") then
 				Budget = Budget + GetData("RestoreBudget")
 			end
