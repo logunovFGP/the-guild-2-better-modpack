@@ -33,10 +33,10 @@ function Run()
 	
 	while true do
 		local BuildingType = BuildingGetProto("MyHome")
-		local Count, Items = economy_GetProducedItems("MyHome")
+		local Count, Items, ProtectedAmounts = economy_GetProducedItems("MyHome")
 		for i = 1, Count do
-			if Items[i] == 360 or Items[i] == 360 or Items[i] == 364 or Items[i] == 365 or Items[i] == 371 then
-				Items[i] = { Items[i], 30 }
+			if ProtectedAmounts[i] then
+				Items[i] = { Items[i], ProtectedAmounts[i] }
 			else
 				Items[i] = { Items[i], 0 }
 			end

@@ -82,11 +82,10 @@ function InitMeasure()
 	end
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
-	local ProductCount, Products = economy_GetProducedItems("MyHome")
+	local ProductCount, Products, ProtectedAmounts = economy_GetProducedItems("MyHome")
 	for i = 1, ProductCount do
-		if Products[i] == 360 or Products[i] == 360 or Products[i] == 364 or Products[i] == 365 or Products[i] == 371 then
-			-- protect medicince required for treatment
-			Products[i] = { Products[i], 30 }
+		if ProtectedAmounts[i] then
+			Products[i] = { Products[i], ProtectedAmounts[i] }
 		else
 			Products[i] = { Products[i], 0 }
 		end
