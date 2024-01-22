@@ -100,7 +100,7 @@ function Run()
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel")
 
-	if AliasExists("TODO") then
+	if AliasExists("Weddingchapel") then
 
 		if DynastyIsAI("") then
 			if Cost > (GetMoney("") - 1000) then
