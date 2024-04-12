@@ -308,4 +308,11 @@ Data:
 427             1                 2                  0                     "LuxuryPurse"                       0   ""                                    |
 428             1                 2                  0                     "WaitTime"                          0   ""                                    |
 429             1                 2                  0                     "AffectedByUncannyClare"            0   "Hud/state/affectedbyuncannyglare.tga"       |
-
+430   1   2   0   "Statue" 0   "Hud/state/Statue.tga" |
+431   1   2   0   "Vase"   0   "Hud/state/Vase.tga"   |
+432   1   2   0   "Tool"   0   "Hud/state/Tool.tga"   |
+433   1   2   0   "Soap"   0   "Hud/state/Soap.tga"   |
+434   1   2   0   "Amulet" 0   "Hud/state/Amulet.tga" |
+435   1   2   0   "FalseRelict"   0   "Hud/state/FalseRelict.tga"   |
+436   1   2   0   "Gravestone"   0   "Hud/state/Gravestone.tga"   |
+437   1   2   0   "Knochenarmreif"   0   "Hud/state/Knochenarmreif.tga"   |
