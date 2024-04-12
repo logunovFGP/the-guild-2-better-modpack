@@ -1,3 +1,19 @@
+function SpendMoney(Alias, Amount, Purpose)
+	if DynastyIsPlayer(Alias) or IsGUIDriven() then
+		-- call hardcoded f_SpendMoney since it works for these cases
+		-- LogMessage("AITWP::SpendMoney::"..Purpose.." on "..GetName(Alias))
+		return SpendMoney(Alias, Amount, Purpose)
+	else
+		-- save to property for later transfer
+		if not GetDynasty(Alias, CRD_DYN_ALIAS) then
+			return SpendMoney(Alias, Amount, Purpose)
+		end
+		local Current = GetProperty(CRD_DYN_ALIAS, "AITWP_Money") or 0
+		SetProperty(CRD_DYN_ALIAS, "AITWP_Money", Current - Amount)
+		return true
+	end
+end
+
 function BeginUseLocator(Actor, LocatorName, Stance, MoveToLocator, Speed)
 	
 	if not AliasExists(Actor) or not AliasExists(LocatorName) then

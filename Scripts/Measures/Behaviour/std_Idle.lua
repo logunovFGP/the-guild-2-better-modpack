@@ -286,7 +286,7 @@ function Run()
 		GetSettlement("","City")
 		local CityLevel = CityGetLevel("City")
 		local SicknessChance = Rand(100)
-		if GetState("InfectSim", STATE_SICK) then
+		if GetState("", STATE_SICK) then
 			SicknessChance = 0
 		else
 			local Season = GetSeason()

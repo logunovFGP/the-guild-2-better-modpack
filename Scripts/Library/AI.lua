@@ -1021,7 +1021,7 @@ function MakeDecision(DynastyAlias, Trait1, Mod1, Trait2, Mod2)
 	end
 	
 	-- random check
-	local CheckValue = Rand(TraitValue) 
+	--local CheckValue = Rand(TraitValue) 
 	return CheckValue
 end
 

@@ -5,6 +5,34 @@ function Init()
  --needed for caching 
 end
 
+function SimGetFameLevel(SimAlias)
+
+	local fame = 0
+
+	if AliasExists(SimAlias) then
+		if GetProperty(SimAlias,"Fame") then
+			fame = GetProperty(SimAlias,"Fame")
+		end
+	end
+
+	if fame == 0 then
+		return 0
+	elseif fame < 6 then
+		return 1
+	elseif fame < 11 then
+		return 2
+	elseif fame < 16 then
+		return 3
+	elseif fame < 21 then
+		return 4
+	else
+		return 5
+	end
+
+	return 0
+
+end
+
 -- ----------- 
 -- MoveToExact
 -- -----------
