@@ -31,8 +31,10 @@ function ArrestLoop(IsBuilding)
 					BattleJoin("", "Wanted", true)
 				end
 			else
-				if GetDistance("","Wanted")<4000 then
-					MeasureRun("", "Wanted", "Arrest")
+				if GetDistance("","Wanted") < 4000 and ReadyToRepeat("Wanted", "TimerGetArrested") then
+					-- Timer prevents arrest spam with too many guards around
+					SetRepeatTimer("Wanted", "TimerGetArrested", 1)
+					--MeasureRun("", "Wanted", "Arrest")
 				end
 			end
 		end

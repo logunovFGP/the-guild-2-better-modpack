@@ -11,6 +11,10 @@ function Run()
 		return
 	end
 
+	if HasData("CapturedByMe") then
+		return
+	end
+
 	if not GetSettlement("", "CityAlias") then
 	 	-- no city found (should never happen for a city guard)
 		return 
@@ -228,7 +232,7 @@ function Captured()
 	MoveStop("")
 	SetProperty("Destination","NoEscape",1)
 	SetState("", STATE_CAPTURED, true)
-	SetData("CapturedByMe", 1)
+	SetData("CapturedByMe", GetID(""))
 	AlignTo("", "Owner")
 	Sleep(0.7)
 			
@@ -268,8 +272,7 @@ function CleanUp()
 			return
 		end
 	
-		if not (GetState("Destination", STATE_IMPRISONED) or GetState("Destination", STATE_PILLORY) or GetState("Destination", STATE_DEAD)) then
-			
+		if not (GetState("Destination", STATE_IMPRISONED) or GetState("Destination", STATE_PILLORY) or GetState("Destination", STATE_DEAD) or GetState("Destination", STATE_UNCONSCIOUS)) then
 			if AliasExists("Penalty") then
 				JoinBattle = true
 			end
@@ -281,8 +284,9 @@ function CleanUp()
 		end
 	end
 	
-	if HasData("CapturedByMe") and GetData("CapturedByMe")==1 then
-		if AliasExists("Destination") then
+	if HasData("CapturedByMe") then
+		JoinBattle = false
+		if GetData("CapturedByMe")==GetID("") and AliasExists("Destination") then
 			SetState("Destination", STATE_CAPTURED, false)
 			RemoveProperty("Destination","NoEscape")
 		end
