@@ -1,4 +1,7 @@
 function Weight()
+	if true then
+		return 0
+	end
 	
 	if SimGetClass("SIM") == 4 then
 		return 0

@@ -1,4 +1,8 @@
 function Weight()
+	if true then
+		return 0
+	end
+
 	if not AliasExists("MyWorkshop") then
 		return 0
 	end

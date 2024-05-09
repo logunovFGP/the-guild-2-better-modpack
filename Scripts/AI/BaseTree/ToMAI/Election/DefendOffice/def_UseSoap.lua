@@ -1,4 +1,8 @@
 function Weight()
+	if true then
+		return 0
+	end
+
 	local	Item = "Soap"
 	local Money = GetMoney("SIM")*0.10 
 	local Difficulty = ScenarioGetDifficulty()
