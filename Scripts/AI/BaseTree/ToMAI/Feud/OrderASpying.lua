@@ -6,17 +6,18 @@ function Weight()
 	if GetFavorToDynasty("dynasty", "VictimDynasty") > gameplayformulas_GetMaxFavByDiffForAttack() then
 		return 0
 	end
-
-	if not DynastyGetMemberRandom("VictimDynasty", "member") then
+	
+	if(HasProperty("Victim", "SpiedByDyn"..GetDynastyID("dynasty"))) then
+		-- we are already spying on this one
 		return 0
 	end
-	
-	return 20
+
+	return 10
 end
 
 function Execute()
 	MeasureCreate("Measure")
 	MeasureAddData("Measure", "TimeOut", 8, false)
-	MeasureStart("Measure", "MYRM", "member", "OrderASpying")
+	MeasureStart("Measure", "MYRM", "Victim", "OrderASpying")
 end
 

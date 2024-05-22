@@ -11,7 +11,8 @@ function Run()
 		return
 	end
 	
-	SetProperty("Destination", "SpiedBy"..GetID(""))
+	SetProperty("Destination", "SpiedBy"..GetID(""), GetID(""))
+	SetProperty("Destination", "SpiedByDyn"..GetDynastyID(""), GetDynastyID(""))
 	AddImpact("","spying",1,-1)
 	MeasureSetNotRestartable()
 	MsgMeasure("","@L_GENERAL_MEASURES_145_ORDERASPYING_ACTION_+0", GetID("Destination"))
@@ -134,6 +135,7 @@ function CleanUp()
 	
 	if AliasExists("Destination") then
 		RemoveProperty("Destination", "SpiedBy"..GetID(""))
+		RemoveProperty("Destination", "SpiedByDyn"..GetDynastyID(""))
 		if Evidences and Evidences > 0 then
 			feedback_MessageCharacter("",
 				"@L_GENERAL_MEASURES_145_ORDERASPYING_MSG_SUCCESS_HEAD_+0",
