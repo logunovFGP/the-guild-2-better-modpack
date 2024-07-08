@@ -126,16 +126,23 @@ function Run()
 			
 			if not AliasExists("councilbuilding") then
 				StopMeasure()
+				return
 			else
 				f_MoveTo("", "councilbuilding")
 			end
 		end
 		
-		-- Check if the desk is busy
-		if not GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos") then
-			MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+0")
+		
+		if not AliasExists("councilbuilding") then
 			StopMeasure()
 			return
+		else
+			-- Check if the desk is busy
+			if not GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos") then
+				MsgQuick("", "@L_PRIVILEGES_BUYNOBILITYTITLE_FAILURES_+0")
+				StopMeasure()
+				return
+			end
 		end
 		
 		while true do
