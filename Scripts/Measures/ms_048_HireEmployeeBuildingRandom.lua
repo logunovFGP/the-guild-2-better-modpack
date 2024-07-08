@@ -58,12 +58,6 @@ function Run()
 		StopMeasure()
 	end
 	
-	if HasProperty("RandWorker", "courted") then
-		MsgQuick("","@L_HIRE_ERROR_COURTED", GetID("RandWorker"))
-		AddImpact("RandWorker", "NoRandomHire", 1, 12)
-		StopMeasure()
-	end
-	
 	local Handsel = SimGetHandsel("RandWorker", "")
 	if BuildingHasUpgrade("", "CrossedAxes") == true then
 		Handsel = Handsel + 4900
@@ -77,11 +71,11 @@ function Run()
 	
 	SetData("Hands", Handsel)
 	local Level	= SimGetLevel("RandWorker")
-	SetData("Lvl",Level)
+	SetData("Lvl", Level)
 	local Salary = SimGetWage("RandWorker")
-	SetData("Saly",Salary)
+	SetData("Saly", Salary)
 	local XP = GetDatabaseValue("CharLevels", Level-1, "xp")  -- XP which was needed for the current level
-	SetData("XPP",XP)	
+	SetData("XPP", XP)	
 	
 	ms_048_hireemployeebuildingrandom_DecideYou()
 	
@@ -94,11 +88,10 @@ end
 		
 function DecideYou()
 
-	SetData("Entscheid",0)
 	local handsels = GetData("Hands")
 	local levels = GetData("Lvl")
 	local salarys = GetData("Saly")
-	local xp = GetData("XPP")
+	local XP = GetData("XPP")
 	
 	if BuildingGetOwner("", "BOwner") then
 		if GetMoney("BOwner") < handsels then
@@ -132,54 +125,16 @@ function DecideYou()
 		return
 	end
 
-	local Error = SimHire("RandWorker", "", true)
-	chr_OutputHireError("RandWorker", "", Error)
-	if SimGetLevel("RandWorker") == 1 then  -- sometimes the level is not reduced to 1 (I guess because he already had the right clothes)
-		IncrementXPQuiet("RandWorker",xp)	      -- XP back to previous value
-	end		
-	if Error == "" then
-		-- stop courting
-		if SimGetCourtLover("RandWorker", "WorkerLover") then
-			SimReleaseCourtLover("RandWorker")
-			if HasProperty("RandWorker", "courted") then
-				RemoveProperty("", "courted")
-			end
-	
-			if HasProperty("WorkerLover", "courted") then
-				RemoveProperty("WorkerLover", "courted")
-			end
-		end	
-		
-		if BuildingHasUpgrade("", "CrossedAxes") == true then
-			chr_SpendMoney("BOwner", 4900, "LaborHansel")
-		elseif BuildingHasUpgrade("", "HarkingHorn") then
-			chr_SpendMoney("BOwner", 2400, "LaborHansel")
-		elseif BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
-			chr_SpendMoney("BOwner", 4900, "LaborHansel")
-		else
-			PlaySound("Effects/moneybag_to_hand+0.wav", 1)
-		end
-		
-		SetData("Entscheid", 1)
-		
-		if DynastyIsAI("") then
-			if BuildingGetLevel("") == 1 then
-				local lvlset = (Rand(2)+1)
-				SetProperty("RandWorker","Level", lvlset)
-			elseif BuildingGetLevel("") == 2 then
-				local lvlset = (Rand(2)+3)
-				SetProperty("RandWorker", "Level", lvlset)
-			else
-				local lvlset = (Rand(2)+5)
-				SetProperty("RandWorker", "Level", lvlset)
-			end
-		end
-	end
-	
-	MoveSetActivity("RandWorker")
-	SimGetWorkingPlace("RandWorker", "workbuilding")
-	chr_CalculateBuildingBonus("RandWorker", "", "hire")
+	chr_CalculateBuildingBonus("", "RandWorker", "hire")
+	CreateScriptcall( "GiveBack", 0.001, "Measures/ms_048_HireEmployee.lua", "GiveXPBack", "RandWorker", "", XP) -- use scriptcall, because Destination is lost after SimHire	
 
+	local	Error = SimHire("RandWorker", "", true)
+	if Error~="" then
+		chr_OutputHireError("RandWorker", "", Error)
+		return
+	else
+		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
+	end
 end
 
 function DecideFirst()
@@ -194,22 +149,59 @@ end
 
 function CheckSoeldner(Alias, Worker)
 	AddItems(Worker, "Dagger", 1, INVENTORY_EQUIPMENT)
-	if BuildingHasUpgrade(Alias, "CrossedAxes") == true then
-		RemoveItems(Worker, "Dagger",1,INVENTORY_EQUIPMENT)
-		AddItems(Worker, "FullHelmet",1,INVENTORY_EQUIPMENT)
-		AddItems(Worker, "Platemail",1,INVENTORY_EQUIPMENT)
-		AddItems(Worker, "Axe",1,INVENTORY_EQUIPMENT)	
-	elseif BuildingHasUpgrade(Alias, "HarkingHorn") == true then
-		RemoveItems(Worker, "Dagger",1,INVENTORY_EQUIPMENT)
-		AddItems(Worker, "IronCap",1,INVENTORY_EQUIPMENT)
-		AddItems(Worker, "Chainmail",1,INVENTORY_EQUIPMENT)
-		AddItems(Worker, "Longsword",1,INVENTORY_EQUIPMENT)
+	if BuildingHasUpgrade(Alias, "CrossedAxes") then
+		RemoveItems(Worker, "Dagger", 1, INVENTORY_EQUIPMENT)
+		AddItems(Worker, "FullHelmet", 1, INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Platemail", 1, INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Axe", 1, INVENTORY_EQUIPMENT)	
+	elseif BuildingHasUpgrade(Alias, "HarkingHorn") then
+		RemoveItems(Worker, "Dagger", 1, INVENTORY_EQUIPMENT)
+		AddItems(Worker, "IronCap", 1, INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Chainmail", 1, INVENTORY_EQUIPMENT)
+		AddItems(Worker, "Longsword", 1, INVENTORY_EQUIPMENT)
 	end
 end
 
 function CheckLeibwache(Alias)
-	RemoveItems(Alias, "Dagger",1,INVENTORY_EQUIPMENT)
-	AddItems(Alias, "FullHelmet",1,INVENTORY_EQUIPMENT)
-	AddItems(Alias, "Platemail",1,INVENTORY_EQUIPMENT)
-	AddItems(Alias, "Longsword",1,INVENTORY_EQUIPMENT)	
+	RemoveItems(Alias, "Dagger", 1, INVENTORY_EQUIPMENT)
+	AddItems(Alias, "FullHelmet", 1, INVENTORY_EQUIPMENT)
+	AddItems(Alias, "Platemail", 1, INVENTORY_EQUIPMENT)
+	AddItems(Alias, "Longsword", 1, INVENTORY_EQUIPMENT)	
 end
+
+function GiveXPBack(params)
+	if SimGetLevel("") == 1 then  -- sometimes the level is not reduced to 1
+		IncrementXPQuiet("", params) -- after hiring, the sim looses all his XP, so we give it back
+	end
+	
+	-- stop courting
+	if SimGetCourtLover("", "WorkerLover") then
+		SimReleaseCourtLover("")
+		if HasProperty("", "courted") then
+			RemoveProperty("", "courted")
+		end
+		
+		if HasProperty("WorkerLover", "courted") then
+			RemoveProperty("WorkerLover", "courted")
+		end
+	end	
+	
+	MoveSetActivity("")
+	
+	-- pay extra money if needed
+	if AliasExists("Destination") and IsType("Destination", "Building") then
+		if BuildingGetOwner("Destination", "BOwner") then
+			
+			if BuildingHasUpgrade("Destination", "CrossedAxes") == true then
+				chr_SpendMoney("BOwner", 4900, "LaborHansel")
+			elseif BuildingHasUpgrade("Destination", "HarkingHorn") then
+				chr_SpendMoney("BOwner", 2400, "LaborHansel")
+			end
+				
+			if BuildingGetType("Destination") == GL_BUILDING_TYPE_ESTATE then
+				chr_SpendMoney("BOwner", 4900, "LaborHansel")
+			end
+		end
+	end
+end
+
