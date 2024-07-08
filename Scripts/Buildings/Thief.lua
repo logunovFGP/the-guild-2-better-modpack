@@ -93,6 +93,10 @@ end
 function CheckInForWork(BldAlias, SimAlias)
 	-- Task may be one of: PickpocketPeople, ScoutAHouse, BurgleAHouse, Hijack, DemandRansom
 	local Task, Detail, Index = thief_GetWorkerTask(BldAlias, SimAlias)
+	if Task == nil or Detail == nil or Index == nil then
+		LogMessage("Thief JobAssignment returned nil")
+		return nil
+	end
 	LogMessage("Thief JobAssignment " .. Index .." : " .. Task .. ", " .. (Detail or "")  )
 	if "PickpocketPeople" == Task then
 		thief_StartPickpocket(BldAlias, SimAlias, Detail, Index)
