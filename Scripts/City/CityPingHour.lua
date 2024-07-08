@@ -544,11 +544,12 @@ function CheckAlderman()
 
 	local year = GetYear() - 2 + math.mod(GetGametime(), 6)
 	local DynCount = ScenarioGetObjects("cl_Dynasty", 99, "Dyn")
-	local SimCount, Alias, SimPrioNew
+	local SimCount, Alias
 	local SimArray = {}
 	local SimFameArray = {}
 	local SimArrayCount = 0
 	local SimPrio = 0
+	local SimPrioNew = 0
 
 	for i=0, DynCount-1 do
 		Alias = "Dyn"..i
