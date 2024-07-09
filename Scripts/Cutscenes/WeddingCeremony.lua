@@ -194,10 +194,14 @@ function EndCeremony()
 	BuildingGetInsideSimList("#WEDDING_CHAPEL", "tmp")
 	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 	ListRemove("tmp","#PRIEST")
-
+ 
 	if GetInsideRoom("#PRIEST","#CHAPEL") then
 		RoomLockForCutscene("#CHAPEL",0)
 	end
+
+	LogMessage("Attempting to clear Sims' status, in WeddingCeremony.lua")
+
+	SetState("#MAIN", STATE_CUTSCENE, false)
 
 	for i = 0, ListSize("tmp") -1 do
 		ListGetElement("tmp", i, "#SIM"..i)
@@ -229,7 +233,7 @@ function EndCeremony()
 
 			if GetInsideBuilding("#SIM"..i, "#BUILDING") ~= false then
 				if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
-					f_ExitCurrentBuilding("#SIM"..i)
+					--f_ExitCurrentBuilding("#SIM"..i)
 					ReleaseAvoidanceGroup("#SIM"..i)
 					MoveSetActivity("#SIM"..i)
 					SimStopMeasure("#SIM"..i)
@@ -627,10 +631,11 @@ function BeginCeremony()
 	SimResetBehavior("#COURTED")
 
 	CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
-	
+
+	Sleep(5)
+
 	EndCutscene("")
 	DestroyCutscene("")
-
 end
 
 -- Misc.
