@@ -73,16 +73,6 @@ function Init()
 		
 		GfxSetPosition("BuildingAnimation0",XN,y,ZN,true)
 		GfxSetRotation("BuildingAnimation0", 0, 0, 0, false)
-	elseif BuildingType == 21 and Level > 1 then -- Mercenary
-		local dx = 0
-		local dz = 0
-		
-		local ZN = z + math.cos(BuildingRotRad) * (dx) - math.sin(BuildingRotRad) * (dz)
-		local XN = x + math.sin(BuildingRotRad) * (dx) + math.cos(BuildingRotRad) * (dz)
-		GfxAttachObject("BuildingAnimation0","buildings/mercenary_anim.nif")
-		
-		GfxSetPosition("BuildingAnimation0",XN,y,ZN,true)
-		GfxSetRotation("BuildingAnimation0", 0, 0, 0, false)
 	end
 end
 
