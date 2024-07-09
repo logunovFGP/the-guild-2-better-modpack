@@ -6,23 +6,24 @@ function ImportantPersonsAddDynMemberToSection(DynastyReference, Section)
 	local Added = false -- do we have already added 1 member?
 		
 	for i=0, Count-1 do
+		if Added then
+			break
+		end
 		if DynastyGetFamilyMember(DynastyReference, i, "dynMember") then
 			if AliasExists("dynMember") then
 				if not GetState("dynMember", STATE_DYING) then
 					if not GetState("dynMember", STATE_DEAD) then
 						if SimGetAge("dynMember") >= 16 then
-							if not Added then
-								SetImportantPersonToSection(GetID("dynMember"), Section, GetDynastyID(""))
-								Added = true
-							else
-								if DynastyIsShadow("dynMember") then
-									if SimGetOfficeLevel("dynMember") >= 0 then
-										SetImportantPersonToSection(GetID("dynMember"), Section, GetDynastyID(""))
-									end
-								else
-									SetImportantPersonToSection(GetID("dynMember"), Section, GetDynastyID(""))
-								end
-							end
+							SetImportantPersonToSection(GetID("dynMember"), Section, GetDynastyID(""))
+							Added = true
+							--	if DynastyIsShadow("dynMember") then
+							--		if SimGetOfficeLevel("dynMember") >= 0 then
+							--			SetImportantPersonToSection(GetID("dynMember"), Section, GetDynastyID(""))
+							--		end
+							--	else
+							--		SetImportantPersonToSection(GetID("dynMember"), Section, GetDynastyID(""))
+							--	end
+							--end
 						end
 					end
 				end
@@ -45,11 +46,11 @@ function ImportantPersonsDiplomacyFilter(DiplState, Section)
 		Alias = "Dynasties"..dyn
 		if not (GetID(Alias) == GetID("dynasty")) then
 			-- am I an important dynasty?
-			if DynastyGetBuildingCount(Alias, -1, -1) > 0 or DynastyGetBuildingCount2(Alias) > 0 then
+			--if DynastyGetBuildingCount(Alias, -1, -1) > 0 or DynastyGetBuildingCount2(Alias) > 0 then
 				if DynastyGetDiplomacyState("dynasty", Alias) == DiplState then
 					gathering_ImportantPersonsAddDynMemberToSection(Alias, Section)
 				end
-			end
+			--end
 		end
 	end
 end
