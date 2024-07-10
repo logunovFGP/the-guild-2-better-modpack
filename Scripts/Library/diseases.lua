@@ -41,6 +41,7 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 			}
 
     -- for the following functions I decided to go for <self.function> instead of <local function> because it seemed to break calls
+    -- To use those functions in your scripts, replace 'self' with Disease.Cold (or any other, see below)
 
 	self.getName = function()
 		return self.name
@@ -223,8 +224,9 @@ function giveSickness(Illness, ObjectAlias)
 		Sleep(1)
 	end
 
-
+	-- check whether the object actually gets infected or not
 	if not Illness:getName() == "BurnWound" and not diseases_checkSickness(ObjectAlias) then
+		LogMessage(GetName(ObjectAlias).." ID: "..GetID(ObjectAlias).." resisted against sickness")
 		return 
 	end
 
@@ -246,12 +248,13 @@ function giveSickness(Illness, ObjectAlias)
 
 		diseases_ImpactManager(true, ObjectAlias, Illness:getName(), Illness.getDuration())
 		diseases_NoTime(ObjectAlias, Illness:getName(), endtime, true)
-
-		if Illness:getName() == "Pox" or Illness:getName() == "Blackdeath" then
+		
+		-- severe diseases reduce life expectancy permanently by 1 or 2 years
+		if Illness:getName() == "BurnWound" or Illness:getName() == "Fracture" then
 			AddImpact(ObjectAlias, "LifeExpanding", -1, -1) 
 		end
 
-		if Illness:getName() == "Pneumonia" then
+		if Illness:getName() == "Pox" or Illness:getName() == "Pneumonia" or Illness:getName() == "BlackDeath" then
 			AddImpact(ObjectAlias, "LifeExpanding", -2, -1) 
 		end
 	end
