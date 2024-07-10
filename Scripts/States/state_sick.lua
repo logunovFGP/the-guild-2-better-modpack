@@ -170,7 +170,7 @@ end
 
 function InfluenzaBehaviour()
 	
-	MoveSetActivity("", "sick")
+	--MoveSetActivity("", "sick")
 	CommitAction("sickness", "", "") -- it's contagious
 	
 	while GetImpactValue("", "Influenza") == 1 do
