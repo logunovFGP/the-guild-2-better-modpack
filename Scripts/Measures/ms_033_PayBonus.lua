@@ -140,7 +140,7 @@ function Run()
 
 	for loop_var=0, numFound-1 do
 		Alias = "Worker"..loop_var
-		chr_ModifyFavor("Owner" , Alias, FavorModify)
+		chr_ModifyFavor(Alias, "", FavorModify)
 		AnimTime = PlayAnimationNoWait(Alias, "nod")
 	end
 	
