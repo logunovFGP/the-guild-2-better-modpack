@@ -8,7 +8,7 @@ Design:
 - Charaktere kommen nun aus der Arbeiterhütte/Residenz, wenn sie das Ziel von Werbung, Geschenken, Gedichten oder Kuchen sind.
 - Debug-Funktionen zur Config.ini hinzugefügt (Standard: aus).
 - Erweiterte Waren-Tooltips sind standardmäßig aktiviert (über config.ini abstellbar).
-- Zufallsereignisse wurden permanent deaktivitert. In einer zukünftigen Version werden sie komplett überarbeitet.
+- Zufallsereignisse wurden permanent deaktiviert. In einer zukünftigen Version werden sie komplett überarbeitet.
 - Das Feature der königlichen Berater wurde entfernt (ohnehin war dieses Feature kaum integriert).
 - Die Möglichkeit, Verteidigungstürme zu errichten, wurde entfernt.
 - Waffenkammer und Gildenhalle können nun unabhängig vom Stadt-Level genutzt werden.
@@ -19,7 +19,7 @@ Design:
 Features:
 - Erzähler zur Hochzeitseinladung hinzugefügt.
 - Besucher des Schwarzen Brettes erhalten nun eine kleine Menge an Erfahrungspunkten, wenn sie durch das Bemerken eines Pamphlets lachen müssen. 12 Stunden Cooldown.
-- Wenn man ein Amt erhält, bekommt man nun zusätzlich eine athmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
+- Wenn man ein Amt erhält, bekommt man nun zusätzlich eine atmosphärische Beschreibung des neuen Postens, zusätzlich zur Privilegien-Liste.
 - Zwei neue hohe Adelstitel eingefügt, deren Privilegien aber erst später erstellt werden.
 - Familienmitglieder, die sich in der Nähe des Schwarzen Bretts aufhalten, werden Pamphlete gegen die eigene Dynastie automatisch entfernen.
 - In einer Taverne zu übernachten, garantiert einen guten Traum, der die Klassentalente temporär erhöht. Eine Taverne, die "das Beste Haus am Platz" ist, sorgt für einen noch höheren Bonus.
