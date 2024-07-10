@@ -222,7 +222,6 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 		Count, Items = economy_GetItemsForSale(BldAlias)
 	end
 	Budget = Budget or 0
-	IgnoreMoney = IgnoreMoney
 	
 	local ItemId, Available, ItemPrice, ItemCount
 	for i=1, Count do
@@ -242,6 +241,7 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 					if not IgnoreMoney then
 						chr_SpendMoney(BuyerAlias, TotalPrice, "WaresBought")
 						chr_UseBudget(BuyerAlias, 1, TotalPrice)
+						LogMessage(GetName("").." bought random items for a price of "..TotalPrice)
 					end
 					return ItemId, ItemCount, TotalPrice
 				end
@@ -662,7 +662,7 @@ function CalcProductionPriorities(BldAlias, ProdCount, ProdItems)
 		NeedValue = math.ceil(MarketValues[i]/TotalValue * 100)
 		SetProperty("Inv", "Need_"..ItemId, NeedValue)
 	end
-	economy_LogProductionNeeds(BldAlias)
+	--economy_LogProductionNeeds(BldAlias)
 end
 
 function IncreaseServiceBasePrice(BldType, ItemId, BasePrice)
@@ -880,7 +880,7 @@ function GetNeedsForMarket(CityAlias)
 			CityNeedCount = CityNeedCount + 1
 			Amount = GetProperty("MarketAlias", "twpNeedAmount"..i)
 			CityNeeds[CityNeedCount] = { tmp, Amount }
-			LogMessage(GetName(CityAlias) .. " needs: " .. Amount .. " " .. ItemGetName(tmp))
+			--LogMessage(GetName(CityAlias) .. " needs: " .. Amount .. " " .. ItemGetName(tmp))
 		end
 	end
 	return CityNeedCount, CityNeeds 
