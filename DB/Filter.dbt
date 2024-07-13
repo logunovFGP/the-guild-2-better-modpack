@@ -451,12 +451,3 @@ Data:
 2064   "IsLingerPlace"   "__F((Object.ActionAdmissible())AND(Object.IsType(32)))"   |
 2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  
-2067   "CanUseVase" "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(vase)>0))" |  
-2068   "CanUseStatue" "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(statue)>0))" |
-2069   "CanUseGravestone"  "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Gravestone)>0)AND NOT(Object.GetState(fighting)))" | 
-2070   "CanUseFalseRelict" "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.GetItemCnt(FalseRelict)>0)AND(Object.IsType(19))OR(Object.IsType(20)))" |
-2071   "CanUseBoneFlute"  "__F((Object.CanBeControlled())AND(Object.GetItemCnt(BoneFlute)>0)AND NOT(Object.GetState(fighting)))" | 
-2072   "CanUseHolzpferd"  "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Holzpferd)>0)AND NOT(Object.GetState(fighting)))" | 
-2073   "CanUsePastry"  "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Pastry)>0)AND NOT(Object.GetState(fighting)))" | 
-2068   "CanUseTool"  "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Tool)>0)AND NOT(Object.GetState(fighting)))" | 
-2069   "CanUseSoap"  "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Soap)>0)AND NOT(Object.GetState(fighting)))" | 

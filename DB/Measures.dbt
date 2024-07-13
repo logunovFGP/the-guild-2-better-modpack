@@ -335,30 +335,6 @@ Data:
 10012   "Squad\ms_SquadDanegeld.lua"                   "-"   "SquadDanegeld"                       30   "hud/buttons/btn_Danegeld.tga"                            1   11             0               ""                                     ""   0                  0                     0                  "none"                   0                     0                       |
 10013   "Squad\ms_SquadDanegeldMember.lua"             "-"   "SquadDanegeldMember"                 30   "hud/buttons/btn_Danegeld.tga"                            1   11             0               ""                                     ""   0                  0                     0                  "none"                   0                     0                       |
 
-// TWP Mod hotfix
-13066   "Artefacts\as_Usevase.lua"   "-"   "Usevase"   55   "hud/items/item_vase.tga"   0   5   0   ""   ""   0   1   24   "none"   0   0   | 
-13067   "Artefacts\as_Usestatue.lua"   "-"   "Usestatue"   55   "hud/items/item_statue.tga"   0   5   0   ""   ""   0   1   24   "none"   0   0   | 
-13068   "Artefacts\as_UseGravestone.lua"   "-"   "UseGravestone"   55   "hud/items/Item_Gravestone.tga"   0   12   150   ""   ""   0   24   24   "none"   0   0   | 
-13069   "Artefacts\as_UseFalseRelict.lua"   "-"   "UseFalseRelict"   55   "hud/items/item_FalseRelict.tga"   0   5   0   ""   ""   0   48   24   "none"   0   0   | 
-13070   "Artefacts\as_UseBoneFlute.lua"   "-"   "UseBoneFlute"   55   "hud/items/item_BoneFlute.tga"   0   12   100   ""   ""   0   0   0   "none"   0   0   | 
-13071   "Artefacts\as_UseHolzpferd.lua"   "-"   "UseHolzpferd"   55   "hud/items/item_Holzpferd.tga"   0   12   100   ""   ""   0   0   0   "none"   0   0   | 
-13072   "Artefacts\as_UsePastry.lua"   "-"   "UsePastry"   55   "hud/items/Item_Pastry.tga"   0   12   200   ""   ""   0   12   0   "none"   0   0   | 
-13080   "ms_ManageSalesCounter.lua"   "-"   "ManageSalesCounter"   40   "Hud/Buttons/Unload.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
-13082   "ms_twp_StealFromCounter.lua"   ""   "StealFromCounter"   42   "hud/buttons/btn_061_PlunderBuilding.tga"   0   3   50   ""   ""   0   6   0   "none"   0   0   |
-13083   "Artefacts\as_UseTool.lua"   "-"   "UseTool"   55   "hud/items/Item_Tool.tga"   0   12   100   ""   ""   0   24   16   "none"   0   0   | 
-13084   "Artefacts\as_UseSoap.lua"   "-"   "UseSoap"   55   "hud/items/Item_Soap.tga"   0   12   100   ""   ""   0   6   6   "none"   0   0   | 
-13085   "Artefacts\as_UseEmpfehlung.lua"   "-"   "UseEmpfehlung"   55   "hud/items/Item_Empfehlung.tga"   0   12   150   ""   ""   0   24   0   "none"   0   0   | 
-13086   "Artefacts\as_UseChaplet.lua"   "-"   "UseChaplet"   55   "hud/items/Item_Chaplet.tga"   0   12   150   ""   ""   0   24   0   "none"   0   0   | 
-13087   "Artefacts\as_DrinkHerbtea.lua"   "-"   "DriHerbtea"   55   "hud/items/Item_Herbtea.tga"   0   12   0   ""   ""   0   0   0   "none"   0   0   | 
-13088   "Artefacts\as_DrinkSmallBeer.lua"   "-"   "DriSmallBeer"   55   "hud/items/Item_SmallBeer.tga"   0   12   0   ""   ""   0   0   0   "none"   0   0   | 
-13089   "Artefacts\as_DrinkWheatBeer.lua"   "-"   "DriWheatBeer"   55   "hud/items/Item_WheatBeer.tga"   0   12   0   ""   ""   0   0   0   "none"   0   0   | 
-13090   "Artefacts\as_DrinkWine.lua"   "-"   "DriWein"   55   "hud/items/Item_Wein.tga"   0   12   0   ""   ""   0   0   0   "none"   0   0   | 
-13091   "Artefacts\as_UseGargoyle.lua"   "-"   "UseGargoyle"   55   "hud/items/Item_Gargoyle.tga"   0   12   150   ""   ""   0   24   16   "none"   0   0   | 
-13092   "Artefacts\as_UseInvisiblePotion.lua"   "-"   "UseInvisiblePotion"   55   "hud/items/Item_InvisiblePotion.tga"   0   12   50   ""   ""   0   0   24   "none"   0   0   | 
-13093   "Artefacts\as_UseWeingeist.lua"   "-"   "UseWeingeist"   55   "hud/items/Item_Weingeist.tga"   0   12   0   ""   ""   0   0   0   "none"   0   0   | 
-13094   "Artefacts\as_UsePfandbrief.lua"   "-"   "UsePfandbrief"   55   "hud/items/Item_Pfandbrief.tga"   0   5   0   ""   ""   0   8   0   "none"   0   0   |
-
-
 // debug measures (needs Debug-Setting in config.ini activated)
 15100   "ms_debug_SimHide.lua"                         "-"   "DebugSimHide"                        99   "hud/buttons/btn_rob.tga"                                 0   99             0               ""                                     ""   0                  0                     0                  "none"                   0                     0                       |
 15200   "ms_debug_FindCourtLover.lua"                  "-"   "DebugFindCourtLover"                 99   "hud/buttons/btn_045_CourtLover.tga"                      0   99             0               ""                                     ""   0                  0                     0                  "none"                   0                     0                       |
