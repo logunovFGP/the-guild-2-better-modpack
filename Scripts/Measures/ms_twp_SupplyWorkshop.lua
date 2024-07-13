@@ -119,7 +119,7 @@ end
 
 function InitMeasure()
   -- find home
-	if not GetHomeBuilding("","MyHome") then
+	if not GetHomeBuilding("", "MyHome") then
 		return
 	end
 	
@@ -172,7 +172,8 @@ function Run()
 	local ResourceCount, Resources, SupplierCount, Suppliers = ms_twp_supplyworkshop_GetMeasureData()
 	
 	-- 1. Go home.
-	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
+	MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
+	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("", "HomePos", GL_MOVESPEED_RUN) then
 		-- cannot get gome, something went wrong
 		StopMeasure()
 	end
@@ -189,7 +190,7 @@ function Run()
 		NeedCount, Needs = economy_CalcCurrentResourceNeeds("MyHome", ResourceCount, Resources, 0.8)
 		SupplierFound = false
 		if NeedCount and NeedCount > 0 then
-			MsgMeasure("", "Looking for supplies")
+			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_SUPPLIES_+0")
 			for i = 1, SupplierCount do
 				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
 					SupplierFound = true
@@ -202,22 +203,25 @@ function Run()
 			end
 		else
 			SupplierFound = true -- otherwise, message gets replaced
-			MsgMeasure("", "Supplies are fine, time for a break")
+			--MsgMeasure("", "Supplies are fine, time for a break")
+			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_BREAK_+0")
 			Sleep(60) -- nothing to do, wait a while
 		end
 		if not SupplierFound then
-			MsgMeasure("", "Could not find supplies, need to wait")
+			--MsgMeasure("", "Could not find supplies, need to wait")
+			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_WAIT_+0")
 			Sleep(35) -- nothing to do, wait a bit
 		end
 		
+		MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
 		-- return home if necessary
-		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
+		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("", "HomePos", GL_MOVESPEED_RUN) then
 			-- cannot get gome, something went wrong
 			StopMeasure() 
 		end
 		-- Unload at home and rest
 		cart_UnloadAll("", "MyHome")
-		MsgMeasure("", "On short break")
+		MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_REST_+0")
 		Sleep(15)
 	end
 end

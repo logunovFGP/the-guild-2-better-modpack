@@ -129,7 +129,7 @@ end
 
 function Run() 
 	-- find home 
-	if not GetHomeBuilding("","MyHome") then
+	if not GetHomeBuilding("", "MyHome") then
 		return
 	end
 	if not GetOutdoorMovePosition("", "MyHome", "HomePos") then
@@ -143,7 +143,8 @@ function Run()
 	-- TODO use selected targets for sales (see AutoCart measure/state)
 	
 	-- 1. Go home.
-	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
+	MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
+	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("", "HomePos", GL_MOVESPEED_RUN) then
 		-- cannot get gome, something went wrong
 		ms_twp_salescart_Abort()
 	end
@@ -171,20 +172,23 @@ function Run()
 		end
 		
 		if ProfitCount > 0 and ChosenTarget then
+			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_SELL_+0")
 			-- 4. load the cart, slot by slot
 			cart_LoadItems("", "MyHome", ProfitCount, Profits) 
 			-- 5. go to the market
-			f_MoveTo("",ChosenTarget, GL_MOVESPEED_RUN)
+			f_MoveTo("", ChosenTarget, GL_MOVESPEED_RUN)
 			Sleep(3)
 			-- 6. Unload
 			cart_UnloadAll("", ChosenTarget)
 			Sleep(2)
 		else
+			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_NO_PROFIT_+0")
 			Sleep(120) -- nothing to sell right now, wait a while
 		end 
 		
+		MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
 		-- return home if necessary
-		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("","HomePos", GL_MOVESPEED_RUN) then
+		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("", "HomePos", GL_MOVESPEED_RUN) then
 			-- cannot get gome, something went wrong
 			ms_twp_salescart_Abort()
 		end
@@ -193,7 +197,7 @@ function Run()
 end
 
 function Abort()
-	GetHomeBuilding("","MyHome")
+	GetHomeBuilding("", "MyHome")
 	local ret = MsgNews("", "", 
 				"", -- Buttons 
 				0,
