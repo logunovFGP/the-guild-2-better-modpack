@@ -1,4 +1,8 @@
 function Weight()
+if true then
+		-- disabled since amulets are not a usable artefact yet 
+		return 0
+	end
 	local	Item = "Amulet"
 	local Money = GetMoney("SIM")*0.10 
 	local Difficulty = ScenarioGetDifficulty()

@@ -559,7 +559,7 @@ function CheckAlderman()
 				DynastyGetMember(Alias, e, "Sim"..e)
 				-- select the strongest sim of the dynasty
 				if HasProperty("Sim"..e, "PatronMaster") or HasProperty("Sim"..e, "ArtisanMaster") or HasProperty("Sim"..e, "ScholarMaster") or HasProperty("Sim"..e, "ChiselerMaster") then
-					SimPrioNew = GetProperty("Sim"..e, "GuildFame")	
+					SimPrioNew = GetProperty("Sim"..e, "GuildFame") or 0
 					if SimPrioNew > SimPrio then
 						SimPrio = SimPrioNew
 						CopyAlias("Sim"..e, "Candidate"..i)

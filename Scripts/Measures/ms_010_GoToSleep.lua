@@ -7,7 +7,6 @@
 -------------------------------------------------------------------------------
 
 function Run() 
-
 	if not(GetHomeBuilding("", "HomeBuilding")) then
 		LogMessage("GoToSleep - No homebuilding found for sleeping")
 		if IsPartyMember("") then
@@ -15,11 +14,9 @@ function Run()
 		end
 		return
 	end
-	
 	if not AliasExists("HomeBuilding") then
 		return
 	end
-	
 	-- Not sleepy?
 	if GetImpactValue("", "GoodDream") > 0 or GetImpactValue("", "VeryGoodDream") > 0 or GetImpactValue("", "BadDream") > 0 then
 		if IsPartyMember("") then
@@ -27,7 +24,6 @@ function Run()
 		end
 		StopMeasure()
 	end
-
 	if not GetInsideBuilding("", "Inside") or GetID("Inside") ~= GetID("HomeBuilding") then
 		if GetImpactValue("", "Sickness") > 0 then
 			if not f_MoveTo("", "HomeBuilding", GL_MOVESPEED_WALK) then
@@ -39,14 +35,13 @@ function Run()
 			end
 		end
 	end
-
 	if GetFreeLocatorByName("HomeBuilding", "Bed", 1, 3, "SleepPosition") then
 		if not f_BeginUseLocator("", "SleepPosition", GL_STANCE_LAY, true) then
 			MsgQuick("", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
 			StopMeasure()
 		end
 	else
-		if GetDynastyID("") ~= -1 and IsDynastySim("Owner") then
+		if GetDynastyID("") ~= -1 and IsDynastySim("Owner") and not DynastyIsAI("") then
 			-- member from a dynasty must sleep in the right way
 			if IsPartyMember("") then
 				MsgBoxNoWait("", "", "@L_GENERAL_ERROR_HEAD_+0", "@L_GENERAL_MEASURES_010_GOTOSLEEP_FAILURES_+1", GetID(""))
@@ -54,7 +49,6 @@ function Run()
 			StopMeasure()
 		end
 	end
-	
 	local MeasureID = GetCurrentMeasureID("")
 	local duration = 6
 	local CurrentHP = GetHP("")
@@ -70,7 +64,6 @@ function Run()
 	SetData("Duration", duration)
 	
 	local EndTime = CurrentTime + duration
-	
 	while GetGametime() < EndTime do
 		
 		Sleep(5)
@@ -87,7 +80,6 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-	
 	if AliasExists("SleepPosition") then
 		f_EndUseLocator("", "SleepPosition", GL_STANCE_STAND)
 	end
@@ -96,7 +88,6 @@ function CleanUp()
 	
 	local Time = GetGametime()
 	local Start = Time
-	
 	if HasData("StartTime") and GetData("StartTime") ~= nil then
 		Start = GetData("StartTime")
 	else
@@ -118,7 +109,6 @@ function CleanUp()
 	elseif Factor < 0.05 then
 		return
 	end
-	
 	if IsDynastySim("Owner") then
 	
 		if GetImpactValue("", "Sickness") > 0 and Factor >= 0.9 then

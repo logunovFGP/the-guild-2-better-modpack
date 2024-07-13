@@ -12,8 +12,7 @@ function Run()
 	local DoNothing = GetProperty("", "_DO_NOTHING_TIME") or 0
 	if DoNothing > 0 then
 		RemoveProperty("", "_DO_NOTHING_TIME")
-		DoNothing = Gametime2Realtime(DoNothing)
-		Sleep(DoNothing)
+		Sleep(DoNothing*60)
 	end 
 	
 	-- cleanup moveset
@@ -41,7 +40,7 @@ function Run()
 	local currentGameTime = math.mod(GetGametime(),24)
 	if (currentGameTime >23 or currentGameTime < 4) then
 		idlelib_GoSleep()
-		SetProperty("", "_DO_NOTHIING_TIME", 1)
+		SetProperty("", "_DO_NOTHING_TIME", 1)
 		return
 	end
 	

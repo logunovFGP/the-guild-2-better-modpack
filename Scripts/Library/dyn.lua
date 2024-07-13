@@ -1239,6 +1239,10 @@ end
 -- -----------------------
 function GetHighestOfficeLevel(SimAlias)
 	GetDynasty(SimAlias, "MyDyn")
+	-- TODO in which cases could this ever be? Check calling script!
+	if not AliasExists("MyDyn") then
+		return SimGetOfficeLevel(SimAlias)
+	end
 	local Members = DynastyGetMemberCount("MyDyn")
 	local HighestLevel = 0
 	

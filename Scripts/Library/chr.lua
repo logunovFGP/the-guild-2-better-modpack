@@ -764,6 +764,9 @@ end
 
 function GiveMoney(Target)
 	DynastyGetMember(Target, 0, "FirstMember")
+	if not AliasExists("FirstMember") then
+		return
+	end
 	local MoneyOnLastCheck = GetProperty(Target, "AI_DynMoney_LastCheck")
 	local CurrentMoney = GetMoney("FirstMember")
 	local CheatingMoney = 0
