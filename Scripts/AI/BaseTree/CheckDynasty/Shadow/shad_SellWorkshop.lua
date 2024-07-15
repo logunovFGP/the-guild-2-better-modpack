@@ -49,10 +49,10 @@ function Execute()
 		SetState("sd_Workshop", STATE_SELLFLAG, true)
 	end
 
---[[	if BuildingGetForSale("sd_Workshop") then
-		BuildingSetForSale("sd_Workshop", false)
-		SetState("sd_Workshop", STATE_SELLFLAG, false)
-	end	
-	]]
+--	if BuildingGetForSale("sd_Workshop") then
+--		BuildingSetForSale("sd_Workshop", false)
+--		SetState("sd_Workshop", STATE_SELLFLAG, false)
+--	end	
+
 end
 

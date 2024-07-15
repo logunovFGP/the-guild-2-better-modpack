@@ -1,17 +1,16 @@
---[[ 
-TradeRoutes by ThreeOfMe:
+-- 
+--TradeRoutes by ThreeOfMe:
 
-* Measure data will be restructured to differ between stations and actions
-	* StationCount: Total number of stations, each selected by the *Next building* command.
-	* Station1 ... Stationn: List of stations to stop at (for total n stations)
-	* Station1Actions: Total number of actions at given station (here first station)
-	* S1Action1 ... Sation1Am: First Action at this station
-	* S1Type1 ... Sation1Tm: Item type of first action
-	* S1Count1 ... Sation1Cm: Count of items at this station
+--Measure data will be restructured to differ between stations and actions
+--	* StationCount: Total number of stations, each selected by the *Next building* command.
+--	* Station1 ... Stationn: List of stations to stop at (for total n stations)
+--	* Station1Actions: Total number of actions at given station (here first station)
+--	* S1Action1 ... Sation1Am: First Action at this station
+--	* S1Type1 ... Sation1Tm: Item type of first action
+--	* S1Count1 ... Sation1Cm: Count of items at this station
 
-* Initialization data (see above) will be kept for now.
+--Initialization data (see above) will be kept for now.
 
---]]
 
 function Init()
 	GetHomeBuilding("", "homeBuilding")

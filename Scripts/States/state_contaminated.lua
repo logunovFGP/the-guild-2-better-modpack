@@ -65,13 +65,12 @@ function SimImpacts(impactNames, impactActives)
 end
 
 function SpecificCommitSimImpacts()
-	--[[	if GetImpactValue("","FaustBad")>0 then
-				GetPosition("", "EffectPosition")
-				StartSingleShotParticle("particles/toadexcrements_hit.nif", "EffectPosition",4,5)
-				PlaySound3D("", "CharacterFX/nasty/Furzen+1.wav", 1.0)
-				PlaySound3D("", "CharacterFX/nasty/Furzen+1.wav", 1.0)
-			end
-		]]
+	--	if GetImpactValue("","FaustBad")>0 then
+	--			GetPosition("", "EffectPosition")
+	--			StartSingleShotParticle("particles/toadexcrements_hit.nif", "EffectPosition",4,5)
+	--			PlaySound3D("", "CharacterFX/nasty/Furzen+1.wav", 1.0)
+	--			PlaySound3D("", "CharacterFX/nasty/Furzen+1.wav", 1.0)
+	--		end
 end
 
 

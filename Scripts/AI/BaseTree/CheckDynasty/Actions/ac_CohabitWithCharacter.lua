@@ -7,11 +7,11 @@ function Weight()
 		return 0
 	end
 
-	--[[if DynastyIsShadow("SIM") then
-		if SimGetOfficeLevel("SIM")<3 and SimGetOfficeLevel("Spouse")<3 then
-			return 0
-		end
-	end]]
+	--if DynastyIsShadow("SIM") then
+	--	if SimGetOfficeLevel("SIM")<3 and SimGetOfficeLevel("Spouse")<3 then
+	--		return 0
+	--	end
+	--end
 	
 	if not GetHomeBuilding("SIM", "home") then
 		return 0
