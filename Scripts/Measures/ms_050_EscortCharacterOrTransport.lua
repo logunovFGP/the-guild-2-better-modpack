@@ -1,6 +1,7 @@
 function Run()
-
+	--LogMessage("Escort Debugging")
 	if not AliasExists("Destination") then
+	--	LogMessage("Escort Debug: No Destination")
 		return
 	end
 
@@ -16,23 +17,6 @@ function Run()
 	elseif IsType("Destination", "Ship") then
 		fDistance = 1000
 	end
-	
-	local DataValue, Temp
-	
-	for l=0, 4 do
-		Temp = "EscortedBy_"..l
-		if not HasProperty("Destination", Temp) then
-			DataValue = Temp
-			break
-		end
-	end
-	
-	if not DataValue then
-		return
-	end
-	
-	SetData("Property", DataValue)
-	SetProperty("Destination", DataValue, GetID(""))
 
 	if TimeOut < 0 then
 		while true do
@@ -140,6 +124,7 @@ function Run()
 				Sleep(2)
 			end
 		end
+	--	LogMessage("Escort Debug: End")
 		StopMeasure()
 	end
 	
@@ -147,19 +132,15 @@ function Run()
 	if TimeOut == 5 then
 		f_FollowNoWait("", "Destination", GL_MOVESPEED_RUN, fDistance)
 		if math.mod(GetGametime(), 24) > GetData("Endtime"..GetID("Destination")) then
+	--		LogMessage("Escort Debug: TimeOut")
 			StopMeasure()
 		end
 	end
 end
 
 function CleanUp()
-	local DataValue = GetData("Property")
-
-	if AliasExists("Destination") and HasProperty("Destination", "KIbodyguard") then
 	
-		if DataValue then
-			RemoveProperty("Destination", DataValue)
-		end
+	if AliasExists("Destination") and HasProperty("Destination", "KIbodyguard") then
 		
 		if GetProperty("Destination", "KIbodyguard") > 1 then
 			SetProperty("Destination", "KIbodyguard", 1)
