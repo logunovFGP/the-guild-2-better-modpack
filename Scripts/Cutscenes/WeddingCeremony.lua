@@ -1,115 +1,158 @@
 function CleanUp()
 	LogMessage("CleanUp() - Cache, in WeddingCeremony.lua")
+
+	RemoveProperty("#MAIN", "OCCURING_MARRIAGE")
+	RemoveProperty("#COURTED", "OCCURING_MARRIAGE")
+
+	f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
+	f_EndUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND)
+
+	ReleaseAvoidanceGroup("#COURTED")
+	ReleaseAvoidanceGroup("#MAIN")
+
+	if AliasExists("Visitors") then
+		ListClear("Visitors")
+	end
+
+	GetInsideBuilding("#MAIN", "#WEDDING_CHAPEL")
+
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "tmp")
+	LogMessage("Size of list (Sims in chapel) with Priest: " .. ListSize("tmp"))
+	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
+	ListRemove("tmp","#PRIEST")
+	LogMessage("Size of list (Sims in chapel): without Priest " .. ListSize("tmp"))
+ 
+	if GetInsideRoom("#PRIEST", "#CHAPEL") then
+		RoomLockForCutscene("#CHAPEL", 0)
+	end
+
+	LogMessage("Attempting to clear Sims' status, in WeddingCeremony.lua")
+
+	SetState("#MAIN", STATE_CUTSCENE, false)
+
+	for i = 0, ListSize("tmp") -1 do
+		LogMessage("check: " .. i)
+		ListGetElement("tmp", i, "#SIM"..i)
+
+		if SimGetAge("#SIM"..i) > 15 then
+			LogMessage("CleanUp [ '"..GetName("#SIM"..i).."']")
+
+			AllowMeasure("#SIM"..i, "BuyNobilityTitle", EN_BOTH)
+
+			if HasProperty("#SIM"..i, "WEDDING_FORCED") then
+				RemoveProperty("#SIM"..i, "WEDDING_FORCED")
+			end
+			if HasProperty("#SIM"..i, "WEDDING_canChat") then
+				RemoveProperty("#SIM"..i, "WEDDING_canChat")
+			end
+			if HasProperty("#SIM"..i, "WEDDING_IGNORE") then
+				RemoveProperty("#SIM"..i, "WEDDING_IGNORE")
+			end
+			if HasProperty("#SIM"..i, "Busy") then
+				RemoveProperty("#SIM"..i, "Busy")
+			end
+			if HasProperty("#SIM"..i, "AttendingWedding") then
+				RemoveProperty("#SIM"..i, "AttendingWedding")
+			end
+			if HasProperty("#SIM"..i, "SIM1") then
+				RemoveProperty("#SIM"..i, "SIM1")
+			end
+			if HasProperty("#SIM"..i, "SIM2") then
+				RemoveProperty("#SIM"..i, "SIM2")
+			end
+
+			SimResetBehavior("#SIM"..i)
+			f_ExitCurrentBuilding("#SIM"..i)
+			
+			if GetInsideBuilding("#SIM"..i, "#BUILDING") ~= false then
+				if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
+					--f_ExitCurrentBuilding("#SIM"..i)
+					ReleaseAvoidanceGroup("#SIM"..i)
+					MoveSetActivity("#SIM"..i)
+					--SimStopMeasure("#SIM"..i)
+				end
+			end
+
+		end
+
+	end
+
+	ListClear("tmp")
 end
 
--- Init.
-function Start()
-	GetSettlement("#MAIN", "settlement")
+function Init()
+    GetSettlement("#MAIN", "settlement")
 
 	if not FindNearestBuilding("#MAIN", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL") then
 		MsgQuick("#MAIN", "Building #WEDDING_CHAPEL not found!")
 		return
 	end
 
-    local timer = 
-    	{
-    		getCurrentRound = math.floor( GetGametime() / 24 ),
-    		getCurrentTime = math.mod(GetGametime(),24),
-    		getEventDate = 0
-    	}
+	LogMessage("Wedding Init of: " .. GetName("#MAIN") .. " and " .. GetName("#COURTED"))
 
-    LogMessage("Current Round: "..timer.getCurrentRound)
-    LogMessage("Current Game Time: "..timer.getCurrentTime.."h00.")
+	local function getDate()
 
-	local found = false
+		local timer = 
+			{
+				getCurrentRound = math.floor(GetGametime()/24),
+				getCurrentTime = math.mod(GetGametime(), 24),
+				getEventDate = 0
+			}
 
-	while not found do
-	    local slotKey = "CEREMONY_SLOT#"..timer.getCurrentRound.."#"..timer.getEventDate
+		LogMessage("Current Round: "..timer.getCurrentRound)
+		LogMessage("Current Game Time: "..timer.getCurrentTime.."h00.")
 
-	    if not HasProperty("#WEDDING_CHAPEL", slotKey) then
-	        local currentTime = math.floor(GetGametime() / 24)
-	        local timeDifference = timer.getEventDate - timer.getCurrentTime
+		local found = false
 
-	        if timer.getCurrentRound == currentTime and timeDifference < 4 then
-	            LogMessage("4H PREP TIME IMPOSSIBLE FOR: " .. slotKey)
-	            SetProperty("#WEDDING_CHAPEL", slotKey, 0)
-	            timer.getEventDate = timer.getEventDate + 6
+		while not found do
+		    local slotKey = "CEREMONY_SLOT#"..timer.getCurrentRound.."#"..timer.getEventDate
 
-	            if timer.getEventDate > 24 - 1 then
-	                timer.getEventDate = 0
-	                timer.getCurrentRound = timer.getCurrentRound + 1
-	            end
-	        else
-	            LogMessage("SLOT FOUND: " .. slotKey)
-	            SetProperty("#WEDDING_CHAPEL", slotKey, timer.getEventDate)
-	            found = true
-	        end
-	    else
-	        LogMessage("ALREADY TAKEN: " .. slotKey)
-	        timer.getEventDate = timer.getEventDate + 6
+		    if not HasProperty("#WEDDING_CHAPEL", slotKey) then
+		        local currentTime = math.floor(GetGametime() / 24)
+		        local timeDifference = timer.getEventDate - timer.getCurrentTime
 
-	        if timer.getEventDate > 24 - 1 then
-	            timer.getEventDate = 0
-	            timer.getCurrentRound = timer.getCurrentRound + 1
-	        end
-	    end
-	end
+		        if timer.getCurrentRound == currentTime and timeDifference < 4 then
+		            LogMessage("4H PREP TIME IMPOSSIBLE FOR: " .. slotKey)
+		            SetProperty("#WEDDING_CHAPEL", slotKey, 0)
+		            timer.getEventDate = timer.getEventDate + 6
 
-	local v = GetProperty("#WEDDING_CHAPEL","CEREMONY_SLOT#"..timer.getCurrentRound.."#"..timer.getEventDate)
+		            if timer.getEventDate > 24 - 1 then
+		                timer.getEventDate = 0
+		                timer.getCurrentRound = timer.getCurrentRound + 1
+		            end
+		        else
+		            LogMessage("SLOT FOUND: " .. slotKey)
+		            SetProperty("#WEDDING_CHAPEL", slotKey, timer.getEventDate)
+		            found = true
+		            return timer.getEventDate
+		        end
+		    else
+		        LogMessage("ALREADY TAKEN: " .. slotKey)
+		        timer.getEventDate = timer.getEventDate + 6
 
-	LogMessage("Hour of the next Wedding Ceremony: "..v.."h00.")
-
-	CityScheduleCutsceneEvent("settlement", "ceremony_date", "", "BeginCeremony", v, 4, "@L_WEDDING_CEREMONY_SCHEDULED_EVENT_+0", GetID("#MAIN"), GetID("#COURTED"))
-
-	local eventDate = SettlementEventGetTime("ceremony_date")
-
-	SimAddDatebookEntry("#MAIN", eventDate, "#WEDDING_CHAPEL","You are getting married!","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
-	SimAddDate("#MAIN","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", eventDate -120, "AttendWedding")
-
-	SimAddDatebookEntry("#COURTED", eventDate, "#WEDDING_CHAPEL","You are getting married!","Two love-birds are getting married soon, you should probably attend the event in a great moment of community.")
-	SimAddDate("#COURTED","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", eventDate -120, "AttendWedding")
-
-	CutsceneCallThread("", "InviteGuests", "#WEDDING_CHAPEL")
-
-	local ID = "Event"..GetID("#MAIN")
-	local DestTime = math.mod(GetGametime(),24) + eventDate/60 - math.mod(GetGametime(),24)
-
-	MsgNewsNoWait("#MAIN", "#MAIN", "@C[@L_WEDDING_COOLDOWN_+0,%3i,%4l]", "default", -1,"@L_WEDDING_COOLDOWN_HEAD_+0","@L_WEDDING_COOLDOWN_BODY_TO_SELF_+0",GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
-	MsgNewsNoWait("#COURTED", "#COURTED", "@C[@L_WEDDING_COOLDOWN_+0,%3i,%4l]", "default", -1,"@L_WEDDING_COOLDOWN_HEAD_+0","@L_WEDDING_COOLDOWN_BODY_TO_COURTED_+0",GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
-end 
-
--- Call Threads
-
-function InitSims()
-	BuildingFindSimByProperty("", "BUILDING_NPC", 11, "#PRIEST")
-
-	BuildingGetInsideSimList("", "tmp")
-	ListRemove("tmp", "#PRIEST")
-	ListRemove("tmp", "#MAIN")
-	ListRemove("tmp", "#COURTED")
-
-	ListNew("Visitors")
-	for i = 0, ListSize("tmp") -1 do
-		ListGetElement("tmp", i, "#SIM"..i)
-		if SimGetAge("#SIM"..i) > 15 then
-			ListAdd("Visitors","#SIM"..i)
-			CutsceneAddSim("","#SIM"..i)
+		        if timer.getEventDate > 24 - 1 then
+		            timer.getEventDate = 0
+		            timer.getCurrentRound = timer.getCurrentRound + 1
+		        end
+		    end
 		end
 	end
-	ListClear("tmp")
 
-	CutsceneAddSim("","#MAIN")
-	CutsceneAddSim("","#COURTED")
-	CutsceneAddSim("","#PRIEST")
-end
+    local date = getDate()
+    CityScheduleCutsceneEvent("settlement", "Date(Wedding)", "", "Start", date, 4, "Ceremony date.")
 
-function InviteGuests()
+	SimAddDatebookEntry("#MAIN", SettlementEventGetTime("Date(Wedding)"), "#WEDDING_CHAPEL","You are getting married!","This is your big day! You are getting married soon, you should probably attend the event in a great moment of community.")
+	SimAddDate("#MAIN","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", SettlementEventGetTime("Date(Wedding)")-120, "AttendWedding")
+
+	SimAddDatebookEntry("#COURTED", SettlementEventGetTime("Date(Wedding)"), "#WEDDING_CHAPEL","You are getting married!","This is your big day! You are getting married soon, you should probably attend the event in a great moment of community.")
+	SimAddDate("#COURTED","#WEDDING_CHAPEL", "#WEDDING_CHAPEL", SettlementEventGetTime("Date(Wedding)")-120, "AttendWedding")
 
     local function canInvite(GuestAlias, GuestDyn)
-        return math.max(GetNobilityTitle("#MAIN"), GetNobilityTitle("#COURTED")) >= GetNobilityTitle(GuestAlias) - 2 and f_SimIsValid(GuestAlias) and not GetState(GuestAlias, STATE_SICK) and CanBeInterruptetBy(GuestAlias, "#MAIN", "Flirt")
+        return math.max(GetNobilityTitle(""), GetNobilityTitle("#COURTED")) >= GetNobilityTitle(GuestAlias) - 1 and f_SimIsValid(GuestAlias) and not GetState(GuestAlias, STATE_SICK) and CanBeInterruptetBy(GuestAlias, "", "Flirt")
     end
 
     local function invite(GuestAlias)
+    	LogMessage("WeddingCeremony.lua, sending invitation to " .. GetName(GuestAlias))
         local Invitation = MsgNews(GuestAlias, "", "@P"..
             "@B[O, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+0]"..
             "@B[C, @L_THIEF_067_LETABDUCTEEOUT_ACTION_BTN_+1]", 
@@ -118,16 +161,17 @@ function InviteGuests()
             "@L_MEASURE_MARRY_CEREMONY_ASK_BODY_+0",
             GetID("#MAIN"), GetID("#COURTED"), GetID("#WEDDING_CHAPEL"), GetID(GuestAlias))
 
-        	if Invitation == "O" then
-        		SimAddDate(GuestAlias, "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", SettlementEventGetTime("ceremony_date")-120, "AttendWedding")
-        		SimAddDatebookEntry(GuestAlias, SettlementEventGetTime("ceremony_date"), "#WEDDING_CHAPEL", "@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
+        	if Invitation == "O" or Invitation == "C" then
+        		LogMessage(GetName(GuestAlias) .. " will be attending the Wedding Ceremony.")
+        		SimAddDate(GuestAlias, "#WEDDING_CHAPEL", "#WEDDING_CHAPEL", SettlementEventGetTime("Date(Wedding)")-120, "AttendWedding")
+        		SimAddDatebookEntry(GuestAlias, SettlementEventGetTime("Date(Wedding)"), "#WEDDING_CHAPEL", "@L_WEDDING_CEREMONY_DIARY_BODY_+0","@L_WEDDING_CEREMONY_DIARY_HEAD_+0")
         		SetProperty(GuestAlias, "AttendingWedding", 1)
         		MsgNewsNoWait("#MAIN", GuestAlias, "", "politics", -1, "Answer to the Wedding invitation","I will be happy to attend your Wedding Ceremony.")
         		MsgNewsNoWait("#COURTED", GuestAlias, "", "politics", -1, "Answer to the Wedding invitation","I will be happy to attend your Wedding Ceremony.")
-        		SetProperty(GuestAlias,"SIM1",GetID("#MAIN"))
-        		SetProperty(GuestAlias,"SIM2",GetID("#COURTED"))
-        		SetProperty(GuestAlias,"WEDDING_canChat",1)
-        		MsgNewsNoWait(GuestAlias, GuestAlias, "@C[@L_WEDDING_COOLDOWN_BODY_+0,%3i,%4l]", "default", -1,"@L_WEDDING_COOLDOWN_HEAD_+0","@L_WEDDING_COOLDOWN_BODY_+0",GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
+        		SetProperty(GuestAlias, "SIM1", GetID("#MAIN"))
+        		SetProperty(GuestAlias, "SIM2", GetID("#COURTED"))
+        		SetProperty(GuestAlias, "WEDDING_GUEST", 1) 
+        		MsgNewsNoWait(GuestAlias, GuestAlias, "@C[@L_WEDDING_COOLDOWN_BODY_+0,%3i,%4l]", "default", -1, "@L_WEDDING_COOLDOWN_HEAD_+0", "@L_WEDDING_COOLDOWN_BODY_+0", GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
         	else
         		return false
         	end
@@ -156,13 +200,14 @@ function InviteGuests()
     end
 
     if GetSettlement("#MAIN", "#SETTLEMENT") then
+    	local i, u
         for i = 0, CityGetBuildings("#SETTLEMENT", GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_HAS_DYNASTY, "Residence") - 1 do
             if GetDynasty("Residence"..i, "GuestDyn") then
                 local limit = 0
                 for u = 0, DynastyGetFamilyMemberCount("GuestDyn") - 1 do
                     if returnSim(u, "GuestDyn") then
                     	limit = limit + 1
-                    	if limit == 2 then
+                    	if limit == 3 then
                         	break
                     	end
                     end
@@ -170,81 +215,64 @@ function InviteGuests()
             end
         end
     end
+
+	local ID = "Event"..GetID("#MAIN")
+	local DestTime = math.mod(GetGametime(),24) + date/60 - math.mod(GetGametime(),24)
+
+	MsgNewsNoWait("#MAIN", "#MAIN", "@C[@L_WEDDING_COOLDOWN_+0,%3i,%4l]", "default", -1, "@L_WEDDING_COOLDOWN_HEAD_+0", "@L_WEDDING_COOLDOWN_BODY_TO_SELF_+0", GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
+	MsgNewsNoWait("#COURTED", "#COURTED", "@C[@L_WEDDING_COOLDOWN_+0,%3i,%4l]", "default", -1, "@L_WEDDING_COOLDOWN_HEAD_+0", "@L_WEDDING_COOLDOWN_BODY_TO_COURTED_+0", GetID("#MAIN"), GetID("#COURTED"), DestTime, ID)
 end
 
-function EndCeremony()
-	LogMessage("EndCeremony() called in WeddingCeremony.lua")
+-- Call Threads
+function InitSims()
+	BuildingFindSimByProperty("", "BUILDING_NPC", 11, "#PRIEST")
 
-	--StopScheduledScript()
-	--LogMessage("CleanUp() in WeddingCeremony.lua")
+	BuildingGetInsideSimList("", "tmp")
+	ListRemove("tmp", "#PRIEST")
+	ListRemove("tmp", "#MAIN")
+	ListRemove("tmp", "#COURTED")
 
-	RemoveProperty("#MAIN","OCCURING_MARRIAGE")
-	RemoveProperty("#COURTED","OCCURING_MARRIAGE")
+	local OrphanCount = 0
 
-	f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
-	f_EndUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND)
-
-	ReleaseAvoidanceGroup("#COURTED")
-	ReleaseAvoidanceGroup("#MAIN")
-
-	if AliasExists("Visitors") then
-		ListClear("Visitors")
-	end
-
-	BuildingGetInsideSimList("#WEDDING_CHAPEL", "tmp")
-	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
-	ListRemove("tmp","#PRIEST")
- 
-	if GetInsideRoom("#PRIEST","#CHAPEL") then
-		RoomLockForCutscene("#CHAPEL",0)
-	end
-
-	LogMessage("Attempting to clear Sims' status, in WeddingCeremony.lua")
-
-	SetState("#MAIN", STATE_CUTSCENE, false)
-
+	ListNew("Visitors")
 	for i = 0, ListSize("tmp") -1 do
 		ListGetElement("tmp", i, "#SIM"..i)
-
 		if SimGetAge("#SIM"..i) > 15 then
-			LogMessage("CleanUp [ '"..GetName("#SIM"..i).."']")
-
-			if HasProperty("#SIM"..i,"WEDDING_FORCED") then
-				RemoveProperty("#SIM"..i,"WEDDING_FORCED")
-			end
-			if HasProperty("#SIM"..i,"WEDDING_canChat") then
-				RemoveProperty("#SIM"..i,"WEDDING_canChat")
-			end
-			if HasProperty("#SIM"..i,"WEDDING_IGNORE") then
-				RemoveProperty("#SIM"..i,"WEDDING_IGNORE")
-			end
-			if HasProperty("#SIM"..i,"Busy") then
-				RemoveProperty("#SIM"..i,"Busy")
-			end
-			if HasProperty("#SIM"..i,"AttendingWedding") then
-				RemoveProperty("#SIM"..i,"AttendingWedding")
-			end
-			if HasProperty("#SIM"..i,"SIM1") then
-				RemoveProperty("#SIM"..i,"SIM1")
-			end
-			if HasProperty("#SIM"..i,"SIM2") then
-				RemoveProperty("#SIM"..i,"SIM2")
-			end
-
-			if GetInsideBuilding("#SIM"..i, "#BUILDING") ~= false then
-				if GetID("#BUILDING") == GetID("#WEDDING_CHAPEL") then
-					--f_ExitCurrentBuilding("#SIM"..i)
-					ReleaseAvoidanceGroup("#SIM"..i)
-					MoveSetActivity("#SIM"..i)
-					SimStopMeasure("#SIM"..i)
-				end
-			end
-
+			ListAdd("Visitors","#SIM"..i)
+			CutsceneAddSim("","#SIM"..i)
+			LogMessage("Visitor added to list:")
+			LogMessage(GetName("#SIM"..i))
+		else
+			OrphanCount = OrphanCount +1
+			ChangeAlias("#SIM"..i, "Orphan#"..OrphanCount)
+			LogMessage("Minor (" .. OrphanCount .. "): " .. GetName("Orphan#"..OrphanCount))
 		end
-
 	end
-
 	ListClear("tmp")
+
+	CutsceneAddSim("","#MAIN")
+	CutsceneAddSim("","#COURTED")
+	CutsceneAddSim("","#PRIEST")
+	if AliasExists("Orphan#1") and AliasExists("Orphan#2") then
+		CutsceneAddSim("","Orphan#1")
+		CutsceneAddSim("","Orphan#2")
+	end
+end
+
+function SetUpOrphan1()
+	GetLocatorByName("#WEDDING_CHAPEL", "FlowerChild1", "FC1")
+	f_MoveTo("Orphan#1", "FC1")
+	f_BeginUseLocator("Orphan#1", "FC1", GL_STANCE_STAND, true)
+	GetPosition("Orphan#1", "Pos1")
+	StartSingleShotParticle("particles/pray_glow.nif", "Pos1", 1, 15)
+end
+
+function SetUpOrphan2()
+	GetLocatorByName("#WEDDING_CHAPEL", "FlowerChild2", "FC2")
+	f_MoveTo("Orphan#2", "FC2")
+	f_BeginUseLocator("Orphan#2", "FC2", GL_STANCE_STAND, true)
+	GetPosition("Orphan#2", "Pos2")
+	StartSingleShotParticle("particles/pray_glow.nif", "Pos2", 1, 15)
 end
 
 function SitGuest()
@@ -275,7 +303,7 @@ function SitGuest()
 	until (allSeats[Seat] == true)
 
 	GetFreeLocatorByName("#WEDDING_CHAPEL", "Sit", Seat, Seat, "#POS", false)
-	f_BeginUseLocator("", "#POS", GL_STANCE_SITBENCH,true)
+	f_BeginUseLocator("", "#POS", GL_STANCE_SITBENCH, true)
 end
 
 -- Utilies
@@ -294,7 +322,7 @@ function AIInitAnswer()
 		end
 	end
 		
-	if Rand(3) == 0 then
+	if Rand(2) == 0 then
 		return "O"
 	else
 		return "C"
@@ -302,24 +330,56 @@ function AIInitAnswer()
 end
 
 -- Scheduled Event
-function BeginCeremony()
+function Start()
 
 	LogMessage("Starting a Wedding event @ "..GetName("#WEDDING_CHAPEL").."!")
 	LogMessage("| Celebrating "..GetName("#MAIN").." and "..GetName("#COURTED").."'s union. |")
 
 	CutsceneCallThread("", "InitSims", "#WEDDING_CHAPEL")
 
+	Sleep(1)
+
 	if not GetInsideBuilding("#MAIN", "#WEDDING_CHAPEL") then
+		LogMessage("Weddings: Main Sim is not in Chapelroom.")
 		MsgQuick("#MAIN", GetName("#MAIN").." is missing!")
+		RemoveProperty("#COURTED", "Wedding")
+		RemoveProperty("#COURTED", "courted")
+		RemoveProperty("#MAIN","#WEDDING_MAIN")
+		RemoveProperty("#MAIN", "#WEDDING_FORCED")
+		RemoveProperty("#COURTED", "#WEDDING_FORCED")
+		RemoveProperty("#WEDDING_CHAPEL", "Wedding")
+		ClearImportantPersonSection("Wedding")
+		Sleep(1)
+
+		SimResetBehavior("#COURTED")
+
 		CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+
+		Sleep(5)
+
 		EndCutscene("")
 		DestroyCutscene("")
 		return
 	end
 
 	if not GetInsideBuilding("#COURTED", "#WEDDING_CHAPEL") then
+		LogMessage("Weddings: Courted Sim is not in Chapelroom.")
 		MsgQuick("#MAIN", GetName("#COURTED").." is missing!")
+		RemoveProperty("#COURTED", "Wedding")
+		RemoveProperty("#COURTED", "courted")
+		RemoveProperty("#MAIN","#WEDDING_MAIN")
+		RemoveProperty("#MAIN", "#WEDDING_FORCED")
+		RemoveProperty("#COURTED", "#WEDDING_FORCED")
+		RemoveProperty("#WEDDING_CHAPEL", "Wedding")
+		ClearImportantPersonSection("Wedding")
+		Sleep(1)
+
+		SimResetBehavior("#COURTED")
+
 		CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+
+		Sleep(5)
+
 		EndCutscene("")
 		DestroyCutscene("")
 		return
@@ -327,8 +387,23 @@ function BeginCeremony()
 
 	if not chr_SpendMoney("#MAIN", GetCost(), "Wedding") then
 		if not HasProperty("", "Tutorial") then
+			LogMessage("Weddings: Not enough money for Wedding.")
 			MsgQuick("#MAIN","@L_MEASURE_WEDDING_FAILURE_+1", GetID(""))
+			RemoveProperty("#COURTED", "Wedding")
+			RemoveProperty("#COURTED", "courted")
+			RemoveProperty("#MAIN","#WEDDING_MAIN")
+			RemoveProperty("#MAIN", "#WEDDING_FORCED")
+			RemoveProperty("#COURTED", "#WEDDING_FORCED")
+			RemoveProperty("#WEDDING_CHAPEL", "Wedding")
+			ClearImportantPersonSection("Wedding")
+			Sleep(1)
+
+			SimResetBehavior("#COURTED")
+
 			CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
+
+			Sleep(5)
+
 			EndCutscene("")
 			DestroyCutscene("")
 			return
@@ -340,21 +415,32 @@ function BeginCeremony()
 	ListRemove("Sit_Visitors", "#MAIN")
 	ListRemove("Sit_Visitors", "#COURTED")
 
+	Sleep(1)
+
 	for i = 0, ListSize("Sit_Visitors") -1 do
 		ListGetElement("Sit_Visitors", i, "#SIM")
-		if SimGetAge("#SIM") > 15 and HasProperty("#SIM","AttendingWedding") then
+		if SimGetAge("#SIM") > 15 and HasProperty("#SIM", "AttendingWedding") then
 			CutsceneCallThread("", "SitGuest", "#SIM")
 		end
 	end
 	ListClear("Sit_Visitors")
 
-	RemoveProperty("#MAIN","WEDDING_canChat")
-	RemoveProperty("#COURTED","WEDDING_canChat")
+	Sleep(1)
+
+	if AliasExists("Orphan#1") and AliasExists("Orphan#2") then
+		CutsceneCallThread("", "SetUpOrphan1", "Orphan#1")
+		CutsceneCallThread("", "SetUpOrphan2", "Orphan#2")
+	end
+
+	Sleep(1)
+
+	RemoveProperty("#MAIN", "WEDDING_canChat")
+	RemoveProperty("#COURTED", "WEDDING_canChat")
 
 	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 
-	if GetInsideRoom("#PRIEST","#CHAPEL") then
-		RoomLockForCutscene("#CHAPEL","")
+	if GetInsideRoom("#PRIEST", "#CHAPEL") then
+		RoomLockForCutscene("#CHAPEL", "")
 	end
 
 	GetLocatorByName("#WEDDING_CHAPEL", "WeddingPriest", "PriestPos", false)
@@ -374,7 +460,7 @@ function BeginCeremony()
         Sleep(1)
     end
 
-    Sleep(12.5)
+    Sleep(2.5)
 
 	SetAvoidanceGroup("#MAIN", "#COURTED")
 
@@ -384,13 +470,13 @@ function BeginCeremony()
 
 	local Guests = ListSize("Visitors")
 
-	CutsceneCameraCreate("","#PRIEST")
+	CutsceneCameraCreate("", "#PRIEST")
 
-	f_StartHighPriorMusic(MUSIC_MARRIAGE)
+	f_StartHighPriorMusic(ENVIRONMENT_MARRIAGE) --MUSIC_MARRIAGE) 
 
-	CutsceneCameraSetRelativePosition("","#CHAPEL_INTRO(01)","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_INTRO(01)", "#PRIEST")
 	CutsceneCameraBlend("", 5, 1)
-	CutsceneCameraSetRelativePosition("","#CHAPEL_INTRO(02)","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_INTRO(02)", "#PRIEST")
 	Sleep(5.5)
 
 	PlayFE("#MAIN", "smile", 2, 2.5, 0)
@@ -405,10 +491,10 @@ function BeginCeremony()
 	f_MoveToNoWait("#COURTED", "MarryPos2", GL_MOVESPEED_WALK)
 
 	Sleep(0.5)
-	CutsceneCameraSetRelativePosition("","#CHAPEL_INTRO(BACK)","#MAIN")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_INTRO(BACK)", "#MAIN")
 	Sleep(0.5)
 	CutsceneCameraBlend("", 15, 1)
-	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(FAR)","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)", "#PRIEST")
 
 	f_BeginUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND, true)
 	f_BeginUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND, true)
@@ -420,43 +506,43 @@ function BeginCeremony()
 	-- We are gathered together today to join %1ST %1SN and %2ST %2SN in the bonds of holy matrimony.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
-	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#PRIEST")
 
 	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded wife, to love and honour, til death do you part? If so, answer with: yes.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
 	CutsceneCameraBlend("", 2, 1)
-	CutsceneCameraSetRelativePosition("","#CHAPEL_RIGHT","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_RIGHT", "#PRIEST")
 	Sleep(1.25)
-	PlayAnimationNoWait("#COURTED","giggle")
+	PlayAnimationNoWait("#COURTED", "giggle")
 	Sleep(0.5)
-	PlayAnimationNoWait("#MAIN","curtsy")
+	PlayAnimationNoWait("#MAIN", "curtsy")
 
 	-- Yes, I do.
 	MsgSay(list[SimGetGender("#MAIN")+1][1], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 
-	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(FAR)","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)","#PRIEST")
 
 	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded husband, to love and honour, til death do you part? If so, answer with: yes.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(list[SimGetGender("#MAIN")+1][2]), GetID(list[SimGetGender("#MAIN")+1][1]))
 
 	CutsceneCameraBlend("", 2, 1)
-	CutsceneCameraSetRelativePosition("","#CHAPEL_LEFT","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_LEFT", "#PRIEST")
 	Sleep(1.25)
-	PlayAnimationNoWait("#MAIN","giggle")
+	PlayAnimationNoWait("#MAIN", "giggle")
 	Sleep(0.75)
-	PlayAnimationNoWait("#COURTED","nod")
+	PlayAnimationNoWait("#COURTED", "nod")
 
 	-- Yes, I do.
 	MsgSay(list[SimGetGender("#MAIN")+1][2], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 
-	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(FAR)","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)", "#PRIEST")
 
 	-- I hereby declare you man and wife. You may now kiss the bride, %1ST %1SV.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID(list[SimGetGender("#MAIN")+1][1]))
 
 	CutsceneCameraBlend("", 8, 1)
-	CutsceneCameraSetRelativePosition("","#CHAPEL_PRIEST(UP)","#PRIEST")
+	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(UP)", "#PRIEST")
 
 	AlignTo("#MAIN", "#COURTED")
 	AlignTo("#COURTED", "#MAIN")
@@ -464,6 +550,11 @@ function BeginCeremony()
 
 	ShowOverheadSymbol("#MAIN", false, true, 0, "@L$S[2001]")
 	ShowOverheadSymbol("#COURTED", false, true, 0, "@L$S[2001]")
+
+	if AliasExists("Orphan#1") and AliasExists("Orphan#2") then
+		PlayAnimationNoWait("Orphan#1", "pray_standing")
+		PlayAnimationNoWait("Orphan#2", "pray_standing")
+	end
 
 	AnimLength = chr_MultiAnim(list[SimGetGender("#MAIN")+1][1], "kiss_male", list[SimGetGender("#MAIN")+1][2], "kiss_female", 128, 1.0, true)
 	Sleep(AnimLength * 0.25)
@@ -506,7 +597,7 @@ function BeginCeremony()
 	    dyn_AddFame("#MAIN", 1)
 	end
 
-	MsgNewsNoWait("All", "", "", "politics", -1,"@L_MEASURE_MARRY_CEREMONY_HEAD_+0","@L_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0",GetID("#MAIN"),GetID("#COURTED"),GetID("#WEDDING_CHAPEL"),Guests)
+	MsgNewsNoWait("All", "", "", "politics", -1, "@L_MEASURE_MARRY_CEREMONY_HEAD_+0", "@L_MEASURE_MARRY_CEREMONY_NEWS_BODY_+0", GetID("#MAIN"), GetID("#COURTED"), GetID("#WEDDING_CHAPEL"), Guests)
 
 	Sleep(0.5)
 
@@ -536,11 +627,11 @@ function BeginCeremony()
 
 		for INDEX = 0, ListSize("Reacting") -1 do
 			ListGetElement("Reacting", INDEX, "#SIM")
-			CutsceneCameraSetRelativePosition("","#CHAPEL_GUEST","#SIM")
+			CutsceneCameraSetRelativePosition("", "#CHAPEL_GUEST", "#SIM")
 
 			local DIALOG, EMOTE = "_POSITIVE", "bench_talk_short"
 
-			if DynastyGetDiplomacyState("#MAIN","#SIM") == DIP_FOE or GetFavorToDynasty("#MAIN", "#SIM") < 40 or SimGetAlignment("#MAIN") >= 70 then
+			if DynastyGetDiplomacyState("#MAIN", "#SIM") == DIP_FOE or GetFavorToDynasty("#MAIN", "#SIM") < 40 or SimGetAlignment("#MAIN") >= 70 then
 				DIALOG = "_NEGATIVE"
 				EMOTE = "bench_talk_offended"
 			elseif GetFavorToDynasty("#MAIN", "#SIM") <= 55 and DynastyGetDiplomacyState("#MAIN", "#SIM") < DIP_ALLIANCE then
@@ -608,15 +699,14 @@ function BeginCeremony()
 		MsgNewsNoWait("#MAIN", "#COURTED", "", "schedule", -1,"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0","@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("#COURTED"))
 	end
 
-	CutsceneCameraBlend("", 4, 0)
-	CutsceneCameraSetRelativePosition("","Far_HUpYLeft","#MAIN")
-	Sleep(6)
+	CutsceneCameraBlend("", 2.5, 0)
+	CutsceneCameraSetRelativePosition("", "Far_HUpYLeft", "#MAIN")
+
+	Sleep(4)
 
 	RemoveProperty("#COURTED", "Wedding")
 	RemoveProperty("#COURTED", "courted")
-	RemoveProperty("#MAIN","#WEDDING_MAIN")
-
-	SetState("#COURTED", STATE_INLOVE, false)
+	RemoveProperty("#MAIN", "#WEDDING_MAIN")
 
 	RemoveProperty("#MAIN", "#WEDDING_FORCED")
 	RemoveProperty("#COURTED", "#WEDDING_FORCED")
@@ -624,15 +714,17 @@ function BeginCeremony()
 
 	PlaySound3D("#WEDDING_CHAPEL", "locations/bell_stroke_cathedral_loop+0.wav", 1.0)
 	ClearImportantPersonSection("Wedding")
+
+	LogMessage("Marrying sims...")
 	SimMarry("#MAIN", "#COURTED")
+
+	SetState("#COURTED", STATE_INLOVE, false)
 
 	Sleep(1)
 
 	SimResetBehavior("#COURTED")
 
-	CutsceneCallThread("", "EndCeremony", "#WEDDING_CHAPEL")
-
-	Sleep(5)
+	Sleep(4)
 
 	EndCutscene("")
 	DestroyCutscene("")

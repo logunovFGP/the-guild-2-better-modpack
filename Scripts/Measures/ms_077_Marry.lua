@@ -100,7 +100,7 @@ function Run()
 
 	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "Weddingchapel")
 
-	if AliasExists("TODO") then -- TODO replace TODO with Weddingchapel
+	if AliasExists("WEDDINGSCHAPELDISABLED") then -- TODO replace TODO with Weddingchapel
 
 		if DynastyIsAI("") then
 			if Cost > (GetMoney("") - 1000) then
@@ -226,7 +226,7 @@ function Run()
 	--------------------------------
 	--  visit the wedding chapel --
 	--------------------------------
-	elseif choice == 1 then
+	elseif choice == 5 then
 		Sleep(1)
 
 		if not SimGetCourtLover("", "Destination") then
@@ -237,7 +237,7 @@ function Run()
 		if HasProperty("","OCCURING_MARRIAGE") or HasProperty("Destination","OCCURING_MARRIAGE") then
 			MsgQuick("","A wedding ceremony is already planned for at least one of these characters!")
 			return
-		end
+		end 
 
 		SetProperty("","WEDDING_FORCED",1)
 		SetProperty("Destination","WEDDING_FORCED",1)
@@ -247,13 +247,20 @@ function Run()
 
 		SetProperty("","OCCURING_MARRIAGE",GetID("Destination"))
 		SetProperty("Destination","OCCURING_MARRIAGE",GetID(""))
-		
-		CreateCutscene("WeddingCeremony", "Wedding")
 
-		CopyAliasToCutscene("", "Wedding", "#MAIN")
-		CopyAliasToCutscene("Destination", "Wedding", "#COURTED")
+		ChangeAlias("Destination", "#COURTED")
 
-		CutsceneCallScheduled("Wedding", "Start")
+		GetSettlement("", "settlement")
+
+		if not FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL") then
+			MsgQuick("", "Building #WEDDING_CHAPEL not found!")
+			return
+		end
+
+	    CreateCutscene("WeddingCeremony", "Cutscene(Wedding)")
+	    CopyAliasToCutscene("", "Cutscene(Wedding)", "#MAIN")
+	    CopyAliasToCutscene("#COURTED", "Cutscene(Wedding)", "#COURTED")
+	    CutsceneCallScheduled("Cutscene(Wedding)", "Init")
 	end
 end
 

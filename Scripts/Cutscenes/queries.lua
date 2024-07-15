@@ -17,6 +17,8 @@ function InitAttend(Sim)
 		return false
 	elseif CurrentMeasure == "AttendFestivity" then
 		return false
+	elseif CurrentMeasure == "AttendWedding" then
+		return false
 	end
 	
 	if GetImpactValue(Sim, "SuppressAttendMessage") > 0 then
@@ -135,7 +137,6 @@ function AttendDuel(DestinationID)
 	DestroyCutscene("")
 end	
 
-
 function AttendFestivity(DestinationID)
 	
 	-- Init
@@ -180,7 +181,8 @@ function AttendFestivity(DestinationID)
 end	
 
 function AttendWedding(DestinationID)
-	FindNearestBuilding("", -1, GL_BUILDING_TYPE_WEDDINGCHAPEL, -1, false, "#WEDDING_CHAPEL")
+
+	LogMessage("queries.lua, function AttendWedding, processing " .. GetName("Sim"))
 
 	if not DynastyIsPlayer("Sim") then
 		MeasureRun("Sim", "Destination", "AttendWedding", true)
@@ -188,26 +190,29 @@ function AttendWedding(DestinationID)
 		return
 	end
 
+	if queries_InitAttend("Sim") == false then
+		DestroyCutscene("")
+		return
+	end
+
+	AddImpact("Sim", "SuppressAttendMessage", 1, 3)
+
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		if MsgNews("Sim","destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"politics", 1, "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+0", "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+1", GetID("Sim")) =="C" then
+					queries_AIReturnO, "politics", 1, "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+0", "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+1", GetID("Sim")) =="C" then
 			bRun = false
 		end
 	end
 
-	if (bRun==true) then
+	if (bRun == true) then
+		LogMessage(GetName("Sim") .. " (human-controlled Sim) is going to the Wedding Ceremony.")
 		MeasureRun("Sim", "Destination", "AttendWedding", true)
 	end
 
 	DestroyCutscene("")
 end
-
-function StartWedding(DestinationID)
-	MeasureRun("Sim", "Destination", "StartWedding", true)
-	DestroyCutscene("")
-end	
 
 function Attend(DestinationID)
 	local bRun = true
