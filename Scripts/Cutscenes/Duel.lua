@@ -628,12 +628,21 @@ function EndDuelFail(ChallengerMissing, ChallengedMissing)
 	duel_Torch(0)
 	Sleep(0.1)
 	
-	SetState("challenger", STATE_LOCKED, false)
-	SetState("challenged", STATE_LOCKED, false)
+	if ChallangerMissing == 1 then
+		SetState("challenged", STATE_LOCKED, false)
+		CarryObject("challenged", "", false)
+		MoveSetActivity("challenged")
+		
+	end
+	
+	if ChallengedMissing == 1 then
+		SetState("challanger", STATE_LOCKED, false)
+		CarryObject("challenger", "", false)
+		MoveSetActivity("challenger")
+	end
+	
 	SimResetBehavior("doctor")
 	SimSetBehavior("doctor", "doctor")
-	CarryObject("challenger", "", false)
-	CarryObject("challenged", "", false)
 	
 	EndCutscene("")	
 end
@@ -674,6 +683,12 @@ function EndDuel()
 	
 	SetState("challenger", STATE_LOCKED, false)
 	SetState("challenged", STATE_LOCKED, false)
+	if not (GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
+		MoveSetActivity("challenger")
+	end
+	if not (GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
+		MoveSetActivity("challenger")
+	end
 	SimResetBehavior("doctor")
 	SimSetBehavior("doctor", "doctor")
 	ModifyHP("Doctor", 100, false)
