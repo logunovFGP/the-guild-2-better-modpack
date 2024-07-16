@@ -32,8 +32,14 @@ function Run()
 	end
 
 	if choice == 0 then
+		if GetState("", STATE_DUEL) then
+			SetState("", STATE_DUEL, false)
+		end
 		DynastyAddMember("dynasty", "")
 	elseif choice == 1 then
+		if GetState("", STATE_DUEL) then
+			SetState("", STATE_DUEL, false)
+		end
 		DynastyRemoveMember("", "dynasty")
 	else
 		StopMeasure()
