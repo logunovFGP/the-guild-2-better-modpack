@@ -145,7 +145,7 @@ CarryObject("Destination","Handheld_Device/ANIM_bookpile.nif",false)
   local SkillHaben = GetSkillValue("Destination",7)
   local SkillNeu = SkillHaben + DieMenge
   SetSkillValue("Destination",7,SkillNeu)
-  MoveSetActivity("Destination","")
+  MoveSetActivity("Destination")
   Sleep(0.5)
   CarryObject("Destination","",false)
  

@@ -283,7 +283,7 @@ function Run()
 			SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
 			SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
 		else
-			MoveSetActivity("SickSim0","")
+			MoveSetActivity("SickSim0")
 			AddImpact("SickSim0", "Resist", 1, 6)
 		end
 
@@ -304,7 +304,7 @@ function PropertiesEnd(checker,sim)
 		SetProperty(sim, "IgnoreHospital", GetID("Hospital"))
 		SetProperty(sim, "IgnoreHospitalTime", GetGametime()+12)
 	else
-		MoveSetActivity(sim,"")
+		MoveSetActivity(sim)
 		AddImpact(sim, "Resist", 1, 6)
 	end
 

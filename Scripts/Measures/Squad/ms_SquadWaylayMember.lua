@@ -216,14 +216,12 @@ end
 
 function ReturnToBase()
 
-	local TransitionTime
 	if GetDistance("", "MyRobbercamp") > 500 then
 
-		TransitionTime = MoveSetActivity("", "carry")
 		Sleep(2)
 		CarryObject("", "Handheld_Device/ANIM_Bag.nif", false)
-
-		Sleep(TransitionTime - 2)
+		MoveSetActivity("", "carry")
+		Sleep(1)
 
 		GetOutdoorMovePosition("", "MyRobbercamp", "MovePos")
 
@@ -239,7 +237,7 @@ function ReturnToBase()
 	local Count = InventoryGetSlotCount("", INVENTORY_STD)
 	for i=0, Count-1 do
 		ItemId, Found = InventoryGetSlotInfo("", i, INVENTORY_STD)
-		if ItemId and ItemId>0 and ItemId ~= 999 and Found > 0 then
+		if ItemId and ItemId > 0 and ItemId ~= 999 and Found > 0 then
 			RemainingSpace = GetRemainingInventorySpace("MyRobbercamp", ItemId)
 			while Found > RemainingSpace do
 				MsgQuick("MyRobbercamp", "@L_GENERAL_INFORMATION_INVENTORY_INVENTORY_FULL_+1", GetID("MyRobbercamp"), ItemGetLabel(ItemId, false))
@@ -271,10 +269,10 @@ function ReturnToBase()
 		AddImpact("MyRobbercamp", "BootyMsg", 1, 2)
 	end
 	
-	TransitionTime = MoveSetActivity("", "")
 	Sleep(2)
 	CarryObject("", "", false)
-	Sleep(TransitionTime - 2)
+	MoveSetActivity("")
+	Sleep(1)
 	
 	-- normal wait behavior
 	local	Distance = GetDistance("", "Destination")

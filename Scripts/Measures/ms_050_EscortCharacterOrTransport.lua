@@ -1,7 +1,7 @@
 function Run()
-	--LogMessage("Escort Debugging")
+	LogMessage("Escort Debugging")
 	if not AliasExists("Destination") then
-	--	LogMessage("Escort Debug: No Destination")
+		LogMessage("Escort Debug: No Destination")
 		return
 	end
 
@@ -124,7 +124,7 @@ function Run()
 				Sleep(2)
 			end
 		end
-	--	LogMessage("Escort Debug: End")
+		LogMessage("Escort Debug: End")
 		StopMeasure()
 	end
 	
@@ -132,7 +132,7 @@ function Run()
 	if TimeOut == 5 then
 		f_FollowNoWait("", "Destination", GL_MOVESPEED_RUN, fDistance)
 		if math.mod(GetGametime(), 24) > GetData("Endtime"..GetID("Destination")) then
-	--		LogMessage("Escort Debug: TimeOut")
+			LogMessage("Escort Debug: TimeOut")
 			StopMeasure()
 		end
 	end

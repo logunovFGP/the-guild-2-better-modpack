@@ -239,7 +239,7 @@ function KnochenGraben()
 		end
 		
 		TransferItems("", "WorkBuilding")
-		MoveSetActivity("", "")
+		MoveSetActivity("")
 		Sleep(2)
 		CarryObject("", "", false)
 	end
