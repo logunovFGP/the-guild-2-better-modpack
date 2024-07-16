@@ -757,9 +757,9 @@ function VoteForOffice(Office)
 			-- No office holder / not present, show the winner instead
 			if Rand(10) == 0 then
 				if Rand(2) == 0 then
-					MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_WORKLESS_GOOD_FAVOR_+2")
+					MsgSay("Applicant"..Winner, "@L_SIM_COMMENTS_WORKER_ORDER_WORKLESS_GOOD_FAVOR_+2")
 				else
-					MsgSay("OfficeHolder", "@L_SIM_COMMENTS_WORKER_ORDER_SCHOLAR_GOOD_FAVOR_+0")
+					MsgSay("Applicant"..Winner, "@L_SIM_COMMENTS_WORKER_ORDER_SCHOLAR_GOOD_FAVOR_+0")
 				end
 			else
 				MsgSay("Applicant"..Winner, "@L_SESSION_3_ELECT_REACTION")
