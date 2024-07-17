@@ -51,6 +51,7 @@ function Run()
 			local TimeLeft = 0+GetProperty("","Time_done")
 			Time = 0+Time - TimeLeft
 		end
+		MeasureSetNotRestartable()
 		SetMeasureRepeat(Time)
 		StartGameTimer(Time)
 		

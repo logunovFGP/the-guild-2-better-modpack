@@ -221,7 +221,7 @@ function giveSickness(Illness, ObjectAlias)
 	local endtime
 
 	if Illness:getName() == "Pneumonia" then 
-		Sleep(1)
+		--Sleep(1)
 	end
 
 	-- check whether the object actually gets infected or not

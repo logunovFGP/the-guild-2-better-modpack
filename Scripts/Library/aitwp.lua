@@ -507,7 +507,7 @@ SHOW_MSG = false
 function Log(Message, Actor, ShowMsg)
 	ShowMsg = SHOW_MSG and ShowMsg
 	Actor = Actor or ""
-	LogMessage("::TWP::AI::"..GetName(Actor).." "..Message)
+	--LogMessage("::TWP::AI::"..GetName(Actor).." "..Message)
 	if ShowMsg then
 --		MsgQuick("All", "::TWP::AI::"..GetName(Actor).." "..Message)
 	end
