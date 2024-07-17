@@ -198,7 +198,13 @@ function Run()
 		
 		-- Decrement sicksimcounter if some sick sim dies
 		gameplayformulas_DecreaseInfectionCountCity("")
-	
+		
+		-- release coutlover
+		if SimGetCourtLover("", "CourtLover") then
+			SetState("CourtLover", STATE_INLOVE, false)
+			RemoveProperty("CourtLover", "courted")
+			SimReleaseCourtLover("")
+		end
 		Sleep(10)
 
 		---------------------
