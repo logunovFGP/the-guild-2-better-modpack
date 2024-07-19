@@ -683,10 +683,10 @@ function EndDuel()
 	
 	SetState("challenger", STATE_LOCKED, false)
 	SetState("challenged", STATE_LOCKED, false)
-	if not (GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
+	if not GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
 		MoveSetActivity("challenger")
 	end
-	if not (GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
+	if not GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
 		MoveSetActivity("challenger")
 	end
 	SimResetBehavior("doctor")
