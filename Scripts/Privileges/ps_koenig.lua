@@ -17,7 +17,6 @@ function TakeOffice(Messages)
 	end
 
 	chr_SetOfficeImpactList( "Office", ps_koenig_GetPrivilegeList() )
-	gameplayformulas_CheckImperialOfficer()
 end
 
 function LooseOffice(Messages)
