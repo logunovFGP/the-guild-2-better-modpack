@@ -12,33 +12,33 @@ function Run()
 				state_scanning_ArrestLoop(true)
 			end
 		end
-		Sleep(1)
+		Sleep(1) 
 	end
 end
 
 
 function ArrestLoop(IsBuilding)
 
-	if IsBuilding==false and GetState("", STATE_IDLE)==false then
-		return
-	end
-	
-	if CityGuardScan("", "Penalty") then	-- find a fugitive (and with no impact "no_arrestable")
-		if PenaltyGetOffender("Penalty", "Wanted") then -- wanted found -> arrest him
+	if CityGuardScan("", "Penalty") then
+		if PenaltyGetOffender("Penalty", "Wanted") then
+			LogMessage("[i] state_scanning.lua -> " .. GetName("") .. " has found felon " .. GetName("Wanted"))
 			if IsBuilding then
 				if not GetState("Wanted", STATE_UNCONSCIOUS) then
 					gameplayformulas_SimAttackWithRangeWeapon("", "Wanted")
 					BattleJoin("", "Wanted", true)
 				end
 			else
-				if GetDistance("","Wanted") < 4000 and ReadyToRepeat("Wanted", "TimerGetArrested") then
-					-- Timer prevents arrest spam with too many guards around
-					SetRepeatTimer("Wanted", "TimerGetArrested", 1)
-					--MeasureRun("", "Wanted", "Arrest")
+				if GetDistance("", "Wanted") < 4000 then 
+					if ReadyToRepeat("Wanted", "TimerGetArrested") then 
+						SetRepeatTimer("Wanted", "TimerGetArrested", 1)
+						MeasureRun("", "Wanted", "Arrest")
+						LogMessage(GetName("") .. " is arresting felon " .. GetName("Wanted") .. "!")
+					end
 				end
 			end
 		end
 	end
+
 end
 
 function WatchtowerLoop()
