@@ -12,8 +12,8 @@ function Weight()
 end
 
 function Execute()
-	f_MoveTo("", "MyWorkshop", GL_MOVESPEED_RUN)
-	Sleep(2)
+	--aitwp_Log("AI::VisitWorkshop Executing.", "SIM")
+	f_MoveToNoWait("", "MyWorkshop", GL_MOVESPEED_RUN)
 end
 
 
