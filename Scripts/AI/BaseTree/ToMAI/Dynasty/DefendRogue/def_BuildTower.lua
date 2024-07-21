@@ -1,4 +1,6 @@
 function Weight()
+	-- inactive since towers are deactivated in Reforged
+	if true then return 0 end
 
 	if not AliasExists("SIM") then
 		return 0
