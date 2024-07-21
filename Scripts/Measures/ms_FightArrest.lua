@@ -1,13 +1,16 @@
 function Run()
+
 	local ExecID = 0
 	if not AliasExists("Destination") then 
 		-- no destination found (should never happen)
 		return
 	end
-	if HasProperty("Destination","GettingTortured") then
+	
+	if HasProperty("Destination", "GettingTortured") then
 		return
 	end
-	if GetID("Destination")==GetID("") then
+	
+	if GetID("Destination") == GetID("") then
 		return
 	end
 
@@ -30,17 +33,15 @@ function Run()
 	end
 	
 	if CityGetPenalty("CityAlias", "Destination", PENALTY_FUGITIVE, true, "Penalty") then
-		if GetState("Destination",STATE_UNCONSCIOUS) and GetImpactValue("Destination", "REVOLT")==1 then
-			MeasureRun("","Destination","Kill")
-		else
+		if GetState("Destination", STATE_UNCONSCIOUS) and GetImpactValue("Destination", "REVOLT") == 1 then
+			MeasureRun("", "Destination", "Kill")
+		elseif not GetState("Destination", STATE_UNCONSCIOUS) and GetImpactValue("Destination", "REVOLT") == 1 then
 			gameplayformulas_SimAttackWithRangeWeapon("", "Destination")
-			BattleJoin("","Destination", true)
+			BattleJoin("", "Destination", true)
 		end
-		Sleep(3)
-		return
 	end
 	
-	if GetState("Destination",STATE_FIGHTING) or GetState("Destination",STATE_CAPTURED) then
+	if GetState("Destination", STATE_FIGHTING) or GetState("Destination", STATE_CAPTURED) then
 		return
 	end
 	
@@ -55,7 +56,7 @@ function Run()
 	Sleep(0.5)
 	PlayAnimationNoWait("", "propel")
 
-	if GetState("Destination",STATE_UNCONSCIOUS) then 
+	if GetState("Destination", STATE_UNCONSCIOUS) then 
 		SetState("Destination", STATE_UNCONSCIOUS, false)
 		Sleep(5)
 	end

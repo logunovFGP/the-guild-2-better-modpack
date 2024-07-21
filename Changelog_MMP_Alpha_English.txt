@@ -49,6 +49,7 @@ Fixes:
 - Going to a townhall of another city and then trying to aquire a new title will no longer let your character run back home.
 - Charging a pregnant character caused the town clerk to say that she can't be charged because she is "in jail".
 - Some crimes didn't create proper evicendes.
+- If a Character dies he will release his courting lover.
 
 Fixes (Modpack):
 - Fixed possible loop during 'make a present', when the target moved inside a building you could not enter.

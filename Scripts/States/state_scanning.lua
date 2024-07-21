@@ -4,12 +4,12 @@ function Run()
 	
 	while not GetState("", STATE_DEAD) do
 	
-		if IsType("","Sim") then
-			state_scanning_ArrestLoop(false)
-		elseif IsType("","Building")then
-			state_scanning_WatchtowerLoop() 
+		if IsType("", "Sim") then
+			state_scanning_ArrestLoop()
+		elseif IsType("", "Building")then
+			state_scanning_WatchtowerLoop() -- towers are deactivated currently
 			if GetDynastyID("")<1 then
-				state_scanning_ArrestLoop(true)
+				state_scanning_ArrestLoop()
 			end
 		end
 		Sleep(1) 
@@ -17,13 +17,28 @@ function Run()
 end
 
 
-function ArrestLoop(IsBuilding)
+function ArrestLoop()
 
 	if CityGuardScan("", "Penalty") then
 		if PenaltyGetOffender("Penalty", "Wanted") then
 			LogMessage("[i] state_scanning.lua -> " .. GetName("") .. " has found felon " .. GetName("Wanted"))
-			if IsBuilding then
-				if not GetState("Wanted", STATE_UNCONSCIOUS) then
+			if GetImpactValue("Wanted", "REVOLT") > 0 then
+				if GetState("Wanted", STATE_UNCONSCIOUS) then
+					feedback_OverheadActionName("Wanted")
+					GetPosition("Wanted", "ParticleSpawnPos")
+					BattleWeaponPresent("")
+					Sleep(2)
+					PlayAnimationNoWait("", "finishing_move_01")
+					Sleep(0.6)	
+					StartSingleShotParticle("particles/bloodsplash.nif", "ParticleSpawnPos", 1, 4)
+					PlaySound3DVariation("Wanted", "Effects/combat_strike_mace", 1)
+					Sleep(2)
+					BattleWeaponStore("")	
+					if AliasExists("Wanted") then
+						SetProperty("Wanted", "UnconsciousKill", 1)
+						Kill("Wanted")
+					end
+				else
 					gameplayformulas_SimAttackWithRangeWeapon("", "Wanted")
 					BattleJoin("", "Wanted", true)
 				end
@@ -38,7 +53,6 @@ function ArrestLoop(IsBuilding)
 			end
 		end
 	end
-
 end
 
 function WatchtowerLoop()

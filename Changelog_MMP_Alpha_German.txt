@@ -48,6 +48,7 @@ Bugfixes:
 - Einen neuen Titel in einer anderen Stadt zu beantragen führt nun nicht länger dazu, dass der Sim zurück in seine Heimatstadt rennt.
 - Wenn man einen schwangeren Charakter anklagen wollte, sprach der Stadtschreiber fälschlicherweise davon, dass diese sich gegenwärtig im Gefängnis befände.
 - Einige Verbrechen haben keine korrekten Beweise erzeugt.
+- Wenn ein Charakter stirbt, entlässt er die Person, die er umworben hatte.
 
 Bugfixes (MegaMod):
 - Beim Schenken von Geschenken konnte es zu einer Schleife kommen, wenn das Ziel abends in eine Arbeiterhütte/Residenz gegangen ist.

@@ -37,7 +37,7 @@ Romanian: EvilGeniusRo
 
 Social Media: Erilambus, Fajeth
 Network Helper: Agentmass
-New Music pieces: The Guild 1 soundtrack + songs by Alexander Nakarada (https://www.serpentsoundstudios.com under CC BY 4.0 Licence)
+New Music pieces: The Guild 1 soundtrack + songs by Alexander Nakarada (https://creatorchords.com/music/ under CC BY 4.0 Licence)
 
 Installation:
 
@@ -55,7 +55,7 @@ Enjoy!
 _Tech_
 - Script and database cleanup: Improved the readability, functions and structure, removed redundant code, unified the script-design.
 - Seperated unused scripts inside the new 'Removed' folder.
-- Renamed Scripts and Folders to have them more consistent and readable.
+- Renamed scripts and folders to have them more consistent and readable.
 - Newly hired workers will no longer get cured automaticly.
 - The idle and freetime behavior of many NPCs have been altered either to improve performance or immersion.
 - The AI only needed to pay 80-40 percent of the money during actions (hardcoded). To fix this SpendMoney has been replaced by chr_SpendMoney
@@ -71,6 +71,9 @@ _Tech_
 - guild house script has been completely revised.
 - Disease scripts and functions completely reworked.
 - Misc. changes to the library functions and files.
+- The mod comes with the developer tools AID (debugger) and gitse (map editor), both included in the official beta patch 4.3b. Use at your own risk!
+- The mod also comes with a script updater (thanks to ThreeOfMe): this makes it possible to load changes to the game files into a saved game. More information under /tools
+
 
 _Design_
 - Instead of Germany, Hungary is now a possible enemy of Austria in war.
@@ -211,6 +214,8 @@ _General_
 - Going to a townhall of another city and then trying to aquire a new title will no longer let your character run back home.
 - Charging a pregnant character caused the town clerk to say that she can't be charged because she is "in jail".
 - Some crimes didn't create proper evicendes.
+- If a Character dies he will release his courting lover.
+- Outlawed criminals are now properly getting killed by the guard instead of knocked out permanently, everytime they stand up again.
 
 _Patron_
 - The action 'Ask someone to dance' could have the wrong cooldown. It's now linked to the DB correctly.

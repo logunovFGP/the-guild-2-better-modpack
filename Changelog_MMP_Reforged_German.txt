@@ -36,7 +36,7 @@ Rumänisch: EvilGeniusRo
 
 Soziale Medien: Erilambus, Fajeth
 Network Helper: Agentmass
-Zusätzliche Musik: Gilde 1 Soundtrack + Alexander Nakarada (https://www.serpentsoundstudios.com unter CC BY 4.0 Lizenz)
+Zusätzliche Musik: Gilde 1 Soundtrack + Alexander Nakarada (https://creatorchords.com/music/ unter CC BY 4.0 Lizenz)
 
 
 
@@ -70,6 +70,8 @@ _Technik_
 - Gildenhaus-Script wurde generalüberholt.
 - Krankheits-Scripts und Funktionen wurden komplett überarbeitet und neu strukturiert.
 - Diverse Änderungen und Umstrukturierungen der library-Funktionen und Dateien.
+- Die Mod liefert die Entwicklertools AID (Debugger) und gitse (Karteneditor), beide im offiziellen Betapatch 4.3b enthalten, mit aus. Nutzung auf eigene Verantwortung!
+- Die Mod liefert auch einen Script-Updater (danke an ThreeOfMe): Dieser ermöglicht es, Änderungen an den Spieldateien in einen gespeicherten Spielstand zu laden. Mehr Infos unter /tools
 
 _Design_
 - Statt Deutschland ist Ungarn nun ein möglicher Kriegsgegner von Österreich.
@@ -210,6 +212,8 @@ _Allgemein_
 - Einen neuen Titel in einer anderen Stadt zu beantragen führt nun nicht länger dazu, dass der Sim zurück in seine Heimatstadt rennt.
 - Wenn man einen schwangeren Charakter anklagen wollte, sprach der Stadtschreiber fälschlicherweise davon, dass diese sich gegenwärtig im Gefängnis befände.
 - Einige Verbrechen haben keine korrekten Beweise erzeugt.
+- Wenn ein Charakter stirbt, entlässt er die Person, die er umworben hatte.
+- Vogelfreie werden nun von der Wache getötet, nachdem sie bewusstlos geschlagen wurden, und nicht permanent erneut bewusstlos geschlagen, wenn sie wieder aufstehen.
 
 _Patron_
 - Cooldown bei der Maßnahme 'Jemanden zum Tanzen auffordern' entsprach nicht unbedingt dem richtigen Wert (Statischer Wert statt Variable)
