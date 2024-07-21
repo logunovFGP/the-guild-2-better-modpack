@@ -7,10 +7,11 @@ function Weight()
 		return 0
 	end
 	
-	if(HasProperty("Victim", "SpiedByDyn"..GetDynastyID("dynasty"))) then
+	-- SpiedByDyn causes crashes, do not use it!
+--	if(HasProperty("Victim", "SpiedByDyn"..GetDynastyID("dynasty"))) then
 		-- we are already spying on this one
-		return 0
-	end
+--		return 0
+--	end
 
 	return 10
 end

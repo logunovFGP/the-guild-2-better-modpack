@@ -2,6 +2,21 @@ function Run()
 	
 	chr_CheckHome("") -- make sure we have a home
 	
+	-- debug actions
+	GetScenario("World")
+	local Prop = GetProperty("World", "DebugActions") or 0
+	if Prop == 1 then
+		while Prop > 0 do
+			LogMessage(GetName("").." ID: "..GetID("").." commits action attackbuilding")
+			CommitAction("attackbuilding", "", "", "")
+			Sleep(1)
+			StopAction("attackbuilding", "")
+			LogMessage(GetName("").." ID: "..GetID("").." stopped action")
+			Prop = GetProperty("World", "DebugActions") or 0
+			Sleep(1)
+		end
+	end
+
 	-- special behavior banned
 	if GetImpactValue("", "banned") == 1 then
 		MeasureRun("", nil, "DynastyBanned")

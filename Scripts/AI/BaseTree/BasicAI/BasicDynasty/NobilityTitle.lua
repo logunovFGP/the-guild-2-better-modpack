@@ -19,10 +19,10 @@ function Weight()
 	if not DynastyIsShadow("SIM") then
 		ai_CalcItemBudget("dynasty")
 	
-		if (chr_DynastyGetImperialFameLevel("dynasty") < famelvl) then
+		if (dyn_GetImperialFameLevel("SIM") < famelvl) then
 			if famelvl <= 2 then
 				-- XXX temporary workaround to enable AI to reach title 8 and 9 and advance to imperial offices
-				chr_SimAddImperialFame("SIM",1)
+				dyn_AddImperialFame("SIM", 1)
 			else
 				return 0
 			end

@@ -23,7 +23,7 @@ function Run()
 	
 	SetProperty("MyCart", "BeingPlundered", 1)
 
- 	f_MoveTo("", "fleepos",GL_MOVESPEED_RUN)
+ 	f_MoveTo("", "fleepos", GL_MOVESPEED_RUN)
 	AlignTo("", "MyCart")
 	Sleep(1)
 
@@ -51,10 +51,8 @@ function Run()
 			end
 		end
 		
-		if Empty then
+		if Empty or Enemies < 1 then
 			break
-		else
-			Sleep(5)
 		end
 		
 		Sleep(1)
@@ -70,15 +68,6 @@ function Run()
 	local radius = GetRadius("MyCart")
 	f_MoveTo("", "MyCart", GL_MOVESPEED_RUN, radius )
 	AlignTo("", "MyCart")	
-	
-	if (GetHPRelative("MyCart") < 0.30) then
-		PlayAnimation("", "crank_front_in")
-	end
-	
-	while (GetHPRelative("MyCart") < 0.30) do
-		PlayAnimation("", "crank_front_loop")
-		ModifyHP("MyCart", 1, false)
-	end
 end
 
 function CleanUp()

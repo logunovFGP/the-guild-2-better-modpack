@@ -705,7 +705,10 @@ function GetResourceNeeds(BldAlias)
 		Ids[Count] = ItemGetID(Id)
 	end
 	
-	local Multiplier = BuildingGetWorkerCount(BldAlias) + 1
+	local Multiplier = BuildingGetWorkerCount(BldAlias)
+	if Multiplier < 1 then
+		Multiplier = 1
+	end
 	local AmountsString = GetDatabaseValue("BuildingToItems", BldId, "requireditemusages")
 	local i = 0
 	

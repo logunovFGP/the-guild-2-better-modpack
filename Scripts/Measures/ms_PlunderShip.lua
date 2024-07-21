@@ -104,6 +104,10 @@ function Run()
 	if Result == "A" then
 		ModifyHP("",-HPLoss,false)
 		ModifyHP("Destination",-OtherHPLoss,false)
+
+		if not AliasExists("") or not AliasExists("Destination") then
+			StopMeasure()
+		end
 		while ((MenCnt > 0)  and (OtherMenCnt > 0)) do
 			if (OtherMenCnt == MenCnt) then 
 				local OneOrAnother = Rand(10)

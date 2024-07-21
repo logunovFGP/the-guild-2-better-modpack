@@ -142,25 +142,25 @@ function InfectionEvent(Target)
 			if Hazard > Rand(100) then
 				Disease.Cold:infectSim(Target)
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Illness)
+--				LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Influenza" then
 			if Hazard > Rand(100) then
 				Disease.Influenza:infectSim(Target)
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Illness)
+	--			LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Pneumonia" then
 			if Hazard > Rand(100) then
 				Disease.Influenza:infectSim(Target)
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Illness)
+	--			LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Pox" then
 			if Hazard > Rand(100) then
 				Disease.Pox:infectSim(Target)
 				Infected = true
-				LogMessage(GetName(Target).." received random illness "..Illness)
+	--			LogMessage(GetName(Target).." received random illness "..Illness)
 			end
 		elseif Illness == "Blackdeath" then
 			local BlackdeathImmunity = GetProperty(Target, "BlackdeathImmunity") or 0
@@ -171,14 +171,14 @@ function InfectionEvent(Target)
 					if Hazard > Rand(100) then
 						Disease.Blackdeath:infectSim(Target)
 						Infected = true
-						LogMessage(GetName(Target).." received random illness "..Illness)
+	--					LogMessage(GetName(Target).." received random illness "..Illness)
 					end
 				end
 			end
 		end
 		
 		if not Infected then
-			LogMessage(GetName(Target).." resisted random illness")
+	--		LogMessage(GetName(Target).." resisted random illness")
 		else
 			if GetDynasty(Target, "TargetDyn") then
 				SetRepeatTimer("TargetDyn", "RandomIllness", 24)
@@ -559,7 +559,7 @@ function CheckAlderman()
 				DynastyGetMember(Alias, e, "Sim"..e)
 				-- select the strongest sim of the dynasty
 				if HasProperty("Sim"..e, "PatronMaster") or HasProperty("Sim"..e, "ArtisanMaster") or HasProperty("Sim"..e, "ScholarMaster") or HasProperty("Sim"..e, "ChiselerMaster") then
-					SimPrioNew = GetProperty("Sim"..e, "GuildFame") or 0
+					SimPrioNew = GetProperty("Sim"..e, "GuildFame")	or 0
 					if SimPrioNew > SimPrio then
 						SimPrio = SimPrioNew
 						CopyAlias("Sim"..e, "Candidate"..i)

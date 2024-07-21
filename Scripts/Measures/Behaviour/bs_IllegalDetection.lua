@@ -1,20 +1,20 @@
 function Run()
 
-	local debug_labels = 'bs_IllegalDetection.lua,'
+--	local debug_labels = "bs_IllegalDetection.lua,"
 
-	if GetName("Owner") ~= nil then
-		debug_labels = debug_labels .. ' | Owner: ' .. GetName("Owner")
-	end
+--	if GetName("Owner") ~= nil then
+--		debug_labels = debug_labels .. " | Owner: " .. GetName("Owner")
+--	end
 
-	if GetName("actor") ~= nil then
-		debug_labels = debug_labels .. ' | actor: ' .. GetName("actor")
-	end
+--	if GetName("actor") ~= nil then
+--		debug_labels = debug_labels .. " | actor: " .. GetName("actor")
+--	end
 
-	if GetCurrentMeasureName("") ~= nil then
-		debug_labels = debug_labels .. ' | MeasureName: ' .. GetCurrentMeasureName("")
-	end 
+--	if GetCurrentMeasureName("") ~= nil then
+--		debug_labels = debug_labels .. " | MeasureName: " .. GetCurrentMeasureName("")
+--	end 
 
-	LogMessage(debug_labels)
+--	LogMessage(debug_labels)
 
 	if HasProperty("", "NotAffectable") then
 		return ""

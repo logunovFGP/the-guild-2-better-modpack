@@ -660,7 +660,7 @@ end
 
 function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 	
-	LogMessage("Check Rival. "..GetName(DynastyAlias).." checks for "..GetName(TargetDynasty))
+--	LogMessage("Check Rival. "..GetName(DynastyAlias).." checks for "..GetName(TargetDynasty))
 	local IsRival = 0 -- no rival
 	local MyCount = DynastyGetMemberCount(DynastyAlias)
 	local MyBuildings = DynastyGetBuildingCount2(DynastyAlias)
@@ -681,7 +681,7 @@ function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 						if GetSettlementID("TargetBuilding") == GetSettlementID("Building") then
 							-- workshops in same city
 							CopyAlias("TargetBuilding", "RivalBuilding")
-							LogMessage("CheckForRival: Your "..GetName("TargetBuilding").." has Type "..BuildingGetType("TargetBuilding").." same as my "..GetName("Building").." which has Type "..Type)
+						--	LogMessage("CheckForRival: Your "..GetName("TargetBuilding").." has Type "..BuildingGetType("TargetBuilding").." same as my "..GetName("Building").." which has Type "..Type)
 							break
 						end
 					end
@@ -705,7 +705,7 @@ function DynastyCheckForRival(DynastyAlias, TargetDynasty)
 						if SimGetOfficeLevel("TargetMember"..i) == (OfficeLevel+1) then 
 							if GetSettlementID("TargetMember"..i) == GetSettlementID("Member"..i) then
 								-- you have the office I want and we live in the same city
-								LogMessage(GetName("TargetMember"..i).." holds the office seat I want!")
+							--	LogMessage(GetName("TargetMember"..i).." holds the office seat I want!")
 								CopyAlias("TargetMember"..i, "RivalOfficeHolder")
 								break
 							end

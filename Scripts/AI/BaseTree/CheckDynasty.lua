@@ -39,9 +39,9 @@ function Execute()
 		return 0
 	end
 	
-	name = GetName("SIM")
-	str = "CheckDynastyChar: Selected "..name
-	LogMessage(str);
+--	name = GetName("SIM")
+--	str = "CheckDynastyChar: Selected "..name
+--	LogMessage(str);
 	
 	SetRepeatTimer("dynasty", "AI_CheckDynasty", 0.5)
 	

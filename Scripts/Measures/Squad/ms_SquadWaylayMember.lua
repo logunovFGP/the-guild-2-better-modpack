@@ -35,35 +35,35 @@ function Run()
 	while true do
 		
 		ToDo = ms_squadwaylaymember_WhatToDo()
-		LogMessage("SWL: ("..GetName("")..") Result of WhatToDo is: " .. ToDo)
+		--LogMessage("SWL: ("..GetName("")..") Result of WhatToDo is: " .. ToDo)
 		Success = false
 		
 		if HasProperty("", "Plunder") then
-			LogMessage("SWL: He has the 'Plunder' property.")
+		--	LogMessage("SWL: He has the 'Plunder' property.")
 			local victim = GetProperty("", "Plunder")
 			GetAliasByID(victim, "Victim")
-			LogMessage("SWL: Victim is: " .. GetName("Victim"))
+		--	LogMessage("SWL: Victim is: " .. GetName("Victim"))
 			if AliasExists("Victim") then
 				ToDo = "plunder"
 			end
-		else
-			LogMessage("SWL: He does not have the 'Plunder' property")
+		--else
+		--	LogMessage("SWL: He does not have the 'Plunder' property")
 		end
 		
 		if ToDo == "return" then
-			LogMessage("SWL: ReturnToBase()")
+		--	LogMessage("SWL: ReturnToBase()")
 			Success = ms_squadwaylaymember_ReturnToBase()
 		elseif ToDo == "wait" then
-			LogMessage("SWL: Wait()")
+		--	LogMessage("SWL: Wait()")
 			Success = ms_squadwaylaymember_Wait()
 		elseif ToDo == "attack" then
-			LogMessage("SWL: Attack()")
+		--	LogMessage("SWL: Attack()")
 			Success = ms_squadwaylaymember_Attack()
 		elseif ToDo == "plunder" then
-			LogMessage("SWL: Plunder()")
+		--	LogMessage("SWL: Plunder()")
 			Success = ms_squadwaylaymember_Plunder()
 		elseif ToDo == "rest" then
-			LogMessage("SWL: Rest()")
+		--	LogMessage("SWL: Rest()")
 			Success = ms_squadwaylaymember_Rest()
 		end
 		
@@ -189,11 +189,11 @@ function WhatToDo()
 		local Target = ms_squadwaylaymember_Scan("")
 
 		if Target then -- only surprise attacks
-			LogMessage("SWL: Result of scan is: 'attack' with Target = true.")
+		--	LogMessage("SWL: Result of scan is: 'attack' with Target = true.")
 			return "attack"
 		end
 		
-		LogMessage("SWL: Result of scan is: 'wait' with Target = false.")
+		--LogMessage("SWL: Result of scan is: 'wait' with Target = false.")
 		return "wait"
 	end
 	
@@ -381,7 +381,7 @@ function Plunder()
 	StopAction("plunder", "")
 	RemoveProperty("", "DontLeave")
 	RemoveProperty("", "Plunder")
-	LogMessage("SWL: Plunder() end with return true.")
+	--LogMessage("SWL: Plunder() end with return true.")
 	return true
 end
 
@@ -399,14 +399,14 @@ function Scan(Member)
 	local Attack = true
 	
 	if NumVictimCarts <= 0 then
-		LogMessage("SWL: No Carts")
+	--	LogMessage("SWL: No Carts")
 		return
 	end
 
 	local MaxTargetValue = 0
 	
 	if not SquadGet(Member, "Squad") then
-		LogMessage("No Squad")
+	--	LogMessage("No Squad")
 		return
 	end
 	
@@ -419,19 +419,19 @@ function Scan(Member)
 	
 	SquadGetMember("Squad", RandomMember, "Robber")
 	
-	LogMessage("SWL: Scanning")
+	--LogMessage("SWL: Scanning")
 	if GetState(Member, STATE_HIDDEN) then
-		LogMessage("SWL: Hidden")
+	--	LogMessage("SWL: Hidden")
 		for FoundObject =0, NumVictimCarts-1 do -- found the best cart to attack
 			
 			local VictimDyn = GetDynastyID("VictimCart"..FoundObject)
 			local CurrentTargetValue = chr_GetBootyCount("VictimCart"..FoundObject, INVENTORY_STD)
 			
 			if CurrentTargetValue >= MaxTargetValue then
-				LogMessage("SWL: Loot detected")
+			--	LogMessage("SWL: Loot detected")
 				if VictimDyn < 1 then
 					f_GetLocalPolitician(Member, false, "Mayor") -- false means: not from my own dynasty
-					LogMessage("SWL: Mayor found")
+				--	LogMessage("SWL: Mayor found")
 				end
 				
 				if AliasExists("Mayor") then
@@ -440,9 +440,9 @@ function Scan(Member)
 				
 				if GetDynastyID(Member) ~= VictimDyn then
 					if DynastyGetDiplomacyState("dynasty","VictimCart"..FoundObject) < DIP_NAP then -- check diplomatic state
-						LogMessage("SWL: Scan: no NAP+")
+				--		LogMessage("SWL: Scan: no NAP+")
 						if GetFavorToDynasty("VictimCart"..FoundObject, "dynasty") < 85 then -- don't attack friends 
-							LogMessage("SWL: No friend")
+				--			LogMessage("SWL: No friend")
 							CopyAlias("VictimCart"..FoundObject, "Victim")
 							MaxTargetValue = CurrentTargetValue
 						else
@@ -461,7 +461,7 @@ function Scan(Member)
 			end
 		end
 	else
-		LogMessage("Not hidden")
+	--	LogMessage("Not hidden")
 		PlayAnimation(Member, "cheer_01")
 	end
 	
@@ -476,7 +476,7 @@ function Scan(Member)
 			AlignTo(Member, "Victim")
 			MsgSay(Member, "@L_MEASURE_ROBBER_WAYLAYFORBOOTY_SCAN_NOBOOTY")
 		end
-		LogMessage("SWL: No booty")
+	--	LogMessage("SWL: No booty")
 		return
 	end
 		
@@ -484,7 +484,7 @@ function Scan(Member)
 
 	AlignTo(Member, "Victim")
 	Sleep(0.5)
-	LogMessage("SWL: Attack!")
+--	LogMessage("SWL: Attack!")
 	return "Victim"
 end
 

@@ -75,7 +75,7 @@ local newDisease = function(name, medicine, favor, cost, duration, impacts1, imp
 		diseases_giveSickness(targetSickness, targetObject)
 	end
 
-	LogMessage("CodeRework, Medical. Class " .. self.name .. " has successfully been created!")
+--	LogMessage("CodeRework, Medical. Class " .. self.name .. " has successfully been created!")
 	return self
 end
 
@@ -226,7 +226,7 @@ function giveSickness(Illness, ObjectAlias)
 
 	-- check whether the object actually gets infected or not
 	if not Illness:getName() == "BurnWound" and not diseases_checkSickness(ObjectAlias) then
-		LogMessage(GetName(ObjectAlias).." ID: "..GetID(ObjectAlias).." resisted against sickness")
+--		LogMessage(GetName(ObjectAlias).." ID: "..GetID(ObjectAlias).." resisted against sickness")
 		return 
 	end
 

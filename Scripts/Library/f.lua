@@ -524,7 +524,7 @@ function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	end
 	
 	if IsType(Buyer, "Market") or IsType(Seller, "Market") then
-		LogMessage("f_Transfer was called with market type instead of market building!")
+--		LogMessage("f_Transfer was called with market type instead of market building!")
 	end
 
 	local RequiresPayment = (GetDynastyID(Buyer) ~= GetDynastyID(Seller))

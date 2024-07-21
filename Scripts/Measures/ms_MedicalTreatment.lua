@@ -91,7 +91,7 @@ function Run()
 			
 			if not AliasExists("") then
 				LogMessage("Hospital: I lost myself")
-				break
+				StopMeasure()
 			end			
 
 			if Rand(9) == 0 then

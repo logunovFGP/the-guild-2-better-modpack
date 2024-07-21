@@ -58,6 +58,7 @@ function Run()
 
 	local ProgressAdd = 0
 	local type, level, nenner, gebBez = bld_BauStuff(BuildingGetType(""), (BuildingGetLevel("")+1),"")
+	LogMessage("State_levelingup: Building: "..type)
 	gebBez = gebBez + 1
 	nenner = 4
 	if type~="" then

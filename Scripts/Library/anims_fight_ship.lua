@@ -90,11 +90,11 @@ function AttackRangedVisual(SoundType)
 	local tx, ty, tz = PositionGetVector("ShipPos") 
 	local size = 2
 	
-	LogMessage("anims_fight_ship "..GetID("").." NumShots="..NumShots.."  Type="..Type.."   Delay="..DelayTime)
+--	LogMessage("anims_fight_ship "..GetID("").." NumShots="..NumShots.."  Type="..Type.."   Delay="..DelayTime)
 	
 	for i=0, VisibleShots-1 do
 	
-		LogMessage("anims_fight_ship "..GetID("").."  executing loop for "..i)
+--		LogMessage("anims_fight_ship "..GetID("").."  executing loop for "..i)
 		local Gun = Rand(NumShots)
 
 		while OffsetArray[(Gun*4)+4] == 0 do
