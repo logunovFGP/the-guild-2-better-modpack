@@ -35,25 +35,35 @@ function Run()
 	while true do
 		
 		ToDo = ms_squadwaylaymember_WhatToDo()
+		LogMessage("SWL: ("..GetName("")..") Result of WhatToDo is: " .. ToDo)
 		Success = false
 		
 		if HasProperty("", "Plunder") then
+			LogMessage("SWL: He has the 'Plunder' property.")
 			local victim = GetProperty("", "Plunder")
 			GetAliasByID(victim, "Victim")
+			LogMessage("SWL: Victim is: " .. GetName("Victim"))
 			if AliasExists("Victim") then
 				ToDo = "plunder"
 			end
+		else
+			LogMessage("SWL: He does not have the 'Plunder' property")
 		end
 		
 		if ToDo == "return" then
+			LogMessage("SWL: ReturnToBase()")
 			Success = ms_squadwaylaymember_ReturnToBase()
 		elseif ToDo == "wait" then
+			LogMessage("SWL: Wait()")
 			Success = ms_squadwaylaymember_Wait()
 		elseif ToDo == "attack" then
+			LogMessage("SWL: Attack()")
 			Success = ms_squadwaylaymember_Attack()
 		elseif ToDo == "plunder" then
+			LogMessage("SWL: Plunder()")
 			Success = ms_squadwaylaymember_Plunder()
 		elseif ToDo == "rest" then
+			LogMessage("SWL: Rest()")
 			Success = ms_squadwaylaymember_Rest()
 		end
 		
@@ -177,10 +187,13 @@ function WhatToDo()
 		end
 	
 		local Target = ms_squadwaylaymember_Scan("")
+
 		if Target then -- only surprise attacks
+			LogMessage("SWL: Result of scan is: 'attack' with Target = true.")
 			return "attack"
 		end
 		
+		LogMessage("SWL: Result of scan is: 'wait' with Target = false.")
 		return "wait"
 	end
 	
@@ -244,7 +257,7 @@ function ReturnToBase()
 				Sleep(15)
 			end
 			
-			if CanAddItems("MyRobbercamp", ItemId, Found, INVENTORY_STD) then
+			if CanAddItems("MyRobbercamp", ItemId, Found, INVENTORY_STD) then 
 				Removed = RemoveItems("", ItemId, Found)
 				local Added = AddItems("MyRobbercamp", ItemId, Removed)
 				MessageItem = ItemId
@@ -312,7 +325,7 @@ function Attack()
 			AddImpact("Victim", "messagesent", 1, 3)
 			
 			if AliasExists("Mayor") then
-				CommitAction("attackcart", "", "Mayor", "")
+				CommitAction("attackcart", "", "Mayor", "") 
 				GetSettlement("Mayor", "MayorTown")
 				MsgNewsNoWait("Mayor", "", "", "military", -1, 
 									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+0",
@@ -335,7 +348,6 @@ end
 
 
 function Plunder()
-
 	GfxDetachAllObjects()
 	SetData("Tarnung", 0)
 	SetState("", STATE_HIDDEN, false)
@@ -358,7 +370,7 @@ function Plunder()
 	CommitAction("plunder", "", "Victim", "Victim")
 	Sleep(2)
 	
-	ItemValue = chr_Plunder("", "Victim")
+	ItemValue = chr_Plunder("", "Victim") 
 	local XPValue = math.floor((25 + ItemValue*0.2)/25)
 	chr_GainXP("", XPValue)
 	if ItemValue > 0 then
@@ -369,7 +381,7 @@ function Plunder()
 	StopAction("plunder", "")
 	RemoveProperty("", "DontLeave")
 	RemoveProperty("", "Plunder")
-
+	LogMessage("SWL: Plunder() end with return true.")
 	return true
 end
 

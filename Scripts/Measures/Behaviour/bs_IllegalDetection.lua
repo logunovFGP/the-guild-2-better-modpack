@@ -1,5 +1,21 @@
 function Run()
 
+	local debug_labels = 'bs_IllegalDetection.lua,'
+
+	if GetName("Owner") ~= nil then
+		debug_labels = debug_labels .. ' | Owner: ' .. GetName("Owner")
+	end
+
+	if GetName("actor") ~= nil then
+		debug_labels = debug_labels .. ' | actor: ' .. GetName("actor")
+	end
+
+	if GetCurrentMeasureName("") ~= nil then
+		debug_labels = debug_labels .. ' | MeasureName: ' .. GetCurrentMeasureName("")
+	end 
+
+	LogMessage(debug_labels)
+
 	if HasProperty("", "NotAffectable") then
 		return ""
 	end
@@ -10,7 +26,7 @@ function Run()
 		end
 	end
 
-	if GetState("", STATE_NPC) then
+	if GetState("", STATE_NPC) then 
 		return ""
 	end
 	
