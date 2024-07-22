@@ -51,6 +51,7 @@ function Run()
 									"@L_BUILDING_RENOVATE_SUCCESS_HEAD_+0",
 									"@L_BUILDING_RENOVATE_SUCCESS_BODY_+0", GetID("Destination"))
 				StopMeasure()
+				break
 			end
 		end
 	end

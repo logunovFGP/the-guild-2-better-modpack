@@ -133,6 +133,7 @@ function Run()
 				SetState("",STATE_SITAROUND,false)
 				SetState("",STATE_TOTALLYDRUNK,true)
 				StopMeasure()
+				break
 			end
 		end
 	end

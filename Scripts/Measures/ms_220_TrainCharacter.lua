@@ -57,6 +57,7 @@ function Run()
 		if Found == 0 then
 			MsgQuick("", "@L_GENERAL_MEASURES_220_TRAINCHARACTER_FAILURES_+0", GetID("Owner"))
 			StopMeasure()
+			break
 		end
 		
 		if GetLocatorByName("HomeBuilding", "manipulate_middle_twohand_pos_012", "TablePos") then
@@ -77,6 +78,7 @@ function Run()
 		else
 			MsgQuick("", "@L_GENERAL_MEASURES_220_TRAINCHARACTER_FAILURES_+0", GetID("Owner"))
 			StopMeasure()
+			break
 		end
 		
 		if GetGametime() >= EndTime and DynastyIsAI("") then

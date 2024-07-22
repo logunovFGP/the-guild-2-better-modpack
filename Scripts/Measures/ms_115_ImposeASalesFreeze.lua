@@ -77,6 +77,7 @@ function Run()
    		if GetImpactValue("Destination", "sale_freezed") < 1 then
       			SetState("", STATE_LOCKED, false)
 	  		StopMeasure()
+			break
 	  	end
 
 		if Rand(3) == 0 then

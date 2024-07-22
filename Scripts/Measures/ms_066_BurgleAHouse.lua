@@ -144,6 +144,7 @@ function Run()
 		SetProcessProgress("", NewValue)
 		if not AliasExists("Destination") then
 			StopMeasure()
+			break
 		end
 		local AnimTime = PlayAnimationNoWait("", "burgle")
 		Sleep(1)

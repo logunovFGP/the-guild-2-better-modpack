@@ -70,6 +70,7 @@ function Run()
 			StopProduction("")
 			Sleep(5)
 			StopMeasure()
+			break
 		end
 		
 		if TimeOut then

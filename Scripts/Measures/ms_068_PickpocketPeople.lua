@@ -168,6 +168,7 @@ function Run()
 							--	StopAction("pickpocket", "")
 								if BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 									StopMeasure()
+									break
 								else
 									Sleep(20)
 								end

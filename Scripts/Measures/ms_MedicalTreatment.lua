@@ -92,6 +92,7 @@ function Run()
 			if not AliasExists("") then
 				LogMessage("Hospital: I lost myself")
 				StopMeasure()
+				break
 			end			
 
 			if Rand(9) == 0 then
@@ -105,6 +106,7 @@ function Run()
 				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") >= 1 then
 					SimSetProduceItemID("", -1, -1)
 					StopMeasure()
+					break
 				end
 			end
 

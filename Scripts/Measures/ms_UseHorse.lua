@@ -77,10 +77,7 @@ function CleanUp()
 
 	if HasProperty("", "aborted") and GetProperty("", "aborted") == 1 then
 		Sleep(1)
-		MoveSetActivity("")
 		Unmount("")
-		SetState("", STATE_RIDING, false)
-		SetState("", STATE_DUEL, false)
 
 		if AliasExists("Destination") then
 			local NewDistance = math.floor(GetDistance("", "Destination")/4000)
@@ -91,6 +88,10 @@ function CleanUp()
 			end
 		end
 	end
+	
+	MoveSetActivity("")
+	SetState("", STATE_RIDING, false)
+	SetState("", STATE_DUEL, false)
 	
 	if HasProperty("", "aborted") then
 		RemoveProperty("", "aborted")

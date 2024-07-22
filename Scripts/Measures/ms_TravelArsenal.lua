@@ -78,6 +78,7 @@ function Run()
 						SetProperty("WarChooser","WarLandNo", totalpower)
 						MsgBoxNoWait("","Aresnal","@L_MEASURE_TravelArsenal_NAME_+0","@L_TRAVELARSENAL_MSG_+0",GetID(""),GetID("settlement"))
 						StopMeasure()
+						return
 					end
 				end
 				if count < 1 then

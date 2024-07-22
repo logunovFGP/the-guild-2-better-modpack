@@ -46,7 +46,9 @@ function Run()
 		
 		if not AliasExists("Destination") then
 			StopMeasure()
+			break
 		end
+		
 		for i=1, 3 do
 			if GetLocatorByName("Destination", "Walledge"..i, "VictimsCorner"..i) then
 				f_MoveTo("", "VictimsCorner"..i, GL_MOVESPEED_WALK, 100)

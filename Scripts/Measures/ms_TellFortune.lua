@@ -24,7 +24,7 @@ function Run()
 
 		local zielloc = Rand(50)+20
 		if not f_MoveTo("","Destination",GL_MOVESPEED_RUN,zielloc) then
-			StopMeasure()
+			return
 		end		
 			
 		GetPosition("","MovePos")
