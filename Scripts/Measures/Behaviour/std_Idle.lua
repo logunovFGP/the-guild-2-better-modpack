@@ -4,7 +4,10 @@ function Run()
 	-- **  PREPARATIONS **
 	-- **********************
 	chr_CheckHome("") -- make sure we have a home
-	chr_CheckChildBehavior("") -- make sure no childs use idle behavior
+	if SimGetAge("") < 17 then
+		chr_CheckChildBehavior("") -- make sure no childs use idle behavior
+		return
+	end
 	
 	if SimGetGender("") == GL_GENDER_FEMALE and HasProperty("", "KissMeHoney") then -- get a kiss from Versengold maybe?
 		idlelib_KissMeHonza()
