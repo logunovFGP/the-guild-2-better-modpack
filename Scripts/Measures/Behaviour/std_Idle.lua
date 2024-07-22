@@ -13,7 +13,6 @@ function Run()
 		idlelib_KissMeHonza()
 		return
 	end
-	
 	local Sickness = GetImpactValue("", "Sickness") -- check for illness
 	if Sickness < 1 then -- not ill?
 		MoveSetActivity("") -- cleanup moveset!
@@ -46,7 +45,6 @@ function Run()
 			end
 		end
 	end
-	
 	if GetState("", STATE_WORKING) then -- some workers have special behavior when they are idle
 		std_idle_Worker()
 		return
@@ -92,7 +90,6 @@ function Worker()
 	if not SimGetWorkingPlace("", "WorkingPlace") then
 		return
 	end
-	
 	if HasProperty("", "StartWorkingTime") then -- check once per day if we need to go to our workingplace
 		RemoveProperty("", "StartWorkingTime")
 		
@@ -134,7 +131,6 @@ function Worker()
 	Sleep(90)
 	return
 end
-
 function CheckNeed(Need)
 	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." checks the need "..Need)
 	if Need == "Health" then
@@ -614,7 +610,7 @@ function ChooseNeed(Need)
 		elseif MyChoice == "" then
 		
 	
-		elseif MyChoice == "GoSleep" then
+			elseif MyChoice == "GoSleep" then
 			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
 			idlelib_GoSleep()
 			return

@@ -6,6 +6,7 @@ function Init()
 end
 
 -- -----------------------
+
 -- CheckWeather
 -- -----------------------
 function CheckWeather()
@@ -54,6 +55,7 @@ end
 function GoSleep()
 	MsgDebugMeasure("Go sleeping...")
 
+
 	local MinMoney = 500  --enough money for tavern?
 	local GoToTavern = 3  --3% chance to go to tavern just for fun
 	local Chance = Rand(100) + 1
@@ -92,6 +94,7 @@ function Sleep()
 		Sleep(60)
 		return false
 	end
+
 
 	if not GetInsideBuilding("", "Inside") or GetID("Inside") ~= GetID("HomeBuilding") then
 		if not f_MoveTo("", "HomeBuilding", GL_MOVESPEED_RUN) then
@@ -504,7 +507,7 @@ end
 function GoToRandomPosition()
 	MsgDebugMeasure("Walking around...")
 	local class
-	local offset =100+Rand(250)
+	local offset = 100 + Rand(250)
 
 	if GetSettlement("", "City") then
 		local RandVal = Rand(7)
@@ -1354,9 +1357,12 @@ function SnowballBattle(Target)
 end
 
 -- -----------------------
+
+-- -----------------------
 -- GoToTavern
 -- -----------------------
 function GoToTavern()
+
 	MsgDebugMeasure("Have some drink in a Tavern")
 	if GetSettlement("", "City") then
 		
@@ -1620,6 +1626,7 @@ function GoToTavern()
 end
 
 -- -----------------------
+
 -- KissMeHonza
 -- -----------------------
 function KissMeHonza()
@@ -1833,7 +1840,7 @@ function GoToDivehouse()
 			    Sleep(1)
 			    CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
 				end
-				CreditMoney("Destination",grundBetrag,"Offering")
+				chr_CreditMoney("Destination", grundBetrag, "Offering")
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1858,7 +1865,7 @@ function GoToDivehouse()
 			    PlaySound3D("","Locations/tavern/cheers_01.wav",1)
 			    CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
 				end
-				CreditMoney("Destination",grundBetrag,"Offering")
+				chr_CreditMoney("Destination", grundBetrag, "Offering")
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1891,7 +1898,7 @@ function GoToDivehouse()
 					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")	
 
 					local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
-					CreditMoney("Destination",Tip,"tip")
+					chr_CreditMoney("Destination", Tip, "tip")
 				end
 			end
 			verweile = verweile - 1
@@ -1939,6 +1946,7 @@ function TakeACredit()
 				IgnoreID = GetProperty("", "IgnoreBank")
 			end
 		end
+
 		if not AliasExists("Destination") or (IgnoreID and IgnoreID == GetID("Destination")) then
 			-- no suitable bank found
 			return
@@ -2030,6 +2038,7 @@ function TakeACredit()
 			--	end
 			end
 
+
 			if not coinCheckEnd then
 				if HasProperty("", "WaitForCredit") then
 					RemoveProperty("", "WaitForCredit")
@@ -2049,6 +2058,7 @@ function TakeACredit()
 							local schuldner = SimGetRank("")
 							local lev = SimGetLevel("")
 
+	end
 							local hmuch = 0
 							if kreditMeng >	8000 then  
 								hmuch = (lev*40)+(80*((schuldner*2.5)+Rand(9)+1))
@@ -2163,11 +2173,11 @@ function ReturnACredit()
 			
 			if not HasProperty("Destination","KreditKonto") then
 				local bankkonto = schuld + ecost
-				CreditMoney("Destination",bankkonto,"tip")
+				chr_CreditMoney("Destination", bankkonto, "tip")
 			else
 				local bankkonto = GetProperty("Destination","KreditKonto") + schuld
 				SetProperty("Destination","KreditKonto",bankkonto)
-				CreditMoney("Destination",ecost,"tip")
+				chr_CreditMoney("Destination", ecost, "tip")
 			end
 
 			if HasProperty("","SchuldenMeng") then
@@ -2219,7 +2229,7 @@ function BeADrunkChamp()
             PlaySound3DVariation("","CharacterFX/female_belch",1)
           end
 			    CarryObject("","",false)
-					CreditMoney("Destination",Rand(90)+10,"tip")
+					chr_CreditMoney("Destination", Rand(90)+10, "tip")
 					local newwinner = GetName("")
 					if HasProperty("Destination","BestDrunkPlayer") then
 				    local altpoint = GetProperty("Destination","BestDrunkPoints")
@@ -2283,6 +2293,7 @@ function BeADiceChamp()
 					end
 					RemoveProperty("Destination","BestDicePlayer")
 					RemoveProperty("Destination","BestDicePott")
+
 
 					SetProperty("Destination","BestDicePlayer",newwinner)
 					SetProperty("Destination","BestDicePott",neuPott)
