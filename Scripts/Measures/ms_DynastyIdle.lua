@@ -54,11 +54,13 @@ function Run()
 	--Sleep at night?
 	local currentGameTime = math.mod(GetGametime(),24)
 	if (currentGameTime >23 or currentGameTime < 4) then
+		end
 		idlelib_GoSleep()
 		SetProperty("", "_DO_NOTHING_TIME", 1)
 		return
 	end
 	
+
 	-- WIP
 	if Rand(2) == 0 then
 		if dyn_GetRandomWorkshopForSim("", "MyWorkshop") then
