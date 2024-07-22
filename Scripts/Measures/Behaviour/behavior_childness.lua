@@ -14,7 +14,7 @@
 function Run()
 	
 	chr_CheckHome("") -- make sure we have a home
-	
+	GetHomeBuilding("", "Residence")
 	-- Check if the sim is old enough for the school
 	if SimGetAge("") >= GL_AGE_FOR_SCHOOL then
 	
