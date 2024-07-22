@@ -302,6 +302,11 @@ function RunCouncilMeeting()
 		HadValidVotes = false
 	end
 	
+	-- this is to remove the measure bar (bug)
+	if CutsceneLocalPlayerIsWatching("") then
+		HudClearSelection()
+	end
+
 	-- all sims are at their places, let the games begin
 	if HasData("UsherSession") then
 		officesession_SimCam("Chairman", 0, 0)
@@ -309,11 +314,6 @@ function RunCouncilMeeting()
 		MsgSay("Chairman", "@L_SESSION_7_NOJURYEVENT_WELCOME", "@L_BUILDING_Quarry_REQUIREMENTS")
 	else
 		MsgSay("Chairman", "@L_SESSION_1_GREETING")
-	end
-
-	-- this is to remove the measure bar (bug)
-	if CutsceneLocalPlayerIsWatching("") then
-		HudClearSelection()
 	end
 
 	-- check if there are applicants. If not, stop the session immediatly.
@@ -338,10 +338,9 @@ function RunCouncilMeeting()
 		EndCutscene("")
 	end
 	
-	if HasData("UsherSession") then
+	if HasData("UsherSession") then  
 		for i=0, NumOfVotes-1 do
 			ListGetElement("OfficeList", i, "OfficeToCheck")
-
 			if (officesession_CheckForValidOfficeRun("OfficeToCheck") == true) then
 				local ApplicantCnt = officesession_OfficeGetApplicants("OfficeToCheck", "Applicant")
 				local Winner = Rand(ApplicantCnt)
@@ -982,7 +981,7 @@ function CheckForValidOfficeRun(Office)
 
 	local ApplicantCnt = officesession_OfficeGetApplicants(Office, "Applicant")
 
-	local DeadApplicants = 0
+	local DeadApplicants = -1
 	
 	if(ApplicantCnt ~= 0) then
 		for i =0, ApplicantCnt, 1 do
@@ -991,7 +990,7 @@ function CheckForValidOfficeRun(Office)
 				DeadApplicants = DeadApplicants + 1
 			end
 		end
-	end
+	end 
 
 	if ((DeadApplicants > 0) or (ApplicantCnt == 0)) then
 		if (DeadApplicants == ApplicantCnt) then
