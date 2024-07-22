@@ -11,7 +11,7 @@ function Weight()
 		return 0
 	end
 	
-	if not chr_CityFindCrowdedPlace("privcc_city", "SIM", "privcc_dest") then
+	if not chr_CityFindCrowdedPlace("privcc_city", "SIM", true, "privcc_dest") then
 		return 0
 	end
 

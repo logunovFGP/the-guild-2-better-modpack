@@ -210,7 +210,7 @@ end
 -- Compute Secret Knowledge
 -- -----------------------
 function ArtifactsDuration(User, duration)
-	local Value = GetSkillValue(User, SECRET_KNOWLEDGE)
+	local Value = chr_GetSkillValue(User, SECRET_KNOWLEDGE)
 	if Value <= 1 then
 		return 0
 	else
@@ -394,11 +394,11 @@ end
 -- Roll higher than difficulty + enemy talent value
 -- -----------------------
 function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill)
-	local TalentValue = GetSkillValue(SimAlias, Skill) + Rand(3)
+	local TalentValue = chr_GetSkillValue(SimAlias, Skill) + Rand(3)
 	local TalentEnemy = 0
 	
 	if DestAlias ~= nil then
-		TalentEnemy = GetSkillValue(DestAlias, DestSkill)
+		TalentEnemy = chr_GetSkillValue(DestAlias, DestSkill)
 	end
 	
 	local SuccessValue = TalentEnemy + Difficulty
@@ -764,9 +764,6 @@ end
 
 function GiveMoney(Target)
 	DynastyGetMember(Target, 0, "FirstMember")
-	if not AliasExists("FirstMember") then
-		return
-	end
 	local MoneyOnLastCheck = GetProperty(Target, "AI_DynMoney_LastCheck")
 	local CurrentMoney = GetMoney("FirstMember")
 	local CheatingMoney = 0
@@ -1399,12 +1396,12 @@ function NeedsTreatment(SimAlias)
 	return false
 end
 
-function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
+function CityFindCrowdedPlace(SettlementAlias, SimAlias, IgnoreProfession, ResultLocation)
 	
 	local MaxDistance = 10000
 	local MaxCrowdedLocators = 30
 	local Profession = SimGetProfession(SimAlias)
-	local LocatorName, LocatorRanking
+	local LocatorRanking
 	
 	-- will contain a computed ranking value for each locator for decision
 	-- LocatorRanking = (10 - Distance/1000) + (5 - OwnWorkersNearby)
@@ -1418,9 +1415,12 @@ function CityFindCrowdedPlace(SettlementAlias, SimAlias, ResultLocation)
 			local DistanceFound = GetDistance(SimAlias, "CrowdedPos")
 			if MaxDistance > DistanceFound then
 				LocatorRanking = math.max(1, 10 - math.floor(DistanceFound/1000))
-				-- check number of own workers nearby
-				local Count = Find("CrowdedPos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == " .. Profession ..") AND (Object.BelongsToMe()))", "Result", 5)
-				LocatorRanking = math.max(1, LocatorRanking + (5 - Count))
+				if not IgnoreProfession then
+					-- check number of own workers nearby
+					local Count = Find("CrowdedPos", "__F((Object.GetObjectsByRadius(Sim) == 1500) AND (Object.GetProfession() == " .. Profession ..") AND (Object.BelongsToMe()))", "Result", 5)
+					LocatorRanking = math.max(1, LocatorRanking + (5 - Count))
+				end
+					
 				LocatorRankingCount = LocatorRankingCount + 1
 				LocatorList[LocatorRankingCount] = "Crowded"..i
 				LocatorRankingList[LocatorRankingCount] = LocatorRanking
@@ -1609,11 +1609,11 @@ function GetBudget(SimAlias, Type)
 	local LuxuryCurrent = 0
 	
 	local RankData = {
-				[GL_RANK_DESTITUTE] = { BasicMax = 12, LuxuryMax = 6 }, -- 1: 696 / 348
-				[GL_RANK_POOR] = { BasicMax = 24, LuxuryMax = 12 },  -- 2: 1392 / 696
-				[GL_RANK_MIDDLE] = { BasicMax = 48, LuxuryMax = 32 }, -- 3: 2784 /1856
-				[GL_RANK_RICH] = { BasicMax = 72, LuxuryMax = 72 },  -- 4: 4176 / 4176
-				[GL_RANK_WEALTHY] = { BasicMax = 120, LuxuryMax = 240 } -- 5: 6960 / 13920
+				[GL_RANK_DESTITUTE] = { BasicMax = 580, LuxuryMax = 290 },
+				[GL_RANK_POOR] = { BasicMax = 1160, LuxuryMax = 580 },
+				[GL_RANK_MIDDLE] = { BasicMax = 2320, LuxuryMax = 1450 },
+				[GL_RANK_RICH] = { BasicMax = 3480, LuxuryMax = 3480 }, 
+				[GL_RANK_WEALTHY] = { BasicMax = 5800, LuxuryMax = 11600 }
 				}
 	
 	BasicCurrent = RankData[Rank].BasicMax - GetImpactValue(SimAlias, "BasicPurse")
@@ -1636,9 +1636,9 @@ function GetBudget(SimAlias, Type)
 	end
 	
 	if Type == 1 then
-		return BasicCurrent * 58
+		return BasicCurrent
 	else
-		return LuxuryCurrent * 58
+		return LuxuryCurrent
 	end
 end
 
@@ -1650,7 +1650,7 @@ function UseBudget(SimAlias, Type, Amount, Balance)
 	end
 	
 	if not Balance or Balance == nil then
-		Balance = "misc"
+		Balance = "WaresBought"
 	end
 	
 	if IsDynastySim(SimAlias) then
@@ -1658,12 +1658,16 @@ function UseBudget(SimAlias, Type, Amount, Balance)
 		-- ToDo: statistics
 	end
 	
-	local Change = math.floor(Amount / 58)
+	local Change = math.floor(Amount)
 	
 	if Type == 1 then -- BasePurse
-		AddImpact(SimAlias, "BasicPurse", Change, 12)
+		AddImpact(SimAlias, "BasicPurse", Change, 16)
+		local val = GetImpactValue(SimAlias, "BasicPurse")
+		LogMessage("BasicPurse of "..GetName(SimAlias).." is now at "..val..". Remaining Budget is: "..chr_GetBudget(SimAlias, 1))
 	elseif Type == 2 then -- LuxuryPurse
-		AddImpact(SimAlias, "LuxuryPurse", Change, 12)
+		AddImpact(SimAlias, "LuxuryPurse", Change, 16)
+		local val = GetImpactValue(SimAlias, "LuxuryPurse")
+		LogMessage("LuxuryPurse of "..GetName(SimAlias).." is now at "..val..". Remaining Budget is: "..chr_GetBudget(SimAlias, 2))
 	end
 end
 
@@ -1708,6 +1712,14 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 		return false
 	end
 	
+	if MinRange == nil then
+		MinRange = 3000
+	end
+	
+	if MaxRange == nil then
+		MaxRange = 25000
+	end
+	
 	local BuildingCount = CityGetBuildings("City", GL_BUILDING_CLASS_WORKSHOP, BuildingType, -1, -1, FILTER_HAS_DYNASTY, "Building") or 0
 	local CheckBld
 	local BestScore = 0
@@ -1717,7 +1729,7 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 		RegularID = GetProperty(SimAlias, "Regular_"..BuildingType)
 	end
 	
-	if BuildingCount > 1 then
+	if BuildingCount >= 1 then
 		for i=0, BuildingCount-1 do
 			CheckBld = "Building"..i
 			if AliasExists(CheckBld) then
@@ -1726,29 +1738,39 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 					FavorBonus = GetFavorToSim(SimAlias, "CheckBoss")
 				end
 				
-				local Score = GetImpactValue(CheckBld, "Attractivity") + FavorBonus
+				local Score = GetImpactValue(CheckBld, "Attractivity")*100 + FavorBonus
+				
+				if BuildingType == GL_BUILDING_TYPE_CHURCH_EV or BuildingType == GL_BUILDING_TYPE_CHURCH_CATH then
+					Score = Score + SimGetFaith(SimAlias)*BuildingGetLevel(CheckBld) -- strong believe values high level churches
+				end
 				
 				if GetID(CheckBld) == RegularID then
 					Score = Score * 3
 				elseif GetDynastyID(CheckBld) == GetDynastyID(SimAlias) then
 					Score = Score * 5
 				end
-			end
 			
-			if HasUpgrade == 0 or BuildingHasUpgrade(CheckBld, HasUpgrade) then
-			
-				local Distance = GetDistance(SimAlias, CheckBld)
-				if Distance <= MinDistance then
-					BestScore = Score
-					CopyAlias(CheckBld, OutputAlias)
-					break
-				elseif Distance > MaxRange then
-					Score = 0
-				end
+				if HasUpgrade == 0 or BuildingHasUpgrade(CheckBld, HasUpgrade) then
 				
-				if Score > BestScore then
-					CopyAlias(CheckBld, OutputAlias)
-					BestScore = Score
+					local Distance = GetDistance(SimAlias, CheckBld)
+					LogMessage(GetName(SimAlias).." Check Distance to Building "..GetName(CheckBld).." is "..Distance)
+					MinRange = MinRange*(1+GetImpactValue(CheckBld, "Attractivity"))
+					MaxRange = MaxRange*(1+GetImpactValue(CheckBld, "Attractivity"))
+					if Distance <= MinRange then
+						BestScore = Score
+						CopyAlias(CheckBld, OutputAlias)
+						break
+					elseif Distance > MaxRange then
+						Score = 0
+					else
+						Score = Score -1*(Distance/200)
+						LogMessage("Score for "..GetName(CheckBld).." is "..Score)
+					end
+					
+					if Score > BestScore then
+						CopyAlias(CheckBld, OutputAlias)
+						BestScore = Score
+					end
 				end
 			end
 		end
@@ -1802,4 +1824,33 @@ function DynastyGetWorkhopCount(SimAlias)
 		end
 	end
 	return buildingcount
+end
+
+function CheckChildBehavior(SimAlias)
+	if not AliasExists(SimAlias) then
+		return
+	end
+	
+	local Age = SimGetAge(SimAlias)
+	if Age < GL_AGE_FOR_SCHOOL then -- 0 to 4
+		SimSetBehavior(SimAlias, "Childness")
+		return
+	elseif Age < GL_AGE_FOR_APPRENTICESHIP then -- 5 to 8
+		SimSetBehavior(SimAlias, "Schooldays")
+		return
+	elseif Age < GL_AGE_FOR_UNIVERSITY then -- 9 to 12
+		SimSetBehavior(SimAlias, "Apprenticeship")
+		return
+	elseif Age < GL_AGE_FOR_GROWNUP then -- 13 to 16
+		SimSetBehavior(SimAlias, "University")
+		return
+	else
+		-- SimSetAge will internally set the grown-up model for the sim
+		SimSetAge(SimAlias, Age)
+		-- Remove the child state so that the child can be controlled
+		SetState(SimAlias, STATE_CHILD, false)
+		-- normal idle behavior for grownups
+		SimSetBehavior(SimAlias, "idle")
+		return
+	end
 end

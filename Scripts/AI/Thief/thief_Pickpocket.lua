@@ -12,7 +12,7 @@ function Weight()
 		return 0
 	end
 	
-	local CrowdedLocation = chr_CityFindCrowdedPlace("City", "SIM", "Destination")
+	local CrowdedLocation = chr_CityFindCrowdedPlace("City", "SIM", false, "Destination")
 	if not CrowdedLocation then
 		return 0
 	end

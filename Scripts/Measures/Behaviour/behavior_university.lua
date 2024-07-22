@@ -74,7 +74,7 @@ function Run()
 	else
 		if Action == 0 then	
 			f_ExitCurrentBuilding("")
-			idlelib_GoTownhall()
+			--idlelib_GoTownhall()
 		elseif Action == 1 then	
 			f_ExitCurrentBuilding("")
 			idlelib_SitDown()
@@ -83,7 +83,7 @@ function Run()
 			idlelib_CollectWater()
 		elseif Action == 3 then
 			f_ExitCurrentBuilding("")
-			idlelib_BuySomethingAtTheMarket()
+			--idlelib_BuySomethingAtTheMarket()
 		elseif Action == 4 then
 			if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Market") then
 				GetFleePosition("","Market",300,"MovePos")

@@ -1,486 +1,630 @@
 function Run()
 	
-	-- dynasty chars have their own behaviour
-	if IsDynastySim("") and GetDynastyID("") > 0 then
-		MeasureRun("", nil, "DynastyIdle")
-		return
-	end
-
+	-- **********************
+	-- **  PREPARATIONS **
+	-- **********************
 	chr_CheckHome("") -- make sure we have a home
+	chr_CheckChildBehavior("") -- make sure no childs use idle behavior
 	
-	-- cleanup properties etc
-	if HasProperty("", "Berserker") then
-		RemoveProperty("", "Berserker")   
-	end
-	
-	-- cleanup moveset
-	local Sickness = GetImpactValue("", "Sickness")
-	if Sickness < 1 then
-		MoveSetActivity("")
-	end
-	
-	-- no children allowed
-	if SimGetAge("") < 16 then
+	if SimGetGender("") == GL_GENDER_FEMALE and HasProperty("", "KissMeHoney") then -- get a kiss from Versengold maybe?
+		idlelib_KissMeHonza()
 		return
-	end	
+	end
 	
-	-- some workers have special behavior when they are idle
-	if GetState("", STATE_WORKING) then
+	local Sickness = GetImpactValue("", "Sickness") -- check for illness
+	if Sickness < 1 then -- not ill?
+		MoveSetActivity("") -- cleanup moveset!
+		
+		-- check for random illness!
+		if ReadyToRepeat("", "RandomIllness") and not IsDynastySim("") then -- dynasty sims get ill by CityPinghour
+		
+			SetRepeatTimer("", "RandomIllness", 1) -- check only once every hour
+			GetSettlement("", "City")
+			local CityLevel = CityGetLevel("City")
+			local SicknessChance = Rand(200)
+			local Season = GetSeason()
+			if Season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
+				SicknessChance = Rand(100)
+			end
+			
+			-- 0.5-1% chance depending on season
+			if SicknessChance == 1 then
+				Disease.Cold:infectSim("")
+			--	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." got infected with a random cold")
+			elseif SicknessChance == 2 then
+				Disease.Sprain:infectSim("")
+			--	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." got infected with a random sprain")
+			elseif SicknessChance == 3 and CityLevel > 2 then
+				Disease.Influenza:infectSim("")
+			--	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." got infected with a random influenza")
+			elseif SicknessChance == 3 and CityLevel > 4 then
+				Disease.Fracture:infectSim("")
+			--	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." got infected with a random fracture")
+			end
+		end
+	end
+	
+	if GetState("", STATE_WORKING) then -- some workers have special behavior when they are idle
 		std_idle_Worker()
 		return
 	end
 	
-	-- Do nothing once in a while
-	local DoNothing = GetProperty("", "_DO_NOTHING_TIME") or 0
-	if DoNothing > 0 then
-		RemoveProperty("", "_DO_NOTHING_TIME")
-		DoNothing = Gametime2Realtime(DoNothing)
-		Sleep(DoNothing)
-	end 
-	
-	-- Check activity or go home and do nothing for some time
-	local Activity = idlelib_GetActivity()
-	local ActiveMovement = false
-	if Activity > Rand(100) then
-		ActiveMovement = true
-	else
-		SetProperty("", "_DO_NOTHING_TIME", 3)
+	local DoNothing = Rand(20) + 1 -- Do nothing for a while
+	if SimGetClass("") == 0 then 
+		DoNothing = DoNothing * 3 -- unemployed idle longer
 	end
+	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." does nothing for "..DoNothing.." seconds")
+	Sleep(DoNothing)
 	
-	if not ActiveMovement then
-		if GetHomeBuilding("", "HomeBuilding") and GetDistance("", "HomeBuilding") > 1000 then
-			idlelib_GoHome()
-			return
-		else
-			return
-		end
-	end
+	-- *********************
+	-- ** CHOOSE RANDOM NEED **
+	-- *********************
 	
-	--if (SimGetGender("") == GL_GENDER_FEMALE) then
-	--	idlelib_KissMeHonza()
-	--end
+	local NeedList = { "Health", "Entertainment", "Food", "Religion", "Luxury", "Clothes", "Protection", "Money" }
+	local NeedSum = 8
+	local Random = Rand(8) + 1
+	local CheckNeed = ""
 	
-	-- check for treatment need
-	if chr_NeedsTreatment("") then
-		if gameplayformulas_CheckMoneyForTreatment("") == 1 then
-			if ReadyToRepeat("", "ai_VisitDoc") then
-				idlelib_VisitDoc()
+	-- check every possibility from NeedList
+	for i=1, NeedSum do
+		CheckNeed = NeedList[Random]
+		--LogMessage("CheckNeed is "..CheckNeed)
+		if std_idle_CheckNeed(CheckNeed) then -- need returns true?
+			std_idle_ChooseNeed(CheckNeed) -- then do that!
+			break
+		else -- CheckNeed returns false? check the next in line from NeedList
+			Random = Random + 1
+			if Random > NeedSum then
+				Random = 1
 			end
 		end
 	end
+end
+
+function Worker()
 	
-	-- check again. If still true, go to the market
-	if chr_NeedsTreatment("") then
-		idlelib_Illness()
-		SetProperty("", "_DO_NOTHING_TIME", 4)
+	local AtPlace = SimGetAssignedAreaID("") == SimGetWorkingPlaceID("")
+	local IsManageEmployee = GetProperty("", "TWP_ManageEmployee") or 0
+	local MyProfession = SimGetProfession("")
+	if not SimGetWorkingPlace("", "WorkingPlace") then
 		return
 	end
 	
-	-- WIP
-	
-	if GetSettlement("","MyCity") then
-		if HasProperty("MyCity","InquisitionOnTheRun") then
-			if (GetImpactValue("","WasInChurch")~=1) then
-				local MyReligion = SimGetReligion("")
-				local InquisitionReligion = GetProperty("MyCity","InquisitionOnTheRun")
-				if InquisitionReligion ~= MyReligion then
-					idlelib_ChangeReligion(InquisitionReligion)
+	if HasProperty("", "StartWorkingTime") then -- check once per day if we need to go to our workingplace
+		RemoveProperty("", "StartWorkingTime")
+		
+		f_MoveTo("", "WorkingPlace", GL_MOVESPEED_RUN)
+		
+		if BuildingGetAISetting("WorkingPlace", "Enable") > 0 then
+			if ReadyToRepeat("", "ai_VisitDoc") and chr_NeedsTreatment("") then
+				if gameplayformulas_CheckMoneyForTreatment("") == 1 then
+					idlelib_VisitDoc()
 				end
 			end
 		end
-	end
-
-	if ActiveMovement then
-		local checkBOK = false
-		if HasProperty("", "TimeBank") then
-			local gtime = GetProperty("", "TimeBank")
-			if gtime < GetGametime() then
-				checkBOK = true
-			end
-		else
-			checkBOK = true
-		end
-
-		local Fneed = SimGetNeed("", 9)
-		if (Fneed > 1) and (checkBOK) then
-			idlelib_CheckBank()
-			return			
-		end
-	end
-
-	if GetHomeBuilding("","HomeBuilding") then
-		if BuildingHasIndoor("HomeBuilding") and SimIsCourting("")==false then
-
-			local offset 	= math.mod(GetID("Owner"), 30) * 0.1
-			local time 		= math.mod(GetGametime(),24)
-			local	StartSleep 	= 22+offset
-			local EndSleep 	= 6+offset
 		
-			if time > StartSleep or time < EndSleep then
-				-- *******************************************
-				--
-				-- satisfy need sleep
-				--
-				-- *******************************************
-				
-				--debug
-				idlelib_Sleep(23+offset, 7+offset)
-				return
-			end
-		end
+		return
 	end
 	
-	if not idlelib_CheckWeather() then
-		if not SimIsCourting("") and GetHomeBuilding("", "HomeBuilding") then
-			idlelib_GoHome()
-			Sleep(Rand(10)+10)
+	if AtPlace or BuildingGetAISetting("WorkingPlace", "Enable") > 0 or IsManageEmployee > 0 then
+		if MyProfession == GL_PROFESSION_THIEF then
+			idlelib_ThiefIdle("WorkingPlace")
 			return
-		end
-	end
-	
-	if ActiveMovement then
-		if (SimGetGender("")==GL_GENDER_FEMALE) then
-			idlelib_KissMeHonza()
-		end
-
-		if (SimGetNeed("", 4)>1) and (GetImpactValue("","WasInChurch")~=1) then
-	
-			-- *******************************************
-			--
-			-- satisfy need religion
-			--
-			-- *******************************************
-			if Rand(50) >= 40 then
-      	idlelib_Graveyard()
-				return
-			else
-		    if SimGetProfession("")~=GL_PROFESSION_PRIEST then
-			    if SimGetChurch("", "church") then
-						if BuildingGetOwner("church","churchowner") then
-					    MeasureRun("", "church", "AttendMass")
-					    return
-						end
-					end
-			  end
-			end
-		end
-		if SimGetAge("")>20 then
-			if SimGetNeed("", 8)>1 then
-				-- *******************************************
-				--
-				-- satisfy need drinking
-				--
-				-- *******************************************
-        if SimGetClass("") == 4 then
-					idlelib_GoToDivehouse()
-        else
-					if Rand(3) == 1 then
-	        	idlelib_GoToDivehouse()
-	        else
-          	idlelib_GoToTavern()
-	        end
-        end
-				return
-			end
-			if SimGetNeed("", 2)>1 then
-				-- *******************************************
-				--
-				-- satisfy need pleasure
-				--
-				-- *******************************************
-				if Rand(2) == 0 then
-					if SimGetClass("") == 4 then
-            idlelib_GoToDivehouse()
-        	else
-            if Rand(3) == 1 then
-            	idlelib_GoToDivehouse()
-          	else
-            	idlelib_GoToTavern()
-          	end
-        	end				
-				else
-					if SimGetGender("")==GL_GENDER_MALE then
-						idlelib_UseCocotte()
-					else
-						idlelib_KissMeHonza()
-					end
-				end
-				
-				return
-			end
-		end
-		
-		if SimGetNeed("", 1)>1 then
-			-- *******************************************
-			--
-			-- satisfy need eat
-			--
-			-- *******************************************
-			local time = math.mod(GetGametime(),24)
-			if time >= 8 and time <= 18 then
-				if Rand(2) == 0 then
-			  	idlelib_BuySomethingAtTheMarket(1)
-					MoveSetActivity("")
-					CarryObject("","",false)
-			  else
-			  	idlelib_CheckInsideStore()
-				end
-			else
-			  idlelib_BuySomethingAtTheMarket(1)
-				MoveSetActivity("")
-				CarryObject("","",false)
-			end
+		elseif MyProfession == GL_PROFESSION_ROBBER then
+			idlelib_RobberIdle("WorkingPlace")
 			return
-		end
-
-		if SimGetNeed("", 7)>1 then
-			-- *******************************************
-			--
-			-- satisfy need konsum
-			--
-			-- *******************************************
-			local time = math.mod(GetGametime(),24)
-			if time >= 8 and time <= 18 then
-				if Rand(3) == 0 then
-			  	idlelib_BuySomethingAtTheMarket(2)
-					MoveSetActivity("")
-					CarryObject("","",false)
-			  else
-			    idlelib_CheckInsideStore()
-				end
-			else
-			  idlelib_BuySomethingAtTheMarket(2)
-				MoveSetActivity("")
-				CarryObject("","",false)
-			end
+		elseif MyProfession == GL_PROFESSION_COCOTTE then
+			idlelib_CocotteIdle("")
 			return
-		end
-		
-		if SimGetNeed("", 3)>1 then
-
-			-- ******** THANKS TO KINVER ********
-			if HasProperty("","SchuldenGeb") then
-				SatisfyNeed("", 9, -0.13)
-			else
-				SatisfyNeed("", 9, -0.1)
-			end
-			-- **********************************
-	
-			-- *******************************************
-			--
-			-- satisfy need talk
-			--
-			-- *******************************************
-			
-			
-			local TalkPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1000)AND NOT(Object.GetStateImpact(no_idle))AND(Object.CanBeInterrupted(Babble)))","TalkPartner", -1)
-			if TalkPartners>0 then
-				MeasureRun("", "TalkPartner"..Rand(TalkPartners), "Babble" )
-				return
-			end
-			
-		end
+		elseif MyProfession == GL_PROFESSION_MYRMIDON then
+			idlelib_MyrmidonIdle("")
+			return
+		elseif MyProfession == GL_PROFESSION_PRIVATEGUARD then
+			idlelib_LeibwacheIdle("WorkingPlace")
+			return
+		elseif MyProfession == GL_PROFESSION_MERCENARY then
+			idlelib_LeibwacheIdle("WorkingPlace")
+			return
+		end	
 	end
-
-	if not IsPartyMember("") then
-		GetSettlement("","City")
-		local CityLevel = CityGetLevel("City")
-		local SicknessChance = Rand(100)
-		if GetState("", STATE_SICK) then
-			SicknessChance = 0
-		else
-			local Season = GetSeason()
-			if Season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
-				SicknessChance = Rand(50)
-			end
-		end
-		if CityLevel > 4 then
-			if SicknessChance == 1 then
-				Disease.Cold:infectSim("")
-			elseif SicknessChance == 2 then
-				Disease.Sprain:infectSim("")
-			elseif SicknessChance == 6 then
-				Disease.Fracture:infectSim("")
-			elseif SicknessChance == 7 then
-				Disease.Influenza:infectSim("")
-			end
-		elseif CityLevel > 2 then
-			if SicknessChance < 6 then
-				Disease.Cold:infectSim("")
-			elseif SicknessChance < 9 then
-				Disease.Sprain:infectSim("")
-			elseif SicknessChance < 11 then
-				Disease.Influenza:infectSim("")
-			end
-		else
-			if SicknessChance < 10 then
-				Disease.Cold:infectSim("")
-			elseif SicknessChance < 15 then
-				Disease.Sprain:infectSim("")
-			end
-		end
-		
-		if ActiveMovement then
-			f_ExitCurrentBuilding("")
-			Sleep(Rand(10)+5)
-			local toast = Rand(3)
-			local WhatToDo = Rand(100)
-			if GetImpactValue("","Sickness")>0 then
-				if WhatToDo > 90 then
-					if toast == 0 then
-						idlelib_GoToRandomPosition()
-					elseif toast == 1 then
-					  idlelib_GoToTavern()
-					else
-					  idlelib_GoToDivehouse()
-					end
-				elseif WhatToDo > 60 then
-					if SimIsCourting("")==false then
-						idlelib_GoHome()
-					end
-				elseif WhatToDo > 30 then	
-					idlelib_SitDown()
-				elseif WhatToDo > 0 then
-					idlelib_DoNothing()
-				end
-			else
-			
-				if WhatToDo == 99 then
-					if GetHPRelative("")>0.3 then
-						local FightPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==2000)AND(Object.CompareHP()>30)AND(Object.CheckCutscene())AND(Object.MinAge(16))AND NOT(Object.HasDynasty())AND NOT(Object.GetState(npc))AND NOT(Object.GetState(animal))", "FightPartner", -1)
-						if FightPartners>0 then
-							idlelib_ForceAFight("FightPartner")
-							return
-						end
-					end
-				elseif WhatToDo > 85 and not HasProperty("","SchuldenGeb") then
-					idlelib_TakeACredit()
-				elseif WhatToDo > 85 and HasProperty("", "SchuldenGeb") then
-					idlelib_ReturnACredit()
-				elseif WhatToDo > 65 then
-					if toast == 0 then
-						idlelib_GoToTavern()
-					else
-						idlelib_GoToDivehouse()
-					end
-				elseif WhatToDo > 50 then
-					if SimGetChurch("", "church") then
-						if BuildingGetOwner("church","churchowner") then
-							MeasureRun("", "church", "AttendMass")
-						end
-					end
-				elseif WhatToDo > 35 then
-					idlelib_Graveyard()
-				elseif WhatToDo > 20 then
-					idlelib_CheckInsideStore()
-				elseif WhatToDo > 15 then
-					idlelib_GoTownhall()
-				elseif WhatToDo > 10 then
-					idlelib_SitDown()
-				elseif WhatToDo > 5 then
-					idlelib_GetCorn()
-				elseif WhatToDo >= 0 then
-					idlelib_CollectWater()
-				end
-			end
-		else
-			if GetHomeBuilding("", "HomeBuilding") then
-				idlelib_GoHome()
-			else
-				idlelib_GoToRandomPosition()
-			end
-		end
-	end
-	--ChangeAnimation("", "idle")
 	
-	if AliasExists("") and (SimGetGender("")==GL_GENDER_FEMALE) then
-		idlelib_KissMeHonza()
-	end
-
-	Sleep(Rand(10)+5)
-	
+	Sleep(90)
+	return
 end
 
-function Worker(ActiveMovement)
-
-	if HasProperty("", "StartWorkingTime") then
-		RemoveProperty("", "StartWorkingTime")
-		local	AtPlace	= SimGetAssignedAreaID("") == SimGetWorkingPlaceID("")
-		if SimGetWorkingPlace("", "WorkingPlace") then
-			if DynastyIsShadow("") and not ActiveMovement then
-				SimBeamMeUp("","WorkingPlace",false)
+function CheckNeed(Need)
+	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." checks the need "..Need)
+	if Need == "Health" then
+		if ReadyToRepeat("", "Need_"..Need) then
+			if chr_NeedsTreatment("") then
+				return true
 			else
-				f_MoveTo("", "WorkingPlace", GL_MOVESPEED_RUN)
+				return false
 			end
-			local Rand = Rand(100)
-			if Rand == 1 then
-				Disease.Sprain:infectSim("")
-			elseif Rand == 2 then
-				Disease.Cold:infectSim("")
-			end
+		else
+			return false
+		end
+	elseif Need == "Entertainment" then
+		return true
+	elseif Need == "Food" then
+		if chr_GetBudget("", 1) >= 58 and ReadyToRepeat("", "Need_"..Need) then
+			return true
+		else
+			return false
+		end
+	elseif Need == "Religion" then
+		if chr_GetBudget("", 1) >= 58 and ReadyToRepeat("", "Need_"..Need) then
+			return true
+		else
+			return false
+		end
+	elseif Need == "Luxury" then
+		if chr_GetBudget("", 2) >= 58 and ReadyToRepeat("", "Need_"..Need) then
+			return true
+		else
+			return false
+		end
+	elseif Need == "Clothes" then
+		if chr_GetBudget("", 1) >= 58 and ReadyToRepeat("", "Need_"..Need) then
+			return true
+		else
+			return false
+		end
+	elseif Need == "Protection" then
+		if chr_GetBudget("", 2) >= 58 and ReadyToRepeat("", "Need_"..Need) then
+			return true
+		else
+			return false
+		end
+	elseif Need == "Money" then
+		if ReadyToRepeat("", "Need_"..Need) then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
+end
 
-			if ((GetImpactValue("","Sickness")>0) or (GetHP("") < GetMaxHP("")/4)) then
-				if gameplayformulas_CheckMoneyForTreatment("") == 1 then
-					if ReadyToRepeat("", "ai_VisitDoc") and chr_NeedsTreatment("") then
-						idlelib_VisitDoc()
+function ChooseNeed(Need)
+
+	LogMessage("Idle: "..GetName("").." ID: "..GetID("").." has chosen the need of "..Need)
+	-- get important data
+	local DayTime = gameplayformulas_GetDayTime() -- returns "MORNING", "DAY", "EVENING", "NIGHT" in 6h intervalls
+	local Season = GetSeason()
+	local ActiveWeather = idlelib_CheckWeather() -- nice weather?
+	local WeatherLog = "nice"
+	if not ActiveWeather then
+		WeatherLog = "bad"
+	end
+	LogMessage("Idle: The DayTime is "..DayTime.." and the weather is "..WeatherLog)
+	
+	local SimClass = SimGetClass("")
+	if SimClass == 0 then -- if unemployed, use random fake class
+		if HasProperty("", "FakeClass") then
+			SimClass = GetProperty("", "FakeClass")
+		else
+			SimClass = Rand(4) + 1
+			SetProperty("", "FakeClass", SimClass)
+		end
+	end
+
+	if Need == "Health" then
+		SetRepeatTimer("", "Need_"..Need, 1)
+		
+		if gameplayformulas_CheckMoneyForTreatment("") == 1 then
+			if ReadyToRepeat("", "ai_VisitDoc") then
+				LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs to visit the doc")
+				idlelib_VisitDoc()
+				return
+			else
+				LogMessage("Idle: "..GetName("").." ID: "..GetID("").." is ill and tries something ...")
+				idlelib_Illness()
+				return
+			end
+		end
+	elseif Need == "Entertainment" then
+		local Choices = { "DoNothing" } -- base choices, always available
+		local ChoicesCount = 1
+		
+		-- add some choices based on conditions
+		if ReadyToRepeat("", "CollectWater") and DayTime ~= "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "CollectWater"
+		end
+		
+		if DayTime ~= "MORNING" and DayTime ~= "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoToDivehouse"
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoToTavern"
+		end
+		
+		if DayTime == "NIGHT" or DayTime == "EVENING" then
+			if not IsDynastySim("") and not GetInsideBuilding("", "Inside") == 0 and ReadyToRepeat("", "ai_ForceAFight") and Rand(8) == 0 then
+				ChoicesCount = ChoicesCount + 1
+				Choices[ChoicesCount] = "ForceAFight"
+			end
+		end
+		
+		-- check for Versengold and tavern stuff
+		if GetSettlement("", "City") then
+
+			local stage = GetData("#MusicStage")
+			if stage ~= nil and GetAliasByID(stage, "stageobj") then
+				BuildingGetCity("stageobj", "stageCity")
+				if GetID("City") == GetID("stageCity") then -- Versengold is in town!
+					if BuildingGetType("stageobj") == GL_BUILDING_TYPE_DIVEHOUSE then
+						ChoicesCount = ChoicesCount + 1
+						Choices[ChoicesCount] = "GoToDivehouse"
+					else
+						ChoicesCount = ChoicesCount + 1
+						Choices[ChoicesCount] = "GoToTavern"
 					end
 				end
 			end
-
 		end
-	end
-	
-	local	AtPlace	= SimGetAssignedAreaID("") == SimGetWorkingPlaceID("")
-	local IsManageEmployee = GetProperty("", "TWP_ManageEmployee") or 0
-	if SimGetWorkingPlace("", "WorkingPlace") then
-		if AtPlace or BuildingGetAISetting("WorkingPlace", "Enable") > 0 or IsManageEmployee > 0 then
-			if SimGetProfession("") == GL_PROFESSION_THIEF then
-				if HasProperty("","SchuldenGeb") then
-					idlelib_ReturnACredit()
-				end
-				idlelib_ThiefIdle("WorkingPlace")
-				return
-			elseif SimGetProfession("") == GL_PROFESSION_ROBBER then
-				if HasProperty("","SchuldenGeb") then
-					idlelib_ReturnACredit()
-				end
-				idlelib_RobberIdle("WorkingPlace")
-				--idlelib_GoToDivehouse()
-				return
-			elseif SimGetProfession("") == GL_PROFESSION_COCOTTE then
-				if HasProperty("","SchuldenGeb") then
-					idlelib_ReturnACredit()
-				end
-				idlelib_CocotteIdle("")
-				return
-			elseif SimGetProfession("") == GL_PROFESSION_MYRMIDON then
-				if HasProperty("","SchuldenGeb") then
-					idlelib_ReturnACredit()
-				end
-				idlelib_MyrmidonIdle("")
-				return
-			elseif SimGetProfession("") == 74 then
-				if HasProperty("","SchuldenGeb") then
-					idlelib_ReturnACredit()
-				end
-				idlelib_LeibwacheIdle("WorkingPlace")
-				return
-			elseif SimGetProfession("") == 17 then
-				if HasProperty("","SchuldenGeb") then
-					idlelib_ReturnACredit()
-				end
-				idlelib_LeibwacheIdle("WorkingPlace")
-				return
-			end	
-		else
-			if HasProperty("","SchuldenGeb") then
-				idlelib_ReturnACredit()
+		
+		if ActiveWeather then -- nice weather
+			
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "SitDown"
+			
+			if DayTime ~= "NIGHT" then
+				ChoicesCount = ChoicesCount + 1
+				Choices[ChoicesCount] = "BuySomething"
+				ChoicesCount = ChoicesCount + 1
+				Choices[ChoicesCount] = "GoToRandomPosition"
+				ChoicesCount = ChoicesCount + 1
+				Choices[ChoicesCount] = "VisitMarket"
+				ChoicesCount = ChoicesCount + 1
+				Choices[ChoicesCount] = "VisitBlackboard"
+				ChoicesCount = ChoicesCount + 1
+				Choices[ChoicesCount] = "GetCurious"
 			end
 		end
-	end
+			
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+			
+		if not ActiveWeather then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoHome"
+		end
+		
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		if MyChoice == "DoNothing" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." does nothing")
+			idlelib_DoNothing()
+			return
+		elseif MyChoice == "CollectWater" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." collects some water")
+			idlelib_CollectWater()
+			return
+		elseif MyChoice == "GoToRandomPosition" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." goes to random position")
+			idlelib_GoToRandomPosition()
+			return
+		elseif MyChoice == "GetCurious" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." looks for crowded places nearby")
+			idlelib_GetCurious()
+			return
+		elseif MyChoice == "SitDown" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to sit down and enjoy the season")
+			idlelib_SitDown()
+			return
+		elseif MyChoice == "VisitMarket" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." visits the market and wants to babble")
+			idlelib_VisitMarket()
+			return
+		elseif MyChoice == "VisitBlackboard" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." is looking for news at the noticeboard")
+			idlelib_VisitBlackboard()
+			return
+		elseif MyChoice == "GoToTavern" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to have a drink in a tavern")
+			idlelib_GoToTavern()
+			return
+		elseif MyChoice == "GoToDivehouse" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to have fun in the divehouse")
+			idlelib_GoToDivehouse()
+			return
+		elseif MyChoice == "BuySomething" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to buy a drink at the market")
+			idlelib_BuySomethingFromMarket("Drink")
+			return
+		elseif MyChoice == "ForceAFight" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." looks for blood")
+			SetRepeatTimer("", "ai_ForceAFight", 24)
+			idlelib_ForceAFight()
+			return
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		else
+			return
+		end
+		
+	elseif Need == "Food" then
+		
+		local Choices = { "BuySomething" }
+		local ChoicesCount = 1
+		
+		if ActiveWeather and DayTime ~= "NIGHT" or DayTime == "EVENING" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GetCorn"
+		end
+		
+		if DayTime ~= "MORNING" and DayTime ~= "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoToDivehouse"
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoToTavern"
+		end
+		
+		SetRepeatTimer("", "Need_"..Need, 3)
+		
+		if DayTime == "MORNING" then
+			return
+		end
+		
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+			
+		if not ActiveWeather then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoHome"
+		end
+		
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		
+		if MyChoice == "GetCorn" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." gets corn from a farm")
+			idlelib_GetCorn()
+			return
+		elseif MyChoice == "BuySomething" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." buys food from market")
+			idlelib_BuySomethingFromMarket("Food")
+			return
+		elseif MyChoice == "GoToTavern" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to have a drink in a tavern")
+			idlelib_GoToTavern()
+			return
+		elseif MyChoice == "GoToDivehouse" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to have fun in the divehouse")
+			idlelib_GoToDivehouse()
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		else
+			return
+		end
+	elseif Need == "Religion" then
+		local Choices = { "BuySomething" }
+		local ChoicesCount = 1
+		local time = math.mod(GetGametime(),24)
+		if time >= 9 and time <= 11 or time >= 18 and time <= 21 then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "AttendMass"
+		end
+		
+		if ActiveWeather and DayTime ~= "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "VisitGraveyard"
+		end
+		
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+			
+		if not ActiveWeather then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoHome"
+		end
+		
+		local Reduction = math.floor(SimGetFaith("") / 10) -- 1 to 10
+		local Timeout = 12 - Reduction -- true believers have a very low cooldown on this need
+		SetRepeatTimer("", "Need_"..Need, Timeout)
+		
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		
+		if MyChoice == "BuySomething" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." buys religious stuff from the market")
+			idlelib_BuySomethingFromMarket("Religion")
+			return
+		elseif MyChoice == "AttendMass" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to attend the mass")
+			idlelib_AttendMass()
+			return
+		elseif MyChoice == "VisitGraveyard" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to visit the graveyard")
+			idlelib_Graveyard()
+			return
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		else
+			return
+		end
+	elseif Need == "Luxury" then
+		local Choices = { "BuySomething" }
+		local ChoicesCount = 1
+		
+		SetRepeatTimer("", "Need_"..Need, 8)
+		
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+			
+		if not ActiveWeather then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoHome"
+		end
+		
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		
+		if MyChoice == "BuySomething" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." buys expensive stuff from the market")
+			idlelib_BuySomethingFromMarket("Luxury")
+			return
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		else
+			return
+		end
+	elseif Need == "Clothes" then
+		local Choices = { "BuySomething" }
+		local ChoicesCount = 1
+		
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+			
+		if not ActiveWeather then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoHome"
+		end
+		
+		SetRepeatTimer("", "Need_"..Need, 12)
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		if MyChoice == "BuySomething" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." buys clothing stuff from the market")
+			idlelib_BuySomethingFromMarket("Clothing")
+			return
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		else
+			return
+		end
+	elseif Need == "Protection" then
+		local Choices = { "DoNothing", "GoHome" }
+		local ChoicesCount = 2
+		
+		local HasWeapon = false
+		local SlotN = ItemGetSlot("Dagger")
+		HasWeapon = InventoryGetSlotInfo("", SlotN-1, INVENTORY_EQUIPMENT)
+		if HasWeapon == nil then -- nothing equiped here
+			HasWeapon = 0
+		end
+		
+		if chr_GetRank("") >= 2 and HasWeapon == 0 then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "BuySomething"
+		end
+		
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+		
+		SetRepeatTimer("", "Need_"..Need, 32)
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		if MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		elseif MyChoice == "DoNothing" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." does nothing")
+			idlelib_DoNothing()
+			return
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "BuySomething" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." buys a simple weapon from the market")
+			idlelib_BuySomethingFromMarket("Weapon")
+			return
+		end
+		return
+	elseif Need == "Money" then
+		local Choices = { "DoNothing" }
+		local ChoicesCount = 1
+		
+		SetRepeatTimer("", "Need_"..Need, 6)
+		
+		if DayTime == "NIGHT" then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoSleep"
+		end
+			
+		if not ActiveWeather then
+			ChoicesCount = ChoicesCount + 1
+			Choices[ChoicesCount] = "GoHome"
+		end
+		
+		-- choose randomly from Choices
+		local RandomChoice = Rand(ChoicesCount) + 1
+		local MyChoice = Choices[RandomChoice]
+		if MyChoice == "DoNothing" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." does nothing")
+			idlelib_DoNothing()
+			return
+		-- to do credits
+		elseif MyChoice == "" then
+		
 	
-	Sleep(120)
-	return
+		elseif MyChoice == "GoSleep" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." needs some sleep")
+			idlelib_GoSleep()
+			return
+		elseif MyChoice == "GoHome" then
+			LogMessage("Idle: "..GetName("").." ID: "..GetID("").." wants to go home")
+			idlelib_GoHome()
+			return
+		else
+			return
+		end
+	else
+		return
+	end
 end
 
 -- -----------------------
@@ -495,7 +639,7 @@ function CleanUp()
 	CarryObject("", "", false)
 	
 	if AliasExists("SitPos") then
-		f_EndUseLocator("","SitPos", GL_STANCE_STAND)
+		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
 	end
 	
 	if GetState("", STATE_SLEEPING) then
@@ -506,8 +650,24 @@ function CleanUp()
 		MoveSetActivity("")
 	end
 	
-	if HasProperty("","WaitingForTreatment") then
+	if HasProperty("", "WaitingForTreatment") then
 		RemoveProperty("", "WaitingForTreatment")
+	end
+	
+	if HasProperty("", "Served") then
+		RemoveProperty("", "Served")
+	end
+	
+	if HasProperty("", "WaitingForService") then
+		RemoveProperty("", "WaitingForService")
+	end
+	
+	if HasProperty("", "DrinkSomething") then
+		RemoveProperty("", "DrinkSomething")
+	end
+	
+	if HasProperty("", "EatSomething") then
+		RemoveProperty("", "EatSomething")
 	end
 	
 	if AliasExists("SleepPosition") then
@@ -520,12 +680,12 @@ function CleanUp()
 		RemoveAlias("ChairPos")
 	end
 	
-	if HasProperty("","ProTCBank") then
-		RemoveProperty("","ProTCBank")
+	if HasProperty("", "ProTCBank") then
+		RemoveProperty("", "ProTCBank")
 	end
 	
-	if HasProperty("","ProRCBank") then
-		RemoveProperty("","ProRCBank")
+	if HasProperty("", "ProRCBank") then
+		RemoveProperty("", "ProRCBank")
 	end
 	
 	if HasProperty("", "KissMeHoney") then

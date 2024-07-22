@@ -41,7 +41,7 @@ function GetWorkerTask(BldAlias, WorkerAlias)
 	end
 	
 	if not WorkerIndex then
-		LogMessage("Thief JobAssignment failed, missing WorkerIndex for " .. GetName(WorkerAlias) .. " of " .. GetName(BldAlias))
+--		LogMessage("Thief JobAssignment failed, missing WorkerIndex for " .. GetName(WorkerAlias) .. " of " .. GetName(BldAlias))
 		return
 	end
 
@@ -85,7 +85,7 @@ function GetWorkerTask(BldAlias, WorkerAlias)
 	end
 	
 	if not Tasks[WorkerIndex+1] then
-		LogMessage("Thief JobAssignment failed, missing Task for " .. WorkerIndex .. ": " .. GetName(WorkerAlias) .. " of " .. GetName(BldAlias))
+--		LogMessage("Thief JobAssignment failed, missing Task for " .. WorkerIndex .. ": " .. GetName(WorkerAlias) .. " of " .. GetName(BldAlias))
 	end
 	return Tasks[WorkerIndex + 1], HijackTargetID, WorkerIndex
 end
@@ -94,10 +94,10 @@ function CheckInForWork(BldAlias, SimAlias)
 	-- Task may be one of: PickpocketPeople, ScoutAHouse, BurgleAHouse, Hijack, DemandRansom
 	local Task, Detail, Index = thief_GetWorkerTask(BldAlias, SimAlias)
 	if Task == nil or Detail == nil or Index == nil then
-		LogMessage("Thief JobAssignment returned nil")
+--		LogMessage("Thief JobAssignment returned nil")
 		return nil
 	end
-	LogMessage("Thief JobAssignment " .. Index .." : " .. Task .. ", " .. (Detail or "")  )
+--	LogMessage("Thief JobAssignment " .. Index .." : " .. Task .. ", " .. (Detail or "")  )
 	if "PickpocketPeople" == Task then
 		thief_StartPickpocket(BldAlias, SimAlias, Detail, Index)
 		return Task
@@ -136,7 +136,7 @@ function StartPickpocket(BldAlias, SimAlias, CrowdedLocator)
 		GetOutdoorLocator(CrowdedLocator, 1, "Destination")
 	else -- try to initialize destination
 		GetSettlement(BldAlias, "City")
-		CrowdedLocator = chr_CityFindCrowdedPlace("City", SimAlias, "Destination")
+		CrowdedLocator = chr_CityFindCrowdedPlace("City", SimAlias, false, "Destination")
 		if "Market" ~= CrowdedLocator then
 			SetProperty(SimAlias, "LastPickpocketLocator", CrowdedLocator)
 		end

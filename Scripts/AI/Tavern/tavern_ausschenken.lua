@@ -24,7 +24,7 @@ function Weight()
 --		return 0
 --	end
 --	
---	if CityFindCrowdedPlace("City", "SIM", "betrugPlatz")==0 then
+--	if CityFindCrowdedPlace("City", "SIM", false, "betrugPlatz")==0 then
 --		return 0
 --	end
 --	

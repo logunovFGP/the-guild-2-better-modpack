@@ -22,7 +22,7 @@ function Run()
 			return
 		end
 		
-		if not chr_CityFindCrowdedPlace("City", "", "Destination") then
+		if not chr_CityFindCrowdedPlace("City", "", false, "Destination") then
 			return
 		end	
 	end
@@ -133,7 +133,7 @@ function Run()
 								ScenarioCreatePosition(GetProperty("", "MyPosX"), GetProperty("", "MyPosZ"), "Destination")
 							else
 								GetNearestSettlement("", "City")
-								chr_CityFindCrowdedPlace("City", "", "Destination")
+								chr_CityFindCrowdedPlace("City", "", false, "Destination")
 							end
 						end
 
@@ -182,7 +182,7 @@ function Run()
 								ScenarioCreatePosition(GetProperty("", "MyPosX"), GetProperty("", "MyPosZ"), "Destination")
 							else
 								GetNearestSettlement("", "City")
-								chr_CityFindCrowdedPlace("City", "", "Destination")
+								chr_CityFindCrowdedPlace("City", "", false, "Destination")
 							end
 						end
 
@@ -206,6 +206,7 @@ function Run()
 		
 		if BreakNumber > 30 then
 			StopMeasure()
+			break
 		end
 		Sleep(5)
 	end

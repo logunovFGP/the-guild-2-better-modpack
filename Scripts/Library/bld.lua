@@ -263,6 +263,15 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 483 then -- Prison_lv3 (Gefängnis)
 		OffsetX = 130
 		OffsetZ = -330
+	elseif Proto == 649 then -- Mercenary1
+		OffsetX = 40
+		OffsetZ = -210
+	elseif Proto == 650 then -- Mercenary2
+		OffsetX = -50
+		OffsetZ = -130
+	elseif Proto == 651 then -- Mercenary3
+		OffsetX = 20
+		OffsetZ = -160
 	elseif Proto == 654 then -- Piratenest
 		OffsetX = 750
 		OffsetZ = -1900
@@ -280,58 +289,60 @@ end
 function BauStuff(typeID, gebLVL, owner)
 	local bNam,gLNam
 	local nenr, gebId = 5, 1
-	if typeID == 2 then
+	if typeID == GL_BUILDING_TYPE_RESIDENCE then
 		bNam = "Residence"
-	elseif typeID == 3 then
+	elseif typeID == GL_BUILDING_TYPE_FARM then
 		bNam = "Farm"
-	elseif typeID == 4 then
+	elseif typeID == GL_BUILDING_TYPE_TAVERN then
 		bNam = "Tavern"
-	elseif typeID == 6 then
+	elseif typeID == GL_BUILDING_TYPE_BAKERY then
 		bNam = "Bakery"
-	elseif typeID == 7 then
+	elseif typeID == GL_BUILDING_TYPE_SMITHY then
 		bNam = "Blacksmith"
 		if BuildingGetProto(owner) == 141 or BuildingGetProto(owner) == 142 then
 			gebId = 5
 		end
-	elseif typeID == 8 then
+	elseif typeID == GL_BUILDING_TYPE_JOINERY then
 		bNam = "Joinery"
-	elseif typeID == 9 then
+	elseif typeID == GL_BUILDING_TYPE_TAILORING then
 		bNam = "Couturier"
-	elseif typeID == 11 then
+	elseif typeID == GL_BUILDING_TYPE_PIRATESNEST then
 		bNam = "Piratesnest"
-	elseif typeID == 12 then
+	elseif typeID == GL_BUILDING_TYPE_MINE then
 		bNam = "Mine"
-	elseif typeID == 15 then
+	elseif typeID == GL_BUILDING_TYPE_ROBBER then
 		bNam = "Robber"
-	elseif typeID == 16 then
+	elseif typeID == GL_BUILDING_TYPE_ALCHEMIST then
 		bNam = "Alchemist"
 		if BuildingGetProto(owner) == 173 or BuildingGetProto(owner) == 174 then
 			gebId = 5
 		end
-	elseif typeID == 18 then
+	elseif typeID == GL_BUILDING_TYPE_RANGERHUT then
 		bNam = "Rangerhut"
-	elseif typeID == 19 or typeID == 20 then
+	elseif typeID == GL_BUILDING_TYPE_CHURCH_EV or typeID == GL_BUILDING_TYPE_CHURCH_CATH then
 		bNam = "Church"
 		if BuildingGetProto(owner) == 191 or BuildingGetProto(owner) == 192 then
 			gebId = 5
 		end
-	elseif typeID == 22 then
+	elseif typeID == GL_BUILDING_TYPE_THIEF then
 		bNam = "Thief"
-	elseif typeID == 35 then
+	elseif typeID == GL_BUILDING_TYPE_FISHINGHUT then
 		bNam = "Fishinghut"
-	elseif typeID == 36 then
+	elseif typeID == GL_BUILDING_TYPE_DIVEHOUSE then
 	    bNam = "Divehouse"
-	elseif typeID == 37 then
+	elseif typeID == GL_BUILDING_TYPE_HOSPITAL then
 		bNam = "Hospital"
-	elseif typeID == 38 then
+	elseif typeID == GL_BUILDING_TYPE_WAREHOUSE then
 		bNam = "Warehouse"
-	elseif typeID == 43 then
+	elseif typeID == GL_BUILDING_TYPE_BANKHOUSE then
 		bNam = "Bank"
-	elseif typeID == 98 then
+	elseif typeID == GL_BUILDING_TYPE_NEKRO then
 		bNam = "Friedhof"
-	elseif typeID == 104 then
+	elseif typeID == GL_BUILDING_TYPE_MILL then
 		bNam = "Mill"
-	elseif typeID == 110 then
+	elseif typeID == GL_BUILDING_TYPE_MERCENARY then
+		bNam = "Mercenary"
+	elseif typeID == GL_BUILDING_TYPE_STONEMASON then
 		bNam = "Stonemason"
 	else
 		bNam = ""
@@ -393,6 +404,63 @@ function CalcTreatmentNeed(BldAlias, SimAlias)
 	end
 	
 	return HealerCount - Producer
+end
+
+function CalcServiceNeed(BldAlias, SimAlias)
+	local MedicineNeed = 0
+	local CheckNeed = 0
+	local Food = { "GrainPap", "FriedHerring", "SalmonFilet", "Shellsoup", "SmokedSalmon", "RoastBeef" }
+	local FoodCnt = 6
+	local FoodAv = false
+	
+	for i = 1, FoodCnt do 
+		local CheckFood = Food[i]
+		if GetItemCount(BldAlias, CheckFood) > 0 then -- food available
+			FoodAv = true
+			break
+		end
+	end
+	
+	local Drinks = { "SmallBeer", "WheatBeer" }
+	local DrinkCnt = 2
+	local DrinkAv = false
+	
+	for i = 1, DrinkCnt do 
+		local CheckDrink = Drinks[i]
+		if GetItemCount(BldAlias, CheckDrink) > 0 then -- drink available
+			DrinkAv = true
+			break
+		end
+	end
+	
+	if not FoodAv or not DrinkAv then -- need to produce
+		return 0
+	end
+	
+	-- check for waiting Sims
+	BuildingGetInsideSimList(BldAlias, "SimList")
+	local ListSize = ListSize("SimList")
+	local Guests = 0
+	for i=0, ListSize-1 do
+		ListGetElement("SimList", i, "CheckSim")
+		if HasProperty("CheckSim", "WaitingForService") or HasProperty("CheckSim", "EatSomething") or HasProperty("CheckSim", "DrinkSomething") then
+			Guests = Guests + 1
+		end
+	end
+	
+	-- do we need more service?
+	if Guests > 0 then
+		local Producer = BuildingGetProducerCount(BldAlias, PT_MEASURE, "AssignEmployeeToService")
+		if Producer < 1 then
+			return 100
+		end
+		
+		if Producer == 1 and Guests > 5 then
+			return 100
+		end
+	end
+	
+	return 0
 end
 
 -- -----------------------
@@ -533,202 +601,52 @@ function SetupAI(BldAlias)
 		GetNearestSettlement(Alias, "City")
 	end
 	
-	CityGetLocalMarket("City","Market")
+	CityGetLocalMarket("City", "Market")
 	if not AliasExists("Market") then
 		return
 	end
 	
-	local Items -- Arry, name of items. First items in this list have a lower value to produce than the last (So if you want to boost a items production priority, put it at the end of this list
+	local Items -- Arry, name of items.
 	local ItemsNum -- total count of items to check
-	local MarketStock = {} -- Array, If this is not -1, AI will prefer to produce items that have a lower amount on stock on the local market
-	local LocalStock = {} -- Array, If this is not -1, AI will prefer to produce items that have a lower amount on stock on your workshops stock
-	local CheckItem
-	local CheckID
-	local Value
-	
+	local MarketStock = {} -- Array, if this is not -1, AI will prefer to produce items that have a lower amount on stock at the local market
+	local LocalStock = {} -- Array, if this is not -1, AI will prefer to produce items that have a lower amount on stock on your workshops stock
+	local CheckItem, CheckID, Value
 	local BldType = BuildingGetType(BldAlias)
 	
-	if BldType == GL_BUILDING_TYPE_SMITHY then
-		if BuildingGetLevel(BldAlias) == 1 then
-			Items = 		{ "Nails", "Tool", "Dagger" }
-			ItemsNum = 3
-			MarketStock = 	{ 50, 40, 30 }
-			LocalStock = 	{ 3, 3, 1 }
-		else	
-			-- check for sublevels
-			if BuildingHasUpgrade(BldAlias, "engravingtoolset") then -- gold smith
-				Items = {	"Nails", "Tool", "Dagger", "SilverRing", "IronBrachelet", 
-						"GoldChain", "BeltOfMetaphysic", "GemRing", "Diamond"
-					}
-				ItemsNum = 9
-				MarketStock = { 50, 40, 30, 30, 30, 15, 15, 15, 15 }
-				LocalStock = { 3, 3, 1, -1, -1, -1, -1, -1, -1 }
-			else
-				Items = {	"Nails", "Tool", "Dagger", "Shortsword", "IronCap", 
-						"Chainmail", "Steel", "Longsword", "FullHelmet", "Platemail"
-					}
-				ItemsNum = 10
-				MarketStock = { 50, 40, 30, 30, 30, 15, -1, 20, 20, 15 }
-				LocalStock = { 3, 3, 1, -1, -1, -1, 4, -1, -1, -1 }
-			end
-		end
-		
-	elseif BldType == GL_BUILDING_TYPE_ALCHEMIST then
-		if BuildingGetLevel(BldAlias) == 1 then
-			Items = { "HerbTea", "Phiole"
-					}
-			ItemsNum = 2
-			MarketStock = { 50, 35 }
-			LocalStock = { 3, 1 }
-		else	
-			-- check for sublevels
-			if BuildingHasUpgrade(BldAlias, "FlowerOfDiscord") then -- perfumery
-				Items = {	"HerbTea", "Phiole", "FlowerOfDiscord", "Perfume", "BoobyTrap", 
-						"FragranceOfHoliness", "DrFaustusElixir"
-					}
-				ItemsNum = 7
-				MarketStock = { 50, 35, 20, 30, 20, 20, 15 }
-				LocalStock = { 5, 5, -1, -1, -1, -1, -1 }
-			else
-				Items = {	"HerbTea", "Phiole", "WeaponPoison", "InvisiblePotion", "ToadExcrements", 
-						"ParalysisPoison", "Toadslime", "BlackWidowPoison"
-					}
-				ItemsNum = 8
-				MarketStock = { 50, 35, 15, 30, 15, 15, 15, 10 }
-				LocalStock = { 3, 1, -1, -1, -1, -1, -1, -1 }
-			end
-		end
-		
-	elseif BldType == GL_BUILDING_TYPE_MINE then
-		Items = {	"Gemstone", "Gold", "Salt", "Silver", "Iron"
-					}
-		ItemsNum = 5
-		MarketStock = { 50, 50, 60, 70, 70 }
-		LocalStock = { -1, -1, -1, -1, -1 }
-		
-	elseif BldType == GL_BUILDING_TYPE_TAILORING then
-		Items = {	"Blanket", "FarmersClothes", "MoneyBag", "CitizensClothes", "LeatherGloves", 
-				"CamouflageCloak", "NoblesClothes", "GlovesOfDexterity", "LeatherArmor", "Cloth"
-					}
-		ItemsNum = 10
-		MarketStock = { 50, 50, 50, 50, 50, 20, 30, 20, 20, -1 }
-		LocalStock = { 2, 2, 2, -1, -1, -1, -1, -1, -1, 4 }
-		
-	elseif BldType == GL_BUILDING_TYPE_BAKERY then
-		Items = {	"Cookie", "Wheatbread", "Cake", "Pretzel", "BreadRoll", 
-				"CreamPie", "Candy", "Pastry", "BreadDough", "CakeBatter"
-					}
-		ItemsNum = 10
-		MarketStock = { 50, 50, 30, 40, 40, 40, 20, 25, -1, -1 }
-		LocalStock = { 4, 3, -1, -1, -1, -1, -1, -1, 4, 4 }
-	
-	elseif BldType == GL_BUILDING_TYPE_TAVERN then
-		Items = {	"GrainPap", "SmallBeer", "Stew", "WheatBeer", "SalmonFilet", 
-				"Mead", "RoastBeef", "BoozyBreathBeer", "GhostlyFog", "Wein",
-				"Weingeist"
-					}
-		ItemsNum = 11
-		MarketStock = { 40, 40, 40, 40, 40, 20, 30, 20, 15, 20, 50 }
-		LocalStock = { 4, 4, 4, 4, 4, -1, 4, -1, -1, 4, 2 }
-		
-	elseif BldType == GL_BUILDING_TYPE_JOINERY then
-		Items = {	"Torch", "Schnitzi", "WalkingStick", "BuildMaterial", "Holzpferd", 
-				"Mace", "CartBooster", "Kamm", "CrossOfProtection", "RubinStaff",
-				"Axe"
-					}
-		ItemsNum = 11
-		MarketStock = { 40, 40, 40, 50, 40, 30, 20, 15, 20, 15, 15 }
-		LocalStock = { 2, 2, 1, -1, -1, -1, -1, -1, -1, -1, -1 }
-	
-	elseif BldType == GL_BUILDING_TYPE_RANGERHUT then
-		Items = {	"Pinewood", "Oakwood", "Charcoal", "Fungi", "Pech"
-					}
-		ItemsNum = 5
-		MarketStock = { 60, 60, 60, 60, 60 }
-		LocalStock = { -1, -1, -1, -1, -1 }
-		
-	elseif BldType == GL_BUILDING_TYPE_CHURCH_EV then
-		Items = {	"Poem", "ThesisPaper", "AboutTalents2", "Hasstirade", "Bible", 
-				"Kerzen", "Housel", "Ink"
-					}
-		ItemsNum = 8
-		MarketStock = { 50, 30, 30, 15, 15, 50, 60, -1 }
-		LocalStock = { 1, -1, -1, -1, -1, 5, 10, 2 }
-		
-	elseif BldType == GL_BUILDING_TYPE_CHURCH_CATH then
-		Items = {	"Poem", "Chaplet", "AboutTalents1", "LetterOfIndulgence", "LetterFromRome", 
-				"Kerzen", "Housel", "Ink"
-					}
-		ItemsNum = 8
-		MarketStock = { 50, 30, 30, 20, 15, 50, 60, -1 }
-		LocalStock = { 1, -1, -1, -1, -1, 5, 10, 2 }
-		
-	elseif BldType == GL_BUILDING_TYPE_HOSPITAL then
-		Items = {	"Antidote", "Mixture" }
-		ItemsNum = 2
-		MarketStock = { 15, 5 }
-		LocalStock = { -1, -1 }
-		
-		-- special case medicine
-		local Medicine = { "Salve", "Bandage", "Medicine", "PainKiller", "Soap", "MiracleCure" }
-		local ItemId 
-		local Need
-		
-		for i=1, 6 do
-			if BuildingHasUpgrade(BldAlias, Medicine[i]) then
-				ItemId = ItemGetID(Medicine[i])
-				Need = bld_GetNeedForMedicine(BldAlias, Medicine[i])
-				if Medicine[i] == "Soap" or Medicine[i] == "MiracleCure" then
-					Need = Need - 25
-				end
-				if Need >= 25 then
-					SetProperty("Inv", "Need_"..ItemId, Need)
-				else
-					SetProperty("Inv", "Need_"..ItemId, Rand(3))
-				end
-			end
-		end
-	
-	elseif BldType == GL_BUILDING_TYPE_FISHINGHUT then
-		Items = {	"FriedHerring", "FishSoup", "SmokedSalmon", "Shellchain", "Shellsoup", 
-				"Pearlchain", "Perle", "Shell"
-					}
-		ItemsNum = 8
-		MarketStock = { 50, 40, 40, 30, 30, 15, -1, -1 }
-		LocalStock = { -1, -1, -1, -1, -1, -1, 3, 3 }
-		
-	elseif BldType == GL_BUILDING_TYPE_NEKRO then
-		Items = {	"Schadelkerze", "Knochenarmreif", "BoneFlute", "HexerdokumentI", "Robe", 
-				"FalseRelict", "HexerdokumentII", "pddv", "Knochen", "Schadel",
-				"Ektoplasma", "Leichenhemd"
-					}
-		ItemsNum = 12
-		MarketStock = { 30, 30, 30, 15, 10, 10, 10, 10, -1, -1, -1, -1 }
-		LocalStock = { 4, 4, -1, -1, -1, -1, -1, -1, 2, 2, 2, 1 }
-		
-	elseif BldType == GL_BUILDING_TYPE_MILL then
-		Items = {	"Saft", "Oil", "Dye", "WheatFlour"
-					}
+	if BldType == GL_BUILDING_TYPE_MINE then
+		Items = {	"Gemstone", "Gold", "Silver", "Iron" }
 		ItemsNum = 4
-		MarketStock = { 30, 50, 60, 70 }
+		MarketStock = { 10, 10, 40, 40 }
 		LocalStock = { -1, -1, -1, -1 }
 		
-	elseif BldType == GL_BUILDING_TYPE_BANKHOUSE then
-		Items = {	"Siegelring", "Schuldenbrief", "Optieisen", "Urkunde", "Optisilber", 
-				"Pfandbrief", "Optigold", "Empfehlung", "Handwerksurkunde", "Siegel"
+	elseif BldType == GL_BUILDING_TYPE_TAVERN then
+		Items = {	"GrainPap", "SmallBeer", "WheatBeer", "SalmonFilet", 
+				"RoastBeef", "Alcohol"
 					}
-		ItemsNum = 10
-		MarketStock = { 40, 40, 40, 30, 35, 15, 20, 10, 15, -1 }
-		LocalStock = { -1, -1, -1, -1, -1, -1, -1, -1, -1, 2 }
+		ItemsNum = 6
+		MarketStock = { 5, 5, 5, 5, 5, -1 }
+		LocalStock = { 5, 5, 5, 5, 5, 5}
 		
-	elseif BldType == GL_BUILDING_TYPE_STONEMASON then
-		Items = {	"Grindingbrick", "vase", "Chisel", "Stonerotary", "Blissstone", 
-				"Gravestone", "statue", "Gargoyle", "Clay", "Granite"
+	elseif BldType == GL_BUILDING_TYPE_RANGERHUT then
+		Items = {	"Pinewood", "Oakwood", "Charcoal", "Fungi"
 					}
-		ItemsNum = 10
-		MarketStock = { 50, 25, -1, 20, 15, 15, 10, 10, -1, -1 }
-		LocalStock = { 5, 3, 3, -1, -1, -1, -1, -1, 2, 3 }
+		ItemsNum = 4
+		MarketStock = { 40, 40, 40, 40 }
+		LocalStock = { -1, -1, -1, -1 }
 		
+	elseif BldType == GL_BUILDING_TYPE_CHURCH_EV or BldType == GL_BUILDING_TYPE_CHURCH_CATH then
+		Items = {	"Housel"
+					}
+		ItemsNum = 1
+		MarketStock = { -1 }
+		LocalStock = { 10 }
+		
+	elseif BldType == GL_BUILDING_TYPE_HOSPITAL then
+		Items = {	"Bandage", "Medicine", "PainKiller", "MiracleCure" }
+		ItemsNum = 4
+		MarketStock = { -1, -1, -1, -1 }
+		LocalStock = { 10, 5, 5, 10 }
+	
 	else
 		return
 	end
@@ -743,15 +661,13 @@ function SetupAI(BldAlias)
 		if CheckItem ~= nil then
 			if BuildingCanProduce(BldAlias, CheckItem) then
 				CheckID = ItemGetID(CheckItem)
-				Value = 5+(i*5)
-				if BldType == GL_BUILDING_TYPE_HOSPITAL then
-					Value = 25
-				end
+				Value = 10 + (3*i)
+				
 				if CheckMarket ~= nil and CheckMarket ~= -1 then
 					if GetItemCount("Market", CheckItem, INVENTORY_STD) <= CheckMarket and GetItemCount(BldAlias, CheckItem, INVENTORY_STD) <= CheckMarket then
 						SetProperty("Inv", "Need_"..CheckID, Value)
 					else
-						SetProperty("Inv", "Need_"..CheckID, Rand(6))
+						SetProperty("Inv", "Need_"..CheckID, 0)
 					end
 				end
 				
@@ -774,9 +690,9 @@ end
 function GetNeedForMedicine(HospAlias, ItemName)
 	-- calculate available items
 	local AvailableItems = GetItemCount(HospAlias, ItemName)
-	if HasProperty(HospAlias, ItemName.."s") then
-		AvailableItems = AvailableItems + GetProperty(HospAlias, ItemName.."s")
-	end
+	--if HasProperty(HospAlias, ItemName.."s") then
+	--	AvailableItems = AvailableItems + GetProperty(HospAlias, ItemName.."s")
+	--end
 	
 	-- one item is missing
 	if AvailableItems == 0 then
@@ -1074,12 +990,12 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	
 	-- Improve AI management (TODO)
 	if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
-	--	bld_SetupAI(BldAlias)
+		bld_SetupAI(BldAlias)
 	end
 	
-	if math.mod(GetGametime(), 8) == 3 then
-		economy_CalculateSalesRanking(BldAlias)
-	end
+--	if math.mod(GetGametime(), 8) == 3 then
+--		economy_CalculateSalesRanking(BldAlias)
+--	end
 	
 	-- Only for AI
 	if GetHomeBuilding("MyBoss", "MyHome") then
@@ -1241,7 +1157,7 @@ function IsResourceAvailable(BldAlias, ResourceItem)
 	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
 	for i=0, Count - 1 do
 		local ResItemId = GetProperty("ResourceSearchResult"..i, "ResourceItemID") or -1
-		LogMessage("Checking resource ".. GetID("ResourceSearchResult"..i) .. " with this current item: " .. ResItemId)
+		--LogMessage("Checking resource ".. GetID("ResourceSearchResult"..i) .. " with this current item: " .. ResItemId)
 		if AliasExists("ResourceSearchResult"..i) -- safety check
 				and ResourceCanBeChanged("ResourceSearchResult"..i) -- it's a changeable resource like a field or meadow
 				and ResItemId == ItemGetID(ResourceItem) then

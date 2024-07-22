@@ -4,7 +4,7 @@ function Weight()
 		return 0
 	end
 	
-	if not CityFindCrowdedPlace("City", "SIM", "jugglerPlay") then
+	if not chr_CityFindCrowdedPlace("City", "SIM", false, "jugglerPlay") then
 		return 0
 	end
 	

@@ -1,59 +1,31 @@
 function Run()
 	
+	--LogMessage("StartQuacksalver")
+	
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
 		StopMeasure() 
-		return
+	end
+	
+	if not GetSettlement("", "City") then
+		StopMeasure()
 	end
 
 	local Producer = BuildingGetProducerCount("Hospital", PT_MEASURE, "Quacksalver")
 	
-	if IsStateDriven() then
-		if Producer >1 then
+	if IsStateDriven() and BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
+		if Producer > 1 then
+	--		LogMessage("Abort StartQuacksalver")
 			StopMeasure()
-			return
 		end
 	end
 
 	MeasureSetStopMode(STOP_NOMOVE)
 
 	if not AliasExists("Destination") then
-		if IsStateDriven() then
-			if not GetSettlement("Hospital", "City") then
-				return
-			end
-			
-			if not CityFindCrowdedPlace("City", "", "Destination") then
-				return
-			end
-		else
-			if HasProperty("","MyQuacksalvePosX") then
-				if not ScenarioCreatePosition(GetProperty("","MyQuacksalvePosX"), GetProperty("","MyQuacksalvePosZ"), "Destination") then
-					return
-				end
-			else
-				return
-			end
-		end
-
+		chr_CityFindCrowdedPlace("City", "", false, "Destination")
 	else	
-		if GetID("Hospital")==GetID("Destination") then
-			if IsStateDriven() then
-				if not GetSettlement("Hospital", "City") then
-					return
-				end
-				
-				if not CityFindCrowdedPlace("City", "", "Destination") then
-					return
-				end
-			else
-				if HasProperty("","MyQuacksalvePosX") then
-					if not ScenarioCreatePosition(GetProperty("","MyQuacksalvePosX"), GetProperty("","MyQuacksalvePosZ"), "Destination") then
-						return
-					end
-				else
-					return
-				end
-			end
+		if GetID("Hospital") == GetID("Destination") then -- stuck in hospital, search a new place
+			chr_CityFindCrowdedPlace("City", "", false, "Destination")
 		end
 	end
 	
@@ -63,36 +35,37 @@ function Run()
 	
 	while true do
 		if not ms_quacksalver_GetPlacebo() then
-			StopMeasure()
-		end
-
-		if not f_MoveTo("","Destination",GL_MOVESPEED_RUN) then
-			StopMeasure()
+			break
 		end
 		
-		GetPosition("","MyPos")
-		local x,y,z = PositionGetVector("MyPos")
-		SetProperty("","MyQuacksalvePosX",x)
-		SetProperty("","MyQuacksalvePosZ",z)
-
-		local MeasureID = GetCurrentMeasureID("")
-		local duration = mdata_GetDuration(MeasureID)
-		local EndTime = GetGametime() + duration
-
+		if GetID("Hospital") == GetID("Destination") then -- stuck in hospital, search a new place
+			chr_CityFindCrowdedPlace("City", "", false, "Destination")
+		end
+		
+		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
+	--		LogMessage("Abort Quacksalver Move Error")
+			break
+		end
+		
 		CommitAction("quacksalver", "", "")
-		while GetGametime() < EndTime do
-		
-			if GetItemCount("", "MiracleCure")<1 then
+		while true do
+			
+			if GetItemCount("", "MiracleCure") < 1 then
 				break
 			end
 			
-			PlayAnimation("","pray_standing")
-			PlayAnimation("","preach")
-			Sleep( 1 + 0.1*Rand(20) )
+			PlayAnimation("", "pray_standing")
+			PlayAnimation("", "preach")
+			Sleep(2)
 		end
 		StopAction("quacksalver", "")
+		
+		if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
+			break
+		end
 	end
-
+	StopAction("quacksalver", "")
+	f_MoveTo("", "Hospital", GL_MOVESPEED_RUN)
 	StopMeasure()
 end
 
@@ -108,26 +81,17 @@ function GetPlacebo()
 		end
 	end
 		
-
 	if GetItemCount("", "MiracleCure") > 0 then
 		return true
 	end
 	
-	if GetInsideBuildingID("") ~= GetID("Hospital") then
-		if not f_MoveTo("", "Hospital", GL_MOVESPEED_RUN) then
-			return false
-		end
+	if not f_MoveTo("", "Hospital", GL_MOVESPEED_RUN) then
+		return false
 	end
 	
-	local	Done
-	local	Result
+	local	Done, Result
 	
 	Result, Done = Transfer("", "", INVENTORY_STD, "Hospital", INVENTORY_STD, "MiracleCure", 99)
-	if Done>0 then
-		return true
-	end
-	
-	Result, Done = Transfer("", "", INVENTORY_STD, "Hospital", INVENTORY_SELL, "MiracleCure", 99)
 	if Done>0 then
 		return true
 	end
@@ -136,14 +100,16 @@ function GetPlacebo()
 end
 
 function CleanUp()
-
+	-- clean the inventory of miracle cures
+	if GetInsideBuilding("", "Inside") then
+		if GetID("Inside") == GetID("Hospital") then
+			local CureCount = GetItemCount("", "MiracleCure")
+			local Added = AddItems("Hospital", "MiracleCure", CureCount)
+			RemoveItems("", "MiracleCure", Added)
+		end
+	end
+	
 	StopAnimation("")
 	StopAction("quacksalver", "")
 end
-
-function GetOSHData(MeasureID)
-	--can be used again in:
-	--OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-end
-
 

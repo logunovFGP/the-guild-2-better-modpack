@@ -24,6 +24,6 @@ function Weight()
 end
 
 function Execute()
-	SetProperty("SIM", "SpecialMeasureId", -MeasureGetID("MedicalTreatment"))
+	MeasureRun("SIM", "Hospital", "MedicalTreatment", true)
 end
 

@@ -33,7 +33,7 @@ function Run()
 		
 		if not AliasExists("Destination") then
 			GetSettlement("", "City")
-			if not chr_CityFindCrowdedPlace("City", "", "Destination") then
+			if not chr_CityFindCrowdedPlace("City", "", false, "Destination") then
 				return
 			end
 		end

@@ -16,12 +16,10 @@ function Weight()
 		return 0			
 	end	
 	
-	local CrowdedLocation = chr_CityFindCrowdedPlace("City", "SIM", "Destination")
-	if not CrowdedLocation then
+	local CrowdedLocation = chr_CityFindCrowdedPlace("City", "SIM", false, "Destination")
+	if not AliasExists("Destination") then
 		return 0
 	end
-	-- TODO use this to come back to old position
-	SetProperty("SIM", "OutdoorPos", CrowdedLocation)
 
 	if BuildingGetLevel("WorkBuilding") > 1 then
 		if not HasProperty("WorkBuilding", "DanceShow") then

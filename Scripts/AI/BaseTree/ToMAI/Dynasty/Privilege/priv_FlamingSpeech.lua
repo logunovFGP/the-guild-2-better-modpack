@@ -11,7 +11,7 @@ function Weight()
 		return 0
 	end
 	
-	if CityFindCrowdedPlace("privfs_city", "SIM", "privfs_dest")<5 then
+	if CityFindCrowdedPlace("privfs_city", "SIM", true, "privfs_dest")<5 then
 		return 0
 	end
 

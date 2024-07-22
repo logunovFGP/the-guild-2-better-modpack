@@ -15,7 +15,7 @@ function Run()
 			return
 		end
 
-		if not chr_CityFindCrowdedPlace("City", "", "Destination") then
+		if not chr_CityFindCrowdedPlace("City", "", false, "Destination") then
 			return
 		end
 	end	
@@ -30,8 +30,9 @@ function Run()
 	
 	while GetItemCount("", "Urkunde")>0 do
 		
-		if not f_MoveTo("","Destination") then
+		if not f_MoveTo("", "Destination") then
 			StopMeasure()
+			break
 		end
 
 		local EndTime = GetGametime() + duration

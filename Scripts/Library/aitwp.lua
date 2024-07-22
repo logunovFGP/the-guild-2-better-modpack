@@ -471,7 +471,7 @@ function MyrmidonIdle(MyrmAlias)
 		elseif Decision < 10 and BuildingHasUpgrade("WorkingPlace", "Commode") then -- 8, 9
 			-- gather evidence
 			LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." gathering evidence...")
-			if GetSettlement("WorkingPlace", "City") and f_CityFindCrowdedPlace("City", MyrmAlias, "GatherDestination") > 0 then
+			if GetSettlement("WorkingPlace", "City") and f_CityFindCrowdedPlace("City", MyrmAlias, false, "GatherDestination") > 0 then
 				f_ExitCurrentBuilding(MyrmAlias)
 				f_MoveTo(MyrmAlias, "GatherDestination", GL_MOVESPEED_RUN, 500)
 				MeasureRun(MyrmAlias, 0, "OrderCollectEvidence")

@@ -29,7 +29,7 @@ function Weight()
 		return 0
 	end
 
-	if not chr_CityFindCrowdedPlace("City", "SIM", "pick_pos") then
+	if not chr_CityFindCrowdedPlace("City", "SIM", false, "pick_pos") then
 		return 0
 	end
 

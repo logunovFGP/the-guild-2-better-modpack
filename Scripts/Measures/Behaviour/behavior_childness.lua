@@ -13,34 +13,8 @@
 -- -----------------------
 function Run()
 	
-	if not GetSettlement("", "City") then
-		if not GetNearestSettlement("", "City") then
-			Sleep(120)
-		end
-	end
-
-	-- check for home
-	if not GetHomeBuilding("", "Residence") then
-		if SimGetMother("", "MyMother") then
-			if GetHomeBuilding("MyMother", "Residence") then
-				SetHomeBuilding("", "Residence")
-			end
-		end
-		
-		if not GetHomeBuilding("", "Residence") then
-			if SimGetFather("", "MyFather") then
-				if GetHomeBuilding("MyFather", "Residence") then
-					SetHomeBuilding("", "Residence")
-				end
-			end
-		end
-	end
+	chr_CheckHome("") -- make sure we have a home
 	
-	if not AliasExists("Residence") then
-		CityGetNearestBuilding("City", "", -1, GL_BUILDING_TYPE_RESIDENCE, -1, -1, FILTER_IGNORE, "Residence")
-		SetHomeBuilding("", "Residence")
-	end
-
 	-- Check if the sim is old enough for the school
 	if SimGetAge("") >= GL_AGE_FOR_SCHOOL then
 	
@@ -53,10 +27,10 @@ function Run()
 	-- Check if the sim is at the residence. If not, let him move to it.
 	if GetInsideBuilding("", "InsideBuilding") then
 		if not GetID("Residence") == GetID("InsideBuilding") then
-			f_MoveTo("", "Residence")
+			f_MoveTo("", "Residence", GL_MOVESPEED_RUN)
 		end
 	else
-		f_MoveTo("", "Residence")
+		f_MoveTo("", "Residence", GL_MOVESPEED_RUN)
 	end
 		
 	--idle behaviours
@@ -124,5 +98,5 @@ function Run()
 		end
 	else -- not normal, probably worker hut
 		Sleep(180)
-	end	
+	end
 end
