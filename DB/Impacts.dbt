@@ -308,4 +308,4 @@ Data:
 427             1                 2                  0                     "LuxuryPurse"                       0   ""                                    |
 428             1                 2                  0                     "WaitTime"                          0   ""                                    |
 429             1                 2                  0                     "AffectedByUncannyClare"            0   "Hud/state/affectedbyuncannyglare.tga"       |
-
+430             1                 2                  0                     "ServiceActive"                     0   "Hud/state/passive/PoliticalAttention.tga"   |

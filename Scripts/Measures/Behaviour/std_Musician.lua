@@ -26,10 +26,10 @@ function Run()
 			local CityIndex = Rand(cities)
 			
 			if ReadyToRepeat("#Musician1", "AI_Concert") then
-				if CurrentTime < 4 or CurrentTime > 18 or Rand(100) > 27 then
+				if CurrentTime < 10 or CurrentTime > 20 or Rand(100) > 27 then
 					-- find a good place to rest
 					if CityGetRandomBuilding("city"..CityIndex, -1, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
-						SetData("#RestPlace",GetID("Destination"))
+						SetData("#RestPlace", GetID("Destination"))
 					end
 				else
 					std_musician_FindConcertDestination(CityIndex)
@@ -154,7 +154,7 @@ function Rest()
 				end
 			elseif GetFreeLocatorByName("placeobj", "idle_SitGround", 1, 5, "SitPos") then
 				Stance = 0
-				f_BeginUseLocator("","SitPos",GL_STANCE_SITGROUND, true)
+				f_BeginUseLocator("", "SitPos",GL_STANCE_SITGROUND, true)
 			elseif GetFreeLocatorByName("placeobj", "idle_Stand", 1, 5, "SitPos") then
 				Stance = 2
 				f_BeginUseLocator("", "SitPos",GL_STANCE_STAND, true)
@@ -173,17 +173,17 @@ function Rest()
 				break
 			end
 
-			if not HasProperty("","KissMe") then
+			if not HasProperty("", "KissMe") then
 				std_musician_CheckForGroupie()
 			end
 			
-			if HasProperty("","KissMe") and std_musician_CheckComeOver()==true then
-				f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+			if HasProperty("", "KissMe") and std_musician_CheckComeOver() == true then
+				f_EndUseLocator("", "SitPos",GL_STANCE_STAND)
 
 				std_musician_ComeOver()
 				
 				while true do
-					if GetData("#MusicStage")>0 or GetData("#RestPlace")==0 or GetData("#RestPlace")~=GetID("placeobj") then
+					if GetData("#MusicStage") > 0 or GetData("#RestPlace") == 0 or GetData("#RestPlace") ~= GetID("placeobj") then
 						std_musician_ResetComeOver()
 						break
 					end
@@ -195,7 +195,7 @@ function Rest()
 							break
 						end
 					else
-						if GetFreeLocatorByName("placeobj","idle_Sit",1,5,"SitPos") then
+						if GetFreeLocatorByName("placeobj", "idle_Sit", 1, 5, "SitPos") then
 							f_BeginUseLocator("","SitPos",GL_STANCE_SITBENCH,true)
 							Stance = 1
 							if GetLocatorByName("placeobj","campfire","CampFirePos") then
@@ -354,15 +354,15 @@ function StartConcert()
 		local DestTime = 0
 		local Round = GetRound()
 
-		if (9 < CurrentTime and CurrentTime < 16) or (0 < CurrentTime and CurrentTime < 2) then
+		if CurrentTime >= 10 and CurrentTime <= 18 then
 			StartTime = CurrentTime + 3
 			DestTime = CurrentTime + 3
-		elseif 2 < CurrentTime and CurrentTime < 9 then
+		elseif CurrentTime < 10 then
 			StartTime = 12
 			DestTime = 12
-		else --CurrentTime>15, don't start until next day
-			StartTime = 3
-			DestTime = 24 - CurrentTime + 3
+		else --CurrentTime>18, don't start until next day
+			StartTime = 10
+			DestTime = 24 - CurrentTime + 10
 			Round = Round + 1
 		end
 
@@ -386,7 +386,7 @@ function StartConcert()
 	end
 
 	while true do
-		if HasProperty("","HaveFun") then
+		if HasProperty("", "HaveFun") then
 			local havefuntime = GetData("#HaveFunTime")
 			if type==0 then
 				std_musician_HaveFunInTavern("stageobj",havefuntime-0.5)
