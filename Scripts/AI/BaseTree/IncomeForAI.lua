@@ -8,7 +8,7 @@ function Weight()
 	if not ReadyToRepeat("dynasty", "AI_Income") then
 		return 0
 	end
-	return 0
+	return 60
 end
 
 
