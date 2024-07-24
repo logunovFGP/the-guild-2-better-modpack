@@ -106,7 +106,7 @@ function CalcResourceNeeds(BldAlias)
 	if Count <= 0 then
 		return 0, {}
 	end 
-	local NeedCount, Needs = economy_CalcCurrentResourceNeeds(BldAlias, Count, Items, 0.4)
+	local NeedCount, Needs = economy_CalcCurrentResourceNeeds(BldAlias, Count, Items, 0.7)
 	return NeedCount, Needs
 end
 
