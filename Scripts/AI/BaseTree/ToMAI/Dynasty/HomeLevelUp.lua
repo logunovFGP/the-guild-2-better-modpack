@@ -3,7 +3,9 @@ function Weight()
 		return 0
 	end
 	
-	DynastyGetMemberRandom("dynasty", "DynMember")
+	if not DynastyGetMemberRandom("dynasty", "DynMember") then
+		return 0
+	end
 
 	if not GetHomeBuilding("DynMember", "home") then
 		return 0
