@@ -66,7 +66,7 @@ function Execute()
 	local Proto = ScenarioFindBuildingProto(1, 2, BuildLevel+1,-1)
 	local Price = GetData("Cost")
 	
-	if f_SpendMoney("dynasty", Price, "BuildingLevelup", false) then
+	if chr_SpendMoney("dynasty", Price, "BuildingLevelup", false) then
 		SetProperty("home", "LevelUpProto", Proto)
 		SetState("home", STATE_LEVELINGUP, true)
 	end
