@@ -41,7 +41,6 @@ function Run()
 		
 		SetMeasureRepeat(TimeOut)
 		AddImpact("","Unantastbar",1,duration)
-		AddImpact("","crossofprotection",1,duration)
 		chr_GainXP("",GetData("BaseXP"))
 	end
 	StopMeasure()
