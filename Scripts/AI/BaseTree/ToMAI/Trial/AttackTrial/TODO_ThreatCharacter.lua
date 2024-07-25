@@ -1,4 +1,8 @@
 function Weight()
+		-- TODO implement threatening
+	if true then 
+		return 0
+	end
 	
 	if ScenarioGetDifficulty() == 0 then 
 		return 0
