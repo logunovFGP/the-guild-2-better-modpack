@@ -13,10 +13,9 @@ function Run()
 		return
 	end
 	
-	if HasProperty("destination", "AtWar") then	
+	if HasProperty("Destination", "AtWar") then	
 		MsgQuick("", "@L_CHARGE_FAILURE_+0")
 		StopMeasure()
-		
 	end
 	
 	if HasProperty("councilbuilding", "CityLevelUpAhead") then
@@ -38,9 +37,9 @@ function Run()
 			StopMeasure()
 		end
 		
-		local success = SimCanBeCharged("destination")
+		local success = SimCanBeCharged("Destination")
 		if success == 0 then
-			SimChargeCharacter("", "destination")
+			SimChargeCharacter("", "Destination")
 		end
 		StopMeasure()
 	end
@@ -71,7 +70,7 @@ function Run()
 	camera_CutsceneBothLock("cutscene", "")
 
 	PlayAnimationNoWait("", "talk")
-	MsgSay("", "@L_LAWSUIT_1_INSTALL_ACCUSER_+0", GetID("destination"))
+	MsgSay("", "@L_LAWSUIT_1_INSTALL_ACCUSER_+0", GetID("Destination"))
 
 	--WalkTo Scribe locator
 
@@ -82,7 +81,7 @@ function Run()
 
 	-- if destination has privilege Immunity
 	if ms_132_chargecharacter_HasImmunity() then
-		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_IMMUNITY_+0", GetID("destination"))
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_IMMUNITY_+0", GetID("Destination"))
 		f_StrollNoWait("", 250, 1)
 		StopMeasure()
 	end
@@ -99,29 +98,29 @@ function Run()
 		f_StrollNoWait("", 250, 1)
 		StopMeasure()
 	end
-	local success = SimCanBeCharged("destination")
+	local success = SimCanBeCharged("Destination")
 
 	if success == 0 then
-		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_SUCCESS_+0", GetID("destination"))
-		SimChargeCharacter("", "destination")
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_SUCCESS_+0", GetID("Destination"))
+		SimChargeCharacter("", "Destination")
 	elseif success == 1 then
-		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_TRIAL_+0", GetID("destination"))
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_TRIAL_+0", GetID("Destination"))
 	elseif success == 2 then
 		-- bug, pregnant characters also return 2
-		if GetState("destination", STATE_PREGNANT) then
-			MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0", GetID("destination"))
+		if GetState("Destination", STATE_PREGNANT) then
+			MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0", GetID("Destination"))
 		else
-			MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_JAIL_+0", GetID("destination"))
+			MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_JAIL_+0", GetID("Destination"))
 		end
 	else
-		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0", GetID("destination"))
+		MsgSay("Usher", "@L_LAWSUIT_1_INSTALL_USHER_NOCHARGE_+0", GetID("Destination"))
 	end
 	f_StrollNoWait("", 250, 1)
 
 end
 
 function HasImmunity()
-	if ( GetImpactValue("destination","HaveImmunity") == 1 and GetImpactValue("destination", "HasRepealedImmunity") < 1 ) then
+	if ( GetImpactValue("Destination","HaveImmunity") == 1 and GetImpactValue("Destination", "HasRepealedImmunity") < 1 ) then
 		return true
  	else
 		return false

@@ -15,6 +15,8 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("dynasty", "AI_ChargeCharacter", 48)
-	MeasureRun("SIM", "Victim", "ChargeCharacter")
+	if AliasExists("Victim") then
+		SetRepeatTimer("dynasty", "AI_ChargeCharacter", 48)
+		MeasureRun("SIM", "Victim", "ChargeCharacter")
+	end
 end
