@@ -2,12 +2,14 @@
 function CleanUp()
 	LogMessage("@NAO [WeddingCeremony] CleanUp().")
 
-	ClearImportantPersonSection("Wedding")
+	LogMessage("@NAO [WeddingCeremony] 1")
 
 	f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
 	f_EndUseLocator("#COURTED", "MarryPos2", GL_STANCE_STAND)
 	f_EndUseLocator("Orphan#1", "FlowerChild1", GL_STANCE_STAND)
 	f_EndUseLocator("Orphan#2", "FlowerChild2", GL_STANCE_STAND)
+
+	LogMessage("@NAO [WeddingCeremony] 2")
 
 	ReleaseAvoidanceGroup("#COURTED")
 	ReleaseAvoidanceGroup("#MAIN")
@@ -21,6 +23,8 @@ function CleanUp()
 
 	GetInsideBuilding("#MAIN", "#WEDDING_CHAPEL")
 
+	LogMessage("@NAO [WeddingCeremony] 3")
+
 	if AliasExists("Visitors") then
 		ListClear("Visitors")
 	end
@@ -33,9 +37,9 @@ function CleanUp()
  
 	BuildingLockForCutscene("#WEDDING_CHAPEL", 0)
 
-	LogMessage("@NAO [WeddingCeremony] Attempt to clear Sims' status.")
-
 	SetState("#MAIN", STATE_CUTSCENE, false)
+
+	LogMessage("@NAO [WeddingCeremony] 4")
 
 	for i = 0, ListSize("tmp") -1 do
 		ListGetElement("tmp", i, "#SIM"..i)
@@ -226,6 +230,9 @@ function InitSims()
 			ListAdd("Visitors","#SIM"..i)
 			CutsceneAddSim("","#SIM"..i)
 			LogMessage("@NAO [WeddingCeremony] Visitor added to list: " .. GetName("#SIM"..i))
+			SimResetBehavior("#SIM"..i)
+			SimSetBehavior("#SIM"..i, "idle")
+			SimStopMeasure("#SIM"..i)
 		else
 			OrphanCount = OrphanCount +1
 			ChangeAlias("#SIM"..i, "Orphan#"..OrphanCount)
@@ -298,7 +305,7 @@ function ImportantSimIsMissing()
 	MsgSay("#PRIEST", "It appears that " .. GetName("#MISSING") .. " is missing...")
 	MsgSay("#PRIEST", "As you know, such a sacred union cannot commence without the presence of both parties.")
 	MsgSay("#PRIEST", "These walls have witnessed many unions, and we can hope that this situation gets resolved soon.")
-
+	ClearImportantPersonSection("Wedding")
 	Sleep(5)
 	EndCutscene("")
 	DestroyCutscene("")
@@ -314,7 +321,7 @@ function ImportantSimCannotPay()
 	MsgSay("#PRIEST", "It appears that " .. GetName("#MAIN") .. " cannot cover the expenses of this ceremony...")
 	MsgSay("#PRIEST", "For such a union to be formed, one needs to go through the effort of proving their love to God with a payment that allows its servants to maintain this holy building.")
 	MsgSay("#PRIEST", "These walls have witnessed many unions, and we can hope that this situation gets resolved soon.")
-
+	ClearImportantPersonSection("Wedding")
 	Sleep(5)
 	EndCutscene("")
 	DestroyCutscene("")
@@ -391,7 +398,9 @@ function Start()
 
 	CutsceneCallThread("", "InitSims", "#WEDDING_CHAPEL")
 
-	Sleep(1)
+	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
+
+	MsgSayNoWait("#PRIEST", "Everyone! Please take a seat, for this ceremony is about to begin.")
 
 	if not chr_SpendMoney("#MAIN", GetCost(), "Wedding") then
 		if not HasProperty("", "Tutorial") then
@@ -405,8 +414,6 @@ function Start()
 	ListRemove("Sit_Visitors", "#MAIN")
 	ListRemove("Sit_Visitors", "#COURTED")
 
-	Sleep(1)
-
 	for i = 0, ListSize("Sit_Visitors") -1 do
 		ListGetElement("Sit_Visitors", i, "#SIM")
 		if SimGetAge("#SIM") > 15 and HasProperty("#SIM", "AttendingWedding") then
@@ -415,16 +422,10 @@ function Start()
 	end
 	ListClear("Sit_Visitors")
 
-	Sleep(1)
-
 	if AliasExists("Orphan#1") and AliasExists("Orphan#2") then
 		CutsceneCallThread("", "SetUpOrphan1", "Orphan#1")
 		CutsceneCallThread("", "SetUpOrphan2", "Orphan#2")
 	end
-
-	Sleep(1)
-
-	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 
 	BuildingLockForCutscene("#WEDDING_CHAPEL", "")
 
@@ -434,11 +435,9 @@ function Start()
 	GetLocatorByName("#WEDDING_CHAPEL", "Front1", "MarryPos1") 
 	GetLocatorByName("#WEDDING_CHAPEL", "Front2", "MarryPos2")
 
-	CutsceneCameraCreate("", "#PRIEST")
+	Sleep(2)
 
-	CutsceneCameraSetRelativePosition("", "#CHAPEL_INTRO(02)", "#PRIEST")
-	CutsceneCameraBlend("", 10, 1)
-	CutsceneCameraSetRelativePosition("", "#CHAPEL_INTRO(01)", "#PRIEST")
+	CutsceneCameraCreate("", "#PRIEST")
 
 	if not GetInsideBuilding("#COURTED", "#WEDDING_CHAPEL") then
 		CopyAlias("#COURTED", "#MISSING")
@@ -453,16 +452,18 @@ function Start()
 
     CutsceneCallThread("", "GoToMarryPos", "#COURTED")
 
-    f_MoveTo("#MAIN", "E1")
-    f_BeginUseLocator("#MAIN", "E1", GL_STANCE_STAND, true)
+    f_MoveToNoWait("#MAIN", "E1")
+    f_BeginUseLocatorNoWait("#MAIN", "E1", GL_STANCE_STAND, true)
 
     while not HasData("There") do
-        Sleep(1)
+		CutsceneCameraBlend("", 0.1, 1)
+		CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#MAIN")
+		Sleep(0.1)
     end
 
-    CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)", "#PRIEST")
+    CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#PRIEST")
     PlayFE("#PRIEST", "smile", 2, 2.5, 0)
-    Sleep(1.75)
+    Sleep(2.5)
 
 	AlignTo("#MAIN", "#COURTED")
 	AlignTo("#COURTED", "#MAIN")
@@ -502,12 +503,10 @@ function Start()
 
 	local list = { {"#COURTED","#MAIN"}, {"#MAIN","#COURTED"} }
 
-	-- We are gathered together today to join %1ST %1SN and %2ST %2SN in the bonds of holy matrimony.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+0", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
 	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#PRIEST")
 
-	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded wife, to love and honour, til death do you part? If so, answer with: yes.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
 	CutsceneCameraBlend("", 2, 1)
@@ -517,12 +516,10 @@ function Start()
 	Sleep(0.5)
 	PlayAnimationNoWait("#MAIN", "curtsy")
 
-	-- Yes, I do.
 	MsgSay(list[SimGetGender("#MAIN")+1][1], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 
 	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)","#PRIEST")
 
-	-- And you, %1ST %1SN, do you wish to take %2ST %2SN to be your lawfully wedded husband, to love and honour, til death do you part? If so, answer with: yes.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_WIFE_+0", GetID(list[SimGetGender("#MAIN")+1][2]), GetID(list[SimGetGender("#MAIN")+1][1]))
 
 	CutsceneCameraBlend("", 2, 1)
@@ -532,12 +529,10 @@ function Start()
 	Sleep(0.75)
 	PlayAnimationNoWait("#COURTED", "nod")
 
-	-- Yes, I do.
 	MsgSay(list[SimGetGender("#MAIN")+1][2], "_FAMILY_1_MARRIAGE_CEREMONY_ANSWER_+0")
 
 	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)", "#PRIEST")
 
-	-- I hereby declare you man and wife. You may now kiss the bride, %1ST %1SV.
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_FINALE_+0", GetID(list[SimGetGender("#MAIN")+1][1]))
 
 	CutsceneCameraBlend("", 8, 1)
@@ -643,7 +638,7 @@ function Start()
 	AddImpact("#COURTED", "LoveLevel", 10, 24)
 
 	if GetImpactValue("#COURTED", "LoveLevel") >= 10 then
-		MsgNewsNoWait("#MAIN", "#COURTED", "", "schedule", -1,"@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0","@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("#COURTED"))
+		MsgNewsNoWait("#MAIN", "#COURTED", "", "schedule", -1, "@L_FAMILY_2_COHIBITATION_FULLOFLOVE_HEAD_+0", "@L_FAMILY_2_COHIBITATION_FULLOFLOVE_BODY_+0", GetID("#COURTED"))
 	end
 
 	CutsceneCameraBlend("", 2.5, 0)
@@ -669,6 +664,7 @@ function Start()
 	Sleep(1)
 
 	SimResetBehavior("#COURTED")
+	ClearImportantPersonSection("Wedding")
 
 	Sleep(4)
 
