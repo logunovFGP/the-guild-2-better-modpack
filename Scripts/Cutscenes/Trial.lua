@@ -824,6 +824,7 @@ function Go()
 			if not (SentenceLevel>=1 and SentenceLevel<=6) then
 				SentenceLevel = trial_GetSubjectiveSentence("judge")/6+1
 			end
+			LogMessage("@NAO Trials. Jury decides sentence, of level: " .. SentenceLevel)
 			SetData("AccuserSentence", SentenceLevel)
 		else
 			SentenceLevel = AccuserSentence
@@ -843,8 +844,6 @@ function Go()
 			SentenceLevel = AccuserSentence	
 			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..list[AccuserSentence]..GenderType) -- END OF ERROR TO CHECK ON CONC FIELD
 			LogMessage("@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..list[AccuserSentence]..GenderType)
-		elseif AccuserSentence == "C" then
-			SentenceLevel = AccuserSentence
 		end
 		
 
@@ -1476,10 +1475,8 @@ function UpdatePanelTrial(time)
 	local TotalEV = GetData("TotalEvidenceValue")
 	local AccuserSentence = GetData("AccuserSentence")
 	LogMessage("TRIAL | 1453. AccuserSentence is: "..(AccuserSentence or '<void>'))
-	if AccuserSentence == nil then
+	if AccuserSentence == nil or AccuserSentence == "C" then
 		AccuserSentence = 0
-	--elseif AccuserSentence == "C" then 
-
 	elseif AccuserSentence > 0 then
 		AccuserSentence = AccuserSentence*3+1
 	end
