@@ -8,7 +8,7 @@ function Init()
 	this:EnableModule("WinInputCtrl",3);
 
 	this:AttachModule("GuiInit", "cl_GuiCreator")
-	this:EnableModule("GuiInti",0)
+	this:EnableModule("GuiInit",0)
 	
 					
 end
