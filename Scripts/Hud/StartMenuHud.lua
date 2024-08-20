@@ -29,18 +29,18 @@ function Init()
  	this:AddPanel("Options_Gfx","cl_StartMenuPanel","gui/menu/options_gfx.gui", false)
  	this:AddPanel("Options_Game","cl_StartMenuPanel","gui/menu/options_game.gui", false)
  	this:AddPanel("Options_Sound","cl_StartMenuPanel","gui/menu/options_sound.gui", false)
+ 	this:AddPanel("Options_Keymapper","cl_StartMenuPanel","gui/menu/options_key.gui", false)
+ 	this:AddPanel("Options_Keymapper_Popup","cl_StartMenuPanel","gui/menu/options_key_popup.gui", false)
+ 	this:AddPanel("Options_Keymapper_Restart","cl_StartMenuPanel","gui/menu/options_key_restart.gui", false)
+ 	this:AddPanel("Options_Keymapper_RestartActivePlay","cl_StartMenuPanel","gui/menu/options_key_restartactiveplay.gui", false)
+ 	this:AddPanel("Options_Keymapper_Duplicate","cl_StartMenuPanel","gui/menu/options_key_duplicate.gui", false)
  	this:AddPanel("RestartWarning","cl_StartMenuPanel","gui/menu/restartwarning.gui", false) 	
  	this:AddPanel("EnterName","cl_StartMenuPanel","gui/menu/multiplayername.gui", false)
  	this:AddPanel("StartWarning","cl_StartMenuPanel","gui/menu/Startwarning.gui", false) 	
  	this:AddPanel("Credits", "cl_Credits", "gui/menu/credits.gui", false) 	
- 	
- 
- 	
  	this:ShowStartMenu()
-	
 end
 
 function CleanUp()
 
 end
-

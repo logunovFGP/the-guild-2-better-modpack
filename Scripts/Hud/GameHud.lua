@@ -1,21 +1,26 @@
 function Init()
 
    -- InGame Menus
-  this:AddPanel("InGameMenu","cl_StartMenuPanel","gui/menu/ingamemenu.gui",false)
-  this:AddPanel("InGameQuit","cl_StartMenuPanel","gui/menu/ingame_quitgame.gui",false)
-  this:AddPanel("InGameBack","cl_StartMenuPanel","gui/menu/ingame_quitgame.gui",false)
+  	this:AddPanel("InGameMenu","cl_StartMenuPanel","gui/menu/ingamemenu.gui",false)
+  	this:AddPanel("InGameQuit","cl_StartMenuPanel","gui/menu/ingame_quitgame.gui",false)
+  	this:AddPanel("InGameBack","cl_StartMenuPanel","gui/menu/ingame_quitgame.gui",false)
 	this:AddPanel("ChatWindow","cl_ChatPanel","gui/Hud/panel_chat.gui",false)	
 	this:AddPanel("WorldDeleteSheet", "cl_MessageBox","GUI/Menu/panel_delete_world.gui",false)
-	this:AddPanel("SelectSaveGame","cl_StartMenuPanel","gui/menu/SelectSaveGame.gui", false)
- 	this:AddPanel("RestartWarning","cl_StartMenuPanel","gui/menu/restartwarning.gui", false) 	
- 	this:AddPanel("Options_Gfx","cl_StartMenuPanel","gui/menu/options_gfx.gui", false)
- 	this:AddPanel("Options_Game","cl_StartMenuPanel","gui/menu/options_game.gui", false)
- 	this:AddPanel("Options_Sound","cl_StartMenuPanel","gui/menu/options_sound.gui", false)
+	this:AddPanel("SelectSaveGame","cl_StartMenuPanel","gui/menu/SelectSaveGame.gui",false)
+ 	this:AddPanel("RestartWarning","cl_StartMenuPanel","gui/menu/restartwarning.gui",false) 	
+ 	this:AddPanel("Options_Gfx","cl_StartMenuPanel","gui/menu/options_gfx.gui",false)
+ 	this:AddPanel("Options_Game","cl_StartMenuPanel","gui/menu/options_game.gui",false)
+ 	this:AddPanel("Options_Sound","cl_StartMenuPanel","gui/menu/options_sound.gui",false)
+ 	this:AddPanel("Options_Keymapper","cl_StartMenuPanel","gui/menu/options_key.gui",false)
+ 	this:AddPanel("Options_Keymapper_Popup","cl_StartMenuPanel","gui/menu/options_key_popup.gui",false)
+ 	this:AddPanel("Options_Keymapper_Restart","cl_StartMenuPanel","gui/menu/options_key_restart.gui",false)
+ 	this:AddPanel("Options_Keymapper_RestartActivePlay","cl_StartMenuPanel","gui/menu/options_key_restartactiveplay.gui",false)
+ 	this:AddPanel("Options_Keymapper_Duplicate","cl_StartMenuPanel","gui/menu/options_key_duplicate.gui",false)
  	this:AddPanel("WorldOverwriteSheet", "cl_MessageBox","GUI/Menu/panel_overwrite_world.gui",false)
  	this:AddPanel("SavingSheet","cl_MessageBox","gui/Menu/panel_saving.gui",false)
  	this:AddPanel("OptionsSheet","cl_OptionsSheet","gui/Menu/savegame.gui",false)
  	
- 	--this:AddPanel("TestPanel","cl_TestPanel","gui/Hud/panel_test.gui",false)
+ 	-- this:AddPanel("TestPanel","cl_TestPanel","gui/Hud/panel_test.gui",false)
  	this:AddPanel("PausePanel","cl_PausePanel","gui/Hud/panel_pause.gui",false)
  	 	
  	this:AddPanel("SystemMessagePanel","cl_InfoPanel","gui/Hud/panel_systemmessage.gui",true,true)
@@ -24,7 +29,7 @@ function Init()
  	this:AddPanel("ClientListPanel","cl_ClientListPanel","gui/Menu/clientlist.gui",false)
  	
  	-- tutorial
- 	--this:AddPanel("TutorialPanel","cl_TutorialPanel","gui/hud/panel_tutorial.gui", false)
+ 	-- this:AddPanel("TutorialPanel","cl_TutorialPanel","gui/hud/panel_tutorial.gui", false)
  	
  	-- onscreen help
  	this:AddPanel("Guide","cl_GuidePanel","gui/hud/panel_guide.gui", false)
@@ -65,15 +70,13 @@ function Init()
 	this:AddPanel("BuildBuildingMisc","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 		
  	-- Buttons have to be above of the sheets. Map has to be above of buttons. News have to be above the buttons
- 	--this:AddPanel("MiniMapPanel","cl_MiniMapPanel","gui/Hud/panel_minimap.gui")
+ 	-- this:AddPanel("MiniMapPanel","cl_MiniMapPanel","gui/Hud/panel_minimap.gui")
  	this:AddPanel("IndoorMapPanel","cl_IndoorMap","gui/Hud/panel_indoormap.gui")
  	
  	this:AddPanel("NewsPanel","cl_NewsPanel","gui/Hud/panel_news.gui",true)
 	this:AddPanel("ActionsPanel","cl_ActionsPanel2","gui/Hud/panel_actions2.gui")
 	this:AddPanel("MeasureMessagePanel","cl_MeasureMessagePanel","gui/Hud/panel_measuremessage.gui",true,true)
 	
-	
- 		
  	-- start sheets
  	this:AddPanel("AdministrateDiplomacySheet", "cl_AdministrateDiplomacySheet", "gui/Hud/panel_diplomacy.gui",false)
 	this:AddPanel("ImportantPersons", "cl_OverviewImportantPersonsSheet", "gui/Hud/panel_importantpersons.gui",false)
@@ -87,8 +90,7 @@ function Init()
 	this:AddPanel("ChangeAppearancePanel","cl_ChangeAppearancePanel","gui/Hud/panel_changeappearance.gui", false)
  	this:AddPanel("_AdministrateBuilding","cl_AdministrateBuilding","gui/Hud/panel_AdministrateBuilding.gui", false)
  	this:AddPanel("_UpgradeShipSheet", "cl_UpgradeShipSheet", "gui/Hud/panel_upgradeship.gui",false)
-	--this:AddPanel("MessageBoxPanel","cl_MessageBoxPanel","gui/Hud/panel_messagebox.gui",false)
-	
+	-- this:AddPanel("MessageBoxPanel","cl_MessageBoxPanel","gui/Hud/panel_messagebox.gui",false)
 		
 	this:AddPanel("_BuildingLevelTreeSheet","cl_BuildingLevelTreePanel","gui/Hud/panel_buildinglevelup.gui",false)
 	this:AddPanel("DynastyStatusSheet","cl_DynastyStatusSheet","gui/Hud/panel_dynastystatussheet.gui",false)
@@ -105,16 +107,16 @@ function Init()
 	this:AddPanel("_MessageFilterSheet","cl_MessageFilterSheet","gui/Hud/panel_messagefiltersheet.gui",false)
 	this:AddPanel("_BuyCartSheet","cl_BuyCartSheet","gui/Hud/panel_buycart.gui",false)
 	this:AddPanel("_BuyShipSheet","cl_BuyCartSheet","gui/Hud/panel_buyship.gui",false)
-    this:AddPanel("_CityLawsSheet","cl_CityLawsSheet","gui/Hud/panel_citylaws.gui",false)
-    this:AddPanel("_CityScheduleSheet","cl_CityScheduleSheet","gui/Hud/panel_cityschedule.gui",false)
+   this:AddPanel("_CityLawsSheet","cl_CityLawsSheet","gui/Hud/panel_citylaws.gui",false)
+   this:AddPanel("_CityScheduleSheet","cl_CityScheduleSheet","gui/Hud/panel_cityschedule.gui",false)
 	
 	this:AddPanel("StatisticsBalanceLast","cl_BalanceSheet","gui/Hud/panel_balancesheet2.gui",false)
 	this:AddPanel("StatisticsBalanceTotal","cl_BalanceSheet","gui/Hud/panel_balancesheet2.gui",false)	
 	this:AddPanel("StatisticsSheetGold","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
 	this:AddPanel("StatisticsSheetAsset","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
---	this:AddPanel("StatisticsSheetSkill","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
---	this:AddPanel("StatisticsSheetAlign","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
---	this:AddPanel("StatisticsSheetPoints","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
+	--	this:AddPanel("StatisticsSheetSkill","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
+	--	this:AddPanel("StatisticsSheetAlign","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
+	--	this:AddPanel("StatisticsSheetPoints","cl_StatisticsSheet","gui/Hud/panel_statisticsheet.gui",false)
 	
 	this:AddPanel("_PamphletSheet","cl_PamphletSheet","gui/Hud/panel_pamphletsheet.gui",false)
 	
@@ -125,15 +127,11 @@ function Init()
 	this:AddPanel("MFDPanel","cl_MFD","gui/Hud/panel_mfd.gui")
 	this:AddPanel("HirePanel","cl_HirePanel","gui/Hud/panel_treesheet.gui", false)
 	
-
-    -- Cutscene Panels
-    this:AddPanel("TrialPanel","cl_TrialPanel","gui/Hud/panel_charge.gui",false,true)
-    this:AddPanel("OfficeApplicationPanel","cl_OfficeApplicationPanel","gui/Hud/panel_officeapplication.gui",false,true)
-    this:AddPanel("OfficeDepositionPanel","cl_OfficeDepositionPanel","gui/Hud/panel_officedeposition.gui",false,true)
+   -- Cutscene Panels
+   this:AddPanel("TrialPanel","cl_TrialPanel","gui/Hud/panel_charge.gui",false,true)
+   this:AddPanel("OfficeApplicationPanel","cl_OfficeApplicationPanel","gui/Hud/panel_officeapplication.gui",false,true)
+   this:AddPanel("OfficeDepositionPanel","cl_OfficeDepositionPanel","gui/Hud/panel_officedeposition.gui",false,true)
     
-	
-	
-	
 	this:AddPanel("ImpactIconPanel","cl_ImpactIconPanel","gui/Hud/panel_impacticon.gui")
 	
 	-- Header
@@ -149,22 +147,18 @@ function Init()
 	
 	this:AddPanel("QuestlogPanel","cl_QuestlogPanel","gui/Hud/panel_questlog.gui",false)
 	this:AddPanel("NPCPanel","cl_NPCPanel","gui/Hud/panel_npc.gui")
-	--this:AddPanel("MessagePanel","cl_MessagePanel","gui/Hud/panel_message.gui")
+	-- this:AddPanel("MessagePanel","cl_MessagePanel","gui/Hud/panel_message.gui")
 	
-		-- body
+	-- body
 	this:AddPanel("ButtonPanelLeft","cl_ButtonPanel","gui/Hud/panel_down_left.gui")
 	this:AddPanel("ButtonPanelRight","cl_ButtonPanel","gui/Hud/panel_down_right.gui")
 	this:AddPanel("ButtonPanelDecorator","cl_StaticPanel","gui/Hud/panel_down_middle.gui")
 	
-	
 	this:AddPanel("DialogPanel","cl_DialogPanel","gui/Hud/panel_dialog.gui",true,true)
-	
 	this:AddPanel("StatusPanel","cl_StatusPanel","",true,true)
-	
 	this:AddPanel("LetterBoxPanel","cl_LetterBoxPanel","gui/Hud/panel_letterbox.gui",false,true)
-	
 	this:AddPanel("UserInputPanel","cl_UserInputPanel","",true,true)
-	
+
 	-- define Tabgroups
 	-- BuildBuildin
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingPatron","@L_CHARACTERS_1_CLASSES_patron_NAME_+0")
@@ -179,15 +173,15 @@ function Init()
 	this:AddSheetToTabGroup("Statistics","StatisticsBalanceTotal","@L_BALANCE_PANELNAMES_+1")		
 	this:AddSheetToTabGroup("Statistics","StatisticsSheetGold","@L_GAMESTATISTICS_FINANCE_+0")
 	this:AddSheetToTabGroup("Statistics","StatisticsSheetAsset","@L_GAMESTATISTICS_ASSETS_+0")
---	this:AddSheetToTabGroup("Statistics","StatisticsSheetSkill","@L_GAMESTATISTICS_SKILLLEVEL_+0")
---	this:AddSheetToTabGroup("Statistics","StatisticsSheetAlign","@L_GAMESTATISTICS_ALIGNMENT_+0")
---	this:AddSheetToTabGroup("Statistics","StatisticsSheetPoints","@L_GAMESTATISTICS_POINTS_+0")
+	--	this:AddSheetToTabGroup("Statistics","StatisticsSheetSkill","@L_GAMESTATISTICS_SKILLLEVEL_+0")
+	-- this:AddSheetToTabGroup("Statistics","StatisticsSheetAlign","@L_GAMESTATISTICS_ALIGNMENT_+0")
+	--	this:AddSheetToTabGroup("Statistics","StatisticsSheetPoints","@L_GAMESTATISTICS_POINTS_+0")
 	this:SetTabGroupHeader("Statistics","@L_GAMESTATISTICS_HEADLINE_+0")
 		
 	-- DiarySheet
-	this:AddSheetToTabGroup("Diary","DiarySheet" 		,"@L_DIARY_+0")
-	this:AddSheetToTabGroup("Diary","DatebookSheet" 	,"@L_DATEBOOK_+0")
-	this:AddSheetToTabGroup("Diary","EvidenceSheet"		,"@L_EVIDENCES_+0")
+	this:AddSheetToTabGroup("Diary","DiarySheet","@L_DIARY_+0")
+	this:AddSheetToTabGroup("Diary","DatebookSheet","@L_DATEBOOK_+0")
+	this:AddSheetToTabGroup("Diary","EvidenceSheet","@L_EVIDENCES_+0")
 	this:AddSheetToTabGroup("Diary","QuestbookSheet","@L_QUESTBOOK_+0")
 	this:SetTabGroupHeader("Diary","@L_DIARY_+1")
 	
@@ -201,7 +195,7 @@ function Init()
 	this:AddSheetToTabGroup("Important","ImportantPersons","@L_IMPORTANTPERSONS_HEAD_+0")
 	this:AddSheetToTabGroup("Important","OverviewBuildings","@L_INTERFACE_OVERVIEWBUILDINGS_HEAD_+0")
 	this:SetTabGroupHeader("Important","@L_INTERFACE_IMPORTANT_+1")
-		
+
 end
 
 function CleanUp() 	
