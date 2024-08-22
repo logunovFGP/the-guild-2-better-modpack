@@ -11,7 +11,7 @@ function Init()
 
 	local KEYS = 
 	{
-	    {"SPEED_UP", 2000, 59},
+	    {"SPEED_UP", 2000, 82},
 	    {"SPEED_DOWN", 2000, 81},
 	    {"SPEED_NORMAL", 2000, 207},
 	    {"SPEED_UP2", 2000, 187},
@@ -40,26 +40,26 @@ function Init()
 	    {"MOUSE_LB", 2100, 2101},
 	    {"MOUSE_RB", 2100, 2102},
 	    {"MOUSE_MB", 2100, 2103},
-	    {"CAM_TOGGLE_FOLLOW", 2000, 33},
-	    {"CAM_NORTH", 2000, 49},
-	    {"CAM_TOGGLE", 2000, 24},
+	    --{"CAM_TOGGLE_FOLLOW", 2000, 33},
+	    --{"CAM_NORTH", 2000, 49},
+	    --{"CAM_TOGGLE", 2000, 24},
 	    {"MAKE_SCREENSHOT", 2000, 183},
-	    {"ADD_TO_SELECTION", 2000, 42},
+	    --{"ADD_TO_SELECTION", 2000, 42},
 	    {"MAP_TOGGLE", 2000, 50},
 	    {"RPG_SAY", 2000, 19},
-	    {"CAMERA_PATH_1", 2000, 71},
-	    {"CAMERA_PATH_2", 2000, 72},
-	    {"CAMERA_PATH_3", 2000, 73},
-	    {"CAMERA_PATH_4", 2000, 74},
-	    {"CAMERA_PATH_5", 2000, 75},
-	    {"CAMERA_PATH_6", 2000, 76},
-	    {"FREE_PATH_1", 2000, 77},
-	    {"FREE_PATH_2", 2000, 78},
-	    {"FREE_PATH_3", 2000, 79},
-	    {"SWITCH_SKYBOX", 2000, 44},
-	    {"CAPTURE_TOGGLE", 2000, 80},
-	    {"CUTSCENE_TOGGLE", 2000, 46},
-	    {"HIERACHY_STEPUP", 2000, 15},
+	    --{"CAMERA_PATH_1", 2000, 71},
+	    --{"CAMERA_PATH_2", 2000, 72},
+	    --{"CAMERA_PATH_3", 2000, 73},
+	    --{"CAMERA_PATH_4", 2000, 74},
+	    --{"CAMERA_PATH_5", 2000, 75},
+	    --{"CAMERA_PATH_6", 2000, 76},
+	    --{"FREE_PATH_1", 2000, 77},
+	    --{"FREE_PATH_2", 2000, 78},
+	    --{"FREE_PATH_3", 2000, 79},
+	    --{"SWITCH_SKYBOX", 2000, 44},
+	    --{"CAPTURE_TOGGLE", 2000, 80},
+	    --{"CUTSCENE_TOGGLE", 2000, 46},
+	    --{"HIERACHY_STEPUP", 2000, 15},
 	    {"TOGGLE_CHAT", 2000, 28},
 	    {"CHAT_TEAM", 2000, 20},
 	    {"MENU_TOGGLE", 2000, 1},
@@ -73,7 +73,7 @@ function Init()
 	    {"TOGGLE_CLIENTLIST", 2000, 37},
 	    {"ONSCREENHELP_TOGGLE", 2000, 15}
 	}
-	for v = 1, 61 do
+	for v = 1, 61 - (17) do
 		local command, device, value = KEYS[v][1], KEYS[v][2], KEYS[v][3]
 		if options:GetValueInt("Keymapper_Toggle") == 1 then
 			if options:GetValueString("Keymapper_" .. command) then
@@ -89,6 +89,7 @@ function Init()
 			end
 		end
 	end
+
 	--InputCtrl:SaveInputMapping("Inputs/Input" .. options:GetValueInt("IniLoad") .. ".ini")
 	
 	local SplashScreen = 0 --this:GetSettingInt("GAME", "SplashScreen", 1)
@@ -109,6 +110,7 @@ function Init()
 	this:EnableModule("SeasonBlender", 0)
 	
 	cl_LoadingScreen:GetInstance():HideLoadingScreen(1)
+
 end
 
 function CleanUp()
