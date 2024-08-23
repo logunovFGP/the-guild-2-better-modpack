@@ -59,7 +59,7 @@ function TranslateKeyToLabel(Key)
 	{
 		["english"] = {
 			["1"] = "Escape", ["2"] = "1", ["3"] = "2", ["4"] = "3", ["5"] = "4", ["6"] = "5", ["7"] = "6", ["8"] = "7", ["9"] = "8", ["10"] = "9", ["11"] = "0",
-			["14"] = "Return", ["16"] = "Q", ["17"] = "W", ["18"] = "E", ["19"] = "R", ["20"] = "T", ["21"] = "Y", ["22"] = "U", ["23"] = "I", ["24"] = "O", ["25"] = "P", ["26"] = "Down arrow",
+			["14"] = "Backspace", ["16"] = "Q", ["17"] = "W", ["18"] = "E", ["19"] = "R", ["20"] = "T", ["21"] = "Y", ["22"] = "U", ["23"] = "I", ["24"] = "O", ["25"] = "P", ["26"] = "Down arrow",
 			["28"] = "Enter", ["29"] = "CTRL", ["30"] = "A", ["31"] = "S", ["32"] = "D", ["33"] = "F", ["34"] = "G", ["35"] = "H", ["36"] = "J", ["37"] = "K", ["38"] = "L",
 			["40"] = "Num. pad. 0", 
 			["42"] = "Shift", 
@@ -71,13 +71,13 @@ function TranslateKeyToLabel(Key)
 			["91"] = "[", ["92"] = "|", 
 			["181"] = "Num. pad. /", 
 			["183"] = "Print", 
-			["186"] = ";", ["187"] = "+", ["188"] = ",", ["189"] = "_",
-			["191"] = "/", ["192"] = "~",
+			["186"] = ";", ["187"] = "+", ["188"] = ",", ["189"] = "_", ["190"] = ".", ["191"] = "/", ["192"] = "`",
 			["197"] = "Pause", 
-			["199"] = "Home", ["200"] = "Up arrow", ["201"] = "Insert", 
+			["199"] = "Home", ["200"] = "Up arrow", ["201"] = "Page up", 
 			["203"] = "Left arrow", ["205"] = "Right arrow", 
 			["207"] = "End", 
 			["209"] = "Page down",
+			["210"] = "Insert",
 			["221"] = "]", ["222"] = "'",
 			["226"] = "|"
 		},
@@ -189,7 +189,7 @@ function TranslateKeyToLabel(Key)
 		}
 	}
 	LogMessage("@HUD_REFORGED #W ___ Translation (" .. language .. "): " .. (keys[language][""..Key..""] or 'Unassigned'))
-	return keys[language][""..Key..""] or 'Unassigned'
+	return keys[language][""..Key..""] or '(x)'
 end
 
 function SetActiveButton(NodeLabel)
@@ -285,6 +285,8 @@ function OnButtonPressed_TabInit(x, y, device, key)
 	object:ShowPanel("Options_Game", false)
 	object:ShowPanel("Options_Gfx", false)
 	keymapper_BreakGameLabelsForAll()
+	--local InputCtrl = FindNode("\\Application\\Game\\InputCtrl")
+	--InputCtrl:SetInputMapping("KEYBOARDHELP", '2000', '209')
 end
 
 function OnButtonPressed_TabGame(x, y, device, key)
@@ -533,3 +535,45 @@ function OnButtonPressed_EditMovementUp(x, y, device, key)
 	keymapper_ShowPopup("CURSOR_UP")
 	keymapper_SetActiveButton("MovementUpBtn")
 end
+
+-- Debug
+function OnButtonPressed_KeyDebugOpenBtn(x, y, device, key)
+	local object = FindNode("\\application\\game\\Hud")
+	object:ShowPanel("Options_Keymapper_Debug", true)
+	object:ShowPanel("Options_Keymapper", false)
+	keymapper_SetAllDebugKeys()
+
+end
+
+function SetAllDebugKeys()
+	local keys =
+	{
+		["english"] = {1, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 87, 88, 183, 70, 197, 192, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 189, 187, 14, 210, 199, 201, 69, 181, 55, 81, -1, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 91, 221, 28, 52, 207, 209, 77, 78, 79, 82, 58, 30, 31, 32, 33, 34, 35, 36, 37, 38, 186, 188, 92, 74, 75, 76, 42, 44, 45, 46, 47, 48, 49, 50, 188, 190, 191, 42, 200, 71, 72, 73, 28, 29, -1, 56, 57, 56, -1, -1, 29, 203, 26, 205, 40, 83}
+	}
+
+	local Element, Value
+
+	for i = 1, 104 do
+		LogMessage("@HUD_REFORGED #W Test... " .. i)
+		Value = (keymapper_TranslateKeyToLabel(keys["english"][i]) or '!!')
+		Element = FindNode("\\GUI\\HudRoot")
+		Element = Element:FindChildDepth('KeyDebug'..i..'Btn')
+		Element:SetValueString("CAPTION", Value)
+		Element:SetValueString("TITLE", Value)
+	end
+end
+
+function OnButtonPressed_KeyDebugCloseBtn(x, y, device, key)
+	local object = FindNode("\\application\\game\\Hud")
+	object:ShowPanel("Options_Keymapper_Debug", false)
+	object:ShowPanel("Options_Keymapper", true)
+end
+
+function OnKeyDown_KeyDebugField(key)
+	local Element, Label, Button = FindNode("\\GUI\\HudRoot")
+	Label = Element:FindChildDepth('KeyDebugToKey')
+	Label:SetValueString("CAPTION", key)
+	Button = Element:FindChildDepth('KeyDebugToLabel')
+	Button:SetValueString("CAPTION", (keymapper_TranslateKeyToLabel(''..key..'') or '!!'))
+end
+
