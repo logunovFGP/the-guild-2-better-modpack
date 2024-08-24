@@ -139,7 +139,7 @@ end
 function TranslateKeyToLabel(Key)
 	local options = FindNode("\\Settings\\GAME")
 	local language, debug = options:GetValueString("Language"), false
-	if debug then
+	if debug or language ~= "french" then
 		language = 'english'
 	end
 	local keys =
