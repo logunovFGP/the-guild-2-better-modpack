@@ -678,6 +678,7 @@ end
 -- List WIP
 function OnButtonPressed_ListTest(x, y, device, key)
 	LogMessage("@HUD_REFORGED #W OnButtonPressed " .. x .. ", " .. y .. ", " .. device .. ", " .. key)
+end
 
 function OnButtonPressed_ListTestBtn(x, y, device, key)
 	LogMessage("@HUD_REFORGED #W OnButtonPressed_ListTestBtn " .. x .. ", " .. y .. ", " .. device .. ", " .. key)
