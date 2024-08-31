@@ -27,10 +27,10 @@ function BreakGameLabelsForAll()
 	local Element, Identifier, Default, NodeName
 	local keys =
 	{
-		{"SPEED_UP",82,"SpeedUpBtn"}, {"SPEED_UP2",187,"SpeedUp2Btn"}, {"SPEED_DOWN",81,"SpeedDownBtn"}, {"SPEED_DOWN2",189,"SpeedDown2Btn"}, {"SPEED_NORMAL",207,"SpeedNormalBtn"}, {"TOGGLE_PAUSE",197,"TogglePauseBtn"}, {"TOGGLE_PSEUDOPAUSE",57,"TogglePseudoPauseBtn"}, {"TOGGLE_HUD",35,"ToggleHudBtn"}, {"SHOW_CAMERA_INFO",23,"ShowCameraInfoBtn"}, {"RPG_SAY",19,"RPGSayBtn"}, {"QUICKSAVE",16,"QuicksaveBtn"}, {"QUICKLOAD",38,"QuickloadBtn"}, {"MENU_TOGGLE",1,"MenuToggleBtn"}, {"MENU_TOGGLE_CHARACTER",46,"MenuToggleCharacterBtn"}, {"MENU_TOGGLE_FINANCE",47,"MenuToggleFinanceBtn"}, {"MENU_TOGGLE_BOOKS",48,"MenuToggleBooksBtn"}, {"MENU_TOGGLE_POLITICS",25,"MenuTogglePoliticsBtn"}, {"MENU_TOGGLE_BUILDING",34,"MenuToggleBuildingBtn"}, {"TOGGLE_CLIENTLIST",37,"ToggleClientlistBtn"}, {"TOGGLE_CHAT",28,"ToggleChatBtn"}, {"CHAT_TEAM",20,"ChatTeamBtn"}, {"MAP_TOGGLE",50,"MapToggleBtn"}, {"CURSOR_LEFT",30,"MovementLeftBtn"}, {"CURSOR_RIGHT",32,"MovementRightBtn"}, {"CURSOR_DOWN",31,"MovementDownBtn"}, {"CURSOR_UP",17,"MovementUpBtn"}
+		{"CAM_TOGGLE_FOLLOW",33,"CamFollowBtn"}, {"CAM_NORTH",49,"SetNorthBtn"}, {"SPEED_UP",82,"SpeedUpBtn"}, {"SPEED_UP2",187,"SpeedUp2Btn"}, {"SPEED_DOWN",81,"SpeedDownBtn"}, {"SPEED_DOWN2",189,"SpeedDown2Btn"}, {"SPEED_NORMAL",207,"SpeedNormalBtn"}, {"TOGGLE_PAUSE",197,"TogglePauseBtn"}, {"TOGGLE_PSEUDOPAUSE",57,"TogglePseudoPauseBtn"}, {"TOGGLE_HUD",35,"ToggleHudBtn"}, {"SHOW_CAMERA_INFO",23,"ShowCameraInfoBtn"}, {"RPG_SAY",19,"RPGSayBtn"}, {"QUICKSAVE",16,"QuicksaveBtn"}, {"QUICKLOAD",38,"QuickloadBtn"}, {"MENU_TOGGLE",1,"MenuToggleBtn"}, {"MENU_TOGGLE_CHARACTER",46,"MenuToggleCharacterBtn"}, {"MENU_TOGGLE_FINANCE",47,"MenuToggleFinanceBtn"}, {"MENU_TOGGLE_BOOKS",48,"MenuToggleBooksBtn"}, {"MENU_TOGGLE_POLITICS",25,"MenuTogglePoliticsBtn"}, {"MENU_TOGGLE_BUILDING",34,"MenuToggleBuildingBtn"}, {"TOGGLE_CLIENTLIST",37,"ToggleClientlistBtn"}, {"TOGGLE_CHAT",28,"ToggleChatBtn"}, {"CHAT_TEAM",20,"ChatTeamBtn"}, {"MAP_TOGGLE",50,"MapToggleBtn"}, {"CURSOR_LEFT",30,"MovementLeftBtn"}, {"CURSOR_RIGHT",32,"MovementRightBtn"}, {"CURSOR_DOWN",31,"MovementDownBtn"}, {"CURSOR_UP",17,"MovementUpBtn"}
 	}
 	LogMessage("@HUD_REFORGED #W LOADING CUSTOM LABELS")
-	for i = 1, 22+4 do
+	for i = 1, 22+4+2 do
 		Identifier, Default, NodeName = keys[i][1], keys[i][2], keys[i][3]
 		Element = FindNode("\\GUI\\HudRoot")
 		Element = Element:FindChildDepth(NodeName)
@@ -50,10 +50,16 @@ function BreakGameLabelsForAll()
 end
 
 function RefreshInputs()
+	local options = FindNode("\\Settings\\Options")
 	local InputCtrl = FindNode("\\Application\\Game\\InputCtrl")
+
 	InputCtrl:LoadInputMapping("inputvoid.ini")
 
-	local options = FindNode("\\Settings\\Options")
+	if options:GetValueInt("Keymapper_Toggle") == 0 then
+		InputCtrl:LoadInputMapping("Input.ini")
+		return
+	end
+
 	local KEYS = 
 	{
 	    {"SPEED_UP", 2000, 82},
@@ -85,11 +91,11 @@ function RefreshInputs()
 	    {"MOUSE_LB", 2100, 2101},
 	    {"MOUSE_RB", 2100, 2102},
 	    {"MOUSE_MB", 2100, 2103},
-	    --{"CAM_TOGGLE_FOLLOW", 2000, 33},
-	    --{"CAM_NORTH", 2000, 49},
-	    --{"CAM_TOGGLE", 2000, 24},
+	    {"CAM_TOGGLE_FOLLOW", 2000, 33},
+	    {"CAM_NORTH", 2000, 49},
+	    --{"CAM_TOGGLE", 2000, 24}, -- Deprecated
 	    {"MAKE_SCREENSHOT", 2000, 183},
-	    --{"ADD_TO_SELECTION", 2000, 42},
+	    {"ADD_TO_SELECTION", 2000, 42},
 	    {"MAP_TOGGLE", 2000, 50},
 	    {"RPG_SAY", 2000, 19},
 	    --{"CAMERA_PATH_1", 2000, 71},
@@ -103,7 +109,7 @@ function RefreshInputs()
 	    --{"FREE_PATH_3", 2000, 79},
 	    --{"SWITCH_SKYBOX", 2000, 44},
 	    --{"CAPTURE_TOGGLE", 2000, 80},
-	    --{"CUTSCENE_TOGGLE", 2000, 46},
+	    --{"CUTSCENE_TOGGLE", 2000, 46}, -- Deprecated
 	    --{"HIERACHY_STEPUP", 2000, 15},
 	    {"TOGGLE_CHAT", 2000, 28},
 	    {"CHAT_TEAM", 2000, 20},
@@ -118,21 +124,13 @@ function RefreshInputs()
 	    {"TOGGLE_CLIENTLIST", 2000, 37},
 	    {"ONSCREENHELP_TOGGLE", 2000, 15}
 	}
-	for v = 1, 61 - (17) do
+
+	for v = 1, 47 do
 		local command, device, value = KEYS[v][1], KEYS[v][2], KEYS[v][3]
-		if options:GetValueInt("Keymapper_Toggle") == 1 then
-			if options:GetValueString("Keymapper_" .. command) then
-				value = options:GetValueString("Keymapper_" .. command)
-				LogMessage("@HUD_REFORGED #W -> " .. command .. ", " .. device .. ", " ..value)
-				InputCtrl:SetInputMapping(command, device, value)
-			else
-				InputCtrl:SetInputMapping(command, device, value)
-			end
-		else
-			if options:GetValueInt("Keymapper_Toggle") == 0 then
-				InputCtrl:LoadInputMapping("Input.ini")
-			end
+		if options:GetValueString("Keymapper_" .. command) then
+			value = options:GetValueString("Keymapper_" .. command)
 		end
+		InputCtrl:SetInputMapping(command, device, value)
 	end
 end
 
@@ -318,8 +316,8 @@ function CheckDuplicateHotkey(Command, Key)
 	    {"MOUSE_LB", 2100, 2101},
 	    {"MOUSE_RB", 2100, 2102},
 	    {"MOUSE_MB", 2100, 2103},
-	    --{"CAM_TOGGLE_FOLLOW", 2000, 33},
-	    --{"CAM_NORTH", 2000, 49},
+	    {"CAM_TOGGLE_FOLLOW", 2000, 33},
+	    {"CAM_NORTH", 2000, 49},
 	    --{"CAM_TOGGLE", 2000, 24},
 	    {"MAKE_SCREENSHOT", 2000, 183},
 	    --{"ADD_TO_SELECTION", 2000, 42},
@@ -351,7 +349,7 @@ function CheckDuplicateHotkey(Command, Key)
 	    {"TOGGLE_CLIENTLIST", 2000, 37},
 	    {"ONSCREENHELP_TOGGLE", 2000, 15}
 	}
-	for v = 1, 61 - (17) do
+	for v = 1, 61 - (17-2) do
 		local command, value = KEYS[v][1], KEYS[v][3]
 		if options:GetValueString("Keymapper_" .. command) ~= nil then
 			if options:GetValueString("Keymapper_" .. command) == ""..Key.."" then
@@ -397,8 +395,8 @@ end
 function OnButtonPressed_KeySaveCustomBtn(x, y, device, key)
 	local object = FindNode("\\application\\game\\Hud")
 	object:ShowPanel("Options_Keymapper", false)
-	--object:ShowPanel("Options_Keymapper_Restart", true)
 	object:ShowPanel("InGameMenu", true)
+	object:ShowPanel("MainMenu", true)
 	local options = FindNode("\\Settings\\Options")
 	options:SetValueInt("Keymapper_Toggle", 1)
 	LogMessage("@HUD_REFORGED #W Game set to load custom keys.")
@@ -410,8 +408,8 @@ function OnButtonPressed_RevertToDefaultBtn(x, y, device, key)
 	local options = FindNode("\\Settings\\Options")
 	options:SetValueInt("Keymapper_Toggle", 0)
 	object:ShowPanel("Options_Keymapper", false)
-	--object:ShowPanel("Options_Keymapper_Restart", true)
 	object:ShowPanel("InGameMenu", true)
+	object:ShowPanel("MainMenu", true)
 	LogMessage("@HUD_REFORGED #W Game set to load default keys.")
 	keymapper_RefreshInputs()
 end
@@ -627,6 +625,16 @@ function OnButtonPressed_EditMovementUp(x, y, device, key)
 	keymapper_SetActiveButton("MovementUpBtn")
 end
 
+function OnButtonPressed_EditSetNorth(x, y, device, key)
+	keymapper_ShowPopup("CAM_NORTH")
+	keymapper_SetActiveButton("SetNorthBtn")
+end
+
+function OnButtonPressed_EditCamFollow(x, y, device, key)
+	keymapper_ShowPopup("CAM_TOGGLE_FOLLOW")
+	keymapper_SetActiveButton("CamFollowBtn")
+end
+
 -- Debug
 function OnButtonPressed_KeyDebugOpenBtn(x, y, device, key)
 	local object = FindNode("\\application\\game\\Hud")
@@ -665,4 +673,12 @@ function OnKeyDown_KeyDebugField(key)
 	Label:SetValueString("CAPTION", key)
 	Button = Element:FindChildDepth('KeyDebugToLabel')
 	Button:SetValueString("CAPTION", (keymapper_TranslateKeyToLabel(''..key..'') or '!!'))
+end
+
+-- List WIP
+function OnButtonPressed_ListTest(x, y, device, key)
+	LogMessage("@HUD_REFORGED #W OnButtonPressed " .. x .. ", " .. y .. ", " .. device .. ", " .. key)
+
+function OnButtonPressed_ListTestBtn(x, y, device, key)
+	LogMessage("@HUD_REFORGED #W OnButtonPressed_ListTestBtn " .. x .. ", " .. y .. ", " .. device .. ", " .. key)
 end
