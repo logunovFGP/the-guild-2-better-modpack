@@ -21,18 +21,20 @@ function Run()
         if bestand1 > 0 then
 	        for s = 0, lagerSlot-1 do
                 ItID, ItMg = InventoryGetSlotInfo("",s,INVENTORY_STD)
-			    if ItMg > 0 then
-        	        GetPosition("","MovePos")
-        	        GfxAttachObject("tradetisch", "city/Stuff/tradetable.nif")
-        	        GfxSetPositionTo("tradetisch", "MovePos")	
-                    while GetItemCount("",ItID) > 0 do
-                        LogMessage("@NAO #E ms_hpfz_Handel.lua, ItID "..ItID..".")
-                        if ItemGetCategory(ItID--[[X]]) > 0 then
-                            ms_hpfz_handel_Ausrufer(ItID--[[X]])
+                if ItMg ~= nil then
+    			    if ItMg > 0 then
+            	        GetPosition("","MovePos")
+            	        GfxAttachObject("tradetisch", "city/Stuff/tradetable.nif")
+            	        GfxSetPositionTo("tradetisch", "MovePos")	
+                        while GetItemCount("",ItID) > 0 do
+                            LogMessage("@NAO #E ms_hpfz_Handel.lua, ItID "..ItID..".")
+                            if ItemGetCategory(ItID--[[X]]) > 0 then
+                                ms_hpfz_handel_Ausrufer(ItID--[[X]])
+                            end
                         end
-                    end
-                    GfxDetachAllObjects()
-			    end
+                        GfxDetachAllObjects()
+    			    end
+                end
 			end
 		end
 
