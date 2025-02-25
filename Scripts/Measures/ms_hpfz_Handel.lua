@@ -26,8 +26,9 @@ function Run()
         	        GfxAttachObject("tradetisch", "city/Stuff/tradetable.nif")
         	        GfxSetPositionTo("tradetisch", "MovePos")	
                     while GetItemCount("",ItID) > 0 do
-                        if ItemGetCategory(ItIDX) > 0 then
-                            ms_hpfz_handel_Ausrufer(ItIDX)
+                        LogMessage("@NAO #E ms_hpfz_Handel.lua, ItID "..ItID..".")
+                        if ItemGetCategory(ItID--[[X]]) > 0 then
+                            ms_hpfz_handel_Ausrufer(ItID--[[X]])
                         end
                     end
                     GfxDetachAllObjects()

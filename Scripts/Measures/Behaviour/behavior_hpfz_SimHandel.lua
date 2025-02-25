@@ -1,5 +1,4 @@
 function Run()
-
 	if Rand(5) > 1 then
 	    GetFleePosition("Owner", "Actor", Rand(50)+100, "Away")
 	    f_MoveTo("Owner", "Away", GL_MOVESPEED_WALK)
@@ -7,10 +6,10 @@ function Run()
 	    Sleep(1)
 		local TimeLeft
 		if Rand(10) < 5 then
-			if SimGetGender("Owner")==GL_GENDER_MALE then
-				PlaySound3DVariation("","CharacterFX/male_cheer",1)
+			if SimGetGender("Owner") == GL_GENDER_MALE then
+				PlaySound3DVariation("", "CharacterFX/male_cheer", 1)
 			else
-				PlaySound3DVariation("","CharacterFX/female_cheer",1)
+				PlaySound3DVariation("", "CharacterFX/female_cheer", 1)
 			end
 			TimeLeft = PlayAnimation("Owner", "cheer_01")
 		else
@@ -18,78 +17,70 @@ function Run()
 		end
 		local ItemCat = behavior_hpfz_simhandel_KundeAuswahl()
 		if ItemCat > 0 then
-			 behavior_hpfz_simhandel_KundeReaktion(ItemCat)
+			behavior_hpfz_simhandel_KundeReaktion(ItemCat)
 		end
 	end
-
 end
 
 function KundeAuswahl()
-
-  GetAliasByID(hpfzFreierHandelKarrenID,"KarrLager")
-	local lagInhalt = { nil }
-	local einkauf = nil
-
-  if hpfzFreierHandelKarrenID > 0 then
+    local Karren = Find("", "__F((Object.GetObjectsByRadius(Cart)==800)AND(Object.CanBeControlled())AND NOT(Object.BelongsToMe()))", "KarrLager", 1)
+    --GetAliasByID(hpfzFreierHandelKarrenID,"KarrLager")
+	local lagInhalt, einkauf = {nil}, nil
+    --if hpfzFreierHandelKarrenID > 0 then
+    if AliasExists("KarrLager") then
 		local r = 0
 		local itemX, mengeX, slotX, feil, gPreis, summe, bonus
-    slotX = InventoryGetSlotCount("KarrLager",INVENTORY_STD)
-    for s = 0, slotX-1 do
-      itemX, mengeX = InventoryGetSlotInfo("KarrLager",s,INVENTORY_STD)
-	    if itemX and mengeX > 0 then
-		    r = r + 1
-	      lagInhalt[r] = itemX
-	    end
-    end
-    einkauf = ( Rand(r) + 1 )
-
-		if ItemGetCategory(lagInhalt[einkauf])~=0 and ItemGetCategory(lagInhalt[einkauf])~=6 then
-			feil = GetSkillValue("Actor",9)
-	    gPreis = ItemGetBasePrice(lagInhalt[einkauf])
-			bonus = ( SimGetRank("Owner") + 5 )
-      summe = ((feil * bonus) + gPreis)
-      chr_CreditMoney("Actor",summe,"Offering")
-			IncrementXPQuiet("Actor",5)
-      if IsDynastySim("Owner") then
-		chr_SpendMoney("Owner", summe, "Offering")
-      end
-      ShowOverheadSymbol("Actor",false,true,0,"%1t",summe)
-      RemoveItems("KarrLager", lagInhalt[einkauf], 1)
-	  end
-
+        slotX = InventoryGetSlotCount("KarrLager",INVENTORY_STD)
+        for s = 0, slotX-1 do
+            itemX, mengeX = InventoryGetSlotInfo("KarrLager",s,INVENTORY_STD)
+	            if itemX and mengeX > 0 then
+                    r = r + 1
+                    lagInhalt[r] = itemX
+                    end
+                end
+            einkauf = ( Rand(r) + 1 )
+            if ItemGetCategory(lagInhalt[einkauf])~=0 and ItemGetCategory(lagInhalt[einkauf])~=6 then
+                feil = GetSkillValue("Actor",9)
+                gPreis = ItemGetBasePrice(lagInhalt[einkauf])
+                bonus = ( SimGetRank("Owner") + 5 )
+                summe = ((feil * bonus) + gPreis)
+                chr_CreditMoney("Actor",summe,"Offering")
+                IncrementXPQuiet("Actor",5)
+                if IsDynastySim("Owner") then
+                    chr_SpendMoney("Owner", summe, "Offering")
+                end
+            ShowOverheadSymbol("Actor",false,true,0,"%1t",summe)
+            RemoveItems("KarrLager", lagInhalt[einkauf], 1)
+        end
 	else
-    local itemX, mengeX, slotX, feil, gPreis, summe, bonus, charm
-    local r = 0
-    slotX = InventoryGetSlotCount("Actor",INVENTORY_STD)
-    for s = 0, slotX-1 do
-      itemX, mengeX = InventoryGetSlotInfo("Actor",s,INVENTORY_STD)
-	    if itemX and mengeX > 0 then
-		    r = r + 1
-				lagInhalt[r] = itemX
-	    end
+        local itemX, mengeX, slotX, feil, gPreis, summe, bonus, charm
+        local r = 0
+        slotX = InventoryGetSlotCount("Actor",INVENTORY_STD)
+        for s = 0, slotX-1 do
+            itemX, mengeX = InventoryGetSlotInfo("Actor",s,INVENTORY_STD)
+            if itemX and mengeX > 0 then
+                r = r + 1
+                lagInhalt[r] = itemX
+            end
+        end
+        einkauf = ( Rand(r) + 1 )
+        if ItemGetCategory(lagInhalt[einkauf])~=0 and ItemGetCategory(lagInhalt[einkauf])~=6 then
+            feil = GetSkillValue("Actor",9)
+            charm = GetSkillValue("Actor",3)
+            gPreis = ItemGetBasePrice(lagInhalt[einkauf])
+            bonus = ( SimGetRank("Owner") * charm )
+            summe = ((feil * bonus) + gPreis)
+            chr_CreditMoney("Actor",summe,"Offering")
+            IncrementXPQuiet("Actor",5)
+            ShowOverheadSymbol("Actor",false,true,0,"%1t",summe)
+            RemoveItems("Actor", lagInhalt[einkauf], 1)
+        end
     end
-    einkauf = ( Rand(r) + 1 )
-
-		if ItemGetCategory(lagInhalt[einkauf])~=0 and ItemGetCategory(lagInhalt[einkauf])~=6 then
-      feil = GetSkillValue("Actor",9)
-			charm = GetSkillValue("Actor",3)
-      gPreis = ItemGetBasePrice(lagInhalt[einkauf])
-			bonus = ( SimGetRank("Owner") * charm )
-      summe = ((feil * bonus) + gPreis)
-      chr_CreditMoney("Actor",summe,"Offering")
-			IncrementXPQuiet("Actor",5)
-      ShowOverheadSymbol("Actor",false,true,0,"%1t",summe)
-      RemoveItems("Actor", lagInhalt[einkauf], 1)
-		end
-	end
-
 	local itcat = ItemGetCategory(lagInhalt[einkauf])
 	return itcat
-	
 end
 
 function KundeReaktion(z)
-
     local simReagiert = Rand(3)
     local HandVerkauf = Rand(3)
 	if simReagiert == 0 or simReagiert == 2 then
@@ -175,7 +166,6 @@ function KundeReaktion(z)
     MoveSetActivity("")
 	CarryObject("", "", false)
 	CarryObject("", "", true)
-	
 end
 
 function CleanUp()
