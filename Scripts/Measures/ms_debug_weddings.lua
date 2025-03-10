@@ -9,7 +9,7 @@ function Run()
 
 	if result == 1 then
 		ms_debug_weddings_PlayerWedding()
-	else
+	elseif result == 2 then
 		ms_debug_weddings_NPCWedding()
 	end
 

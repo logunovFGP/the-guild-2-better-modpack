@@ -1,80 +1,66 @@
 function Run()
 
-	if not f_MoveTo("","Destination") then
-		MsgQuick("","")
-    StopMeasure()
-  end	
-	
-	local bestand1, bestand2, lagerSlot = ms_hpfz_handel_BestandCheck()
-  if bestand1 == 0 and bestand2 == 0 then
-	  MsgQuick("","_HPFZ_HANDEL_FEHLER_+0")
-	  StopMeasure()
-  end
+    if not f_MoveTo("","Destination") then
+        MsgQuick("","")
+        StopMeasure()
+    end	
 
-  MeasureSetStopMode(STOP_NOMOVE)
-  CommitAction("handeln", "", "")
+    local bestand1, bestand2, lagerSlot = ms_hpfz_handel_BestandCheck()
 
-  while bestand1 > 0 or bestand2 > 0 do
-	  local s, ItID, ItMg, ItIDX, ItMgX
-	  if bestand1 > 0 then
-	    for s = 0, lagerSlot-1 do
-		    ItID, ItMg = InventoryGetSlotInfo("",s,INVENTORY_STD)
-				if ItMg > 0 then
-	        GetPosition("","MovePos")
-	        GfxAttachObject("tradetisch", "city/Stuff/tradetable.nif")
-	        GfxSetPositionTo("tradetisch", "MovePos")	
+    if bestand1 == 0 and bestand2 == 0 then
+	   MsgQuick("","_HPFZ_HANDEL_FEHLER_+0")
+	   StopMeasure()
+    end
 
-          while GetItemCount("",ItID) > 0 do
-				    if ItemGetCategory(ItID) == 1 then
-		          ms_hpfz_handel_Ausrufer(1)
-		        elseif ItemGetCategory(ItID) == 2 then
-	            ms_hpfz_handel_Ausrufer(2)
-		        elseif ItemGetCategory(ItID) == 3 then
-	            ms_hpfz_handel_Ausrufer(3)
-		        elseif ItemGetCategory(ItID) == 4 then
-	            ms_hpfz_handel_Ausrufer(4)
-		        elseif ItemGetCategory(ItID) == 5 then
-	            ms_hpfz_handel_Ausrufer(5)
-		        end
-          end
-          GfxDetachAllObjects()
-				end
+    MeasureSetStopMode(STOP_NOMOVE)
+    CommitAction("handeln", "", "")
+
+    while bestand1 > 0 or bestand2 > 0 do
+        local s, ItID, ItMg, ItIDX, ItMgX
+        
+        if bestand1 > 0 then
+	        for s = 0, lagerSlot-1 do
+                ItID, ItMg = InventoryGetSlotInfo("",s,INVENTORY_STD)
+                if ItMg ~= nil then
+    			    if ItMg > 0 then
+            	        GetPosition("","MovePos")
+            	        GfxAttachObject("tradetisch", "city/Stuff/tradetable.nif")
+            	        GfxSetPositionTo("tradetisch", "MovePos")	
+                        while GetItemCount("",ItID) > 0 do
+                            LogMessage("@NAO #E ms_hpfz_Handel.lua, ItID "..ItID..".")
+                            if ItemGetCategory(ItID--[[X]]) > 0 then
+                                ms_hpfz_handel_Ausrufer(ItID--[[X]])
+                            end
+                        end
+                        GfxDetachAllObjects()
+    			    end
+                end
 			end
 		end
 
-    if bestand2 > 0 then
-	    for s = 0, lagerSlot-1 do
-				Find("", "__F((Object.GetObjectsByRadius(Cart)==800)AND(Object.CanBeControlled())AND(Object.BelongsToMe()))", "ExtraLagerX", 1)
-				hpfzFreierHandelKarrenID = GetID("ExtraLagerX")
-		    ItIDX, ItMgX = InventoryGetSlotInfo("ExtraLagerX",s,INVENTORY_STD)
-	
-				if ItMgX > 0 then
-		      GfxAttachObject("verkaufsStand", "city/freierhandler.nif")
-	
-	        while GetItemCount("ExtraLagerX",ItIDX) > 0 do
-				    if ItemGetCategory(ItIDX) == 1 then
-				      ms_hpfz_handel_Ausrufer(1)
-				    elseif ItemGetCategory(ItIDX) == 2 then
-				      ms_hpfz_handel_Ausrufer(2)
-				    elseif ItemGetCategory(ItIDX) == 3 then
-				      ms_hpfz_handel_Ausrufer(3)
-				    elseif ItemGetCategory(ItIDX) == 4 then
-				      ms_hpfz_handel_Ausrufer(4)
-				    elseif ItemGetCategory(ItIDX) == 5 then
-				      ms_hpfz_handel_Ausrufer(5)
-				    end
-	        end
-	        GfxDetachAllObjects()
-				end
-			end
-		end
+        if bestand2 > 0 then
+            for s = 0, lagerSlot-1 do
+                Find("", "__F((Object.GetObjectsByRadius(Cart)==800)AND(Object.CanBeControlled())AND(Object.BelongsToMe()))", "ExtraLagerX", 1)
+                hpfzFreierHandelKarrenID = GetID("ExtraLagerX")
+    		    ItIDX, ItMgX = InventoryGetSlotInfo("ExtraLagerX",s,INVENTORY_STD)
+    	
+                if ItMgX > 0 then
+                    --GfxAttachObject("verkaufsStand", "city/freierhandler.nif")
+    	            while GetItemCount("ExtraLagerX",ItIDX) > 0 do
+                        if ItemGetCategory(ItIDX) > 0 then
+                            ms_hpfz_handel_Ausrufer(ItIDX)
+                        end
+    	            end
+    	           GfxDetachAllObjects()
+                end
+    	    end
+    	end
+        bestand1, bestand2, lagerSlot = ms_hpfz_handel_BestandCheck()
+    end
 
-	  bestand1, bestand2, lagerSlot = ms_hpfz_handel_BestandCheck()
-	end
-
-  StopAction("handeln","")
+    StopAction("handeln","")
 	hpfzFreierHandelKarrenID = 0
-  StopMeasure()
+    StopMeasure()
 end
 
 function BestandCheck()

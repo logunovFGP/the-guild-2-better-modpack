@@ -348,6 +348,10 @@ end
 
 function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
+	if IsPlayer then
+		LogMessage("@NAO #E Player creation -> ID: " .. ID .. ", SpawnPoint: " .. SpawnPoint .. ", " .. PeerID .. ", PlayerDesc: " .. PlayerDescLabel)
+	end
+
 	local DynastyAlias = "NewDynasty"
 
 	if not AliasExists(SpawnPoint) then
@@ -360,6 +364,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	if PlayerDescLabel~=nil then
 		local PlayerDescPath = "\\Application\\Game\\PlayerDesc"..PlayerDescLabel
 		PlayerDescNode = FindNode(PlayerDescPath)
+		LogMessage("@NAO #W ("..ID..") PlayerDescNode found.")
 	end
 	
 	if IsPlayer then
@@ -399,6 +404,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	-- get city name from playerdescnode
 	if PlayerDescNode ~= nil then
 		CityName = PlayerDescNode:GetValueString("City")
+		LogMessage("@NAO #W ("..ID..") City -> " .. CityName)
 	end
 	
 	if IsPlayer then
@@ -408,6 +414,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
 		if not AliasExists(CityAlias) then
 			CityName = GetSettingString("ENDLESS", "City", "")
+			LogMessage("@NAO #W ("..ID..") City not found. Using Endless City -> " .. CityName)
 			if CityName ~= "" then
 				ScenarioGetObjectByName("Settlement", CityName, CityAlias)
 			end
@@ -488,6 +495,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		IncrementXP("boss", AgeBonus)
 	else
 		SimSetAge("boss", 17)
+		LogMessage("@NAO #W ("..ID..") Character is " .. GetName("boss"))
 	end
 	
 	-- start money

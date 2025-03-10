@@ -242,9 +242,6 @@ function Run()
 		SetProperty("","WEDDING_FORCED",1)
 		SetProperty("Destination","WEDDING_FORCED",1)
 
-		SetProperty("","WEDDING_canChat",1)
-		SetProperty("Destination","WEDDING_canChat",1)
-
 		SetProperty("","OCCURING_MARRIAGE",GetID("Destination"))
 		SetProperty("Destination","OCCURING_MARRIAGE",GetID(""))
 

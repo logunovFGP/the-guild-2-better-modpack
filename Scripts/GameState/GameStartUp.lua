@@ -1,16 +1,12 @@
 function Init()
-
 	cl_LoadingScreen:GetInstance():ShowLoadingScreen("LoadingScreen/balken.dds", 183, 684, 657, 32, 4, 3)
-	
+	LogMessage("@HUD_REFORGED Game start up...")
 	this:AttachModule("WorldSessionCtrl", "cl_WorldSessionController")
 	this:AttachModule("TextSystem","cl_TextSystemModule")
 	
 	this:SetValueInt("GameMode", 1)
 	this:SetValueString("SessionType", "LOCALHOST")
-	
-	local InputCtrl = FindNode("\\Application\\Game\\InputCtrl")
-	InputCtrl:LoadInputMapping("Input.ini")
-	
+
 	this:AttachModule("Illustrator", "cl_Illustrator")
 	this:EnableModule("Illustrator", 1)
 	
