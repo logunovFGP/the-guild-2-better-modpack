@@ -22,7 +22,7 @@ function Run()
 		end
 	end
 
-	local citizens = ms_levelupcity_GetValue(Level)[2]
+	local citizens = citylevel_GetValue(Level)
 
 	if nomorelvlup==true then
 		MsgBoxNoWait("",false,
@@ -82,20 +82,6 @@ function Run()
 				"@L_MEASURE_LEVELUPCITY_HEAD_+0",
 				"@L_MEASURE_LEVELUPCITY_BODY_+3", GetID("MyCity"), citylabel, citizens)
 		end
-	end
-end
-
-function GetValue(Level)
-	if Level == 2 then
-		return {0, 80}
-	elseif Level == 3 then
-		return {90, 130}
-	elseif Level == 4 then
-		return {140, 200}
-	elseif Level == 5 then
-		return {200, 300}
-	elseif Level == 6 then
-		return {260, 99999}
 	end
 end
 

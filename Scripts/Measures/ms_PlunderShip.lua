@@ -107,7 +107,9 @@ function Run()
 
 		if not AliasExists("") or not AliasExists("Destination") then
 			StopMeasure()
+			return
 		end
+
 		while ((MenCnt > 0)  and (OtherMenCnt > 0)) do
 			if (OtherMenCnt == MenCnt) then 
 				local OneOrAnother = Rand(10)
@@ -134,6 +136,11 @@ function Run()
 			
 			MenCnt = math.floor(MenCnt - MenLoss)
 			OtherMenCnt = math.floor(OtherMenCnt - OtherMenLoss)
+			
+			if not AliasExists("") or not AliasExists("Destination") then
+				StopMeasure()
+				return
+			end
 
 			ShowOverheadSymbol("", false, false, 0, "@L_GENERAL_OVERHEADSYMBOL_MENCNT_DEC_+0", MenCnt - oldmencount)  
 			ShowOverheadSymbol("Destination", false, false, 0, "@L_GENERAL_OVERHEADSYMBOL_MENCNT_DEC_+0", OtherMenCnt - oldothermencount) 
