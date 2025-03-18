@@ -94,6 +94,7 @@ function Run()
 
 	if Selection == 3 then
 		ms_debug_weddings_PlayerWedding()
+
 	elseif Selection == 4 then
 		ms_debug_weddings_NPCWedding()
 	end
@@ -124,7 +125,7 @@ function PlayerWedding()
 	SimSetCourtLover("", "NPC")
 	SimSetProgress("", 100)
 
-	SetProperty("","InWedding",1)
+	SetProperty("","InWedding", 1)
 	
     CreateCutscene("WeddingCeremony", "Cutscene(Wedding)")
     CopyAliasToCutscene("", "Cutscene(Wedding)", "#MAIN")

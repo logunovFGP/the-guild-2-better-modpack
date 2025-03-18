@@ -52,6 +52,7 @@ function Init()
  	this:AddPanel("Options_Keymapper_Debug","cl_StartMenuPanel","gui/menu/options_key_debug.gui", false)
  	this:AddPanel("RestartWarning","cl_StartMenuPanel","gui/menu/restartwarning.gui", false) 	
  	this:AddPanel("EnterName","cl_StartMenuPanel","gui/menu/multiplayername.gui", false)
+ 	
  	this:AddPanel("StartWarning","cl_StartMenuPanel","gui/menu/Startwarning.gui", false) 
  	this:AddPanel("Changelogs","cl_StartMenuPanel","gui/menu/changelogs.gui", false)
  	this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false)

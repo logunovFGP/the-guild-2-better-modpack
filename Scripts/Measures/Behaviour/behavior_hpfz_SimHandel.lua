@@ -38,6 +38,7 @@ function KundeAuswahl()
             end
         end
 
+
         if Index > 0 then
             LogMessage("@Free_Trade #E Index: "..Index)
             local Purchase = Rand(Index) + 1
@@ -58,6 +59,7 @@ function KundeAuswahl()
             return -1
         end
     end
+
 	--[[else
         local itemX, mengeX, slotX, feil, gPreis, summe, bonus, charm
         local r = 0

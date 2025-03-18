@@ -25,6 +25,7 @@ function Init()
 
 
  	
+ 
  	
  	-- debug
  	this:AddPanel("HudRootAnalyser","cl_TestPanel","gui/debug/hudrootanalyser/warningpopup.gui", false) -- cl_TrialPanel
@@ -83,6 +84,7 @@ function Init()
 	--this:AddPanel("BuildBuildingAll","cl_BuildBuildingSheet","gui/Rags/construct.gui",false)
 
  	-- Buttons have to be above of the sheets. Map has to be above of buttons. News have to be above the buttons
+
  	this:AddPanel("IndoorMapPanel","cl_IndoorMap","gui/Hud/panel_indoormap.gui")
  	
  	this:AddPanel("NewsPanel","cl_NewsPanel","gui/Hud/panel_news.gui",true)
@@ -213,6 +215,7 @@ function Init()
 	this:AddSheetToTabGroup("Important","ImportantPersons","@L_IMPORTANTPERSONS_HEAD_+0")
 	this:AddSheetToTabGroup("Important","OverviewBuildings","@L_INTERFACE_OVERVIEWBUILDINGS_HEAD_+0")
 	this:SetTabGroupHeader("Important","@L_INTERFACE_IMPORTANT_+1")
+
 
 	-- this:AddPanel("MiniMapPanel","cl_MiniMapPanel","gui/Hud/panel_minimap.gui")
 
