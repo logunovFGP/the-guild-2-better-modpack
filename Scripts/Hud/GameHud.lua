@@ -21,6 +21,9 @@ function Init()
  	this:AddPanel("SavingSheet","cl_MessageBox","gui/Menu/panel_saving.gui",false)
  	this:AddPanel("OptionsSheet","cl_OptionsSheet","gui/Menu/savegame.gui",false)
  	
+ 	-- debug
+ 	this:AddPanel("HudRootAnalyser","cl_MessageBox","gui/debug/hudrootanalyser/warningpopup.gui", false)
+
  	-- this:AddPanel("TestPanel","cl_TestPanel","gui/Hud/panel_test.gui",false)
  	this:AddPanel("PausePanel","cl_PausePanel","gui/Hud/panel_pause.gui",false)
  	 	
