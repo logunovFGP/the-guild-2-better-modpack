@@ -87,7 +87,7 @@ function Init()
 					"@B[B,@L_HPFZ_BLACKJACK_SPRUCH_+3]"..
 					"@B[C,@L_HPFZ_WS_STUFF_+10]",
 					"@L_HPFZ_WS_KOPF_+6",
-					"@L_MEASURE_DICEGAME_OPPONENT_CHECK_+0", GetID("Divehouse"), GetID("Opponent"), BestOpponentSum)
+					"@L_MEASURE_DICEGAME_OPPONENT_CHECK_BODY_+0", GetID("Divehouse"), GetID("Opponent"), BestOpponentSum)
 		
 	if Check == "C" then
 		StopMeasure()
