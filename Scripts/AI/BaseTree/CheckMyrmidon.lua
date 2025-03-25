@@ -1,21 +1,12 @@
-function Weight()
+----
+-- CheckMyrmidon is part of the vanilla AI and not used in Reforged.
+-- 
+-- 
+-- * Actions of thugs are split into idle actions (patrol, escort, collec evidence) and dynasty actions (sabotage etc.) 
+--
 
-	TotalFound = 0
-	Count = DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON)
-	for i=0, Count-1 do
-		if DynastyGetWorker("dynasty", GL_PROFESSION_MYRMIDON, i, "CHECKME") then
-			if GetState("CHECKME", STATE_IDLE) then
-				CopyAlias("CHECKME", "MEMBER"..TotalFound )
-				TotalFound = TotalFound + 1
-			end
-		end
-	end
-	
-	if TotalFound == 0 then
-		return 0
-	end
-	
-	return TotalFound*100
+function Weight()
+	return 0
 end
 
 function Execute()

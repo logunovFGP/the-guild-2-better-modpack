@@ -99,9 +99,9 @@ function Execute()
 	if HasData("Price") and GetData("Price") >= 2500 then
 		Price = GetData("Price")
 	end
-	if f_SpendMoney("Home", Price, "misc") then
+	if chr_SpendMoney("Home", Price, "misc") then
 		if not CityBuildNewBuilding("ProCity", Proto, "BuildOwner", "Tower", "ProtectMe") then
-			f_CreditMoney("Home", Price, "misc")
+			chr_CreditMoney("Home", Price, "misc")
 			return
 		end
 	end

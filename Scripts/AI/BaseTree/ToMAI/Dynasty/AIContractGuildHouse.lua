@@ -17,6 +17,10 @@ function Weight()
 	end
 
 	if HasProperty("Guildhouse", "ContractCount") and (GetProperty("Guildhouse", "ContractCount")>0) then
+		if HasProperty("Guildhouse", "Contract") and GetProperty("Guildhouse", "Contract") == 1 then
+			-- TODO AI will currently not manufacture special guild items, ignore these contracts
+			return 0
+		end
 		if HasProperty("Guildhouse", "ContractClass") then
 			if (SimGetClass("SIM")==GetProperty("Guildhouse", "ContractClass")) then
 				if chr_GetAlderman()==GetID("SIM") then

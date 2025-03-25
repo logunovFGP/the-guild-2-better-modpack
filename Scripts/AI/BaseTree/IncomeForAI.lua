@@ -4,6 +4,8 @@
 -- This is also true for Transfer of items at the market.
 -- Instead, measures and other scripts should call "chr_CreditMoney" and "chr_SpendMoney".
 -- The finances of the AI will then be correctly updated by this script. 
+-- 
+
 function Weight()
 	if not ReadyToRepeat("dynasty", "AI_Income") then
 		return 0
