@@ -83,13 +83,13 @@ function ChangeNode(Bool)
 
 	if Bool then
 		NewLabels = {
+			'Legendary', 	-- A wedding that will be remembered for generations
 		    'Disastrous',   -- Worst possible wedding, maybe barely legal
 		    'Cheap',        -- Very low-budget, unimpressive
 		    'Modest',       -- A simple and decent ceremony
 		    'Respectable',  -- A proper, well-organized wedding
 		    'Grand',        -- A lavish event with notable guests
 		    'Magnificent',  -- Extravagant and highly prestigious
-		    'Legendary'     -- A wedding that will be remembered for generations
 		}
 	else
 		NewLabels = {
