@@ -605,34 +605,34 @@ function Round1Action()
 end
 
 function EndDuelFail(ChallengerMissing, ChallengedMissing)
-	
-	--how much the favor of the listeners to the destination is decreased
 	local favormodify = GL_FAVOR_MOD_NORMAL
-	--the listening range. 
 	local ListeningRange = 2000
+
+	LogMessage("@DUEL End Duel due to Missing person.")
+	LogMessage("@DUEL Challenger: "..GetName("Challenger"))
+	LogMessage("@DUEL Challenged: "..GetName("Challenged"))
 	
 	if (ChallengerMissing == 1 and ChallengedMissing == 0) then
-		local count = Find("Destination","__F((Object.GetObjectsByRadius(Sim) == "..ListeningRange.."))","Challenger", -1)
+		local count = Find("Challenged","__F((Object.GetObjectsByRadius(Sim) == "..ListeningRange.."))","Result", -1)
 		for i=0,count-1 do 
-			chr_ModifyFavor("Challenger"..i, "Destination", -favormodify)
-			Sleep(0.2)
+			LogMessage("@DUEL Due to missing the duel, "..GetName("Result"..i).." has seen its favor with "..GetName("Challenger").." decreased.")
+			chr_ModifyFavor("Result"..i, "Challenger", -favormodify)
 		end
 	elseif (ChallengedMissing == 1 and ChallengerMissing == 0) then
-		local count = Find("Destination","__F((Object.GetObjectsByRadius(Sim) == "..ListeningRange.."))","Challenged", -1)
+		local count = Find("Challenger","__F((Object.GetObjectsByRadius(Sim) == "..ListeningRange.."))","Result", -1)
 		for i=0,count-1 do 
-			chr_ModifyFavor("Challenged"..i, "Destination", -favormodify)
-			Sleep(0.2)
+			LogMessage("@DUEL Due to missing the duel, "..GetName("Result"..i).." has seen its favor with "..GetName("Challenged").." decreased.")
+			chr_ModifyFavor("Result"..i, "Challenged", -favormodify)
 		end
 	end
 
 	duel_Torch(0)
 	Sleep(0.1)
 	
-	if ChallangerMissing == 1 then
+	if ChallengerMissing == 1 then
 		SetState("challenged", STATE_LOCKED, false)
 		CarryObject("challenged", "", false)
 		MoveSetActivity("challenged")
-		
 	end
 	
 	if ChallengedMissing == 1 then
