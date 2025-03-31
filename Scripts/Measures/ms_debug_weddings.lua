@@ -1,15 +1,99 @@
 function Run()
+	local _MainChoice
+	local _SubChoice
+	local _Options = {}
 
-	local result = InitData("@P"..
-	"@B[1,Player wedding,Start a wedding with your Sim,hud/buttons/btn_will.tga]"..
-	"@B[2,AI wedding,Start a wedding involving only NPCs,hud/buttons/btn_will.tga]",
-	nil,
-	"Which wedding setup do you want to run?",
-	"")
+	local START_SELECTING_OPTIONS = 1
 
-	if result == 1 then
+	_MainChoice = MsgBox("", "", 
+		"@B[0,@L_MEASURE_WEDDING_OPTION_+0]"..
+		"@B[1,@L_MEASURE_WEDDING_OPTION_+1]"..
+		"@B[2,@L_MEASURE_WEDDING_OPTION_+2]",
+		"@L_FAMILY_1_MARRIAGE_MESSAGE_HEAD_LEAVE_+0",
+		"@L_MEASURE_WEDDING_QUESTION_+0",
+		GetID(""), GetID(""), 0)
+
+	local GetHiredMusicians = function()
+		for _, v in helpfuncs_myipairs(_Options) do
+			if v == "@B[0,Hire Musicians]" then
+				return true
+			end
+		end
+		return false
+	end
+
+	local GetDistributeMoney = function()
+		for _, v in helpfuncs_myipairs(_Options) do
+			if v == "@B[1,Distribute Money]" then
+				return true
+			end
+		end
+		return false
+	end
+
+	local GetDecorateFlowers = function()
+		for _, v in helpfuncs_myipairs(_Options) do
+			if v == "@B[2,Decorate with Flowers]" then
+				return true
+			end
+		end
+		return false
+	end
+
+	local GetBox = function()
+		local Labels = ''
+		if not GetHiredMusicians() then
+			Labels = Labels .. "@B[0,Hire Musicians]"
+		end
+		if not GetDistributeMoney() then
+			Labels = Labels .. "@B[1,Distribute Money]"
+		end
+		if not GetDecorateFlowers() then
+			Labels = Labels .. "@B[2,Decorate with Flowers]"
+		end
+		return Labels
+	end
+
+	local CreateBox = function()
+		return MsgBox("", "", 
+			GetBox()..
+			"@B[3,Let's start the ceremony.]",
+			"@B[4,@L_MEASURE_WEDDING_OPTION_+2]",
+			"@L_FAMILY_1_MARRIAGE_MESSAGE_HEAD_LEAVE_+0",
+			"@L_MEASURE_WEDDING_QUESTION_+0",
+			GetID(""), GetID(""), 0)
+	end
+
+	local ProcessSelection = function()
+		local Selection = CreateBox()
+		local Length
+
+		if Selection == 0 then
+			Length = helpfuncs_mytablelength(_Options)
+			_Options[Length+1] = "@B[0,Hire Musicians]"
+		end
+		if Selection == 1 then
+			Length = helpfuncs_mytablelength(_Options)
+			_Options[Length+1] = "@B[1,Distribute Money]"
+		end
+		if Selection == 2 then
+			Length = helpfuncs_mytablelength(_Options)
+			_Options[Length+1] = "@B[2,Decorate with Flowers]"
+		end
+		return Selection
+	end
+
+	local Selection
+
+	if _MainChoice == START_SELECTING_OPTIONS then
+		repeat
+			Selection = ProcessSelection()
+		until Selection > 2
+	end
+
+	if Selection == 3 then
 		ms_debug_weddings_PlayerWedding()
-	elseif result == 2 then
+	elseif Selection == 4 then
 		ms_debug_weddings_NPCWedding()
 	end
 
@@ -38,6 +122,8 @@ function PlayerWedding()
 	Sleep(1)
 	SimSetCourtLover("", "NPC")
 	SimSetProgress("", 100)
+
+	SetProperty("","InWedding",1)
 	
     CreateCutscene("WeddingCeremony", "Cutscene(Wedding)")
     CopyAliasToCutscene("", "Cutscene(Wedding)", "#MAIN")

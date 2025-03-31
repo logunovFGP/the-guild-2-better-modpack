@@ -17,7 +17,11 @@ function Start()
 	TrialHUDSetSims("", GetID("Spouse1"), GetID("Spouse2"), GetID("Guest1"), GetID("Guest2"), GetID("Guest3"))
 
 	-- Progress, Guest1, Guest2, Guest3, Arrow, Timer
-	TrialHUDSetStatus("", 5, 2, 5, 8, 5, 2.0)
+	TrialHUDSetStatus("", 0, 0, 0, 0, 0, 0.0)
+	Sleep(0.5)
+
+	TrialHUDSetStatus("", 8, 7, 8, 9, 8, 2.0)
+	Sleep(2.5)
 
 	CutsceneHUDShow("","LetterBoxPanel")
 	CutsceneHUDShow("","TrialPanel")
@@ -28,6 +32,7 @@ function Start()
 	AllowMeasure("Spouse1",240,EN_BOTH)
 
 	CutsceneCameraSetRelativePosition("", "CameraPortrait", "Spouse1")
+	--CutsceneSetTimeBar("", 5)
 	CutsceneShowCharacterPanel("",true)
 
 	if GetLocalPlayerDynasty("LocalPlayerDyn") then
@@ -38,16 +43,25 @@ function Start()
 		end
 	end
 
-	Sleep(2)
+	ProgressBar:SetValueInt("VISIBILITY",1)
+	local Width
+	while true do
+		Width = ProgressBar:GetValueInt("ABS_WIDTH")
+		ProgressBar:SetValueInt("ABS_WIDTH", Width-50)
+		Sleep(0.1)
+		if Width < 10 then
+			break
+		end
+	end
+
+	ProgressBar:SetValueInt("VISIBILITY",0)
+	ProgressBar:SetValueInt("ABS_WIDTH",1000)
+
+	Sleep(0.5)
 
 	CutsceneHUDShow("","LetterBoxPanel",false)
 	CutsceneHUDShow("","TrialPanel",false)
 
-	
-
-	CutsceneHUDShow("","OfficeApplicationPanel")
-	Sleep(2)
-	CutsceneHUDShow("","OfficeApplicationPanel",false)
 	EndCutscene("")
 end
 
@@ -83,13 +97,14 @@ function ChangeNode(Bool)
 
 	if Bool then
 		NewLabels = {
-			'Legendary', 	-- A wedding that will be remembered for generations
-		    'Disastrous',   -- Worst possible wedding, maybe barely legal
 		    'Cheap',        -- Very low-budget, unimpressive
 		    'Modest',       -- A simple and decent ceremony
 		    'Respectable',  -- A proper, well-organized wedding
 		    'Grand',        -- A lavish event with notable guests
 		    'Magnificent',  -- Extravagant and highly prestigious
+		    'Legendary', 	-- A wedding that will be remembered for generations
+		    'Disastrous',   -- Worst possible wedding, maybe barely legal
+
 		}
 	else
 		NewLabels = {
@@ -102,6 +117,8 @@ function ChangeNode(Bool)
 		    '@L_REPLACEMENTS_PENALTIES_+0'
 		}
 	end
+
+	ProgressBar = nil
 
 	for i = 0, Child:GetChildCnt() - 1 do
 		Node = Child:GetChildAt(i)
@@ -120,6 +137,10 @@ function ChangeNode(Bool)
 				_Child:SetValueString("TEXT",NewLabels[i-28])
 				LogMessage("@NAO #W cl_WinContainer ("..i..") -> "..(_Child:GetValueString("TEXT") or 'nil'))
 			end
+			if Node:GetName() == "ProgressBarDesc" then
+				ProgressBar = Node
+				LogMessage("@NAO Found progress bar.")
+			end
 		end
 	end
 end
@@ -127,7 +148,11 @@ end
 function CleanUp()
 	local Sims = {"Spouse2", "Guest1", "Guest2", "Guest3"}
 	for k, v in helpfuncs_myipairs(Sims) do
-		RemoveProperty(v, "InWedding")
+		if AliasExists(v) then
+			RemoveProperty(v, "InWedding")
+		end
 	end
-	AllowAllMeasures("Spouse1")
+	if AliasExists("Spouse1") then
+		AllowAllMeasures("Spouse1")
+	end
 end

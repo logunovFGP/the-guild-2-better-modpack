@@ -652,4 +652,22 @@ function LogTransferError(ErrorNumber, BuyerAlias, SellerAlias, ItemId, ItemCoun
 	end
 end
 
-
+function GetAlignmentVariant(Alignment)
+    local categories = {
+        {min = 0, max = 11, name = "HALO_WEARER"},
+        {min = 12, max = 22, name = "GOOD_AT_HEART"},
+        {min = 23, max = 33, name = "RIGHTEOUS"},
+        {min = 34, max = 44, name = "RESPECTABLE"},
+        {min = 45, max = 55, name = "NEUTRAL"},
+        {min = 56, max = 66, name = "SHADY"},
+        {min = 67, max = 77, name = "CORRUPT"},
+        {min = 78, max = 88, name = "EVIL"},
+        {min = 89, max = 100, name = "WALKING_NIGHTMARE"}
+    }
+    
+    for _, category in helpfuncs_myipairs(categories) do
+        if Alignment >= category.min and Alignment <= category.max then
+            return category.name
+        end
+    end
+end
