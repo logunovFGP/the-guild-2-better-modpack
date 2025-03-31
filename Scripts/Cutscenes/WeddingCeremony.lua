@@ -15,6 +15,7 @@ function CleanUp()
 	end
 
 	if AliasExists("#MAIN") then
+		RemoveProperty("#MAIN", "IsMainActorInWeddingCeremony")
 		f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
 		AllowAllMeasures("#MAIN")
 		ReleaseAvoidanceGroup("#MAIN")
@@ -525,6 +526,8 @@ function Start()
 
 	TrialHUDSetStatus("", 8, 7, 8, 9, 8, 2.0)
 	Sleep(0.5)
+
+	SetProperty("#MAIN", "IsMainActorInWeddingCeremony", "1")
 
 	SetExclusiveMeasure("#MAIN", 3000, EN_BOTH)
 	AllowMeasure("#MAIN", 3001, EN_BOTH)
