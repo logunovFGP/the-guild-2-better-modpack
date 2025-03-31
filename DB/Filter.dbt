@@ -451,4 +451,4 @@ Data:
 2064   "IsLingerPlace"   "__F((Object.ActionAdmissible())AND(Object.IsType(32)))"   |
 2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  
-2067   "NoOneHas" "__F((Object.HasProperty(NoOneHasThisProperty)))" |  
+2067   "NoOneHas" "__F((Object.CanBeControlled())AND NOT(Object.LacksProperty('IsMainActorInWeddingCeremony')))"   |
