@@ -1,4 +1,5 @@
 function Run()
+	SetProperty("", "IsMainActorInWeddingCeremony", "1")
 	local _MainChoice
 	local _SubChoice
 	local _Options = {}
