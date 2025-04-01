@@ -11,9 +11,8 @@ The Guild 2: Reforged is brand new mod for The Guild 2: Renaissance that enhance
 
 ### Installation Steps
 
-1. **Download the latest release**
-   - Go to the [Releases](https://gitlab.com/fajeth-modpack/megamodpack-reforged/-/releases) page
-   - Download the latest `.zip` file
+1. **Download the latest version**
+   - [Download](https://gitlab.com/fajeth-modpack/megamodpack-reforged/-/archive/master/megamodpack-reforged-master.zip) the latest `.zip` file here: https://gitlab.com/fajeth-modpack/megamodpack-reforged/-/archive/master/megamodpack-reforged-master.zip
 
 2. **Locate your game installation**
    - Typical Steam locations:
