@@ -42,6 +42,66 @@ function OnButtonPressed_Logs8(x, y, device, key)
 	changelogs_Display(7)
 end
 
+function OnButtonPressed_Logs8(x, y, device, key)
+	changelogs_Display(7)
+end
+
+function OnButtonPressed_Logs9(x, y, device, key)
+	changelogs_Display(8)
+end
+
+function OnButtonPressed_Logs10(x, y, device, key)
+	changelogs_Display(9)
+end
+
+function OnButtonPressed_Logs11(x, y, device, key)
+	changelogs_Display(10)
+end
+
+function OnButtonPressed_Logs12(x, y, device, key)
+	changelogs_Display(11)
+end
+
+function OnButtonPressed_Logs13(x, y, device, key)
+	changelogs_Display(12)
+end
+
+function OnButtonPressed_Logs14(x, y, device, key)
+	changelogs_Display(13)
+end
+
+function OnButtonPressed_Logs15(x, y, device, key)
+	changelogs_Display(14)
+end
+
+function OnButtonPressed_Logs16(x, y, device, key)
+	changelogs_Display(15)
+end
+
+function OnButtonPressed_Logs17(x, y, device, key)
+	changelogs_Display(16)
+end
+
+function OnButtonPressed_Logs18(x, y, device, key)
+	changelogs_Display(17)
+end
+
+function OnButtonPressed_Logs19(x, y, device, key)
+	changelogs_Display(18)
+end
+
+function OnButtonPressed_Logs20(x, y, device, key)
+	changelogs_Display(19)
+end
+
+function OnButtonPressed_Logs21(x, y, device, key)
+	changelogs_Display(20)
+end
+
+function OnButtonPressed_Logs22(x, y, device, key)
+	changelogs_Display(21)
+end
+
 function Display(Number)
 	local Node 		= FindNode("\\GUI\\HudRoot")
 	local Author 	= Node:FindChildDepth("Author")
