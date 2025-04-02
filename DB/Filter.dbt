@@ -203,6 +203,7 @@ Data:
 283   "IsResourceMeasure"   "__F((Object.BelongsToMe())AND(Object.IsResourceMeasure()))"   |
 284   "CanLinger"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==600)AND(Object.IsType(32)))"   |
 285   "IsResourceMeasureMeadow"   "__F((Object.IsResourceMeasure())AND((Object.BelongsToMe())OR NOT(Object.HasDynasty())))"   |
+296   "CanUseCutsceneMakeACompliment" "__F((Object.CanBeControlledInCutscene()) AND (Object.HasProperty(CutsceneMakeACompliment)))" | 
 299   "CanUseDrFaustusElixir"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(DrFaustusElixir)>0)AND NOT(Object.GetState(fighting)))"   |
 300   "CanUseToadSlime"   "__F((Object.CanBeControlled())AND(Object.GetItemCnt(Toadslime)>0)AND NOT(Object.GetState(fighting)))"   |
 302   "CanPoisonWell"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(16))AND(Object.GetLevel()>=2)ANDObject.HasUpgrade(AlchimistCellar)))"   |
@@ -451,4 +452,5 @@ Data:
 2064   "IsLingerPlace"   "__F((Object.ActionAdmissible())AND(Object.IsType(32)))"   |
 2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  
-2067   "WeddingHudMeasure" "__F((Object.CanBeControlled())AND NOT(Object.LacksProperty('IsMainActorInWeddingCeremony')))"   |
+2067   "NoOneHas" "__F((Object.CanBeControlled())AND NOT(Object.LacksProperty('pirateship')))"   |
+2068   "ShowAdditionalDebugMeasures"   "__F((Object.CanBeControlled())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"  
