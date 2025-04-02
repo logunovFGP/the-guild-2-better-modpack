@@ -56,7 +56,7 @@ function RefreshInputs()
 	InputCtrl:LoadInputMapping("inputvoid.ini")
 
 	if options:GetValueInt("Keymapper_Toggle") == 0 then
-		InputCtrl:LoadInputMapping("Input.ini")
+		InputCtrl:LoadInputMapping("input.ini")
 		return
 	end
 
