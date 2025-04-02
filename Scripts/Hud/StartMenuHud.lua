@@ -7,8 +7,23 @@ function Init()
  	--this:AddPanel("CharSkills","cl_CharacterSheet","gui/charactercreation/panel_skills.gui", false) 	
  	--this:AddPanel("ChangeAppearancePanel","cl_ChangeAppearancePanel","gui/charactercreation/panel_changeappearance.gui",false)
  
+ 	local Setting = FindNode("\\Settings\\GAME")
+ 	local Launcher = Setting:GetValueInt("IsRunningLauncher")
+
  	this:AddPanel("InGameQuit","cl_StartMenuPanel","gui/menu/ingame_quitgame.gui", false)
- 	this:AddPanel("MainMenu","cl_StartMenuPanel","gui/menu/mainmenu.gui", false)
+
+ 	LogMessage("@NAO Test: "..Launcher)
+
+ 	if (Launcher == nil) or (Launcher == 0) then
+ 		this:AddPanel("MainMenu","cl_StartMenuPanel","gui/menu/mainmenu.gui", false)
+ 	end
+
+ 	if (Launcher ~= nil) then
+		if (Launcher == 1) then
+	 		this:AddPanel("MainMenu","cl_StartMenuPanel","gui/menu/mainmenu_launcher.gui", false)
+	 	end
+	end
+
  	this:AddPanel("SinglePlayer","cl_StartMenuPanel","gui/menu/singleplayermenu.gui", false)
  	this:AddPanel("MultiPlayer","cl_StartMenuPanel","gui/menu/networktype.gui", false)
  	this:AddPanel("GameList","cl_StartMenuPanel","gui/menu/gamelist.gui", false)
