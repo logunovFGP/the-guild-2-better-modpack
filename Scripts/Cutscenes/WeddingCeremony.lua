@@ -15,7 +15,7 @@ function CleanUp()
 	end
 
 	if AliasExists("#MAIN") then
-		RemoveProperty("#MAIN", "IsMainActorInWeddingCeremony")
+		RemoveProperty("#MAIN", "IsAllowedSpecialMeasuresForWeddings")
 		f_EndUseLocator("#MAIN", "MarryPos1", GL_STANCE_STAND)
 		AllowAllMeasures("#MAIN")
 		ReleaseAvoidanceGroup("#MAIN")
@@ -374,11 +374,6 @@ function GetUp()
 	MoveSetStance("", GL_STANCE_STAND)
 end
 
-function Flee()
-	GetFleePosition("", "", 75, "FleePos")
-	f_MoveTo("", "FleePos", GL_MOVESPEED_RUN)
-end
-
 -- Scheduled Event
 function Start()
 
@@ -510,6 +505,8 @@ function Start()
 	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)","#PRIEST")
 	-- WIP
 
+	SetState("#MAIN", STATE_CUTSCENE, false)
+
 	CutsceneSetData("", "SkipProgressBar", 0)
 
 	TrialHUDSetSims("", GetID("#MAIN"), GetID("#COURTED"), GetID("#PRIEST"), GetID("#PRIEST"), GetID("#PRIEST"))
@@ -527,7 +524,7 @@ function Start()
 	TrialHUDSetStatus("", 8, 7, 8, 9, 8, 2.0)
 	Sleep(0.5)
 
-	SetProperty("#MAIN", "IsMainActorInWeddingCeremony", "1")
+	SetProperty("#MAIN", "IsAllowedSpecialMeasuresForWeddings", "1")
 
 	SetExclusiveMeasure("#MAIN", 3000, EN_BOTH)
 	AllowMeasure("#MAIN", 3001, EN_BOTH)
@@ -905,6 +902,10 @@ function ContinueAfterNo()
 	DestroyCutscene("")
 end
 
+function ThreatenAfterMurder()
+
+end
+
 function ContinueAfterSuccessfulMurder()
 	SimGetCutscene("#MAIN", "Cutscene")
 
@@ -924,8 +925,6 @@ function ContinueAfterSuccessfulMurder()
 	for i = 0, ListSize("Sit_Visitors") -1 do
 		ListGetElement("Sit_Visitors", i, "#SIM")
 		CutsceneCallThread("Cutscene", "GetUp", "#SIM")
-		Sleep(2)
-		CutsceneCallThread("Cutscene", "Flee", "#SIM")
 	end
 
 	ListClear("Sit_Visitors")
@@ -962,6 +961,84 @@ function ContinueAfterSuccessfulMurder()
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_MURDER_+2")
 
 	Sleep(0.5)
+
+	LogMessage("@NAO ???")
+
+	local Next = MsgSayInteraction("#MAIN", "#MAIN", "#MAIN",
+										"@B[1,@L_MEASURE_MARRY_CEREMONY_THREATEN_+0]"..
+										"@B[2,@L_MEASURE_MARRY_CEREMONY_THREATEN_+1]",
+										nil,
+										"test")
+
+	LogMessage("@NAO Next is "..Next)
+	LogMessage("@NAO ???")
+
+	if Next == 1 then
+		CutsceneCallThread("Cutscene", "ThreatenAfterMurder", "#MAIN")
+	else
+		CutsceneCallThread("Cutscene", "GetOutAfterMurder", "#MAIN")
+	end
+	LogMessage("@NAO ???")
+end
+
+function ThreatenAfterMurder()
+	SimGetCutscene("#MAIN", "Cutscene")
+
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "Sit_Visitors")
+
+	ListRemove("Sit_Visitors", "#MAIN")
+	ListRemove("Sit_Visitors", "#COURTED")
+	ListRemove("Sit_Visitors", "#PRIEST")
+
+	if AliasExists("Orphan#1") and AliasExists("Orphan#2") then
+		ListRemove("Sit_Visitors", "Orphan#1")
+		ListRemove("Sit_Visitors", "Orphan#2")
+	end
+
+	CutsceneCameraBlend("Cutscene", 2, 1)
+	CutsceneCameraSetRelativePosition("Cutscene", "CameraPortrait", "#MAIN")
+
+	MsgSay("#MAIN", "Now listen up, if you wish to live...")
+
+	local Size = ListSize("Sit_Visitors")
+	local TargetSim = ListGetElement("Sit_Visitors", Rand(Size), "TargetSim")
+
+	AlignTo("#MAIN", "TargetSim")
+
+	MsgSay("#MAIN", "You seem like a reasonable folk. Give me your gold.")
+
+	Sleep(2)
+
+	local test = InitAlias("#MAIN", MEASUREINIT_SELECTION, "__F( NOT(Object.BelongsToMe())AND(Object.Type == Sim)) )",
+			"@L_ARTEFACTS_184_USEFLOWEROFDISCORD_TARGET2_+0", 0)
+ -- MEASUREINIT_PANEL_CLASS
+	if test ~= nil then
+		Sleep(4)
+
+		RemoveProperty("#MAIN", "#WEDDING_MAIN")
+		RemoveProperty("#MAIN", "#WEDDING_FORCED")
+
+		ClearImportantPersonSection("Wedding")
+
+		EndCutscene("Cutscene")
+		DestroyCutscene("Cutscene")
+	end
+
+end
+
+function GetOutAfterMurder()
+	SimGetCutscene("#MAIN", "Cutscene")
+
+	BuildingGetInsideSimList("#WEDDING_CHAPEL", "Sit_Visitors")
+
+	ListRemove("Sit_Visitors", "#MAIN")
+	ListRemove("Sit_Visitors", "#COURTED")
+	ListRemove("Sit_Visitors", "#PRIEST")
+
+	if AliasExists("Orphan#1") and AliasExists("Orphan#2") then
+		ListRemove("Sit_Visitors", "Orphan#1")
+		ListRemove("Sit_Visitors", "Orphan#2")
+	end
 
 	for i = 0, Guests - 1 do
 		ListGetElement("Visitors", i, "#SIM")
@@ -1018,13 +1095,12 @@ function ContinueAfterSuccessfulMurder()
 			else
 				ListGetElement("Reacting", INDEX, "#SIM")
 				Sleep(Rand(0.7,2))
-				CutsceneCameraSetRelativePosition("Cutscene", "#CHAPEL_GUEST", "#SIM")
+				CutsceneCameraSetRelativePosition("Cutscene", "CameraPortrait", "#SIM")
 				ReleaseLocator("SIM")
 				--PlayAnimationNoWait("#SIM", "bench_talk_offended")
 				MsgSay("#SIM", "Horrible!")
 			end
 		end
-
 		ListClear("Reacting")
 	end
 
@@ -1191,6 +1267,3 @@ function Murder()
 
 	CutsceneCallThread("Cutscene", "ContinueAfterSuccessfulMurder", "#MAIN")
 end
-
--- InitAlias("Believer", MEASUREINIT_SELECTION, "__F( NOT(Object.BelongsToMe())AND(Object.Type == Sim)AND(Object.IsDynastySim()))",
---			"@L_ARTEFACTS_184_USEFLOWEROFDISCORD_TARGET2_+0", 0)
