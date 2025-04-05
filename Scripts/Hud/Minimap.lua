@@ -1,31 +1,31 @@
 function OnButtonPressed_TopLeft(x, y, device, key)
 	local Setting = FindNode("\\Settings\\Options")
 	Setting:SetValueInt("MinimapPos", 1)
-	minimap_Refresh()
+	--minimap_Refresh()
 end
 
 function OnButtonPressed_BottomRight(x, y, device, key)
 	local Setting = FindNode("\\Settings\\Options")
 	Setting:SetValueInt("MinimapPos", 2)
-	minimap_Refresh()
+	--minimap_Refresh()
 end
 
 function OnButtonPressed_Top(x, y, device, key)
 	local Setting = FindNode("\\Settings\\Options")
 	Setting:SetValueInt("MinimapPos", 3)
-	minimap_Refresh()
+	--minimap_Refresh()
 end
 
 function OnButtonPressed_Show(x, y, device, key)
 	local Setting = FindNode("\\Settings\\Options")
 	Setting:SetValueInt("MinimapVisibility", 2)
-	minimap_Refresh()
+	--minimap_Refresh()
 end
 
 function OnButtonPressed_Hide(x, y, device, key)
 	local Setting = FindNode("\\Settings\\Options")
 	Setting:SetValueInt("MinimapVisibility", 1)
-	minimap_Refresh()
+	--minimap_Refresh()
 end
 
 function Refresh()
