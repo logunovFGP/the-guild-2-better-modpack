@@ -453,4 +453,6 @@ Data:
 2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  
 2067   "NoOneHas" "__F((Object.CanBeControlled())AND NOT(Object.LacksProperty('pirateship')))"   |
-2068   "ShowAdditionalDebugMeasures"   "__F((Object.CanBeControlled())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"  
+2068   "ShowAdditionalDebugMeasures"   "__F((Object.CanBeControlled())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"   |
+2069   "IsAllowedSpecialMeasuresForWeddings"   "__F((Object.CanBeControlled())AND(Object.HasProperty(IsAllowedSpecialMeasuresForWeddings)))"   |
+2070   "IsChapel"   "__F((Object.IsType(42)))"   |
