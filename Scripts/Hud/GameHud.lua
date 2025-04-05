@@ -199,11 +199,11 @@ function Init()
 	this:AddSheetToTabGroup("Important","OverviewBuildings","@L_INTERFACE_OVERVIEWBUILDINGS_HEAD_+0")
 	this:SetTabGroupHeader("Important","@L_INTERFACE_IMPORTANT_+1")
 
-	this:AddPanel("MiniMapPanel","cl_MiniMapPanel","gui/Hud/panel_minimap.gui")
+	-- this:AddPanel("MiniMapPanel","cl_MiniMapPanel","gui/Hud/panel_minimap.gui")
 
-	Include ( "hud/Minimap.lua" )
+	-- Include ( "hud/Minimap.lua" )
 
-	minimap_Refresh()
+	-- minimap_Refresh()
 
 end
 
