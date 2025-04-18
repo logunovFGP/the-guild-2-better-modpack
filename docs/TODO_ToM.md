@@ -1,3 +1,30 @@
+
+## Reforged-AI ##
+
+### 2025-04-18 ###
+
+- [Basetree/Idle] On nearly every political meeting minimum the half of the politicians stay away from the meeting what makes ranking up in the politics very hard because maybe the people you are good with dont come and vote for you
+
+- [Behavior] The family does not react on fire outside of the city 
+
+- [Basetree] At the late game dynasties actively dying out. There are no active actions against them, just no childs
+
+- [] I noticed that (Hanseatic map, 12 dynasties) nobody builds new buildings in Bergen aside me, even though there are tons of free space. Around 20-30 years into the game,. Maybe that is how it's intended in game and vanilla they dont build either, I dont know. The town starts with tavern, church, forge, the random families owning it even upgrade it to tier 2, but nobody builds new tier 1 buildings to start producing basic resources for these buildings. So those buildings dont produce anything either. This means that until I would build out an entire patron+craft+scholar resources chain single handedly many decades in for this town, almost all goods in their market, even many basic ones like barley or wood, will be at 0 forever.
+
+- [Idle-Thug] In same town, Bergen, tiny town w 3 office positions and no resource chain, year 20, there are 30+ thugs running around, all of them belong to minor/neutral dynasties (no color or coat of arms). I only have 2 thugs myself. At all times, there are ~10 no-color thugs following my dynasty head, spying, they swarm around every building he's in. It's hilarious but probably shouldn't be like this.
+
+- [Basetree] AI tends to remain friends forever, there should be more causes for them to dislike players or at least make sure that each player always has at least one enemy (compare Fugger 2: If current archenemy died or got too weak, he was replaced by another.) 
+
+- [Basetree] Workshop expansion not working properly?
+
+- [Basetree] No AI actions on impending war, send char or buy soldiers.
+
+- [Basetree] No banquets
+
+- [Basetree] Rare poison well of alchemists (?)
+
+
+
 ## Reforged-TWP ##
 
 Base idea: Branch out the reforged project to include the best TWP features. 
