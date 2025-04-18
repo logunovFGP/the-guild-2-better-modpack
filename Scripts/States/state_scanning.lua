@@ -1,27 +1,22 @@
 function Run()
-	-- dont remove this line since it sets the owners dynasty that is needed for later filter
 	GetDynasty("", "Dynasty")
-	
 	while not GetState("", STATE_DEAD) do
-	
 		if IsType("", "Sim") then
 			state_scanning_ArrestLoop()
-		elseif IsType("", "Building")then
+		elseif IsType("", "Building") then
 			state_scanning_WatchtowerLoop() -- towers are deactivated currently
-			if GetDynastyID("")<1 then
+			if GetDynastyID("") < 1 then
 				state_scanning_ArrestLoop()
 			end
 		end
-		Sleep(1) 
+		Sleep(1)
 	end
 end
 
-
-function ArrestLoop()
-
+function ArrestLoop() -- LogMessage("@NAO Arrestloop for "..GetName(""))
 	if CityGuardScan("", "Penalty") then
 		if PenaltyGetOffender("Penalty", "Wanted") then
-			LogMessage("[i] state_scanning.lua -> " .. GetName("") .. " has found felon " .. GetName("Wanted"))
+			LogMessage("@NAO [i] state_scanning.lua -> " .. GetName("") .. " has found felon " .. GetName("Wanted"))
 			if GetImpactValue("Wanted", "REVOLT") > 0 then
 				if GetState("Wanted", STATE_UNCONSCIOUS) then
 					feedback_OverheadActionName("Wanted")
@@ -47,7 +42,7 @@ function ArrestLoop()
 					if ReadyToRepeat("Wanted", "TimerGetArrested") then 
 						SetRepeatTimer("Wanted", "TimerGetArrested", 1)
 						MeasureRun("", "Wanted", "Arrest")
-						LogMessage(GetName("") .. " is arresting felon " .. GetName("Wanted") .. "!")
+						LogMessage("@NAO #W " .. GetName("") .. " is arresting felon " .. GetName("Wanted") .. "!")
 					end
 				end
 			end
@@ -74,4 +69,3 @@ function WatchtowerLoop()
 		end	
 	end	
 end
-
