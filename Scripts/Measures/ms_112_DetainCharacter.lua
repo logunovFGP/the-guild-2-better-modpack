@@ -1,49 +1,50 @@
 function Run()
-
-	GetSettlement("Owner","TheCity")
-	if not ai_CreateMutex("TheCity") then
+	if GetState("Destination", STATE_IMPRISONED) then
+		MsgQuick("", "The Destination is already in prison.")
 		return
 	end
 
-	--how far the Destination can be to start this action
-	local MaxDistance = 1000
-	--how far from the destination, the owner should stand 
-	local ActionDistance = 100
-	--time before privilege can be used again
+	GetSettlement("Owner", "CityAlias")
+
+	if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_PRISON, -1, -1, FILTER_IGNORE, "Prison") then
+		MsgQuick("", "There is no available prison.")
+		return
+	end
+
+	if not ai_CreateMutex("CityAlias") then
+		return
+	end
+
 	local MeasureID = GetCurrentMeasureID("")
-	local duration = mdata_GetDuration(MeasureID)
-	local TimeOut = mdata_GetTimeOut(MeasureID)
 	
-	--check if destination is too far from city
-	GetPosition("TheCity","CityPos")
-	if GetInsideBuilding("Destination","CurrentBuilding") then
-		GetPosition("CurrentBuilding","BuildingPos")
-		if GetDistance("BuildingPos","CityPos") > 10000 then
-			MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+23")
+	GetPosition("CityAlias", "CityPos")
+	if GetInsideBuilding("Destination", "CurrentBuilding") then
+		GetPosition("CurrentBuilding", "BuildingPos")
+		if GetDistance("BuildingPos", "CityPos") > 10000 then
+			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+23")
 			StopMeasure()
 		end
 	else
-		GetPosition("Destination","DestPos")
-		if GetDistance("CityPos","DestPos") > 10000 then
-			MsgQuick("","@L_GENERAL_MEASURES_FAILURES_+23")
+		GetPosition("Destination", "DestPos")
+		if GetDistance("CityPos", "DestPos") > 10000 then
+			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+23")
 			StopMeasure()
 		end
 	end
 	
-	--run to destination and start action at MaxDistance
-	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
+	if not ai_StartInteraction("", "Destination", 1000, 100, nil) then
 		StopMeasure()
 	end
+
 	AlignTo("Owner", "Destination")
 	AlignTo("Destination", "Owner")
 	Sleep(0.5)
-	
-	--Get the office holder
+
 	SimGetServantDynasty("", "ActorDyn")
 	
 	local found = false
 	for i = 0,2 do
-		if DynastyGetMember("ActorDyn",i,"Actor") then
+		if DynastyGetMember("ActorDyn", i, "Actor") then
 			if GetSettlementID("Actor") == GetSettlementID("") then
 				if GetImpactValue("Actor", "CommandCityGuard") then -- 227
 					found = true
@@ -52,34 +53,48 @@ function Run()
 			end
 		end
 	end		
-		
-	--SetMeasureRepeat(TimeOut)
-	SimGetWorkingPlace("","Workbuilding")
-	SetRepeatTimer("Workbuilding", GetMeasureRepeatName(), TimeOut)
 
-	if found == false then
-		feedback_MessageCharacter("Destination",
-			"@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_HEAD_+0",
-			"@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_BODY_+1",GetID("ActorDyn"),GetID("Destination"),GetID("TheCity"))
-	else
-		feedback_MessageCharacter("Destination",
-			"@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_HEAD_+0",
-			"@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_BODY_+0",GetID("Actor"),GetID("Destination"),GetID("TheCity"))
+	SimGetWorkingPlace("", "Workbuilding")
+	SetRepeatTimer("Workbuilding", GetMeasureRepeatName(), mdata_GetTimeOut(MeasureID))
+
+	local _Actor = "Actor"
+
+	if not found then
+		_Actor = "ActorDyn"
 	end
 
-	CityAddPenalty("TheCity","Destination",PENALTY_PRISON,duration)
+	feedback_MessageCharacter("Destination", "@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_HEAD_+0", "@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_BODY_+1", GetID(_Actor), GetID("Destination"), GetID("CityAlias"))
+	CityAddPenalty("CityAlias", "Destination", PENALTY_PRISON, mdata_GetDuration(MeasureID))
 
+	LogMessage("@NAO "..GetName("Destination").." is serving a Prison penalty in "..GetName("CityAlias"))
+
+	MeasureRun("", "Destination", "Arrest")
+
+	--[[f_FollowNoWait("Owner", "Destination", GL_MOVESPEED_WALK, 130)
+
+	if GetOutdoorMovePosition(nil, "Prison", "MovePos") then
+		if not (f_MoveTo("Destination", "MovePos", GL_MOVESPEED_WALK)) then
+			StopMeasure()
+			return
+		end	
+	else
+		if not (f_MoveTo("Destination", "Prison", GL_MOVESPEED_WALK)) then
+			StopMeasure()
+			return
+		end
+	end
+
+	f_MoveTo("Owner", "Prison", GL_MOVESPEED_WALK, "MoveResult")--]]
 end
 
 function CleanUp()
-	ai_ReleaseMutex("TheCity", "")
+	if GetID("CityAlias") == -1 then
+		return
+	end
+	ai_ReleaseMutex("CityAlias", "")
 end
-
 
 function GetOSHData(MeasureID)
-	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
-	--active time:
 	OSHSetMeasureRuntime("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+0",Gametime2Total(mdata_GetDuration(MeasureID)))
 end
-
