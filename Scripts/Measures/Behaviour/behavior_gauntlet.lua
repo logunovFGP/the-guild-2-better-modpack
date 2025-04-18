@@ -1,5 +1,9 @@
 function Run()
-
+	local State = GetState("Owner", STATE_SCANNING)
+	if State then
+		return
+	end
+	
 	if GetEvadePosition("Owner", 400, "Away") then
 		f_MoveTo("Owner", "Away", GL_MOVESPEED_RUN)
 	end
@@ -12,7 +16,7 @@ function Run()
 --		MsgMeasure("Owner","gaping at "..GetName("Actor"))
 
 		local Value = Rand(2)
-		if Value==0 then
+		if Value == 0 then
 			if SimGetGender("")==GL_GENDER_MALE then
 				PlaySound3DVariation("","CharacterFX/male_cheer",1)
 			else
@@ -24,4 +28,3 @@ function Run()
 		end
 	end
 end
-

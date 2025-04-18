@@ -1,8 +1,9 @@
 function Run()
-
 	local ExecID = 0
+
+	LogMessage("@NAO #W " .. GetName("") .. " is arresting a criminal.")
+
 	if not AliasExists("Destination") then 
-		-- no destination found (should never happen)
 		return
 	end
 	
@@ -19,12 +20,10 @@ function Run()
 	end
 
 	if not GetSettlement("", "CityAlias") then
-	 	-- no city found (should never happen for a city guard)
 		return 
 	end
 
 	if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_PRISON, -1, -1, FILTER_IGNORE, "Prison") then
-		-- no prison found
 		return
 	end
 	
@@ -45,14 +44,14 @@ function Run()
 		return
 	end
 	
-	if not ai_StartInteraction("", "Destination", 500, 110,"Captured") then
+	if not ai_StartInteraction("", "Destination", 500, 110, "Captured") then
 		CopyAlias("Destination", "Backup")
 		StopMeasure()
 		return
 	end
 	
 	AlignTo("", "Destination")
-	--BattleWeaponPresent("")
+	BattleWeaponPresent("")
 	Sleep(0.5)
 	PlayAnimationNoWait("", "propel")
 
@@ -61,18 +60,17 @@ function Run()
 		Sleep(5)
 	end
 
-	local Time = MoveSetActivity("Destination","arrested") 
-	Sleep(Time+4)
+	local Time = MoveSetActivity("Destination", "arrested") 
+	Sleep(Time + 4)
 
-	--if the destination has penalty prison
 	if CityGetPenalty("CityAlias", "Destination", PENALTY_PRISON, true, "Penalty") then
-		SetData("arrester",1)
-		RemoveProperty("Destination","NoEscape")
+		SetData("arrester", 1)
+		RemoveProperty("Destination", "NoEscape")
 		CommitAction("gauntlet", "Destination", "Destination")
 		SetData("Action_Started", "gauntlet")
-		
-		f_FollowNoWait("", "Destination", GL_MOVESPEED_WALK, 160)
+		f_FollowNoWait("", "Destination", GL_MOVESPEED_WALK, 10, false)
 		Sleep(1)
+
 		if GetOutdoorMovePosition(nil, "Prison", "MovePos") then
 			if not (f_MoveTo("Destination", "MovePos", GL_MOVESPEED_WALK)) then
 				StopMeasure()
@@ -83,38 +81,43 @@ function Run()
 				StopMeasure()
 				return
 			end		
-		end		
+		end	
+
 		MoveStop("")
 		MoveStop("Destination")
 		BattleWeaponStore("")
 	
 		if not f_MoveTo("Destination", "Prison") then
-			if GetInsideBuildingID("Destination")~=GetID("Prison") then
+			if GetInsideBuildingID("Destination") ~= GetID("Prison") then
 				StopMeasure()
 				return
 			end
 		end
+
+		Sleep(3)
+
 		MoveSetActivity("Destination")
-		if not GetInsideBuilding("Destination","CurrentBuilding") then
+
+		AddImpact("Destination", "Resist", 1, 6)
+
+		if not GetInsideBuilding("Destination", "CurrentBuilding") then
 			StopMeasure()
 		end
+
 		if GetID("CurrentBuilding") == GetID("Prison") then
+			SetState("Destination", STATE_CAPTURED, false)
 			SetState("Destination", STATE_IMPRISONED, true)
 		end
 			
 		f_StartHighPriorMusic(MUSIC_DUNGEON) 
 		StopMeasure()
 	
-	--if the destination has penalty pillory
 	elseif CityGetPenalty("CityAlias", "Destination", PENALTY_PILLORY, true, "Penalty") then
-		
-		
+
 		if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_EXECUTIONS_PLACE, -1, -1, FILTER_IGNORE, "Pillory") then
-		-- no pillory found
 			StopMeasure()
 		end
 		
-		--go to the execution place
 		GetLocatorByName("Pillory","pillory","PilloryPos")
 		f_FollowNoWait("", "Destination", GL_MOVESPEED_WALK, 160) 
 		Sleep(1)
@@ -139,12 +142,9 @@ function Run()
 		MeasureSetNotRestartable()
 		SetData("locked",0)
 		
-		
-	--if the destination has death penalty
 	elseif CityGetPenalty("CityAlias", "Destination", PENALTY_DEATH, true, "Penalty") then
 
 		if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_EXECUTIONS_PLACE, -1, -1, FILTER_IGNORE, "ExecutionPlace") then
-		-- no execution place found
 			StopMeasure()
 		end
 		
@@ -154,21 +154,19 @@ function Run()
 		Sleep(4)
 		BlockChar("Destination")
 		SetActiveAvoidance("Destination",true)
+
 		if not f_BeginUseLocator("Destination","ExecPos",GL_STANCE_STAND,true) then
-		
 			SimBeamMeUp("Destination","ExecPos",false)
 		end
 		
 		f_MoveTo("", "Destination", GL_MOVESPEED_WALK,300)
-		--BattleWeaponStore("")
+		-- BattleWeaponStore("")
 		CommitAction("pillory", "Destination", "Destination")
 		SetData("Action_Started", "Pillory")
 		SetProperty("Destination","NoEscape",1)
 		f_StartHighPriorMusic(MUSIC_EXECUTION)
 		local ActivityTime = MoveSetActivity("Destination","execute")
 		
-		
-
 		PlayAnimationNoWait("","sentinel_idle")
 		Sleep(ActivityTime)
 		--create the executioner
@@ -205,7 +203,7 @@ function Run()
 		PlaySound3DVariation("Destination","combat/pain",1)
 		SetProperty("Destination","Executed",1)
 		--Time = PlayAnimationNoWait("Destination","execute_out")
---		MeasureSetNotRestartable()
+		--		MeasureSetNotRestartable()
 		
 		Sleep(0.5)
 		StopAction("Pillory", "Destination")
@@ -242,24 +240,15 @@ function Captured()
 	end
 end
 
--- -----------------------
--- Terminate
--- -----------------------
 function Terminate(ExecID)
-	
-	-- Get rid of the Executioner
 	GetAliasByID(ExecID,"SimExec")
 	if AliasExists("SimExecutioner") then
-		-- Let the executioner go to the next townhall and disapear
 		if FindNearestBuilding("SimExec", -1, GL_BUILDING_TYPE_TOWNHALL, -1, false, "Townhall") then
 			f_MoveTo("SimExec", "Townhall")
 		end
-	
 		InternalDie("SimExec")
 		InternalRemove("SimExec")
 	end
-	
-	
 end
 
 function CleanUp() 	
@@ -267,7 +256,7 @@ function CleanUp()
 	
 	local JoinBattle = false
 	
-	SetState("",STATE_SCANNING,true)
+	SetState("", STATE_SCANNING, true)
 	if (GetData("arrester") == 1) then
 		if not AliasExists("Destination") then
 			return
