@@ -530,40 +530,85 @@ function GetBootyCount(Destination, InventoryType)
 end
 
 function Plunder(SimAlias, Destination)
-	
-	local Slots = InventoryGetSlotCount(Destination, INVENTORY_STD)
-	local ItemID, ItemCount
-	local Value = 0
-	
-	for Number = 0, Slots-1 do
-		ItemID, ItemCount = InventoryGetSlotInfo(Destination, Number, INVENTORY_STD)
-		if ItemID and ItemCount and ItemID ~= 999 then
-			-- check for engineer ability
-			if GetImpactValue(Destination, "CartBoost") > 0 then
-				ItemCount = ItemCount - 5
-			end
-			
-			if ItemCount > 10 then
-				ItemCount = 10
-			end
-			
-			if ItemCount > 0 then
-			
-				local Plunder = AddItems(SimAlias, ItemID, ItemCount, INVENTORY_STD)
-				RemoveItems(Destination, ItemID, Plunder, INVENTORY_STD)
-				
-				Value = Value + ItemGetBasePrice(ItemID) * Plunder
+	local Print = function (Channel, Message)
+		LogMessage("@"..Channel)
+		LogMessage("@"..Channel.." "..Message)
+	end
+
+	Print("WAYLAY", "#E Plunder("..GetName(SimAlias)..", "..GetName(Destination)..")")
+
+	local Check = false
+
+	GetLocalPlayerDynasty("Local")
+	GetDynasty(SimAlias, "Target")
+
+	if GetID("Target") == GetID("Local") then
+		Check = true
+	end
+
+	if Check then
+		if AliasExists(Destination) then
+			Count = InventoryGetSlotCount(Destination, INVENTORY_STD)
+			LogMessage("@WAYLAY " .. GetName(Destination) .. "'s inventory count is " .. Count)
+			local _ID, _COUNT
+			for i = 0, Count - 1 do
+				_ID, _COUNT = InventoryGetSlotInfo(Destination, i)
+				if _COUNT == nil or _ID == nil then
+					LogMessage("@WAYLAY Slot #" .. i + 1 .. " is empty.")
+				else
+					LogMessage("@WAYLAY Slot #" .. i + 1 .. " contains x" .._COUNT .. " " .. ItemGetName(_ID) .. "(s)")
+				end
 			end
 		end
 	end
+
+	local Item = {Slot=InventoryGetSlotCount(Destination, INVENTORY_STD), ID=nil, Count=nil, Value=0}
 	
-	-- do anim
+	for Number = 0, Item.Slot - 1 do
+		Item.ID, Item.Count = InventoryGetSlotInfo(Destination, Number, INVENTORY_STD)
+		if Item.ID and Item.Count and Item.ID ~= 999 then
+			if Item.Count > 0 then
+				local _SPACE = GetRemainingInventorySpace(SimAlias, Item.ID, INVENTORY_STD)
+
+				if _SPACE > 10 then
+					_SPACE = 10
+				end
+
+				if _SPACE > Item.Count then
+					LogMessage("@WAYLAY [i] Available space of ".._SPACE.." but only x"..Item.Count.." exist in the cart (before extra modifiers).")
+					_SPACE = Item.Count
+				end
+
+				if GetImpactValue(Destination, "CartBoost") > 0 then
+					_SPACE = _SPACE - 5
+					if _SPACE < 0 then
+						_SPACE = 0
+					end
+				end
+
+				if _SPACE == 0 then
+					LogMessage("@WAYLAY [i] Actually, the cart seems to be empty... moving on to the next victim.")
+					return 0
+				end
+
+				if _SPACE > 0 then
+					AddItems(SimAlias, Item.ID, _SPACE, INVENTORY_STD)
+					Print("WAYLAY", "#W <" .. GetName(SimAlias) .. "> 'I have collected x".._SPACE.." "..ItemGetName(Item.ID).."(s) from "..GetName(Destination).."'.")
+					RemoveItems(Destination, Item.ID, _SPACE, INVENTORY_STD)
+					LogMessage("@WAYLAY #W <" .. GetName(Destination) .. "> 'I have lost x".._SPACE.." "..ItemGetName(Item.ID).."(s)...'")
+					Item.Value = Item.Value + ItemGetBasePrice(Item.ID) * _SPACE
+					break
+				end
+			end
+		end
+	end
+
 	MoveSetActivity(SimAlias, "carry")
 	Sleep(2)
 	CarryObject(SimAlias, "Handheld_Device/ANIM_Bag.nif", false)
 	Sleep(0.5)
 	
-	return Value
+	return Item.Value
 end 
 
 function OutputHireError(SimAlias, BuildingAlias, Error)
