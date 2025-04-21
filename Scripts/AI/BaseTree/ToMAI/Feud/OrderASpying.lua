@@ -3,9 +3,6 @@ function Weight()
 		return 0
 	end
 
-	if GetFavorToDynasty("dynasty", "VictimDynasty") > gameplayformulas_GetMaxFavByDiffForAttack() then
-		return 0
-	end
 	
 	-- SpiedByDyn causes crashes, do not use it!
 	-- SetProperty("Destination", "TomAIBeingSpiedOn", 1)

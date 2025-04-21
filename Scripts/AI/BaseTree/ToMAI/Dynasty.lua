@@ -5,12 +5,12 @@
 function Weight()
 	local PartyCount = DynastyGetMemberCount("dynasty")
 	if PartyCount < 2 then
-		return 30
+		return 50
 	end
 	if PartyCount < 3 then
-		return 20
+		return 30
 	end
-	return 10
+	return 20
 end
 
 function Execute()

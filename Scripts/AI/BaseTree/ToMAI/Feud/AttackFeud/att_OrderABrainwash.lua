@@ -8,10 +8,6 @@ function Weight()
 		return 0
 	end
 	
-	if GetFavorToDynasty("Victim", "dynasty") > 40 then
-		return 0
-	end
-	
 	if DynastyIsShadow("Victim") then
 		return 0
 	end
