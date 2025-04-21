@@ -55,9 +55,9 @@ function Run()
 	local currentGameTime = math.mod(GetGametime(),24)
 	if (currentGameTime >23 or currentGameTime < 4) then
 		-- if married, get some action
-		if Rand(10) > 7 and SimGetSpouse("SIM", "Spouse") and GetDynasty("", "MyDyn") and DynastyIsAI("MyDyn") then
+		if Rand(10) > 7 and SimGetSpouse("", "Spouse") and GetDynasty("", "MyDyn") and DynastyIsAI("MyDyn") then
 			idlelib_GoHome()
-			MeasureRun("SIM", "Spouse", "CohabitWithCharacter")
+			MeasureRun("", "Spouse", "CohabitWithCharacter")
 		else
 			idlelib_GoSleep()
 			SetProperty("", "_DO_NOTHING_TIME", 1)

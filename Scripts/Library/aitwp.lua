@@ -41,6 +41,7 @@ function CalculatePriorities(DynAlias)
 	SetProperty(DynAlias, "AITWP_Political", Political)
 	SetProperty(DynAlias, "AITWP_Agressive", Agressive)
 	SetProperty(DynAlias, "AITWP_Intrigue", Intrigue)
+	LogMessage("TOMAI Priorities (P/A/I) of " .. GetName(DynAlias) ..": " .. Political .. "/" .. Agressive .. "/" .. Intrigue)
 end 
 
 -- result will be <= 100

@@ -22,7 +22,6 @@
 - [Basetree] Rare poison well of alchemists (?)
 
 
-
 ### 2025-04-18 ###
 
 **dyn_isIdle: Checks for pretrial and presession may not be correct for checking the behaviour. Generally, the IsIdle checks from AI_BaseTree are not good for the overall concept of the decision tree. Instead, change to something like this:**
