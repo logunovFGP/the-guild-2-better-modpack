@@ -8,10 +8,11 @@ function Weight()
 	end
 	
 	-- SpiedByDyn causes crashes, do not use it!
---	if(HasProperty("Victim", "SpiedByDyn"..GetDynastyID("dynasty"))) then
-		-- we are already spying on this one
---		return 0
---	end
+	-- SetProperty("Destination", "TomAIBeingSpiedOn", 1)
+	if(HasProperty("Victim", "TomAIBeingSpiedOn")) then
+		-- someone is already spying on this one
+		return 0
+	end
 
 	return 10
 end

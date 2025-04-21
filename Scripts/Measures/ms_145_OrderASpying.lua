@@ -16,6 +16,7 @@ function Run()
 	MeasureSetNotRestartable()
 	MsgMeasure("","@L_GENERAL_MEASURES_145_ORDERASPYING_ACTION_+0", GetID("Destination"))
 			
+	SetProperty("Destination", "TomAIBeingSpiedOn", 1) -- don't spy on the same sim with several thugs
 	
 	local WhatToDo, SpyTheHouse, i, k
 	local Radius = 2000
@@ -128,6 +129,7 @@ function CleanUp()
 	
 	if AliasExists("Destination") then
 		RemoveProperty("Destination", "SpiedBy"..GetID(""))
+		RemoveProperty("Destination", "TomAIBeingSpiedOn")
 		if Evidences and Evidences > 0 then
 			feedback_MessageCharacter("",
 				"@L_GENERAL_MEASURES_145_ORDERASPYING_MSG_SUCCESS_HEAD_+0",
