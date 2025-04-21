@@ -54,8 +54,14 @@ function Run()
 	--Sleep at night?
 	local currentGameTime = math.mod(GetGametime(),24)
 	if (currentGameTime >23 or currentGameTime < 4) then
-		idlelib_GoSleep()
-		SetProperty("", "_DO_NOTHING_TIME", 1)
+		-- if married, get some action
+		if Rand(10) > 7 and SimGetSpouse("SIM", "Spouse") and GetDynasty("", "MyDyn") and DynastyIsAI("MyDyn") then
+			idlelib_GoHome()
+			MeasureRun("SIM", "Spouse", "CohabitWithCharacter")
+		else
+			idlelib_GoSleep()
+			SetProperty("", "_DO_NOTHING_TIME", 1)
+		end
 		return
 	end
 	
@@ -122,6 +128,9 @@ function Run()
 		    idlelib_GoToTavern()
 			end
 		end
+	elseif not SimGetSpouse("") and GetDynasty("", "MyDyn") and DynastyIsAI("MyDyn") then
+		-- find lover, court and marry (disabled for family of players)
+		aitwp_CourtLover("")
 	else
 		if dyn_GetRandomWorkshopForSim("", "MyWorkshop") then
 			f_MoveTo("", "MyWorkshop")

@@ -1,13 +1,11 @@
 
 ## Reforged-AI ##
 
-### 2025-04-18 ###
+### 2025-04-21 ###
 
 - [Basetree/Idle] On nearly every political meeting minimum the half of the politicians stay away from the meeting what makes ranking up in the politics very hard because maybe the people you are good with dont come and vote for you
 
 - [Behavior] The family does not react on fire outside of the city 
-
-- [Basetree] At the late game dynasties actively dying out. There are no active actions against them, just no childs
 
 - [] I noticed that (Hanseatic map, 12 dynasties) nobody builds new buildings in Bergen aside me, even though there are tons of free space. Around 20-30 years into the game,. Maybe that is how it's intended in game and vanilla they dont build either, I dont know. The town starts with tavern, church, forge, the random families owning it even upgrade it to tier 2, but nobody builds new tier 1 buildings to start producing basic resources for these buildings. So those buildings dont produce anything either. This means that until I would build out an entire patron+craft+scholar resources chain single handedly many decades in for this town, almost all goods in their market, even many basic ones like barley or wood, will be at 0 forever.
 
@@ -22,6 +20,28 @@
 - [Basetree] No banquets
 
 - [Basetree] Rare poison well of alchemists (?)
+
+
+
+### 2025-04-18 ###
+
+**dyn_isIdle: Checks for pretrial and presession may not be correct for checking the behaviour. Generally, the IsIdle checks from AI_BaseTree are not good for the overall concept of the decision tree. Instead, change to something like this:**
+
+- Use BaseTree to make plans for the dynasty.
+- Use IdleBehaviour of dynasty SIMs to execute planned measures.
+- Make sure the dynasty SIM actually goes idle, so all longer measures need timeouts (i.e. production measures)  
+- Each dynasty sim has a todo list with measures and measure targets (i.e. marry, reproduce)
+- Dynasty has an additional todo list with things that any dynasty member could do (i.e. gain favor), also with measure and measure target
+- Could use single todo item for each character instead -> reduces list management like shifting indices.
+- Potentially find a simpler solution for shadow dynasties that requires less additional memory (properties)
+
+Potential changes to BaseTree: 
+
+- Remove most calls to dyn_IsIdle
+- Add some managing functions for todo items, like finding the next dyn member with no current todo
+- Or: Only use TODO if no idle member can be found, otherwise start measure directly
+    -> dyn_isIdle should not be used in Weight functions but only in Execute functions!
+
 
 
 
