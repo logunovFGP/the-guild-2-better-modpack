@@ -26,11 +26,6 @@ function Weight()
 		return 0
 	end
 	
-	-- check for diplomacy state to be sure
-	if DynastyGetDiplomacyState("Victim", "SIM") >= DIP_NAP then
-		return 0
-	end
-	
 	-- don't attack characters who are inside a building
 	if GetInsideBuilding("Victim","Inside") then
 		return 0

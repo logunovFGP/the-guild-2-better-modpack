@@ -14,11 +14,7 @@ function Weight()
 		return 0
 	end
 
-	if GetFavorToDynasty("Victim", "dynasty") > 40 then
-		return 0
-	end
-	
-	if not DynastyGetRandomVictim("Victim", 50, "VictimDynasty2") then
+	if not DynastyGetRandomVictim("SIM", 50, "VictimDynasty2") then
 		return 0
 	end
 	
