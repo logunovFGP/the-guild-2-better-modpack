@@ -702,3 +702,50 @@ function DynastyRemoveAlly(Sim,Destination)
 	NumOfAllies = NumOfAllies - 1
 	SetProperty("MyDyn","Allies_No",NumOfAllies)
 end
+
+function FindOfficeForApplication(SimAlias, RetOfficeAlias)
+	local CityAlias = "AITWP_OfficeApplicationSettlement" 
+	if not GetSettlement(SimAlias, CityAlias) then
+		return false
+	end
+
+	-- find range of available office levels
+	local SimMaxLevel = SimGetMaxOfficeLevel(SimAlias)
+	local CityMaxLevel = CityGetHighestOfficeLevel(CityAlias)
+	
+	local MaxLevel = math.min(SimMaxLevel, CityMaxLevel)
+	local SimCurLevel = SimGetOfficeLevel(SimAlias)
+	
+	-- start at max level and go down, looking for a good office to apply to
+	local OfficeCount, ApplicantCount
+	local RetOfficeLevel, RetOfficeIdx, ApplicantCount
+	local LowestApplicantCount = 4 
+	for i=MaxLevel, SimCurLevel+1 do
+		OfficeCount = SettlementGetOfficeCnt(CityAlias, MaxLevel)
+		LowestApplicantCount = 4
+		RetOfficeIdx = -1
+		for j=0, OfficeCount-1 do
+			SettlementGetOffice(CityAlias, i, j, "AITWP_CurrentOfficeToCheck"..j)
+			ApplicantCount = OfficeGetApplicantCount("AITWP_CurrentOfficeToCheck"..j)
+			if ApplicantCount < 4 and LowestApplicantCount >= ApplicantCount 
+					and not (DynastyIsShadow(SimAlias) and OfficeGetShadowApplicantCount("AITWP_CurrentOfficeToCheck"..j) >= 3) then
+				
+				-- check current holder
+				if OfficeGetHolder("AITWP_CurrentOfficeToCheck"..j, "OfficeHolder") 
+					and (GetDynastyID(SimAlias) == GetDynastyID("OfficeHolder") or DynastyGetDiplomacyState(SimAlias,"OfficeHolder")==DIP_ALLIANCE) then
+					-- don't apply for allied offices
+				else
+					if RetOfficeIdx < 0 or Rand(2) < 1 then -- keep some randomness for selection
+						LowestApplicantCount = ApplicantCount
+						RetOfficeIdx = j
+					end
+				end
+			end
+		end
+		if RetOfficeIdx >= 0 and LowestApplicantCount < 4 then
+			CopyAlias("AITWP_CurrentOfficeToCheck" .. RetOfficeIdx, RetOfficeAlias)
+			return true
+		end
+	end
+	return false
+end
