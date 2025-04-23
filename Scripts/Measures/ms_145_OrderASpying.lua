@@ -11,12 +11,11 @@ function Run()
 		return
 	end
 	
-	SetProperty("Destination", "SpiedBy"..GetID(""), 1) -- do not remove this property. Do not add a property like "SpiedByDyn"..GetDynastyID("") because that will lead to crashes on all crime actions
+	SetProperty("Destination", "SpiedBy"..GetID("")) -- do not remove this property. Do not add a property like "SpiedByDyn"..GetDynastyID("") because that will lead to crashes on all crime actions
 	AddImpact("", "spying", 1, -1) -- probably needed for hardcoded function aswell
 	MeasureSetNotRestartable()
 	MsgMeasure("","@L_GENERAL_MEASURES_145_ORDERASPYING_ACTION_+0", GetID("Destination"))
 			
-	SetProperty("Destination", "TomAIBeingSpiedOn", 1) -- don't spy on the same sim with several thugs
 	
 	local WhatToDo, SpyTheHouse, i, k
 	local Radius = 2000
@@ -129,7 +128,6 @@ function CleanUp()
 	
 	if AliasExists("Destination") then
 		RemoveProperty("Destination", "SpiedBy"..GetID(""))
-		RemoveProperty("Destination", "TomAIBeingSpiedOn")
 		if Evidences and Evidences > 0 then
 			feedback_MessageCharacter("",
 				"@L_GENERAL_MEASURES_145_ORDERASPYING_MSG_SUCCESS_HEAD_+0",
