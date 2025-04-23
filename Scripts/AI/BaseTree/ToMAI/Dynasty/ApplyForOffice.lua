@@ -5,11 +5,11 @@ function Weight()
 		return 0
 	end
 	
-	if not ReadyToRepeat("SIM", "AI_ApplyForOffice") then
+	if not dyn_GetIdleMember("dynasty", "SIM") then
 		return 0
 	end
-	
-	if not dyn_GetIdleMember("dynasty", "SIM") then
+
+	if not ReadyToRepeat("SIM", "AI_ApplyForOffice") then
 		return 0
 	end
 	
