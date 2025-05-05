@@ -1,114 +1,184 @@
--- ******** THANKS TO KINVER ********
 function Run()
 	if not GetInsideBuilding("", "BankBuilding") then
-		MsgDebugMeasure("@L_MEASURE_OFFERCREDIT_FAIL_+0")
 		StopMeasure()
 	end
 
-	if HasProperty("BankBuilding","OfferCreditNow") then
-		return
-	end
-
-	if not HasProperty("BankBuilding","KreditKonto") then
-		MsgDebugMeasure("@L_MEASURE_OFFERCREDIT_FAIL_+0")
+	if not HasProperty("BankBuilding", "BankAccount") then
+		MsgBoxNoWait("", "BankBuilding", "@L_OFFERCREDIT_ERROR_TIME_HEAD_+0", "@L_OFFERCREDIT_ERROR_MONEY_BODY_+0")
 		StopMeasure()
 	end
 	
-	local TimeOut  = GetData("TimeOut")
-	local MakeBreak = false
+	if not HasProperty("BankBuilding", "OfferCreditNow") then
+		SetProperty("BankBuilding", "OfferCreditWorker", GetID(""))
+	end
 
-	GetLocatorByName("BankBuilding","Work3","ChiefPos")
-	f_BeginUseLocator("","ChiefPos",GL_STANCE_SIT,true)
 	SetProperty("BankBuilding", "OfferCreditNow", 1)
-	SetProperty("BankBuilding", "OfferChr", GetID(""))
-	SetProperty("BankBuilding", "OfferStartTime", GetGametime())
-
-	if TimeOut ~= nil then
-		TimeOut = GetGametime() + TimeOut
-		MakeBreak = true
-	end		
-
-	while true do
-		if MakeBreak then
-			if TimeOut < GetGametime() then
-				break
-			end
-		end
-
-		local Kredit = GetProperty("BankBuilding","KreditKonto")
-		if Kredit == 0 then
-			break
-		end
-		
-		if not DynastyIsPlayer("") then
-			local Hour = math.mod(GetGametime(), 24)
-			if (Hour > 3) and (Hour <7) then
-				break
-			end
-		end
-
-		if HasProperty("BankBuilding", "OfferChr") then
-			local OfferID = GetProperty("BankBuilding","OfferChr")
-			if GetID("") ~= OfferID then
-				StopMeasure()
-			else
-				if Rand(11) > 9 then
-					CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false)
-					PlayAnimation("","sit_drink")
-					CarryObject("","",false)
-				end
-				
-				if HasProperty("BankBuilding","BankKundschaft") then
-					if GetProperty("BankBuilding","BankKundschaft") > 0 then
-						if SimGetGender("") == 1 then
-							PlaySound3DVariation("","CharacterFX/male_neutral",1)
-						else
-							PlaySound3DVariation("","CharacterFX/female_neutral",1)
-						end	
-						local doWork = Rand(4)
-						if doWork == 0 then
-						    PlayAnimation("","sit_talk")
-						elseif doWork == 1 then
-						    PlayAnimation("","sit_talk_02")
-						elseif doWork == 2 then
-						    PlayAnimation("","sit_yes")
-						else
-						    PlayAnimation("","sit_no")
-						end
-					end
-				end
-				
-				if not HasProperty("BankBuilding","KreditKonto") then
-					StopMeasure()
-				end
-
-				if not HasProperty("BankBuilding","OfferCreditNow") then
-					StopMeasure()
-				end
-				Sleep(5)
-				IncrementXPQuiet("",1)
-			end
-		else
-			break
+	
+	if HasProperty("BankBuilding", "OfferCreditWorker") then
+		local OfferID = GetProperty("BankBuilding", "OfferCreditWorker")
+		if GetID("") ~= OfferID then
+			MsgBoxNoWait("MyBoss", "BankBuilding", "@L_OFFERCREDIT_ERROR_TIME_HEAD_+0", "@L_OFFERCREDIT_ERROR_EMPLOYEE_BODY_+0")
+			StopMeasure()
 		end
 	end
+	
+	GetLocatorByName("BankBuilding", "Work3", "ChiefPos")
+	f_BeginUseLocator("", "ChiefPos", GL_STANCE_SIT, true)
+	
+	SetData("IsProductionMeasure", 0)
+	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
+	SetData("IsProductionMeasure", 1)
+
+	while true do
+		local CreditSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForCredit)))"
+		local NumCreditSims = Find("", CreditSimFilter, "CreditSim", -1)
+
+		if NumCreditSims < 1 then
+
+			if Rand(10) == 0 then
+				CarryObject("", "Handheld_Device/ANIM_beaker_sit_drink.nif", false)
+				PlayAnimation("", "sit_drink")
+				CarryObject("", "", false)
+			end
+			Sleep(5)
+
+		else
+			
+			SetData("Blocked", 0)
+
+			if not SendCommandNoWait("CreditSim0", "BlockMe") then
+				break
+			end
+
+			GetLocatorByName("BankBuilding", "wait3", "ClientSit")
+			f_BeginUseLocator("CreditSim0", "ClientSit", GL_STANCE_SIT, true)
+			MeasureSetNotRestartable()
+			SetState("", STATE_DUEL, true)
+
+			local anim = {"sit_talk", "sit_talk_02"}
+			local dowhat = PlayAnimationNoWait("CreditSim0", anim[Rand(2)+1])
+
+			MsgSay("CreditSim0", "@L_MEASURE_IDLE_TAKECREDIT_SPRUCH")
+					
+			local Account = GetProperty("BankBuilding", "BankAccount")
+
+			PlayAnimationNoWait("", "sit_talk")
+
+			if SimGetGender("") == 1 then
+				PlaySound3DVariation("","CharacterFX/male_neutral", 1)
+			else
+				PlaySound3DVariation("","CharacterFX/female_neutral", 1)
+			end	
+			
+			if Account >= 100 then
+				PlayAnimationNoWait("", "sit_yes")
+				local InterestText = 25 + GetSkillValue("", BARGAINING)
+				MsgSay("", "@L_MEASURE_IDLE_TAKECREDIT_ANSWER_POSITIVE", InterestText)
+				PlayAnimation("CreditSim0", "sit_yes")
+			else
+				PlayAnimationNoWait("", "sit_no")
+				MsgSay("", "@L_MEASURE_IDLE_TAKECREDIT_ANSWER_NEGATIVE")
+			end
+			
+			if HasProperty("CreditSim0", "WaitForCredit") then
+				RemoveProperty("CreditSim0", "WaitForCredit")
+			end			
+					
+			if Account >= 100 then
+				local Rank = SimGetRank("CreditSim0")
+				local CreditChoice = 0
+				local Sum = 100
+						
+				if Rank >= 3 then
+					CreditChoice = 2 + Rand(4)
+				else
+					CreditChoice = Rand(2)
+				end
+
+				if IsDynastySim("CreditSim0") then
+					CreditChoice = 4 + Rand(2)
+				end
+						
+				local creditOptions = {
+				    [1] = {amount = 200, minAccount = 200},
+				    [2] = {amount = 500, minAccount = 500},
+				    [3] = {amount = 1000, minAccount = 1000},
+				    [4] = {amount = 2000, minAccount = 2000},
+				    [5] = {amount = 5000, minAccount = 5000},
+				}
+
+				if CreditChoice == 0 then
+				    Sum = 100
+				elseif creditOptions[CreditChoice] and Account >= creditOptions[CreditChoice].minAccount then
+				    Sum = creditOptions[CreditChoice].amount
+				else
+				    Sum = 100
+				end
+				
+				local Interest 		= 0.25 + (GetSkillValue("",BARGAINING) / 100)
+				local InterestText 	= 25 + GetSkillValue("", BARGAINING)
+				
+				SetProperty("CreditSim0", "CreditBank" ,GetID("BankBuilding"))
+				SetProperty("CreditSim0", "CreditSum", Sum)
+				SetProperty("CreditSim0", "CreditInterest", Interest)
+				CreateScriptcall("OrderCredit_End", 24, "Measures/ms_OrderCredit.lua", "ReturnCredit", "CreditSim0", "MyBoss")
+				
+				if GetProperty("BankBuilding","MsgTake") == 1 then
+					MsgNewsNoWait("MyBoss", "CreditSim0", "", "building", -1, "@L_MEASURE_OfferCredit_HEAD_+0", "@L_MEASURE_OfferCredit_BODY_+0", GetID("CreditSim0"), GetID("BankBuilding"), Sum, InterestText)
+				end
+				
+				MoveSetActivity("CreditSim0", "")
+				SetProperty("BankBuilding", "BankAccount", (Account-Sum))
+				CreditMoney("CreditSim0", Sum, "Bank")
+				SatisfyNeed("CreditSim0", 9, 1)
+			end
+
+			f_EndUseLocator("CreditSim0", "ClientSit", GL_STANCE_STAND)
+			SetData("Blocked", 1)
+			Sleep(8)
+			SetState("", STATE_DUEL, false)
+			SetState("CreditSim0", STATE_DUEL, false)
+		end
+	end
+	StopMeasure()
+end
+
+function BlockMe()
+	while GetData("Blocked") ~= 1 do
+		Sleep(0.8)
+		SetState("", STATE_DUEL, true)
+	end
+	if HasProperty("", "WaitForCredit") then
+		RemoveProperty("", "WaitForCredit")
+	end
+	Sleep(1)
+	f_ExitCurrentBuilding("")
+	if GetState("", STATE_DUEL) then
+		SetState("", STATE_DUEL, false)
+	end
+	SimResetBehavior("")
 end
 
 function CleanUp()
-
-	GetInsideBuilding("", "BankBuilding")
-	if HasProperty("BankBuilding", "OfferCreditNow") then
-		RemoveProperty("BankBuilding", "OfferCreditNow")
+	SetData("Blocked", 1)
+	if GetInsideBuilding("", "BankBuilding") then
+		if HasProperty("BankBuilding", "OfferCreditNow") then
+			RemoveProperty("BankBuilding", "OfferCreditNow")
+		end
+		if HasProperty("BankBuilding" ,"OfferCreditWorker") then
+			RemoveProperty("BankBuilding", "OfferCreditWorker")
+		end
 	end
-
-	if HasProperty("BankBuilding" ,"OfferChr") then
-		RemoveProperty("BankBuilding" ,"OfferChr")
+	if AliasExists("CreditSim0") then
+		if GetState("CreditSim0", STATE_DUEL) then
+			SetState("CreditSim0", STATE_DUEL, false)
+		end
 	end
-
+	SetState("", STATE_DUEL, false)
 	StopAnimation("")
-	CarryObject("","",false)
-	CarryObject("","",true)
-	MoveSetStance("",GL_STANCE_STAND)
-	MoveSetActivity("")
-	f_EndUseLocator("","ChiefPos",GL_STACE_STAND)
+	CarryObject("", "", false)
+	CarryObject("", "", true)
+	MoveSetStance("", GL_STANCE_STAND)
+	MoveSetActivity("", "")
+	f_EndUseLocator("", "ChiefPos", GL_STANCE_STAND)
 end
