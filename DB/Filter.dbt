@@ -449,6 +449,9 @@ Data:
 1567   "CanArrangeConcert"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsType(4))OR(Object.IsType(36)))"   |
 1568   "CanUseMineGuards"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())AND(Object.IsType(12))AND NOT Object.GetState(building))"   |
 2000   "PATCH_TODO"   "__F((Object.BelongsToMe())AND(Object.IsDynastySim()))"   |
+2053   "CanCollectDebtsBoss"   "__F((Object.CanBeControlled())AND(Object.IsClass(3))AND(Object.GetOwnedBuildings())AND(Object.IsType(43)))"   |
+2054   "CanCollectDebtsWorker"   "__F((Object.CanBeControlled())AND(Object.GetProfession()==41))"   |
+2055   "HasStolenMoney"   "__F((Object.HasProperty(StolenSum)))"   |
 2064   "IsLingerPlace"   "__F((Object.ActionAdmissible())AND(Object.IsType(32)))"   |
 2065   "TargetFilterBuildingBurning"   "__F((Object.Type == Building)AND(Object.GetState(burning)))"   |
 2066   "BookmarkPerson" "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe()))" |  

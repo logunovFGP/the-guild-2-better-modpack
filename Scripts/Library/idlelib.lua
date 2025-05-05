@@ -1726,194 +1726,79 @@ end
 -- TakeACredit
 -- -----------------------
 function TakeACredit()
-	if HasProperty("","ProTCBank") then
+
+	MsgDebugMeasure("Go to the bank and take a credit")
+
+	if not GetSettlement("", "City") then
 		return
 	end
-	SetProperty("","ProTCBank",1)
-	local DistanceBest = -1
-	local Attractivity
-	local Distance
 
-	if GetSettlement("", "City") then
-		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_BANKHOUSE)
-	
-		local IgnoreID
-		if HasProperty("", "IgnoreBank") then
-			local Time = GetProperty("", "IgnoreBankTime")
-			if Time < GetGametime() then
-				RemoveProperty("", "IgnoreBank")
-				RemoveProperty("", "IgnoreBankTime")
-			else
-				IgnoreID = GetProperty("", "IgnoreBank")
+	local NumBankhouses = CityGetBuildings("City", 2, 43, -1, -1, FILTER_HAS_DYNASTY, "Bank")
+
+	if NumBankhouses > 0 then
+		for i = 0, NumBankhouses - 1 do
+			local Attractivity = GetImpactValue("Bank"..i, "Attractivity")
+			if HasProperty("Bank"..i, "OfferCreditNow") then
+				Attractivity = Attractivity + 0.25
+				CopyAlias("Bank"..i, "Destination")
 			end
 		end
-		if not AliasExists("Destination") or (IgnoreID and IgnoreID == GetID("Destination")) then
-			-- no suitable bank found
-			SatisfyNeed("", 9, 1)
+	end
+
+	if not AliasExists("Destination") then
+		SatisfyNeed("", 9, 1)
+		return
+	end
+	
+	if not BuildingGetOwner("Destination", "MyBoss") then
+		return
+	end
+
+	if AliasExists("Destination") then
+		GetLocatorByName("Destination", "exit1", "MoveTo")
+
+		if not f_MoveTo("","MoveTo") then
 			return
 		end
 		
-		if f_MoveTo("","Destination") then
-			if not GetLocatorByName("Destination","Wait4","SitPos") then
-				if not GetLocatorByName("Destination","Wait3","SitPos") then
-					if not GetFreeLocatorByName("Destination","Wait",1,4,"SitPos") then
-						return
-					else
-						if not HasProperty("Destination","BankKundschaft") then
-							SetProperty("Destination","BankKundschaft",1)
-						end	
-					end
-				else
-					if not HasProperty("Destination","BankKundschaft") then
-						SetProperty("Destination","BankKundschaft",2)
-					end						
+		if not GetFreeLocatorByName("Destination", "wait", 1, 2, "SitPos") then
+			Sleep(1)
+			idlelib_GoToRandomPosition()
+			return
+		end
+		
+		if AliasExists("SitPos") then
+			if (LocatorGetBlocker("SitPos") ~= GetID("")) then
+				if GetFreeLocatorByName("Destination", "wait", 1, 2, "SitPos") then
+					f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true)
 				end
+			end
+		else
+			if GetFreeLocatorByName("Destination", "wait", 1, 2, "SitPos") then
+				f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true)
 			else
-				if not HasProperty("Destination","BankKundschaft") then
-					SetProperty("Destination","BankKundschaft",2)
-				end
+				Sleep(1)
+				return
 			end
+		end
+		
+		SetProperty("", "WaitForCredit", 1)
+		local WaitTime = GetGametime() + 3
+		while GetGametime() < WaitTime do
+			Sleep(5)
+		end
 			
-			local coinCheckEnd = false
-			if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
-				if idlelib_BuySomeCoin(1) == "c" then
-					while true do
-						local WaitSimFilter = "__F(	(Object.GetObjectsByRadius(Sim) == 5000) AND (Object.Property.WaitForCredit==1) AND NOT (Object.Property.StartSay==1)	)"
-						local NumWaitSims = Find("", WaitSimFilter,"WaitSim", -1)
-						if NumWaitSims < 4 then
-							SetProperty("", "WaitForCredit", 1)
-							if f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
-								break
-							else
-								local BehaviourRand = Rand(5)
-								local AnimTime
-								if BehaviourRand == 0 then
-									AnimTime = PlayAnimation("","cogitate")
-								elseif BehaviourRand == 1 then
-									if NumWaitSims == 2 then
-										local myID = GetID("")
-										local OtherID
-										for i=0, NumWaitSims do
-											OtherID = GetID("WaitSim"..i)
-											if myID ~= OtherID then
-												CopyAlias("WaitSim"..i,"OtherSim")
-												break
-											end
-										end
-										if AliasExists("OtherSim") then
-											SetProperty("", "StartSay", 1)
-											SetProperty("OtherSim", "StartSay", 1)
-											f_MoveTo("","OtherSim",GL_MOVESPEED_WALK,100)
-											AlignTo("","OtherSim")
-											AlignTo("OtherSim","")
-											Sleep(1.5)
-											AnimTime = PlayAnimationNoWait("","talk")
-											if SimGetGender("")==GL_GENDER_MALE then
-												PlaySound3DVariation("","CharacterFX/male_neutral",1)
-											else
-												PlaySound3DVariation("","CharacterFX/female_neutral",1)
-											end
-										end
-									end
-								end
-								Sleep(AnimTime)
-								if HasProperty("", "StartSay") then
-									RemoveProperty("", "StartSay")
-								end
-								if AliasExists("OtherSim") then
-									if HasProperty("OtherSim", "StartSay") then
-										RemoveProperty("OtherSim", "StartSay")
-									end
-								end
-							end
-						else
-							coinCheckEnd = true
-							break
-						end
-					end
-					if HasProperty("", "WaitForCredit") then
-						RemoveProperty("", "WaitForCredit")
-					end
-				else
-					coinCheckEnd = true
-				end
-			end
-
-			if not coinCheckEnd then
-				if HasProperty("", "WaitForCredit") then
-					RemoveProperty("", "WaitForCredit")
-				end
-				if HasProperty("Destination","KreditKonto") then
-					if HasProperty("Destination","OfferCreditNow") then
-						local kreditMeng = GetProperty("Destination","KreditKonto")
-						if kreditMeng == 0 then
-							f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-							f_MoveTo("","Destination")
-							idlelib_BuySomeCoin()
-						else
-							local anim = { "sit_talk","sit_talk_02" }
-							local dowhat = PlayAnimationNoWait("",anim[Rand(2)+1])
-							MsgSayNoWait("","@L_MEASURE_IDLE_TAKECREDIT_SPRUCH")
-
-							local schuldner = SimGetRank("")
-							local lev = SimGetLevel("")
-
-							local hmuch = 0
-							if kreditMeng >	8000 then  
-								hmuch = (lev*40)+(80*((schuldner*2.5)+Rand(9)+1))
-							else
-								hmuch = (lev*35)+((kreditMeng/100) * ((schuldner*2)+Rand(8)+1))
-								if hmuch < 50 then
-									hmuch = 50
-								end
-							end
-
-							local PlaceIs = SimGetWorkingPlaceID("")
-							if lev == 1 and not IsDynastySim("") and PlaceIs == -1 then
-								hmuch = 30
-							end
-							if kreditMeng < hmuch then
-								hmuch = kreditMeng
-							end
-							hmuch = math.floor(hmuch)
-
-							kreditMeng = kreditMeng - hmuch
-							SetProperty("","SchuldenGeb",GetID("Destination"))
-							SetProperty("","SchuldenMeng",hmuch)
-							SetProperty("", "TimeBank", GetGametime()+4)
-
-							SetProperty("Destination","KreditKonto",kreditMeng)
-
-							SatisfyNeed("", 9, 1)
-
-							if BuildingGetOwner("Destination", "Glaubiger") then
-								chr_ModifyFavor("","Glaubiger", GL_FAVOR_MOD_SMALL)					
-							end
-
-							Sleep(dowhat)
-							f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-						end
-					else
-
-						f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-						f_MoveTo("","Destination")
-						idlelib_BuySomeCoin()
-					end
-				else
-
-					f_EndUseLocator("","SitPos",GL_STANCE_STAND)
-					f_MoveTo("","Destination")
-					idlelib_BuySomeCoin()
-				end
-			end
-		end			
+		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
+			
+		if HasProperty("", "WaitForCredit") then
+			RemoveProperty("", "WaitForCredit")
+		end
+		
+		f_ExitCurrentBuilding("")
 	end
-	f_ExitCurrentBuilding("")
-	if AliasExists("Destination") then
-		RemoveProperty("Destination","BankKundschaft")
-	end
-	RemoveProperty("","ProTCBank")
-	idlelib_GoToRandomPosition()
+
+	-- idlelib_BuySomeCoin()
+	Sleep(2)
 end
 
 -- -----------------------
