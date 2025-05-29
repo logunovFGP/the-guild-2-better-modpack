@@ -227,6 +227,9 @@ Data:
 2393    "buildings/ms_ManageLodge.lua"                 "-"   "ManageLodge"                         20   "hud/buttons/btn_157_AssignEmployeeToService.tga"         0   5              0               ""                                     ""   14                 0                     0                  "none"                   0                     0                       |
 2394    "buildings/SleepTavern.lua"                    "-"   "SleepTavern"                         99   "hud/buttons/btn_008_TakeCredit.tga"                      0   1              0               ""                                     ""   21                 0                     0                  "none"                   0                     0                       |
 
+// idlelib
+2500    "IdleLib/ms_GoTavern.lua"                      "-"   "DrinkAtTavern"                       1    "hud/buttons/btn_008_TakeCredit.tga"                      0   11             0               ""                                     ""   0                  0                     0                  "none"                   0                     0                       |
+
 // weddings
 3000    "WeddingCeremony\ms_SayYes.lua"                "-"   "SayYes"                              99   "hud/buttons/btn_multiplayersay.tga"                       0   99              0               ""                                     ""   0                  0                    0                  "none"                   0                     0                       |
 3001    "WeddingCeremony\ms_SayNo.lua"                 "-"   "SayNo"                               98   "hud/buttons/btn_multiplayersay.tga"                       0   99              0               ""                                     ""   0                  0                    0                  "none"                   0                     0                       |

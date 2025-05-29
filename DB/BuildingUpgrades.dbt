@@ -154,7 +154,19 @@ Data:
 1252             132              "Waterpipe"                 1                     0                 10                   0.25                 1251              0                 300             0          |
 1253             132              "Divanbed"                  1                     0                 15                   1530                 1246              0                 0               0          |
 1254             132              "stage"                     1                     0                 15                   1550                 1246              0                 0               0          |
-1255             130              "RentRoom"                  1                     1                 0                    152                  1248              43                0               0          |
+1255             130              "RentRoom"                  1                     1                 0                    152                  0                 43                0               0          |
+1256             130              "RentPrivate"               1                     0                 10                   0.25                 0                 44                500             0          |
+
+1257             130              "Scene01"                   1                     0                 10                   0.25                 1256              0                 750             0          |
+1258             130              "Chimney"                   1                     0                 10                   0.25                 1256              0                 500             0          |
+
+1259             130              "Scene02"                   1                     0                 10                   0.25                 1257              0                 750             0          |
+1260             130              "Angel"                     1                     0                 10                   0.25                 1257              0                 500             0          |
+1261             130              "Rug"                       1                     0                 10                   0.25                 1257              0                 250             0          |
+
+1262             130              "Decoration"               1                     0                 10                   0.25                 1259              0                 500             0          |
+1263             130              "Paintings"                1                     0                 10                   0.25                 1259              0                 750             0          |
+1264             130              "Sofa"                     1                     0                 10                   0.25                 1259              0                 250             0          |
 
 // Smithy 140
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
