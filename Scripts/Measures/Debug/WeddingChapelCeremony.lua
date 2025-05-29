@@ -17,10 +17,12 @@ function Run()
 	GetPosition("Member", "Position")
 	GetSettlement("", "Settlement")
 
+	local Templates = {701, 720, 721}
+
 	local Count = -1
 	repeat
 		Count = Count + 1
-		SimCreate(720, "Settlement", "Position", "Musician"..Count)
+		SimCreate(Templates[Count+1], "Settlement", "Position", "Musician"..Count)
 	until (Count == 2)
 
 	Sleep(1)
