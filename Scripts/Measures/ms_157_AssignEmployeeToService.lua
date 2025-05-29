@@ -10,6 +10,7 @@
 -- Run
 -- -----------------------
 function Run()
+
 	if not SimGetWorkingPlace("", "Tavern") then
 		if IsPartyMember("") then
 			if not GetInsideBuilding("", "CurrentBuilding") then
@@ -27,15 +28,37 @@ function Run()
 		if not f_MoveTo("", "Tavern", GL_MOVESPEED_RUN) then
 			StopMeasure()
 		end
-
 		if not GetInsideBuilding("", "CurrentBuilding") then
 			StopMeasure()
 		end
-
 		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_TAVERN then
 			CopyAlias("CurrentBuilding", "Tavern")
 		else
 			StopMeasure()
+		end
+	end
+
+	if not BuildingGetOwner("Tavern", "MyBoss") then
+		LogMessage("@TAVERN #E Critical error in Lodge.")
+		StopMeasure()
+	end
+
+	if not HasProperty("Tavern", "AmountBeds") then
+		SetProperty("Tavern", "AmountBeds", 3)
+	end
+
+	if not HasProperty("Tavern", "ServingLodge") then
+		SetProperty("Tavern", "ServingLodge", -1)
+	end
+
+	GetLocatorByName("Tavern", "GiveRoom", "LodgeManager")
+
+	for i = 1, 3 do
+		if not HasProperty("Tavern", "StatusBed"..i) then
+			SetProperty("Tavern", "StatusBed"..i, "Vacant")
+		end
+		if not HasProperty("Tavern", "BedMoney"..i) then
+			SetProperty("Tavern", "BedMoney"..i, 0)
 		end
 	end
 
@@ -46,14 +69,317 @@ function Run()
 	SetData("IsProductionMeasure", 1)
 		
 	while true do
-		local NumGuests = BuildingGetSimCount("Tavern")
-		if NumGuests == 0 then
+		local Count = {Guests=0, Lodge=0, CanOrder=0}
+		local GuestID, Time
+
+		for i = 1, 6 do
+			if not IsLocatorFree("Tavern", "sitrich"..i) then
+				Count.Guests = Count.Guests +1
+				GetLocatorByName("Tavern", "sitrich"..i, "Position"..i)
+				GuestID = LocatorGetBlocker("Position"..i)
+				if HasProperty("Tavern", "GuestServed#"..GuestID) then
+					Time = GetProperty("Tavern", "GuestServed#"..GuestID)
+					if Time < GetGametime() then
+						Count.CanOrder = Count.CanOrder +1
+					end
+				else
+					Count.CanOrder = Count.CanOrder +1
+				end
+			end
+		end
+
+		for i = 1, 15 do 
+			if not IsLocatorFree("Tavern", "sitinn"..i) then
+				Count.Guests = Count.Guests +1
+				GetLocatorByName("Tavern", "sitinn"..i, "Position"..i)
+				GuestID = LocatorGetBlocker("Position"..i)
+				if HasProperty("Tavern", "GuestServed#"..GuestID) then
+					Time = GetProperty("Tavern", "GuestServed#"..GuestID)
+					if Time < GetGametime() then
+						Count.CanOrder = Count.CanOrder +1
+					end
+				else
+					Count.CanOrder = Count.CanOrder +1
+				end
+			end
+		end
+
+		for i = 1, 8 do
+			if not IsLocatorFree("Tavern", "WaitLodge"..i) then
+				Count.Lodge = Count.Lodge +1
+			end
+		end
+
+		if (Count.Lodge == 0) and (Count.CanOrder == 0) then
+			MsgDebugMeasure("Cleaning tables.")
 			ms_157_assignemployeetoservice_CleanTables()
-		else
+		end 
+
+		GetDynasty("", "Dynasty")
+
+		if DynastyIsPlayer("Dynasty") then
+			LogMessage("@TAVERN #W (" .. GetName("") ..") Guests: " .. Count.Guests .. ", CanOrder: " .. Count.CanOrder .. ", Lodge: " .. Count.Lodge)
+		end
+
+		if Count.Lodge > 0 then
+			local doLodge = GetProperty("Tavern", "ServingLodge")
+			if doLodge == -1 then
+				SetProperty("Tavern", "ServingLodge", GetID(""))
+				MsgDebugMeasure("Assigning a bed to a guest.")
+				ms_157_assignemployeetoservice_Lodge()
+			end
+		elseif (Count.Guests > 0) and (Count.CanOrder > 0) then
+			MsgDebugMeasure("Serving customers.")
 			ms_157_assignemployeetoservice_Serve()
 		end
+
 		Sleep(1)
 	end
+end
+
+function Lodge()
+	if not AliasExists("Tavern") then
+		StopMeasure()
+	end
+
+	f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
+
+	local function ReturnPrice(Slot)
+		local Element 	= FindNode("\\GUI\\HudRoot")
+		local Bed 		= Element:FindChildDepth("Bed0"..Slot)
+		local Price		= Bed:FindChildDepth("Price")
+		LogMessage( "@TAVERN #W ReturnPrice for Tavern is " .. 25* ( Price:GetValueInt("Price") ) )
+		return ( 25* ( Price:GetValueInt("Price") ) )
+	end
+
+	local CheckOutSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitsForCheckout)))"
+	local NumCheckOutSims = Find("", CheckOutSimFilter, "CheckOutSim", -1)
+
+	if NumCheckOutSims > 0 then
+		--repeat
+			--NumCheckOutSims = Find("", CheckOutSimFilter, "CheckOutSim", -1)
+			LogMessage("@TAVERN_LODGE #W Checkout with " .. GetName("CheckOutSim0"))
+			RemoveProperty("CheckOutSim0", "WaitsForCheckout")
+			GetLocatorByName("Tavern", "GetRoom", "CheckOut")
+			if not f_BeginUseLocator("CheckOutSim0", "CheckOut", GL_STANCE_STAND, true) then
+				LogMessage("@TAVERN_LODGE #E Cannot reach CheckOut Locator!")
+			else
+				LogMessage("@TAVERN_LODGE #E Reached CheckOut Locator!")
+			end
+			MeasureSetNotRestartable()
+			SetState("CheckOutSim0", STATE_DUEL, true)
+			SetState("", STATE_DUEL, true)
+
+			PlayAnimationNoWait("CheckOutSim0", "talk_short")
+
+			if SimGetGender("CheckOutSim0") == GL_GENDER_MALE then
+				MsgSay("CheckOutSim0", "@L_LODGE_TIP_MALE_+"..Rand(4))
+			else
+				MsgSay("CheckOutSim0", "@L_LODGE_TIP_FEMALE_+"..Rand(4))
+			end
+
+			local Slot = GetProperty("CheckOutSim0", "AssignedBed")
+
+			local Sim = {Rank=SimGetRank("CheckOutSim0"), Wage=SimGetWage("CheckOutSim0")}
+
+			local Tip = ReturnPrice(Slot) * ( 100 + ( 50 * (-1 + Sim.Rank) ) / 100 )
+			Tip = Tip + Sim.Wage / ( Rand(3) + 1 )
+
+			LogMessage("@TAVERN_LODGE === Tip: " .. Tip)
+
+			SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
+			
+			CreditMoney("", Tip, "Lodge (Tips)")
+
+			ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
+
+			Sleep(0.7)
+			chr_ModifyFavor("CheckOutSim0", "MyBoss", 5)
+
+			Sleep(0.3)
+			chr_ModifyFavor("MyBoss", "CheckOutSim0", 5)
+
+			Sleep(0.3)
+			chr_GainXP("CheckOutSim0", 5)
+
+			Sleep(0.3)
+			chr_GainXP("", 5)
+
+			f_EndUseLocator("CheckOutSim0", "GetRoom", GL_STANCE_STAND)
+
+			Sleep(1)
+
+			SetState("", STATE_DUEL, false)
+			SetState("CheckOutSim0", STATE_DUEL, false)
+
+			if HasProperty("CheckOutSim0", "AssignedBed") then
+				RemoveProperty("CheckOutSim0", "AssignedBed")
+				--f_ExitCurrentBuilding("CheckOutSim0")
+				SimResetBehavior("CheckOutSim0")
+				SimStopMeasure("CheckOutSim0")
+			end
+
+			Sleep(1)
+		--until (NumCheckOutSims == 0)
+	end
+
+	local LodgeSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForLodge)))"
+	local NumLodgeSims = Find("", LodgeSimFilter, "LodgeSim", -1)
+
+	if NumLodgeSims > 0 then
+		--repeat
+			--NumLodgeSims = Find("", LodgeSimFilter, "LodgeSim", -1)
+			SetProperty("Tavern", "GuestLodge"..GetID("LodgeSim0").."Waiter", GetID(""))
+			LogMessage("@TAVERN (" .. GetName("") .. " Waiting Lodge Sims " .. NumLodgeSims)
+			RemoveProperty("LodgeSim0", "WaitForLodge")
+			GetLocatorByName("Tavern", "GetRoom", "AskForBed")
+			f_BeginUseLocator("LodgeSim0", "AskForBed", GL_STANCE_STAND, true)
+			MeasureSetNotRestartable()
+			SetState("LodgeSim0", STATE_DUEL, true)
+			SetState("", STATE_DUEL, true)
+
+			PlayAnimationNoWait("LodgeSim0", "talk_short")
+
+			if SimGetGender("LodgeSim0") == GL_GENDER_MALE then
+				MsgSay("LodgeSim0", "@L_LODGE_ASK_FOR_BED_MALE_+"..Rand(8))
+			else
+				MsgSay("LodgeSim0", "@L_LODGE_ASK_FOR_BED_FEMALE_+"..Rand(8))
+			end
+			
+			local isSelectedBed = nil
+
+			for i = 1, 3 do
+				if HasProperty("Tavern", "StatusBed"..i) then
+					local isBedAvailable = GetProperty("Tavern", "StatusBed"..i)
+					if (isBedAvailable == "Vacant") then
+						local Price = ReturnPrice(i)
+						local Favor = GetFavorToSim("", "LodgeSim0")
+						local Label = nil
+
+						if (Favor >= 65) then
+							Label = "LODGE_PRICE_INFO_POLITE"
+						end
+
+						if (Label == nil) and (Favor >= 40) then
+							Label = "LODGE_PRICE_INFO_NORMAL"
+						end
+
+						if (Label == nil) and (Favor <= 35) then
+							Label = "LODGE_PRICE_INFO_RUDE"
+						end
+
+						MsgSay("", "@L_"..Label.."_+0", Price)
+						local temp = Rand(1)
+
+						if temp == 0 then
+							PlayAnimationNoWait("LodgeSim0", "nod")
+
+							if SimGetGender("LodgeSim0") == GL_GENDER_MALE then
+								MsgSay("LodgeSim0", "@L_LODGE_ACCEPT_PRICE_MALE_+"..Rand(1), Price)
+							else
+								MsgSay("LodgeSim0", "@L_LODGE_ACCEPT_PRICE_FEMALE_+"..Rand(1), Price)
+							end
+
+							isSelectedBed = i
+							SetProperty("Tavern", "StatusBed"..i, GetID("LodgeSim0"))
+						else
+							PlayAnimationNoWait("LodgeSim0", "shakehead")
+
+							if SimGetGender("LodgeSim0") == GL_GENDER_MALE then
+								MsgSay("LodgeSim0", "@L_LODGE_REJECT_PRICE_MALE_+"..Rand(1), Price)
+							else
+								MsgSay("LodgeSim0", "@L_LODGE_REJECT_PRICE_FEMALE_+"..Rand(1), Price)
+							end
+
+							isSelectedBed = nil
+						end
+
+						break
+					end
+				end
+			end
+
+			PlayAnimationNoWait("", "talk_short")
+
+			if (isSelectedBed == nil) then
+				local Favor = GetFavorToSim("", "LodgeSim0")
+				local Label = nil
+
+				if (Favor >= 65) then
+					Label = "_LODGE_NO_BED_POLITE_"
+				end
+
+				if (Label == nil) and (Favor >= 40) then
+					Label = "_LODGE_NO_BED_CASUAL_"
+				end
+
+				if (Label == nil) and (Favor <= 35) then
+					Label = "_LODGE_NO_BED_GRUMPY_"
+				end
+
+				MsgSay("", "@L"..Label.."+"..Rand(4))
+			end
+
+			if (isSelectedBed ~= nil) then
+				local Favor = GetFavorToSim("", "LodgeSim0")
+				local Label = nil
+
+				if (Favor >= 65) then
+					Label = "L_LODGE_ROOM_AVAILABLE_POLITE_"
+				end
+
+				if (Label == nil) and (Favor >= 40) then
+					Label = "L_LODGE_ROOM_AVAILABLE_CASUAL_"
+				end
+
+				if (Label == nil) and (Favor <= 35) then
+					Label = "L_LODGE_ROOM_AVAILABLE_GRUMPY_"
+				end
+
+				MsgSay("", "@"..Label.."+"..Rand(4))
+
+				local Price = ReturnPrice(isSelectedBed)
+
+				SetProperty("Tavern", "BedMoney"..isSelectedBed, GetProperty("Tavern", "BedMoney"..isSelectedBed) + Price)
+
+				CreditMoney("", Price, "Lodge")
+				ShowOverheadSymbol("", false, false, 0, "@L%1t", Price)
+
+				Sleep(0.7)
+				chr_ModifyFavor("LodgeSim0", "MyBoss", 5)
+
+				Sleep(0.3)
+				chr_ModifyFavor("MyBoss", "LodgeSim0", 5)
+
+				Sleep(0.3)
+				chr_GainXP("LodgeSim0", 15)
+
+				Sleep(0.3)
+				chr_GainXP("", 5)
+
+				SetProperty("LodgeSim0", "AssignedBed", isSelectedBed)
+				MeasureRun("LodgeSim0", nil, "SleepTavern", true)
+			end
+
+			f_EndUseLocator("LodgeSim0", "GetRoom", GL_STANCE_STAND)
+
+			Sleep(1)
+
+			SetState("", STATE_DUEL, false)
+			SetState("LodgeSim0", STATE_DUEL, false)
+
+			if not HasProperty("LodgeSim0", "AssignedBed") then
+				LogMessage("@TAVERN #E No bed assigned to " .. GetName("LodgeSim0"))
+				--f_ExitCurrentBuilding("LodgeSim0")
+				SimResetBehavior("LodgeSim0")
+			end
+
+			Sleep(1)
+		--until (NumLodgeSims == 0)
+	end
+
+	SetProperty("Tavern", "ServingLodge", -1)
+	Sleep(1)
 end
 
 function CleanTables()
@@ -79,55 +405,145 @@ function CleanTables()
 end
 
 function Serve()
-	local Type = Rand(4)
-	local Locator
-	if Type == 0 then
-		Locator = Rand(4)
-		GetLocatorByName("Tavern", "ServeSitRich"..Locator, "MovePos")
-		f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
-		PlayAnimation("", "talk_short")
-		f_EndUseLocator("", "MovePos", GL_STANCE_STAND)
-	else 
-		Locator = Rand(6)
-		GetLocatorByName("Tavern", "ServeStand"..Locator, "MovePos")
-		f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
-		PlayAnimation("", "talk_short")
-		f_EndUseLocator("", "MovePos", GL_STANCE_STAND)
+	for i = 1, 6 do
+		ms_157_assignemployeetoservice_ServeCustomer("sitrich", i)
 	end
-	Type = Rand(3)
-	if Type == 0 then
-		if GetLocatorByName("Tavern", "ServeAloneStand0", "ServePos") then
-			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND, true)
-			PlayAnimation("", "manipulate_middle_twohand")
-			f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
-		end
-	elseif Type == 1 then
-		if GetLocatorByName("Tavern", "ServeAloneHigh0", "ServePos") then
-			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND, true)
-			PlayAnimation("", "manipulate_top_r")
-			f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
-		end
-	elseif Type == 2 then
-		if GetLocatorByName("Tavern", "ServeAloneKnee0", "ServePos") then
-			f_BeginUseLocator("", "ServePos", GL_STANCE_STAND, true)
-			PlayAnimation("", "manipulate_middle_low_r")
-			f_EndUseLocator("", "ServePos", GL_STANCE_STAND)
+	for i = 1, 15 do 
+		ms_157_assignemployeetoservice_ServeCustomer("sitinn", i)
+	end
+end
+
+function ServeCustomer(Locator, Index)
+	Sleep(1)
+	GetInsideBuilding("Owner", "Tavern") 
+	GetDynasty("Tavern", "Dynasty")
+
+	if not IsLocatorFree("Tavern", Locator..Index) then
+		if GetLocatorByName("Tavern", Locator..Index, "Position"..Index) then
+			local Guest = LocatorGetBlocker("Position"..Index)
+			if HasProperty("Tavern", "GuestServed#"..Guest) then
+				local Time = GetProperty("Tavern", "GuestServed#"..Guest)
+				GetAliasByID(Guest, "Guest")
+				if Time < GetGametime() then
+					RemoveProperty("Tavern", "GuestServed#"..Guest)
+					if DynastyIsPlayer("Dynasty") then
+						LogMessage("@TAVERN_TABLE #W " .. GetName("Guest") .. " can order again because next checkpoint " .. Time .. " has been passed by current time " .. GetGametime())
+					end
+				end
+			else
+				GetAliasByID(Guest, "Guest")
+
+				if DynastyIsPlayer("Dynasty") then
+					LogMessage("@TAVERN_TABLE #W " .. GetName("Guest") .. " is ordering now -> " .. GetGametime())
+				end
+				SetProperty("Tavern", "GuestServed#"..Guest, GetGametime() + 1.5)
+				SetProperty("Tavern", "Guest"..Guest.."Waiter", GetID(""))
+
+				f_MoveTo("", "Position"..Index, GL_MOVESPEED_WALK)
+				
+				PlayAnimationNoWait("", "talk_short")
+				MsgSay("", "What will it be today?")
+				PlayAnimationNoWait("Guest", "talk_sit_short")
+				PlayAnimationNoWait("", "nod")
+
+				local Request, Amount, WantsDrink, TotalPrice
+				local ItemCount = 0
+
+				if HasProperty("Tavern", "Guest"..Guest.."WantsType") then
+					Request, Amount = GetProperty("Tavern", "Guest"..Guest.."WantsType"), GetProperty("Tavern", "Guest"..Guest.."WantsAmount")
+					if Request == "Drink" then
+						WantsDrink = true
+					else
+						WantsDrink = false
+					end
+					MsgSay("Guest", "I'll get a " .. Request)
+					ItemCount, TotalPrice = economy_BuyItems("Tavern", "Guest", Request, Amount, true)
+				end
+
+				-- if SimGetNeed("", 8) > 0.3 or  SimGetNeed("", 1) > 0.3 then
+
+				if ItemCount == 0 then
+					MsgSay("", "I'm sorry, we've ran out.")
+					SimStopMeasure("Guest")
+				end
+
+				if ItemCount > 0 then
+					local Bonus = 1
+
+					if HasProperty("Tavern", "Versengold") then
+						Bonus = Bonus + 1
+					end
+
+					--SatisfyNeed("", needo, 0.3)
+					local Tavern = {Level=BuildingGetLevel("Tavern"), Attractivity=GetImpactValue("Tavern", "Attractivity")}
+					chr_CreditMoney("Tavern", math.floor(Tavern.Level * (5 + (Rand(20)+1) * (Tavern.Attractivity + Bonus))), "WaresSold")
+					-- chr_CreditMoney("Tavern", 3 * chr_GetRank("") + 1, "WaresSold")
+
+					if WantsDrink then
+						GetLocatorByName("Tavern", "servealonehigh0", "MovePos")
+						if not f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true) then
+							f_MoveTo("", "MovePos")
+						end
+						PlayAnimation("", "manipulate_top_r")
+
+						CarryObject("", "Handheld_Device/ANIM_beaker_sit_drink.nif", false)
+
+						GetLocatorByName("Tavern", "servealoneknee0", "MovePos")
+						f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
+						PlayAnimation("", "manipulate_middle_low_r")
+
+						f_MoveTo("", "Position"..Index, GL_MOVESPEED_WALK)
+						PlayAnimation("", "manipulate_middle_low_r")
+						CarryObject("", "", false)
+						MoveSetActivity("")
+						SetProperty("Tavern", "Guest"..Guest.."Has", "Drink")
+					end
+
+					if not WantsDrink then
+						GetLocatorByName("Tavern", "servealonestand0", "MovePos")
+						f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
+						PlayAnimation("", "manipulate_middle_twohand")
+						MoveSetActivity("", "carry")
+						CarryObject("", "Handheld_Device/ANIM_Bowl_Stew.nif", false)
+						f_MoveTo("", "Position"..Index, GL_MOVESPEED_WALK)
+						PlayAnimation("", "manipulate_middle_low_r")
+						CarryObject("", "", false)
+						MoveSetActivity("")
+						SetProperty("Tavern", "Guest"..Guest.."Has", "Food")
+					end
+
+					MeasureRun("", nil, "AssignEmployeeToService")
+				end
+			end
 		end
 	end
-	f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
-	PlayAnimation("", "manipulate_middle_low_r")
-	f_EndUseLocator("", "MovePos", GL_STANCE_STAND)
-	
 end
 
 function CleanUp()
-	if AliasExists("Tavern") then
-		SimGetWorkingPlace("","Tavern")
-		RemoveProperty("Tavern", "ServiceActive")
-		RemoveProperty("Tavern", "GoToService")
+	SetState("", STATE_DUEL, false)
+	StopAnimation("")
+	CarryObject("", "", false)
+	CarryObject("", "", true)
+	MoveSetActivity("")
+
+	if not AliasExists("Tavern") then
+		SimGetWorkingPlace("", "Tavern")
 	end
 
-	StopAnimation("")
-	MoveSetActivity("", "")
-end
+	if AliasExists("Tavern") then
+		GetDynasty("Tavern", "Dynasty")
 
+		if DynastyIsPlayer("Dynasty") then
+			LogMessage("@TAVERN #W CleanUp() with " .. GetName(""))
+		end
+
+		RemoveProperty("Tavern",  "ServiceActive")
+		RemoveProperty("Tavern",  "GoToService")
+
+		local Lodge = GetProperty("Tavern", "ServingLodge")
+
+		if GetID("") == Lodge then
+			SetProperty("Tavern", "ServingLodge", -1)
+		end
+	end
+end

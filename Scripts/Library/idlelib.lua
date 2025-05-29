@@ -919,6 +919,17 @@ end
 -- GoToTavern
 -- -----------------------
 function GoToTavern()
+	local test = true
+
+	LogMessage("@IDLE #W before ("..GetName("")..") Go to Tavern")
+
+	MeasureRun("", nil, "DrinkAtTavern")
+
+	LogMessage("@IDLE #W after ("..GetName("")..") Go to Tavern")
+
+	if test then
+		--StopMeasure()
+	end
 	MsgDebugMeasure("Have some drink in a Tavern")
 	if GetSettlement("", "City") then
 
@@ -1011,7 +1022,7 @@ function GoToTavern()
 			if Rand(3) > 0 then
 				AnimTime = PlayAnimationNoWait("","sit_drink")
 				Sleep(1)
-				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false)
+				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false) -- have sim get food
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1857,16 +1868,24 @@ function RentBed()
 			idlelib_GoToRandomPosition()
 			return
 		end
+
+		local STANCE
+
+		if BuildingHasUpgrade("Destination", 1247) then
+			STANCE = GL_STANCE_SIT
+		else
+			STANCE = GL_STANCE_STAND
+		end
 		
 		if AliasExists("SitPos") then
 			if (LocatorGetBlocker("SitPos") ~= GetID("")) then
 				if GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
-					f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true)
+					f_BeginUseLocator("", "SitPos", STANCE, true)
 				end
 			end
 		else
 			if GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
-				f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true)
+				f_BeginUseLocator("", "SitPos", STANCE, true)
 			else
 				Sleep(1)
 				return
