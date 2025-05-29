@@ -38,34 +38,41 @@ function Run()
 	end
 
 	local WaitTime = GetGametime() + 1.5
-	local hasFinished = false
 
 	while GetGametime() < WaitTime do
-		
-		if HasProperty("", "WaitsForCheckout") then
-			hasFinished = true
-			break
-		end
+		Sleep(5)
 	end
 
-	if not hasFinished then 		
-		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
+	LogMessage("@TAVERN #E (" .. GetName("") .. ") Leaves without tip. Reason: Too Long to Check Out.")	
+	f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
 
-		SetProperty("Tavern", "StatusBed"..AssignedBed, "Vacant")
-
-		if HasProperty("", "WaitsForCheckout") then
-			RemoveProperty("", "WaitsForCheckout")
-		end
-
-		if HasProperty("", "AssignedBed") then
-			RemoveProperty("", "AssignedBed")
-		end
-			
-		f_ExitCurrentBuilding("")
-		SimResetBehavior("")
-	end
+	StopMeasure()
 end
 
 function CleanUp()
-
+	if GetInsideBuilding("", "Tavern") then
+		if AliasExists("Tavern") then
+			GetDynasty("Tavern", "Dynasty")
+			if DynastyIsPlayer("Dynasty") then
+				LogMessage("@TAVERN #W (" .. GetName("") .. ") ends the SleepTavern().")
+			end
+			if HasProperty("", "WaitsForCheckout") then
+				RemoveProperty("", "WaitsForCheckout")
+			end
+			if HasProperty("", "AssignedBed") then
+				local Slot = GetProperty("", "AssignedBed")
+				local BedStatus = GetProperty("Tavern", "StatusBed"..Slot)
+				RemoveProperty("", "AssignedBed")
+				SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
+			end
+			if HasProperty("Tavern", "GuestLodge"..GetID("").."Waiter") then
+				local Waiter = GetProperty("Tavern", "GuestLodge"..GetID("").."Waiter")
+				GetAliasByID(Waiter, "Waiter")
+				RemoveProperty("Tavern", "GuestLodge"..GetID("").."Waiter")
+				MeasureRun("Waiter", nil, "AssignEmployeeToService")
+			end
+		end
+	end
+	f_ExitCurrentBuilding("")
+	SimResetBehavior("")
 end
