@@ -154,6 +154,7 @@ Data:
 1252             132              "Waterpipe"                 1                     0                 10                   0.25                 1251              0                 300             0          |
 1253             132              "Divanbed"                  1                     0                 15                   1530                 1246              0                 0               0          |
 1254             132              "stage"                     1                     0                 15                   1550                 1246              0                 0               0          |
+1255             130              "RentRoom"                  1                     1                 0                    152                  1248              43                0               0          |
 
 // Smithy 140
 // ID         Building ID              Name            Impact Receiver          Standard           Impact            Impact Value          Room (Tree)        Indoorscene         Cost           Visible
