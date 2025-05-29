@@ -459,3 +459,4 @@ Data:
 2068   "ShowAdditionalDebugMeasures"   "__F((Object.CanBeControlled())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"   |
 2069   "IsAllowedSpecialMeasuresForWeddings"   "__F((Object.CanBeControlled())AND(Object.HasProperty(IsAllowedSpecialMeasuresForWeddings)))"   |
 2070   "IsChapel"   "__F((Object.IsType(42)))"   |
+2071   "IsMyTavern"   "__F((Object.Type==Building)AND(Object.IsType(4))AND(Object.BelongsToMe()))"   |
