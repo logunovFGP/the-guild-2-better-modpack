@@ -2,6 +2,19 @@
 function CleanUp()
 	LogMessage("@NAO [WeddingCeremony] CleanUp().")
 
+	if AliasExists("Musician0") then
+		for i = 1, 2 do
+			StopAnimation("Musician"..i)
+			PlayAnimation("Musician"..i, "play_instrument_03_out")
+			CarryObject("Musician"..i, "", false)
+			CarryObject("Musician"..i, "", true)
+			Kill("Musician"..i)
+		end
+		StopAnimation("Musician0")
+		Detach3DSound("Musician0")
+		Kill("Musician0")
+	end
+
 	f_EndUseLocator("Orphan#1", "flowerchild1", GL_STANCE_STAND)
 	f_EndUseLocator("Orphan#2", "flowerchild2", GL_STANCE_STAND)
 
@@ -68,6 +81,12 @@ function CleanUp()
 	end
 
 	ListClear("tmp")
+end
+
+function OnCameraEnable()
+end
+
+function OnCameraDisable()
 end
 
 function Init()
@@ -248,7 +267,7 @@ function InitSims()
 end
 
 function SetUpOrphan1()
-	GetLocatorByName("#WEDDING_CHAPEL", "flowerchild1", "FC1")
+	GetLocatorByName("#WEDDING_CHAPEL", "FlowerChild1", "FC1")
 	f_MoveTo("", "FC1")
 	f_BeginUseLocator("", "FC1", GL_STANCE_STAND, true)
 	GetPosition("", "Pos1")
@@ -256,7 +275,7 @@ function SetUpOrphan1()
 end
 
 function SetUpOrphan2()
-	GetLocatorByName("#WEDDING_CHAPEL", "flowerchild2", "FC2")
+	GetLocatorByName("#WEDDING_CHAPEL", "FlowerChild2", "FC2")
 	f_MoveTo("", "FC2")
 	f_BeginUseLocator("", "FC2", GL_STANCE_STAND, true)
 	GetPosition("", "Pos2")
@@ -299,6 +318,7 @@ function GoToMarryPos()
 	f_MoveTo("", "E2")
 	f_BeginUseLocator("", "E2", GL_STANCE_STAND, true) 
 	SetData("There", 1)
+	CutsceneSetData("", "There")
 	while true do
 		Sleep(5)
 	end
@@ -383,6 +403,29 @@ function Start()
 
 	BuildingFindSimByProperty("#WEDDING_CHAPEL", "BUILDING_NPC", 11, "#PRIEST")
 
+	local doMusicians = true
+
+	if doMusicians then
+		local Templates = {719, 720, 721}
+		GetPosition("#PRIEST", "Position")
+		GetSettlement("#PRIEST", "Settlement")
+
+		local Count = -1
+		repeat
+			Count = Count + 1
+			SimCreate(Templates[Count+1], "Settlement", "Position", "Musician"..Count)
+		until (Count == 2)
+
+		for i = 0, 2 do 
+			CopyAliasToCutscene("Musician"..i, "", "Musician"..i)
+			CutsceneAddSim("", "Musician"..i)
+		end
+
+		for i = 0, 2 do
+			CutsceneCallThread("", "PrepareInstrument"..i, "Musician"..i)
+		end
+	end
+
 	MsgSayNoWait("#PRIEST", "_MEASURE_MARRY_CEREMONY_TAKE_A_SEAT_+0")
 
 	if not chr_SpendMoney("#MAIN", GetCost(), "Wedding") then
@@ -443,11 +486,42 @@ function Start()
     f_MoveToNoWait("#MAIN", "E1")
     f_BeginUseLocatorNoWait("#MAIN", "E1", GL_STANCE_STAND, true)
 
-    while not HasData("There") do
-		CutsceneCameraBlend("", 0.1, 1)
-		CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#MAIN")
-		Sleep(0.1)
-    end
+    LogMessage("@NAO #E Saving now will crash")
+    --local hasData
+    --while true do
+	--	CutsceneGetData("", "There")
+    --	if GetData("There") ~= 1 then
+	--		CutsceneCameraBlend("", 0.1, 1)
+	--		CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#MAIN")
+	--		Sleep(0.1)
+	--	elseif GetData("There") == 1 then
+	--		break
+	--	end
+    --end
+    LogMessage("@NAO #E Saving now will not crash")
+
+	SetState("#MAIN", STATE_CUTSCENE, false)
+
+	SetData("SkipProgressBar", 0)
+	CutsceneSetData("", "SkipProgressBar")
+
+	TrialHUDSetSims("", GetID("#MAIN"), GetID("#COURTED"), GetID("#PRIEST"), GetID("#PRIEST"), GetID("#PRIEST"))
+	
+	CutsceneCallThread("", "SetWeddingHUD", "#MAIN")
+
+	-- Progress, Guest1, Guest2, Guest3, Arrow, Timer
+	TrialHUDSetStatus("", 0, 0, 0, 0, 0, 0.0)
+	Sleep(0.5)
+
+	TrialHUDSetStatus("", 8, 7, 8, 9, 8, 2.0)
+	Sleep(0.5)
+
+    if doMusicians then
+		for i = 1, 2 do
+			CutsceneCallThread("", "StartPlaying", "Musician"..i)
+		end
+		CutsceneCallThread("", "StartSinging", "Musician0")
+	end
 
     CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST", "#PRIEST")
     PlayFE("#PRIEST", "smile", 2, 2.5, 0)
@@ -476,6 +550,15 @@ function Start()
 	f_MoveToNoWait("#MAIN", "MarryPos1", GL_MOVESPEED_WALK)	
 	f_MoveToNoWait("#COURTED", "MarryPos2", GL_MOVESPEED_WALK)
 
+	if doMusicians then
+		LogMessage("@NAO Start Camera Musicians")
+		CutsceneCameraSetRelativePosition("", "CameraPortrait", "Musician1")
+		CutsceneCameraBlend("", 5, 1)
+		CutsceneCameraSetRelativePosition("", "CameraPortrait", "Musician2")
+		LogMessage("@NAO End Camera Musicians")
+		Sleep(10)
+	end
+
 	Sleep(0.5)
 	CutsceneCameraSetRelativePosition("", "#CHAPEL_INTRO(BACK)", "#MAIN")
 	Sleep(0.5)
@@ -503,27 +586,12 @@ function Start()
 	MsgSay("#PRIEST", "_FAMILY_1_MARRIAGE_CEREMONY_PRIEST_HUSBAND_+1", GetID(list[SimGetGender("#MAIN")+1][1]), GetID(list[SimGetGender("#MAIN")+1][2]))
 
 	CutsceneCameraSetRelativePosition("", "#CHAPEL_PRIEST(FAR)","#PRIEST")
-	-- WIP
 
-	SetState("#MAIN", STATE_CUTSCENE, false)
-
-	CutsceneSetData("", "SkipProgressBar", 0)
-
-	TrialHUDSetSims("", GetID("#MAIN"), GetID("#COURTED"), GetID("#PRIEST"), GetID("#PRIEST"), GetID("#PRIEST"))
-	
-	CutsceneCallThread("", "SetWeddingHUD", "#MAIN")
+	Sleep(1)
 
 	CutsceneHUDShow("", "LetterBoxPanel")
 	CutsceneHUDShow("", "TrialPanel")
 	CutsceneShowCharacterPanel("", true)
-
-	-- Progress, Guest1, Guest2, Guest3, Arrow, Timer
-	TrialHUDSetStatus("", 0, 0, 0, 0, 0, 0.0)
-	Sleep(0.5)
-
-	TrialHUDSetStatus("", 8, 7, 8, 9, 8, 2.0)
-	Sleep(0.5)
-
 	SetProperty("#MAIN", "IsAllowedSpecialMeasuresForWeddings", "1")
 
 	SetExclusiveMeasure("#MAIN", 3000, EN_BOTH)
@@ -537,8 +605,6 @@ function Start()
 			HudAddToSelection("#MAIN")
 		end
 	end
-
-	Sleep(1)
 
 	ProgressBar:SetValueInt("VISIBILITY", 1)
 	local Width
@@ -902,10 +968,6 @@ function ContinueAfterNo()
 	DestroyCutscene("")
 end
 
-function ThreatenAfterMurder()
-
-end
-
 function ContinueAfterSuccessfulMurder()
 	SimGetCutscene("#MAIN", "Cutscene")
 
@@ -964,14 +1026,13 @@ function ContinueAfterSuccessfulMurder()
 
 	LogMessage("@NAO ???")
 
-	local Next = MsgSayInteraction("#MAIN", "#MAIN", "#MAIN",
-										"@B[1,@L_MEASURE_MARRY_CEREMONY_THREATEN_+0]"..
-										"@B[2,@L_MEASURE_MARRY_CEREMONY_THREATEN_+1]",
-										nil,
-										"test")
+	--local Next = MsgSayInteraction("#MAIN", "#MAIN", "#MAIN",
+	--									"@B[1,@L_MEASURE_MARRY_CEREMONY_THREATEN_+0]"..
+	--									"@B[2,@L_MEASURE_MARRY_CEREMONY_THREATEN_+1]",
+	--									nil,
+	--									"test")
 
-	LogMessage("@NAO Next is "..Next)
-	LogMessage("@NAO ???")
+	local Next = 1
 
 	if Next == 1 then
 		CutsceneCallThread("Cutscene", "ThreatenAfterMurder", "#MAIN")
@@ -1212,9 +1273,9 @@ function SayYes()
 end
 
 function SayNo()
-	SimGetCutscene("#MAIN","Cutscene")
+	SimGetCutscene("#MAIN", "Cutscene")
 	CutsceneCallThread("Cutscene", "ForbidWeddingMeasures", "#MAIN")
-	CutsceneSetData("Cutscene","SkipProgressBar","1")
+	CutsceneSetData("Cutscene", "SkipProgressBar","1")
 	local Charisma = GetSkillValue("#MAIN", CHARISMA)
 	local Rethoric = GetSkillValue("#MAIN", RHETORIC)
 	local Alignment = SimGetAlignment("#MAIN")
@@ -1267,3 +1328,53 @@ function Murder()
 
 	CutsceneCallThread("Cutscene", "ContinueAfterSuccessfulMurder", "#MAIN")
 end
+
+-- Musicians
+
+function PrepareInstrument0()
+	GetInsideBuilding("", "MarryRoom")
+	GetLocatorByName("MarryRoom", "Musician0", "MusicianPosition", false)
+	f_MoveTo("", "MusicianPosition")
+	f_BeginUseLocator("", "MusicianPosition", GL_STANCE_STAND)
+end
+
+function PrepareInstrument1()
+	CarryObject("", "Handheld_Device/ANIM_Violinestock.nif", false)
+	CarryObject("", "Handheld_Device/ANIM_Violine.nif", true)
+	GetInsideBuilding("", "MarryRoom")
+	GetLocatorByName("MarryRoom", "Musician1", "MusicianPosition", false)
+	f_MoveTo("", "MusicianPosition")
+	f_BeginUseLocator("", "MusicianPosition", GL_STANCE_STAND)
+end
+
+function PrepareInstrument2()
+	CarryObject("", "Handheld_Device/ANIM_Violinestock.nif", false)
+	CarryObject("", "Handheld_Device/ANIM_Violine.nif", true)
+	GetInsideBuilding("", "MarryRoom")
+	GetLocatorByName("MarryRoom", "Musician2", "MusicianPosition", false)
+	f_MoveTo("", "MusicianPosition")
+	f_BeginUseLocator("", "MusicianPosition", GL_STANCE_STAND)
+	CutsceneSendEventTrigger("owner", "Musician2Ready")
+end
+
+function StartPlaying()
+	local Duration = PlayAnimationNoWait("", "play_instrument_03_in")
+	Sleep(Duration)
+	LoopAnimation("", "play_instrument_03_loop", 30)
+end
+
+function StartSinging()
+	LogMessage("@NAO Start Singing")
+	Attach3DSound("", "measures/singforpeacefulness/female_songofpeacefulness+0.wav", 1.0)
+	LoopAnimation("", "sing_for_peace", 30)
+	LogMessage("@NAO End Singing")
+end
+
+--PlayAnimationNoWait("","play_instrument_01_in")
+--CarryObject("","Handheld_Device/ANIM_Flute.nif",false)
+--PlayAnimation("", "play_instrument_01_loop")
+
+
+--PlayAnimationNoWait("","play_instrument_03_in")
+--CarryObject("","Handheld_Device/ANIM_laute.nif",true)
+--PlayAnimation("","play_instrument_03_loop")
