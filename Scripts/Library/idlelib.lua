@@ -11,6 +11,7 @@ end
 -- -----------------------
 function GetActivity()
 
+
 	if not GetSettlement("", "MyCity") then
 		return 0
 	end
@@ -75,12 +76,25 @@ end
 -- -----------------------
 function Sleep(SleepStart, SleepEnd)
 	MsgDebugMeasure("Sleeping...")
-	if not GetHomeBuilding("", "HomeBuilding") then
-		Sleep(Gametime2Realtime(1))
-		return false
+
+	LogMessage("@TAVERN Looking to sleep at a tavern: " .. GetName(""))
+
+	local Home = {exists=false, type=nil}
+
+	Home.exists = GetHomeBuilding("", "HomeBuilding")
+
+	if Home.exists then
+		Home.type = BuildingGetType("HomeBuilding")
 	end
 
-	if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID("HomeBuilding") then
+	if (not Home.exists) or (Home.type == 1) then
+		if not idlelib_CheckTavern() then
+			Sleep(Gametime2Realtime(1))
+			return false
+		end
+	end
+
+	if (not GetInsideBuilding("", "Inside")) or (GetID("Inside")~=GetID("HomeBuilding")) then
 		if not f_MoveTo("", "HomeBuilding", GL_MOVESPEED_RUN) then
 			Sleep(3)
 			StopMeasure()
@@ -108,8 +122,8 @@ function Sleep(SleepStart, SleepEnd)
 	end
 	
 	local SleepTime = Gametime2Realtime(EN_RECOVERFACTOR_HOME/60)
-	local	ContinueSleeping = true
-	SetState("", STATE_SLEEPING,true)
+	local ContinueSleeping = true
+	SetState("", STATE_SLEEPING, true)
 	while ContinueSleeping do
 	
 		ContinueSleeping = false
@@ -1802,6 +1816,83 @@ function TakeACredit()
 end
 
 -- -----------------------
+-- RentABed
+-- -----------------------
+function RentBed()
+	MsgDebugMeasure("Rent a bed at the tavern.")
+
+	LogMessage("@W " .. GetName("") .. " is renting a bed.")
+
+	if not GetSettlement("", "City") then
+		return
+	end
+
+	local NumTaverns = CityGetBuildings("City", 2, 4, -1, -1, FILTER_HAS_DYNASTY, "Tavern")
+
+	if NumTaverns > 0 then
+		for i = 0, NumTaverns - 1 do
+			local Attractivity = GetImpactValue("Tavern"..i, "Attractivity")
+			CopyAlias("Tavern"..i, "Destination")
+		end
+	end
+
+	if not AliasExists("Destination") then
+		SatisfyNeed("", 10, 1)
+		return
+	end
+	
+	if not BuildingGetOwner("Destination", "MyBoss") then
+		return
+	end
+
+	if AliasExists("Destination") then
+		GetLocatorByName("Destination", "exit1", "MoveTo")
+
+		if not f_MoveTo("","MoveTo") then
+			return
+		end
+		
+		if not GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
+			Sleep(1)
+			idlelib_GoToRandomPosition()
+			return
+		end
+		
+		if AliasExists("SitPos") then
+			if (LocatorGetBlocker("SitPos") ~= GetID("")) then
+				if GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
+					f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true)
+				end
+			end
+		else
+			if GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
+				f_BeginUseLocator("", "SitPos", GL_STANCE_SIT, true)
+			else
+				Sleep(1)
+				return
+			end
+		end
+		
+		SetProperty("", "WaitForLodge", 1)
+		local WaitTime = GetGametime() + 2
+		while GetGametime() < WaitTime do
+			Sleep(5)
+		end
+			
+		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
+			
+		if HasProperty("", "WaitForLodge") then
+			RemoveProperty("", "WaitForLodge")
+		end
+		
+		f_ExitCurrentBuilding("")
+	end
+
+	Sleep(2)
+end
+
+
+-- -----------------------
 -- ReturnACredit
 -- -----------------------
 function ReturnACredit()
@@ -2111,6 +2202,13 @@ function DinnerAtEstate()
 
 end
 
+function CheckTavern()
+-- ******** THANKS TO KINVER ********
+	if not HasProperty("", "IsSleepingAtTavern") then
+		return idlelib_RentBed()
+	end
+end
+
 function CheckBank()
 -- ******** THANKS TO KINVER ********
 	if not HasProperty("","SchuldenGeb") then
@@ -2221,7 +2319,7 @@ function GoSleep()
 		end
 		
 		if GetFreeLocatorByName("DestTavern", "Berth", 1, 2, "SleepingBerth") then  -- sleep in tavern if possible
-			MeasureRun("", nil, "RentSleepingBerth")
+			--MeasureRun("", nil, "RentSleepingBerth")
 			return
 		else
 			idlelib_GoToTavern()
