@@ -20,6 +20,11 @@ function Init()
  	this:AddPanel("WorldOverwriteSheet", "cl_MessageBox","GUI/Menu/panel_overwrite_world.gui",false)
  	this:AddPanel("SavingSheet","cl_MessageBox","gui/Menu/panel_saving.gui",false)
  	this:AddPanel("OptionsSheet","cl_OptionsSheet","gui/Menu/savegame.gui",false)
+
+ 	this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false) 
+
+
+ 	
  	
  	-- debug
  	this:AddPanel("HudRootAnalyser","cl_TestPanel","gui/debug/hudrootanalyser/warningpopup.gui", false) -- cl_TrialPanel
@@ -72,6 +77,13 @@ function Init()
 	this:AddPanel("BuildBuildingScholar","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingChiseler","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingMisc","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
+
+	-- Rags to Riches
+	--this:AddPanel("BuildBuildingAll","cl_BuildBuildingSheet","gui/Rags/construct.gui",false)
+
+	 this:AddPanel("RentRoom", "cl_MessageBox", "gui/hud/panel_rentroom.gui", false) 
+
+
 		
  	-- Buttons have to be above of the sheets. Map has to be above of buttons. News have to be above the buttons
  	this:AddPanel("IndoorMapPanel","cl_IndoorMap","gui/Hud/panel_indoormap.gui")
@@ -165,10 +177,12 @@ function Init()
 	-- define Tabgroups
 	-- BuildBuildin
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingPatron","@L_CHARACTERS_1_CLASSES_patron_NAME_+0")
+	--this:AddSheetToTabGroup("BuildBuilding","BuildBuildingAll","Rags to Riches")
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingArtisan","@L_CHARACTERS_1_CLASSES_artisan_NAME_+0")
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingScholar","@L_CHARACTERS_1_CLASSES_scholar_NAME_+0")
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingChiseler","@L_CHARACTERS_1_CLASSES_chiseler_NAME_+0")
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingMisc","@L_BUILDBUILDING_MISC_+0")
+
 	this:SetTabGroupHeader("BuildBuilding","@L_BUILDBUILDING_+1")
 	
 	-- Statistics
