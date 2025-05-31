@@ -65,29 +65,26 @@ function Run()
 			return
 		end
 
-		local Time = {Remaining=GetGametime()+2, Current=math.mod(GetGametime(), 24)}
+		local Expected_Time = GetGametime() + 2
+		local Current_Time  = math.mod(GetGametime(), 24)
 
-		local IncrementTime = function(Value)
-			Time.Remaining = Time.Remaining + Value
-		end
-
-		if (Time.Current > 6) and (Time.Current < 20) then
-			IncrementTime(Rand(3)+2)
+		if (Current_Time > 6) and (Current_Time < 20) then
+			Expected_Time = Expected_Time + Rand(3)+2
 		else
-			IncrementTime(Rand(6)+2)
+			Expected_Time = Expected_Time + Rand(6)+2
 		end
 
 		if HasProperty("Destination", "DanceShow") then
-			IncrementTime(3)
+			Expected_Time = Expected_Time + 3
 		end
 
 		if HasProperty("Destination", "ServiceActive") then
-			IncrementTime(2)
+			Expected_Time = Expected_Time + 2
 		end
 
 		GetDynasty("Destination", "Dynasty")
 		
-		while (GetGametime() < Time.Remaining) do
+		while (GetGametime() < Expected_Time) do
 
 			if HasProperty("Destination", "Versengold") and (Rand(10)>7) then
 				f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
@@ -118,9 +115,9 @@ function Run()
 				local AnimType = Rand(2)
 
 				if AnimType == 0 then
-					--PlayAnimation("", "sit_talk")
+					PlayAnimation("", "sit_talk")
 				else
-					--PlayAnimationNoWait("", "sit_laugh")
+					PlayAnimationNoWait("", "sit_laugh")
 					Sleep(2)
 					if (Rand(2) == 0) then
 						PlaySound3D("", "Locations/tavern/laugh_01.wav", 1)
@@ -144,8 +141,8 @@ function Run()
 								{473,155,-810}, {382,155,-878}, {771,155,-817}, {769,155,-719}, {785,155,-817}, {380,155,-760}
 							}
 
-							--GfxAttachObject("Bowl_Stew"..GetID(""), "Locations/Tavern/Bowl_Stew_fixed.nif")
-							--GfxSetPosition("Bowl_Stew"..GetID(""), Data[hasFoundSeat][1], Data[hasFoundSeat][2], Data[hasFoundSeat][3], true)
+							GfxAttachObject("Bowl_Stew"..GetID(""), "Locations/Tavern/Bowl_Stew_fixed.nif")
+							GfxSetPosition("Bowl_Stew"..GetID(""), Data[hasFoundSeat][1], Data[hasFoundSeat][2], Data[hasFoundSeat][3], true)
 
 							--GetDynasty("Tavern", "Dynasty")
 							--if DynastyIsPlayer("Dynasty") then
@@ -154,16 +151,16 @@ function Run()
 						end
 
 						for i = 1, Rand(4) + 1 do
-							--PlayAnimation("", "sit_eat")
+							PlayAnimation("", "sit_eat")
 						end
 
-						--GfxDetachObject("Bowl_Stew"..GetID(""))
+						GfxDetachObject("Bowl_Stew"..GetID(""))
 					end
 
 					if Type == "Drink" then
 						local AnimTime
 						if Rand(2) == 0 then
-							AnimTime = --PlayAnimationNoWait("", "sit_cheer")
+							AnimTime = PlayAnimationNoWait("", "sit_cheer")
 							Sleep(1)
 							PlaySound3D("", "Locations/tavern/cheers_01.wav", 1)
 							CarryObject("", "Handheld_Device/ANIM_beaker_sit_drink.nif", false)
@@ -173,7 +170,7 @@ function Run()
 							CarryObject("", "", false)
 							Sleep(1.5)
 						else
-							AnimTime = --PlayAnimationNoWait("", "sit_drink")
+							AnimTime = PlayAnimationNoWait("", "sit_drink")
 							Sleep(1)
 							CarryObject("", "Handheld_Device/ANIM_beaker_sit_drink.nif", false)
 							Sleep(1)
@@ -194,10 +191,10 @@ function Run()
 			Sleep(5)
 		end
 
-		Time.Current = math.mod(GetGametime(), 24)
-		if (Time.Current > 21) or (Time.Current < 4) then
+		Current_Time = math.mod(GetGametime(), 24)
+		if (Current_Time > 21) or (Current_Time < 4) then
 			if Rand(100) > 80 then
-				--LoopAnimation("","idle_drunk",10)
+				LoopAnimation("","idle_drunk",10)
 				AddImpact("", "totallydrunk", 1, 6)
 				AddImpact("", "MoveSpeed", 0.7, 6)
 				SetState("", STATE_TOTALLYDRUNK, true)
@@ -209,10 +206,10 @@ end
 
 function CleanUp()
 	if GetInsideBuilding("", "Tavern") then
-		--f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
+		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
 		if AliasExists("Tavern") then
 			if AliasExists("Bowl_Stew"..GetID("")) then
-				--GfxDetachObject("Bowl_Stew"..GetID(""))
+				GfxDetachObject("Bowl_Stew"..GetID(""))
 			end
 			--GetDynasty("Tavern", "Dynasty")
 			--if DynastyIsPlayer("Dynasty") then
@@ -228,7 +225,7 @@ function CleanUp()
 			if HasProperty("Tavern", "Guest"..GetID("").."Waiter") then
 				local Waiter = GetProperty("Tavern", "Guest"..GetID("").."Waiter")
 				GetAliasByID(Waiter, "Waiter")
-				--MeasureRun("Waiter", nil, "AssignEmployeeToService")
+				MeasureRun("Waiter", nil, "AssignEmployeeToService")
 			end
 		end
 	end
