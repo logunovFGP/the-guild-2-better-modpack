@@ -38,6 +38,8 @@ function Run()
 		end
 	end
 
+	LogMessage("@TAVERN #W TEST01 with " .. GetName(""))
+
 	if not BuildingGetOwner("Tavern", "MyBoss") then
 		LogMessage("@TAVERN #E Critical error in Lodge.")
 		StopMeasure()
@@ -53,6 +55,8 @@ function Run()
 
 	GetLocatorByName("Tavern", "GiveRoom", "LodgeManager")
 
+	LogMessage("@TAVERN #W TEST02 with " .. GetName(""))
+
 	for i = 1, 3 do
 		if not HasProperty("Tavern", "StatusBed"..i) then
 			SetProperty("Tavern", "StatusBed"..i, "Vacant")
@@ -67,10 +71,14 @@ function Run()
 	SetData("IsProductionMeasure", 0)
 	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
 	SetData("IsProductionMeasure", 1)
+
+	LogMessage("@TAVERN #W TEST03 with " .. GetName(""))
 		
 	while true do
 		local Count = {Guests=0, Lodge=0, CanOrder=0}
 		local GuestID, Time
+
+		LogMessage("@TAVERN #W TEST04 with " .. GetName(""))
 
 		for i = 1, 6 do
 			if not IsLocatorFree("Tavern", "sitrich"..i) then
@@ -115,11 +123,7 @@ function Run()
 			ms_157_assignemployeetoservice_CleanTables()
 		end 
 
-		GetDynasty("", "Dynasty")
-
-		if DynastyIsPlayer("Dynasty") then
-			LogMessage("@TAVERN #W (" .. GetName("") ..") Guests: " .. Count.Guests .. ", CanOrder: " .. Count.CanOrder .. ", Lodge: " .. Count.Lodge)
-		end
+		LogMessage("@TAVERN #W (" .. GetName("") ..") Guests: " .. Count.Guests .. ", CanOrder: " .. Count.CanOrder .. ", Lodge: " .. Count.Lodge)
 
 		if Count.Lodge > 0 then
 			local doLodge = GetProperty("Tavern", "ServingLodge")
@@ -134,6 +138,7 @@ function Run()
 		end
 
 		Sleep(1)
+		LogMessage("@TAVERN #W TEST05 with " .. GetName(""))
 	end
 end
 
@@ -181,6 +186,8 @@ function Lodge()
 			local Slot = GetProperty("CheckOutSim0", "AssignedBed")
 
 			local Sim = {Rank=SimGetRank("CheckOutSim0"), Wage=SimGetWage("CheckOutSim0")}
+
+			LogMessage("@TAVERN #W TEST RETURN PRICE with " .. GetName(""))
 
 			local Tip = ReturnPrice(Slot) * ( 100 + ( 50 * (-1 + Sim.Rank) ) / 100 )
 			Tip = Tip + Sim.Wage / ( Rand(3) + 1 )
@@ -426,16 +433,16 @@ function ServeCustomer(Locator, Index)
 				GetAliasByID(Guest, "Guest")
 				if Time < GetGametime() then
 					RemoveProperty("Tavern", "GuestServed#"..Guest)
-					if DynastyIsPlayer("Dynasty") then
+					--if DynastyIsPlayer("Dynasty") then
 						LogMessage("@TAVERN_TABLE #W " .. GetName("Guest") .. " can order again because next checkpoint " .. Time .. " has been passed by current time " .. GetGametime())
-					end
+					--end
 				end
 			else
 				GetAliasByID(Guest, "Guest")
 
-				if DynastyIsPlayer("Dynasty") then
+				--if DynastyIsPlayer("Dynasty") then
 					LogMessage("@TAVERN_TABLE #W " .. GetName("Guest") .. " is ordering now -> " .. GetGametime())
-				end
+				--end
 				SetProperty("Tavern", "GuestServed#"..Guest, GetGametime() + 1.5)
 				SetProperty("Tavern", "Guest"..Guest.."Waiter", GetID(""))
 
@@ -533,9 +540,9 @@ function CleanUp()
 	if AliasExists("Tavern") then
 		GetDynasty("Tavern", "Dynasty")
 
-		if DynastyIsPlayer("Dynasty") then
+		--if DynastyIsPlayer("Dynasty") then
 			LogMessage("@TAVERN #W CleanUp() with " .. GetName(""))
-		end
+		--end
 
 		RemoveProperty("Tavern",  "ServiceActive")
 		RemoveProperty("Tavern",  "GoToService")
