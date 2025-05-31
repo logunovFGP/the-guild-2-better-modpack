@@ -79,20 +79,20 @@ function Sleep(SleepStart, SleepEnd)
 
 	LogMessage("@TAVERN Looking to sleep at a tavern: " .. GetName(""))
 
-	local Home = {exists=false, type=nil}
+	--local Home = {exists=false, type=nil}
 
-	Home.exists = GetHomeBuilding("", "HomeBuilding")
+	--Home.exists = GetHomeBuilding("", "HomeBuilding")
 
-	if Home.exists then
-		Home.type = BuildingGetType("HomeBuilding")
-	end
+	--if Home.exists then
+	--	Home.type = BuildingGetType("HomeBuilding")
+	--end
 
-	if (not Home.exists) or (Home.type == 1) then
-		if not idlelib_CheckTavern() then
-			Sleep(Gametime2Realtime(1))
-			return false
-		end
-	end
+	--if (not Home.exists) or (Home.type == 1) then
+	--	if not idlelib_CheckTavern() then
+	--		Sleep(Gametime2Realtime(1))
+	--		return false
+	--	end
+	--end
 
 	if (not GetInsideBuilding("", "Inside")) or (GetID("Inside")~=GetID("HomeBuilding")) then
 		if not f_MoveTo("", "HomeBuilding", GL_MOVESPEED_RUN) then
@@ -919,17 +919,17 @@ end
 -- GoToTavern
 -- -----------------------
 function GoToTavern()
-	local test = true
+	--local test = true
 
 	LogMessage("@IDLE #W before ("..GetName("")..") Go to Tavern")
 
-	MeasureRun("", nil, "DrinkAtTavern")
+	--MeasureRun("", nil, "DrinkAtTavern")
 
 	LogMessage("@IDLE #W after ("..GetName("")..") Go to Tavern")
 
-	if test then
+	--if test then
 		--StopMeasure()
-	end
+	--end
 	MsgDebugMeasure("Have some drink in a Tavern")
 	if GetSettlement("", "City") then
 
