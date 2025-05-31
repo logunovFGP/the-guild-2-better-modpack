@@ -1,12 +1,12 @@
 function OnButtonPressed_Open(x, y, device, key)
 	local object = FindNode("\\application\\game\\Hud")
-	object:ShowPanel("ChangeLogs", true)
+	object:ShowPanel("Changelogs", true)
 	object:ShowPanel("MainMenu", false)
 end
 
 function OnButtonPressed_Back(x, y, device, key)
 	local Node = FindNode("\\application\\game\\Hud")
-	Node:ShowPanel("ChangeLogs", false)
+	Node:ShowPanel("Changelogs", false)
 	Node:ShowPanel("MainMenu", true)
 end
 
