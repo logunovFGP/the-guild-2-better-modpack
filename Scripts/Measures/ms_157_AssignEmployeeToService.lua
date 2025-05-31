@@ -189,9 +189,9 @@ function Lodge()
 
 			SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
 			
-			CreditMoney("", Tip, "Lodge (Tips)")
+			-- CreditMoney("", Tip, "Lodge (Tips)")
 
-			ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
+			-- ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
 
 			Sleep(0.7)
 			chr_ModifyFavor("CheckOutSim0", "MyBoss", 5)
