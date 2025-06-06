@@ -4,9 +4,9 @@
 -- -----------------------
 function Run()
 
-	if BuildingGetType("")==GL_BUILDING_TYPE_ARSENAL then
-		StopMeasure()
-	end
+	-- if BuildingGetType("")==GL_BUILDING_TYPE_ARSENAL then
+	-- 	StopMeasure()
+	-- end
 
 	local warchooserid = GetData("#WarChooser")
 	GetAliasByID(warchooserid,"WarChooser")
