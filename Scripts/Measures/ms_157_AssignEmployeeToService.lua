@@ -144,11 +144,12 @@ end
 
 
 function ReturnPrice(Slot)
-	local Element 	= FindNode("\\GUI\\HudRoot")
-	local Bed 		= Element:FindChildDepth("Bed0"..Slot)
-	local Price		= Bed:FindChildDepth("Price")
-	LogMessage( "@TAVERN #W ReturnPrice for Tavern is " .. 25* ( Price:GetValueInt("Price") ) )
-	return ( 25* ( Price:GetValueInt("Price") ) )
+	--local Element 	= FindNode("\\GUI\\HudRoot")
+	--local Bed 		= Element:FindChildDepth("Bed0"..Slot)
+	--local Price		= Bed:FindChildDepth("Price")
+	--LogMessage( "@TAVERN #W ReturnPrice for Tavern is " .. 25* ( Price:GetValueInt("Price") ) )
+	--return ( 25* ( Price:GetValueInt("Price") ) )
+	return 50
 end
 
 function ProcessCheckout(CheckOutSim)
