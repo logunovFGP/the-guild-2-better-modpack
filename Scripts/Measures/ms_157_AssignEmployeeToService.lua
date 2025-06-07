@@ -66,77 +66,83 @@ function Run()
 	SetData("IsProductionMeasure", 1)
 
 	while true do
-		local Count = {Guests=0, CanOrder=0}
-		local GuestID, Time
-		local isAssigned = false
+		--local Count = {Guests=0, CanOrder=0}
+		--local GuestID, Time
+		--local isAssigned = false
 
-		for i = 1, 6 do
-			if not IsLocatorFree("Tavern", "sitrich"..i) then
-				Count.Guests = Count.Guests +1
-				GetLocatorByName("Tavern", "sitrich"..i, "Position"..i)
-				GuestID = LocatorGetBlocker("Position"..i)
-				if HasProperty("Tavern", "GuestServed#"..GuestID) then
-					Time = GetProperty("Tavern", "GuestServed#"..GuestID)
-					if Time < GetGametime() then
-						Count.CanOrder = Count.CanOrder +1
-					end
-				else
-					Count.CanOrder = Count.CanOrder +1
-				end
-			end
-		end
+		-- for i = 1, 6 do
+		-- 	if not IsLocatorFree("Tavern", "sitrich"..i) then
+		-- 		Count.Guests = Count.Guests +1
+		-- 		GetLocatorByName("Tavern", "sitrich"..i, "Position"..i)
+		-- 		GuestID = LocatorGetBlocker("Position"..i)
+		-- 		if HasProperty("Tavern", "GuestServed#"..GuestID) then
+		-- 			Time = GetProperty("Tavern", "GuestServed#"..GuestID)
+		-- 			if Time < GetGametime() then
+		-- 				Count.CanOrder = Count.CanOrder +1
+		-- 			end
+		-- 		else
+		-- 			Count.CanOrder = Count.CanOrder +1
+		-- 		end
+		-- 	end
+		-- end
 
-		for i = 1, 15 do 
-			if not IsLocatorFree("Tavern", "sitinn"..i) then
-				Count.Guests = Count.Guests +1
-				GetLocatorByName("Tavern", "sitinn"..i, "Position"..i)
-				GuestID = LocatorGetBlocker("Position"..i)
-				if HasProperty("Tavern", "GuestServed#"..GuestID) then
-					Time = GetProperty("Tavern", "GuestServed#"..GuestID)
-					if Time < GetGametime() then
-						Count.CanOrder = Count.CanOrder +1
-					end
-				else
-					Count.CanOrder = Count.CanOrder +1
-				end
-			end
-		end
+		-- for i = 1, 15 do 
+		-- 	if not IsLocatorFree("Tavern", "sitinn"..i) then
+		-- 		Count.Guests = Count.Guests +1
+		-- 		GetLocatorByName("Tavern", "sitinn"..i, "Position"..i)
+		-- 		GuestID = LocatorGetBlocker("Position"..i)
+		-- 		if HasProperty("Tavern", "GuestServed#"..GuestID) then
+		-- 			Time = GetProperty("Tavern", "GuestServed#"..GuestID)
+		-- 			if Time < GetGametime() then
+		-- 				Count.CanOrder = Count.CanOrder +1
+		-- 			end
+		-- 		else
+		-- 			Count.CanOrder = Count.CanOrder +1
+		-- 		end
+		-- 	end
+		-- end
 
-		local Result, Check
+		local Result, Check, i
 
 		-- Handle CheckOut Sims (for Tips)
-		Check = GetProperty("Tavern", "LodgeAssigned")
-		if (Check == -1) then
+		--Check = GetProperty("Tavern", "LodgeAssigned")
+		--if (Check == -1) then
 			Result = Find("", "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitsForCheckout)))", "CheckOutSim", -1)
 			if Result > 0 then
+				for i = 0, Result-1 do
+					BuildingAddWaitingSimToLodge("Tavern", "CheckOutSim"..i)
+				end
 				MsgDebugMeasure("Collecting tips.")
 				SetProperty("Tavern", "LodgeAssigned", GetID(""))
 				f_MoveTo("", "LodgeManager", GL_MOVESPEED_WALK, 60)
 				--f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
 				ms_157_assignemployeetoservice_ProcessCheckout("CheckOutSim0")
 			end
-		end
+		--end
 
 		-- Handle Lodge sims (for Beds)
-		Check = GetProperty("Tavern", "LodgeAssigned")
-		if (Check == -1) then
+		--Check = GetProperty("Tavern", "LodgeAssigned")
+		--if (Check == -1) then
 			Result = Find("", "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForLodge)))", "LodgeSim", -1)
 			if Result > 0 then
+				for i = 0, Result-1 do
+					BuildingAddWaitingSimToLodge("Tavern", "LodgeSim"..i)
+				end
 				MsgDebugMeasure("Assigning a bed to a guest.")
 				SetProperty("Tavern", "LodgeAssigned", GetID(""))
 				f_MoveTo("", "LodgeManager", GL_MOVESPEED_WALK, 60)
 				--f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
 				ms_157_assignemployeetoservice_ProcessLodge("LodgeSim0")
 			end
-		end
+		--end
 
-		if (Count.Guests > 0) and (Count.CanOrder > 0) then
-			MsgDebugMeasure("Serving customers.")
-			ms_157_assignemployeetoservice_Serve()
-		end
+		--if (Count.Guests > 0) and (Count.CanOrder > 0) then
+		--	MsgDebugMeasure("Serving customers.")
+		--	ms_157_assignemployeetoservice_Serve()
+		--end
 
-		MsgDebugMeasure("Cleaning tables.")
-		ms_157_assignemployeetoservice_CleanTables()
+		-- MsgDebugMeasure("Cleaning tables.")
+		-- ms_157_assignemployeetoservice_CleanTables()
 
 		Sleep(1)
 	end
@@ -154,6 +160,7 @@ end
 
 function ProcessCheckout(CheckOutSim)
 	RemoveProperty(CheckOutSim, "WaitsForCheckout")
+	BuildingRemoveWaitingSimToLodge("Tavern", CheckOutSim)
 	GetLocatorByName("Tavern", "GetRoom", "CheckOut")
 
 	f_BeginUseLocator(CheckOutSim, "CheckOut", GL_STANCE_STAND, true)
@@ -222,6 +229,7 @@ function ProcessLodge(LodgeSim)
 	SetProperty("Tavern", "GuestLodge"..GetID(LodgeSim).."Waiter", GetID(""))
 
 	RemoveProperty(LodgeSim, "WaitForLodge")
+	BuildingRemoveWaitingSimToLodge("Tavern", LodgeSim)
 
 	GetLocatorByName("Tavern", "GetRoom", "AskForBed")
 	f_BeginUseLocator(LodgeSim, "AskForBed", GL_STANCE_STAND, true)
@@ -511,25 +519,22 @@ end
 
 function CleanUp()
 	SetState("", STATE_DUEL, false)
-	StopAnimation("")
-	CarryObject("", "", false)
-	CarryObject("", "", true)
+	--StopAnimation("")
+	--CarryObject("", "", false)
+	--CarryObject("", "", true)
 	MoveSetActivity("")
 
-	if not AliasExists("Tavern") then
-		GetInsideBuilding("", "Tavern")
-	 	--SimGetWorkingPlace("", "Tavern")
-	end
+	--GetInsideBuilding("", "Tavern")
 
-	if AliasExists("Tavern") then
-		local Lodge = GetProperty("Tavern", "LodgeAssigned")
-		local Sim = GetID("")
+	--SetProperty("Tavern", "LodgeAssigned", -1)
 
-		if (Sim == Lodge) then
-			SetProperty("Tavern", "LodgeAssigned", -1)
-		end
-
-		RemoveProperty("Tavern",  "ServiceActive")
-		RemoveProperty("Tavern",  "GoToService")
-	end
+	-- if AliasExists("Tavern") then
+	-- 	local Lodge = GetProperty("Tavern", "LodgeAssigned")
+	-- 	local Sim = GetID("")
+	-- 	if (Sim == Lodge) then
+			
+	-- 	end
+	-- 	RemoveProperty("Tavern",  "ServiceActive")
+	-- 	RemoveProperty("Tavern",  "GoToService")
+	-- end
 end
