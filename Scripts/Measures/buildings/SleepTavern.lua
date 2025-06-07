@@ -52,6 +52,7 @@ end
 function CleanUp()
 	if GetInsideBuilding("", "Tavern") then
 		if AliasExists("Tavern") then
+			BuildingRemoveLodgeSim("Tavern", "")
 			GetDynasty("Tavern", "Dynasty")
 			if DynastyIsPlayer("Dynasty") then
 				LogMessage("@TAVERN #W (" .. GetName("") .. ") ends the SleepTavern().")

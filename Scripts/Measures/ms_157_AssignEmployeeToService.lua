@@ -6,9 +6,6 @@
 ----
 -------------------------------------------------------------------------------
 
--- -----------------------
--- Run
--- -----------------------
 function Run()
 
 	if not SimGetWorkingPlace("", "Tavern") then
@@ -38,8 +35,6 @@ function Run()
 		end
 	end
 
-	LogMessage("@TAVERN #W TEST01 with " .. GetName(""))
-
 	if not BuildingGetOwner("Tavern", "MyBoss") then
 		LogMessage("@TAVERN #E Critical error in Lodge.")
 		StopMeasure()
@@ -49,13 +44,11 @@ function Run()
 		SetProperty("Tavern", "AmountBeds", 3)
 	end
 
-	if not HasProperty("Tavern", "ServingLodge") then
-		SetProperty("Tavern", "ServingLodge", -1)
+	if not HasProperty("Tavern", "LodgeAssigned") then
+		SetProperty("Tavern", "LodgeAssigned", -1)
 	end
 
 	GetLocatorByName("Tavern", "GiveRoom", "LodgeManager")
-
-	LogMessage("@TAVERN #W TEST02 with " .. GetName(""))
 
 	for i = 1, 3 do
 		if not HasProperty("Tavern", "StatusBed"..i) then
@@ -72,13 +65,10 @@ function Run()
 	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
 	SetData("IsProductionMeasure", 1)
 
-	LogMessage("@TAVERN #W TEST03 with " .. GetName(""))
-		
 	while true do
-		local Count = {Guests=0, Lodge=0, CanOrder=0}
+		local Count = {Guests=0, CanOrder=0}
 		local GuestID, Time
-
-		LogMessage("@TAVERN #W TEST04 with " .. GetName(""))
+		local isAssigned = false
 
 		for i = 1, 6 do
 			if not IsLocatorFree("Tavern", "sitrich"..i) then
@@ -112,280 +102,272 @@ function Run()
 			end
 		end
 
-		for i = 1, 8 do
-			if not IsLocatorFree("Tavern", "WaitLodge"..i) then
-				Count.Lodge = Count.Lodge +1
+		local Result, Check
+
+		-- Handle CheckOut Sims (for Tips)
+		Check = GetProperty("Tavern", "LodgeAssigned")
+		if (Check == -1) then
+			Result = Find("", "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitsForCheckout)))", "CheckOutSim", -1)
+			if Result > 0 then
+				MsgDebugMeasure("Collecting tips.")
+				SetProperty("Tavern", "LodgeAssigned", GetID(""))
+				f_MoveTo("", "LodgeManager", GL_MOVESPEED_WALK, 60)
+				--f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
+				ms_157_assignemployeetoservice_ProcessCheckout("CheckOutSim0")
 			end
 		end
 
-		if (Count.Lodge == 0) and (Count.CanOrder == 0) then
-			MsgDebugMeasure("Cleaning tables.")
-			ms_157_assignemployeetoservice_CleanTables()
-		end 
-
-		LogMessage("@TAVERN #W (" .. GetName("") ..") Guests: " .. Count.Guests .. ", CanOrder: " .. Count.CanOrder .. ", Lodge: " .. Count.Lodge)
-
-		if Count.Lodge > 0 then
-			local doLodge = GetProperty("Tavern", "ServingLodge")
-			if doLodge == -1 then
-				SetProperty("Tavern", "ServingLodge", GetID(""))
+		-- Handle Lodge sims (for Beds)
+		Check = GetProperty("Tavern", "LodgeAssigned")
+		if (Check == -1) then
+			Result = Find("", "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForLodge)))", "LodgeSim", -1)
+			if Result > 0 then
 				MsgDebugMeasure("Assigning a bed to a guest.")
-				ms_157_assignemployeetoservice_Lodge()
+				SetProperty("Tavern", "LodgeAssigned", GetID(""))
+				f_MoveTo("", "LodgeManager", GL_MOVESPEED_WALK, 60)
+				--f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
+				ms_157_assignemployeetoservice_ProcessLodge("LodgeSim0")
 			end
-		elseif (Count.Guests > 0) and (Count.CanOrder > 0) then
+		end
+
+		if (Count.Guests > 0) and (Count.CanOrder > 0) then
 			MsgDebugMeasure("Serving customers.")
 			ms_157_assignemployeetoservice_Serve()
 		end
 
+		MsgDebugMeasure("Cleaning tables.")
+		ms_157_assignemployeetoservice_CleanTables()
+
 		Sleep(1)
-		LogMessage("@TAVERN #W TEST05 with " .. GetName(""))
 	end
 end
 
-function Lodge()
-	if not AliasExists("Tavern") then
-		StopMeasure()
+
+function ReturnPrice(Slot)
+	local Element 	= FindNode("\\GUI\\HudRoot")
+	local Bed 		= Element:FindChildDepth("Bed0"..Slot)
+	local Price		= Bed:FindChildDepth("Price")
+	LogMessage( "@TAVERN #W ReturnPrice for Tavern is " .. 25* ( Price:GetValueInt("Price") ) )
+	return ( 25* ( Price:GetValueInt("Price") ) )
+end
+
+function ProcessCheckout(CheckOutSim)
+	RemoveProperty(CheckOutSim, "WaitsForCheckout")
+	GetLocatorByName("Tavern", "GetRoom", "CheckOut")
+
+	f_BeginUseLocator(CheckOutSim, "CheckOut", GL_STANCE_STAND, true)
+
+	MeasureSetNotRestartable()
+
+	SetState(CheckOutSim, STATE_DUEL, true)
+	SetState("", STATE_DUEL, true)
+
+	PlayAnimationNoWait(CheckOutSim, "talk_short")
+
+	if SimGetGender(CheckOutSim) == GL_GENDER_MALE then
+		MsgSay(CheckOutSim, "@L_LODGE_TIP_MALE_+"..Rand(4))
+	else
+		MsgSay(CheckOutSim, "@L_LODGE_TIP_FEMALE_+"..Rand(4))
 	end
 
-	f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
+	local Slot = GetProperty(CheckOutSim, "AssignedBed")
 
-	local function ReturnPrice(Slot)
-		local Element 	= FindNode("\\GUI\\HudRoot")
-		local Bed 		= Element:FindChildDepth("Bed0"..Slot)
-		local Price		= Bed:FindChildDepth("Price")
-		LogMessage( "@TAVERN #W ReturnPrice for Tavern is " .. 25* ( Price:GetValueInt("Price") ) )
-		return ( 25* ( Price:GetValueInt("Price") ) )
-	end
+	local Sim = {Rank=SimGetRank(CheckOutSim), Wage=SimGetWage(CheckOutSim)}
 
-	local CheckOutSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitsForCheckout)))"
-	local NumCheckOutSims = Find("", CheckOutSimFilter, "CheckOutSim", -1)
+	local Tip = ms_157_assignemployeetoservice_ReturnPrice(Slot) * ( 100 + ( 50 * (-1 + Sim.Rank) ) / 100 )
+	Tip = Tip + Sim.Wage / ( Rand(3) + 1 )
 
-	if NumCheckOutSims > 0 then
-		--repeat
-			--NumCheckOutSims = Find("", CheckOutSimFilter, "CheckOutSim", -1)
-			LogMessage("@TAVERN_LODGE #W Checkout with " .. GetName("CheckOutSim0"))
-			RemoveProperty("CheckOutSim0", "WaitsForCheckout")
-			GetLocatorByName("Tavern", "GetRoom", "CheckOut")
-			if not f_BeginUseLocator("CheckOutSim0", "CheckOut", GL_STANCE_STAND, true) then
-				LogMessage("@TAVERN_LODGE #E Cannot reach CheckOut Locator!")
-			else
-				LogMessage("@TAVERN_LODGE #E Reached CheckOut Locator!")
-			end
-			MeasureSetNotRestartable()
-			SetState("CheckOutSim0", STATE_DUEL, true)
-			SetState("", STATE_DUEL, true)
+	LogMessage("@TAVERN_LODGE === Tip: " .. Tip)
 
-			PlayAnimationNoWait("CheckOutSim0", "talk_short")
+	BuildingAddLodgeBedTips("Tavern", Slot-1, Tip/100)
 
-			if SimGetGender("CheckOutSim0") == GL_GENDER_MALE then
-				MsgSay("CheckOutSim0", "@L_LODGE_TIP_MALE_+"..Rand(4))
-			else
-				MsgSay("CheckOutSim0", "@L_LODGE_TIP_FEMALE_+"..Rand(4))
-			end
-
-			local Slot = GetProperty("CheckOutSim0", "AssignedBed")
-
-			local Sim = {Rank=SimGetRank("CheckOutSim0"), Wage=SimGetWage("CheckOutSim0")}
-
-			LogMessage("@TAVERN #W TEST RETURN PRICE with " .. GetName(""))
-
-			local Tip = ReturnPrice(Slot) * ( 100 + ( 50 * (-1 + Sim.Rank) ) / 100 )
-			Tip = Tip + Sim.Wage / ( Rand(3) + 1 )
-
-			LogMessage("@TAVERN_LODGE === Tip: " .. Tip)
-
-			SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
+	SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
 			
 			-- CreditMoney("", Tip, "Lodge (Tips)")
 
 			-- ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
 
-			Sleep(0.7)
-			chr_ModifyFavor("CheckOutSim0", "MyBoss", 5)
+	Sleep(0.7)
+	chr_ModifyFavor(CheckOutSim, "MyBoss", 5)
 
-			Sleep(0.3)
-			chr_ModifyFavor("MyBoss", "CheckOutSim0", 5)
+	Sleep(0.3)
+	chr_ModifyFavor("MyBoss", CheckOutSim, 5)
 
-			Sleep(0.3)
-			chr_GainXP("CheckOutSim0", 5)
+	Sleep(0.3)
+	chr_GainXP(CheckOutSim, 5)
 
-			Sleep(0.3)
-			chr_GainXP("", 5)
+	Sleep(0.3)
+	chr_GainXP("", 5)
 
-			f_EndUseLocator("CheckOutSim0", "GetRoom", GL_STANCE_STAND)
+	f_EndUseLocator(CheckOutSim, "GetRoom", GL_STANCE_STAND)
 
-			Sleep(1)
+	Sleep(1)
 
-			SetState("", STATE_DUEL, false)
-			SetState("CheckOutSim0", STATE_DUEL, false)
+	SetState("", STATE_DUEL, false)
+	SetState(CheckOutSim, STATE_DUEL, false)
 
-			if HasProperty("CheckOutSim0", "AssignedBed") then
-				RemoveProperty("CheckOutSim0", "AssignedBed")
-				--f_ExitCurrentBuilding("CheckOutSim0")
-				SimResetBehavior("CheckOutSim0")
-				SimStopMeasure("CheckOutSim0")
-			end
-
-			Sleep(1)
-		--until (NumCheckOutSims == 0)
+	if HasProperty(CheckOutSim, "AssignedBed") then
+		RemoveProperty(CheckOutSim, "AssignedBed")
+		SimResetBehavior(CheckOutSim)
+		SimStopMeasure(CheckOutSim)
 	end
 
-	local LodgeSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForLodge)))"
-	local NumLodgeSims = Find("", LodgeSimFilter, "LodgeSim", -1)
+	SetProperty("Tavern", "LodgeAssigned", -1)
+	Sleep(1)
+end
 
-	if NumLodgeSims > 0 then
-		--repeat
-			--NumLodgeSims = Find("", LodgeSimFilter, "LodgeSim", -1)
-			SetProperty("Tavern", "GuestLodge"..GetID("LodgeSim0").."Waiter", GetID(""))
-			LogMessage("@TAVERN (" .. GetName("") .. " Waiting Lodge Sims " .. NumLodgeSims)
-			RemoveProperty("LodgeSim0", "WaitForLodge")
-			GetLocatorByName("Tavern", "GetRoom", "AskForBed")
-			f_BeginUseLocator("LodgeSim0", "AskForBed", GL_STANCE_STAND, true)
-			MeasureSetNotRestartable()
-			SetState("LodgeSim0", STATE_DUEL, true)
-			SetState("", STATE_DUEL, true)
+function ProcessLodge(LodgeSim)
 
-			PlayAnimationNoWait("LodgeSim0", "talk_short")
+	SetProperty("Tavern", "GuestLodge"..GetID(LodgeSim).."Waiter", GetID(""))
 
-			if SimGetGender("LodgeSim0") == GL_GENDER_MALE then
-				MsgSay("LodgeSim0", "@L_LODGE_ASK_FOR_BED_MALE_+"..Rand(8))
-			else
-				MsgSay("LodgeSim0", "@L_LODGE_ASK_FOR_BED_FEMALE_+"..Rand(8))
-			end
+	RemoveProperty(LodgeSim, "WaitForLodge")
+
+	GetLocatorByName("Tavern", "GetRoom", "AskForBed")
+	f_BeginUseLocator(LodgeSim, "AskForBed", GL_STANCE_STAND, true)
+
+	MeasureSetNotRestartable()
+	SetState(LodgeSim, STATE_DUEL, true)
+	SetState("", STATE_DUEL, true)
+
+	PlayAnimationNoWait(LodgeSim, "talk_short")
+
+	if SimGetGender(LodgeSim) == GL_GENDER_MALE then
+		MsgSay(LodgeSim, "@L_LODGE_ASK_FOR_BED_MALE_+"..Rand(8))
+	else
+		MsgSay(LodgeSim, "@L_LODGE_ASK_FOR_BED_FEMALE_+"..Rand(8))
+	end
 			
-			local isSelectedBed = nil
+	local isSelectedBed = nil
 
-			for i = 1, 3 do
-				if HasProperty("Tavern", "StatusBed"..i) then
-					local isBedAvailable = GetProperty("Tavern", "StatusBed"..i)
-					if (isBedAvailable == "Vacant") then
-						local Price = ReturnPrice(i)
-						local Favor = GetFavorToSim("", "LodgeSim0")
-						local Label = nil
+	for i = 1, 3 do
+		if HasProperty("Tavern", "StatusBed"..i) then
+			local isBedAvailable = GetProperty("Tavern", "StatusBed"..i)
+			if (isBedAvailable == "Vacant") then
+				local Price = ms_157_assignemployeetoservice_ReturnPrice(i)
+				local Favor = GetFavorToSim("", LodgeSim)
+				local Label = nil
 
-						if (Favor >= 65) then
-							Label = "LODGE_PRICE_INFO_POLITE"
-						end
+				if (Favor >= 65) then
+					Label = "LODGE_PRICE_INFO_POLITE"
+				end
 
-						if (Label == nil) and (Favor >= 40) then
-							Label = "LODGE_PRICE_INFO_NORMAL"
-						end
+				if (Label == nil) and (Favor >= 40) then
+					Label = "LODGE_PRICE_INFO_NORMAL"
+				end
 
-						if (Label == nil) and (Favor <= 35) then
-							Label = "LODGE_PRICE_INFO_RUDE"
-						end
+				if (Label == nil) and (Favor <= 35) then
+					Label = "LODGE_PRICE_INFO_RUDE"
+				end
 
-						MsgSay("", "@L_"..Label.."_+0", Price)
-						local temp = Rand(1)
+				MsgSay("", "@L_"..Label.."_+0", Price)
+				local temp = Rand(1)
 
-						if temp == 0 then
-							PlayAnimationNoWait("LodgeSim0", "nod")
+				if temp == 0 then
+					PlayAnimationNoWait(LodgeSim, "nod")
 
-							if SimGetGender("LodgeSim0") == GL_GENDER_MALE then
-								MsgSay("LodgeSim0", "@L_LODGE_ACCEPT_PRICE_MALE_+"..Rand(1), Price)
-							else
-								MsgSay("LodgeSim0", "@L_LODGE_ACCEPT_PRICE_FEMALE_+"..Rand(1), Price)
-							end
-
-							isSelectedBed = i
-							SetProperty("Tavern", "StatusBed"..i, GetID("LodgeSim0"))
-						else
-							PlayAnimationNoWait("LodgeSim0", "shakehead")
-
-							if SimGetGender("LodgeSim0") == GL_GENDER_MALE then
-								MsgSay("LodgeSim0", "@L_LODGE_REJECT_PRICE_MALE_+"..Rand(1), Price)
-							else
-								MsgSay("LodgeSim0", "@L_LODGE_REJECT_PRICE_FEMALE_+"..Rand(1), Price)
-							end
-
-							isSelectedBed = nil
-						end
-
-						break
+					if SimGetGender(LodgeSim) == GL_GENDER_MALE then
+						MsgSay(LodgeSim, "@L_LODGE_ACCEPT_PRICE_MALE_+"..Rand(1), Price)
+					else
+						MsgSay(LodgeSim, "@L_LODGE_ACCEPT_PRICE_FEMALE_+"..Rand(1), Price)
 					end
+
+					isSelectedBed = i
+					SetProperty("Tavern", "StatusBed"..i, GetID(LodgeSim))
+				else
+					PlayAnimationNoWait(LodgeSim, "shakehead")
+
+					if SimGetGender(LodgeSim) == GL_GENDER_MALE then
+						MsgSay(LodgeSim, "@L_LODGE_REJECT_PRICE_MALE_+"..Rand(1), Price)
+					else
+						MsgSay(LodgeSim, "@L_LODGE_REJECT_PRICE_FEMALE_+"..Rand(1), Price)
+					end
+
+					isSelectedBed = nil
 				end
+
+				break
 			end
-
-			PlayAnimationNoWait("", "talk_short")
-
-			if (isSelectedBed == nil) then
-				local Favor = GetFavorToSim("", "LodgeSim0")
-				local Label = nil
-
-				if (Favor >= 65) then
-					Label = "_LODGE_NO_BED_POLITE_"
-				end
-
-				if (Label == nil) and (Favor >= 40) then
-					Label = "_LODGE_NO_BED_CASUAL_"
-				end
-
-				if (Label == nil) and (Favor <= 35) then
-					Label = "_LODGE_NO_BED_GRUMPY_"
-				end
-
-				MsgSay("", "@L"..Label.."+"..Rand(4))
-			end
-
-			if (isSelectedBed ~= nil) then
-				local Favor = GetFavorToSim("", "LodgeSim0")
-				local Label = nil
-
-				if (Favor >= 65) then
-					Label = "L_LODGE_ROOM_AVAILABLE_POLITE_"
-				end
-
-				if (Label == nil) and (Favor >= 40) then
-					Label = "L_LODGE_ROOM_AVAILABLE_CASUAL_"
-				end
-
-				if (Label == nil) and (Favor <= 35) then
-					Label = "L_LODGE_ROOM_AVAILABLE_GRUMPY_"
-				end
-
-				MsgSay("", "@"..Label.."+"..Rand(4))
-
-				local Price = ReturnPrice(isSelectedBed)
-
-				SetProperty("Tavern", "BedMoney"..isSelectedBed, GetProperty("Tavern", "BedMoney"..isSelectedBed) + Price)
-
-				CreditMoney("", Price, "Lodge")
-				ShowOverheadSymbol("", false, false, 0, "@L%1t", Price)
-
-				Sleep(0.7)
-				chr_ModifyFavor("LodgeSim0", "MyBoss", 5)
-
-				Sleep(0.3)
-				chr_ModifyFavor("MyBoss", "LodgeSim0", 5)
-
-				Sleep(0.3)
-				chr_GainXP("LodgeSim0", 15)
-
-				Sleep(0.3)
-				chr_GainXP("", 5)
-
-				SetProperty("LodgeSim0", "AssignedBed", isSelectedBed)
-				MeasureRun("LodgeSim0", nil, "SleepTavern", true)
-			end
-
-			f_EndUseLocator("LodgeSim0", "GetRoom", GL_STANCE_STAND)
-
-			Sleep(1)
-
-			SetState("", STATE_DUEL, false)
-			SetState("LodgeSim0", STATE_DUEL, false)
-
-			if not HasProperty("LodgeSim0", "AssignedBed") then
-				LogMessage("@TAVERN #E No bed assigned to " .. GetName("LodgeSim0"))
-				--f_ExitCurrentBuilding("LodgeSim0")
-				SimResetBehavior("LodgeSim0")
-			end
-
-			Sleep(1)
-		--until (NumLodgeSims == 0)
+		end
 	end
 
-	SetProperty("Tavern", "ServingLodge", -1)
+	PlayAnimationNoWait("", "talk_short")
+
+	if (isSelectedBed == nil) then
+		local Favor = GetFavorToSim("", LodgeSim)
+		local Label = nil
+
+		if (Favor >= 65) then
+			Label = "_LODGE_NO_BED_POLITE_"
+		end
+
+		if (Label == nil) and (Favor >= 40) then
+			Label = "_LODGE_NO_BED_CASUAL_"
+		end
+
+		if (Label == nil) and (Favor <= 35) then
+			Label = "_LODGE_NO_BED_GRUMPY_"
+		end
+
+		MsgSay("", "@L"..Label.."+"..Rand(4))
+	end
+
+	if (isSelectedBed ~= nil) then
+		local Favor = GetFavorToSim("", LodgeSim)
+		local Label = nil
+
+		if (Favor >= 65) then
+			Label = "L_LODGE_ROOM_AVAILABLE_POLITE_"
+		end
+
+		if (Label == nil) and (Favor >= 40) then
+			Label = "L_LODGE_ROOM_AVAILABLE_CASUAL_"
+		end
+
+		if (Label == nil) and (Favor <= 35) then
+			Label = "L_LODGE_ROOM_AVAILABLE_GRUMPY_"
+		end
+
+		MsgSay("", "@"..Label.."+"..Rand(4))
+
+		local Price = ms_157_assignemployeetoservice_ReturnPrice(isSelectedBed)
+
+		SetProperty("Tavern", "BedMoney"..isSelectedBed, GetProperty("Tavern", "BedMoney"..isSelectedBed) + Price)
+
+		CreditMoney("", Price, "Lodge")
+		ShowOverheadSymbol("", false, false, 0, "@L%1t", Price)
+
+		Sleep(0.7)
+		chr_ModifyFavor(LodgeSim, "MyBoss", 5)
+
+		Sleep(0.3)
+		chr_ModifyFavor("MyBoss", LodgeSim, 5)
+
+		Sleep(0.3)
+		chr_GainXP(LodgeSim, 15)
+
+		Sleep(0.3)
+		chr_GainXP("", 5)
+
+		BuildingAddLodgeBedMoney("Tavern", isSelectedBed-1, Price)
+		BuildingAddLodgeSim("Tavern", LodgeSim)
+
+		SetProperty(LodgeSim, "AssignedBed", isSelectedBed)
+		MeasureRun(LodgeSim, nil, "SleepTavern", true)
+	end
+
+	f_EndUseLocator(LodgeSim, "GetRoom", GL_STANCE_STAND)
+
+	Sleep(1)
+
+	SetState("", STATE_DUEL, false)
+	SetState(LodgeSim, STATE_DUEL, false)
+
+	if not HasProperty(LodgeSim, "AssignedBed") then
+		LogMessage("@TAVERN #E No bed assigned to " .. GetName(LodgeSim))
+		SimResetBehavior(LodgeSim)
+	end
+
+	SetProperty("Tavern", "LodgeAssigned", -1)
 	Sleep(1)
 end
 
@@ -534,23 +516,18 @@ function CleanUp()
 	MoveSetActivity("")
 
 	if not AliasExists("Tavern") then
-		SimGetWorkingPlace("", "Tavern")
+	 	SimGetWorkingPlace("", "Tavern")
 	end
 
-	if AliasExists("Tavern") then
-		--GetDynasty("Tavern", "Dynasty") 
+	Sleep(0.5)
 
-		--if DynastyIsPlayer("Dynasty") then
-			LogMessage("@TAVERN #W CleanUp() with " .. GetName(""))
-		--end
+	local Lodge = GetProperty("Tavern", "LodgeAssigned")
+	local Sim = GetID("")
 
-		RemoveProperty("Tavern",  "ServiceActive")
-		RemoveProperty("Tavern",  "GoToService")
-
-		local Lodge = GetProperty("Tavern", "ServingLodge")
-
-		if GetID("") == Lodge then
-			SetProperty("Tavern", "ServingLodge", -1)
-		end
+	if (Sim == Lodge) then
+		SetProperty("Tavern", "LodgeAssigned", -1)
 	end
+
+	RemoveProperty("Tavern",  "ServiceActive")
+	RemoveProperty("Tavern",  "GoToService")
 end
