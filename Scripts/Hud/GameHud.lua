@@ -82,8 +82,6 @@ function Init()
 	-- Rags to Riches
 	--this:AddPanel("BuildBuildingAll","cl_BuildBuildingSheet","gui/Rags/construct.gui",false)
 
-	this:AddPanel("RentRoom", "cl_MessageBox", "gui/hud/panel_rentroom.gui", false) 
-
  	-- Buttons have to be above of the sheets. Map has to be above of buttons. News have to be above the buttons
  	this:AddPanel("IndoorMapPanel","cl_IndoorMap","gui/Hud/panel_indoormap.gui")
  	
