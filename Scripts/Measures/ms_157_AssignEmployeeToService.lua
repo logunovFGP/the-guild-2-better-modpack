@@ -536,13 +536,11 @@ function CleanUp()
 
 	GetInsideBuilding("", "Tavern")
 
-	SetProperty("Tavern", "LodgeAssigned", -1)
-
 	if AliasExists("Tavern") then
 		local Lodge = GetProperty("Tavern", "LodgeAssigned")
 		local Sim = GetID("")
 		if (Sim == Lodge) then
-			
+			SetProperty("Tavern", "LodgeAssigned", -1)
 		end
 		RemoveProperty("Tavern",  "ServiceActive")
 		RemoveProperty("Tavern",  "GoToService")
