@@ -517,18 +517,19 @@ function CleanUp()
 	MoveSetActivity("")
 
 	if not AliasExists("Tavern") then
-	 	SimGetWorkingPlace("", "Tavern")
+		GetInsideBuilding("", "Tavern")
+	 	--SimGetWorkingPlace("", "Tavern")
 	end
 
-	Sleep(0.5)
+	if AliasExists("Tavern") then
+		local Lodge = GetProperty("Tavern", "LodgeAssigned")
+		local Sim = GetID("")
 
-	local Lodge = GetProperty("Tavern", "LodgeAssigned")
-	local Sim = GetID("")
+		if (Sim == Lodge) then
+			SetProperty("Tavern", "LodgeAssigned", -1)
+		end
 
-	if (Sim == Lodge) then
-		SetProperty("Tavern", "LodgeAssigned", -1)
+		RemoveProperty("Tavern",  "ServiceActive")
+		RemoveProperty("Tavern",  "GoToService")
 	end
-
-	RemoveProperty("Tavern",  "ServiceActive")
-	RemoveProperty("Tavern",  "GoToService")
 end
