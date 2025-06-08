@@ -1,6 +1,4 @@
 function Run()
-	LogMessage("@TAVERN aaaaaaa")
-
 	if not GetInsideBuilding("", "Tavern") then
 		StopMeasure()
 	end
@@ -53,10 +51,8 @@ function CleanUp()
 	if GetInsideBuilding("", "Tavern") then
 		if AliasExists("Tavern") then
 			BuildingRemoveLodgeSim("Tavern", "")
+			BuildingRemoveWaitingSimToLodge("Tavern", "")
 			GetDynasty("Tavern", "Dynasty")
-			if DynastyIsPlayer("Dynasty") then
-				LogMessage("@TAVERN #W (" .. GetName("") .. ") ends the SleepTavern().")
-			end
 			if HasProperty("", "WaitsForCheckout") then
 				RemoveProperty("", "WaitsForCheckout")
 			end

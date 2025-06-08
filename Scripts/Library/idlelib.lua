@@ -1646,8 +1646,6 @@ end
 function RentBed()
 	MsgDebugMeasure("Rent a bed at the tavern.")
 
-	LogMessage("@TAVERN_LODGE #W " .. GetName("") .. " is renting a bed.")
-
 	if not GetSettlement("", "City") then
 		return
 	end
@@ -1717,6 +1715,8 @@ function RentBed()
 		if HasProperty("", "WaitForLodge") then
 			RemoveProperty("", "WaitForLodge")
 		end
+
+		BuildingRemoveWaitingSimToLodge("Destination", "")
 		
 		f_ExitCurrentBuilding("")
 	end

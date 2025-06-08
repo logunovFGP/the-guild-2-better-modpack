@@ -124,6 +124,7 @@ function Run()
 				SetProperty("Tavern", "LodgeAssigned", GetID(""))
 				f_MoveTo("", "LodgeManager", GL_MOVESPEED_WALK, 60)
 				f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
+				SetProperty("", "AssignedSim", GetID("CheckOutSim0"))
 				ms_157_assignemployeetoservice_ProcessCheckout("CheckOutSim0")
 			end
 		end
@@ -140,6 +141,7 @@ function Run()
 				SetProperty("Tavern", "LodgeAssigned", GetID(""))
 				f_MoveTo("", "LodgeManager", GL_MOVESPEED_WALK, 60)
 				f_BeginUseLocator("", "LodgeManager", GL_STANCE_STAND, true)
+				SetProperty("", "AssignedSim", GetID("LodgeSim0"))
 				ms_157_assignemployeetoservice_ProcessLodge("LodgeSim0")
 			end
 		end
@@ -219,6 +221,12 @@ function ProcessCheckout(CheckOutSim)
 
 	Sleep(1)
 
+	GetInsideBuilding("", "Tavern")
+
+	RemoveProperty("", "AssignedSim")
+
+	SetProperty("Tavern", "LodgeAssigned", -1)
+
 	SetState("", STATE_DUEL, false)
 	SetState(CheckOutSim, STATE_DUEL, false)
 
@@ -228,9 +236,6 @@ function ProcessCheckout(CheckOutSim)
 		SimStopMeasure(CheckOutSim)
 	end
 
-	GetInsideBuilding("", "Tavern")
-
-	SetProperty("Tavern", "LodgeAssigned", -1)
 	Sleep(1)
 end
 
@@ -380,6 +385,8 @@ function ProcessLodge(LodgeSim)
 
 	SetState("", STATE_DUEL, false)
 	SetState(LodgeSim, STATE_DUEL, false)
+
+	RemoveProperty("", "AssignedSim")
 
 	if not HasProperty(LodgeSim, "AssignedBed") then
 		LogMessage("@TAVERN #E No bed assigned to " .. GetName(LodgeSim))
@@ -535,6 +542,15 @@ function CleanUp()
 	MoveSetActivity("")
 
 	GetInsideBuilding("", "Tavern")
+
+	if HasProperty("", "AssignedSim") then
+		local AssignedSim = GetProperty("", "AssignedSim")
+		AssignedSim = GetAliasByID(AssignedSim, "Guest")
+		SetState("Guest", STATE_DUEL, false)
+		MoveSetActivity("Guest")
+		SimStopMeasure("Guest")
+		RemoveProperty("", "AssignedSim")
+	end
 
 	if AliasExists("Tavern") then
 		local Lodge = GetProperty("Tavern", "LodgeAssigned")
