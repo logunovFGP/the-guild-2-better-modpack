@@ -158,16 +158,6 @@ function Run()
 	end
 end
 
-
-function ReturnPrice(Slot)
-	--local Element 	= FindNode("\\GUI\\HudRoot")
-	--local Bed 		= Element:FindChildDepth("Bed0"..Slot)
-	--local Price		= Bed:FindChildDepth("Price")
-	--LogMessage( "@TAVERN #W ReturnPrice for Tavern is " .. 25* ( Price:GetValueInt("Price") ) )
-	--return ( 25* ( Price:GetValueInt("Price") ) )
-	return 50
-end
-
 function ProcessCheckout(CheckOutSim)
 	RemoveProperty(CheckOutSim, "WaitsForCheckout")
 	BuildingRemoveWaitingSimToLodge("Tavern", CheckOutSim)
@@ -190,20 +180,18 @@ function ProcessCheckout(CheckOutSim)
 
 	local Slot = GetProperty(CheckOutSim, "AssignedBed")
 
-	local Sim = {Rank=SimGetRank(CheckOutSim), Wage=SimGetWage(CheckOutSim)}
-
-	local Tip = ms_157_assignemployeetoservice_ReturnPrice(Slot) * ( 100 + ( 50 * (-1 + Sim.Rank) ) / 100 )
-	Tip = Tip + Sim.Wage / ( Rand(3) + 1 )
+	local Rank = SimGetRank(CheckOutSim)
+	local Tip = (Rand(25) +1) * Rank
 
 	LogMessage("@TAVERN_LODGE === Tip: " .. Tip)
 
-	BuildingAddLodgeBedTips("Tavern", Slot-1, Tip/100)
+	BuildingAddLodgeBedTips("Tavern", Slot-1, Tip)
 
 	SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
 			
-			-- CreditMoney("", Tip, "Lodge (Tips)")
+	CreditMoney("", Tip, "Lodge (Tips)")
 
-			-- ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
+	ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
 
 	Sleep(0.7)
 	chr_ModifyFavor(CheckOutSim, "MyBoss", 5)
@@ -267,7 +255,18 @@ function ProcessLodge(LodgeSim)
 		if HasProperty("Tavern", "StatusBed"..i) then
 			local isBedAvailable = GetProperty("Tavern", "StatusBed"..i)
 			if (isBedAvailable == "Vacant") then
-				local Price = ms_157_assignemployeetoservice_ReturnPrice(i)
+				local Factor = BuildingGetLodgeBedPrice("Tavern", i-1)
+
+				local factorToMultiplier = {
+				    [1] = 0.25,
+				    [2] = 0.50,
+				    [3] = 0.75,
+				    [4] = 1.00,
+				    [5] = 1.50,
+				    [6] = 2.00
+				}
+
+				local Price = 50 * factorToMultiplier[Factor]
 				local Favor = GetFavorToSim("", LodgeSim)
 				local Label = nil
 
@@ -279,14 +278,24 @@ function ProcessLodge(LodgeSim)
 					Label = "LODGE_PRICE_INFO_NORMAL"
 				end
 
-				if (Label == nil) and (Favor <= 35) then
+				if (Label == nil) and (Favor <= 39) then
 					Label = "LODGE_PRICE_INFO_RUDE"
 				end
 
 				MsgSay("", "@L_"..Label.."_+0", Price)
-				local temp = Rand(1)
 
-				if temp == 0 then
+				local willAccept = 0
+				if Factor == 3 then
+					willAccept = Rand(1)
+				elseif Factor == 4 then
+					willAccept = Rand(2)
+				elseif Factor == 5 then
+					willAccept = Rand(4)
+				elseif Factor == 6 then
+					willAccept = Rand(6)
+				end
+
+				if willAccept == 0 then
 					PlayAnimationNoWait(LodgeSim, "nod")
 
 					if SimGetGender(LodgeSim) == GL_GENDER_MALE then
@@ -328,7 +337,7 @@ function ProcessLodge(LodgeSim)
 			Label = "_LODGE_NO_BED_CASUAL_"
 		end
 
-		if (Label == nil) and (Favor <= 35) then
+		if (Label == nil) and (Favor <= 39) then
 			Label = "_LODGE_NO_BED_GRUMPY_"
 		end
 
@@ -347,13 +356,24 @@ function ProcessLodge(LodgeSim)
 			Label = "L_LODGE_ROOM_AVAILABLE_CASUAL_"
 		end
 
-		if (Label == nil) and (Favor <= 35) then
+		if (Label == nil) and (Favor <= 39) then
 			Label = "L_LODGE_ROOM_AVAILABLE_GRUMPY_"
 		end
 
 		MsgSay("", "@"..Label.."+"..Rand(4))
 
-		local Price = ms_157_assignemployeetoservice_ReturnPrice(isSelectedBed)
+		local Factor = BuildingGetLodgeBedPrice("Tavern", isSelectedBed-1)
+
+		local factorToMultiplier = {
+		    [1] = 0.25,
+		    [2] = 0.50,
+		    [3] = 0.75,
+		    [4] = 1.00,
+		    [5] = 1.50,
+		    [6] = 2.00
+		}
+
+		local Price = 50 * factorToMultiplier[Factor]
 
 		SetProperty("Tavern", "BedMoney"..isSelectedBed, GetProperty("Tavern", "BedMoney"..isSelectedBed) + Price)
 
