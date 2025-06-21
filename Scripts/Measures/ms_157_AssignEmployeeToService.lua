@@ -189,7 +189,7 @@ function ProcessCheckout(CheckOutSim)
 
 	SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
 			
-	CreditMoney("", Tip, "Lodge (Tips)")
+	CreditMoney("", Tip, "IncomeLodgeTips")
 
 	ShowOverheadSymbol("", false, false, 0, "@L%1t", Tip)
 
@@ -377,7 +377,7 @@ function ProcessLodge(LodgeSim)
 
 		SetProperty("Tavern", "BedMoney"..isSelectedBed, GetProperty("Tavern", "BedMoney"..isSelectedBed) + Price)
 
-		CreditMoney("", Price, "Lodge")
+		CreditMoney("", Price, "IncomeLodge")
 		ShowOverheadSymbol("", false, false, 0, "@L%1t", Price)
 
 		Sleep(0.7)
