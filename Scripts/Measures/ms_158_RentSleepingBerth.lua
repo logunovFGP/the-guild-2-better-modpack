@@ -37,7 +37,7 @@ function Run()
 			return
 		end
 
-		chr_CreditMoney("Tavern", Price, "RentABerth")
+		chr_CreditMoney("Tavern", Price, "IncomeLodge")
 		-- for the balance
 	--	local OldBalance = 0
 	--	if HasProperty("Tavern", "BalanceSleepingFee") then

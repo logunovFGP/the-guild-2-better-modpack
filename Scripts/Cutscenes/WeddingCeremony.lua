@@ -428,7 +428,7 @@ function Start()
 
 	MsgSayNoWait("#PRIEST", "_MEASURE_MARRY_CEREMONY_TAKE_A_SEAT_+0")
 
-	if not chr_SpendMoney("#MAIN", GetCost(), "Wedding") then
+	if not chr_SpendMoney("#MAIN", GetCost(), "CostWedding") then
 		if not HasProperty("", "Tutorial") then
 			CutsceneCallThread("", "ImportantSimCannotPay", "#MAIN")
 			return

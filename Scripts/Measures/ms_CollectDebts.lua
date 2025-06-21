@@ -103,7 +103,7 @@ function Run()
 		SetProperty("Bank","BankAccount",(OldAccount+StolenSum))
 		-- giveout the bonus Money directly
 		Sleep(0.25)
-		CreditMoney("",Bonus,"Credit")
+		CreditMoney("",Bonus,"CreditsRepaid")
 		
 		-- Set the balance
 		
@@ -281,7 +281,7 @@ function Run()
 				SetProperty("Bank","BankAccount",(OldAccount+StolenSum))
 				-- giveout the bonus Money directly
 				Sleep(0.5)
-				CreditMoney("",Bonus,"Credit")
+				CreditMoney("",Bonus,"CreditsRepaid")
 				
 				-- Set the balance
 		
@@ -347,7 +347,7 @@ function Run()
 				chr_GainXP("",50)
 				Sleep(0.5)
 				-- giveout the whole sum in cash
-				CreditMoney("",StolenSum,"Credit")
+				CreditMoney("",StolenSum,"CreditsRepaid")
 				
 				-- Set the balance
 		

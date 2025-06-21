@@ -55,7 +55,7 @@ function Run()
 			PlayAnimation("", "nod")
 			if RemoveItems("Actor", "MiracleCure", 1, INVENTORY_STD) == 1 then
 				MoneyToGet = MoneyToGet + Rand(101)
-				chr_CreditMoney("Actor", MoneyToGet, "Offering")
+				chr_CreditMoney("Actor", MoneyToGet, "IncomeQuacksalve")
 				
 				-- for the balance
 			--	if ai_GetWorkBuilding("Actor", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then

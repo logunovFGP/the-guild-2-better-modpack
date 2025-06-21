@@ -18,7 +18,7 @@ function Run()
 				if HasProperty("", "costs") then
 					local profit = GetProperty("", "costs") * 2.5
 					GetSettlement("", "City")
-					chr_CreditMoney("City", profit, "WarProfit")
+					chr_CreditMoney("City", profit, "IncomeWar")
 					if HasProperty("City", "Warcosts") then
 						profit = GetProperty("City", "Warcosts") - profit
 					else
@@ -33,7 +33,7 @@ function Run()
 					if GetMoney("City")<fine then
 						fine = GetMoney("City")
 					end
-					chr_SpendMoney("City", fine, "WarFine")
+					chr_SpendMoney("City", fine, "CostWar")
 					if HasProperty("City", "Warcosts") then
 						fine = GetProperty("City", "Warcosts") + fine
 					end
@@ -109,7 +109,7 @@ function PreWar()
 
 	SetProperty("", "costs", costs)
 
-	chr_SpendMoney("City",costs,"Warcosts")
+	chr_SpendMoney("City",costs,"CostWar")
 	if HasProperty("City", "Warcosts") then
 		costs = costs + GetProperty("City", "Warcosts")
 	end
