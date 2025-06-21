@@ -77,21 +77,21 @@ end
 function Sleep(SleepStart, SleepEnd)
 	MsgDebugMeasure("Sleeping...")
 
-	LogMessage("@TAVERN Looking to sleep at a tavern: " .. GetName(""))
+	-- LogMessage("@TAVERN Looking to sleep at a tavern: " .. GetName(""))
 
 	local Home_Exists = GetHomeBuilding("", "HomeBuilding")
-	local Home_Type   = nil
+	-- local Home_Type   = nil
 
-	if Home_Exists then
-		Home_Type = BuildingGetType("HomeBuilding")
-	end
+	-- if Home_Exists then
+	-- 	Home_Type = BuildingGetType("HomeBuilding")
+	-- end
 
-	if (not Home_Exists) or (Home_Type == 1) then
-		if not idlelib_CheckTavern() then
-			Sleep(Gametime2Realtime(1))
-			return false
-		end
-	end
+	-- if (not Home_Exists) or (Home_Type == 1) then
+	-- 	if not idlelib_CheckTavern() then
+	-- 		Sleep(Gametime2Realtime(1))
+	-- 		return false
+	-- 	end
+	-- end
 
 	if (not GetInsideBuilding("", "Inside")) or (GetID("Inside")~=GetID("HomeBuilding")) then
 		if not f_MoveTo("", "HomeBuilding", GL_MOVESPEED_RUN) then
