@@ -34,9 +34,9 @@ function Run()
 	    StopMeasure()
 	else
 	    GetDynasty("Destination","kasse")
-	    chr_CreditMoney("kasse",spend,"Offering")
+	    chr_CreditMoney("kasse",spend,"IncomeSocial")
         ShowOverheadSymbol("Destination",false,true,0,"%1t",spend)
-       chr_SpendMoney("Owner", spend, "Offering")
+       chr_SpendMoney("Owner", spend, "CostSocial")
 		
 		local card = Rand(21)
 		
@@ -62,7 +62,7 @@ function TheDestiny(x)
 			if pay > 25 then
 				pay = 25
 			end
-		chr_SpendMoney("Owner", pay, "Offering")
+		chr_SpendMoney("Owner", pay, "CostSocial")
 		return
 	
 	elseif x == 1 then
@@ -79,7 +79,7 @@ function TheDestiny(x)
 			if pay > 25 then
 				pay = 25
 			end
-		chr_CreditMoney("Owner",pay,"Offering")
+		chr_CreditMoney("Owner",pay,"IncomeSocial")
 		return
 		
 	elseif x == 12 then

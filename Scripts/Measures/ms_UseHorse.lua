@@ -30,7 +30,7 @@ function Run()
 	SetProperty("", "aborted", 0)
 	SetData("Distance", distance)
 	
-	if not chr_SpendMoney("", costs, "travelling") then
+	if not chr_SpendMoney("", costs, "CostTravels") then
 		MsgQuick("", "@L_USE_HORSE_FAILURE_+1")
 		StopMeasure()
 	end
@@ -83,7 +83,7 @@ function CleanUp()
 			local NewDistance = math.floor(GetDistance("", "Destination")/4000)
 			local refunds = GetData("costs") - 250 - 250*NewDistance
 			if refunds > 0 then
-				chr_CreditMoney("", refunds, "")
+				chr_CreditMoney("", refunds, "IncomeTravels")
 				MsgQuick("","@L_USE_HORSE_CANCEL_+0", GetID(""), refunds)
 			end
 		end

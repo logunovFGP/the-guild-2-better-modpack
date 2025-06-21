@@ -133,7 +133,7 @@ function Run()
 					local Interest 		= 0.25 + (GetSkillValue("",BARGAINING) / 100)
 					local InterestText 	= 25 + GetSkillValue("", BARGAINING)
 					
-					SetProperty("CreditSim0", "CreditBank" ,GetID("BankBuilding"))
+					SetProperty("CreditSim0", "CreditBank", GetID("BankBuilding"))
 					SetProperty("CreditSim0", "CreditSum", Sum)
 					SetProperty("CreditSim0", "CreditInterest", Interest)
 					CreateScriptcall("OrderCredit_End", 24, "Measures/ms_OrderCredit.lua", "ReturnCredit", "CreditSim0", "MyBoss")
@@ -146,7 +146,7 @@ function Run()
 
 					MoveSetActivity("CreditSim0", "")
 					SetProperty("BankBuilding", "BankAccount", (Account-Sum))
-					CreditMoney("CreditSim0", Sum, "Bank")
+					CreditMoney("CreditSim0", Sum, "CreditsTaken")
 					SatisfyNeed("CreditSim0", 9, 1)
 				end
 			end

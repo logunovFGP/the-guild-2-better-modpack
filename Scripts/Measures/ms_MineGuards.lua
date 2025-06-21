@@ -20,7 +20,7 @@ function Run()
 			return
 		end
 		
-	if not chr_SpendMoney("", 1000, "misc") then
+	if not chr_SpendMoney("", 1000, "CostProtection") then
 		StopMeasure()
 	end
 

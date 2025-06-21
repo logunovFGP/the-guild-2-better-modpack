@@ -29,7 +29,7 @@ function ClearBuildingStash(BldAlias, OwnerAlias)
 		local invest = GetProperty(BldAlias, "BankAccount")
 		RemoveProperty(BldAlias, "BankAccount")
 		if AliasExists(OwnerAlias) then
-			chr_CreditMoney(OwnerAlias, invest, "Credit")
+			chr_CreditMoney(OwnerAlias, invest, "BuildingSold")
 			-- notify former owner
 			MsgNewsNoWait(OwnerAlias, BldAlias, "", "building", -1, 
 						"@L_BUYBUILDING_CREDIT_HEAD_+0",

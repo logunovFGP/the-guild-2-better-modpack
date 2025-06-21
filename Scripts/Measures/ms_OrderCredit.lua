@@ -125,7 +125,7 @@ function Run()
 		end
 
 		if (Payout_Message ~= "C") and (Payout_Message ~= 3) then
-			CreditMoney("BankChief", Payout_Amount[Payout_Message+1], "Credit")
+			CreditMoney("BankChief", Payout_Amount[Payout_Message+1], "NULL")
 			if Payout_Message == 2 then
 				SetProperty("Bank", "BankAccount", 0)
 			else
@@ -136,7 +136,7 @@ function Run()
 		
 	elseif Credit == 5 then
 		Money.Invest = GetProperty("Bank", "BankAccount")
-		CreditMoney("BankChief", Money.Invest, "Credit")
+		CreditMoney("BankChief", Money.Invest, "NULL")
 		RemoveProperty("Bank", "BankAccount")
 		StopMeasure()
 
@@ -291,14 +291,15 @@ function ReturnCredit()
 		end
 		
 		if IsDynastySim("") then
-			SpendMoney("",ReturnCredit,"Credit")
+			SpendMoney("", CreditSum, "CreditsRepaid")
+			SpendMoney("", Plus, "CreditsInterest")
 		end
 		
 		SetProperty("Bank","BankAccount",(Account+CreditSum))
 		SetProperty("Bank","BalanceReturnCount",(BalanceReturnCount+1))
 		SetProperty("Bank","BalanceReturn", (BalanceReturn+Plus))
 		
-		CreditMoney("MyBoss",Plus,"Credit")
+		CreditMoney("MyBoss",Plus,"CreditsInterest")
 		local ExtraMsg = "@L_MEASURE_IDLE_RETURNCREDIT_SPRUCH"
 		if GetProperty("Bank","MsgReturn")==1 then
 			MsgNewsNoWait("MyBoss","","","building",-1,"@L_MEASURE_OfferCredit_HEAD_+1",

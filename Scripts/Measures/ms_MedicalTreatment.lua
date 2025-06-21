@@ -201,7 +201,7 @@ function Run()
 				if CanHeal ~= false then
 
 					if DynastyIsPlayer("SickSim0") or (IsDynastySim("SickSim0") and IsPartyMember("SickSim0")) then 
-						if chr_SpendMoney("SickSim0", v.Cost, "Offering") then
+						if chr_SpendMoney("SickSim0", v.Cost, "CostMedical") then
 							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 						else
 							local Money = GetMoney("SickSim0")
@@ -213,7 +213,7 @@ function Run()
 							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 					end
 
-					chr_CreditMoney("Hospital", v.Cost, "Offering")
+					chr_CreditMoney("Hospital", v.Cost, "IncomeMedical")
 					local TotalIncome = 0
 					local RoundIncome = 0
 					local MedicalIncome = 0

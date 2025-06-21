@@ -125,14 +125,14 @@ function Init()
 		StopMeasure()
 	end
 	
-	if not chr_SpendMoney("", ChoiceSum, "misc") then
+	if not chr_SpendMoney("", ChoiceSum, "CostSocial") then
 		MsgQuick("", "@L_MEASURE_DICEGAME_NOMONEY_+0")
 		StopMeasure()
 	end
 	
 	-- cash out 10% for the pub
 	local Share = math.ceil(ChoiceSum * 0.1)
-	chr_CreditMoney("Divehouse", Share, "misc") 
+	chr_CreditMoney("Divehouse", Share, "IncomeSocial") 
 	
 	ChoiceSum = ChoiceSum - Share
 	
@@ -510,7 +510,7 @@ function Raise(add)
 		ShowOverheadSymbol("", false, true, 0, "-%1t", add)
 		-- 10% for divehouse
 		local Share = add * 0.1
-		chr_CreditMoney("Divehouse", Share, "misc")
+		chr_CreditMoney("Divehouse", Share, "IncomeSocial")
 		add = add - Share
 		SetData("Jackpod", add+pod)	
 		return true
@@ -545,7 +545,7 @@ function Payout(code)
 				"@L_HPFZ_WS_RUMPF_+2", GetData("Sum"))
 		end
 				
-		chr_CreditMoney("", Payout, "Offering")
+		chr_CreditMoney("", Payout, "IncomeSocial")
 		ShowOverheadSymbol("", false, true, 0, "%1t", Payout)
 	elseif code == 2 then -- Player win
 		
@@ -574,7 +574,7 @@ function Payout(code)
 				"@L_HPFZ_WS_RUMPF_+3", GetData("Sum"), GetData("XSum"), Payout)
 		end
 		
-		chr_CreditMoney("", Payout, "Offering")
+		chr_CreditMoney("", Payout, "IncomeSocial")
 		ShowOverheadSymbol("", false, true, 0,"%1t", Payout)
 		
 		if not HasProperty("Divehouse" ,"BestDicePlayer") then

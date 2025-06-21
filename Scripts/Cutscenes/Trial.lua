@@ -695,7 +695,7 @@ function Go()
 		MsgSay("judge","@L_LAWSUIT_4_ACCUSAL_NOEVIDENCE_JUDGE", TrialFee)
 		PlayAnimationNoWait("judge", "sit_talk")
 		MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_CLOSE_+0")
-		chr_SpendMoney("accuser", TrialFee, "trialfee", true)
+		chr_SpendMoney("accuser", TrialFee, "CostTrial", true)
 	else
 		-- Go through all evidences
 		
@@ -1163,7 +1163,7 @@ function Go()
 			trial_PlayRelevantJuryAni("judge", 0)
 			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY"..GenderType,GetID("accused"))
 			MsgSay("judge", "@L_LAWSUIT_6_DECISION_B_JUDGE_DECISION_NOTGUILTY_TOBOTH", TrialCosts)
-			chr_SpendMoney("accuser", TrialCosts, "trialfee", true)
+			chr_SpendMoney("accuser", TrialCosts, "CostTrial", true)
 			local TrialIncome = GetProperty("settlement", "TrialIncome") or 0
 			TrialIncome = TrialIncome + TrialCosts
 			SetProperty("settlement", "TrialIncome", TrialIncome)
@@ -1208,9 +1208,9 @@ function Go()
 		local TrialIncome = GetProperty("settlement", "TrialIncome") or 0
 		TrialIncome = TrialIncome - TrialCosts
 		SetProperty("settlement", "TrialIncome", TrialIncome)
-		chr_CreditMoney("judge", JudgeMoney, "Office")
-		chr_CreditMoney("assessor1", AssessorMoney, "Office")
-		chr_CreditMoney("assessor2", AssessorMoney, "Office")
+		chr_CreditMoney("judge", JudgeMoney, "IncomeTrial")
+		chr_CreditMoney("assessor1", AssessorMoney, "IncomeTrial")
+		chr_CreditMoney("assessor2", AssessorMoney, "IncomeTrial")
 	end
 
 	--Be done

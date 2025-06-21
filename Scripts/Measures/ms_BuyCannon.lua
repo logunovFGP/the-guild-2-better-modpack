@@ -121,7 +121,7 @@ function Run()
 		amount = Result
 	end
 
-	if not chr_SpendMoney("", amount*money[ItemIndex], "FireArms") then
+	if not chr_SpendMoney("", amount*money[ItemIndex], "WaresBought") then
 		MsgQuick("", "@L_MEASURE_BUYRAWMATERIAL_FAILURE_+1", GetID(""), ObjectLabel)
 		StopMeasure()
 	end
