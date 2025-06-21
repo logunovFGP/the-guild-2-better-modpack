@@ -1,0 +1,16 @@
+
+tools/CMF/build/
+
+tools/CMF/cmf_app_env/
+
+tools/CMF/dist/
+
+tools/CMF/textures/
+
+tools/CMF/cmf_editor.py
+
+tools/CMF/cmf_editor.spec
+
+tools/CMF/icon.ico
+
+tools/CMF/cmf_analyzer.py
