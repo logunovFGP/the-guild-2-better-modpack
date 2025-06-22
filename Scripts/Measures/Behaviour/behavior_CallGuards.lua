@@ -5,7 +5,7 @@ function Run()
 	--while not ActionIsStopped("Action") do
 	
 		if not AliasExists("Actor") then
-			break
+			--break
 		end
 		
 		local Distance = GetDistance("Owner", "Actor")
