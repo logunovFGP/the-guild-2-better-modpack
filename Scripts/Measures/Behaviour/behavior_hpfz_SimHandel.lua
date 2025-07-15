@@ -43,10 +43,10 @@ function KundeAuswahl()
             local Purchase = Rand(Index) + 1
             if ItemGetCategory(List[Purchase]) ~= -1 then
                 local Calculus = ((GetSkillValue("Actor", 9) * (SimGetRank("Owner") + 5)) + ItemGetBasePrice(List[Purchase]))
-                chr_CreditMoney("Actor", Calculus, "IncomeStreetSales")
+                chr_CreditMoney("Actor", Calculus, "Offering")
                 IncrementXPQuiet("Actor", 5)
                 if IsDynastySim("Owner") then
-                    chr_SpendMoney("Owner", Calculus, "CostStreetSales")
+                    chr_SpendMoney("Owner", Calculus, "Offering")
                 end
                 ShowOverheadSymbol("Actor", false, true, 0, "%1t", Calculus)
                 RemoveItems("Actor", List[Purchase], 1)

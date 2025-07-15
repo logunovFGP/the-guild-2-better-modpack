@@ -120,7 +120,7 @@ function Run()
 			StopMeasure()
 		end
 		
-		if not chr_SpendMoney("", Cost, "CostSocial", false) then
+		if not chr_SpendMoney("", Cost, "AdoptOrphan", false) then
 			MsgQuick("", "@L_MEASURE_ADOPTORPHAN_FAILURE_+1", GetID(""))
 			StopMeasure()
 		end

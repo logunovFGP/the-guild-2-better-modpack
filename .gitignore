@@ -14,3 +14,9 @@ tools/CMF/cmf_editor.spec
 tools/CMF/icon.ico
 
 tools/CMF/cmf_analyzer.py
+
+Textures/scenes/locations/Tavern_Private_Room/texconv.exe
+
+Textures/scenes/locations/Tavern_Private_Room/png_to_dds.py
+
+Textures/scenes/locations/Tavern_Private_Room/ConvertToDDS.bat

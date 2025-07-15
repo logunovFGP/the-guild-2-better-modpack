@@ -67,7 +67,7 @@ function FindConcertDestination(CityIndex)
 	BuildingGetOwner("bestDest", "BuildingOwner")
 	if GetMoney("BuildingOwner") > bestFee then
 		if bestFee > 0 then
-			chr_SpendMoney("BuildingOwner", bestFee, "CostVersengold")
+			chr_SpendMoney("BuildingOwner", bestFee, "Versengold")
 			SetProperty("bestDest", "MusiciansFee", 0)
 		end
 		CopyAlias("bestDest", "Destination")

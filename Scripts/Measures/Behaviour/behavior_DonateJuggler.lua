@@ -31,11 +31,11 @@ function Run()
 	end
 
 	local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(4)*charm
-	chr_CreditMoney("Actor", getbeg, "CostThiefs")
+	chr_CreditMoney("Actor", getbeg, "Offering")
 	ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 	
 	if IsDynastySim("Owner") then
-		chr_SpendMoney("Owner", getbeg, "CostSocial")
+		chr_SpendMoney("Owner", getbeg, "Offering")
 	end
 
 	SetRepeatTimer("Owner", "DonateJuggler", 1)
@@ -56,11 +56,11 @@ function Run()
 		-- again
 		local SomeSpendingValue = (charm + spender) * 3
 		spend = SomeSpendingValue + Rand(SomeSpendingValue)
-		chr_CreditMoney("Actor", getbeg, "CostThiefs")
+		chr_CreditMoney("Actor", getbeg, "Offering")
 		ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 		
 		if IsDynastySim("Owner") then
-			chr_SpendMoney("Owner", getbeg, "CostSocial")
+			chr_SpendMoney("Owner", getbeg, "Offering")
 		end
 	end
 end

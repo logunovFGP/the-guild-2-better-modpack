@@ -2,10 +2,10 @@ function Run()
  
 	local GuardsCalled = false
 
-	--while not ActionIsStopped("Action") do
+	while not ActionIsStopped("Action") do
 	
 		if not AliasExists("Actor") then
-			--break
+			break
 		end
 		
 		local Distance = GetDistance("Owner", "Actor")
@@ -23,10 +23,10 @@ function Run()
 			else
 				MsgSay("", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
 			end
-			--CommitAction("call_guards", "Owner", "Owner")
+			CommitAction("call_guards", "Owner", "Owner")
 			GuardsCalled = true
 			Sleep(5)
-			--StopAction("call_guards", "Owner")
+			StopAction("call_guards", "Owner")
 		end
 		
 		if Rand(100) < 25 then
@@ -43,7 +43,7 @@ function Run()
 		if Rand (10) == 0 then
 			GuardsCalled = false
 		end
-	--end
+	end
 end
 
 function CleanUp()

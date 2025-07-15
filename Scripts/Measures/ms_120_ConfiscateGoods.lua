@@ -38,7 +38,7 @@ function Run()
 	PlayAnimation("", "propel")
 	
 	local GoodMoney = chr_GetBootyCount("Destination", INVENTORY_STD) + chr_GetBootyCount("Destination", INVENTORY_SELL)
-	chr_CreditMoney("", GoodMoney, "IncomeConfiscation")
+	chr_CreditMoney("", GoodMoney, "unknown")
 	
 	local Count = InventoryGetSlotCount("Destination", INVENTORY_STD)
 	local Removed = 0

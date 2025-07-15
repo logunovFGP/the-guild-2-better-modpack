@@ -47,7 +47,7 @@ function Run()
 	MsgSay("Spouse", "@L_FAMILY_5_DIVORCE_TALK_2")
 	MsgSay("", "@L_FAMILY_5_DIVORCE_TALK_3")	
 	
-	chr_SpendMoney("", Cost, "CostSocial")
+	chr_SpendMoney("", Cost, "CostFee")
 	-- Ex-spouse leaves the building
 	f_ExitCurrentBuilding("Spouse")
 		

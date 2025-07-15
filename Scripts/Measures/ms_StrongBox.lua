@@ -48,13 +48,13 @@ function Run()
 				DynID,strongboxvalue,"@L_RESIDENCE_STRONGBOX_BODY_+3",value1,value2,value3)
 			
 			if value == "A1" then
-				chr_SpendMoney("dynasty", value1, "NULL")
+				chr_SpendMoney("dynasty", value1, "strongbox")
 				SetProperty("", "strongbox", strongboxvalue + value1)
 			elseif value == "A2" then
-				chr_SpendMoney("dynasty", value2, "NULL")
+				chr_SpendMoney("dynasty", value2, "strongbox")
 				SetProperty("", "strongbox", strongboxvalue + value2)
 			elseif value == "A3" then
-				chr_SpendMoney("dynasty", value3, "NULL")
+				chr_SpendMoney("dynasty", value3, "strongbox")
 				SetProperty("", "strongbox", strongboxvalue + value3)
 			end
 	
@@ -68,13 +68,13 @@ function Run()
 				DynID,strongboxvalue,"@L_RESIDENCE_STRONGBOX_BODY_+4",value1,value2,value3)
 			
 			if value == "B1" then
-				chr_CreditMoney("dynasty",value1,"NULL")
+				chr_CreditMoney("dynasty",value1,"strongbox")
 				SetProperty("", "strongbox", strongboxvalue - value1)
 			elseif value == "B2" then
-				chr_CreditMoney("dynasty",value2,"NULL")
+				chr_CreditMoney("dynasty",value2,"strongbox")
 				SetProperty("", "strongbox", strongboxvalue - value2)
 			elseif value == "B3" then
-				chr_CreditMoney("dynasty",strongboxvalue,"NULL")
+				chr_CreditMoney("dynasty",strongboxvalue,"strongbox")
 				SetProperty("", "strongbox", 0)
 			end
 		end

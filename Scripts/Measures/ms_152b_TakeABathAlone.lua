@@ -72,7 +72,7 @@ function Run()
 			MsgQuick("", "_TAVERN_152_TAKEABATH_FAILURES_+0", GetID("Tavern"))
 			return
 		end
-		chr_CreditMoney("Tavern", OverallPrice, "IncomeSocial")
+		chr_CreditMoney("Tavern", OverallPrice, "Offering")
 	end
 
 	-- Bathing

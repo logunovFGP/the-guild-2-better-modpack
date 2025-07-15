@@ -129,7 +129,7 @@ function Run()
 					MsgQuick("","@L_CONTRACTARSENAL_FAILURE_+2")
 					StopMeasure()
 				else
-					chr_SpendMoney("", money, "CostArsenal")
+					chr_SpendMoney("", money, "HireMercenaries")
 					dyn_AddImperialFame("", fame * choice2)
 					Count = GetProperty("Arsenal", label) + choice2
 					SetProperty("Arsenal", label, Count)

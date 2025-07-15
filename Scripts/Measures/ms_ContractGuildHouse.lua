@@ -77,7 +77,7 @@ function Run()
 			ContractCount = ContractCount - 1
 			SetProperty("Guildhouse", "ContractCount", ContractCount)
 			RemoveItems("",ContractItem,1)
-			chr_CreditMoney("", ContractMoney, "IncomeGuildOrders")
+			chr_CreditMoney("", ContractMoney, "GuildContract")
 
 			if not (SimGetClass("")==(ContractClass+1)) then
 				ContractFame = ContractFame - 1

@@ -89,7 +89,7 @@ function Run()
 		end
 		
 		if GetDynastyID("Destination") ~= GetDynastyID("") then
-			chr_CreditMoney("Destination", Money, "IncomeMass")
+			chr_CreditMoney("Destination", Money, "Offering")
 		end
 		if GetImpactValue("Destination","MassInProgress")~=1 then
 			break

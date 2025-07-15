@@ -86,8 +86,8 @@ function Run()
 	    end		
 
 	if trunkwahl ~= 77 then
-		chr_CreditMoney("Tave",kosten,"IncomeSocial")
-		chr_SpendMoney("Owner", kosten, "CostSocial")
+		chr_CreditMoney("Tave",kosten,"Offering")
+		chr_SpendMoney("Owner", kosten, "Offering")
             if alcpegel <= 40 then
 			    MsgSayNoWait("","@L_MEASURE_DRUNKGAME_SPRUCHA")
 			    local dowas = PlayAnimationNoWait("","use_potion_standing")

@@ -152,10 +152,10 @@ function Dance()
 	        end
 		
 		if IsDynastySim(DestAlias) then
-			chr_SpendMoney(DestAlias, spend, "CostThiefs")
+			chr_SpendMoney(DestAlias, spend, "LaborOfLove")
 		end
 		
-		chr_CreditMoney("", spend, "IncomeThiefs")
+		chr_CreditMoney("", spend, "LaborOfLove")
 		IncrementXPQuiet("", 10)
 		AddImpact(DestAlias,"FullOfLove",1,2)
 		end

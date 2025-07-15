@@ -197,7 +197,7 @@ function Run()
 		if GetRemainingInventorySpace("",Plan) < 1 then
 			MsgQuick("", "@L_MEASURE_BUYWORKINGPLAN_FAILURE_+1", GetID(""), PlanLabel)
 			StopMeasure()
-		elseif not chr_SpendMoney("", money, "WaresBought") then
+		elseif not chr_SpendMoney("", money, "WorkingPlan") then
 			MsgQuick("", "@L_MEASURE_BUYWORKINGPLAN_FAILURE_+0", GetID(""), PlanLabel)
 			StopMeasure()
 		end
