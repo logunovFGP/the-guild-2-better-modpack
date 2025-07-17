@@ -12,6 +12,10 @@ function Run()
 		MsgQuick("", "@L_NEWSTUFF_TRIAL_INSTALL_WRONGTOWNHALL")
 		return
 	end
+
+	if not AliasExists("Destination") then
+		StopMeasure()
+	end
 	
 	if HasProperty("Destination", "AtWar") then	
 		MsgQuick("", "@L_CHARGE_FAILURE_+0")

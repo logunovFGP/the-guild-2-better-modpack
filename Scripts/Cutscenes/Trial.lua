@@ -101,7 +101,7 @@ function Start()
 	local CityID = GetID("settlement")
 
 	--if (WaitTime < 0) then
-		trial_SetBuildingInfo()
+		--trial_SetBuildingInfo()
 	--else
 		CutsceneAddEvent("", "SetBuildingInfo", WaitTime)
 	--end
