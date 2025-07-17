@@ -418,8 +418,11 @@ function ProcessLodge(LodgeSim)
 end
 
 function CleanTables()
+	if not AliasExists("Tavern") then
+		GetInsideBuilding("", "Tavern")
+	end
 	local Type = Rand(4)
-	if Type == 0 then	
+	if Type == 0 then
 		GetFreeLocatorByName("Tavern", "ServeSitRich", 0, 3,"MovePos")
 		f_BeginUseLocator("", "MovePos", GL_STANCE_STAND, true)
 		PlayAnimation("", "manipulate_middle_twohand")

@@ -225,7 +225,9 @@ function CleanUp()
 			if HasProperty("Tavern", "Guest"..GetID("").."Waiter") then
 				local Waiter = GetProperty("Tavern", "Guest"..GetID("").."Waiter")
 				GetAliasByID(Waiter, "Waiter")
-				MeasureRun("Waiter", nil, "AssignEmployeeToService")
+				if AliasExists("Waiter") then
+					MeasureRun("Waiter", nil, "AssignEmployeeToService")
+				end
 			end
 		end
 	end
