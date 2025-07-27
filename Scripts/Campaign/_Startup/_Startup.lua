@@ -4,11 +4,6 @@ end
 
 
 function Prepare()
-	local RandomTime = 6 + Rand(12)
-	local Season = { EN_SEASON_SPRING, EN_SEASON_SUMMER, EN_SEASON_AUTUMN, EN_SEASON_WINTER }
-	local Randomizer = 1 + Rand(4)
-	
-	SetTime(Season[Randomizer], 1400, RandomTime, 0)
 	GetScenario("World")
 	SetProperty("World", "static", 1)
 	
@@ -155,6 +150,6 @@ function Start()
 			MeasureRun("Boat", nil, "StartmenuShip")
 		end
 	end
-	
+	local Season = { EN_SEASON_SPRING, EN_SEASON_SUMMER, EN_SEASON_AUTUMN, EN_SEASON_WINTER }
+	SetTime(Season[1+Rand(4)], 1400, 6+Rand(12), 0)
 end
-
