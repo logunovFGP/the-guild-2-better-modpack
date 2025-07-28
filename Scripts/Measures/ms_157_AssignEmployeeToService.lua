@@ -118,7 +118,7 @@ function Run()
 			Result = Find("", "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitsForCheckout)))", "CheckOutSim", -1)
 			if Result > 0 then
 				for i = 0, Result-1 do
-					BuildingAddWaitingSimToLodge("Tavern", "CheckOutSim"..i)
+					-- BuildingAddWaitingSimToLodge("Tavern", "CheckOutSim"..i)
 				end
 				MsgDebugMeasure("Collecting tips.")
 				SetProperty("Tavern", "LodgeAssigned", GetID(""))
@@ -135,7 +135,7 @@ function Run()
 			Result = Find("", "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForLodge)))", "LodgeSim", -1)
 			if Result > 0 then
 				for i = 0, Result-1 do
-					BuildingAddWaitingSimToLodge("Tavern", "LodgeSim"..i)
+					-- BuildingAddWaitingSimToLodge("Tavern", "LodgeSim"..i)
 				end
 				MsgDebugMeasure("Assigning a bed to a guest.")
 				SetProperty("Tavern", "LodgeAssigned", GetID(""))
@@ -160,7 +160,7 @@ end
 
 function ProcessCheckout(CheckOutSim)
 	RemoveProperty(CheckOutSim, "WaitsForCheckout")
-	BuildingRemoveWaitingSimToLodge("Tavern", CheckOutSim)
+	-- BuildingRemoveWaitingSimToLodge("Tavern", CheckOutSim)
 	GetLocatorByName("Tavern", "GetRoom", "CheckOut")
 
 	f_BeginUseLocator(CheckOutSim, "CheckOut", GL_STANCE_STAND, true)
@@ -185,7 +185,7 @@ function ProcessCheckout(CheckOutSim)
 
 	LogMessage("@TAVERN_LODGE === Tip: " .. Tip)
 
-	BuildingAddLodgeBedTips("Tavern", Slot-1, Tip)
+	-- BuildingAddLodgeBedTips("Tavern", Slot-1, Tip)
 
 	SetProperty("Tavern", "StatusBed"..Slot, "Vacant")
 			
@@ -232,7 +232,7 @@ function ProcessLodge(LodgeSim)
 	SetProperty("Tavern", "GuestLodge"..GetID(LodgeSim).."Waiter", GetID(""))
 
 	RemoveProperty(LodgeSim, "WaitForLodge")
-	BuildingRemoveWaitingSimToLodge("Tavern", LodgeSim)
+	-- BuildingRemoveWaitingSimToLodge("Tavern", LodgeSim)
 
 	GetLocatorByName("Tavern", "GetRoom", "AskForBed")
 	f_BeginUseLocator(LodgeSim, "AskForBed", GL_STANCE_STAND, true)
@@ -255,7 +255,7 @@ function ProcessLodge(LodgeSim)
 		if HasProperty("Tavern", "StatusBed"..i) then
 			local isBedAvailable = GetProperty("Tavern", "StatusBed"..i)
 			if (isBedAvailable == "Vacant") then
-				local Factor = BuildingGetLodgeBedPrice("Tavern", i-1)
+				local Factor = 1 -- BuildingGetLodgeBedPrice("Tavern", i-1)
 
 				local factorToMultiplier = {
 				    [1] = 0.25,
@@ -362,7 +362,7 @@ function ProcessLodge(LodgeSim)
 
 		MsgSay("", "@"..Label.."+"..Rand(4))
 
-		local Factor = BuildingGetLodgeBedPrice("Tavern", isSelectedBed-1)
+		local Factor = 1 --BuildingGetLodgeBedPrice("Tavern", isSelectedBed-1)
 
 		local factorToMultiplier = {
 		    [1] = 0.25,
@@ -392,8 +392,8 @@ function ProcessLodge(LodgeSim)
 		Sleep(0.3)
 		chr_GainXP("", 5)
 
-		BuildingAddLodgeBedMoney("Tavern", isSelectedBed-1, Price)
-		BuildingAddLodgeSim("Tavern", LodgeSim)
+		-- BuildingAddLodgeBedMoney("Tavern", isSelectedBed-1, Price)
+		-- BuildingAddLodgeSim("Tavern", LodgeSim)
 
 		SetProperty(LodgeSim, "AssignedBed", isSelectedBed)
 		MeasureRun(LodgeSim, nil, "SleepTavern", true)
