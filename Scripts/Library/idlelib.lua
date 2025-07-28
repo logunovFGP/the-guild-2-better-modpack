@@ -11,7 +11,6 @@ end
 -- -----------------------
 function GetActivity()
 
-
 	if not GetSettlement("", "MyCity") then
 		return 0
 	end
@@ -76,24 +75,12 @@ end
 -- -----------------------
 function Sleep(SleepStart, SleepEnd)
 	MsgDebugMeasure("Sleeping...")
+	if not GetHomeBuilding("", "HomeBuilding") then
+		Sleep(Gametime2Realtime(1))
+		return false
+	end
 
-	--LogMessage("@TAVERN Looking to sleep at a tavern: " .. GetName(""))
-
-	--local Home_Exists = GetHomeBuilding("", "HomeBuilding")
-	--local Home_Type   = nil
-
-	--if Home_Exists then
-	--	Home_Type = BuildingGetType("HomeBuilding")
-	--end
-
-	--if (not Home_Exists) or (Home_Type == 1) then
-		--if not idlelib_CheckTavern() then
-			--Sleep(Gametime2Realtime(1))
-			--return false
-		--end
-	--end
-
-	if (not GetInsideBuilding("", "Inside")) or (GetID("Inside")~=GetID("HomeBuilding")) then
+	if not GetInsideBuilding("", "Inside") or GetID("Inside")~=GetID("HomeBuilding") then
 		if not f_MoveTo("", "HomeBuilding", GL_MOVESPEED_RUN) then
 			Sleep(3)
 			StopMeasure()
@@ -121,8 +108,8 @@ function Sleep(SleepStart, SleepEnd)
 	end
 	
 	local SleepTime = Gametime2Realtime(EN_RECOVERFACTOR_HOME/60)
-	local ContinueSleeping = true
-	SetState("", STATE_SLEEPING, true)
+	local	ContinueSleeping = true
+	SetState("", STATE_SLEEPING,true)
 	while ContinueSleeping do
 	
 		ContinueSleeping = false
@@ -918,9 +905,183 @@ end
 -- GoToTavern
 -- -----------------------
 function GoToTavern()
-	LogMessage("@IDLE #W before ("..GetName("")..") Go to Tavern")
-	MeasureRun("", nil, "DrinkAtTavern")
-	return
+	MsgDebugMeasure("Have some drink in a Tavern")
+	if GetSettlement("", "City") then
+
+		local stage = GetData("#MusicStage")
+		if stage ~= nil and GetAliasByID(stage, "stageobj") then
+			BuildingGetCity("stageobj", "stageCity")
+			if GetID("City") == GetID("stageCity") and (Rand(100)>39) then
+				if BuildingGetType("stageobj") == GL_BUILDING_TYPE_DIVEHOUSE then
+					idlelib_GoToDivehouse()
+					return
+				end
+			end
+		end
+		
+		-- TODO calculation of attractivity needs to be increased when versengold is giving a concert
+		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_TAVERN)
+		
+		if not AliasExists("Destination") or not f_MoveTo("","Destination") then
+			return
+		end
+
+		if Rand(4)==0 then
+			if HasProperty("Destination","Versengold") then
+				MeasureRun("", nil, "CheerMusicians")
+			else
+				idlelib_KissMeHonza()
+			end
+		end
+		
+		local SimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000))"
+		local NumSims = Find("", SimFilter,"Sim", -1)
+		if NumSims > 30 then
+			f_ExitCurrentBuilding("")
+			idlelib_GoToRandomPosition()
+			return
+		end
+		
+		if IsDynastySim("") then
+			if not GetFreeLocatorByName("Destination","SitRich",1,5,"SitPos") then
+				f_Stroll("",150,2)
+				return
+			end
+			
+			if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
+				return
+			end			
+		else
+			if not GetFreeLocatorByName("Destination", "SitInn", 1, 15, "SitPos") then
+				f_Stroll("", 150, 2)
+				return
+			end
+			
+			if not f_BeginUseLocator("","SitPos",GL_STANCE_SIT,true) then
+				return
+			end
+		end
+		
+		local Hour = math.mod(GetGametime(), 24)
+		local verweile = 0
+		local basicvalue = 1
+
+		if Hour > 6 and Hour < 20 then
+			verweile = Rand(3)+2
+		else
+			verweile = Rand(6)+2
+		end
+
+		if HasProperty("Destination", "DanceShow") then
+			verweile = verweile + 3
+		end
+		if HasProperty("Destination", "ServiceActive") then
+			verweile = verweile + 2
+		end
+		if HasProperty("Destination", "Versengold") then
+			basicvalue = basicvalue + 1
+			verweile = verweile + 3
+		end
+		
+		while verweile > 0 do
+
+			if HasProperty("Destination","Versengold") and Rand(10)>7 then
+				f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+				MeasureRun("", nil, "CheerMusicians")
+			end
+		
+			local AnimTime
+			local AnimType = Rand(3)
+			PlaySound3DVariation("","Locations/tavern_people",1)
+			local WhatToBuy = "drink"
+			if Rand(3) > 0 then
+				AnimTime = PlayAnimationNoWait("","sit_drink")
+				Sleep(1)
+				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif",false)
+				Sleep(1)
+				PlaySound3DVariation("","CharacterFX/drinking",1)
+				Sleep(AnimTime-1.5)
+				CarryObject("","",false)
+				
+				if SimGetGender("")==GL_GENDER_MALE then
+					PlaySound3DVariation("","CharacterFX/male_belch",1)
+				else
+					PlaySound3DVariation("","CharacterFX/female_belch",1)
+				end
+				Sleep(1.5)
+			else
+				WhatToBuy = "eat"
+				PlayAnimation("","sit_eat")
+			end
+			
+			if AnimType == 0 then
+				PlayAnimation("","sit_talk")
+			elseif AnimType == 1 then
+				AnimTime = PlayAnimationNoWait("", "sit_cheer")
+				Sleep(1)
+				PlaySound3D("","Locations/tavern/cheers_01.wav",1)
+				CarryObject("","Handheld_Device/ANIM_beaker_sit_drink.nif", false)
+				Sleep(1)
+				PlaySound3DVariation("", "CharacterFX/drinking", 1)
+				Sleep(AnimTime-1.5)
+				CarryObject("", "", false)
+				Sleep(1.5)
+			else
+				PlayAnimationNoWait("", "sit_laugh")
+				Sleep(2)
+				if Rand(2)==0 then
+					PlaySound3D("","Locations/tavern/laugh_01.wav",1)
+				else
+					PlaySound3D("","Locations/tavern/laugh_02.wav",1)
+				end
+				Sleep(5)	
+			end
+			
+	--		if SimGetNeed("", 8) > 0.3 or  SimGetNeed("", 1) > 0.3 then
+			local NumItems = 1
+			if HasProperty("Destination","DanceShow") then
+				NumItems = 2
+			end
+				
+			local Items, needo
+			if WhatToBuy == "drink" then
+				Items = { "SmallBeer", "WheatBeer" }
+				needo = 8
+			else
+				Items = { "GrainPap", "RoastBeef" }
+				needo = 1
+			end
+				
+			local Choice = Items[Rand(2)+1]	
+			local ItemCount, TotalPrice = economy_BuyItems("Destination", "", Choice, NumItems, true)
+			if ItemCount > 0 then
+				--SatisfyNeed("", needo, 0.3)
+				if HasProperty("Destination","ServiceActive") then
+					local TavernLevel = BuildingGetLevel("Destination")
+					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
+					local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
+					chr_CreditMoney("Destination", Tip, "WaresSold")
+				end
+			else
+				local Tip = 3 * chr_GetRank("") + 1
+				chr_CreditMoney("Destination", Tip, "WaresSold")
+			end
+
+			verweile = verweile - 1
+		end
+		f_EndUseLocator("","SitPos",GL_STANCE_STAND)
+
+		local Hour = math.mod(GetGametime(), 24)
+		if Hour > 21 or Hour < 4 then
+			if Rand(100) > 80 then
+				--LoopAnimation("","idle_drunk",10)
+				AddImpact("","totallydrunk",1,6)
+				AddImpact("","MoveSpeed",0.7,6)
+				SetState("",STATE_TOTALLYDRUNK,true)
+				StopMeasure()
+			end
+		end
+	end
 end
 
 -- -----------------------
@@ -1641,91 +1802,6 @@ function TakeACredit()
 end
 
 -- -----------------------
--- RentABed
--- -----------------------
-function RentBed()
-	MsgDebugMeasure("Rent a bed at the tavern.")
-
-	if not GetSettlement("", "City") then
-		return
-	end
-
-	local NumTaverns = CityGetBuildings("City", 2, 4, -1, -1, FILTER_HAS_DYNASTY, "Tavern")
-
-	if NumTaverns > 0 then
-		for i = 0, NumTaverns - 1 do
-			local Attractivity = GetImpactValue("Tavern"..i, "Attractivity")
-			CopyAlias("Tavern"..i, "Destination")
-		end
-	end
-
-	if not AliasExists("Destination") then
-		SatisfyNeed("", 10, 1)
-		return
-	end
-	
-	if not BuildingGetOwner("Destination", "MyBoss") then
-		return
-	end
-
-	if AliasExists("Destination") then
-		GetLocatorByName("Destination", "exit1", "MoveTo")
-
-		if not f_MoveTo("","MoveTo") then
-			return
-		end
-		
-		if not GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
-			Sleep(1)
-			idlelib_GoToRandomPosition()
-			return
-		end
-
-		local STANCE
-
-		if BuildingHasUpgrade("Destination", 1247) then
-			STANCE = GL_STANCE_SIT
-		else
-			STANCE = GL_STANCE_STAND
-		end
-		
-		if AliasExists("SitPos") then
-			if (LocatorGetBlocker("SitPos") ~= GetID("")) then
-				if GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
-					f_BeginUseLocator("", "SitPos", STANCE, true)
-				end
-			end
-		else
-			if GetFreeLocatorByName("Destination", "WaitLodge", 1, 8, "SitPos") then
-				f_BeginUseLocator("", "SitPos", STANCE, true)
-			else
-				Sleep(1)
-				return
-			end
-		end
-		
-		SetProperty("", "WaitForLodge", 1)
-		local WaitTime = GetGametime() + 2
-		while GetGametime() < WaitTime do
-			Sleep(5)
-		end
-			
-		f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
-			
-		if HasProperty("", "WaitForLodge") then
-			RemoveProperty("", "WaitForLodge")
-		end
-
-		BuildingRemoveWaitingSimToLodge("Destination", "")
-		
-		f_ExitCurrentBuilding("")
-	end
-
-	Sleep(2)
-end
-
-
--- -----------------------
 -- ReturnACredit
 -- -----------------------
 function ReturnACredit()
@@ -2035,13 +2111,6 @@ function DinnerAtEstate()
 
 end
 
-function CheckTavern()
--- ******** THANKS TO KINVER ********
-	if not HasProperty("", "IsSleepingAtTavern") then
-		return idlelib_RentBed()
-	end
-end
-
 function CheckBank()
 -- ******** THANKS TO KINVER ********
 	if not HasProperty("","SchuldenGeb") then
@@ -2152,7 +2221,7 @@ function GoSleep()
 		end
 		
 		if GetFreeLocatorByName("DestTavern", "Berth", 1, 2, "SleepingBerth") then  -- sleep in tavern if possible
-			--MeasureRun("", nil, "RentSleepingBerth")
+			MeasureRun("", nil, "RentSleepingBerth")
 			return
 		else
 			idlelib_GoToTavern()
