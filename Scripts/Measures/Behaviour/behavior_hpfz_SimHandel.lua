@@ -1,5 +1,4 @@
 function Run()
-
 	if Rand(5) > 1 then
 	    GetFleePosition("Owner", "Actor", Rand(50)+100, "Away")
 	    f_MoveTo("Owner", "Away", GL_MOVESPEED_WALK)
@@ -24,9 +23,10 @@ function Run()
 end
 
 function KundeAuswahl()
-    LogMessage("@Free_Trade #E KundeAuswahl() -> Actor | "..GetName("Actor")..", Owner | "..GetName("Owner"))
-
 	local List = {}
+
+    local fromCart = false
+    local usedCartIndex = nil
 
     if AliasExists("Owner") and AliasExists("Actor") then
         local Index, SlotCount = 0, InventoryGetSlotCount("Actor", INVENTORY_STD)
@@ -38,8 +38,46 @@ function KundeAuswahl()
             end
         end
 
+        local OwnedByActor = function(Cart)
+            if not GetHomeBuilding(Cart, "Building") then
+                return false
+            end
+            if not BuildingGetOwner("Building", "BuildingOwner") then
+                return false
+            end
+            if GetID("BuildingOwner") == GetID("Actor") then
+                return true
+            end
+        end
+
+        local function AnalyseCart(Cart, _CartIndex)
+            if OwnedByActor(Cart) then
+                local CartItemIndex, SlotCount = 0, InventoryGetSlotCount(Cart, INVENTORY_STD)
+                for Count = 0, SlotCount -1 do
+                    local ItemID, ItemCount = InventoryGetSlotInfo(Cart, Count, INVENTORY_STD)
+                    if ItemID ~= nil and ItemCount > 0 then
+                        Index = Index + 1
+                        List[Index] = ItemID
+                        fromCart = true
+                        usedCartIndex = _CartIndex
+                    end
+                end
+            end
+        end
+
+        if ItemID == nil then
+            local Cart = Find("Actor", "__F((Object.GetObjectsByRadius(Cart)==800))", "Cart", 1)
+            if (Cart > 0) then
+                for CartIndex = 0, Cart -1 do
+                    AnalyseCart("Cart", CartIndex)
+                end
+            elseif (Cart == 1) then
+                ChangeAlias("Cart", "Cart1")
+                AnalyseCart("Cart", 1)
+            end
+        end
+
         if Index > 0 then
-            LogMessage("@Free_Trade #E Index: "..Index)
             local Purchase = Rand(Index) + 1
             if ItemGetCategory(List[Purchase]) ~= -1 then
                 local Calculus = ((GetSkillValue("Actor", 9) * (SimGetRank("Owner") + 5)) + ItemGetBasePrice(List[Purchase]))
@@ -49,40 +87,18 @@ function KundeAuswahl()
                     chr_SpendMoney("Owner", Calculus, "Offering")
                 end
                 ShowOverheadSymbol("Actor", false, true, 0, "%1t", Calculus)
-                RemoveItems("Actor", List[Purchase], 1)
+                if fromCart then
+                    RemoveItems("Cart"..usedCartIndex, List[Purchase], 1)  -- Use usedCartIndex instead
+                else
+                    RemoveItems("Actor", List[Purchase], 1)
+                end
             end
-            LogMessage("@NAO #E behavior_hpfz_simhandel.lua, Purchase: "..Purchase..".")
             return ItemGetCategory(List[Purchase])
         else
-            LogMessage("@Free_Trade #E Index is nil.")
             return -1
         end
     end
-	--[[else
-        local itemX, mengeX, slotX, feil, gPreis, summe, bonus, charm
-        local r = 0
-        slotX = InventoryGetSlotCount("Actor",INVENTORY_STD)
-        for s = 0, slotX-1 do
-            itemX, mengeX = InventoryGetSlotInfo("Actor",s,INVENTORY_STD)
-            if itemX and mengeX > 0 then
-                r = r + 1
-                List[r] = itemX
-            end
-        end
-        Purchase = ( Rand(r) + 1 )
-        if ItemGetCategory(List[Purchase]) ~= nil then
-            if ItemGetCategory(List[Purchase])~=0 and ItemGetCategory(List[Purchase])~=6 then
-                feil = GetSkillValue("Actor",9)
-                charm = GetSkillValue("Actor",3)
-                gPreis = ItemGetBasePrice(List[Purchase])
-                bonus = ( SimGetRank("Owner") * charm )
-                summe = ((feil * bonus) + gPreis)
-                chr_CreditMoney("Actor",summe,"Offering")
-                IncrementXPQuiet("Actor",5)
-                ShowOverheadSymbol("Actor",false,true,0,"%1t",summe)
-                RemoveItems("Actor", List[Purchase], 1)
-            end
-        end--]]
+
 end
 
 function KundeReaktion(z)

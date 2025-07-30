@@ -27,7 +27,6 @@ function Run()
             	        GfxAttachObject("tradetisch", "city/Stuff/tradetable.nif")
             	        GfxSetPositionTo("tradetisch", "MovePos")	
                         while GetItemCount("",ItID) > 0 do
-                            LogMessage("@NAO #E ms_hpfz_Handel.lua, ItID "..ItID..".")
                             if ItemGetCategory(ItID--[[X]]) > 0 then
                                 ms_hpfz_handel_Ausrufer(ItID--[[X]])
                             end
@@ -47,7 +46,7 @@ function Run()
                 if ItMgX > 0 then
                     --GfxAttachObject("verkaufsStand", "city/freierhandler.nif")
     	            while GetItemCount("ExtraLagerX",ItIDX) > 0 do
-                        if ItemGetCategory(ItIDX) > 0 then
+                        if (ItemGetCategory(ItIDX) > 0) then
                             ms_hpfz_handel_Ausrufer(ItIDX)
                         end
     	            end
@@ -68,7 +67,7 @@ function BestandCheck()
   local Slots = InventoryGetSlotCount("",INVENTORY_STD)
   local r, ItemID, ItemMenge
   local Lager = 0
-	local LagerX = 0
+    local LagerX = 0
 
   for r = 0, Slots-1 do
     ItemID, ItemMenge = InventoryGetSlotInfo("",r,INVENTORY_STD)
@@ -76,9 +75,9 @@ function BestandCheck()
         Lager = Lager + 1
     end 
 		if ItemID ~= nil then
-	    if ItemGetCategory(ItemID)==0 or ItemGetCategory(ItemID)==6 then
-  	    Lager = Lager - 1
-	    end
+    	    if ItemGetCategory(ItemID)==0 then --or ItemGetCategory(ItemID)==6 then
+      	    Lager = Lager - 1
+    	    end
 		end
   end
 
@@ -91,7 +90,7 @@ function BestandCheck()
                 LagerX = LagerX + 1
             end 
 			if ItemID ~= nil then
-	            if ItemGetCategory(ItemID)==0 or ItemGetCategory(ItemID)==6 then
+	            if ItemGetCategory(ItemID)==0 then --or ItemGetCategory(ItemID)==6 then
 	                LagerX = LagerX - 1
 		        end
 			end
@@ -102,7 +101,6 @@ function BestandCheck()
 end
 
 function Ausrufer(z)
-
     local HandVerkauf = Rand(3)
     local Aktion
     local Rufe = Rand(2)
