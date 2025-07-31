@@ -1,53 +1,61 @@
 function Run()
-
 	GetScenario("scenario")
+
 	if not HasProperty("scenario", "static") then
-		local	TimeToSleep = 583
-		local	EventType
+		local TimeToSleep = 60
+		local EventType
 		local currentRound
 		local WarRiskVal
-		
-		--------------------------
-		-- initiate war parameters
-		SetProperty("","WarPhase", 0)
-		SetProperty("","WarWon", 0)
-		if not HasProperty("","WarEndTime") then
-			SetProperty("","WarEndTime", 0)
+		local LastWarRound
+		local WarCondition
+
+		SetProperty("", "WarPhase", 0)
+		SetProperty("", "WarWon", 0)
+
+		if not HasData("#GlobalEventType") then
+			SetData("#GlobalEventType", 0)
 		end
-		if not HasProperty("","WarRisk") then
-			SetProperty("","WarRisk", 25)
-			SetProperty("","Hostility1", 25)
-			SetProperty("","Hostility2", 25)
-			SetProperty("","Hostility3", 25)
-			SetProperty("","Hostility4", 25)
+
+		if not HasProperty("", "WarEndTime") then
+			SetProperty("", "WarEndTime", 0)
 		end
-		--------------------------
+
+		if not HasProperty("", "WarRisk") then
+			SetProperty("", "WarRisk", 25)
+			SetProperty("", "Hostility1", 25)
+			SetProperty("", "Hostility2", 25)
+			SetProperty("", "Hostility3", 25)
+			SetProperty("", "Hostility4", 25)
+		end
 		
-		while true do
-			
+		while true do			
 			currentRound = GetRound()
 			EventType = GetData("#GlobalEventType")
-	
-			if currentRound > 0 then
-				
-				if EventType ~= 1 then
-				
-					local WarRiskChange = Rand(4)-1
-					gameplayformulas_ChangeWarRisk(WarRiskChange)
-	
-					WarRiskVal = GetProperty("","WarRisk")
-					if (Rand(200)+15)<WarRiskVal then
-						if (GetProperty("","WarPhase")==0) then
-							ms_globalevent_War()
-						end
-					end
-	
-				end
-				
+
+			if HasData("#LastWarRound") then
+				LastWarRound = GetData("#LastWarRound")
+			else
+				LastWarRound = -1
 			end
+
+			if (currentRound > LastWarRound) and (EventType ~= 1) then
+				LogMessage("@WAR Current round: " .. currentRound .. ", Last Round at War: " .. LastWarRound)			
+				local WarRiskChange = Rand(4)-1
+				gameplayformulas_ChangeWarRisk(WarRiskChange)
 	
+				WarRiskVal = GetProperty("", "WarRisk")
+				WarCondition = Rand(85) + 16 --Rand(200)+15
+				LogMessage("@WAR War risk: " .. WarRiskVal .. "/" .. WarCondition)
+
+				if (WarCondition <= WarRiskVal) then
+					if (GetProperty("", "WarPhase") == 0) then
+						SetData("#LastWarRound", currentRound)
+						ms_globalevent_War()
+					end
+				end
+			end
+
 			Sleep(TimeToSleep)
-			
 		end
 	end
 end
