@@ -286,6 +286,7 @@ function GetMyWeapon()
 end
 
 function CleanUp()
+	--LogMessage("@WAR CleanUp in State Global Travelling with " .. GetName(""))
 	if HasProperty("","TorchlightCarrier") then
 		RemoveProperty("","TorchlightCarrier")
 	end
@@ -305,7 +306,7 @@ function CleanUp()
 		RemoveProperty("", "WarVictim")
 		InternalDie("")
 		InternalRemove("")
-		Kill("")
+		--Kill("")
 	elseif HasProperty("", "captain") then
 		RemoveProperty("", "captain")
 	elseif HasProperty("", "officer") then
@@ -314,20 +315,22 @@ function CleanUp()
 		RemoveProperty("", "trooper")
 		InternalDie("")
 		InternalRemove("")
-		Kill("")
+		--Kill("")
 	elseif HasProperty("", "arkebusier") then
 		RemoveProperty("", "arkebusier")
 		InternalDie("")
 		InternalRemove("")
-		Kill("")
+		--Kill("")
 	elseif HasProperty("", "cannon") then
 		RemoveProperty("", "cannon")
 		InternalDie("")
 		InternalRemove("")
-		Kill("")
+		--Kill("")
 	end
 	
 	SetState("",STATE_LOCKED,false)
+
+	--LogMessage("@WAR End CleanUp in State Global Travelling with " .. GetName(""))
 
 end
 
