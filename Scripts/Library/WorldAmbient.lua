@@ -16,11 +16,11 @@ function CreateCityAnimals(city, startup)
 		CityGetRandomBuilding(city, GL_BUILDING_CLASS_MARKET, -1, -1, -1, FILTER_IGNORE, "Market")
 		if startup then
 			count = CityGetLevel(city)
-			worldambient_CreateAnimal("Dog", "Market", count-1)
-			worldambient_CreateAnimal("Cat", "Market", count-1)
+			--worldambient_CreateAnimal("Dog", "Market", count-1)
+			--worldambient_CreateAnimal("Cat", "Market", count-1)
 		else
-			worldambient_CreateAnimal("Dog", "Market", 1)
-			worldambient_CreateAnimal("Cat", "Market", 1)
+			--worldambient_CreateAnimal("Dog", "Market", 1)
+			--worldambient_CreateAnimal("Cat", "Market", 1)
 		end
 	end
 end
@@ -32,7 +32,7 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Dog", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Dog","locpos"..l, 1)
+				--worldambient_CreateAnimal("Dog","locpos"..l, 1)
 			end
 		end
 
@@ -40,7 +40,7 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Cat", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Cat","locpos"..l, 1)
+				--worldambient_CreateAnimal("Cat","locpos"..l, 1)
 			end
 		end
 
@@ -48,7 +48,7 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Wolf", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Wolf","locpos"..l, 1)
+				--worldambient_CreateAnimal("Wolf","locpos"..l, 1)
 			end
 		end
 
@@ -56,7 +56,7 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Duck", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Duck","locpos"..l, 2)
+				--worldambient_CreateAnimal("Duck","locpos"..l, 2)
 			end
 		end
 
@@ -64,7 +64,7 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Goose", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Goose","locpos"..l, 2)
+				--worldambient_CreateAnimal("Goose","locpos"..l, 2)
 			end
 		end
 		
@@ -72,7 +72,7 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Goat", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Goat", "locpos"..l, 1)
+				--worldambient_CreateAnimal("Goat", "locpos"..l, 1)
 			end
 		end
 
@@ -80,8 +80,8 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Chicken", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Cock","locpos"..l, 1)
-				worldambient_CreateAnimal("Chicken","locpos"..l, 2)
+				--worldambient_CreateAnimal("Cock","locpos"..l, 1)
+				--worldambient_CreateAnimal("Chicken","locpos"..l, 2)
 			end
 		end
 
@@ -89,8 +89,8 @@ function CreateWorldAnimals()
 		local num = GetOutdoorLocator("Deer", -1, "locpos")
 		if num > 0 then
 			for l=0,num-1 do
-				worldambient_CreateAnimal("Stag","locpos"..l, 1)
-				worldambient_CreateAnimal("Deer","locpos"..l, 2)
+				--worldambient_CreateAnimal("Stag","locpos"..l, 1)
+				--worldambient_CreateAnimal("Deer","locpos"..l, 2)
 			end
 		end
 
@@ -98,6 +98,11 @@ function CreateWorldAnimals()
 end
 
 function CreateAnimal(animal, building, count)	
+	local disabled = true
+	if disabled then
+		return
+	end
+	
 	if worldambient_CheckAmbient() then
 
 		if BuildingGetType(building)== -1 then
