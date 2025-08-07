@@ -28,7 +28,7 @@ function Run()
 				SetProperty("mymarket_food","OPEN",1)
 				BlockLocator("","SalePosFood")
 				if not f_MoveTo("","SalePosFood") then
-					SimBeamMeUp("","SalePosFood",false)
+					SimBeamMeUp("","home",false)
 				end
 				while true do
 					Sleep(Rand(49)+73)
