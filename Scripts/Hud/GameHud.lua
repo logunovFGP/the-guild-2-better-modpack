@@ -21,7 +21,7 @@ function Init()
  	this:AddPanel("SavingSheet","cl_MessageBox","gui/Menu/panel_saving.gui",false)
  	this:AddPanel("OptionsSheet","cl_OptionsSheet","gui/Menu/savegame.gui",false)
 
- 	this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false) 
+ 	--this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false) 
 
 
  	
