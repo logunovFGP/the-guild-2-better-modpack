@@ -102,12 +102,12 @@ function Start()
 		end
 
 		if GetOutdoorLocator("Dog"..n, 1, "DogPos" )~=0 then
-			SimCreate(906, "", "DogPos", "NPC")
-			SetState("NPC", STATE_ANIMAL, true)
+			--SimCreate(906, "", "DogPos", "NPC")
+			--SetState("NPC", STATE_ANIMAL, true)
 		end
 		if GetOutdoorLocator("Cat"..n, 1, "CatPos" )~=0 then
-			SimCreate(908, "", "CatPos", "NPC")
-			SetState("NPC", STATE_ANIMAL, true)
+			--SimCreate(908, "", "CatPos", "NPC")
+			--SetState("NPC", STATE_ANIMAL, true)
 		end
 	end
 	
