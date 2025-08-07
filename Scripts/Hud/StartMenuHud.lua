@@ -54,7 +54,7 @@ function Init()
  	this:AddPanel("EnterName","cl_StartMenuPanel","gui/menu/multiplayername.gui", false)
  	this:AddPanel("StartWarning","cl_StartMenuPanel","gui/menu/Startwarning.gui", false) 
  	this:AddPanel("Changelogs","cl_StartMenuPanel","gui/menu/changelogs.gui", false)
- 	this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false)
+ 	--this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false)
  	this:AddPanel("Credits", "cl_Credits", "gui/menu/credits.gui", false) 
  	this:ShowStartMenu()
 end

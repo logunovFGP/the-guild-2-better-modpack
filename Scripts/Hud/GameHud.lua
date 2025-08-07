@@ -21,7 +21,7 @@ function Init()
  	this:AddPanel("SavingSheet","cl_MessageBox","gui/Menu/panel_saving.gui",false)
  	this:AddPanel("OptionsSheet","cl_OptionsSheet","gui/Menu/savegame.gui",false)
 
- 	this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false) 
+ 	--this:AddPanel("Console", "cl_StartMenuPanel", "gui/hud/panel_console.gui", false) 
 
 
  	
@@ -81,14 +81,20 @@ function Init()
 
 	-- Rags to Riches
 	--this:AddPanel("BuildBuildingAll","cl_BuildBuildingSheet","gui/Rags/construct.gui",false)
+	--this:AddPanel("Achievements", "cl_AchievementsSheet", "gui/Hud/panel_achievements.gui", false)
 
  	-- Buttons have to be above of the sheets. Map has to be above of buttons. News have to be above the buttons
  	this:AddPanel("IndoorMapPanel","cl_IndoorMap","gui/Hud/panel_indoormap.gui")
- 	
+
  	this:AddPanel("NewsPanel","cl_NewsPanel","gui/Hud/panel_news.gui",true)
 	this:AddPanel("ActionsPanel","cl_ActionsPanel2","gui/Hud/panel_actions2.gui")
 	this:AddPanel("MeasureMessagePanel","cl_MeasureMessagePanel","gui/Hud/panel_measuremessage.gui",true,true)
-	
+
+	-- body
+	this:AddPanel("ButtonPanelLeft","cl_ButtonPanel","gui/Hud/panel_down_left.gui")
+	this:AddPanel("ButtonPanelRight","cl_ButtonPanel","gui/Hud/panel_down_right.gui")
+	this:AddPanel("ButtonPanelDecorator","cl_StaticPanel","gui/Hud/panel_down_middle.gui")
+
  	-- start sheets
  	this:AddPanel("AdministrateDiplomacySheet", "cl_AdministrateDiplomacySheet", "gui/Hud/panel_diplomacy.gui",false)
 	this:AddPanel("ImportantPersons", "cl_OverviewImportantPersonsSheet", "gui/Hud/panel_importantpersons.gui",false)
@@ -151,6 +157,7 @@ function Init()
 	this:AddPanel("HeaderSeason","cl_DatePanel","gui/Hud/panel_header_season.gui")  
 	this:AddPanel("HeaderMoney","cl_DatePanel","gui/Hud/panel_header_money.gui")  
 	this:AddPanel("HeaderDecorator","cl_StaticPanel","gui/Hud/panel_header_leiste.gui")
+	--this:AddPanel("HeaderAchievements","cl_DatePanel","gui/Hud/panel_header_achievement.gui")
 	
 	this:AddPanel("RenderViewPanel","cl_RenderViewPanel","gui/Hud/panel_3dview.gui",true)
 	this:AddPanel("MultiselectionPanel","cl_MultiselectionPanel","gui/Hud/panel_multiselection.gui")
@@ -160,11 +167,6 @@ function Init()
 	this:AddPanel("QuestlogPanel","cl_QuestlogPanel","gui/Hud/panel_questlog.gui",false)
 	this:AddPanel("NPCPanel","cl_NPCPanel","gui/Hud/panel_npc.gui")
 	-- this:AddPanel("MessagePanel","cl_MessagePanel","gui/Hud/panel_message.gui")
-	
-	-- body
-	this:AddPanel("ButtonPanelLeft","cl_ButtonPanel","gui/Hud/panel_down_left.gui")
-	this:AddPanel("ButtonPanelRight","cl_ButtonPanel","gui/Hud/panel_down_right.gui")
-	this:AddPanel("ButtonPanelDecorator","cl_StaticPanel","gui/Hud/panel_down_middle.gui")
 
 	-- Overalls
 	this:AddPanel("Overall_Lodge","cl_ButtonPanel","gui/Hud/panel_overall_lodge.gui",false)
