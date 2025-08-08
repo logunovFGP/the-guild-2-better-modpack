@@ -29,6 +29,8 @@ The Guild 2: Reforged is brand new mod for The Guild 2: Renaissance that enhance
    - You should see a folder named something like `megamodpack-reforged-master`
 
 4. **Copy mod files to game directory**
+   - First, DELETE the "Scripts", "GUI" folders from the original The Guild 2: Renaissance installation.
+   - **Skipping the step above will lead to guaranteed Out of Sync error in Multiplayer!**
    - Copy all folders from the extracted directory to your game installation folder
 
 5. **Choose your language**
@@ -55,6 +57,7 @@ If you encounter issues after installation:
 1. **Verify game files**
    - If using Steam: Right-click the game → Properties → Local Files → Verify integrity of game files
    - If using GOG: Right-click the game → Manage installation → Verify/Repair
+   - Reinstall Reforged
 
 2. **Language issues**
    - Make sure you've copied the correct language files from the Translations folder
