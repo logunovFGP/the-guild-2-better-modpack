@@ -75,7 +75,7 @@ function War()
 	local enemyHost3 = GetProperty("","Hostility3")
 	local enemyHost4 = GetProperty("","Hostility4")
 
-	math.randomseed(GetGametime())
+	--math.randomseed(GetGametime())
 
 	local enemynum
 	local enemyRand = Rand(100)+1
