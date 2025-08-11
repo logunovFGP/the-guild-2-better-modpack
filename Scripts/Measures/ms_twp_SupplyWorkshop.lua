@@ -195,6 +195,15 @@ function Run()
 				if economy_CheckAvailability(Suppliers[i], "", NeedCount, Needs) then
 					SupplierFound = true
 					f_MoveTo("", Suppliers[i], GL_MOVESPEED_RUN)
+					-- if cart is attacked while moving between suppliers it will stop to be plundered, wait until we can move again
+					if not IsInLoadingRange("", Suppliers[i]) then -- stopped early, should only happen when attacked 
+						while GetState("", STATE_ACTIVE_ESCORT) or (not CartGetOperator("", "Operator")) or GetState("Operator", STATE_DRIVERATTACKED) do
+							Sleep(10) -- wait until movement is available again
+						end
+					end
+					-- continue to the supplier (previous supplies will have beeon lost, but we can still try to get remaining ones)
+					f_MoveTo("", Suppliers[i], GL_MOVESPEED_RUN)
+					
 					NeedCount, Needs = cart_LoadItems("", Suppliers[i], NeedCount, Needs)
 					if NeedCount <= 0 then
 						break
@@ -215,6 +224,17 @@ function Run()
 		
 		MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
 		-- return home if necessary
+		if not IsInLoadingRange("", "MyHome") then
+			f_MoveTo("", "HomePos", GL_MOVESPEED_RUN)
+		end
+		
+		-- careful: MoveResult is true when driver is attacked. SATE_DRIVERATTACKED lasts longer than the following code segment and would lead to abort
+		if not IsInLoadingRange("", "MyHome") then
+			while GetState("", STATE_ACTIVE_ESCORT) or (not CartGetOperator("", "Operator")) or GetState("Operator", STATE_DRIVERATTACKED) do
+				Sleep(10) -- wait until movement is available again
+			end
+		end
+		
 		if not IsInLoadingRange("", "MyHome") and not f_MoveTo("", "HomePos", GL_MOVESPEED_RUN) then
 			-- cannot get gome, something went wrong
 			StopMeasure() 
