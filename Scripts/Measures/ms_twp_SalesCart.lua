@@ -177,8 +177,15 @@ function Run()
 			cart_LoadItems("", "MyHome", ProfitCount, Profits) 
 			-- 5. go to the market
 			f_MoveTo("", ChosenTarget, GL_MOVESPEED_RUN)
+			-- careful: MoveResult is true when driver is attacked. SATE_DRIVERATTACKED lasts longer than the following code segment and would lead to abort
+			if not IsInLoadingRange("", ChosenTarget) then
+				while GetState("", STATE_ACTIVE_ESCORT) or (not CartGetOperator("", "Operator")) or GetState("Operator", STATE_DRIVERATTACKED) do
+					Sleep(10) -- wait until movement is available again
+				end
+			end
+			
 			Sleep(3)
-			-- 6. Unload
+			-- 6. Unload (simply does nothing when not in range)
 			cart_UnloadAll("", ChosenTarget)
 			Sleep(2)
 		else
