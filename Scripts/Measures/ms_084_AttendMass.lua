@@ -101,6 +101,8 @@ function Run()
 	end
 	
 	ms_084_attendmass_AffectFaith()
+	Sleep(0.5)
+	chr_GainXP("", GetData("BaseXP"))
 end
 
 function CleanUp()
