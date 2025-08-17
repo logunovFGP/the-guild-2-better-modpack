@@ -135,7 +135,7 @@ function Run()
 		return 
 	end 
 
-	local TargetCount, Targets = ms_twp_salescart_GetMeasureData()
+	local ProductCount, Products, TargetCount, Targets = ms_twp_salescart_GetMeasureData()
 	
 	-- 1. Go home.
 	MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
@@ -152,6 +152,8 @@ function Run()
 	
 	local NeedCount, Needs
 	while true do 
+		LogMessage("@TWP ProductCount: " .. ProductCount)
+LogMessage("@TWP TargetCount : " .. TargetCount )
 		-- 3. Calculate expected profit for each item
 		local ProfitCount, Profits = 0, {}
 		local ExpectedTotalProfit = 0
@@ -186,7 +188,7 @@ function Run()
 			cart_UnloadAll("", ChosenTarget)
 			Sleep(2)
 		else
-			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_NO_PROFIT_+0")
+			MsgMeasure("", "No profit: " .. ExpectedTotalProfit )
 			Sleep(120) -- nothing to sell right now, wait a while
 		end 
 		
