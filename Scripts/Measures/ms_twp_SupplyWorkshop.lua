@@ -125,11 +125,11 @@ function InitMeasure()
 	
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
-	local ResourceCount, Resources = economy_GetResourceNeeds("MyHome")
+	local ResourceCount, Resources = economy_StorageGetResources("MyHome")
 	local SupplierCount = 0
 	local Suppliers = {} -- {Supplier1, Supplier2, ...}
 	-- add local market as supplier for convenience
-	if GetSettlement("MyHome", "MyCity") then
+	if GetSettlement("MyHome", "MyCity") and not cart_IsShip("") then
 		if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
 			SupplierCount = 1
 			Suppliers[1] = "MyMarket"
@@ -149,6 +149,7 @@ function InitMeasure()
 		if Choice == 1 then
 			MsgBox("", "Owner", "", "@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0", "@L_TWP_SUPPLYWORKSHOP_HELP_BODY_+0")
 		elseif Choice == 2 then
+			-- override building settings for this cart measure
 			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources)
 		elseif Choice == 3 then
 			SupplierCount, Suppliers = ms_twp_supplyworkshop_ChooseSuppliers(SupplierCount, Suppliers)

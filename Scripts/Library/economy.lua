@@ -36,34 +36,16 @@ function GetProducedItems(BldAlias)
 	
 	local BldId = BuildingGetProto(BldAlias)
 	local ItemsString, ProtectedAmountsString
-	if GL_BUILDING_TYPE_WAREHOUSE == BuildingGetType(BldAlias) then
-		-- Warehouse may offer anything, check current offer 
-		ItemsString = GetProperty(BldAlias, "SalesCounterItems")
-	else
-		-- production buildings may only offer their own products
-		ItemsString = GetDatabaseValue("BuildingToItems", BldId, "produceditems")
-		ProtectedAmountsString = GetDatabaseValue("BuildingToItems", BldId, "protectedproducts")
-	end
+	-- production buildings may only offer their own products
+	ItemsString = GetDatabaseValue("BuildingToItems", BldId, "produceditems")
+	ProtectedAmountsString = GetDatabaseValue("BuildingToItems", BldId, "protectedproducts")
 	if ItemsString == nil then
 		return 0, {}, {}
 	end
-	local Items = {}
-	local ProtectedAmounts = {}
-	local Count = 0
-	for Id in string.gfind(ItemsString, "%d+") do
-		Count = Count + 1
-		Items[Count] = ItemGetID(Id)
-	end
 	
-	local ProtCount = 0
-	if ProtectedAmountsString and ProtectedAmountsString ~= "" then
-		for Amount in string.gfind(ProtectedAmountsString, "%d+") do
-			ProtCount = ProtCount + 1
-			ProtectedAmounts[ProtCount] = Amount + 0
-		end
-	end
-	
-	return Count, Items, ProtectedAmounts
+	local Count, Products = helpfuncs_StringToIdList(ItemsString)
+	local _, ProtectedAmounts = helpfuncs_StringToIdList(ProtectedAmountsString)
+	return Count, Products, ProtectedAmounts
 end
 
 -- Count and Items should be taken from above function GetItemsForSale
@@ -447,12 +429,14 @@ function ChooseItemFromCounter(BldAlias, Count, Items)
 		Prices[i] = economy_GetPrice(BldAlias, Id)
 		PriceLabel = "%"..i.."t"
 		-- Appending the itemID finding the items again and even enables filters on the property
-		CurrentAmount = GetItems(BldAlias, Id, INVENTORY_SELL)
-		MaxAmount = GetImpactValue(BldAlias, "BonusSpace")
+		--CurrentAmount = GetItemCount(BldAlias, Id, INVENTORY_SELL)
+		--MaxAmount = GetImpactValue(BldAlias, "BonusSpace")
+		CurrentAmount = GetProperty(BldAlias, PREFIX_SALESCOUNTER..Id) or 0
+    MaxAmount = GetProperty(BldAlias, PREFIX_SALESCOUNTER_MAX..Id) or 0
 		ItemTexture = "Hud/Items/Item_"..ItemGetName(Items[i])..".tga"
 		-- result, Tooltip, label, icon
 		ItemLabel = ItemGetLabel(Items[i], CurrentAmount == 1)
-		Subtext = CurrentAmount .. "/" .. MaxAmount
+		-- Subtext = CurrentAmount .. "/" .. MaxAmount
 		Buttons = Buttons.."@B[" .. Id .. "," .. Subtext .. "," .. PriceLabel .. "," .. ItemTexture .."]"
 	end
 	-- add extra button if warehouse and Count < 16
@@ -471,7 +455,7 @@ function ChooseItemFromCounter(BldAlias, Count, Items)
 	if ChosenItemId == "C" then
 		return nil, 0
 	end
-	local Amount = GetItems(BldAlias, ChosenItemId, INVENTORY_SELL)
+	local Amount = GetProperty(BldAlias, PREFIX_SALESCOUNTER..ChosenItemId) or 0
 	return ChosenItemId, Amount
 end
 
@@ -779,7 +763,7 @@ function CheckAvailability(BldAlias, CartAlias, NeedCount, Needs)
 	return false
 end
 
-function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThreshold)
+function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThreshold, UseBasePrice)
 	local Profits = {} -- table of {ItemId, MinAmount, Profit}
 	local ProfitCount = 0
 	local ExpectedTotalProfit = 0
@@ -790,7 +774,12 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThres
 		Amount = Amount - Products[i][2]
 		-- normalize amount to no more than 120 (max cart size)
 		Amount = math.min(Amount, 120)
-		local Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 
+		local Profit
+		if UseBasePrice then
+      Profit = Amount * ItemGetBasePrice(ItemId)
+		else
+		  Profit = Amount *	ItemGetPriceSell(ItemId, MarketAlias) 
+		end
 		if Amount > 0 and Profit > ProfitThreshold then
 			ProfitCount = ProfitCount + 1
 			Profits[ProfitCount] = {ItemId, Amount, Profit}
@@ -1033,3 +1022,125 @@ function CityGetServantCount(CityAlias)
 	
 	return Servants
 end
+
+function StorageGetProducts(BldAlias)
+	-- need to match the return values of economy_GetProducedItems 
+	if (not BldAlias or not AliasExists(BldAlias)) then
+		return 0, {}, {}
+	end
+	
+	local ItemsString, ProtectedAmountsString
+	ItemsString = GetProperty(BldAlias, "MgmStor_Products")
+	ProtectedAmountsString = GetProperty(BldAlias, "MgmStor_ProductsProt")
+	
+	if not ItemsString or ItemsString == "" then
+		-- fallback to default product list
+		return economy_GetProducedItems(BldAlias)
+	end
+	
+	local Count, Products = helpfuncs_StringToIdList(ItemsString)
+	local _, ProtectedAmounts = helpfuncs_StringToIdList(ProtectedAmountsString)
+	return Count, Products, ProtectedAmounts
+end
+
+function StorageSaveProducts(BldAlias, ProductCount, Products, ProtectedAmounts)
+	local ProductsString = helpfuncs_IdListToString(Products, ProductCount)
+	if ProductsString then
+		SetProperty(BldAlias, "MgmStor_Products", ProductsString)
+	end
+
+	local ProtAmountsString = helpfuncs_IdListToString(ProtectedAmounts, ProductCount)
+	if ProtAmountsString then
+		SetProperty(BldAlias, "MgmStor_ProductsProt", ProtAmountsString)
+	end
+end
+
+function StorageGetResources(BldAlias)
+	-- need to match the return values of economy_GetResourceNeeds 
+	if (not BldAlias or not AliasExists(BldAlias)) then
+		return 0, {}
+	end
+	
+	local ItemsString, MinAmounts
+	ItemsString = GetProperty(BldAlias, "MgmStor_Resources")
+	MinAmounts = GetProperty(BldAlias, "MgmStor_ResourceMins")
+	
+	if not ItemsString or ItemsString == "" then
+		return economy_GetResourceNeeds(BldAlias)
+	end
+	
+	local Count, Resources = helpfuncs_StringToIdList(ItemsString)
+	local _, MinAmounts = helpfuncs_StringToIdList(MinAmounts)
+	
+	-- convert to default resource list (careful, uses different format!)
+	for i = 1, Count do
+		Resources[i] = { Resources[i], MinAmounts[i] or 0 }
+	end
+	
+	return Count, Resources
+end
+
+function StorageSaveResources(BldAlias, ResourceCount, Resources)
+	local ResourcesList = {}
+	local MinAmounts = {}
+	for i = 1, ResourceCount do
+		ResourcesList[i] = Resources[i][1]
+		MinAmounts[i] = Resources[i][2] or 0
+	end
+
+	local ResourceString = helpfuncs_IdListToString(ResourcesList, ResourceCount)
+	if ResourceString then
+		SetProperty(BldAlias, "MgmStor_Resources", ResourceString)
+	end
+
+	local MinAmountsString = helpfuncs_IdListToString(MinAmounts, ResourceCount)
+	if MinAmountsString then
+		SetProperty(BldAlias, "MgmStor_ResourceMins", MinAmountsString)
+	end
+end
+
+function StorageUpdateOnLevelUp(BldAlias)
+	if not DynastyIsPlayer(BldAlias) then
+		-- irrelevant for ai buildings
+		return
+	end
+
+	-- update resource list if necessary
+	local Count, Resources = economy_StorageGetResources(BldAlias)
+	local DefaultCount, DefaultNeeds = economy_GetResourceNeeds(BldAlias)
+	local NewCount = Count
+	if DefaultCount > Count then
+		-- add new items (careful, this requires all items in BuildingToItems to be listed in same order for each building type!)
+		for i = Count + 1, DefaultCount do
+			if DefaultNeeds[i] then
+				Resources[i] = DefaultNeeds[i]
+				NewCount = NewCount + 1
+			end
+		end
+		economy_StorageSaveResources(BldAlias, NewCount, Resources)
+	end
+	
+	-- update product list if necessary
+	local ProductCount, Products, ProtAmounts = economy_StorageGetProducts(BldAlias)
+	local DefaultProdCount, DefaultProducts, DefaultProtAmounts = economy_GetProducedItems(BldAlias)
+	local NewProductCount = ProductCount
+	if DefaultProdCount > ProductCount then
+		-- add new items (careful, this requires all items in BuildingToItems to be listed in same order for each building type!)
+		for i = ProductCount + 1, DefaultProdCount do
+			if DefaultProducts[i] then
+				Products[i] = DefaultProducts[i]
+				ProtAmounts[i] = DefaultProtAmounts[i]
+				NewProductCount = NewProductCount + 1
+			end
+		end
+		economy_StorageSaveProducts(BldAlias, NewProductCount, Products, ProtAmounts)
+	end
+end
+
+function StorageClearProperties(BldAlias)
+	RemoveProperty(BldAlias, "MgmStor_Products")
+	RemoveProperty(BldAlias, "MgmStor_ProductsProt")
+	RemoveProperty(BldAlias, "MgmStor_Resources")
+	RemoveProperty(BldAlias, "MgmStor_ResourceMins")
+end
+
