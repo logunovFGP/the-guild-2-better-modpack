@@ -1218,6 +1218,8 @@ function HandleOnLevelUp(BldAlias)
 		bld_ResetWorkers(BldAlias)
 		SetProperty(BldAlias, "CheckDefaultWorkers", 1)
 	end
+	
+	economy_StorageUpdateOnLevelUp(BldAlias)
 	economy_CalculateSalesRanking(BldAlias)
 end
 
@@ -1226,6 +1228,7 @@ function HandleNewOwner(BldAlias, FormerOwner)
 	--bld_BuildingWorkersStopWorking(BldAlias) -- this seemed necessary at some point
 	bld_ResetWorkers(BldAlias)
 	economy_ClearBalance(BldAlias)
+	economy_StorageClearProperties(BldAlias)
 end
 
 function IsResourceAvailable(BldAlias, ResourceItem)

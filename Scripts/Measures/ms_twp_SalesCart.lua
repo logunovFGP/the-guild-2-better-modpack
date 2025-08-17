@@ -82,19 +82,15 @@ function InitMeasure()
 	end
 	local Choice
 	-- initialize Resources: {{Item1, Min1}, {Item2, Min2}, ...}
-	local ProductCount, Products, ProtectedAmounts = economy_GetProducedItems("MyHome")
+	local ProductCount, Products, ProtectedAmounts = economy_StorageGetProducts("MyHome")
 	for i = 1, ProductCount do
-		if ProtectedAmounts[i] then
-			Products[i] = { Products[i], ProtectedAmounts[i] }
-		else
-			Products[i] = { Products[i], 0 }
-		end
+		Products[i] = { Products[i], ProtectedAmounts[i] or 0 }
 	end
 	
 	local TargetCount = 0
 	local Targets = {} -- {Target1, Target2, ...}
 	-- add local market as target for convenience
-	if GetSettlement("MyHome", "MyCity") then
+	if GetSettlement("MyHome", "MyCity") and not cart_IsShip("") then
 		if CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "MyMarket") then
 			TargetCount = 1
 			Targets[1] = "MyMarket"
@@ -139,13 +135,12 @@ function Run()
 		return 
 	end 
 
-	local ProductCount, Products, TargetCount, Targets = ms_twp_salescart_GetMeasureData()
-	-- TODO use selected targets for sales (see AutoCart measure/state)
+	local TargetCount, Targets = ms_twp_salescart_GetMeasureData()
 	
 	-- 1. Go home.
 	MsgMeasure("", "@L_GENERAL_MSGMEASURE_BACK_TO_WORK_+0")
 	if not IsInLoadingRange("", "MyHome") and not f_MoveTo("", "HomePos", GL_MOVESPEED_RUN) then
-		-- cannot get gome, something went wrong
+		-- cannot get home, something went wrong
 		ms_twp_salescart_Abort()
 	end
 	local CartSlots, CartSlotSize = cart_GetCartSlotInfo("")
@@ -163,7 +158,9 @@ function Run()
 		local ChosenTarget
 		for i = 1, TargetCount do
 			if Targets[i] and AliasExists(Targets[i]) then
-				local TmpProfitCount, TmpProfits, TmpExpectedTotalProfit = economy_CalcProfits("Market"..i, "MyHome", ProductCount, Products, 250)
+			  -- selling to market or just send the goods to warehouse?
+			  local UseBasePrice = GL_BUILDING_TYPE_WAREHOUSE == BuildingGetType(Targets[i])
+				local TmpProfitCount, TmpProfits, TmpExpectedTotalProfit = economy_CalcProfits("Market"..i, "MyHome", ProductCount, Products, 250, UseBasePrice)
 				if TmpExpectedTotalProfit and TmpExpectedTotalProfit > ExpectedTotalProfit then
 					ChosenTarget = Targets[i]
 					ProfitCount, Profits, ExpectedTotalProfit = TmpProfitCount, TmpProfits, TmpExpectedTotalProfit
@@ -257,9 +254,10 @@ function SelectTarget(Index)
 	while AliasExists("Target"..FreeIndex) do
 		FreeIndex = FreeIndex + 1
 	end
-	-- filter for waypoint selection
+	-- filter for market/building selection
 	InitAlias("Target"..FreeIndex, MEASUREINIT_SELECTION,
-		"__F((Object.IsClass(5)) AND (Object.Type == Building))",
+		--"__F((Object.IsClass(5)) AND (Object.Type == Building))",
+		"__F( ((Object.Type == Building) AND (Object.IsClass(5))) OR ((Object.Type == Building) AND (Object.IsClass(2)) AND (Object.BelongsToMe())) )",
 		"@L_TRADEROUTE_NEXT_BUILDING_+0",0)
 	return "Target"..FreeIndex
 end
