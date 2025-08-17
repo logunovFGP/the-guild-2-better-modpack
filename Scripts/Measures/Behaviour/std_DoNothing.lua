@@ -25,5 +25,10 @@ function Run()
 	end
 	
 	Sleep(DoNothing)
+	
+		if not DynastyIsPlayer("") and Rand(10) > 4 then
+		MeasureRun("", nil, "Idle")
+		return
+	end
 end
 

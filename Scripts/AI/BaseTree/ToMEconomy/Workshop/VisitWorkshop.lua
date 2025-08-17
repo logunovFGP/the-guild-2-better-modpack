@@ -13,7 +13,7 @@ end
 
 function Execute()
 	--aitwp_Log("AI::VisitWorkshop Executing.", "SIM")
-	f_MoveToNoWait("", "MyWorkshop", GL_MOVESPEED_RUN)
+	f_MoveToNoWait("", "MyWorkshop")
 end
 
 
