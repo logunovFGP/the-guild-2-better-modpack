@@ -35,7 +35,7 @@ function Run()
 			if HasData("#LastWarRound") then
 				LastWarRound = GetData("#LastWarRound")
 			else
-				LastWarRound = -1
+				LastWarRound = 3 -- no war before round 3
 			end
 
 			if (currentRound > LastWarRound) and (EventType ~= 1) then
