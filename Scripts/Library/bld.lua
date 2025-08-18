@@ -1307,9 +1307,10 @@ function CheckResource(BldAlias, ResourceProto, ResourceCount)
 	
 	-- 4. No more resource buildings aroung, try to build new
 	while AvailableResourceCount < ResourceCount do
+		GetPosition(BldAlias, "TargetPosition")
 		if BuildingGetCity(BldAlias, "BuildCity") 
 				and BuildingGetOwner(BldAlias, "CheckResourceBldOwner")
-				and CityBuildNewBuilding("BuildCity", ResourceProto, "CheckResourceBldOwner", "ResourceAlias", BldAlias) then
+				and CityBuildNewBuilding("BuildCity", ResourceProto, "CheckResourceBldOwner", "ResourceAlias", "TargetPosition", 4000) then
 			AvailableResourceCount = AvailableResourceCount + 1
 		else
 			break
