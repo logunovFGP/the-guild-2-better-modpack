@@ -117,7 +117,7 @@ function ManageResources(BldAlias)
 			Id = Resources[i][1]
 			ItemTexture = "Hud/Items/Item_"..ItemGetName(Id)..".tga"
 			Tooltip = ItemGetLabel(Id, false)
-			Subtext = Resources[ResourceCount][2] or 0
+			Subtext = Resources[i][2] or 0
 			-- result, Tooltip, label, icon
 			Buttons = Buttons.."@B[" .. i .. "," .. Subtext .. "," .. Tooltip .. "," .. ItemTexture .."]"
 		end
