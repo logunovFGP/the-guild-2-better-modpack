@@ -6,28 +6,29 @@ function Run()
 
 		if HasProperty("Actor", "Pamphlet_"..i) then
 			VictimArray[i] = GetProperty("Actor", "Pamphlet_"..i)
-			GetAliasByID(VictimArray[i], "Victim_"..i)
-			Found = Found + 1
-			local MinFav = 20 -- don't influence enemies with lower favor
-			local MaxFav = 80 -- don't influence friends with higher favor
-			local CheckFav = GetFavorToSim("", "Victim_"..i)
-			
-			-- influence favor
-			if IsDynastySim("") then
-				if GetDynastyID("") ~= GetDynastyID("Victim_"..i) then -- is that my family?
+			if GetAliasByID(VictimArray[i], "Victim_"..i) and AliasExists("Victim_"..i) then
+				Found = Found + 1
+				local MinFav = 20 -- don't influence enemies with lower favor
+				local MaxFav = 80 -- don't influence friends with higher favor
+				local CheckFav = GetFavorToSim("", "Victim_"..i)
+				
+				-- influence favor
+				if IsDynastySim("") then
+					if GetDynastyID("") ~= GetDynastyID("Victim_"..i) then -- is that my family?
+						if CheckFav < MaxFav and CheckFav > MinFav then -- does this effect me?
+							chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_VERYSMALL)
+							Sleep(0.15)
+							chr_GainXP("", GL_EXP_GAIN_SIMPLE)
+							Sleep(0.1)
+						end
+					end
+				else
 					if CheckFav < MaxFav and CheckFav > MinFav then -- does this effect me?
 						chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_VERYSMALL)
 						Sleep(0.15)
 						chr_GainXP("", GL_EXP_GAIN_SIMPLE)
 						Sleep(0.1)
 					end
-				end
-			else
-				if CheckFav < MaxFav and CheckFav > MinFav then -- does this effect me?
-					chr_ModifyFavor("", "Victim_"..i, -GL_FAVOR_MOD_VERYSMALL)
-					Sleep(0.15)
-					chr_GainXP("", GL_EXP_GAIN_SIMPLE)
-					Sleep(0.1)
 				end
 			end
 		end
