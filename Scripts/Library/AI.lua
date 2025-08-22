@@ -923,8 +923,9 @@ function BuildNewWorkshop(Owner, Type)
 	if not BuildingGetCity("home", "city") then
 		return false
 	end
-	-- this will only work for buildings inside the city boundaries
-	CityBuildNewBuilding("city", proto, Owner, "building")
+
+	GetPosition("home", "TargetPosition")
+	CityBuildNewBuilding("city", proto, Owner, "building", "TargetPosition", 25000)
 end
 
 function BuyRandomWorkshop(Owner)
