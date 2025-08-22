@@ -12,8 +12,17 @@ function Init()
 end
 
 function Run()
-	while true do
+	local TimeOut = GetGametime() + 24
+	while GetGametime() < TimeOut do
 		Sleep(100)
 	end
+end
+
+function CleanUp()
+	if HasProperty("Destination", "NoEscape") then
+		RemoveProperty("Destination", "NoEscape")
+	end
+	MoveSetActivity("")
+	StopAnimation("")
 end
 
