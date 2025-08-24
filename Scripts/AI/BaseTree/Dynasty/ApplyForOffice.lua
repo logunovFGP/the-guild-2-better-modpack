@@ -23,12 +23,15 @@ function Weight()
 		return 0
 	end
 	
-	return 10
+	return 30
 end
 
 function Execute()
 	SetRepeatTimer("SIM", "AI_ApplyForOffice", 3)
 	if aitwp_FindOfficeForApplication("SIM", "APPLY_OFFICE") then
+		LogMessage("::TWP::AI::"..GetName("SIM").." ".. " applying for vacant office seat.")
 		MeasureRun("SIM", "APPLY_OFFICE", "RunForAnOffice")
+	else
+		LogMessage("::TWP::AI::"..GetName("SIM").." ".. " couldn't find vacant office seat.")
 	end
 end

@@ -36,7 +36,7 @@ function Weight()
 		return 0
 	end
 	
-	return 5
+	return 3
 end
 
 function Execute()
