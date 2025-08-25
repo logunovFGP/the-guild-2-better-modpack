@@ -48,7 +48,6 @@ You can edit the game's configuration files manually:
 
 - `config.ini` - Main game configuration 
 - `userconfig.ini` - User-specific settings
-- `editor.ini` - TG2 Editor settings
 
 ## Troubleshooting
 
