@@ -703,6 +703,63 @@ function DynastyRemoveAlly(Sim,Destination)
 	SetProperty("MyDyn","Allies_No",NumOfAllies)
 end
 
+-- Replace FindOfficeForApplication in Library/aitwp.lua with this:
+
+
+function CanRunForThisOffice(SimAlias, OfficeAlias)
+	-- city alias
+	local CityAlias = "AITWP_CanRunForThisOffice_Settlement" 
+	if not GetSettlement(SimAlias, CityAlias) then
+		return false
+	end
+	-- nobility check
+	local MyTitle = GetNobilityTitle(SimAlias)
+	if MyTitle < 4 then
+		return false
+	elseif MyTitle < 5 and OfficeGetLevel(OfficeAlias) > 1 then
+		return false
+	end
+	-- diplo check
+	if OfficeGetHolder(OfficeAlias, "OfficeHolder")  then
+		if (GetDynastyID(SimAlias) == GetDynastyID("OfficeHolder") or DynastyGetDiplomacyState(SimAlias,"OfficeHolder")==DIP_ALLIANCE) then
+			return false
+		end
+	end
+	
+	-- applicant count check
+	ApplicantCount = OfficeGetApplicantCount(OfficeAlias)
+	if ApplicantCount >= 4 then
+		return false
+	end
+	if DynastyIsShadow(SimAlias) and OfficeGetShadowApplicantCount(OfficeAlias) >= 3 then
+		return false
+	end
+		
+	-- don't run for lower or same level offices
+	local SimCurLevel = SimGetOfficeLevel(SimAlias)
+	local OfficeLevel = OfficeGetLevel(OfficeAlias)
+	if SimCurLevel >= OfficeLevel then
+		return false
+	end
+	
+	-- can afford the application cost
+	local ChargeCost  = OfficeGetChargeCost(OfficeAlias)
+	if GetMoney(SimAlias) < ChargeCost then
+		return false
+	end
+	
+	-- sim must go step by step on the office ladder
+	local SimMaxLevel = SimGetMaxOfficeLevel(SimAlias)
+	if OfficeLevel > SimMaxLevel+1 then
+		return false
+	end
+	
+	
+	-- checks passed
+	return true
+end
+
+
 function FindOfficeForApplication(SimAlias, RetOfficeAlias)
 	local CityAlias = "AITWP_OfficeApplicationSettlement" 
 	if not GetSettlement(SimAlias, CityAlias) then
@@ -710,42 +767,29 @@ function FindOfficeForApplication(SimAlias, RetOfficeAlias)
 	end
 
 	-- find range of available office levels
-	local SimMaxLevel = SimGetMaxOfficeLevel(SimAlias)
 	local CityMaxLevel = CityGetHighestOfficeLevel(CityAlias)
 	
-	local MaxLevel = math.min(SimMaxLevel, CityMaxLevel)
-	local SimCurLevel = SimGetOfficeLevel(SimAlias)
+	local found = false
 	
 	-- start at max level and go down, looking for a good office to apply to
-	local OfficeCount, ApplicantCount
-	local RetOfficeLevel, RetOfficeIdx, ApplicantCount
-	local LowestApplicantCount = 4 
-	for i=MaxLevel, SimCurLevel+1 do
-		OfficeCount = SettlementGetOfficeCnt(CityAlias, MaxLevel)
-		LowestApplicantCount = 4
-		RetOfficeIdx = -1
-		for j=0, OfficeCount-1 do
-			SettlementGetOffice(CityAlias, i, j, "AITWP_CurrentOfficeToCheck"..j)
-			ApplicantCount = OfficeGetApplicantCount("AITWP_CurrentOfficeToCheck"..j)
-			if ApplicantCount < 4 and LowestApplicantCount >= ApplicantCount 
-					and not (DynastyIsShadow(SimAlias) and OfficeGetShadowApplicantCount("AITWP_CurrentOfficeToCheck"..j) >= 3) then
-				
-				-- check current holder
-				if OfficeGetHolder("AITWP_CurrentOfficeToCheck"..j, "OfficeHolder") 
-					and (GetDynastyID(SimAlias) == GetDynastyID("OfficeHolder") or DynastyGetDiplomacyState(SimAlias,"OfficeHolder")==DIP_ALLIANCE) then
-					-- don't apply for allied offices
-				else
-					if RetOfficeIdx < 0 or Rand(2) < 1 then -- keep some randomness for selection
-						LowestApplicantCount = ApplicantCount
-						RetOfficeIdx = j
-					end
+	for i=CityMaxLevel, 0,-1 do
+		local LevelOfficeCount = SettlementGetOfficeCnt(CityAlias, i)
+		for j=0, LevelOfficeCount-1 do
+			local OfficeAlias = "AITWP_CurrentOfficeToCheck"
+			SettlementGetOffice(CityAlias, i, j, OfficeAlias)
+			if aitwp_CanRunForThisOffice(SimAlias,OfficeAlias) then
+				found = true
+				CopyAlias(OfficeAlias, RetOfficeAlias)
+				-- we don't want to always select the first office at curent level so there's 50/50 chance to keep searching 
+				-- it will fall back to our original find if we don't find anything else
+				if Rand(2)==1 then
+					return true
 				end
 			end
 		end
-		if RetOfficeIdx >= 0 and LowestApplicantCount < 4 then
-			CopyAlias("AITWP_CurrentOfficeToCheck" .. RetOfficeIdx, RetOfficeAlias)
-			return true
-		end
+	end
+	if found then
+		return true
 	end
 	return false
 end

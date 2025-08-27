@@ -13,25 +13,26 @@ function Weight()
 		return 0
 	end
 	
-	-- title requirement
-	if SimGetMaxOfficeLevel("SIM") <= 0 then
-		return 0
-	end
-	
 		-- application running already
 	if SimIsAppliedForOffice("SIM") then
 		return 0
 	end
 	
-	return 30
+	-- nobility check
+	local MyTitle = GetNobilityTitle("SIM")
+	if MyTitle < 4 then
+		return false
+	end
+	
+	return 20
 end
 
 function Execute()
 	SetRepeatTimer("SIM", "AI_ApplyForOffice", 3)
 	if aitwp_FindOfficeForApplication("SIM", "APPLY_OFFICE") then
-		LogMessage("::TWP::AI::"..GetName("SIM").." ".. " applying for vacant office seat.")
+		--LogMessage("::TWP::AI::"..GetName("SIM").." ".. " applying for vacant office seat.")
 		MeasureRun("SIM", "APPLY_OFFICE", "RunForAnOffice")
 	else
-		LogMessage("::TWP::AI::"..GetName("SIM").." ".. " couldn't find vacant office seat.")
+		--LogMessage("::TWP::AI::"..GetName("SIM").." ".. " couldn't find vacant office seat.")
 	end
 end
