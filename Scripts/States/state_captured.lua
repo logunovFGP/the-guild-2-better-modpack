@@ -19,8 +19,8 @@ function Run()
 end
 
 function CleanUp()
-	if HasProperty("Destination", "NoEscape") then
-		RemoveProperty("Destination", "NoEscape")
+	if HasProperty("", "NoEscape") then
+		RemoveProperty("", "NoEscape")
 	end
 	MoveSetActivity("")
 	StopAnimation("")
