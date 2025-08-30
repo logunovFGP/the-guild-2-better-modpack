@@ -1692,8 +1692,13 @@ function GoToDivehouse()
 				NumItems = Rand(3)+2
 			end
 
-			local BoughtItem, BoughtAmount = economy_BuyRandomItems("Destination", "", 0, NumItems)
-			if BoughtItem and BoughtItem > 0 then
+			local	Items = { "SmallBeer", "WheatBeer", "PiratenGrog", "Schadelbrand" }
+			local Choice = Items[Rand(4)+1]	
+			
+			local ItemId = ItemGetID(Choice)
+			local ItemCount, TotalPrice = economy_BuyItems("Destination", "", ItemId, NumItems)
+			
+			if ItemCount and ItemCount > 0 then
 				if HasProperty("Destination","ServiceActive") then
 					local TavernLevel = BuildingGetLevel("Destination")
 					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")	
