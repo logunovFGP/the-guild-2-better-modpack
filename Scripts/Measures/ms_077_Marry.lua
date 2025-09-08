@@ -28,6 +28,14 @@ function Run()
 	
 	local Cost = (Title * 2) * 300
 	
+	-- check for circular marriages
+	if not enginebugchecks_CanSafelyUseSimMarry("", "Destination") then
+		SimReleaseCourtLover("")
+		MsgQuick("", "@L_COURTLOVER_MSG_CIRCULARMARRIAGE_QUICK")
+		return
+	end
+	
+	
 	if not HasProperty("", "ContinueWedding") then
 	
 		if SimGetProfession("Destination") > 0 then -- don't marry workers please

@@ -63,6 +63,11 @@ function AIInit()
 			if GetFavorToSim(Alias, "") < MinFavor then
 				Skip = true
 			end
+			
+			-- check for circular marriages
+			if (not Skip) and (not enginebugchecks_CanSafelyUseSimMarry("", Alias)) then
+				Skip = true
+			end
 
 			if not Skip then
 				Value = SimGetLevel(Alias)*10
@@ -126,6 +131,13 @@ function Run()
 	if SimGetCourtingSim("Destination", "blabla") then
 		MsgQuick("", "%1SN %2l", GetID("Destination")," @L_FILTER_IS_COURTED")
 		StopMeasure()
+	end
+	
+	-- check for circular marriages
+	if not enginebugchecks_CanSafelyUseSimMarry("", "Destination") then
+		SimReleaseCourtLover("")
+		MsgQuick("", "@L_COURTLOVER_MSG_CIRCULARMARRIAGE_QUICK")
+		return
 	end
 	
 	-- Calculate the difficulty which will be set as property to the destination and used in the following MsgBox

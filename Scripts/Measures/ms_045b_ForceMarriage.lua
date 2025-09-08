@@ -17,6 +17,13 @@ function Run()
 		return
 	end
 	
+	-- check for circular marriages
+	if not enginebugchecks_CanSafelyUseSimMarry("", "Destination") then
+		SimReleaseCourtLover("")
+		MsgQuick("", "@L_COURTLOVER_MSG_CIRCULARMARRIAGE_QUICK")
+		return
+	end
+	
 	MeasureSetNotRestartable()
 	
 	-- Display the court lover sheet
