@@ -1,6 +1,12 @@
 -- SimMarry has a nasty engine bug that could corrupt the dynasty if there are circular marriages and lead to unpreventable crashes later in the game
 -- We need to check if we can safely marry the sim
 
+function Init()
+ --needed for caching
+end
+
+
+
 function CanSafelyUseSimMarry(SourceSim, DestinationSim)
 	if not enginebugchecks_CircularMarriageCheck(SourceSim, DestinationSim) then
 		LogMessage("@SMFIX Detected circular marriage. Preventing marriage between source: '" .. GetName(SourceSim) .. "' and destination: '" .. GetName(DestinationSim))
