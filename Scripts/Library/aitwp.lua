@@ -247,8 +247,9 @@ function CourtLover(SimAlias)
 	end
 	
 	-- find good courting measure and execute it
-	local MeasureName = aitwp_GetCourtingMeasure(SimAlias)
-	if MeasureName then
+	-- use FindCourtingMeasure from gameplayformulas, which uses updated weights
+	local MeasureName = gameplayformulas_FindCourtingMeasure(SimAlias, Beloved)
+	if MeasureName and MeasureName ~= "none" then
 		MeasureRun(SimAlias, Beloved, MeasureName)
 	end
 end
