@@ -58,7 +58,7 @@ function AIInit()
 			end
 	
 			local TitleDifference = (MyTitle - DestinationTitle) * 2
-			local MinFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - (TitleDifference * 2)
+			local MinFavor = GL_COURT_LOVER_MINFAVOR - TotalSkill - TitleDifference
 			
 			if GetFavorToSim(Alias, "") < MinFavor then
 				Skip = true
