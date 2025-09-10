@@ -70,7 +70,7 @@ function AIInit()
 			end
 
 			if not Skip then
-				Value = SimGetLevel(Alias)*10
+				Value = SimGetLevel(Alias)*10 + Rand(5)
 					
 				if TitleDifference < 0 then
 					Value = Value * 2
@@ -189,6 +189,12 @@ function Run()
 			Sleep(1)
 			f_MoveTo("Destination", "Owner", GL_MOVESPEED_RUN, 300)
 		end
+	end
+	
+	-- we need to check again after arriving to the destination, to prevent multiple sims courting the same person
+	if SimGetCourtingSim("Destination", "blabla") then
+		MsgQuick("", "%1SN %2l", GetID("Destination")," @L_FILTER_IS_COURTED")
+		StopMeasure()
 	end
 	
 	local InteractionDistance = 128
