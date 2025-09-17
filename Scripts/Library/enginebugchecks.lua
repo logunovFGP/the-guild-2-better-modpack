@@ -8,10 +8,12 @@ end
 
 
 function CanSafelyUseSimMarry(SourceSim, DestinationSim)
-	if not enginebugchecks_CircularMarriageCheck(SourceSim, DestinationSim) then
-		LogMessage("@SMFIX Detected circular marriage. Preventing marriage between source: '" .. GetName(SourceSim) .. "' and destination: '" .. GetName(DestinationSim))
-		return false
-	end
+	-- temporarily restrict marriage targets to serfs to prevent player saves from getting corrupted until we find a better solution
+	return enginebugchecks_SuperStrictCheck(SourceSim, DestinationSim)
+	--if not enginebugchecks_CircularMarriageCheck(SourceSim, DestinationSim) then
+	--	LogMessage("@SMFIX Detected circular marriage. Preventing marriage between source: '" .. GetName(SourceSim) .. "' and destination: '" .. GetName(DestinationSim))
+	--	return false
+	--end
 	return true
 end
 
