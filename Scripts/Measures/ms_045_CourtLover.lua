@@ -55,6 +55,9 @@ function AIInit()
 			local DestinationTitle = 0
 			if IsDynastySim(Alias) then
 				DestinationTitle = GetNobilityTitle(Alias)
+				if GetDynasty(Alias, "PlayerDynasty") and DynastyIsPlayer("PlayerDynasty") then
+					Skip = true
+				end
 			end
 	
 			local TitleDifference = (MyTitle - DestinationTitle) * 2
