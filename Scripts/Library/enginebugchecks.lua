@@ -8,12 +8,14 @@ end
 
 
 function CanSafelyUseSimMarry(SourceSim, DestinationSim)
-	-- temporarily restrict marriage targets to serfs to prevent player saves from getting corrupted until we find a better solution
-	return enginebugchecks_SuperStrictCheck(SourceSim, DestinationSim)
-	--if not enginebugchecks_CircularMarriageCheck(SourceSim, DestinationSim) then
-	--	LogMessage("@SMFIX Detected circular marriage. Preventing marriage between source: '" .. GetName(SourceSim) .. "' and destination: '" .. GetName(DestinationSim))
-	--	return false
-	--end
+	if not enginebugchecks_CircularMarriageCheck(SourceSim, DestinationSim) then
+		LogMessage("@SMFIX Detected circular marriage. Preventing marriage between source: '" .. GetName(SourceSim) .. "' and destination: '" .. GetName(DestinationSim))
+		return false
+	end
+	if not enginebugchecks_WontRevertChildDynastyCheck(SourceSim, DestinationSim) then
+		LogMessage("@SMFIX Detected marriage that causes an engine bug. Preventing marriage between source: '" .. GetName(SourceSim) .. "' and destination: '" .. GetName(DestinationSim))
+		return false
+	end
 	return true
 end
 
@@ -68,6 +70,23 @@ end
 function SuperStrictCheck(SourceSim, DestinationSim)
 	if IsDynastySim(DestinationSim) then
 		return false
+	end
+	return true
+end
+
+
+-- In a situation when the parent of a child that changed dynasty gets married as a sourceSim, it also reverts that childs dynasty, 
+-- leading to a corrupted state where sims of two different dynasties are married.
+
+function WontRevertChildDynastyCheck(SourceSim, DestinationSim)
+	local SourceDynastyID = GetDynastyID(SourceSim)
+	local SourceChildCount = SimGetChildCount(SourceSim)
+	for idx=0, SourceChildCount-1 do
+		if SimGetChild(SourceSim, idx, "SMFIX_Child") then
+			if SourceDynastyID ~= GetDynastyID("SMFIX_Child") then
+				return false
+			end
+		end
 	end
 	return true
 end
