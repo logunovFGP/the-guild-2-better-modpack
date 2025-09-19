@@ -1040,3 +1040,15 @@ function CheckPersonalityWeight(Dynasty, ActionCategory)
 	
 	return Weight
 end
+
+-- gets children that aren't married off
+function GetUsefulChildCount(SimAlias)
+	local childCount = SimGetChildCount(SimAlias)
+	local usefulChildCount = 0
+	for idx=0, childCount-1 do
+		if SimGetChild(SimAlias, idx, "AI_UsefulChild") and GetDynastyID("AI_UsefulChild") == GetDynastyID(SimAlias) then
+			usefulChildCount = usefulChildCount + 1
+		end
+	end
+	return usefulChildCount
+end
