@@ -236,6 +236,11 @@ function CleanUp()
 	ResetProcessProgress("")
 	SetMeasureRepeat(0.01)
 	
+	if GetState("", STATE_INVISIBLE) then
+		SimBeamMeUp("", "DestPos", false)
+		SetState("", STATE_INVISIBLE, false)
+	end
+	
 	if HasData("StartTime") and not HasData("Finished") then
 		local SchoolEnd = math.floor(0+GetGametime())
 		local SchoolStart = 0 + GetData("StartTime")
@@ -252,9 +257,6 @@ function CleanUp()
 			feedback_MessageSchedule("",
 								"@L_FAMILY_150_ATTENDAPPRENTICESHIP_NOTFINISHED_HEAD",
 								"@L_FAMILY_150_ATTENDAPPRENTICESHIP_NOTFINISHED_BODY", GetID(""), (MaxTime-Difference), GetID("Destination"))
-
-			SimBeamMeUp("", "DestPos", false)
-			SetState("", STATE_INVISIBLE, false)
 			
 			if GetHomeBuilding("", "Home") and GetInsideBuildingID("") ~= GetID("Home") then
 				f_MoveToNoWait("", "Home", GL_MOVESPEED_WALK)
