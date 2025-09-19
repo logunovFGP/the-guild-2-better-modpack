@@ -81,9 +81,9 @@ function AIInit()
 				
 				-- if we're the last member of the dynasty in the later turns, then prioritize the survival of dynasty
 				if DynastyGetMemberCount("") == 1 and GetRound() >= 10 then
-					Value = SimGetAge(Alias)
+					Value = 300-SimGetAge(Alias)+Rand(5)
 				-- try not to marry sims that may die in a few turns
-				elseif SimGetAge(Alias)>=65 then
+				elseif SimGetAge(Alias)>=60 then
 					Value = 0
 				else
 					local AgeDiff = SimGetAge(Alias) - SimGetAge("")

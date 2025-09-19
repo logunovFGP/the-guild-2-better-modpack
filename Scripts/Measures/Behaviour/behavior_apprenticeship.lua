@@ -31,6 +31,7 @@ function Run()
 				feedback_MessageSchedule("", "@L_FAMILY_151_ATTENDUNIVERSITY_MISSING_EDUCATION_HEAD", "@L_FAMILY_151_ATTENDUNIVERSITY_MISSING_EDUCATION_BODY", GetID(""))
 			end
 			SimSetBehavior("", "University")
+			return
 		end
 		SimResetBehavior("")
 		return
