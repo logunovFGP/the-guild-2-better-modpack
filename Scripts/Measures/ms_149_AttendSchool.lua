@@ -196,6 +196,11 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
+	
+	if GetState("", STATE_INVISIBLE) then
+		SimBeamMeUp("", "DestPos", false)
+		SetState("", STATE_INVISIBLE, false)
+	end
 
 	if HasData("StartTime") and not HasData("Finished") then
 		local SchoolEnd = math.floor(0+GetGametime())
@@ -215,8 +220,6 @@ function CleanUp()
 								"@L_FAMILY_149_ATTENDSCHOOL_NOTFINISHED_BODY", GetID(""), MaxTime-Difference)
 			
 			-- get the sim back to the DestPos and let him go home
-			SimBeamMeUp("", "DestPos", false)
-			SetState("", STATE_INVISIBLE, false)
 			if GetHomeBuilding("", "Home") then
 				f_MoveToNoWait("", "Home", GL_MOVESPEED_WALK)
 			end

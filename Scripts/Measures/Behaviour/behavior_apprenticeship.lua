@@ -32,6 +32,7 @@ function Run()
 			end
 			SimSetBehavior("", "University")
 		end
+		SimResetBehavior("")
 		return
 	end
 	

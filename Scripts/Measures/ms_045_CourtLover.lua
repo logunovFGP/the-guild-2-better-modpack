@@ -78,20 +78,28 @@ function AIInit()
 				if TitleDifference < 0 then
 					Value = Value * 2
 				end
-					
-				local AgeDiff = SimGetAge(Alias) - SimGetAge("")
-				if AgeDiff < 0 then
-					AgeDiff = -AgeDiff
+				
+				-- if we're the last member of the dynasty in the later turns, then prioritize the survival of dynasty
+				if DynastyGetMemberCount("") == 1 and GetRound() >= 10 then
+					Value = SimGetAge(Alias)
+				-- try not to marry sims that may die in a few turns
+				elseif SimGetAge(Alias)>=65 then
+					Value = 0
+				else
+					local AgeDiff = SimGetAge(Alias) - SimGetAge("")
+					if AgeDiff < 0 then
+						AgeDiff = -AgeDiff
+					end
+						
+					if AgeDiff > 20 then
+						Value = Value / 5
+					elseif AgeDiff > 10 then
+						Value = Value / 3
+					elseif AgeDiff < 5 then
+						Value = Value * 1.5
+					end
 				end
-					
-				if AgeDiff > 20 then
-					Value = Value / 5
-				elseif AgeDiff > 10 then
-					Value = Value / 3
-				elseif AgeDiff < 5 then
-					Value = Value * 1.5
-				end
-					
+				
 				if not Selection or Value > BestValue then
 					Selection = Alias
 					BestValue = Value

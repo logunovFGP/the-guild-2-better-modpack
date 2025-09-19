@@ -10,9 +10,13 @@ function Weight()
 		
 		if SimGetAge("Member") >= 18 
 				and SimGetSpouse("Member", "Spouse") 
-				and SimGetChildCount("Member") < 4 
+				and SimGetChildCount("Member") <= GL_MAX_CHILD_COUNT
+				and ai_GetUsefulChildCount("Member") < 4
 				and dyn_IsIdleMember("Member")
-				and dyn_IsIdleMember("Spouse") then
+				and dyn_IsIdleMember("Spouse") 
+				and (ReadyToRepeat("Member", "AI_FailedReproduction_Cohabit") or ReadyToRepeat("Member", "AI_FailedReproduction_Adopt"))
+				and (ReadyToRepeat("Spouse", "AI_FailedReproduction_Cohabit") or ReadyToRepeat("Spouse", "AI_FailedReproduction_Adopt"))
+				then
 			CopyAlias("Member", "SIM")
 			return 10
 		end
@@ -21,6 +25,6 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("dynasty", "AI_Reproduce", 24)
+	
 end
 
