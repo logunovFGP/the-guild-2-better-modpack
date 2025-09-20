@@ -360,6 +360,10 @@ function CleanUp()
 	FadeOutAllFE("", 0)	
 	StopAnimation("")
 	
+	if GetState("", STATE_INVISIBLE) then
+		SetState("", STATE_INVISIBLE, false)
+	end
+	
 	if HasData("BewitcherLocatorInUse") then
 		f_EndUseLocatorNoWait("", "Bewitcher", GL_STANCE_STAND)
 	end

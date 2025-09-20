@@ -3,11 +3,6 @@ function Weight()
 		return 0
 	end
 
-	local time = math.mod(GetGametime(),24)
-	if time < 8 then
-		adoptorphan_SetFailTimersExact(8-time)
-		return 0
-	end
 	
 	if ai_GetUsefulChildCount("SIM") > 2 then
 		-- I've got enough children to survive
@@ -33,7 +28,24 @@ function Weight()
 		end
 	end
 	
-
+	
+	local time = math.mod(GetGametime(),24)
+	if time < 8 then
+		adoptorphan_SetFailTimersExact(8 - time)
+		return 0
+	end
+	
+	-- we're probably not gonna get there in time, so don't waste any
+	if time >= 21 then
+		adoptorphan_SetFailTimersExact(8+ (24-time))
+		return 0
+	end
+	
+	local Title = GetNobilityTitle("SIM")
+	if mdata_GetPrice("AdoptOrphan", Title) > GetMoney("SIM") then
+		adoptorphan_SetFailTimersExact(6)
+		return 0
+	end
 	
 	
 	
