@@ -360,8 +360,8 @@ function CleanUp()
 	FadeOutAllFE("", 0)	
 	StopAnimation("")
 	
-	if GetState("", STATE_INVISIBLE) then
-		SetState("", STATE_INVISIBLE, false)
+	if GetState("", STATE_DUEL) then
+		SetState("", STATE_DUEL, false)
 	end
 	
 	if HasData("BewitcherLocatorInUse") then
