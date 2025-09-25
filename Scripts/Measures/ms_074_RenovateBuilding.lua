@@ -50,7 +50,10 @@ function Run()
 		end
 	end
 	
-	if not chr_SpendMoney("dynasty", Cost, "BuildingRepairs") then
+	local owner = "Renovate_Owner"
+	BuildingGetOwner("", owner)
+	
+	if not chr_SpendMoney(owner, Cost, "BuildingRepairs") then
 		MsgQuick("", "@L_GENERAL_MEASURES_074_RENOVATEBUILDING_FAILURES_+0", Cost, GetID(""))
 		return
 	end
