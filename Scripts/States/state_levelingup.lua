@@ -124,6 +124,11 @@ function Run()
 	end
 
 	ShowBuildingFlags("", false)
+	LogMessage("@BILU STATE ID: <" .. GetID("") .. "> Name: <" .. GetName("") .. "> Proto: <" .. Proto .. ">")
+	-- there's different models for residences, choose a random model each time
+	if BuildingGetType("") == GL_BUILDING_TYPE_RESIDENCE then
+		Proto = state_levelingup_GetRandomResidenceModel("")
+	end
 	BuildingInternalLevelUp("", Proto)
 	ShowBuildingFlags("", true)
 	
@@ -148,6 +153,56 @@ function Run()
 		SetState("", STATE_MOVING_BUILDING, true)
 	end		
 	
+end
+
+
+function GetRandomResidenceModel(BuildingAlias)
+	local Check
+	local CurrentLevel = BuildingGetLevel(BuildingAlias) + 1
+	if CurrentLevel == 1 then -- verylow
+		Check = Rand(2)
+		if Check == 0 then
+			return 440
+		else
+			return 681
+		end	
+
+	elseif CurrentLevel == 2 then -- low
+		Check = Rand(5)
+		if Check == 0 then
+			return 441
+		elseif Check == 1 then
+			return 655
+		elseif Check == 2 then
+			return 656
+		elseif Check == 3 then
+			return 657
+		else
+			return 682
+		end
+
+	elseif CurrentLevel == 3 then -- lowmed
+		Check = Rand(3)
+		if Check == 0 then
+			return 442
+		elseif Check == 1 then
+			return 658
+		else
+			return 659
+		end
+
+	elseif CurrentLevel == 4 then -- med
+		Check = Rand(3)
+		if Check == 0 then
+			return 443
+		elseif Check == 1 then
+			return 683
+		else
+			return 684
+		end
+	else
+		return 444 -- Residence5
+	end
 end
 
 -- -----------------------
