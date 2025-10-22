@@ -282,6 +282,10 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 			if AliasExists("SpouseShop") then
 				local BuildingClass = BuildingGetCharacterClass("SpouseShop")
 				local MyClass = SimGetClass("Spouse")
+				-- Pirate buildings have BuildingClass == 0, and if we use SimSetClass, then it will result in a corrupted sim that will cause crashes later.
+				if BuildingClass == 0 then
+					BuildingClass = 4 -- Rogue
+				end
 				if BuildingClass ~= MyClass then
 					--LogMessage("Change Class of "..GetName("Spouse"))
 					SimSetClass("Spouse", BuildingClass)
