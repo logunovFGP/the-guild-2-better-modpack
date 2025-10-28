@@ -828,9 +828,14 @@ function CheckCarts(BldAlias)
 	local BldType = BuildingGetType(BldAlias)
 	local BestCount = 2
 	
-	if BldType == GL_BUILDING_TYPE_ROBBER or BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_MERCENARY then
+	if BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_MERCENARY then
 		-- no state_autocart or forced carts for robbers
 		return
+	end
+	
+	if BldType == GL_BUILDING_TYPE_ROBBER and BuildingGetLevel(BldAlias) <= 1 then
+		-- low level robbers should be fine with one cart, add second cart for higher levels
+		BestCount = 1
 	end
 	
 	if BldType == GL_BUILDING_TYPE_DIVEHOUSE then
