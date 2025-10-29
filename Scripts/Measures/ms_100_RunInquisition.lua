@@ -183,7 +183,7 @@ function Run()
 	
 	for i=0,NumExecutioners do
 		ExecID = GetData("SimExecutioner"..i)
-		ms_runinquisition_Terminate(ExecID)
+		ms_100_RunInquisition_Terminate(ExecID)
 	end
 	
 	RemoveData("NumExecutioners")
@@ -266,7 +266,7 @@ function CleanUp()
 		local	NumExecutioners = GetData("NumExecutioners")
 		for i=0, NumExecutioners do
 			local	ExecID = GetData("SimExecutioner"..i)
-			ms_runinquisition_Terminate(ExecID)
+			ms_100_RunInquisition_Terminate(ExecID)
 		end
 	end
 	StopAnimation("")
