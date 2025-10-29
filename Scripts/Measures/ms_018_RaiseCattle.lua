@@ -208,7 +208,7 @@ function neuvieh(s)
 	SimSetFirstname("Tier"..s, "@L_UPGRADE_"..hoftier.."_NAME_+0")
 	SimSetLastname("Tier"..s, "@L_EMPTY_NAME_+0")
 
-	AddImpact("Tier"..s,390,1,-1)
+	AddImpact("Tier"..s,343,1,-1)
 	SetState("Tier"..s, STATE_ANIMAL, true)
 end
 

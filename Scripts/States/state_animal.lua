@@ -45,7 +45,7 @@ end
 	
 function PflegeVieh(Animal)
 	
-	local range = 600
+	local range = 300
 	local AniChange = false
 	if Animal == "Goat" then
 		AniChange = "Sheep"
@@ -69,10 +69,10 @@ function PflegeVieh(Animal)
 			local y = 0
 			local z = 0
 				
-			local RandomChangeX = Rand(3)
+			local RandomChangeX = Rand(2)
 			if RandomChangeX == 0 then
 				x = 0 + Rand(range) + 100
-			elseif RandomChangeX == 1 then
+			else
 				x = 0 - Rand(range) - 100
 			end
 				
