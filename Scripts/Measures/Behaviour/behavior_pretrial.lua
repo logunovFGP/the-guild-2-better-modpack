@@ -22,7 +22,7 @@ function Run()
 	BuildingGetRoom("Townhall", "Judge", "judgeroom")
 	local CutsceneID = GetProperty("judgeroom","NextCutsceneID")
 
-	if GetAliasByID(CutsceneID,"CutsceneAlias") == nil then
+	if not CutsceneID or GetAliasByID(CutsceneID,"CutsceneAlias") == nil then
 		LogMessage("No Cutscene Alias from judgeroom")
 	end
 

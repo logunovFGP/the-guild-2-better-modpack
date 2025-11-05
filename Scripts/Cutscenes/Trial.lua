@@ -874,60 +874,12 @@ function Go()
 			DecisionReplacement = "_NOTGUILTY"
 			confession = 0
 			
-			local BelieveFactorAccuser = 0
-			local BelieveFactorAccused = 0
-			
-			if HasData("BF_accuser") then
-				BelieveFactorAccuser = GetData("BF_accuser")
-			end
-			
-			-- Main factor is Rhetoric
-			local RhetoricSkill = GetSkillValue("accused", RHETORIC)
-			
-			-- Do we get a bonus for fragrance of holiness?
-			local ItemBuff = 0
-			if GetImpactValue("accused", "fragranceofholiness") > 0 and GetImpactValue("accuser", "fragranceofholiness") == 0 then
-				ItemBuff = 4
-			end
-			
-			-- Are we very noble?
-			local GoldenSpoon = 0
-			if GetImpactValue("accused", "GoldenSpoon") > 0 then
-				GoldenSpoon = 2
-			end
-			
-			-- are we good natured?
-			local AlignmentBonus = 0
-			if SimGetAlignment("accused") < 30 then
-				AlignmentBonus = 2
-			elseif SimGetAlignment("accused") > 70 then
-				AlignmentBonus = -2
-			end
-			
-			-- Is opponent evil or good?
-			if SimGetAlignment("accuser") > 70 then
-				AlignmentBonus = AlignmentBonus +2
-			elseif SimGetAlignment("accuser") < 30 then
-				AlignmentBonus = AlignmentBonus -2
-			end
-			
-			-- office level also factors in
-			local OfficeBonus = 0
-			OfficeBonus = SimGetOfficeLevel("accused") - SimGetOfficeLevel("accuser")
-			
-			-- is the judge our friend?
-			local FriendBonus = 0
-			if GetFavorToSim("accused", "judge") > 70 then
-				FriendBonus = 3
-			elseif GetFavorToSim("accused", "judge") < 20 then
-				FriendBonus = -3
-			end
-			
-			-- final calculation
-			BelieveFactorAccused = RhetoricSkill + ItemBuff + GoldenSpoon + AlignmentBonus + OfficeBonus + FriendBonus + Rand(4)
+			local BelieveFactorDefenseBonus = trial_CalcBelieveFactorBonus("accused")
+			BelieveFactorDefenseBonus = 0 - BelieveFactorDefenseBonus -- a positive bonus decreases difficulty on skill check
+			local HasWonSkillCheck = chr_SkillCheck("accused", RHETORIC, BelieveFactorDefenseBonus, "judge", EMPATHY)
 			
 			trial_Cam("JudgeFromBelowCam")
-			if BelieveFactorAccused >= BelieveFactorAccuser then
+			if HasWonSkillCheck then
 				trial_ModifyTotalEvidenceValue(-3) 
 				PlayAnimationNoWait("judge", "nod")
 			else
@@ -1273,144 +1225,51 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	AlignTo("accuser", "judge")
 	AlignTo("accused", "judge")
 	
-	local BelieveFactor = EvidenceValue * (EvidenceQuality / 100) * 2 -- if BelieveFactor is 10+ the evidence is very good, below 4 can not believed
-	LogMessage("Trial: BelieveFactor base value: " .. BelieveFactor)
+	local FinalEvidenceQuality = trial_CalcBelieveFactor(EvidenceQuality, VictimID)
+	-- local EvidenceWeight = CalcEvidenceWeight(BelieveFactor, EvidenceValue)
 	
-	-- Main factor is Rhetoric
-	local RhetoricSkill = GetSkillValue("accuser", RHETORIC)
-	local RhetoricBonus = 0
-	if RhetoricSkill < 4 then
-		RhetoricBonus = -2
-	elseif RhetoricSkill >= 7 then
-		RhetoricBonus = 2
-	elseif RhetoricSkill >= 10 then
-		RhetoricBonus = 4
-	elseif RhetoricSkill >= 13 then
-		RhetoricBonus = 6
-	end
-		
-	-- Are we the victim?
-	local IsVictim = 0
-	GetAliasByID(VictimID, "VictimAlias")
-	local VictimDynID = GetDynastyID("VictimAlias")
-	if GetDynastyID("accuser") == VictimDynID then
-		IsVictim = 4
-	end
-		
-	-- Do we get a bonus for fragrance of holiness?
-	local ItemBuff = 0
-	if GetImpactValue("accuser", "fragranceofholiness") > 0 then
-		ItemBuff = 4
-	end
-	if GetImpactValue("accused", "fragranceofholiness") > 0 then
-		ItemBuff = ItemBuff - 4
-	end
-		
-	-- Are we very noble?
-	local GoldenSpoon = 0
-	if GetImpactValue("accuser", "GoldenSpoon") > 0 then
-		GoldenSpoon = 2
-	end
-		
-	-- are we good natured?
-	local AlignmentBonus = 0
-	if SimGetAlignment("accuser") < 30 then
-		AlignmentBonus = 2
-	elseif SimGetAlignment("accuser") > 70 then
-		AlignmentBonus = -2
-	end
-		
-	-- Is opponent evil or good?
-	if SimGetAlignment("accused") > 70 then
-		AlignmentBonus = AlignmentBonus +2
-	elseif SimGetAlignment("accused") < 30 then
-		AlignmentBonus = AlignmentBonus -2
-	end
-		
-	-- office level also factors in
-	local OfficeBonus = 0
-	OfficeBonus = SimGetOfficeLevel("accuser") - SimGetOfficeLevel("accused")
-		
-	-- is the judge our friend?
-	local FriendBonus = 0
-	local FavorToJudge = GetFavorToSim("accuser", "judge")
-	if FavorToJudge >= 80 then
-		FriendBonus = 4
-	elseif FavorToJudge >= 70 then
-		FriendBonus = 3
-	elseif FavorToJudge >= 60 then 
-		FriendBonus = 2
-	elseif FavorToJudge < 50 then
-		FriendBonus = -1
-		if FavorToJudge < 40 then
-			FriendBonus = -2
-			if FavorToJudge < 30 then
-				FriendBonus = -3
-				if FavorToJudge < 20 then
-					FriendBonus = -4
-				end
-			end
-		end
-	end
-		
-	-- final calculation
-	BelieveFactor = RhetoricBonus + IsVictim + ItemBuff + GoldenSpoon + AlignmentBonus + OfficeBonus + FriendBonus + Rand(3)
+	local QualityText
+	local EvidenceModifier = 0
 	
-	LogMessage("Trial: Final BelieveFactor is " .. BelieveFactor)
-	SetData("BF_accuser", BelieveFactor)
-
-	local QualityType
-	local x
-	
-	local juryani
-	
-	if BelieveFactor < 4 then
-		x = -3
-		QualityType = "_0QUALITY"
-		trial_ModifyTotalEvidenceValue(x)
-		juryani = 0
-	elseif BelieveFactor < 6 then
-		x = -1
-		QualityType = "_25QUALITY"
-		trial_ModifyTotalEvidenceValue(x)
-		juryani = 20
-	elseif BelieveFactor < 8 then
-		x = (EvidenceValue/2)
-		QualityType = "_50QUALITY"
-		trial_ModifyTotalEvidenceValue(x)
-		juryani = 60
-	elseif BelieveFactor < 10 then
-		x = EvidenceValue
-		QualityType = "_75QUALITY"
-		trial_ModifyTotalEvidenceValue(x)
-		juryani = 100
-	else
-		x = EvidenceValue +1
-		QualityType = "_100QUALITY"
-		trial_ModifyTotalEvidenceValue(x)
-		juryani = 100
+	if FinalEvidenceQuality >= 150 then
+		EvidenceModifier = EvidenceValue + 2
+		QualityText = "_100QUALITY"
+	elseif FinalEvidenceQuality >= 100 then
+		EvidenceModifier = EvidenceValue
+		QualityText = "_100QUALITY"
+	elseif FinalEvidenceQuality >= 75 then
+		EvidenceModifier = math.ceil(EvidenceValue * FinalEvidenceQuality / 100)
+		QualityText = "_75QUALITY"
+	elseif FinalEvidenceQuality >= 50 then
+		EvidenceModifier = math.ceil(EvidenceValue * FinalEvidenceQuality / 100)
+		QualityText = "_50QUALITY"
+	elseif FinalEvidenceQuality >= 25 then
+		EvidenceModifier = math.ceil(EvidenceValue * FinalEvidenceQuality / 100)
+		QualityText = "_25QUALITY"
 	end
+	
+	trial_ModifyTotalEvidenceValue(EvidenceModifier)
 	
 	CutsceneCameraBlend("", 0.01, 0)
 --	trial_Cam("TrialMainCam")
 --	trial_RandomVisitorComment("@L_LAWSUIT_4_ACCUSAL_F_AUDIENCE_STANDARD")
 	trial_Cam("JudgeFromBelowCam")
 
-	trial_PlayRelevantJuryAni("judge", juryani)
-	MsgSay("judge", "@L_LAWSUIT_4_ACCUSAL_D_JUDGE_COMMENTS"..QualityType)
+	trial_PlayRelevantJuryAni("judge", EvidenceQuality)
+	MsgSay("judge", "@L_LAWSUIT_4_ACCUSAL_D_JUDGE_COMMENTS"..QualityText)
 	
 	-- more evidences?
 	if NumCrimes > CurrentCrime then
-		if BelieveFactor < 4 then
-			QualityType = "_LOWQUALITY"
-		elseif BelieveFactor < 8 then
-			QualityType = "_MEDIUMQUALITY"
+		if FinalEvidenceQuality < 50 then
+			QualityText = "_LOWQUALITY"
+		elseif FinalEvidenceQuality < 80 then
+			QualityText = "_MEDIUMQUALITY"
 		else
-			QualityType = "_HIGHQUALITY"
+			QualityText = "_HIGHQUALITY"
 		end
 
 		trial_Cam("TrialMainCam")
-		MsgSay("judge", "@L_LAWSUIT_4_ACCUSAL_D_JUDGE_CONTINUE"..QualityType)
+		MsgSay("judge", "@L_LAWSUIT_4_ACCUSAL_D_JUDGE_CONTINUE"..QualityText)
 		
 	end
 end
@@ -1445,6 +1304,91 @@ function ProduceMultipleEvidence(NumCrimes, EvidenceType, EvidenceValue, GenderT
 	Weight = Weight*(Found-1)
 	trial_ModifyTotalEvidenceValue(Weight)
 end
+
+function CalcBelieveFactor(EvidenceQuality, VictimID)
+	EvidenceQuality = EvidenceQuality or 50
+	LogMessage("Trial: EvidenceQuality base value: " .. EvidenceQuality)
+	
+	-- Are we the victim? Gives a bonus on Rhetoric skill check since telling your own story is always more believable
+	GetAliasByID(VictimID, "VictimAlias")
+	local VictimDynID = GetDynastyID("VictimAlias")
+	local RhetCheckDifficulty = 0
+	if GetDynastyID("accuser") == VictimDynID then
+		RhetCheckDifficulty = -4
+	end
+	
+	-- 1. Chance to improve Quality: Roll of Accuser.Rhetoric vs Judge.Empathy (can only improve quality, chance for critical improvement)
+	-- this would have the option to make the skill check harder for the accuser
+	local HasRhetoricBonus = chr_SkillCheck("accuser", RHETORIC, RhetCheckDifficulty, "judge", EMPATHY)
+	if HasRhetoricBonus then
+		EvidenceQuality = EvidenceQuality * 1.5
+	end
+	
+	-- 2. Calculate bonuses of accuser
+	local AccuserBonus = trial_CalcBelieveFactorBonus("accuser")
+	
+	-- 3. Calculate bonuses of accused
+	local AccusedBonus = trial_CalcBelieveFactorBonus("accused")
+	
+	
+	-- 4. Subtract the bonuses and run the result through an empathy check with the judge
+	local TotalBonus = AccuserBonus - AccusedBonus
+	local JudgeEmpathy = GetSkillValue("judge", EMPATHY)
+	if TotalBonus > 0 and TotalBonus > JudgeEmpathy then
+		EvidenceQuality = EvidenceQuality * 1.5
+	elseif TotalBonus < 0 and math.abs(TotalBonus) > JudgeEmpathy then
+		EvidenceQuality = EvidenceQuality * 0.5
+	end
+	
+	LogMessage("Trial: Final EvidenceQuality is " .. EvidenceQuality)
+	return EvidenceQuality
+end
+
+function CalcBelieveFactorBonus(SimAlias) 
+	local Bonus = 0
+	if GetImpactValue(SimAlias, "fragranceofholiness") > 0 then
+		Bonus = 4 + Bonus
+	end
+	
+	if GetImpactValue(SimAlias, "GoldenSpoon") > 0 then
+		Bonus = 2 + Bonus
+	end
+		
+	-- are we good natured?
+	local AlignmentBonus = 0
+	if SimGetAlignment(SimAlias) < 30 then -- good
+		Bonus = Bonus + 2
+	elseif SimGetAlignment(SimAlias) > 70 then -- evil
+		Bonus = Bonus - 2
+	end
+
+	-- office level also factors in
+	Bonus = Bonus + (SimGetOfficeLevel(SimAlias) - 1)
+	
+	-- is the judge our friend?
+	local FriendBonus = 0
+	local FavorToJudge = GetFavorToSim(SimAlias, "judge")
+	if FavorToJudge >= 80 then
+		FriendBonus = 4
+	elseif FavorToJudge >= 70 then
+		FriendBonus = 3
+	elseif FavorToJudge >= 60 then 
+		FriendBonus = 2
+	end
+	
+	if FavorToJudge < 20 then
+		FriendBonus = -4
+	elseif FavorToJudge < 30 then
+		FriendBonus = -3
+	elseif FavorToJudge < 40 then
+		FriendBonus = -2
+	elseif FavorToJudge < 50 then
+		FriendBonus = -1
+	end
+	Bonus = Bonus + FriendBonus
+	return Bonus
+end
+
 
 function GetSubjectiveSentence(Sim)
 	

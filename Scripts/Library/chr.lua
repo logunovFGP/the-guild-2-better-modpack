@@ -394,14 +394,18 @@ end
 -- Roll higher than difficulty + enemy talent value
 -- -----------------------
 function SkillCheck(SimAlias, Skill, Difficulty, DestAlias, DestSkill)
+	Difficulty = Difficulty or 0
 	local TalentValue = GetSkillValue(SimAlias, Skill) + Rand(3)
 	local TalentEnemy = 0
 	
-	if DestAlias ~= nil then
-		TalentEnemy = GetSkillValue(DestAlias, DestSkill)
+	if DestAlias ~= nil and AliasExists(DestAlias) then
+		TalentEnemy = GetSkillValue(DestAlias, DestSkill) or 0
 	end
 	
 	local SuccessValue = TalentEnemy + Difficulty
+	if SuccessValue <= 0 then
+		return true -- don't try to randomize over negative values
+	end
 	
 	if Rand(TalentValue) > Rand(SuccessValue) then
 		return true
