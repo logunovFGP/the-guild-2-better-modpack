@@ -8,43 +8,56 @@
 -------------------------------------------------------------------------------
 
 function Run()
-	LogMessage("behavior_pretrial: Running Run()")
+	LogMessage("@TRIAL #W Executing pre-trial behaviour with " .. GetName("Owner"))
 	
-	if DynastyIsPlayer("") then
+	if DynastyIsPlayer("Owner") then
 		return
 	end
 	
-	if not GetInsideBuilding("", "Townhall") then
-		LogMessage("PreTrial, no InsideRoom for"..GetName(""))
+	if not GetInsideBuilding("Owner", "Townhall") then
+		LogMessage("@TRIAL #E The Sim is not inside of the Town Hall (returning)")
 		return
 	end
 
 	BuildingGetRoom("Townhall", "Judge", "judgeroom")
-	local CutsceneID = GetProperty("judgeroom","NextCutsceneID")
+	local CutsceneID = GetProperty("judgeroom", "NextCutsceneID")
 
-	if not CutsceneID or GetAliasByID(CutsceneID,"CutsceneAlias") == nil then
-		LogMessage("No Cutscene Alias from judgeroom")
+	if (CutsceneID == nil) then
+		Sleep(2)
+		return
+	end
+
+	LogMessage("@TRIAL CutsceneID found: " .. CutsceneID)
+
+	if GetAliasByID(CutsceneID, "Trial") == nil then
+		LogMessage("@TRIAL #E No valid CutsceneAlias found for this trial...")
+		return
+	else
+		LogMessage("@TRIAL Found valid CutsceneID (" .. GetID("Trial") .. ")")
 	end
 
 	local list = {"judge","accuser","accused","assessor1","assessor2"}
+	local Checker
 
 	for i = 1, 5 do
-		list[i] = behavior_pretrial_GetDataFromCutscene("CutsceneAlias", list[i])
+		LogMessage("@TRIAL GetDataFromCutscene with " .. list[i])
+		Checker = behavior_pretrial_GetDataFromCutscene("Trial", list[i])
+		if (Checker ~= false) then
+			list[i] = Checker
+		else
+			return
+		end
 	end
 	
 	if HasProperty("", "HaveCutscene") then
-		LogMessage("PreTrial: remove HaveCutscene")
 		RemoveProperty("", "HaveCutscene")
 	end
 	
 	while true do
-
-		LogMessage("behavior_pretrial: Running while true do")
+		LogMessage("@TRIAL #W Waiting with " .. GetName("Owner"))
 
 		for i = 1, 5 do
 			if (GetID("") == list[i]) then
-				LogMessage("43 | TRIAL: Actor ["..list[i].."] is making an Action")
-				LogMessage("Actor is making an Action")
 				behavior_pretrial_ActionsForActor(i)
 			end
 		end
@@ -55,40 +68,48 @@ function Run()
 end
 
 function GetDataFromCutscene(CutsceneAlias, Data)
-	CutsceneGetData(CutsceneAlias, Data)
-	return GetData(Data)
+	if CutsceneGetData(CutsceneAlias, Data) then
+		return GetData(Data)
+	else
+		return false
+	end
 end
 
 function ActionsForActor(ID)
-	LogMessage("behavior_pretrial: Running ActionForActor("..ID..")")
 	local action = Rand(2)
+	LogMessage("@TRIAL Running action " .. action .. ". Sim: " .. GetName("Owner") .. " ("..ID..")")
 
-	if ID == 3 or ID == 2 then 
-		local judge = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","judge")
+	if (ID == 3) or (ID == 2) then 
+		local judge = behavior_pretrial_GetDataFromCutscene("Trial","judge")
 		local SimExists = GetAliasByID(judge,"JudgeAlias")
 		if (SimExists == true) then
-			--AIExecutePlan("", "Trial", "SIM", "","Trial_Destination","JudgeAlias")  e
+			LogMessage("@TRIAL #W Judge found.")
+			if AIExecutePlan("", "Trial", "SIM", "", "Trial_Destination", "JudgeAlias") then
+				LogMessage("@TRIAL #W AI Plan executed.")
+			end
 			Sleep(1)
+		else
+			LogMessage("@TRIAL #W Judge does not exist.")
 		end
 	end
 
 	if ID > 3 then 
-		if GetInsideRoom("","InsideRoom") then
+		if GetInsideRoom("", "InsideRoom") then
 			if (GetID("judgeroom") ~= GetID("InsideRoom")) then
+				Sleep(1)
 				return
 			end
 		end
 	end
 
 	if action == 0 then
-
-		RoomGetInsideSimList("judgeroom","visitor_list")
+		RoomGetInsideSimList("judgeroom", "visitor_list")
 
 		local accuser, accused, judge
-		if ID == 2 then 
-			accused = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","accused")
-		elseif ID ~= 2 and ID < 4 then
-			accuser = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","accuser")
+		if (ID == 2) then 
+			accused = behavior_pretrial_GetDataFromCutscene("Trial", "accused")
+		elseif (ID ~= 2) and (ID < 4) then
+			accuser = behavior_pretrial_GetDataFromCutscene("Trial", "accuser")
 		end
 
 		local num = ListSize("visitor_list")
@@ -172,13 +193,15 @@ function ActionsForActor(ID)
 
 	if action == 1 then
 
+		local SimExists = false
+
 		if ID == 1 or ID == 2 then 
-			local accused = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","accused")
-			local SimExists = GetAliasByID(accused,"accusedAlias")
+			local accused = behavior_pretrial_GetDataFromCutscene("Trial","accused")
+			SimExists = GetAliasByID(accused,"accusedAlias")
 			if SimExists then CopyAlias("accusedAlias","TalkToAlias") end
 		elseif ID == 3 then 
-			local accuser = behavior_pretrial_GetDataFromCutscene("CutsceneAlias","accuser")
-			local SimExists = GetAliasByID(accuser,"accuserAlias")
+			local accuser = behavior_pretrial_GetDataFromCutscene("Trial","accuser")
+			SimExists = GetAliasByID(accuser,"accuserAlias")
 			if SimExists then CopyAlias("accuserAlias","TalkToAlias") end
 		end		
 		
