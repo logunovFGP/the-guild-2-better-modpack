@@ -47,12 +47,18 @@ function Start()
 	-- we have 2 time slots for the event
 	
 	if not HasProperty("courtbuilding", "UpcomingTrials") then
-		SetProperty("courtbuilding", "UpcomingTrials", 0)
+		LogMessage("@TRIAL #W Setting UpcomingTrials value to -1 (default)")
+		SetProperty("courtbuilding", "UpcomingTrials", -1)
 	end
-	
-	local TrialCount = GetProperty("courtbuilding", "UpcomingTrials")
 
-	local debug = debugTrial
+	local UpcomingTrials = GetProperty("courtbuilding", "UpcomingTrials")
+	SetProperty("courtbuilding", "UpcomingTrials", UpcomingTrials +1)
+	
+	UpcomingTrials = GetProperty("courtbuilding", "UpcomingTrials")
+
+	LogMessage("@TRIAL #W The following slot was assigned to this trial: " .. UpcomingTrials)
+
+	local debug = false
 
 	if debug then 
 
@@ -60,7 +66,7 @@ function Start()
 
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", math.mod(GetGametime(),24), 0, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=4, mintimeinfuture=6
 		CityGetRandomBuilding("Settlement",GL_BUILDING_CLASS_PUBLICBUILDING,GL_BUILDING_TYPE_TOWNHALL,-1,-1,FILTER_IGNORE,"CouncilBuilding")
-		GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos")
+		GetLocatorByName("CouncilBuilding", "ApproachUsherPos", "destpos")
 		BuildingGetRoom("CouncilBuilding", "Judge", "Room")
 
 		local locations = {["judge"]="JudgeChairPos",["accuser"]="AccuserStandPos",["accused"]="AccusedStandPos",["assessor1"]="RightAssessorChairPos",["assessor2"]="LeftAssessorChairPos"}
@@ -77,13 +83,13 @@ function Start()
 		end
 
 	-- No trials ahead, take the first slot
-	elseif TrialCount == 0 then
+	elseif UpcomingTrials == 0 then
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", 4, 6, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=4, mintimeinfuture=6
 	-- else take the second slot
-	elseif TrialCount == 1 then
+	elseif UpcomingTrials == 1 then
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", 11, 6, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=11, mintimeinfuture=6
 	-- after that take the first slot again
-	elseif TrialCount == 2 then
+	elseif UpcomingTrials == 2 then
 		CityScheduleCutsceneEvent("settlement", "trial_date", "", "EverybodySitDown", 4, 6, "@L_LAWSUIT_DIARY_CITY_+0", GetID("accuser"), GetID("accused"))	-- hourofday=4, mintimeinfuture=6
 	-- default: take the second slot
 	else
@@ -96,9 +102,14 @@ function Start()
 	local EventTimeInvite = EventTime/60
 	local CurrentTime = math.mod(GetGametime(),24)
 	local GameTime = GetGametime()*60
-	local WaitTime = EventTime - GameTime - 120
+	local WaitTime = EventTime - GameTime - 180
 	local ImpactTime = math.floor(WaitTime/60)
 	local CityID = GetID("settlement")
+
+	LogMessage("@TRIAL #W Internal timecode for event: " .. EventTime)
+	LogMessage("@TRIAL #W Current gametime: " .. GameTime)
+	LogMessage("@TRIAL #W Planned total wait time: " .. WaitTime)
+	LogMessage("@TRIAL #W Alternative round-up final time minus two hours: " .. EventTime - 180)
 
 	--if (WaitTime < 0) then
 		--trial_SetBuildingInfo()
@@ -270,6 +281,7 @@ function Start()
 end
 
 function SetBuildingInfo()
+	LogMessage("@TRIAL #W Setting judgeroom information (this is where NextCutsceneID is set to " .. GetID("") ..")")
 	BuildingGetRoom("courtbuilding", "Judge", "judgeroom")
 	SetProperty("judgeroom", "NextCutsceneID", GetID(""))
 end
@@ -356,8 +368,10 @@ function Go()
 	LogMessage("Trial: Go")
 	
 	-- lower UpcomingTrialCount by 1
-	SetProperty("courtbuilding", "UpcomingTrials", (GetProperty("courtbuilding", "UpcomingTrials")-1))
-	
+	local UpcomingTrials = GetProperty("courtbuilding", "UpcomingTrials")
+	LogMessage("@TRIAL #W This trial is starting. Lowering UpcomingTrials value by 1 (from " .. UpcomingTrials .. ")")
+	SetProperty("courtbuilding", "UpcomingTrials", UpcomingTrials-1)
+
 	BuildingGetRoom("courtbuilding", "Judge", "judgeroom")
 	
 	-- set the camera
