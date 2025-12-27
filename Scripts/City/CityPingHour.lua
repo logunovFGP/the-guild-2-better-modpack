@@ -20,30 +20,6 @@ function Run()
 		end
 	end
 	
-	-- random diseases for dynasty members
-	local trys = 5
-		
-	for i=1, trys do
-		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
-		if TargetID > 0 then
-			GetAliasByID(TargetID, "InfectSim")
-			if AliasExists("InfectSim") and GetDynasty("InfectSim", "InfectDyn") and ReadyToRepeat("InfectDyn", "RandomIllness") then
-				SetRepeatTimer("InfectDyn", "RandomIllness", 24)
-				if not GetState("InfectSim", STATE_SICK) then
-					if GetImpactValue("InfectSim", "Resist") == 0 then
-						--LogMessage("City "..GetName("").." tries to infect "..GetName("InfectSim"))
-						CopyAlias("InfectSim", "RandomInfected")
-						break
-					end
-				end
-			end
-		end
-	end
-	
-	if AliasExists("RandomInfected") then
-		citypinghour_InfectionEvent("RandomInfected")
-	end
-	
 	-- levelup public buildings if necessecary
 	if ScenarioGetTimePlayed() > 12 then
 
@@ -80,9 +56,7 @@ function Run()
 		end
 			
 		if CurrentRound > 2 then -- round 4+
-			
-			-- ToDo: City Events
-			citypinghour_CityEvent("")
+			citypinghour_CityEvent()
 		end
 	end
 		
@@ -101,8 +75,32 @@ function Run()
 	end
 end
 
-function InfectionEvent(Target)
+function InfectionEvent()
+	local Target = "RandomInfected"
+	-- random diseases for dynasty members
+	local trys = 5
+		
+	for i=1, trys do
+		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
+		if TargetID > 0 then
+			GetAliasByID(TargetID, "InfectSim")
+			if AliasExists("InfectSim") and GetDynasty("InfectSim", "InfectDyn") and ReadyToRepeat("InfectDyn", "RandomIllness") then
+				SetRepeatTimer("InfectDyn", "RandomIllness", 24)
+				if not GetState("InfectSim", STATE_SICK) then
+					if GetImpactValue("InfectSim", "Resist") == 0 then
+						--LogMessage("City "..GetName("").." tries to infect "..GetName("InfectSim"))
+						CopyAlias("InfectSim", Target)
+						break
+					end
+				end
+			end
+		end
+	end
 	
+	if not AliasExists(Target) then
+		return -- didn't find someone to infect, just return
+	end
+
 	local Difficulty = ScenarioGetDifficulty()
 	local Round = GetRound()
 	
@@ -187,8 +185,32 @@ function InfectionEvent(Target)
 	end
 end
 
-function CityEvent(Target)
-	--ToDo
+function CityEvent()
+	local Difficulty = ScenarioGetDifficulty()
+	local Season = GetSeason() 
+	-- infection, Heuschrecken, inferno, black death, ratboy
+	local probs = {8, 1, 2, 1, 1} -- spring and fall
+	if Season == EN_SEASON_SUMMER then
+		probs = {3, 2, 3, 2, 0} -- summer
+	elseif Season == EN_SEASON_WINTER then
+		probs = {15, 0, 0, 2, 0} -- winter
+	end
+
+	local Choice = Rand(100)+1
+	if Choice < Difficulty * probs[1] then
+		citypinghour_InfectionEvent()
+	elseif Choice < Difficulty * (probs[1] + probs[2]) then
+		ms_citycontrol_Heuschrecken()
+	elseif Choice < Difficulty * (probs[1] + probs[2] + probs[3]) then
+		ms_citycontrol_Inferno()
+	elseif Choice < Difficulty * (probs[1] + probs[2] + probs[3] + probs[4])  and GetRound() > (10 - Difficulty) then
+		ms_citycontrol_TheBlackDeath()
+	elseif Choice < Difficulty * probs[5] then
+		ms_citycontrol_RatBoy()
+	else 
+		-- DEBUG
+		--MsgNewsNoWait("All","","","intrigue",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
+	end
 end
 
 function CityBalance()
