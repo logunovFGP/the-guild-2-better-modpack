@@ -36,6 +36,8 @@ function Run()
 		RemoveProperty("", "_DO_NOTHING_TIME")
 		DoNothing = Gametime2Realtime(DoNothing)
 		Sleep(DoNothing)
+		-- random infection
+		std_idle_RandomInfection()
 	end 
 	
 	-- Check activity or go home and do nothing for some time
@@ -283,43 +285,6 @@ function Run()
 	end
 
 	if not IsPartyMember("") then
-		GetSettlement("","City")
-		local CityLevel = CityGetLevel("City")
-		local SicknessChance = Rand(100)
-		if GetState("", STATE_SICK) then
-			SicknessChance = 0
-		else
-			local Season = GetSeason()
-			if Season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
-				SicknessChance = Rand(50)
-			end
-		end
-		if CityLevel > 4 then
-			if SicknessChance == 1 then
-				Disease.Cold:infectSim("")
-			elseif SicknessChance == 2 then
-				Disease.Sprain:infectSim("")
-			elseif SicknessChance == 6 then
-				Disease.Fracture:infectSim("")
-			elseif SicknessChance == 7 then
-				Disease.Influenza:infectSim("")
-			end
-		elseif CityLevel > 2 then
-			if SicknessChance < 6 then
-				Disease.Cold:infectSim("")
-			elseif SicknessChance < 9 then
-				Disease.Sprain:infectSim("")
-			elseif SicknessChance < 11 then
-				Disease.Influenza:infectSim("")
-			end
-		else
-			if SicknessChance < 10 then
-				Disease.Cold:infectSim("")
-			elseif SicknessChance < 15 then
-				Disease.Sprain:infectSim("")
-			end
-		end
-		
 		if ActiveMovement then
 			f_ExitCurrentBuilding("")
 			Sleep(Rand(10)+5)
@@ -533,3 +498,43 @@ function CleanUp()
 	end
 end
 
+function RandomInfection()
+	if not IsPartyMember("") then
+		GetSettlement("","City")
+		local CityLevel = CityGetLevel("City")
+		local SicknessChance = Rand(100)
+		if GetState("", STATE_SICK) then
+			SicknessChance = 0
+		else
+			local Season = GetSeason()
+			if Season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
+				SicknessChance = Rand(50)
+			end
+		end
+		if CityLevel > 4 then
+			if SicknessChance == 1 then
+				Disease.Cold:infectSim("")
+			elseif SicknessChance == 2 then
+				Disease.Sprain:infectSim("")
+			elseif SicknessChance == 6 then
+				Disease.Fracture:infectSim("")
+			elseif SicknessChance == 7 then
+				Disease.Influenza:infectSim("")
+			end
+		elseif CityLevel > 2 then
+			if SicknessChance < 6 then
+				Disease.Cold:infectSim("")
+			elseif SicknessChance < 9 then
+				Disease.Sprain:infectSim("")
+			elseif SicknessChance < 11 then
+				Disease.Influenza:infectSim("")
+			end
+		else
+			if SicknessChance < 10 then
+				Disease.Cold:infectSim("")
+			elseif SicknessChance < 15 then
+				Disease.Sprain:infectSim("")
+			end
+		end
+	end
+end
