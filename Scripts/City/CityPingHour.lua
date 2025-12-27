@@ -78,10 +78,10 @@ end
 function InfectionEvent()
 	local Target = "RandomInfected"
 	-- random diseases for dynasty members
-	local trys = 5
+	local trys = 20
 		
 	for i=1, trys do
-		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", true, true) or 0
+		local TargetID = gameplayformulas_CityGetRandomDynastyMember("", false, true) or 0
 		if TargetID > 0 then
 			GetAliasByID(TargetID, "InfectSim")
 			if AliasExists("InfectSim") and GetDynasty("InfectSim", "InfectDyn") and ReadyToRepeat("InfectDyn", "RandomIllness") then
@@ -200,13 +200,13 @@ function CityEvent()
 	if Choice < Difficulty * probs[1] then
 		citypinghour_InfectionEvent()
 	elseif Choice < Difficulty * (probs[1] + probs[2]) then
-		ms_citycontrol_Heuschrecken()
+		citypinghour_Heuschrecken()
 	elseif Choice < Difficulty * (probs[1] + probs[2] + probs[3]) then
-		ms_citycontrol_Inferno()
+		citypinghour_Inferno()
 	elseif Choice < Difficulty * (probs[1] + probs[2] + probs[3] + probs[4])  and GetRound() > (10 - Difficulty) then
-		ms_citycontrol_TheBlackDeath()
+		citypinghour_TheBlackDeath()
 	elseif Choice < Difficulty * probs[5] then
-		ms_citycontrol_RatBoy()
+		citypinghour_RatBoy()
 	else 
 		-- DEBUG
 		--MsgNewsNoWait("All","","","intrigue",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
@@ -651,5 +651,72 @@ function CheckAlderman()
 		end
 	else
 		SetData("#Alderman", 0)
+	end
+end
+
+
+
+function RatBoy()
+	if not CityGetRandomBuilding("", 3, 23, -1, -1, FILTER_IGNORE, "RatBoyHomeBuilding") then
+		return
+	end
+	
+	GetPosition("RatBoyHomeBuilding", "RatBoySpawnPos")
+	if not SimCreate(904,"RatBoyHomeBuilding", "RatBoySpawnPos", "RatBoy") then
+		return
+	end
+	
+	SimSetBehavior("RatBoy", "RatBoy")
+	citypinghour_Warnung(2, "RatBoy")
+end
+
+function Inferno()
+	local NumBuildings = CityGetBuildingCount("", 1, -1, -1, -1, FILTER_IGNORE)
+	CityGetBuildings("", 1, -1, -1, -1, FILTER_IGNORE, "Building")
+	for i=0, NumBuildings-3 do
+		SetState("Building"..i, STATE_BURNING, true)
+		Sleep(5)
+	end
+	citypinghour_Warnung(3, "")
+end
+
+function Heuschrecken()
+	if not CityGetRandomBuilding("", 6, 33, 0, -1, FILTER_IGNORE, "Feld") then
+		return
+	end
+	
+	if not HasProperty("Feld", "Heuschrecken") then
+		SetProperty("Feld", "Heuschrecken", 1)
+	else
+		return
+	end
+	MeasureRun("Feld", "", "HeuPlage", true)
+	citypinghour_Warnung(4, "")
+end
+
+function TheBlackDeath()
+	if not ReadyToRepeat("", "Pest") then
+		return
+	end
+	
+	local opfer = Rand(2) + 1
+	if CityGetRandomBuilding("", opfer, -1, -1, -1, FILTER_HAS_DYNASTY, "Ausbruch") then
+		if BuildingGetSim("Ausbruch", 1, "ErstOpfer") then
+			Disease.Blackdeath:infectSim("ErstOpfer")
+			SetRepeatTimer("", "Pest", 192)
+		end
+	end
+end
+
+function Warnung(danger, opfer, zusatz)
+	if danger == 2 then
+		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_RATTE_KOPF",
+					"@L_HPFZ_KATASTR_RATTE_RUMPF")
+	elseif danger == 3 then
+		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_FEUER_KOPF",
+					"@L_HPFZ_KATASTR_FEUER_RUMPF", GetID(opfer))
+	elseif danger == 4 then
+		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_GRILLEN_KOPF",
+					"@L_HPFZ_KATASTR_GRILLEN_RUMPF", GetID(opfer))
 	end
 end
