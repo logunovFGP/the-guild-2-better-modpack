@@ -34,7 +34,7 @@ function Run()
 		end
 		AddItems("Lager", "Silver", Ertrag)
 		local item = "_ITEM_Silver_NAME_+0"
-		MsgNewsNoWait("", "Lager", "", "economie", -1,
+		MsgNewsNoWait("", "Lager", "", "production", -1,
 					"@L_HPFZ_ARTEFAKT_OPTSCH_NUTZER_KOPF_+0",
 					"@L_HPFZ_ARTEFAKT_OPTSCH_NUTZER_RUMPF_+0", GetID("Lager"), Ertrag, item)
 	end

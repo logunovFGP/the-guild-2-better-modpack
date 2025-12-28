@@ -138,7 +138,7 @@ function MessageOtherCharacters(Owner, Headline, Text, ...)
 	end
 	
 	local HeaderText = Headline
-	local MessageClass = "intrigue"
+	local MessageClass = "economie"
 	local OwnerDyn = GetDynastyID(Owner)
 	local Alias
 	local DynCount = ScenarioGetObjects("Dynasty", 100, "Dynasties")
@@ -177,11 +177,11 @@ function MessageOtherDynastiesTitle(Owner, NewTitle)
 			-- check for diplomacy
 			local Diplo = DynastyGetDiplomacyState(Alias, Owner)
 			if Diplo == DIP_FOE then
-				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHER_DOCUMENT_HEADER_+2", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_ENEMY_+0", GetID(Owner), TitleLabel)
+				MsgNewsNoWait(Alias, Owner, "", "economie", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHER_DOCUMENT_HEADER_+2", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_ENEMY_+0", GetID(Owner), TitleLabel)
 			elseif Diplo == DIP_ALLIANCE then
-				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHER_DOCUMENT_HEADER_+1", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_BLOODBAND_+0", GetID(Owner), TitleLabel)
+				MsgNewsNoWait(Alias, Owner, "", "economie", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHER_DOCUMENT_HEADER_+1", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_BLOODBAND_+0", GetID(Owner), TitleLabel)
 			else -- neutral
-				MsgNewsNoWait(Alias, Owner, "", "intrigue", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHER_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_NEUTRAL_+0", GetID(Owner), TitleLabel)
+				MsgNewsNoWait(Alias, Owner, "", "economie", -1, "@L_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHER_DOCUMENT_HEADER_+0", "_CHARACTERS_3_TITLES_AQUIRE_MESSAGES_OTHERPLAYERS_NEUTRAL_+0", GetID(Owner), TitleLabel)
 			end
 		end
 	end

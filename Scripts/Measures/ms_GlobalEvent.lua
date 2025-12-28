@@ -129,7 +129,7 @@ function War()
 	SetProperty("","WarEnemyNo", WarNoEnemy)
 	SetProperty("","WarPhase", 1)
 
-	MsgNewsNoWait("All","","@C[@L_WAR_DECLARED_COOLDOWN_+0,%6i,%7l]","economie",-1,
+	MsgNewsNoWait("All","","@C[@L_WAR_DECLARED_COOLDOWN_+0,%6i,%7l]","politics",-1,
 						"@L_WAR_DECLARED_HEAD_+0",
 						"@L_WAR_DECLARED_BODY_+0",
 						"@L_SCENARIO_WAR_"..land.."_+1", "@L_SCENARIO_WAR_"..enemy.."_+1", Gametime, lordlabel, "@L_SCENARIO_WAR_"..enemy.."_+0", StartTime, ID)

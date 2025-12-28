@@ -451,7 +451,7 @@ function CheckRivals(BldAlias)
 							-- check for diplomacy
 							if DynastyGetDiplomacyState("MyBoss", "RivalBoss") < DIP_ALLIANCE then
 								SetProperty(BldAlias, "Rival"..RivID, 1) -- only one msg
-								MsgNewsNoWait("RivalBoss", "MyBoss", "", "intrigue", -1,
+								MsgNewsNoWait("RivalBoss", "MyBoss", "", "economie", -1,
 											"@L_AI_NEWRIVALINTOWN_HEAD", "@L_AI_NEWRIVALINTOWN_BODY", GetID("MyBoss"), GetID(BldAlias), GetID(RivBld))
 								chr_ModifyFavor("MyBoss", "RivalBoss", -GL_FAVOR_MOD_VERYLARGE)
 								break

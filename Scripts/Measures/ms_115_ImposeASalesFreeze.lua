@@ -65,7 +65,7 @@ function Run()
 	local ID = "Event"..GetID("")
 	DynastyGetMember("dynasty", 0, "MrFreeze")
 
-	MsgNewsNoWait("All","MrFreeze","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+0,%4i,%5l]","economie",-1,
+	MsgNewsNoWait("All","MrFreeze","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+0,%4i,%5l]","production",-1,
 		"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_HEAD_+0",
 		"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_BODY_+0",
 		GetID("MrFreeze"),GetID("Destination"),GetID("CityAlias"),Elapse,ID)

@@ -77,7 +77,7 @@ function NeedItems()
 	-- message to insert here: start of the event
 	GetSettlement("", "City")
 
-	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_NEED_ITEMS_COOLDOWN_+0,%5i,%6l]", "economie", -1,
+	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_NEED_ITEMS_COOLDOWN_+0,%5i,%6l]", "mission", -1,
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_HEAD_+"..random,
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_TEXT_+"..random,
 			       GetID("City"), Needed, ItemLabel, Gametime, DestTime, ID)
@@ -103,11 +103,11 @@ function NeedItems()
 	-- message to insert here: end of the event
 	
 	if Success then
-		feedback_MessageEconomie("All", "@L_KONTOR_MISSIONS_NEED_ITEMS_SUCCESS_HEAD_+0",
+		feedback_MessageMission("All", "@L_KONTOR_MISSIONS_NEED_ITEMS_SUCCESS_HEAD_+0",
 						"@L_KONTOR_MISSIONS_NEED_ITEMS_SUCCESS_TEXT_+0",
 						GetID("City"), Needed, ItemLabel)
 	else
-		feedback_MessageEconomie("All", "@L_KONTOR_MISSIONS_NEED_ITEMS_FAILED_HEAD_+0",
+		feedback_MessageMission("All", "@L_KONTOR_MISSIONS_NEED_ITEMS_FAILED_HEAD_+0",
 						"@L_KONTOR_MISSIONS_NEED_ITEMS_FAILED_TEXT_+0",
 						GetID("City"), Needed, ItemLabel)
 	end
@@ -214,7 +214,7 @@ function OfferItems()
 	
 	GetSettlement("", "City")
 
-	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_OFFER_ITEMS_COOLDOWN_+0,%5i,%6l]", "economie", -1,
+	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_OFFER_ITEMS_COOLDOWN_+0,%5i,%6l]", "mission", -1,
 			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_HEAD_+"..random,
 			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_TEXT_+"..random,
 			       GetID("City"), Offering, ItemLabel, Gametime, DestTime, ID)
@@ -242,11 +242,11 @@ function OfferItems()
 
 	-- message to insert here: end of the event
 	if Success then
-		feedback_MessageEconomie("All", "@L_KONTOR_MISSIONS_OFFER_ITEMS_SUCCESS_HEAD_+0",
+		feedback_MessageMission("All", "@L_KONTOR_MISSIONS_OFFER_ITEMS_SUCCESS_HEAD_+0",
 						"@L_KONTOR_MISSIONS_OFFER_ITEMS_SUCCESS_TEXT_+0",
 						GetID("City"), ItemLabel)
 	else
-		feedback_MessageEconomie("All", "@L_KONTOR_MISSIONS_OFFER_ITEMS_FAILED_HEAD_+0",
+		feedback_MessageMission("All", "@L_KONTOR_MISSIONS_OFFER_ITEMS_FAILED_HEAD_+0",
 						"@L_KONTOR_MISSIONS_OFFER_ITEMS_FAILED_TEXT_+0",
 						GetID("City"), ItemLabel)
 	end

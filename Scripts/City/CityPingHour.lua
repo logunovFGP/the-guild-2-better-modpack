@@ -209,7 +209,7 @@ function CityEvent()
 		citypinghour_RatBoy()
 	else 
 		-- DEBUG
-		--MsgNewsNoWait("All","","","intrigue",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
+		--MsgNewsNoWait("All","","","default",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
 	end
 end
 
@@ -723,13 +723,13 @@ end
 
 function Warnung(danger, opfer, zusatz)
 	if danger == 2 then
-		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_RATTE_KOPF",
+		MsgNewsNoWait("All", opfer, "", "default", -1, "@L_HPFZ_KATASTR_RATTE_KOPF",
 					"@L_HPFZ_KATASTR_RATTE_RUMPF")
 	elseif danger == 3 then
-		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_FEUER_KOPF",
+		MsgNewsNoWait("All", opfer, "", "default", -1, "@L_HPFZ_KATASTR_FEUER_KOPF",
 					"@L_HPFZ_KATASTR_FEUER_RUMPF", GetID(opfer))
 	elseif danger == 4 then
-		MsgNewsNoWait("All", opfer, "", "intrigue", -1, "@L_HPFZ_KATASTR_GRILLEN_KOPF",
+		MsgNewsNoWait("All", opfer, "", "default", -1, "@L_HPFZ_KATASTR_GRILLEN_KOPF",
 					"@L_HPFZ_KATASTR_GRILLEN_RUMPF", GetID(opfer))
 	end
 end

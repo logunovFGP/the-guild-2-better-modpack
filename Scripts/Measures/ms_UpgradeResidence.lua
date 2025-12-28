@@ -24,7 +24,7 @@ function Run()
 		"@B[1,@L_UPGRADE_RESIDENCE_ANSWER_+0]"..
 		"@B[0,@L_UPGRADE_RESIDENCE_ANSWER_+1]",
 		0,
-		"economie",
+		"building",
 		-1,
 		"@L_UPGRADE_RESIDENCE_HEAD_+0",
 		"@L_UPGRADE_RESIDENCE_BODY_+0",

@@ -137,7 +137,7 @@ function NotifyRoute(CartAlias, CurrentStop, Destination)
 	MsgNewsNoWait("All", -- recipient
 				CartAlias, -- jump to target
 				"", -- panel params (buttons)
-				"economie", -- message class
+				"default", -- message class
 				-1, -- TimeOut 
 				"World Trader", -- Header
 				Msg, -- Body

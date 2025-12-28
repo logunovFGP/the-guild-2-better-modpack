@@ -64,7 +64,7 @@ function Run()
 		gradelabel = "@L_CHECKALDERMAN_ALDERMAN_FEMALE_+0"
 	end
 
-	MsgNewsNoWait("All", "","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+1,%5i,%6l]","economie",-1,
+	MsgNewsNoWait("All", "","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+1,%5i,%6l]","production",-1,
 				"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_HEAD_+0",
 				"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_BODY_+1",
 				gradelabel,GetID(""),GetID("Destination"),GetID("CityAlias"),Elapse,ID)

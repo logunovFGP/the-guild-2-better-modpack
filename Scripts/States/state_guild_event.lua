@@ -70,7 +70,7 @@ function Contract()
 	GetSettlement("", "City")
 
 	if (type == 1) then
-		MsgNewsNoWait("All","","@C[@L_GUILDHOUSE_MISSIONS_ITEMS_COOLDOWN_+0,%8i,%9l]","economie",-1,
+		MsgNewsNoWait("All","","@C[@L_GUILDHOUSE_MISSIONS_ITEMS_COOLDOWN_+0,%8i,%9l]","mission",-1,
 				       "@L_GUILDHOUSE_MISSIONS_ITEMS_HEAD_+0",
 				       "@L_GUILDHOUSE_MISSIONS_ITEMS_TEXT_+0",
 				       "@L_GUILDHOUSE_GUILDS_+"..event-1,GetID("City"),"@L_GUILDHOUSE_MISSIONS_ITEMS_ORDERER_TEXT_+"..orderer, Needed, ItemLabel, money, Gametime, DestTime,ID)
@@ -86,7 +86,7 @@ function Contract()
 		else
 			eventstring = "@L_GUILDHOUSE_MISSIONS_TASK_CHISELER_TEXT_+"..Item
 		end
-		MsgNewsNoWait("All","","@C[@L_GUILDHOUSE_MISSIONS_TASK_COOLDOWN_+0,%8i,%9l]","economie",-1,
+		MsgNewsNoWait("All","","@C[@L_GUILDHOUSE_MISSIONS_TASK_COOLDOWN_+0,%8i,%9l]","mission",-1,
 				       "@L_GUILDHOUSE_MISSIONS_TASK_HEAD_+0",
 				       "@L_GUILDHOUSE_MISSIONS_TASK_TEXT_+0",
 				       "@L_GUILDHOUSE_GUILDS_+"..event-1,GetID("City"),eventstring, "@L_GUILDHOUSE_MISSIONS_TASK_ORDERER_TEXT_+"..orderer, Duration, money, Gametime, DestTime,ID)

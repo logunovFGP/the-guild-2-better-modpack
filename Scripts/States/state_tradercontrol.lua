@@ -51,12 +51,12 @@ function Run()
 			SetProperty("", "TradersRobberMessageSaid", 0)			
 
 			-- msg to all players;
-			MsgNewsNoWait("All", "", "", "economie", -1, 
+			MsgNewsNoWait("All", "", "", "default", -1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
 				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("MyCity")) 
 			
 		elseif MainPlunderCount > 2 and GetProperty("","TradersRobberMessageSaid") ~= 1 then
-			MsgNewsNoWait("All", "", "", "economie", -1, 
+			MsgNewsNoWait("All", "", "", "default", -1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
 				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("MyCity")) 
 			SetProperty("", "TradersRobberMessageSaid", 1)
