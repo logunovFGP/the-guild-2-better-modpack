@@ -55,7 +55,7 @@ function Run()
 			end
 		end
 			
-		if CurrentRound > 2 then -- round 4+
+		if CurrentRound > 1 and Rand(24) < 3 then -- round 3+ and average of 3 times a day
 			citypinghour_CityEvent()
 		end
 	end
@@ -671,11 +671,24 @@ function RatBoy()
 end
 
 function Inferno()
-	local NumBuildings = CityGetBuildingCount("", 1, -1, -1, -1, FILTER_IGNORE)
-	CityGetBuildings("", 1, -1, -1, -1, FILTER_IGNORE, "Building")
-	for i=0, NumBuildings-3 do
-		SetState("Building"..i, STATE_BURNING, true)
-		Sleep(5)
+	-- residences
+	local NumBuildings = CityGetBuildingCount("MyCity",1,-1,-1,-1,FILTER_IGNORE)
+	CityGetBuildings("MyCity",1,-1,-1,-1,FILTER_IGNORE,"Building")
+	local Severity = Rand(70)
+	for i=0,NumBuildings-1 do
+		if GetImpactValue("Building"..i, 7) * 100 < Severity then
+			SetState("Building"..i,STATE_BURNING,true)
+			Sleep(3)
+		end
+	end
+	-- workshops
+	local NumBuildings = CityGetBuildingCount("MyCity",2,-1,-1,-1,FILTER_IGNORE)
+	CityGetBuildings("MyCity",2,-1,-1,-1,FILTER_IGNORE,"Building")
+	for i=0,NumBuildings-1 do
+		if GetImpactValue("Building"..i, 7) * 100 < Severity then
+			SetState("Building"..i,STATE_BURNING,true)
+			Sleep(3)
+		end
 	end
 	citypinghour_Warnung(3, "")
 end
