@@ -880,6 +880,11 @@ function CheckCarts(BldAlias)
 		bld_BuyCart(BldAlias, "CartAlias", bld_GetIdealCartType(BldAlias))
 	end
 	
+	-- no autocart measure for divehouse and robber
+	if BldType == GL_BUILDING_TYPE_ROBBER or BldType == GL_BUILDING_TYPE_DIVEHOUSE then
+		return
+	end
+	
 	CartCount = BuildingGetCartCount(BldAlias)
 	for i=0, CartCount - 1 do
 		if BuildingGetCart(BldAlias, i, "CartAlias") then
