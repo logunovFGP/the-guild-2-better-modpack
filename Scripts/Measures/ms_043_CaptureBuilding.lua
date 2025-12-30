@@ -103,6 +103,7 @@ function Run()
 	AddImpact("InsideBuilding", "recentlycaptured", 1, 12)
 	SetProperty("InsideBuilding", "Captured", 1)
 	SetRepeatTimer("dynasty", GetMeasureRepeatName2("CaptureBuilding"), TimeOut)
+	SetMeasureRepeat(TimeOut)
 	
 	if GetImpactValue("Destination", "messagesent") == 0 then
 		SetData("Success", "1")
