@@ -108,7 +108,7 @@ function Run()
 		end
 	end
 
-	CommitAction("explosion", "", "Victim", "Destination")
+	CommitAction("explosion", "", "Destination", "Destination")
 	AddImpact("Destination","buildingbombedtoday",1,duration)
 	
 	SetMeasureRepeat(TimeOut)
