@@ -672,9 +672,9 @@ end
 
 function Inferno()
 	-- residences
-	local NumBuildings = CityGetBuildingCount("MyCity",1,-1,-1,-1,FILTER_IGNORE)
-	CityGetBuildings("MyCity",1,-1,-1,-1,FILTER_IGNORE,"Building")
-	local Severity = Rand(70)
+	local NumBuildings = CityGetBuildingCount("",1,-1,-1,-1,FILTER_IGNORE)
+	CityGetBuildings("",1,-1,-1,-1,FILTER_IGNORE,"Building")
+	local Severity = Rand(60) + 10
 	for i=0,NumBuildings-1 do
 		if GetImpactValue("Building"..i, 7) * 100 < Severity then
 			SetState("Building"..i,STATE_BURNING,true)
@@ -682,8 +682,8 @@ function Inferno()
 		end
 	end
 	-- workshops
-	local NumBuildings = CityGetBuildingCount("MyCity",2,-1,-1,-1,FILTER_IGNORE)
-	CityGetBuildings("MyCity",2,-1,-1,-1,FILTER_IGNORE,"Building")
+	local NumBuildings = CityGetBuildingCount("",2,-1,-1,-1,FILTER_IGNORE)
+	CityGetBuildings("",2,-1,-1,-1,FILTER_IGNORE,"Building")
 	for i=0,NumBuildings-1 do
 		if GetImpactValue("Building"..i, 7) * 100 < Severity then
 			SetState("Building"..i,STATE_BURNING,true)
