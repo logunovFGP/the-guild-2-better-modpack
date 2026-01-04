@@ -218,7 +218,7 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 					local TotalPrice = ItemCount * ItemPrice 
 					CreditMoney(BldAlias, TotalPrice, "WaresSold")
 					ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
-				--	economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
+					economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
 					if not IgnoreMoney then
 						chr_SpendMoney(BuyerAlias, TotalPrice, "WaresBought")
 						chr_UseBudget(BuyerAlias, 1, TotalPrice)
@@ -312,14 +312,16 @@ function GetPrice(BldAlias, ItemId, Buyer)
 	return math.floor((BasePrice * 0.9) + (BasePrice * TheBargain)) 
 end
 
+-- known suffixes: Salescounter, Autoroute, Wages, Service, Theft
 function UpdateBalance(BldAlias, BalanceSuffix, TotalPrice, ItemId, Amount)
 	local Current = GetProperty(BldAlias, "Balance"..BalanceSuffix) or 0
 	SetProperty(BldAlias, "Balance"..BalanceSuffix, Current + TotalPrice)
-	-- logging
-	--MsgBoxNoWait(BldAlias, BldAlias, "Balance updated", "The balance for "..BalanceSuffix.." was updated, difference is "..TotalPrice)
 	
-	-- TODO update balance for each item the workshop sells
-	-- these specific balances could then be shown after clicking an item in sales counter management
+	-- TODO update balance by round, removing properties that are older than two rounds
+	-- or better/easier: give an option to clear the balance sheet
+	
+	-- logging
+	MsgBoxNoWait(BldAlias, BldAlias, "Balance updated", "The balance for "..BalanceSuffix.." was updated, difference is "..TotalPrice)
 end
 
 

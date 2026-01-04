@@ -81,7 +81,7 @@ function UnloadAll(CartAlias, DestAlias)
 	if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
 		CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
 	
-		BalanceSheet = "WaresSeaSold"
+		--BalanceSheet = "WaresSeaSold"
 	end
 	
 	--do the transfer
@@ -93,16 +93,24 @@ function UnloadAll(CartAlias, DestAlias)
 		if ItemId and ItemCount then
 			BuildingGetCity(DestAlias, "BargCity")
 			local ItemStock = GetItemCount(DestAlias, ItemId)
+			local Error, ItemTransfered, Price
+		
 			if CanAddItems(DestAlias, ItemId, ItemCount, INVENTORY_STD) then
 				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." wants to unload "..ItemCount.." "..ItemGetName(ItemId).." at "..GetName(DestAlias).." of City "..GetName("MyCity")..". Stock currently is at: "..ItemStock)
 				
-				local Error, ItemTransfered = f_Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
+				Error, ItemTransfered, Price = f_Transfer(CartAlias, DestAlias, INVENTORY_STD, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 				--LogMessage("WorldTrader ID: "..GetID(CartAlias).." unloads "..ItemCount.." "..ItemGetName(ItemId).." to "..GetName(DestAlias).." of City "..GetName("MyCity"))
 				ItemStock = GetItemCount(DestAlias, ItemId)
 				--LogMessage("Stock of "..ItemGetName(ItemId).." is now at "..ItemStock)
 			else
-				f_Transfer(CartAlias, DestAlias, INVENTORY_SELL, CartAlias, INVENTORY_STD, ItemId, ItemCount)
+				Error, ItemTransfered, Price = f_Transfer(CartAlias, DestAlias, INVENTORY_SELL, CartAlias, INVENTORY_STD, ItemId, ItemCount)
 			end
+			
+			if Price and GetHomeBuilding(CartAlias, "CartUnloadAllHomeBuilding") then
+				economy_UpdateBalance("CartUnloadAllHomeBuilding", BalanceSheet, Price)
+			end
+			-- TODO find out transferred money and call economy_UpdateBalance!
+			--economy_UpdateBalance("Business", "Autoroute", math.abs(EstimatedMoney + BargainMoney))
 		end
 		Sleep(0.4)
 	end
@@ -154,6 +162,13 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 		return Count, ShoppingList
 	end
 	
+	local BalanceSheet = "WaresBought"
+	local CartType = CartGetType(CartAlias)
+	if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
+		CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
+		--BalanceSheet = "WaresSeaBought"
+	end
+	
 	local SlotCount, CartSlotSize = cart_GetCartSlotInfo(CartAlias)
 	local BldInv = INVENTORY_STD
 	if GetDynastyID(CartAlias) ~= GetDynastyID(BldAlias) and BuildingGetClass(BldAlias) ~= GL_BUILDING_CLASS_MARKET then
@@ -170,17 +185,26 @@ function LoadItems(CartAlias, BldAlias, Count, ShoppingList)
 	--	LogMessage("WorldTrader ID: "..GetID(CartAlias) .. " open slots: " .. OpenSlots)
 		ItemId = ShoppingList[CurrentItem][1]
 		ReqAmount = ShoppingList[CurrentItem][2]
+		local Error, ItemTransfered, Price
+		local Error2, ItemTransfered2, Price2
 		BuildingGetCity(BldAlias, "City")
 		local ItemStock = GetItemCount(BldAlias, ItemId)
 	--	LogMessage("WorldTrader ID: "..GetID(CartAlias).." is buying "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of City "..GetName("City")..". Current Stock is at "..ItemStock)
 		if ItemId and ReqAmount > 0 then
-			local Error, ItemTransfered = f_Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			Error, ItemTransfered, Price = f_Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, BldInv, ItemId, math.min(CartSlotSize, ReqAmount))
+			Price = Price or 0
 			if ItemTransfered < ReqAmount and GetDynastyID(CartAlias) == GetDynastyID(BldAlias) then
 				-- also check INV_SELL for own buildings
-				local Error2, ItemTransfered2 = f_Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, INVENTORY_SELL, ItemId, math.min((CartSlotSize-ItemTransfered), (ReqAmount-ItemTransfered)))
+				local Error2, ItemTransfered2, Price2 = f_Transfer(CartAlias, CartAlias, INVENTORY_STD, BldAlias, INVENTORY_SELL, ItemId, math.min((CartSlotSize-ItemTransfered), (ReqAmount-ItemTransfered)))
 				if ItemTransfered2 then
 					ItemTransfered = ItemTransfered + ItemTransfered2
+					Price2 = Price2 or 0
+					Price = Price + Price2
 				end
+			end
+			
+			if Price and GetHomeBuilding(CartAlias, "CartLoadItemsHomeBuilding") then
+				economy_UpdateBalance("CartLoadItemsHomeBuilding", BalanceSheet, 0-math.abs(Price))
 			end
 
 			--LogMessage("WorldTraderID: "..GetID(CartAlias).." loads "..ItemTransfered.." "..ItemGetName(ItemId).." from "..GetName(BldAlias).." of "..GetName("City"))

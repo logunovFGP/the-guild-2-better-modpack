@@ -14,7 +14,8 @@
 
 function Init()
 	GetHomeBuilding("", "homeBuilding")
-	ms_hpfz_autoroute_UpdateBalance("homeBuilding", 0)
+	economy_UpdateBalance("homeBuilding", "WaresBought", 0)
+	economy_UpdateBalance("homeBuilding", "WaresSold", 0)
 
 	local ort = ""
 	MsgBox("", "Owner", "", "@L_TRADEROUTE_HELP_HEAD_+0", "@L_TRADEROUTE_HELP_BODY_+0")
@@ -408,7 +409,7 @@ function LoadCart(SrcID, DestID, station, type, itemCount)
 	local prevCount = GetItemCount("", type, INVENTORY_STD)
 	local Error, ItemsTransfered, Price = f_Transfer("", "", INVENTORY_STD, station, INVENTORY_STD, type, itemCount)
 	if Price then
-		ms_hpfz_autoroute_UpdateBalance("homeBuilding", 0 - math.abs(Price))
+		economy_UpdateBalance("homeBuilding", "WaresBought", 0-math.abs(Price))
 	end
 end
 
@@ -480,7 +481,7 @@ function Unload(Station, Type, Count, Threshold)
 	
 	local Error, ItemsTransfered, Price = f_Transfer("", Station, INVENTORY_STD, "", INVENTORY_STD, Type, itemCount)
 	if Price then
-		ms_hpfz_autoroute_UpdateBalance("homeBuilding", math.abs(Price))
+		economy_UpdateBalance("homeBuilding", "WaresSold", math.abs(Price))
 	end
 	if GetItemCount("", Type, INVENTORY_STD) > Count then
 		return false
@@ -513,11 +514,6 @@ function CheckWarning(NumberOfTries, WarningCount, Station)
 		end
 	end
 	return WarningCount, false, (NumberOfTries + 1)
-end
-
-function UpdateBalance(HomeAlias, Amount)
-	-- only active with TWP mod
-	-- economy_UpdateBalance(HomeAlias, "Autoroute", Amount)
 end
 
 ---- Auswahlmenü: Waren einladen

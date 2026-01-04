@@ -1091,6 +1091,12 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 		economy_CalculateSalesRanking(BldAlias)
 	end
 	
+	-- at 1am: subtract current wages from balance
+	if math.mod(GetGametime(), 24) == 1 then
+		local Wages = economy_CalculateWages(BldAlias)
+		economy_UpdateBalance(BldAlias, "Wages", -Wages)
+	end
+	
 	-- Only for AI
 	if GetHomeBuilding("MyBoss", "MyHome") then
 		if DynastyIsAI("MyBoss") then -- or BuildingGetAISetting(BldAlias, "BuySell") > 0 then 
