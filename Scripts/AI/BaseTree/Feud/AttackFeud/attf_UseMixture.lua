@@ -1,6 +1,10 @@
 function Weight()
 	local	Item = "Mixture"
 	
+	if not ReadyToRepeat("dynasty", "AIUse_Mixture") then
+		return 0
+	end
+	
 	if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("Use"..Item)) > 0 then
 		return 0
 	end
@@ -27,5 +31,6 @@ function Weight()
 end
 
 function Execute()
+	SetRepeatTimer("dynasty", "AIUse_Mixture", 24)
 	MeasureRun("SIM", "Victim", "UseMixture", false)
 end

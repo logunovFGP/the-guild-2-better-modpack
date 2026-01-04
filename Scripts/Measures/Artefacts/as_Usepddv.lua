@@ -30,6 +30,11 @@ function Run()
 		MsgQuick("", "_HPFZ_ARTEFAKT_ALLGEMEIN_FEHLER_+0")
 		StopMeasure()
 	end
+	
+	if GetInsideBuilding("Destination","Inside") then -- don't use indoors
+		MsgQuick("", "_HPFZ_ARTEFAKT_ALLGEMEIN_FEHLER_+0")
+		StopMeasure()
+	end
 
 	if RemoveItems("", "pddv", 1) == 1 then
 	

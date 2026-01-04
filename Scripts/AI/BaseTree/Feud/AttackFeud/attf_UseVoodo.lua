@@ -1,5 +1,8 @@
 function Weight()
 	local	Item = "Voodo"
+	if not ReadyToRepeat("dynasty", "AIUse_Voodoo") then
+		return 0
+	end
 	
 	if ScenarioGetDifficulty() < 2 then
 		return 0
@@ -31,5 +34,6 @@ function Weight()
 end
 
 function Execute()
+	SetRepeatTimer("dynasty", "AIUse_Voodoo", 24)
 	MeasureRun("SIM", "Victim", "UseVoodo", false)
 end

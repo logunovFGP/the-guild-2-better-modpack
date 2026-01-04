@@ -1,5 +1,12 @@
 function Weight()
 	local	Item = "Pddv"
+	if not ReadyToRepeat("dynasty", "AIUse_Pddv") then
+		return 0
+	end
+	
+	if ScenarioGetDifficulty() < 2 then
+		return 0
+	end
 	
 	if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("Usepddv")) > 0 then
 		return 0
@@ -27,5 +34,6 @@ function Weight()
 end
 
 function Execute()
+	SetRepeatTimer("dynasty", "AIUse_Pddv", 24)
 	MeasureRun("SIM", "Victim", "Usepddv")
 end

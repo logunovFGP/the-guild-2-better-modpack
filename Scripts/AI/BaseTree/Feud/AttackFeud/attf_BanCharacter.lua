@@ -4,6 +4,11 @@ function Weight()
 		return 0
 	end
 	
+	local Difficulty = ScenarioGetDifficulty()
+	if GetRound() < (6 - Difficulty) then -- no early bans
+		return 0
+	end
+	
 	if GetImpactValue("SIM", "BanCharacter")==0 then
 		return 0
 	end
