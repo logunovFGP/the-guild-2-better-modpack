@@ -1152,7 +1152,8 @@ function CityCheckImportantOwner(CityAlias, BuildingType, BuildingLevel)
 end
 
 function CityCheckHospital(CityAlias, Disease, NeedOwner)
-	local HospitalLevel = {1, 1, 1, 2, 2, 3, 3, 3, 3 }
+	-- { "Sprain", "Cold","Influenza", "Pox", "BurnWound", "Pneumonia", "Blackdeath", "Fracture", "Caries" }
+	local HospitalLevel = {1, 1, 2, 2, 2, 3, 3, 3, 3 }
 	local result = false
 
 	for k, v in diseases_GetDiseaseIterator() do
@@ -1171,7 +1172,8 @@ end
 
 function CalcIllnessHazard(SimAlias, Disease)
 
-	local BaseHazard = { 50, 50, 60, 30, 70, 0, 0, 0, 80 }
+	-- { "Sprain", "Cold","Influenza", "Pox", "BurnWound", "Pneumonia", "Blackdeath", "Fracture", "Caries" }
+	local BaseHazard = { 0, 60, 40, 30, 0, 10, 70, 0, 20 }
 	local Hazard = 0
 
 	for k, v in diseases_GetDiseaseIterator() do
