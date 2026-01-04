@@ -36,8 +36,6 @@ function Run()
 		RemoveProperty("", "_DO_NOTHING_TIME")
 		DoNothing = Gametime2Realtime(DoNothing)
 		Sleep(DoNothing)
-		-- random infection
-		std_idle_RandomInfection()
 	end 
 	
 	-- Check activity or go home and do nothing for some time
@@ -50,6 +48,8 @@ function Run()
 	end
 	
 	if not ActiveMovement then
+		-- random infection
+		std_idle_RandomInfection()
 		if GetHomeBuilding("", "HomeBuilding") and GetDistance("", "HomeBuilding") > 1000 then
 			idlelib_GoHome()
 			return
