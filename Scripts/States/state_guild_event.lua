@@ -10,10 +10,10 @@ end
 
 
 function Contract()
-
+	local currentRound = GetRound()
 	local event = Rand(4) + 1
 	local orderer = Rand(10)
-	local moneymod = Rand(5) + 1
+	local moneymod = (Rand(4) + 1) * (currentRound + 1)
 	local type
 	local Needed
 	local	Item
@@ -28,19 +28,18 @@ function Contract()
 		money = ItemGetBasePrice(Item) + (moneymod * 140)
 	else
 		local chance
-		local currentRound = GetRound()
 		if currentRound > 1 then
 			chance = Rand(10) + 1
 		else
 			chance = 1
 		end
-		if chance < 8 then
+		if chance < 8 then -- 80% chance for item missions
 			type = 1
 			Needed = Rand(4) + 2
 			Item = state_guild_event_FindItem(event)
 			ItemLabel	= ItemGetLabel(Item, false)
 			money = ItemGetBasePrice(Item) + (moneymod * 200)
-		else
+		else -- 20% chance for travel missions
 			type = 2
 			Needed = 1
 			Item = Rand(4)

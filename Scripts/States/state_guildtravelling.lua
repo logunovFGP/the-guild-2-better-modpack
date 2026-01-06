@@ -74,7 +74,7 @@ function Run()
 	end
 	
 	dyn_AddFame("", ContractFame)
-	chr_GainXP("", GL_EXP_GAIN_RARE)
+	chr_GainXP("", GL_EXP_GAIN_HIGH_RISK) -- been gone for a while and thus missing opportunities
 
 	MsgBoxNoWait("", "",
 						"@L_GUILDHOUSE_MISSIONS_TASK_FINISH_HEAD_+0",
