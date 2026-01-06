@@ -81,12 +81,12 @@ function Execute()
 end
 
 function AbsolveSinner()
-	TimerName = def_useprivilege_GetTimerName()
+	local TimerName = def_useprivilege_GetTimerName()
 	if not def_useprivilege_GetVictim(80) then
 		SetRepeatTimer("SIM", TimerName, 2)
 		return 
 	end
-	SetRepeatTimer("SIM", def_useprivilege_GetTimerName(), 24)
+	SetRepeatTimer("SIM", TimerName, 24)
 	MeasureRun("SIM", "Victim", "AbsolveSinner")
 end
 

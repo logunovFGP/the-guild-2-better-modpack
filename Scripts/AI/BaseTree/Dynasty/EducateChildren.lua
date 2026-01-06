@@ -22,7 +22,7 @@ function Execute()
 		return
 	end
 	
-	if not (CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_BANK)[1]>0)) then
+	if not (CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0)) then
 		return
 	end
 

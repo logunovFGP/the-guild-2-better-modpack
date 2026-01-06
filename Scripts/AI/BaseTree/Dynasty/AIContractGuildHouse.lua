@@ -1,5 +1,9 @@
 -- returns 30 on active contracts for SIM
 function Weight()
+	if not ReadyToRepeat("SIM", "AI_ContractGuildHouse") then
+		return 0
+	end
+
 	if not dyn_GetIdleMember("dynasty", "SIM") then
 		return 0
 	end
@@ -8,11 +12,11 @@ function Weight()
 		return 0
 	end
 	
-	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_BANK)[1] <= 0) then
+	if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] <= 0) then
 		return 0
 	end
 	
-	if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "Guildhouse") then
+	if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 		return 0
 	end
 
@@ -38,7 +42,7 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("dynasty", "IAContractGuildHouse", 4)
+	SetRepeatTimer("dynasty", "AI_ContractGuildHouse", 4)
 	MeasureCreate("Measure")
 	MeasureRun("SIM", "Guildhouse", "ContractGuildHouse")
 end

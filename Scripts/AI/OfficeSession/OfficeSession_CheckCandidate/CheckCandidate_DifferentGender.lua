@@ -73,7 +73,7 @@ function Weight()
 	local MaxInviters = JuryArrayCount
 
 	for i = 0, (MaxInviters-1), 1 do
-		CurrentJury = JuryArray[i]
+		local CurrentJury = JuryArray[i]
 		if (CurrentJury ~= GetID("SIM")) then
 			GetInsideBuilding("SIM","InsideBuilding")
 			if (GetID("Office_Destination") == GetID("InsideBuilding")) then
@@ -110,7 +110,7 @@ function Weight()
 		end
 
 		local RethoricSkill = GetSkillValue("SIM", RHETORIC)
-		local MinimumFavor = 45 - (RethoricSkill*2)
+		MinimumFavor = 45 - (RethoricSkill*2)
 		local CanCompliment = 999
 		if (GetFavorToSim("OS_CurrentJury", "SIM") >= MinimumFavor) then
 			CanCompliment = GetMeasureRepeat("SIM", "MakeACompliment")

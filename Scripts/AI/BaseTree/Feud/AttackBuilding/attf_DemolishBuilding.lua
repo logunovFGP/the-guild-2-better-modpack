@@ -12,7 +12,6 @@ function Weight()
 		return 0
 	end
 
-	local i = 0
 	local NumVictimBuildings = DynastyGetBuildingCount("Victim",-1,-1)
 	for i=0,NumVictimBuildings do
 		if not DynastyGetRandomBuilding("Victim",-1,-1,"db_House") then

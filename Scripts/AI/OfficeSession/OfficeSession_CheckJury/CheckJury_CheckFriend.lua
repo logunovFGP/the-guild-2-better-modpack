@@ -8,7 +8,6 @@ function Weight()
 
 	local AppList_Count = checkjury_checkfriend_GetDataFromCutscene("CutsceneAlias","AppList_Count")
 	local CurrentApplicant
-	local UseApplicant
 	for UseOffice = 1, AppList_Count, 1 do
 		local OfficeTask = checkjury_checkfriend_GetDataFromCutscene("CutsceneAlias","AppList_"..(UseOffice).."_ID")
 		local ApplicantCount = checkjury_checkfriend_GetDataFromCutscene("CutsceneAlias","AppList_"..(OfficeTask).."_Count")

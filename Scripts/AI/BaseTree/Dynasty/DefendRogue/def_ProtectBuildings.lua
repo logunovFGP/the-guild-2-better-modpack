@@ -106,7 +106,7 @@ function Execute()
 			end
 		end
 		MeasureRun("SIM", "ProtectMe", "UseBoobyTrap")
-	elseif WhatToDO == 1 then
+	elseif WhatToDo == 1 then
 		local TotalFound = 0
 		local Count = DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON)
 		for i=0,Count-1 do

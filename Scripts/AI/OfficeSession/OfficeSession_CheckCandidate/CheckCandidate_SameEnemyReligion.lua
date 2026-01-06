@@ -75,7 +75,7 @@ function Weight()
 	local MaxInviters = JuryArrayCount
 
 	for i = 0, MaxInviters - 1 do
-		CurrentJury = JuryArray[i]
+		local CurrentJury = JuryArray[i]
 		if (CurrentJury ~= GetID("SIM")) then
 			GetInsideBuilding("SIM","InsideBuilding")
 			if (GetID("Office_Destination") == GetID("InsideBuilding")) then

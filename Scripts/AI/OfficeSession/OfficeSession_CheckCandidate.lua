@@ -54,7 +54,7 @@ function GetCutscenePossition()
 	end
 
 --	Check if the SIM is an Applicant for the Office that he allready own
-	local Found = false
+	Found = false
 	
 	for i=0,NumOfVotes - 1 do
 		ListGetElement("OfficeList",i,"OfficeToCheck")
@@ -76,7 +76,7 @@ function GetCutscenePossition()
 	end
 	
 --	Check if the SIM is an Applicant for an Office
-	local Found = false
+	Found = false
 	
 	for i=0,NumOfVotes - 1 do
 		ListGetElement("OfficeList",i,"OfficeToCheck")

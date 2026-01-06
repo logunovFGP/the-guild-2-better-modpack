@@ -8,8 +8,6 @@ function Weight()
 	else
 		return 0
 	end
-
-	return 100
 end
 
 function Execute()
