@@ -45,6 +45,7 @@ function CalcDefend(a_fAttackValue, a_fDamage)
 	
 	SetData("FCDefenseResult", bDefenseResult)
 	SetData("FCDefenseDamage", Damage)
+	return bDefenseResult
 end
 
 function ModifyDamage(fDamage)
@@ -291,7 +292,7 @@ end
 
 function BlockUnarmed(a_AttackAnim, a_fAttackValue, a_fDamage, AttackLenght)
 
-	anims_fight_sim_CalcDefend(a_fAttackValue, a_fDamage)
+	local bDefenseResult = anims_fight_sim_CalcDefend(a_fAttackValue, a_fDamage)
 	
 	-- run anims if really blocked)
 	if (bDefenseResult == 1) then
@@ -331,7 +332,7 @@ end
 
 function BlockArmed(a_AttackAnim, a_fAttackValue, a_fDamage, AttackLenght)
 
-	anims_fight_sim_CalcDefend(a_fAttackValue, a_fDamage)
+	local bDefenseResult = anims_fight_sim_CalcDefend(a_fAttackValue, a_fDamage)
 	
 	-- run anims if really blocked)
 	if (bDefenseResult == 1) then

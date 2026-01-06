@@ -71,8 +71,8 @@ function Run()
 
 	if (choice==1) then
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_JOINERY, -1, -1, FILTER_IGNORE, "DestBuilding") then
 					if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SMITHY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 						return -- paranoia-fix - should never happen
@@ -88,8 +88,8 @@ function Run()
 		end
 	elseif (choice==2) then
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_BANK)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BANK, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TAVERN, -1, -1, FILTER_IGNORE, "DestBuilding") then
 					if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_BAKERY, -1, -1, FILTER_IGNORE, "DestBuilding") then 
 						return -- paranoia-fix - should never happen
@@ -114,8 +114,8 @@ function Run()
 		end
 	elseif (choice==4) then
 		Appmoney = App1
-		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_SCHOOL)[1]>0) then
-			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SCHOOL, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if (gameplayformulas_CheckPublicBuilding("MyCity", GL_BUILDING_TYPE_ARSENAL)[1]>0) then
+			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "DestBuilding") then
 				if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding") then -- alternative go to townhall
 					return -- paranoia-fix - should never happen
 				end

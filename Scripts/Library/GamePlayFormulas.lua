@@ -500,8 +500,6 @@ function GetEnemyHostilityLevel(Enemy)
 	else
 		return 5
 	end
-
-	return 0
 end
 
 function GetWarRiskLevel()
@@ -524,8 +522,6 @@ function GetWarRiskLevel()
 	else
 		return 5
 	end
-
-	return 0
 end
 
 -- -----------------------
@@ -596,10 +592,9 @@ local list = {GL_BUILDING_TYPE_FARM,GL_BUILDING_TYPE_ROBBER,GL_BUILDING_TYPE_MIN
 	for i = 1,12 do
 		if BuildingGetType(building) == list[i] then 
 			return 1
-		else
-			return 0
 		end
 	end
+	return 0
 end
 
 ---------------------------------------------------------------------------
@@ -1225,7 +1220,7 @@ function CheckPublicBuilding(city,building)
 		return {0, 0}
 	else
 		local Level = CityGetLevel(city)
-		if building==GL_BUILDING_TYPE_BANK then
+		if building==GL_BUILDING_TYPE_GUILDHOUSE then
 			if Level==1 then
 				return {0, 0}
 			elseif Level==2 then
@@ -1239,7 +1234,7 @@ function CheckPublicBuilding(city,building)
 			elseif Level==6 then
 				return {2, 2}
 			end
-		elseif building==GL_BUILDING_TYPE_SCHOOL or building==GL_BUILDING_TYPE_SOLDIERPLACE then
+		elseif building==GL_BUILDING_TYPE_ARSENAL or building==GL_BUILDING_TYPE_SOLDIERPLACE then
 			if Level==1 then
 				return {0, 0}
 			elseif Level==2 then

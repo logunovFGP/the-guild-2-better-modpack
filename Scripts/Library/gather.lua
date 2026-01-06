@@ -103,7 +103,7 @@ function Run(SimAlias, ResourceAlias, mode)
 		end
 		
 		if Function_Prepare then
-			WorkerAlias = Function_Prepare(SimAlias, ResourceAlias, Name, ItemID)
+			WorkerAlias = Function_Prepare(SimAlias, ResourceAlias, "unusedparam", ItemID)
 		else
 			WorkerAlias = SimAlias
 		end

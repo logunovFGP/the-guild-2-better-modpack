@@ -5,11 +5,11 @@ function SpendMoney(Alias, Amount, Purpose)
 		return SpendMoney(Alias, Amount, Purpose)
 	else
 		-- save to property for later transfer
-		if not GetDynasty(Alias, CRD_DYN_ALIAS) then
+		if not GetDynasty(Alias, "CRD_DYN_ALIAS") then
 			return SpendMoney(Alias, Amount, Purpose)
 		end
-		local Current = GetProperty(CRD_DYN_ALIAS, "AITWP_Money") or 0
-		SetProperty(CRD_DYN_ALIAS, "AITWP_Money", Current - Amount)
+		local Current = GetProperty("CRD_DYN_ALIAS", "AITWP_Money") or 0
+		SetProperty("CRD_DYN_ALIAS", "AITWP_Money", Current - Amount)
 		return true
 	end
 end
@@ -135,7 +135,7 @@ function MoveToSilent(Owner, Destination, iSpeed, fRange)
 			WaitForMessage("WaitForTask")
 	 		local lateresult = GetProperty(Owner, ResultName)
 			RemoveProperty(Owner, ResultName)
-			if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
+			if not lateresult or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
 				-- if IsType("","Sim") then
 					-- ai_ShowMoveError(lateresult, Owner)
 				-- end
@@ -188,7 +188,7 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 		local lateresult = GetProperty(Owner, ResultName)
 		RemoveProperty(Owner, ResultName)
 		
-		if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
+		if not lateresult or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
 			if IsType(Owner, "Sim") then
 				ai_ShowMoveError(lateresult, Owner)
 			end
@@ -220,8 +220,8 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 				local lateresult = GetProperty(Owner, ResultName2)
 				RemoveProperty(Owner, ResultName2)
 				
-				if lateresult == NIL or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
-					local locator = "Walledge2"
+				if not lateresult or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
+					locator = "Walledge2"
 					GetLocatorByName(Destination, locator, "entry")
 
 					local Result3 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
@@ -350,11 +350,11 @@ function MoveToNoWait(pOwner, pDestination, iSpeed, fRange)
 	--workaround for spinning carts...
 	SetState(pOwner, STATE_CHECKFORSPINNINGS, true)
 	----------------------------------
-	return CMoveTo(pOwner, pDestination, iSpeed, NIL, fRange, false)
+	return CMoveTo(pOwner, pDestination, iSpeed, nil, fRange, false)
 end
 
 function WeakMoveToNoWait(Owner, Destination, iSpeed, fRange)
-	return CMoveToWeak(Owner, Destination, iSpeed, NIL, fRange, true)
+	return CMoveToWeak(Owner, Destination, iSpeed, nil, fRange, true)
 end
 	
 function FollowNoWait(pOwner, pDestination, iSpeed, fRange, bFollowOnce)
@@ -362,7 +362,7 @@ function FollowNoWait(pOwner, pDestination, iSpeed, fRange, bFollowOnce)
 		return false
 	end
 
-	return CFollow(pOwner, pDestination, iSpeed, NIL, fRange, bFollowOnce, false)
+	return CFollow(pOwner, pDestination, iSpeed, nil, fRange, bFollowOnce, false)
 end	
 
 function Fight(pSource, pDestination, Type)
@@ -518,6 +518,7 @@ function GetLocalPolitician(SimAlias, SameDyn, ResultAlias)
 	return false
 end
 
+
 function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	if not AliasExists(Buyer) or not AliasExists(Seller) then
 		return nil
@@ -585,10 +586,6 @@ function Transfer(Executer, Buyer, BuyerInv, Seller, SellerInv, Item, ItemCount)
 	-- give normal bargaining bonus for player
 	if DynastyIsPlayer("TransferBargOwner") then
 		local BalanceSheet = "WaresSold"
-		if CartType == EN_CT_CORSAIR or CartType == EN_CT_FISHERBOOT or CartType == EN_CT_MERCHANTMAN_SMALL or
-			CartType == EN_CT_MERCHANTMAN_BIG or CartType == EN_CT_WARSHIP then
-			BalanceSheet = "WaresSeaSold"
-		end
 		chr_CreditMoney("TransferBargOwner", BargainMoney, BalanceSheet)
 		Sleep(0.5)
 		ShowOverheadSymbol(Executer, false, false, 0, "@L(+ %1t)", BargainMoney)

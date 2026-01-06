@@ -41,7 +41,7 @@ function StartBuildingAction(FirstSim, SecondSim, BuildingClass, BuildingType, B
 		end
 		
 	elseif not IsOk2 then
-		local checkers = {BlockChar(SecondSim),f_MoveToBuildingAction(FirstSim, SecondSim, -1, 200),f_FollowNoWait(SecondSim, FirstSim, GL_MOVESPEED_MOVE, 100),f_MoveTo(FirstSim, BuildingAlias)}
+		local checkers = {BlockChar(SecondSim),f_MoveToBuildingAction(FirstSim, SecondSim, -1, 200),f_FollowNoWait(SecondSim, FirstSim, GL_MOVESPEED_WALK, 100),f_MoveTo(FirstSim, BuildingAlias)}
 		for i = 1,4 do
 			if not checkers[i] then return false end
 		end
@@ -288,7 +288,6 @@ function MultiMoveTo(...)
 	number  = number / 2
 
 	--start moving
-	local steps
 	local pos
 	local MMResultName
 	local objectarray = {}
@@ -402,7 +401,7 @@ function ReleaseMutex(BaseAlias)
 	local	Value = GetProperty(BaseAlias, PropertyName)
 	
 	if not Value or Value~=GetID("") then
-		return fals
+		return false
 	end
 	RemoveProperty(BaseAlias, PropertyName)
 end

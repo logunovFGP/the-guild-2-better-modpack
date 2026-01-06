@@ -498,8 +498,8 @@ function ResetWorkers(BldAlias)
 				end
 				
 				-- add dagger if needed
-				if SimGetClass("Worker") == GL_CLASS_FIGHTER then
-					if GetItemCount("Worker", "Dagger", INVENTORY_EQUIPMENT) > 0 then
+				if SimGetClass("Worker") == GL_CLASS_CHISELER then
+					if GetItemCount("Worker", "Dagger", INVENTORY_EQUIPMENT) <= 0 then
 						AddItems("Worker", "Dagger", 1, INVENTORY_EQUIPMENT)
 					end
 				end
@@ -530,7 +530,7 @@ function SetupAI(BldAlias)
 	end
 	
 	if not GetSettlement(BldAlias, "City") then
-		GetNearestSettlement(Alias, "City")
+		GetNearestSettlement(BldAlias, "City")
 	end
 	
 	CityGetLocalMarket("City","Market")
@@ -1082,10 +1082,10 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	-- abilities for buildings (last forever)
 	bld_AbilityBoosts(BldAlias, "MyBoss")
 	
-	-- Improve AI management (TODO)
-	if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
+	-- Improve AI management (should not be necessary anymore, AI does very well)
+	--if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
 	--	bld_SetupAI(BldAlias)
-	end
+	--end
 	
 	if math.mod(GetGametime(), 8) == 3 then
 		economy_CalculateSalesRanking(BldAlias)
@@ -1333,8 +1333,8 @@ function CheckResource(BldAlias, ResourceProto, ResourceCount)
 	end
 	
 	-- 5. No way to get more resource buildings, initiate regular crop change
-	local FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))%s)", Radius, DynFilter)
-	local Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
+	FilterByItem = string.format("__F((Object.GetObjectsByRadius(Building)==%d)AND(Object.IsClass(6))AND(Object.IsType(33))%s)", Radius, DynFilter)
+	Count = Find(BldAlias, FilterByItem, "ResourceSearchResult", 20)
 	for i=0, Count - 1 do
 		if AliasExists("ResourceSearchResult"..i) -- safety check
 				and ResourceCanBeChanged("ResourceSearchResult"..i) -- it's a changeable resource like a field or meadow

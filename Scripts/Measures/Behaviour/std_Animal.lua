@@ -273,7 +273,7 @@ function HausVieh()
 			        firstTime = 2
 			    end
 		    elseif RandVal<4 then
-			    class = GL_BUILDING_CLASS_PUBLIC
+			    class = GL_BUILDING_CLASS_PUBLICBUILDING
 		    else
 			    class = GL_BUILDING_CLASS_WORKSHOP
 		    end

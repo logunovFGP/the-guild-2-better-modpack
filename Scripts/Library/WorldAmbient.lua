@@ -27,9 +27,9 @@ end
 
 function CreateWorldAnimals()
 	if worldambient_CheckAmbient() == true then
-
+		local num
 		-- create dogs
-		local num = GetOutdoorLocator("Dog", -1, "locpos")
+		num = GetOutdoorLocator("Dog", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Dog","locpos"..l, 1)
@@ -37,7 +37,7 @@ function CreateWorldAnimals()
 		end
 
 		-- create cats
-		local num = GetOutdoorLocator("Cat", -1, "locpos")
+		num = GetOutdoorLocator("Cat", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Cat","locpos"..l, 1)
@@ -45,7 +45,7 @@ function CreateWorldAnimals()
 		end
 
 		-- create wolves
-		local num = GetOutdoorLocator("Wolf", -1, "locpos")
+		num = GetOutdoorLocator("Wolf", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Wolf","locpos"..l, 1)
@@ -53,7 +53,7 @@ function CreateWorldAnimals()
 		end
 
 		-- create ducks
-		local num = GetOutdoorLocator("Duck", -1, "locpos")
+		num = GetOutdoorLocator("Duck", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Duck","locpos"..l, 2)
@@ -61,7 +61,7 @@ function CreateWorldAnimals()
 		end
 
 		-- create goose
-		local num = GetOutdoorLocator("Goose", -1, "locpos")
+		num = GetOutdoorLocator("Goose", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Goose","locpos"..l, 2)
@@ -69,7 +69,7 @@ function CreateWorldAnimals()
 		end
 		
 		-- create goats
-		local num = GetOutdoorLocator("Goat", -1, "locpos")
+		num = GetOutdoorLocator("Goat", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Goat", "locpos"..l, 1)
@@ -77,7 +77,7 @@ function CreateWorldAnimals()
 		end
 
 		-- create chicken
-		local num = GetOutdoorLocator("Chicken", -1, "locpos")
+		num = GetOutdoorLocator("Chicken", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Cock","locpos"..l, 1)
@@ -86,7 +86,7 @@ function CreateWorldAnimals()
 		end
 
 		-- create deers
-		local num = GetOutdoorLocator("Deer", -1, "locpos")
+		num = GetOutdoorLocator("Deer", -1, "locpos") or 0
 		if num > 0 then
 			for l=0,num-1 do
 				--worldambient_CreateAnimal("Stag","locpos"..l, 1)

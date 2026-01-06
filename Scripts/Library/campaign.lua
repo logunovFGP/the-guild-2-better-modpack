@@ -20,20 +20,20 @@ function CheckStock()
 	if CartCount > 0 then
 		for i=0, CartCount-1 do
 			if BuildingGetCart("#Smithy", CartCount-1, "Cart") then
-				for i=1, 249 do
-					ObjCount = ObjCount + GetItemCount("Cart",i)
+				for j=1, 10 do
+					ObjCount = ObjCount + GetItemCount("Cart",j)
 				end
 			end
 		end
 	end
 
-	local CartCount = BuildingGetCartCount("#Residence")
+	CartCount = BuildingGetCartCount("#Residence")
 
 	if CartCount > 0 then
 		for i=0, CartCount-1 do
-			if BuildingGetCart("#Smithy", CartCount-1, "Cart") then
-				for i=1, 249 do
-					ObjCount = ObjCount + GetItemCount("Cart", i)
+			if BuildingGetCart("#Residence", CartCount-1, "Cart") then
+				for j=1, 10 do
+					ObjCount = ObjCount + GetItemCount("Cart", j)
 				end
 			end
 		end

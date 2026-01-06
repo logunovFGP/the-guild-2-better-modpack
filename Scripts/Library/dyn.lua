@@ -197,7 +197,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 	end
 	
 	-- add all the buildings to this list
-	local BuildingList = {}
+	--local BuildingList = {}
 	local FoundType
 	local FoundPatrons = 0
 	local FoundScholars = 0
@@ -207,7 +207,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 	for i=0, Count-1 do
 		if DynastyGetBuilding2(SimAlias, i, "AddBuilding") then
 			FoundType = BuildingGetType("AddBuilding")
-			BuildingList[i+1] = FoundType
+			--BuildingList[i+1] = FoundType
 			local FoundClass = BuildingGetCharacterClass("AddBuilding")
 			if FoundClass == GL_CLASS_PATRON then
 				FoundPatrons = FoundPatrons + 1
@@ -720,12 +720,7 @@ function AddGrudge(source, dest)
 				
 				feedback_FavorAddGrudge(source, dest)
 				feedback_FavorAddGrudge(dest, source)
-				return
-			else
-				return
 			end
-			
-			return
 		else
 			-- add first grudge
 			SetProperty("MyDyn", "Grudge"..TargetID, 1)
@@ -733,7 +728,6 @@ function AddGrudge(source, dest)
 			
 			feedback_FavorGainGrudge(source, dest)
 			feedback_FavorGainGrudge(dest, source)
-			return
 		end
 	end
 end
@@ -782,12 +776,7 @@ function AddFondness(source, dest)
 				
 				feedback_FavorAddFondness(source, dest)
 				feedback_FavorAddFondness(dest, source)
-				return
-			else
-				return
 			end
-			
-			return
 		else
 			-- add first fondness
 			SetProperty("MyDyn", "Fondness"..TargetID, 1)
@@ -833,7 +822,7 @@ function GetNameLabel(SimAlias, ParameterIndex)
 	end
 	
 	local MyFlag = DynastyGetFlagNumber("DynAliasForFlag") or 16 
-	local Offset = Math.min(16, MyFlag) * 4 + ParameterIndex
+	local Offset = math.min(16, MyFlag) * 4 + ParameterIndex
 	return MyLabel .. Offset
 end
 

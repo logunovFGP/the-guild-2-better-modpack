@@ -93,7 +93,7 @@ function Sleep(SleepStart, SleepEnd)
 			if IsDynastySim("") then
 				if GetHPRelative("")<1 then
 					if GetSettlement("", "MyCity") then
-						if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLIC, 32, -1, -1, FILTER_IGNORE, "Destination") then
+						if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLICBUILDING, 32, -1, -1, FILTER_IGNORE, "Destination") then
 							if f_MoveTo("","Destination") then
 								MeasureRun("", "Destination", "Linger", true)
 								return
@@ -371,7 +371,7 @@ function GoToRandomPosition()
 		if RandVal < 2 then
 			class = GL_BUILDING_CLASS_MARKET
 		elseif RandVal < 4 then
-			class = GL_BUILDING_CLASS_PUBLIC
+			class = GL_BUILDING_CLASS_PUBLICBUILDING
 		else
 			class = GL_BUILDING_CLASS_WORKSHOP
 		end
@@ -437,7 +437,7 @@ function SitDown()
 		end
 	else
 		if GetSettlement("", "City") then
-			if CityGetNearestBuilding("City", "", GL_BUILDING_CLASS_PUBLIC, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
+			if CityGetNearestBuilding("City", "", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
 				local Stance = 2 --0=sitground, 1=sitbench, 2=stand
 				local LingerLevel = BuildingGetLevel("Destination") or 1
 				local GuestCount = GetProperty("Destination", "Guests") or 0
@@ -636,7 +636,7 @@ function CollectWater()
 				if Rand(100)>70 then
 					Disease.Pox:infectSim("")
 				else
-					diseases_Fever("",true)
+					Disease.Cold:infectSim("")
 				end
 			end
 			
@@ -665,7 +665,7 @@ function BuySomethingAtTheMarket(art)
 	if GetSettlement("", "City") then
 		local Market = Rand(5)+1
 		if CityGetRandomBuilding("City", 5,14,Market,-1, FILTER_IGNORE, "Destination") then
-			if not f_MoveTo("","Destination",GL_WALKSPEED_RUN, 200) then
+			if not f_MoveTo("","Destination",GL_MOVESPEED_RUN, 200) then
 				return
 			end
 			PlayAnimation("","cogitate")
@@ -1071,7 +1071,7 @@ function GoToTavern()
 		end
 		f_EndUseLocator("","SitPos",GL_STANCE_STAND)
 
-		local Hour = math.mod(GetGametime(), 24)
+		Hour = math.mod(GetGametime(), 24)
 		if Hour > 21 or Hour < 4 then
 			if Rand(100) > 80 then
 				--LoopAnimation("","idle_drunk",10)
@@ -1171,7 +1171,7 @@ function RepairHome(Building)
 	if not CityGetRandomBuilding("City", 5, GL_BUILDING_TYPE_MARKET, Market, -1, FILTER_IGNORE, "Destination") then
 		return
 	end
-	if not f_MoveTo("","Destination",GL_WALKSPEED_RUN, 200) then
+	if not f_MoveTo("","Destination",GL_MOVESPEED_RUN, 200) then
 		return
 	end
 	GetOutdoorMovePosition("",Building,"WorkPos2")
@@ -1187,7 +1187,7 @@ function RepairHome(Building)
 		Sleep(2)
 		CarryObject("","Handheld_Device/ANIM_holzscheite.nif",false)
 
-		if not f_MoveTo("", "WorkPos2",GL_WALKSPEED_RUN, 200) then
+		if not f_MoveTo("", "WorkPos2",GL_MOVESPEED_RUN, 200) then
 			return
 		end
 		MoveSetActivity("")
@@ -1715,7 +1715,7 @@ function GoToDivehouse()
 		    f_EndUseLocator("","StandPos",GL_STANCE_STAND)
 		end
 		
-		local Hour = math.mod(GetGametime(), 24)
+		Hour = math.mod(GetGametime(), 24)
 		if Hour > 21 or Hour < 4 then
 			if Rand(100) > 90 then
 				AddImpact("","totallydrunk",1,6)

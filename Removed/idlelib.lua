@@ -106,7 +106,7 @@ function Sleep(SleepStart, SleepEnd)
 			if IsDynastySim("") then
 				if GetHPRelative("")<1 then
 					if GetSettlement("", "MyCity") then
-						if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLIC, 32, -1, -1, FILTER_IGNORE, "Destination") then
+						if CityGetRandomBuilding("MyCity", GL_BUILDING_CLASS_PUBLICBUILDING, 32, -1, -1, FILTER_IGNORE, "Destination") then
 							if f_MoveTo("","Destination") then
 								MeasureRun("", "Destination", "Linger", true)
 								return
@@ -384,7 +384,7 @@ function GoToRandomPosition()
 		if RandVal < 2 then
 			class = GL_BUILDING_CLASS_MARKET
 		elseif RandVal < 4 then
-			class = GL_BUILDING_CLASS_PUBLIC
+			class = GL_BUILDING_CLASS_PUBLICBUILDING
 		else
 			class = GL_BUILDING_CLASS_WORKSHOP
 		end
@@ -450,7 +450,7 @@ function SitDown()
 		end
 	else
 		if GetSettlement("", "City") then
-			if CityGetNearestBuilding("City", "", GL_BUILDING_CLASS_PUBLIC, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
+			if CityGetNearestBuilding("City", "", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_LINGERPLACE, -1, -1, FILTER_IGNORE, "Destination") then
 				local Stance = 2 --0=sitground, 1=sitbench, 2=stand
 				local LingerLevel = BuildingGetLevel("Destination") or 1
 				local GuestCount = GetProperty("Destination", "Guests") or 0

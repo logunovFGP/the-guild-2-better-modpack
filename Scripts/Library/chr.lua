@@ -29,8 +29,6 @@ function SimGetFameLevel(SimAlias)
 		return 5
 	end
 
-	return 0
-
 end
 
 -- ----------- 
@@ -66,8 +64,6 @@ function MoveToExact(MoverAlias, DestinationAlias, Movespeed, Range)
 	
 	local Error = CalcDistance(MoverAlias, DestinationAlias) - Range
 	
-	return MoveResult
-	
 end
 
 -- -------------
@@ -85,6 +81,7 @@ end
 -- AlignExact
 -- ----------
 function AlignExact(MoverAlias, DestinationAlias, Range, Duration)
+	Duration = Duration or 1
 
 	-- Get the current exact distance
 	local Distance = CalcDistance(MoverAlias, DestinationAlias)
@@ -97,10 +94,6 @@ function AlignExact(MoverAlias, DestinationAlias, Range, Duration)
 	
 	-- Calculate the last step distance
 	local LastStepLength = Distance - Range
-	
-	if not Duration then
-		local Duration = 1
-	end
 	
 	-- Get the terrain-height of the sims
 	local tempx = 0
@@ -552,7 +545,7 @@ function Plunder(SimAlias, Destination)
 
 	if Check then
 		if AliasExists(Destination) then
-			Count = InventoryGetSlotCount(Destination, INVENTORY_STD)
+			local Count = InventoryGetSlotCount(Destination, INVENTORY_STD)
 			LogMessage("@WAYLAY " .. GetName(Destination) .. "'s inventory count is " .. Count)
 			local _ID, _COUNT
 			for i = 0, Count - 1 do
@@ -841,7 +834,7 @@ function GiveMoney(Target)
 		Current = math.floor(Current * Multiplier)
 		SpendMoney(Target, math.abs(Current), "misc")
 	end
-	local CurrentMoney = GetMoney("FirstMember")
+	CurrentMoney = GetMoney("FirstMember")
 	SetProperty(Target, "AI_DynMoney_LastCheck", CurrentMoney)
 end
 
@@ -1129,7 +1122,7 @@ function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 				CharismaMod = CharismaMod - 2
 			end
 			
-			if BuildingHasUpgrade(Workbuilding, "SexyClothes") then
+			if BuildingHasUpgrade(WorkBuilding, "SexyClothes") then
 				CharismaMod = CharismaMod - 3
 			end
 		end
@@ -1267,7 +1260,6 @@ function GetWarRiskLevel(val)
 		return 4
 	end
 
-	return 0
 end
 
 function GetEnemyMoodLevel(val)
@@ -1283,8 +1275,6 @@ function GetEnemyMoodLevel(val)
 	else
 		return 4
 	end
-
-	return 0
 end
 
 function DecrementInfectionCount(InfectionName, CityAlias)
@@ -1533,8 +1523,8 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 2
 					local FoundOld = false
 		
-					for i=1, CheckOldCount do
-						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+					for j=1, CheckOldCount do
+						if GetItemCount(SimAlias, CheckOld[j], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
 						end
@@ -1549,8 +1539,8 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 3
 					local FoundOld = false
 		
-					for i=1, CheckOldCount do
-						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+					for j=1, CheckOldCount do
+						if GetItemCount(SimAlias, CheckOld[j], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
 						end
@@ -1565,8 +1555,8 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 4
 					local FoundOld = false
 		
-					for i=1, CheckOldCount do
-						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+					for j=1, CheckOldCount do
+						if GetItemCount(SimAlias, CheckOld[j], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
 						end
@@ -1581,8 +1571,8 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 5
 					local FoundOld = false
 		
-					for i=1, CheckOldCount do
-						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+					for j=1, CheckOldCount do
+						if GetItemCount(SimAlias, CheckOld[j], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
 						end
@@ -1597,8 +1587,8 @@ function CheckWeaponChange(SimAlias, WeaponNew)
 					local CheckOldCount = 6
 					local FoundOld = false
 		
-					for i=1, CheckOldCount do
-						if GetItemCount(SimAlias, CheckOld[i], INVENTORY_EQUIPMENT) > 0 then
+					for j=1, CheckOldCount do
+						if GetItemCount(SimAlias, CheckOld[j], INVENTORY_EQUIPMENT) > 0 then
 							FoundOld = true
 							break
 						end
@@ -1768,6 +1758,7 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 	
 	if BuildingCount > 1 then
 		for i=0, BuildingCount-1 do
+			local Score
 			CheckBld = "Building"..i
 			if AliasExists(CheckBld) then
 				local FavorBonus = 0
@@ -1775,7 +1766,7 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 					FavorBonus = GetFavorToSim(SimAlias, "CheckBoss")
 				end
 				
-				local Score = GetImpactValue(CheckBld, "Attractivity") + FavorBonus
+				Score = GetImpactValue(CheckBld, "Attractivity") + FavorBonus
 				
 				if GetID(CheckBld) == RegularID then
 					Score = Score * 3
@@ -1787,7 +1778,7 @@ function FindInterestingWorkshop(SimAlias, BuildingType, HasUpgrade, MinRange, M
 			if HasUpgrade == 0 or BuildingHasUpgrade(CheckBld, HasUpgrade) then
 			
 				local Distance = GetDistance(SimAlias, CheckBld)
-				if Distance <= MinDistance then
+				if Distance <= MinRange then
 					BestScore = Score
 					CopyAlias(CheckBld, OutputAlias)
 					break
@@ -1833,8 +1824,6 @@ function DynastyGetImperialFameLevel(SimAlias)
 	else
 		return 5
 	end
-
-	return 0
 
 end
 

@@ -91,7 +91,6 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 		Count, Items = economy_GetItemsForSale(BldAlias)
 	end
 	
-	local Ranking = 0
 	-- availablity of goods is based on a default of four slots
 	local AvailableGoods = 0
 	local Tmp
@@ -145,8 +144,8 @@ function CalculateSalesRanking(BldAlias, Count, Items)
 	return Ranking, RankingGoods, RankingCrafty, RankingCharisma, Attractivity
 end
 
-function GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type, MinLevel)
-	Ranking = Ranking or 0
+function GetRandomBuildingByRanking(CityAlias, ResultAlias, MinRanking, Type, MinLevel)
+	MinRanking = MinRanking or 0
 	Type = Type or -1
 	MinLevel = MinLevel or 0
 	local Count = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, Type, -1, -1, FILTER_HAS_DYNASTY, "Result")
@@ -157,7 +156,7 @@ function GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type, MinLe
 	for i = 0, Count-1 do
 		if AliasExists("Result"..i) and BuildingGetLevel("Result"..i) >= MinLevel then
 			Ranking = GetProperty("Result"..i, "SalescounterRanking") or 1
-			if Ranking then
+			if Ranking and Ranking >= MinRanking then
 				RankingSum = RankingSum + Ranking 
 			end
 		end
@@ -167,7 +166,7 @@ function GetRandomBuildingByRanking(CityAlias, ResultAlias, Ranking, Type, MinLe
 	for i = 0, Count-1 do
 		if AliasExists("Result"..i) then
 			Ranking = GetProperty("Result"..i, "SalescounterRanking")
-			if Ranking then
+			if Ranking and Ranking >= MinRanking  then
 				Choice = Choice - Ranking 
 			end
 			if Choice <= 0 then
@@ -436,7 +435,7 @@ function ChooseItemFromCounter(BldAlias, Count, Items)
 		ItemTexture = "Hud/Items/Item_"..ItemGetName(Items[i])..".tga"
 		-- result, Tooltip, label, icon
 		ItemLabel = ItemGetLabel(Items[i], CurrentAmount == 1)
-		-- Subtext = CurrentAmount .. "/" .. MaxAmount
+		Subtext = CurrentAmount
 		Buttons = Buttons.."@B[" .. Id .. "," .. Subtext .. "," .. PriceLabel .. "," .. ItemTexture .."]"
 	end
 	-- add extra button if warehouse and Count < 16
@@ -855,7 +854,7 @@ function CalcNeedsForMarket(CityAlias)
 				RemoveProperty("MarketAlias", "twpNeedAmount"..i)
 			end
 		end
-		return CityNeedCount, CityNeed
+		return CityNeedCount, CityNeeds
 	else
 		return -1, -1
 	end
@@ -1070,7 +1069,7 @@ function StorageGetResources(BldAlias)
 	end
 	
 	local Count, Resources = helpfuncs_StringToIdList(ItemsString)
-	local _, MinAmounts = helpfuncs_StringToIdList(MinAmounts)
+	ItemsString, MinAmounts = helpfuncs_StringToIdList(MinAmounts)
 	
 	-- convert to default resource list (careful, uses different format!)
 	for i = 1, Count do
