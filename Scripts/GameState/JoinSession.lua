@@ -31,7 +31,7 @@ function Idle()
 	local World = FindNode("\\World")
 	World:SetValueInt("Renderable", 1)
 
-	Game:ChangeGameState("Game")
+	this:ChangeGameState("Game")
 
 end
 
