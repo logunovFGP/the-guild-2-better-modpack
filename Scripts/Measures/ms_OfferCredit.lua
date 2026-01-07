@@ -79,7 +79,7 @@ function Run()
 			end
 			
 			if (checkAccount() == true) then
-				if Account >= 100 then
+				if Account >= 200 then
 					PlayAnimationNoWait("", "sit_yes")
 					local InterestText = 25 + GetSkillValue("", BARGAINING)
 					MsgSay("", "@L_MEASURE_IDLE_TAKECREDIT_ANSWER_POSITIVE", InterestText)
@@ -97,10 +97,10 @@ function Run()
 			end	
 					
 			if (checkAccount() == true) then
-				if Account >= 100 then
+				if Account >= 200 then
 					local Rank = SimGetRank("CreditSim0")
 					local CreditChoice = 0
-					local Sum = 100
+					local Sum = 200
 							
 					if Rank >= 3 then
 						CreditChoice = 2 + Rand(4)
@@ -115,19 +115,19 @@ function Run()
 					LogMessage("@BANK loan taken0")
 							
 					local creditOptions = {
-					    [1] = {amount = 200, minAccount = 200},
-					    [2] = {amount = 500, minAccount = 500},
-					    [3] = {amount = 1000, minAccount = 1000},
-					    [4] = {amount = 2000, minAccount = 2000},
-					    [5] = {amount = 5000, minAccount = 5000},
+					    [1] = {amount = 500, minAccount = 500},
+					    [2] = {amount = 1000, minAccount = 1000},
+					    [3] = {amount = 2000, minAccount = 2000},
+					    [4] = {amount = 5000, minAccount = 5000},
+					    [5] = {amount = 10000, minAccount = 10000},
 					}
 
 					if CreditChoice == 0 then
-					    Sum = 100
+					    Sum = 200
 					elseif creditOptions[CreditChoice] and Account >= creditOptions[CreditChoice].minAccount then
 					    Sum = creditOptions[CreditChoice].amount
 					else
-					    Sum = 100
+					    Sum = 200
 					end
 					
 					local Interest 		= 0.25 + (GetSkillValue("",BARGAINING) / 100)
