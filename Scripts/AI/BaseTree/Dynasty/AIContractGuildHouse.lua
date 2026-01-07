@@ -1,6 +1,6 @@
 -- returns 30 on active contracts for SIM
 function Weight()
-	if not ReadyToRepeat("SIM", "AI_ContractGuildHouse") then
+	if not ReadyToRepeat("dynasty", "AI_ContractGuildHouse") then
 		return 0
 	end
 
