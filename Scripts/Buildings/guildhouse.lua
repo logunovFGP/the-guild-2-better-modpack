@@ -77,7 +77,7 @@ function CheckGuildMasters()
 		CheckMaster = MasterList[i]
 		CheckMasterID = GetProperty("", CheckMaster)
 		
-		if MasterID ~= nil then
+		if CheckMasterID ~= nil then
 			if GetAliasByID(CheckMasterID, "OldMaster") and not GetState("OldMaster", STATE_DEAD) then
 				dyn_AddFame("OldMaster", 1)
 				RemoveProperty("OldMaster", CheckMaster)
@@ -111,7 +111,7 @@ function CheckGuildMasters()
 	for i=0, BuildingCount-1 do
 		Alias = "Building"..i
 		BuildingLvl = BuildingGetLevel(Alias) * BuildingGetLevel(Alias)
-		BuildCharClass = BuildingGetCharacterClass(Alias)
+		local BuildCharClass = BuildingGetCharacterClass(Alias)
 		
 		if BuildingGetOwner(Alias, "Sim") and (GetSettlementID("Sim") == GetID("city")) then
 			
@@ -177,18 +177,18 @@ function CheckGuildMasters()
 			-- ## Scholar Class ##
 			elseif BuildCharClass == GL_CLASS_SCHOLAR then
 				if ArrayCountScholar > 0 then -- we have scholars in the list. Check the list
-					for i=1, ArrayCountScholar do
-						local CheckArray = ArrayScholar[i]
+					for j=1, ArrayCountScholar do
+						local CheckArray = ArrayScholar[j]
 						if CheckArray ~= nil and GetID("Sim") == CheckArray then -- already in the array? Add BuildingLvl to the points
-							tmpPoints = PointArrayScholar[i] + BuildingLvl
-							PointArrayScholar[i] = tmpPoints
+							tmpPoints = PointArrayScholar[j] + BuildingLvl
+							PointArrayScholar[j] = tmpPoints
 							break
 						end
 							
-						if i == ArrayCountScholar then -- last in the last and no break yet? Then add the new guy
-							ArrayScholar[(i+1)] = GetID("Sim")
+						if j == ArrayCountScholar then -- last in the last and no break yet? Then add the new guy
+							ArrayScholar[(j+1)] = GetID("Sim")
 							tmpPoints = BuildingLvl + SimFame
-							PointArrayScholar[(i+1)] = tmpPoints
+							PointArrayScholar[(j+1)] = tmpPoints
 							ArrayCountScholar = ArrayCountScholar + 1
 							break
 						end
@@ -203,18 +203,18 @@ function CheckGuildMasters()
 			-- ## Rogue (Chiseler) Class ##
 			elseif BuildCharClass == GL_CLASS_CHISELER then
 				if ArrayCountChiseler > 0 then -- we have chiselers in the list. Check the list
-					for i=1, ArrayCountChiseler do
-						local CheckArray = ArrayChiseler[i]
+					for j=1, ArrayCountChiseler do
+						local CheckArray = ArrayChiseler[j]
 						if CheckArray ~= nil and GetID("Sim") == CheckArray then -- already in the array? Add BuildingLvl to the points
-							tmpPoints = PointArrayChiseler[i] + BuildingLvl
-							PointArrayChiseler[i] = tmpPoints
+							tmpPoints = PointArrayChiseler[j] + BuildingLvl
+							PointArrayChiseler[j] = tmpPoints
 							break
 						end
 							
-						if i == ArrayCountChiseler then -- last in the last and no break yet? Then add the new guy
-							ArrayChiseler[(i+1)] = GetID("Sim")
+						if j == ArrayCountChiseler then -- last in the last and no break yet? Then add the new guy
+							ArrayChiseler[(j+1)] = GetID("Sim")
 							tmpPoints = BuildingLvl + SimFame
-							PointArrayChiseler[(i+1)] = tmpPoints
+							PointArrayChiseler[(j+1)] = tmpPoints
 							ArrayCountChiseler = ArrayCountChiseler + 1
 							break
 						end
