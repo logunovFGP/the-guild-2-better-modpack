@@ -9,6 +9,11 @@ function Run()
 		end
 	end
 
+	-- if the "Destination" sim is dead, AddEvidence will cause a crash, so we need to check for that
+	if GetState("Destination", STATE_DEAD) or GetState("Destination", STATE_UNCONSCIOUS) then
+		return
+	end
+
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 
@@ -26,6 +31,12 @@ function Run()
 				break
 			end
 			Sleep(0.2)
+		end
+
+		-- in an extremely unlikely case the Destination sim can die during Sleep(), so we need to check again
+		-- we lose the artifact in this case, but it's better than crashing the game
+		if GetState("Destination", STATE_DEAD) or GetState("Destination", STATE_UNCONSCIOUS) then
+			return
 		end
 			
 		for k=1, 2 do -- get 2 evidences

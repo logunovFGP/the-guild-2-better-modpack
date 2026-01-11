@@ -16,6 +16,11 @@ function Run()
 	if not AliasExists("Destination") then
 		StopMeasure()
 	end
+
+	-- if the "Destination" sim is dead, AddEvidence will cause a crash, so we need to check for that
+	if GetState("Destination", STATE_DEAD) or GetState("Destination", STATE_UNCONSCIOUS) then
+		return
+	end
 	
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
@@ -140,6 +145,12 @@ function Run()
 			break
 		end
 		Sleep(0.1) 
+	end
+
+	-- in an extremely unlikely case the Destination sim can die during Sleep(), so we need to check again
+	-- we lose some money in this case, but it's better than crashing the game
+	if GetState("Destination", STATE_DEAD) or GetState("Destination", STATE_UNCONSCIOUS) then
+		return
 	end
 
 	AddEvidence("", "Destination", "EvidenceVictim", Evidence, "Destination", "Sim0", "Sim1", "Sim2", "Sim3", "Sim4", "Sim5", "Sim6", "Sim7", "Sim8", "Sim9")
