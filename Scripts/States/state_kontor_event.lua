@@ -56,10 +56,11 @@ function NeedItems()
 		return
 	end
 	
-	local Needed = Rand(15)*5 + 10
 	
-	if ItemGetType(Item) == 8 then
-		Needed = Needed * 3
+	local CurrentRound = GetRound()
+	local Needed = Rand( CurrentRound + 5 ) * 5 + 10
+	if ItemGetType(Item) == 8 or ItemGetBasePrice(Item) < 50 then
+		Needed = Needed * 5
 	end
 	
 	SetData("Item", Item)
@@ -82,7 +83,7 @@ function NeedItems()
 			       "@L_KONTOR_MISSIONS_NEED_ITEMS_TEXT_+"..random,
 			       GetID("City"), Needed, ItemLabel, Gametime, DestTime, ID)
 
-	CitySetFixedPrice("", Item, BasePrice*2, BasePrice*2, Gametime)
+	CitySetFixedPrice("", Item, BasePrice*2.5, BasePrice*2.5, Gametime)
 
 	while ToDo>0 do
 
@@ -125,7 +126,7 @@ function NeedItemsFindItem(event)
 			"Torch", 
 			"optieisen", "optisilber",
 			"optigold", "HexerdokumentI",
-			"HexerdokumentII", "spindel"
+			"HexerdokumentII", "spindel", "pddv", "StaffOfAesculap"
 			}
 	elseif event == 1 then
 		Items = { 
@@ -135,26 +136,26 @@ function NeedItemsFindItem(event)
 			}
 	elseif event == 2 then
 		Items = { 
-			"Wheat", "Barleybread", "FriedHerring", "BreadRoll",
+			"Wheat", "Barley", "Barleybread", "FriedHerring", "BreadRoll",
 			"GrainPap", "Wheatbread", "Shellsoup", "RoastBeef",
-			"SmokedSalmon"
+			"SmokedSalmon", "WheatFlour", "BarleyFlour"
 			}
 	elseif event == 3 then
 		Items = { 
 			"IronCap", "IronBrachelet", "LeatherGloves", 
 			"LeatherArmor", "Chainmail", "FullHelmet", 
 			"Platemail",
-			"Dagger", "Longsword", "Axe", "Mace", "Shortsword"
+			"Dagger", "Longsword", "Axe", "Mace", "Shortsword", "MediPack"
 			}
 	elseif event == 4 then
 		Items = { 
 			"Perfume", "SmallBeer", "WheatBeer", "CreamPie", 
 			"Cake", "Soap", "Candy",
-			"Kamm", "pddv"
+			"Kamm", "StaffOfAesculap"
 			}
 	else
 		Items = { 
-			"Iron", "Silver", "Gold", 
+			"Iron", "Silver", "Gold", "Leather",
 			"Pinewood", "Oakwood", "Wool", "Fungi", 
 			"Charcoal", "Granite"
 			}
@@ -199,7 +200,6 @@ function OfferItems()
 		return
 	end
 	
-	local Offering = Rand(15)*5 + 10
 	SetData("Item", Item)
 	SetProperty("", "EventItem", Item)
 	
@@ -212,23 +212,24 @@ function OfferItems()
 	local	Success = false
 	local ID = "Event"..GetID("")
 	
-	GetSettlement("", "City")
+	local CurrentRound = GetRound()
+	local Offering = Rand( CurrentRound + 5 ) * 5 + 10
+	if ItemGetType(Item) == 8 or ItemGetBasePrice(Item) < 50 then
+		Offering = Offering * 5
+	end
 
-	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_OFFER_ITEMS_COOLDOWN_+0,%5i,%6l]", "mission", -1,
-			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_HEAD_+"..random,
-			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_TEXT_+"..random,
-			       GetID("City"), Offering, ItemLabel, Gametime, DestTime, ID)
-	
 	CitySetFixedPrice("", Item, BasePrice*0.5, BasePrice*0.85, Gametime)
 
 	-- first remove all items of this type	
 	Count = GetItemCount("", Item, INVENTORY_STD)
 	RemoveItems("", Item, Count, INVENTORY_STD)
-	
-	if ItemGetType(Item) == 8 then
-		Offering = Offering * 3
-	end
 	AddItems("", Item, Offering, INVENTORY_STD)
+	
+	GetSettlement("", "City")
+	MsgNewsNoWait("All", "", "@C[@L_KONTOR_MISSIONS_OFFER_ITEMS_COOLDOWN_+0,%5i,%6l]", "mission", -1,
+			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_HEAD_+"..random,
+			       "@L_KONTOR_MISSIONS_OFFER_ITEMS_TEXT_+"..random,
+			       GetID("City"), Offering, ItemLabel, Gametime, DestTime, ID)
 	
 	while ToDo>0 do
 		Sleep(2)
@@ -280,9 +281,9 @@ function OfferItemsFindItem(event)
 			}
 	elseif event == 2 then
 		Items = { 
-			"Wheat", "Barleybread", "FriedHerring", "BreadRoll",
+			"Wheat", "Barley", "Barleybread", "FriedHerring", "BreadRoll",
 			"GrainPap", "Wheatbread", "Shellsoup", "RoastBeef",
-			"SmokedSalmon"
+			"SmokedSalmon", "WheatFlour", "BarleyFlour"
 			}
 	else
 		Items = { 
