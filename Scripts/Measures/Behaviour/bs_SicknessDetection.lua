@@ -2,16 +2,17 @@ function Run()
 	
 	-- check state impact
 	if GetStateImpact("", "no_control") or GetStateImpact("", "no_hire") then
-		return
+		return ""
 	end
 	
+	
 	if not GetSettlement("", "MyHomeCity") then
-		return
+		return ""
 	end
 	
 	-- Resist prevents infection spams on the same Sim
 	if GetImpactValue("", "Resist") > 0 then
-		return
+		return ""
 	else
 		AddImpact("", "Resist", 1, 2)
 	end
@@ -19,11 +20,11 @@ function Run()
 	-- no infection spam in certain areas
 	if GetInsideBuilding("", "CurrentBuilding") then
 		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_HOSPITAL then
-			return
+			return ""
 		end
 		
 		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_WORKER_HOUSING then
-			return
+			return ""
 		end
 	end
 
@@ -65,5 +66,6 @@ end
 			return "flee"
 		end
 	end
+	return ""
 end
 
