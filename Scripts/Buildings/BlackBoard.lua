@@ -12,7 +12,7 @@ function PingHour()
 	local PamphletToRemove
 	for i=0, 3 do
 		if HasProperty("", "Pamphlet_"..i) then
-				local DynID = GetProperty("Actor", "Pamphlet_"..i)
+				local DynID = GetProperty("", "Pamphlet_"..i)
 				if DynID and GetAliasByID(DynID, "PamTarget"..i) and AliasExists("PamTarget"..i) then
 					if not PamphletToRemove and Rand(100) < 8 then -- some chance for the pamphlet to just wither away
 						PamphletToRemove = i
