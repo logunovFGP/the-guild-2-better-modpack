@@ -321,7 +321,7 @@ function UpdateBalance(BldAlias, BalanceSuffix, TotalPrice, ItemId, Amount)
 	-- or better/easier: give an option to clear the balance sheet
 	
 	-- logging
-	MsgBoxNoWait(BldAlias, BldAlias, "Balance updated", "The balance for "..BalanceSuffix.." was updated, difference is "..TotalPrice)
+	--MsgBoxNoWait(BldAlias, BldAlias, "Balance updated", "The balance for "..BalanceSuffix.." was updated, difference is "..TotalPrice)
 end
 
 
