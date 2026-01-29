@@ -636,7 +636,7 @@ function EndDuelFail(ChallengerMissing, ChallengedMissing)
 	end
 	
 	if ChallengedMissing == 1 then
-		SetState("challanger", STATE_LOCKED, false)
+		SetState("challenger", STATE_LOCKED, false)
 		CarryObject("challenger", "", false)
 		MoveSetActivity("challenger")
 	end
