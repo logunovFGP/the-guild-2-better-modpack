@@ -1,5 +1,5 @@
 function Weight()
-	if not SimGetReligion == RELIGION_EVANGELIC then
+	if SimGetReligion("SIM") ~= RELIGION_EVANGELIC then
 		return 0
 	end
 	local Count = CityGetBuildingCount("HomeCity", -1, GL_BUILDING_TYPE_CHURCH_EV)
