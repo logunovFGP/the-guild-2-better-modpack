@@ -480,14 +480,14 @@ function Go()
 
 			feedback_MessagePolitics(list[i],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+0",
 			"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+1", callbacks[i][1][1], callbacks[i][1][2])
-			local newlist = {"judge","assessor1","assessor2"}
+			newlist = {"judge","assessor1","assessor2"}
 
 			for dest = 5, 7 do 
 				feedback_MessagePolitics(list[dest],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+2",
 				"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+3", callbacks[i][2][1], callbacks[i][2][2], callbacks[i][2][3])
 			end
 
-			local newlist = helpfuncs_diff({"accuser","accused"},list[i])
+			newlist = helpfuncs_diff({"accuser","accused"},list[i])
 			LogMessage("newlist="..newlist)
 
 			feedback_MessagePolitics(newlist[1],"@L_LAWSUIT_3_INTRO_PERSON_NOT_PRESENT_ENTFUEHRT_"..list[i+2].."_MESSAGES_+2",
@@ -852,12 +852,12 @@ function Go()
 			
 		PlayAnimationNoWait(SentenceAnnouncer, "talk") -- ERROR TO CHECK ON CONC FIELD
 
-		local list = {"MONEY","PILLORY","MOREMONEY","TITLE","PRISON","DEATH"}
+		local penaltyList = {"MONEY","PILLORY","MOREMONEY","TITLE","PRISON","DEATH"}
 		
-		if not AccuserSentence == "C" then
+		if AccuserSentence ~= "C" then
 			SentenceLevel = AccuserSentence	
-			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..list[AccuserSentence]..GenderType) -- END OF ERROR TO CHECK ON CONC FIELD
-			LogMessage("@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..list[AccuserSentence]..GenderType)
+			MsgSay(SentenceAnnouncer,"@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..penaltyList[AccuserSentence]..GenderType) -- END OF ERROR TO CHECK ON CONC FIELD
+			LogMessage("@L_LAWSUIT_5_DEFENSE_A_SPEAK_ACCUSER_"..penaltyList[AccuserSentence]..GenderType)
 		end
 		
 
@@ -1091,7 +1091,6 @@ function Go()
 					MsgSay("judge", "@L_NEWSTUFF_NOTITLEPENALTY_+0")
 					PlayAnimationNoWait("judge", "sit_talk")
 					PenaltyType = PENALTY_PRISON
-					local YearsPerRound = Options:GetValueInt("YearsPerRound")
 					PenaltyValue = 48 * YearsPerRound
 					PenaltyMsg = PenaltyValue / 24
 					MsgSay("judge","@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6", GetID("accused"), PenaltyMsg)
@@ -1099,7 +1098,6 @@ function Go()
 			elseif SentenceLevel == 5 then
 				PlayAnimationNoWait("judge", "sit_talk")
 				PenaltyType = PENALTY_PRISON
-				local YearsPerRound = Options:GetValueInt("YearsPerRound")
 				PenaltyValue = 48 * YearsPerRound
 				PenaltyMsg = PenaltyValue / 24
 				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+6", GetID("accused"), PenaltyMsg)
@@ -1182,7 +1180,7 @@ function Go()
 	--Be done
 	CutsceneCollectEvidences("", "accuser", "accused", true)		-- mark collected evidences as used
 	--BuildingLockForCutscene("courtbuilding", 0)
-	if execfound then
+	if BuildingFindSimByProperty("courtbuilding", "BUILDING_NPC", 4, "executioner") then
 		SimResetBehavior("executioner")
 	end
 	EndCutscene("")
@@ -1242,7 +1240,7 @@ function ProduceEvidence(EvidenceType, VictimID, EvidenceQuality, EvidenceValue,
 	local FinalEvidenceQuality = trial_CalcBelieveFactor(EvidenceQuality, VictimID)
 	-- local EvidenceWeight = CalcEvidenceWeight(BelieveFactor, EvidenceValue)
 	
-	local QualityText
+	local QualityText = "_0QUALITY"
 	local EvidenceModifier = 0
 	
 	if FinalEvidenceQuality >= 150 then
@@ -1527,7 +1525,6 @@ end
 function StopAllMeasures()
 	BuildingGetRoom("courtbuilding", "Judge", "judgeroom")
 	RoomGetInsideSimList("judgeroom","visitor_list")
-	local i
 	local num = ListSize("visitor_list")
 	for i=0,num-1 do
 		ListGetElement("visitor_list",i,"visitor")
