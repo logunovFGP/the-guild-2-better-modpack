@@ -135,6 +135,7 @@ function Run()
 			end
 		end
 		chr_CreditMoney("Tavern",GetData("Price"),"Offering")
+		economy_UpdateBalance("Tavern", "Service", GetData("Price"))
 		-- for the balance
 	--	local OldBalance = 0
 	--	if HasProperty("Tavern", "BalanceBewitchingFee") then

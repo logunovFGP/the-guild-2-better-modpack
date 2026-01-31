@@ -38,6 +38,7 @@ function Run()
 		end
 
 		chr_CreditMoney("Tavern", Price, "RentABerth")
+		economy_UpdateBalance("Tavern", "Service", Price)
 		-- for the balance
 	--	local OldBalance = 0
 	--	if HasProperty("Tavern", "BalanceSleepingFee") then

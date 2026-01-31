@@ -84,6 +84,7 @@ function Run()
 						if tips>0 then
 							if BuildingGetOwner("stageobj","BuildingOwner") then
 								chr_CreditMoney("BuildingOwner", tips, "Versengold")
+								economy_UpdateBalance("stageobj", "Service", tips)
 							end
 						end
 						RemoveProperty("","Tips")

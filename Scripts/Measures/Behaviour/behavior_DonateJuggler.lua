@@ -32,6 +32,7 @@ function Run()
 
 	local getbeg = math.floor(spend + ((spend / 100) * begbonus)) + Rand(4)*charm
 	chr_CreditMoney("Actor", getbeg, "Offering")
+			economy_UpdateBalance("Juggler", "Service", getbeg)
 	ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 	
 	if IsDynastySim("Owner") then
@@ -58,7 +59,7 @@ function Run()
 		spend = SomeSpendingValue + Rand(SomeSpendingValue)
 		chr_CreditMoney("Actor", getbeg, "Offering")
 		ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
-		
+		economy_UpdateBalance("Juggler", "Service", getbeg)
 		if IsDynastySim("Owner") then
 			chr_SpendMoney("Owner", getbeg, "Offering")
 		end

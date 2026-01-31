@@ -133,6 +133,7 @@ function Init()
 	-- cash out 10% for the pub
 	local Share = math.ceil(ChoiceSum * 0.1)
 	chr_CreditMoney("Divehouse", Share, "misc") 
+	economy_UpdateBalance("Divehouse", "Service", Share)
 	
 	ChoiceSum = ChoiceSum - Share
 	
@@ -511,6 +512,7 @@ function Raise(add)
 		-- 10% for divehouse
 		local Share = add * 0.1
 		chr_CreditMoney("Divehouse", Share, "misc")
+		economy_UpdateBalance("Divehouse", "Service", Share)
 		add = add - Share
 		SetData("Jackpod", add+pod)	
 		return true

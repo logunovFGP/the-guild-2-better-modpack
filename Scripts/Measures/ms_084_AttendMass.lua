@@ -90,6 +90,7 @@ function Run()
 		
 		if GetDynastyID("Destination") ~= GetDynastyID("") then
 			chr_CreditMoney("Destination", Money, "Offering")
+			economy_UpdateBalance("Destination", "Service", Money)
 		end
 		if GetImpactValue("Destination","MassInProgress")~=1 then
 			break

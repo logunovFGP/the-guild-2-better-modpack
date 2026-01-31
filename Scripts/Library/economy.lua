@@ -218,7 +218,7 @@ function BuyRandomItems(BldAlias, BuyerAlias, Budget, Max, Count, Items, IgnoreM
 					local TotalPrice = ItemCount * ItemPrice 
 					CreditMoney(BldAlias, TotalPrice, "WaresSold")
 					ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
-					economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
+					economy_UpdateBalance(BldAlias, "WaresSold", TotalPrice, ItemId)
 					if not IgnoreMoney then
 						chr_SpendMoney(BuyerAlias, TotalPrice, "WaresBought")
 						chr_UseBudget(BuyerAlias, 1, TotalPrice)
@@ -266,7 +266,7 @@ function BuyItems(BldAlias, BuyerAlias, ItemId, DesiredAmount, BuyerInventory)
 			RemoveItems(BldAlias, ItemId, ItemCount, INVENTORY_SELL)
 			CreditMoney(BldAlias, TotalPrice, "WaresSold")
 			ShowOverheadSymbol(BldAlias, false, false, 0, "@L%1t", TotalPrice)
-			economy_UpdateBalance(BldAlias, "Salescounter", TotalPrice, ItemId)
+			economy_UpdateBalance(BldAlias, "WaresSold", TotalPrice, ItemId)
 			if ItemCount > 0 and BuyerInventory then
 				AddItems(BuyerAlias, ItemId, ItemCount, BuyerInventory)
 			end

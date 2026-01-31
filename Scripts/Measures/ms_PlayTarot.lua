@@ -37,6 +37,9 @@ function Run()
 	    chr_CreditMoney("kasse",spend,"Offering")
         ShowOverheadSymbol("Destination",false,true,0,"%1t",spend)
        chr_SpendMoney("Owner", spend, "Offering")
+       if ai_GetWorkBuilding("Actor", GL_BUILDING_TYPE_JUGGLER, "ActorJuggler") then
+	    	economy_UpdateBalance("ActorJuggler", "Service", spend)
+	    end
 		
 		local card = Rand(21)
 		

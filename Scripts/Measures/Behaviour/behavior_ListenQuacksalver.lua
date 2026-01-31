@@ -57,24 +57,9 @@ function Run()
 				MoneyToGet = MoneyToGet + Rand(101)
 				chr_CreditMoney("Actor", MoneyToGet, "Offering")
 				
-				-- for the balance
-			--	if ai_GetWorkBuilding("Actor", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
-			--		local TotalIncome = 0
-			--		if HasProperty("Hospital", "TotalIncome") then
-			--			TotalIncome = GetProperty("Hospital","TotalIncome")
-			--		end
-			--		local RoundIncome = 0
-			--		if HasProperty("Hospital", "RoundIncome") then
-			--			RoundIncome = GetProperty("Hospital","RoundIncome")
-			--		end
-			--		local QuackIncome = 0
-			--		if HasProperty("Hospital", "QuackIncome") then
-			--			QuackIncome = GetProperty("Hospital","QuackIncome")
-			--		end
-			--		SetProperty("Hospital", "TotalIncome",(TotalIncome+MoneyToGet))
-			--		SetProperty("Hospital", "RoundIncome",(RoundIncome+MoneyToGet))
-			--		SetProperty("Hospital", "QuackIncome",(QuackIncome+MoneyToGet))
-			--	end
+				if ai_GetWorkBuilding("Actor", GL_BUILDING_TYPE_HOSPITAL, "QuackHospital") then
+					economy_UpdateBalance("QuackHospital", "Service", MoneyToGet)
+				end
 				
 				if dyn_IsLocalPlayer("Actor") then
 					ShowOverheadSymbol("Actor", false, true, 0, "%1t", MoneyToGet)

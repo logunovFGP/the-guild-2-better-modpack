@@ -196,6 +196,7 @@ function Run()
 							return
 						end
 						chr_CreditMoney("Tavern", Price, "Offering")
+						economy_UpdateBalance("Tavern", "Service", Price)
 					end
 					
 					AddImpact("Destination", "ReceivedBath", 1, 6)

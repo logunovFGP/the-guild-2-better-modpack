@@ -575,7 +575,9 @@ function Graveyard()
 		MoveSetStance("",GL_STANCE_STAND)
 		SatisfyNeed("", 4, 0.2)
 		if BuildingGetOwner("Destination", "Sitzer") then
-			chr_CreditMoney("Destination", Rand(5)+1, "tip")
+			local Tip = Rand(10)+1
+			chr_CreditMoney("Destination", Tip, "tip")
+			economy_UpdateBalance("Destination", "Service", Tip)
 		end
 		Sleep(6)
 	end
@@ -1061,10 +1063,12 @@ function GoToTavern()
 					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")
 					local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
 					chr_CreditMoney("Destination", Tip, "WaresSold")
+					economy_UpdateBalance("Destination", "Service", Tip)
 				end
 			else
 				local Tip = 3 * chr_GetRank("") + 1
 				chr_CreditMoney("Destination", Tip, "WaresSold")
+				economy_UpdateBalance("Destination", "Service", Tip)
 			end
 
 			verweile = verweile - 1
@@ -1641,6 +1645,7 @@ function GoToDivehouse()
 			    CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
 				end
 				chr_CreditMoney("Destination",grundBetrag,"Offering")
+				economy_UpdateBalance("Destination", "Service", grundBetrag)
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1666,6 +1671,7 @@ function GoToDivehouse()
 			    CarryObject("","Handheld_Device/ANIM_beaker.nif",false)
 				end
 				chr_CreditMoney("Destination",grundBetrag,"Offering")
+				economy_UpdateBalance("Destination", "Service", grundBetrag)
 				Sleep(1)
 				PlaySound3DVariation("","CharacterFX/drinking",1)
 				Sleep(AnimTime-1.5)
@@ -1705,6 +1711,7 @@ function GoToDivehouse()
 
 					local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
 					chr_CreditMoney("Destination",Tip,"tip")
+					economy_UpdateBalance("Destination", "Service", Tip)
 				end
 			end
 			verweile = verweile - 1
@@ -1864,10 +1871,12 @@ function ReturnACredit()
 			if not HasProperty("Destination","KreditKonto") then
 				local bankkonto = schuld + ecost
 				chr_CreditMoney("Destination",bankkonto,"tip")
+				economy_UpdateBalance("Destination", "Service", bankkonto)
 			else
 				local bankkonto = GetProperty("Destination","KreditKonto") + schuld
 				SetProperty("Destination","KreditKonto",bankkonto)
 				chr_CreditMoney("Destination",ecost,"tip")
+				economy_UpdateBalance("Destination", "Service", ecost)
 			end
 
 			if HasProperty("","SchuldenMeng") then
@@ -1919,7 +1928,9 @@ function BeADrunkChamp()
             PlaySound3DVariation("","CharacterFX/female_belch",1)
           end
 			    CarryObject("","",false)
-					chr_CreditMoney("Destination",Rand(90)+10,"tip")
+			    local tip = Rand(90)+10
+					chr_CreditMoney("Destination",tip,"tip")
+					economy_UpdateBalance("Destination", "Service", tip)
 					local newwinner = GetName("")
 					if HasProperty("Destination","BestDrunkPlayer") then
 				    local altpoint = GetProperty("Destination","BestDrunkPoints")
@@ -1959,14 +1970,17 @@ function BeADiceChamp()
 				    return
 			    end
 			  	if not f_BeginUseLocator("Owner","StandPos",GL_STANCE_STAND,true) then
-					return
-				else
+						return
+					else
 				    Sleep(1)
-			        PlaySound3D("","measures/shake_dices/shake_dices+0.wav", 1.0)
-			        local wfallen = PlayAnimationNoWait("","manipulate_middle_low_r")
-			        Sleep(wfallen-1)
-			        PlaySound3D("","measures/throw_dices/throw_dices+0.wav", 1.0)
-					chr_CreditMoney("Destination",Rand(20)+5,"tip")
+			      PlaySound3D("","measures/shake_dices/shake_dices+0.wav", 1.0)
+			      local wfallen = PlayAnimationNoWait("","manipulate_middle_low_r")
+			      Sleep(wfallen-1)
+			      PlaySound3D("","measures/throw_dices/throw_dices+0.wav", 1.0)
+			    local tip = Rand(20) + 5
+					chr_CreditMoney("Destination",tip,"tip")
+					economy_UpdateBalance("Destination", "Service", tip)
+					
 					local newwinner = GetName("")
 					local bonus
 					if HasProperty("Destination","BestDicePlayer") then
@@ -1982,7 +1996,7 @@ function BeADiceChamp()
 						local newpoints = Rand(300) + bonus[Rand(3)+1]
 			          	SetProperty("Destination","BestDicePlayer",newwinner)
 				        SetProperty("Destination","BestDicePott",newpoints)
-          			end
+    			end
 				f_EndUseLocator("","StandPos",GL_STANCE_STAND)
 				end
 			end			

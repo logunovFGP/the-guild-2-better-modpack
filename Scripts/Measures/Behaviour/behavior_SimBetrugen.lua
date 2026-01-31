@@ -50,6 +50,9 @@ function Run()
 
     if RemoveItems("Actor", "Urkunde", 1, INVENTORY_STD) > 0 then
       chr_CreditMoney("Actor",Betrug,"Offering")
+      if ai_GetWorkBuilding("Actor", GL_BUILDING_TYPE_BANKHOUSE, "ActorBank") then
+				economy_UpdateBalance("ActorBank", "Service", Betrug)
+			end
 	    IncrementXPQuiet("Actor",10)
       ShowOverheadSymbol("Actor",false,true,0,"%1t",Betrug)
       if IsDynastySim("Owner") then

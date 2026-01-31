@@ -214,6 +214,7 @@ function Run()
 					end
 
 					chr_CreditMoney("Hospital", v.Cost, "Offering")
+					economy_UpdateBalance("Hospital", "Service", v.Cost)
 					local TotalIncome = 0
 					local RoundIncome = 0
 					local MedicalIncome = 0

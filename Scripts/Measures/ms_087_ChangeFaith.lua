@@ -74,6 +74,7 @@ function Run()
 						StopMeasure()
 					else
 						chr_CreditMoney("church", 100, "IncomeEducation")
+						economy_UpdateBalance("church", "Service", 100)
 						feedback_MessagePolitics("", ""..Prefix.."MSG_HEAD", ""..Prefix.."MSG_BODY", GetID(""), GetID("church"))
 						SetMeasureRepeat(TimeOut)
 						chr_GainXP("", GetData("BaseXP"))

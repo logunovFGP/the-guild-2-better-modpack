@@ -73,6 +73,7 @@ function Run()
 			return
 		end
 		chr_CreditMoney("Tavern", OverallPrice, "Offering")
+		economy_UpdateBalance("Tavern", "Service", OverallPrice)
 	end
 
 	-- Bathing

@@ -44,6 +44,7 @@ function Run()
 		end
 
 		chr_CreditMoney("Destination", MoneyToPay , "LaborOfLove")
+		economy_UpdateBalance("Destination", "Service", MoneyToPay)
 	end
 	MsgSay("","@L_PIRATE_LABOROFLOVE_TALK_START")
 	SetMeasureRepeat(TimeOut)
@@ -82,6 +83,7 @@ function Run()
 		end
 
 		chr_CreditMoney("Destination", spend, "LaborOfLove")
+		economy_UpdateBalance("Destination", "Service", spend)
 		IncrementXPQuiet("", 15)
 	end
 

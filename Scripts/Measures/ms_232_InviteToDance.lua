@@ -214,6 +214,7 @@ function Run()
 						if GetMoney("") > OverallPrice then
 							chr_SpendMoney("", OverallPrice, "CostSocial", false)
 							chr_CreditMoney("DestTavern", OverallPrice, "Offering")
+							economy_UpdateBalance("DestTavern", "Service", OverallPrice)
 						else
 							MsgQuick("", "@L_TAVERN_232_INVITETODANCE_FAILURES_MONEY_+0", GetID(""), OverallPrice)
 							LogMessage(GetName("") .. " cannot afford the dance, abort measure. Current money: " .. GetMoney(""))
@@ -337,6 +338,7 @@ function Run()
 					return
 				end
 				chr_CreditMoney("DestTavern", 250, "Offering")
+				economy_UpdateBalance("DestTavern", "Service", 250)
 		--		local OldBalance = 0
 		--		if HasProperty("Tavern", "BalanceDancingFee") then
 		--			OldBalance = GetProperty("Tavern", "BalanceDancingFee")

@@ -156,6 +156,7 @@ function Dance()
 		end
 		
 		chr_CreditMoney("", spend, "LaborOfLove")
+		economy_UpdateBalance("", "Service", spend)
 		IncrementXPQuiet("", 10)
 		AddImpact(DestAlias,"FullOfLove",1,2)
 		end

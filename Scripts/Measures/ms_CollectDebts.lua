@@ -104,6 +104,7 @@ function Run()
 		-- giveout the bonus Money directly
 		Sleep(0.25)
 		CreditMoney("",Bonus,"Credit")
+		economy_UpdateBalance("Bank", "Service", Bonus)
 		
 		-- Set the balance
 		
@@ -282,6 +283,7 @@ function Run()
 				-- giveout the bonus Money directly
 				Sleep(0.5)
 				CreditMoney("",Bonus,"Credit")
+				economy_UpdateBalance("Bank", "Service", Bonus)
 				
 				-- Set the balance
 		
@@ -348,6 +350,7 @@ function Run()
 				Sleep(0.5)
 				-- giveout the whole sum in cash
 				CreditMoney("",StolenSum,"Credit")
+				economy_UpdateBalance("Bank", "Service", StolenSum)
 				
 				-- Set the balance
 		

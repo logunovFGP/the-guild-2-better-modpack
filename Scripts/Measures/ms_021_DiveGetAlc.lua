@@ -78,6 +78,8 @@ function Run()
 		StopMeasure()
 	end
 	
+	economy_UpdateBalance("", "WaresBought", 0-price)
+	
 	AddItems("", alcId, menge, INVENTORY_STD)
 	MsgQuick("", "@L_MEASURES_DIVEGETALC_SUCCESS_+0")
 end

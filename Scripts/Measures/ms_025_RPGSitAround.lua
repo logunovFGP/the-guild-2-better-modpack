@@ -148,6 +148,7 @@ function PayTavern(Cost, Tavern)
 		if (GetMoney("") >= Cost) then
 				chr_SpendMoney("", Cost, "Misc")
 				chr_CreditMoney(Tavern,Cost,"Misc")
+				economy_UpdateBalance(Tavern, "Service", Cost)
 				feedback_OverheadMoney("", -Cost)
 				PlaySound3D("","Effects/coins_to_counter+0.wav", 1.0)
 		else

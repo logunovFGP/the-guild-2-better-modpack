@@ -164,6 +164,7 @@ function Danegeld()
 			--money = money + (SimGetLevel("") * 10)
 
 			chr_CreditMoney("MercOwner", money, "IncomeBribes")
+			economy_UpdateBalance("MyMercenarycamp", "Theft", money)
 			IncrementXPQuiet("", 15)
 
 			PlayAnimationNoWait("", "fetch_store_obj_R")

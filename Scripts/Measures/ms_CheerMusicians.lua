@@ -90,6 +90,7 @@ function CleanUp()
 			if GetAliasByID(stage,"stageobj") then
 				if BuildingGetOwner("stageobj","BuildingOwner") then
 					chr_CreditMoney("BuildingOwner", tips, "Versengold")
+					economy_UpdateBalance("BuildingOwner", "Service", tips)
 				end
 			end
 		end

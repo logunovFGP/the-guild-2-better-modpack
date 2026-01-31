@@ -58,6 +58,7 @@ function Run()
 				end
 				SpendMoney("", Cost, "CostIndulgence")
 				chr_CreditMoney("church", (Cost*0.5), "IncomeIndulgence")
+				economy_UpdateBalance("church", "Service", (Cost*0.5))
 				SetMeasureRepeat(TimeOut)
 				for i=0,ListSize("CrimeList")-1,1 do
 					ListGetElement("CrimeList", i, "tmp")
