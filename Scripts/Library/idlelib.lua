@@ -230,7 +230,7 @@ function RobberIdle(Workbuilding)
 	
 	if GetDistance("", "WaitingPos") > 115 then
 		local dist = Rand(100)+10	
-		f_MoveTo("Sim", "WaitingPos", GL_MOVESPEED_RUN, dist)
+		f_MoveTo("", "WaitingPos", GL_MOVESPEED_RUN, dist)
 	end
 
 	Sleep(5)
