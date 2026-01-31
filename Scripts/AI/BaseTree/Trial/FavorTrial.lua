@@ -19,13 +19,13 @@ function Weight()
 	local FavorToJudge = GetFavorToSim("SIM", "TrialJudge")
 	
 	local Assessor1ID = GetProperty("SIM", "TrialAssessor1")
-	if not GetAliasByID(JudgeID, "TrialAssessor1") then
+	if not GetAliasByID(Assessor1ID, "TrialAssessor1") then
 		return 0
 	end
 	local FavorToAssessor1 = GetFavorToSim("SIM", "TrialAssessor1")
 	
 	local Assessor2ID = GetProperty("SIM", "TrialAssessor2")
-	if not GetAliasByID(JudgeID, "TrialAssessor2") then
+	if not GetAliasByID(Assessor2ID, "TrialAssessor2") then
 		return 0
 	end
 	local FavorToAssessor2 = GetFavorToSim("SIM", "TrialAssessor2")
