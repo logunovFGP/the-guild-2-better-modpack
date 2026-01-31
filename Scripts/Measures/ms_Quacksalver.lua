@@ -136,9 +136,11 @@ function GetPlacebo()
 end
 
 function CleanUp()
-
 	StopAnimation("")
 	StopAction("quacksalver", "")
+	if HasProperty("", "SpecialMeasureId") then
+		RemoveProperty("", "SpecialMeasureId")
+	end
 end
 
 function GetOSHData(MeasureID)
