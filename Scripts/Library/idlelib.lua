@@ -230,7 +230,7 @@ function RobberIdle(Workbuilding)
 	
 	if GetDistance("", "WaitingPos") > 115 then
 		local dist = Rand(100)+10	
-		f_MoveTo("Sim", "WaitingPos", GL_MOVESPEED_RUN, dist)
+		f_MoveTo("", "WaitingPos", GL_MOVESPEED_RUN, dist)
 	end
 
 	Sleep(5)
@@ -330,7 +330,7 @@ function DoNothing()
 		if IsDynastySim("") and not GetInsideBuilding("", "inside") then
 			-- talk to someone
 			Sleep(5)
-			local TalkPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1500)AND NOT(Object.GetStateImpact(no_idle))AND(Object.IsDynastySim())AND(Object.CanBeInterrupted(StartDialog))AND NOT(Object.HasImpact(Hidden))AND NOT(Object.GetInsideBuilding()))","TalkPartner", -1)
+			local TalkPartners = Find("", "__F((Object.GetObjectsByRadius(Sim)==1500)AND NOT(Object.GetStateImpact(no_idle))AND(Object.IsDynastySim())AND(Object.CanBeInterrupted(StartDialog))AND NOT(Object.HasImpact(Hidden))AND(Object.IsNotInBuilding()))","TalkPartner", -1)
 			if TalkPartners >0 then
 				MeasureRun("", "TalkPartner"..Rand(TalkPartners), "StartDialog" )
 				return
