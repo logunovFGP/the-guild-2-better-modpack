@@ -1,7 +1,7 @@
 function Weight()
 	
 	if IsDynastySim("SIM") then
-		if not ai_GetWorkBuilding("SIM ", GL_BUILDING_TYPE_DIVEHOUSE, "Divehouse") then
+		if not ai_GetWorkBuilding("SIM", GL_BUILDING_TYPE_DIVEHOUSE, "Divehouse") then
 			return 0
 		end
 	else

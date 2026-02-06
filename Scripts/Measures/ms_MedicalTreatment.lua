@@ -280,23 +280,25 @@ function Run()
 
 			end
 
-		Sleep(1)
+			Sleep(1)
 
-		if cured == false then
-			SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
-			SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
-		else
-			MoveSetActivity("SickSim0")
-			AddImpact("SickSim0", "Resist", 1, 6)
-		end
+			if cured == false then
+				SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
+				SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
+			else
+				MoveSetActivity("SickSim0")
+				AddImpact("SickSim0", "Resist", 1, 6)
+			end
 
-		if HasProperty("SickSim0", "WaitingForTreatment") then
-			RemoveProperty("SickSim0", "WaitingForTreatment")
-		end
+			if HasProperty("SickSim0", "WaitingForTreatment") then
+				RemoveProperty("SickSim0", "WaitingForTreatment")
+			end
 
-		SetData("Blocked", 1)
-		SetState("", STATE_DUEL, false)
-
+			SetData("Blocked", 1)
+			SetState("", STATE_DUEL, false)
+			SetState("SickSim0", STATE_DUEL, false)
+			
+			return
 		end
 	end
 end
@@ -316,16 +318,16 @@ function PropertiesEnd(checker,sim)
 	end
 
 	SetData("Blocked", 1)
-	SetState("", STATE_DUEL, false)
+	SetState(sim, STATE_DUEL, false)
 end
 
 
 function BlockMe()
-	while GetData("Blocked")~=1 do
-		Sleep(1)
+	while GetData("Blocked")==0 do
 		if not GetState("", STATE_DUEL) then
 			SetState("", STATE_DUEL, true)
 		end
+		Sleep(1)
 	end
 	
 	if HasProperty("", "WaitingForTreatment") then
