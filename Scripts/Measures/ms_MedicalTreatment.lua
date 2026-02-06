@@ -296,11 +296,9 @@ function Run()
 
 			SetData("Blocked", 1)
 			SetState("", STATE_DUEL, false)
-
-			-- we need to be sure the SickSim0 gets its STATE_DUEL reset here 
-			-- it will fall out of the scope of Cleanup()'s SickSim0 alias after it gets overwritten by next Find()
-			-- otherwise, in the case where where the measure gets interrupted immediately after the next Find, it will cause a state-freeze
 			SetState("SickSim0", STATE_DUEL, false)
+			
+			return
 		end
 	end
 end
@@ -325,7 +323,7 @@ end
 
 
 function BlockMe()
-	while GetData("Blocked")~=1 do
+	while GetData("Blocked")==0 do
 		if not GetState("", STATE_DUEL) then
 			SetState("", STATE_DUEL, true)
 		end
