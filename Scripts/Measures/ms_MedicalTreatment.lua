@@ -296,9 +296,11 @@ function Run()
 
 			SetData("Blocked", 1)
 			SetState("", STATE_DUEL, false)
+			-- this should be enough for BlockMe task to iterate once more before going for the next sim
+			Sleep(3)
+			-- to be sure
 			SetState("SickSim0", STATE_DUEL, false)
 			
-			return
 		end
 	end
 end
