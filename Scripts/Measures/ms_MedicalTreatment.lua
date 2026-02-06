@@ -280,23 +280,27 @@ function Run()
 
 			end
 
-		Sleep(1)
+			Sleep(1)
 
-		if cured == false then
-			SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
-			SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
-		else
-			MoveSetActivity("SickSim0")
-			AddImpact("SickSim0", "Resist", 1, 6)
-		end
+			if cured == false then
+				SetProperty("SickSim0", "IgnoreHospital", GetID("Hospital"))
+				SetProperty("SickSim0", "IgnoreHospitalTime", GetGametime()+12)
+			else
+				MoveSetActivity("SickSim0")
+				AddImpact("SickSim0", "Resist", 1, 6)
+			end
 
-		if HasProperty("SickSim0", "WaitingForTreatment") then
-			RemoveProperty("SickSim0", "WaitingForTreatment")
-		end
+			if HasProperty("SickSim0", "WaitingForTreatment") then
+				RemoveProperty("SickSim0", "WaitingForTreatment")
+			end
 
-		SetData("Blocked", 1)
-		SetState("", STATE_DUEL, false)
+			SetData("Blocked", 1)
+			SetState("", STATE_DUEL, false)
 
+			-- we need to be sure the SickSim0 gets its STATE_DUEL reset here 
+			-- it will fall out of the scope of Cleanup()'s SickSim0 alias after it gets overwritten by next Find()
+			-- otherwise, in the case where where the measure gets interrupted immediately after the next Find, it will cause a state-freeze
+			SetState("SickSim0", STATE_DUEL, false)
 		end
 	end
 end
@@ -316,16 +320,16 @@ function PropertiesEnd(checker,sim)
 	end
 
 	SetData("Blocked", 1)
-	SetState("", STATE_DUEL, false)
+	SetState(sim, STATE_DUEL, false)
 end
 
 
 function BlockMe()
 	while GetData("Blocked")~=1 do
-		Sleep(1)
 		if not GetState("", STATE_DUEL) then
 			SetState("", STATE_DUEL, true)
 		end
+		Sleep(1)
 	end
 	
 	if HasProperty("", "WaitingForTreatment") then
