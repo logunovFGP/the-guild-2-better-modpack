@@ -12,12 +12,19 @@ function Weight()
 	    return 0
 	end
 	
-	return 100
+	local WorkerCount = BuildingGetWorkerCount("MyWork")
+	-- worker #1 will always beg
+	if BuildingGetWorkerCount("MyWork") > 0 and BuildingGetWorker("MyWork", 0, "Worker") and GetID("SIM") == GetID("Worker") then
+		return 100
+	end
+	
+	-- all other worker will do other things
+	return 0
 end
 
 function Execute()
 	MeasureCreate("Measure")
-	MeasureAddData("Measure", "TimeOut", Rand(3)+3)
+	MeasureAddData("Measure", "TimeOut", 14)
 	MeasureStart("Measure", "SIM", "jugglerPlay", "JugglerBeg")
 end
 

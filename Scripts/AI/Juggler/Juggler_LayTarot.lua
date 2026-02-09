@@ -8,15 +8,21 @@ function Weight()
 		return 0
 	end
 	
-	if SimGetWorkingPlace("SIM", "MyWork") then
-	    if BuildingGetLevel("MyWork") < 2 then
-		    return 0
-		end
-	else
+	if not SimGetWorkingPlace("SIM", "MyWork") then
 	    return 0
 	end
+
+  if BuildingGetLevel("MyWork") < 2 then
+      return 0
+	end
 	
-	return 100
+	-- worker #4 will always do tarot
+	if BuildingGetWorkerCount("MyWork") > 3 and BuildingGetWorker("MyWork", 3, "Worker") and GetID("SIM") == GetID("Worker") then
+		return 100
+	end
+	
+	-- all other worker will do other things
+	return 0
 end
 
 function Execute()

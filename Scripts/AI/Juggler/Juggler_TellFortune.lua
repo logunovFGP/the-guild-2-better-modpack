@@ -4,19 +4,25 @@ function Weight()
 		return 0
 	end
 	
-	if not CityFindCrowdedPlace("City", "SIM", "jugglerPlay") then
+	if not chr_CityFindCrowdedPlace("City", "SIM", "jugglerPlay") then
 		return 0
 	end
 	
-	if SimGetWorkingPlace("SIM", "MyWork") then
-	    if BuildingGetLevel("MyWork") < 3 then
-		    return 0
-		end
-	else
+	if not SimGetWorkingPlace("SIM", "MyWork") then
 	    return 0
 	end
+
+  if BuildingGetLevel("MyWork") < 3 then
+      return 0
+	end
 	
-	return 100
+	-- worker #5 will always do fortune
+	if BuildingGetWorkerCount("MyWork") > 4 and BuildingGetWorker("MyWork", 4, "Worker") and GetID("SIM") == GetID("Worker") then
+		return 100
+	end
+	
+	-- all other worker will do other things
+	return 0
 end
 
 function Execute()
