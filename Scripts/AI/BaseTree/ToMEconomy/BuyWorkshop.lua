@@ -32,10 +32,12 @@ function Weight()
 	local simclass = SimGetClass("SIM")
 	local simrel = SimGetReligion("SIM")
 	
-	local n = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_IS_BUYABLE)
-	local m = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_NO_DYNASTY)
+	local n = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_IS_BUYABLE) or 0
+	local m = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_NO_DYNASTY) or 0
   
-	return (n * 10) + (m * 10) 
+  if n > 0 or m > 0 then
+  	return 8
+  end
 end
 
 function Execute()
