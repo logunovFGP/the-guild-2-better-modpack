@@ -41,7 +41,7 @@ end
 function Execute()
 	aitwp_Log("Execute ToMEconomy::BuyWorkshop", "SIM", true)
 	local Difficulty = ScenarioGetDifficulty()
-	local Timer = 48 - Difficulty * 6 -- easy: 2 days, medium: 3 days, hard: 1 days
+	local Timer = 96 - Difficulty * 12 -- easy: 4 days, medium: 3 days, hard: 2 days
 	SetRepeatTimer("dynasty", "BasicAI_NewWorkshop", Timer)
 
 	ai_BuyRandomWorkshop("SIM")
