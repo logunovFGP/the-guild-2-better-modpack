@@ -80,13 +80,13 @@ function Run()
 	chr_CalculateBuildingBonus("", "Destination", "hire")
 	CreateScriptcall( "GiveBack", 0.001, "Measures/ms_048_HireEmployee.lua", "GiveXPBack", "", "Destination", XP) -- use scriptcall, because Destination is lost after SimHire	
 
+	economy_UpdateBalance("Destination", "Wages", 0-Handsel)
 	local	Error = SimHire("", "Destination")
 	if Error~="" then
 		chr_OutputHireError("", "Destination", Error)
 		return
 	else
-		economy_UpdateBalance("", "Wages", -Handsel)
-	  PlaySound3D("", "Effects/moneybag_to_hand+0.wav", 1.0)
+	  PlaySound3D("Destination", "Effects/moneybag_to_hand+0.wav", 1.0)
 	end
 end
 

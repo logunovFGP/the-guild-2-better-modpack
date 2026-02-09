@@ -133,7 +133,8 @@ function DecideYou()
 		chr_OutputHireError("RandWorker", "", Error)
 		return
 	else
-		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
+		economy_UpdateBalance("", "Wages", 0-handsels)
+	  PlaySound3D("", "Effects/moneybag_to_hand+0.wav", 1.0)
 	end
 end
 
