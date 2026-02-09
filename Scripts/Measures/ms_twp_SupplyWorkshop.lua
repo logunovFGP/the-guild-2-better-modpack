@@ -31,7 +31,7 @@ function Init()
 	ms_twp_supplyworkshop_SetMeasureData(ResourceCount, Resources, SupplierCount, Suppliers)
 end
 
-function ChooseResources(ResourceCount, Resources)
+function ChooseResources(ResourceCount, Resources, IsWarehouse)
 	local ChosenItemId
 	local Buttons = ""
 	local Id, ItemTexture, Subtext
@@ -57,7 +57,10 @@ function ChooseResources(ResourceCount, Resources)
 			"Body"
 		)
 		if ChosenItem and ChosenItem ~= "C" then
-			local Options = "@B[100,100,]@B[80,80,]@B[60,60,]@B[50,50,]@B[40,40,]@B[30,30,]@B[20,20,]@B[10,10,]@B[0,0,]"
+			local Options = "@B[120,120,]@B[100,100,]@B[80,80,]@B[60,60,]@B[40,40,]@B[30,30,]@B[20,20,]@B[10,10,]@B[0,0,]"
+			if IsWarehouse then
+				Options = "@B[500,500,]@B[300,300,]@B[200,200,]@B[100,100,]@B[60,60,]@B40,40,]@B[20,20,]@B[10,10,]@B[0,0,]"
+			end
 			local ItemId = Resources[ChosenItem][1]
 			local ChosenMinAmount = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0","_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_BODY_+0", ItemGetLabel(ItemId,false))			
 			if ChosenMinAmount and ChosenMinAmount ~= "C" then
@@ -150,7 +153,8 @@ function InitMeasure()
 			MsgBox("", "Owner", "", "@L_TWP_SUPPLYWORKSHOP_INITIATE_HEAD_+0", "@L_TWP_SUPPLYWORKSHOP_HELP_BODY_+0")
 		elseif Choice == 2 then
 			-- override building settings for this cart measure
-			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources)
+			local IsWarehouse =  (BuildingGetType("MyHome") == GL_BUILDING_TYPE_WAREHOUSE)
+			ResourceCount, Resources = ms_twp_supplyworkshop_ChooseResources(ResourceCount, Resources, IsWarehouse)
 		elseif Choice == 3 then
 			SupplierCount, Suppliers = ms_twp_supplyworkshop_ChooseSuppliers(SupplierCount, Suppliers)
 		elseif Choice == nil or Choice == "C" then -- cancel
