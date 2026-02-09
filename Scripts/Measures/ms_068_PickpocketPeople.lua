@@ -120,6 +120,7 @@ function Run()
 						
 						IncrementXPQuiet("Owner", 15)
 						chr_RecieveMoney("Owner", VictimSpendValue, "IncomeThiefs")
+						economy_UpdateBalance("WorkBuilding", "Service", VictimSpendValue)
 						--for the mission
 						mission_ScoreCrime("", VictimSpendValue)
 						-- Play a coin sound for the local player

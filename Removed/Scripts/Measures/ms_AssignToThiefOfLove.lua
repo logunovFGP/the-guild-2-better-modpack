@@ -95,6 +95,7 @@ function Run()
 						local VictimSpendValue = Rand(SimGetLevel("") * 20) + 25
 						IncrementXPQuiet("", 15)
 						chr_RecieveMoney("Owner", VictimSpendValue, "IncomeThiefs")
+						economy_UpdateBalance("WorkBuilding", "Service", VictimSpendValue)
 						--for the mission
 						mission_ScoreCrime("",VictimSpendValue)
 						-- Play a coin sound for the local player

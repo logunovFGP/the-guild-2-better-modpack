@@ -132,6 +132,7 @@ function Run()
 		--wants to pay
 		if chr_SpendMoney("Victim", fMoney, "CostRobbers") then
 			chr_RecieveMoney("", fMoney, "IncomeRobbers")
+			economy_UpdateBalance("Base", "Service", fMoney)
 			--for the mission
 			mission_ScoreCrime("",fMoney)
 			feedback_MessageCharacter("",

@@ -207,10 +207,12 @@ function Run()
 			if VicMoney > (Value + ValueBonus) then
 				chr_SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
 				chr_RecieveMoney("Owner", Value + ValueBonus, "IncomeThiefs")
+				economy_UpdateBalance("MyThievesGuild", "Service", Value + ValueBonus)
 				mission_ScoreCrime("", Value + ValueBonus)
 			else
 				chr_SpendMoney("Destination", VicMoney, "CostThiefs")
 				chr_RecieveMoney("Owner", VicMoney, "IncomeThiefs")
+				economy_UpdateBalance("MyThievesGuild", "Service", VicMoney)
 				mission_ScoreCrime("", VicMoney)
 			end
 
@@ -285,10 +287,12 @@ function Run()
 					chr_SpendMoney("Destination", Value + ValueBonus, "CostThiefs")
 					Sleep(0.4)
 					chr_RecieveMoney("Owner", Value + ValueBonus, "IncomeThiefs")
+					economy_UpdateBalance("MyThievesGuild", "Service", Value + ValueBonus)
 					mission_ScoreCrime("", Value + ValueBonus)
 				else
 					chr_SpendMoney("Destination", VicMoney, "CostThiefs")
 					chr_RecieveMoney("Owner", VicMoney, "IncomeThiefs")
+					economy_UpdateBalance("MyThievesGuild", "Service", VicMoney)
 					mission_ScoreCrime("", VicMoney)
 				end
 	

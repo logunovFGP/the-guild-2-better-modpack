@@ -112,6 +112,7 @@ function Run()
 					end
 					
 					chr_RecieveMoney("MercOwner", VictimSpendValue, "IncomeBribes")
+					economy_UpdateBalance("MyHome", "Service", VictimSpendValue)
 					IncrementXPQuiet("", 15)
 
 					PlaySound3D("", "Effects/coins_to_moneybag+0.wav", 1.0)

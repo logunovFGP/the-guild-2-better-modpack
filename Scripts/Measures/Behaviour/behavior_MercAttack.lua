@@ -14,7 +14,7 @@ function Run()
 				end
 			end
 		end
-		
+		economy_UpdateBalance("MyHome", "Service", HeadMoney)
 		MeasureRun("",Protectorate,"Protectorate",true)
 	else
 		local VictimID = GetProperty("", "Victim")
