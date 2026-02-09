@@ -41,6 +41,11 @@ function Run()
 	local MaxHP = GetMaxHP("")
 	local DamagePerTick = math.ceil((MaxHP * 0.025 + 12*FireLevel) - FireProt*(MaxHP * 0.025 + 12*FireLevel))
 	
+	local HpNotBelow = 0.2
+	if GetHPRelative("") < 0.3 then
+		HpNotBelow = -1
+	end
+	
 	SetProperty("Owner", "BurningTime", MaxBurnTime) -- save it to property for firefighting-Measures
 	CommitAction("fire", "Owner", "Owner")
 	
@@ -130,6 +135,11 @@ function Run()
 			end
 		end
 		Sleep(5)
+		
+		if GetHPRelative("") <= HpNotBelow then
+			-- make sure a single fire is unable to destroy the building
+			break
+		end
 	end
 	
 	AddImpact("Owner", "Extinguished", 1, 8)
