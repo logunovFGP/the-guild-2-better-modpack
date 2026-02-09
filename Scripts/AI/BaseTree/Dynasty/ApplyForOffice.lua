@@ -14,9 +14,12 @@ function Weight()
 	end
 	
 		-- application running already
-	if SimIsAppliedForOffice("SIM") then
-		return 0
-	end
+		-- this would also return true if SIM is defending current office!
+--		local MyOfficeLevel = SimGetOfficeLevel("SIM")
+--		-- compare with application
+--	if SimIsAppliedForOffice("SIM") then
+--		return 0
+--	end
 	
 	-- nobility check
 	local MyTitle = GetNobilityTitle("SIM")
