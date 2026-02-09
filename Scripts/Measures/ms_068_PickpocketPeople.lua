@@ -58,13 +58,6 @@ function Run()
 				DoIt = 0
 			end
 			
-			local VictimSkill		
-			if IsDynastySim(DestAlias) then 
-				VictimSkill = GetSkillValue(DestAlias, EMPATHY)
-			else
-				VictimSkill = Rand(6) + 1
-			end
-			
 			if BuildingGetAISetting("WorkBuilding", "Enable") > 0 and not HasProperty("", "OutdoorPos") then -- AI has no fixed pos? then get one.
 				-- Find a good spot for AI
 				local MaxDistance = 10000
@@ -100,8 +93,10 @@ function Run()
 			end
 			
 			if DoIt == 1 then
-				if SendCommandNoWait(DestAlias, "BlockMe") then 
-					if CheckSkill("", 2, VictimSkill) then
+				if SendCommandNoWait(DestAlias, "BlockMe") then
+					local SkillBonus = math.floor(GetSkillValue("", SHADOW_ARTS) / 2) 
+					chr_SkillCheck("", DEXTERITY, 2-SkillBonus, DestAlias, EMPATHY) 
+					if chr_SkillCheck("", DEXTERITY, 0-SkillBonus, DestAlias, EMPATHY) then
 						SetData("Blocked", 1)
 							
 						f_MoveTo("", DestAlias, GL_MOVESPEED_WALK, 140)

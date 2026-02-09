@@ -27,6 +27,7 @@ function Run()
 	local DoNothing = GetProperty("", "_DO_NOTHING_TIME") or 0
 	if DoNothing > 0 then
 		RemoveProperty("", "_DO_NOTHING_TIME")
+		chr_GainXP("", DoNothing*5, true) -- make sure idle dynasty characters gain some XP over time
 		Sleep(DoNothing*60)
 	end 
 	
