@@ -6,13 +6,14 @@ function Run()
 	end
 	SetData("#KontorEventCount", Count+1)
 
-	local	Selection = Rand(2)
-	SetData("Selection", Selection)
+	local	Selection = Rand(3) -- need events more likely
 	
-	if Selection == 0 then
-		state_kontor_event_NeedItems()
-	elseif Selection == 1 then
+	if Selection == 1 then
+		SetData("Selection", 1)
 		state_kontor_event_OfferItems()
+	else 
+		SetData("Selection", 0)
+		state_kontor_event_NeedItems()
 	end
 end
 
@@ -308,7 +309,8 @@ function OfferItemsCleanUp()
 	if Item then
 		local Count = GetItemCount("", Item, INVENTORY_STD)
 		RemoveItems("", Item, Count, INVENTORY_STD)
-		CitySetFixedPrice("", Item, -1, -1, -1)
+		local BasePrice = ItemGetBasePrice(Item)
+		CitySetFixedPrice("", Item, BasePrice*0.5, BasePrice*0.85, 16) -- keep the price offered for another 16 hours to prevent immediate back-sales
 	end
 end
 
