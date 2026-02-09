@@ -85,7 +85,8 @@ function Run()
 		chr_OutputHireError("", "Destination", Error)
 		return
 	else
-		PlaySound("Effects/moneybag_to_hand+0.wav", 1)
+		economy_UpdateBalance("", "Wages", -Handsel)
+	  PlaySound3D("", "Effects/moneybag_to_hand+0.wav", 1.0)
 	end
 end
 

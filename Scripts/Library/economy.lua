@@ -716,6 +716,9 @@ function CalcCurrentResourceNeeds(BldAlias, ResourceCount, Resources, Threshold)
 	local NeedCount = 0
 	for i = 1, ResourceCount do
 		local CurrentAmount = GetItemCount(BldAlias, Resources[i][1])
+		-- AI tends to put spare materials into sales inventory, take these into account
+		local SalesCount = GetItemCount(BldAlias, Resources[i][1], INVENTORY_SELL) or 0 
+		CurrentAmount = CurrentAmount + SalesCount
 		local MaxNeed = Resources[i][2]
 		local ActualNeed = MaxNeed - CurrentAmount
 		-- need resources when stores below threshold

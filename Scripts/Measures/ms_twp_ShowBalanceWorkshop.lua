@@ -93,13 +93,14 @@ function ShowForWorkshop(BldAlias)
 end
 
 function ShowForRogue(BldAlias)
-	local BalanceTypes = {"WaresSold", "WaresBought", "Theft", "Wages"}
+	local BalanceTypes = {"WaresSold", "WaresBought", "Theft", "Wages", "Service"}
 	local Balances = {}
 	local TotalBalance = 0
-	for i=1, 4 do
+	for i=1, 5 do
 		Balances[i] = GetProperty(BldAlias, BALANCE_PREFIX..BalanceTypes[i]) or 0
 		TotalBalance = TotalBalance + Balances[i]
 	end
+	local TheftBalance = Balances[3] + Balances[5] -- add service balance to theft
 	
 	local Wages = economy_CalculateWages(BldAlias)
 	-- XXX unused for now
@@ -121,7 +122,7 @@ function ShowForRogue(BldAlias)
 			--Ranking, -- %4i Ranking
 			Balances[1], -- %4t WaresSold 
 			Balances[2], -- %5t WaresBought 
-			Balances[3], -- %6t Theft
+			TheftBalance, -- %6t Theft
 			Balances[4] -- %7t Wages
 			--, PriceRatio -- %8i%% current PriceRatio
 			)
@@ -134,7 +135,7 @@ function ShowForRogue(BldAlias)
 	elseif Choice == "PRIC" then
 		ms_twp_showbalanceworkshop_ChangePriceRatio(BldAlias)
 	elseif Choice == "CLR" then
-		for i=1, 4 do
+		for i=1, 5 do
 			SetProperty(BldAlias, BALANCE_PREFIX..BalanceTypes[i], 0) 
 		end
 		ms_twp_showbalanceworkshop_ShowForRogue(BldAlias)
