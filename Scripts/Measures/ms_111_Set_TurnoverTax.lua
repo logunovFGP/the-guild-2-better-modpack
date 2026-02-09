@@ -40,8 +40,28 @@ function Run()
 end
 
 function AIFunction()
-	-- changed this to more random values
-	return 5 * Rand(7)
+	local MinTax = 0
+	local MaxTax = 30
+	
+  -- taxes scale with difficulty (no high taxes on easy, no low taxes on hard) 
+	local Difficulty = ScenarioGetDifficulty() -- 0 .. 4
+	if Difficulty == 0 then -- Tax range: 0 .. 20
+	    MaxTax = 20
+	end
+	if Difficulty == 1 then  -- Tax range: 0 .. 25
+	    MaxTax = 25
+	end
+	if Difficulty == 3 then  -- Tax range: 5 .. 30
+	    MinTax = 5
+	end
+	if Difficulty == 4 then -- Tax range: 10 .. 300
+	    MinTax = 10
+	end
+
+	local AIChoice = 5 * Rand(7)
+	AIChoice = math.max(AIChoice, MinTax)
+	AIChoice = math.min(AIChoice, MaxTax)
+	return AIChoice
 end
 
 function GetOSHData(MeasureID)
