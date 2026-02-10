@@ -28,6 +28,6 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("MyBank", "AI_CREDIT", 6)
+	SetRepeatTimer("MyBank", "AI_CREDIT", 24)
 	MeasureRun("MyBank", "MyBank", "OrderCredit", true)
 end
