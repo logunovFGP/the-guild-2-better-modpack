@@ -43,8 +43,8 @@ function Run()
 		end			
 		
 		local MainPlunderCount = GetProperty("", "TradersPlundered")
-		if MainPlunderCount > 4 then -- Too many robberies occured, stop trade for some time
-			local Time = Rand(24) + 24
+		if MainPlunderCount > 8 then -- Too many robberies occured, stop trade for some time
+			local Time = Rand(12) + 24
 			AddImpact("", "TradingRoutePlundered", 1, Time) 
 			MainPlunderCount = 0
 			SetProperty("", "TradersPlundered", 0)
@@ -55,7 +55,7 @@ function Run()
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
 				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("MyCity")) 
 			
-		elseif MainPlunderCount > 2 and GetProperty("","TradersRobberMessageSaid") ~= 1 then
+		elseif MainPlunderCount > 4 and GetProperty("","TradersRobberMessageSaid") ~= 1 then
 			MsgNewsNoWait("All", "", "", "default", -1, 
 				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
 				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("MyCity")) 
@@ -77,7 +77,7 @@ function Run()
 		if MainPlunderCount == 0 then
 			SetProperty("", "LastTimeRobbed", CurrentRound)
 		end
-		Sleep(37)
+		Sleep(67)
 	end
 end
 
@@ -113,7 +113,7 @@ function BuyNewCart(CartCount)
 		NewCartType = EN_CT_OX
 	end
 
-	if CityLevel > 4 then
+	if CityLevel > 4 or CityLevel == 1 then -- Kontor will also get horse carts for the distance covered
 		NewCartType = EN_CT_HORSE
 	end
 	
@@ -135,7 +135,7 @@ end
 
 function CanBuyNewCart(CartCount)
 	local CityLevel = CityGetLevel("MyCity") -- 1 for kontor, 2 and higher for regular settlements
-	return (CartCount < CityLevel - 2) -- villages do not trade yet
+	return CityLevel
 end
 
 
