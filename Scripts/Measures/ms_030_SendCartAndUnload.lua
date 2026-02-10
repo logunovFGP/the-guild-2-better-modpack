@@ -50,7 +50,7 @@ function Run()
 	local Slots = InventoryGetSlotCount("", INVENTORY_STD)
 	local ItemId, ItemCount
 	local Amount = 0
-	local Error, ItemTransfered
+	local Error, ItemTransfered, Price
 	local Found = false
 	local CurrentSlot = Slots-1
 	
@@ -58,7 +58,10 @@ function Run()
 		ItemId, ItemCount = InventoryGetSlotInfo("", CurrentSlot, InventoryType)
 		
 		if ItemId and ItemCount then
-			Error, ItemTransfered = f_Transfer("", "Destination", INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
+			Error, ItemTransfered, Price = f_Transfer("", "Destination", INVENTORY_STD, "", INVENTORY_STD, ItemId, ItemCount)
+			if Price and GetHomeBuilding("", "homeBuilding")  then
+				economy_UpdateBalance("homeBuilding", "WaresSold", math.abs(Price))
+			end
 			Amount = Amount + ItemTransfered
 			Found = true
 		end
