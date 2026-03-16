@@ -1,0 +1,55 @@
+//Table File, Version 1.02 (c) 2004 4head studios
+//Exported
+
+Table Description:
+"id" INT -1 |"category" STRING  0 |"category_localization" STRING  0 |"purpose_name" STRING  0 |"type" STRING  0 |"localization_key" STRING  0 |"indent_level" INT 0 |"display_order" INT 0 |
+
+Data:
+1            "Trade"              "@L_BALANCE_GOODS"                 ""                   ""          ""                                0            1            |
+2            "Trade"              ""                                 "WaresSold"          "Income"    "@L_BALANCE_GOODS_1"              1            2            |
+3            "Trade"              ""                                 "WaresBought"        "Cost"      "@L_BALANCE_GOODS_2"              1            3            |
+4            "Trade"              ""                                 "WaresSeaSold"       "Income"    "@L_BALANCE_GOODS_4"              1            4            |
+5            "Trade"              ""                                 "WaresSeaBought"     "Cost"      "@L_BALANCE_GOODS_5"              1            5            |
+6            "Trade"              ""                                 "SalesTax"           "Cost"      "@L_BALANCE_GOODS_3"              1            6            |
+7            ""                   ""                                 ""                   ""          ""                                0            7            |
+8            "Buildings"          "@L_BALANCE_BUILDINGS_1"           ""                   ""          ""                                0            8            |
+9            "Buildings"          ""                                 "BuildingSold"       "Income"    "@L_BALANCE_BUILDINGS_1_SUB1"     1            9            |
+10           "Buildings"          ""                                 "BuildingBought"     "Cost"      "@L_BALANCE_BUILDINGS_1_SUB1"     1            10           |
+11           "Buildings"          ""                                 "CartSold"           "Income"    "@L_BALANCE_BUILDINGS_1_SUB2"     1            11           |
+12           "Buildings"          ""                                 "CartBought"         "Cost"      "@L_BALANCE_BUILDINGS_1_SUB2"     1            12           |
+13           "Buildings"          ""                                 "BuildingBuild"      "Cost"      "@L_BALANCE_BUILDINGS_2_SUB_+0"   1            13           |
+14           "Buildings"          ""                                 "BuildingLevelup"    "Cost"      "@L_BALANCE_BUILDINGS_2_SUB_+2"   1            14           |
+15           "Buildings"          ""                                 "BuildingUpgrades"   "Cost"      "@L_BALANCE_BUILDINGS_2_SUB_+3"   1            15           |
+16           "Buildings"          ""                                 "BuildingRepairs"    "Cost"      "@L_BALANCE_BUILDINGS_2_SUB_+4"   1            16           |
+17           ""                   ""                                 ""                   ""          ""                                0            17           |
+18           "Wages"              "@L_BALANCE_WAGES"                 ""                   ""          ""                                0            22           |
+19           "Wages"              ""                                 "LaborWages"         "Cost"      "@L_BALANCE_WAGES_SUB_+0"         1            23           |
+20           "Wages"              ""                                 "LaborHansel"        "Cost"      "@L_BALANCE_WAGES_SUB_+1"         1            24           |
+21           "Wages"              ""                                 "LaborBonus"         "Cost"      "@L_BALANCE_WAGES_SUB_+2"         1            25           |
+22           ""                   ""                                 ""                   ""          ""                                0            26           |
+23           "Credits"            "@L_BALANCE_CREDITS"               ""                   ""          ""                                0            27           |
+24           "Credits"            ""                                 "CreditsTaken"       "Income"    "@L_BALANCE_CREDITS_1"            1            28           |
+25           "Credits"            ""                                 "CreditsTaken"       "Cost"      "@L_BALANCE_CREDITS_1"            1            29           |
+26           "Credits"            ""                                 "CreditsInterest"    "Cost"      "@L_BALANCE_CREDITS_2_SUB_+0"     1            30           |
+27           "Credits"            ""                                 "CreditsRepaid"      "Cost"      "@L_BALANCE_CREDITS_2_SUB_+1"     1            31           |
+28           ""                   ""                                 ""                   ""          ""                                0            32           |
+29           "Office"             "@L_BALANCE_OFFICE"                ""                   ""          ""                                0            33           |
+30           "Office"             ""                                 "Office"             "Income"    "@L_BALANCE_OFFICE_SUB_+0"        1            34           |
+31           ""                   ""                                 ""                   ""          ""                                0            35           |
+32           "OtherIncome"        "@L_BALANCE_STUFF_1"               ""                   ""          ""                                0            36           |
+33           "OtherIncome"        ""                                 "IncomeBribes"       "Income"    "@L_BALANCE_STUFF_1_SUB_+0"       1            37           |
+34           "OtherIncome"        ""                                 "IncomeIndulgence"   "Income"    "@L_BALANCE_STUFF_1_SUB_+1"       1            38           |
+35           "OtherIncome"        ""                                 "IncomeEducation"    "Income"    "@L_BALANCE_STUFF_1_SUB_+2"       1            39           |
+36           "OtherIncome"        ""                                 "IncomeThiefs"       "Income"    "@L_BALANCE_STUFF_1_SUB_+3"       1            40           |
+37           "OtherIncome"        ""                                 "IncomeRobbers"      "Income"    "@L_BALANCE_STUFF_1_SUB_+4"       1            41           |
+38           "OtherIncome"        ""                                 "IncomeOther"        "Income"    "@L_BALANCE_STUFF_1_SUB_+5"       1            42           |
+39           ""                   ""                                 ""                   ""          ""                                0            43           |
+40           "OtherExpenses"      "@L_BALANCE_STUFF_2"               ""                   ""          ""                                0            44           |
+41           "OtherExpenses"      ""                                 "CostBribes"         "Cost"      "@L_BALANCE_STUFF_2_SUB_+1"       1            45           |
+42           "OtherExpenses"      ""                                 "CostPunishment"     "Cost"      "@L_BALANCE_STUFF_2_SUB_+2"       1            46           |
+43           "OtherExpenses"      ""                                 "CostIndulgence"     "Cost"      "@L_BALANCE_STUFF_2_SUB_+3"       1            47           |
+44           "OtherExpenses"      ""                                 "CostEducation"      "Cost"      "@L_BALANCE_STUFF_2_SUB_+4"       1            48           |
+45           "OtherExpenses"      ""                                 "CostAdministration" "Cost"      "@L_BALANCE_STUFF_2_SUB_+5"       1            49           |
+46           "OtherExpenses"      ""                                 "CostSocial"         "Cost"      "@L_BALANCE_STUFF_2_SUB_+6"       1            50           |
+47           "OtherExpenses"      ""                                 "CostThiefs"         "Cost"      "@L_BALANCE_STUFF_2_SUB_+7"       1            51           |
+48           "OtherExpenses"      ""                                 "CostRobbers"        "Cost"      "@L_BALANCE_STUFF_2_SUB_+8"       1            52           |

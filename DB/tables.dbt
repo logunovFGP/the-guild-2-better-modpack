@@ -48,7 +48,6 @@ Data:
 72           "AIScripts"                     | 
 73           "Sentences"                     | 
 74           "VegetationGroups"              | 
-75           "Text"                          | 
 76           "AnimationEffects"              | 
 77           "MeasureType"                   | 
 78           "AICharacterType"               | 
@@ -77,3 +76,5 @@ Data:
 102          "Lordship"                      | 
 103          "BuildingToItems"               | 
 104          "ItemsToMarket"                 | 
+105          "BalanceCategories"             |
+106 		 "Achievements"                  |

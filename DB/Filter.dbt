@@ -462,3 +462,5 @@ Data:
 2071   "IsMyTavern"   "__F((Object.Type==Building)AND(Object.IsType(4))AND(Object.BelongsToMe()))"   |
 2072   "ShowBalance" "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsClass(2))AND(Object.IsType(38)))" | 
 2073   "ShowManageStorage" "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsClass(2)))" | 
+2074   "BuildingHasTransactions"   "__F((Object.CanBeControlled())AND (Object.IsClass(2))AND (Object.BuildingHasTransactions()))"   |
+2075   "CanReflectHeritage"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(111)))"   |
