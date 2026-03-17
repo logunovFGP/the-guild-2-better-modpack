@@ -102,6 +102,7 @@ function Run()
 	end
 	
 	ms_084_attendmass_AffectFaith()
+	achievements_Unlock("", "MISC_ATTEND_MASS")
 	Sleep(0.5)
 	chr_GainXP("", GetData("BaseXP"))
 end

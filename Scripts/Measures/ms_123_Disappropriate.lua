@@ -48,6 +48,7 @@ function Run()
 	MsgNewsNoWait("Victim","","","politics",-1,
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_HEAD",
 				"@L_PRIVILEGES_DISAPPROPRIATE_MSG_VICTIM_BODY_+0", GetID(""), GetID("Destination"), GetNobilityTitleLabel(GetNobilityTitle("")))
+	achievements_Unlock("", "PRIVILEGE_DISAPPROPRIATE")
 	
 end
 

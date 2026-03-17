@@ -207,6 +207,7 @@ function Run()
 	StartSingleShotParticle("particles/change_effect.nif", "ParticleSpawnPos", 1, 2.0)
 	SimSetClass("Destination", GL_CLASS_CHISELER)
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_MILITARY_TRAINING")
 	StopMeasure()
 end
 

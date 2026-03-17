@@ -52,6 +52,7 @@ function Run()
 	chr_GainXP("", GetData("BaseXP"))
 	Sleep(0.25)
 	chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_NORMAL)
+	achievements_Unlock("", "PRIVILEGE_REPEAL_IMMUNITY")
 	
 end
 

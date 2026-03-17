@@ -57,6 +57,8 @@ function Run()
 			end	
 
 			xp_CommitCrime("", "Destination")
+			achievements_IncrementStat("Owner", "STAT_FINISH_OFF")
+			if SimGetOfficeLevel("Destination") == 7 then achievements_Unlock("Owner", "MISC_KINGSLAYER") end
 			SetProperty("Destination", "UnconsciousKill", 1)
 			Kill("Destination")	-- must be the last command in this measure, because the kill of a measure object restarts the measure
 		end

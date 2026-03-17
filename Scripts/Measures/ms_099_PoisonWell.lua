@@ -21,6 +21,7 @@ function Run()
 	AddImpact("Destination", "polluted", 1, duration)
 	SetState("Destination", STATE_CONTAMINATED, true)
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "CRIME_POISON_WELL")
 end
 
 

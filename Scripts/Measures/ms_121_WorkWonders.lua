@@ -64,6 +64,7 @@ function Run()
 		end
 	end	
 	Sleep(2)
+	achievements_Unlock("", "PRIVILEGE_WORK_WONDERS")
 end
 
 function CleanUp()

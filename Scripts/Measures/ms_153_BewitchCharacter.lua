@@ -249,6 +249,7 @@ function Run()
 			chr_ModifyFavor("Destination", "", FavorWon)
 			AddImpact("Destination", "ReceivedBewitch", 1, 6)
 			gameplayformulas_CourtingProgress("", CourtingProgress) 
+			achievements_Unlock("", "MISC_BEWITCH")
 		end
 	end
 	
@@ -318,6 +319,7 @@ function Run()
 			TimeAnim = PlayAnimationNoWait("Destination", AnimType)
 			Sleep(TimeAnim-1.5)
 			SetMeasureRepeat(TimeUntilRepeat)	
+			achievements_Unlock("", "MISC_BEWITCH")
 			
 			-- forget the evidences
 			-- for testing purposes always forget the best evidence

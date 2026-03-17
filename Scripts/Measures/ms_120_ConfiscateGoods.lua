@@ -63,6 +63,7 @@ function Run()
 	MsgNewsNoWait("Destination", "", "", "politics", -1,
 				"@L_PRIVILEGES_CONFISCATEGOODS_MSG_VICTIM_HEAD_+0",
 				"@L_PRIVILEGES_CONFISCATEGOODS_MSG_VICTIM_BODY_+0", GetID(""), GetID("Destination"))
+	achievements_Unlock("", "PRIVILEGE_CONFISCATE_GOODS")
 				
 end
 

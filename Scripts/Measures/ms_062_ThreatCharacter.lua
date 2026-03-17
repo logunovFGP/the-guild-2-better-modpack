@@ -63,6 +63,7 @@ function Run()
 			GetDynasty("", "Dyn")
 			dyn_BlockEvilMeasures("Dyn", DynID, DurationHours)
 			chr_GainXP("", GetData("BaseXP"))
+			achievements_Unlock("", "CRIME_THREAT")
 			MsgNewsNoWait("", "Destination", "", "intrigue", -1,
 						"@L_INTRIGUE_THREAT_CHARACTER_MSG_SUCCESS_HEAD", 
 						"@L_INTRIGUE_THREAT_CHARACTER_MSG_SUCCESS_BODY", DynID, Gametime2Total(GetGametime()+DurationHours))

@@ -66,6 +66,7 @@ function Run()
 		end		
 		
 		SetProperty("","EduLevel",EDULEVEL_UNIVERSITY1)
+		achievements_Unlock("", "MISC_ATTEND_UNIVERSITY")
 		
 		-- Preparations for the certificate
 		GetSettlement("", "Settlement")
@@ -118,6 +119,7 @@ function Run()
 		
 		SetProperty("","EduLevel",EDULEVEL_UNIVERSITY2)
 		SetProperty("","IsADoctor",1)
+		achievements_Unlock("", "MISC_ATTEND_UNIVERSITY")
 		
 		-- Preparations for the certificate
 		GetSettlement("", "Settlement")

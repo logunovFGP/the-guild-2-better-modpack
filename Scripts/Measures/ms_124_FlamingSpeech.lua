@@ -35,6 +35,7 @@ function Run()
 	
 	SetMeasureRepeat(TimeOut)
 	MeasureSetNotRestartable()
+	achievements_Unlock("", "PRIVILEGE_FLAMING_SPEECH")
 	
 	while GetGametime() < EndTime do
 		MsgSay("", "@L_PRIVILEGES_FLAMINGSPEECH")

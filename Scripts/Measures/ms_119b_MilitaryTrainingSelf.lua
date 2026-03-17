@@ -243,6 +243,7 @@ function Run()
 	StartSingleShotParticle("particles/change_effect.nif", "ParticleSpawnPos", 1, 2.0)
 	
 	SimSetClass("", GL_CLASS_CHISELER)
+	achievements_Unlock("", "PRIVILEGE_MILITARY_TRAINING")
 	ms_119b_militarytrainingself_Terminate(TrainerID)
 	StopMeasure()
 end

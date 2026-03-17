@@ -38,6 +38,7 @@ function Run()
 				SimSetBehavior("Guard"..i, "RoyalGuardDuty")
 			end
 		end
+		achievements_Unlock("", "PRIVILEGE_ROYAL_GUARD")
 	end
 end
 

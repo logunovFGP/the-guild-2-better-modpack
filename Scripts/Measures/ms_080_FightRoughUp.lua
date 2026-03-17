@@ -65,6 +65,7 @@ function Run()
 							"@L_BATTLE_FIGHTROUGHUP_MSG_SUCCESS_VICTIM_HEAD_+0",
 							"@L_BATTLE_FIGHTROUGHUP_MSG_SUCCESS_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 			StopAction("slugging", "")
+			achievements_Unlock("", "CRIME_ORDER_SLUGGING")
 		end
 	end
 	

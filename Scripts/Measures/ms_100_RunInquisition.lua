@@ -179,6 +179,7 @@ function Run()
 	Kill("Destination")
 	Sleep(1)
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_RUN_INQUISITION")
 	--DestroyCutscene("cutscene")
 	
 	for i=0,NumExecutioners do

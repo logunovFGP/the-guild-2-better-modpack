@@ -12,6 +12,7 @@
 function Run()
 	MeasureSetNotRestartable()
 	chr_StartRage("")
+	achievements_Unlock("", "PRIVILEGE_RAGE")
 end
 
 -- -----------------------

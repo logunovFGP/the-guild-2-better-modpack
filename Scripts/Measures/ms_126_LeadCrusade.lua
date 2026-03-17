@@ -176,6 +176,7 @@ function Run()
 	
 	local xp = GetData("BaseXP")+25*Skill
 	chr_GainXP("", xp)
+	achievements_Unlock("", "PRIVILEGE_LEAD_CRUSADE")
 	
 	if not f_MoveTo("", "Destination", GL_MOVESPEED_WALK) then
 		StopMeasure()

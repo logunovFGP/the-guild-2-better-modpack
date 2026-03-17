@@ -183,6 +183,7 @@ function Run()
 				Gametime2Total(GetGametime()))
 	
 	SetProperty("", "EduLevel", EDULEVEL_SCHOOL)
+	achievements_Unlock("", "MISC_ATTEND_SCHOOL")
 	SimBeamMeUp("", "DestPos", false)
 	SetState("", STATE_INVISIBLE, false)
 	xp_School("")
