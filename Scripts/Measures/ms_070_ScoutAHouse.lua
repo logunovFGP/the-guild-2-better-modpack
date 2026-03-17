@@ -104,6 +104,8 @@ function Run()
 			"@L_THIEF_070_SCOUTAHOUSE_MSG_ACTOR_BODY_+0", GetID("Destination"), ProtectionLabel,ValueLabel)
 	end
 
+	achievements_Unlock("Owner", "CRIME_SCOUT_HOUSE")
+
 	--stop hiding
 	ResetProcessProgress("")
 	SetState("", STATE_HIDDEN, false)

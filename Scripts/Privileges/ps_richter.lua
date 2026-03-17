@@ -16,6 +16,8 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 	
+	achievements_Unlock("", "POLITICS_RICHTER")
+	
 	-- Remove the "HasRepealedImmunity" impact
 	if GetImpactValue("", "HasRepealedImmunity") ~= 0 then
 		RemoveImpact("", "HasRepealedImmunity")

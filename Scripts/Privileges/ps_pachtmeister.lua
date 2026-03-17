@@ -15,6 +15,7 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_HEAD_+0",
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
+	achievements_Unlock("", "POLITICS_PACHTMEISTER")
 	chr_SetOfficeImpactList( "Office", ps_pachtmeister_GetPrivilegeList() )
 	AddObjectDependendImpact("", GetID("Office"), "bargaining", 2)
 end

@@ -138,6 +138,9 @@ function Run()
 			feedback_MessageCharacter("",
 				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_SUCCESS_HEAD_+0",
 				"@L_THIEF_069_DEMANDRANSOM_RANSOMDEMAND_ACTOR_SUCCESS_BODY_+0", GetID("Victim"), fMoney)
+			if achievements_isValidSim("", "CRIME_DEMAND_RANSOM") then
+				UpdateStat("STAT_RANSOM_MONEY", GetStat("STAT_RANSOM_MONEY") + math.floor(fMoney))
+			end
 			if not MeasureRun("Base", nil, "LetAbducteeFree", false) then
 				SetProperty("Victim", "ForceFree", 1)
 			end

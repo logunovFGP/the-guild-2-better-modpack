@@ -84,6 +84,7 @@ function Run()
 	feedback_MessageWorkshop("Destination",
 		"@L_PRIVILEGES_101_INSPECTBUSINESS_MSG_DESTINATION_HEAD_+0",
 		"@L_PRIVILEGES_101_INSPECTBUSINESS_MSG_DESTINATION_BODY_+0", GetID("Destination"))
+	achievements_Unlock("", "PRIVILEGE_INSPECT_BUSINESS")
 	
 	
 	--SetMeasureRepeat(TimeOut)

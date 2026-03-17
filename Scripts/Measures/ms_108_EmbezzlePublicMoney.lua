@@ -41,6 +41,7 @@ function Run()
 	SetMeasureRepeat(TimeOut)
 	chr_SpendMoney("city", money, "CostThiefs")
 	chr_CreditMoney("", money, "IncomeThiefs")
+	achievements_Unlock("Owner", "PRIVILEGE_EMBEZZLE")
 	
 	feedback_MessageCharacter("Owner",
 						"@L_PRIVILEGES_108_EMBEZZLEPUBLICMONEY_SUCCESS_HEAD_+0",

@@ -223,6 +223,9 @@ function Run()
 		
 		--do the favor stuff
 		chr_ModifyFavor("Destination", "", ModifyFavor)
+		if achievements_isValidSim("Owner", "CRIME_BRIBE") then
+			UpdateStat("STAT_BRIBE_MONEY", GetStat("STAT_BRIBE_MONEY") + math.floor(Money))
+		end
 		chr_GainXP("", GetData("BaseXP"))
 		
 		--show message

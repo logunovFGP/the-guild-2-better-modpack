@@ -60,6 +60,7 @@ function Run()
 	SetRepeatTimer("Workbuilding", GetMeasureRepeatName(), TimeOut)
 
 	AddImpact("Destination", "sale_freezed", 1, duration)
+	achievements_Unlock("", "PRIVILEGE_IMPOSE_SALES_FREEZE")
 	GetSettlement("", "CityAlias")
 	local Elapse = GetGametime() + duration
 	local ID = "Event"..GetID("")

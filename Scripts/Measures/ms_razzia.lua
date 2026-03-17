@@ -152,6 +152,7 @@ MeasureSetNotRestartable()
 		"@L_MERCENARY_RAZZIA_MSG_END_BODY_+3",
 		GetID("Destination"), GetID(""))
 	chr_GainXP("",GetData("BaseXP"))
+	achievements_Unlock("", "CRIME_RAZZIA")
 		
 
 	f_ExitCurrentBuilding("")

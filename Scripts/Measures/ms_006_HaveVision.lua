@@ -98,6 +98,7 @@ function Run()
 		
 			AddItems("", ItemToGet, 1, INVENTORY_STD)
 			chr_GainXP("", GetData("BaseXP"))
+			achievements_Unlock("", "MISC_HAVE_VISION")
 			feedback_MessageWorkshop("","@L_ALCHEMIST_006_HAVEVISION_START_HEAD_+0",
 								"@L_ALCHEMIST_006_HAVEVISION_START_BODY_+0", ItemGetLabel(ItemToGet, 1))
 		--vision failed

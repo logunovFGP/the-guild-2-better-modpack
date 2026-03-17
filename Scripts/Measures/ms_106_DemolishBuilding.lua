@@ -70,6 +70,7 @@ function Run()
 		end
 	end
 	chr_GainXP("",GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_DEMOLISH_BUILDING")
 	ModifyHP("Destination",-GetHP("Destination"),false)
 
 end

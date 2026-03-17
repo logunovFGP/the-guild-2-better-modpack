@@ -60,6 +60,9 @@ function Run()
 				if ai_GetWorkBuilding("Actor", GL_BUILDING_TYPE_HOSPITAL, "QuackHospital") then
 					economy_UpdateBalance("QuackHospital", "Service", MoneyToGet)
 				end
+				if achievements_isValidSim("Actor", "MISC_QUACKSALVER") then
+					UpdateStat("STAT_QUACKSALVER", GetStat("STAT_QUACKSALVER") + math.floor(MoneyToGet))
+				end
 				
 				if dyn_IsLocalPlayer("Actor") then
 					ShowOverheadSymbol("Actor", false, true, 0, "%1t", MoneyToGet)

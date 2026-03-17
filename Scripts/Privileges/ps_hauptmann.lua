@@ -20,6 +20,8 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
+	achievements_Unlock("", "POLITICS_HAUPTMANN")
+
 	chr_SetOfficeImpactList("Office", ps_hauptmann_GetPrivilegeList() )
 end
 

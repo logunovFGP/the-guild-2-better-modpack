@@ -54,7 +54,8 @@ function Run()
 
 		MsgNewsNoWait("All", "", "", "politics", -1,
 			"@L_PRIVILEGES_110_SETCHURCHTITHE_MSG_HEADLINE_+0",
-			"@L_PRIVILEGES_110_SETCHURCHTITHE_MSG_BODY", GetID(""), TaxValue)	
+			"@L_PRIVILEGES_110_SETCHURCHTITHE_MSG_BODY", GetID(""), TaxValue)
+		achievements_Unlock("", "PRIVILEGE_SET_TITHE")	
 	end
 end
 

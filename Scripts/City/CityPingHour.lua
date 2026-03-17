@@ -641,6 +641,8 @@ function CheckAlderman()
 				label = label.."_FEMALE_+0"
 			end
 
+			achievements_Unlock("New", "POLITICS_ALDERMAN")
+
 			GetSettlement("New", "settlement")
 			local fameleveldyn = "@L_GUILDHOUSE_FAME_DYNASTY_+"..dyn_GetFameLevel("New")
 

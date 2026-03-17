@@ -154,6 +154,7 @@ function Normal()
 				"@L_DUELL_1_DIALOGMSG_INSULTER_YES_+0",GetID(""),GetID("Destination"),ReplacementLabel)
 		
 		-- initialize the cutscene: 
+		achievements_Unlock("Owner", "SOCIAL_INSULT_SOMEONE")
 		CreateCutscene("Duel","my_duel")
 		CopyAliasToCutscene("Destination","my_duel","challenger")
 		CopyAliasToCutscene("","my_duel","challenged")

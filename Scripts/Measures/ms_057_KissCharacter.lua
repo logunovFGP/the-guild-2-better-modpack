@@ -162,6 +162,9 @@ function End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgres
 	
 	if not Started then
 		chr_ModifyFavor("Destination", "", FavorWon)
+		if achievements_isValidSim("", "MISC_AMAZING_KISSER") then
+			UpdateStat("STAT_KISS_TOTAL", GetStat("STAT_KISS_TOTAL") + math.floor(FavorWon))
+		end
 		
 		if IsCourtLover then 
 			Sleep(0.4)
@@ -175,6 +178,9 @@ function End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgres
 	else
 		if FavorWon > 0 then -- success
 			chr_ModifyFavor("Destination", "", FavorWon)
+			if achievements_isValidSim("", "MISC_AMAZING_KISSER") then
+				UpdateStat("STAT_KISS_TOTAL", GetStat("STAT_KISS_TOTAL") + math.floor(FavorWon))
+			end
 			
 			if IsCourtLover then 
 				Sleep(0.4)
@@ -193,6 +199,9 @@ function End(Started, IsCourtLover, IsLover, MinFavor, FavorWon, CourtingProgres
 			chr_GainXP("", GL_EXP_GAIN_SIMPLE) -- gain XP for success
 		else 
 			chr_ModifyFavor("Destination", "", FavorWon)
+			if achievements_isValidSim("", "MISC_AMAZING_KISSER") then
+				UpdateStat("STAT_KISS_TOTAL", GetStat("STAT_KISS_TOTAL") + math.floor(FavorWon))
+			end
 			SetData("Fail", 1)
 			
 			if IsCourtLover then 

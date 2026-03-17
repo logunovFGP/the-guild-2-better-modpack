@@ -266,6 +266,7 @@ function Run()
 					end
 
 					cured = true
+					achievements_IncrementStat("Owner", "STAT_PLAGUE_CURED")
 
 					Sleep(1)
 
@@ -288,6 +289,7 @@ function Run()
 			else
 				MoveSetActivity("SickSim0")
 				AddImpact("SickSim0", "Resist", 1, 6)
+				achievements_IncrementStat("Owner", "STAT_SICK_HEALED")
 			end
 
 			if HasProperty("SickSim0", "WaitingForTreatment") then

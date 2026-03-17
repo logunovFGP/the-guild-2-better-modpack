@@ -128,6 +128,7 @@ function Run()
 		SimGetWorkingPlace("", "WorkingPlace")
 		BuildingGetOwner("WorkingPlace", "SimOwner")	
 		xp_CaptureBuilding("SimOwner", GetData("BaseXP"), BuildingGetLevel("InsideBuilding"))
+		achievements_Unlock("SimOwner", "CRIME_CAPTURE_BUILDING")
 		Evacuate("InsideBuilding", true)
 	end
 	StopMeasure()

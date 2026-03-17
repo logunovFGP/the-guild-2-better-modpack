@@ -1064,6 +1064,9 @@ function GoToTavern()
 					local Tip = math.floor(TavernLevel * (5 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
 					chr_CreditMoney("Destination", Tip, "WaresSold")
 					economy_UpdateBalance("Destination", "Service", Tip)
+					if BuildingGetOwner("Destination", "TavernOwner") then
+						achievements_IncrementStat("TavernOwner", "STAT_SERVED_CUSTOMERS")
+					end
 				end
 			else
 				local Tip = 3 * chr_GetRank("") + 1
@@ -1712,6 +1715,9 @@ function GoToDivehouse()
 					local Tip = math.floor(TavernLevel * (10 + (Rand(20)+1) * (TavernAttractivity + basicvalue)))
 					chr_CreditMoney("Destination",Tip,"tip")
 					economy_UpdateBalance("Destination", "Service", Tip)
+					if BuildingGetOwner("Destination", "DivehouseOwner") then
+						achievements_IncrementStat("DivehouseOwner", "STAT_SERVED_CUSTOMERS")
+					end
 				end
 			end
 			verweile = verweile - 1
@@ -1877,6 +1883,9 @@ function ReturnACredit()
 				SetProperty("Destination","KreditKonto",bankkonto)
 				chr_CreditMoney("Destination",ecost,"tip")
 				economy_UpdateBalance("Destination", "Service", ecost)
+			end
+			if achievements_isValidSim("Destination", "ECONOMY_INTEREST_500K") then
+				UpdateStat("STAT_INTEREST_EARNED", GetStat("STAT_INTEREST_EARNED") + ecost)
 			end
 
 			if HasProperty("","SchuldenMeng") then

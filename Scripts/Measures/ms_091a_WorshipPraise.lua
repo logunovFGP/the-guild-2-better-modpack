@@ -31,6 +31,7 @@ function Run()
 			end
 		end
 		chr_ModifyFavor("destination", "MrChurch", (GL_FAVOR_MOD_TINY+PreacherSkill))
+		achievements_IncrementStat("", "STAT_SERMONS_GIVEN")
 	end
 end
 

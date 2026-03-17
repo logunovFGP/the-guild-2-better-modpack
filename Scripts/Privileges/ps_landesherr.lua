@@ -16,6 +16,8 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
+	achievements_Unlock("", "POLITICS_LANDESHERR")
+
 	chr_SetOfficeImpactList( "Office", ps_landesherr_GetPrivilegeList() )
 	RemoveImpact("", "CanApplyForEpicOfficeTimed")
 end

@@ -126,6 +126,7 @@ function Run()
 	SetData("PositionModified", 1)
 	PositionModify("VictimPosition", 0, 70, 0)
 	CarryObject("", "weapons/club_01.nif", false)
+	achievements_Unlock("", "PRIVILEGE_TORTURE")
 
 	for i=1, 10 do
 		PlayAnimationNoWait("Destination", "torture_victim")

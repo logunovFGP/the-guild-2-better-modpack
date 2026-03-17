@@ -113,6 +113,7 @@ function Run()
 	
 	SetMeasureRepeat(TimeOut)
 --	DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
+	achievements_Unlock("Owner", "CRIME_SABOTAGE")
 	
 	local BuildingHP = GetMaxHP("Destination")
 	local Damage = BuildingHP*(InitDamage/100)

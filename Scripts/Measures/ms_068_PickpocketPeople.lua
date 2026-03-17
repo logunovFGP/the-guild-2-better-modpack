@@ -118,6 +118,9 @@ function Run()
 						economy_UpdateBalance("WorkBuilding", "Service", VictimSpendValue)
 						--for the mission
 						mission_ScoreCrime("", VictimSpendValue)
+						if achievements_isValidSim("Owner", "CRIME_PICKPOCKET_TOTAL") then
+							UpdateStat("STAT_PICKPOCKET_MONEY", GetStat("STAT_PICKPOCKET_MONEY") + math.floor(VictimSpendValue))
+						end
 						-- Play a coin sound for the local player
 						if dyn_IsLocalPlayer("") then
 							PlaySound3D("", "Effects/coins_to_moneybag+0.wav", 1.0)

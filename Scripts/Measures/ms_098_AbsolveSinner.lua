@@ -53,6 +53,7 @@ function Run()
 	
 	SetMeasureRepeat(TimeOut)
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_ABSOLVE_SINNER")
 	-- Remove All Evidences against Destination
 	SimGetCrimeList("destination", "my_crimes")
 	local i

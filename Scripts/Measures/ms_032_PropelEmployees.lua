@@ -106,6 +106,7 @@ function Run()
 	local XPAmount = GetData("BaseXP")
 	XPAmount = XPAmount * Count
 	chr_GainXP("", XPAmount)
+	achievements_Unlock("", "MISC_PROPEL_EMPLOYEES")
 	Sleep(0.5)
 	StopMeasure()
 end

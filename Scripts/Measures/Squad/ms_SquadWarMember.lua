@@ -45,6 +45,7 @@ function Run()
 							if not GetState("Target", STATE_UNCONSCIOUS) then
 								if not GetState("Victim",STATE_CUTSCENE) then
 									BattleJoin("", "Target", false, true)
+									achievements_Unlock("", "MISC_PARTICIPATE_WAR")
 								end
 							end
 --						SetData("DontLeave", 1)
@@ -106,6 +107,7 @@ function Phase1()
 				
 					SetProperty("Squad", "Phase", 2)
 					SetProperty("Squad", "TargetID", GetID("Build"))
+					achievements_Unlock("", "MISC_PARTICIPATE_WAR")
 
 					SetData("DontLeave", 1)
 					if not MeasureRun("", "Build", "AttackEnemy", true) then
@@ -131,6 +133,7 @@ function Phase1()
 		
 		SetProperty("Squad", "Phase", 2)
 		SetProperty("Squad", "TargetID", GetID("Victim"))
+		achievements_Unlock("", "MISC_PARTICIPATE_WAR")
 		SetData("DontLeave", 1)
 		if not GetState("Victim", STATE_CUTSCENE) then
 			if not MeasureRun("", "Victim", "AttackEnemy", true) then

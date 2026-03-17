@@ -49,7 +49,8 @@ function Run()
 				SetProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn,1)
 				feedback_MessageCharacter("",
 					"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_HEAD_+0",
-					"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_BODY_+0",GetID(""),GetID("Destination"))	
+					"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_BODY_+0",GetID(""),GetID("Destination"))
+				achievements_Unlock("", "CRIME_ORDER_SHADOWING")	
 			end
 		end
 		

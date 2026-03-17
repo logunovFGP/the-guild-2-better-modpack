@@ -173,6 +173,9 @@ function Run()
 									"@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_ACTOR_POS_ANSWER_HEAD_+0",
 									"@L_ROBBER_134_PRESSPROTECTIONMONEY_ACTION_MSG_ACTOR_POS_ANSWER_BODY_+0",
 									GetID("Destination"), fTotalMoney)
+			if achievements_isValidSim("MrRobber", "CRIME_PRESS_PROTECTION_MONEY") then
+				UpdateStat("STAT_PROTECTION_MONEY", GetStat("STAT_PROTECTION_MONEY") + math.floor(fTotalMoney))
+			end
 			
 			--force dynasty relations to neutral
 			DynastySetMinDiplomacyState("", "Destination", DIP_NEUTRAL, OwnerID, fMeasureDuration)

@@ -336,6 +336,9 @@ function Run()
 		feedback_MessageCharacter("Owner",
 							"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_HEAD_+0",
 							"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_BODY_+0", GetID("Destination"), Haul + HaulBonus )
+		if achievements_isValidSim("Owner", "CRIME_BURGLE_HOUSE") then
+			UpdateStat("STAT_BURGLE_MONEY", GetStat("STAT_BURGLE_MONEY") + math.floor(Haul + HaulBonus))
+		end
 		
 		feedback_MessageCharacter("Destination",
 							"@L_THIEF_066_BURGLEAHOUSE_MSG_VICTIM_SUCCESS_HEAD_+0",

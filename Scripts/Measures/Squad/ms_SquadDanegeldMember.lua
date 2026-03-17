@@ -165,6 +165,9 @@ function Danegeld()
 
 			chr_CreditMoney("MercOwner", money, "IncomeBribes")
 			economy_UpdateBalance("MyMercenarycamp", "Theft", money)
+			if achievements_isValidSim("MercOwner", "CRIME_COLLECT_TOLL") then
+				UpdateStat("STAT_TOLL_MONEY", GetStat("STAT_TOLL_MONEY") + math.floor(money))
+			end
 			IncrementXPQuiet("", 15)
 
 			PlayAnimationNoWait("", "fetch_store_obj_R")

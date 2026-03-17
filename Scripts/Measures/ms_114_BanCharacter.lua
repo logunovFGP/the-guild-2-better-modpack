@@ -107,6 +107,7 @@ function Run()
 	-- set pre banned impact
 	--AddImpact("Destination","prebanned",1,4)
 	AddImpact("Destination", "banned", 1, duration)
+	achievements_Unlock("", "PRIVILEGE_BAN")
 	
 	--modify the favor
 	local favormodify = GetFavorToSim("Destination","") - 5

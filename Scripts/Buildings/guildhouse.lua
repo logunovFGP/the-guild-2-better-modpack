@@ -325,6 +325,7 @@ function CheckGuildMasters()
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
 									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_PATRON_"..GenderLabel.."_+0")
+				achievements_Unlock("Winner", "POLITICS_GUILDMASTER")
 				
 			else
 				textArray[1] = "@L_GUILDHOUSE_MASTERLIST_PATRON_MALE_+0"
@@ -353,6 +354,7 @@ function CheckGuildMasters()
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
 									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_ARTISAN_"..GenderLabel.."_+0")
+				achievements_Unlock("Winner", "POLITICS_GUILDMASTER")
 				
 			else
 				textArray[3] = "@L_GUILDHOUSE_MASTERLIST_ARTISAN_MALE_+0"
@@ -381,6 +383,7 @@ function CheckGuildMasters()
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
 									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0")
+				achievements_Unlock("Winner", "POLITICS_GUILDMASTER")
 				
 			else
 				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_MALE_+0"
@@ -410,6 +413,7 @@ function CheckGuildMasters()
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
 									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0")
+				achievements_Unlock("Winner", "POLITICS_GUILDMASTER")
 				
 			else
 				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_MALE_+0"

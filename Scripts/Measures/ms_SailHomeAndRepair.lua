@@ -206,6 +206,9 @@ function Run()
 		if GetImpactValue("", "ShipMenMod") < (1 + Modifier) then	
 			AddImpact("", "ShipMenMod", 0.5, -1) -- 1 for normal, 1.50 for  cutlass, 2.00 for muskets
 		end
+		if GetImpactValue("", "ShipCannonMod") >= 2 and GetImpactValue("", "ShipHitpointMod") >= 2 and GetImpactValue("", "ShipMenMod") >= 2 then
+			achievements_Unlock("", "ROGUE_CARRACK_FULL_UPGRADES")
+		end
 	end
 	
 	if GetHPRelative("") < 1 then

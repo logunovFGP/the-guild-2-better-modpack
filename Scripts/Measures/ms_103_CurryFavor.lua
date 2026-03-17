@@ -70,6 +70,7 @@ function Run()
 	MsgSay("Destination", "@L_PRIVILEGES_103_CURRYFAVOR_DESTINATION_SUCCESS"..RhethoricType)
 	PlayAnimation("Destination", "bow")
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_CURRY_FAVOR")
 	MsgNewsNoWait("Destination","","","intrigue",-1,
 		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_HEAD_+0",
 		"@L_PRIVILEGES_103_CURRYFAVOR_MSG_VICTIM_BODY_+0", GetID("Destination"), GetID(""))

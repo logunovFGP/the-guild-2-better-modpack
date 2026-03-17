@@ -80,6 +80,7 @@ function Run()
 	
 	-- Add xp
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "CRIME_BLACKMAIL")
 	
 	StopAction("blackmail", "Owner")
 	

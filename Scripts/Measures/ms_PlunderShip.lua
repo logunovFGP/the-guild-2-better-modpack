@@ -205,6 +205,11 @@ function Run()
 		chr_CreditMoney("dynasty",Money,"IncomeRobbers")
 		ShowOverheadSymbol("", false, false, 0, "@L%1t",Money)
 	end
+	if Money > 0 then
+		if achievements_isValidSim("", "ROGUE_PLUNDER_SHIP") then
+			UpdateStat("STAT_PLUNDER_SHIP_MONEY", GetStat("STAT_PLUNDER_SHIP_MONEY") + math.floor(Money))
+		end
+	end
 	
 	--for the mission
 	mission_ScoreCrime("",Money)

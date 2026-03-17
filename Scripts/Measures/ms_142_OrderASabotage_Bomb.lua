@@ -105,6 +105,7 @@ function Run()
 	AddImpact("Destination","buildingbombedtoday",1,duration)
 	SetMeasureRepeat(TimeOut)
 	--DynastyMakeImpact("Owner", GL_IMPACT_AGGRESSIV, 1)
+	achievements_Unlock("Owner", "CRIME_SABOTAGE")
 	
 	
 	StartSingleShotParticle("particles/Explosion.nif", "SabotagePosition", 4,5)

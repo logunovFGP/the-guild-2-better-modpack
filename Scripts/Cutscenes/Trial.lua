@@ -43,6 +43,12 @@ function Start()
 		ListRemove("assessor_candidates", "assessor2")
 	end
 
+	achievements_IncrementStat("judge", "STAT_PARTICIPATE_TRIAL")
+	achievements_IncrementStat("accuser", "STAT_PARTICIPATE_TRIAL")
+	achievements_IncrementStat("accused", "STAT_PARTICIPATE_TRIAL")
+	achievements_IncrementStat("assessor1", "STAT_PARTICIPATE_TRIAL")
+	achievements_IncrementStat("assessor2", "STAT_PARTICIPATE_TRIAL")
+
 	-- schedule the event: event_alias, settlement, cutscene, function
 	-- we have 2 time slots for the event
 	
@@ -1106,6 +1112,7 @@ function Go()
 				MsgSay("judge", "@L_LAWSUIT_6_DECISION_C_JUDGEMENT_ANNOUNCEMENT_+7", GetID("accused"), PenaltyValue)
 				PenaltyType = PENALTY_DEATH
 				SetProperty("accused", "ExecutedBy", GetID("accuser"))
+				achievements_IncrementStat("judge", "STAT_KILLER_JUDGE")
 				--mission_ScoreAccuse("accuser")
 			end
 
@@ -1119,6 +1126,9 @@ function Go()
 			if PenaltyType>-1 then
 				CityAddPenalty("settlement", "accused", PenaltyType, PenaltyValue)
 				xp_ChargeCharacter("accuser", SentenceLevel)
+				if PenaltyType == PENALTY_DEATH then
+					achievements_Unlock("accuser", "MISC_IRON_CLAD_CASE")
+				end
 			else
 				DecisionForFinalComment = 0
 			end

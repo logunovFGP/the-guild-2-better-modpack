@@ -72,6 +72,7 @@ function Run()
 				end
 				SimSetReligion("Owner", Religion)
 				SimSetFaith("Owner", 20)
+				achievements_IncrementStat("Actor", "STAT_WIN_BELIEVERS")
 				GetPosition("Owner","ParticleSpawnPos")
 				--ShowOverheadSymbol("Owner",false,true,0,"@L_CHURCH_093_WINBELIEVERS_COMMENT_POSITIVE")
 				Sleep(1)

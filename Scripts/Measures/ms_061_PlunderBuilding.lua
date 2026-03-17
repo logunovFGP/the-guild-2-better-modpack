@@ -89,6 +89,9 @@ function Run()
 		chr_GainXP("", GetData("BaseXP"))		
 		--for the mission
 		mission_ScoreCrime("", Money)
+		if achievements_isValidSim("", "CRIME_PLUNDER_BUILDING") then
+			UpdateStat("STAT_PLUNDER_MONEY", GetStat("STAT_PLUNDER_MONEY") + math.floor(Money))
+		end
 		
 	else
 		MsgQuick("", "@L_BATTLE_061_PLUNDERBUILDING_FAILURES_+1")

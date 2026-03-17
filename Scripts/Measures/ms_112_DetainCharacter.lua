@@ -65,6 +65,7 @@ function Run()
 
 	feedback_MessageCharacter("Destination", "@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_HEAD_+0", "@L_PRIVILEGES_112_DETAINCHARACTER_MSG_VICTIM_BODY_+1", GetID(_Actor), GetID("Destination"), GetID("CityAlias"))
 	CityAddPenalty("CityAlias", "Destination", PENALTY_PRISON, mdata_GetDuration(MeasureID))
+	achievements_Unlock("", "PRIVILEGE_ARREST_SOMEONE")
 
 	LogMessage("@NAO "..GetName("Destination").." is serving a Prison penalty in "..GetName("CityAlias"))
 

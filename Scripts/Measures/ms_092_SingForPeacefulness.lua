@@ -23,6 +23,7 @@ function Run()
 	end
 
 	ms_092_singforpeacefulness_Pacify("", duration)
+	achievements_Unlock("", "CRIME_SING_PEACEFULNESS")
 	GetPosition("", "ParticleSpawnPosPrayer")
 	StartSingleShotParticle("particles/pray_glow.nif", "ParticleSpawnPosPrayer", 2, Time)
 	Sleep(Time)

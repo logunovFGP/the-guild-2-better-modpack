@@ -74,6 +74,7 @@ function Run()
 		MsgNewsNoWait("All","","","politics",-1,
 			"@L_PRIVILEGES_109_SETSEVERITYOFTHELAW_MSG_HEADLINE_+0",
 			"@L_PRIVILEGES_109_SETSEVERITYOFTHELAW_MSG_BODY",GetID(""),GetID("city"),Severity)
+		achievements_Unlock("", "PRIVILEGE_SEVERITY_OF_LAW")
 	end
 	StopMeasure()
 end

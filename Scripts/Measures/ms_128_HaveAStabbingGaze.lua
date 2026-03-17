@@ -25,6 +25,7 @@ function Run()
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil) then
 		StopMeasure()
 	end
+	achievements_Unlock("", "PRIVILEGE_STABBING_GAZE")
 	
 	Sleep(0.5)
 	PlayAnimationNoWait("", "threat")

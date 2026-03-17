@@ -106,6 +106,7 @@ function Run()
 	-- reset the timer for this action
 	SetRepeatTimer("", GetMeasureRepeatName2("DeliverTheFalseGauntlet"), TimeOut)
 	chr_GainXP("",GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_DELIVER_GAUNTLET")
 	-- let the other sim be locked/waiting for a moment
 	SimLock("Believer", 1)
 	

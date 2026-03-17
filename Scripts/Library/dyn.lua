@@ -488,6 +488,7 @@ function AddFame(SimAlias, Amount)
 	-- new family fame
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "Fame", (fame+Amount))
+		if GetProperty("family", "Fame") >= 25 then achievements_Unlock(SimAlias, "DYNASTY_FAME") end
 	end
 	
 	-- save personal fame
@@ -567,6 +568,7 @@ function AddImperialFame(SimAlias, Amount)
 	
 	if GetDynasty(SimAlias, "family") then
 		SetProperty("family", "ImperialFame", (fame+Amount))
+		if GetProperty("family", "ImperialFame") >= 10 then achievements_Unlock(SimAlias, "DYNASTY_IMPERIAL_FAME") end
 	end
 end
 

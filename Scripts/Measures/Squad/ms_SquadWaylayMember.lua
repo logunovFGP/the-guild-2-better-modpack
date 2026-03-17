@@ -377,6 +377,7 @@ function Plunder()
 		--for the mission
 		mission_ScoreCrime("dynasty", ItemValue)
 	end
+	achievements_IncrementStat("", "STAT_WAYLAY_COUNT")
 	
 	StopAction("plunder", "")
 	RemoveProperty("", "DontLeave")

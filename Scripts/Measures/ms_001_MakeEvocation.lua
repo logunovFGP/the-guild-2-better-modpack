@@ -170,6 +170,7 @@ function Success(item1, item2)
 	AddItems("", item2, 1)
 	MsgNewsNoWait("", "Building", "", "intrigue", -1, "@L_ALCHEMIST_001_MAKEEVOCATION_GOLDSUCCESS_HEAD_+0", "@L_ALCHEMIST_001_MAKEEVOCATION_GOLDSUCCESS_BODY_+1", ItemGetLabel(item1, 1), ItemGetLabel(item2, 1))
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "MISC_MAKE_EVOCATION")
 end
 
 function SuccessGold(item1, gold)
@@ -180,6 +181,7 @@ function SuccessGold(item1, gold)
 	Sleep(0.3)
 	MsgNewsNoWait("", "Building", "", "intrigue", -1, "@L_ALCHEMIST_001_MAKEEVOCATION_GOLDSUCCESS_HEAD_+0", "@L_ALCHEMIST_001_MAKEEVOCATION_GOLDSUCCESS_BODY_+0", ItemGetLabel(item1, 1), gold)
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "MISC_MAKE_EVOCATION")
 end
 
 function Nothing()

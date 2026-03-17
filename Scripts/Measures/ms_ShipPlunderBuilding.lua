@@ -73,6 +73,9 @@ function Run()
 		
 		--for the mission
 		mission_ScoreCrime("",Money)
+		if achievements_isValidSim("", "ROGUE_RAID_BUILDING") then
+			UpdateStat("STAT_RAID_BUILDING_MONEY", GetStat("STAT_RAID_BUILDING_MONEY") + math.floor(Money))
+		end
 		SetMeasureRepeat(TimeOut)
 	else
 		MsgQuick("", "@L_BATTLE_061_PLUNDERBUILDING_FAILURES_+1")

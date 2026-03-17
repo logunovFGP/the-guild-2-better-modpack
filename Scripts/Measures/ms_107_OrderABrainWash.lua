@@ -129,6 +129,7 @@ function Run()
 	end
 	
 	Sleep(0.5)
+	achievements_Unlock("", "PRIVILEGE_BRAINWASH")
 	
 	--start brainwashing
 	local DestinationGender = (SimGetGender("Destination"))

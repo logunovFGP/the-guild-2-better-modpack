@@ -16,6 +16,8 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
+	achievements_Unlock("", "POLITICS_FELDHERR")
+
 	chr_SetOfficeImpactList( "Office", ps_feldherr_GetPrivilegeList() )
 	RemoveImpact("","CanApplyForEpicOfficeTimed")
 	-- Feldherr special case because the functionality can not be mapped via the impact-functionality

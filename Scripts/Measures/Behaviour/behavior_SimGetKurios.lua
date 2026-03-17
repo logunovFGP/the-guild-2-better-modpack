@@ -39,6 +39,9 @@ function Run()
 		chr_CreditMoney("Actor", getbeg, "Offering")
 		economy_UpdateBalance("Juggler", "Service", getbeg)
 		IncrementXPQuiet("Actor", 5)
+		if achievements_isValidSim("Actor", "MISC_TELL_FORTUNE") then
+			UpdateStat("STAT_TAROT_MONEY", GetStat("STAT_TAROT_MONEY") + getbeg)
+		end
 
 		if dyn_IsLocalPlayer("Actor") then
 			ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
@@ -105,6 +108,9 @@ function Run()
    	economy_UpdateBalance("Juggler", "Service", getbeg)
 		IncrementXPQuiet("Actor", 5)
 		IncrementXPQuiet("Owner", 20)
+		if achievements_isValidSim("Actor", "MISC_CRYSTAL_BALL") then
+			UpdateStat("STAT_CRYSTAL_BALL_MONEY", GetStat("STAT_CRYSTAL_BALL_MONEY") + getbeg)
+		end
 		
 		if dyn_IsLocalPlayer("Actor") then
 			ShowOverheadSymbol("Actor",false,true,0,"%1t",getbeg)

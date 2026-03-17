@@ -91,6 +91,7 @@ function Run()
 		"@L_PRIVILEGES_116_PROPITIATEENEMIES_MSG_VICTIM_2_BODY",GetID(""),GetID("Destination2"),GetID("Destination"))
 	
 	chr_GainXP("", GetData("BaseXP"))
+	achievements_Unlock("", "PRIVILEGE_PROPHITIATE_ENEMIES")
 	StopMeasure()
 
 end

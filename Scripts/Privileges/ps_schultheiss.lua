@@ -17,6 +17,8 @@ function TakeOffice(Messages)
 			"@L_PRIVILEGES_OFFICE_GAIN_BODY", GetID(""), GetSettlementID(""), AthmoLabel)
 	end
 
+	achievements_Unlock("", "POLITICS_SCHULTHEISS")
+
 	chr_SetOfficeImpactList( "Office", ps_schultheiss_GetPrivilegeList() )
 end
 
