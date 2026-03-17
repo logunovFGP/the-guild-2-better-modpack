@@ -7,6 +7,9 @@ function Init()
  	--this:AddPanel("CharSkills","cl_CharacterSheet","gui/charactercreation/panel_skills.gui", false) 	
  	--this:AddPanel("ChangeAppearancePanel","cl_ChangeAppearancePanel","gui/charactercreation/panel_changeappearance.gui",false)
  
+ 	this:AddPanel("LobbyPanel","cl_LobbyBrowser","",false)
+ 	this:AddPanel("LobbyRoomPanel","cl_LobbyRoom","",false)
+ 
  	local Setting = FindNode("\\Settings\\GAME")
  	local Launcher = Setting:GetValueInt("IsRunningLauncher")
 

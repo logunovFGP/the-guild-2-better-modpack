@@ -1,5 +1,10 @@
 function Init()
 
+	-- Steam Networking
+	this:AddPanel("JoinRequestPanel","cl_StaticPanel","",false,true)
+	this:AddPanel("ResyncRequestPanel","cl_StaticPanel","",false,true)
+	this:AddPanel("ResyncMessage","cl_StaticPanel","",false,true)
+
    -- InGame Menus
   	this:AddPanel("InGameMenu","cl_StartMenuPanel","gui/menu/ingamemenu.gui",false)
   	this:AddPanel("InGameQuit","cl_StartMenuPanel","gui/menu/ingame_quitgame.gui",false)
@@ -71,6 +76,9 @@ function Init()
  	this:AddPanel("Connection3","cl_InventoryPanel","gui/Hud/panel_connection_03.gui",false)
  	this:AddPanel("StoreSheet","cl_StoreSheet","gui/Hud/panel_storesheet.gui",false)
  	this:AddPanel("ProductionSheet","cl_ProductionSheet","gui/Hud/panel_productionsheet.gui",false)
+
+ 	this:AddPanel("BuildingStatisticsSheet","cl_BuildingStatisticsSheet","gui/Hud/panel_buildingstatistics.gui",false)
+
  	this:AddPanel("MarketInventorySheet","cl_MarketInventorySheet","gui/Hud/panel_marketinventory2.gui",false)
  	this:AddPanel("BuildBuildingPatron","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingArtisan","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
