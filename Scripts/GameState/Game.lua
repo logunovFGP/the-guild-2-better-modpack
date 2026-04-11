@@ -95,5 +95,12 @@ function CleanUp()
 	this:DetachModule("NetworkCtrl")
 	this:DetachModule("GeneralInputCtrl")
 
-end
+	local resync = this:GetValueInt("_ResyncReload")
+	if resync == 0 then
+		this:DetachModule("NetworkCtrl")
+	else
+		this:SetValueInt("_ResyncReload", 0)
+	end
 
+	this:DetachModule("GeneralInputCtrl")
+end

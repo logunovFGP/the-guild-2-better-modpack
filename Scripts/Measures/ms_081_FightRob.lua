@@ -28,6 +28,9 @@ function Run()
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_HEAD_+0",
 					"@L_BATTLE_FIGHTROB_MSG_SUCCESS_VICTIM_BODY_+0", GetID("Destination"), GetID(""))
 		xp_CommitCrime("", "Destination")
+		if achievements_isValidSim("", "CRIME_ROB") then
+			UpdateStat("STAT_ROB_MONEY", (GetStat("STAT_ROB_MONEY") or 0) + math.floor(Booty))
+		end
 	else
 		local MoneyToSteal = chr_GetBudget("Destination", 2)
 		
@@ -78,6 +81,9 @@ function Run()
 			chr_RecieveMoney("", MoneyToSteal, "IncomeRobber")
 			Sleep(0.4)
 			mission_ScoreCrime("", MoneyToSteal)
+			if achievements_isValidSim("", "CRIME_ROB") then
+				UpdateStat("STAT_ROB_MONEY", (GetStat("STAT_ROB_MONEY") or 0) + math.floor(MoneyToSteal))
+			end
 			xp_CommitCrime("", "Destination")
 		else
 			MsgQuick("", "@L_BATTLE_FIGHTROB_FAILED_+0", GetID("Destination"))

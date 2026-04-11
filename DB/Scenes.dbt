@@ -48,3 +48,8 @@ Data:
 42           "Alchimist_main_SMap_02"        "Locations/Alchimist/"          | 
 43           "Tavern_Rent_Room"              "Locations/Tavern_Rent_Room/"   | 
 44           "Tavern_Rent_Private_Room"      "Locations/Tavern_Rent_Room/"   | 
+49           "Ship_Fisherboat_Interior"     "Locations/Ships/"              | 
+50           "Ship_CogSmall_Interior"       "Locations/Ships/"              | 
+51           "Ship_CogBig_Interior"         "Locations/Ships/"              | 
+52           "Ship_Hulk_Interior"           "Locations/Ships/"              | 
+53           "Ship_Carrack_Interior"        "Locations/Ships/"              | 

@@ -87,6 +87,12 @@ function Run()
 			end
 			SetData("ItemID", ItemID)
 			
+			if DynastyIsPlayer("") then
+				SetRichPresence("item", ResolveLabel(ItemGetLabel(ItemID, true)))
+				SetRichPresence("building", GetDisplayName("WorkBuilding"))
+				SetRichPresence("state", "Crafting")
+			end
+
 			local Type = BuildingGetType("WorkBuilding")
 			GetLocatorFunction = ms_022_producegoods_GetLocator
 			
@@ -231,6 +237,9 @@ function OnInterrupt()
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 	feedback_OverheadActionName("Owner")
 
 	if HasProperty("","ForceProd") then

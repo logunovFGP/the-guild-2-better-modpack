@@ -44,6 +44,9 @@ function Run()
 		end
 
 		chr_CreditMoney("Destination", MoneyToPay , "LaborOfLove")
+		if achievements_isValidSim("Destination", "MISC_LABOR_OF_LOVE") then
+			UpdateStat("STAT_LABOR_OF_LOVE", (GetStat("STAT_LABOR_OF_LOVE") or 0) + math.floor(MoneyToPay))
+		end
 		economy_UpdateBalance("Destination", "Service", MoneyToPay)
 	end
 	MsgSay("","@L_PIRATE_LABOROFLOVE_TALK_START")
@@ -83,6 +86,9 @@ function Run()
 		end
 
 		chr_CreditMoney("Destination", spend, "LaborOfLove")
+		if achievements_isValidSim("Destination", "MISC_LABOR_OF_LOVE") then
+			UpdateStat("STAT_LABOR_OF_LOVE", (GetStat("STAT_LABOR_OF_LOVE") or 0) + math.floor(spend))
+		end
 		economy_UpdateBalance("Destination", "Service", spend)
 		IncrementXPQuiet("", 15)
 	end

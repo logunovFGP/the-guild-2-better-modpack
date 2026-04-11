@@ -120,7 +120,9 @@ end
 -- Run
 -- -----------------------
 function Run()
-	
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "Courting")
+	end
 	MeasureSetNotRestartable()
 	if not AliasExists("Destination") then
 		if not ms_045_courtlover_AIInit() then
@@ -433,7 +435,9 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
-
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 	DestroyCutscene("cutscene")
 	ReleaseAvoidanceGroup("")
 	MoveSetActivity("")

@@ -207,7 +207,7 @@ function Run()
 	end
 	if Money > 0 then
 		if achievements_isValidSim("", "ROGUE_PLUNDER_SHIP") then
-			UpdateStat("STAT_PLUNDER_SHIP_MONEY", GetStat("STAT_PLUNDER_SHIP_MONEY") + math.floor(Money))
+			UpdateStat("STAT_PLUNDER_SHIP_MONEY", (GetStat("STAT_PLUNDER_SHIP_MONEY") or 0) + math.floor(Money))
 		end
 	end
 	

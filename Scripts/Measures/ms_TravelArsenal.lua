@@ -1,4 +1,8 @@
 function Run()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "Traveling")
+	end
+
 	local warchooserid = GetData("#WarChooser")
 	GetAliasByID(warchooserid,"WarChooser")
 
@@ -95,4 +99,7 @@ function Run()
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 end

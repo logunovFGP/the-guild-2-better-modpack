@@ -40,7 +40,7 @@ function Run()
 		economy_UpdateBalance("Juggler", "Service", getbeg)
 		IncrementXPQuiet("Actor", 5)
 		if achievements_isValidSim("Actor", "MISC_TELL_FORTUNE") then
-			UpdateStat("STAT_TAROT_MONEY", GetStat("STAT_TAROT_MONEY") + getbeg)
+			UpdateStat("STAT_TAROT_MONEY", (GetStat("STAT_TAROT_MONEY") or 0) + getbeg)
 		end
 
 		if dyn_IsLocalPlayer("Actor") then
@@ -109,7 +109,7 @@ function Run()
 		IncrementXPQuiet("Actor", 5)
 		IncrementXPQuiet("Owner", 20)
 		if achievements_isValidSim("Actor", "MISC_CRYSTAL_BALL") then
-			UpdateStat("STAT_CRYSTAL_BALL_MONEY", GetStat("STAT_CRYSTAL_BALL_MONEY") + getbeg)
+			UpdateStat("STAT_CRYSTAL_BALL_MONEY", (GetStat("STAT_CRYSTAL_BALL_MONEY") or 0) + getbeg)
 		end
 		
 		if dyn_IsLocalPlayer("Actor") then

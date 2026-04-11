@@ -61,7 +61,7 @@ function Run()
 					economy_UpdateBalance("QuackHospital", "Service", MoneyToGet)
 				end
 				if achievements_isValidSim("Actor", "MISC_QUACKSALVER") then
-					UpdateStat("STAT_QUACKSALVER", GetStat("STAT_QUACKSALVER") + math.floor(MoneyToGet))
+					UpdateStat("STAT_QUACKSALVER", (GetStat("STAT_QUACKSALVER") or 0) + math.floor(MoneyToGet))
 				end
 				
 				if dyn_IsLocalPlayer("Actor") then

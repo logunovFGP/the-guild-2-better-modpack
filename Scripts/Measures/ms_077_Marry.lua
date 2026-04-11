@@ -10,6 +10,10 @@
 -- Run
 -- -----------------------
 function Run()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "GettingMarried")
+	end
+
 	local XP = GetData("BaseXP")
 	local Title = GetNobilityTitle("")
 	local InteractionDistance = 128
@@ -270,6 +274,9 @@ function Run()
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 	EndCutscene("")
 	DestroyCutscene("cutscene")
 	MoveSetActivity("")

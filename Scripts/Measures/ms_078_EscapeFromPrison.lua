@@ -1,4 +1,7 @@
 function Run()
+	--if DynastyIsPlayer("") then
+	--	SetRichPresence("state", "InPrison")
+	--end
 	MeasureSetNotRestartable()
 
 	if not GetInsideBuilding("", "Prison") then
@@ -17,3 +20,8 @@ function Run()
 	end
 end
 
+function CleanUp()
+	--if DynastyIsPlayer("") then
+	--	SetRichPresence("state", "")
+	--end
+end

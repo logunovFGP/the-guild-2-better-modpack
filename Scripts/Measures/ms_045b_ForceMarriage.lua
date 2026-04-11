@@ -1,6 +1,8 @@
 
 function Run()
-
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "GettingMarried")
+	end
 	-- recently fired employee
 	if HasProperty("Destination", "NoMarry") then    
 		if GetProperty("Destination", "NoMarryTime") < GetGametime() then -- if time is over, remove property
@@ -96,4 +98,7 @@ end
 -- CleanUp
 -- -----------------------
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 end

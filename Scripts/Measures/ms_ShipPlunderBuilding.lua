@@ -74,7 +74,7 @@ function Run()
 		--for the mission
 		mission_ScoreCrime("",Money)
 		if achievements_isValidSim("", "ROGUE_RAID_BUILDING") then
-			UpdateStat("STAT_RAID_BUILDING_MONEY", GetStat("STAT_RAID_BUILDING_MONEY") + math.floor(Money))
+			UpdateStat("STAT_RAID_BUILDING_MONEY", (GetStat("STAT_RAID_BUILDING_MONEY") or 0) + math.floor(Money))
 		end
 		SetMeasureRepeat(TimeOut)
 	else

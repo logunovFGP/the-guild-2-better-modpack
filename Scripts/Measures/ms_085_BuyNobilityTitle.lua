@@ -181,6 +181,10 @@ function Run()
 		
 		SetProperty("Usher", "UsherBusy", 1)
 		
+		if IsMultiplayerGame() then
+			MeasureSetNotRestartable()
+		end
+		
 		-- Check if a grant is in progress
 		if GetNobilityTitle("", true) == true then
 		

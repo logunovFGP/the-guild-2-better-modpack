@@ -3,6 +3,9 @@ function AIFunc()
 end
 
 function Run()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "Feast")
+	end
 	local money = SimGetWealth("")
 	if not GetHomeBuilding("", "MyHome") then
 		StopMeasure()
@@ -125,5 +128,8 @@ function CallToFeast()
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 end
 

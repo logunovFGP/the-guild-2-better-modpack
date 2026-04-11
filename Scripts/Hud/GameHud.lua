@@ -80,6 +80,7 @@ function Init()
  	this:AddPanel("BuildingStatisticsSheet","cl_BuildingStatisticsSheet","gui/Hud/panel_buildingstatistics.gui",false)
 
  	this:AddPanel("MarketInventorySheet","cl_MarketInventorySheet","gui/Hud/panel_marketinventory2.gui",false)
+ 	-- this:AddPanel("NewMarketSheet","cl_NewMarketSheet","",false)
  	this:AddPanel("BuildBuildingPatron","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingArtisan","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingScholar","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
@@ -155,9 +156,11 @@ function Init()
 	
    -- Cutscene Panels
    this:AddPanel("TrialPanel","cl_TrialPanel","gui/Hud/panel_charge.gui",false,true)
+   this:AddPanel("WeddingPanel","cl_WeddingPanel","gui/Hud/panel_charge.gui",false,true)
    this:AddPanel("OfficeApplicationPanel","cl_OfficeApplicationPanel","gui/Hud/panel_officeapplication.gui",false,true)
    this:AddPanel("OfficeDepositionPanel","cl_OfficeDepositionPanel","gui/Hud/panel_officedeposition.gui",false,true)
-    
+   this:AddPanel("BattleScreen", "cl_RenderCustomPanel", "gui/Hud/battle.gui", false, true)
+
 	this:AddPanel("ImpactIconPanel","cl_ImpactIconPanel","gui/Hud/panel_impacticon.gui")
 	
 	-- Header

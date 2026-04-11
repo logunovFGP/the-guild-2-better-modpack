@@ -114,7 +114,7 @@ function Run()
 					chr_RecieveMoney("MercOwner", VictimSpendValue, "IncomeBribes")
 					economy_UpdateBalance("MyHome", "Service", VictimSpendValue)
 					if achievements_isValidSim("MercOwner", "CRIME_COLLECT_HUSH_MONEY") then
-						UpdateStat("STAT_HUSH_MONEY", GetStat("STAT_HUSH_MONEY") + math.floor(VictimSpendValue))
+						UpdateStat("STAT_HUSH_MONEY", (GetStat("STAT_HUSH_MONEY") or 0) + math.floor(VictimSpendValue))
 					end
 					IncrementXPQuiet("", 15)
 

@@ -126,7 +126,9 @@ function AIDecision()
 end
 
 function Run()
-
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "Bribery")
+	end
 	if not HasData("TFBribe") then
 		if IsStateDriven() then
 			ms_041_bribecharacter_Init();
@@ -224,7 +226,7 @@ function Run()
 		--do the favor stuff
 		chr_ModifyFavor("Destination", "", ModifyFavor)
 		if achievements_isValidSim("Owner", "CRIME_BRIBE") then
-			UpdateStat("STAT_BRIBE_MONEY", GetStat("STAT_BRIBE_MONEY") + math.floor(Money))
+			UpdateStat("STAT_BRIBE_MONEY", (GetStat("STAT_BRIBE_MONEY") or 0) + math.floor(Money))
 		end
 		chr_GainXP("", GetData("BaseXP"))
 		
@@ -261,6 +263,9 @@ function GetOSHData(MeasureID)
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 	if AliasExists("cutscene") then
 		DestroyCutscene("cutscene")
 	end

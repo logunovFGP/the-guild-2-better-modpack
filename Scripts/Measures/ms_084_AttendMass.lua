@@ -1,4 +1,7 @@
 function Run()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "AtChurch")
+	end
 	if IsGUIDriven() then
 		GetInsideBuilding("","Destination")
 	end
@@ -108,6 +111,9 @@ function Run()
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 	SetAvoidanceRange("",-1)
 	AddImpact("","WasInChurch",1,4)
 	if SimIsInside("") and not IsGUIDriven() then

@@ -34,7 +34,7 @@ function Run()
 	chr_CreditMoney("Actor", getbeg, "Offering")
 			economy_UpdateBalance("Juggler", "Service", getbeg)
 	if achievements_isValidSim("Actor", "MISC_GO_BEGGING") then
-		UpdateStat("STAT_BEGGING_MONEY", GetStat("STAT_BEGGING_MONEY") + getbeg)
+		UpdateStat("STAT_BEGGING_MONEY", (GetStat("STAT_BEGGING_MONEY") or 0) + getbeg)
 	end
 	ShowOverheadSymbol("Actor", false, true, 0, "%1t", getbeg)
 	

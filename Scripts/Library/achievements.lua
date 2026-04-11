@@ -19,7 +19,8 @@ function IncrementStat(SIM, STAT)
 	if true then
 		LogMessage("@STEAM #W Stat " .. STAT .. " called with " .. GetName(SIM) ..".")
 	end
-	UpdateStat(STAT, GetStat(STAT) + 1)
+	local current = GetStat(STAT) or 0
+	UpdateStat(STAT, current + 1)
 end
 
 function GetWorldName()

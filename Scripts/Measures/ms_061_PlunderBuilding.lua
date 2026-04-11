@@ -90,7 +90,7 @@ function Run()
 		--for the mission
 		mission_ScoreCrime("", Money)
 		if achievements_isValidSim("", "CRIME_PLUNDER_BUILDING") then
-			UpdateStat("STAT_PLUNDER_MONEY", GetStat("STAT_PLUNDER_MONEY") + math.floor(Money))
+			UpdateStat("STAT_PLUNDER_MONEY", (GetStat("STAT_PLUNDER_MONEY") or 0) + math.floor(Money))
 		end
 		
 	else

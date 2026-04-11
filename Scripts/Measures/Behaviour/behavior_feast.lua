@@ -1,4 +1,7 @@
 function Run()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "Feast")
+	end
 	if not GetInsideBuilding("","PartyLocation") then
 		if HasProperty("","InvitedBy") then
 			local HostID = GetProperty("","InvitedBy")
@@ -462,6 +465,9 @@ function Musician()
 end
 
 function CleanUp()
+	if DynastyIsPlayer("") then
+		SetRichPresence("state", "")
+	end
 	if GetProperty("","Host") then
 		SetState("PartyLocation",STATE_FEAST,false)
 		DestroyCutscene("cutscene")
