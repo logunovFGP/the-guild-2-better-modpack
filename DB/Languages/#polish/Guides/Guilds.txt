@@ -1,0 +1,50 @@
+<header>Guild Masters and The Alderman</header>
+
+<text>
+This page lacks information for now, so be mindful of this warning.
+</text>
+
+<text>
+Each {tip:SETTLEMENT}settlement{/tip} has four guilds, each led by an elected {tip:GUILD_MASTER}Guild Master{/tip}. Above them all sits the {tip:ALDERMAN}Alderman{/tip}.
+</text>
+
+<separator></separator>
+
+<header>The Four Guilds</header>
+
+<text>[r=160][g=100][b=20]Patron Guild</text>
+<text>
+The Patrons work the land and offer services. The {tip:GUILD_PATRON_MASTER}Patron Guild Master{/tip} takes care of inns, farms and more. To become one, you must own businesses and become respectable in the field.
+</text>
+
+<text>[r=130][g=70][b=20]Artisan Guild</text>
+<text>
+The Artisans are craftsmen and builders. The {tip:GUILD_ARTISAN_MASTER}Artisan Guild Master{/tip} sets the standard for quality goods. Smithies, jewellries and more fall under their domain.
+</text>
+
+<text>[r=30][g=60][b=140]Scholar Guild</text>
+<text>
+The Scholars pursue knowledge and spiritual guidance. The {tip:GUILD_SCHOLAR_MASTER}Scholar Guild Master{/tip} oversees churches, hospitals, and places of learning. Healing and alchemy are also their specialties.
+</text>
+
+<text>[r=120][g=25][b=20]Rogue Guild</text>
+<text>
+The Rogues operate in the shadows. The {tip:GUILD_ROGUE_MASTER}Rogue Guild Master{/tip} controls taverns, gambling dens, and less savory enterprises. While frowned upon, their influence is undeniable.
+</text>
+
+<separator></separator>
+
+<header>The Alderman</header>
+
+<text>
+The {tip:ALDERMAN}Alderman{/tip} is elected from among the most prominent guild masters. They can:
+</text>
+
+<list>
+  [type="bullet"]
+  <item><text>[link="Measure_ImposeASalesFreezeAlderman"]Impose sales freezes on rival businesses</text></item>
+</list>
+
+<separator></separator>
+
+<text>[link="Politics"]Learn more about the political system >></text>

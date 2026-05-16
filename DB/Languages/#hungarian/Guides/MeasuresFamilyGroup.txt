@@ -1,0 +1,14 @@
+<header>Family & Group Measures</header>
+
+<text>
+These measures handle inventory management, party/group management, and reputation display.
+</text>
+
+<separator></separator>
+
+<list>
+  [type="bullet"]
+{bullet_autolist:measures_by_type:2}
+</list>
+
+<text>[link="Measures"]Back to Measures Overview >></text>

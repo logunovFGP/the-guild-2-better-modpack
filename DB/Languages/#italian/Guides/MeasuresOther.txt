@@ -1,0 +1,16 @@
+<header>Other Measures</header>
+
+<text>
+Measures listed here do not fit cleanly into any of the other categories. Hover any name for a quick description, or open its page from the table of contents on the left for full details.
+</text>
+
+<separator></separator>
+
+<header>Measures</header>
+
+<list>
+  [type="bullet"]
+{bullet_autolist:measures_by_names:UseStonerotary}
+</list>
+
+<text>[link="Measures"]Back to Measures Overview >></text>

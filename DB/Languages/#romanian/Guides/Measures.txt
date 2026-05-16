@@ -1,0 +1,35 @@
+<header>Measures Overview</header>
+
+<text>
+Measures are the actions your characters can perform. Every interaction in the world, from hiring an {tip:EMPLOYEE}employee{/tip} to brewing a potion, from filing a lawsuit to seducing a rival, is a measure. Measures cost time, and some cost {tip:GOLD}gold{/tip}.
+</text>
+
+<separator></separator>
+
+<header>Categories</header>
+
+<text>
+This guide documents the measures used by the entire game. Not all are available to every character; class, {tip:NOBILITY}nobility title{/tip}, current {tip:OFFICE}office{/tip}, and situation determine what your characters can do.
+</text>
+
+<list>
+  [type="bullet"]
+  <item><text>[link="MeasuresBuilding"]Building & Economy</text><text> - Building management, employees, production, housing, religion</text></item>
+  <item><text>[link="MeasuresFamily"]Dialogue & Romance</text><text> - Social interactions, courtship, marriage</text></item>
+  <item><text>[link="MeasuresAggressive"]Aggressive & Rogue</text><text> - Combat, theft, sabotage, intrigue</text></item>
+  <item><text>[link="MeasuresPrivilege"]Office Privileges</text><text> - Actions unlocked by political offices</text></item>
+  <item><text>[link="MeasuresFamilyGroup"]Family & Group</text><text> - Inventory, party, reputation, trade routes</text></item>
+  <item><text>[link="MeasuresRPG"]RPG Actions</text><text> - Role-playing and divehouse measures</text></item>
+</list>
+
+<separator></separator>
+
+<header>General Notes</header>
+
+<list>
+  [type="bullet"]
+  <item><text>Each measure has an interrupt priority. Higher priorities can override current activities.</text></item>
+  <item><text>Some measures grant {tip:EXPERIENCE}experience{/tip} to the character performing them.</text></item>
+  <item><text>Many measures require a target: another character, a building, a cart, or a location.</text></item>
+  <item><text>Characters can queue multiple measures in sequence.</text></item>
+</list>

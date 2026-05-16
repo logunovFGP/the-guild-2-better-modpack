@@ -1,0 +1,12 @@
+<header>Buildings</header>
+
+<text>
+Every building in the game.
+</text>
+
+<separator></separator>
+
+<list>
+  [type="bullet"]
+{bullet_autolist:buildings}
+</list>

@@ -1,0 +1,14 @@
+<header>Dialogue & Romance Measures</header>
+
+<text>
+These dialogue measures handle social interactions, courtship, and marriage. They affect {tip:FAVOR}favor{/tip} between characters and shape family relationships.
+</text>
+
+<separator></separator>
+
+<list>
+  [type="bullet"]
+{bullet_autolist:measures_by_type:6}
+</list>
+
+<text>[link="Measures"]Back to Measures Overview >></text>

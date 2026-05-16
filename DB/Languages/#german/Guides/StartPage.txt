@@ -1,0 +1,26 @@
+<header>Welcome to The Guild 2: Renaissance</header>
+
+<text>
+Welcome! This guide will help you understand the many systems of the game and help you build your {tip:DYNASTY}dynasty{/tip} into a powerful legacy.
+</text>
+
+<separator></separator>
+
+<header>Quick Navigation</header>
+
+<list>
+  [type="bullet"]
+  <item><text>[link="FirstSteps"]Your First Steps</text><text> - Begin your journey</text></item>
+  <item><text>[link="Economy"]Economy Overview</text><text> - Learn about {tip:GOLD}gold{/tip} and trade</text></item>
+  <item><text>[link="Politics"]Political System</text><text> - Rise to power through {tip:OFFICE}offices{/tip}</text></item>
+  <item><text>[link="Guilds"]Guild Masters</text><text> - Understand the four guilds</text></item>
+  <item><text>[link="Combat"]Combat Basics</text><text> - Defend what is yours</text></item>
+</list>
+
+<separator></separator>
+
+<text>
+[font="sylfaensmall"]
+[r=120][g=90][b=60]
+Use the Table of Contents on the left to browse topics, or use the search bar above to find specific information. Hover over highlighted terms to learn more about them.
+</text>

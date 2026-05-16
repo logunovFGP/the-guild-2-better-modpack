@@ -1,0 +1,63 @@
+<header>Settlement Offices</header>
+
+<text>
+Each {tip:SETTLEMENT}settlement{/tip} has a hierarchy of {tip:OFFICE}offices{/tip} that govern the town. As the settlement grows, more offices become available - from minor positions like the Watchman or the Bailiff up through the Mayor, the Chief Judge, the Marshal, the Bishop, and at the very top of the realm, the King.
+</text>
+
+<separator></separator>
+
+<header>Office Access Rights</header>
+
+<text>
+To hold an office, your character must have the appropriate {tip:NOBILITY}nobility title{/tip}. Higher offices require higher titles, which in turn require more {tip:FAME}fame{/tip} and {tip:GOLD}gold{/tip}.
+</text>
+
+<separator></separator>
+
+<header>Office Benefits</header>
+
+<list>
+  [type="bullet"]
+  <item><text>Regular salary.</text></item>
+  <item><text>Unique {tip:MEASURE}measures{/tip} only available to office holders.</text></item>
+  <item><text>Increased {tip:FAME}fame{/tip}.</text></item>
+  <item><text>Influence over town policies and laws.</text></item>
+</list>
+
+<separator></separator>
+
+<header>The settlement office hierarchy</header>
+
+<text>
+Hover any office below to see who currently holds it in your settlement.
+</text>
+
+<list>
+  [type="bullet"]
+  <item><text>{tip:OFFICE_WEIBEL}Watchman{/tip}</text></item>
+  <item><text>{tip:OFFICE_SCHLICHTMANN}Bailiff{/tip}</text></item>
+  <item><text>{tip:OFFICE_SCHULTHEISS}Reeve{/tip}</text></item>
+  <item><text>{tip:OFFICE_FOLTERMEISTER}Torturer{/tip}</text></item>
+  <item><text>{tip:OFFICE_HAUPTMANN}Captain{/tip}</text></item>
+  <item><text>{tip:OFFICE_KERKERMEISTER}Jailer{/tip}</text></item>
+  <item><text>{tip:OFFICE_GILDENMEISTER}Guild Officer{/tip}</text></item>
+  <item><text>{tip:OFFICE_INQUISITOR}Inquisitor{/tip}</text></item>
+  <item><text>{tip:OFFICE_SENESCHALL}Seneschal{/tip}</text></item>
+  <item><text>{tip:OFFICE_OBRIST}Colonel{/tip}</text></item>
+  <item><text>{tip:OFFICE_RICHTER}Judge{/tip}</text></item>
+  <item><text>{tip:OFFICE_BUERGERMEISTER}Mayor{/tip}</text></item>
+  <item><text>{tip:OFFICE_HENKER}Executioner{/tip}</text></item>
+  <item><text>{tip:OFFICE_PACHTMEISTER}Tax Collector{/tip}</text></item>
+  <item><text>{tip:OFFICE_KERKERVOGT}Chief Jailer{/tip}</text></item>
+  <item><text>{tip:OFFICE_GILDENVORSTEHER}Guild President{/tip}</text></item>
+  <item><text>{tip:OFFICE_BISCHOF}Bishop{/tip}</text></item>
+  <item><text>{tip:OFFICE_KONSUL}Consul{/tip}</text></item>
+  <item><text>{tip:OFFICE_MARSCHALL}Marshal{/tip}</text></item>
+  <item><text>{tip:OFFICE_OBERSTERRICHTER}Chief Judge{/tip}</text></item>
+  <item><text>{tip:OFFICE_LANDESHERR}Sovereign{/tip}</text></item>
+  <item><text>{tip:OFFICE_KARDINAL}Cardinal{/tip}</text></item>
+  <item><text>{tip:OFFICE_FELDHERR}Field Marshal{/tip}</text></item>
+  <item><text>{tip:OFFICE_KOENIG}King{/tip}</text></item>
+</list>
+
+<text>[link="Politics"]Back to Political System >></text>

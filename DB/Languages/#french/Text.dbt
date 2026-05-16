@@ -15971,3 +15971,37 @@ Data:
 
 20620	"ShipDestroyed_Evacuated"	"Your ship was destroyed! The crew managed to swim to safety on nearby land."	|
 20621	"ShipDestroyed_Drowned"	"Your ship was destroyed far from land! The crew drowned in the sea."	|
+
+20622	"_TIP_OFFICE_LEVEL_NOCTX_+0"	"Niveau de cité requis : %d"	|
+20623	"_TIP_OFFICE_LEVEL_MET_+0"	"Niveau de cité requis : %d - %s est au niveau %d"	|
+20624	"_TIP_OFFICE_LEVEL_UNMET_+0"	"Niveau de cité requis : %d - %s n'est qu'au niveau %d (pas encore disponible)"	|
+20625	"_TIP_OFFICE_INCOME_+0"	"Revenu : %d"	|
+20626	"_TIP_OFFICE_HELD_BY_+0"	"Occupé actuellement par : %s"	|
+20627	"_TIP_OFFICE_VACANT_+0"	"Poste vacant à %s"	|
+20628	"_TIP_UPGRADE_PRODUCES_+0"	"Produit : %s"	|
+20629	"_TIP_UPGRADE_GRANTS_MEASURE_+0"	"Donne la mesure : %s"	|
+20630	"_TIP_NAV_JUMP_+0"	"Appuyez sur F pour aller vers %s"	|
+20631	"_TIP_NAV_CYCLE_+0"	"Appuyez sur Page Haut / Page Bas pour changer de cité"	|
+20632	"_TIP_PENALTY_SEVERITY_+0"	"Sévérité : %d / 100"	|
+20633	"_TIP_TITLE_PRICE_+0"	"Prix : %d"	|
+20634	"_TIP_TITLE_IMPFAME_+0"	"Renommée impériale requise : %d"	|
+20635	"_TIP_TITLE_MAXRES_+0"	"Niveau max de résidence : %d"	|
+20636	"_TIP_TITLE_MAXWKS_+0"	"Ateliers max : %d"	|
+20637	"_TIP_LAW_FAVOR_+0"	"Modificateur de faveur : %+d"	|
+20638	"_TIP_LAW_EVIDENCE_+0"	"Compte comme preuve au tribunal"	|
+20639	"_TIP_LAW_DURATION_+0"	"Durée : %.0f jours"	|
+20640	"_TIP_ABILITY_SKILLREQ_+0"	"Compétence requise : %s niveau %d"	|
+20641	"_TIP_ABILITY_MINLEVEL_+0"	"Niveau minimum du personnage : %d"	|
+20642	"_TIP_ABILITY_MAXCOUNT_+0"	"Max par personnage : %d"	|
+20643	"_TIP_OFFICE_REPLACED_BY_+0"	"Pas à ce niveau de cité - %s utilise %s à la place"	|
+20644	"_TIP_OFFICE_NOT_APPLICABLE_+0"	"Non applicable à ce niveau de cité (%s)"	|
+20645	"_TIP_BUILDING_PRICE_+0"	"Prix : %d"	|
+20646	"_TIP_BUILDING_BUILDTIME_+0"	"Temps de construction : %d jours"	|
+20647	"_TIP_BUILDING_LEVEL_+0"	"Niveau : %d"	|
+20648	"_TIP_BUILDING_HP_+0"	"Durabilité : %d PV"	|
+20649	"PENALTY_FINE"	"Amende"	|
+20650	"PENALTY_ACQUITTAL"	"Acquittement"	|
+20651	"PENALTY_NONE"	"Aucune"	|
+20652	"_BUILDBUILDING_OFFICE_+0"	"Mandat"	|
+20653	"_BUILDBUILDING_OFFICE_COUNT_+0"	"%1n / %2n max dans cette ville"	|
+20654	"_BUILDBUILDING_OFFICE_LOCKED_+0"	"Indisponible à ce niveau de ville"	|

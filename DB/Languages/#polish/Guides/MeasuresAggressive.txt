@@ -1,0 +1,14 @@
+<header>Aggressive & Rogue Measures</header>
+
+<text>
+For when words are not enough. These measures are risky - they can break laws, damage relationships, or provoke retaliation.
+</text>
+
+<separator></separator>
+
+<list>
+  [type="bullet"]
+{bullet_autolist:measures_by_type:3}
+</list>
+
+<text>[link="Measures"]Back to Measures Overview >></text>

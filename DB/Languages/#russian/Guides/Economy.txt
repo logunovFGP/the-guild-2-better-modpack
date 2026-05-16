@@ -1,0 +1,29 @@
+<header>Economy Overview</header>
+
+<text>
+The economy is the foundation of your {tip:DYNASTY}dynasty's{/tip} power. Without {tip:GOLD}gold{/tip}, you cannot build, hire, or influence.
+</text>
+
+<separator></separator>
+
+<header>Sources of Income</header>
+
+<list>
+  [type="numbered"]
+  <item><text>Production - Your buildings produce goods that can be sold at the market.</text></item>
+  <item><text>Trading - Buy low and sell high using {tip:CART}carts{/tip} to transport goods between markets.</text></item>
+  <item><text>Political Income - Holding {tip:OFFICE}offices{/tip} grants a regular salary.</text></item>
+  <item><text>Special Actions - Various {tip:MEASURE}measures{/tip} can generate income through less conventional means.</text></item>
+</list>
+
+<separator></separator>
+
+<header>Trade Routes</header>
+
+<text>
+Goods are produced in your buildings and must be transported to market stalls for sale. Each {tip:SETTLEMENT}settlement{/tip} has its own marketplace with supply and demand. Prices fluctuate based on availability.
+</text>
+
+<separator></separator>
+
+<text>[link="Trading"]Learn more about trading strategies >></text>

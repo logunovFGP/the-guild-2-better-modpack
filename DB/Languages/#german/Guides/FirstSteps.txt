@@ -1,0 +1,49 @@
+<header>Your First Steps</header>
+
+<text>
+Congratulations on founding your {tip:DYNASTY}dynasty{/tip}! Here is what you should focus on in the early game.
+</text>
+
+<separator></separator>
+
+<header>Step 1: Build Your First Business</header>
+
+<text>
+Your starting {tip:GOLD}gold{/tip} should be invested into a building. Which building depends on your guild:
+</text>
+
+<list>
+  [type="bullet"]
+  <item><text>[link="Guilds"]{tip:PATRON_GUILD}Patrons{/tip} - Start with an Inn or a Farm for steady income.</text></item>
+  <item><text>[link="Guilds"]{tip:ARTISAN_GUILD}Artisans{/tip} - Build a Smithy to produce weapons and {tip:ITEM_Tool}tools{/tip}.</text></item>
+  <item><text>[link="Guilds"]{tip:SCHOLAR_GUILD}Scholars{/tip} - Establish a Church or Hospital for healing services.</text></item>
+  <item><text>[link="Guilds"]{tip:ROGUE_GUILD}Rogues{/tip} - Open a Tavern for quick profits.</text></item>
+</list>
+
+<separator></separator>
+
+<header>Step 2: Hire Workers</header>
+
+<text>
+Your building needs workers to produce goods. Hire employees from the population. More skilled workers produce at better rates.
+</text>
+
+<separator></separator>
+
+<header>Step 3: Start Trading</header>
+
+<text>
+Purchase a {tip:CART}cart{/tip} to transport goods from your building to the marketplace. Keep an eye on market prices in each {tip:SETTLEMENT}settlement{/tip}.
+</text>
+
+<separator></separator>
+
+<header>Step 4: Build Your Reputation</header>
+
+<text>
+With enough fame, you can pursue {tip:NOBILITY}nobility titles{/tip} and eventually run for {tip:OFFICE}political office{/tip}. You raise your limit of workshops as you obtain new titles.
+</text>
+
+<separator></separator>
+
+<text>[link="Economy"]Read the Economy Overview >></text>

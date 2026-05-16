@@ -1,0 +1,30 @@
+<header>Trading Guide</header>
+
+<text>
+Trading is the lifeblood of commerce. Master it, and {tip:GOLD}gold{/tip} will flow into your coffers.
+</text>
+
+<separator></separator>
+
+<header>The Trading Cycle</header>
+
+<list>
+  [type="numbered"]
+  <item><text>Your buildings produce goods when staffed with workers.</text></item>
+  <item><text>Load goods onto a {tip:CART}cart{/tip} at your building.</text></item>
+  <item><text>Send the cart to a marketplace in any {tip:SETTLEMENT}settlement{/tip}.</text></item>
+  <item><text>Sell goods at the market stall. Prices depend on supply and demand.</text></item>
+  <item><text>Repeat!</text></item>
+</list>
+
+<separator></separator>
+
+<header>Trading Tips</header>
+
+<list>
+  [type="bullet"]
+  <item><text>Check prices across different settlements - some pay more for certain goods.</text></item>
+  <item><text>Upgrade your carts for faster transport and larger capacity.</text></item>
+  <item><text>Guard your carts on dangerous routes to prevent bandit raids.</text></item>
+  <item><text>Buy raw materials cheaply and sell finished goods at a premium.</text></item>
+</list>
