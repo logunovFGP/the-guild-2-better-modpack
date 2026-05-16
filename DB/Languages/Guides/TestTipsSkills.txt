@@ -1,0 +1,13 @@
+<header>Test: Skill (Talent) Tips</header>
+
+<text>Hover any entry to preview its rendered tooltip in the current language.</text>
+
+<separator></separator>
+
+<text>Every entry in Skills.dbt</text>
+
+<table>
+  [columns=3]
+  <row><cell><text>[r=120][g=25][b=20]ID</text></cell><cell><text>[r=120][g=25][b=20]Name</text></cell><cell><text>[r=120][g=25][b=20]Hover to preview</text></cell></row>
+{autolist:skills}
+</table>

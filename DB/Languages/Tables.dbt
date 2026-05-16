@@ -1,4 +1,5 @@
 // Table File
+// by naonauno
 
 Table Description:
 "id" INT 0 | "name" STRING 0 |
@@ -7,3 +8,5 @@ Data:
 1   "Text"  		|
 2 	"Achievements" 	|
 3 	"Multiplayer" 	|
+4 	"Tooltips" 	|
+5 	"TipLabels" 	|

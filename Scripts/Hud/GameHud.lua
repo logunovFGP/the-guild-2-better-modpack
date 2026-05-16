@@ -46,7 +46,7 @@ function Init()
  	-- this:AddPanel("TutorialPanel","cl_TutorialPanel","gui/hud/panel_tutorial.gui", false)
  	
  	-- onscreen help
- 	this:AddPanel("Guide","cl_GuidePanel","gui/hud/panel_guide.gui", false)
+ 	this:AddPanel("Guide","cl_GuidePanel","", false)
 
  	this:AddPanel("HelpCharacters","cl_OnscreenHelpPanel","gui/Hud/Helppanels/characters.gui",false)
 	this:AddPanel("HelpSkill","cl_OnscreenHelpPanel","gui/Hud/Helppanels/skill.gui",false)
@@ -87,6 +87,8 @@ function Init()
 	this:AddPanel("BuildBuildingChiseler","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	--this:AddPanel("BuildBuildingSettlement","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingMisc","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
+	this:AddPanel("BuildBuildingOffice","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
+
 
 	-- Rags to Riches
 	--this:AddPanel("BuildBuildingAll","cl_BuildBuildingSheet","gui/Rags/construct.gui",false)
@@ -197,6 +199,7 @@ function Init()
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingChiseler","@L_CHARACTERS_1_CLASSES_chiseler_NAME_+0")
 	--this:AddSheetToTabGroup("BuildBuilding","BuildBuildingSettlement","Settlement")
 	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingMisc","@L_BUILDBUILDING_MISC_+0")
+	this:AddSheetToTabGroup("BuildBuilding","BuildBuildingOffice","@L_BUILDBUILDING_OFFICE_+0")
 	this:SetTabGroupHeader("BuildBuilding","@L_BUILDBUILDING_+1")
 
 	-- Statistics
