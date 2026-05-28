@@ -78,6 +78,7 @@ function Init()
  	this:AddPanel("ProductionSheet","cl_ProductionSheet","gui/Hud/panel_productionsheet.gui",false)
 
  	this:AddPanel("BuildingStatisticsSheet","cl_BuildingStatisticsSheet","gui/Hud/panel_buildingstatistics.gui",false)
+ 	this:AddPanel("CityNeedsSheet","cl_CityNeedsSheet","",false)
 
  	this:AddPanel("MarketInventorySheet","cl_MarketInventorySheet","gui/Hud/panel_marketinventory2.gui",false)
  	-- this:AddPanel("NewMarketSheet","cl_NewMarketSheet","",false)

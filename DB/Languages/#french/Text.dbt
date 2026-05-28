@@ -16005,3 +16005,70 @@ Data:
 20652	"_BUILDBUILDING_OFFICE_+0"	"Mandat"	|
 20653	"_BUILDBUILDING_OFFICE_COUNT_+0"	"%1n / %2n max dans cette ville"	|
 20654	"_BUILDBUILDING_OFFICE_LOCKED_+0"	"Indisponible à ce niveau de ville"	|
+
+20655	"_MEASURE_ToggleCityNeeds_NAME_+0"	"City Needs"	|
+20656	"_MEASURE_ToggleCityNeeds_TOOLTIP_+0"	"View live needs, market stock and price trends for this settlement."	|
+20657	"CityNeedsSheet_+0"	"City Needs"	|
+20658	"_CITYNEEDS_TITLE"	"City Needs"	|
+20659	"_CITYNEEDS_TITLE_FOR_+0"	"Needs for"	|
+20660	"_CITYNEEDS_CLOSE"	"Close"	|
+20661	"_CITYNEEDS_CATEGORIES"	"Daily demand by category"	|
+20662	"_CITYNEEDS_CAT_FOOD"	"Food"	|
+20663	"_CITYNEEDS_CAT_AMUSEMENT"	"Amusement"	|
+20664	"_CITYNEEDS_CAT_CLOTHES"	"Clothes"	|
+20665	"_CITYNEEDS_CAT_WEAPON"	"Weapon"	|
+20666	"_CITYNEEDS_CAT_ARMOR"	"Armor"	|
+20667	"_CITYNEEDS_CAT_ILLNESS"	"Healthcare"	|
+20668	"_CITYNEEDS_CAT_SPECIAL"	"Special"	|
+20669	"_CITYNEEDS_CAT_LUXORY"	"Luxury"	|
+20670	"_CITYNEEDS_CAT_SOCIAL"	"Social"	|
+20671	"_CITYNEEDS_CAT_REPAIR"	"Repair"	|
+20672	"_CITYNEEDS_COL_ITEM"	"Item"	|
+20673	"_CITYNEEDS_COL_CATEGORY"	"Category"	|
+20674	"_CITYNEEDS_COL_DEMAND"	"Demand"	|
+20675	"_CITYNEEDS_COL_STOCK"	"Stock"	|
+20676	"_CITYNEEDS_COL_PRICE"	"Price"	|
+20677	"_CITYNEEDS_COL_TREND"	"Trend (1h)"	|
+20678	"_CITYNEEDS_CAT_RESOURCE"	"Resource"	|
+20679	"_CITYNEEDS_CAT_GATHERING"	"Raw material"	|
+20680	"_CITYNEEDS_CAT_INTERMEDIATE"	"Intermediate"	|
+20681	"_CITYNEEDS_CAT_OTHER"	"Other"	|
+20682	"_CITYNEEDS_FILTER_ALL"	"All"	|
+20683	"_CITYNEEDS_FILTER_RES"	"Resources"	|
+20684	"_CITYNEEDS_PRICE_FMT"	"%1t"	|
+20685	"_CITYNEEDS_RATE_FMT"	"%1s %2.1f/d"	|
+20686	"_CITYNEEDS_COL_BUY"	"Buy"	|
+20687	"_CITYNEEDS_COL_SELL"	"Sell"	|
+20688	"_CITYNEEDS_COL_TIER"	"Needed by"	|
+20689	"_CITYNEEDS_COL_SHORTAGE"	"Status"	|
+20690	"_CITYNEEDS_COL_REVENUE"	"Revenue"	|
+20691	"_CITYNEEDS_RANK_DESTITUTE"	"Destitute"	|
+20692	"_CITYNEEDS_RANK_POOR"	"Poor"	|
+20693	"_CITYNEEDS_RANK_MIDDLE"	"Middle"	|
+20694	"_CITYNEEDS_RANK_RICH"	"Rich"	|
+20695	"_CITYNEEDS_RANK_WEALTHY"	"Wealthy"	|
+20696	"_CITYNEEDS_STATUS_OUT"	"out"	|
+20697	"_CITYNEEDS_STATUS_CRITICAL"	"critical"	|
+20698	"_CITYNEEDS_STATUS_LOW"	"low"	|
+20699	"_CITYNEEDS_STATUS_OK"	"ok"	|
+20700	"_CITYNEEDS_STATUS_ABUNDANT"	"abundant"	|
+20701	"_CITYNEEDS_PANEL_TITLE"	"City Needs"	|
+20702	"_CITYNEEDS_TITLE_FOR_CITY"	"City Needs - %s"	|
+20703	"_CITYNEEDS_TIP_TIER_RAW"	"Raw material - not consumed directly"	|
+20704	"_CITYNEEDS_TIP_TIER"	"Favoured by %s-class citizens (%d in this settlement). Each typically buys around %.2f per day, suggesting roughly %.2f units of daily demand and about %s gold of revenue per day at current sell prices."	|
+20705	"_CITYNEEDS_TIP_TIER_WITH_BLDG"	"Favoured by %s-class citizens (%d in this settlement). Each typically buys around %.2f per day, suggesting roughly %.2f units of daily demand and about %s gold of revenue per day at current sell prices. Produced at: %s."	|
+20706	"_CITYNEEDS_TIP_STOCK_OUT"	"Out of stock! Demand is %.2f per day - critical shortage"	|
+20707	"_CITYNEEDS_TIP_STOCK_SHORTAGE"	"%d in stock, only %.1f days of supply at current demand (%.2f/day) - shortage"	|
+20708	"_CITYNEEDS_TIP_STOCK_LOW"	"%d in stock, %.1f days of supply at current demand (%.2f/day) - low"	|
+20709	"_CITYNEEDS_TIP_STOCK_OK"	"%d in stock, %.1f days of supply at current demand (%.2f/day) - well supplied"	|
+20710	"_CITYNEEDS_TIP_STOCK_NO_DEMAND"	"%d in stock - no current citizen demand"	|
+20711	"_CITYNEEDS_TIP_STOCK_EMPTY"	"Empty stock and no citizen demand"	|
+20712	"_CITYNEEDS_TIP_DEMAND_OK"	"Citizens buy about %.2f of this per day. Currently produced by %d workshop(s)."	|
+20713	"_CITYNEEDS_TIP_DEMAND_NO_PROD_BLDG"	"Citizens buy about %.2f of this per day, yet no workshop here produces it. Consider building a %s to ease the shortage."	|
+20714	"_CITYNEEDS_TIP_DEMAND_NO_PROD"	"Citizens buy about %.2f of this per day, but no workshop here produces it."	|
+20715	"_CITYNEEDS_TIP_DEMAND_NO_DEMAND_PROD"	"No direct citizen demand. %d workshop(s) here can produce this."	|
+20716	"_CITYNEEDS_TIP_DEMAND_NONE"	"No direct citizen demand and no producer in this settlement."	|
+20717	"_CITYNEEDS_TIP_DEMAND_USED_BY"	" Also used as ingredient by: %s."	|
+20718	"_CITYNEEDS_TIP_REVENUE_NONE"	"No expected daily revenue: either no demand or no sell price for this item."	|
+20719	"_CITYNEEDS_TIP_REVENUE"	"Estimated total city revenue per day if the full daily demand from all citizens and workshops is supplied at today's sell price: about %s gold (= %s total daily demand x %s gold per unit). Real sales will be lower because workshops compete and citizens substitute between items."	|
+20720	"_CITYNEEDS_POPULATION_LABEL"	"%d citizens  -  $C[150,140,130]%d destitute, $C[180,150,110]%d poor, $C[210,210,170]%d middle, $C[230,190,100]%d rich, $C[255,210,110]%d wealthy"	|
