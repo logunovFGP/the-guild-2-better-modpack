@@ -16071,4 +16071,10 @@ Data:
 20717	"_CITYNEEDS_TIP_DEMAND_USED_BY"	" Also used as ingredient by: %s."	|
 20718	"_CITYNEEDS_TIP_REVENUE_NONE"	"No expected daily revenue: either no demand or no sell price for this item."	|
 20719	"_CITYNEEDS_TIP_REVENUE"	"Estimated total city revenue per day if the full daily demand from all citizens and workshops is supplied at today's sell price: about %s gold (= %s total daily demand x %s gold per unit). Real sales will be lower because workshops compete and citizens substitute between items."	|
-20720	"_CITYNEEDS_POPULATION_LABEL"	"%d citizens  -  $C[150,140,130]%d destitute, $C[180,150,110]%d poor, $C[210,210,170]%d middle, $C[230,190,100]%d rich, $C[255,210,110]%d wealthy"	|
+20720	"_CITYNEEDS_POPULATION_LABEL"	"%d citizens  -  $C[150,140,130]%d destitute, $C[180,150,110]%d poor, $C[210,210,170]%d middle, $C[230,190,100]%d rich, $C[255,210,110]%d wealthy, $C[140,140,140]%d other"	|
+20721	"_CITYNEEDS_CAT_USEABLE"	"Useable"	|
+20722	"_CITYNEEDS_CAT_SUPPLY"	"Supply"	|
+20723	"_CITYNEEDS_CAT_ARTIFACT"	"Artifact"	|
+20724	"_CITYNEEDS_CAT_ANIMAL"	"Animal"	|
+20725	"_CITYNEEDS_CAT_MEASURE"	"Crafted"	|
+20726	"_CITYNEEDS_CAT_QUEST"	"Quest"	|

@@ -2,13 +2,18 @@ function Init()
 
 	this:DisableModule("RenderCtrl")
 
-	this:AttachModule("MovieCtrl", "cl_MovePlayController")
+	-- Temporary workaround to avoid game crash with movies.
+	this:ChangeGameState("GameStartUp")
 
-	local Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
-	Ctrl:SetValueString("FileName", "movie/GameIntro.wmv")
-	Ctrl:SetValueString("NextGameState", "GameStartUp")
+	if (false) then
+		this:AttachModule("MovieCtrl", "cl_MovePlayController")
 
-	this:EnableModule("MovieCtrl", 4)
+		Ctrl = FindNode("\\Application\\Game\\MovieCtrl")
+		Ctrl:SetValueString("FileName", "movie/GameIntro.wmv")
+		Ctrl:SetValueString("NextGameState", "GameStartUp")
+
+		this:EnableModule("MovieCtrl", 4)
+	end
 
 end
 

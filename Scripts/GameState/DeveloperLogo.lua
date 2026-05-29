@@ -2,15 +2,15 @@ function Init()
 
 	this:DisableModule("RenderCtrl")
 
-	if (this:GetSettingInt("GAME", "SplashScreen", 0) == 0) then
-	
+	-- Temporary workaround to avoid game crash with movies.
+	if (true or this:GetSettingInt("GAME", "SplashScreen", 0) == 0) then
 		this:ChangeGameState("GameStartUp")
 
 	else
 
 		this:AttachModule("MovieCtrl", "cl_MovePlayController")
 
-		local Ctrl = FindNode("\\Application\\Game\\MovieCtrl")	
+		Ctrl = FindNode("\\Application\\Game\\MovieCtrl")
 		--Ctrl:SetValueString("FileName", "movie/DeveloperLogo.mpg")
 		Ctrl:SetValueString("FileName", "movie/RuneforgeLogo.wmv")
 		Ctrl:SetValueString("NextGameState", "GameIntro")
