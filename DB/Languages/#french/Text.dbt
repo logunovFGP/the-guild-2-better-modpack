@@ -2,7 +2,7 @@
 //by RUNEFORGE Game Studio
 
 Table Description:
-"id" INT  0   |"label" STRING  0   |"english" STRING  0   |
+"id" INT  0   |"label" STRING  0   |"french" STRING  0   |
 
 Data:
 1   "BeginSpeak"   "'"   |
