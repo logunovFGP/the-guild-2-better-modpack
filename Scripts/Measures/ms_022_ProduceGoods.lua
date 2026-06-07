@@ -210,7 +210,12 @@ function Run()
 				if not f_MoveTo("","WorkPosition") then
 					Sleep(0.5)
 				else
-					AnimationFunction()
+					if AnimationFunction then
+						AnimationFunction()
+					else
+						LogError("ms_022_ProduceGoods: missing animation function for locator "..LocatorName)
+						Sleep(0.5)
+					end
 				end
 				ReleaseLocator("Owner","WorkPosition")
 				RemoveAlias("WorkPosition")
