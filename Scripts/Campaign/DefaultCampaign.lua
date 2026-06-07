@@ -352,6 +352,12 @@ end
 
 function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
+	local Money = GetSettingNumber(Section, "Money", 5000)
+	
+	if Money < 5000 then
+		Money = 5000
+	end
+	
 	local optMoney = GetSettingNumber("OPTIONS", (IsPlayer and "PlayerStartMoney") or "AIStartMoney", 0)
 	if optMoney > 0 then
 		Money = optMoney
@@ -412,11 +418,6 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	Section = Section .. ScenarioGetDifficulty()
 	
 	local Workshops = 1
-	local Money = GetSettingNumber(Section, "Money", 5000)
-	
-	if Money < 5000 then
-		Money = 5000
-	end
 	
 	-- get city name from playerdescnode
 	if PlayerDescNode ~= nil then
