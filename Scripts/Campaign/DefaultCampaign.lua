@@ -365,7 +365,6 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
 	local optResLevel = GetSettingNumber("OPTIONS", (IsPlayer and "StartBuildings") or "AIStartBuildings", 0)
 	if optResLevel > 0 then
-		HasResidence = 1
 		if optResLevel > 4 then
 			optResLevel = 4
 		end
@@ -485,6 +484,12 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	local optTitle = GetSettingNumber("OPTIONS", (IsPlayer and "StartNobility") or "AIStartNobility", 0)
 	if (optTitle > 0) then
 		SetNobilityTitle("boss", optTitle)
+	end
+
+	local resMin, resMax = 1, -1
+	if optResLevel and optResLevel > 0 then
+		resMin = optResLevel
+		resMax = optResLevel 
 	end
 
 	-- Find residence
