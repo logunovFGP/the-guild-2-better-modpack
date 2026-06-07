@@ -352,6 +352,19 @@ end
 
 function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
+	local optMoney = GetSettingNumber("OPTIONS", (IsPlayer and "PlayerStartMoney") or "AIStartMoney", 0)
+	if optMoney > 0 then
+		Money = optMoney
+	end
+
+	local optResLevel = GetSettingNumber("OPTIONS", (IsPlayer and "StartBuildings") or "AIStartBuildings", 0)
+	if optResLevel > 0 then
+		HasResidence = 1
+		if optResLevel > 4 then
+			optResLevel = 4
+		end
+	end
+
 	if IsPlayer then
 		LogMessage("@NAO #E Player creation -> ID: " .. ID .. ", SpawnPoint: " .. SpawnPoint .. ", " .. PeerID .. ", PlayerDesc: " .. PlayerDescLabel)
 	end
@@ -467,10 +480,18 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	if not DynastyAddMember(DynastyAlias, "boss") then
 		return "unable to add the first member to the dynasty"
 	end
-	
+
+	local optTitle = GetSettingNumber("OPTIONS", (IsPlayer and "StartNobility") or "AIStartNobility", 0)
+	if (optTitle > 0) then
+		SetNobilityTitle("boss", optTitle)
+	end
+
 	-- Find residence
-	if not CityGetRandomBuilding(CityAlias, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_NO_DYNASTY, "Residence") then
-		local Proto = ScenarioFindBuildingProto(nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1) -- if not, build a new one
+	if not CityGetRandomBuilding(CityAlias, nil, GL_BUILDING_TYPE_RESIDENCE, resMin, resMax, FILTER_IS_BUYABLE, "Residence") then
+		local Proto = ScenarioFindBuildingProto(nil, GL_BUILDING_TYPE_RESIDENCE, resMin, -1)
+		if (not Proto or Proto==-1) and resMin > 1 then
+			Proto = ScenarioFindBuildingProto(nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1)
+		end
 		if Proto and Proto~=-1 then
 			if not CityBuildNewBuilding(CityAlias, Proto, nil, "Residence") then
 				return "unable to create main residence" -- bad luck?

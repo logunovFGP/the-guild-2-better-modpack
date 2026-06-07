@@ -1,3 +1,5 @@
+g_StartFillMult = 1.0
+
 function GameStart()
 	
 	GetSettlement("", "City")
@@ -7,12 +9,19 @@ function GameStart()
 	end
 	
 	local Level = CityGetLevel("City")
+
+	g_StartFillMult = GetSettingNumber("OPTIONS", "MarketItemMult", 100) / 100.0
+	if g_StartFillMult < 1.0 then
+		g_StartFillMult = 1.0
+	end
 	
 	marketpinghour_SpawnItems("City", Level)
 	
 	-- far trader
 	economy_CalcNeedsForMarket("City")
 	economy_CalcSalesForMarket("City")
+
+	g_StartFillMult = 1.0
 end
 
 function PingHour()
@@ -75,7 +84,11 @@ function SpawnItems(City, CityLevel)
 			
 			-- multiply and add
 			Spawn = Spawn*LevelFound
-			
+
+			if g_StartFillMult and g_StartFillMult > 1.0 then
+				Spawn = math.floor(Spawn * g_StartFillMult + 0.5)
+			end
+
 			if Spawn == 0 then
 				AddItems("", ItemName, 1, INVENTORY_STD) -- we spawn it anyway to have to slot shown
 				RemoveItems("", ItemName, 1, INVENTORY_STD)

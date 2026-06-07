@@ -366,7 +366,8 @@ function GoToRandomPosition()
 	local class
 	local offset = 75+Rand(250)
 
-	if GetSettlement("", "City") then
+	GetSettlement("", "City")
+	if AliasExists("City") then
 		local RandVal = Rand(7)
 		if RandVal < 2 then
 			class = GL_BUILDING_CLASS_MARKET

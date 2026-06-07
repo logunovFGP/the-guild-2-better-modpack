@@ -86,20 +86,23 @@ function Init()
 end
 
 function CleanUp()
-
 	this:DetachModule("Hud")
 	this:DetachModule("TreeViewCtrl")
 	this:DetachModule("TreeGraphCtrl")
 	this:DetachModule("SeasonBlender")
 	this:DisableModule("WorldSessionCtrl")
-	this:DetachModule("NetworkCtrl")
-	this:DetachModule("GeneralInputCtrl")
 
 	local resync = this:GetValueInt("_ResyncReload")
-	if resync == 0 then
+	local keepSteamNetwork = this:GetValueInt("_SteamMPKeepNetworkCtrl")
+	if resync == 0 and keepSteamNetwork == 0 then
 		this:DetachModule("NetworkCtrl")
 	else
-		this:SetValueInt("_ResyncReload", 0)
+		if resync ~= 0 then
+			this:SetValueInt("_ResyncReload", 0)
+		end
+		if keepSteamNetwork ~= 0 then
+			this:SetValueInt("_SteamMPKeepNetworkCtrl", 0)
+		end
 	end
 
 	this:DetachModule("GeneralInputCtrl")
