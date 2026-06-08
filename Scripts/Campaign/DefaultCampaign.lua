@@ -352,6 +352,10 @@ end
 
 function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
+	local Section
+	Section = "INIT-PLAYER-"
+	Section = Section .. ScenarioGetDifficulty()
+
 	local Money = GetSettingNumber(Section, "Money", 5000)
 	
 	if Money < 5000 then
@@ -409,12 +413,8 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	end
 	
 	local CityAlias = "CityName"
-	local Section
+	
 	local BeamPos
-	
-	Section = "INIT-PLAYER-"
-	
-	Section = Section .. ScenarioGetDifficulty()
 	
 	local Workshops = 1
 	
@@ -450,30 +450,72 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	end
 
 	if not AliasExists(CityAlias) then
-		-- choose a random start city for AI
-		
-		local CityCount = ScenarioGetObjects("Settlement", 15, "CityList")
-		local FreeResidences = 0
-		local BestSum = -99
-		local BestCity = false
-			
+		LogMessage("@NAO #W AI " .. GetName("boss") .. " Check 1, City Alias not AliasExists(CityAlias)")
+
+		local CityCount = ScenarioGetObjects("Settlement", 99, "CityList")
+		local BestScore = -1
+		local BestCity = nil
+		local EqualBestCount = 0
+
 		for cc=0, CityCount-1 do
-			local Alias = "CityList"..cc
-			if AliasExists(Alias) then
-				FreeResidences = CityGetBuildingCount(Alias, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_NO_DYNASTY)
-				
-				if FreeResidences >= BestSum then
-					BestSum = FreeResidences
-					BestCity = Alias
+			local Candidate = "CityList"..cc
+
+			if AliasExists(Candidate) then
+				local FreeResidences = CityGetBuildingCount(
+					Candidate,
+					nil,
+					GL_BUILDING_TYPE_RESIDENCE,
+					1,
+					-1,
+					FILTER_IS_BUYABLE
+				)
+
+				local FreeWorkshops = CityGetBuildingCount(
+					Candidate,
+					GL_BUILDING_CLASS_WORKSHOP,
+					nil,
+					1,
+					-1,
+					FILTER_IS_BUYABLE
+				)
+
+				if FreeResidences > 4 then
+					FreeResidences = 4
+				end
+
+				if FreeWorkshops > 4 then
+					FreeWorkshops = 4
+				end
+
+				local Score = FreeResidences + FreeWorkshops
+
+				if Score > BestScore then
+					BestScore = Score
+					BestCity = Candidate
+					EqualBestCount = 1
+				elseif Score == BestScore then
+					EqualBestCount = EqualBestCount + 1
+
+					if Rand(EqualBestCount) == 0 then
+						BestCity = Candidate
+					end
 				end
 			end
 		end
-		
+
 		if BestCity then
+			LogMessage(
+				"@NAO #W AI "
+				.. GetName("boss")
+				.. " selected city "
+				.. GetName(BestCity)
+				.. " with score "
+				.. BestScore
+			)
+
 			CopyAlias(BestCity, CityAlias)
-		else
-			BestCity = "CityList0"
-			CopyAlias(BestCity, CityAlias)
+		elseif not ScenarioGetRandomObject("Settlement", CityAlias) then
+			return "unable to find a start city for AI dynasty"
 		end
 	end
 	
@@ -504,6 +546,8 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 			end
 		end
 	end
+
+	LogMessage("@NAO #W AI " .. GetName("boss") .. "spawned at city " .. GetName(CityAlias) )
 	
 	-- Buy the residence
 	if AliasExists("Residence") then
