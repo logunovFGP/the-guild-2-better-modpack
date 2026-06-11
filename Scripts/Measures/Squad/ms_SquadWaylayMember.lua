@@ -144,7 +144,7 @@ function WhatToDo()
 		local ItemCount 
 			
 		ItemId, ItemCount = InventoryGetSlotInfo("", i, INVENTORY_STD)
-		if ItemId and ItemID ~= 999 and ItemCount > 0 then
+		if ItemId and ItemId ~= 999 and ItemCount > 0 then -- was 'ItemID' (typo), so EmptySlot (999) was never excluded
 			Items = ItemCount
 			break
 		end
