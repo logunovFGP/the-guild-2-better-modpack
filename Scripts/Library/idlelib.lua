@@ -1237,6 +1237,15 @@ function MyrmidonIdle(MyrmAlias)
 	SimGetWorkingPlace(MyrmAlias, "WorkingPlace")
 	GetDynasty("WorkingPlace", "DynAlias")
 	local IsManageEmployee = GetProperty(MyrmAlias, "TWP_ManageEmployee") or 0
+
+	-- player guard with a saved patrol: resume it (route rebuilt in ms_147)
+	if not DynastyIsAI("DynAlias") and IsManageEmployee == 0 then
+		if HasProperty(MyrmAlias, "CU_PatrolActive") then
+			MeasureRun(MyrmAlias, nil, "PatrolTheTown")
+			return
+		end
+	end
+
 	if DynastyIsAI("DynAlias") or IsManageEmployee > 0 then
 		if GetHPRelative(MyrmAlias) < 0.7 then
 			-- Heal

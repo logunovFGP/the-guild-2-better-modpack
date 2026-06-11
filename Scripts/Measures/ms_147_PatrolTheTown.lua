@@ -5,6 +5,10 @@
 ----	with this measure, the player can send a myrmidon to patrol between 
 ----	2 waypoints or guard an building
 ----
+----	Community Update: a player guard's patrol is now a standing order.
+----	The route is saved on the guard; when he idles after an interruption the
+----	measure is re-issued and the route rebuilt from the saved waypoint ids.
+----
 -------------------------------------------------------------------------------
 
 function Init() 
@@ -37,8 +41,17 @@ end
 function Run()
 	local Count
 
+	-- no live waypoints: try to rebuild the route from a saved patrol
+	if not AliasExists("Waypoint1") then
+		ms_147_patrolthetown_RestorePatrol()
+	end
+
 	if AliasExists("Waypoint1") then
 		Count = 0+GetData("WaypointCount")
+		-- save a player-issued patrol so the guard can resume it later
+		if IsGUIDriven() then
+			ms_147_patrolthetown_SavePatrol(Count)
+		end
 	end
 
 	--ai timeout
@@ -108,6 +121,71 @@ function Run()
 			end
 		end
 		Sleep(5)
+	end
+end
+
+-- -----------------------
+-- patrol standing-order helpers
+-- -----------------------
+function SavePatrol(Count)
+	-- drop the previous route first so a shorter patrol leaves no stale waypoints
+	ms_147_patrolthetown_ClearPatrol()
+	SetProperty("", "CU_PatrolActive", 1)
+	SetProperty("", "CU_PatrolWPCount", Count)
+	local i = 1
+	while i <= Count do
+		SetProperty("", "CU_PatrolWP"..i, GetID("Waypoint"..i))
+		i = i + 1
+	end
+end
+
+function RestorePatrol()
+	if not HasProperty("", "CU_PatrolActive") then
+		return
+	end
+	if not HasProperty("", "CU_PatrolWPCount") then
+		ms_147_patrolthetown_ClearPatrol()
+		return
+	end
+	local saved = GetProperty("", "CU_PatrolWPCount")
+	if not saved or saved < 1 then
+		ms_147_patrolthetown_ClearPatrol()
+		return
+	end
+	-- rebuild waypoints from the saved ids; stop at the first missing one
+	local restored = 0
+	local i = 1
+	while i <= saved do
+		local wpid = GetProperty("", "CU_PatrolWP"..i)
+		if wpid and GetAliasByID(wpid, "Waypoint"..i) then
+			restored = i
+			i = i + 1
+		else
+			i = saved + 1
+		end
+	end
+	if restored >= 1 then
+		SetData("WaypointCount", restored)
+	else
+		ms_147_patrolthetown_ClearPatrol()
+	end
+end
+
+function ClearPatrol()
+	local saved = 0
+	if HasProperty("", "CU_PatrolWPCount") then
+		saved = GetProperty("", "CU_PatrolWPCount")
+		RemoveProperty("", "CU_PatrolWPCount")
+	end
+	local i = 1
+	while saved and i <= saved do
+		if HasProperty("", "CU_PatrolWP"..i) then
+			RemoveProperty("", "CU_PatrolWP"..i)
+		end
+		i = i + 1
+	end
+	if HasProperty("", "CU_PatrolActive") then
+		RemoveProperty("", "CU_PatrolActive")
 	end
 end
 

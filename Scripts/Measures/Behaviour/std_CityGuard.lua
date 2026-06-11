@@ -1,3 +1,5 @@
+-- Community Update: with a player captain the guard plan was skipped and the
+-- guards idled. They now follow a route set by the captain, or patrol normally.
 function Run()
 
 	local Player = false
@@ -7,6 +9,14 @@ function Run()
 		end
 		
 		if not Player then
+			AIExecutePlan("", "CityGuard", "SIM", "", "dynasty", "ServantDynasty")
+			return
+		else
+			-- follow a route set by the captain, else patrol normally
+			if HasProperty("", "CU_PatrolActive") then
+				MeasureRun("", nil, "PatrolTheTown")
+				return
+			end
 			AIExecutePlan("", "CityGuard", "SIM", "", "dynasty", "ServantDynasty")
 			return
 		end
