@@ -5,6 +5,10 @@
 ----	with this measure, the player can send a myrmidon to spy out an sim
 ----	after 2h the character sheet of the destination will be revealed
 ----
+----	Community Update: a player-ordered shadowing never ended, because the only
+----	exit of the loop was the AI-only TimeOut. It now runs on the game timer
+----	like the other timed measures and reveals the sheet when the time is up.
+----
 -------------------------------------------------------------------------------
 
 function Run()
@@ -32,25 +36,21 @@ function Run()
 	end
 	
 	StartGameTimer(TimeToShadow)
-	local DestDyn = GetDynasty("Destination","DestDynasty")
+	GetDynasty("Destination","DestDynasty")
 	local OwnerDyn = GetDynastyID("")
 	SendCommandNoWait("","Progress")
 	MeasureSetNotRestartable()
-	while true do
+
+	-- shadow until the time is up
+	while not CheckGameTimerEnd() do
+
+		if not AliasExists("Destination") then
+			break
+		end
 		
 		if TimeOut then
 			if TimeOut < GetGametime() then
 				break
-			end
-		end
-		
-		if CheckGameTimerEnd() then
-			if not HasProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn) then
-				SetProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn,1)
-				feedback_MessageCharacter("",
-					"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_HEAD_+0",
-					"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_BODY_+0",GetID(""),GetID("Destination"))
-				achievements_Unlock("", "CRIME_ORDER_SHADOWING")	
 			end
 		end
 		
@@ -99,27 +99,31 @@ function Run()
 			
 				--start observation
 				while (SpyTheHouse == 1) do
-					WhatToDo = Rand(4)
-					--Go around the house
-					if (WhatToDo == 0) then
-						for i=1, 4 do
-							if GetLocatorByName("VictimsHome", "Walledge"..i, "VictimsCorner"..i) then
-								f_MoveTo("", "VictimsCorner"..i, GL_MOVESPEED_SNEAK, 50)
-							end
-							Sleep(1)
-							k = Rand(2)
-							if (k == 0) then
-								PlayAnimation("","watch_for_guard")
-							end
-						end
-					elseif (WhatToDo == 1) then
-						if GetLocatorByName("VictimsHome", "Entry1", "VictimsEntry") then
-							f_MoveTo("", "VictimsEntry", GL_MOVESPEED_SNEAK, 50)
-						end
-						Sleep(3)
-					--cancel building observation
-					else
+					if CheckGameTimerEnd() then
 						SpyTheHouse = 0
+					else
+						WhatToDo = Rand(4)
+						--Go around the house
+						if (WhatToDo == 0) then
+							for i=1, 4 do
+								if GetLocatorByName("VictimsHome", "Walledge"..i, "VictimsCorner"..i) then
+									f_MoveTo("", "VictimsCorner"..i, GL_MOVESPEED_SNEAK, 50)
+								end
+								Sleep(1)
+								k = Rand(2)
+								if (k == 0) then
+									PlayAnimation("","watch_for_guard")
+								end
+							end
+						elseif (WhatToDo == 1) then
+							if GetLocatorByName("VictimsHome", "Entry1", "VictimsEntry") then
+								f_MoveTo("", "VictimsEntry", GL_MOVESPEED_SNEAK, 50)
+							end
+							Sleep(3)
+						--cancel building observation
+						else
+							SpyTheHouse = 0
+						end
 					end
 				end
 			end
@@ -128,7 +132,20 @@ function Run()
 	
 	end
 	
+	-- time is up: reveal the character sheet
+	if CheckGameTimerEnd() and AliasExists("Destination") then
+		GetDynasty("Destination","DestDynasty")
+		if not HasProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn) then
+			SetProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn,1)
+			feedback_MessageCharacter("",
+				"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_HEAD_+0",
+				"@L_GENERAL_MEASURES_143_ORDERASHADOWING_MSG_SUCCESS_BODY_+0",GetID(""),GetID("Destination"))
+			achievements_Unlock("", "CRIME_ORDER_SHADOWING")
+		end
+		SetProperty("", "CU_ShadowDone", 1)   -- completed, keep the reveal
+	end
 	
+	StopMeasure()
 end
 
 function Progress()
@@ -150,11 +167,19 @@ function CleanUp()
 	StopAnimation("")
 	AddImpact("","spying",-1,-1)
 	ResetProcessProgress("")
-	if AliasExists("Destination") then
-		local DestDyn = GetDynasty("Destination","DestDynasty")
-		local OwnerDyn = GetDynastyID("","OwnerDynasty")
-		if HasProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn) then
-			RemoveProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn)
+
+	-- keep the reveal when completed, clear it on early cancel
+	local completed = HasProperty("", "CU_ShadowDone")
+	if completed then
+		RemoveProperty("", "CU_ShadowDone")
+	end
+	if not completed then
+		if AliasExists("Destination") then
+			local DestDyn = GetDynasty("Destination","DestDynasty")
+			local OwnerDyn = GetDynastyID("")
+			if HasProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn) then
+				RemoveProperty("DestDynasty","BeeingShadowedBy"..OwnerDyn)
+			end
 		end
 	end
 

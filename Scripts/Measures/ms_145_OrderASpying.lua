@@ -3,6 +3,11 @@
 ----	OVERVIEW "ms_145_OrderASpying"
 ----
 ----	with this measure, the player can send a myrmidon to spy out an sim
+----	(gather evidence); the engine counts evidence into "SpiedByCount" and
+----	CleanUp reports success or failure from it.
+----
+----	Community Update: same problem as ms_143 -- a player-ordered spying ran
+----	forever. It now ends after SpyDuration hours.
 ----
 -------------------------------------------------------------------------------
 
@@ -26,7 +31,15 @@ function Run()
 		TimeOut = GetGametime() + TimeOut
 	end
 	
-	while true do
+	-- end the investigation after SpyDuration hours
+	local SpyDuration = 4
+	StartGameTimer(SpyDuration)
+
+	while not CheckGameTimerEnd() do
+
+		if not AliasExists("Destination") then
+			break
+		end
 
 		if TimeOut then
 			if TimeOut < GetGametime() then
@@ -81,27 +94,31 @@ function Run()
 			
 				--start observation
 				while (SpyTheHouse == 1) do
-					WhatToDo = Rand(4)
-					--Go around the house
-					if (WhatToDo == 0) then
-						for i=1, 4 do
-							if GetLocatorByName("VictimsHome", "Walledge"..i, "VictimsCorner"..i) then
-								f_MoveTo("", "VictimsCorner"..i, GL_MOVESPEED_RUN, 50)
-							end
-							Sleep(1)
-							k = Rand(2)
-							if (k == 0) then
-								PlayAnimation("", "watch_for_guard")
-							end
-						end
-					elseif (WhatToDo == 1) then
-						if GetLocatorByName("VictimsHome", "Entry1", "VictimsEntry") then
-							f_MoveTo("", "VictimsEntry", GL_MOVESPEED_RUN, 50)
-						end
-						Sleep(3)
-					--cancel building observation
-					else
+					if CheckGameTimerEnd() then
 						SpyTheHouse = 0
+					else
+						WhatToDo = Rand(4)
+						--Go around the house
+						if (WhatToDo == 0) then
+							for i=1, 4 do
+								if GetLocatorByName("VictimsHome", "Walledge"..i, "VictimsCorner"..i) then
+									f_MoveTo("", "VictimsCorner"..i, GL_MOVESPEED_RUN, 50)
+								end
+								Sleep(1)
+								k = Rand(2)
+								if (k == 0) then
+									PlayAnimation("", "watch_for_guard")
+								end
+							end
+						elseif (WhatToDo == 1) then
+							if GetLocatorByName("VictimsHome", "Entry1", "VictimsEntry") then
+								f_MoveTo("", "VictimsEntry", GL_MOVESPEED_RUN, 50)
+							end
+							Sleep(3)
+						--cancel building observation
+						else
+							SpyTheHouse = 0
+						end
 					end
 				end
 			end
@@ -109,6 +126,9 @@ function Run()
 	
 		Sleep(1)
 	end
+
+	-- time is up; CleanUp resolves success or failure
+	StopMeasure()
 end
 
 -- -----------------------
