@@ -3,6 +3,7 @@
 ----	OVERVIEW "AIBuyArmor.lua"
 ----
 ----	with this measure the AI buys an armor and uses it
+----	Community Update: handles all armor slots (head/body/hands), not only body
 ----
 -------------------------------------------------------------------------------
 function Run()
@@ -15,7 +16,7 @@ function Run()
 		return
 	end
 	
-	-- Buy the Item
+	-- Buy the item
 	if GetItemCount("", ItemName, INVENTORY_STD) == 0 and GetItemCount("", ItemName, INVENTORY_EQUIPMENT) == 0 then
 		if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 			return
@@ -32,36 +33,49 @@ function Run()
 	
 	if GetItemCount("", ItemName) > 0 then
 	
-		-- Equip the Item if Slot is empty
+		-- Equip directly if the item's slot is free
 		if GetRemainingInventorySpace("", ItemName, INVENTORY_EQUIPMENT) > 0 then
 			RemoveItems("", ItemName, 1, INVENTORY_STD)
 			AddItems("", ItemName, 1, INVENTORY_EQUIPMENT)
 		
 		else
-			-- Check what item blocks the space
-			local ItemCase1 = GetItemCount("", "LeatherArmor", INVENTORY_EQUIPMENT)
-			local ItemCase2 = GetItemCount("", "Chainmail", INVENTORY_EQUIPMENT)
-			local ItemCase3 = GetItemCount("", "Platemail", INVENTORY_EQUIPMENT)
+			-- slot occupied: swap out a worse piece of the same slot, if any.
+			-- epics are not listed, so they never get swapped out.
+			local Slots = {
+				{ "LeatherArmor", "WarCuirass", "Chainmail", "Platemail" },
+				{ "IronCap", "FullHelmet" },
+				{ "IronBrachelet", "LeatherGloves" },
+			}
 			
-			if ItemCase1 >0 then
-				-- Check if new item is better or not
-				-- Every case is better than Dagger
-				if ItemName ~= "LeatherArmor" then
-					RemoveItems("", "LeatherArmor", 1, INVENTORY_EQUIPMENT)
-					-- Equip new item
-					RemoveItems("", ItemName, 1, INVENTORY_STD)
-					AddItems("", ItemName, 1, INVENTORY_EQUIPMENT)
+			-- locate ItemName's slot list and its tier index
+			local slot
+			local idx
+			local s = 1
+			while Slots[s] do
+				local i = 1
+				while Slots[s][i] do
+					if Slots[s][i] == ItemName then
+						slot = Slots[s]
+						idx = i
+					end
+					i = i + 1
 				end
-			elseif ItemCase2 >0 then
-				if ItemName == "Platemail" then
-					RemoveItems("", "Chainmail",1, INVENTORY_EQUIPMENT)
-					RemoveItems("", ItemName, 1, INVENTORY_STD)
-					AddItems("", ItemName, 1, INVENTORY_EQUIPMENT)
+				s = s + 1
+			end
+
+			if slot then
+				-- remove the first equipped piece lower than ItemName, then equip it
+				local done = false
+				local j = 1
+				while j < idx and not done do
+					if GetItemCount("", slot[j], INVENTORY_EQUIPMENT) > 0 then
+						RemoveItems("", slot[j], 1, INVENTORY_EQUIPMENT)
+						RemoveItems("", ItemName, 1, INVENTORY_STD)
+						AddItems("", ItemName, 1, INVENTORY_EQUIPMENT)
+						done = true
+					end
+					j = j + 1
 				end
-			elseif ItemCase3 >0 then
-				-- You already have a platemail, no need to change.
-				RemoveItems("", ItemName, 1, INVENTORY_STD)
-				StopMeasure()
 			end
 		end
 	end
