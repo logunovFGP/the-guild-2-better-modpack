@@ -295,7 +295,7 @@ function Host()
 		if HasProperty("PartyLocation","Guest"..i) then
 			local GuestID = GetProperty("PartyLocation","Guest"..i) or 0
 			if GetAliasByID(GuestID,"Guest") then
-				local FavorWon = GetProperty("PartyLocation","FavorWonMusic"..i) + GetProperty("PartyLocation","FavorWonEat"..i) or 0
+				local FavorWon = (GetProperty("PartyLocation","FavorWonMusic"..i) or 0) + (GetProperty("PartyLocation","FavorWonEat"..i) or 0)
 				if FavorWon >= 5 then
 					camera_CutsceneBothLock("cutscene", "Guest")
 					MsgSay("Guest","@L_FEAST_4_GOODBYE_B_COMMENTS_GOOD")

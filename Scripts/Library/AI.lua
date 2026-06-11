@@ -155,20 +155,24 @@ function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDis
 
 	ReactionDistance = ReactionDistance * 1.5
 
+	-- engine info
+	SetProperty(FirstPerson, "DebugWaitingFor", GetID(TargetPerson))
+
 	while success == false do
-	
+
 		if not f_Follow(FirstPerson,TargetPerson,GL_MOVESPEED_RUN,ReactionDistance, true) then
-			if not bForceNoErrorOnBlock then		
+			if not bForceNoErrorOnBlock then
+				RemoveProperty(FirstPerson, "DebugWaitingFor")
 				return false
 			end
 		end
-	
+
 		if CommandFunction then
 			success = SendCommandNoWait(TargetPerson, CommandFunction)
 		else
 			success = BlockChar(TargetPerson)
 		end
-			
+
 		if not success then
 		  -- check for timeout
 		  local curGametime = GetGametime()
@@ -183,16 +187,19 @@ function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDis
 							MsgQuick(FirstPerson,"@L_GENERAL_MEASURES_FAILURES_+0", GetID(TargetPerson), GetID(FirstPerson))
 						end
 					end
+					RemoveProperty(FirstPerson, "DebugWaitingFor")
 					return false
 				end
 			end
-			
+
 			if not bForceNoErrorOnBlock then
 				Sleep(1)
 			end
 		end
 	end
-	
+
+	RemoveProperty(FirstPerson, "DebugWaitingFor")
+
 	-- move to destinaton
 	if not (f_MoveTo(FirstPerson,TargetPerson, GL_MOVESPEED_WALK, ActionDistance)) then
 		return false
@@ -950,10 +957,13 @@ function BuyRandomWorkshop(Owner)
 
 	-- no buildings available or not able to buy any of them
 	local m = CityGetBuildingCount("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_NO_DYNASTY )
-	for i=0, m-1 do
-		if not BuildingGetForSale("bld"..i) and BuildingCanBeOwnedBy("bld"..i, Owner)then
-			if MeasureRun("bld"..i, Owner, "TakeOverBid", true) then 
-				return true
+	if m >= 1 then
+		CityGetBuildings("city", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_NO_DYNASTY, "bld")
+		for i=0, m-1 do
+			if not BuildingGetForSale("bld"..i) and BuildingCanBeOwnedBy("bld"..i, Owner) then
+				if MeasureRun("bld"..i, Owner, "TakeOverBid", true) then
+					return true
+				end
 			end
 		end
 	end

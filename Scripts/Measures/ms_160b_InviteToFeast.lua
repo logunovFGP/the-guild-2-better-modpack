@@ -79,7 +79,7 @@ function Run()
 				StopMeasure()
 			else				--destination agrees
 				local CurrentTime = math.mod(GetGametime(),24)
-				local TimeToCall = (PartyDate/60) - 2
+				local TimeToCall = (PartyDate/60) - 6
 				local AcceptAnswerBodyText
 				if SimGetGender("")==GL_GENDER_MALE then
 					AcceptAnswerBodyText = "@L_FEAST_2_INVITE_C_ANSWER_BODY_YES_TO_MALE"
@@ -119,17 +119,20 @@ function Run()
 end
 
 function CallToFeast()
-	if GetState("", STATE_CUTSCENE) then
-		return
-	end
-	if GetState("", STATE_LOCKED) then
-		return
-	end
 	if not HasProperty("", "InvitedBy") then
 		return
 	end
 	local HostID = GetProperty("", "InvitedBy")
 	if not GetAliasByID(HostID,"PartyHost") then
+		return
+	end
+	if GetState("", STATE_CUTSCENE) or GetState("", STATE_LOCKED) then
+		if GetHomeBuilding("PartyHost", "RetryLocation") then
+			local PartyDate = GetProperty("RetryLocation", "PartyDate")
+			if PartyDate and GetGametime() < (PartyDate/60) then
+				CreateScriptcall("CallToFeastRetry", 1, "Measures/ms_160b_InviteToFeast.lua", "CallToFeast", "")
+			end
+		end
 		return
 	end
 	if GetFavorToDynasty("", "PartyHost") < 30 then

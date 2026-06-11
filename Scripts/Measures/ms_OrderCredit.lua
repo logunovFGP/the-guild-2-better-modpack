@@ -66,8 +66,9 @@ function Run()
 
 	for i = 0, TotalSimCount - 1 do
 		SimAlias = "SimAr"..i
-		local GBankName = GetProperty(SimAlias, "CreditBank")
-		if BankName == GBankName then
+		if HasProperty(SimAlias, "CreditBank") and BankName == GetProperty(SimAlias, "CreditBank") then
+			GBankMoney = 0
+			GStolenMoney = 0
 			if HasProperty(SimAlias, "CreditSum") then
 				TakeLoanSimCount = TakeLoanSimCount + 1
 				GBankMoney = GetProperty(SimAlias, "CreditSum")
@@ -125,12 +126,17 @@ function Run()
 		end
 
 		if (Payout_Message ~= "C") and (Payout_Message ~= 3) then
-			CreditMoney("BankChief", Payout_Amount[Payout_Message+1], "Credit")
-			if Payout_Message == 2 then
-				SetProperty("Bank", "BankAccount", 0)
-			else
-				SetProperty("Bank", "BankAccount", (Money.Invest - Payout_Amount[Payout_Message+1]))
+			-- re-read the account: repayments may have arrived while the dialog was open
+			local Account = 0
+			if HasProperty("Bank", "BankAccount") then
+				Account = GetProperty("Bank", "BankAccount")
 			end
+			local Payout = Payout_Amount[Payout_Message+1]
+			if Payout_Message == 2 or Payout > Account then
+				Payout = Account
+			end
+			CreditMoney("BankChief", Payout, "Credit")
+			SetProperty("Bank", "BankAccount", (Account - Payout))
 		end
 		StopMeasure()
 		
@@ -257,7 +263,11 @@ function ReturnCredit()
 		return
 	end
 
-	local Account = GetProperty("Bank","BankAccount")
+	-- the account may have been emptied/closed while the loan was out
+	local Account = 0
+	if HasProperty("Bank","BankAccount") then
+		Account = GetProperty("Bank","BankAccount")
+	end
 	local MyMoney = GetMoney("")
 	if not BuildingGetOwner("Bank","MyBoss") then
 		StopMeasure()
@@ -271,8 +281,9 @@ function ReturnCredit()
 		BalanceReturn = GetProperty("Bank","BalanceReturn")
 	end
 	
-	-- deactivate hunt for debts for AI buildings cause its bugged somehow
-	if BuildingGetAISetting("Bank", "Produce_Selection")>0 or DynastyIsAI("MyBoss") then
+	if DynastyIsAI("MyBoss") then
+		Choice = 10
+	elseif BuildingGetAISetting("Bank", "Produce_Selection")>0 then
 		Choice = 0
 	end
 	

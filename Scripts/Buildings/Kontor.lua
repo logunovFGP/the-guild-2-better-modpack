@@ -9,20 +9,23 @@ function OnLevelUp()
 	local Water = 0
 	SetProperty("", "WaterKontor", 0)
 	GetPosition("", "Position")
-	GetLocatorByName("", "Entry1", "PositionEntry")	
+	GetLocatorByName("", "Entry1", "PositionEntry")
 	if (BuildingFindWaterPos("Position", "PositionEntry", "PosWater")) then
 		if (GetOutdoorMovePosition(nil, "", "PosGround")) then
 			BuildingSetWaterPos("", "PosWater", "PosGround")
 			SetProperty("", "WaterKontor", 1)
 			Water = 1
+			if not GetState("", STATE_MARINECONTROL) then
+				SetState("", STATE_MARINECONTROL, true)
+			end
 			return true
 		end
 	end
-	
-	if Water == 1 and not GetState("", STATE_MARINECONTROL) then
-		SetState("",STATE_MARINECONTROL, true)
+
+	if not GetState("", STATE_TRADERCONTROL) then
+		SetState("", STATE_TRADERCONTROL, true)
 	end
-	
+
 	if not ScenarioFindPosition("", 2250, EN_POSTYPE_WATER, 600, nil, nil, nil, "PosWater") then
 		return false
 	end

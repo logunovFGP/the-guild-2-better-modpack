@@ -539,6 +539,14 @@ function CheckDistance(Sim, Victim)
 end
 
 function GetMaxFavByDiffForAttack()
+	-- MP advanced option
+	if IsMultiplayerGame() then
+		local opt = GetSettingNumber("OPTIONS", "AIAttackFavor", 0)
+		if opt and opt > 0 then
+			return opt
+		end
+	end
+
 	local Difficulty = ScenarioGetDifficulty()
 
 	if Difficulty == 0 then

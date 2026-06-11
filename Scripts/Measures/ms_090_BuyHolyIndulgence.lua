@@ -56,7 +56,7 @@ function Run()
 					f_EndUseLocator("", "HolyIndulgencePos", GL_STANCE_STAND)
 					SetData("Blocked", 0)
 				end
-				SpendMoney("", Cost, "CostIndulgence")
+				chr_SpendMoney("", Cost, "CostIndulgence")
 				chr_CreditMoney("church", (Cost*0.5), "IncomeIndulgence")
 				economy_UpdateBalance("church", "Service", (Cost*0.5))
 				SetMeasureRepeat(TimeOut)

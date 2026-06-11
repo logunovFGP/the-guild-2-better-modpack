@@ -12,8 +12,8 @@ function Run()
 	local time = math.mod(GetGametime(),24)
 	--debug
 	--day+1 in final version
-	local festivity_date = (day+1)*24 + PartyStart	 -- am nächsten tag um 20h
-	local invitestop_date = (day+1)*24 + InviteStop	 -- am nächsten tag um 14h
+	local festivity_date = (day+1)*24 + PartyStart	 -- am nï¿½chsten tag um 20h
+	local invitestop_date = (day+1)*24 + InviteStop	 -- am nï¿½chsten tag um 14h
 	--local festivity_date = GetGametime()+2 -- 6
 	festivity_date = festivity_date*60
 	SetProperty("","PartyDate",festivity_date)
@@ -35,9 +35,9 @@ function Run()
 	SimAddDatebookEntry("BuildingOwner", festivity_date, "", "@L_FEAST_5_TIMEPLANNERENTRY_INVITER_+0",
 								"@L_FEAST_5_TIMEPLANNERENTRY_INVITER_+1",
 								GetID("BuildingOwner"),SimsInvited,GetID("Settlement"))
-	local TimeToCall = (festivity_date/60)-2
+	local TimeToCall = (festivity_date/60)-6
 	if CreateScriptcall("CallToFeast",TimeToCall-GetGametime(),"Measures/ms_160_GiveAFeast.lua","CallToFeast","BuildingOwner","") then
-		--MsgQuick("BuildingOwner","Attend Script 2h before %1c",festivity_date)
+		--MsgQuick("BuildingOwner","Attend Script 6h before %1c",festivity_date)
 	end
 	
 	Sleep(TimeToWait)
@@ -116,7 +116,7 @@ function Run()
 	while GetProperty("","GuestsReady") < NumGuests do
 		Sleep(1)
 		if GetGametime() > (festivity_date / 60)+1 then
-			--MsgQuick("","PROBLEM - Gäste lassen zu lange auf sich warten")
+			--MsgQuick("","PROBLEM - Gï¿½ste lassen zu lange auf sich warten")
 			--StopMeasure()
 		end
 	end

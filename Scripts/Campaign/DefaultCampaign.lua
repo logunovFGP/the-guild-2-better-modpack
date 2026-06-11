@@ -341,12 +341,22 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	IncrementXP("boss", (XP+AgeBonus))
 	StartMoney =  StartMoney + NobLevel*500 + OfficeLevel*750
 	CreditMoney("boss", StartMoney, "GameStart")
-		
+
 	if Fame and ImpFame then
 		dyn_AddFame("boss", Fame)
 		dyn_AddImperialFame("boss", ImpFame)
 	end
-	
+
+	-- MP advanced option
+	if IsMultiplayerGame() then
+		local optLevel = GetSettingNumber("OPTIONS", "ShadowStartLevel", 0)
+		local Guard = 0
+		while optLevel > 1 and SimGetLevel("boss") < optLevel and Guard < 300 do
+			IncrementXP("boss", 1000)
+			Guard = Guard + 1
+		end
+	end
+
 	return ""
 end
 
@@ -362,15 +372,18 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		Money = 5000
 	end
 	
-	local optMoney = GetSettingNumber("OPTIONS", (IsPlayer and "PlayerStartMoney") or "AIStartMoney", 0)
-	if optMoney > 0 then
-		Money = optMoney
-	end
-
-	local optResLevel = GetSettingNumber("OPTIONS", (IsPlayer and "StartBuildings") or "AIStartBuildings", 0)
-	if optResLevel > 0 then
-		if optResLevel > 4 then
-			optResLevel = 4
+	local optMoney, optResLevel = 0, 0
+	if IsMultiplayerGame() then
+		optMoney = GetSettingNumber("OPTIONS", (IsPlayer and "PlayerStartMoney") or "AIStartMoney", 0)
+		if optMoney > 0 then
+			Money = optMoney
+		end	
+	
+		optResLevel = GetSettingNumber("OPTIONS", (IsPlayer and "StartBuildings") or "AIStartBuildings", 0)
+		if optResLevel > 0 then
+			if optResLevel > 4 then
+				optResLevel = 4
+			end
 		end
 	end
 
@@ -523,9 +536,11 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		return "unable to add the first member to the dynasty"
 	end
 
-	local optTitle = GetSettingNumber("OPTIONS", (IsPlayer and "StartNobility") or "AIStartNobility", 0)
-	if (optTitle > 0) then
-		SetNobilityTitle("boss", optTitle)
+	if IsMultiplayerGame() then
+		local optTitle = GetSettingNumber("OPTIONS", (IsPlayer and "StartNobility") or "AIStartNobility", 0)
+		if (optTitle > 0) then
+			SetNobilityTitle("boss", optTitle)
+		end
 	end
 
 	local resMin, resMax = 1, -1
@@ -572,7 +587,17 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		SimSetAge("boss", 17)
 		LogMessage("@NAO #W ("..ID..") Character is " .. GetName("boss"))
 	end
-	
+
+	-- MP advanced option
+	if IsMultiplayerGame() then
+		local optLevel = GetSettingNumber("OPTIONS", (IsPlayer and "PlayerStartLevel") or "AIStartLevel", 0)
+		local Guard = 0
+		while optLevel > 1 and SimGetLevel("boss") < optLevel and Guard < 300 do
+			IncrementXP("boss", 1000)
+			Guard = Guard + 1
+		end
+	end
+
 	-- start money
 	CreditMoney("boss", Money, "GameStart")
 	

@@ -31,8 +31,10 @@ function Weight()
 		if BuildingGetWorker("MyWorkshop", number, Alias) then
 			if SimIsWorkingTime(Alias) then
 				numFound = numFound + 1
-				if GetFavorToSim("SIM", Alias) < LowestFavor then
-					LowestFavor = GetFavorToSim("SIM", Alias)
+				-- worker's favor toward the boss: only whip them while their
+				-- morale can take it (gate below)
+				if GetFavorToSim(Alias, "SIM") < LowestFavor then
+					LowestFavor = GetFavorToSim(Alias, "SIM")
 				end
 			end
 		end

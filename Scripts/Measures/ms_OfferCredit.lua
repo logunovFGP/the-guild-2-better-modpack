@@ -129,25 +129,36 @@ function Run()
 					else
 					    Sum = 200
 					end
-					
-					local Interest 		= 0.25 + (GetSkillValue("",BARGAINING) / 100)
-					local InterestText 	= 25 + GetSkillValue("", BARGAINING)
-					
-					SetProperty("CreditSim0", "CreditBank" ,GetID("BankBuilding"))
-					SetProperty("CreditSim0", "CreditSum", Sum)
-					SetProperty("CreditSim0", "CreditInterest", Interest)
-					CreateScriptcall("OrderCredit_End", 24, "Measures/ms_OrderCredit.lua", "ReturnCredit", "CreditSim0", "MyBoss")
-					
-					if GetProperty("BankBuilding","MsgTake") == 1 then
-						MsgNewsNoWait("MyBoss", "CreditSim0", "", "building", -1, "@L_MEASURE_OfferCredit_HEAD_+0", "@L_MEASURE_OfferCredit_BODY_+0", GetID("CreditSim0"), GetID("BankBuilding"), Sum, InterestText)
-					end
-					
-					LogMessage("@BANK loan taken")
 
-					MoveSetActivity("CreditSim0", "")
-					SetProperty("BankBuilding", "BankAccount", (Account-Sum))
-					CreditMoney("CreditSim0", Sum, "Bank")
-					SatisfyNeed("CreditSim0", 9, 1)
+					-- re-read the account right before committing: deposits, withdrawals or repayments may have changed it during the talk animations above
+					Account = GetProperty("BankBuilding", "BankAccount")
+					if Account == nil then
+						Account = 0
+					end
+					if Account < Sum then
+						Sum = 200
+					end
+
+					if Account >= Sum then
+						local Interest 		= 0.25 + (GetSkillValue("",BARGAINING) / 100)
+						local InterestText 	= 25 + GetSkillValue("", BARGAINING)
+
+						SetProperty("CreditSim0", "CreditBank" ,GetID("BankBuilding"))
+						SetProperty("CreditSim0", "CreditSum", Sum)
+						SetProperty("CreditSim0", "CreditInterest", Interest)
+						CreateScriptcall("OrderCredit_End", 24, "Measures/ms_OrderCredit.lua", "ReturnCredit", "CreditSim0", "MyBoss")
+
+						if GetProperty("BankBuilding","MsgTake") == 1 then
+							MsgNewsNoWait("MyBoss", "CreditSim0", "", "building", -1, "@L_MEASURE_OfferCredit_HEAD_+0", "@L_MEASURE_OfferCredit_BODY_+0", GetID("CreditSim0"), GetID("BankBuilding"), Sum, InterestText)
+						end
+
+						LogMessage("@BANK loan taken")
+
+						MoveSetActivity("CreditSim0", "")
+						SetProperty("BankBuilding", "BankAccount", (Account-Sum))
+						CreditMoney("CreditSim0", Sum, "Bank")
+						SatisfyNeed("CreditSim0", 9, 1)
+					end
 				end
 			end
 

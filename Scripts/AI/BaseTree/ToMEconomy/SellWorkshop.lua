@@ -1,22 +1,26 @@
 -- Motivation: I'm broke, gotta sell
 function Weight()
-	-- colored dynasties will not sell
-	if not DynastyIsShadow("dynasty") then
-		return 0
-	end
-	
 	if not ReadyToRepeat("dynasty", "BasicAI_SellShop") then
 		return 0
 	end
 
-	if GetMoney("dynasty") >= 0 then
+	local Money = GetMoney("dynasty")
+
+	-- shadows sell as soon as they are in the red; colored dynasties only as
+	-- a last resort when deep in debt (previously they never sold and just
+	-- stayed bankrupt)
+	if DynastyIsShadow("dynasty") then
+		if Money >= 0 then
+			return 0
+		end
+	elseif Money >= -5000 then
 		return 0
 	end
 
 	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, -1, "sd_Workshop") then
 		return 0
 	end
-	
+
 	return 2
 end
 

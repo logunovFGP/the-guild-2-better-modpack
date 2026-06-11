@@ -1,5 +1,5 @@
 function AIFunc()
-	return Rand(4) 
+	return 1 + Rand(4)
 end
 
 function Run()
@@ -69,13 +69,13 @@ function Run()
 	end
 
 	local MusicLevel = 0 
-	if Res2==1 then			--Die berühmten >Mittelländer Troubadoure<
+	if Res2==1 then			--Die berï¿½hmten >Mittellï¿½nder Troubadoure<
 		MusicLevel = 4		
 	elseif Res2==2 then		--Den bekannten Barden >Willem Hamshakes<
 		MusicLevel = 3		
-	elseif Res2==3 then		--Eine Truppe Flötisten aus den Anden
+	elseif Res2==3 then		--Eine Truppe Flï¿½tisten aus den Anden
 		MusicLevel = 2		
-	elseif Res2==4 then		--Die berüchtigten >Fürchterlichen Volksmusikanten<
+	elseif Res2==4 then		--Die berï¿½chtigten >Fï¿½rchterlichen Volksmusikanten<
 		MusicLevel = 1		
 	else
 		return

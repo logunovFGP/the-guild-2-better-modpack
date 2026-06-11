@@ -14,7 +14,7 @@ function Run()
 		
 		--if inquisition is running, changing faith is not possible because of exploit
 		if HasProperty("", "InquisitionRunning") then
-			--@T text todo: failure message: Glaubenswechsel nicht moeglich. Ihr führt gerade eine Inquisition durch
+			--@T text todo: failure message: Glaubenswechsel nicht moeglich. Ihr fï¿½hrt gerade eine Inquisition durch
 			StopMeasure()
 		end
 		
@@ -33,7 +33,7 @@ function Run()
 				local Result = MsgNews("", "", "@P"..
 					"@B[1,"..Prefix.."BTN_+0]"..
 					"@B[2,"..Prefix.."BTN_+1]",
-					ms_087_ChangeFaith_AIDecide,
+					ms_087_changefaith_AIDecide,
 					"default", 0,
 					"@L_CHURCH_087_CHANGEFAITH_+0",
 					""..Prefix.."DESCRIPTION", Cost)
@@ -47,7 +47,7 @@ function Run()
 			local Result = MsgNews("", "", "@P"..
 					"@B[1,"..Prefix.."BTN_+0]"..
 					"@B[2,"..Prefix.."BTN_+1]",
-					ms_087_ChangeFaith_AIDecide,
+					ms_087_changefaith_AIDecide,
 					"default", 0,
 					"@L_CHURCH_087_CHANGEFAITH_+0",
 					""..Prefix.."DESCRIPTIONFAMILY")

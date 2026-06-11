@@ -80,13 +80,13 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 120 then -- BreadShop (Backstube)
 		OffsetX = 100
 		OffsetZ = -30
-	elseif Proto == 121 then -- Bakery2 (Bäckerei)
+	elseif Proto == 121 then -- Bakery2 (Bï¿½ckerei)
 		OffsetX = 50
 		OffsetZ = -80
 	elseif Proto == 122 then -- PastryShop (Konditorei)
 		OffsetX = 55
 		OffsetZ = -15
-	elseif Proto == 130 then -- Taproom (Schänke)
+	elseif Proto == 130 then -- Taproom (Schï¿½nke)
 		OffsetX = -10
 		OffsetZ = -100
 	elseif Proto == 131 then -- Inn (Taverne)
@@ -107,7 +107,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 143 then -- CannonFoundry (Kanonengiesserei)
 		OffsetX = 300
 		OffsetZ = -140
-	elseif Proto == 144 then -- Armourer (Rüstungsschmiede)
+	elseif Proto == 144 then -- Armourer (Rï¿½stungsschmiede)
 		OffsetX = 60
 		OffsetZ = -1750
 	elseif Proto == 150 then -- Joinery (Tischlerei)
@@ -203,7 +203,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 340 then -- School (Schule)
 		OffsetX = 10
 		OffsetZ = -130
-	elseif Proto == 341 then -- University (Universität)
+	elseif Proto == 341 then -- University (Universitï¿½t)
 		OffsetX = 200
 		OffsetZ = -440
 	elseif Proto == 200 then -- Watchtower1
@@ -245,7 +245,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 432 then -- WorkersHut3 (Arbeiterhaus)
 		OffsetX = 40
 		OffsetZ = -210
-	elseif Proto == 440 then -- Hütte
+	elseif Proto == 440 then -- Hï¿½tte
 		OffsetX = -45
 		OffsetZ = -180
 	elseif Proto == 441 then -- Haus
@@ -260,7 +260,7 @@ function GetScaffoldOffsets(Proto)
 	elseif Proto == 444 then -- Herrenhaus
 		OffsetX = 200
 		OffsetZ = -300
-	elseif Proto == 483 then -- Prison_lv3 (Gefängnis)
+	elseif Proto == 483 then -- Prison_lv3 (Gefï¿½ngnis)
 		OffsetX = 130
 		OffsetZ = -330
 	elseif Proto == 654 then -- Piratenest
@@ -735,28 +735,28 @@ function SetupAI(BldAlias)
 	
 	local CheckStock
 	local CheckMarket
-	
+
 	for i=1, ItemsNum do
 		CheckItem = Items[i]
 		CheckStock = LocalStock[i]
 		CheckMarket = MarketStock[i]
 		if CheckItem ~= nil then
-			if BuildingCanProduce(BldAlias, CheckItem) then
-				CheckID = ItemGetID(CheckItem)
+			CheckID = bld_GetKnownItemID(CheckItem)
+			if CheckID and BuildingCanProduce(BldAlias, CheckID) then
 				Value = 5+(i*5)
 				if BldType == GL_BUILDING_TYPE_HOSPITAL then
 					Value = 25
 				end
 				if CheckMarket ~= nil and CheckMarket ~= -1 then
-					if GetItemCount("Market", CheckItem, INVENTORY_STD) <= CheckMarket and GetItemCount(BldAlias, CheckItem, INVENTORY_STD) <= CheckMarket then
+					if GetItemCount("Market", CheckID, INVENTORY_STD) <= CheckMarket and GetItemCount(BldAlias, CheckID, INVENTORY_STD) <= CheckMarket then
 						SetProperty("Inv", "Need_"..CheckID, Value)
 					else
 						SetProperty("Inv", "Need_"..CheckID, Rand(6))
 					end
 				end
-				
+
 				if CheckStock ~= nil and CheckStock ~= -1 then
-					if GetItemCount(BldAlias, CheckItem, INVENTORY_STD) <= CheckStock then
+					if GetItemCount(BldAlias, CheckID, INVENTORY_STD) <= CheckStock then
 						SetProperty("Inv", "Need_"..CheckID, Value*3)
 					else
 						SetProperty("Inv", "Need_"..CheckID, 0)
@@ -765,6 +765,22 @@ function SetupAI(BldAlias)
 			end
 		end
 	end
+end
+
+-- ----------------------------------------------
+-- Safe item-name lookup for SetupAI
+-- ----------------------------------------------
+function GetKnownItemID(Name)
+	if not BLD_KNOWN_ITEM_IDS then
+		BLD_KNOWN_ITEM_IDS = {}
+		for id = 1, 999 do
+			local ItemName = GetDatabaseValue("Items", id, "name")
+			if ItemName and ItemName ~= "" then
+				BLD_KNOWN_ITEM_IDS[ItemName] = id
+			end
+		end
+	end
+	return BLD_KNOWN_ITEM_IDS[Name]
 end
 
 -- ----------------------------------------------
@@ -1082,9 +1098,9 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	-- abilities for buildings (last forever)
 	bld_AbilityBoosts(BldAlias, "MyBoss")
 	
-	-- Improve AI management (should not be necessary anymore, AI does very well)
 	--if BuildingGetAISetting(BldAlias, "Produce_Selection") > 0 then
-	--	bld_SetupAI(BldAlias)
+		--disable because not sure?
+		--bld_SetupAI(BldAlias)
 	--end
 	
 	if math.mod(GetGametime(), 8) == 3 then

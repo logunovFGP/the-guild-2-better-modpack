@@ -29,12 +29,15 @@ function Weight()
 		return 0
 	end
 	
-	local Wealth = SimGetWealth("SIM")
 	local Money = GetMoney("SIM")
-	
-	if Money > 5000 then
+
+	-- the richer the dynasty, the more eager it is to expand
+	if Money > 20000 then
+		return 8
+	elseif Money > 5000 then
 		return 3
 	end
+	return 0
 end
 
 function Execute()

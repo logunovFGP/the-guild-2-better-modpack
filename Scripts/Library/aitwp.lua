@@ -171,6 +171,15 @@ end
 function InitEnemies(DynAlias)
 	local Difficulty = ScenarioGetDifficulty()
 	local TimeOfTruce = 5 - Difficulty -- wait 5 rounds on easy, 1 round on hard
+
+	-- MP advanced option: explicit truce length in rounds overrides the difficulty default
+	if IsMultiplayerGame() then
+		local optTruce = GetSettingNumber("OPTIONS", "AITruceRounds", -1)
+		if optTruce and optTruce >= 0 then
+			TimeOfTruce = optTruce
+		end
+	end
+
 	if GetRound() < TimeOfTruce then
 		return 0, "" -- no enemies yet
 	end

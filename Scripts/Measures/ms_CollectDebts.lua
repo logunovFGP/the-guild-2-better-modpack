@@ -97,7 +97,10 @@ function Run()
 		
 		-- XP for the collector
 		chr_GainXP("",25)
-		local OldAccount = GetProperty("Bank","BankAccount")
+		local OldAccount = 0
+		if HasProperty("Bank","BankAccount") then
+			OldAccount = GetProperty("Bank","BankAccount")
+		end
 		local OldSum = GetProperty("Destination","StolenSum")
 		-- set the new account
 		SetProperty("Bank","BankAccount",(OldAccount+StolenSum))
@@ -277,7 +280,10 @@ function Run()
 				Sleep(0.25)
 				-- nice XP for the collector
 				chr_GainXP("",50)
-				local OldAccount = GetProperty("Bank","BankAccount")
+				local OldAccount = 0
+				if HasProperty("Bank","BankAccount") then
+					OldAccount = GetProperty("Bank","BankAccount")
+				end
 				-- set the new account
 				SetProperty("Bank","BankAccount",(OldAccount+StolenSum))
 				-- giveout the bonus Money directly

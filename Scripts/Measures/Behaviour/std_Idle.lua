@@ -500,14 +500,17 @@ end
 
 function RandomInfection()
 	if not IsPartyMember("") then
-		GetSettlement("","City")
+		if not GetSettlement("","City") then
+			return
+		end
 		local CityLevel = CityGetLevel("City")
 		local SicknessChance = Rand(100)
 		if GetState("", STATE_SICK) then
 			SicknessChance = 0
 		else
 			local Season = GetSeason()
-			if Season == EN_SEASON_AUTUMN or EN_SEASON_WINTER then
+			-- was "or EN_SEASON_WINTER" (always true)
+			if Season == EN_SEASON_AUTUMN or Season == EN_SEASON_WINTER then
 				SicknessChance = Rand(50)
 			end
 		end

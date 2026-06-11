@@ -67,10 +67,25 @@ function Run()
 		wuerdentrager = wuerdentrager.."@B[4,"..enemy4.."]"
 	end		
 	
-	local choice = MsgBox("","", "@P"..wuerdentrager..
-							"@B[5,@L_MEASURE_WUERDENTRAGEREMPFANGEN_NONE_+0]",
-							"@L_MEASURE_WUERDENTRAGEREMPFANGEN_HEAD_+0", 
-							"@L_MEASURE_WUERDENTRAGEREMPFANGEN_BODY_+0") 
+	-- MsgBox auto-returns "O" for AI dynasties so add isguidriven
+	local choice
+	if IsGUIDriven() then
+		choice = MsgBox("","", "@P"..wuerdentrager..
+								"@B[5,@L_MEASURE_WUERDENTRAGEREMPFANGEN_NONE_+0]",
+								"@L_MEASURE_WUERDENTRAGEREMPFANGEN_HEAD_+0",
+								"@L_MEASURE_WUERDENTRAGEREMPFANGEN_BODY_+0")
+	else
+		choice = 5
+		local worst = -1
+		for c = 1, 4 do
+			val = GetProperty("WarChooser","Hostility"..c)
+			laune = chr_GetEnemyMoodLevel(val)
+			if laune < 4 and val > worst then
+				choice = c
+				worst = val
+			end
+		end
+	end
 
 	local diploTyp
 	if choice == 1 then
@@ -123,12 +138,15 @@ function Run()
 	
 	Sleep(moveDipi-1)
 
-	local choice2 = MsgBox("","", "@P"..
-	                        "@B[1,@L_MEASURE_WUERDENTRAGEREMPFANGEN_ASK_+0]"..
-							"@B[2,@L_MEASURE_WUERDENTRAGEREMPFANGEN_ASK_+1]"..
-							"@B[3,@L_MEASURE_WUERDENTRAGEREMPFANGEN_ASK_+2]",
-							"@L_MEASURE_WUERDENTRAGEREMPFANGEN_HEAD_+0", 
-							"@L_MEASURE_WUERDENTRAGEREMPFANGEN_BODY_+1",stimmung,ort) 
+	local choice2 = 1
+	if IsGUIDriven() then
+		choice2 = MsgBox("","", "@P"..
+		                        "@B[1,@L_MEASURE_WUERDENTRAGEREMPFANGEN_ASK_+0]"..
+								"@B[2,@L_MEASURE_WUERDENTRAGEREMPFANGEN_ASK_+1]"..
+								"@B[3,@L_MEASURE_WUERDENTRAGEREMPFANGEN_ASK_+2]",
+								"@L_MEASURE_WUERDENTRAGEREMPFANGEN_HEAD_+0",
+								"@L_MEASURE_WUERDENTRAGEREMPFANGEN_BODY_+1",stimmung,ort)
+	end
 
 	if choice2 == 1 then
 	    moveDipi = PlayAnimationNoWait("","sit_yes")
@@ -156,7 +174,7 @@ function Run()
 		if val2 < 5 then
 			SetProperty("WarChooser", "WarRisk", 0)
 		else
-			SetProperty("WarChooser", "WarRisk", val-5)
+			SetProperty("WarChooser", "WarRisk", val2-5)
 		end
 		
 		dyn_AddImperialFame("", 10)

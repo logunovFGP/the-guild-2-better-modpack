@@ -12,17 +12,22 @@ function Run()
 	SetData("costs", costs)
 	
 	local DecisionBtns = "@B[1,@L_USE_HORSE_DECISION_BUTTON_+0]@B[0,@L_USE_HORSE_DECISION_BUTTON_+1]"
-	
+
 	if costs > GetMoney("") then
 		DecisionBtns = "@B[0,@L_USE_HORSE_DECISION_BUTTON_+2]"
 	end
-	
-	local Result = MsgBox("", "", "@P"..
-		DecisionBtns,
-		"@L_USE_HORSE_DECISION_HEAD_+0",
-		"@L_USE_HORSE_DECISION_BODY_+0",
-		GetID(""), costs)
-		
+
+	local Result = 1
+	if IsGUIDriven() then
+		Result = MsgBox("", "", "@P"..
+			DecisionBtns,
+			"@L_USE_HORSE_DECISION_HEAD_+0",
+			"@L_USE_HORSE_DECISION_BODY_+0",
+			GetID(""), costs)
+	elseif costs > GetMoney("") then
+		StopMeasure()
+	end
+
 	if Result ~= 1 then
 		StopMeasure()
 	end

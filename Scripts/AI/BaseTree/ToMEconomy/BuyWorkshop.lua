@@ -38,6 +38,7 @@ function Weight()
   if n > 0 or m > 0 then
   	return 8
   end
+  return 0
 end
 
 function Execute()

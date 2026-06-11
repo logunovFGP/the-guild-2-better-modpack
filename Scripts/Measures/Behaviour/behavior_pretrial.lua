@@ -19,6 +19,12 @@ function Run()
 		return
 	end
 
+	if BuildingGetType("Townhall") ~= GL_BUILDING_TYPE_TOWNHALL then
+		LogMessage("@TRIAL #E The Sim is inside some other building, not the Town Hall (returning)")
+		Sleep(2)
+		return
+	end
+
 	BuildingGetRoom("Townhall", "Judge", "judgeroom")
 	local CutsceneID = GetProperty("judgeroom", "NextCutsceneID")
 
@@ -79,9 +85,13 @@ function ActionsForActor(ID)
 	local action = Rand(2)
 	LogMessage("@TRIAL Running action " .. action .. ". Sim: " .. GetName("Owner") .. " ("..ID..")")
 
-	if (ID == 3) or (ID == 2) then 
+	if (ID == 3) or (ID == 2) then
 		local judge = behavior_pretrial_GetDataFromCutscene("Trial","judge")
-		local SimExists = GetAliasByID(judge,"JudgeAlias")
+
+		local SimExists = false
+		if judge and judge ~= 0 then
+			SimExists = GetAliasByID(judge,"JudgeAlias")
+		end
 		if (SimExists == true) then
 			LogMessage("@TRIAL #W Judge found.")
 			if AIExecutePlan("", "Trial", "SIM", "", "Trial_Destination", "JudgeAlias") then
@@ -195,15 +205,19 @@ function ActionsForActor(ID)
 
 		local SimExists = false
 
-		if ID == 1 or ID == 2 then 
+		if ID == 1 or ID == 2 then
 			local accused = behavior_pretrial_GetDataFromCutscene("Trial","accused")
-			SimExists = GetAliasByID(accused,"accusedAlias")
+			if accused and accused ~= 0 then
+				SimExists = GetAliasByID(accused,"accusedAlias")
+			end
 			if SimExists then CopyAlias("accusedAlias","TalkToAlias") end
-		elseif ID == 3 then 
+		elseif ID == 3 then
 			local accuser = behavior_pretrial_GetDataFromCutscene("Trial","accuser")
-			SimExists = GetAliasByID(accuser,"accuserAlias")
+			if accuser and accuser ~= 0 then
+				SimExists = GetAliasByID(accuser,"accuserAlias")
+			end
 			if SimExists then CopyAlias("accuserAlias","TalkToAlias") end
-		end		
+		end
 		
 		if SimExists then
 	

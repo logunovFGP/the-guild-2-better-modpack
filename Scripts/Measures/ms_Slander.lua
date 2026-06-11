@@ -53,7 +53,7 @@ function Run()
 			"@B[L,@L_MESSAGES_SLANDER_MSG_BUTTONS_+0]"..
 			"@B[M,@L_MESSAGES_SLANDER_MSG_BUTTONS_+1]"..
 			"@B[H,@L_MESSAGES_SLANDER_MSG_BUTTONS_+2]",
-			ms_slander_AIInit(LowPrice, MidPrice, HighPrice), "intrigue", 1,
+			function() return ms_slander_AIInit(LowPrice, MidPrice, HighPrice) end, "intrigue", 1,
 			"@L_MESSAGES_SLANDER_MSG_HEAD_+0",
 			"@L_MESSAGES_SLANDER_MSG_BODY_+0",
 			LowPrice, MidPrice, HighPrice)

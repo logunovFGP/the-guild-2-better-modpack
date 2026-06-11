@@ -15,10 +15,17 @@ function Weight()
 	local currenttitle = GetNobilityTitle("SIM")
 	local cost = GetDatabaseValue("NobilityTitle", currenttitle+1, "price")
 	local famelvl = GetDatabaseValue("NobilityTitle", currenttitle+1, "minimperialfame")
-	
+
+	-- need to add tonumber to engine
+	-- cost = tonumber(cost)
+	-- famelvl = tonumber(famelvl)
+	if cost == "" or famelvl == "" then
+		return 0
+	end
+
 	if not DynastyIsShadow("SIM") then
 		ai_CalcItemBudget("dynasty")
-	
+
 		if (chr_DynastyGetImperialFameLevel("dynasty") < famelvl) then
 			if famelvl <= 2 then
 				-- XXX temporary workaround to enable AI to reach title 8 and 9 and advance to imperial offices
@@ -27,10 +34,6 @@ function Weight()
 				return 0
 			end
 		end
-	end
-	
-	if cost == nil or cost == "" then
-		return 0
 	end
 	
 	if DynastyIsShadow("SIM") or GetMoney("SIM") > (cost+5000) then

@@ -755,6 +755,15 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	-- counter hardcoded AI cheat
 	local Diff = ScenarioGetDifficulty()
 	local Multiplier = 10/(8-Diff)
+
+	-- MP advanced option
+	if IsMultiplayerGame() then
+		local optCost = GetSettingNumber("OPTIONS", "AICostFactor", -1)
+		if optCost and optCost > 0 then
+			Multiplier = 100 / optCost
+		end
+	end
+
 	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
 	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
 	return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
@@ -812,12 +821,10 @@ function GiveMoney(Target)
 	local MoneyOnLastCheck = GetProperty(Target, "AI_DynMoney_LastCheck")
 	local CurrentMoney = GetMoney("FirstMember")
 	local CheatingMoney = 0
-	if MoneyOnLastCheck and (MoneyOnLastCheck + 1000) < CurrentMoney then
+
+	if DynastyIsShadow(Target) and MoneyOnLastCheck and (MoneyOnLastCheck + 1000) < CurrentMoney then
 		CheatingMoney = CurrentMoney - MoneyOnLastCheck
 		aitwp_Log("Removing cheating money from AI: " .. CheatingMoney, Target, true)
-		local Diff = ScenarioGetDifficulty()
-		local Multiplier = 10/(8-Diff)
-		CheatingMoney = math.floor(CheatingMoney * Multiplier)
 		SpendMoney(Target, math.abs(CheatingMoney), "misc")
 	end
 	
