@@ -511,3 +511,4 @@ Data:
 40042   "ms_ReflectHeritage.lua"   ""   "ReflectHeritage"   5   "hud/buttons/btn_kampf.tga"   0   14   0   ""   ""   51   0   0   "none"   0   0   |
 
 40043    ""                                             "-"   "ToggleCityNeeds"                     99   "hud/buttons/btn_ShowCredits.tga"                2   0              0               "CityNeedsSheet"                       ""   7                  0                     0                  "none"                   0                     0                       |
+40044    ""                                             "-"   "ToggleSimHistory"                    99   "hud/buttons/btn_145_orderASpying.tga"   2   0              0               "SimHistorySheet"                      ""   7                  0                     0                  "none"                   0                     0                       |

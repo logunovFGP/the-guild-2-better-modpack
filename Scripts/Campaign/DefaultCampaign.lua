@@ -350,10 +350,8 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	-- MP advanced option
 	if IsMultiplayerGame() then
 		local optLevel = GetSettingNumber("OPTIONS", "ShadowStartLevel", 0)
-		local Guard = 0
-		while optLevel > 1 and SimGetLevel("boss") < optLevel and Guard < 300 do
-			IncrementXP("boss", 1000)
-			Guard = Guard + 1
+		if optLevel > 1 then
+			SimSetStartLevel("boss", optLevel)
 		end
 	end
 
@@ -591,10 +589,8 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 	-- MP advanced option
 	if IsMultiplayerGame() then
 		local optLevel = GetSettingNumber("OPTIONS", (IsPlayer and "PlayerStartLevel") or "AIStartLevel", 0)
-		local Guard = 0
-		while optLevel > 1 and SimGetLevel("boss") < optLevel and Guard < 300 do
-			IncrementXP("boss", 1000)
-			Guard = Guard + 1
+		if optLevel > 1 then
+			SimSetStartLevel("boss", optLevel)
 		end
 	end
 

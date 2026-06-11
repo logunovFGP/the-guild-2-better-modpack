@@ -29,7 +29,13 @@ function Run()
 		end
 	end
 
-	PartyTime = GetProperty("PartyLocation", "PartyDate")
+	if AliasExists("PartyLocation") then
+		PartyTime = GetProperty("PartyLocation", "PartyDate")
+	end
+	if not PartyTime then
+		StopMeasure()
+		return
+	end
 	PartyTime = PartyTime / 60
 
 	if HasProperty("", "Host") then
