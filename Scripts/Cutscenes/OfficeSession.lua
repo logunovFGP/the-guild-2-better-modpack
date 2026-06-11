@@ -864,14 +864,14 @@ function InviteApplicant(SimAlias)
 	local EventTime = SettlementEventGetTime("council_date")/60
 	local CurrentTime = math.mod(GetGametime(),24)
 	local WaitTime = math.floor(EventTime-CurrentTime)
-	local CityID = GetID("settlement")
+	local EventID = GetID("")   -- countdown per event, not per city
 	
 	AddImpact(SimAlias, "OfficeTimer", 1, WaitTime)
 	SimAddDate(SimAlias, "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
 	
 	-- Start Countdown
-	if GetDynasty(SimAlias, "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE"..CityID) then
-		SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE"..CityID, WaitTime)
+	if GetDynasty(SimAlias, "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE"..EventID) then
+		SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE"..EventID, WaitTime)
 		WaitTime = EventTime - CurrentTime
 		local DestTime = CurrentTime + WaitTime
 		local ID = "Event"..GetID(SimAlias)
@@ -891,7 +891,7 @@ function InviteDepositionDefender(SimAlias, RunForOfficeSim)
 	local EventTime = SettlementEventGetTime("council_date")/60
 	local CurrentTime = math.mod(GetGametime(),24)
 	local WaitTime = math.floor(EventTime-CurrentTime)
-	local CityID = GetID("settlement")
+	local EventID = GetID("")   -- countdown per event, not per city
 	
 	AddImpact(SimAlias, "OfficeTimer", 1, WaitTime)
 	SimAddDate(SimAlias, "councilbuilding", "Council Meeting", SettlementEventGetTime("council_date")-120, "AttendOfficeMeeting")
@@ -899,8 +899,8 @@ function InviteDepositionDefender(SimAlias, RunForOfficeSim)
 	-- only send 1 message if multiple guys run for your office
 	if GetImpactValue(SimAlias, "SuppressDefenderMessage") == 0 then
 		AddImpact(SimAlias, "SuppressDefenderMessage", 1, WaitTime)
-		if GetDynasty(SimAlias, "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE"..CityID) then -- start countdown in HUD
-			SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE"..CityID, WaitTime)
+		if GetDynasty(SimAlias, "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE"..EventID) then -- start countdown in HUD
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE"..EventID, WaitTime)
 			WaitTime = EventTime - CurrentTime
 			local DestTime = CurrentTime + WaitTime
 			local ID = "Event"..GetID(SimAlias)
@@ -936,7 +936,7 @@ function InviteAllVoters()
 	local EventTime = SettlementEventGetTime("council_date")/60
 	local CurrentTime = math.mod(GetGametime(),24)
 	local WaitTime = math.floor(EventTime-CurrentTime)
-	local CityID = GetID("settlement")
+	local EventID = GetID("")   -- countdown per event, not per city
 	
 	-- invite all remaining voters
 	VoterCnt = ListSize("VoterList")
@@ -950,8 +950,8 @@ function InviteAllVoters()
 		if GetImpactValue("Voter", "SuppressVoterMessage") == 0 then 
 			AddImpact("Voter", "SuppressVoterMessage", 1, WaitTime)
 			-- start Countdown
-			if GetDynasty("Voter", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE"..CityID) then
-				SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE"..CityID, WaitTime)
+			if GetDynasty("Voter", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_OFFICE"..EventID) then
+				SetRepeatTimer("InviteDyn", "COUNTDOWN_OFFICE"..EventID, WaitTime)
 				WaitTime = EventTime - CurrentTime
 				local DestTime = CurrentTime + WaitTime
 				local ID = "Event"..GetID("Voter")

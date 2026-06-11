@@ -110,7 +110,7 @@ function Start()
 	local GameTime = GetGametime()*60
 	local WaitTime = EventTime - GameTime - 180
 	local ImpactTime = math.floor(WaitTime/60)
-	local CityID = GetID("settlement")
+	local EventID = GetID("")   -- countdown per event, not per city
 
 	LogMessage("@TRIAL #W Internal timecode for event: " .. EventTime)
 	LogMessage("@TRIAL #W Current gametime: " .. GameTime)
@@ -133,8 +133,8 @@ function Start()
 		AddImpact("judge", "TrialTimer", 1, ImpactTime)
 		
 		-- start countdown
-		if GetDynasty("judge", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
-			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+		if GetDynasty("judge", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..EventID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..EventID, ImpactTime)
 			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
 			local DestTime = CurrentTime + ImpactTimeCorrect
 			local ID = "Event"..GetID("judge")
@@ -168,8 +168,8 @@ function Start()
 		AddImpact("accuser", "TrialTimer", 1, ImpactTime)
 		
 		-- start countdown
-		if GetDynasty("accuser", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
-			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+		if GetDynasty("accuser", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..EventID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..EventID, ImpactTime)
 			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
 			local DestTime = CurrentTime + ImpactTimeCorrect
 			local ID = "Event"..GetID("accuser")
@@ -203,8 +203,8 @@ function Start()
 		AddImpact("accused", "TrialTimer", 1, ImpactTime)
 		
 		-- start countdown
-		if GetDynasty("accused", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
-			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+		if GetDynasty("accused", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..EventID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..EventID, ImpactTime)
 			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
 			local DestTime = CurrentTime + ImpactTimeCorrect
 			local ID = "Event"..GetID("accused")
@@ -235,8 +235,8 @@ function Start()
 		SetProperty("accuser", "TrialAssessor1", GetID("assessor1"))
 		
 		-- start countdown
-		if GetDynasty("assessor1", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
-			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+		if GetDynasty("assessor1", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..EventID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..EventID, ImpactTime)
 			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
 			local DestTime = CurrentTime + ImpactTimeCorrect
 			local ID = "Event"..GetID("assessor1")
@@ -263,8 +263,8 @@ function Start()
 		SetProperty("accuser", "TrialAssessor2", GetID("assessor2"))
 		
 		-- start countdown
-		if GetDynasty("assessor2", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..CityID) then
-			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..CityID, ImpactTime)
+		if GetDynasty("assessor2", "InviteDyn") and ReadyToRepeat("InviteDyn", "COUNTDOWN_TRIAL"..EventID) then
+			SetRepeatTimer("InviteDyn", "COUNTDOWN_TRIAL"..EventID, ImpactTime)
 			local ImpactTimeCorrect = EventTimeInvite - CurrentTime
 			local DestTime = CurrentTime + ImpactTimeCorrect
 			local ID = "Event"..GetID("assessor2")
