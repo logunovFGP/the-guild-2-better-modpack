@@ -464,54 +464,50 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		LogMessage("@NAO #W AI " .. GetName("boss") .. " Check 1, City Alias not AliasExists(CityAlias)")
 
 		local CityCount = ScenarioGetObjects("Settlement", 99, "CityList")
-		local BestScore = -1
+
+		local BestOccupancy = nil
 		local BestCity = nil
 		local EqualBestCount = 0
+		local FallbackOccupancy = nil
+		local FallbackCity = nil
+		local FallbackEqual = 0
 
 		for cc=0, CityCount-1 do
 			local Candidate = "CityList"..cc
 
 			if AliasExists(Candidate) then
-				local FreeResidences = CityGetBuildingCount(
-					Candidate,
-					nil,
-					GL_BUILDING_TYPE_RESIDENCE,
-					1,
-					-1,
-					FILTER_IS_BUYABLE
-				)
+				local Occupancy = CityGetBuildingCount(Candidate, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_HAS_DYNASTY)
+				local FreeResidences = CityGetBuildingCount(Candidate, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_IS_BUYABLE)
 
-				local FreeWorkshops = CityGetBuildingCount(
-					Candidate,
-					GL_BUILDING_CLASS_WORKSHOP,
-					nil,
-					1,
-					-1,
-					FILTER_IS_BUYABLE
-				)
-
-				if FreeResidences > 4 then
-					FreeResidences = 4
+				if FallbackOccupancy == nil or Occupancy < FallbackOccupancy then
+					FallbackOccupancy = Occupancy
+					FallbackCity = Candidate
+					FallbackEqual = 1
+				elseif Occupancy == FallbackOccupancy then
+					FallbackEqual = FallbackEqual + 1
+					if Rand(FallbackEqual) == 0 then
+						FallbackCity = Candidate
+					end
 				end
 
-				if FreeWorkshops > 4 then
-					FreeWorkshops = 4
-				end
-
-				local Score = FreeResidences + FreeWorkshops
-
-				if Score > BestScore then
-					BestScore = Score
-					BestCity = Candidate
-					EqualBestCount = 1
-				elseif Score == BestScore then
-					EqualBestCount = EqualBestCount + 1
-
-					if Rand(EqualBestCount) == 0 then
+				if FreeResidences >= 1 then
+					if BestOccupancy == nil or Occupancy < BestOccupancy then
+						BestOccupancy = Occupancy
 						BestCity = Candidate
+						EqualBestCount = 1
+					elseif Occupancy == BestOccupancy then
+						EqualBestCount = EqualBestCount + 1
+						if Rand(EqualBestCount) == 0 then
+							BestCity = Candidate
+						end
 					end
 				end
 			end
+		end
+
+		if not BestCity then
+			BestCity = FallbackCity
+			BestOccupancy = FallbackOccupancy
 		end
 
 		if BestCity then
@@ -520,8 +516,9 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 				.. GetName("boss")
 				.. " selected city "
 				.. GetName(BestCity)
-				.. " with score "
-				.. BestScore
+				.. " (occupancy "
+				.. tostring(BestOccupancy)
+				.. ")"
 			)
 
 			CopyAlias(BestCity, CityAlias)

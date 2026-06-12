@@ -77,9 +77,11 @@ function CheckGuildMasters()
 		CheckMaster = MasterList[i]
 		CheckMasterID = GetProperty("", CheckMaster)
 		
-		if CheckMasterID ~= nil then
-			if GetAliasByID(CheckMasterID, "OldMaster") and not GetState("OldMaster", STATE_DEAD) then
-				dyn_AddFame("OldMaster", 1)
+		if CheckMasterID ~= nil and CheckMasterID ~= 0 then
+			if GetAliasByID(CheckMasterID, "OldMaster") then
+				if not GetState("OldMaster", STATE_DEAD) then
+					dyn_AddFame("OldMaster", 1)
+				end
 				RemoveProperty("OldMaster", CheckMaster)
 			end
 		end
@@ -113,8 +115,8 @@ function CheckGuildMasters()
 		BuildingLvl = BuildingGetLevel(Alias) * BuildingGetLevel(Alias)
 		local BuildCharClass = BuildingGetCharacterClass(Alias)
 		
-		if BuildingGetOwner(Alias, "Sim") and (GetSettlementID("Sim") == GetID("city")) then
-			
+		if BuildingGetOwner(Alias, "Sim") and (GetSettlementID("Sim") == GetID("city")) and not GetState("Sim", STATE_DEAD) then
+
 			if not PlayerCity and DynastyIsPlayer("Sim") then
 				PlayerCity = true
 			end
