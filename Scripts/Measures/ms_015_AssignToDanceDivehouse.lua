@@ -3,6 +3,9 @@
 -- -----------------------
 -- ******** THANKS TO KINVER ********
 function Run()
+	if not GetData("AutoDispatch") then
+		RemoveProperty("", "CocotteAssign")
+	end
 	if not SimGetWorkingPlace("","Divehouse") then
 		if IsPartyMember("") then
 			--if not SimGetGender("") == GENDER_MALE then

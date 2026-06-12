@@ -4,6 +4,8 @@ function Run()
 		return
 	end
 
+	SetProperty("", "JugglerAssign", "Beg")
+
 	if GetInsideBuilding("", "InsideBuilding") then
 		f_ExitCurrentBuilding("")
 	end

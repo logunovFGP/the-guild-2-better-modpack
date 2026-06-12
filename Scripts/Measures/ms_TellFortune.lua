@@ -1,7 +1,9 @@
 function Run()
 
+	RemoveProperty("", "JugglerAssign")
+
 	if not ai_GetWorkBuilding("", 102, "Juggler") then
-		StopMeasure() 
+		StopMeasure()
 		return
 	end
 

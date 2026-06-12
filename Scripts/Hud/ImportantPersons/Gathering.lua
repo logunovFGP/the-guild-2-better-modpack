@@ -87,7 +87,10 @@ function ImportantPersonsSetupSections()
 
 	-- weddings
 	CreateImportantPersonSection("Wedding", "@L_WEDDING_PEOPLE_+0")
-	
+
+	-- festivities: everyone currently attending a party (guests + host)
+	CreateImportantPersonSection("Festivity", "@L_FEAST_PEOPLE_+0")
+
 end
 
 -- CREDITORS who didn't pay back by Serp and Fajeth
@@ -138,6 +141,13 @@ function IsWedding(Alias)
 	return false
 end
 
+function IsFestivity(Alias)
+	if HasProperty(Alias, "InvitedBy") or HasProperty(Alias, "Host") then
+		return true
+	end
+	return false
+end
+
 function ImportantPersonsGather_Wedding()
 
 		-- Define the criteria sims must meet to be included.
@@ -153,6 +163,19 @@ function ImportantPersonsGather_Wedding()
 	  gathering_PopulateImportantPersonSection("Wedding", SimListFilterFunction, SimListSortCompareFunction, false)
 
 	  SetImportantPersonToSection(GetID("Spouse"), "Family", GetDynastyID(""))
+end
+
+-- Called by the game to populate the "Festivity" section: everyone attending a party
+function ImportantPersonsGather_Festivity()
+
+		local SimListFilterFunction = gathering_IsFestivity
+
+		local SimListSortCompareFunction =
+		function(a,b)
+			return SimGetAge(a) <= SimGetAge(b)
+		end
+
+		gathering_PopulateImportantPersonSection("Festivity", SimListFilterFunction, SimListSortCompareFunction, false)
 end
 
 -- Called by game to populate the "Creditors" section... at the moment sorted by level and age 

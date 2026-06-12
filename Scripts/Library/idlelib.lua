@@ -241,23 +241,55 @@ function CocotteIdle(Cocotte)
 	-- AI controlled cocottes do not go idle
 	local Lvl = BuildingGetLevel("Divehouse")
 	local GuestCount = BuildingGetSimCount("Divehouse")
+
+	if GetProperty(Cocotte, "CocotteAssign") == "ThiefOfLove"
+			and Lvl >= 2
+			and BuildingHasUpgrade("Divehouse", "SexyClothes") then
+		if GetSettlement("Divehouse", "DiveCity")
+				and chr_CityFindCrowdedPlace("DiveCity", Cocotte, "pick_pos") then
+			MeasureCreate("Measure")
+			MeasureAddData("Measure", "TimeOut", Rand(6)+2)
+			MeasureStart("Measure", Cocotte, "pick_pos", "AssignToThiefOfLove")
+			return
+		end
+	end
+
 	if BuildingGetAISetting("Divehouse", "Enable") > 0 then
 		-- offer services if not already offered
 		if not HasProperty("Divehouse", "ServiceActive") and not HasProperty("Divehouse", "GoToService") then
 			SetProperty("Divehouse","GoToService",1)
 			MeasureCreate("Measure")
 			MeasureAddData("Measure", "TimeOut", Rand(3)+2)
+			MeasureAddData("Measure", "AutoDispatch", 1)
 			MeasureStart("Measure", Cocotte, "Divehouse", "AssignToServiceDivehouse")
 		elseif Lvl >= 2 and GuestCount > 4 and not HasProperty("Divehouse", "DanceShow") and not HasProperty("Divehouse", "GoToDance") then
 			SetProperty("Divehouse","GoToDance",1)
 			MeasureCreate("Measure")
 			MeasureAddData("Measure", "TimeOut", Rand(3)+3)
+			MeasureAddData("Measure", "AutoDispatch", 1)
 			MeasureStart("Measure", Cocotte, "Divehouse", "AssignToDanceDivehouse")
 		else
 			MeasureRun(Cocotte,"Divehouse","AssignToLaborOfLove",false)
 		end
 	end
-	return 
+	return
+end
+
+-- -----------------------
+-- JugglerIdle
+-- -----------------------
+function JugglerIdle(Juggler)
+	if GetProperty(Juggler, "JugglerAssign") == "Beg" then
+		if SimGetWorkingPlace(Juggler, "Jugglerhouse")
+				and GetSettlement("Jugglerhouse", "JuggCity")
+				and chr_CityFindCrowdedPlace("JuggCity", Juggler, "jugglerPlay") then
+			MeasureCreate("Measure")
+			MeasureAddData("Measure", "TimeOut", 14)
+			MeasureStart("Measure", Juggler, "jugglerPlay", "JugglerBeg")
+			return
+		end
+	end
+	return
 end
 
 -- -----------------------

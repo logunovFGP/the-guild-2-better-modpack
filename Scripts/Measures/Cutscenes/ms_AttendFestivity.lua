@@ -46,7 +46,7 @@ function Run()
 		if GetInsideBuilding("","CurrentBuilding") then
 			if not (GetID("CurrentBuilding") == GetID("Destination")) then
 				f_ExitCurrentBuilding("")
-				if not f_MoveTo("","Destination") then
+				if not f_MoveTo("","Destination",GL_MOVESPEED_RUN) then
 					StopMeasure()
 				end
 			end
@@ -54,7 +54,7 @@ function Run()
 			f_BeginUseLocator("", "HostWelcomePos", GL_STANCE_STAND, true)
 			
 		else
-			if not f_MoveTo("", "Destination") then
+			if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 				StopMeasure()
 			end
 
@@ -80,7 +80,7 @@ function Run()
 			StopMeasure()
 		end
 
-		if not f_MoveTo("", "MovePos") then
+		if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN) then
 			StopMeasure()
 		end
 

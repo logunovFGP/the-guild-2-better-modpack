@@ -3,6 +3,10 @@
 -- -----------------------
 function Run()
 
+	if not GetData("AutoDispatch") then
+		RemoveProperty("", "CocotteAssign")
+	end
+
 	if not SimGetWorkingPlace("", "Divehouse") then
 		if IsPartyMember("") then
 			if not GetInsideBuilding("", "CurrentBuilding") then

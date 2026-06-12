@@ -436,7 +436,14 @@ function Worker(ActiveMovement)
 				end
 				idlelib_LeibwacheIdle("WorkingPlace")
 				return
-			end	
+			elseif SimGetProfession("") == 42 then
+				-- juggler: resume a sticky street-begging assignment so it persists
+				if HasProperty("","SchuldenGeb") then
+					idlelib_ReturnACredit()
+				end
+				idlelib_JugglerIdle("")
+				return
+			end
 		else
 			if HasProperty("","SchuldenGeb") then
 				idlelib_ReturnACredit()

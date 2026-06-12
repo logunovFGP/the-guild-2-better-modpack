@@ -32,6 +32,7 @@ function Run()
 		StopMeasure()
 	end
 
+	SetProperty("", "CocotteAssign", "ThiefOfLove")
 	SetProperty("", "ThiefOfLove", 1)
 	SetProperty("", "CocotteHasClient", 0)
 	SetProperty("", "CocotteProvidesLove", 1)
