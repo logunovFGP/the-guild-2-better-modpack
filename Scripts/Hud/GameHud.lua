@@ -77,7 +77,7 @@ function Init()
  	this:AddPanel("StoreSheet","cl_StoreSheet","gui/Hud/panel_storesheet.gui",false)
  	this:AddPanel("ProductionSheet","cl_ProductionSheet","gui/Hud/panel_productionsheet.gui",false)
 
- 	this:AddPanel("BuildingStatisticsSheet","cl_BuildingStatisticsSheet","gui/Hud/panel_buildingstatistics.gui",false)
+ 	this:AddPanel("BuildingStatisticsSheet","cl_BuildingStatisticsSheet","",false)
  	this:AddPanel("CityNeedsSheet","cl_CityNeedsSheet","",false)
  	this:AddPanel("SimHistorySheet","cl_SimHistorySheet","",false)
 

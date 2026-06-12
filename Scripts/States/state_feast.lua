@@ -115,6 +115,12 @@ function Run()
 	
 	while GetProperty("","GuestsReady") < NumGuests do
 		Sleep(1)
+		if GetGametime() > (festivity_date / 60) + 6 then
+			StopMeasure()
+		end
+		if not BuildingGetOwner("","BuildingOwner") then
+			StopMeasure()
+		end
 		if GetGametime() > (festivity_date / 60)+1 then
 			--MsgQuick("","PROBLEM - G�ste lassen zu lange auf sich warten")
 			--StopMeasure()
@@ -124,9 +130,16 @@ function Run()
 	SetProperty("","AllGuestsThere",1)
 		
 	
+	local PartyEndTime = (festivity_date / 60) + 12
 	while true do
 		Sleep(3)
 		if not GetInsideBuilding("BuildingOwner","CurrentBuilding") then
+			StopMeasure()
+		end
+		if GetGametime() > PartyEndTime then
+			StopMeasure()
+		end
+		if not BuildingGetOwner("","BuildingOwner") then
 			StopMeasure()
 		end
 	end
