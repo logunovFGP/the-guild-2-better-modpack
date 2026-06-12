@@ -33,7 +33,27 @@ function Run()
     	SetData("Tarnung", 0)	
 	
 	while true do
-		
+
+		-- injured and not carrying loot -> break off and heal. Only for sims
+		-- auto-heal actively manages (CuCovered): this measure also runs for AI
+		-- robbers, which cu_autoheal can't heal -- breaking them off just makes
+		-- the AI re-recruit them every cycle. Unmanaged sims keep the rest
+		-- branch in WhatToDo() instead.
+		local cuHP = GetHPRelative("")
+		-- cuHP >= 0 guards GetHPRelative's -1 error return
+		if ms_squadwaylaymember_CuCovered() and cuHP >= 0 and cuHP < cu_autoheal_HpThreshold and not ms_squadwaylaymember_HasLoot() then
+			-- remember the waylay spot so cu_autoheal re-issues WaylayForBooty once healed
+			if SquadGetMeetingPlace("Squad", "CU_WLHome") then
+				SetProperty("", "CU_WaylayDest", GetID("CU_WLHome"))
+			end
+			-- bypass the heal retry throttle once, so treatment starts this idle cycle
+			SetProperty("", "CU_HealNow", 1)
+			if cu_autoheal_Debug == 1 then LogMessage("@AUTOHEAL "..GetName("").." waylay break-off to heal (hp="..cuHP..")") end
+			-- the measure's own CleanUp removes us from the squad (group preserved)
+			StopMeasure()
+			return
+		end
+
 		ToDo = ms_squadwaylaymember_WhatToDo()
 		--LogMessage("SWL: ("..GetName("")..") Result of WhatToDo is: " .. ToDo)
 		Success = false
@@ -180,8 +200,10 @@ function WhatToDo()
 		
 		if ToDo then
 			return "plunder"
-		else  
-			if GetHPRelative("") < 0.76 then
+		else
+			-- rest at the camp only for sims auto-heal does not manage --
+			-- managed ones are broken off to a real heal in Run() instead
+			if not ms_squadwaylaymember_CuCovered() and GetHPRelative("") < 0.76 then
 				return "rest"
 			end
 		end
@@ -526,6 +548,32 @@ function Rest()
 	Time = MoveSetStance("", GL_STANCE_STAND)
 	Sleep(Time)
 	return true
+end
+
+-- true if auto-heal actively manages this sim (master switch, per-char
+-- opt-out, player-owned scope) -- mirrors the gates cu_autoheal itself
+-- applies, so the break-off and the rest branch stay in lockstep with
+-- what cu_autoheal will really do
+function CuCovered()
+	cu_autoheal_LoadConfig()
+	if cu_autoheal_Enabled ~= 1 then
+		return nil
+	end
+	if HasProperty("", "AutoHealOff") then
+		return nil
+	end
+	return cu_autoheal_Category("")
+end
+
+function HasLoot()
+	local cnt = InventoryGetSlotCount("", INVENTORY_STD)
+	for i = 0, cnt - 1 do
+		local iid, icnt = InventoryGetSlotInfo("", i, INVENTORY_STD)
+		if iid and iid ~= 999 and icnt and icnt > 0 then
+			return 1
+		end
+	end
+	return nil
 end
 
 function CleanUp()

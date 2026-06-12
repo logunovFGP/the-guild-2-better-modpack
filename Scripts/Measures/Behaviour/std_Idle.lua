@@ -1,5 +1,10 @@
 function Run()
 	
+	-- injured player-controlled sims seek treatment first (Library/cu_autoheal.lua)
+	if cu_autoheal_Process("") then
+		return
+	end
+
 	-- dynasty chars have their own behaviour
 	if IsDynastySim("") and GetDynastyID("") > 0 then
 		MeasureRun("", nil, "DynastyIdle")
