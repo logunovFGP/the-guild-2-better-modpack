@@ -13,33 +13,48 @@ function Run()
 	if DynastyIsPlayer("Owner") then
 		return
 	end
-	
+
+	local bGiveUp = false
+
 	if not GetInsideBuilding("Owner", "Townhall") then
-		LogMessage("@TRIAL #E The Sim is not inside of the Town Hall (returning)")
-		return
-	end
-
-	if BuildingGetType("Townhall") ~= GL_BUILDING_TYPE_TOWNHALL then
-		LogMessage("@TRIAL #E The Sim is inside some other building, not the Town Hall (returning)")
-		Sleep(2)
-		return
-	end
-
-	BuildingGetRoom("Townhall", "Judge", "judgeroom")
-	local CutsceneID = GetProperty("judgeroom", "NextCutsceneID")
-
-	if (CutsceneID == nil) then
-		Sleep(2)
-		return
-	end
-
-	LogMessage("@TRIAL CutsceneID found: " .. CutsceneID)
-
-	if GetAliasByID(CutsceneID, "Trial") == nil then
-		LogMessage("@TRIAL #E No valid CutsceneAlias found for this trial...")
-		return
+		LogMessage("@TRIAL #E The Sim is not inside of the Town Hall")
+		bGiveUp = true
+	elseif BuildingGetType("Townhall") ~= GL_BUILDING_TYPE_TOWNHALL then
+		LogMessage("@TRIAL #E The Sim is inside some other building, not the Town Hall")
+		bGiveUp = true
 	else
-		LogMessage("@TRIAL Found valid CutsceneID (" .. GetID("Trial") .. ")")
+		BuildingGetRoom("Townhall", "Judge", "judgeroom")
+		local CutsceneID = GetProperty("judgeroom", "NextCutsceneID")
+		if (CutsceneID == nil) or (GetAliasByID(CutsceneID, "Trial") == nil) then
+			LogMessage("@TRIAL #E No valid trial cutscene pending here")
+			bGiveUp = true
+		else
+			LogMessage("@TRIAL Found valid CutsceneID (" .. GetID("Trial") .. ")")
+		end
+	end
+
+	if bGiveUp then
+		local waited = GetProperty("Owner", "PretrialWait")
+		if waited == nil then waited = 0 end
+		waited = waited + 1
+		if waited >= 8 then
+			RemoveProperty("Owner", "PretrialWait")
+			local trialprops = {"DefendTrial","TrialOpponent","TrialJudge","TrialAssessor1","TrialAssessor2"}
+			for i = 1, 5 do
+				if HasProperty("Owner", trialprops[i]) then
+					RemoveProperty("Owner", trialprops[i])
+				end
+			end
+			SimSetBehavior("Owner", "Idle")
+		else
+			SetProperty("Owner", "PretrialWait", waited)
+			Sleep(2)
+		end
+		return
+	end
+
+	if HasProperty("Owner", "PretrialWait") then
+		RemoveProperty("Owner", "PretrialWait")
 	end
 
 	local list = {"judge","accuser","accused","assessor1","assessor2"}
