@@ -151,7 +151,19 @@ function Run()
 	cart_UnloadAll("", "MyHome")
 	
 	local NeedCount, Needs
-	while true do 
+	while true do
+		local MgmProductsStr = GetProperty("MyHome", "MgmStor_Products")
+		if MgmProductsStr and MgmProductsStr ~= "" then
+			local MgmCount, MgmProducts, MgmProt = economy_StorageGetProducts("MyHome")
+			for i = 1, ProductCount do
+				for j = 1, MgmCount do
+					if MgmProducts[j] == Products[i][1] and MgmProt[j] ~= nil then
+						Products[i][2] = MgmProt[j]
+						break
+					end
+				end
+			end
+		end
 		LogMessage("@TWP ProductCount: " .. ProductCount)
 LogMessage("@TWP TargetCount : " .. TargetCount )
 		-- 3. Calculate expected profit for each item

@@ -89,6 +89,8 @@ function ManageProducts(BldAlias)
 					-- for warehouses, selecting no sales will remove the entry
 					_, ProtectedAmounts = helpfuncs_RemoveElementFromList(ProtectedAmounts, ProductCount, ChosenItem)
 					ProductCount, Products = helpfuncs_RemoveElementFromList(Products, ProductCount, ChosenItem)
+				else
+					ProtectedAmounts[ChosenItem] = -1
 				end
 			end
 			
