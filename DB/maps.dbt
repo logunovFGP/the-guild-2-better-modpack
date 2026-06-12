@@ -6,19 +6,20 @@ Table Description:
 
 Data:
 
-1   "york"                   0   "York"                 16   3   "england"      | 
-2   "ulm"                    0   "Ulm"                  10   3   "germany"      |
-3   "magathaburg"            0   "magathaburg"          8    3   "germany"      |
-4   "holyblood"              0   "Holyblood"            12   3   "austria"      |
-5   "seatown"                0   "Seatown"              4    3   "hansa"        |
-6   "fichtenhain"            0   "Fichtenhain"          12   3   "germany"      |
-7   "bingenheim"             0   "Bingenheim"           16   3   "germany"      |
-8   "weilerthal"             0   "Weilerthal"           12   3   "germany"      |
-9   "Novaesium"              0   "Novaesium"            16   3   "germany"      |
-10  "hanse"                  0   "Hanse"                12   3   "hansa"        | 
-11  "newark"                 0   "Newark"               6    3   "england"      | 
-12  "augsburg"               0   "South_Germany"        8    3   "germany"      |
-13  "lyon_3s"                0   "France_3s"            12   3   "france"       |
-14  "calenberg"              0   "Calenberg"            12   3   "germany"      |
-15  "rivertrent"             0   "Rivertrent"           16   3   "england"      |
-16  "dracula"                0   "dracula"              6    3   "hungary"      |
+1   "england"                0   "England"              14   3   "england"      |
+2  "rivertrent"             0   "Rivertrent"           16   3   "england"      |
+3   "york"                   0   "York"                 16   3   "england"      |
+4   "ulm"                    0   "Ulm"                  10   3   "germany"      |
+5   "magathaburg"            0   "magathaburg"          8    3   "germany"      |
+6   "holyblood"              0   "Holyblood"            12   3   "austria"      |
+7   "seatown"                0   "Seatown"              4    3   "hansa"        |
+8   "fichtenhain"            0   "Fichtenhain"          12   3   "germany"      |
+9   "bingenheim"             0   "Bingenheim"           16   3   "germany"      |
+10   "weilerthal"             0   "Weilerthal"           12   3   "germany"      |
+11   "Novaesium"              0   "Novaesium"            16   3   "germany"      |
+12  "hanse"                  0   "Hanse"                12   3   "hansa"        | 
+13  "newark"                 0   "Newark"               6    3   "england"      | 
+14  "augsburg"               0   "South_Germany"        8    3   "germany"      |
+15  "lyon_3s"                0   "France_3s"            12   3   "france"       |
+16  "calenberg"              0   "Calenberg"            12   3   "germany"      |
+17  "dracula"                0   "dracula"              6    3   "hungary"      |
