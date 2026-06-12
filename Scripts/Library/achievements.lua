@@ -42,7 +42,8 @@ function isValidSim(SIM, REASON)
 	local CheckDynasty = GetID("PlayerDynasty") == GetDynastyID(SIM) and IsPartyMember(SIM)
 
 	if (REASON == "PRIVILEGE_TORTURE") then
-		for i = 0, Count-1 do
+		-- 'Count' was undefined here, count the family members instead
+		for i = 0, DynastyGetFamilyMemberCount("PlayerDynasty")-1 do
 			if DynastyGetFamilyMember("PlayerDynasty", i, "SIM") then
 				if AliasExists("SIM") then
 					if (GetImpactValue("SIM", "CommandPrisonGuard") > 0) then
