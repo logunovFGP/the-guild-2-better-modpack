@@ -517,7 +517,7 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 				.. " selected city "
 				.. GetName(BestCity)
 				.. " (occupancy "
-				.. tostring(BestOccupancy)
+				.. BestOccupancy
 				.. ")"
 			)
 
