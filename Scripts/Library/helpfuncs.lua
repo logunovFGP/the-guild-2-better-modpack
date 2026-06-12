@@ -202,7 +202,7 @@ function StringToIdList(ItemsString)
 	end
 	local Items = {}
 	local Count = 0
-	for Id in string.gfind(ItemsString, "%d+") do
+	for Id in string.gfind(ItemsString, "%-?%d+") do
 		Count = Count + 1
 		Items[Count] = (Id + 0) -- convert id from string to number through arithmetic operation
 	end

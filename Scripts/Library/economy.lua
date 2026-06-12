@@ -243,7 +243,7 @@ function ProtectSaleItems(BldAlias, ItemId, Available)
 			return math.max(0, Diff) -- return 0 if negative Diff
 		end
 	end
-	-- protect grog and schädelbrand since they don't have sale values
+	-- protect grog and schï¿½delbrand since they don't have sale values
 	if ItemId == 935 or ItemId == 936 then
 		return 0
 	end
@@ -279,7 +279,7 @@ end
 --- calculates current price for offered item
 -- Price is based on current market price and depends on Bargaining of Owner and Buyer 
 function GetPrice(BldAlias, ItemId, Buyer)
-	-- Piratengrog, Schädelbrand
+	-- Piratengrog, Schï¿½delbrand
 	if ItemId == 935 then
 		return 35
 	elseif ItemId == 936 then
@@ -774,8 +774,13 @@ function CalcProfits(MarketAlias, HomeAlias, ProductCount, Products, ProfitThres
 	local ItemId, Amount
 	for i = 1, ProductCount do
 		ItemId = Products[i][1]
+		local ProductMin = Products[i][2] or 0
 		Amount = GetItemCount(HomeAlias, ItemId, INVENTORY_STD) + GetItemCount(HomeAlias, ItemId, INVENTORY_SELL)
-		Amount = Amount - Products[i][2]
+		Amount = Amount - ProductMin
+		if ProductMin < 0 then
+			-- protected product, never loaded onto the cart
+			Amount = 0
+		end
 		-- normalize amount to no more than 120 (max cart size)
 		Amount = math.min(Amount, 120)
 		local Profit
