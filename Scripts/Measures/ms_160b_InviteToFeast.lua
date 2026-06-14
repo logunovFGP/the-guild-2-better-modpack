@@ -78,6 +78,11 @@ function Run()
 						GetID("Destination"))
 				StopMeasure()
 			else				--destination agrees
+				if HasProperty("Destination","InvitedBy") then
+					MsgQuick("","@L_FEAST_FAILURES_+1",GetID("Destination"))
+					StopMeasure()
+					return
+				end
 				local CurrentTime = math.mod(GetGametime(),24)
 				local TimeToCall = (PartyDate/60) - 6
 				local AcceptAnswerBodyText
