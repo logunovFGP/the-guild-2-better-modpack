@@ -240,8 +240,8 @@ function Run()
 			--
 			-- *******************************************
 			local time = math.mod(GetGametime(),24)
-			if time >= 8 and time <= 18 then
-				if Rand(3) == 0 then
+			if time >= 7 and time <= 21 then
+				if Rand(6) == 0 then
 			  	idlelib_BuySomethingAtTheMarket(2)
 					MoveSetActivity("")
 					CarryObject("","",false)
