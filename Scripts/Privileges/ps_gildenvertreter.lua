@@ -1,5 +1,5 @@
 function GetPrivilegeList()
-	return "InspectBusiness", "CommandInspector"
+	return "InspectBusiness", "CommandInspector", "AldermanFreezeTrade"
 end
 
 function InitOffice()

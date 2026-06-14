@@ -67,7 +67,7 @@ function Run()
 				local Found = false
 				
 				for i=1, trys do
-					if GetOutdoorLocator("Crowded"..i, 1, "Pos") then
+					if GetOutdoorLocator("Crowded"..i, 1, "Pos") >= 1 then
 						if not HasProperty("WorkBuilding", "OutdoorPos"..i) then -- check if we already have one employee here
 							DistanceFound = GetDistance("", "Pos") -- check how far that pos is
 							if DistanceFound < BestDistance then

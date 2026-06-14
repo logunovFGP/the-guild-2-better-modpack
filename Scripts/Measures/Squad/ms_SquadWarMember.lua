@@ -1,3 +1,61 @@
+function WarParticipationReward()
+	if not IsDynastySim("") then
+		ms_squadwarmember_WarHireReward()
+		return
+	end
+	local now = GetGametime()
+	local key = "#kr_warxp_"..GetID("")
+	local last = GetData(key)
+	if last ~= nil and (now - last) < 8 then
+		return
+	end
+	SetData(key, now)
+	IncrementXP("", 300)
+	chr_SimAddFame("", 1)
+end
+
+function WarWinReward()
+	if not IsDynastySim("") then
+		ms_squadwarmember_WarHireReward(1)
+		return
+	end
+	local now = GetGametime()
+	local key = "#kr_warwin_"..GetID("")
+	local last = GetData(key)
+	if last ~= nil and (now - last) < 8 then
+		return
+	end
+	SetData(key, now)
+	chr_RecieveMoney("", 1500, "WarLoot")
+	chr_SimAddFame("", 3)
+end
+
+function WarHireReward(isWin)
+	if IsDynastySim("") then
+		return
+	end
+	if not DynastyGetFamilyMember("", 0, "EmployerHead") then
+		return
+	end
+	if DynastyIsPlayer == nil or not DynastyIsPlayer("EmployerHead") then
+		return
+	end
+	local now = GetGametime()
+	local key = "#kr_warhire_"..GetID("")
+	if isWin then
+		key = "#kr_warhirewin_"..GetID("")
+	end
+	local last = GetData(key)
+	if last ~= nil and (now - last) < 8 then
+		return
+	end
+	SetData(key, now)
+	chr_SimAddFame("EmployerHead", 1)
+	if isWin then
+		chr_RecieveMoney("EmployerHead", 600, "WarLoot")
+	end
+end
+
 function Run()
 
 	if not SquadGet("", "Squad") then
@@ -30,9 +88,6 @@ function Run()
 		local Phase = GetProperty("Squad", "Phase")
 	
 		if not IsLeader then
-		
-			-- Member stuff
-			
 			if GetAliasByID(LeaderID, "Leader") then
 		
 				f_FollowNoWait("", "Leader", GL_MOVESPEED_RUN)
@@ -45,7 +100,7 @@ function Run()
 							if not GetState("Target", STATE_UNCONSCIOUS) then
 								if not GetState("Victim",STATE_CUTSCENE) then
 									BattleJoin("", "Target", false, true)
-									achievements_Unlock("", "MISC_PARTICIPATE_WAR")
+									achievements_Unlock("", "MISC_PARTICIPATE_WAR"); ms_squadwarmember_WarParticipationReward()
 								end
 							end
 --						SetData("DontLeave", 1)
@@ -56,8 +111,6 @@ function Run()
 			end
 			
 		else
-		
-			-- Leader stuff
 			
 			if Phase == 0 then
 				ms_squadwarmember_Phase0()
@@ -71,8 +124,6 @@ function Run()
 	end
 end
 
-
--- Phase0 - gather at residence
 function Phase0()
 
 	if SimGetWorkingPlace("", "Place") then
@@ -82,8 +133,6 @@ function Phase0()
 	end
 end
 
-
--- Phase1 - lets go
 function Phase1()
 	local WaitTime = GetData("WaitTime", WaitTime)
 	local Att, Def
@@ -107,7 +156,7 @@ function Phase1()
 				
 					SetProperty("Squad", "Phase", 2)
 					SetProperty("Squad", "TargetID", GetID("Build"))
-					achievements_Unlock("", "MISC_PARTICIPATE_WAR")
+					achievements_Unlock("", "MISC_PARTICIPATE_WAR"); ms_squadwarmember_WarParticipationReward()
 
 					SetData("DontLeave", 1)
 					if not MeasureRun("", "Build", "AttackEnemy", true) then
@@ -133,7 +182,7 @@ function Phase1()
 		
 		SetProperty("Squad", "Phase", 2)
 		SetProperty("Squad", "TargetID", GetID("Victim"))
-		achievements_Unlock("", "MISC_PARTICIPATE_WAR")
+		achievements_Unlock("", "MISC_PARTICIPATE_WAR"); ms_squadwarmember_WarParticipationReward()
 		SetData("DontLeave", 1)
 		if not GetState("Victim", STATE_CUTSCENE) then
 			if not MeasureRun("", "Victim", "AttackEnemy", true) then
@@ -146,8 +195,8 @@ end
 
 function Phase2()
 	if GetState("Victim", STATE_UNCONSCIOUS) then
-		-- kill char
 		SetProperty("Squad", "Phase", 100)
+		ms_squadwarmember_WarWinReward()
 
 		SetData("DontLeave", 1)
 		if not GetState("Victim",STATE_CUTSCENE) then
@@ -180,4 +229,3 @@ function CleanUp()
 		end
 	end
 end
-

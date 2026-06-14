@@ -30,7 +30,7 @@ function Run()
 		SetProcessProgress("", (5 * BaseDrinkingTime) - (5 * TimeToGetDrunk))
 
 		
-		local CostToDrink = 30 --as if buying wheat beer at the base price
+		local CostToDrink = 25 + SimGetLevel("") * 5
 		
 		--animation note: plays the animation with a money cost first, then does 4 random animations (total of 5 including first one),
 		--then goes back to the first one (with the money cost), and so on. This way the cost is more consistent (one payment every five cycles).

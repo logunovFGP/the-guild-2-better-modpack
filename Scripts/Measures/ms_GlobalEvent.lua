@@ -172,25 +172,25 @@ function War()
 				if GetDynasty("OutPutDyn"..i, "family") then
 					if GetID("family")==GetID("kingfamily") then
 						if GetProperty("family","WarLandNo") then
-							local money = (Rand(1100) + 250) * (25 + GetProperty("family","WarLandNo"))
+							local money = (Rand(400) + 600) * (25 + GetProperty("family","WarLandNo"))
 							
 							feedback_MessagePolitics("family","@L_WAR_END_WON_HEAD_+1","@L_WAR_END_WON_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, lordlabel)
 		
-							chr_CreditMoney("family", money, "WarMoney")
+							chr_CreditMoney("family", money, "WarMoney"); ms_globalevent_WarFame("family", 1)
 							RemoveProperty("family", "WarLandNo")
 						else
-							local money = (Rand(1100) + 250) * 25
+							local money = (Rand(400) + 600) * 25
 							
 							feedback_MessagePolitics("family","@L_WAR_END_WON_HEAD_+1","@L_WAR_END_WON_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, lordlabel)
 		
-							chr_CreditMoney("family", money, "WarMoney")
+							chr_CreditMoney("family", money, "WarMoney"); ms_globalevent_WarFame("family", 1)
 						end
 					elseif GetProperty("family","WarLandNo") then
-						local money = (Rand(1100) + 250) * GetProperty("family","WarLandNo")
+						local money = (Rand(400) + 600) * GetProperty("family","WarLandNo")
 						
 						feedback_MessagePolitics("family","@L_WAR_END_WON_HEAD_+1","@L_WAR_END_WON_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, lordlabel)
 	
-						chr_CreditMoney("family", money, "WarMoney")
+						chr_CreditMoney("family", money, "WarMoney"); ms_globalevent_WarFame("family", 1)
 						RemoveProperty("family", "WarLandNo")
 					end
 				end
@@ -200,11 +200,11 @@ function War()
 			for i=0,NumDynasties-1 do
 				if GetDynasty("OutPutDyn"..i, "family") then
 					if GetProperty("family","WarLandNo") then
-						local money = (Rand(1100) + 250) * GetProperty("family","WarLandNo")
+						local money = (Rand(400) + 600) * GetProperty("family","WarLandNo")
 						
 						feedback_MessagePolitics("family","@L_WAR_END_WON_HEAD_+1","@L_WAR_END_WON_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, lordlabel)
 	
-						chr_CreditMoney("family", money, "WarMoney")
+						chr_CreditMoney("family", money, "WarMoney"); ms_globalevent_WarFame("family", 1)
 						RemoveProperty("family", "WarLandNo")
 					end
 				end
@@ -227,37 +227,37 @@ function War()
 				if GetDynasty("OutPutDyn"..i, "family") then
 					if GetID("family")==GetID("kingfamily") then
 						if GetProperty("family","WarLandNo") then
-							local money = (Rand(1100) + 250) * (25 + GetProperty("family","WarLandNo"))
+							local money = (Rand(400) + 600) * (25 + GetProperty("family","WarLandNo"))
 							local dynmoney = GetMoney("family")
 							if money < dynmoney then
 								dynmoney = money
 							end
 							
-							feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
+							feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), dynmoney, "@L_SCENARIO_LORD_"..enemy.."_+1")
 		
-							chr_SpendMoney("family", money, "WarMoney")
+							chr_SpendMoney("family", dynmoney, "WarMoney"); ms_globalevent_WarFame("family", -1)
 							RemoveProperty("family", "WarLandNo")
 						else
-							local money = (Rand(1100) + 250) * 25
+							local money = (Rand(400) + 600) * 25
 							local dynmoney = GetMoney("family")
 							if money < dynmoney then
 								dynmoney = money
 							end
 							
-							feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
+							feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), dynmoney, "@L_SCENARIO_LORD_"..enemy.."_+1")
 		
-							chr_SpendMoney("family", money, "WarMoney")
+							chr_SpendMoney("family", dynmoney, "WarMoney"); ms_globalevent_WarFame("family", -1)
 						end
 					elseif GetProperty("family","WarLandNo") then
-						local money = (Rand(1100) + 250) * GetProperty("family","WarLandNo")
+						local money = (Rand(400) + 600) * GetProperty("family","WarLandNo")
 						local dynmoney = GetMoney("family")
 						if money < dynmoney then
 							dynmoney = money
 						end
 						
-						feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
+						feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), dynmoney, "@L_SCENARIO_LORD_"..enemy.."_+1")
 	
-						chr_SpendMoney("family", money, "WarMoney")
+						chr_SpendMoney("family", dynmoney, "WarMoney"); ms_globalevent_WarFame("family", -1)
 						RemoveProperty("family", "WarLandNo")
 					end
 				end
@@ -267,15 +267,15 @@ function War()
 			for i=0,NumDynasties-1 do
 				if GetDynasty("OutPutDyn"..i, "family") then
 					if GetProperty("family","WarLandNo") then
-						local money = (Rand(1100) + 250) * GetProperty("family","WarLandNo")
+						local money = (Rand(400) + 600) * GetProperty("family","WarLandNo")
 						local dynmoney = GetMoney("family")
 						if money < dynmoney then
 							dynmoney = money
 						end
 						
-						feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), money, "@L_SCENARIO_LORD_"..enemy.."_+1")
+						feedback_MessagePolitics("family","@L_WAR_END_LOOSE_HEAD_+1","@L_WAR_END_LOOSE_BODY_+1","@L_SCENARIO_WAR_"..enemy.."_+0", GetDynastyID("family"), dynmoney, "@L_SCENARIO_LORD_"..enemy.."_+1")
 	
-						chr_SpendMoney("family", money, "WarMoney")
+						chr_SpendMoney("family", dynmoney, "WarMoney"); ms_globalevent_WarFame("family", -1)
 						RemoveProperty("family", "WarLandNo")
 					end
 				end
@@ -314,4 +314,12 @@ function CleanUp()
 	RemoveProperty("","WarWon")
 	RemoveData("#GlobalEventType")
 
+end
+
+function WarFame(famAlias, dir)
+	local f = GetProperty(famAlias, "ImperialFame")
+	if not f then f = 0 end
+	f = f + dir
+	if f < 0 then f = 0 end
+	SetProperty(famAlias, "ImperialFame", f)
 end

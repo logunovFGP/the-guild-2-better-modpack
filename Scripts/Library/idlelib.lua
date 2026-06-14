@@ -6,6 +6,108 @@ function Init()
 end
 
 -- -----------------------
+-- PickWeightedBuildingByAttractivity
+-- -----------------------
+function PickWeightedBuildingByAttractivity(CityAlias, ResultAlias, BuildingClass, BuildingType, RequiredProperty, BonusProperty, BonusValue, IgnoreProperty, IgnoreTimeProperty)
+	local Count = CityGetBuildings(CityAlias, BuildingClass, BuildingType, -1, -1, FILTER_HAS_DYNASTY, "WeightedBuilding")
+	if Count <= 0 then
+		return false
+	end
+
+	local IgnoreID
+	if IgnoreProperty and HasProperty("", IgnoreProperty) then
+		local IgnoreTime = GetProperty("", IgnoreTimeProperty)
+		if IgnoreTime and IgnoreTime < GetGametime() then
+			RemoveProperty("", IgnoreProperty)
+			RemoveProperty("", IgnoreTimeProperty)
+		else
+			IgnoreID = GetProperty("", IgnoreProperty)
+		end
+	end
+
+	local Scores = {}
+	local ScoreSum = 0
+	for i = 0, Count - 1 do
+		local BuildingAlias = "WeightedBuilding"..i
+		if AliasExists(BuildingAlias) then
+			local CanUse = true
+			if RequiredProperty and not HasProperty(BuildingAlias, RequiredProperty) and (GetImpactValue(BuildingAlias, RequiredProperty) or 0) <= 0 then
+				CanUse = false
+			end
+			if IgnoreID and IgnoreID == GetID(BuildingAlias) then
+				CanUse = false
+			end
+			if CanUse then
+				local Attractivity = GetImpactValue(BuildingAlias, "Attractivity") or 0
+				if BonusProperty and (HasProperty(BuildingAlias, BonusProperty) or (GetImpactValue(BuildingAlias, BonusProperty) or 0) > 0) then
+					Attractivity = Attractivity + (BonusValue or 0)
+				end
+
+				local Distance = GetDistance("", BuildingAlias)
+				if Distance == -1 then
+					Distance = 50000
+				end
+
+				local Score = math.floor(((0.5 + Attractivity) * 100000) / math.max(250, Distance))
+				if Score < 1 then
+					Score = 1
+				end
+
+				Scores[i] = Score
+				ScoreSum = ScoreSum + Score
+			end
+		end
+	end
+
+	if ScoreSum <= 0 then
+		return false
+	end
+
+	local Choice = Rand(ScoreSum) + 1
+	for i = 0, Count - 1 do
+		if Scores[i] then
+			Choice = Choice - Scores[i]
+			if Choice <= 0 then
+				CopyAlias("WeightedBuilding"..i, ResultAlias)
+				return true
+			end
+		end
+	end
+
+	return false
+end
+
+-- -----------------------
+-- GetChurchForMass
+-- -----------------------
+function GetChurchForMass(ResultAlias)
+	if not GetSettlement("", "City") then
+		return false
+	end
+
+	local FirstType = GL_BUILDING_TYPE_CHURCH_EV
+	local SecondType = GL_BUILDING_TYPE_CHURCH_CATH
+	if SimGetReligion("") == RELIGION_CATHOLIC then
+		FirstType = GL_BUILDING_TYPE_CHURCH_CATH
+		SecondType = GL_BUILDING_TYPE_CHURCH_EV
+	end
+
+	if idlelib_PickWeightedBuildingByAttractivity("City", ResultAlias, GL_BUILDING_CLASS_WORKSHOP, FirstType, "MassInProgress") then
+		return true
+	end
+
+	if idlelib_PickWeightedBuildingByAttractivity("City", ResultAlias, GL_BUILDING_CLASS_WORKSHOP, FirstType, nil, "MassInProgress", 0.5) then
+		return true
+	end
+
+	if idlelib_PickWeightedBuildingByAttractivity("City", ResultAlias, GL_BUILDING_CLASS_WORKSHOP, SecondType, "MassInProgress") then
+		return true
+	end
+
+	return idlelib_PickWeightedBuildingByAttractivity("City", ResultAlias, GL_BUILDING_CLASS_WORKSHOP, SecondType, nil, "MassInProgress", 0.25)
+end
+
+-- -----------------------
 -- GetActivity
 -- 0 = no activity, 100 = full activity of the sims
 -- -----------------------
@@ -1793,19 +1895,7 @@ function TakeACredit()
 		return
 	end
 
-	local NumBankhouses = CityGetBuildings("City", 2, 43, -1, -1, FILTER_HAS_DYNASTY, "Bank")
-
-	if NumBankhouses > 0 then
-		for i = 0, NumBankhouses - 1 do
-			local Attractivity = GetImpactValue("Bank"..i, "Attractivity")
-			if HasProperty("Bank"..i, "OfferCreditNow") then
-				Attractivity = Attractivity + 0.25
-				CopyAlias("Bank"..i, "Destination")
-			end
-		end
-	end
-
-	if not AliasExists("Destination") then
+	if not idlelib_PickWeightedBuildingByAttractivity("City", "Destination", 2, 43, "OfferCreditNow", nil, nil, "IgnoreBank", "IgnoreBankTime") then
 		SatisfyNeed("", 9, 1)
 		return
 	end
@@ -2258,7 +2348,7 @@ function BuySomeCoin(SplitNumber)
 						chr_ModifyFavor("","Glaubiger",-GL_FAVOR_MOD_TINY)					
 					end
 					
-					SetProperty("", "IgnoreBank", "Destination")
+					SetProperty("", "IgnoreBank", GetID("Destination"))
 					SetProperty("", "IgnoreBankTime", GetGametime()+36)
 				end
 			end

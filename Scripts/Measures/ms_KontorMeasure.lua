@@ -1,17 +1,36 @@
+function kr_MirrorRoutes()
+	if KontorSetRoute == nil then
+		return
+	end
+	local frozen = GetData("#kr_freeze_all")
+	local krCat
+	for krCat = 1, 7 do
+		local r = GetData("#kr_route_"..krCat)
+		local open = 1
+		if r ~= nil and r == 0 then open = 0 end
+		if frozen ~= nil and frozen ~= 0 then open = 0 end
+		KontorSetRoute("", krCat, open)
+
+		if KontorSetLordship ~= nil then
+			local lord = GetData("#kr_routelord_"..krCat)
+			if lord == nil then lord = krCat end
+			KontorSetLordship("", krCat, lord)
+		end
+	end
+end
+
 function Run()
 
 	GetSettlement("", "City")
 
-	local Firsttime = true
+	ms_kontormeasure_kr_MirrorRoutes()
+
 	local TimeToSleep = Gametime2Realtime(1)
-	local Count
-	local Item
-	local Demand
-	local Stock
 	local LocalCityId = GetID("City")
-	
+	local Count
+
 	while true do
-	
+
 		if ScenarioGetTimePlayed() > (24 + Rand(25)) then
 			if Rand(100)>=90 then
 				Count = GetData("#KontorEventCount")
@@ -24,88 +43,114 @@ function Run()
 		end
 
 		Sleep(TimeToSleep)
-		
-		local Check = {}
-		
-		Count = ScenarioGetKontorGoodCount()
-		local CityId
-		for g=0, Count-1 do
-			Item, Demand, CityId = ScenarioGetKontorGoodInfo(g)
-			if Item ~= -1 and CityId == LocalCityId then
-				if Demand > 0 then
-					ms_kontormeasure_CheckItem(Item, Demand*2, Firsttime)
-					Check[Item] = true
+
+		ms_kontormeasure_kr_MirrorRoutes()
+
+		if KontorFreezeAll ~= nil then
+			local kf = GetData("#kr_freeze_all")
+			if kf == nil then kf = 0 end
+			KontorFreezeAll(kf)
+		end
+
+		local krFrozen = GetData("#kr_freeze_all")
+		if krFrozen ~= nil and krFrozen ~= 0 then
+			local fc = InventoryGetSlotCount("", INVENTORY_STD)
+			local fg
+			for fg = 0, fc - 1 do
+				local fit, fam = InventoryGetSlotInfo("", fg, INVENTORY_STD)
+				if fit and fit ~= -1 and fam and fam > 0 then
+					RemoveItems("", fit, fam, INVENTORY_STD)
 				end
 			end
+			RemoveEmptySlots("", INVENTORY_STD)
+		else
+
+		local now = GetGametime()
+		local nextR = GetProperty("", "kr_next_refresh")
+		if nextR == nil or now >= nextR then
+			ms_kontormeasure_RefreshStock(LocalCityId)
+			local hour = math.mod(now, 24)
+			local to5 = 5 - hour
+			if to5 <= 0 then to5 = to5 + 24 end
+			SetProperty("", "kr_next_refresh", now + to5)
 		end
-		
-		local	EventItem = GetProperty("", "EventItem")
-		local	EvID  = -1
-		if EventItem then
-			EvID = ItemGetID(EventItem)
-		end
-		
-		Count = InventoryGetSlotCount("", INVENTORY_STD)
-		for g=0, Count-1 do
-		
-			Item, Demand = InventoryGetSlotInfo("", g, INVENTORY_STD)
-			if Item and Check[Item] ~= true and Item ~= EvID then
-				if Demand > 0 then
-					RemoveItems("", Item, 1, INVENTORY_STD)
-				end
+
+		local sc = InventoryGetSlotCount("", INVENTORY_STD)
+		local si
+		for si = 0, sc - 1 do
+			local sit = InventoryGetSlotInfo("", si, INVENTORY_STD)
+			if sit and sit ~= -1 then
+				ms_kontormeasure_SetKontorPrice(sit)
 			end
 		end
-		
-		RemoveEmptySlots("", INVENTORY_STD)
-		Firsttime = false
+
+		end
 	end
 end
 
-function CheckItem(Item, Wanted, FirstTime)
-	if Wanted == 0 then
+function RefreshStock(LocalCityId)
+	local EventItem = GetProperty("", "EventItem")
+	local EvID = -1
+	if EventItem then EvID = ItemGetID(EventItem) end
+
+	local fc = InventoryGetSlotCount("", INVENTORY_STD)
+	local fg
+	for fg = 0, fc - 1 do
+		local fit, fam = InventoryGetSlotInfo("", fg, INVENTORY_STD)
+		if fit and fit ~= -1 and fit ~= EvID and fam and fam > 0 then
+			RemoveItems("", fit, fam, INVENTORY_STD)
+		end
+	end
+	RemoveEmptySlots("", INVENTORY_STD)
+
+	local items = {}
+	local nItems = 0
+	local cnt = ScenarioGetKontorGoodCount()
+	local g
+	for g = 0, cnt - 1 do
+		local it, dm, cid = ScenarioGetKontorGoodInfo(g)
+		if it ~= -1 and cid == LocalCityId and dm > 0 then
+			items[nItems] = it
+			nItems = nItems + 1
+		end
+	end
+	if nItems == 0 then
 		return
 	end
-	
-	local Count = GetItemCount("", Item, INVENTORY_STD)
-	if Count >= Wanted then
-		return
+
+	local pick = 4
+	if pick > nItems then pick = nItems end
+	local rot = GetProperty("", "kr_rot")
+	if rot == nil then rot = 0 end
+
+	local i
+	for i = 0, pick - 1 do
+		local idx = rot + i
+		while idx >= nItems do idx = idx - nItems end
+		local it = items[idx]
+		local qty = 2 + Rand(4)
+		AddItems("", it, qty, INVENTORY_STD)
+		ms_kontormeasure_SetKontorPrice(it)
 	end
-	
-	local	Var = 95 - (Wanted-Count)*0.5
-	
-	local Grow = (Wanted-Count) * 0.05
-	if Grow < 1 then
-		Grow = 1
-	end
-	
-	if Grow > 5 then
-		Grow = 5
-	end
-	
+
+	rot = rot + pick
+	while nItems > 0 and rot >= nItems do rot = rot - nItems end
+	SetProperty("", "kr_rot", rot)
+end
+
+function SetKontorPrice(Item)
 	local Base = ItemGetBasePrice(Item)
-	if Count < Wanted then
-		if Base < 300 or ScenarioGetTimePlayed() > (48 + Rand(25)) then
-			if not FirstTime then
-				if Rand(100) >= Var then
-					AddItems("", Item, Grow, INVENTORY_STD)
-				end
-			else
-				AddItems("", Item, Rand(Wanted), INVENTORY_STD)
-			end
-		end
+	if Base == -1 then
+		return
 	end
-	
-	if Base ~= -1 then
-	
-		local PriceIn = Base * 0.5 -- 0.25
-		Count = GetItemCount("", Item, INVENTORY_STD)
-	
-		local	Quote = 0.55 + 0.86*(1 - Count / Wanted) -- 0.5 + 0.75
-		if Base >= 300 then
-			Quote = 1.05 + 0.65*(1 - Count / Wanted)
-		end
-		local PriceOut = Base * Quote
-	
-		CitySetFixedPrice("", Item, PriceIn, PriceOut, -1)
+
+	local PriceIn = Base * 0.1
+
+	local Mult = 1.75
+	if ItemGetCategory(Item) == 3 then
+		Mult = 3.5
 	end
+	local PriceOut = Base * Mult
+
+	CitySetFixedPrice("", Item, PriceIn, PriceOut, -1)
 end

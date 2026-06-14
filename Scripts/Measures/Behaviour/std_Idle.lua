@@ -157,11 +157,9 @@ function Run()
 				return
 			else
 		    if SimGetProfession("")~=GL_PROFESSION_PRIEST then
-			    if SimGetChurch("", "church") then
-						if BuildingGetOwner("church","churchowner") then
-					    MeasureRun("", "church", "AttendMass")
-					    return
-						end
+			    if idlelib_GetChurchForMass("church") then
+				    MeasureRun("", "church", "AttendMass")
+				    return
 					end
 			  end
 			end
@@ -329,10 +327,8 @@ function Run()
 						idlelib_GoToDivehouse()
 					end
 				elseif WhatToDo > 50 then
-					if SimGetChurch("", "church") then
-						if BuildingGetOwner("church","churchowner") then
-							MeasureRun("", "church", "AttendMass")
-						end
+					if idlelib_GetChurchForMass("church") then
+						MeasureRun("", "church", "AttendMass")
 					end
 				elseif WhatToDo > 35 then
 					idlelib_Graveyard()

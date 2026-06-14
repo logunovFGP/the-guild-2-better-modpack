@@ -161,11 +161,14 @@ function GetRandomBuildingByRanking(CityAlias, ResultAlias, MinRanking, Type, Mi
 			end
 		end
 	end
+	if RankingSum <= 0 then
+		return false
+	end
 
 	local Choice = Rand(RankingSum) + 1
 	for i = 0, Count-1 do
-		if AliasExists("Result"..i) then
-			Ranking = GetProperty("Result"..i, "SalescounterRanking")
+		if AliasExists("Result"..i) and BuildingGetLevel("Result"..i) >= MinLevel then
+			Ranking = GetProperty("Result"..i, "SalescounterRanking") or 1
 			if Ranking and Ranking >= MinRanking  then
 				Choice = Choice - Ranking 
 			end
