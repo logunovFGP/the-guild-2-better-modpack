@@ -100,6 +100,11 @@ function Run()
 			DynastyRemoveMember("Destination", "DesDyn")
 		end
 		
+		if not AliasExists("") then
+			DestroyCutscene("cutscene")
+			return
+		end
+
 		ReleaseAvoidanceGroup("")
 		DestroyCutscene("cutscene")
 	end

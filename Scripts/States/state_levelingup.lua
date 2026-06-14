@@ -30,16 +30,11 @@ function Run()
 	end
 	AddImpact("", "LevelingUp", 1, -1)
 	
-	local OldProto = Proto-1
-	-- In branching workshops, the old proto is different!
-	if Proto == 143 then
-		OldProto = 140
-	elseif Proto == 173 then
-		OldProto = 170
-	elseif Proto == 1001 then
-		OldProto = 654
-	end
+	local OldProto = BuildingGetProto("")
 	local TotalTime = GetDatabaseValue("Buildings", Proto, "buildtime") - GetDatabaseValue("Buildings", OldProto, "buildtime") + 1
+	if TotalTime < 1 then
+		TotalTime = 1
+	end
 	
 	local 	H4x0r = GetSettingNumber("DEBUG", "DisableBuildtime", 0)
 	if (H4x0r==1) then
