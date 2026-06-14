@@ -309,3 +309,5 @@ Data:
 428             1                 2                  0                     "WaitTime"                          0   ""                                    |
 429             1                 2                  0                     "AffectedByUncannyGlare"            0   "Hud/state/affectedbyuncannyglare.tga"       |
 430             1                 2                  0                     "ServiceActive"                     0   "Hud/state/passive/PoliticalAttention.tga"   |
+500   1   3   0   "AldermanFreezeTrade"   0   ""   |
+501   1   2   0   "OfferCreditNow"   0   ""   |
