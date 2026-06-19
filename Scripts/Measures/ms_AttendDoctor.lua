@@ -29,7 +29,9 @@ function Run()
 	end
 	
 	local Costs = 0
-	if (GetDynastyID("Destination") ~= GetID("dynasty")) then
+	-- only party members pay the Medicus fee up-front; non-party sims (employees,
+	-- hired rogues, city/elite guards) heal free at the hospital, so do not gate them here
+	if (GetDynastyID("Destination") ~= GetID("dynasty")) and IsPartyMember("") then
 		if GetImpactValue("", "Sprain") == 1 then
 			Costs = Disease.Sprain:getCost()
 		elseif GetImpactValue("", "Cold") == 1 then
