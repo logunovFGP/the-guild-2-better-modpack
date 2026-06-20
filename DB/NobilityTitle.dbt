@@ -1,23 +1,19 @@
-//Table File (c) 2004 4head studios
-//Modified by RUNEFORGE Game Studio
-
 Table Description:
-"id" INT -1 |"title" STRING  0 |"price" INT  0 |"script" STRING  0 |"maxresidencelevel" INT  0 |"maxworkshops" INT  0 |"minimperialfame" INT  0 |
+"id" INT -1 |"title" STRING 0 |"price" INT 0 |"script" STRING 0 |"maxresidencelevel" INT 0 |"maxworkshops" INT 0 |"minimperialfame" INT 0 |
 
 Data:
-1            "Unfreier"          0               ""                                     0              0                       0                |
-2            "Gemeiner"          500             "privileges/ps_02_gemeiner.lua"        1              1                       0                |
-3            "Freisasse"         2000            "privileges/ps_03_freisasse.lua"       2              2                       0                |
-4            "Beisasse"          5000            "privileges/ps_04_beisasse.lua"        2              3                       0                |
-5            "Buerger"           10000           "privileges/ps_05_buerger.lua"         3              4                       0                |
-6            "Freibuerger"       25000           "privileges/ps_06_freibuerger.lua"     3              6                       0                |
-7            "Patrizier"         50000           "privileges/ps_07_patrizier.lua"       4              8                       0                |
-8            "Edelmann"          100000          "privileges/ps_08_edelmann.lua"        4              10                      1                |
-9            "Freiherr"          200000          "privileges/ps_09_freiherr.lua"        5              15                      2                |
-10           "Baron"             300000          "privileges/ps_10_baron.lua"           5              20                      2                |
-11           "Graf"              400000          "privileges/ps_11_graf.lua"            5              25                      3                |
-12           "Markgraf"          500000          "privileges/ps_12_markgraf.lua"        5              30                      3                |
-13           "Fuerst"            600000          "privileges/ps_13_fuerst.lua"          5              35                      4                |
-14           "Reichsfuerst"      700000          "privileges/ps_14_reichsfuerst.lua"    5              40                      4                |
-15           "Herzog"            850000          "privileges/ps_15_herzog.lua"          5              50                      5                |
-16           "Erzherzog"         1000000         "privileges/ps_16_erzherzog.lua"       5              100                     5                |
+2   "~"   500   "~"   "~"   "~"   "~"   |
+3   "~"   2000   "~"   "~"   "~"   "~"   |
+4   "~"   5000   "~"   "~"   3   "~"   |
+5   "~"   10000   "~"   "~"   4   "~"   |
+6   "~"   25000   "~"   "~"   6   "~"   |
+7   "~"   50000   "~"   "~"   8   "~"   |
+8   "~"   100000   "~"   "~"   10   "~"   |
+9   "~"   200000   "~"   "~"   15   2   |
+10   "~"   "~"   "~"   "~"   20   "~"   |
+11   "~"   400000   "~"   "~"   25   3   |
+12   "~"   500000   "~"   "~"   30   "~"   |
+13   "~"   600000   "~"   "~"   35   "~"   |
+14   "~"   700000   "~"   "~"   40   4   |
+15   "Herzog"   850000   "privileges/ps_15_herzog.lua"   5   50   5   |
+16   "Erzherzog"   1000000   "privileges/ps_16_erzherzog.lua"   5   100   5   |

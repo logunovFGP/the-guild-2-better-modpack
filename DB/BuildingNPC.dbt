@@ -1,20 +1,16 @@
-//Table File, Version 1.02 (c) 2004 4head studios
-//Exported 
-
 Table Description:
-"id" INT -1 |"name" STRING  0               |"buildingtype" INT  0 |"spawnlocator" STRING  0       |"behavior" INT  0 |"characterclass" INT  0 |"profession" INT  0 |
+"id" INT -1 |"behavior" INT 0 |
 
-Data: 
-0            ""                              0                      ""                              0                  0                        0                    | 
-1            "Usher"                         23                     "UsherChairPos"                 30013              1                        33                   | 
-2            "TownhallGuard1"                23                     "Guard1OffPos"                  30014              4                        34                   | 
-3            "TownhallGuard2"                23                     "Guard2OffPos"                  30015              4                        34                   | 
-4            "Executioner"                   23                     "ExecutionerOffPos"             30016              4                        35                   | 
-5            "Doctor"                        31                     "Doctor"                        30018              3                        31                   | 
-6            "Sekundant1"                    31                     "Sekundant1"                    30019              4                        36                   | 
-7            "Sekundant2"                    31                     "Sekundant2"                    30020              4                        36                   | 
-8            "Vendor1"                       14                     "vendor"                        30021              19                       37                   | 
-9            "Undertaker"                    29                     "priest"                        30026              3                        38                   | 
-10           "Towncrier"                     23                     "entry1"                        30025              3                        10                   | 
-11           "WeddingPriest"                 42                     "WeddingPriest"                 30029              3                        11                   | 
-12           "GuildClerk"                    26                     "GuildClerkPos"                 30035              1                        27                   | 
+Data:
+1   30013   |
+2   30014   |
+3   30015   |
+4   30016   |
+5   30018   |
+6   30019   |
+7   30020   |
+8   30021   |
+9   30026   |
+10   30025   |
+11   30029   |
+12   30035   |

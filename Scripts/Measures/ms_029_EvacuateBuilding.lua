@@ -1,4 +1,0 @@
-function Run()
-	Evacuate("")
-end
-

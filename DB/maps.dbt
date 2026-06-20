@@ -1,25 +1,20 @@
-//Table File (c) 2004 4head studios
-//Modified by RUNEFORGE Game Studio
-
 Table Description:
-"id" INT -1 |"filename" STRING  0 |"modes" INT  0 |"name" STRING  0 |"maxplayers" INT  0 |"multiplayer" INT  0 |"lordship" STRING  0 |
+"id" INT -1 |"filename" STRING 0 |"name" STRING 0 |"maxplayers" INT 0 |"lordship" STRING 0 |
 
 Data:
-
-1   "england"                0   "England"              14   3   "england"      |
-2  "rivertrent"             0   "Rivertrent"           16   3   "england"      |
-3   "york"                   0   "York"                 16   3   "england"      |
-4   "ulm"                    0   "Ulm"                  10   3   "germany"      |
-5   "magathaburg"            0   "magathaburg"          8    3   "germany"      |
-6   "holyblood"              0   "Holyblood"            12   3   "austria"      |
-7   "seatown"                0   "Seatown"              4    3   "hansa"        |
-8   "fichtenhain"            0   "Fichtenhain"          12   3   "germany"      |
-9   "bingenheim"             0   "Bingenheim"           16   3   "germany"      |
-10   "weilerthal"             0   "Weilerthal"           12   3   "germany"      |
-11   "Novaesium"              0   "Novaesium"            16   3   "germany"      |
-12  "hanse"                  0   "Hanse"                12   3   "hansa"        | 
-13  "newark"                 0   "Newark"               6    3   "england"      | 
-14  "augsburg"               0   "South_Germany"        8    3   "germany"      |
-15  "lyon_3s"                0   "France_3s"            12   3   "france"       |
-16  "calenberg"              0   "Calenberg"            12   3   "germany"      |
-17  "dracula"                0   "dracula"              6    3   "hungary"      |
+2   "rivertrent"   "Rivertrent"   16   "england"   |
+3   "york"   "York"   16   "england"   |
+4   "ulm"   "Ulm"   10   "germany"   |
+5   "magathaburg"   "magathaburg"   8   "germany"   |
+6   "holyblood"   "Holyblood"   "~"   "austria"   |
+7   "seatown"   "Seatown"   4   "hansa"   |
+8   "fichtenhain"   "Fichtenhain"   12   "~"   |
+9   "bingenheim"   "Bingenheim"   16   "~"   |
+10   "weilerthal"   "Weilerthal"   12   "germany"   |
+11   "Novaesium"   "Novaesium"   16   "germany"   |
+12   "hanse"   "Hanse"   12   "hansa"   |
+13   "newark"   "Newark"   6   "england"   |
+14   "augsburg"   "South_Germany"   8   "germany"   |
+15   "lyon_3s"   "France_3s"   12   "france"   |
+16   "calenberg"   "Calenberg"   12   "germany"   |
+17   "dracula"   "dracula"   6   "hungary"   |

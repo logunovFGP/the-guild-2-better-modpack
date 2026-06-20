@@ -1,19 +1,10 @@
-//Table File, Version 1.02 (c) 2004 4head studios
-//Exported 
-
 Table Description:
-"id" INT  0 |"level" INT  0 |"abilitylevel" INT  0 |
+"id" INT 0 |"abilitylevel" INT 0 |
 
-Data: 
-0            0               0                      | 
-1            1               0                      | 
-2            2               2                      | 
-3            3               2                      | 
-4            4               4                      | 
-5            5               2                      | 
-6            6               4                      | 
-7            7               7                      | 
-8            8               2                      | 
-9            9               4                      | 
-10           10              10                     | 
-11           10              2                      | 
+Data:
+3   2   |
+5   2   |
+6   4   |
+8   2   |
+9   4   |
+11   2   |

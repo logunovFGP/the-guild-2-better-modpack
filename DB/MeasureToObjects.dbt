@@ -1,446 +1,417 @@
-//Table File (c) 2004 4head studios
-//Modified by RUNEFORGE Game Studio
-
 Table Description:
-"id" INT -1 |"measureid" INT  0 |"selectionmode" INT  0 |"targetfilter" INT  0 |"objectfilter" INT  0 |"object" INT  0 |"mouseicon" STRING  0 |"targets" LIST  0 |"targetflag" STRING  0 |"useinstantmeasure" INT  0 |"instantmeasurefilter" INT  0 |
+"id" INT -1 |"measureid" INT 0 |"selectionmode" INT 0 |"targetfilter" INT 0 |"objectfilter" INT 0 |"object" INT 0 |"mouseicon" STRING 0 |"targets" LIST 0 |"targetflag" STRING 0 |"useinstantmeasure" INT 0 |"instantmeasurefilter" INT 0 |
 
 Data:
-// standard character + building measures
-10            10                  0                       0                      89                     6               ""                      ()                ""                        0                          0                   |
-20            20                  0                       318                    125                    1               ""                      (8)               "MEASUREINIT_SELECTION"   2                          318                 |
-30            30                  1                       0                      10                     1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-31            30                  1                       0                      10                     6     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-32            30                  1                       0                      10                     3     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-33            30                  1                       0                      10                     5     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-34            30                  1                       0                      157                    1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-35            30                  1                       0                      158                    1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-36            30                  1                       0                      159                    1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-37            30                  1                       0                      160                    1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-38            30                  1                       0                      386                    1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-39            30                  1                       0                      607                    6     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-40            40                  1                       0                      10                     1     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-41            40                  1                       0                      10                     6     "hud/cursors/Cursor_moveto.tga"   (99)              "MEASUREINIT_SELECTION"   0                          0                   |
-50            50                  0                       98                     10                     6     "hud/cursors/Cursor_talk.tga"     (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-60            60                  0                       0                      92                     6               ""                      ()                "MEASUREINIT_SELECTION"   0                          0                   |
-90            90                  1                       0                      1554                   1               ""                      ()                ""                        0                          0                   |
-91            90                  1                       0                      1554                   6               ""                      ()                ""                        0                          0                   |
-100           100                 1                       0                      119                    6               ""                      ()                ""                        0                          0                   |
-101           100                 0                       0                      376                    1               ""                      ()                ""                        0                          0                   |
-110           110                 0                       0                      427                    1               ""                      (4)               "MEASUREINIT_SELECTION"   0                          0                   |
-120           120                 0                       429                    428                    6               ""                      (1)               "MEASUREINIT_SELECTION"   0                          0                   |
-121           120                 0                       429                    428                    1               ""                      (1)               "MEASUREINIT_SELECTION"   0                          0                   |
-130           130                 0                       0                      1539                   1               ""                      (4)               ""                        0                          0                   |
-140           140                 0                       0                      1540                   1               ""                      (4)               "MEASUREINIT_SELECTION"   0                          0                   |
-150           150                 0                       0                      1555                   1               ""                      ()                ""                        0                          0                   |
-151           150                 0                       0                      1556                   6               ""                      ()                ""                        0                          0                   |
-160           160                 0                       283                    264                    1               ""                      (8)               ""                        2                          283                 |
-161           160                 0                       283                    450                    6               ""                      (8)               ""                        2                          283                 |
-170           170                 0                       285                    1543                   6               ""                      (8)               ""                        2                          285                 |
-171           170                 0                       285                    1549                   1               ""                      (8)               ""                        2                          285                 |
-180           180                 0                       283                    264                    1               ""                      (8)               ""                        2                          283                 |
-181           180                 0                       283                    450                    6               ""                      (8)               ""                        2                          283                 |
-190           190                 0                       0                      1540                   1               ""                      (4)               "MEASUREINIT_SELECTION"   0                          0                   |
-200           200                 0                       0                      1538                   2               ""                      ()                ""                        0                          0                   |
-210           210                 0                       0                      1541                   2               ""                      ()                ""                        0                          0                   |
-221           221                 0                       413                    412                    5               ""                      (8  2)            "MEASUREINIT_SELECTION"   2                          413                 |
-230           230                 0                       0                      1516                   6               ""                      ()                ""                        0                          0                   |
-240           240                 0                       0                      10                     6               ""                      ()                ""                        0                          0                   |
-250           250                 0                       0                      443                    6               ""                      ()                ""                        0                          0                   |
-260           260                 0                       82                     10                     6               ""                      (6)               ""                        0                          0                   |
-270           270                 0                       0                      445                    6               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-280           280                 0                       0                      446                    6               ""                      ()                ""                        0                          0                   |
-290           290                 0                       0                      10                     2               ""                      ()                ""                        0                          0                   |
-291           291                 1                       0                      123                    1               ""                      ()                ""                        0                          0                   |
-292           291                 1                       0                      325                    1               ""                      ()                ""                        0                          0                   |
-300           300                 0                       379                    9                      3               ""                      (2)               ""                        2                          379                 |
-301           300                 0                       411                    10                     5               ""                      (2)               ""                        2                          411                 |
-310           310                 1                       0                      269                    1               ""                      ()                ""                        0                          0                   |
-320           320                 0                       0                      312                    6               ""                      ()                ""                        0                          0                   |
-330           330                 0                       0                      311                    6               ""                      ()                ""                        0                          0                   |
-340           340                 0                       0                      1564                   2               ""                      ()                ""                        0                          0                   |
-341           341                 0                       0                      1509                   3               ""                      ()                ""                        0                          0                   |
-350           350                 0                       0                      122                    6               ""                      ()                "MEASUREINIT_SELECTION"   0                          0                   |
-351           351                 0                       0                      363                    6               ""                      ()                "MEASUREINIT_SELECTION"   0                          0                   |
-360           360                 1                       200                    10                     1   "hud/cursors/Cursor_Attack.tga"     (8  2  1  6  3)   "MEASUREINIT_SELECTION"   2                          322                 |
-361           360                 1                       200                    10                     6   "hud/cursors/Cursor_Attack.tga"     (8  2  1  6  3)   "MEASUREINIT_SELECTION"   2                          322                 |
-362           360                 1                       200                    435                    5   "hud/cursors/Cursor_Attack.tga"     (2  5)            "MEASUREINIT_SELECTION"   2                          439                 |
-363           360                 0                       200                    434                    2   "hud/cursors/Cursor_Attack.tga"     (5)               "MEASUREINIT_SELECTION"   2                          322                 |
-370           370                 0                       0                      580                    2               ""                      ()                ""                        0                          0                   |
-380           380                 0                       0                      581                    2               ""                      ()                ""                        0                          0                   |
-390           390                 0                       138                    10                     6   "hud/cursors/Cursor_moveto.tga"     (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-400           400                 1                       1562                   584                    1               ""                      (2)               ""                        0                          0                   |
-410           410                 0                       365                    10                     6   "hud/cursors/Cursor_Attack.tga"     (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-420           420                 1                       360                    583                    1               ""                      (4)               ""                        0                          0                   |
-421           420                 1                       360                    1560                   6               ""                      (4)               ""                        0                          0                   |
-430           430                 1                       452                    75                     1               ""                      (2)               ""                        0                          0                   |
-440           440                 0                       0                      189                    6               ""                      ()                ""                        0                          0                   |
-450           450                 0                       127                    129                    6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-451           451                 0                       127                    1530                   6               ""                      (1)               "MEASUREINIT_SELECTION"   0                          0                   |
-460           460                 0                       320                    10                     6   "hud/cursors/Cursor_talk.tga"       (1  6)            "MEASUREINIT_SELECTION"   2                          320                 |
-470           470                 0                       82                     135                    2               ""                      (6)               ""                        0                          0                   |
-480           480                 0                       10                     12                     1               ""                      (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-481           481                 0                       0                      378                    2               ""                      ()                ""                        0                          0                   |
-490           490                 0                       0                      11                     1               ""                      ()                ""                        0                          0                   |
-500           500                 1                       0                      75                     1   "hud/cursors/Cursor_Attack.tga"     (6  1  3)         "MEASUREINIT_SELECTION"   0                          0                   |
-510           510                 0                       90                     10                     1               ""                      (1  6)            "MEASUREINIT_SELECTION"   0                          0                   |
-511           511                 0                       90                     10                     6   "hud/cursors/Cursor_Attack.tga"     (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-520           520                 0                       0                      1568                   6               ""                      ()                ""                        0                          0                   |
-530           530                 0                       280                    10                     6               ""                      (6  1)            ""                        0                          0                   |
-540           540                 0                       279                    10                     6   "hud/cursors/Cursor_bomb.tga"       (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-550           550                 0                       455                    220                    6   "hud/cursors/Cursor_Attack.tga"     (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-560           560                 0                       82                     438                    6               ""                      (6)               ""                        0                          0                   |
-570           570                 0                       280                    10                     6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-580           580                 0                       0                      514                    6               ""                      ()                ""                        0                          0                   |
-581           580                 0                       0                      514                    1               ""                      ()                ""                        0                          0                   |
-590           590                 0                       0                      274                    6               ""                      ()                "MEASUREINIT_SELECTION"   0                          0                   |
-600           600                 1                       2064                   10                     6               ""                      (2)               "MEASUREINIT_SELECTION"   2                          2064                |
-601           600                 1                       2064                   10                     1               ""                      (2)               "MEASUREINIT_SELECTION"   2                          2064                |
-610           610                 1                       198                    259                    1               ""                      (2)               ""                        0                          0                   |
-611           610                 1                       198                    259                    6               ""                      (2)               ""                        0                          0                   |
-620           620                 0                       258                    315                    6               ""                      (6)               ""                        0                          0                   |
-630           630                 0                       0                      512                    6               ""                      ()                ""                        0                          0                   |
-640           640                 0                       0                      513                    6               ""                      ()                ""                        0                          0                   |
-650           650                 1                       310                    276                    1               ""                      (6)               ""                        0                          0                   |
-651           650                 1                       310                    276                    6               ""                      (6)               ""                        0                          0                   |
-660           660                 1                       374                    215                    6               ""                      (2)               ""                        0                          0                   |
-661           660                 1                       374                    215                    1               ""                      (2)               ""                        0                          0                   |
-670           670                 0                       0                      227                    2               ""                      ()                ""                        0                          0                   |
-680           680                 0                       0                      215                    6               ""                      (4)               ""                        0                          0                   |
-681           680                 0                       0                      215                    1               ""                      (4)               ""                        0                          0                   |
-690           690                 0                       0                      224                    1               ""                      ()                ""                        0                          0                   |
-700           700                 1                       198                    380                    6               ""                      (2)               ""                        0                          0                   |
-701           700                 1                       198                    215                    1               ""                      (2)               ""                        0                          0                   |
-710           710                 0                       0                      84                     8               ""                      ()                ""                        0                          0                   |
-711           710                 0                       0                      84                     2               ""                      ()                ""                        0                          0                   |
-720           720                 1                       0                      514                    6               ""                      ()                ""                        0                          0                   |
-730           730                 0                       0                      85                     2               ""                      ()                ""                        0                          0                   |
-740           740                 0                       0                      103                    2               ""                      ()                ""                        0                          0                   |
-750           750                 0                       0                      416                    8               ""                      ()                ""                        0                          0                   |
-751           750                 0                       0                      416                    2               ""                      ()                ""                        0                          0                   |
-752           751                 0                       0                      417                    8               ""                      ()                ""                        0                          0                   |
-753           751                 0                       0                      417                    2               ""                      ()                ""                        0                          0                   |
-760           760                 0                       0                      9                      8               ""                      ()                ""                        0                          0                   |
-761           760                 0                       0                      9                      2               ""                      ()                ""                        0                          0                   |
-770           770                 0                       0                      185                    6               ""                      ()                ""                        0                          0                   |
-780           780                 0                       0                      142                    6               ""                      ()                ""                        0                          0                   |
-790           790                 0                       0                      277                    6               ""                      ()                ""                        0                          0                   |
-800           800                 0                       375                    317                    6               ""                      (1  6)            ""                        0                          0                   |
-801           800                 0                       375                    317                    1               ""                      (1  6)            ""                        0                          0                   |
-810           810                 0                       195                    10                     6               ""                      (1  6)            ""                        2                          195                 |
-811           810                 0                       195                    75                     1               ""                      (1  6)            ""                        2                          195                 |
-820           820                 0                       403                    10                     6               ""                      (1  6)            ""                        0                          0                   |
-830           830                 0                       0                      128                    6               ""                      ()                ""                        0                          0                   |
-840           840                 0                       0                      372                    6               ""                      ()                "Att"                     0                          0                   |
-841           840                 0                       0                      373                    6               ""                      ()                ""                        0                          0                   |
-850           850                 0                       0                      359                    6               ""                      ()                ""                        0                          0                   |
-851           850                 0                       0                      181                    2               ""                      ()                ""                        0                          0                   |
-860           860                 0                       0                      582                    2               ""                      ()                ""                        0                          0                   |
-870           870                 0                       0                      243                    6               ""                      ()                ""                        0                          0                   |
-871           870                 0                       0                      242                    6               ""                      ()                ""                        0                          0                   |
-880           880                 1                       360                    583                    1               ""                      (4)               ""                        0                          0                   |
-881           880                 1                       360                    1560                   6               ""                      (4)               ""                        0                          0                   |
-890           890                 0                       3                      248                    1               ""                      (2)               ""                        0                          0                   |
-891           890                 0                       3                      250                    1               ""                      (2)               ""                        0                          0                   |
-892           890                 0                       3                      385                    6               ""                      (2)               ""                        0                          0                   |
-900           900                 0                       0                      244                    6               ""                      ()                ""                        0                          0                   |
-910           910                 0                       0                      245                    1               ""                      ()                ""                        0                          0                   |
-911           910                 0                       0                      383                    6               ""                      ()                ""                        0                          0                   |
-912           911                 0                       82                     253                    1               ""                      (6)               ""                        0                          0                   |
-913           911                 0                       82                     253                    6               ""                      (6)               ""                        0                          0                   |
-914           912                 0                       82                     253                    6               ""                      (6)               ""                        0                          0                   |
-915           912                 0                       82                     253                    1               ""                      (6)               ""                        0                          0                   |
-920           920                 0                       0                      246                    6               ""                      ()                ""                        0                          0                   |
-921           920                 0                       0                      246                    1               ""                      ()                ""                        0                          0                   |
-930           930                 0                       0                      247                    1               ""                      (4)               ""                        0                          0                   |
-931           930                 0                       0                      384                    6               ""                      (4)               ""                        0                          0                   |
-940           940                 0                       0                      1523                   6               ""                      ()                ""                        0                          0                   |
-950           950                 0                       1484                   1485                   6               ""                      (2)               ""                        0                          0                   |
-960           960                 0                       106                    1488                   6               ""                      (4)               ""                        0                          0                   |
-970           970                 0                       106                    1489                   6               ""                      (4)               ""                        0                          0                   |
-980           980                 0                       0                      153                    6               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-990           990                 0                       303                    302                    6               ""                      (2)               ""                        0                          0                   |
-1000          1000                0                       415                    386                    1               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-1010          1010                0                       197                    159                    1               ""                      (2)               ""                        0                          0                   |
-1020          1020                0                       374                    1544                   1     "hud/cursors/Cursor_moveto.tga"   (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-1021          1020                0                       374                    1532                   6     "hud/cursors/Cursor_moveto.tga"   (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-1030          1030                0                       82                     152                    6               ""                      (6)               ""                        0                          0                   |
-1040          1040                0                       82                     154                    6               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-1050          1050                0                       192                    184                    1               ""                      (6)               ""                        0                          0                   |
-1060          1060                0                       203                    151                    6               ""                      (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-1070          1070                0                       257                    211                    1               ""                      (6)               ""                        0                          0                   |
-1080          1080                0                       0                      117                    6               ""                      ()                ""                        0                          0                   |
-1090          1090                0                       0                      196                    6               ""                      ()                ""                        0                          0                   |
-1100          1100                0                       0                      201                    6               ""                      ()                ""                        0                          0                   |
-1110          1110                0                       0                      202                    6               ""                      ()                ""                        0                          0                   |
-1120          1120                0                       205                    206                    1               ""                      (1  6)            ""                        0                          0                   |
-1130          1130                0                       0                      1517                   6               ""                      ()                ""                        0                          0                   |
-1140          1140                0                       454                    212                    6               ""                      (6)               ""                        0                          0                   |
-1150          1150                0                       214                    213                    1               ""                      (2)               ""                        0                          0                   |
-1151          1151                0                       214                    613                    1               ""                      (2)               ""                        0                          0                   | 
-1160          1160                0                       82                     275                    6               ""                      (6)               ""                        0                          0                   |
-1170          1170                0                       198                    1491                   6               ""                      (2)               ""                        0                          0                   |
-1180          1180                0                       186                    219                    6               ""                      (9  1  6)         "MEASUREINIT_SELECTION"   0                          0                   |
-1190          1190                0                       9                      387                    6               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-1191          1191                0                       0                      388                    6               ""                      ()                "MEASUREINIT_SELECTION"   0                          0                   |
-1200          1200                0                       390                    389                    6               ""                      (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-1210          1210                0                       0                      391                    6               ""                      ()                ""                        0                          0                   |
-1220          1220                0                       0                      392                    6               ""                      (4)               ""                        0                          0                   |
-1230          1230                0                       390                    393                    6               ""                      (2)               ""                        0                          0                   |
-1240          1240                0                       0                      394                    6               ""                      (4)               ""                        0                          0                   |
-1250          1250                0                       405                    395                    6               ""                      (6)               ""                        0                          0                   |
-1260          1260                0                       0                      398                    6               ""                      (4)               ""                        0                          0                   |
-1270          1270                0                       0                      221                    6               ""                      ()                ""                        0                          0                   |
-1280          1280                0                       82                     210                    6               ""                      (6)               ""                        0                          0                   |
-1290          1290                0                       127                    436                    6               ""                      (1  6)            ""                        0                          0                   |
-1300          1300                0                       0                      399                    6               ""                      ()                ""                        0                          0                   |
-1310          1310                0                       187                    133                    6               ""                      (1  6)            "MEASUREINIT_SELECTION"   0                          0                   |
-1320          1320                0                       139                    133                    6       "hud/cursors/Cursor_bomb.tga"   (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-1330          1330                0                       0                      233                    6               ""                      ()                ""                        0                          0                   |
-1340          1340                0                       500                    259                    1               ""                      (2)               ""                        0                          0                   |
-1350          1350                1                       360                    259                    1               ""                      (4)               ""                        0                          0                   |
-1351          1350                1                       360                    259                    6               ""                      (4)               ""                        0                          0                   |
-1360          1360                0                       0                      406                    1               ""                      ()                ""                        0                          0                   |
-1361          1360                0                       0                      407                    6               ""                      ()                ""                        0                          0                   |
-1370          1370                0                       106                    409                    1               ""                      (4)               ""                        0                          0                   |
-1371          1370                0                       106                    408                    6               ""                      (4)               ""                        0                          0                   |
-1380          1380                0                       0                      410                    1               ""                      ()                ""                        0                          0                   |
-1381          1380                0                       0                      410                    6               ""                      ()                ""                        0                          0                   |
-1390          1390                0                       0                      414                    5               ""                      ()                ""                        0                          0                   |
-1400          1400                0                       442                    414                    5               ""                      (5)               ""                        2                          420                 |
-1410          1410                0                       432                    430                    5               ""                      (2)               ""                        0                          0                   |
-1421          1421                0                       198                    144                    1               ""                      (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-1422          1422                0                       198                    145                    1               ""                      (2)               "MEASUREINIT_SELECTION"   0                          0                   |
-1430          1430                0                       82                     273                    1               ""                      (6)               ""                        0                          0                   |
-1440          1440                0                       0                      1520                   6               ""                      ()                "MEASUREINIT_SELECTION"   2                          0                   |
-1450          1450                0                       82                     366                    1               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-1460          1460                0                       0                      370                    6               ""                      ()                ""                        0                          0                   |
-1461          1460                0                       0                      370                    2               ""                      ()                ""                        0                          0                   |
-1470          1470                1                       0                      75                     1     "hud/cursors/Cursor_moveto.tga"   (2  4)            "MEASUREINIT_SELECTION"   0                          0                   |
-1471          1470                1                       0                      157                    1     "hud/cursors/Cursor_moveto.tga"   (2  4)            "MEASUREINIT_SELECTION"   0                          0                   |
-1480          1480                0                       0                      260                    3               ""                      ()                ""                        0                          0                   |
-1481          1480                0                       0                      451                    5               ""                      ()                ""                        0                          0                   |
-1490          1490                0                       0                      228                    6               ""                      ()                ""                        0                          0                   |
-1500          1500                0                       0                      229                    6               ""                      ()                ""                        0                          0                   |
-1510          1510                0                       0                      230                    6               ""                      ()                ""                        0                          0                   |
-1520          1520                0                       280                    324                    6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-1521          1521                0                       0                      324                    6               ""                      ()                ""                        0                          0                   |
-1530          1530                0                       280                    364                    6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-1540          1540                0                       0                      1550                   6               ""                      ()                "MEASUREINIT_SELECTION"   2                          0                   |
-1550          1550                0                       0                      268                    1               ""                      ()                ""                        0                          0                   |
-1551          1550                0                       0                      441                    6               ""                      ()                ""                        0                          0                   |
-1560          1560                0                       0                      1519                   6               ""                      ()                ""                        0                          0                   |
-1570          1570                0                       0                      118                    1               ""                      ()                ""                        0                          0                   |
-1571          1570                0                       0                      440                    6               ""                      ()                ""                        0                          0                   |
-1580          1580                0                       0                      281                    6               ""                      ()                ""                        0                          0                   |
-1590          1590                0                       0                      1567                   2               ""                      ()                ""                        0                          0                   |
-1600          1600                0                       0                      261                    6               ""                      ()                ""                        0                          0                   |
-1601          1601                0                       82                     239                    6               ""                      (6  1)            ""                        0                          0                   |
-1610          1610                0                       106                    1492                   6               ""                      (4)               ""                        0                          0                   |
-1620          1620                0                       0                      1509                   3               ""                      ()                ""                        0                          0                   |
-1621          1620                0                       0                      1509                   5               ""                      ()                ""                        0                          0                   |
-1630          1630                0                       0                      600                    6               ""                      ()                ""                        0                          0                   |
-1640          1640                0                       0                      600                    6               ""                      ()                ""                        0                          0                   |
-1650          1650                0                       0                      602                    2               ""                      ()                ""                        0                          0                   |
-1660          1660                0                       0                      605                    6               ""                      ()                ""                        0                          0                   |
-1670          1670                1                       0                      612                    6        "hud/cursors/btn_travel.tga"   (2  4)            "MEASUREINIT_SELECTION"   0                          0                   |
-1680          1680                0                       0                      395                    6               ""                      ()                ""                        0                          0                   |
-1690          1690                0                       0                      1534                   1               ""                      (4)               ""                        0                          0                   |
-1691          1690                0                       0                      1557                   6               ""                      (4)               ""                        0                          0                   |
-1700          1700                0                       0                      1537                   1               ""                      (4)               ""                        0                          0                   |
-1701          1700                0                       0                      1559                   6               ""                      (4)               ""                        0                          0                   |
-1710          1710                1                       0                      1535                   6               ""                      ()                ""                        0                          0                   |
-1720          1720                0                       0                      1536                   1               ""                      (4)               ""                        0                          0                   |
-1721          1720                0                       0                      1558                   6               ""                      (4)               ""                        0                          0                   |
-1730          1730                0                       0                      1546                   6               ""                      ()                ""                        0                          0                   |
-1740          1740                0                       0                      1548                   6               ""                      ()                ""                        0                          0                   |
-1741          1740                0                       0                      1553                   1               ""                      ()                ""                        0                          0                   |
-1750          1750                0                       0                      1547                   2               ""                      ()                ""                        0                          0                   |
-1760          1760                0                       0                      1552                   6               ""                      ()                ""                        0                          0                   |
-1770          1770                0                       0                      181                    2               ""                      ()                ""                        0                          0                   |
-1780          1780                0                       0                      1566                   6               ""                      ()                ""                        0                          0                   |
-1790          1790                1                       1551                   1490                   6               ""                      (6  1)            ""                        0                          0                   |
-1800          1800                1                       0                      272                    1               ""                      (4)               ""                        0                          0                   |
-1801          1800                0                       0                      160                    1               ""                      (4)               ""                        0                          0                   |
-1810          1810                0                       0                      132                    6               ""                      ()                ""                        0                          0                   |
-1811          1810                0                       0                      526                    2               ""                      ()                ""                        0                          0                   |
-1820          1820                0                       0                      516                    6               ""                      ()                ""                        0                          0                   |
-1830          1830                0                       0                      517                    6               ""                      ()                ""                        0                          0                   |
-1831          1830                0                       0                      527                    2               ""                      ()                ""                        0                          0                   |
-1840          1840                0                       0                      514                    6               ""                      ()                ""                        0                          0                   |
-1850          1850                0                       519                    10                     6       "hud/cursors/Cursor_drag.tga"   (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-1860          1860                0                       0                      516                    6               ""                      ()                ""                        0                          0                   |
-1870          1870                0                       0                      10                     3               ""                      ()                ""                        0                          0                   |
-2200          2200                1                       0                      119                    6               ""                      ()                ""                        0                          0                   |
-2300          2300                0                       82                     10                     6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-2310          2310                0                       280                    10                     6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-2320          2320                0                       280                    121                    6               ""                      (6  1)            "MEASUREINIT_SELECTION"   0                          0                   |
-2330          2330                0                       2066                   10                     6               ""                      (6)               "MEASUREINIT_SELECTION"   0                          0                   |
-2340          2340                0                       0                      1509                   3               ""                      ()                ""                        0                          0                   |
-2341          2340                0                       0                      1509                   5               ""                      ()                ""                        0                          0                   |
-2350          2350                0                       0                      1509                   3               ""                      ()                ""                        0                          0                   |
-2351          2350                0                       0                      1509                   5               ""                      ()                ""                        0                          0                   |
-2370          2370                0                       0                      75                     1               ""                      ()                ""                        0                          0                   |
-2380          2380                0                       0                      83                     2               ""                      ()                ""                        0                          0                   |
-2394          2393                0                       0                      440                    6               ""                      ()                ""                        0                          0                   |
-2395          2395                0                       0                      2073                   2               ""                      ()                ""                        0                          0                   |
-2396          2396                0                       0                      2073                   2               ""                      ()                ""                        0                          0                   |
-
-// weddings
-3000          3000                 0                       0                      2067                     6               ""                      ()                ""                        0                          0                   |
-3001          3001                 0                       0                      2067                     6               ""                      ()                ""                        0                          0                   |
-3002          3002                 0                       0                      2067                     6               ""                      ()                ""                        0                          0                   |
-
-// collect money from debtors
-3065   		  2391   			  0   					  2055   				 2053  				 	6  			 	""   					(1  6  )  		  "MEASUREINIT_SELECTION"   0   					   0  				   |
-3066   		  2391   			  0   					  2055   				 2054   				1   			""   					(1  6  )  		  "MEASUREINIT_SELECTION"   0   					   0  				   |
-
-// artefacts
-5000          5000                0                       0                      148                    6               ""                      ()                ""                        0                          0                   |
-5010          5010                0                       0                      171                    6               ""                      ()                ""                        0                          0                   |
-5020          5020                0                       0                      164                    6               ""                      ()                ""                        0                          0                   |
-5030          5030                0                       0                      170                    6               ""                      ()                ""                        0                          0                   |
-5040          5040                0                       0                      169                    6               ""                      ()                ""                        0                          0                   |
-5050          5050                0                       0                      162                    6               ""                      ()                ""                        0                          0                   |
-5060          5060                0                       0                      299                    6               ""                      ()                ""                        0                          0                   |
-5070          5070                0                       0                      282                    6               ""                      ()                ""                        0                          0                   |
-5080          5080                0                       257                    163                    6               ""                      (6)               ""                        0                          0                   |
-5090          5090                0                       0                      172                    6               ""                      ()                ""                        0                          0                   |
-5100          5100                0                       257                    165                    6               ""                      (6)               ""                        0                          0                   |
-5110          5110                0                       198                    300                    6               ""                      (2)               ""                        0                          0                   |
-5120          5120                0                       0                      147                    6               ""                      ()                ""                        0                          0                   |
-5130          5130                0                       82                     161                    6               ""                      (6)               ""                        0                          0                   |
-5140          5140                0                       0                      173                    6               ""                      ()                ""                        0                          0                   |
-5150          5150                0                       82                     167                    6               ""                      (6)               ""                        0                          0                   |
-5160          5160                0                       0                      146                    6               ""                      ()                ""                        0                          0                   |
-5170          5170                0                       0                      174                    6               ""                      ()                ""                        0                          0                   |
-5180          5180                0                       216                    166                    6               ""                      (1  6)            ""                        0                          0                   |
-5190          5190                0                       0                      175                    6               ""                      ()                ""                        0                          0                   |
-5200          5200                0                       319                    176                    6               ""                      (2)               ""                        0                          0                   |
-5210          5210                0                       0                      306                    6               ""                      ()                ""                        0                          0                   |
-5220          5220                0                       0                      307                    6               ""                      ()                ""                        0                          0                   |
-5230          5230                0                       305                    304                    6               ""                      (2)               ""                        0                          0                   |
-5240          5240                0                       0                      308                    6               ""                      ()                ""                        0                          0                   |
-5250          5250                0                       9                      418                    6               ""                      (1  6)            ""                        0                          0                   |
-5260          5260                0                       0                      419                    6               ""                      ()                ""                        0                          0                   |
-5270          5270                0                       0                      425                    6               ""                      (4)               ""                        0                          0                   |
-5280          5280                0                       9                      367                    6               ""                      (3)               ""                        0                          0                   |
-5290          5290                0                       9                      368                    6               ""                      (2)               ""                        0                          0                   |
-5300          5300                0                       257                    369                    6               ""                      (6)               ""                        0                          0                   |
-5310          5310                0                       257                    404                    6               ""                      (6  1)            ""                        0                          0                   |
-5320          5320                0                       0                      447                    6               ""                      ()                ""                        0                          0                   |
-5330          5330                0                       9                      448                    6               ""                      (2)               ""                        0                          0                   |
-5340          5340                0                       9                      449                    6               ""                      (2)               ""                        0                          0                   |
-5350          5350                0                       0                      501                    6               ""                      ()                ""                        0                          0                   |
-5360          5360                0                       0                      502                    6               ""                      ()                ""                        0                          0                   |
-5370          5370                0                       0                      503                    6               ""                      ()                ""                        0                          0                   |
-5380          5380                0                       0                      504                    6               ""                      ()                ""                        0                          0                   |
-5390          5390                0                       0                      505                    6               ""                      ()                ""                        0                          0                   |
-5400          5400                0                       0                      506                    6               ""                      ()                ""                        0                          0                   |
-5410          5410                0                       0                      507                    6               ""                      ()                ""                        0                          0                   |
-5420          5420                0                       0                      508                    6               ""                      ()                ""                        0                          0                   |
-5430          5430                0                       0                      509                    6               ""                      ()                ""                        0                          0                   |
-5440          5440                0                       0                      510                    6               ""                      ()                ""                        0                          0                   |
-5450          5450                0                       0                      511                    6               ""                      ()                ""                        0                          0                   |
-5460          5460                0                       0                      520                    6               ""                      ()                ""                        0                          0                   |
-5461          5460                0                       0                      521                    6               ""                      ()                ""                        0                          0                   |
-5470          5470                0                       0                      522                    6               ""                      ()                ""                        0                          0                   |
-5471          5470                0                       0                      601                    6               ""                      ()                ""                        0                          0                   |
-5480          5480                0                       0                      523                    6               ""                      ()                ""                        0                          0                   |
-5490          5490                0                       0                      524                    6               ""                      ()                ""                        0                          0                   |
-5491          5490                0                       0                      525                    6               ""                      ()                ""                        0                          0                   |
-5500          5500                1                       585                    586                    6               ""                      (1  6)            "MEASUREINIT_SELECTION"   0                          0                   |
-5510          5510                1                       585                    588                    6               ""                      (1  6)            "MEASUREINIT_SELECTION"   0                          0                   |
-5520          5520                1                       585                    589                    6               ""                      (1  6)            "MEASUREINIT_SELECTION"   0                          0                   |
-5530          5530                1                       0                      590                    6               ""                      ()                ""                        0                          0                   |
-5540          5540                0                       257                    1456                   6               ""                      (6)               ""                        0                          0                   |
-5550          5550                0                       0                      1461                   6               ""                      ()                ""                        0                          0                   |
-5560          5560                0                       0                      1462                   6               ""                      ()                ""                        0                          0                   |
-5570          5570                0                       1481                   1463                   6               ""                      (6)               ""                        0                          0                   |
-5580          5580                0                       257                    1466                   6               ""                      (6)               ""                        0                          0                   |
-5590          5590                0                       82                     1467                   6               ""                      (6)               ""                        0                          0                   |
-5600          5600                0                       0                      1468                   6               ""                      ()                ""                        0                          0                   |
-5610          5610                0                       257                    1472                   6               ""                      (6)               ""                        0                          0                   |
-5620          5620                0                       257                    1473                   6               ""                      (6)               ""                        0                          0                   |
-5630          5630                0                       257                    1474                   6               ""                      (6)               ""                        0                          0                   |
-5640          5640                0                       0                      1476                   6               ""                      ()                ""                        0                          0                   |
-5650          5650                0                       0                      1477                   6               ""                      ()                ""                        0                          0                   |
-5660          5660                0                       0                      1478                   6               ""                      ()                ""                        0                          0                   |
-5670          5670                0                       0                      603                    6               ""                      ()                ""                        0                          0                   |
-5680          5680                0                       0                      604                    6               ""                      ()                ""                        0                          0                   |
-5690          5690                0                       0                      1522                   6               ""                      ()                ""                        0                          0                   |
-5700          5700                1                       609                    606                    6               ""                      (6  1)            ""                        0                          0                   |
-5710          5710                0                       0                      1533                   6               ""                      ()                ""                        0                          0                   |
-
-// Open HUD panels
-9010          9010                0                       0                      10                     2               ""                      ()                ""                        0                          0                   |
-9020          9020                0                       0                      598                    2               ""                      ()                ""                        0                          0                   |
-9030          9030                0                       0                      105                    2               ""                      ()                ""                        0                          0                   |
-9040          9040                1                       0                      263                    1               ""                      ()                ""                        0                          0                   |
-9041          9040                1                       0                      131                    6               ""                      ()                ""                        0                          0                   |
-9050          9050                0                       0                      76                     1               ""                      ()                ""                        0                          0                   |
-9051          9050                0                       0                      76                     6               ""                      ()                ""                        0                          0                   |
-9052          9050                0                       0                      111                    2               ""                      ()                ""                        0                          0                   |
-9060          9060                1                       0                      1504                   2               ""                      (2)               ""                        0                          0                   |
-9070          9070                1                       0                      131                    3               ""                      ()                ""                        0                          0                   |
-9071          9070                1                       0                      131                    5               ""                      ()                ""                        0                          0                   |
-9080          9080                0                       0                      313                    6               ""                      ()                ""                        0                          0                   |
-9081          9080                0                       0                      314                    6               ""                      ()                ""                        0                          0                   |
-9090          9090                0                       0                      9                      6               ""                      ()                ""                        0                          0                   |
-9100          9100                0                       0                      150                    2               ""                      ()                ""                        0                          0                   |
-9101          9100                0                       0                      149                    2               ""                      ()                ""                        0                          0                   |
-9110          9110                0                       0                      181                    2               ""                      ()                ""                        0                          0                   |
-9120          9120                0                       0                      181                    2               ""                      ()                ""                        0                          0                   |
-9130          9130                0                       0                      377                    2               ""                      ()                ""                        0                          0                   |
-9140          9140                0                       0                      421                    5               ""                      ()                ""                        0                          0                   |
-9150          9150                0                       0                      444                    2               ""                      ()                ""                        0                          0                   |
-9160          9160                0                       0                      181                    2               ""                      ()                ""                        0                          0                   |
-9180          9180                0                       0                      1563                   2               ""                      ()                ""                        0                          0                   |
-
-// debug measures (needs Debug-Setting in config.ini activated)
-15100         15100               0                       0                      10                     1               ""                      ()                ""                        0                          0                   |
-15101         15100               0                       0                      10                     6               ""                      ()                ""                        0                          0                   |
-15200         15200               0                       0                      128                    6               ""                      ()                ""                        0                          0                   |
-15300         15300               0                       0                      2                      2               ""                      ()                ""                        0                          0                   |
-15301         15301               0                       0                      2065                   2               ""                      ()                ""                        0                          0                   |
-15400         15400               0                       0                      28                     1               ""                      ()                ""                        0                          0                   |
-15401         15400               0                       0                      10                     6               ""                      ()                ""                        0                          0                   |
-15402         15401               0                       0                      27                     1               ""                      ()                ""                        0                          0                   |
-15403         15401               0                       0                      27                     6               ""                      ()                ""                        0                          0                   |
-15500         15500               0                       0                      10                     2               ""                      ()                ""                        0                          0                   |
-15600         15600               0                       0                      514                    6               ""                      ()                ""                        0                          0                   |
-15601         15601               0                       0                      514                    6               ""                      (6)               ""                        0                          0                   |
-15700         15700               0                       0                      237                    1               ""                      ()                ""                        0                          0                   |
-15800         15800               0                       0                      238                    1               ""                      ()                ""                        0                          0                   |
-15900         15900               0                       0                      238                    1               ""                      ()                ""                        0                          0                   |
-16000         16000               0                       0                      10                     6               ""                      ()                ""                        0                          0                   |
-16100         16100               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-16200         16200               1                       0                      607                    6               ""                      ()                ""                        0                          0                   |
-16300         16300               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-16600         16600               1                       0                      10                     6               ""                      ()                ""                        0                          0                   |
-16700         16700               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-16800         16800               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-16900         16900               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17000         17000               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17100         17100               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17200         17200               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17300         17300               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17400         17400               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17500         17500               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-17600         17600               1                       0                      10                     6               ""                      ()                ""                        0                          0                   |
-17700         17700               0                       0                      2070                   2               ""                      ()                ""                        0                          0                   |
-17800         17800               0                       0                      2070                   2               ""                      ()                ""                        0                          0                   |
-17900         17900               1                       0                      2068                   6               ""                      ()                ""                        0                          0                   |
-
-//18000         40041   			  1                       0                      2074                   2               ""                      (2)               ""                        0                          0                   |
-18100         40042   			  0                       0                      2075                   6               ""                      ()                ""                        0                          0                   |
-
-18200   40043   1   0   181  2    ""   (2)  ""   0   0   |
-
-// 2403   3005   0   0   10   5   ""   ()   ""   0   0   |
-18300   40044   1   0   0  1    ""   (1)  ""   0   0   |
-18400   40044   1   0   0  6    ""   (6)  ""   0   0   |
-
-//18401	40045	0	0	516	6	""	()	""	0	0	|
-//18403	40046	0	0	516	6	""	()	""	0	0	|
-18405	40047	0	0	516	6	""	()	""	0	0	|
-//18407	40048	0	0	516	6	""	()	""	0	0	|
+10   10   0   0   89   6   ""   ()   ""   0   0   |
+20   20   0   318   125   1   ""   (8)   "MEASUREINIT_SELECTION"   2   318   |
+30   30   1   0   10   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+31   30   1   0   10   6   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+32   30   1   0   10   3   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+33   30   1   0   10   5   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+34   30   1   0   157   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+35   30   1   0   158   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+36   30   1   0   159   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+37   30   1   0   160   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+38   30   1   0   386   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+39   30   1   0   607   6   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+40   40   1   0   10   1   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+41   40   1   0   10   6   "hud/cursors/Cursor_moveto.tga"   (99)   "MEASUREINIT_SELECTION"   0   0   |
+50   50   0   98   "~"   "~"   "hud/cursors/Cursor_talk.tga"   (6  1)   "~"   0   0   |
+60   60   "~"   "~"   92   6   "~"   "~"   "MEASUREINIT_SELECTION"   "~"   "~"   |
+90   90   1   "~"   1554   1   "~"   "~"   "~"   "~"   "~"   |
+91   90   1   "~"   1554   "~"   "~"   "~"   "~"   "~"   "~"   |
+100   100   1   "~"   119   6   "~"   "~"   "~"   "~"   "~"   |
+101   100   "~"   "~"   376   1   "~"   "~"   "~"   "~"   "~"   |
+110   110   "~"   "~"   427   1   "~"   (4)   "MEASUREINIT_SELECTION"   "~"   "~"   |
+120   120   0   429   428   6   ""   (1)   "MEASUREINIT_SELECTION"   0   0   |
+121   120   0   429   428   1   ""   (1)   "MEASUREINIT_SELECTION"   0   0   |
+130   130   0   0   1539   1   ""   (4)   ""   0   0   |
+140   140   0   0   1540   1   ""   (4)   "MEASUREINIT_SELECTION"   0   0   |
+150   150   0   0   1555   1   ""   ()   ""   0   0   |
+151   150   0   0   1556   6   ""   ()   ""   0   0   |
+160   160   0   283   264   1   ""   (8)   ""   2   283   |
+161   160   0   283   450   6   ""   (8)   ""   2   283   |
+170   170   "~"   285   1543   "~"   "~"   (8)   "~"   2   285   |
+171   170   0   285   1549   1   ""   (8)   ""   2   285   |
+180   180   "~"   283   264   1   "~"   (8)   "~"   2   283   |
+181   180   0   283   450   6   ""   (8)   ""   2   283   |
+190   190   0   0   1540   1   ""   (4)   "MEASUREINIT_SELECTION"   0   0   |
+200   200   "~"   "~"   1538   2   "~"   "~"   "~"   "~"   "~"   |
+210   210   0   0   1541   2   ""   ()   ""   0   0   |
+221   221   0   413   412   5   ""   (8  2)   "MEASUREINIT_SELECTION"   2   413   |
+230   230   0   0   1516   6   ""   ()   ""   0   0   |
+240   240   0   0   10   6   ""   ()   ""   0   0   |
+250   250   0   0   443   6   ""   ()   ""   0   0   |
+260   260   0   82   10   6   ""   (6)   ""   0   0   |
+270   270   0   0   445   6   ""   (6)   "MEASUREINIT_SELECTION"   0   0   |
+280   280   0   0   446   6   ""   ()   ""   0   0   |
+290   290   0   0   10   2   ""   ()   ""   0   0   |
+291   291   1   0   123   1   ""   ()   ""   0   0   |
+292   291   1   0   325   1   ""   ()   ""   0   0   |
+300   300   0   379   9   3   ""   (2)   ""   2   379   |
+301   300   0   411   10   5   ""   (2)   ""   2   411   |
+310   310   1   0   269   1   ""   ()   ""   0   0   |
+320   320   0   0   312   6   ""   ()   ""   0   0   |
+330   330   0   0   311   6   ""   ()   ""   0   0   |
+340   340   0   0   1564   2   ""   ()   ""   0   0   |
+341   341   0   0   1509   3   ""   ()   ""   0   0   |
+350   350   0   0   122   6   ""   ()   "MEASUREINIT_SELECTION"   0   0   |
+351   351   0   0   363   6   ""   ()   "MEASUREINIT_SELECTION"   0   0   |
+360   360   1   200   10   1   "hud/cursors/Cursor_Attack.tga"   (8  2  1  6  3)   "MEASUREINIT_SELECTION"   2   322   |
+361   360   1   200   10   6   "hud/cursors/Cursor_Attack.tga"   (8  2  1  6  3)   "MEASUREINIT_SELECTION"   2   322   |
+362   360   1   200   435   5   "hud/cursors/Cursor_Attack.tga"   (2  5)   "MEASUREINIT_SELECTION"   2   439   |
+363   360   0   200   434   2   "hud/cursors/Cursor_Attack.tga"   (5)   "MEASUREINIT_SELECTION"   2   322   |
+370   370   0   0   580   2   ""   ()   ""   0   0   |
+380   380   0   0   581   2   ""   ()   ""   0   0   |
+390   390   0   138   10   6   "hud/cursors/Cursor_moveto.tga"   (6)   "MEASUREINIT_SELECTION"   0   0   |
+400   400   1   1562   584   1   ""   (2)   ""   0   0   |
+410   410   0   365   10   6   "hud/cursors/Cursor_Attack.tga"   (6)   "MEASUREINIT_SELECTION"   0   0   |
+420   420   1   360   583   1   ""   (4)   ""   0   0   |
+421   420   1   360   1560   6   ""   (4)   ""   0   0   |
+430   430   1   452   75   1   ""   (2)   ""   0   0   |
+440   440   0   0   189   6   ""   ()   ""   0   0   |
+450   450   0   127   129   6   ""   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+451   451   0   127   1530   6   ""   (1)   "MEASUREINIT_SELECTION"   0   0   |
+460   460   0   320   10   6   "hud/cursors/Cursor_talk.tga"   (1  6)   "MEASUREINIT_SELECTION"   2   320   |
+470   470   0   82   135   2   ""   (6)   ""   0   0   |
+480   480   0   10   12   1   ""   (2)   "MEASUREINIT_SELECTION"   0   0   |
+481   481   0   0   378   2   ""   ()   ""   0   0   |
+490   490   0   0   11   1   ""   ()   ""   0   0   |
+500   500   1   0   75   1   "hud/cursors/Cursor_Attack.tga"   (6  1  3)   "MEASUREINIT_SELECTION"   0   0   |
+510   510   0   90   10   1   ""   (1  6)   "MEASUREINIT_SELECTION"   0   0   |
+511   511   0   90   10   6   "hud/cursors/Cursor_Attack.tga"   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+520   520   0   0   1568   6   ""   ()   ""   0   0   |
+530   530   0   280   10   6   ""   (6  1)   ""   0   0   |
+540   540   0   279   10   6   "hud/cursors/Cursor_bomb.tga"   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+550   550   0   455   220   6   "hud/cursors/Cursor_Attack.tga"   (6)   "MEASUREINIT_SELECTION"   0   0   |
+560   560   0   82   438   6   ""   (6)   ""   0   0   |
+570   570   0   280   10   6   ""   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+580   580   0   0   514   6   ""   ()   ""   0   0   |
+581   580   0   0   514   1   ""   ()   ""   0   0   |
+590   590   0   0   274   6   ""   ()   "MEASUREINIT_SELECTION"   0   0   |
+600   600   1   2064   10   6   ""   (2)   "MEASUREINIT_SELECTION"   2   2064   |
+601   600   1   2064   10   1   ""   (2)   "MEASUREINIT_SELECTION"   2   2064   |
+610   610   1   198   259   1   ""   (2)   ""   0   0   |
+611   610   1   198   259   6   ""   (2)   ""   0   0   |
+620   "~"   "~"   "~"   "~"   "~"   "~"   (6)   "~"   "~"   "~"   |
+630   630   0   0   512   6   ""   ()   ""   0   0   |
+640   640   0   0   513   6   ""   ()   ""   0   0   |
+650   650   1   310   276   1   ""   (6)   ""   0   0   |
+651   650   1   310   276   6   ""   (6)   ""   0   0   |
+660   660   1   374   215   6   ""   (2)   ""   0   0   |
+661   660   1   374   215   1   ""   (2)   ""   0   0   |
+670   670   0   0   227   2   ""   ()   ""   0   0   |
+680   680   0   0   215   6   ""   (4)   ""   0   0   |
+681   680   0   0   215   1   ""   (4)   ""   0   0   |
+690   690   0   0   224   1   ""   ()   ""   0   0   |
+700   700   1   198   380   6   ""   (2)   ""   0   0   |
+701   700   1   198   215   1   ""   (2)   ""   0   0   |
+710   710   0   0   84   8   ""   ()   ""   0   0   |
+711   710   0   0   84   2   ""   ()   ""   0   0   |
+720   720   1   0   514   6   ""   ()   ""   0   0   |
+730   730   0   0   85   2   ""   ()   ""   0   0   |
+740   740   0   0   103   2   ""   ()   ""   0   0   |
+750   750   0   0   416   8   ""   ()   ""   0   0   |
+751   750   0   0   416   2   ""   ()   ""   0   0   |
+752   751   0   0   417   8   ""   ()   ""   0   0   |
+753   751   0   0   417   2   ""   ()   ""   0   0   |
+760   760   0   0   9   8   ""   ()   ""   0   0   |
+761   760   0   0   9   2   ""   ()   ""   0   0   |
+770   770   0   0   185   6   ""   ()   ""   0   0   |
+780   780   0   0   142   6   ""   ()   ""   0   0   |
+790   790   0   0   277   6   ""   ()   ""   0   0   |
+800   800   0   375   317   6   ""   (1  6)   ""   0   0   |
+801   800   0   375   317   1   ""   (1  6)   ""   0   0   |
+810   810   0   195   10   6   ""   (1  6)   ""   2   195   |
+811   810   0   195   75   1   ""   (1  6)   ""   2   195   |
+820   820   0   403   10   6   ""   (1  6)   ""   0   0   |
+830   830   0   0   128   6   ""   ()   ""   0   0   |
+840   840   0   0   372   6   ""   ()   "Att"   0   0   |
+841   840   0   0   373   6   ""   ()   ""   0   0   |
+850   850   0   0   359   6   ""   ()   ""   0   0   |
+851   850   0   0   181   2   ""   ()   ""   0   0   |
+860   860   0   0   582   2   ""   ()   ""   0   0   |
+870   870   0   0   243   6   ""   ()   ""   0   0   |
+871   870   0   0   242   6   ""   ()   ""   0   0   |
+880   880   1   360   583   1   ""   (4)   ""   0   0   |
+881   880   1   360   1560   6   ""   (4)   ""   0   0   |
+890   890   0   3   248   1   ""   (2)   ""   0   0   |
+891   890   0   3   250   1   ""   (2)   ""   0   0   |
+892   890   0   3   385   6   ""   (2)   ""   0   0   |
+900   900   0   0   244   6   ""   ()   ""   0   0   |
+910   910   0   0   245   1   ""   ()   ""   0   0   |
+911   910   0   0   383   6   ""   ()   ""   0   0   |
+912   911   0   82   253   1   ""   (6)   ""   0   0   |
+913   911   0   82   253   6   ""   (6)   ""   0   0   |
+914   912   0   82   253   6   ""   (6)   ""   0   0   |
+915   912   0   82   253   1   ""   (6)   ""   0   0   |
+920   920   0   0   246   6   ""   ()   ""   0   0   |
+921   920   0   0   246   1   ""   ()   ""   0   0   |
+930   930   0   0   247   1   ""   (4)   ""   0   0   |
+931   930   0   0   384   6   ""   (4)   ""   0   0   |
+940   940   0   0   1523   6   ""   ()   ""   0   0   |
+950   950   0   1484   1485   6   ""   (2)   ""   0   0   |
+960   960   0   106   1488   6   ""   (4)   ""   0   0   |
+970   970   0   106   1489   6   ""   (4)   ""   0   0   |
+980   980   0   0   153   6   ""   (6)   "MEASUREINIT_SELECTION"   0   0   |
+990   990   0   303   302   6   ""   (2)   ""   0   0   |
+1000   1000   0   415   386   1   ""   (6)   "MEASUREINIT_SELECTION"   0   0   |
+1010   1010   0   197   159   1   ""   (2)   ""   0   0   |
+1020   1020   0   374   1544   1   "hud/cursors/Cursor_moveto.tga"   (2)   "MEASUREINIT_SELECTION"   0   0   |
+1021   1020   0   374   1532   6   "hud/cursors/Cursor_moveto.tga"   (2)   "MEASUREINIT_SELECTION"   0   0   |
+1040   1040   0   82   154   6   ""   (6)   "MEASUREINIT_SELECTION"   0   0   |
+1060   1060   0   203   151   6   ""   (2)   "MEASUREINIT_SELECTION"   0   0   |
+1080   1080   0   0   117   6   ""   ()   ""   0   0   |
+1090   1090   0   0   196   6   ""   ()   ""   0   0   |
+1100   1100   0   0   201   6   ""   ()   ""   0   0   |
+1110   1110   0   0   202   6   ""   ()   ""   0   0   |
+1120   1120   0   205   206   1   ""   (1  6)   ""   0   0   |
+1130   1130   "~"   "~"   1517   "~"   "~"   "~"   "~"   "~"   "~"   |
+1150   1150   "~"   214   213   1   "~"   "~"   ""   "~"   "~"   |
+1151   1151   "~"   "~"   613   "~"   "~"   "~"   "~"   "~"   "~"   |
+1160   1160   0   82   275   6   ""   (6)   ""   "~"   "~"   |
+1170   1170   0   198   1491   6   ""   (2)   ""   0   0   |
+1180   1180   "~"   186   219   6   "~"   (9  1  6)   "MEASUREINIT_SELECTION"   0   0   |
+1190   1190   "~"   9   387   "~"   "~"   (6)   "MEASUREINIT_SELECTION"   "~"   "~"   |
+1191   1191   0   0   388   6   ""   ()   "MEASUREINIT_SELECTION"   0   0   |
+1200   1200   0   390   389   6   ""   (2)   "MEASUREINIT_SELECTION"   0   0   |
+1210   1210   0   0   391   6   ""   ()   ""   0   0   |
+1220   1220   0   0   392   6   ""   (4)   ""   0   0   |
+1230   1230   0   390   393   6   ""   (2)   ""   0   0   |
+1240   1240   0   0   394   6   ""   (4)   ""   0   0   |
+1250   1250   0   405   395   6   ""   (6)   ""   0   0   |
+1260   1260   0   0   398   6   ""   (4)   ""   0   0   |
+1270   1270   0   0   221   6   ""   ()   ""   0   0   |
+1290   1290   "~"   127   436   6   "~"   (1  6)   "~"   "~"   "~"   |
+1300   1300   "~"   0   399   "~"   "~"   ()   "~"   "~"   "~"   |
+1310   1310   0   187   133   6   ""   (1  6)   "MEASUREINIT_SELECTION"   0   0   |
+1320   1320   0   139   133   6   "hud/cursors/Cursor_bomb.tga"   (6)   "MEASUREINIT_SELECTION"   0   0   |
+1330   1330   0   0   233   6   ""   ()   ""   0   0   |
+1340   1340   0   500   259   1   ""   (2)   ""   0   0   |
+1350   1350   1   360   259   1   ""   (4)   ""   0   0   |
+1351   1350   1   360   259   6   ""   (4)   ""   0   0   |
+1360   1360   0   0   406   1   ""   ()   ""   0   0   |
+1361   1360   0   0   407   6   ""   ()   ""   0   0   |
+1370   1370   0   106   409   1   ""   (4)   ""   0   0   |
+1371   1370   0   106   408   6   ""   (4)   ""   0   0   |
+1380   1380   0   0   410   1   ""   ()   ""   0   0   |
+1381   1380   0   0   410   6   ""   ()   ""   0   0   |
+1390   1390   0   0   414   5   ""   ()   ""   0   0   |
+1400   1400   0   442   414   5   ""   (5)   ""   2   420   |
+1410   1410   0   432   430   5   ""   (2)   ""   0   0   |
+1421   1421   0   198   144   1   ""   (2)   "MEASUREINIT_SELECTION"   0   0   |
+1422   1422   0   198   145   1   ""   (2)   "MEASUREINIT_SELECTION"   0   0   |
+1440   1440   "~"   0   1520   "~"   "~"   ()   "MEASUREINIT_SELECTION"   2   "~"   |
+1450   1450   "~"   82   366   "~"   "~"   (6)   "MEASUREINIT_SELECTION"   "~"   "~"   |
+1460   1460   0   0   370   6   "~"   ()   "~"   "~"   "~"   |
+1461   1460   0   0   370   2   ""   ()   ""   0   0   |
+1470   1470   1   0   75   1   "hud/cursors/Cursor_moveto.tga"   (2  4)   "MEASUREINIT_SELECTION"   0   0   |
+1471   1470   1   0   157   1   "hud/cursors/Cursor_moveto.tga"   (2  4)   "MEASUREINIT_SELECTION"   0   0   |
+1480   1480   0   0   260   3   ""   ()   ""   0   0   |
+1481   1480   0   0   451   5   ""   ()   ""   0   0   |
+1490   1490   0   0   228   6   ""   ()   ""   0   0   |
+1500   1500   "~"   "~"   229   "~"   ""   ()   "~"   "~"   "~"   |
+1510   1510   0   "~"   230   6   "~"   "~"   "~"   "~"   "~"   |
+1520   1520   "~"   280   324   "~"   "~"   (6  1)   "MEASUREINIT_SELECTION"   "~"   "~"   |
+1521   1521   "~"   0   324   "~"   "~"   ()   "~"   "~"   "~"   |
+1530   1530   0   280   364   6   ""   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+1540   1540   0   0   1550   6   ""   ()   "MEASUREINIT_SELECTION"   2   0   |
+1550   1550   0   0   268   1   ""   ()   ""   0   0   |
+1551   1550   0   0   441   6   ""   ()   ""   0   0   |
+1560   1560   0   0   1519   6   ""   ()   ""   0   0   |
+1570   1570   0   0   118   1   ""   ()   ""   0   0   |
+1571   1570   0   0   440   6   ""   ()   ""   0   0   |
+1580   1580   0   0   281   6   ""   ()   ""   0   0   |
+1590   1590   0   0   1567   2   ""   ()   ""   0   0   |
+1600   1600   0   0   261   6   ""   ()   ""   0   0   |
+1601   1601   0   82   239   6   ""   (6  1)   ""   0   0   |
+1610   1610   0   106   1492   6   ""   (4)   ""   0   0   |
+1620   1620   0   0   1509   3   ""   ()   ""   0   0   |
+1621   1620   0   0   1509   5   ""   ()   ""   0   0   |
+1630   1630   0   0   600   6   ""   ()   ""   0   0   |
+1640   1640   0   0   600   6   ""   ()   ""   0   0   |
+1650   1650   0   0   602   2   ""   ()   ""   0   0   |
+1660   1660   0   0   605   6   ""   ()   ""   0   0   |
+1670   1670   1   0   612   6   "hud/cursors/btn_travel.tga"   (2  4)   "MEASUREINIT_SELECTION"   0   0   |
+1680   1680   0   0   395   6   ""   ()   ""   0   0   |
+1690   1690   0   0   1534   1   ""   (4)   ""   0   0   |
+1691   1690   0   0   1557   6   ""   (4)   ""   0   0   |
+1700   1700   "~"   "~"   1537   1   "~"   (4)   "~"   "~"   "~"   |
+1701   1700   "~"   0   1559   "~"   "~"   (4)   "~"   "~"   "~"   |
+1710   1710   1   0   1535   "~"   "~"   "~"   "~"   "~"   "~"   |
+1720   1720   0   0   1536   "~"   "~"   (4)   "~"   "~"   "~"   |
+1721   1720   "~"   "~"   1558   6   "~"   (4)   "~"   "~"   "~"   |
+1730   1730   0   0   1546   6   ""   ()   ""   0   0   |
+1740   1740   0   0   1548   6   ""   ()   ""   0   0   |
+1741   1740   0   0   1553   1   ""   ()   ""   0   0   |
+1750   1750   0   0   1547   2   ""   ()   ""   0   0   |
+1760   1760   0   0   1552   6   ""   ()   ""   0   0   |
+1770   1770   0   0   181   2   ""   ()   ""   0   0   |
+1780   1780   0   0   1566   6   ""   ()   ""   0   0   |
+1790   1790   1   1551   1490   6   ""   (6  1)   ""   0   0   |
+1800   1800   1   0   272   1   ""   (4)   ""   0   0   |
+1801   1800   0   0   160   1   ""   (4)   ""   0   0   |
+1810   1810   0   0   132   6   ""   ()   ""   0   0   |
+1811   1810   0   0   526   2   ""   ()   ""   0   0   |
+1820   1820   0   0   516   6   ""   ()   ""   0   0   |
+1830   1830   0   0   517   6   ""   ()   ""   0   0   |
+1831   1830   0   0   527   2   ""   ()   ""   0   0   |
+1840   1840   0   0   514   6   ""   ()   ""   0   0   |
+1850   1850   0   519   10   6   "hud/cursors/Cursor_drag.tga"   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+1860   1860   0   0   516   6   ""   ()   ""   0   0   |
+1870   1870   0   0   10   3   ""   ()   ""   0   0   |
+2200   2200   1   0   119   6   ""   ()   ""   0   0   |
+2300   2300   0   82   10   6   ""   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+2310   2310   0   280   10   6   ""   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+2320   2320   0   280   121   6   ""   (6  1)   "MEASUREINIT_SELECTION"   0   0   |
+2330   2330   0   2066   10   6   "~"   (6)   "MEASUREINIT_SELECTION"   "~"   "~"   |
+2340   2340   "~"   "~"   1509   3   "~"   "~"   "~"   "~"   "~"   |
+2341   2340   "~"   "~"   1509   5   "~"   "~"   "~"   "~"   "~"   |
+2350   2350   "~"   "~"   1509   3   "~"   "~"   "~"   "~"   "~"   |
+2351   2350   "~"   "~"   1509   5   "~"   "~"   "~"   "~"   "~"   |
+2370   2370   0   "~"   75   1   "~"   "~"   "~"   "~"   "~"   |
+2380   2380   "~"   "~"   83   2   "~"   "~"   "~"   "~"   "~"   |
+2394   2393   "~"   "~"   440   6   "~"   "~"   "~"   "~"   "~"   |
+2395   2395   "~"   "~"   2073   "~"   "~"   "~"   "~"   "~"   "~"   |
+2396   2396   "~"   "~"   2073   2   "~"   "~"   "~"   "~"   "~"   |
+3000   3000   0   0   2067   6   ""   ()   ""   0   0   |
+3001   3001   0   0   2067   6   ""   ()   ""   0   0   |
+3002   3002   0   0   2067   6   ""   ()   ""   0   0   |
+3065   2391   0   2055   2053   6   ""   (1  6  )   "MEASUREINIT_SELECTION"   0   0   |
+3066   2391   0   2055   2054   1   ""   (1  6  )   "MEASUREINIT_SELECTION"   0   0   |
+5000   5000   0   0   148   6   ""   ()   ""   0   0   |
+5010   5010   0   0   171   6   ""   ()   ""   0   0   |
+5020   5020   0   0   164   6   ""   ()   ""   0   0   |
+5030   5030   0   0   170   6   ""   ()   ""   0   0   |
+5040   5040   0   0   169   6   ""   ()   ""   0   0   |
+5050   5050   0   0   162   6   ""   ()   ""   0   0   |
+5060   5060   0   0   299   6   ""   ()   ""   0   0   |
+5070   5070   0   0   282   6   ""   ()   ""   0   0   |
+5080   5080   0   257   163   6   ""   (6)   ""   0   0   |
+5090   5090   0   0   172   6   ""   ()   ""   0   0   |
+5100   5100   0   257   165   6   ""   (6)   ""   0   0   |
+5110   5110   0   198   300   6   ""   (2)   ""   0   0   |
+5120   5120   0   0   147   6   ""   ()   ""   0   0   |
+5130   5130   0   82   161   6   ""   (6)   ""   0   0   |
+5140   5140   0   0   173   6   ""   ()   ""   0   0   |
+5150   5150   0   82   167   6   ""   (6)   ""   0   0   |
+5160   5160   0   0   146   6   ""   ()   ""   0   0   |
+5170   5170   0   0   174   6   ""   ()   ""   0   0   |
+5180   5180   0   216   166   6   ""   (1  6)   ""   0   0   |
+5190   5190   0   0   175   6   ""   ()   ""   0   0   |
+5200   5200   0   319   176   6   ""   (2)   ""   0   0   |
+5210   5210   0   0   306   6   ""   ()   ""   0   0   |
+5220   5220   0   0   307   6   ""   ()   ""   0   0   |
+5230   5230   0   305   304   6   ""   (2)   ""   0   0   |
+5240   5240   0   0   308   6   ""   ()   ""   0   0   |
+5250   5250   0   9   418   6   ""   (1  6)   ""   0   0   |
+5260   5260   0   0   419   6   ""   ()   ""   0   0   |
+5270   5270   0   0   425   6   ""   (4)   ""   0   0   |
+5280   5280   0   9   367   6   ""   (3)   ""   0   0   |
+5290   5290   0   9   368   6   ""   (2)   ""   0   0   |
+5300   5300   0   257   369   6   ""   (6)   ""   0   0   |
+5310   5310   0   257   404   6   ""   (6  1)   ""   0   0   |
+5320   5320   0   0   447   6   ""   ()   ""   0   0   |
+5330   5330   0   9   448   6   ""   (2)   ""   0   0   |
+5340   5340   0   9   449   6   ""   (2)   ""   0   0   |
+5350   5350   0   0   501   6   ""   ()   ""   0   0   |
+5360   5360   0   0   502   6   ""   ()   ""   0   0   |
+5370   5370   0   0   503   6   ""   ()   ""   0   0   |
+5380   5380   0   0   504   6   ""   ()   ""   0   0   |
+5390   5390   0   0   505   6   ""   ()   ""   0   0   |
+5400   5400   0   0   506   6   ""   ()   ""   0   0   |
+5410   5410   0   0   507   6   ""   ()   ""   0   0   |
+5420   5420   0   0   508   6   ""   ()   ""   0   0   |
+5430   5430   0   0   509   6   ""   ()   ""   0   0   |
+5440   5440   0   0   510   6   ""   ()   ""   0   0   |
+5450   5450   0   0   511   6   ""   ()   ""   0   0   |
+5460   5460   0   0   520   6   ""   ()   ""   0   0   |
+5461   5460   0   0   521   6   ""   ()   ""   0   0   |
+5470   5470   0   0   522   6   ""   ()   ""   0   0   |
+5471   5470   0   0   601   6   ""   ()   ""   0   0   |
+5480   5480   0   0   523   6   ""   ()   ""   0   0   |
+5490   5490   0   0   524   6   ""   ()   ""   0   0   |
+5491   5490   0   0   525   6   ""   ()   ""   0   0   |
+5500   5500   1   585   586   6   ""   (1  6)   "MEASUREINIT_SELECTION"   0   0   |
+5510   5510   1   585   588   6   ""   (1  6)   "MEASUREINIT_SELECTION"   0   0   |
+5520   5520   1   585   589   6   ""   (1  6)   "MEASUREINIT_SELECTION"   0   0   |
+5530   5530   1   0   590   6   ""   ()   ""   0   0   |
+5540   5540   0   257   1456   6   ""   (6)   ""   0   0   |
+5550   5550   0   0   1461   6   ""   ()   ""   0   0   |
+5560   5560   0   0   1462   6   ""   ()   ""   0   0   |
+5570   5570   0   1481   1463   6   ""   (6)   ""   0   0   |
+5580   5580   0   257   1466   6   ""   (6)   ""   0   0   |
+5590   5590   0   82   1467   6   ""   (6)   ""   0   0   |
+5600   5600   0   0   1468   6   ""   ()   ""   0   0   |
+5610   5610   0   257   1472   6   ""   (6)   ""   0   0   |
+5620   5620   0   257   1473   6   ""   (6)   ""   0   0   |
+5630   5630   0   257   1474   6   ""   (6)   ""   0   0   |
+5640   5640   0   0   1476   6   ""   ()   ""   0   0   |
+5650   5650   0   0   1477   6   ""   ()   ""   0   0   |
+5660   5660   0   0   1478   6   ""   ()   ""   0   0   |
+5670   5670   0   0   603   6   ""   ()   ""   0   0   |
+5680   5680   0   0   604   6   ""   ()   ""   0   0   |
+5690   5690   0   0   1522   6   ""   ()   ""   0   0   |
+5700   5700   1   609   606   6   ""   (6  1)   ""   0   0   |
+5710   5710   0   0   1533   6   ""   ()   ""   0   0   |
+9010   9010   0   0   10   2   ""   ()   ""   0   0   |
+9020   9020   0   0   598   2   ""   ()   ""   0   0   |
+9030   9030   0   0   105   2   ""   ()   ""   0   0   |
+9040   9040   1   0   263   1   ""   ()   ""   0   0   |
+9041   9040   1   0   131   6   ""   ()   ""   0   0   |
+9050   9050   0   0   76   1   ""   ()   ""   0   0   |
+9051   9050   0   0   76   6   ""   ()   ""   0   0   |
+9052   9050   0   0   111   2   ""   ()   ""   0   0   |
+9060   9060   1   0   1504   2   ""   (2)   ""   0   0   |
+9070   9070   1   0   131   3   ""   ()   ""   0   0   |
+9071   9070   1   0   131   5   ""   ()   ""   0   0   |
+9080   9080   0   0   313   6   ""   ()   ""   0   0   |
+9081   9080   0   0   314   6   ""   ()   ""   0   0   |
+9090   9090   0   0   9   6   ""   ()   ""   0   0   |
+9100   9100   0   0   150   2   ""   ()   ""   0   0   |
+9101   9100   0   0   149   2   ""   ()   ""   0   0   |
+9110   9110   0   0   181   2   ""   ()   ""   0   0   |
+9120   9120   0   0   181   2   ""   ()   ""   0   0   |
+9130   9130   0   0   377   2   ""   ()   ""   0   0   |
+9140   9140   0   0   421   5   ""   ()   ""   0   0   |
+9150   9150   0   0   444   2   ""   ()   ""   0   0   |
+9160   9160   0   0   181   2   ""   ()   ""   0   0   |
+9180   9180   0   0   1563   2   ""   ()   ""   0   0   |
+15100   15100   0   0   10   1   ""   ()   ""   0   0   |
+15101   15100   0   0   10   6   ""   ()   ""   0   0   |
+15200   15200   0   0   128   6   ""   ()   ""   0   0   |
+15300   15300   0   0   2   2   ""   ()   ""   0   0   |
+15301   15301   0   0   2065   2   ""   ()   ""   0   0   |
+15400   15400   0   0   28   1   ""   ()   ""   0   0   |
+15401   15400   0   0   10   6   ""   ()   ""   0   0   |
+15402   15401   0   0   27   1   ""   ()   ""   0   0   |
+15403   15401   0   0   27   6   ""   ()   ""   0   0   |
+15500   15500   0   0   10   2   ""   ()   ""   0   0   |
+15600   15600   0   0   514   6   ""   ()   ""   0   0   |
+15601   15601   0   0   514   6   ""   (6)   ""   0   0   |
+15700   15700   0   0   237   1   ""   ()   ""   0   0   |
+15800   15800   0   0   238   1   ""   ()   ""   0   0   |
+15900   15900   0   0   238   1   ""   ()   ""   0   0   |
+16000   16000   0   0   10   6   ""   ()   ""   0   0   |
+16100   16100   1   0   2068   6   ""   ()   ""   0   0   |
+16200   16200   1   0   607   6   ""   ()   ""   0   0   |
+16300   16300   1   0   2068   6   ""   ()   ""   0   0   |
+16600   16600   1   0   10   6   ""   ()   ""   0   0   |
+16700   16700   1   0   2068   6   ""   ()   ""   0   0   |
+16800   16800   1   0   2068   6   ""   ()   ""   0   0   |
+16900   16900   1   0   2068   6   ""   ()   ""   0   0   |
+17000   17000   1   0   2068   6   ""   ()   ""   0   0   |
+17100   17100   1   0   2068   6   ""   ()   ""   0   0   |
+17200   17200   1   0   2068   6   ""   ()   ""   0   0   |
+17300   17300   1   0   2068   6   ""   ()   ""   0   0   |
+17400   17400   1   0   2068   6   ""   ()   ""   0   0   |
+17500   17500   1   0   2068   6   ""   ()   ""   0   0   |
+17600   17600   1   0   10   6   ""   ()   ""   0   0   |
+17700   17700   0   0   2070   2   ""   ()   ""   0   0   |
+17800   17800   0   0   2070   2   ""   ()   ""   0   0   |
+17900   17900   1   0   2068   6   ""   ()   ""   0   0   |
+18100   40042   0   0   2075   6   ""   ()   ""   0   0   |
+18200   40043   1   0   181   2   ""   (2)   ""   0   0   |
+18300   40044   1   0   0   1   ""   (1)   ""   0   0   |
+18400   40044   1   0   0   6   ""   (6)   ""   0   0   |
+18405   40047   0   0   516   6   ""   ()   ""   0   0   |
