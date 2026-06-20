@@ -10,7 +10,13 @@ function GameStart()
 	
 	local Level = CityGetLevel("City")
 
-	g_StartFillMult = GetSettingNumber("OPTIONS", "MarketItemMult", 100) / 100.0
+	local fMarketMult
+	if IsMultiplayerGame() then
+		fMarketMult = GetProperty("World", "MarketItemMult") or 100
+	else
+		fMarketMult = GetSettingNumber("OPTIONS", "MarketItemMult", 100)
+	end
+	g_StartFillMult = fMarketMult / 100.0
 	if g_StartFillMult < 1.0 then
 		g_StartFillMult = 1.0
 	end

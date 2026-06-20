@@ -756,14 +756,6 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	local Diff = ScenarioGetDifficulty()
 	local Multiplier = 10/(8-Diff)
 
-	-- MP advanced option
-	if IsMultiplayerGame() then
-		local optCost = GetSettingNumber("OPTIONS", "AICostFactor", -1)
-		if optCost and optCost > 0 then
-			Multiplier = 100 / optCost
-		end
-	end
-
 	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
 	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
 	return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
