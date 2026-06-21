@@ -40,7 +40,7 @@ function Run()
 			ms_citycontrol_RatBoy()
 		else 
 			-- DEBUG
-			--MsgNewsNoWait("All","","","intrigue",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
+			--MsgNewsNoWait("All","","","intrigue",-1,"Glï¿½ck gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
 		end
 
 	end
@@ -133,6 +133,7 @@ function RatBoy()
 end
 
 function Inferno()
+	do Sleep(5) return end
 	local NumBuildings = CityGetBuildingCount("MyCity", 1, -1, -1, -1, FILTER_IGNORE)
 	CityGetBuildings("MyCity", 1, -1, -1, -1, FILTER_IGNORE, "Building")
 	for i=0, NumBuildings-3 do
