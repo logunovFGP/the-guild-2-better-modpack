@@ -173,6 +173,11 @@ function InitEnemies(DynAlias)
 	local TimeOfTruce = 5 - Difficulty -- wait 5 rounds on easy, 1 round on hard
 
 	if IsMultiplayerGame() then
+		GetScenario("World")
+		if not HasProperty("World", "AITruceRounds") then
+			LogMessage("@NAO #W Set AITruceRounds property to default -1 as it was not existing.")
+			SetProperty("World", "AITruceRounds",  GetSettingNumber("OPTIONS", "AITruceRounds",  -1))
+		end
 		local optTruce = GetProperty("World", "AITruceRounds")
 		if optTruce and optTruce >= 0 then
 			TimeOfTruce = optTruce

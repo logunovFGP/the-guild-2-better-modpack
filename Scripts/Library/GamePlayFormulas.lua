@@ -540,6 +540,11 @@ end
 
 function GetMaxFavByDiffForAttack()
 	if IsMultiplayerGame() then
+		GetScenario("World")
+		if not HasProperty("World", "AIAttackFavor") then
+			LogMessage("@NAO #W Set AIAttackFavor property to default 0 as it was not existing.")
+			SetProperty("World", "AIAttackFavor",  GetSettingNumber("OPTIONS", "AIAttackFavor",  0))
+		end
 		local opt = GetProperty("World", "AIAttackFavor")
 		if opt and opt > 0 then
 			return opt

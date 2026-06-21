@@ -12,6 +12,11 @@ function GameStart()
 
 	local fMarketMult
 	if IsMultiplayerGame() then
+		GetScenario("World")
+		if not HasProperty("World", "MarketItemMult") then
+			SetProperty("World", "MarketItemMult", GetSettingNumber("OPTIONS", "MarketItemMult", 100))
+			LogMessage("@NAO #W Set MarketItemMult property to default 100 as it was not existing.")
+		end
 		fMarketMult = GetProperty("World", "MarketItemMult") or 100
 	else
 		fMarketMult = GetSettingNumber("OPTIONS", "MarketItemMult", 100)
