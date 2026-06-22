@@ -358,6 +358,25 @@ function CreateShadowDynasty(Number, City, NewDynastyAlias)
 	return ""
 end
 
+function FindResidenceElsewhere(CityAlias)
+	local n = ScenarioGetObjects("Settlement", 99, "AltCity")
+	for i = 0, n - 1 do
+		local Alt = "AltCity"..i
+		if AliasExists(Alt) and not CityIsKontor(Alt) and GetID(Alt) ~= GetID(CityAlias) then
+			if CityGetRandomBuilding(Alt, nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1, FILTER_IS_BUYABLE, "Residence") then
+				CopyAlias(Alt, CityAlias)
+				return true
+			end
+			local Proto = ScenarioFindBuildingProto(nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1)
+			if Proto and Proto ~= -1 and CityBuildNewBuilding(Alt, Proto, nil, "Residence") then
+				CopyAlias(Alt, CityAlias)
+				return true
+			end
+		end
+	end
+	return false
+end
+
 function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 
 	local Section
@@ -552,7 +571,9 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		end
 		if Proto and Proto~=-1 then
 			if not CityBuildNewBuilding(CityAlias, Proto, nil, "Residence") then
-				return "unable to create main residence" -- bad luck?
+				if not IsPlayer then
+					defaultcampaign_FindResidenceElsewhere(CityAlias)
+				end
 			end
 		end
 	end
@@ -566,7 +587,25 @@ function CreateDynasty(ID, SpawnPoint, IsPlayer, PeerID, PlayerDescLabel)
 		BeamPos = "BeamPos"
 		SetHomeBuilding("boss", "Residence")
 	else
-		if GetOutdoorMovePosition("boss", SpawnPoint, "Position") then
+		if IsPlayer then
+			local RProto = ScenarioFindBuildingProto(nil, GL_BUILDING_TYPE_RESIDENCE, 1, -1)
+			local Refund = 0
+			if RProto and RProto ~= -1 then
+				Refund = BuildingGetPriceProto(RProto)
+			end
+			if Refund and Refund > 0 then
+				CreditMoney("boss", Refund, "GameStart")
+			end
+			local Body = "@L_SPAWN_NOROOM_SP_BODY"
+			if IsMultiplayerGame() then
+				Body = "@L_SPAWN_NOROOM_MP_BODY"
+			end
+			MsgBoxNoWait("boss", "", "@L_SPAWN_NOROOM_HEAD", Body, GetName(CityAlias), Refund)
+		end
+
+		if CityGetRandomBuilding(CityAlias, GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "TownHall") and GetOutdoorMovePosition("boss", "TownHall", "Position") then
+			BeamPos = "Position"
+		elseif GetOutdoorMovePosition("boss", SpawnPoint, "Position") then
 			BeamPos = "Position"
 		else
 			BeamPos = SpawnPoint
