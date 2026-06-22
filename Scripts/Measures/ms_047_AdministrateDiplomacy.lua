@@ -11,6 +11,31 @@
 ----	AI scripts
 -------------------------------------------------------------------------------
 
+GL_DIPLO_MAX_PER_DAY = 3
+
+function CanDiplo(DestID)
+	local Day = math.floor(GetGametime() / 24)
+	local Count = 0
+	if HasProperty("dynasty", "DIP_Day_"..DestID) and GetProperty("dynasty", "DIP_Day_"..DestID) == Day then
+		if HasProperty("dynasty", "DIP_Count_"..DestID) then
+			Count = GetProperty("dynasty", "DIP_Count_"..DestID)
+		end
+	end
+	return Count < GL_DIPLO_MAX_PER_DAY
+end
+
+function RecordDiplo(DestID)
+	local Day = math.floor(GetGametime() / 24)
+	local Count = 0
+	if HasProperty("dynasty", "DIP_Day_"..DestID) and GetProperty("dynasty", "DIP_Day_"..DestID) == Day then
+		if HasProperty("dynasty", "DIP_Count_"..DestID) then
+			Count = GetProperty("dynasty", "DIP_Count_"..DestID)
+		end
+	end
+	SetProperty("dynasty", "DIP_Day_"..DestID, Day)
+	SetProperty("dynasty", "DIP_Count_"..DestID, Count + 1)
+end
+
 function Init() -- this is called before Run
 
 	-- We need the Owner because this measure is now a building-measure
@@ -32,6 +57,11 @@ function Init() -- this is called before Run
 		-- target badge
 		local TargetBadge = dyn_GetFlagLabel("Destination")
 		
+		local LetterBtn = ""
+		if DynastyIsPlayer("Destination") then
+			LetterBtn = "@B[7,@L_MP_LETTER_BUTTON]"
+		end
+
 		-- First we need to choose what we want to do
 		local Selection = MsgBox("MyBoss", "Destination", "@P"..
 								"@B[1,@L_MEASURE_ADMINISTRATE_DIPLOMACY_STATUS_+0]"..
@@ -39,7 +69,8 @@ function Init() -- this is called before Run
 								"@B[2,@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_+0]"..
 								"@B[4,@L_MEASURE_ADMINISTRATE_DIPLOMACY_DEMAND_+0]"..
 								"@B[3,@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_+0]"..
-								"@B[5,@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_+0]",
+								"@B[5,@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_+0]"..
+								LetterBtn,
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_HEAD_+0",
 								"@L_MEASURE_ADMINISTRATE_DIPLOMACY_SELECTION_BODY_+0", GetID("Destination"), TargetBadge)
 	
@@ -92,6 +123,9 @@ function Run()
 		ms_047_administratediplomacy_RequestAllies()
 	elseif Selection == 6 then -- check for grudges and fondness, rivals, allies and foes
 		ms_047_administratediplomacy_SpecialCheck()
+	elseif Selection == 7 then -- open the native free-text letter composer for this player
+		GetDynasty("Destination", "LetterTarget")
+		OpenLetterComposer("LetterTarget")
 	end
 end
 
@@ -103,7 +137,7 @@ function Status()
 	
 	-- timout for changing status multiple times
 	local DestID = GetDynastyID("Destination")
-	if not ReadyToRepeat("dynasty", "DIP_"..DestID) then
+	if not ms_047_administratediplomacy_CanDiplo(DestID) then
 		MsgBoxNoWait("MyBoss", "Destination",
 				"@L_GENERAL_ERROR_HEAD_+0",
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_COOLDOWN", GetID("Destination"), TargetBadge)
@@ -163,7 +197,7 @@ function Message()
 	
 	-- timout for multiple messages
 	local DestID = GetDynastyID("Destination")
-	if not ReadyToRepeat("dynasty", "DIP_"..DestID) then
+	if not ms_047_administratediplomacy_CanDiplo(DestID) then
 		MsgBoxNoWait("MyBoss", "Destination",
 				"@L_GENERAL_ERROR_HEAD_+0",
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_COOLDOWN", GetID("Destination"), TargetBadge)
@@ -216,7 +250,7 @@ function Message()
 		StopMeasure()
 	end
 	
-	SetRepeatTimer("dynasty", "DIP_"..DestID, 20)
+	ms_047_administratediplomacy_RecordDiplo(DestID)
 	dyn_ModifyFavor("MyBoss", "Destination", (Favor)) -- use dyn_ModifyFavor because there's no animations
 	MsgBoxNoWait("MyBoss", "Destination",
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_HEAD_+0",
@@ -319,7 +353,7 @@ function RequestAllies()
 	local DestID = GetDynastyID("Destination")
 	local resultReq
 	
-	if not ReadyToRepeat("dynasty", "DIP_"..DestID) then
+	if not ms_047_administratediplomacy_CanDiplo(DestID) then
 		MsgBoxNoWait("MyBoss", "Destination",
 				"@L_GENERAL_ERROR_HEAD_+0",
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_COOLDOWN", GetID("Destination"), TargetBadge)
@@ -349,7 +383,7 @@ function RequestAllies()
 	end
 	
 	if resultReq == 1 then 
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20)
+		ms_047_administratediplomacy_RecordDiplo(DestID)
 		-- Can I have some money?
 		MsgBoxNoWait("MyBoss", "Destination", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_MONEY_BTN_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_MONEY_BODY_+0", GetID("Destination"), TargetBadge)
 	
@@ -430,7 +464,7 @@ function RequestAllies()
 		end
 		
 		-- all fine? then set the cooldown
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20)
+		ms_047_administratediplomacy_RecordDiplo(DestID)
 		
 		-- Send a message to human players or calc AI reaction
 		if DynastyIsPlayer("Destination") then
@@ -583,7 +617,7 @@ function RequestEnemies()
 	-- Do you really want to demand money from the target? You will lose some favor
 	local DestID = GetDynastyID("Destination")
 	
-	if not ReadyToRepeat("dynasty", "DIP_"..DestID) then
+	if not ms_047_administratediplomacy_CanDiplo(DestID) then
 		MsgBoxNoWait("MyBoss","Destination",
 				"@L_GENERAL_ERROR_HEAD_+0",
 				"@L_MEASURE_ADMINISTRATE_DIPLOMACY_ERROR_COOLDOWN", GetID("Destination"), TargetBadge)
@@ -622,7 +656,7 @@ function RequestEnemies()
 					"@L_MEASURE_ADMINISTRATE_DIPLOMACY_REQUEST_ENEMIES_BODY_+0", GetID("Destination"), ReqMoney, TargetBadge)
 					
 	if RequestResult == 1 then
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20)
+		ms_047_administratediplomacy_RecordDiplo(DestID)
 		dyn_ModifyFavor("Destination", "MyBoss", (-GL_FAVOR_MOD_NORMAL))
 		CreateScriptcall("Answer_RequestEnemies", 0.15, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerRequestEnemies", "MyBoss", "Destination", ReqMoney)
 	else
@@ -697,7 +731,7 @@ function ConfirmFeud()
 	if result == 1 then 
 		--Yes, declare war
 		local DestID = GetDynastyID("Destination")
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		ms_047_administratediplomacy_RecordDiplo(DestID) -- count toward the per-day limit
 			
 		MsgBoxNoWait("MyBoss", "Destination",
 					"@LDIPLOMATIC_STATE_CHANGED_HEAD",
@@ -759,7 +793,7 @@ function ConfirmNeutral()
 	if result == 1 then
 	
 		local DestID = GetDynastyID("Destination")
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		ms_047_administratediplomacy_RecordDiplo(DestID) -- count toward the per-day limit
 		
 		-- check if we downgrade the status. No agreement needed then
 		if CState > DIP_NEUTRAL then
@@ -906,7 +940,7 @@ function ConfirmNAP()
 	if result == 1 then
 	
 		local DestID = GetDynastyID("Destination")
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		ms_047_administratediplomacy_RecordDiplo(DestID) -- count toward the per-day limit
 		
 		-- check if we downgrade the status. No agreement needed then
 		if CState > DIP_NAP then
@@ -1095,7 +1129,7 @@ function ConfirmAlliance()
 	if result == 1 then
 		
 		local DestID = GetDynastyID("Destination")
-		SetRepeatTimer("dynasty", "DIP_"..DestID, 20) -- wait 20 hours for the next
+		ms_047_administratediplomacy_RecordDiplo(DestID) -- count toward the per-day limit
 		
 		-- send a message to the destination and ask
 		

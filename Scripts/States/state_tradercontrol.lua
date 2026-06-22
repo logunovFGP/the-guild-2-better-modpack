@@ -134,7 +134,13 @@ function BuyNewCart(CartCount)
 end
 
 function CanBuyNewCart(CartCount)
+	if not BuildingGetCity("", "MyCity") then
+		return false
+	end
 	local CityLevel = CityGetLevel("MyCity") -- 1 for kontor, 2 and higher for regular settlements
+	if not CityLevel then
+		return false
+	end
 	return CartCount < CityLevel
 end
 

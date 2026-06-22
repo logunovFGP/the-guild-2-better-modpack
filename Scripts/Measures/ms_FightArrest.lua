@@ -72,44 +72,34 @@ function Run()
 		Sleep(1)
 
 		if GetOutdoorMovePosition(nil, "Prison", "MovePos") then
-			if not (f_MoveTo("Destination", "MovePos", GL_MOVESPEED_WALK)) then
-				StopMeasure()
-				return
-			end			
+			f_MoveTo("Destination", "MovePos", GL_MOVESPEED_WALK)
 		else
-			if not (f_MoveTo("Destination", "Prison", GL_MOVESPEED_WALK)) then
-				StopMeasure()
-				return
-			end		
-		end	
+			f_MoveTo("Destination", "Prison", GL_MOVESPEED_WALK)
+		end
 
 		MoveStop("")
 		MoveStop("Destination")
 		BattleWeaponStore("")
-	
-		if not f_MoveTo("Destination", "Prison") then
-			if GetInsideBuildingID("Destination") ~= GetID("Prison") then
-				StopMeasure()
-				return
-			end
-		end
+
+		f_MoveTo("Destination", "Prison")
 
 		Sleep(3)
 
 		MoveSetActivity("Destination")
-
 		AddImpact("Destination", "Resist", 1, 6)
 
-		if not GetInsideBuilding("Destination", "CurrentBuilding") then
-			StopMeasure()
+		if GetInsideBuildingID("Destination") ~= GetID("Prison") then
+			if GetLocatorByName("Prison", "Entry1TeleportTargetPos", "JailPos")
+				or GetLocatorByName("Prison", "Entry1", "JailPos")
+				or GetOutdoorMovePosition(nil, "Prison", "JailPos") then
+				SimBeamMeUp("Destination", "JailPos", false)
+			end
 		end
 
-		if GetID("CurrentBuilding") == GetID("Prison") then
-			SetState("Destination", STATE_CAPTURED, false)
-			SetState("Destination", STATE_IMPRISONED, true)
-		end
-			
-		f_StartHighPriorMusic(MUSIC_DUNGEON) 
+		SetState("Destination", STATE_CAPTURED, false)
+		SetState("Destination", STATE_IMPRISONED, true)
+
+		f_StartHighPriorMusic(MUSIC_DUNGEON)
 		StopMeasure()
 	
 	elseif CityGetPenalty("CityAlias", "Destination", PENALTY_PILLORY, true, "Penalty") then
@@ -271,6 +261,10 @@ function CleanUp()
 		local Action_Name = GetData("Action_Started")
 		if Action_Name then
 			StopAction(Action_Name, "Destination")
+		end
+
+		if not (GetState("Destination", STATE_IMPRISONED) or GetState("Destination", STATE_PILLORY) or GetState("Destination", STATE_DEAD)) then
+			MoveSetActivity("Destination")
 		end
 	end
 	

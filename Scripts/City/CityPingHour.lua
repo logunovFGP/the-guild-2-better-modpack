@@ -209,7 +209,7 @@ function CityEvent()
 		citypinghour_RatBoy()
 	else 
 		-- DEBUG
-		--MsgNewsNoWait("All","","","default",-1,"Glück gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
+		--MsgNewsNoWait("All","","","default",-1,"Glï¿½ck gehabt!", "Es ist nichts passiert, Wahl: "..Choice)
 	end
 end
 
@@ -673,6 +673,7 @@ function RatBoy()
 end
 
 function Inferno()
+	do Sleep(5) return end
 	-- residences
 	local NumBuildings = CityGetBuildingCount("",1,-1,-1,-1,FILTER_IGNORE)
 	CityGetBuildings("",1,-1,-1,-1,FILTER_IGNORE,"Building")
