@@ -124,8 +124,10 @@ function Run()
 	elseif Selection == 6 then -- check for grudges and fondness, rivals, allies and foes
 		ms_047_administratediplomacy_SpecialCheck()
 	elseif Selection == 7 then -- open the native free-text letter composer for this player
-		GetDynasty("Destination", "LetterTarget")
-		OpenLetterComposer("LetterTarget")
+		if GetLocalPlayerDynasty("LocalDyn") and GetDynasty("", "ActorDyn") and GetID("LocalDyn") == GetID("ActorDyn") then
+			GetDynasty("Destination", "LetterTarget")
+			OpenLetterComposer("LetterTarget")
+		end
 	end
 end
 
