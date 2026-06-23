@@ -739,12 +739,6 @@ end
 
 -- this function is called, after the init of the scenario is finished.
 function Start()
-	if IsMultiplayerGame() then
-		GetScenario("World")
-		if not HasProperty("World", "AITruceRounds")  then SetProperty("World", "AITruceRounds",  GetSettingNumber("OPTIONS", "AITruceRounds",  -1))  end
-		if not HasProperty("World", "AIAttackFavor")  then SetProperty("World", "AIAttackFavor",  GetSettingNumber("OPTIONS", "AIAttackFavor",   0))  end
-		if not HasProperty("World", "MarketItemMult") then SetProperty("World", "MarketItemMult", GetSettingNumber("OPTIONS", "MarketItemMult", 100)) end
-	end
 	defaultcampaign_SetupDiplomacy()
 end
 
