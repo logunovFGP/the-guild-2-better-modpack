@@ -489,3 +489,6 @@ Data:
 40046   "ms_ManageTradeRoutes.lua"   "-"   "ManageTradeRoutes"   40   "hud/buttons/btn_ShowGuildContracts.tga"   0   5   0   ""   ""   1   0   0   "none"   0   0   |
 40047   "ms_AldermanFreezeTrade.lua"   "-"   "AldermanFreezeTrade"   40   "hud/buttons/btn_115_ImposeASalesFreeze.tga"   0   4   0   ""   ""   2   0   0   "none"   0   0   |
 40048   "ms_LordshipRequest.lua"   "-"   "LordshipRequest"   40   "hud/buttons/btn_ShowGuildContracts.tga"   0   5   0   ""   ""   3   0   0   "none"   0   0   |
+7150   "ms_SendLetterToPlayer.lua"   "-"   "SendLetterToPlayer"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+7151   "ms_DebugSendLetterSelf.lua"   "-"   "DebugSendLetterSelf"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+20100   "ms_CreateWorkOfArt.lua"   "-"   "CreateWorkOfArt"   50   "hud/buttons/btn_Meassure_Production.tga"   0   4   300   ""   ""   0   0   0   "none"   0   0   |

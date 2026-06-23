@@ -68,3 +68,8 @@ Data:
 2073   "ShowManageStorage"   "__F((Object.Type==Building)AND(Object.BelongsToMe())AND(Object.IsClass(2)))"   |
 2074   "BuildingHasTransactions"   "__F((Object.CanBeControlled())AND (Object.IsClass(2)))"   |
 2075   "CanReflectHeritage"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(111)))"   |
+7150   "TargetIsOtherHumanPlayer"   "__F((Object.IsDynastySim)AND NOT(Object.BelongsToMe())AND(Object.DynastyIsHumanPlayer()))"   |
+7151   "TargetIsOwnDynastySim"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe()))"   |
+7200   "CanCreateWorkOfArt"   "__F((Object.CanBeControlled())AND(Object.IsClass(2))AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsType(7)))"   |
+7152   "ShowDebugSelfLetterEvenDrunk"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"   |
+7153   "CanWriteLetterActor"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe()))"   |
