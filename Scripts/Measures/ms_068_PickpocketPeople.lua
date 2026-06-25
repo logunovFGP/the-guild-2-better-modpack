@@ -24,6 +24,11 @@ function Run()
 	f_Stroll("", 400, 3)
 	--the time, a thief must wait to rob the same person again
 	local TimeToWait = 8
+	local PickpocketMinXP = 1
+	local PickpocketMaxXP = 8
+	local MoneyRandomRange = 30
+	local MoneyPerLevel = 15
+	local MoneyBase = 20
 	local Value
 	local CancelCount = 0 -- only for AI
 	GetNearestSettlement("", "City")	
@@ -107,13 +112,13 @@ function Run()
 						
 						local ThiefLevel = SimGetLevel("")
 						local RogueBonus =  GetImpactValue("WorkBuilding", "RogueBonus") + 1
-						local VictimSpendValue = (Rand(40) + ThiefLevel * 20 + 25)*RogueBonus
+						local VictimSpendValue = (Rand(MoneyRandomRange) + ThiefLevel * MoneyPerLevel + MoneyBase)*RogueBonus
 						
 						if Rand(100) > (100-ThiefLevel*2) then
 							VictimSpendValue = VictimSpendValue*3
 						end
 						
-						IncrementXPQuiet("Owner", 15)
+						IncrementXPQuiet("Owner", PickpocketMinXP + Rand(PickpocketMaxXP - PickpocketMinXP + 1))
 						chr_RecieveMoney("Owner", VictimSpendValue, "IncomeThiefs")
 						economy_UpdateBalance("WorkBuilding", "Service", VictimSpendValue)
 						--for the mission
@@ -155,7 +160,7 @@ function Run()
 						SetData("Blocked", 0)
 						if GetNobilityTitle(DestAlias) > 3 then
 							chr_ModifyFavor(DestAlias,"",-GL_FAVOR_MOD_SMALL)
-						--	CommitAction("pickpocket", "", "", DestAlias)
+							CommitAction("pickpocket", "", "", DestAlias)
 							feedback_OverheadComment(DestAlias,
 								"@L_THIEF_068_PICKPOCKETPEOPLE_SCREAM_+0", false, true)
 							if BuildingHasUpgrade("WorkBuilding", "ShadowCloak") then
@@ -164,7 +169,7 @@ function Run()
 								end
 							else
 								f_MoveTo("", "WorkBuilding", GL_MOVESPEED_RUN, 0)
-							--	StopAction("pickpocket", "")
+								StopAction("pickpocket", "")
 								if BuildingGetAISetting("WorkBuilding", "Enable") > 0 then
 									StopMeasure()
 									break
@@ -198,7 +203,7 @@ end
 
 function FastHide()
 
-	--StopAction("pickpocket", "")
+	StopAction("pickpocket", "")
 	GetPosition("", "standPos")
 	PlayAnimationNoWait("", "crouch_down")
 	Sleep(1)
@@ -223,7 +228,7 @@ function CleanUp()
 	
 	GfxDetachAllObjects()
 	StopAnimation("")
---	StopAction("pickpocket", "")
+	StopAction("pickpocket", "")
 	if HasProperty("", "OutdoorPos") then
 		local MyPos = GetProperty("", "OutdoorPos")
 		RemoveProperty("WorkBuilding", "OutdoorPos"..MyPos)
