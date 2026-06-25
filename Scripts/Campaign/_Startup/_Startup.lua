@@ -53,6 +53,7 @@ function CreateComputerDynasty()
 end
 
 function Start()
+	if not IsMultiplayerGame() then
 	for n=1, 50 do
 		if GetOutdoorLocator("Start"..n, 1, "Position" )==0 then
 			break	-- return "Unable to locate the locator Start"..n.." in the startup scene"
@@ -149,6 +150,7 @@ function Start()
 		if ScenarioCreateCart(EN_CT_WARSHIP, nil, "Position", "Boat") then
 			MeasureRun("Boat", nil, "StartmenuShip")
 		end
+	end
 	end
 	local Season = { EN_SEASON_SPRING, EN_SEASON_SUMMER, EN_SEASON_AUTUMN, EN_SEASON_WINTER }
 	SetTime(Season[1+Rand(4)], 1400, 6+Rand(12), 0)
