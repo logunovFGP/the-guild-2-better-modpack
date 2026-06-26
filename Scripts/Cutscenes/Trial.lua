@@ -1150,6 +1150,10 @@ function Go()
 			xp_ChargeCharacter("accused", XPLevel)
 		end
 
+		if GetID("judge") > 0 then xp_ChargeCharacter("judge", 3) end
+		if GetID("assessor1") > 0 then xp_ChargeCharacter("assessor1", 2) end
+		if GetID("assessor2") > 0 then xp_ChargeCharacter("assessor2", 2) end
+
 		trial_Cam("TrialMainCam")
 		local time = PlayAnimationNoWait("judge", "sit_judge_hammer")
 		Sleep(1.5)

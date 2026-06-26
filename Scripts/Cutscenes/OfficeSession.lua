@@ -1193,7 +1193,7 @@ end
 
 -- saves the result of the given vote
 function SaveVoteResult(OfficeAlias,WinnerAlias)
- -- sollte der Gewinner ebenfalls in der Amtswahl um sein altes Amt vertreten sein, wird er aus der Wahlliste für dieses Amt gelöscht
+ -- sollte der Gewinner ebenfalls in der Amtswahl um sein altes Amt vertreten sein, wird er aus der Wahlliste fï¿½r dieses Amt gelï¿½scht
 	if(SimGetOffice(WinnerAlias, "CurrentOffice") == true) then
 		OfficeRemoveApplicant("CurrentOffice", WinnerAlias)
 	end
@@ -1403,8 +1403,14 @@ function AIAbstimmung(Params)
 			Feud = 0
 		end
 		
+		-- temporary for more office feedback
+		local PlayerBonus = 1
+		if DynastyIsHumanControlled(CurrentApplicant) then
+			PlayerBonus = 1.3
+		end
+
 		-- Calculation
-		local Fav = (((((((BaseValue+(Favor*1.5)+(RhetSkill*1.25)+Title)*Bribery)*AllyBonus)*CurrentOfficeBonus)*PoliticalAttention)*TalentBonus)*IsPresent)*Feud
+		local Fav = (((((((BaseValue+(Favor*1.5)+(RhetSkill*1.25)+Title)*Bribery)*AllyBonus)*CurrentOfficeBonus)*PoliticalAttention)*TalentBonus)*IsPresent)*Feud*PlayerBonus
 		if Fav > MaxFav then
 			Best = App
 			MaxFav = Fav
