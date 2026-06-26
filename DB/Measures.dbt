@@ -492,3 +492,7 @@ Data:
 7150   "ms_SendLetterToPlayer.lua"   "-"   "SendLetterToPlayer"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 7151   "ms_DebugSendLetterSelf.lua"   "-"   "DebugSendLetterSelf"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 20100   "ms_CreateWorkOfArt.lua"   "-"   "CreateWorkOfArt"   50   "hud/buttons/btn_Meassure_Production.tga"   0   4   300   ""   ""   0   0   0   "none"   0   0   |
+40049   "ms_AssistGathering.lua"   "-"   "AssistGathering"   30   "hud/buttons/SendCartAndUnload.tga"   0   3   0   ""   ""   0   0   0   "none"   0   0   |
+40050   "ms_ToggleVoice.lua"   "-"   "ToggleVoice"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+40051   "ms_CommissionArt.lua"   "-"   "CommissionArt"   30   "hud/buttons/btn_BuyGoldenRing.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+40052   "ms_ManageCommission.lua"   "-"   "ManageCommission"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
