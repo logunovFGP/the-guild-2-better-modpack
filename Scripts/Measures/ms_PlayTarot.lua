@@ -72,7 +72,7 @@ function TheDestiny(x)
 	    local oneskill = Rand(10)+1
         local haveskill = GetSkillValue("Owner",oneskill)
         local getskill = haveskill + 1
-        SetSkillValue("Owner",4,getskill)
+        SetSkillValue("Owner",oneskill,getskill)
 		return
 		
 	elseif x == 8 then
@@ -89,7 +89,8 @@ function TheDestiny(x)
 	    local oneskill = Rand(10)+1
         local haveskill = GetSkillValue("Owner",oneskill)
         local getskill = haveskill - 1
-        SetSkillValue("Owner",4,getskill)
+        if getskill < 1 then getskill = 1 end
+        SetSkillValue("Owner",oneskill,getskill)
 		return
 		
 	elseif x == 13 then
