@@ -278,6 +278,7 @@ function Run()
 	local lastT = GetGametime()
 	local lastOH = -100
 	local nextCheck = 1
+	local xpHourMark = doneHours + 1.0
 	SetProcessMaxProgress("", 1000)
 	while doneHours < targetHours do
 		if not GetInsideBuilding("", "Workshop") then
@@ -294,6 +295,13 @@ function Run()
 		if delta < 0 then delta = 0 end
 		doneHours = doneHours + delta
 		lastT = now
+
+		while doneHours >= xpHourMark do
+			if GetSimType("") == 1 then
+				chr_GainXP("", 25, true)
+			end
+			xpHourMark = xpHourMark + 1.0
+		end
 
 		local pct = (doneHours * 100) / targetHours
 		if pct > 100 then pct = 100 end
@@ -383,6 +391,24 @@ function Run()
 	local cname = GetData("TF0")
 	if not cname then cname = "" end
 
+	local commState = GetProperty("Workshop", "CommState")
+	if commState == 2 and GetProperty("Workshop", "CommItem") == itemId then
+		SetProperty("Workshop", "CommPermil", permil)
+		SetProperty("Workshop", "CommQuality", quality)
+		SetProperty("Workshop", "CommState", 3)
+		local bId = GetProperty("Workshop", "CommBuyerChar")
+		if bId and bId > 0 and GetAliasByID(bId, "CommReady") then
+			MsgNewsNoWait("", "CommReady", "", "economy", -1, "@L_COMM_NEWS_READY_HEAD_+0", "@L_COMM_NEWS_READY_BODY_+0")
+		end
+		local cwoaXP = 60 + (quality * 40) + (permil / 40)
+		if cwoaXP < 40 then cwoaXP = 40 end
+		IncrementXP("", cwoaXP)
+		RemoveProperty("", "WoA_Active");  RemoveProperty("", "WoA_Item")
+		RemoveProperty("", "WoA_Permil");  RemoveProperty("", "WoA_Quality"); RemoveProperty("", "WoA_DoneHours")
+		MsgBoxNoWait("", "", "@L_COMM_CRAFTED_HEAD_+0", "@L_COMM_CRAFTED_BODY_+0")
+		StopMeasure(); return
+	end
+
 	local placedWhere = 0
 	if CanAddItems("Workshop", itemId, 1, INVENTORY_STD) then
 		CreateWorkOfArt("Workshop", itemId, permil, quality, cname, INVENTORY_STD, ""); placedWhere = 1
@@ -394,8 +420,8 @@ function Run()
 		CreateWorkOfArt("WoAHome", itemId, permil, quality, cname, INVENTORY_STD, ""); placedWhere = 4
 	end
 
-	local woaXP = 15 + (quality * 13) + (permil / 80)
-	if woaXP < 10 then woaXP = 10 end
+	local woaXP = 60 + (quality * 40) + (permil / 40)
+	if woaXP < 40 then woaXP = 40 end
 	IncrementXP("", woaXP)
 
 	RemoveProperty("", "WoA_Active")
