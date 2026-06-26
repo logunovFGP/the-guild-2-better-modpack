@@ -242,14 +242,21 @@ function ReturnCredit()
 	local ReturnBank = 0
 	if not HasProperty("","CreditBank") then
 		StopMeasure()
+		return
 	else
 		ReturnBank = GetProperty("","CreditBank")
 	end
 	
 	if not GetAliasByID(ReturnBank, "Bank") then
 		StopMeasure()
+		return
 	end
 	
+	if not HasProperty("","CreditSum") or not HasProperty("","CreditInterest") then
+		StopMeasure()
+		return
+	end
+
 	local CreditSum = GetProperty("","CreditSum")
 	local Interest = GetProperty("","CreditInterest")
 	local ReturnCredit = math.floor(CreditSum*(1+Interest))
