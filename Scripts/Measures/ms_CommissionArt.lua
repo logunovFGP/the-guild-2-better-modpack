@@ -5,7 +5,7 @@ function Run()
 		MsgQuick("", "@L_COMM_NEEDSMITHY_+0")
 		StopMeasure(); return
 	end
-	if BelongsToMe("Foundry") then
+	if GetDynastyID("Foundry") == GetDynastyID("") then
 		MsgQuick("", "@L_COMM_OWNSMITHY_+0")
 		StopMeasure(); return
 	end

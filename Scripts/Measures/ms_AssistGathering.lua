@@ -1,3 +1,5 @@
+SUCK_RADIUS = 4500
+
 function Init()
 end
 
@@ -9,11 +11,80 @@ local function CartHasGoods()
 	local slots = InventoryGetSlotCount("", INVENTORY_STD)
 	for s = 0, slots - 1 do
 		local id, cnt = InventoryGetSlotInfo("", s, INVENTORY_STD)
-		if id and cnt and cnt > 0 then
+		if id and id > 0 and cnt and cnt > 0 then
 			return true
 		end
 	end
 	return false
+end
+
+local function CartHasSpace()
+	local slots = InventoryGetSlotCount("", INVENTORY_STD)
+	for s = 0, slots - 1 do
+		local id, cnt = InventoryGetSlotInfo("", s, INVENTORY_STD)
+		if not id or id == 0 or not cnt or cnt == 0 then
+			return true
+		end
+	end
+	return false
+end
+
+local function DriveTowardField()
+	local wcount = BuildingGetWorkerCount("Destination")
+	local bestDist = -1
+	local anyOut = false
+	for i = 0, wcount - 1 do
+		if BuildingGetWorker("Destination", i, "Scan") then
+			if not GetInsideBuilding("Scan", "ScanBld") then
+				anyOut = true
+				local d = GetDistance("Destination", "Scan")
+				if d and d > bestDist then
+					bestDist = d
+					BuildingGetWorker("Destination", i, "FieldAnchor")
+				end
+			end
+		end
+	end
+	if bestDist >= 0 then
+		f_MoveToNoWait("", "FieldAnchor", GL_MOVESPEED_RUN)
+	end
+	return anyOut
+end
+
+local function SuckNearbyWorkers()
+	local got = false
+	local wcount = BuildingGetWorkerCount("Destination")
+	for i = 0, wcount - 1 do
+		if not AliasExists("Destination") then break end
+		if BuildingGetWorker("Destination", i, "Worker") then
+			if not GetInsideBuilding("Worker", "WorkerBld")
+				and GetDistance("", "Worker") <= SUCK_RADIUS then
+
+				local pulled = 0
+				local slots = InventoryGetSlotCount("Worker", INVENTORY_STD)
+				for s = slots - 1, 0, -1 do
+					local id, cnt = InventoryGetSlotInfo("Worker", s, INVENTORY_STD)
+					if id and id > 0 and cnt and cnt > 0 then
+						local space = GetRemainingInventorySpace("", id)
+						if space and space > 0 then
+							local take = cnt
+							if take > space then take = space end
+							local removed = RemoveItems("Worker", id, take, INVENTORY_STD)
+							if removed and removed > 0 then
+								AddItems("", id, removed, INVENTORY_STD)
+								pulled = pulled + removed
+								got = true
+							end
+						end
+					end
+				end
+				if pulled > 0 then
+					ShowOverheadSymbol("Worker", false, true, 0, "%1t", pulled)
+				end
+			end
+		end
+	end
+	return got
 end
 
 local function DeliverToWorkshop()
@@ -23,31 +94,13 @@ local function DeliverToWorkshop()
 	local slots = InventoryGetSlotCount("", INVENTORY_STD)
 	for s = slots - 1, 0, -1 do
 		local id, cnt = InventoryGetSlotInfo("", s, INVENTORY_STD)
-		if id and cnt and cnt > 0 then
+		if id and id > 0 and cnt and cnt > 0 then
 			local err, moved, price = f_Transfer("", "Destination", INVENTORY_STD, "", INVENTORY_STD, id, cnt)
 			if price and GetHomeBuilding("", "homeBuilding") then
 				economy_UpdateBalance("homeBuilding", "WaresSold", math.abs(price))
 			end
 		end
 	end
-end
-
-local function HarvestWorker(WorkerAlias)
-	if not f_MoveTo("", WorkerAlias) then
-		return false
-	end
-	local got = false
-	local slots = InventoryGetSlotCount(WorkerAlias, INVENTORY_STD)
-	for s = slots - 1, 0, -1 do
-		local id, cnt = InventoryGetSlotInfo(WorkerAlias, s, INVENTORY_STD)
-		if id and cnt and cnt > 0 then
-			local err, moved = f_Transfer(WorkerAlias, "", INVENTORY_STD, "", INVENTORY_STD, id, cnt)
-			if moved and moved > 0 then
-				got = true
-			end
-		end
-	end
-	return got
 end
 
 function Run()
@@ -57,41 +110,20 @@ function Run()
 	end
 
 	while AliasExists("Destination") do
-		local collectedSomething = false
+		local anyOut = DriveTowardField()
+		local sucked = SuckNearbyWorkers()
 
-		local wcount = BuildingGetWorkerCount("Destination")
-		for i = 0, wcount - 1 do
-			if not AliasExists("Destination") then
-				break
-			end
-			if BuildingGetWorker("Destination", i, "Worker") then
-				if not GetInsideBuilding("Worker", "WorkerBld") then
-					local slots = InventoryGetSlotCount("Worker", INVENTORY_STD)
-					local hasGoods = false
-					for s = 0, slots - 1 do
-						local id, cnt = InventoryGetSlotInfo("Worker", s, INVENTORY_STD)
-						if id and cnt and cnt > 0 then
-							hasGoods = true
-							break
-						end
-					end
-					if hasGoods then
-						if HarvestWorker("Worker") then
-							collectedSomething = true
-						end
-					end
-				end
-			end
-		end
-
-		if CartHasGoods() then
+		if not CartHasSpace() then
 			DeliverToWorkshop()
-		end
-
-		if not collectedSomething then
-			Sleep(8)
-		else
+		elseif not anyOut then
+			if CartHasGoods() then
+				DeliverToWorkshop()
+			end
+			Sleep(6)
+		elseif sucked then
 			Sleep(2)
+		else
+			Sleep(3)
 		end
 	end
 

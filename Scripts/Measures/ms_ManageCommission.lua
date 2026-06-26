@@ -3,7 +3,7 @@ function Run()
 		MsgQuick("", "@L_COMM_MGR_NOTYOURS_+0")
 		StopMeasure(); return
 	end
-	if not BelongsToMe("Foundry") then
+	if GetDynastyID("Foundry") ~= GetDynastyID("") then
 		MsgQuick("", "@L_COMM_MGR_NOTYOURS_+0")
 		StopMeasure(); return
 	end
