@@ -118,7 +118,7 @@ function RefreshStock(LocalCityId)
 		return
 	end
 
-	local pick = 4
+	local pick = 10
 	if pick > nItems then pick = nItems end
 	local rot = GetProperty("", "kr_rot")
 	if rot == nil then rot = 0 end
@@ -128,12 +128,12 @@ function RefreshStock(LocalCityId)
 		local idx = rot + i
 		while idx >= nItems do idx = idx - nItems end
 		local it = items[idx]
-		local qty = 2 + Rand(4)
+		local qty = 4 + Rand(6) + Rand(16)
 		AddItems("", it, qty, INVENTORY_STD)
 		ms_kontormeasure_SetKontorPrice(it)
 	end
 
-	rot = rot + pick
+	rot = rot + pick + Rand(3)
 	while nItems > 0 and rot >= nItems do rot = rot - nItems end
 	SetProperty("", "kr_rot", rot)
 end
@@ -146,9 +146,9 @@ function SetKontorPrice(Item)
 
 	local PriceIn = Base * 0.1
 
-	local Mult = 1.75
+	local Mult = 1.05
 	if ItemGetCategory(Item) == 3 then
-		Mult = 3.5
+		Mult = 1.35
 	end
 	local PriceOut = Base * Mult
 
