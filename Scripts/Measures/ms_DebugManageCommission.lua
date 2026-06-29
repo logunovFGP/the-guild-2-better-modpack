@@ -5,10 +5,6 @@ function Run()
 		MsgQuick("", "@L_COMM_NEEDSMITHY_+0")
 		StopMeasure(); return
 	end
-	if GetDynastyID("Foundry") == GetDynastyID("") then
-		MsgQuick("", "@L_COMM_OWNSMITHY_+0")
-		StopMeasure(); return
-	end
 
 	local myDyn = GetDynastyID("")
 	local st = GetProperty("Foundry", "CommState")
@@ -20,7 +16,7 @@ function Run()
 			StopMeasure(); return
 		end
 		if st == 3 then
-			ms_commissionart_Collect()
+			ms_debugmanagecommission_Collect()
 		elseif st == 2 then
 			MsgBoxNoWait("", "", "@L_COMM_MINE_HEAD_+0", "@L_COMM_INPROGRESS_BODY_+0")
 		else
@@ -29,7 +25,7 @@ function Run()
 		StopMeasure(); return
 	end
 
-	ms_commissionart_Place(myDyn)
+	ms_debugmanagecommission_Place(myDyn)
 	StopMeasure()
 end
 
@@ -136,7 +132,7 @@ function Collect()
 
 	CreateWorkOfArt("", itemId, permil, quality, "", INVENTORY_STD, "")
 
-	ms_commissionart_ClearCommission("Foundry")
+	ms_debugmanagecommission_ClearCommission("Foundry")
 	MsgBoxNoWait("", "", "@L_COMM_COLLECT_DONE_HEAD_+0", "@L_COMM_COLLECT_DONE_BODY_+0")
 end
 

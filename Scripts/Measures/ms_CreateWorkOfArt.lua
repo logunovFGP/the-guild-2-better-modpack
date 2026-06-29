@@ -392,21 +392,28 @@ function Run()
 	if not cname then cname = "" end
 
 	local commState = GetProperty("Workshop", "CommState")
+	local commWantQ = GetProperty("Workshop", "CommWantQuality")
+	if not commWantQ then commWantQ = 0 end
+	local commShortfall = false
 	if commState == 2 and GetProperty("Workshop", "CommItem") == itemId then
-		SetProperty("Workshop", "CommPermil", permil)
-		SetProperty("Workshop", "CommQuality", quality)
-		SetProperty("Workshop", "CommState", 3)
-		local bId = GetProperty("Workshop", "CommBuyerChar")
-		if bId and bId > 0 and GetAliasByID(bId, "CommReady") then
-			MsgNewsNoWait("", "CommReady", "", "economy", -1, "@L_COMM_NEWS_READY_HEAD_+0", "@L_COMM_NEWS_READY_BODY_+0")
+		if quality >= commWantQ then
+			SetProperty("Workshop", "CommPermil", permil)
+			SetProperty("Workshop", "CommQuality", quality)
+			SetProperty("Workshop", "CommState", 3)
+			local bId = GetProperty("Workshop", "CommBuyerChar")
+			if bId and bId > 0 and GetAliasByID(bId, "CommReady") then
+				MsgNewsNoWait("", "CommReady", "", "economy", -1, "@L_COMM_NEWS_READY_HEAD_+0", "@L_COMM_NEWS_READY_BODY_+0")
+			end
+			local cwoaXP = 60 + (quality * 40) + (permil / 40)
+			if cwoaXP < 40 then cwoaXP = 40 end
+			IncrementXP("", cwoaXP)
+			RemoveProperty("", "WoA_Active");  RemoveProperty("", "WoA_Item")
+			RemoveProperty("", "WoA_Permil");  RemoveProperty("", "WoA_Quality"); RemoveProperty("", "WoA_DoneHours")
+			MsgBoxNoWait("", "", "@L_COMM_CRAFTED_HEAD_+0", "@L_COMM_CRAFTED_BODY_+0")
+			StopMeasure(); return
+		else
+			commShortfall = true
 		end
-		local cwoaXP = 60 + (quality * 40) + (permil / 40)
-		if cwoaXP < 40 then cwoaXP = 40 end
-		IncrementXP("", cwoaXP)
-		RemoveProperty("", "WoA_Active");  RemoveProperty("", "WoA_Item")
-		RemoveProperty("", "WoA_Permil");  RemoveProperty("", "WoA_Quality"); RemoveProperty("", "WoA_DoneHours")
-		MsgBoxNoWait("", "", "@L_COMM_CRAFTED_HEAD_+0", "@L_COMM_CRAFTED_BODY_+0")
-		StopMeasure(); return
 	end
 
 	local placedWhere = 0
@@ -436,7 +443,12 @@ function Run()
 		MsgBoxNoWait("", "", "@L_WOA_ACCIDENT_QUAL_HEAD_+0", "@L_WOA_ACCIDENT_QUAL_BODY_+0")
 	end
 
-	if placedWhere == 0 then
+	if commShortfall then
+		SetArg(1, "_ITEM_"..ItemGetName(itemId).."_NAME_+0")
+		SetArg(2, ms_createworkofart_woa_QualityKey(quality))
+		SetArg(3, ms_createworkofart_woa_QualityKey(commWantQ))
+		MsgBoxNoWait("", "", "@L_COMM_SHORTFALL_HEAD_+0", "@L_COMM_SHORTFALL_BODY_+0")
+	elseif placedWhere == 0 then
 		MsgBoxNoWait("", "", "@L_WOA_NOROOM_HEAD_+0", "@L_WOA_NOROOM_BODY_+0")
 	elseif placedWhere == 4 then
 		MsgBoxNoWait("", "", "@L_WOA_DONE_HEAD_+0", "@L_WOA_DONE_HOME_BODY_+0")

@@ -778,19 +778,37 @@ function SetupDiplomacy()
 		end
 		
 		local Alias
-		
+
+		local napDeg = {}
+		local di
+		local dj
+		for di=0,Count-1 do
+			napDeg[di] = 0
+		end
+		for di=0,Count-1 do
+			for dj=0,Count-1 do
+				if di~=dj then
+					if DynastyGetDiplomacyState("Dynasties"..di, "Dynasties"..dj)==DIP_NAP then
+						napDeg[di] = napDeg[di] + 1
+					end
+				end
+			end
+		end
+
 		for dyn=0,Count-1 do
-		
+
 			Alias = "Dynasties"..dyn
-			
-			local Friends = defaultcampaign_GetStateCount(Alias, DIP_NAP, Count)
-			
+
+			local Friends = napDeg[dyn]
+
 			while Friends < FriendCount do
-			
+
 				if Friends<FriendCount and Rand(3) == 0 then
-					local Friend = defaultcampaign_FindDynasty(DIP_NAP, FriendCount, dyn+1, Count, Friends == 0)
+					local Friend, FriendNo = defaultcampaign_FindDynasty(DIP_NAP, FriendCount, dyn+1, Count, Friends == 0, napDeg)
 					if Friend then
 						DynastySetDiplomacyState(Alias, Friend, DIP_NAP)
+						napDeg[dyn] = napDeg[dyn] + 1
+						napDeg[FriendNo] = napDeg[FriendNo] + 1
 					end
 					Friends = Friends + 1
 				end
@@ -814,19 +832,37 @@ function SetupDiplomacy()
 		end
 		
 		local Alias
-		
+
+		local foeDeg = {}
+		local di
+		local dj
+		for di=0,Count-1 do
+			foeDeg[di] = 0
+		end
+		for di=0,Count-1 do
+			for dj=0,Count-1 do
+				if di~=dj then
+					if DynastyGetDiplomacyState("Dynasties"..di, "Dynasties"..dj)==DIP_FOE then
+						foeDeg[di] = foeDeg[di] + 1
+					end
+				end
+			end
+		end
+
 		for dyn=0,Count-1 do
-		
+
 			Alias = "Dynasties"..dyn
-			
-			local Enemies = defaultcampaign_GetStateCount(Alias, DIP_FOE, Count)
-			
+
+			local Enemies = foeDeg[dyn]
+
 			while Enemies < EnemyCount do
-			
+
 				if Enemies < EnemyCount and Rand(3) == 0 then
-					local Friend = defaultcampaign_FindDynasty(DIP_FOE, EnemyCount, dyn+1, Count, Enemies == 0)
+					local Friend, FriendNo = defaultcampaign_FindDynasty(DIP_FOE, EnemyCount, dyn+1, Count, Enemies == 0, foeDeg)
 					if Friend then
 						DynastySetDiplomacyState(Alias, Friend, DIP_FOE)
+						foeDeg[dyn] = foeDeg[dyn] + 1
+						foeDeg[FriendNo] = foeDeg[FriendNo] + 1
 					end
 					Enemies = Enemies + 1
 				end
@@ -848,27 +884,29 @@ function InitCameraPosition()
 	end
 end
 
-function FindDynasty(DipState, MaxState, StartNo, EndNo, FirstOfType)
+function FindDynasty(DipState, MaxState, StartNo, EndNo, FirstOfType, Deg)
 
 	local DynNo
 	local Found
+	local FoundNo
 	local Count = 0
-	
+
 	for DynNo=StartNo, EndNo-1 do
 		if DynastyGetDiplomacyState("Dynasties"..(StartNo-1), "Dynasties"..DynNo) == DIP_NEUTRAL then
-			if defaultcampaign_GetStateCount("Dynasties"..DynNo, DipState, EndNo) < MaxState then
+			if Deg[DynNo] < MaxState then
 				Count = Count + 1
 				if Rand(100) <= 100/Count then
 					Found = "Dynasties"..DynNo
+					FoundNo = DynNo
 					if FirstOfType and GetSettlementID("Dynasties"..(StartNo-1)) == GetSettlementID("Dynasties"..DynNo) then
-						return Found
+						return Found, FoundNo
 					end
 				end
 			end
 		end
 	end
-	
-	return Found
+
+	return Found, FoundNo
 end
 
 function GetStateCount(DynAlias, DipState, EndNo)

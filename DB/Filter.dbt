@@ -72,5 +72,6 @@ Data:
 7151   "TargetIsOwnDynastySim"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe()))"   |
 7200   "CanCreateWorkOfArt"   "__F((Object.CanBeControlled())AND(Object.IsClass(2))AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsType(7)))"   |
 7201   "CanCommissionForeignSmithy"   "__F((Object.CanBeControlled())AND(Object.IsClass(2))AND(Object.GetInsideBuilding())AND NOT(Object.IsBuildingOwnedByMe())AND(Object.IsType(7)))"   |
+7202   "CanDebugCommission"   "__F((Object.CanBeControlled())AND(Object.HasProperty(ShowAdditionalDebugMeasures))AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsType(7)))"   |
 7152   "ShowDebugSelfLetterEvenDrunk"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"   |
 7153   "CanWriteLetterActor"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe()))"   |

@@ -496,3 +496,5 @@ Data:
 40050   "ms_ToggleVoice.lua"   "-"   "ToggleVoice"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 40051   "ms_CommissionArt.lua"   "-"   "CommissionArt"   30   "hud/buttons/btn_BuyGoldenRing.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 40052   "ms_ManageCommission.lua"   "-"   "ManageCommission"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+40053   "ms_DebugManageCommission.lua"   "-"   "DebugManageCommission"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+40054   "ms_DebugRoad.lua"   "-"   "DebugRoad"   30   "hud/buttons/btn_Meassure_Production.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
