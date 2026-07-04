@@ -165,7 +165,7 @@ function Run()
 			end
 		end
 		if SimGetAge("")>20 then
-			if SimGetNeed("", 8)>1 then
+			if SimGetNeed("", 8)>1 and SimGetNeed("", 1)<=1 then
 				-- *******************************************
 				--
 				-- satisfy need drinking
@@ -182,7 +182,7 @@ function Run()
         end
 				return
 			end
-			if SimGetNeed("", 2)>1 then
+			if SimGetNeed("", 2)>1 and SimGetNeed("", 1)<=1 then
 				-- *******************************************
 				--
 				-- satisfy need pleasure
@@ -218,12 +218,12 @@ function Run()
 			-- *******************************************
 			local time = math.mod(GetGametime(),24)
 			if time >= 8 and time <= 18 then
-				if Rand(2) == 0 then
+				if Rand(5) == 0 then
 			  	idlelib_BuySomethingAtTheMarket(1)
 					MoveSetActivity("")
 					CarryObject("","",false)
 			  else
-			  	idlelib_CheckInsideStore()
+			  	idlelib_CheckInsideStore(1)
 				end
 			else
 			  idlelib_BuySomethingAtTheMarket(1)
@@ -246,7 +246,7 @@ function Run()
 					MoveSetActivity("")
 					CarryObject("","",false)
 			  else
-			    idlelib_CheckInsideStore()
+			    idlelib_CheckInsideStore(7)
 				end
 			else
 			  idlelib_BuySomethingAtTheMarket(2)

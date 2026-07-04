@@ -296,20 +296,30 @@ function GetPrice(BldAlias, ItemId, Buyer)
 		return -1
 	end
 
-	-- get baseprice and multiply by sales ratio
-	local BasePrice = ItemGetBasePrice(ItemId)
-	local PriceRatio = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 100
-	BasePrice = BasePrice * (PriceRatio / 100)
+	local BasePrice = GetAccessPriceTake(BldAlias, "", ItemId, 1, INVENTORY_SELL)
+	if not BasePrice or BasePrice <= 0 then
+		BasePrice = ItemGetBasePrice(ItemId)
+		local level = BuildingGetAISetting(BldAlias, "BuySell_PriceLevel")
+		local ratio = 1.0
+		if level == 0 then ratio = 0.5
+		elseif level == 1 then ratio = 0.75
+		elseif level == 3 then ratio = 1.25
+		elseif level == 4 then ratio = 1.5
+		end
+		BasePrice = BasePrice * ratio
+	end
 	
 	-- get difference in bargaining between Owner and Buyer
 	local BargOwner = GetSkillValue("BldOwner", BARGAINING)
 	local TheBargain
 	if Buyer and AliasExists(Buyer) then
 		local BargBuyer = GetSkillValue(Buyer, BARGAINING)
-		TheBargain = (BargOwner - BargBuyer) * 0.02
+		TheBargain = (BargOwner - BargBuyer) * 0.03
 	else
-		TheBargain = BargOwner * 0.02
+		TheBargain = BargOwner * 0.03
 	end
+	if TheBargain < -0.3 then TheBargain = -0.3 end
+	if TheBargain > 0.25 then TheBargain = 0.25 end
 	
 	-- this will result in a range of about 70..110% of the calculated price
 	return math.floor((BasePrice * 0.9) + (BasePrice * TheBargain)) 

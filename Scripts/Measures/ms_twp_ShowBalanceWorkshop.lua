@@ -44,10 +44,10 @@ function Run()
 end
 
 function ShowForWorkshop(BldAlias)
-	local BalanceTypes = {"WaresSold", "WaresBought", "Service", "Wages"}
+	local BalanceTypes = {"WaresSold", "WaresBought", "Service", "Wages", "TownSold"}
 	local Balances = {}
 	local TotalBalance = 0
-	for i=1, 4 do
+	for i=1, 5 do
 		Balances[i] = GetProperty(BldAlias, BALANCE_PREFIX..BalanceTypes[i]) or 0
 		TotalBalance = TotalBalance + Balances[i]
 	end
@@ -57,7 +57,6 @@ function ShowForWorkshop(BldAlias)
 	local Ranking, RankingGoods, RankingCrafty, RankingCharisma, Attractivity = economy_CalculateSalesRanking(BldAlias)
 	
 	-- add extra button to choose pricing
-	local PriceRatio = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 150
 	
 	-- buttons for more information about (1) current attractivity and (b) current prices  
 	local Choice = MsgBox("dynasty", BldAlias,
@@ -73,7 +72,8 @@ function ShowForWorkshop(BldAlias)
 			Balances[1], -- %4t WaresSold 
 			Balances[2], -- %5t WaresBought 
 			Balances[3], -- %6t Service
-			Balances[4] -- %7t Wages
+			Balances[4], -- %7t Wages
+			Balances[5] -- %8t TownSold
 			--, PriceRatio -- %8i%% current PriceRatio
 			)
 	if Choice == "ATTR" then
@@ -85,7 +85,7 @@ function ShowForWorkshop(BldAlias)
 	elseif Choice == "PRIC" then
 		ms_twp_showbalanceworkshop_ChangePriceRatio(BldAlias)
 	elseif Choice == "CLR" then
-		for i=1, 4 do
+		for i=1, 5 do
 			SetProperty(BldAlias, BALANCE_PREFIX..BalanceTypes[i], 0) 
 		end
 		ms_twp_showbalanceworkshop_ShowForWorkshop(BldAlias)
@@ -107,7 +107,6 @@ function ShowForRogue(BldAlias)
 	local Ranking, RankingGoods, RankingCrafty, RankingCharisma, Attractivity = economy_CalculateSalesRanking(BldAlias)
 	
 	-- add extra button to choose pricing
-	local PriceRatio = GetProperty(BldAlias, SALESCOUNTER_PRICE) or 150
 	
 	-- buttons for more information about (1) current attractivity and (b) current prices  
 	local Choice = MsgBox("dynasty", BldAlias,

@@ -823,10 +823,11 @@ function BuySomethingAtTheMarket(art)
 				if SimGetGender("")==GL_GENDER_MALE then
 					Amount = 2
 				end
+					local bought = MarketConsume("City", art == 1, SimGetRank(""))
 					if art == 1 then
-					    SatisfyNeed("",1,0.5)
+					    if bought > 0 then SatisfyNeed("",1,0.5) else SatisfyNeed("",1,0.15) end
 					else
-					    SatisfyNeed("",7,0.5)
+					    if bought > 0 then SatisfyNeed("",7,0.5) else SatisfyNeed("",7,0.15) end
 					end
 				
 				local list = {"holzscheite","Boxvegetable","Breadbasket","Barrel","Bottlebox","Tailorbasket"}
@@ -951,10 +952,143 @@ function Illness()
 end
 
 -- -----------------------
+function ItemFillsNeed(id, needIndex)
+	local n = ItemGetNeed(id)
+	if not n or n <= 0 then return false end
+	if needIndex == 1 then
+		return n == 4
+	end
+	return n ~= 4
+end
+
+function PickNeedGood(shop, needIndex, rank)
+	local buyId = -1
+	local buyTier = -1
+	local slots = InventoryGetSlotCount(shop, INVENTORY_SELL)
+	if slots and slots > 0 then
+		local s
+		for s = 0, slots - 1 do
+			local id, amt = InventoryGetSlotInfo(shop, s, INVENTORY_SELL)
+			if id and id > 0 and amt and amt > 0 then
+				if idlelib_ItemFillsNeed(id, needIndex) then
+					local tier = ItemGetSubstLevel(id) or 1
+					if tier <= rank and tier > buyTier then
+						buyTier = tier
+						buyId = id
+					end
+				end
+			end
+		end
+	end
+	return buyId
+end
+
+function GoShoppingSmart(needIndex)
+	if not GetSettlement("", "City") then return false end
+
+	local rank = SimGetRank("")
+	if not rank or rank < 1 then rank = 1 end
+
+	local shopN = 0
+	local shopScore = {}
+	local cnt = CityGetBuildings("City", 2, -1, -1, -1, FILTER_HAS_DYNASTY, "Cand")
+	if cnt and cnt > 0 then
+		local i
+		for i = 0, cnt - 1 do
+			local ca = "Cand"..i
+			if AliasExists(ca) then
+				local bt = BuildingGetType(ca)
+				if bt ~= GL_BUILDING_TYPE_TAVERN and bt ~= GL_BUILDING_TYPE_PIRAT then
+					local dist = GetDistance("", ca)
+					if dist == -1 then dist = 999999 end
+					if dist <= 20000 then
+						local pick = idlelib_PickNeedGood(ca, needIndex, rank)
+						if pick > 0 then
+							local avail = GetItemCount(ca, pick, INVENTORY_SELL)
+							if not avail or avail < 1 then avail = 1 end
+							local stockw = 1 + math.min(avail, 10) * 0.15
+							local attract = GetImpactValue(ca, "Attractivity") or 0
+
+							local plevel = BuildingGetAISetting(ca, "BuySell_PriceLevel")
+							local pfactor = 1.0
+							if plevel == 0 then pfactor = 2.0
+							elseif plevel == 1 then pfactor = 1.33
+							elseif plevel == 3 then pfactor = 0.8
+							elseif plevel == 4 then pfactor = 0.67
+							end
+
+							CopyAlias(ca, "Shop"..shopN)
+							shopScore[shopN] = math.floor(((0.5 + attract) * stockw * pfactor * 100000) / math.max(250, dist))
+							shopN = shopN + 1
+							if shopN >= 16 then break end
+						end
+					end
+				end
+			end
+		end
+	end
+	if shopN == 0 then return false end
+
+	local tries = 0
+	local used = {}
+	while tries < 3 do
+		local best = -1
+		local bestScore = -1
+		local j
+		for j = 0, shopN - 1 do
+			if (not used[j]) and shopScore[j] > bestScore then
+				bestScore = shopScore[j]
+				best = j
+			end
+		end
+		if best < 0 then break end
+		used[best] = true
+		tries = tries + 1
+
+		local shop = "Shop"..best
+		if f_MoveTo("", shop, GL_MOVESPEED_RUN, 50 + Rand(60)) then
+			local buyId = idlelib_PickNeedGood(shop, needIndex, rank)
+			if buyId > 0 then
+				local qty = Rand(3) + 1
+				local avail = GetItemCount(shop, buyId, INVENTORY_SELL)
+				if avail and avail < qty then qty = avail end
+				if qty > 0 then
+					local prodNam = ItemGetLabel(buyId, true)
+					PlayAnimationNoWait("", "manipulate_middle_twohand")
+					MsgSayNoWait("", "@L_HPFZ_IDLELIB_GETFOOD_SPRUCH_+1", prodNam)
+					local moved = RemoveItems(shop, buyId, qty, INVENTORY_SELL)
+					if moved and moved > 0 then
+						local price = economy_GetPrice(shop, buyId, "")
+						if not price or price <= 0 then price = ItemGetPriceBuy(buyId, shop) end
+						local total = moved * (price or 0)
+						if total and total > 0 then
+							CreditMoney(shop, total, "WaresSold")
+							ShowOverheadSymbol(shop, false, false, 0, "@L%1t", total)
+							if economy_UpdateBalance then economy_UpdateBalance(shop, "WaresSold", total, buyId) end
+						end
+						MarketRegisterSale("City", buyId, moved)
+						if needIndex and needIndex > 0 then
+							SatisfyNeed("", needIndex, 0.5)
+						end
+						return true
+					end
+				end
+			end
+			PlayAnimationNoWait("", "propel")
+		end
+	end
+	return false
+end
+
 -- CheckInsideStore
 -- -----------------------
 function CheckInsideStore(Type)
-	local Workshop = "Workshop" 
+	if Type and Type > 0 then
+		if idlelib_GoShoppingSmart(Type) then
+			return
+		end
+	end
+	local Workshop = "Workshop"
 	if not GetHomeBuilding("", "HomeBld") then
 		return
 	end

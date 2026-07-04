@@ -269,13 +269,18 @@ function ImportantPersonsGather_UnemployedByAge()
 	
 	-- Define the criteria sims must meet to be included.
 	local SimListFilterFunction = gathering_IsUnemployedSim
-	
-	-- Define the sims list sort order.
-	local SimListSortCompareFunction = 
-		function(a,b) 
+
+	-- Define the sims list sort order: by level (higher/more skilled first), then by age (younger first).
+	local SimListSortCompareFunction =
+		function(a,b)
+			local LevelA = SimGetLevel(a)
+			local LevelB = SimGetLevel(b)
+			if LevelA ~= LevelB then
+				return LevelA > LevelB
+			end
 			return SimGetAge(a) <= SimGetAge(b)
 		end
-	
+
 	-- Find, sort and add the sims.
 	gathering_PopulateImportantPersonSection("UnemployedByAge", SimListFilterFunction, SimListSortCompareFunction, Debug)
 end
