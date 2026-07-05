@@ -5,6 +5,9 @@ function Weight()
 	if GetState("SIM", STATE_DEAD) or GetState("SIM", STATE_UNCONSCIOUS) or GetState("SIM", STATE_CUTSCENE) then
 		return 0
 	end
+	if not GetState("Victim", STATE_UNCONSCIOUS) then
+		return 0
+	end
 	if GetState("Victim", STATE_DEAD) or GetState("Victim", STATE_CUTSCENE) then
 		return 0
 	end
