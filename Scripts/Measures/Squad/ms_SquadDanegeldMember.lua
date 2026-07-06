@@ -139,7 +139,9 @@ function Danegeld()
 			return false
 		end
 	else
-		BuildingGetOwner("MyMercenarycamp", "MercOwner")
+		if not BuildingGetOwner("MyMercenarycamp", "MercOwner") then
+			return false
+		end
 	end
 
 	if GetImpactValue("Victim", "HaveBeenPickpocketed") > 0 then
@@ -149,11 +151,12 @@ function Danegeld()
 	if GetHomeBuilding("Victim", "workingplace") then
 		if BuildingGetOwner("workingplace", "VictimOwner") then
 			
-			AddImpact("Victim", "HaveBeenPickpocketed", 1, 12)
-			
-			if chr_SpendMoney("VictimOwner", money, "CostBribes", false) then
-				chr_ModifyFavor("VictimOwner","MercOwner",-favourloss)
+			if not chr_SpendMoney("VictimOwner", money, "CostBribes", false) then
+				return false
 			end
+
+			AddImpact("Victim", "HaveBeenPickpocketed", 1, 12)
+			chr_ModifyFavor("VictimOwner","MercOwner",-favourloss)
 
 			AlignTo("", "Victim")
 			PlayAnimationNoWait("", "use_object_standing")
@@ -164,6 +167,7 @@ function Danegeld()
 			--money = money + (SimGetLevel("") * 10)
 
 			chr_CreditMoney("MercOwner", money, "IncomeBribes")
+			feedback_OverheadFadeText("MercOwner", "@L%1t", false, money)
 			economy_UpdateBalance("MyMercenarycamp", "Theft", money)
 			if achievements_isValidSim("MercOwner", "CRIME_COLLECT_TOLL") then
 				UpdateStat("STAT_TOLL_MONEY", (GetStat("STAT_TOLL_MONEY") or 0) + math.floor(money))
@@ -203,6 +207,16 @@ function Scan(Member)
 	local DanegeldFilterSim = "__F((Object.GetObjectsByRadius(Sim) == "..DanegeldRadius..")AND NOT(Object.BelongsToMe())AND(Object.ActionAdmissible())AND NOT(Object.HasImpact(HaveBeenPickpocketed)))"
 	local DanegeldFilterCart = "__F((Object.GetObjectsByRadius(Cart) == "..DanegeldRadius..")AND NOT(Object.BelongsToMe())AND(Object.ActionAdmissible())AND NOT(Object.HasImpact(HaveBeenPickpocketed)))"
 	
+	if not GetDynasty("", "MercDynasty") then
+		if SimGetWorkingPlace("", "MyMercenarycamp") and BuildingGetOwner("MyMercenarycamp", "MercOwner") then
+			if not GetDynasty("MercOwner", "MercDynasty") then
+				return
+			end
+		else
+			return
+		end
+	end
+
 	-- Danegeld on sims deactivated
 	local NumVictimSims = 0 --Find("Destination", DanegeldFilterSim, "VictimSim", -1)
 	local NumVictimCarts = Find("Destination", DanegeldFilterCart, "VictimCart", -1)
@@ -229,7 +243,7 @@ function Scan(Member)
 		end
 		
 		for FoundObject=0, Num-1 do
-			if DynastyGetDiplomacyState("Dynasty", TargetAlias..FoundObject) <= DIP_NEUTRAL then --no attack agreement, no booty
+			if DynastyGetDiplomacyState("MercDynasty", TargetAlias..FoundObject) <= DIP_NEUTRAL then --no attack agreement, no booty
 				CurrentTargetValue = chr_GetBootyCount(TargetAlias..FoundObject, INVENTORY_STD)
 				if (CurrentTargetValue > MaxTargetValue) then
 					CopyAlias(TargetAlias..FoundObject, "Victim")

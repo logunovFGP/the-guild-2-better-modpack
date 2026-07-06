@@ -207,12 +207,13 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 	if IsType(Destination, "cl_Building") and BuildingCanBeEntered(Destination,Owner) then
 
 		local locator = "Walledge1"
+		local ReachedFallbackLocator = false
 		GetLocatorByName(Destination, locator, "entry")
 		
 		if AliasExists("entry") then
 			
-			local ResultName2 = "__MoveToResult_"..GetID(Owner).."_"..GetID(Destination)
-			local Result2 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
+			local ResultName2 = "__MoveToResult_"..GetID(Owner).."_"..GetID(Destination).."_Walledge1"
+			local Result2 = CMoveTo(Owner, "entry", iSpeed, ResultName2, fRange, true)
 			
 			
 			if (Result2) then
@@ -220,23 +221,38 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 				local lateresult = GetProperty(Owner, ResultName2)
 				RemoveProperty(Owner, ResultName2)
 				
-				if not lateresult or lateresult ~= GL_MOVERESULT_TARGET_REACHED then 
-					locator = "Walledge2"
-					GetLocatorByName(Destination, locator, "entry")
-
-					local Result3 = CMoveTo(Owner, "entry", iSpeed, ResultName, fRange, true)
+				if lateresult == GL_MOVERESULT_TARGET_REACHED then 
+					ReachedFallbackLocator = true
 				end
-
-				SetProperty(Owner, "BlockLocL", locator)
-				SetProperty(Owner, "BlockLocB", GetID(Destination))
 			end
+		end
+		
+		if not ReachedFallbackLocator then
+			locator = "Walledge2"
+			GetLocatorByName(Destination, locator, "entry")
+
+			if AliasExists("entry") then
+				local ResultName3 = "__MoveToResult_"..GetID(Owner).."_"..GetID(Destination).."_Walledge2"
+				local Result3 = CMoveTo(Owner, "entry", iSpeed, ResultName3, fRange, true)
+				if (Result3) then
+					WaitForMessage("WaitForTask")
+					local lateresult = GetProperty(Owner, ResultName3)
+					RemoveProperty(Owner, ResultName3)
+					
+					if lateresult == GL_MOVERESULT_TARGET_REACHED then 
+						ReachedFallbackLocator = true
+					end
+				end
+			end
+		end
+		
+		if ReachedFallbackLocator then
+			SetProperty(Owner, "BlockLocL", locator)
+			SetProperty(Owner, "BlockLocB", GetID(Destination))
 			--workaround for spinning carts...
 			SetState(Owner, STATE_CHECKFORSPINNINGS, false)
-
 			SimBeamMeUp(Owner, Destination, false)
 			return true
-		else
-			return false
 		end
 
 	end

@@ -420,13 +420,13 @@ function Worker(ActiveMovement)
 				end
 				idlelib_MyrmidonIdle("")
 				return
-			elseif SimGetProfession("") == 74 then
+			elseif SimGetProfession("") == GL_PROFESSION_PRIVATEGUARD then
 				if HasProperty("","SchuldenGeb") then
 					idlelib_ReturnACredit()
 				end
 				idlelib_LeibwacheIdle("WorkingPlace")
 				return
-			elseif SimGetProfession("") == 17 then
+			elseif SimGetProfession("") == GL_PROFESSION_MERCENARY then
 				if HasProperty("","SchuldenGeb") then
 					idlelib_ReturnACredit()
 				end

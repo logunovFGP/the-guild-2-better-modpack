@@ -577,14 +577,15 @@ function CheckAlderman()
 		Alias = "Dyn"..i
 		if GetID(Alias) > 0 then
 			SimCount = DynastyGetMemberCount(Alias)
-			for e=0, SimCount do
-				DynastyGetMember(Alias, e, "Sim"..e)
-				-- select the strongest sim of the dynasty
-				if HasProperty("Sim"..e, "PatronMaster") or HasProperty("Sim"..e, "ArtisanMaster") or HasProperty("Sim"..e, "ScholarMaster") or HasProperty("Sim"..e, "ChiselerMaster") then
-					SimPrioNew = GetProperty("Sim"..e, "GuildFame")	or 0
-					if SimPrioNew > SimPrio then
-						SimPrio = SimPrioNew
-						CopyAlias("Sim"..e, "Candidate"..i)
+			for e=0, SimCount-1 do
+				if DynastyGetMember(Alias, e, "Sim"..e) then
+					-- select the strongest sim of the dynasty
+					if HasProperty("Sim"..e, "PatronMaster") or HasProperty("Sim"..e, "ArtisanMaster") or HasProperty("Sim"..e, "ScholarMaster") or HasProperty("Sim"..e, "ChiselerMaster") then
+						SimPrioNew = GetProperty("Sim"..e, "GuildFame")	or 0
+						if SimPrioNew > SimPrio then
+							SimPrio = SimPrioNew
+							CopyAlias("Sim"..e, "Candidate"..i)
+						end
 					end
 				end
 			end
@@ -675,7 +676,7 @@ end
 function Inferno()
 	do Sleep(5) return end
 	-- residences
-	local NumBuildings = CityGetBuildingCount("",1,-1,-1,-1,FILTER_IGNORE)
+	local NumBuildings = CityGetBuildingCount("",GL_BUILDING_CLASS_LIVINGROOM,-1,-1,-1,FILTER_IGNORE)
 	CityGetBuildings("",1,-1,-1,-1,FILTER_IGNORE,"Building")
 	local Severity = Rand(60) + 10
 	for i=0,NumBuildings-1 do
@@ -685,7 +686,7 @@ function Inferno()
 		end
 	end
 	-- workshops
-	local NumBuildings = CityGetBuildingCount("",2,-1,-1,-1,FILTER_IGNORE)
+	local NumBuildings = CityGetBuildingCount("",GL_BUILDING_CLASS_WORKSHOP,-1,-1,-1,FILTER_IGNORE)
 	CityGetBuildings("",2,-1,-1,-1,FILTER_IGNORE,"Building")
 	for i=0,NumBuildings-1 do
 		if GetImpactValue("Building"..i, 7) * 100 < Severity then

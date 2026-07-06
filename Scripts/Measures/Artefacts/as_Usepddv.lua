@@ -10,7 +10,7 @@ function Run()
 
 	-- AI Script behavior
 	if IsStateDriven() then
-		local ItemName = "pddv"
+		local ItemName = "Pddv"
 		if GetItemCount("", ItemName, INVENTORY_STD) == 0 then
 			if not ai_BuyItem("", ItemName, 1, INVENTORY_STD) then
 				return
@@ -36,7 +36,7 @@ function Run()
 		StopMeasure()
 	end
 
-	if RemoveItems("", "pddv", 1) == 1 then
+	if RemoveItems("", "Pddv", 1) == 1 then
 	
 		-- initialize measure
 		MeasureSetNotRestartable()

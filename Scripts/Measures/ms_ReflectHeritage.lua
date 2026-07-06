@@ -162,7 +162,7 @@ function CheckPleasurePalace()
 	local wCount = BuildingGetWorkerCount("CurrentBuilding")
 	for gi = 0, wCount - 1 do
 		if BuildingGetWorker("CurrentBuilding", gi, "ppGuard") then
-			if SimGetProfession("ppGuard") == 74 then
+			if SimGetProfession("ppGuard") == GL_PROFESSION_PRIVATEGUARD then
 				guardCount = guardCount + 1
 			end
 		end

@@ -31,9 +31,9 @@ function Start()
 
 	ShowTutorialBoxNoWait(100, 690, 500, 150, 1, LEFTLOWER_NOARROW, "@L_TUTORIAL_CHAPTER_4_BUY_RESSOURCES_STORE_IRON_NAME",  "@L_TUTORIAL_CHAPTER_4_BUY_RESSOURCES_STORE_IRON_TASK",  "Hud/Items/Item_Iron.tga")
 
-	local ToolCount = GetItemCount("#Smithy", "Tool", INVENTORY_STD)
-	if ToolCount > 0 then
-		RemoveItems("#Smithy", "Tool", ToolCount)
+	local IronCount = GetItemCount("#Smithy", "Iron")
+	if IronCount > 0 then
+		RemoveItems("#Smithy", "Iron", IronCount)
 	end	
 
 	SetData("NoCart",0)

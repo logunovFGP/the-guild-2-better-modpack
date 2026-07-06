@@ -65,31 +65,31 @@ function Run()
 		local ItemTwoAvg = 0
 		local Wages = 0
 		
-		if BuildingGetType("Workshop")==6 then -- bakery
+		if BuildingGetType("Workshop")==GL_BUILDING_TYPE_BAKERY then -- bakery
 			BalanceLastItem = "Cookie"
 			LabelOne = "Cookie"
 			LabelTwo = "Wheatbread"
-		elseif BuildingGetType("Workshop")==7 then -- smithy
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_SMITHY then -- smithy
 			BalanceLastItem = "Tool"
 			LabelOne = "Tool"
 			LabelTwo = "Dagger"
-		elseif BuildingGetType("Workshop")==8 then -- joinery
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_JOINERY then -- joinery
 			BalanceLastItem = "Torch"
 			LabelOne = "Torch"
 			LabelTwo = "Schnitzi"
-		elseif BuildingGetType("Workshop")==9 then -- tailor
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_TAILORING then -- tailor
 			BalanceLastItem = "MoneyBag"
 			LabelOne = "MoneyBag"
 			LabelTwo = "Blanket"
-		elseif BuildingGetType("Workshop")==110 then -- stonemason
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_STONEMASON then -- stonemason
 			BalanceLastItem = "vase"
 			LabelOne = "vase"
 			LabelTwo = "Grindingbrick"
-		elseif BuildingGetType("Workshop")==16 then -- alchemist
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_ALCHEMIST then -- alchemist
 			BalanceLastItem = "HerbTea"
 			LabelOne = "HerbTea"
 			LabelTwo = "Phiole"
-		elseif BuildingGetType("Workshop")==98 then -- cemetery
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_NEKRO then -- cemetery
 			BalanceLastItem = "Schadelkerze" 
 			LabelOne = "Schadelkerze"
 			LabelTwo = "Knochenarmreif"

@@ -15,7 +15,7 @@ function Weight()
 	if Rand(2) == 0 then
 	    Count = CityGetBuildings("PPM_CITY", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_ISNOT_BUYABLE, "PPM_BUILD")
 	else
-	    Count = CityGetBuildings("PPM_CITY", 1, -1, -1, -1, FILTER_ISNOT_BUYABLE, "PPM_BUILD")
+	    Count = CityGetBuildings("PPM_CITY", GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_ISNOT_BUYABLE, "PPM_BUILD")
 	end
 	
 	if Count < 1 then

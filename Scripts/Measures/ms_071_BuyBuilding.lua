@@ -18,7 +18,7 @@ function Run()
 	end
 	
 	-- check if building is an estate
-	if BuildingGetType("") == 111 then
+	if BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
 		DynastyGetMember("dynasty", 0, "boss")
 		if GetNobilityTitle("boss") < 8 then
 			MsgQuick("dynasty", "@L_GENERAL_BUILDING_CASTLE_FAILURE_+0")

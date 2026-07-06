@@ -1,4 +1,9 @@
 function Run()
+	if GetImpactValue("", "AldermanFreezeTrade") ~= 1 then
+		StopMeasure()
+		return
+	end
+
 	if IsStateDriven() then
 		if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 			StopMeasure()

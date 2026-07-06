@@ -38,7 +38,7 @@ function Init()
 	local vorgang
 	repeat -- building overview, building select and send out
 		local optionen = { -- TODO list current buildings as buttons or submenu
-											"@B[1,@L_TRADEROUTE_INITIATE_OPTION_+2,]", -- Nächstes Gebäude
+											"@B[1,@L_TRADEROUTE_INITIATE_OPTION_+2,]", -- Nï¿½chstes Gebï¿½ude
 											"",--"@B[2,@L_TRADEROUTE_INITIATE_OPTION_+9,]", -- Aktuelle Route anzeigen
 											"@B[5,@L_TRADEROUTE_INITIATE_OPTION_+5,]", -- Verkaufsniveau
 											"@B[6,@L_TRADEROUTE_INITIATE_OPTION_+6,]", -- Intervall
@@ -51,7 +51,7 @@ function Init()
 		else
 			optionen2 = optionen[1]..optionen[3]..optionen[4]..optionen[6]
 		end
-		vorgang = MsgBox("","Owner","@P"..optionen2,"@L_TRADEROUTE_INITIATE_HEAD_+0","_TRADEROUTE_INITIATE_BODY_+0", SaleThreshold, IntervalLabel)	 -- Vorgang wählen
+		vorgang = MsgBox("","Owner","@P"..optionen2,"@L_TRADEROUTE_INITIATE_HEAD_+0","_TRADEROUTE_INITIATE_BODY_+0", SaleThreshold, IntervalLabel)	 -- Vorgang wï¿½hlen
 		if vorgang == 1 then -- next building
 			StationCount = StationCount + 1 
 			ort = ms_hpfz_autoroute_Wegpunkte(StationCount) -- returns ("WegPunkt"..o, true)
@@ -103,10 +103,10 @@ function ActionSelect(ort, CurrentItems)
 	local vorgang, was, wovon, wieviel
 	local optionen = {"@B[1,@L_TRADEROUTE_ACTIONSELECT_OPTION_+1,]", -- Einladen
 										"@B[2,@L_TRADEROUTE_ACTIONSELECT_OPTION_+2,]", -- Ausladen
-										"@B[3,@L_TRADEROUTE_ACTIONSELECT_OPTION_+3,]",--Lager auffüllen
+										"@B[3,@L_TRADEROUTE_ACTIONSELECT_OPTION_+3,]",--Lager auffï¿½llen
 										"@B[81,@L_TRADEROUTE_ACTIONSELECT_OPTION_+4,]",-- Wegpunkt als wichtig markieren
 										"@B[82,@L_TRADEROUTE_ACTIONSELECT_OPTION_+5,]", -- Wegpunkt als nicht wichtig markieren
-										"@B[C,@L_TRADEROUTE_ACTIONSELECT_OPTION_+0,]"}-- Zurück
+										"@B[C,@L_TRADEROUTE_ACTIONSELECT_OPTION_+0,]"}-- Zurï¿½ck
 
 	repeat 
 		local optionen2 = ""
@@ -114,7 +114,7 @@ function ActionSelect(ort, CurrentItems)
 		optionen2 = optionen2..optionen[1]--Einladen
 		optionen2 = optionen2..optionen[2]--Ausladen
 		if GetDynastyID("") == GetDynastyID(ort) then
-			optionen2 = optionen2..optionen[3]--Lager auffüllen
+			optionen2 = optionen2..optionen[3]--Lager auffï¿½llen
 		end
 		if not wichtig then
 			optionen2 = optionen2..optionen[4] -- als wichtig markieren
@@ -123,11 +123,11 @@ function ActionSelect(ort, CurrentItems)
 			optionen2 = optionen2..optionen[5] -- als nicht wichtig markieren
 			imp = "_TRADEROUTE_ACTIONSELECT_BODY_+1"
 		end
-		optionen2 = optionen2..optionen[6]--Zurück
-		vorgang = MsgBox("","Owner","@P"..optionen2,"@L_TRADEROUTE_ACTIONSELECT_HEAD_+0","@L_TRADEROUTE_ACTIONSELECT_BODY_+0", GetID(ort), imp)	-- Vorgang wählen
+		optionen2 = optionen2..optionen[6]--Zurï¿½ck
+		vorgang = MsgBox("","Owner","@P"..optionen2,"@L_TRADEROUTE_ACTIONSELECT_HEAD_+0","@L_TRADEROUTE_ACTIONSELECT_BODY_+0", GetID(ort), imp)	-- Vorgang wï¿½hlen
 
 		if vorgang == "C" then
-			-- Zurück zur Gebäudeauswahl
+			-- Zurï¿½ck zur Gebï¿½udeauswahl
 			return ActionCount, Actions, wichtig
 			
 		elseif vorgang == 1 then -- Einladen
@@ -144,10 +144,10 @@ function ActionSelect(ort, CurrentItems)
 				ms_hpfz_autoroute_KarrenLager(false, wovon, wieviel, CurrentItems)
 			end
 
-		elseif vorgang == 3 then -- Lager auffüllen
+		elseif vorgang == 3 then -- Lager auffï¿½llen
 			was = 3
 			wovon, wieviel = ms_hpfz_autoroute_InitUnload(ort, true, CurrentItems)
-			-- kein Ändern des Karrenlagers, da ggf. gar keine Waren abgeladen werden
+			-- kein ï¿½ndern des Karrenlagers, da ggf. gar keine Waren abgeladen werden
 		
 		elseif vorgang == 81 then
 			wichtig = true
@@ -162,7 +162,7 @@ function ActionSelect(ort, CurrentItems)
 	return ActionCount, Actions, wichtig
 end
 
--- zeigt einen Dialog mit einem Button pro Station und einem Zurück-Button 
+-- zeigt einen Dialog mit einem Button pro Station und einem Zurï¿½ck-Button 
 function ShowRoute(StationCount, Stations)
 	-- show message with route
 	local buttons = "@P" 
@@ -171,7 +171,7 @@ function ShowRoute(StationCount, Stations)
 		buttons = buttons.."@B["..i..","..ort..",]"
 	end
 	buttons = buttons.."@B[8888,@LBack_+0,]"
-	local vorgang = MsgBox("","Owner",buttons,"@L_TRADEROUTE_INITIATE_HEAD_+0","")	-- Vorgang wählen
+	local vorgang = MsgBox("","Owner",buttons,"@L_TRADEROUTE_INITIATE_HEAD_+0","")	-- Vorgang wï¿½hlen
 	-- TODO process vorgang
 	return
 end
@@ -344,7 +344,7 @@ function Run()
 					Count = AC[3]
 					
 					if Action == 1 then 
-						------ Einladen oder Karren auffüllen ----
+						------ Einladen oder Karren auffï¿½llen ----
 						local requiredItems = Count - GetItemCount("", Type, INVENTORY_STD)
 				 		local itemCount = math.min(requiredItems, GetItemCount(Station, Type, INVENTORY_STD))
 			 			ms_hpfz_autoroute_LoadCart(SrcID, DestID, Station, Type, itemCount)
@@ -355,7 +355,7 @@ function Run()
 					------ Ausladen ----
 						isDone = isDone and ms_hpfz_autoroute_Unload(Station, Type, Count, Threshold)
 					elseif Action == 3 then
-					------ Lager auffüllen ----
+					------ Lager auffï¿½llen ----
 						local requiredItems = Count - GetItemCount(Station, Type, INVENTORY_STD)
 						if requiredItems > 0 and SrcID == DestID then
 							local itemCount = math.min(requiredItems, GetItemCount("", Type, INVENTORY_STD))
@@ -421,7 +421,7 @@ function SetRouteData(StationCount, Stations)
 		if Stations[s][2] >= 1 then
 			for a = 1, Stations[s][2] do
 				local Action = Stations[s][3][a]
-				SetData("S"..s.."Action"..a, Action[1]) -- Aktion: 1=Einladen, 2=Ausladen, 3=Auffüllen
+				SetData("S"..s.."Action"..a, Action[1]) -- Aktion: 1=Einladen, 2=Ausladen, 3=Auffï¿½llen
 				SetData("S"..s.."Type"..a, Action[2])
 				SetData("S"..s.."Count"..a, Action[3])
 			end 
@@ -473,8 +473,13 @@ function Unload(Station, Type, Count, Threshold)
 			and GetSettlement(Station, "MyCity") then
 		CityGetLocalMarket("MyCity", "MyMarket")
 		-- check threshold
-		local Ratio = ItemGetPriceSell(Type, Station)*100/ItemGetBasePrice(Type)
-		if Ratio < Threshold then
+			local sellprice = ItemGetPriceSell(Type, "MyMarket") -- ItemGetPriceSell can only check price at market, not at Station
+			if sellprice == -1 then -- error
+				LogMessage("AutoTrade Error: ItemGetPriceSell returned -1 for item "..Type.." at market "..GetID("MyMarket").." in settlement "..GetID("MyCity"))
+				return true -- break out of the loop
+			end
+			local Ratio = sellprice*100/ItemGetBasePrice(Type)
+			if Ratio < Threshold then
 			return false
 		end
 	end
@@ -516,7 +521,7 @@ function CheckWarning(NumberOfTries, WarningCount, Station)
 	return WarningCount, false, (NumberOfTries + 1)
 end
 
----- Auswahlmenü: Waren einladen
+---- Auswahlmenï¿½: Waren einladen
 -- returns ItemId, Amount
 function ChooseItemsToLoad(CartAlias, BldAlias)
   -- if TWP mod, use economy scripts

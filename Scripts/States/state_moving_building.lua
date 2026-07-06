@@ -5,7 +5,7 @@ function Init()
 	local x,y,z = PositionGetVector("Pos")
 	local BuildingRotRad = (ObjectGetRotationY("") / 360) * (2 * math.pi)
 	
-	if BuildingType == 104 then -- Windmill
+	if BuildingType == GL_BUILDING_TYPE_MILL then -- Windmill
 		local dx = 20
 		local dz = 200
 		local ZN = z + math.cos(BuildingRotRad) * (dx) - math.sin(BuildingRotRad) * (dz)
@@ -14,7 +14,7 @@ function Init()
 		GfxAttachObject("BuildingAnimation0","buildings/windmillwheel.nif")
 		GfxSetPosition("BuildingAnimation0",XN,y+665,ZN,true)
 		GfxSetRotation("BuildingAnimation0", 0, 90, 0, false)
-	elseif BuildingType == 27 then -- Arsenal
+	elseif BuildingType == GL_BUILDING_TYPE_ARSENAL then -- Arsenal
 		local dx = 0
 		local dz = 0
 		local ZN = z + math.cos(BuildingRotRad) * (dx) - math.sin(BuildingRotRad) * (dz)
@@ -28,7 +28,7 @@ function Init()
 		end
 		GfxSetPosition("BuildingAnimation0",XN,y,ZN,true)
 		GfxSetRotation("BuildingAnimation0", 0, 90, 0, false)
-	elseif BuildingType == 24 then -- Well
+	elseif BuildingType == GL_BUILDING_TYPE_WELL then -- Well
 		local dx = 0
 		local dz = 0
 		local ZN = z + math.cos(BuildingRotRad) * (dx) - math.sin(BuildingRotRad) * (dz)
@@ -42,7 +42,7 @@ function Init()
 		end
 		GfxSetPosition("BuildingAnimation0",XN,y+2,ZN,true)
 		GfxSetRotation("BuildingAnimation0", 0, 0, 0, false)	
-	elseif BuildingType == 102 then -- Juggler
+	elseif BuildingType == GL_BUILDING_TYPE_JUGGLER then -- Juggler
 		if Level > 1 then
 			local dx = -270
 			local dz = 390
@@ -63,7 +63,7 @@ function Init()
 			GfxStartParticle("JugglerFlames0", "particles/fire1.nif", "Pos", 2)
 		end
 		SetProperty("","FireOn", 1)
-	elseif BuildingType == 109 then -- Soldierplace
+	elseif BuildingType == GL_BUILDING_TYPE_SOLDIERPLACE then -- Soldierplace
 		local dx = 0
 		local dz = 0
 		
@@ -77,7 +77,7 @@ function Init()
 end
 
 function Run()
-	if BuildingGetType("") == 104 then -- Windmill
+	if BuildingGetType("") == GL_BUILDING_TYPE_MILL then -- Windmill
 		local LastState = 0
 		if not HasProperty("","Active") then
 			SetProperty("","Active",0)
@@ -107,7 +107,7 @@ function Run()
 			end
 			Sleep(Rand(2)+5)
 		end
-	elseif BuildingGetType("") == 102 then -- Juggler
+	elseif BuildingGetType("") == GL_BUILDING_TYPE_JUGGLER then -- Juggler
 		while true do
 			if Weather_GetValue(0) > 0.5 and GetProperty("","FireOn") == 1 then -- rain
 				GfxStopParticle("JugglerFlames0")
@@ -133,15 +133,15 @@ end
 
 function CleanUp()
 	if AliasExists("BuildingAnimation0") then
-		if BuildingGetType("") == 104 or BuildingGetType("") == 27 
-			or BuildingGetType("") == 29 or BuildingGetType("") == 102 
-			or BuildingGetType("") == 109 or BuildingGetType("") == 21 then
+		if BuildingGetType("") == GL_BUILDING_TYPE_MILL or BuildingGetType("") == GL_BUILDING_TYPE_ARSENAL 
+			or BuildingGetType("") == GL_BUILDING_TYPE_GRAVEYARD or BuildingGetType("") == GL_BUILDING_TYPE_JUGGLER 
+			or BuildingGetType("") == GL_BUILDING_TYPE_SOLDIERPLACE or BuildingGetType("") == GL_BUILDING_TYPE_MERCENARY then
 			GfxSetPosition("BuildingAnimation0",0,-1000,0,false)
 			GfxDetachObject("BuildingAnimation0")
 		end
 	end
 
-	if BuildingGetType("") == 102 then
+	if BuildingGetType("") == GL_BUILDING_TYPE_JUGGLER then
 		GfxStopParticle("JugglerFlames0")
 	end
 end

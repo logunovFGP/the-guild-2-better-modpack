@@ -11,7 +11,7 @@ function Run()
 					if not GetInsideBuilding("", "CurrentBuilding") then
 						StopMeasure()
 					end
-					if BuildingGetType("CurrentBuilding")==36 then
+					if BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_DIVEHOUSE then
 						CopyAlias("CurrentBuilding", "Divehouse")
 					else
 						StopMeasure()
@@ -35,7 +35,7 @@ function Run()
 			StopMeasure()
 		end
 
-		if BuildingGetType("CurrentBuilding")==36 then
+		if BuildingGetType("CurrentBuilding")==GL_BUILDING_TYPE_DIVEHOUSE then
 			CopyAlias("CurrentBuilding","Divehouse")
 		else
 			StopMeasure()

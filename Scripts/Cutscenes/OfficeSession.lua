@@ -1414,7 +1414,7 @@ function AIAbstimmung(Params)
 		if Fav > MaxFav then
 			Best = App
 			MaxFav = Fav
-		elseif Fav == MaxFavor then
+		elseif Fav == MaxFav then
 			Best = -1
 		end
 	end
@@ -1486,9 +1486,9 @@ function SimExitBuilding()
 	CutsceneSendEventTrigger("owner", "Reached")
 	f_ExitCurrentBuilding("")
 	CutsceneRemoveSim("owner", "")
-	SimResetBehavior("Sim")
+	SimResetBehavior("")
 	if DynastyIsAI("") then
-		AllowAllMeasures("Sim")
+		AllowAllMeasures("")
 	end
 end
 

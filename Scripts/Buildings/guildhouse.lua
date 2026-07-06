@@ -377,11 +377,10 @@ function CheckGuildMasters()
 					textArray[11] = "@L$S[20"..tmpflag.."]"
 				end
 				
-				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0"
-				textArray[6] = GetName("Winner")
-			
 				Gender = SimGetGender("Winner") + 1
 				GenderLabel = GenderArray[Gender]
+				textArray[5] = "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0"
+				textArray[6] = GetName("Winner")
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 
 									GetID("Winner"), NewYear, "@L_GUILDHOUSE_MASTERLIST_SCHOLAR_"..GenderLabel.."_+0")
@@ -406,11 +405,10 @@ function CheckGuildMasters()
 					textArray[12] = "@L$S[20"..tmpflag.."]"
 				end
 				
-				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0"
-				textArray[8] = GetName("Winner")
-			
 				Gender = SimGetGender("Winner") + 1
 				GenderLabel = GenderArray[Gender]
+				textArray[7] = "@L_GUILDHOUSE_MASTERLIST_CHISELER_"..GenderLabel.."_+0"
+				textArray[8] = GetName("Winner")
 		
 				feedback_MessagePolitics("Winner", "@L_GUILDHOUSE_MASTERLIST_PLAYER_HEAD_+0", 
 									"@L_GUILDHOUSE_MASTERLIST_PLAYER_"..GenderLabel.."_+0", GetID("city"), 

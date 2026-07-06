@@ -1572,7 +1572,7 @@ function TakeACredit()
 		return
 	end
 
-	local NumBankhouses = CityGetBuildings("City", 2, 43, -1, -1, FILTER_HAS_DYNASTY, "Bank")
+	local NumBankhouses = CityGetBuildings("City", GL_BUILDING_CLASS_WORKSHOP, 43, -1, -1, FILTER_HAS_DYNASTY, "Bank")
 
 	if NumBankhouses > 0 then
 		for i = 0, NumBankhouses - 1 do
@@ -1650,7 +1650,7 @@ function RentBed()
 		return
 	end
 
-	local NumTaverns = CityGetBuildings("City", 2, 4, -1, -1, FILTER_HAS_DYNASTY, "Tavern")
+	local NumTaverns = CityGetBuildings("City", GL_BUILDING_CLASS_WORKSHOP, 4, -1, -1, FILTER_HAS_DYNASTY, "Tavern")
 
 	if NumTaverns > 0 then
 		for i = 0, NumTaverns - 1 do

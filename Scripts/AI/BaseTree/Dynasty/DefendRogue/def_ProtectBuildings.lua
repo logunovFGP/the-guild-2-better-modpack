@@ -61,9 +61,9 @@ function Weight()
 		end
 	end
 	
-	if GetImpactValue("ProtectMe","buildingburgledtoday")>0 or BuildingGetType("ProtectMe")==18 or
-		BuildingGetType("ProtectMe") == 3 or BuildingGetType("ProtectMe")==108 or 
-		BuildingGetType("ProtectMe") == 104 or BuildingGetType("ProtectMe")==12 then
+	if GetImpactValue("ProtectMe","buildingburgledtoday")>0 or BuildingGetType("ProtectMe")==GL_BUILDING_TYPE_RANGERHUT or
+		BuildingGetType("ProtectMe") == GL_BUILDING_TYPE_FARM or BuildingGetType("ProtectMe")==GL_BUILDING_TYPE_FRUITFARM or 
+		BuildingGetType("ProtectMe") == GL_BUILDING_TYPE_MILL or BuildingGetType("ProtectMe")==GL_BUILDING_TYPE_MINE then
 		if ImpactGetMaxTimeleft("ProtectMe","buildingburgledtoday") <=4 then
 			if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("UseBoobyTrap")) <= 0 then
 				if GetImpactValue("ProtectMe","BoobyTrap")==0 then
@@ -100,7 +100,7 @@ function Execute()
 	local WhatToDo = GetData("WhatToDo")
 	if WhatToDo == 2 then
 		if GetRound()<5 then
-			if BuildingGetType("ProtectMe")==12 then
+			if BuildingGetType("ProtectMe")==GL_BUILDING_TYPE_MINE then
 				-- cheat for mines in the first rounds
 				AddItems("SIM","BoobyTrap",1,INVENTORY_STD)
 			end

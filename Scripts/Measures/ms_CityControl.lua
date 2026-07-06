@@ -135,7 +135,7 @@ end
 function Inferno()
 	do Sleep(5) return end
 	local NumBuildings = CityGetBuildingCount("MyCity", 1, -1, -1, -1, FILTER_IGNORE)
-	CityGetBuildings("MyCity", 1, -1, -1, -1, FILTER_IGNORE, "Building")
+	CityGetBuildings("MyCity", GL_BUILDING_CLASS_LIVINGROOM, -1, -1, -1, FILTER_IGNORE, "Building")
 	for i=0, NumBuildings-3 do
 		SetState("Building"..i, STATE_BURNING, true)
 		Sleep(5)
