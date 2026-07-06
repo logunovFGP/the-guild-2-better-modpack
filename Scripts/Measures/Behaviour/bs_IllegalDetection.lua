@@ -57,6 +57,7 @@ function Run()
 		return ""
 	elseif MeasureName == "SquadWaylayMember" then
 		SetProperty("", "DontLeave", 1)
+		return "" -- dont do other actions like CallGuards while Waylaying
 	end
 	
 	local MyProfession = SimGetProfession("")
@@ -76,6 +77,21 @@ function Run()
 
 	local bEvidence = ActionIsEvidence("Action")
 	local bIsGuard = (MyDyn == -1) and (MyProfession == GL_PROFESSION_CITYGUARD or MyProfession == GL_PROFESSION_ELITEGUARD)
+	local bIsHiredGuard = (MyProfession == GL_PROFESSION_PRIVATEGUARD) or HasProperty("", "Guarding")
+	local bActorIsGuardOwner = false
+
+	if bIsHiredGuard and ActorDyn > 0 then
+		local GuardOwnerDyn = SimGetServantDynastyId("")
+		if GuardOwnerDyn < 1 then
+			if SimGetWorkingPlace("", "WorkingPlace") then
+				GuardOwnerDyn = GetDynastyID("WorkingPlace")
+			end
+		end
+
+		if GuardOwnerDyn == ActorDyn then
+			bActorIsGuardOwner = true
+		end
+	end
 
 	-- join an existing Fight
 	if not (bIsGuard) then
@@ -83,6 +99,10 @@ function Run()
 			CopyAlias("nextEnemy", "Destination")
 			return "Attack"
 		end
+	end
+
+	if bActorIsGuardOwner then
+		return ""
 	end
 	
 	-- starts a new Fight

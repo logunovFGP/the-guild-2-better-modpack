@@ -6,7 +6,7 @@ function Run()
 	end
 
 	-- check for maximum of 10 thugs for dynasty
-	if BuildingGetType("") == 2 and DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= 10 then
+	if BuildingGetType("") == GL_BUILDING_TYPE_RESIDENCE and DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= 10 then
 		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURES_HIRERANDOM_NOTHUGS_+0")
 		StopMeasure()
 	end
@@ -65,7 +65,7 @@ function Run()
 		Handsel = Handsel + 2400
 	end
 	
-	if BuildingGetType("") == 111 then
+	if BuildingGetType("") == GL_BUILDING_TYPE_ESTATE then
 		Handsel = Handsel + 4900
 	end
 	

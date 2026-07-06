@@ -506,8 +506,8 @@ function ResetWorkers(BldAlias)
 				
 				-- heal default worker.
 				if GetImpactValue("Worker", "Sickness") > 0 then
-					diseases_removeAllSickness("")
-					MoveSetActivity("")
+					diseases_removeAllSickness("Worker")
+					MoveSetActivity("Worker")
 				end
 				
 				SetProperty("Worker", "ResetWorker", 1)

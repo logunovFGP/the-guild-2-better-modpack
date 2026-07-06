@@ -34,7 +34,7 @@ function Run()
 		--Sleep(2)
 	end
 
---  if BuildingGetType("") == 32 then
+--  if BuildingGetType("") == GL_BUILDING_TYPE_LINGERPLACE then
 --    SetState("", STATE_HPFZ_STATUE, true)
 --  end
 end

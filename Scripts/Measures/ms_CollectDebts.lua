@@ -21,7 +21,7 @@ function Run()
 	-- No cancel? So then let's get started
 	
 	if GetInsideBuilding("Destination","Inside") then
-		if BuildingGetType("Inside")==1 then -- check if target is inside worker's hut 
+		if BuildingGetType("Inside")==GL_BUILDING_TYPE_WORKER_HOUSING then -- check if target is inside worker's hut 
 			f_ExitCurrentBuilding("Destination")
 			GetFleePosition("Destination","Inside",1000,"FleePos")
 			f_MoveTo("Destination","FleePos")

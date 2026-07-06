@@ -7,7 +7,7 @@ function On_Enable()
 end
 
 function On_MOUSE_RB_RELEASED( Value)
-	Mode = this:GetValueInt("Object3DToolMode")
+	local Mode = this:GetValueInt("Object3DToolMode")
 	if (Mode == 2) then
 		landscapeeditor_SetToolMode(0)
 	end
@@ -24,7 +24,6 @@ function On_SHOOTERCAM( Value)
 end
 
 function On_GUIMODE(Value)
-	CamMode = this:GetValueInt("CameraMode")
 	if (Value == 1) then
 		SetEditorMode("2DEdit")
 	else
@@ -33,7 +32,7 @@ function On_GUIMODE(Value)
 end
 
 function On_NEW_OBJECT( Value)
-	Mode = this:GetValueInt("Object3DToolMode")
+	local Mode = this:GetValueInt("Object3DToolMode")
 	if not (Mode == 2) then
 		landscapeeditor_SetToolMode(2)
 	end
@@ -43,9 +42,9 @@ function On_KEYBOARD_PRESSED(Value)
 
 	LogMessage("#E Key pressed: " .. Value)
 
- 	-- 'm' & 'M'
+	-- 'm' & 'M'
 	if ( (Value == 77) or (Value == 109) ) then
-		Mode = this:GetValueInt("Object3DToolMode") + 1
+		local Mode = this:GetValueInt("Object3DToolMode") + 1
 		landscapeeditor_SetToolMode(Mode)
 	end
 	

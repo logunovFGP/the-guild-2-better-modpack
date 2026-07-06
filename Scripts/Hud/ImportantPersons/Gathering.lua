@@ -103,7 +103,7 @@ function IsCreditorSim(Alias)
 		GetDynasty("","MyDyn")
 		for i=0, DynastyGetBuildingCount2("MyDyn")-1 do  -- loop through all your buildings
 			DynastyGetBuilding2("MyDyn",i,"Bank") -- save the building in "Bank"
-			if BuildingGetType("Bank")==43 then -- check if it is really a bankhouse
+			if BuildingGetType("Bank")==GL_BUILDING_TYPE_BANKHOUSE then -- check if it is really a bankhouse
 				if GetID("Bank") == bankID then  -- check if your bank is the creditors bank
 					IsCreditor = true
 				end

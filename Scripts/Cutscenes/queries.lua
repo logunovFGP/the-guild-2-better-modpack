@@ -49,10 +49,10 @@ function AttendTrialMeeting(DestinationID)
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		GetInsideBuilding("Sim","InsideBuilding")
-		if (GetID("destination") ~= GetID("InsideBuilding")) then
+		if (GetID("Destination") ~= GetID("InsideBuilding")) then
 			if MsgNews("Sim", "Destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"politics", 1, "@L_LAWSUIT_DIARY_REMEMBER_+0", "@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("destination"))=="C" then
+					queries_AIReturnO,"politics", 1, "@L_LAWSUIT_DIARY_REMEMBER_+0", "@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("Destination"))=="C" then
 				bRun = false
 			end
 		end
@@ -83,7 +83,7 @@ function AttendOfficeMeeting(DestinationID)
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
 		GetInsideBuilding("Sim","InsideBuilding")
-		if (GetID("destination") ~= GetID("InsideBuilding")) then
+		if (GetID("Destination") ~= GetID("InsideBuilding")) then
 			if MsgNews("Sim", "Destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
 					queries_AIReturnO, "politics", 1, 
@@ -118,7 +118,7 @@ function AttendDuel(DestinationID)
 
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
-		if MsgNews("Sim","destination",
+		if MsgNews("Sim","Destination",
 				"@P"..
 				"@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]"..
 				"@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
@@ -150,7 +150,7 @@ function AttendFestivity(DestinationID)
 	local bRun = true
 	local message = 0
 	if GetInsideBuilding("Sim", "Currentbuilding") then
-		if GetID("CurrentBuilding") == GetID("Destination") then
+		if GetID("Currentbuilding") == GetID("Destination") then
 			-- already there
 		else
 			message = 1
@@ -199,7 +199,7 @@ function AttendWedding(DestinationID)
 
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
-		if MsgNews("Sim","destination",
+		if MsgNews("Sim","Destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
 					queries_AIReturnO, "politics", 1, "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+0", "@L_WEDDING_CEREMONY_DIARY_REMEMBER_+1", GetID("Sim")) =="C" then
 			bRun = false
@@ -217,9 +217,9 @@ end
 function Attend(DestinationID)
 	local bRun = true
 	if DynastyIsPlayer("Sim") and IsPartyMember("Sim") then
-		if MsgNews("Sim","destination",
+		if MsgNews("Sim","Destination",
 					"@P@B[O,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+0]@B[C,@L_GENERAL_TIMEPLANNERENTRY_MESSAGE_BUTTONS_+1]",
-					queries_AIReturnO,"politics", 1, "@L_LAWSUIT_DIARY_REMEMBER_+0", "@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("destination"))=="C" then
+					queries_AIReturnO,"politics", 1, "@L_LAWSUIT_DIARY_REMEMBER_+0", "@L_LAWSUIT_DIARY_REMEMBER_+1", GetID("Sim"), GetSettlementID("Destination"))=="C" then
 			bRun = false
 		end
 	end

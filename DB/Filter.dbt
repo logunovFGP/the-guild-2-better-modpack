@@ -75,3 +75,4 @@ Data:
 7202   "CanDebugCommission"   "__F((Object.CanBeControlled())AND(Object.HasProperty(ShowAdditionalDebugMeasures))AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsType(7)))"   |
 7152   "ShowDebugSelfLetterEvenDrunk"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"   |
 7153   "CanWriteLetterActor"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe()))"   |
+7203   "CanAldermanFreezeTrade"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetInsideBuilding())AND(Object.IsType(26))AND(Object.PlayerHasOfficeImpact('AldermanFreezeTrade')))"   |

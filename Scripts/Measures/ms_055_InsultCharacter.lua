@@ -32,7 +32,7 @@ function Normal()
 
 	-- Check Inside Building
 	if GetInsideBuilding("Destination","Inside") then
-		if BuildingGetType("Inside")==2 then
+		if BuildingGetType("Inside")==GL_BUILDING_TYPE_RESIDENCE then
 			StopMeasure()
 		end
 	end

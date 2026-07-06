@@ -641,8 +641,8 @@ function EndDuelFail(ChallengerMissing, ChallengedMissing)
 		MoveSetActivity("challenger")
 	end
 	
-	SimResetBehavior("doctor")
-	SimSetBehavior("doctor", "doctor")
+	SimResetBehavior("Doctor")
+	SimSetBehavior("Doctor", "doctor")
 	
 	EndCutscene("")	
 end
@@ -658,7 +658,7 @@ function EndDuel()
 	-- Add xp
 	if GetState("challenged", STATE_UNCONSCIOUS) or GetState("challenged", STATE_DEAD) then -- challenger won
 		xp_DuelWithOpponent("challenger", true, DifficultyChallenger)
-	elseif GetState("challenged", STATE_UNCONSCIOUS) or GetState("challenged", STATE_DEAD) then -- challenged won
+	elseif GetState("challenger", STATE_UNCONSCIOUS) or GetState("challenger", STATE_DEAD) then -- challenged won
 		xp_DuelWithOpponent("challenged", true, DifficultyChallenged)
 	else
 		xp_DuelWithOpponent("challenger", false, DifficultyChallenger)
@@ -686,11 +686,11 @@ function EndDuel()
 	if not GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
 		MoveSetActivity("challenger")
 	end
-	if not GetState("challenger", STATE_DEAD) or GetState("challenger", STATE_UNCONSCIOUS) then 
-		MoveSetActivity("challenger")
+	if not GetState("challenged", STATE_DEAD) or GetState("challenged", STATE_UNCONSCIOUS) then
+		MoveSetActivity("challenged")
 	end
-	SimResetBehavior("doctor")
-	SimSetBehavior("doctor", "doctor")
+	SimResetBehavior("Doctor")
+	SimSetBehavior("Doctor", "doctor")
 	ModifyHP("Doctor", 100, false)
 	CarryObject("challenger", "", false)
 	CarryObject("challenged", "", false)

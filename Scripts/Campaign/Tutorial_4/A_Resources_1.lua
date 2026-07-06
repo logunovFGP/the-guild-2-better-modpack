@@ -65,7 +65,7 @@ function CheckEnd()
 			SetData("NoCart",0)
 			ShowTutorialBoxNoWait(100, 690, 500, 150, 1, LEFTLOWER_NOARROW, "@L_TUTORIAL_CHAPTER_4_BUY_RESSOURCES_NAME",  "@L_TUTORIAL_CHAPTER_4_BUY_RESSOURCES_TASK",  "")
 		end
-		for CurrentCart=0,CartCount do
+		for CurrentCart=0,CartCount-1 do
 			BuildingGetCart("#Smithy",CurrentCart,"MyCart")
 			local DistanceToMarket = GetDistance("MyCart", "#Market")
 			if (DistanceToMarket <= 1600) then

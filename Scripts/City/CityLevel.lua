@@ -52,14 +52,14 @@ function CalcStartupLevel()
 
 	-- init buyable buildings
 	local buyablehouses = CityGetBuildingCount("", 1, 2, -1, -1, FILTER_IS_BUYABLE)
-	CityGetBuildings("", 1, 2, -1, -1, FILTER_IS_BUYABLE, "FreeHouse")
+	CityGetBuildings("", GL_BUILDING_CLASS_LIVINGROOM, 2, -1, -1, FILTER_IS_BUYABLE, "FreeHouse")
 	for i=0, buyablehouses-1 do
 		if BuildingGetBuyPrice("FreeHouse"..i) then
 			SetState("FreeHouse"..i, STATE_SELLFLAG, true)
 		end
 	end
 	
-	local buyableworkshops = CityGetBuildingCount("", 2, -1, -1, -1, FILTER_IS_BUYABLE)
+	local buyableworkshops = CityGetBuildingCount("", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_IS_BUYABLE)
 	CityGetBuildings("", 2, -1, -1, -1, FILTER_IS_BUYABLE, "FreeWorkshop")
 	for k=0, buyableworkshops-1 do
 		if BuildingGetBuyPrice("FreeWorkshop"..k) then

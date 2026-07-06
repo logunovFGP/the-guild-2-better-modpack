@@ -10,7 +10,7 @@ function CheckPosition()
 	-- local	Count = DynastyGetBuildingCount2("Dynasty")
 	-- for l=0,Count-1 do
 		-- if DynastyGetBuilding2("Dynasty", l, "Check") then
-			-- if BuildingGetType("Check")==111 then
+			-- if BuildingGetType("Check")==GL_BUILDING_TYPE_ESTATE then
 				-- return "@L_GENERAL_BUILDING_CASTLE_FAILURE_+1"
 			-- end
 		-- end
