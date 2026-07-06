@@ -61,8 +61,8 @@ function Weight()
 end
 
 function Execute()
-	SetRepeatTimer("PresserHome", "AI_PRESS", 2)
-	SetRepeatTimer("PPM_DEST", "AI_PRESSED", 8)
+	SetRepeatTimer("PresserHome", "AI_PRESS", 24)
+	SetRepeatTimer("PPM_DEST", "AI_PRESSED", 96)
 	SetProperty("SIM", "SpecialMeasureDestination", GetID("PPM_DEST"))
 	SetProperty("SIM", "SpecialMeasureId", -MeasureGetID("PressProtectionMoney"))
 end

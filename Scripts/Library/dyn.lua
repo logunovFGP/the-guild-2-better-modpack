@@ -285,7 +285,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 	if BestType == 0 then -- still no best type? then check next class
 		if not EnoughScholars then
 			-- if possible, choose a building which is only present max. once in the city already
-			local ScholarBuildingTypes = { GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NEKRO, 
+			local ScholarBuildingTypes = { GL_BUILDING_TYPE_ALCHEMIST_SHOP, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_FRIEDHOF, 
 									GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_HOSPITAL }
 			local ScholarBuildingTypesCount = 6
 			
@@ -345,8 +345,8 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 	if BestType == 0 then -- still no best type? then check next class
 		if not EnoughRogues then
 			-- if possible, choose a building which is only present max. once in the city already
-			local RoguesBuildingTypes = { GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, 
-									GL_BUILDING_TYPE_MERCENARY }
+			local RoguesBuildingTypes = { GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, 
+									GL_BUILDING_TYPE_CASTLE }
 			local RoguesBuildingTypesCount = 6
 			
 			for i=1, RoguesBuildingTypesCount do
@@ -362,7 +362,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 						end
 					else
 						-- exclude types the AI can't properly build
-						if ChooseType == GL_BUILDING_TYPE_ROBBER or GL_BUILDING_TYPE_PIRATESNEST then
+						if ChooseType == GL_BUILDING_TYPE_ROBBER or GL_BUILDING_TYPE_DIVEHOUSE then
 							local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
 							if AvailableCount <= BestCount then
 								BestType = ChooseType
@@ -399,7 +399,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 		end
 		
 		if PartyScholars > 0 then -- add scholar buildings
-			local ScholarBuildingTypes = { GL_BUILDING_TYPE_ALCHEMIST, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_NEKRO, 
+			local ScholarBuildingTypes = { GL_BUILDING_TYPE_ALCHEMIST_SHOP, GL_BUILDING_TYPE_CHURCH_CATH, GL_BUILDING_TYPE_CHURCH_EV, GL_BUILDING_TYPE_FRIEDHOF, 
 									GL_BUILDING_TYPE_BANKHOUSE, GL_BUILDING_TYPE_HOSPITAL }
 			local ScholarBuildingTypesCount = 6
 			
@@ -425,8 +425,8 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 		end
 		
 		if PartyRogues > 0 then -- add rouges buildings
-			local RoguesBuildingTypes = { GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_PIRATESNEST, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, 
-									GL_BUILDING_TYPE_MERCENARY }
+			local RoguesBuildingTypes = { GL_BUILDING_TYPE_ROBBER, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE, GL_BUILDING_TYPE_JUGGLER, 
+									GL_BUILDING_TYPE_CASTLE }
 			local RoguesBuildingTypesCount = 6
 			
 			for i=NewBuildingListCount, RoguesBuildingTypesCount do

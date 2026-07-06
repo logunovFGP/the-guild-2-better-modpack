@@ -26,7 +26,7 @@ function Run()
 		
 	local wahl = (Rand(u)+1)
   local reise = reiseZiel[wahl]
-	CityGetRandomBuilding(reise, -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "VerkundPlatz")
+	CityGetRandomBuilding(reise, -1, GL_BUILDING_TYPE_SCHOOL, -1, -1, FILTER_IGNORE, "VerkundPlatz")
 	GetOutdoorMovePosition("", "VerkundPlatz", "KundPos")
   f_MoveTo("","KundPos",GL_MOVESPEED_WALK,300)
 

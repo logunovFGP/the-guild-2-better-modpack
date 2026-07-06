@@ -658,7 +658,7 @@ function CalcProductionPriorities(BldAlias, ProdCount, ProdItems)
 	for i=1, ProdCount do
 		ItemId = ProdItems[i]
 		NeedValue = math.ceil(MarketValues[i]/TotalValue * 100)
-		SetProperty("Inv", "Need_"..ItemId, NeedValue)
+		bld_SetInvNeedUnlocked(ItemId, NeedValue)
 	end
 	--economy_LogProductionNeeds(BldAlias)
 end

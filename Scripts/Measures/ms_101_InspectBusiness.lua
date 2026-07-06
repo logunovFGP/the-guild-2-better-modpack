@@ -101,7 +101,7 @@ function Run()
 							"ServeSitRich1", "watch_for_guard","Cooking3","manipulate_middle_twohand",
 							"Brewer","manipulate_middle_twohand","CookingPot","manipulate_middle_twohand",
 							"Spice2","watch_for_guards","Barrel","manipulate_middle_twohand","Bath1","manipulate_middle_twohand")
-		elseif (Type==GL_BUILDING_TYPE_ALCHEMIST) then
+		elseif (Type==GL_BUILDING_TYPE_ALCHEMIST_SHOP) then
 			ms_101_inspectbusiness_Inspect("CopperCaldron","manipulate_middle_twohand","Shelf","manipulate_middle_up_l",
 							"Mandrake","manipulate_middle_twohand","DryingMachine","watch_for_guard",
 							"DryingMachine2","cogitate","Ritual1","manipulate_middle_twohand",

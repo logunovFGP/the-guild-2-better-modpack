@@ -5,8 +5,22 @@ function Run()
 		return
 	end
 
+	local qcap0 = "MActRule_" .. MeasureGetID("Quacksalver") .. "_"
+	if HasProperty("Hospital", qcap0 .. "enabled") and (GetProperty("Hospital", qcap0 .. "enabled") - 1) == 0 then
+		SimSetProduceItemID("", 0, -1)
+		StopMeasure()
+		return
+	end
+	if HasProperty("Hospital", qcap0 .. "maxw") then
+		if BuildingGetProducerCount("Hospital", PT_MEASURE, "Quacksalver") > (GetProperty("Hospital", qcap0 .. "maxw") - 1) then
+			SimSetProduceItemID("", 0, -1)
+			StopMeasure()
+			return
+		end
+	end
+
 	local Producer = BuildingGetProducerCount("Hospital", PT_MEASURE, "Quacksalver")
-	
+
 	if IsStateDriven() then
 		if Producer >1 then
 			StopMeasure()
@@ -62,12 +76,29 @@ function Run()
 	SetData("IsProductionMeasure", 1)
 	
 	while true do
-		if not ms_quacksalver_GetPlacebo() then
+		local qcap = "MActRule_" .. MeasureGetID("Quacksalver") .. "_"
+		if HasProperty("Hospital", qcap .. "enabled") and (GetProperty("Hospital", qcap .. "enabled") - 1) == 0 then
+			SimSetProduceItemID("", 0, -1)
 			StopMeasure()
+			return
+		end
+		if HasProperty("Hospital", qcap .. "maxw") then
+			if BuildingGetProducerCount("Hospital", PT_MEASURE, "Quacksalver") > (GetProperty("Hospital", qcap .. "maxw") - 1) then
+				SimSetProduceItemID("", 0, -1)
+				StopMeasure()
+				return
+			end
+		end
+
+		if not ms_quacksalver_GetPlacebo() then
+			SimSetProduceItemID("", 0, -1)
+			StopMeasure()
+			return
 		end
 
 		if not f_MoveTo("","Destination",GL_MOVESPEED_RUN) then
 			StopMeasure()
+			return
 		end
 		
 		GetPosition("","MyPos")
@@ -136,6 +167,7 @@ function GetPlacebo()
 end
 
 function CleanUp()
+	SimSetProduceItemID("", 0, -1)
 	StopAnimation("")
 	StopAction("quacksalver", "")
 	if HasProperty("", "SpecialMeasureId") then

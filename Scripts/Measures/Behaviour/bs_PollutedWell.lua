@@ -3,7 +3,7 @@ function Run()
 	if GetImpactValue("Actor", "polluted") == 1 then
 		if IsType("", "Sim") then
 			if GetImpactValue("", "Sickness") == 0 then
-				if IsDynastySim("") and DynastyGetRandomBuilding("", -1, GL_BUILDING_TYPE_ALCHEMIST) then
+				if IsDynastySim("") and DynastyGetRandomBuilding("", -1, GL_BUILDING_TYPE_ALCHEMIST_SHOP) then
 					return ""
 				elseif SimGetProfession("") == 9 then
 					return ""

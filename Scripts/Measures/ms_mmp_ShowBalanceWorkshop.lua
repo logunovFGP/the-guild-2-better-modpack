@@ -85,11 +85,11 @@ function Run()
 			BalanceLastItem = "vase"
 			LabelOne = "vase"
 			LabelTwo = "Grindingbrick"
-		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_ALCHEMIST then -- alchemist
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_ALCHEMIST_SHOP then -- alchemist
 			BalanceLastItem = "HerbTea"
 			LabelOne = "HerbTea"
 			LabelTwo = "Phiole"
-		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_NEKRO then -- cemetery
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_FRIEDHOF then -- cemetery
 			BalanceLastItem = "Schadelkerze" 
 			LabelOne = "Schadelkerze"
 			LabelTwo = "Knochenarmreif"

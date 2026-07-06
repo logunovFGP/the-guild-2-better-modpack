@@ -22,7 +22,7 @@ function Run()
 	
 	if not SimGetWorkingPlace("", "MyHome") then
 		if IsPartyMember("") then
-			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MERCENARY)
+			local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CASTLE)
 			if not NextBuilding then
 				StopMeasure()
 			end

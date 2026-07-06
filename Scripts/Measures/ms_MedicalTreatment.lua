@@ -39,8 +39,23 @@ function Run()
 
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_HOSPITAL, "Hospital") then
 		StopMeasure()
+		return
 	end
-	
+
+	local tcap0 = "MActRule_" .. MeasureGetID("MedicalTreatment") .. "_"
+	if HasProperty("Hospital", tcap0 .. "enabled") and (GetProperty("Hospital", tcap0 .. "enabled") - 1) == 0 then
+		SimSetProduceItemID("", 0, -1)
+		StopMeasure()
+		return
+	end
+	if HasProperty("Hospital", tcap0 .. "maxw") then
+		if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > (GetProperty("Hospital", tcap0 .. "maxw") - 1) then
+			SimSetProduceItemID("", 0, -1)
+			StopMeasure()
+			return
+		end
+	end
+
 	if GetInsideBuildingID("") ~= GetID("Hospital") then
 		if not f_MoveTo("", "Hospital", GL_MOVESPEED_RUN) then
 			return
@@ -84,32 +99,27 @@ function Run()
 
 	while true do
 
+		local tcap = "MActRule_" .. MeasureGetID("MedicalTreatment") .. "_"
+		if HasProperty("Hospital", tcap .. "enabled") and (GetProperty("Hospital", tcap .. "enabled") - 1) == 0 then
+			SimSetProduceItemID("", 0, -1)
+			StopMeasure()
+			break
+		end
+		if HasProperty("Hospital", tcap .. "maxw") then
+			if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > (GetProperty("Hospital", tcap .. "maxw") - 1) then
+				SimSetProduceItemID("", 0, -1)
+				StopMeasure()
+				break
+			end
+		end
+
 		local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.Property.WaitingForTreatment==1))"
 		local NumSickSims = Find("", SickSimFilter, "SickSim", -1)
 		
 		if NumSickSims < 1 then
-			
-			if not AliasExists("") then
-				LogMessage("Hospital: I lost myself")
-				StopMeasure()
-				break
-			end			
-
-			if Rand(9) == 0 then
-				MoveStop("")
-				PlayAnimation("", "cogitate")
-			else
-				Sleep(6)
-			end
-
-			if BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
-				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") >= 1 then
-					SimSetProduceItemID("", -1, -1)
-					StopMeasure()
-					break
-				end
-			end
-
+			SimSetProduceItemID("", 0, -1)
+			StopMeasure()
+			break
 		else
 			
 			if not AliasExists("SickSim0") then
@@ -191,7 +201,7 @@ function Run()
 						
 					if v.Med == "Bandage" and BuildingGetAISetting("Hospital", "Produce_Selection") > 0 then
 						if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > 1 then
-							SimSetProduceItemID("", -1, -1)
+							SimSetProduceItemID("", 0, -1)
 							StopMeasure()
 						end
 					end
@@ -215,6 +225,7 @@ function Run()
 
 					chr_CreditMoney("Hospital", v.Cost, "Offering")
 					economy_UpdateBalance("Hospital", "Service", v.Cost)
+					SetProperty("Hospital", "BalanceOffering", (GetProperty("Hospital", "BalanceOffering") or 0) + v.Cost)
 					local TotalIncome = 0
 					local RoundIncome = 0
 					local MedicalIncome = 0
@@ -390,6 +401,7 @@ function LayBack()
 end
 
 function CleanUp()
+	SimSetProduceItemID("", 0, -1)
 	SetData("Blocked",1)
 
 	if HasData("BedNumber") then

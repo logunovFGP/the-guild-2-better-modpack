@@ -36,7 +36,7 @@ function Run()
 --	
 	-- differentiate rogue buildings
 	local BldType = BuildingGetType("Workshop")
-	if GL_BUILDING_TYPE_THIEF == BldType or GL_BUILDING_TYPE_ROBBER == BldType or GL_BUILDING_TYPE_PIRATESNEST == BldType then
+	if GL_BUILDING_TYPE_THIEF == BldType or GL_BUILDING_TYPE_ROBBER == BldType or GL_BUILDING_TYPE_DIVEHOUSE == BldType then
 		ms_twp_showbalanceworkshop_ShowForRogue("Workshop")
 	else
 		ms_twp_showbalanceworkshop_ShowForWorkshop("Workshop")

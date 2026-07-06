@@ -5,7 +5,7 @@ function Run()
 
 	GetSettlement("", "CityAlias")
 	if not CityGetNearestBuilding("CityAlias", "", -1, GL_BUILDING_TYPE_ROBBER, -1, -1, FILTER_IGNORE, "FleeBuilding") then
-		if not CityGetNearestBuilding("CityAlias", "", -1, GL_BUILDING_TYPE_MERCENARY, -1, -1, FILTER_IGNORE, "FleeBuilding") then
+		if not CityGetNearestBuilding("CityAlias", "", -1, GL_BUILDING_TYPE_CASTLE, -1, -1, FILTER_IGNORE, "FleeBuilding") then
 			CityGetNearestBuilding("CityAlias", "", -1, GL_BUILDING_TYPE_FARM, -1, -1, FILTER_IGNORE, "FleeBuilding")
 		end
 	end

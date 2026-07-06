@@ -998,7 +998,7 @@ function GoShoppingSmart(needIndex)
 			local ca = "Cand"..i
 			if AliasExists(ca) then
 				local bt = BuildingGetType(ca)
-				if bt ~= GL_BUILDING_TYPE_TAVERN and bt ~= GL_BUILDING_TYPE_PIRAT then
+				if bt ~= GL_BUILDING_TYPE_TAVERN and bt ~= GL_BUILDING_TYPE_DIVEHOUSE then
 					local dist = GetDistance("", ca)
 					if dist == -1 then dist = 999999 end
 					if dist <= 20000 then

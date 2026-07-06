@@ -2,7 +2,7 @@ function Run()
 	SetState("",STATE_TOWNNPC,true)
 	GetHomeBuilding("","home")
 	BuildingGetCity("home","homecity")
-	CityGetRandomBuilding("homecity",-1,GL_BUILDING_TYPE_ARSENAL,-1,-1, FILTER_IGNORE,"myarsenal")
+	CityGetRandomBuilding("homecity",-1,GL_BUILDING_TYPE_SCHOOL,-1,-1, FILTER_IGNORE,"myarsenal")
 
 	while true do
 		-- try to walk to the arsenal

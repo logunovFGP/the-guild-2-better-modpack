@@ -14,7 +14,7 @@ function Init()
 		GfxAttachObject("BuildingAnimation0","buildings/windmillwheel.nif")
 		GfxSetPosition("BuildingAnimation0",XN,y+665,ZN,true)
 		GfxSetRotation("BuildingAnimation0", 0, 90, 0, false)
-	elseif BuildingType == GL_BUILDING_TYPE_ARSENAL then -- Arsenal
+	elseif BuildingType == GL_BUILDING_TYPE_SCHOOL then -- Arsenal
 		local dx = 0
 		local dz = 0
 		local ZN = z + math.cos(BuildingRotRad) * (dx) - math.sin(BuildingRotRad) * (dz)
@@ -133,9 +133,9 @@ end
 
 function CleanUp()
 	if AliasExists("BuildingAnimation0") then
-		if BuildingGetType("") == GL_BUILDING_TYPE_MILL or BuildingGetType("") == GL_BUILDING_TYPE_ARSENAL 
+		if BuildingGetType("") == GL_BUILDING_TYPE_MILL or BuildingGetType("") == GL_BUILDING_TYPE_SCHOOL 
 			or BuildingGetType("") == GL_BUILDING_TYPE_GRAVEYARD or BuildingGetType("") == GL_BUILDING_TYPE_JUGGLER 
-			or BuildingGetType("") == GL_BUILDING_TYPE_SOLDIERPLACE or BuildingGetType("") == GL_BUILDING_TYPE_MERCENARY then
+			or BuildingGetType("") == GL_BUILDING_TYPE_SOLDIERPLACE or BuildingGetType("") == GL_BUILDING_TYPE_CASTLE then
 			GfxSetPosition("BuildingAnimation0",0,-1000,0,false)
 			GfxDetachObject("BuildingAnimation0")
 		end

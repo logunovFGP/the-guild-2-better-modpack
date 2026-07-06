@@ -93,7 +93,7 @@ function Run()
 			-- get special locators
 			if (Type == GL_BUILDING_TYPE_SMITHY) then
 				GetLocatorFunction = ms_022_producesmithy_GetLocator
-			elseif (Type == GL_BUILDING_TYPE_ALCHEMIST) then
+			elseif (Type == GL_BUILDING_TYPE_ALCHEMIST_SHOP) then
 				GetLocatorFunction = ms_022_producealchemist_GetLocator
 			elseif (Type == GL_BUILDING_TYPE_TAILORING) then
 				GetLocatorFunction = ms_022_producetailor_GetLocator
@@ -141,7 +141,7 @@ function Run()
 		end
     
 		-- Necromancer
-		if BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_NEKRO then
+		if BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_FRIEDHOF then
 			StartProduction("","WorkBuilding")
 			if SimGetProduceItemID("") == 973 or SimGetProduceItemID("") == 972 or SimGetProduceItemID("") == 971 then -- Knochen, Schadel, Leichenhemd
 				if not ms_022_producenekro_KnochenGraben() then

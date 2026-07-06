@@ -102,7 +102,7 @@ function Run()
 	
 		Appmoney = App1
 		
-		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_ARSENAL, -1, -1, FILTER_IGNORE, "DestBuilding") then
+		if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_SCHOOL, -1, -1, FILTER_IGNORE, "DestBuilding") then
 			if not CityGetRandomBuilding("MyCity", -1, GL_BUILDING_TYPE_TOWNHALL, -1, -1, FILTER_IGNORE, "DestBuilding") then -- alternative go to townhall
 				return
 			end	

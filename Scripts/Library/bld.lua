@@ -520,6 +520,13 @@ end
 -- Modify AI production priorities TODO
 -- ----------------------------------------------
 
+function bld_SetInvNeedUnlocked(itemId, value)
+	if (GetProperty("Inv", "NeedLock_"..itemId) or 0) ~= 0 then
+		return
+	end
+	SetProperty("Inv", "Need_"..itemId, value)
+end
+
 function SetupAI(BldAlias)
 	if not BuildingGetOwner(BldAlias, "MyBoss") then
 		return
@@ -573,7 +580,7 @@ function SetupAI(BldAlias)
 			end
 		end
 		
-	elseif BldType == GL_BUILDING_TYPE_ALCHEMIST then
+	elseif BldType == GL_BUILDING_TYPE_ALCHEMIST_SHOP then
 		if BuildingGetLevel(BldAlias) == 1 then
 			Items = { "HerbTea", "Phiole"
 					}
@@ -682,9 +689,9 @@ function SetupAI(BldAlias)
 					Need = Need - 25
 				end
 				if Need >= 25 then
-					SetProperty("Inv", "Need_"..ItemId, Need)
+					bld_SetInvNeedUnlocked(ItemId, Need)
 				else
-					SetProperty("Inv", "Need_"..ItemId, Rand(3))
+					bld_SetInvNeedUnlocked(ItemId, Rand(3))
 				end
 			end
 		end
@@ -697,7 +704,7 @@ function SetupAI(BldAlias)
 		MarketStock = { 50, 40, 40, 30, 30, 15, -1, -1 }
 		LocalStock = { -1, -1, -1, -1, -1, -1, 3, 3 }
 		
-	elseif BldType == GL_BUILDING_TYPE_NEKRO then
+	elseif BldType == GL_BUILDING_TYPE_FRIEDHOF then
 		Items = {	"Schadelkerze", "Knochenarmreif", "BoneFlute", "HexerdokumentI", "Robe", 
 				"FalseRelict", "HexerdokumentII", "pddv", "Knochen", "Schadel",
 				"Ektoplasma", "Leichenhemd"
@@ -749,17 +756,17 @@ function SetupAI(BldAlias)
 				end
 				if CheckMarket ~= nil and CheckMarket ~= -1 then
 					if GetItemCount("Market", CheckID, INVENTORY_STD) <= CheckMarket and GetItemCount(BldAlias, CheckID, INVENTORY_STD) <= CheckMarket then
-						SetProperty("Inv", "Need_"..CheckID, Value)
+						bld_SetInvNeedUnlocked(CheckID, Value)
 					else
-						SetProperty("Inv", "Need_"..CheckID, Rand(6))
+						bld_SetInvNeedUnlocked(CheckID, Rand(6))
 					end
 				end
 
 				if CheckStock ~= nil and CheckStock ~= -1 then
 					if GetItemCount(BldAlias, CheckID, INVENTORY_STD) <= CheckStock then
-						SetProperty("Inv", "Need_"..CheckID, Value*3)
+						bld_SetInvNeedUnlocked(CheckID, Value*3)
 					else
-						SetProperty("Inv", "Need_"..CheckID, 0)
+						bld_SetInvNeedUnlocked(CheckID, 0)
 					end
 				end
 			end
@@ -844,7 +851,7 @@ function CheckCarts(BldAlias)
 	local BldType = BuildingGetType(BldAlias)
 	local BestCount = 2
 	
-	if BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_MERCENARY then
+	if BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_CASTLE then
 		-- no state_autocart or forced carts for robbers
 		return
 	end
@@ -859,7 +866,7 @@ function CheckCarts(BldAlias)
 	end
 	
 	-- special case pirate
-	if BldType == GL_BUILDING_TYPE_PIRATESNEST then
+	if BldType == GL_BUILDING_TYPE_DIVEHOUSE then
 		if not ReadyToRepeat(BldAlias, "ai_BuyPirateShip") then
 			return 
 		end
@@ -1052,7 +1059,7 @@ function ForceLevelUp(BldAlias)
 	
 	-- Special case SubLevel
 	local SubLevel = -1
-	if BuildType == GL_BUILDING_TYPE_ALCHEMIST then
+	if BuildType == GL_BUILDING_TYPE_ALCHEMIST_SHOP then
 		if BuildLevel == 1 then
 			SubLevel = 1 + Rand(2)
 		else
@@ -1192,7 +1199,7 @@ function AbilityBoosts(BldAlias, BossAlias)
 				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
 			end
 		end
-	elseif Type == GL_BUILDING_TYPE_PIRATESNEST then
+	elseif Type == GL_BUILDING_TYPE_DIVEHOUSE then
 		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
 		if BossAbility > 0 then
 			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then
@@ -1208,7 +1215,7 @@ function AbilityBoosts(BldAlias, BossAlias)
 				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
 			end
 		end
-	elseif Type == GL_BUILDING_TYPE_MERCENARY then
+	elseif Type == GL_BUILDING_TYPE_CASTLE then
 		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
 		if BossAbility > 0 then
 			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then

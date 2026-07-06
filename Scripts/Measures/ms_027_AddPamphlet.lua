@@ -75,7 +75,7 @@ function Run()
 			else
 				Rest = "_BERUF_SCHNEIDER_2"
 			end
-		elseif BuildingType == GL_BUILDING_TYPE_ALCHEMIST then
+		elseif BuildingType == GL_BUILDING_TYPE_ALCHEMIST_SHOP then
 			if Idx < 2 then
 				Rest = "_BERUF_ALCHIMIST_1"
 			elseif Idx < 4 then
