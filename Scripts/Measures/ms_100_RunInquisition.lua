@@ -18,7 +18,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if not CityGetRandomBuilding("DestCity", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONS_PLACE, -1, -1, FILTER_IGNORE, "DestExecPlace") then
+	if not CityGetRandomBuilding("DestCity", GL_BUILDING_CLASS_PUBLICBUILDING, GL_BUILDING_TYPE_EXECUTIONPLACE, -1, -1, FILTER_IGNORE, "DestExecPlace") then
 		StopMeasure()
 	end
 	

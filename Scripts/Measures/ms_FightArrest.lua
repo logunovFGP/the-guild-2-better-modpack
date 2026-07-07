@@ -104,7 +104,7 @@ function Run()
 	
 	elseif CityGetPenalty("CityAlias", "Destination", PENALTY_PILLORY, true, "Penalty") then
 
-		if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_EXECUTIONS_PLACE, -1, -1, FILTER_IGNORE, "Pillory") then
+		if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_EXECUTIONPLACE, -1, -1, FILTER_IGNORE, "Pillory") then
 			StopMeasure()
 		end
 		
@@ -134,7 +134,7 @@ function Run()
 		
 	elseif CityGetPenalty("CityAlias", "Destination", PENALTY_DEATH, true, "Penalty") then
 
-		if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_EXECUTIONS_PLACE, -1, -1, FILTER_IGNORE, "ExecutionPlace") then
+		if not CityGetRandomBuilding("CityAlias", -1, GL_BUILDING_TYPE_EXECUTIONPLACE, -1, -1, FILTER_IGNORE, "ExecutionPlace") then
 			StopMeasure()
 		end
 		
