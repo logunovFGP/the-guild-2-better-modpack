@@ -115,7 +115,7 @@ function Run()
 			-- Gaukler
 			elseif (Type == 102) then
 				GetLocatorFunction = ms_022_producegaukler_GetLocator
-			-- Bänker
+			-- Bï¿½nker
 			elseif (Type == 43) then
 				GetLocatorFunction = ms_022_producebankier_GetLocator
 			end

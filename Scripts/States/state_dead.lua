@@ -39,13 +39,11 @@ function Run()
 				SquadDestroy("Squad")
 			end
 		end
-		
+		local Age = SimGetAge("")
 		-- Messages. Get cause
 		if HasProperty("", "SenilDecay") then -- default msg
 			-- Message only for dynasty
 			if IsDynastySim("") and not DynastyIsShadow("") then
-				
-				local Age = SimGetAge("")
 				local SettlementId = GetSettlementID("")
 				-- your badge
 				local BadgeID = DynastyGetFlagNumber("dynasty") + 29
@@ -74,7 +72,6 @@ function Run()
 			
 			if ReasonToDie == "BurnWound" then
 				ReasonLabel = "@L_ILLNESS_REASON_+1"
-				local Age = SimGetAge("")
 				if IsDynastySim("") and not DynastyIsShadow("") then
 				
 					local SettlementId = GetSettlementID("")
@@ -94,11 +91,10 @@ function Run()
 					end
 				 -- message the dynasty leader if you are a former employee
 				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
-					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
 				end
 			elseif ReasonToDie == "Pneumonia" then
 				ReasonLabel = "@L_ILLNESS_REASON_+2"
-				local Age = SimGetAge("")
 				if IsDynastySim("") and not DynastyIsShadow("") then
 				
 					local SettlementId = GetSettlementID("")
@@ -118,12 +114,10 @@ function Run()
 					end
 				 -- message the dynasty leader if you are a former employee
 				elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
-					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+					MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
 				end
 			elseif ReasonToDie == "Blackdeath" then
 				ReasonLabel = "@L_ILLNESS_REASON_+3"
-				local Age = SimGetAge("")
-				
 				if GetSettlement("", "DeadSimsSettlement") then
 					-- add death counter
 					local DeathCounter = GetProperty("DeadSimsSettlement", "PlagueDeathCounter") or 0
@@ -148,13 +142,12 @@ function Run()
 						
 					 -- message the dynasty leader if you are a former employee
 					elseif SimGetWorkingPlace("", "WorkPlace") and GetDynasty("", "BossDyn") then
-						MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BLACKDEATH_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
+						MsgNewsNoWait("BossDyn", "WorkPlace", "", "building", -1, "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_BLACKDEATH_HEAD_+0", "@L_FAMILY_6_DEATH_MSG_DEAD_EMPLOYEE_ILLNESS_BODY_+0", GetID(""), GetID("WorkPlace"), Age, ReasonLabel)
 					end
 				end
 			end
 		else -- died by force
 			local ReasonLabel = "@L_ILLNESS_REASON_+4"
-			local Age = SimGetAge("")
 			if IsDynastySim("") and not DynastyIsShadow("") then
 				
 				local SettlementId = GetSettlementID("")

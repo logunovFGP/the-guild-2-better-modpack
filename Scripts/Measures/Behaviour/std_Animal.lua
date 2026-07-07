@@ -107,7 +107,7 @@ function WaldVieh()
 		local moveArt = Rand(3)
 		local x,y,z
 
-		if SimGetProfession("")==49 then
+		if SimGetProfession("")==GL_PROFESSION_WOLF then
 			NumOfObjects = Find("","__F( (Object.GetObjectsByRadius(Sim)==100) AND NOT((Object.GetProfession() == 44)OR (Object.GetProfession() == 45)OR (Object.GetProfession() == 46)OR (Object.GetProfession() == 47)OR (Object.GetProfession() == 48)OR (Object.GetProfession() == 49)OR (Object.GetProfession() == 50)OR (Object.GetProfession() == 51)OR (Object.GetProfession() == 55)OR (Object.GetProfession() == 57)OR (Object.GetProfession() == 58)))","Sims",-1)
 		else
 			NumOfObjects = Find("","__F( (Object.GetObjectsByRadius(Sim)==100) AND NOT((Object.GetProfession() == 44)OR (Object.GetProfession() == 45)OR (Object.GetProfession() == 46)OR (Object.GetProfession() == 47)OR (Object.GetProfession() == 48)OR (Object.GetProfession() == 50)OR (Object.GetProfession() == 51)OR (Object.GetProfession() == 55)OR (Object.GetProfession() == 57)OR (Object.GetProfession() == 58)))","Sims",-1)

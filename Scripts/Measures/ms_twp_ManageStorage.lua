@@ -150,7 +150,7 @@ function ManageResources(BldAlias)
 		if ChosenItem and ChosenItem ~= "C" then
 			local Options = ""
 			if GL_BUILDING_TYPE_WAREHOUSE == BldType then
-				Options = Options .. "@B[-1,@L_TWP_SUPPLYWORKSHOP_REMOVE_+0,]@B[500,500,]@B[300,300,]@B[200,200,]@B[100,100,]@B[60,60,]@B40,40,]@B[20,20,]@B[10,10,]@B[0,0,]"
+				Options = Options .. "@B[-1,@L_TWP_SUPPLYWORKSHOP_REMOVE_+0,]@B[500,500,]@B[300,300,]@B[200,200,]@B[100,100,]@B[60,60,]@B[40,40,]@B[20,20,]@B[10,10,]@B[0,0,]"
 			else
 				Options = Options .. "@B[80,80,]@B[60,60,]@B[50,50,]@B[40,40,]@B[30,30,]@B[20,20,]@B[10,10,]@B[0,0,]" 
 			end

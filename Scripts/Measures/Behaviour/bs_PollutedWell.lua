@@ -5,7 +5,7 @@ function Run()
 			if GetImpactValue("", "Sickness") == 0 then
 				if IsDynastySim("") and DynastyGetRandomBuilding("", -1, GL_BUILDING_TYPE_ALCHEMIST_SHOP) then
 					return ""
-				elseif SimGetProfession("") == 9 then
+				elseif SimGetProfession("") == GL_PROFESSION_ALCHIMIST then
 					return ""
 				end
 				
