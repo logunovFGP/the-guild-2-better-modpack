@@ -866,7 +866,7 @@ function CheckCarts(BldAlias)
 	end
 	
 	-- special case pirate
-	if BldType == GL_BUILDING_TYPE_DIVEHOUSE then
+	if BldType == GL_BUILDING_TYPE_PIRATESNEST then
 		if not ReadyToRepeat(BldAlias, "ai_BuyPirateShip") then
 			return 
 		end
