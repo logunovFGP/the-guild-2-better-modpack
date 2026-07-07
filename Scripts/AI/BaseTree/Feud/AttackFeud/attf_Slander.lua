@@ -21,10 +21,10 @@ function Weight()
 		return 0
 	end
 
-	return 25
+	return 5
 end
 
 function Execute()
-	SetRepeatTimer("dynasty", "Do_Slander", 48)
+	SetRepeatTimer("dynasty", "Do_Slander", 168)
 	MeasureRun("SIM", "Victim", "Slander", false)
 end
