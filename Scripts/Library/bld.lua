@@ -520,7 +520,7 @@ end
 -- Modify AI production priorities TODO
 -- ----------------------------------------------
 
-function bld_SetInvNeedUnlocked(itemId, value)
+function SetInvNeedUnlocked(itemId, value)
 	if (GetProperty("Inv", "NeedLock_"..itemId) or 0) ~= 0 then
 		return
 	end
