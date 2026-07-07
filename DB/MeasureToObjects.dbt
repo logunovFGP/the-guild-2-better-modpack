@@ -423,3 +423,4 @@ Data:
 //7150   7150   1   0   7150   6   ""   ()   ""   0   0   |   //disabled: "Write Letter" (SendLetterToPlayer) per-Sim shortcut on other players' characters removed; measure 7150 / ms_SendLetterToPlayer.lua / LetterComposerPanel kept
 7151   7151   1   0   7152   6   ""   ()   ""   0   0   |
 20100   20100   0   0   7200   6   "~"   ()   "MEASUREINIT_SELECTION"   0   0   |
+20117   40055   0   0   2068   6   "~"   ()   "MEASUREINIT_SELECTION"   0   0   |
