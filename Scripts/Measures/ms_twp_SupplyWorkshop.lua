@@ -59,7 +59,7 @@ function ChooseResources(ResourceCount, Resources, IsWarehouse)
 		if ChosenItem and ChosenItem ~= "C" then
 			local Options = "@B[120,120,]@B[100,100,]@B[80,80,]@B[60,60,]@B[40,40,]@B[30,30,]@B[20,20,]@B[10,10,]@B[0,0,]"
 			if IsWarehouse then
-				Options = "@B[500,500,]@B[300,300,]@B[200,200,]@B[100,100,]@B[60,60,]@B40,40,]@B[20,20,]@B[10,10,]@B[0,0,]"
+				Options = "@B[500,500,]@B[300,300,]@B[200,200,]@B[100,100,]@B[60,60,]@B[40,40,]@B[20,20,]@B[10,10,]@B[0,0,]"
 			end
 			local ItemId = Resources[ChosenItem][1]
 			local ChosenMinAmount = MsgBox("","Owner","@P"..Options,"@L_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_HEAD_+0","_TWP_SUPPLYWORKSHOP_CHOOSEAMOUNT_BODY_+0", ItemGetLabel(ItemId,false))			

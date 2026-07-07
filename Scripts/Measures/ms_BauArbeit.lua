@@ -50,7 +50,7 @@ function Run()
 			AddImpact("Destination", "BauArbeiter", baufast, -1)
 		end
 		
-		if SimGetProfession("") == 59 or SimGetProfession("") == 60 then
+		if SimGetProfession("") == GL_PROFESSION_BAUMEISTER or SimGetProfession("") == GL_PROFESSION_BAUKUENSTLER then
 			ms_bauarbeit_Meister(BauPos)
 		else
 			ms_bauarbeit_Arbeiter(BauPos)
@@ -141,7 +141,7 @@ function MasterA(Pos)
 	end
 	
 	local spruch = Rand(4)
-	if SimGetProfession("") == 60 or IsPartyMember("") then
+	if SimGetProfession("") == GL_PROFESSION_BAUKUENSTLER or IsPartyMember("") then
 		if spruch == 0 then
 			MsgSay("", "@L_HPFZ_BAUARBEIT_SPRUCH_+0")
 		elseif spruch == 1 then

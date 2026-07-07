@@ -1090,13 +1090,72 @@ function StorageGetResources(BldAlias)
 	if not ItemsString or ItemsString == "" then
 		return economy_GetResourceNeeds(BldAlias)
 	end
+	-- The new StorageGetResources() logic repairs saved SupplyWorkshop resource lists before they are shown or used.
+	-- Older savegames can contain stale or duplicated MgmStor_Resources entries after DB changes. Instead of trusting that saved list blindly, the code now normalizes it by item ID: duplicate or invalid items are removed, existing minimum amounts are preserved, and regular workshops are rebuilt from the current BuildingToItems.requireditems order. This restores missing default resources such as Fungi or Silver while keeping the player’s configured stock amounts where possible.
+	-- For warehouses, custom resource lists are still allowed, but duplicate or invalid entries are cleaned up. If the function detects that the stored list was repaired, it saves the normalized list back to the building so the same savegame does not keep showing the broken popup.
+	local StoredCount, StoredResources = helpfuncs_StringToIdList(ItemsString)
+	local _, StoredMinAmounts = helpfuncs_StringToIdList(MinAmounts)
+	local DefaultCount, DefaultResources = economy_GetResourceNeeds(BldAlias)
+	local MinAmountByItem = {}
+	local HasStoredItem = {}
+	local Changed = false
+	local ItemId, Amount
 	
-	local Count, Resources = helpfuncs_StringToIdList(ItemsString)
-	ItemsString, MinAmounts = helpfuncs_StringToIdList(MinAmounts)
-	
-	-- convert to default resource list (careful, uses different format!)
-	for i = 1, Count do
-		Resources[i] = { Resources[i], MinAmounts[i] or 0 }
+	for i = 1, StoredCount do
+		ItemId = ItemGetID(StoredResources[i])
+		Amount = StoredMinAmounts[i] or 0
+		if ItemId and ItemId > 0 then
+			if HasStoredItem[ItemId] then
+				Changed = true
+				if Amount > MinAmountByItem[ItemId] then
+					MinAmountByItem[ItemId] = Amount
+				end
+			else
+				HasStoredItem[ItemId] = true
+				MinAmountByItem[ItemId] = Amount
+			end
+		else
+			Changed = true
+		end
+	end
+
+	local Count = 0
+	local Resources = {}
+	local BldType = BuildingGetType(BldAlias)
+	if BldType == GL_BUILDING_TYPE_WAREHOUSE then
+		for i = 1, StoredCount do
+			ItemId = ItemGetID(StoredResources[i])
+			if ItemId and ItemId > 0 and MinAmountByItem[ItemId] then
+				Count = Count + 1
+				Resources[Count] = { ItemId, MinAmountByItem[ItemId] }
+				MinAmountByItem[ItemId] = nil
+				if ItemId ~= StoredResources[i] or Count ~= i then
+					Changed = true
+				end
+			end
+		end
+	else
+		for i = 1, DefaultCount do
+			ItemId = DefaultResources[i][1]
+			Amount = MinAmountByItem[ItemId]
+			if Amount == nil then
+				Amount = DefaultResources[i][2] or 0
+				Changed = true
+			end
+			Count = Count + 1
+			Resources[Count] = { ItemId, Amount }
+			if i > StoredCount or ItemId ~= ItemGetID(StoredResources[i]) or Amount ~= (StoredMinAmounts[i] or 0) then
+				Changed = true
+			end
+			MinAmountByItem[ItemId] = nil
+		end
+		if StoredCount ~= DefaultCount then
+			Changed = true
+		end
+	end
+
+	if Changed then
+		economy_StorageSaveResources(BldAlias, Count, Resources)
 	end
 	
 	return Count, Resources

@@ -34,7 +34,7 @@ function Run()
 	if Oldpercent ~= TaxValue then
 		MsgNewsNoWait("All","","","politics",-1,
 			"@L_PRIVILEGES_111_SETTURNOVERTAX_MSG_HEADLINE_+0",
-			"@L_PRIVILEGES_111_SETTURNOVERTAX_MSG_BODY",GetID(""),GetID("city"),TaxValue)
+			"@L_PRIVILEGES_111_SETTURNOVERTAX_MSG_BODY",GetID(""),GetID("city"),Oldpercent,TaxValue)
 		achievements_Unlock("", "PRIVILEGE_SET_TAXES")
 	end
 	StopMeasure()

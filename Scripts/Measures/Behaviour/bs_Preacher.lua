@@ -4,7 +4,7 @@ function Run()
 		return ""
 	end
 	
-	if SimGetProfession("") == 11 then --priest
+	if SimGetProfession("") == GL_PROFESSION_PRIEST then --priest
 		return ""
 	end
 	

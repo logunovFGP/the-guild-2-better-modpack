@@ -12,7 +12,7 @@ function Run()
 		return ""
 	end
 
-	if SimGetProfession("") == 41 then --bänker
+	if SimGetProfession("") == GL_PROFESSION_BANKIER then --bänker
 		return ""
 	end	
 

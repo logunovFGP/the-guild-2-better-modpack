@@ -61,8 +61,17 @@ function Run()
 	local Level = 0+ GetProperty("city","SeverityOfLaw")
 	local Oldlevel = GetData("Oldlevel")
 	local Severity
+	local Oldseverity
 	if Oldlevel ~= Level then
 
+		if Oldlevel==0 then
+			Oldseverity = "_PRIVILEGES_109_SETSEVERITYOFTHELAW_LVL_+0"
+		elseif Oldlevel ==1 then
+			Oldseverity = "_PRIVILEGES_109_SETSEVERITYOFTHELAW_LVL_+1"
+		elseif Oldlevel ==2 then
+			Oldseverity = "_PRIVILEGES_109_SETSEVERITYOFTHELAW_LVL_+2"
+		end	
+	
 		if Level==0 then
 			Severity = "_PRIVILEGES_109_SETSEVERITYOFTHELAW_LVL_+0"
 		elseif Level ==1 then
@@ -73,7 +82,7 @@ function Run()
 	
 		MsgNewsNoWait("All","","","politics",-1,
 			"@L_PRIVILEGES_109_SETSEVERITYOFTHELAW_MSG_HEADLINE_+0",
-			"@L_PRIVILEGES_109_SETSEVERITYOFTHELAW_MSG_BODY",GetID(""),GetID("city"),Severity)
+			"@L_PRIVILEGES_109_SETSEVERITYOFTHELAW_MSG_BODY",GetID(""),GetID("city"),Oldseverity,Severity)
 		achievements_Unlock("", "PRIVILEGE_SEVERITY_OF_LAW")
 	end
 	StopMeasure()

@@ -93,20 +93,30 @@ function Run()
 			else
 				-- force a fight with random npc
 				local FightPartners = Find("Destination", "__F((Object.GetObjectsByRadius(Sim)==2000)AND NOT(Object.HasDynasty())AND NOT(Object.GetState(unconscious))AND NOT(Object.GetState(dead))AND(Object.CompareHP()>30))","FightPartner", -1)
+				local FightPartnerAlias = nil
 				if FightPartners > 0 then
-					if not BattleIsFighting(FightPartner) then
+					for i=0, FightPartners-1 do
+						local Alias = "FightPartner"..i
+						if not BattleIsFighting(Alias) then
+							FightPartnerAlias = Alias
+							break
+						end
+					end
+					if FightPartnerAlias then
 						MsgDebugMeasure("Force a Fight")
-						SimStopMeasure("FightPartner0")
-						StopAnimation("FightPartner0") 
-						MoveStop("FightPartner0")
-						AlignTo("Destination", "FightPartner0")
-						AlignTo(FightPartner, "Destination")
+						SimStopMeasure(FightPartnerAlias)
+						StopAnimation(FightPartnerAlias) 
+						MoveStop(FightPartnerAlias)
+						AlignTo("Destination", FightPartnerAlias)
+						AlignTo(FightPartnerAlias, "Destination")
 						Sleep(1)
 						PlayAnimationNoWait("Destination", "threat")
-						PlayAnimation("FightPartner0", "insult_character")
-						SetProperty("FightPartner0", "Berserker", 1)
+						PlayAnimation(FightPartnerAlias, "insult_character")
+						SetProperty(FightPartnerAlias, "Berserker", 1)
 						SetProperty("Destination", "Berserker", 1)
-						BattleJoin("Destination", "FightPartner0", false, false)
+						BattleJoin("Destination", FightPartnerAlias, false, false)
+					else
+						BattleJoin("Destination", "", false, false)
 					end
 				else -- no random person found, attack user
 					BattleJoin("Destination", "", false, false)

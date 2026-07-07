@@ -73,7 +73,19 @@ function Run()
 	
 	local WaitStep = Gametime2Realtime(0.25)
 	local	Attr		= GetImpactValue("Destination", "Attractivity")	-- 0 - 0.75
-	local Money		= math.floor(1.5*(7+(1+Attr*4)*SimGetRank(""))) 
+	local PreacherFactor = 1
+	local PreacherID = GetProperty("Destination", "MassInProgress")
+	if PreacherID then
+		GetAliasByID(PreacherID, "Preacher")
+		if AliasExists("Preacher") then
+			local PreacherRhetoric = GetSkillValue("Preacher", RHETORIC)
+			local PreacherLevel = SimGetLevel("Preacher")
+			PreacherFactor = 0.25 + math.min(25, PreacherRhetoric + PreacherLevel) * 0.05 -- max 1.5
+		end
+	end
+	local BaseMoney = math.floor(1.5*(7+(1+Attr*4)*SimGetRank(""))) -- indirectly already takes church level and money of the visitors into account (by checking attractivity of church and the Rank of the visitor)
+	local Money		= math.floor(BaseMoney * PreacherFactor)
+	local ReducedMoney = math.floor(Money * 0.7)
 	SetData("MessMoney",Money)
 	local Transfered
 	local HouselTaken = false
@@ -87,13 +99,21 @@ function Run()
 		if not HouselTaken then
 			local BoughtHousels = economy_BuyItems("Destination", "", ItemGetID("Housel"), 1)
 			if BoughtHousels >= 1 then
+				SatisfyNeed("", 4, -0.25)
 				HouselTaken = true
 			end
 		end
 		
+		SatisfyNeed("", 4, Progress)
 		if GetDynastyID("Destination") ~= GetDynastyID("") then
-			chr_CreditMoney("Destination", Money, "Offering")
-			economy_UpdateBalance("Destination", "Service", Money)
+			local Donation
+			if HouselTaken then
+				Donation = Money
+			else
+				Donation = ReducedMoney
+			end
+			chr_CreditMoney("Destination", Donation, "Offering")
+			economy_UpdateBalance("Destination", "Service", Donation)
 		end
 		if GetImpactValue("Destination","MassInProgress")~=1 then
 			break
@@ -127,7 +147,7 @@ function AffectFaith()
 	local MyFaith = SimGetFaith("")
 	
 	if (chr_SpendMoney("", GetData("MessMoney"), "MessMoney")) then
-		-- gunst steigt bei allen Dynastien deren Anführer die gleiche Religion hat 
+		-- gunst steigt bei allen Dynastien deren Anfuehrer die gleiche Religion hat 
 		GetDynasty("", "dynasty")
 		local iCount = ScenarioGetObjects("Dynasty", 99, "Dynasties")
 		
