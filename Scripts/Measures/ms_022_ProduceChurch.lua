@@ -36,7 +36,7 @@ function SitAround() --ChairA,ChairB,ShelfB
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 	GetLocatorByName("WorkBuilding","ShelfB","ShelfPos")
 	f_BeginUseLocator("","ShelfPos",GL_STANCE_STAND,true)
@@ -57,7 +57,7 @@ function SitAround() --ChairA,ChairB,ShelfB
 	PlaySound3DVariation("","Effects/digging_shelf",1)
 	CarryObject("","",false)
 	Sleep(Time)
-	f_EndUseLocator("","ShelfPos",GL_STACE_STAND)
+	f_EndUseLocator("","ShelfPos",GL_STANCE_STAND)
 end
 
 function ReadBook() --ChairC,ShelfC,ChairD
@@ -91,7 +91,7 @@ function ReadBook() --ChairC,ShelfC,ChairD
 	PlaySound3DVariation("","Effects/digging_shelf",1)
 	CarryObject("","",false)
 	Sleep(Time)
-	f_EndUseLocator("","ShelfPos",GL_STACE_STAND)
+	f_EndUseLocator("","ShelfPos",GL_STANCE_STAND)
 	GetLocatorByName("WorkBuilding","ChairD","ChairPos")
 	f_BeginUseLocator("","ChairPos",GL_STANCE_SIT,true)
 	CarryObject("","Handheld_Device/ANIM_ink_feather.nif",false)
@@ -103,7 +103,7 @@ function ReadBook() --ChairC,ShelfC,ChairD
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 end
 
@@ -143,7 +143,7 @@ function ControlBooks() --ShelfA,ShelfE,ChairE
 	PlaySound3DVariation("","Effects/digging_shelf",1)
 	CarryObject("","",false)
 	Sleep(Time)
-	f_EndUseLocator("","ShelfPos",GL_STACE_STAND)
+	f_EndUseLocator("","ShelfPos",GL_STANCE_STAND)
 	GetLocatorByName("WorkBuilding","ChairE","ChairPos")
 	f_BeginUseLocator("","ChairPos",GL_STANCE_SIT,true)
 	CarryObject("","Handheld_Device/ANIM_ink_feather.nif",false)
@@ -155,7 +155,7 @@ function ControlBooks() --ShelfA,ShelfE,ChairE
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 end
 

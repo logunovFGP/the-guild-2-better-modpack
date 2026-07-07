@@ -53,7 +53,7 @@ function UsePultA()
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 
 end
@@ -72,7 +72,7 @@ function UsePultB()
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 
 end
@@ -91,7 +91,7 @@ function UsePultC()
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 
 end
@@ -110,7 +110,7 @@ function UsePultD()
 	end
 	PlayAnimation("","sit_write_out")
 	CarryObject("","",false)
-	f_EndUseLocator("","ChairPos",GL_STACE_STAND)
+	f_EndUseLocator("","ChairPos",GL_STANCE_STAND)
 	Sleep(1)
 
 end

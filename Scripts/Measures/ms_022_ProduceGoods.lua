@@ -141,7 +141,7 @@ function Run()
 		end
     
 		-- Necromancer
-		if BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_FRIEDHOF then
+		if BuildingGetType("WorkBuilding") == GL_BUILDING_TYPE_CRYPT then
 			StartProduction("","WorkBuilding")
 			if SimGetProduceItemID("") == 973 or SimGetProduceItemID("") == 972 or SimGetProduceItemID("") == 971 then -- Knochen, Schadel, Leichenhemd
 				if not ms_022_producenekro_KnochenGraben() then

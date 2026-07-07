@@ -284,3 +284,5 @@ Data:
 280   "GL_RANK_RICH"   4   ""   |
 281   "GL_RANK_WEALTHY"   5   ""   |
 282   "GL_PROPEL_EMPLOYEES_FAVOR_LOSS"   16   ""   |
+283   "GL_DIPLO_MAX_PER_DAY"   3   ""   |
+284   "GL_ENABLE_LOG"   0   ""   |

@@ -202,7 +202,7 @@ function Run()
 					AddImpact("Destination", "ReceivedBath", 1, 6)
 					
 					-- player goes to his position after his partner went to his one
-					if f_MoveToNoWait("Destination", "BathPosition2", GL_WALKSPEED_RUN) then
+					if f_MoveToNoWait("Destination", "BathPosition2", GL_MOVESPEED_RUN) then
 						f_MoveTo("", "BathPosition1")
 					
 						SetProperty("", "Ready")
@@ -334,7 +334,7 @@ function Run()
 				return
 			end
 			
-			if f_MoveToNoWait("Destination", "BathPosition2", GL_WALKSPEED_RUN) then
+			if f_MoveToNoWait("Destination", "BathPosition2", GL_MOVESPEED_RUN) then
 				f_MoveTo("", "BathPosition1")
 				SetState("Destination", STATE_LOCKED, true)						
 				SetProperty("", "Ready")

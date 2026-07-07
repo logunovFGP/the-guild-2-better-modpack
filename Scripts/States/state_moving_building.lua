@@ -135,7 +135,7 @@ function CleanUp()
 	if AliasExists("BuildingAnimation0") then
 		if BuildingGetType("") == GL_BUILDING_TYPE_MILL or BuildingGetType("") == GL_BUILDING_TYPE_SCHOOL 
 			or BuildingGetType("") == GL_BUILDING_TYPE_GRAVEYARD or BuildingGetType("") == GL_BUILDING_TYPE_JUGGLER 
-			or BuildingGetType("") == GL_BUILDING_TYPE_SOLDIERPLACE or BuildingGetType("") == GL_BUILDING_TYPE_CASTLE then
+			or BuildingGetType("") == GL_BUILDING_TYPE_SOLDIERPLACE or BuildingGetType("") == GL_BUILDING_TYPE_MERCENARY then
 			GfxSetPosition("BuildingAnimation0",0,-1000,0,false)
 			GfxDetachObject("BuildingAnimation0")
 		end

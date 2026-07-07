@@ -222,7 +222,7 @@ end
 
 -- -----------------------
 -- ModifyFavor
--- Value uses GameConstants (GL_FAVOR_MOD_)
+-- Value uses GameConstants (global constant FAVOR_MOD_ +++)
 -- Value uses diplomacy or title for additional modification
 -- -----------------------
 function ModifyFavor(source, dest, val)
@@ -1128,7 +1128,7 @@ function CalculateBuildingBonus(SimAlias, WorkBuilding, HireFire)
 		
 		AddImpact(SimAlias, "charisma", CharismaMod, -1)
 
-	elseif BuildingType == GL_BUILDING_TYPE_CASTLE then
+	elseif BuildingType == GL_BUILDING_TYPE_MERCENARY then
 		if HireFire == "hire" then
 			if BuildingHasUpgrade(WorkBuilding, "AlarmHorn") then
 				FightingMod = FightingMod + 1

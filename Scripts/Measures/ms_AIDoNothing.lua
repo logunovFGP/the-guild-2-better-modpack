@@ -32,7 +32,7 @@ function MoveToHome()
 		return false
 	end
 	
-	if not CityGetRandomBuilding("City", GL_BUILDING_TYPE_HOUSING, GL_BUILDING_TYPE_RESIDENCE, -1, -1, FILTER_IGNORE, "Home") then
+	if not CityGetRandomBuilding("City", GL_BUILDING_TYPE_WORKER_HOUSING, GL_BUILDING_TYPE_RESIDENCE, -1, -1, FILTER_IGNORE, "Home") then
 		return false
 	end
 	

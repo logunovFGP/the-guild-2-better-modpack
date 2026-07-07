@@ -704,7 +704,7 @@ function SetupAI(BldAlias)
 		MarketStock = { 50, 40, 40, 30, 30, 15, -1, -1 }
 		LocalStock = { -1, -1, -1, -1, -1, -1, 3, 3 }
 		
-	elseif BldType == GL_BUILDING_TYPE_FRIEDHOF then
+	elseif BldType == GL_BUILDING_TYPE_CRYPT then
 		Items = {	"Schadelkerze", "Knochenarmreif", "BoneFlute", "HexerdokumentI", "Robe", 
 				"FalseRelict", "HexerdokumentII", "pddv", "Knochen", "Schadel",
 				"Ektoplasma", "Leichenhemd"
@@ -851,7 +851,7 @@ function CheckCarts(BldAlias)
 	local BldType = BuildingGetType(BldAlias)
 	local BestCount = 2
 	
-	if BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_CASTLE then
+	if BldType == GL_BUILDING_TYPE_THIEF or BldType == GL_BUILDING_TYPE_MERCENARY then
 		-- no state_autocart or forced carts for robbers
 		return
 	end
@@ -1215,7 +1215,7 @@ function AbilityBoosts(BldAlias, BossAlias)
 				AddImpact(BldAlias, "RogueBonus", 0.10, -1)
 			end
 		end
-	elseif Type == GL_BUILDING_TYPE_CASTLE then
+	elseif Type == GL_BUILDING_TYPE_MERCENARY then
 		local BossAbility = GetImpactValue(BossAlias, "ThiefI")
 		if BossAbility > 0 then
 			if GetImpactValue(BldAlias, "ThiefBoost") < BossAbility then

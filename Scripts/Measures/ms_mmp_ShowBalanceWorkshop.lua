@@ -89,7 +89,7 @@ function Run()
 			BalanceLastItem = "HerbTea"
 			LabelOne = "HerbTea"
 			LabelTwo = "Phiole"
-		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_FRIEDHOF then -- cemetery
+		elseif BuildingGetType("Workshop")==GL_BUILDING_TYPE_CRYPT then -- cemetery
 			BalanceLastItem = "Schadelkerze" 
 			LabelOne = "Schadelkerze"
 			LabelTwo = "Knochenarmreif"

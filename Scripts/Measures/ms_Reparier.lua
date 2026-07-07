@@ -13,7 +13,7 @@ function Run()
 		StopMeasure()
 	end
 
-	if not f_MoveTo("","Destination",GL_WALKSPEED_RUN, 300) then
+	if not f_MoveTo("","Destination",GL_MOVESPEED_RUN, 300) then
 		StopMeasure()
 	end
 

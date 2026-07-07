@@ -8,7 +8,7 @@ function Run()
 
 		if not SimGetWorkingPlace("", "MyHome") then
 			if IsPartyMember("") then
-				local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CASTLE)
+				local NextBuilding = ai_GetNearestDynastyBuilding("", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_MERCENARY)
 				if NextBuilding then
 					CopyAlias(NextBuilding, "MyHome")
 				end

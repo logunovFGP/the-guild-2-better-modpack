@@ -11,8 +11,6 @@
 ----	AI scripts
 -------------------------------------------------------------------------------
 
-GL_DIPLO_MAX_PER_DAY = 3
-
 function CanDiplo(DestID)
 	local Day = math.floor(GetGametime() / 24)
 	local Count = 0
