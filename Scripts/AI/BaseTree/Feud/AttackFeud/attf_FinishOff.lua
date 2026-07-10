@@ -19,6 +19,7 @@ function Weight()
 					if GetState("FinishTarget", STATE_UNCONSCIOUS)
 						and not GetState("FinishTarget", STATE_DEAD)
 						and not GetState("FinishTarget", STATE_CUTSCENE)
+						and GetHPRelative("FinishTarget") <= 0.2
 						and GetDistance("SIM", "FinishTarget") <= 2500 then
 						if Rand(100) < 40 then
 							return 90

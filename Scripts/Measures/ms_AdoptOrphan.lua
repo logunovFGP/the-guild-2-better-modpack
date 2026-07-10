@@ -142,6 +142,9 @@ function Run()
 		
 		local Age = SimGetAge("Orphan")
 		DoNewBornStuff("Orphan")
+		if Age < 1 or Age > 14 then
+			Age = 4 + Rand(3)
+		end
 		SimSetAge("Orphan", Age)
 		SimSetBehavior("Orphan", "Childness")
 		SetState("Orphan", STATE_CHILD, true)

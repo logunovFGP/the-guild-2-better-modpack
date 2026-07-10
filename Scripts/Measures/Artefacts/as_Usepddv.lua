@@ -36,7 +36,7 @@ function Run()
 		StopMeasure()
 	end
 
-	if RemoveItems("", "Pddv", 1) == 1 then
+	if GetItemCount("", "Pddv", INVENTORY_STD) >= 1 then
 	
 		-- initialize measure
 		MeasureSetNotRestartable()
@@ -70,7 +70,10 @@ function Run()
 		StopAction("poison","")
 		PlayFE("", "anger", 1, 2, 0)
 		MsgSay("Destination","_HPFZ_ARTEFAKT_PDDV_SPRUCH_+0")
-		
+
+		if RemoveItems("", "Pddv", 1) ~= 1 then
+			StopMeasure()
+		end
 		-- skillcheck
 		if (GetSkillValue("", SHADOW_ARTS) > GetSkillValue("Destination", EMPATHY)) then	
 			AddImpact("Destination", "LifeExpanding", YearsToLive, -1)

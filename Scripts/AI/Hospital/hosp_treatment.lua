@@ -16,7 +16,7 @@ function Weight()
 		end
 	end
 
-	local need = bld_CalcTreatmentNeed("Hospital", "SIM")
+	local need, waiting = bld_CalcTreatmentNeed("Hospital", "SIM")
 	if need <= 0 then
 		return 0
 	end
@@ -31,7 +31,7 @@ function Weight()
 		if HasProperty("Hospital", rbase .. "minp") then
 			minp = GetProperty("Hospital", rbase .. "minp") - 1
 		end
-		if need < minp then
+		if waiting < minp then
 			return 0
 		end
 		local maxw = 99

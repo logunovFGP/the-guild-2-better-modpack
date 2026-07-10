@@ -562,6 +562,7 @@ function Go()
 			-- punish him
 			LogMessage("Trial: Outlaw gets punished because rawpenalty is >= 16")
 			CityAddPenalty("settlement", "accused", PENALTY_FUGITIVE, FugitiveYears)
+			SetProperty("accused", "RevoltCityID", GetID("settlement"))
 			AddImpact("accused", "REVOLT", 1, FugitiveHours)
 			SetState("accused", STATE_REVOLT, true)
 			

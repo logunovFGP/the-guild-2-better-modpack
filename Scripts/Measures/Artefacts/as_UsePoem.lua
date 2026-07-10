@@ -86,7 +86,7 @@ function Run()
 	end
 
 	--read the poem
-	if RemoveItems("", "Poem", 1) > 0 then
+	if GetItemCount("", "Poem", INVENTORY_STD) > 0 then
 		SetMeasureRepeat(TimeOut)
 		local Time = PlayAnimationNoWait("", "use_book_standing")
 		PlayAnimationNoWait("Destination", "cogitate")
@@ -98,7 +98,10 @@ function Run()
 		Sleep(Time-3)
 		PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 		CarryObject("", "", false)
-	
+
+		if RemoveItems("", "Poem", 1) ~= 1 then
+			StopMeasure()
+		end
 		--modify the favor
 		chr_ModifyFavor("Destination", "", favormodify)
 		-- add progress

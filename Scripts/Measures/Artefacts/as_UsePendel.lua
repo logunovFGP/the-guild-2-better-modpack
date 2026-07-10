@@ -30,7 +30,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if RemoveItems("", "Pendel", 1) == 1 then
+	if GetItemCount("", "Pendel", INVENTORY_STD) >= 1 then
 
 		-- initialize measure
 		MeasureSetNotRestartable()
@@ -56,9 +56,12 @@ function Run()
 		PlaySound3D("", "Locations/destillery/destillery+1.wav", 1.0)
 		PlayAnimationNoWait("Destination", "nod")				
 		PlayFE("", "smile", 1, 2, 0)
-		
+
+		if RemoveItems("", "Pendel", 1) ~= 1 then
+			StopMeasure()
+		end
 		-- skillcheck
-		if (GetSkillValue("", SHADOW_ARTS) < GetSkillValue("Destination", EMPATHY)) then	
+		if (GetSkillValue("", SHADOW_ARTS) < GetSkillValue("Destination", EMPATHY)) then
 			MsgSay("Destination", "_HPFZ_ARTEFAKT_PENDEL_SPRUCH_+0")		
 		else
 			GetSettlement("Destination", "Heimat")

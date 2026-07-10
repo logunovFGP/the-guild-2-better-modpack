@@ -44,7 +44,7 @@ function Run()
 	GetPosition("Destination", "ParticleSpawnPos")
 	local time = PlayAnimationNoWait("Destination","cogitate")
 	--play animation and spawn particles
-	if RemoveItems("", "Mixture", 1) > 0 then
+	if GetItemCount("", "Mixture", INVENTORY_STD) > 0 then
 		CommitAction("poison", "", "Destination", "Destination")
 		local Time
 		Time = PlayAnimationNoWait("","use_object_standing")
@@ -61,7 +61,10 @@ function Run()
 		CarryObject("","",false)
 		Sleep(1)
 		StopAction("poison","")
-		
+
+		if RemoveItems("", "Mixture", 1) ~= 1 then
+			StopMeasure()
+		end
 		SetState("Destination", STATE_UNCONSCIOUS,true)
 		
 		CreateScriptcall("StartDisease",1,"Measures/Artefacts/as_UseMixture.lua","StartDisease","Owner","Destination")

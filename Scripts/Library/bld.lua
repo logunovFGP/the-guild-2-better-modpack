@@ -382,17 +382,19 @@ function CalcTreatmentNeed(BldAlias, SimAlias)
 	local SickSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitingForTreatment)))"
 	local NumSickSims = Find(SimAlias, SickSimFilter,"SickSim", -1)
 	local Producer = BuildingGetProducerCount(BldAlias, PT_MEASURE, "MedicalTreatment")
-	
+
 	local HealerCount = 0
-	if NumSickSims > 6 and MedicineNeed < 100 then
-		HealerCount = 3
-	elseif NumSickSims > 3 and MedicineNeed < 100 then
-		HealerCount = 2
-	elseif NumSickSims > 0 then
-		HealerCount = 1
+	if NumSickSims > 0 then
+		HealerCount = NumSickSims
+		if HealerCount > 5 then
+			HealerCount = 5
+		end
+		if MedicineNeed >= 100 and HealerCount > 1 then
+			HealerCount = 1
+		end
 	end
-	
-	return HealerCount - Producer
+
+	return HealerCount - Producer, NumSickSims
 end
 
 -- -----------------------

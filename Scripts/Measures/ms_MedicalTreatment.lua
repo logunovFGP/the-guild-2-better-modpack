@@ -42,17 +42,24 @@ function Run()
 		return
 	end
 
-	local tcap0 = "MActRule_" .. MeasureGetID("MedicalTreatment") .. "_"
-	if HasProperty("Hospital", tcap0 .. "enabled") and (GetProperty("Hospital", tcap0 .. "enabled") - 1) == 0 then
-		SimSetProduceItemID("", 0, -1)
-		StopMeasure()
-		return
+	local ManualWorker = IsDynastySim("")
+	if not ManualWorker and HasProperty("", "AIManual") and GetProperty("", "AIManual") ~= 0 then
+		ManualWorker = true
 	end
-	if HasProperty("Hospital", tcap0 .. "maxw") then
-		if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > (GetProperty("Hospital", tcap0 .. "maxw") - 1) then
+
+	local tcap0 = "MActRule_" .. MeasureGetID("MedicalTreatment") .. "_"
+	if not ManualWorker then
+		if HasProperty("Hospital", tcap0 .. "enabled") and (GetProperty("Hospital", tcap0 .. "enabled") - 1) == 0 then
 			SimSetProduceItemID("", 0, -1)
 			StopMeasure()
 			return
+		end
+		if HasProperty("Hospital", tcap0 .. "maxw") then
+			if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > (GetProperty("Hospital", tcap0 .. "maxw") - 1) then
+				SimSetProduceItemID("", 0, -1)
+				StopMeasure()
+				return
+			end
 		end
 	end
 
@@ -100,16 +107,18 @@ function Run()
 	while true do
 
 		local tcap = "MActRule_" .. MeasureGetID("MedicalTreatment") .. "_"
-		if HasProperty("Hospital", tcap .. "enabled") and (GetProperty("Hospital", tcap .. "enabled") - 1) == 0 then
-			SimSetProduceItemID("", 0, -1)
-			StopMeasure()
-			break
-		end
-		if HasProperty("Hospital", tcap .. "maxw") then
-			if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > (GetProperty("Hospital", tcap .. "maxw") - 1) then
+		if not ManualWorker then
+			if HasProperty("Hospital", tcap .. "enabled") and (GetProperty("Hospital", tcap .. "enabled") - 1) == 0 then
 				SimSetProduceItemID("", 0, -1)
 				StopMeasure()
 				break
+			end
+			if HasProperty("Hospital", tcap .. "maxw") then
+				if BuildingGetProducerCount("Hospital", PT_MEASURE, "MedicalTreatment") > (GetProperty("Hospital", tcap .. "maxw") - 1) then
+					SimSetProduceItemID("", 0, -1)
+					StopMeasure()
+					break
+				end
 			end
 		end
 

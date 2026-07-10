@@ -41,10 +41,13 @@ function Run()
 	end
 	
 	--play anims 
-	if RemoveItems("", "MediPack", 1) > 0 then
+	if GetItemCount("", "MediPack", INVENTORY_STD) > 0 then
 		local Time = PlayAnimationNoWait("","manipulate_middle_twohand")
 		GetPosition("Destination", "ParticleSpawnPos")
 		Sleep(Time-2)
+		if RemoveItems("", "MediPack", 1) ~= 1 then
+			StopMeasure()
+		end
 		StartSingleShotParticle("particles/healthglow.nif", "ParticleSpawnPos",1, 2.0)
 		PlaySound3D("","Effects/mystic_gift+0.wav", 1.0)
 		

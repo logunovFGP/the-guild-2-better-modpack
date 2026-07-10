@@ -42,7 +42,7 @@ function Run()
 	local duration = mdata_GetDuration(MeasureID)
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 
-	if RemoveItems("","WeaponPoison",1)>0 then	
+	if GetItemCount("","WeaponPoison",INVENTORY_STD)>0 then
 		MoveSetActivity("","fighting")
 		PlayAnimationNoWait("","fight_draw_weapon")
 		Sleep(1.5)
@@ -54,6 +54,9 @@ function Run()
 		StartSingleShotParticle("particles/bloodsplash.nif", "ParticleSpawnPos", 1, 3.0)
 		PlaySound3D("Destination","Effects/combat_strike_fist/combat_strike_fist+4.wav",1)
 	
+		if RemoveItems("","WeaponPoison",1) ~= 1 then
+			StopMeasure()
+		end
 		local ActualHP = GetHP("Destination")
 		ModifyHP("Destination",-(ActualHP/3),true)
 	

@@ -30,8 +30,8 @@ function Run()
 		return
 	end
 
-	if RemoveItems("", "Voodo", 1) == 1 then
-	
+	if GetItemCount("", "Voodo", INVENTORY_STD) >= 1 then
+
 		-- initialize measure
 		MeasureSetNotRestartable()
 		SetMeasureRepeat(TimeOut)	
@@ -66,6 +66,9 @@ function Run()
 			PlaySound3D("", "Locations/destillery/destillery+1.wav", 1.0)
 			MsgSay("Destination", "_HPFZ_ARTEFAKT_VODOO_SPRUCH_+1")
 			Sleep(1)
+			if RemoveItems("", "Voodo", 1) ~= 1 then
+				return
+			end
 			chr_GainXP("", GetData("BaseXP"))
 			if DerFluch < 4 then
 				-- make drunk
@@ -131,18 +134,20 @@ function Run()
 					"@L_HPFZ_ARTEFAKT_VODOO_OPFER_RUMPF_+0", GetID(""))
 					
 		else
-			PlayAnimation("Destination", "shake_head")
-			PlayAnimationNoWait("Destination", "threat")
-			MsgSay("Destination", "_HPFZ_ARTEFAKT_FAIL_SPRUCH")
-			
+			if RemoveItems("", "Voodo", 1) ~= 1 then
+				return
+			end
+			chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_NORMAL)
+			AddEvidence("Destination", "Owner", "Destination", 11) -- poison
 			MsgBoxNoWait("","Destination",
 						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_KOPF_+0",
 						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_NUTZER_RUMPF_+0", GetID("Destination"))
 			MsgNewsNoWait("Destination", "", "", "intrigue", -1,
 						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_KOPF_+0",
 						"@L_HPFZ_ARTEFAKT_VODOO_FAILED_OPFER_RUMPF_+0", GetID(""))
-			chr_ModifyFavor("Destination", "", -GL_FAVOR_MOD_NORMAL)
-			AddEvidence("Destination", "Owner", "Destination", 11) -- poison
+			PlayAnimation("Destination", "shake_head")
+			PlayAnimationNoWait("Destination", "threat")
+			MsgSay("Destination", "_HPFZ_ARTEFAKT_FAIL_SPRUCH")
 		end
 	end
 end

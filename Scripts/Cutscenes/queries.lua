@@ -289,7 +289,7 @@ function DecideFugitive()
 		elseif Fee*2<GetMoney("Sim") then
 			Decision = 2		-- ich zahle
 		else 
-			Decision = 1		-- ich gehe freiwillig ins Gefängnis
+			Decision = 1		-- ich gehe freiwillig ins Gefï¿½ngnis
 		end
 	end
 
@@ -300,6 +300,7 @@ function DecideFugitive()
 		local FugitiveHours = FugitiveYears * 24 / YearsPerRound
 
 		CityAddPenalty("City","Sim",PENALTY_FUGITIVE,FugitiveYears)
+		SetProperty("Sim", "RevoltCityID", GetID("City"))
 		AddImpact("Sim","REVOLT",1,FugitiveHours)
 		SetState("Sim",STATE_REVOLT,true)
 

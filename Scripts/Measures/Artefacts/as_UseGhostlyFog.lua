@@ -47,7 +47,7 @@ function Run()
 	GetPosition("Destination", "ParticleSpawnPos")
 	local time2 = PlayAnimationNoWait("Destination", "cogitate")
 	--play animation and spawn particles
-	if RemoveItems("", "Ghostlyfog", 1) > 0 then
+	if GetItemCount("", "Ghostlyfog", INVENTORY_STD) > 0 then
 		CommitAction("poison","","Destination","Destination")
 		local Time
 		Time = PlayAnimationNoWait("","use_object_standing")
@@ -64,8 +64,11 @@ function Run()
 		CarryObject("","",false)
 		Sleep(1)
 		StopAction("poison","")
+		if RemoveItems("", "Ghostlyfog", 1) ~= 1 then
+			StopMeasure()
+		end
 		--modify the empathy
-		if (modifyvalue >= GetSkillValue("Destination",EMPATHY)) then	
+		if (modifyvalue >= GetSkillValue("Destination",EMPATHY)) then
 			--show overhead text -> NO EFFECT
 				
 			Sleep(1)

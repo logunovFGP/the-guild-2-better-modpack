@@ -9,7 +9,17 @@ function Run()
 	if GetState("Destination", STATE_DEAD) then
 		StopMeasure()
 	end
-	
+
+	local HumanActor = false
+	if GetDynastyID("") > 0 and DynastyIsHumanControlled("") then
+		HumanActor = true
+	end
+	if not HumanActor then
+		if not GetState("Destination", STATE_UNCONSCIOUS) or GetHPRelative("Destination") > 0.2 then
+			StopMeasure()
+		end
+	end
+
 	--run to destination and start action at MaxDistance
 	if not ai_StartInteraction("", "Destination", MaxDistance, ActionDistance, nil, true) then
 		StopMeasure()

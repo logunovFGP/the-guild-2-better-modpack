@@ -42,7 +42,7 @@ function Run()
 	AlignTo("Believer", "Owner")
 	Sleep(1)
 	
-	if RemoveItems("","Hasstirade",1) == 1 then
+	if GetItemCount("", "Hasstirade", INVENTORY_STD) >= 1 then
 	
 		MeasureSetNotRestartable()
 		SetMeasureRepeat(TimeOut)
@@ -84,8 +84,11 @@ function Run()
 		Sleep(1)
 		PlaySound3D("", "Locations/wear_clothes/wear_clothes+1.wav", 1.0)
 		CarryObject("", "", false)
-		
-		chr_ModifyFavor("Believer", "Destination", -GL_FAVOR_MOD_MAX)		
+
+		if RemoveItems("","Hasstirade",1) ~= 1 then
+			StopMeasure()
+		end
+		chr_ModifyFavor("Believer", "Destination", -GL_FAVOR_MOD_MAX)
 			
 		MsgNewsNoWait("", "Believer", "", "intrigue", -1,
 					"@L_HPFZ_ARTEFAKT_TIRADE_NUTZER_KOPF_+0",

@@ -30,7 +30,7 @@ function Run()
 		StopMeasure()
 	end
 
-	if RemoveItems("", "Spindel", 1) == 1 then
+	if GetItemCount("", "Spindel", INVENTORY_STD) >= 1 then
 	
 		-- initialize measure
 		SetMeasureRepeat(TimeOut)
@@ -51,6 +51,9 @@ function Run()
 		
 		-- skillcheck
 		if (GetSkillValue("Destination", EMPATHY) > GetSkillValue("", SHADOW_ARTS)) then
+			if RemoveItems("", "Spindel", 1) ~= 1 then
+				StopMeasure()
+			end
 			AlignTo("Destination", "")
 			PlayFE("", "anger", 1, 3, 0)
 			PlayAnimationNoWait("Destination", "propel")
@@ -90,6 +93,9 @@ function Run()
 			Sleep(1)
 			chr_ModifyFavor("Destination", "", -favorlost)
 		else
+			if RemoveItems("", "Spindel", 1) ~= 1 then
+				StopMeasure()
+			end
 			SetState("Destination", STATE_HPFZ_TRAUMLAND, true)
 
 			MsgNewsNoWait("", "Destination", "", "intrigue", -1,
