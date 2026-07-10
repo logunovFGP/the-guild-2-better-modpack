@@ -168,18 +168,18 @@ end
 
 function CalculateMarketPrice(itemID)
     if not GetNearestSettlement("Owner", "NearestCity") then
-        behavior_hpfz_simhandel_CalculateFallbackPrice(itemID)
+        return behavior_hpfz_simhandel_CalculateFallbackPrice(itemID)
     end
 
     if not CityGetLocalMarket("NearestCity", "LocalMarket") then
-        behavior_hpfz_simhandel_CalculateFallbackPrice(itemID)
+        return behavior_hpfz_simhandel_CalculateFallbackPrice(itemID)
     end
 
     local buyPrice = ItemGetPriceBuy(itemID, "LocalMarket")
     local sellPrice = ItemGetPriceSell(itemID, "LocalMarket")
     
     if buyPrice == -1 or sellPrice == -1 then
-        behavior_hpfz_simhandel_CalculateFallbackPrice(itemID)
+        return behavior_hpfz_simhandel_CalculateFallbackPrice(itemID)
     end
 
     local currentPrice = sellPrice

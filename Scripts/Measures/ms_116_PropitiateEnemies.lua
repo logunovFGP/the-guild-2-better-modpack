@@ -31,6 +31,7 @@ function Run()
 	local MaxDistance = 3000
 	--how far from the destination, the owner should stand while reading the letter from rome
 	local ActionDistance = 120
+	local TargetStopMovingDistance = ActionDistance * 2
 	local MeasureID = GetCurrentMeasureID("")
 	local TimeOut = mdata_GetTimeOut(MeasureID)
 	--amount of favor
@@ -44,7 +45,7 @@ function Run()
 	local DestinationGender = (SimGetGender("Destination"))
 
 	--run to destination and start action at MaxDistance
-	if not ai_StartInteraction("", "Destination2", MaxDistance, ActionDistance, nil) then
+	if not ai_StartInteraction("", "Destination2", MaxDistance, ActionDistance, nil, nil, TargetStopMovingDistance) then
 		StopMeasure()
 	end
 	

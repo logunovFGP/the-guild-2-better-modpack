@@ -83,10 +83,10 @@ function Run()
 	-- Cure some diseases
 	if WasSick then
 		if GetImpactValue("", "HerbTea") > 0 then -- herb tea helps
-			local CheckDisease = { "Cold", "Sprain", "BurnWound", "Influenza", "Pneumonia", "Pox", "BlackDeath", "Fracture" }
+			local CheckDisease = { "Cold", "Sprain", "BurnWound", "Influenza", "Pneumonia", "Pox", "Blackdeath", "Fracture" }
 			local SleepBonus = GetImpactValue("", "SleepBonusI")
 	
-			for i=1, 7 do
+			for i=1, 8 do
 				if GetImpactValue("", CheckDisease[i]) > 0 then
 					if CheckDisease[i] == "Cold" then
 						Disease.Cold:cureSim("")

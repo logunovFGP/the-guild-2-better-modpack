@@ -103,9 +103,14 @@ function Run()
 		StopMeasure()
 	end
 	
+	local FeastMaxGuests = bld_GetFeastMaxGuests("MyHome")
+	if FeastMaxGuests <= 0 then
+		StopMeasure()
+	end
 	SetState("MyHome", STATE_FEAST, true)
 	SetProperty("", "Host")
-	SetProperty("MyHome", "InvitationsLeft", 6)
+	SetProperty("MyHome", "FeastMaxGuests", FeastMaxGuests)
+	SetProperty("MyHome", "InvitationsLeft", FeastMaxGuests)
 	SetProperty("MyHome", "CanInvite", 1)
 	SetProperty("MyHome", "MusicLevel", MusicLevel)
 	SetProperty("MyHome", "FoodLevel", FoodLevel)
@@ -122,7 +127,22 @@ function CallToFeast()
 	if not BuildingHasUpgrade("PartyLocation", "Saloon") then
 		return
 	end
+	if GetState("", STATE_CUTSCENE) or GetState("", STATE_LOCKED) then
+		local PartyDate = GetProperty("PartyLocation", "PartyDate")
+		if PartyDate and GetGametime() < (PartyDate/60) then
+			CreateScriptcall("CallToFeastRetry", 1, "Measures/ms_160_GiveAFeast.lua", "CallToFeast", "")
+		end
+		return
+	end
+	local MeasureName = GetCurrentMeasureName("")
+	if MeasureName == "AttendFestivity" or MeasureName == "Feast" then
+		return
+	end
 	if not MeasureRun("", "PartyLocation", "AttendFestivity") then
+		local PartyDate = GetProperty("PartyLocation", "PartyDate")
+		if PartyDate and GetGametime() < (PartyDate/60) then
+			CreateScriptcall("CallToFeastRetry", 1, "Measures/ms_160_GiveAFeast.lua", "CallToFeast", "")
+		end
 		return
 	end
 end

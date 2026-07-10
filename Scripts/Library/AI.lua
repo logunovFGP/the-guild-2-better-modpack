@@ -132,7 +132,7 @@ function GoInsideBuilding(SimAlias, CityObject, BuildingClass, BuildingType, Bui
 	return f_WeakMoveTo(SimAlias, BuildingAlias)
 end
 
-function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDistance, CommandFunction, bForceNoErrorOnBlock)
+function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDistance, CommandFunction, bForceNoErrorOnBlock, TargetStopMovingDistance)
 	if not TargetPerson or not GetID(TargetPerson) then
 		return
 	end
@@ -154,13 +154,23 @@ function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDis
 	local timeout = GetGametime() + 8
 
 	ReactionDistance = ReactionDistance * 1.5
+	if not TargetStopMovingDistance then
+		TargetStopMovingDistance = ReactionDistance
+	end
 
 	-- engine info
 	SetProperty(FirstPerson, "DebugWaitingFor", GetID(TargetPerson))
 
 	while success == false do
-
+		-- move FirstPerson into the general interaction/search range
 		if not f_Follow(FirstPerson,TargetPerson,GL_MOVESPEED_RUN,ReactionDistance, true) then
+			if not bForceNoErrorOnBlock then
+				RemoveProperty(FirstPerson, "DebugWaitingFor")
+				return false
+			end
+		end
+		-- continue following until the distance is small enough to actually stop the target.
+		if not f_Follow(FirstPerson,TargetPerson,GL_MOVESPEED_RUN,TargetStopMovingDistance, true) then
 			if not bForceNoErrorOnBlock then
 				RemoveProperty(FirstPerson, "DebugWaitingFor")
 				return false

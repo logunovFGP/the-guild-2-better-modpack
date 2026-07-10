@@ -751,18 +751,10 @@ function ConfirmFeud()
 			CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
 		else	
 			
-			-- in case we downgrade from alliance (who would do that?) we need to remove properties
-			if DynastyGetDiplomacyState("Destination", "MyBoss") == DIP_ALLIANCE then
-				dyn_RemoveAlly("Destination", "MyBoss")
-			end
-			
 			-- set the new status and favor
-			DynastySetDiplomacyState("Destination", "", DIP_FOE)
+			dyn_SetDiplomacyState("Destination", "MyBoss", DIP_FOE) -- handles also dyn_RemoveAlly and dyn_AddEnemy 
 			DynastyForceCalcDiplomacy("MyBoss")
 			SetFavorToDynasty("Destination", "MyBoss", 0)
-			
-			-- add the new property
-			dyn_AddEnemy("MyBoss","Destination")
 		end
 	else
 		StopMeasure()
@@ -816,15 +808,10 @@ function ConfirmNeutral()
 				CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
 			else
 				-- set the new status and favor here
-				DynastySetDiplomacyState("Destination", "", DIP_NEUTRAL)
+				dyn_SetDiplomacyState("Destination", "MyBoss", DIP_NEUTRAL)
 				DynastyForceCalcDiplomacy("MyBoss")
 				if GetFavorToDynasty("MyBoss", "Destination") > 50 then
 					SetFavorToDynasty("MyBoss", "Destination", 50)
-				end
-				
-				-- in case we downgrade from alliance (who would do that?) we need to remove properties
-				if CState == DIP_ALLIANCE then
-					dyn_RemoveAlly("MyBoss", "Destination")
 				end
 			end
 		else
@@ -902,12 +889,8 @@ function ConfirmNeutral()
 					SetFavorToDynasty("MyBoss", "Destination", 45)
 				end
 				
-				DynastySetDiplomacyState("Destination","MyBoss", DIP_NEUTRAL)
+				dyn_SetDiplomacyState("Destination","MyBoss", DIP_NEUTRAL)
 				DynastyForceCalcDiplomacy("MyBoss")
-				--remove enemy property
-				if CState == DIP_FOE then
-					dyn_RemoveEnemy("MyBoss", "Destination")
-				end
 			end
 		end
 	else
@@ -963,15 +946,10 @@ function ConfirmNAP()
 				CreateScriptcall("Answer_Diplomacy", AnswerTime, "Measures/ms_047_AdministrateDiplomacy.lua", "AnswerLetter", "MyBoss", "Destination", Status)
 			else
 				-- set the new status and favor here
-				DynastySetDiplomacyState("Destination", "", DIP_NAP)
+				dyn_SetDiplomacyState("Destination", "MyBoss", DIP_NAP)
 				DynastyForceCalcDiplomacy("MyBoss")
 				if GetFavorToDynasty("MyBoss", "Destination") > 60 then
 					SetFavorToDynasty("MyBoss", "Destination", 60)
-				end
-				
-				-- in case we downgrade from alliance (who would do that?) we need to remove properties
-				if CState == DIP_ALLIANCE then
-					dyn_RemoveAlly("MyBoss", "Destination")
 				end
 			end
 				
@@ -1091,13 +1069,8 @@ function ConfirmNAP()
 					SetFavorToDynasty("MyBoss", "Destination", 50)
 				end
 				
-				DynastySetDiplomacyState("Destination", "MyBoss", DIP_NAP)
+				dyn_SetDiplomacyState("Destination", "MyBoss", DIP_NAP)
 				DynastyForceCalcDiplomacy("MyBoss")
-				
-				--remove enemy property
-				if CState == DIP_FOE then
-					dyn_RemoveEnemy("MyBoss", "Destination")
-				end
 			end
 		end
 	else	
@@ -1225,16 +1198,8 @@ function ConfirmAlliance()
 				SetFavorToDynasty("MyBoss", "Destination", 75)
 			end
 			
-			DynastySetDiplomacyState("Destination", "MyBoss", DIP_ALLIANCE)
+			dyn_SetDiplomacyState("Destination", "MyBoss", DIP_ALLIANCE)
 			DynastyForceCalcDiplomacy("MyBoss")
-			
-			-- add the new property
-			dyn_AddAlly("MyBoss", "Destination")
-			
-			--remove enemy property
-			if CState == DIP_FOE then
-				dyn_RemoveEnemy("MyBoss", "Destination")
-			end
 			StopMeasure()
 		end
 	else
@@ -1358,20 +1323,8 @@ function AnswerLetter(NewState)
 	end
 	
 	-- set the new status and favor here
-	DynastySetDiplomacyState("", "Destination", DipStatus)
+	dyn_SetDiplomacyState("", "Destination", DipStatus)
 	DynastyForceCalcDiplomacy("")
-	
-	if DipStatus == DIP_FOE then
-		-- add the new property
-		dyn_AddEnemy("", "Destination")
-	end
-	
-	-- remove properties
-	if CState == DIP_ALLIANCE then
-		dyn_RemoveAlly("", "Destination")
-	elseif CState == DIP_FOE then
-		dyn_RemoveEnemy("", "Destination")
-	end
 
 	if CurrentFavor < MinFavor then
 		SetFavorToDynasty("MyDyn", "DynastyAlias", MinFavor)
@@ -1497,18 +1450,8 @@ function Demand(RequestedState)
 				chr_CreditMoney("Destination", MoneyToPay, "IncomeBribes")
 				
 				-- set the new status and favor here
-				DynastySetDiplomacyState("MyBoss", "Destination", NewDip)
+				dyn_SetDiplomacyState("MyBoss", "Destination", NewDip)
 				DynastyForceCalcDiplomacy("MyBoss")
-				
-				if NewDip == DIP_ALLIANCE then
-					-- add the new property
-					dyn_AddAlly("MyBoss", "Destination")
-				end
-				
-				-- remove properties
-				if CState == DIP_FOE then
-					dyn_RemoveEnemy("MyBoss", "Destination")
-				end
 
 				if CurrentFavor < MinFavor then
 					SetFavorToDynasty("MyBoss","DestDyn", MinFavor)
@@ -1544,18 +1487,8 @@ function Demand(RequestedState)
 				chr_CreditMoney("Destination", MoneyToPay, "IncomeBribes")
 				
 				-- set the new status and favor here
-				DynastySetDiplomacyState("MyBoss", "DestDyn", NewDip)
+				dyn_SetDiplomacyState("MyBoss", "DestDyn", NewDip)
 				DynastyForceCalcDiplomacy("MyBoss")
-				
-				if NewDip == DIP_ALLIANCE then
-					-- add the new property
-					dyn_AddAlly("MyBoss", "Destination")
-				end
-				
-				-- remove properties
-				if CState == DIP_FOE then
-					dyn_RemoveEnemy("MyBoss", "Destination")
-				end
 				
 				if CurrentFavor < MinFavor then
 					SetFavorToDynasty("MyBoss", "DestDyn", MinFavor)
@@ -1574,17 +1507,7 @@ function Demand(RequestedState)
 			end
 		elseif Choice == 2 then
 			-- set the new status and favor here
-			DynastySetDiplomacyState("MyDyn", "DestDyn", NewDip)
-			
-			if NewDip == DIP_ALLIANCE then
-				-- add the new property
-				dyn_AddAlly("MyBoss", "Destination")
-			end
-			
-			-- remove properties
-			if CState == DIP_FOE then
-				dyn_RemoveEnemy("MyBoss", "Destination")
-			end
+			dyn_SetDiplomacyState("MyDyn", "DestDyn", NewDip)
 
 			if CurrentFavor < MinFavor then
 				SetFavorToDynasty("MyDyn", "DestDyn", MinFavor)
@@ -1594,9 +1517,8 @@ function Demand(RequestedState)
 			
 			-- set the favor to the enemy
 			SetFavorToDynasty("EnemyAlias", "MyDyn", 0)
-			DynastySetDiplomacyState("MyDyn", "EnemyAlias", DIP_FOE)
+			dyn_SetDiplomacyState("MyDyn", "EnemyAlias", DIP_FOE)
 			DynastyForceCalcDiplomacy("MyDyn")
-			dyn_AddEnemy("MyBoss", "EnemyAlias")
 			
 			if DynastyIsPlayer("EnemyAlias") then
 				-- send a message to the enemy

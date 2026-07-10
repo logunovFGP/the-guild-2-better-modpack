@@ -21,6 +21,70 @@ function GetEmployeesInBuilding(BuildingAlias)
 	return WorkerCount
 end
 
+function bld_CountLocators(BuildingAlias, LocatorBaseName, MaxScan)
+	local Count = 0
+	MaxScan = MaxScan or 32
+	for i=1, MaxScan do
+		if GetLocatorByName(BuildingAlias, LocatorBaseName..i, "__LocatorCountPos", true) then
+			Count = i
+		else
+			break
+		end
+	end
+	return Count
+end
+
+function bld_GetFeastMaxGuests(BuildingAlias)
+	local DanceLocators = bld_CountLocators(BuildingAlias, "Dance", 32)
+	local GuestWelcomeLocators = bld_CountLocators(BuildingAlias, "GuestWelcome", 32)
+	local GuestArriveLocators = bld_CountLocators(BuildingAlias, "GuestArrive", 32)
+	local MaxGuests = DanceLocators - 1 -- -1 for the host
+	MaxGuests = math.max(math.min( MaxGuests, GuestWelcomeLocators, GuestArriveLocators ), 0)
+	return MaxGuests
+end
+
+function bld_IsValidFeastGuest(BuildingAlias, GuestAlias, HostID, FeastMaxGuests)
+	if not AliasExists(GuestAlias) then
+		return false
+	end
+	if not HasProperty(GuestAlias, "InvitedBy") then
+		return false
+	end
+	if GetProperty(GuestAlias, "InvitedBy") ~= HostID then
+		return false
+	end
+	local GuestID = GetID(GuestAlias)
+	for Slot=1, FeastMaxGuests do
+		if HasProperty(BuildingAlias, "Guest"..Slot) then
+			if GetProperty(BuildingAlias, "Guest"..Slot) == GuestID then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function bld_FindValidFeastGuests(SearchAlias, BuildingAlias, GuestFilter, HostID, FeastMaxGuests)
+	local FoundGuests = Find(SearchAlias, GuestFilter, "Guest", -1)
+	local ValidGuests = 0
+	if FoundGuests < 1 then
+		return 0
+	end
+	for i=0, FoundGuests-1 do
+		if ValidGuests >= FeastMaxGuests then
+			break
+		end
+		local GuestAlias = "Guest"..i
+		if bld_IsValidFeastGuest(BuildingAlias, GuestAlias, HostID, FeastMaxGuests) then
+			if ValidGuests ~= i then
+				CopyAlias(GuestAlias, "Guest"..ValidGuests)
+			end
+			ValidGuests = ValidGuests + 1
+		end
+	end
+	return ValidGuests
+end
+
 -- -----------------------
 -- Pays out bank account when on sale/sold
 -- -----------------------

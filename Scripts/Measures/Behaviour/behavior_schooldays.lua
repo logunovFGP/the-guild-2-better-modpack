@@ -45,7 +45,7 @@ function Run()
 	local BuildType = BuildingGetType("Residence")
 	if BuildType == 2 or BuildType == 1  then
 		if GetInsideBuilding("", "InsideBuilding") then
-			if not GetID("Residence") == GetID("InsideBuilding") then
+			if GetID("Residence") ~= GetID("InsideBuilding") then
 				f_MoveTo("", "Residence")
 			end
 		else

@@ -19,7 +19,7 @@ function UpdateBalance(Alias)
 			list[i+4] = GetProperty(Alias, list[i])
 		end
 
-		if not i == 1 then
+		if i ~= 1 then
 			SetProperty(Alias, "Last"..list[i], list[i+4])
 		else
 			SetProperty(Alias, "LastIncome", list[5])

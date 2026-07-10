@@ -18,10 +18,10 @@ function Run()
 		end
 		
 		if not GuardsCalled then
-			if SimGetAge("") < 16 then
+			if SimGetAge("Owner") < 16 then
 				ShowOverheadSymbol("Owner", true, true,"OverheadSymbolID", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
 			else
-				MsgSay("", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
+				MsgSay("Owner", "@L_GENERAL_MEASURES_146_ALERTTHEGUARD")
 			end
 			CommitAction("call_guards", "Owner", "Owner")
 			GuardsCalled = true
@@ -30,10 +30,10 @@ function Run()
 		end
 		
 		if Rand(100) < 25 then
-			if SimGetGender("") == GL_GENDER_MALE then
-				PlaySound3DVariation("", "CharacterFX/male_anger_loop", 1)
+			if SimGetGender("Owner") == GL_GENDER_MALE then
+				PlaySound3DVariation("Owner", "CharacterFX/male_anger_loop", 1)
 			else
-				PlaySound3DVariation("", "CharacterFX/female_anger_loop", 1)
+				PlaySound3DVariation("Owner", "CharacterFX/female_anger_loop", 1)
 			end
 			PlayAnimation("Owner", "cheer_02")
 		end

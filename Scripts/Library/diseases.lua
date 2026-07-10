@@ -19,7 +19,7 @@ end
 
 function NoTime(Boolean, ObjectAlias, Sickness, Endtime)
 	
-	if not Sickness == "Caries" and not Sickness == "BurnWound" then
+	if Sickness ~= "Caries" and Sickness ~= "BurnWound" then
 		if Boolean then
 			SetProperty(ObjectAlias, Sickness.."Time", Endtime)
 		else
@@ -124,12 +124,12 @@ function removeSickness(Illness, ObjectAlias)
 		--LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness:getName())
 
 		diseases_ImpactManager(false, ObjectAlias, Illness:getName(), 0)
-		diseases_NoTime(ObjectAlias, Illness:getName(), 0, false)
+		diseases_NoTime(false, ObjectAlias, Illness:getName(), 0)
 
 		if Illness:getName() ~= "BurnWound" then
 
 			local new_duration = Illness.getDuration()
-			if not Illness:getName() == "Pox" then
+			if Illness:getName() ~= "Pox" then
 				if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, Illness:getName().."Time") then
 					new_duration = math.floor(GetProperty(ObjectAlias,Illness:getName().."Time")-math.mod(GetGametime(),24))
 				end
@@ -225,7 +225,7 @@ function giveSickness(Illness, ObjectAlias)
 	end
 
 	-- check whether the object actually gets infected or not
-	if not Illness:getName() == "BurnWound" and not diseases_checkSickness(ObjectAlias) then
+	if Illness:getName() ~= "BurnWound" and not diseases_checkSickness(ObjectAlias) then
 --		LogMessage(GetName(ObjectAlias).." ID: "..GetID(ObjectAlias).." resisted against sickness")
 		return 
 	end
@@ -247,14 +247,14 @@ function giveSickness(Illness, ObjectAlias)
 		end
 
 		diseases_ImpactManager(true, ObjectAlias, Illness:getName(), Illness.getDuration())
-		diseases_NoTime(ObjectAlias, Illness:getName(), endtime, true)
+		diseases_NoTime(true, ObjectAlias, Illness:getName(), endtime)
 		
 		-- severe diseases reduce life expectancy permanently by 1 or 2 years
 		if Illness:getName() == "BurnWound" or Illness:getName() == "Fracture" then
 			AddImpact(ObjectAlias, "LifeExpanding", -1, -1) 
 		end
 
-		if Illness:getName() == "Pox" or Illness:getName() == "Pneumonia" or Illness:getName() == "BlackDeath" then
+		if Illness:getName() == "Pox" or Illness:getName() == "Pneumonia" or Illness:getName() == "Blackdeath" then
 			AddImpact(ObjectAlias, "LifeExpanding", -2, -1) 
 		end
 	end

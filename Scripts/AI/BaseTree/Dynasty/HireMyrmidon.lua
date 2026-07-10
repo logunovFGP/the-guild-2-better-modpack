@@ -11,7 +11,7 @@ function Weight()
 		return 0
 	end
 	
-	if not BuildingGetType("myrm_home") == GL_BUILDING_TYPE_RESIDENCE then
+	if BuildingGetType("myrm_home") ~= GL_BUILDING_TYPE_RESIDENCE then
 		return 0
 	end
 	

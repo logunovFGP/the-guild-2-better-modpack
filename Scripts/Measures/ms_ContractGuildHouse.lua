@@ -84,7 +84,7 @@ function Run()
 				ContractFame = ContractFame - 1
 			end
 			
-			if not GetSettlementID("")==GetID("city") then
+			if GetSettlementID("") ~= GetID("city") then
 				ContractFame = ContractFame - 1
 			end
 			

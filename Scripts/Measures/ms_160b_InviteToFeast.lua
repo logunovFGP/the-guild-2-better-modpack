@@ -105,7 +105,8 @@ function Run()
 				InvitationsLeft = InvitationsLeft - 1
 				SetProperty("MyHome","InvitationsLeft",InvitationsLeft)
 				SetProperty("Destination","InvitedBy",GetID(""))
-				local SimsInvited = 6 - InvitationsLeft
+				local FeastMaxGuests = GetProperty("MyHome", "FeastMaxGuests") or bld_GetFeastMaxGuests("MyHome")
+				local SimsInvited = FeastMaxGuests - InvitationsLeft
 				SimAddDatebookEntry("", PartyDate, "MyHome", "@L_FEAST_5_TIMEPLANNERENTRY_INVITER_+0",
 								"@L_FEAST_5_TIMEPLANNERENTRY_INVITER_+1",
 								GetID(""),SimsInvited,GetID("Settlement"))
@@ -134,13 +135,17 @@ function CallToFeast()
 	if GetState("", STATE_CUTSCENE) or GetState("", STATE_LOCKED) then
 		if GetHomeBuilding("PartyHost", "RetryLocation") then
 			local PartyDate = GetProperty("RetryLocation", "PartyDate")
-			if PartyDate and GetGametime() < (PartyDate/60) then
+			if PartyDate and GetGametime() < (PartyDate/60) + 1 then
 				CreateScriptcall("CallToFeastRetry", 1, "Measures/ms_160b_InviteToFeast.lua", "CallToFeast", "")
 			end
 		end
 		return
 	end
 	if GetFavorToDynasty("", "PartyHost") < 30 then
+		return
+	end
+	local MeasureName = GetCurrentMeasureName("")
+	if MeasureName == "AttendFestivity" or MeasureName == "Feast" then
 		return
 	end
 	if not GetHomeBuilding("PartyHost", "PartyLocation") then
@@ -150,6 +155,10 @@ function CallToFeast()
 		return
 	end
 	if not MeasureRun("", "PartyLocation", "AttendFestivity") then
+		local PartyDate = GetProperty("PartyLocation", "PartyDate")
+		if PartyDate and GetGametime() < (PartyDate/60) + 1 then
+			CreateScriptcall("CallToFeastRetry", 1, "Measures/ms_160b_InviteToFeast.lua", "CallToFeast", "")
+		end
 		return
 	end
 end

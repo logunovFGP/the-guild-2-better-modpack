@@ -40,7 +40,8 @@ function Host()
 	local HostID = GetID("")
 	GetLocatorByName("PartyLocation","HostWelcome","SearchPos")
 	local GuestFilter = "__F((Object.GetObjectsByRadius(Sim)==20000) AND(Object.Property.InvitedBy=="..HostID..")) )"
-	local NumGuests = Find("SearchPos",GuestFilter,"Guest",-1)
+	local FeastMaxGuests = GetProperty("PartyLocation", "FeastMaxGuests") or bld_GetFeastMaxGuests("PartyLocation")
+	local NumGuests = bld_FindValidFeastGuests("SearchPos", "PartyLocation", GuestFilter, HostID, FeastMaxGuests)
 	
 	if NumGuests == 0 then		--no guests here. stop the feast
 		SetState("PartyLocation",STATE_FEAST,false)
@@ -51,7 +52,7 @@ function Host()
 	--camera
 	CreateCutscene("default","cutscene")
 	CutsceneAddSim("cutscene","")
-	for i=1,6 do
+	for i=1, FeastMaxGuests do
 		if HasProperty("PartyLocation","Guest"..i) then
 			local GuestID = GetProperty("PartyLocation","Guest"..i)
 			if GetAliasByID(GuestID,"Guest"..i) then
@@ -93,7 +94,7 @@ function Host()
 	SetProperty("PartyLocation","GoDance",1)
 	SetProperty("PartyLocation","DanceFinished",0)
 	f_StartHighPriorMusic(MUSIC_PARTY)
-	if GetFreeLocatorByName("PartyLocation","Dance",1,7,"DancePos") then
+	if GetFreeLocatorByName("PartyLocation","Dance",1,FeastMaxGuests + 1,"DancePos") then
 		if f_BeginUseLocator("","DancePos",GL_STANCE_STAND,true) then
 			if SimGetGender("")==GL_GENDER_MALE then
 				PlayAnimation("","dance_male_1")
@@ -110,7 +111,7 @@ function Host()
 	Finished = Finished + 1
 	SetProperty("PartyLocation","DanceFinished",Finished)
 	while true do
-		NumGuests = Find("SearchPos",GuestFilter,"Guest",-1)
+		NumGuests = bld_FindValidFeastGuests("SearchPos", "PartyLocation", GuestFilter, HostID, FeastMaxGuests)
 		Finished = GetProperty("PartyLocation","DanceFinished")
 		if NumGuests == Finished -1 then
 			break
@@ -122,7 +123,7 @@ function Host()
 	RemoveProperty("PartyLocation","DanceFinished")
 	--finished with dance
 	local MusicQuality = GetProperty("PartyLocation","MusicLevel")
-	for i=1,6 do
+	for i=1, FeastMaxGuests do
 		if HasProperty("PartyLocation","Guest"..i) then
 			local GuestID = GetProperty("PartyLocation","Guest"..i)
 			if GetAliasByID(GuestID,"Guest") then
@@ -203,7 +204,7 @@ function Host()
 	SetProperty("PartyLocation","EatFinished",FinishedEat)
 	
 	while true do
-		NumGuests = Find("SearchPos",GuestFilter,"Guest",-1)
+		NumGuests = bld_FindValidFeastGuests("SearchPos", "PartyLocation", GuestFilter, HostID, FeastMaxGuests)
 		Finished = GetProperty("PartyLocation","EatFinished")
 		if NumGuests == Finished -1 then
 			break
@@ -216,7 +217,7 @@ function Host()
 	
 	--finished with eat
 	local FoodQuality = GetProperty("PartyLocation","FoodLevel")
-	for i=1,6 do
+	for i=1, FeastMaxGuests do
 		if HasProperty("PartyLocation","Guest"..i) then
 			local GuestID = GetProperty("PartyLocation","Guest"..i)
 			if GetAliasByID(GuestID,"Guest") then
@@ -291,7 +292,7 @@ function Host()
 	--some comments
 	FoodQuality = GetProperty("PartyLocation","FoodLevel") or 0
 	MusicQuality = GetProperty("PartyLocation","MusicLevel") or 0
-	for i=1,6 do
+	for i=1, FeastMaxGuests do
 		if HasProperty("PartyLocation","Guest"..i) then
 			local GuestID = GetProperty("PartyLocation","Guest"..i) or 0
 			if GetAliasByID(GuestID,"Guest") then
@@ -325,6 +326,8 @@ function Guest()
 				if not GetHomeBuilding("Host","PartyLocation") then
 					StopMeasure()
 				end
+			else
+				StopMeasure()
 			end
 		else
 			StopMeasure()
@@ -333,7 +336,7 @@ function Guest()
 	if not GetInsideBuilding("","CurrentBuilding") then
 		StopMeasure()
 	end
-	if not GetID("") == GetID("CurrentBuilding") then
+	if GetID("CurrentBuilding") ~= GetID("PartyLocation") then
 		StopMeasure()
 	end
 	if not GetState("PartyLocation",STATE_FEAST) then
@@ -346,7 +349,8 @@ function Guest()
 	else
 		ReplacementlabelHostMissing = "@L_FEAST_3_FEAST_A_HELLO_INVITERMISSING_1_FEMALE"
 	end
-	if GetFreeLocatorByName("PartyLocation","GuestWelcome",1,6,"GuestWelcomePos") then
+	local FeastMaxGuests = GetProperty("PartyLocation", "FeastMaxGuests") or bld_GetFeastMaxGuests("PartyLocation")
+	if GetFreeLocatorByName("PartyLocation","GuestWelcome",1,FeastMaxGuests,"GuestWelcomePos") then
 		if f_BeginUseLocator("","GuestWelcomePos",GL_STANCE_STAND,true)then
 			local GuestReady = GetProperty("PartyLocation","GuestsReady")
 			GuestReady = GuestReady + 1
@@ -365,7 +369,7 @@ function Guest()
 				Sleep(1)
 			end
 			--dance
-			if GetFreeLocatorByName("PartyLocation","Dance",1,7,"DancePos") then
+			if GetFreeLocatorByName("PartyLocation","Dance",1,FeastMaxGuests + 1,"DancePos") then
 				if f_BeginUseLocator("","DancePos",GL_STANCE_STAND,true) then
 					if SimGetGender("")==GL_GENDER_MALE then
 						PlayAnimation("","dance_male_1")
@@ -473,7 +477,8 @@ function CleanUp()
 		DestroyCutscene("cutscene")
 	end
 	if AliasExists("PartyLocation") then
-		for i=1,6 do
+		local FeastMaxGuests = GetProperty("PartyLocation", "FeastMaxGuests") or bld_GetFeastMaxGuests("PartyLocation")
+		for i=1, FeastMaxGuests do
 			if HasProperty("PartyLocation","Guest"..i) then
 				local PropID = GetProperty("PartyLocation","Guest"..i)
 				if PropID == GetID("") then

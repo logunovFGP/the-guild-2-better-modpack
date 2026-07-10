@@ -35,7 +35,7 @@ function Run()
 
 	if BuildingGetType("Residence") == 2 then
 		if GetInsideBuilding("", "InsideBuilding") then
-			if not GetID("Residence") == GetID("InsideBuilding") then
+			if GetID("Residence") ~= GetID("InsideBuilding") then
 				f_MoveTo("", "Residence")
 			end
 		else

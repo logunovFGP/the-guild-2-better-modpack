@@ -690,6 +690,10 @@ function AddGrudge(source, dest)
 	
 		local TargetID = GetDynastyID(dest)
 		local MyDynID = GetDynastyID(source)
+
+		if DynastyGetTeam(source) > 0 and DynastyGetTeam(source) == DynastyGetTeam(dest) then
+			return
+		end
 		
 		-- check for fondness first
 		if HasProperty("MyDyn", "Fondness"..TargetID) then
@@ -970,7 +974,13 @@ function AddEnemy(SimAlias, TargetAlias)
 	local MyID = GetID("MyDyn")
 	local TargetID = GetID("TargetDyn")
 	
-	local MyEnemies = dyn_GetEnemyCounter(SimAlias)
+	local MyEnemies = dyn_GetEnemyCounter(SimAlias) -- make sure it was not already added
+	for i=1, MyEnemies do
+		if GetProperty("MyDyn", "EnemyNo"..i) == TargetID then
+			return
+		end
+	end
+
 	local MyNewCounter = MyEnemies + 1
 	
 	SetProperty("MyDyn", "EnemyCounter", MyNewCounter)
@@ -1145,7 +1155,13 @@ function AddAlly(SimAlias, TargetAlias)
 	local MyID = GetID("MyDyn")
 	local TargetID = GetID("TargetDyn")
 	
-	local MyAllies = dyn_GetAllyCounter(SimAlias)
+	local MyAllies = dyn_GetAllyCounter(SimAlias) -- make sure it was not already added
+	for i=1, MyAllies do
+		if GetProperty("MyDyn", "AllyNo"..i) == TargetID then
+			return
+		end
+	end
+
 	local MyNewCounter = MyAllies + 1
 	
 	SetProperty("MyDyn", "AllyCounter", MyNewCounter)
@@ -1206,6 +1222,10 @@ function SetDiplomacyState(ObjectA, ObjectB, NewState)
 		CopyAlias(ObjectB, "TargetSim")
 	end
 	
+	if DynastyGetTeam("MySim") > 0 and DynastyGetTeam("MySim") == DynastyGetTeam("TargetSim") and NewState < DIP_ALLIANCE then
+		NewState = DIP_ALLIANCE -- dont return, because we might want to execute some of the stuff below (AddAlly/AddEnemy was made able to deal with repeated calls)
+	end
+
 	local CurrentState = DynastyGetDiplomacyState("MySim", "TargetSim")
 	if CurrentState ~= NewState then
 		if CurrentState == DIP_FOE then

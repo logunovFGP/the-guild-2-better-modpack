@@ -52,7 +52,7 @@ function Run()
 
 	-- Check if the sim is at the residence. If not, let him move to it.
 	if GetInsideBuilding("", "InsideBuilding") then
-		if not GetID("Residence") == GetID("InsideBuilding") then
+		if GetID("Residence") ~= GetID("InsideBuilding") then
 			f_MoveTo("", "Residence")
 		end
 	else

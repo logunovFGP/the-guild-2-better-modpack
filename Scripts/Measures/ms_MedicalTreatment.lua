@@ -254,7 +254,7 @@ function Run()
 						
 						local list = {["Fracture"]=1,["BurnWound"]=1,["Pox"]=1,["Caries"]=1,["Pneumonia"]=1,["Blackdeath"]=1}
 
-						if not list[v.Name] == nil then
+						if list[v.Name] ~= nil then
 							ms_medicaltreatment_LayToBed("", "SickSim0", BedNumber)
 
 							if v.Name == "Blackdeath" then

@@ -788,7 +788,11 @@ function SetupDiplomacy()
 		for di=0,Count-1 do
 			for dj=0,Count-1 do
 				if di~=dj then
-					if DynastyGetDiplomacyState("Dynasties"..di, "Dynasties"..dj)==DIP_NAP then
+					local TeamA = DynastyGetTeam("Dynasties"..di)
+					local TeamB = DynastyGetTeam("Dynasties"..dj)
+					if TeamA > 0 and TeamA == TeamB then
+						DynastySetDiplomacyState("Dynasties"..di, "Dynasties"..dj, DIP_ALLIANCE)
+					elseif DynastyGetDiplomacyState("Dynasties"..di, "Dynasties"..dj)==DIP_NAP then
 						napDeg[di] = napDeg[di] + 1
 					end
 				end
@@ -842,7 +846,11 @@ function SetupDiplomacy()
 		for di=0,Count-1 do
 			for dj=0,Count-1 do
 				if di~=dj then
-					if DynastyGetDiplomacyState("Dynasties"..di, "Dynasties"..dj)==DIP_FOE then
+					local TeamA = DynastyGetTeam("Dynasties"..di)
+					local TeamB = DynastyGetTeam("Dynasties"..dj)
+					if TeamA > 0 and TeamA == TeamB then
+						DynastySetDiplomacyState("Dynasties"..di, "Dynasties"..dj, DIP_ALLIANCE)
+					elseif DynastyGetDiplomacyState("Dynasties"..di, "Dynasties"..dj)==DIP_FOE then
 						foeDeg[di] = foeDeg[di] + 1
 					end
 				end
@@ -893,7 +901,9 @@ function FindDynasty(DipState, MaxState, StartNo, EndNo, FirstOfType, Deg)
 
 	for DynNo=StartNo, EndNo-1 do
 		if DynastyGetDiplomacyState("Dynasties"..(StartNo-1), "Dynasties"..DynNo) == DIP_NEUTRAL then
-			if Deg[DynNo] < MaxState then
+			local TeamA = DynastyGetTeam("Dynasties"..(StartNo-1))
+			local TeamB = DynastyGetTeam("Dynasties"..DynNo)
+			if not (TeamA > 0 and TeamA == TeamB) and Deg[DynNo] < MaxState then
 				Count = Count + 1
 				if Rand(100) <= 100/Count then
 					Found = "Dynasties"..DynNo

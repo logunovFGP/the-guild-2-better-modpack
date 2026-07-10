@@ -59,7 +59,7 @@ function Run()
 			if CurrentState > DIP_NEUTRAL then
 				-- set the new status and favor here
 				DynastySetMinDiplomacyState("", "OldFamily", DIP_FOE, GetID(""), 12)
-				DynastySetDiplomacyState("", "OldFamily", DIP_NEUTRAL)
+				dyn_SetDiplomacyState("", "OldFamily", DIP_NEUTRAL)
 				DynastyForceCalcDiplomacy("")
 				
 				if GetFavorToDynasty("", "OldFamily") > 50 then

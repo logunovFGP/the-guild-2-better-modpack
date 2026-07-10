@@ -668,7 +668,7 @@ function EndDuel()
 	MsgSay("Doctor", "@L_DUELL_5_OUTRO_END")
 	
 	if DynastyGetDiplomacyState("challenger","challenged") < DIP_NEUTRAL then -- end feud
-		DynastySetDiplomacyState("challenger","challenged", DIP_NAP)
+		dyn_SetDiplomacyState("challenger","challenged", DIP_NAP)
 		DynastyForceCalcDiplomacy("challenger")
 	end
 	
