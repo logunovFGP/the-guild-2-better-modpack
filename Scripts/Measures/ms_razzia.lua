@@ -11,6 +11,10 @@ MeasureSetNotRestartable()
 	   MsgQuick("", "@L_MERCENARY_RAZZIA_FILTER_NOOWNER_+0")
 	   StopMeasure()
 	end
+	if DynastyGetTeam("") > 0 and DynastyGetTeam("") == DynastyGetTeam("victim") then
+		StopMeasure()
+		return
+	end
 	
 	
 	-- check for evidences against the destination
@@ -48,7 +52,7 @@ MeasureSetNotRestartable()
 	PlayAnimationNoWait("", "threat")
 	MsgSay("", "@L_MERCENARY_RAZZIA_SPEECH_BEGIN_+0")
 	-- Dynasty will hate you for this
-	DynastySetDiplomacyState("Destination","",DIP_FOE)
+	dyn_SetDiplomacyState("victim", "", DIP_FOE)
 	-- Remove the evidences here so that the player cannot cancel the measure when he recognizes a possible failure and keep the evidences this way
 	RemoveEvidences("", "victim")
 	Sleep (5)

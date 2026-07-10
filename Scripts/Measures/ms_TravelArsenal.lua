@@ -6,7 +6,7 @@ function Run()
 	local warchooserid = GetData("#WarChooser")
 	GetAliasByID(warchooserid,"WarChooser")
 
-	if not GetProperty("WarChooser","WarPhase")==1 then
+	if GetProperty("WarChooser","WarPhase") ~= 1 then
 		StopMeasure()
 	end
 
@@ -19,7 +19,7 @@ function Run()
 	CopyAlias("Arsenal0", "Arsenal")
 	GetSettlement("Arsenal", "City")
 	GetSettlement("", "settlement")
-	if not GetID("City") == GetID("settlement") then
+	if GetID("City") ~= GetID("settlement") then
 		MsgBoxNoWait("","Arsenal","@L_GENERAL_ERROR_HEAD_+0","@L_TRAVELARSENAL_FAILURE_+0",GetID("settlement"))
 		StopMeasure()
 	end
@@ -55,7 +55,7 @@ function Run()
 							"@L_SCENARIO_WAR_"..enemy.."_+0",GetID("City"),count,GetID(""))
 
 		if (choice==1) then
-			if not GetProperty("WarChooser","WarPhase")==1 then
+			if GetProperty("WarChooser","WarPhase") ~= 1 then
 				MsgBoxNoWait("","Arsenal","@L_GENERAL_ERROR_HEAD_+0","@L_TRAVELARSENAL_FAILURE_+1")
 				StopMeasure()
 			else

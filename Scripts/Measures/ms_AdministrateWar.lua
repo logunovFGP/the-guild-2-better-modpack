@@ -4,7 +4,7 @@
 -- -----------------------
 function Run()
 
-	if not GetID("")==chr_GetKing() then
+	if GetID("") ~= chr_GetKing() then
 		StopMeasure()
 	end
 	

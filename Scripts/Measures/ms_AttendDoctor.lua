@@ -30,27 +30,16 @@ function Run()
 	
 	local Costs = 0
 	if (GetDynastyID("Destination") ~= GetID("dynasty")) then
-		if GetImpactValue("", "Sprain") == 1 then
-			Costs = Disease.Sprain:getCost()
-		elseif GetImpactValue("", "Cold") == 1 then
-			Costs = Disease.Cold:getCost()
-		elseif GetImpactValue("", "Influenza") == 1 then
-			Costs = Disease.Influenza:getCost()
-		elseif GetImpactValue("", "BurnWound") == 1 then
-			Costs = Disease.BurnWound:getCost()
-		elseif GetImpactValue("", "Pox") == 1 then
-			Costs = Disease.Pox:getCost()
-		elseif GetImpactValue("", "Pneumonia") == 1 then
-			Costs = Disease.Pneumonia:getCost()
-		elseif GetImpactValue("", "Blackdeath") == 1 then
-			Costs = Disease.Blackdeath:getCost()
-		elseif GetImpactValue("", "Fracture") == 1 then
-			Costs = Disease.Fracture:getCost()
-		elseif GetImpactValue("", "Caries") == 1 then
-			Costs = Disease.Caries:getCost()
-		elseif GetHPRelative("") < 0.99 then
+		for k, Illness in diseases_GetDiseaseIterator() do
+			if GetImpactValue("", Illness:getName()) == 1 then
+				Costs = Illness:getCost()
+				break
+			end
+		end
+
+		if Costs == 0 and GetHPRelative("") < 0.99 then
 			Costs = GetMaxHP("") -GetHP("")
-		else
+		elseif Costs == 0 then
 			return
 		end
 		
@@ -79,25 +68,14 @@ end
 -- -----------------------
 function GetOSHData(MeasureID)
 local Costs = 0
-	if GetImpactValue("", "Sprain") == 1 then
-		Costs = Disease.Sprain:getCost()
-	elseif GetImpactValue("", "Cold") == 1 then
-		Costs = Disease.Cold:getCost()
-	elseif GetImpactValue("", "Influenza") == 1 then
-		Costs = Disease.Influenza:getCost()
-	elseif GetImpactValue("", "BurnWound") == 1 then
-		Costs = Disease.BurnWound:getCost()
-	elseif GetImpactValue("", "Pox") == 1 then
-		Costs = Disease.Pox:getCost()
-	elseif GetImpactValue("", "Pneumonia") == 1 then
-		Costs = Disease.Pneumonia:getCost()
-	elseif GetImpactValue("", "Blackdeath") == 1 then
-		Costs = Disease.Blackdeath:getCost()
-	elseif GetImpactValue("", "Fracture") == 1 then
-		Costs = Disease.Fracture:getCost()
-	elseif GetImpactValue("", "Caries") == 1 then
-		Costs = Disease.Caries:getCost()
-	elseif GetHPRelative("") < 0.99 then
+	for k, Illness in diseases_GetDiseaseIterator() do
+		if GetImpactValue("", Illness:getName()) == 1 then
+			Costs = Illness:getCost()
+			break
+		end
+	end
+
+	if Costs == 0 and GetHPRelative("") < 0.99 then
 		Costs = GetMaxHP("")-GetHP("")
 	end
 	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", Costs)

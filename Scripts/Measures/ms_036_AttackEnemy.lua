@@ -25,18 +25,16 @@ function Run()
 
 	--dont follow buildings and force outdoor position
 	if IsType("Destination", "Building") then
-		if not BuildingGetOwner("Destination", "BOwner") then
-			StopMeasure()
-		end
-			
+		BuildingGetOwner("Destination", "BOwner") -- just to safe it in BOwner, do not require it anymore, so you can now also attack unowned buildings (like intended in the AttackEnemy Filter)
 		if GetState("Destination", STATE_REPAIRING) then 
 			SetState("Destination", STATE_REPAIRING, false)
 		end
 		
-		GetFleePosition("","Destination",1000,"AttackPos")
-		if not f_MoveTo("","AttackPos",GL_MOVESPEED_RUN) then
-			StopMeasure("")
-			return
+		if GetFleePosition("", "Destination", 1000, "AttackPos") then
+			if not f_MoveTo("", "AttackPos", GL_MOVESPEED_RUN) then
+				StopMeasure("")
+				return
+			end
 		end
 	
 		AlignTo("","Destination")
@@ -62,6 +60,7 @@ function Run()
 	
 	gameplayformulas_SimAttackWithRangeWeapon("", "Destination")
 	local iBattleID = BattleJoin("", "Destination", false)
+	Sleep(2) -- required to be at least 1, better 2, otherwise attackers will abort attack within a second after attack
 end
 
 

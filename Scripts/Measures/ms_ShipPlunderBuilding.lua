@@ -1,6 +1,14 @@
 function Run()
 	if not AliasExists("Destination") then
 		StopMeasure()
+		return
+	end
+
+	local HasVictimOwner = BuildingGetOwner("Destination", "VictimOwner")
+
+	if HasVictimOwner and DynastyGetTeam("") > 0 and DynastyGetTeam("") == DynastyGetTeam("VictimOwner") then
+		StopMeasure()
+		return
 	end
 	
 	local MeasureID = GetCurrentMeasureID("")
@@ -9,6 +17,7 @@ function Run()
 	BuildingGetWaterPos("Destination",true,"MovePos")
 	if not f_MoveTo("", "MovePos",GL_MOVESPEED_RUN) then
 		StopMeasure()
+		return
 	end
 	MeasureSetNotRestartable()
 	
@@ -25,6 +34,7 @@ function Run()
 						"@L_BATTLE_061_PLUNDERBUILDING_MSG_VICTIM_START_BODY_+0",GetID(""),GetID("Destination"))
 	else
 		StopMeasure()
+		return
 	end
 	
 	PlaySound3DVariation("Destination","measures/plunderbuilding",1)
@@ -36,7 +46,9 @@ function Run()
 	SetProcessMaxProgress("",duration*10)
 	SendCommandNoWait("","Progress")
 	SendCommandNoWait("Destination","Progress")
-	DynastySetDiplomacyState("Destination","",DIP_FOE)
+	if HasVictimOwner then
+		dyn_SetDiplomacyState("VictimOwner", "", DIP_FOE)
+	end
 	
 	while GetGametime() < EndTime do
 		local Damage = 0.1*GetMaxHP("Destination")

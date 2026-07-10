@@ -210,7 +210,7 @@ function InitEnemies(DynAlias)
 		for i = 0, 10 do
 			DAli = "Dyn"..Rand(DynCount)
 			DynID = GetID(DAli)
-			if not DynastyIsShadow(DAli) and not DynID == GetID(DynAlias) then
+			if not DynastyIsShadow(DAli) and DynID ~= GetID(DynAlias) then
 				EnemyCount = EnemyCount + 1
 				EnemyIDs[EnemyCount] = DynID
 				break

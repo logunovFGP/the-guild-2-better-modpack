@@ -83,8 +83,13 @@ function Run()
 		if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN) then
 			StopMeasure()
 		end
+		SetData("Arrived", 1)
 
-		if not GetFreeLocatorByName("PartyLocation", "GuestArrive", 1, 6, "GuestArrivePos") then
+		local FeastMaxGuests = GetProperty("PartyLocation", "FeastMaxGuests") or bld_GetFeastMaxGuests("PartyLocation")
+		if FeastMaxGuests <= 0 then
+			StopMeasure()
+		end
+		if not GetFreeLocatorByName("PartyLocation", "GuestArrive", 1, FeastMaxGuests, "GuestArrivePos") then
 			StopMeasure()
 		end
 
@@ -100,6 +105,19 @@ function Run()
 			end
 		end
 	end
+
+	if not HasProperty("", "Host") then
+		local InsidePartyLocation = false
+		if GetInsideBuilding("", "CurrentBuilding") then
+			InsidePartyLocation = (GetID("CurrentBuilding") == GetID("PartyLocation"))
+		end
+		if not InsidePartyLocation then
+			if not f_MoveTo("", "PartyLocation", GL_MOVESPEED_RUN) then
+				StopMeasure()
+			end
+		end
+	end
+
 	SetState("", STATE_LOCKED, true)
 	
 	while GetGametime() < PartyTime do
@@ -115,7 +133,9 @@ function Run()
 		StopMeasure()
 	end
 		
-	SimSetBehavior("", "Feast")
+	if not SimSetBehavior("", "Feast") then
+		StopMeasure()
+	end
 
 	SetData("Start", 1)
 	StopMeasure()
@@ -126,12 +146,13 @@ function CleanUp()
 	SetState("", STATE_LOCKED, false)
 	RemoveProperty("", "AccessAllAreas")
 
-	if not HasData("Start") then
+	if not HasData("Start") and not HasData("Arrived") then
 		if HasProperty("", "InvitedBy") then
 			RemoveProperty("", "InvitedBy")
 		end
 		if AliasExists("PartyLocation") then
-			for i=1, 6 do
+			local FeastMaxGuests = GetProperty("PartyLocation", "FeastMaxGuests") or bld_GetFeastMaxGuests("PartyLocation")
+			for i=1, FeastMaxGuests do
 				if HasProperty("PartyLocation", "Guest"..i) then
 					if (GetProperty("PartyLocation","Guest"..i) == GetID("")) then
 						RemoveProperty("PartyLocation", "Guest"..i)

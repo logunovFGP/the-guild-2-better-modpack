@@ -1,13 +1,13 @@
 function Run()
 	SimSetProduceItemID("", -1, -1)
-	BuildingGetRoom("destination", "Judge", "Room")
-	
-	if not f_SimIsValid("") then
+	BuildingGetRoom("Destination", "Judge", "Room")
+
+	if not AliasExists("Room") or not f_SimIsValid("") then
 		return
 	end	
 
 	if GetInsideBuilding("", "InsideBuilding") then -- already inside
-		if GetID("InsideBuilding") ~= GetID("destination") then -- wrong inside building
+		if GetID("InsideBuilding") ~= GetID("Destination") then -- wrong inside building
 			f_ExitCurrentBuilding("")
 			f_AttendMoveTo("", "Room", GL_MOVESPEED_RUN, 5)
 		elseif GetInsideRoom("", "InsideRoom") then

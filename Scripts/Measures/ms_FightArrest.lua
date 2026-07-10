@@ -221,7 +221,7 @@ function Captured()
 	MoveStop("")
 	SetProperty("Destination","NoEscape",1)
 	SetState("", STATE_CAPTURED, true)
-	SetData("CapturedByMe", GetID(""))
+	SetData("CapturedByMe", 1)
 	AlignTo("", "Owner")
 	Sleep(0.7)
 			
@@ -268,9 +268,9 @@ function CleanUp()
 		end
 	end
 	
-	if HasData("CapturedByMe") then
+	if HasData("CapturedByMe") and GetData("CapturedByMe")==1 then
 		JoinBattle = false
-		if GetData("CapturedByMe")==GetID("") and AliasExists("Destination") then
+		if AliasExists("Destination") then
 			SetState("Destination", STATE_CAPTURED, false)
 			RemoveProperty("Destination","NoEscape")
 		end

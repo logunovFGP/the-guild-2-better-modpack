@@ -31,7 +31,8 @@ function Run()
 	if not GetSettlement("","Settlement") then
 		StopMeasure()
 	end
-	local SimsInvited = 6 - GetProperty("","InvitationsLeft")
+	local FeastMaxGuests = GetProperty("", "FeastMaxGuests") or bld_GetFeastMaxGuests("")
+	local SimsInvited = FeastMaxGuests - GetProperty("","InvitationsLeft")
 	SimAddDatebookEntry("BuildingOwner", festivity_date, "", "@L_FEAST_5_TIMEPLANNERENTRY_INVITER_+0",
 								"@L_FEAST_5_TIMEPLANNERENTRY_INVITER_+1",
 								GetID("BuildingOwner"),SimsInvited,GetID("Settlement"))
@@ -46,9 +47,11 @@ function Run()
 	if not BuildingGetOwner("","BuildingOwner") then
 		StopMeasure()
 	end
+	local FeastMaxGuests = GetProperty("", "FeastMaxGuests") or bld_GetFeastMaxGuests("")
+	local SimsInvited = FeastMaxGuests - (GetProperty("","InvitationsLeft") or FeastMaxGuests)
 	SetProperty("","InvitationsLeft",0)
 	SetProperty("","GuestsReady",0)
-	if GetProperty("","InvitationsLeft")==6 then		--no one invited
+	if SimsInvited <= 0 then		--no one invited
 		feedback_MessageWorkshop("","@L_FEAST_2_INVITE_NOONEINVITED_HEADER_+0",
 						"@L_FEAST_2_INVITE_NOONEINVITED_BODY_+0",GetID("BuildingOwner"))
 		StopMeasure()
@@ -67,7 +70,8 @@ function Run()
 	GetLocatorByName("","HostWelcome","SearchPos")
 	local HostID = GetID("BuildingOwner")
 	local GuestFilter = "__F((Object.GetObjectsByRadius(Sim)==20000) AND(Object.Property.InvitedBy=="..HostID..")) )"
-	local NumGuests = Find("SearchPos",GuestFilter,"Guest",-1)
+	local FeastMaxGuests = GetProperty("", "FeastMaxGuests") or bld_GetFeastMaxGuests("")
+	local NumGuests = bld_FindValidFeastGuests("SearchPos", "", GuestFilter, HostID, FeastMaxGuests)
 	
 	if NumGuests <= 0 then
 		StopMeasure()
@@ -98,9 +102,7 @@ function Run()
 	
 	if not GetInsideBuilding("BuildingOwner","CurrentBuilding") then
 		SetProperty("","NoHost",1)
-		
-	end
-	if GetID("CurrentBuilding") ~= GetID("") then
+	elseif GetID("CurrentBuilding") ~= GetID("") then
 		SetProperty("","NoHost",1)
 	end
 	
@@ -112,8 +114,23 @@ function Run()
 			SimSetBehavior("BuildingOwner","Feast")
 		end
 	end
+	for i=0, NumGuests-1 do
+		if AliasExists("Guest"..i) then
+			local MeasureName = GetCurrentMeasureName("Guest"..i)
+			if MeasureName ~= "AttendFestivity" and MeasureName ~= "Feast" then
+				MeasureRun("Guest"..i, "", "AttendFestivity", false)
+			end
+		end
+	end
 	
-	while GetProperty("","GuestsReady") < NumGuests do
+	while true do
+		NumGuests = bld_FindValidFeastGuests("SearchPos", "", GuestFilter, HostID, FeastMaxGuests)
+		if NumGuests <= 0 then
+			StopMeasure()
+		end
+		if (GetProperty("","GuestsReady") or 0) >= NumGuests then
+			break
+		end
 		Sleep(1)
 		if GetGametime() > (festivity_date / 60) + 6 then
 			StopMeasure()
@@ -171,9 +188,11 @@ function CleanUp()
 		InternalDie("Musician3")
 		InternalRemove("Musician3")
 	end
+	local FeastMaxGuests = GetProperty("", "FeastMaxGuests") or bld_GetFeastMaxGuests("")
 	RemoveProperty("","PartyDate")
 	RemoveProperty("","GuestsReady")
 	RemoveProperty("","InvitationsLeft")
+	RemoveProperty("","FeastMaxGuests")
 	RemoveProperty("","CanInvite")
 	RemoveProperty("","MusicLevel")
 	RemoveProperty("","FoodLevel")
@@ -181,10 +200,15 @@ function CleanUp()
 	RemoveProperty("","PriceForInvite")
 	RemoveProperty("","NoHost")
 	RemoveProperty("","AllGuestsThere")
-	for i=1,6 do
+	for i=1, FeastMaxGuests do
 		if HasProperty("","Guest"..i) then
 			local GuestID = GetProperty("","Guest"..i)
 			if GetAliasByID(GuestID,"Guest") then
+				if AliasExists("BuildingOwner") and HasProperty("Guest","InvitedBy") then
+					if GetProperty("Guest","InvitedBy") == GetID("BuildingOwner") then
+						RemoveProperty("Guest","InvitedBy")
+					end
+				end
 				local MeasureName = GetCurrentMeasureName("Guest") 
 				if MeasureName == "AttendFestivity" or MeasureName == "Feast" then
 					SimStopMeasure("Guest")

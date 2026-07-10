@@ -3,6 +3,10 @@ function Run()
 	if not AliasExists("Destination") then
 		StopMeasure()
 	end
+	if DynastyGetTeam("") > 0 and DynastyGetTeam("") == DynastyGetTeam("Destination") then
+		StopMeasure()
+		return
+	end
 
 	if not SimGetWorkingPlace("", "Workbuilding") then
 		if IsPartyMember("") then

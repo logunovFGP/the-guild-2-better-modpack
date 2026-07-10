@@ -697,7 +697,7 @@ function Run()
 	
 	SetMeasureRepeat(TimeOut)
 	
-	if IsPartyMember("Destination") and not PresentName == "JanesRing" then
+	if IsPartyMember("Destination") and PresentName ~= "JanesRing" then
 		if DynastyIsPlayer("Destination") then
 			if GetRemainingInventorySpace("Destination", ItemName[ItemIndex], INVENTORY_STD) > 0 then
 				AddItems("Destination", ItemName[ItemIndex], 1, INVENTORY_STD)

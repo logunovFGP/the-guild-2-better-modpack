@@ -3,7 +3,7 @@ function Run()
 	local warchooserid = GetData("#WarChooser")
 	GetAliasByID(warchooserid,"WarChooser")
 
-	if not GetProperty("WarChooser","WarPhase")==1 then
+	if GetProperty("WarChooser","WarPhase") ~= 1 then
 		StopMeasure()
 	end
 
@@ -31,7 +31,7 @@ function Run()
 	GetSettlement("Arsenal", "City")
 	GetSettlement("", "settlement")
 
-	if not GetID("City") == GetID("settlement") then
+	if GetID("City") ~= GetID("settlement") then
 		MsgQuick("","@L_CONTRACTARSENAL_FAILURE_+0",GetID("settlement"))
 		StopMeasure()
 	end
@@ -119,7 +119,7 @@ function Run()
 			        "@L_CONTRACTARSENAL_HIRE_MAIN_BODY_+1",
 					    "_WAR_MERC_"..label.."_MALE_+0","_WAR_MERC_"..label.."_MORE_+0",cost,cost*5,cost*10)
 
-		if not GetProperty("WarChooser","WarPhase")==1 then
+		if GetProperty("WarChooser","WarPhase") ~= 1 then
 			MsgQuick("","@L_CONTRACTARSENAL_FAILURE_+1")
 			StopMeasure()
 		else
