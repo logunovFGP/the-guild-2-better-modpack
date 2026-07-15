@@ -41,7 +41,7 @@ function isValidSim(SIM, REASON)
 	local playerDynasty = GetLocalPlayerDynasty("PlayerDynasty")
 	local CheckDynasty = GetID("PlayerDynasty") == GetDynastyID(SIM) and IsPartyMember(SIM)
 
-	if (REASON == "PRIVILEGE_TORTURE") then
+	if false then
 		-- 'Count' was undefined here, count the family members instead
 		for i = 0, DynastyGetFamilyMemberCount("PlayerDynasty")-1 do
 			if DynastyGetFamilyMember("PlayerDynasty", i, "SIM") then

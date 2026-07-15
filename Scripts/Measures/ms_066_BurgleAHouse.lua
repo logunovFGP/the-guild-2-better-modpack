@@ -47,7 +47,7 @@ function Run()
 	SetProperty("", ThiefProperty, 1)
 	
 	-- die measure darf/sollte nicht restarten, da nach einem erwischt/entdeckt werden ansonsten die Measure immer wieder neu
-	-- aufgerufen werden würde, was zu vielen Beweisen führen würde
+	-- aufgerufen werden wï¿½rde, was zu vielen Beweisen fï¿½hren wï¿½rde
 	MeasureSetNotRestartable()
 	
 	--check if building has been burgled 12 hours ago
@@ -338,6 +338,7 @@ function Run()
 							"@L_THIEF_066_BURGLEAHOUSE_MSG_ACTOR_SUCCESS_BODY_+0", GetID("Destination"), Haul + HaulBonus )
 		if achievements_isValidSim("Owner", "CRIME_BURGLE_HOUSE") then
 			UpdateStat("STAT_BURGLE_MONEY", (GetStat("STAT_BURGLE_MONEY") or 0) + math.floor(Haul + HaulBonus))
+			achievements_Unlock("Owner", "CRIME_BURGLE_HOUSE")
 		end
 		
 		feedback_MessageCharacter("Destination",
@@ -356,7 +357,7 @@ end
 
 -- -----------------------
 -- GetMaxHaulValue 
--- berechnet den maximalen wert der beute, die ein dieb abhängig von der gebäudestufe klauen kann
+-- berechnet den maximalen wert der beute, die ein dieb abhï¿½ngig von der gebï¿½udestufe klauen kann
 -- -----------------------
 
 function GetMaxHaulValue(DestAlias, DynastyID, ThiefLevel)

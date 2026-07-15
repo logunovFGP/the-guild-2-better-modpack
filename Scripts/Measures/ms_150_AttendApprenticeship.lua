@@ -188,7 +188,9 @@ function Run()
 		ClassNr = Rand(4) + 1
 	end
 	SimSetClass("", ClassNr)
-	achievements_Unlock("", "MISC_ATTEND_APPRENTICESHIP")
+	GetDynasty("","AppDyn")
+	DynastyGetMember("AppDyn",0,"AppBoss")
+	achievements_Unlock("AppBoss", "MISC_ATTEND_APPRENTICESHIP")
 	
 	-- Preparations for the certificate
 	GetSettlement("", "Settlement")

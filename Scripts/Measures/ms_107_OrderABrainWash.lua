@@ -129,7 +129,7 @@ function Run()
 	end
 	
 	Sleep(0.5)
-	achievements_Unlock("", "PRIVILEGE_BRAINWASH")
+	achievements_Unlock("MrBrainwash", "PRIVILEGE_BRAINWASH")
 	
 	--start brainwashing
 	local DestinationGender = (SimGetGender("Destination"))
@@ -161,8 +161,8 @@ function Run()
 	PlayFE("","smile",1.0,3.0, 0)
 	
 
-----	Das Diplomatieverhältnis zwischen den beiden Dynastien wird 
-----	für 24h auf "Blutbande" gestellt. 
+----	Das Diplomatieverhï¿½ltnis zwischen den beiden Dynastien wird 
+----	fï¿½r 24h auf "Blutbande" gestellt. 
 
 	
 	--force dynasty relations to alliance
