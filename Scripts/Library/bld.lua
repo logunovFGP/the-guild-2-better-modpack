@@ -21,7 +21,7 @@ function GetEmployeesInBuilding(BuildingAlias)
 	return WorkerCount
 end
 
-function bld_CountLocators(BuildingAlias, LocatorBaseName, MaxScan)
+function CountLocators(BuildingAlias, LocatorBaseName, MaxScan)
 	local Count = 0
 	MaxScan = MaxScan or 32
 	for i=1, MaxScan do
@@ -34,7 +34,7 @@ function bld_CountLocators(BuildingAlias, LocatorBaseName, MaxScan)
 	return Count
 end
 
-function bld_GetFeastMaxGuests(BuildingAlias)
+function GetFeastMaxGuests(BuildingAlias)
 	local DanceLocators = bld_CountLocators(BuildingAlias, "Dance", 32)
 	local GuestWelcomeLocators = bld_CountLocators(BuildingAlias, "GuestWelcome", 32)
 	local GuestArriveLocators = bld_CountLocators(BuildingAlias, "GuestArrive", 32)
@@ -43,7 +43,7 @@ function bld_GetFeastMaxGuests(BuildingAlias)
 	return MaxGuests
 end
 
-function bld_IsValidFeastGuest(BuildingAlias, GuestAlias, HostID, FeastMaxGuests)
+function IsValidFeastGuest(BuildingAlias, GuestAlias, HostID, FeastMaxGuests)
 	if not AliasExists(GuestAlias) then
 		return false
 	end
@@ -64,7 +64,7 @@ function bld_IsValidFeastGuest(BuildingAlias, GuestAlias, HostID, FeastMaxGuests
 	return false
 end
 
-function bld_FindValidFeastGuests(SearchAlias, BuildingAlias, GuestFilter, HostID, FeastMaxGuests)
+function FindValidFeastGuests(SearchAlias, BuildingAlias, GuestFilter, HostID, FeastMaxGuests)
 	local FoundGuests = Find(SearchAlias, GuestFilter, "Guest", -1)
 	local ValidGuests = 0
 	if FoundGuests < 1 then

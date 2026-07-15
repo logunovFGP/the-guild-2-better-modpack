@@ -124,14 +124,16 @@ function removeSickness(Illness, ObjectAlias)
 		--LogMessage("CodeRework, Medical. " .. GetName(ObjectAlias) .. " has been cured from: " .. Illness:getName())
 
 		diseases_ImpactManager(false, ObjectAlias, Illness:getName(), 0)
+
+		local sick_endtime = GetProperty(ObjectAlias, Illness:getName().."Time")
 		diseases_NoTime(false, ObjectAlias, Illness:getName(), 0)
 
 		if Illness:getName() ~= "BurnWound" then
 
 			local new_duration = Illness.getDuration()
 			if Illness:getName() ~= "Pox" then
-				if math.mod(GetGametime(),24) < GetProperty(ObjectAlias, Illness:getName().."Time") then
-					new_duration = math.floor(GetProperty(ObjectAlias,Illness:getName().."Time")-math.mod(GetGametime(),24))
+				if sick_endtime and math.mod(GetGametime(),24) < sick_endtime then
+					new_duration = math.floor(sick_endtime - math.mod(GetGametime(),24))
 				end
 			end
 
