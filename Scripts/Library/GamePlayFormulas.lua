@@ -65,7 +65,7 @@ end
 
 function GetDamage(SimAlias, fWeaponDamage)
 	local AttackValue = GetSkillValue(SimAlias, FIGHTING)
-	local Damage = fWeaponDamage + (SimGetLevel(SimAlias) + AttackValue)*0.5
+	local Damage = (fWeaponDamage + (SimGetLevel(SimAlias) + AttackValue) * 0.5) * (1 + AttackValue * 0.025)
 	return Damage	
 end
 
