@@ -1,6 +1,6 @@
 function Weight()
 	local Time = math.mod(GetGametime(), 24)
-	if Time < 6 and Time > 21 then	
+	if Time < 6 or Time > 22 then	
 		return 0
 	end
 	
@@ -25,4 +25,3 @@ end
 function Execute()
 	thief_StartPickpocket("WorkBuilding", "SIM")
 end
-
