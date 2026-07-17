@@ -79,6 +79,7 @@ function CleanTables()
 end
 
 function Serve()
+	achievements_IncrementStatForDynasty("", "STAT_SERVED_CUSTOMERS")
 	local Type = Rand(4)
 	local Locator
 	if Type == 0 then
