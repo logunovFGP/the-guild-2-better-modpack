@@ -42,7 +42,7 @@ function Run()
 		return
 	end
 
-	local ManualWorker = IsDynastySim("")
+	local ManualWorker = IsDynastySim("") or not IsStateDriven()
 	if not ManualWorker and HasProperty("", "AIManual") and GetProperty("", "AIManual") ~= 0 then
 		ManualWorker = true
 	end

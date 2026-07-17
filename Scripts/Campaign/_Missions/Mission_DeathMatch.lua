@@ -55,6 +55,8 @@ function CheckEnd()
 	end
 
 	if CountActiveEnemies==0 then
+		DynastyGetMember("Actor",0,"VictoryBoss")
+		achievements_Unlock("VictoryBoss", "VICTORY_EXTINCTION")
 		return true
 	elseif GetData("EnemyDynastyCount")==-1 then
 		feedback_MessageMission("Actor","@L_MISSIONS_SPECIAL_DEATHMATCH_+0","@L_INTERFACE_MISSIONS_DEATHMATCH_+0",CountActiveEnemies)

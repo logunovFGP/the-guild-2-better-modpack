@@ -12,6 +12,19 @@ function Unlock(SIM, ID)
 	UnlockAchievement(ID)
 end
 
+function UnlockVictory(BossAlias, Sub, Diff)
+	if not AliasExists(BossAlias) then
+		return
+	end
+	achievements_Unlock(BossAlias, "VICTORY_EASY_"..Sub)
+	if Diff >= 1 then
+		achievements_Unlock(BossAlias, "VICTORY_MEDIUM_"..Sub)
+	end
+	if Diff >= 2 then
+		achievements_Unlock(BossAlias, "VICTORY_HARD_"..Sub)
+	end
+end
+
 function IncrementStat(SIM, STAT)
 	if not achievements_isValidSim(SIM, STAT) then
 		return
@@ -27,6 +40,29 @@ function GetWorldName()
 	GetScenario("World")
 	local WorldName = GetProperty("World", "WorldName")
 	return WorldName
+end
+
+function IncrementStatForDynasty(SIM, STAT)
+	if not AliasExists(SIM) then
+		return
+	end
+	GetLocalPlayerDynasty("PlayerDynasty")
+	if GetID("PlayerDynasty") ~= GetDynastyID(SIM) then
+		return
+	end
+	local current = GetStat(STAT) or 0
+	UpdateStat(STAT, current + 1)
+end
+
+function UnlockForDynasty(SIM, ID)
+	if not AliasExists(SIM) then
+		return
+	end
+	GetLocalPlayerDynasty("PlayerDynasty")
+	if GetID("PlayerDynasty") ~= GetDynastyID(SIM) then
+		return
+	end
+	UnlockAchievement(ID)
 end
 
 function isValidSim(SIM, REASON)

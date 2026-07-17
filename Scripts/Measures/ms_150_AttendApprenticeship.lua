@@ -189,8 +189,10 @@ function Run()
 	end
 	SimSetClass("", ClassNr)
 	GetDynasty("","AppDyn")
-	DynastyGetMember("AppDyn",0,"AppBoss")
-	achievements_Unlock("AppBoss", "MISC_ATTEND_APPRENTICESHIP")
+	if AliasExists("AppDyn") then
+		DynastyGetMember("AppDyn",0,"AppBoss")
+		achievements_Unlock("AppBoss", "MISC_ATTEND_APPRENTICESHIP")
+	end
 	
 	-- Preparations for the certificate
 	GetSettlement("", "Settlement")

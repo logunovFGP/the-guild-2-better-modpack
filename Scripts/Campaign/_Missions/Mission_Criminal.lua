@@ -39,6 +39,8 @@ function CheckEnd()
 	if GetDynasty("Actor","criminal_dynasty") then
 	
 		if (GetProperty("criminal_dynasty","CrimeMoneyScore") >= GetData("CrimeMoneyGoal")) then
+			DynastyGetMember("Actor", 0, "VictoryBoss")
+			achievements_UnlockVictory("VictoryBoss", "CRIMINAL", GetData("MissionDifficulty"))
 	   		return true
 	   	else
 			if CheckPlayerExtinct("Actor") then

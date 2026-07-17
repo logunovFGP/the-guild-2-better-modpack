@@ -431,8 +431,10 @@ function CleanUp()
 			SetProperty("Thief"..i,"ThiefGoHome")					
 		end
 		
-		if SetProperty("Thief"..0, "Bandleader", 1) then
-		elseif SetProperty("Thief"..1, "Bandleader", 1) then
+		if AliasExists("Thief0") then
+			SetProperty("Thief0", "Bandleader", 1)
+		elseif AliasExists("Thief1") then
+			SetProperty("Thief1", "Bandleader", 1)
 		end
 	end
 	

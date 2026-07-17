@@ -1334,7 +1334,7 @@ function GoToTavern()
 					chr_CreditMoney("Destination", Tip, "WaresSold")
 					economy_UpdateBalance("Destination", "Service", Tip)
 					if BuildingGetOwner("Destination", "TavernOwner") then
-						achievements_IncrementStat("TavernOwner", "STAT_SERVED_CUSTOMERS")
+						achievements_IncrementStatForDynasty("TavernOwner", "STAT_SERVED_CUSTOMERS")
 					end
 				end
 			else
@@ -1994,7 +1994,7 @@ function GoToDivehouse()
 					chr_CreditMoney("Destination",Tip,"tip")
 					economy_UpdateBalance("Destination", "Service", Tip)
 					if BuildingGetOwner("Destination", "DivehouseOwner") then
-						achievements_IncrementStat("DivehouseOwner", "STAT_SERVED_CUSTOMERS")
+						achievements_IncrementStatForDynasty("DivehouseOwner", "STAT_SERVED_CUSTOMERS")
 					end
 				end
 			end

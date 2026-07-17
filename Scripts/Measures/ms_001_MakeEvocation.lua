@@ -30,7 +30,7 @@ function Run()
 	for Number = 0, Slots-1 do
 		ItemId, ItemCount = InventoryGetSlotInfo("", Number, InventoryType)
 		if ItemId and ItemId > 0 and ItemCount then
-			if ItemGetType(ItemId) == ITEM_TYPE_GATHERING then
+			if ItemGetType(ItemId) == ITEM_TYPE_GATHERING and (ItemGetName(ItemId)=="Gold" or ItemGetName(ItemId)=="Silver" or ItemGetName(ItemId)=="Iron" or ItemGetName(ItemId)=="Oakwood" or ItemGetName(ItemId)=="Spiderleg" or ItemGetName(ItemId)=="Frogeye") then
 				if not added[ItemId] then
 					
 					added[ItemId] = true

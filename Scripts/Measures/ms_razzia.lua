@@ -18,7 +18,7 @@ MeasureSetNotRestartable()
 	
 	
 	-- check for evidences against the destination
-	local EvidenceValueSum = GetEvidenceValues("", "victim")
+	local EvidenceValueSum = GetDynastyEvidenceValues("", "victim")
 	if(EvidenceValueSum < 35) then
 	    MsgQuick("", "@L_MERCENARY_RAZZIA_FILTER_NOEVIDENCES_+0")
 		StopMeasure()
@@ -54,7 +54,7 @@ MeasureSetNotRestartable()
 	-- Dynasty will hate you for this
 	dyn_SetDiplomacyState("victim", "", DIP_FOE)
 	-- Remove the evidences here so that the player cannot cancel the measure when he recognizes a possible failure and keep the evidences this way
-	RemoveEvidences("", "victim")
+	RemoveDynastyEvidences("", "victim")
 	Sleep (5)
     local Result = MsgNews("Destination","",
 		"@B[1,@L__MERCENARY_RAZZIA_MSG_BEGIN_BUTTON_+0]"..

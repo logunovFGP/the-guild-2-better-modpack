@@ -630,6 +630,9 @@ function VoteForOffice(Office)
 				
 				if( Idx ~= -1 ) then
 					local Value = votes[Idx]
+					if Value == nil then
+						Value = 0
+					end
 					votes[Idx] = Value + 1
 				end
 			end
