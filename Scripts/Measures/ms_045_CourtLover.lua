@@ -238,7 +238,7 @@ function Run()
 			return
 		end
 		
-		-- If it was allowed by the player don´t do the whole animation thing
+		-- If it was allowed by the player donï¿½t do the whole animation thing
 		if Allow == 1 then
 			SetProperty("Destination", "courted", 1)
 			SetState("Destination", STATE_INLOVE, true)
@@ -370,16 +370,19 @@ function Run()
 		end
 
 		-- adds property so that CourtLover cannot be hired
-		SetProperty("Destination", "courted", 1)
-		SetState("Destination", STATE_INLOVE, true)
+		if AliasExists("Destination") then
+			SetProperty("Destination", "courted", 1)
+			SetState("Destination", STATE_INLOVE, true)
+		end
 		SetData("CourtLoverSet", 1)
 		DestroyCutscene("cutscene")
 
-		feedback_MessageCharacter("", 
+		if AliasExists("Destination") then
+			feedback_MessageCharacter("",
 							"@L_COURTLOVER_MSG_SUCCESS_HEAD_+0",
 							"@L_COURTLOVER_MSG_SUCCESS_BODY_+0", GetID("Destination"), GetID("Owner"))
-		
-		SimSetCourtLover("", "Destination")		
+			SimSetCourtLover("", "Destination")
+		end
 	else
 		
 		camera_CutscenePlayerLock("cutscene", "Destination")		
