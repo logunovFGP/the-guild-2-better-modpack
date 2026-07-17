@@ -1114,7 +1114,7 @@ function Go()
 				PenaltyType = PENALTY_DEATH
 				SetProperty("accused", "ExecutedBy", GetID("accuser"))
 				achievements_IncrementStat("judge", "STAT_KILLER_JUDGE")
-				--mission_ScoreAccuse("accuser")
+				mission_ScoreAccuse("accuser")
 			end
 
 			if SentenceLevel >=1 then
