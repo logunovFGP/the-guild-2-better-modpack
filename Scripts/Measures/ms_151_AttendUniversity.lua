@@ -67,8 +67,10 @@ function Run()
 		
 		SetProperty("","EduLevel",EDULEVEL_UNIVERSITY1)
 		GetDynasty("","UniDyn")
-		DynastyGetMember("UniDyn",0,"UniBoss")
-		achievements_Unlock("UniBoss", "MISC_ATTEND_UNIVERSITY")
+		if AliasExists("UniDyn") then
+			DynastyGetMember("UniDyn",0,"UniBoss")
+			achievements_Unlock("UniBoss", "MISC_ATTEND_UNIVERSITY")
+		end
 		
 		-- Preparations for the certificate
 		GetSettlement("", "Settlement")
@@ -122,8 +124,10 @@ function Run()
 		SetProperty("","EduLevel",EDULEVEL_UNIVERSITY2)
 		SetProperty("","IsADoctor",1)
 		GetDynasty("","UniDyn")
-		DynastyGetMember("UniDyn",0,"UniBoss")
-		achievements_Unlock("UniBoss", "MISC_ATTEND_UNIVERSITY")
+		if AliasExists("UniDyn") then
+			DynastyGetMember("UniDyn",0,"UniBoss")
+			achievements_Unlock("UniBoss", "MISC_ATTEND_UNIVERSITY")
+		end
 		
 		-- Preparations for the certificate
 		GetSettlement("", "Settlement")

@@ -78,7 +78,7 @@ function HandelStuff()
 		Eingenommen = GPreis + (Gewinn * Feilschen)
 		chr_CreditMoney("Actor",Eingenommen,"Offering")
 		IncrementXPQuiet("Actor",5)
-		achievements_IncrementStat("Actor", "STAT_SERVED_CUSTOMERS")
+		achievements_IncrementStatForDynasty("Actor", "STAT_SERVED_CUSTOMERS")
 		ShowOverheadSymbol("Actor",false,true,0,"%1t",Eingenommen)
     RemoveItems("Actor", Lager, 1)
 	end

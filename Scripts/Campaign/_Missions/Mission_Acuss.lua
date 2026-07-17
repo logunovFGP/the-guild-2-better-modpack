@@ -38,6 +38,8 @@ function CheckEnd()
 	end
 
 	if (GetProperty("Actor","ConvictionScore") >= GetData("ConvictionGoal")) then
+		DynastyGetMember("Actor", 0, "VictoryBoss")
+		achievements_UnlockVictory("VictoryBoss", "ACUSS", GetData("MissionDifficulty"))
 		return true
 	else
 		if CheckPlayerExtinct("Actor") then

@@ -45,13 +45,27 @@ function CheckEnd()
 	local NumDynastyChars = DynastyGetMemberCount("Actor")
 	for i=0,NumDynastyChars-1,1 do
 		if DynastyGetMember("Actor",i,"dynasty_char") then
-			local OfficeID = SimGetOfficeID("dynasty_char")
 			local Goal = GetData("GoalOfficeID")
-			if Goal==8 and (OfficeID==8 or OfficeID==15 or OfficeID==24) then
-				return true
-			elseif Goal==15 and (OfficeID==15 or OfficeID==24) then
-				return true
-			elseif Goal==24 and (OfficeID==24) then
+			local GoalLevel = 3
+			if Goal == 15 then
+				GoalLevel = 4
+			elseif Goal == 24 then
+				GoalLevel = 5
+			end
+			local reached = false
+			if SimGetOffice("dynasty_char", "MemberOffice") then
+				local OffLevel = OfficeGetLevel("MemberOffice")
+				if OffLevel ~= nil and OffLevel >= GoalLevel then
+					reached = true
+				end
+			end
+			if reached then
+				DynastyGetMember("Actor", 0, "VictoryBoss")
+				local vdiff = GetData("MissionDifficulty")
+				if vdiff == nil then
+					vdiff = 0
+				end
+				achievements_UnlockVictory("VictoryBoss", "OFFICE", vdiff)
 				return true
 			end
 		end

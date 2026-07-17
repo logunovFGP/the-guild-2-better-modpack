@@ -184,8 +184,10 @@ function Run()
 	
 	SetProperty("", "EduLevel", EDULEVEL_SCHOOL)
 	GetDynasty("","SchoolDyn")
-	DynastyGetMember("SchoolDyn",0,"SchoolBoss")
-	achievements_Unlock("SchoolBoss", "MISC_ATTEND_SCHOOL")
+	if AliasExists("SchoolDyn") then
+		DynastyGetMember("SchoolDyn",0,"SchoolBoss")
+		achievements_Unlock("SchoolBoss", "MISC_ATTEND_SCHOOL")
+	end
 	SimBeamMeUp("", "DestPos", false)
 	SetState("", STATE_INVISIBLE, false)
 	xp_School("")

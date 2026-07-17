@@ -64,14 +64,17 @@ function Run()
 	GetSettlement("", "CityAlias")
 	local Elapse = GetGametime() + duration
 	local ID = "Event"..GetID("")
-	DynastyGetMember("dynasty", 0, "MrFreeze")
+	GetDynasty("","dynasty")
+	if AliasExists("dynasty") then
+		DynastyGetMember("dynasty", 0, "MrFreeze")
 
-	MsgNewsNoWait("All","MrFreeze","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+0,%4i,%5l]","production",-1,
-		"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_HEAD_+0",
-		"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_BODY_+0",
-		GetID("MrFreeze"),GetID("Destination"),GetID("CityAlias"),Elapse,ID)
-	
-	chr_GainXP("MrFreeze", GetData("BaseXP"))
+		MsgNewsNoWait("All","MrFreeze","@C[@L_IMPOSEASALESFREEZE_COOLDOWN_+0,%4i,%5l]","production",-1,
+			"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_HEAD_+0",
+			"@L_PRIVILEGES_115_IMPOSEASALESFREEZE_MSG_BODY_+0",
+			GetID("MrFreeze"),GetID("Destination"),GetID("CityAlias"),Elapse,ID)
+
+		chr_GainXP("MrFreeze", GetData("BaseXP"))
+	end
 	SetState("", STATE_LOCKED, true)
 
 	while not CheckGameTimerEnd() do

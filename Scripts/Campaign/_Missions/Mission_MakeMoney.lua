@@ -40,6 +40,12 @@ function CheckEnd()
 	end
 
 	if (DynastyGetRanking("Actor") >= GetData("MoneyLimit")) then
+		DynastyGetMember("Actor", 0, "VictoryBoss")
+		local vdiff = GetData("MissionDifficulty")
+		if vdiff == nil then
+			vdiff = 0
+		end
+		achievements_UnlockVictory("VictoryBoss", "MAKEMONEY", vdiff)
 		return true
 	else
 		if CheckPlayerExtinct("Actor") then

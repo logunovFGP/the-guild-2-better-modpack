@@ -84,6 +84,9 @@ function Run()
 	feedback_MessageWorkshop("Destination",
 		"@L_PRIVILEGES_101_INSPECTBUSINESS_MSG_DESTINATION_HEAD_+0",
 		"@L_PRIVILEGES_101_INSPECTBUSINESS_MSG_DESTINATION_BODY_+0", GetID("Destination"))
+	if GetOfficeTypeHolder("InspectingCity", 6, "InspectorBoss") then
+		achievements_Unlock("InspectorBoss", "PRIVILEGE_INSPECT_BUSINESS")
+	end
 	achievements_Unlock("", "PRIVILEGE_INSPECT_BUSINESS")
 	
 	
