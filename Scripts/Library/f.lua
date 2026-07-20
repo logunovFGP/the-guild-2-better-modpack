@@ -208,7 +208,7 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 
 		local locator = "Walledge1"
 		local ReachedFallbackLocator = false
-		GetLocatorByName(Destination, locator, "entry")
+		GetLocatorByName(Destination, locator, "entry", true)
 		
 		if AliasExists("entry") then
 			
@@ -229,7 +229,7 @@ function MoveTo(Owner, Destination, iSpeed, fRange, Special)
 		
 		if not ReachedFallbackLocator then
 			locator = "Walledge2"
-			GetLocatorByName(Destination, locator, "entry")
+			GetLocatorByName(Destination, locator, "entry", true)
 
 			if AliasExists("entry") then
 				local ResultName3 = "__MoveToResult_"..GetID(Owner).."_"..GetID(Destination).."_Walledge2"

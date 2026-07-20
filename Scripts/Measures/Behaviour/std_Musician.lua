@@ -198,7 +198,7 @@ function Rest()
 						if GetFreeLocatorByName("placeobj", "idle_Sit", 1, 5, "SitPos") then
 							f_BeginUseLocator("","SitPos",GL_STANCE_SITBENCH,true)
 							Stance = 1
-							if GetLocatorByName("placeobj","campfire","CampFirePos") then
+							if BuildingGetProto("placeobj") == 620 and GetLocatorByName("placeobj","campfire","CampFirePos") then
 								if GetImpactValue("placeobj","torch")==0 then
 									AddImpact("placeobj","torch",1,1)
 									GfxStartParticle("Campfire","particles/Campfire2.nif","CampFirePos",3)

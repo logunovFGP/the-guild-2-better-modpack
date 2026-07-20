@@ -68,7 +68,7 @@ function Run()
 			end
 			
 			if Action == 0 then	
-				if GetFreeLocatorByName("Residence", "Play",1,3, "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "Play",1,3, "PlayPos") then
 					if f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true) then
 						PlayAnimation("","child_play_02_in")
 						LoopAnimation("","child_play_02_loop",12)
@@ -77,7 +77,7 @@ function Run()
 					end
 				end
 			elseif Action == 1 then	
-				if GetLocatorByName("Residence", "Apples", "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetLocatorByName("Residence", "Apples", "PlayPos") then
 					if f_BeginUseLocator("","PlayPos",GL_STANCE_STAND,true) then
 						if Rand(100)>50 then
 							PlayAnimation("","manipulate_middle_low_r")
@@ -88,20 +88,20 @@ function Run()
 					end
 				end
 			elseif Action == 2 then
-				if GetFreeLocatorByName("Residence", "ChildStroll",1,1, "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll",1,1, "PlayPos") then
 					f_MoveTo("","PlayPos",GL_MOVESPEED_RUN,100)
 				end
-				if GetFreeLocatorByName("Residence", "ChildStroll",2,2, "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll",2,2, "PlayPos") then
 					f_MoveTo("","PlayPos",GL_MOVESPEED_RUN,100)
 				end
-				if GetFreeLocatorByName("Residence", "ChildStroll",3,3, "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll",3,3, "PlayPos") then
 					f_MoveTo("","PlayPos",GL_MOVESPEED_RUN,100)
 				end
-				if GetFreeLocatorByName("Residence", "ChildStroll",4,4, "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll",4,4, "PlayPos") then
 					f_MoveTo("","PlayPos",GL_MOVESPEED_RUN,100)
 				end
 			elseif Action == 3 then
-				if GetLocatorByName("Residence", "BearRug", "PlayPos") then
+				if BuildingGetType("Residence") == 2 and GetLocatorByName("Residence", "BearRug", "PlayPos") then
 					if f_BeginUseLocator("","PlayPos",GL_STANCE_SITGROUND,true) then
 						Sleep(Rand(20)+10)
 						f_EndUseLocator("","PlayPos",GL_STANCE_STAND)

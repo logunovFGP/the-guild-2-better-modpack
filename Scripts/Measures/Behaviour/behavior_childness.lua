@@ -64,7 +64,7 @@ function Run()
 	if BuildingGetType("Residence") == GL_BUILDING_TYPE_RESIDENCE then -- residence, all normal
 	
 		if Action == 0 then	
-			if GetFreeLocatorByName("Residence", "Play", 1, 3, "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "Play", 1, 3, "PlayPos") then
 				if f_BeginUseLocator("", "PlayPos", GL_STANCE_STAND, true) then
 					PlayAnimation("", "child_play_02_in")
 					LoopAnimation("", "child_play_02_loop", 16)
@@ -75,7 +75,7 @@ function Run()
 			end
 		
 		elseif Action == 1 then	
-			if GetLocatorByName("Residence", "Apples", "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetLocatorByName("Residence", "Apples", "PlayPos") then
 				if f_BeginUseLocator("", "PlayPos", GL_STANCE_STAND, true) then
 					if Rand(100) > 50 then
 						PlayAnimation("", "manipulate_middle_low_r")
@@ -88,22 +88,22 @@ function Run()
 			end
 		
 		elseif Action == 2 then
-			if GetFreeLocatorByName("Residence", "ChildStroll", 1, 1, "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll", 1, 1, "PlayPos") then
 				if f_MoveTo("", "PlayPos") then
 					Sleep(2+Rand(5))
 				end
 			end
-			if GetFreeLocatorByName("Residence", "ChildStroll", 2, 2, "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll", 2, 2, "PlayPos") then
 				if f_MoveTo("", "PlayPos") then
 					Sleep(2+Rand(5))
 				end
 			end
-			if GetFreeLocatorByName("Residence", "ChildStroll", 3, 3, "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll", 3, 3, "PlayPos") then
 				if f_MoveTo("", "PlayPos") then
 					Sleep(3)
 				end
 			end
-			if GetFreeLocatorByName("Residence", "ChildStroll", 4, 4, "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetFreeLocatorByName("Residence", "ChildStroll", 4, 4, "PlayPos") then
 				if f_MoveTo("", "PlayPos") then
 					Sleep(1+Rand(6))
 				end
@@ -115,7 +115,7 @@ function Run()
 			PlayAnimation("", "watch_for_guard")
 		
 		else
-			if GetLocatorByName("Residence", "BearRug", "PlayPos") then
+			if BuildingGetType("Residence") == 2 and GetLocatorByName("Residence", "BearRug", "PlayPos") then
 				if f_BeginUseLocator("", "PlayPos", GL_STANCE_SITGROUND, true) then
 					Sleep(Rand(20)+12)
 					f_EndUseLocator("", "PlayPos", GL_STANCE_STAND)

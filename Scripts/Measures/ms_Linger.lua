@@ -14,7 +14,7 @@ function Run()
 	if GetFreeLocatorByName("Destination", "idle_Sit", 1, 5, "SitPos") then
 		f_BeginUseLocator("", "SitPos", GL_STANCE_SITBENCH, true)
 		-- make fire?
-		if GetLocatorByName("Destination", "campfire", "CampFirePos") then
+		if BuildingGetProto("Destination") == 620 and GetLocatorByName("Destination", "campfire", "CampFirePos") then
 			if GetImpactValue("Destination", "torch") == 0 then
 				AddImpact("Destination", "torch", 1, 1)
 				GfxStartParticle("Campfire", "particles/Campfire2.nif", "CampFirePos",3)
