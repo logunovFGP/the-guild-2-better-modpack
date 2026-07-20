@@ -126,7 +126,7 @@ function Danegeld()
 	local money = math.floor((chr_GetBootyCount("Victim", INVENTORY_STD) / 100)*15)
 	--if money <= 0 then
 	--	return false
-	if money < 10 then
+	if money < 25 then
 		money = 25
 	end
 
@@ -167,7 +167,7 @@ function Danegeld()
 			--money = money + (SimGetLevel("") * 10)
 
 			chr_CreditMoney("MercOwner", money, "IncomeBribes")
-			feedback_OverheadFadeText("MercOwner", "@L%1t", false, money)
+			feedback_OverheadFadeText("", "@L%1t", false, money)
 			economy_UpdateBalance("MyMercenarycamp", "Theft", money)
 			if achievements_isValidSim("MercOwner", "CRIME_COLLECT_TOLL") then
 				UpdateStat("STAT_TOLL_MONEY", (GetStat("STAT_TOLL_MONEY") or 0) + math.floor(money))

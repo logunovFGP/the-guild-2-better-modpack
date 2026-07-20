@@ -98,7 +98,7 @@ function Run()
 					Sleep(1)	
 					
 					local	MercLevel	= SimGetLevel("")
-					local RogueBonus =  GetImpactValue("MyHome", "RogueBonus") + 1 or 1
+					local RogueBonus = (GetImpactValue("MyHome", "RogueBonus") or 0) + 1
 					local	VictimSpendValue = (Rand(50)+(MercLevel * 50) + 50)*RogueBonus
 										
 					AddImpact(DestAlias, "HaveBeenPickpocketed", 1, TimeToWait)
@@ -111,7 +111,8 @@ function Run()
 						end
 					end
 					
-					chr_RecieveMoney("MercOwner", VictimSpendValue, "IncomeBribes")
+					chr_CreditMoney("MercOwner", VictimSpendValue, "IncomeBribes")
+					feedback_OverheadFadeText("", "@L%1t", false, VictimSpendValue)
 					economy_UpdateBalance("MyHome", "Service", VictimSpendValue)
 					if achievements_isValidSim("MercOwner", "CRIME_COLLECT_HUSH_MONEY") then
 						UpdateStat("STAT_HUSH_MONEY", (GetStat("STAT_HUSH_MONEY") or 0) + math.floor(VictimSpendValue))
