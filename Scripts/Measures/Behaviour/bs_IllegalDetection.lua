@@ -216,9 +216,12 @@ local function ImprovedRun()
 			bDecisionMade = true
 		end
 
-		-- Some workless sims just flee at random, others gape.
+		-- Workless witnesses mostly raise the alarm, the rest panics or gapes.
 		if not bDecisionMade and MyDyn < 1 then
-			if Rand(5) > 2 then
+			local random = Rand(5)
+			if bEvidence and bCanActAgainstActor and random < 3 then
+				Reaction = "-CallGuards:2"
+			elseif random > 3 then
 				Reaction = "-Flee"
 			else
 				Reaction = "-Gape:8"
@@ -445,14 +448,18 @@ function Run()
 		return ""
 	end
 	
-	-- some workless just flee at random
-	local random = Rand(5)
-	if ((random > 2) and (MyDyn < 1)) then
-		return "-Flee"
-	elseif (MyDyn < 1) then
-		return "-Gape:8"
-	end		
-	
+	-- workless witnesses mostly raise the alarm, the rest panics or gapes
+	if (MyDyn < 1) then
+		local random = Rand(5)
+		if (bEvidence) and bCanActAgainstActor and (random < 3) then
+			return "-CallGuards:2"
+		elseif (random > 3) then
+			return "-Flee"
+		else
+			return "-Gape:8"
+		end
+	end
+
 	-- der Rest ruft Wachen
 	if (bEvidence) and bCanActAgainstActor then
 		return "-CallGuards:2"
