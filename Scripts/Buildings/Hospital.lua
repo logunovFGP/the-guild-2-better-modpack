@@ -2,10 +2,12 @@ function Run()
 end
 
 function OnLevelUp()
+	hospital_SetupAI("")
 	bld_HandleOnLevelUp("")
 end
 
 function Setup()
+	hospital_SetupAI("")
 	bld_HandleSetup("")
 	local list = {"Cat","Dog"}
 	worldambient_CreateAnimal(list[Rand(2)+1], "", 1)
@@ -72,4 +74,50 @@ function PingHour()
 	end
 
 	bld_HandlePingHour("", true)
+end
+
+function SetNeed(InvAlias, ItemId, Value)
+	if (GetProperty(InvAlias, "NeedLock_"..ItemId) or 0) ~= 0 then
+		return
+	end
+	if Value then
+		SetProperty(InvAlias, "Need_"..ItemId, Value)
+	else
+		RemoveProperty(InvAlias, "Need_"..ItemId)
+	end
+end
+
+function SetGood(ItemId, Counter, Stock)
+	hospital_SetNeed("NeedSell", ItemId, Counter)
+	hospital_SetNeed("NeedStd", ItemId, Stock)
+end
+
+function SetupAI(Alias)
+	local Level = BuildingGetLevel(Alias)
+	if Level < 1 then
+		return
+	end
+	if not GetInventory(Alias, INVENTORY_STD, "NeedStd") then
+		return
+	end
+	if not GetInventory(Alias, INVENTORY_SELL, "NeedSell") then
+		return
+	end
+
+	hospital_SetGood(GL_ITEM_LAVENDER, -1, 20)	-- Lavender [120]
+	hospital_SetGood(GL_ITEM_BANDAGE, -1, 20)	-- Bandage [360]
+	hospital_SetGood(GL_ITEM_SOAP, nil, 8)	-- Soap [361]
+	hospital_SetGood(GL_ITEM_MIRACLECURE, -1, 15)	-- Miracle cure [362]
+
+	if Level >= 2 then
+		hospital_SetGood(GL_ITEM_SALVE, -1, 10)	-- Ointment [364]
+		hospital_SetGood(GL_ITEM_MEDICINE, -1, 8)	-- Medicine bottle [365]
+		hospital_SetGood(GL_ITEM_STAFFOFAESCULAP, nil, nil)	-- Caduceus [366]
+	end
+
+	if Level >= 3 then
+		hospital_SetGood(GL_ITEM_MIXTURE, nil, nil)	-- Secret Mixture [369]
+		hospital_SetGood(GL_ITEM_MEDIPACK, nil, nil)	-- Healer's pouch [370]
+		hospital_SetGood(GL_ITEM_PAINKILLER, -1, 8)	-- Pain medication [371]
+	end
 end

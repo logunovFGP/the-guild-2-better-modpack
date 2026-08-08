@@ -20,6 +20,7 @@ function CheckPosition()
 end
 
 function OnLevelUp()
+	fishinghut_SetupAI("")
 	bld_HandleOnLevelUp("")
 	
 	GetPosition("", "Position")
@@ -40,8 +41,8 @@ function OnLevelUp()
 	return false
 end
 
-
 function Setup()
+	fishinghut_SetupAI("")
 	bld_HandleSetup("")
 end
 
@@ -78,5 +79,49 @@ function Run()
 		if (GetOutdoorMovePosition("fishingboat", "", "GoodPos")) then
 			SimBeamMeUp("fishingboat", "GoodPos")
 		end	
+	end
+end
+
+function SetNeed(InvAlias, ItemId, Value)
+	if (GetProperty(InvAlias, "NeedLock_"..ItemId) or 0) ~= 0 then
+		return
+	end
+	if Value then
+		SetProperty(InvAlias, "Need_"..ItemId, Value)
+	else
+		RemoveProperty(InvAlias, "Need_"..ItemId)
+	end
+end
+
+function SetGood(ItemId, Counter, Stock)
+	fishinghut_SetNeed("NeedSell", ItemId, Counter)
+	fishinghut_SetNeed("NeedStd", ItemId, Stock)
+end
+
+function SetupAI(Alias)
+	local Level = BuildingGetLevel(Alias)
+	if Level < 1 then
+		return
+	end
+	if not GetInventory(Alias, INVENTORY_STD, "NeedStd") then
+		return
+	end
+	if not GetInventory(Alias, INVENTORY_SELL, "NeedSell") then
+		return
+	end
+
+	fishinghut_SetGood(GL_ITEM_FRIEDHERRING, nil, nil)	-- Fried herring [312]
+	fishinghut_SetGood(GL_ITEM_SMOKEDSALMON, nil, nil)	-- Smoked salmon [315]
+
+	if Level >= 2 then
+		fishinghut_SetGood(GL_ITEM_SHELLCHAIN, nil, nil)	-- Mussel necklace [309]
+		fishinghut_SetGood(GL_ITEM_SHELL, -1, 8)	-- Mussel [313]
+		fishinghut_SetGood(GL_ITEM_SHELLSOUP, nil, nil)	-- Mussel soup [314]
+	end
+
+	if Level >= 3 then
+		fishinghut_SetGood(GL_ITEM_SHELL, -1, 12)	-- Mussel [313]
+		fishinghut_SetGood(GL_ITEM_STINKBOMB, nil, nil)	-- Stink bomb [318]
+		fishinghut_SetGood(GL_ITEM_PEARLCHAIN, nil, nil)	-- Pearl necklace [321]
 	end
 end
