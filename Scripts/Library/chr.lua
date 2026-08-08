@@ -1182,7 +1182,7 @@ end
 function CheckGuildMaster(SimAlias, GuildHouse)
 
 	if GetSettlement(SimAlias, "city") then
-		if not CityGetRandomBuilding("city", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "guildhouse") then
+		if not trade_GetGuildHouse("city", "guildhouse") then
 			return false
 		end
 	else

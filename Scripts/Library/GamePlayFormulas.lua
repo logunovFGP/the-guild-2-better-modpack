@@ -294,7 +294,7 @@ function SimIsGuildmaster()
 end
 
 function SimIsAlderman()
-	if chr_GetAlderman() == GetID("") then
+	if trade_IsAlderman("") then
 		if SimGetGender("") == 0 then
 			return 1
 		else
