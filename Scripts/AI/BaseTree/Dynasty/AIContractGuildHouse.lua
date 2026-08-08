@@ -27,7 +27,7 @@ function Weight()
 		end
 		if HasProperty("Guildhouse", "ContractClass") then
 			if (SimGetClass("SIM")==GetProperty("Guildhouse", "ContractClass")) then
-				if chr_GetAlderman()==GetID("SIM") then
+				if trade_IsAlderman("SIM", "Guildhouse") then
 					return 30
 				elseif chr_CheckGuildMaster("SIM","Guildhouse") then
 					return 30

@@ -19,7 +19,7 @@ function Weight()
 			if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 				if chr_CheckGuildMaster("SIM","Guildhouse") then
 					Price = (Title * Title) * 30
-					if chr_GetAlderman()==GetID("") then
+					if trade_IsAlderman("", "Guildhouse") then
 						Price = (Title * Title) * 15
 						if GetItemCount("", Item,INVENTORY_STD)>0 then
 							return 100

@@ -1,4 +1,7 @@
 function Weight()
+	if GetState("SIM", STATE_CHILD) then
+		return 0
+	end
 
 	if IsDynastySim("SIM") then
 		return 0
@@ -13,6 +16,7 @@ function Weight()
 	end
 	
 	if not ReadyToRepeat("SIM", GetMeasureRepeatName2("DemandRansom")) then
+		RemoveAlias("Victim")
 		return 0
 	end
 		
@@ -24,4 +28,3 @@ function Execute()
 	MeasureAddData("Measure", "Victim", "Victim")
 	MeasureStart("Measure", "SIM", nil, "DemandRansom")
 end
-
