@@ -11,7 +11,7 @@ function Run()
 	local member = false
 	local noguildhouse = false
 
-	if chr_GetAlderman() == GetID("Destination") then
+	if trade_IsAlderman("Destination") then
 		if HasProperty("Destination", "Alderman") then
 			label2 = "@L_MEASURE_SHOWGUILDMEMBERSHIP_ALDERMAN_+0"
 		end
@@ -78,7 +78,7 @@ function Run()
 	local impfameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..dyn_GetImperialFameLevel("Destination")
 
 	if member then
-		if chr_GetAlderman() == GetID("Destination") and HasProperty("Destination", "Alderman") then
+		if trade_IsAlderman("Destination") then
 			label2 = "@L_MEASURE_SHOWGUILDMEMBERSHIP_ALDERMAN_+0"
 			MsgBoxNoWait("dynasty", "Destination",
 						"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
@@ -94,7 +94,7 @@ function Run()
 		end
 	else
 		if noguildhouse then
-			if chr_GetAlderman() == GetID("Destination") and HasProperty("Destination", "Alderman") then
+			if trade_IsAlderman("Destination") then
 				MsgBoxNoWait("dynasty", "Destination",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2",
@@ -108,7 +108,7 @@ function Run()
 							lordlabel, impfameleveldyn, dyn_GetImperialFame("Destination"), SimFame)
 			end				
 		else
-			if chr_GetAlderman() == GetID("Destination") and HasProperty("Destination", "Alderman") then
+			if trade_IsAlderman("Destination") then
 				MsgBoxNoWait("dynasty", "Destination",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1",

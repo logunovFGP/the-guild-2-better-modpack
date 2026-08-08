@@ -82,7 +82,7 @@ function Run()
 	local impfameleveldyn = "@L_IMPERIAL_FAME_DYNASTY_+"..dyn_GetImperialFameLevel("")
 
 	if member then
-		if chr_GetAlderman() == GetID("") and HasProperty("", "Alderman") then
+		if trade_IsAlderman("") then
 			label2 = "@L_MEASURE_SHOWGUILDMEMBERSHIP_ALDERMAN_+0"
 			MsgBoxNoWait("dynasty", "",
 						"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
@@ -98,7 +98,7 @@ function Run()
 		end
 	else
 		if noguildhouse then
-			if chr_GetAlderman() == GetID("") and HasProperty("", "Alderman") then
+			if trade_IsAlderman("") then
 				MsgBoxNoWait("dynasty", "",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+2",
@@ -112,7 +112,7 @@ function Run()
 							lordlabel, impfameleveldyn, dyn_GetImperialFame(""), SimFame)
 			end				
 		else
-			if chr_GetAlderman() == GetID("") and HasProperty("", "Alderman") then
+			if trade_IsAlderman("") then
 				MsgBoxNoWait("dynasty", "",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_HEAD_+0",
 							"@L_MEASURE_SHOWGUILDMEMBERSHIP_TEXT_+1",

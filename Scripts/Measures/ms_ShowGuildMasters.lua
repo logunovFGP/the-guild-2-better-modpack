@@ -131,7 +131,7 @@ function Run()
 			textArray[12] = "@L$S[2045]"
 		end
 
-		local Alderman = chr_GetAlderman()
+		local Alderman = trade_GetAldermanOfGuildHouse("guildhouse")
 		if Alderman~=0 then
 		
 			if not GetAliasByID(Alderman, "Alderman") or GetState("Alderman", STATE_DEAD) then

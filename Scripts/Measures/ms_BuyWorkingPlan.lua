@@ -10,7 +10,7 @@ function Run()
 	local alderman = false
 	local guildmaster = false
 	
-	if chr_GetAlderman() == GetID("") then
+	if trade_IsAlderman("", "Guildhouse") then
 		alderman = true
 	elseif chr_CheckGuildMaster("", "Guildhouse") then
 		guildmaster = true
