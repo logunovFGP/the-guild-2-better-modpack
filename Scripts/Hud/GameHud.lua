@@ -83,6 +83,7 @@ function Init()
 
  	this:AddPanel("MarketInventorySheet","cl_MarketInventorySheet","gui/Hud/panel_marketinventory2.gui",false)
  	-- this:AddPanel("NewMarketSheet","cl_NewMarketSheet","",false)
+ 	this:AddPanel("KontorPanel","cl_KontorPanel","",false)
  	this:AddPanel("BuildBuildingPatron","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingArtisan","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)
 	this:AddPanel("BuildBuildingScholar","cl_BuildBuildingSheet","gui/Hud/panel_buildbuildingsheet_workshop.gui",false)

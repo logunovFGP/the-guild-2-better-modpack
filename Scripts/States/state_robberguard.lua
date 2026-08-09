@@ -12,6 +12,9 @@ function Run()
 
 	-- state initiated by ms_134_PressProtectionMoney.lua
 	local iVictimBuildingID = GetProperty("", "RobberProtecting")
+	if iVictimBuildingID == nil or iVictimBuildingID == 0 then
+		return
+	end
 	if (GetAliasByID(iVictimBuildingID, "VictimBuilding") == false) then
 		return
 	end
@@ -85,7 +88,11 @@ function CleanUp()
 	ResetProcessProgress("")
 	local iVictimBuildingID = GetProperty("", "RobberProtecting")
 	RemoveProperty("", "RobberProtecting")
-	
+
+	if iVictimBuildingID == nil or iVictimBuildingID == 0 then
+		return
+	end
+
 	local result = GetAliasByID(iVictimBuildingID, "VictimBuilding")
 	if (result == false) then
 		return
