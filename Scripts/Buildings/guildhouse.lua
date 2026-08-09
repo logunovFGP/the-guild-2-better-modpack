@@ -298,7 +298,8 @@ function CheckGuildMasters()
 	-- PatronLabel[1], PatronName[2],  ArtisanLabel[3], ArtisanName[4],
 	-- ScholarLabel[5], ScholarName[6], ChiselerLabel[7], ChiselerName[8],
 	-- PatronFlag[9], ArtisanFlag[10], ScholarFlag[11], ChiselerFlag[12]
-	local textArray = {"", "", "", "", "", "", "", "", "", "", "", "" }
+	-- AldermanLabel[13], AldermanName[14], AldermanFlag[15]
+	local textArray = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "" }
 	local Gender, GenderLabel
 	local GenderArray = { "FEMALE", "MALE"}
 	local NewYear = GetYear()
@@ -422,10 +423,31 @@ function CheckGuildMasters()
 		end
 	end
 
+	local AldermanId = trade_GetAldermanOfGuildHouse("")
+	if AldermanId ~= nil and AldermanId > 0 and GetAliasByID(AldermanId, "Alderman") then
+		if DynastyIsShadow("Alderman") then
+			textArray[15] = "@L$S[2045]"
+		else
+			GetDynasty("Alderman", "Dyn")
+			local tmpflag = DynastyGetFlagNumber("Dyn") + 29
+			textArray[15] = "@L$S[20"..tmpflag.."]"
+		end
+
+		Gender = SimGetGender("Alderman") + 1
+		GenderLabel = GenderArray[Gender]
+		textArray[13] = "@L_GUILDHOUSE_MASTERLIST_ALDERMAN_"..GenderLabel.."_+0"
+		textArray[14] = GetName("Alderman")
+	else
+		textArray[13] = "@L_GUILDHOUSE_MASTERLIST_ALDERMAN_MALE_+0"
+		textArray[14] = "@L_GUILDHOUSE_MASTERLIST_NO_ENTRY_+0"
+		textArray[15] = "@L$S[2045]"
+	end
+
 	if PlayerCity then
 		MsgNewsNoWait("All", "", "", "politics", -1, "@L_GUILDHOUSE_MASTERLIST_HEAD_+0",
-					"@L_GUILDHOUSE_MASTERLIST_BODY_+0", GetID("city"), NewYear, 
-					textArray[1], textArray[2], textArray[3], textArray[4], textArray[5], textArray[6], 
-					textArray[7], textArray[8], textArray[9], textArray[10], textArray[11], textArray[12])
+					"@L_GUILDHOUSE_MASTERLIST_BODY_+0", GetID("city"), NewYear,
+					textArray[1], textArray[2], textArray[3], textArray[4], textArray[5], textArray[6],
+					textArray[7], textArray[8], textArray[9], textArray[10], textArray[11], textArray[12],
+					textArray[13], textArray[14], textArray[15])
 	end
 end
