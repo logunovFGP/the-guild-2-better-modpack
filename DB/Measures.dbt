@@ -368,7 +368,6 @@ Data:
 20004   "ms_SetChildName.lua"   "-"   "SetChildName"   1   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 20005   "ms_Merchantman.lua"   "-"   "Merchantman"   30   "-"   0   0   0   ""   ""   20   0   0   "none"   0   0   |
 20006   "ms_StepAside.lua"   "-"   "StepAside"   1   "hud/buttons/btn_Sim_WalkTo.tga"   1   11   0   ""   ""   0   0   0   "none"   0   0   |
-20007   "ms_KontorMeasure.lua"   "-"   "KontorMeasure"   50   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
 20008   "ms_AIDoNothing.lua"   "-"   "AIDoNothing"   1   "-"   1   11   0   ""   ""   19   0   0   "none"   0   0   |
 20009   "ms_AIBuyItem.lua"   "-"   "AIBuyItem"   10   "-"   1   11   0   ""   ""   19   0   0   "none"   0   0   |
 20010   "ms_CheckOutfit.lua"   "-"   "CheckOutfit"   20   "-"   0   13   0   ""   ""   0   0   0   "none"   0   0   |
@@ -485,7 +484,6 @@ Data:
 40042   "ms_ReflectHeritage.lua"   ""   "ReflectHeritage"   5   "hud/buttons/btn_kampf.tga"   0   14   0   ""   ""   51   0   0   "none"   0   0   |
 40043   ""   "-"   "ToggleCityNeeds"   99   "hud/buttons/btn_ShowCredits.tga"   2   0   0   "CityNeedsSheet"   ""   7   0   0   "none"   0   0   |
 40044   ""   "-"   "ToggleSimHistory"   99   "hud/buttons/btn_145_orderASpying.tga"   2   0   0   "SimHistorySheet"   ""   7   0   0   "none"   0   0   |
-40045   "ms_BuyTradePermit.lua"   "-"   "BuyTradePermit"   40   "hud/buttons/btn_ShowGuildContracts.tga"   0   5   0   ""   ""   0   0   0   "none"   0   0   |
 40046   "ms_ManageTradeRoutes.lua"   "-"   "ManageTradeRoutes"   40   "hud/buttons/btn_ShowGuildContracts.tga"   0   5   0   ""   ""   1   0   0   "none"   0   0   |
 40047   "ms_AldermanFreezeTrade.lua"   "-"   "AldermanFreezeTrade"   40   "hud/buttons/btn_115_ImposeASalesFreeze.tga"   0   4   0   ""   ""   2   0   0   "none"   0   0   |
 40048   "ms_LordshipRequest.lua"   "-"   "LordshipRequest"   40   "hud/buttons/btn_ShowGuildContracts.tga"   0   5   0   ""   ""   3   0   0   "none"   0   0   |

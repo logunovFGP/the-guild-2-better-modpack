@@ -286,3 +286,4 @@ Data:
 282   "GL_PROPEL_EMPLOYEES_FAVOR_LOSS"   16   ""   |
 283   "GL_DIPLO_MAX_PER_DAY"   3   ""   |
 284   "GL_ENABLE_LOG"   0   ""   |
+285   "GL_BUILDING_TYPE_BANK"   26   "~"   |

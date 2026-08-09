@@ -3,7 +3,5 @@ Table Description:
 
 Data:
 99   "AIPersonality"   |
-103   "BuildingToItems"   |
-104   "ItemsToMarket"   |
-105   "BalanceCategories"   |
-106   "Achievements"   |
+109   "BuildingToItems"   |
+110   "ItemsToMarket"   |
