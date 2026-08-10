@@ -13,10 +13,17 @@ function Setup()
 		end
 	end
 	
+	SetProperty("", "kr_init_v2", 1)
 	MeasureRun("", nil, "KontorMeasure")
 end
 
 function PingHour()
+	if GetProperty("", "kr_init_v2") == nil then
+		SetProperty("", "kr_init_v2", 1)
+		MeasureRun("", nil, "KontorMeasure", true)
+		return
+	end
+
 	if GetCurrentMeasureName("") ~= "KontorMeasure" then
 		MeasureRun("", nil, "KontorMeasure")
 	end
