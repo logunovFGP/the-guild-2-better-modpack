@@ -20,6 +20,7 @@ end
 function PingHour()
 	if GetProperty("", "kr_init_v2") == nil then
 		SetProperty("", "kr_init_v2", 1)
+		RemoveProperty("", "kr_next_refresh")
 		MeasureRun("", nil, "KontorMeasure", true)
 		return
 	end

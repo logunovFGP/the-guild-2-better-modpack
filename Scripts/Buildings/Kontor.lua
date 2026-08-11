@@ -45,6 +45,7 @@ function Setup()
 			SetProperty("", "WaterKontor", 1)
 		end
 	end
+	SetProperty("", "kr_init_v2", 1)
 	MeasureRun("", nil, "KontorMeasure")
 end
 
@@ -53,6 +54,13 @@ end
 -- attention: this function call is unscheduled
 --
 function PingHour()
+	if GetProperty("", "kr_init_v2") == nil then
+		SetProperty("", "kr_init_v2", 1)
+		RemoveProperty("", "kr_next_refresh")
+		MeasureRun("", nil, "KontorMeasure", true)
+		return
+	end
+
 	if GetCurrentMeasureName("") ~= "KontorMeasure" then
 		MeasureRun("", nil, "KontorMeasure")
 	end
