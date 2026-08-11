@@ -200,7 +200,7 @@ LogMessage("@TWP TargetCount : " .. TargetCount )
 			cart_UnloadAll("", ChosenTarget)
 			Sleep(2)
 		else
-			MsgMeasure("", "No profit: " .. ExpectedTotalProfit )
+			MsgMeasure("", "@L_GENERAL_MSGMEASURE_TWP_CART_NOPROFIT_+0")
 			Sleep(120) -- nothing to sell right now, wait a while
 		end 
 		
