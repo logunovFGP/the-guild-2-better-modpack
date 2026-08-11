@@ -122,6 +122,8 @@ function Run()
 	SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
 	SetData("IsProductionMeasure", 1)
 
+	local AtStation = true
+
 	while true do
 
 		local tcap = "MActRule_" .. MeasureGetID("MedicalTreatment") .. "_"
@@ -145,6 +147,10 @@ function Run()
 		
 		if NumSickSims < 1 then
 			if PlayerOrdered then
+				if not AtStation then
+					GetLocatorByName("Hospital", "Treatment"..BedNumber, "TreatmentPos")
+					AtStation = f_BeginUseLocator("", "TreatmentPos", GL_STANCE_STAND, true)
+				end
 				Sleep(5)
 			else
 				SimSetProduceItemID("", 0, -1)
@@ -152,6 +158,7 @@ function Run()
 				break
 			end
 		else
+			AtStation = false
 			
 			if not AliasExists("SickSim0") then
 				LogMessage("Hospital: NoSickSim0 found")
