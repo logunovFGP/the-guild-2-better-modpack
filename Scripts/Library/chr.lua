@@ -748,17 +748,17 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	end
 	
 	-- check if AI
-	if not DynastyIsAI(SimAlias) then
+	--if not DynastyIsAI(SimAlias) then
 		return SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
-	end
+	--end
 	
-	-- counter hardcoded AI cheat
-	local Diff = ScenarioGetDifficulty()
-	local Multiplier = 10/(8-Diff)
+	-- counter hardcoded AI cheat OBSOLETE WITH NEW SETTINGS 
+--	local Diff = ScenarioGetDifficulty()
+--	local Multiplier = 10/(8-Diff)
 
-	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
-	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
-	return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
+--	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
+--	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
+--	return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
 	
 	-- debugging
 --	local MoneyBefore = GetMoney(SimAlias)
