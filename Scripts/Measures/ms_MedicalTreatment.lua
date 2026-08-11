@@ -42,7 +42,8 @@ function Run()
 		return
 	end
 
-	local ManualWorker = IsDynastySim("") or not IsStateDriven()
+	local PlayerOrdered = not IsStateDriven()
+	local ManualWorker = IsDynastySim("") or PlayerOrdered
 	if not ManualWorker and HasProperty("", "AIManual") and GetProperty("", "AIManual") ~= 0 then
 		ManualWorker = true
 	end
@@ -73,26 +74,43 @@ function Run()
 	local BedNumber = 0
 	local MyID = GetID("")
 	
+	local HospitalID = GetID("Hospital")
+	
 	for i=1,5 do
 		if HasProperty("Hospital", "Locator"..i) then
-			if GetProperty("Hospital", "Locator"..i) == MyID then
+			local Holder = GetProperty("Hospital", "Locator"..i)
+			if Holder == MyID then
 				BedFree = true
 				BedNumber = i
 				SetData("BedNumber", i)
 				break
 			end
-		else
-			SetProperty("Hospital", "Locator"..i, MyID)
-			BedFree = true
-			BedNumber = i
-			SetData("BedNumber", i)
-			break
+			if not GetAliasByID(Holder, "BedHolder") then
+				RemoveProperty("Hospital", "Locator"..i)
+			elseif GetState("BedHolder", STATE_DEAD) then
+				RemoveProperty("Hospital", "Locator"..i)
+			elseif GetInsideBuildingID("BedHolder") ~= HospitalID then
+				RemoveProperty("Hospital", "Locator"..i)
+			end
+		end
+	end
+	
+	if not BedFree then
+		for i=1,5 do
+			if not HasProperty("Hospital", "Locator"..i) then
+				SetProperty("Hospital", "Locator"..i, MyID)
+				BedFree = true
+				BedNumber = i
+				SetData("BedNumber", i)
+				break
+			end
 		end
 	end
 	
 	if not BedFree then
 		LogMessage("Hospital no free bed found")
 		StopMeasure()
+		return
 	end
 	
 	GetLocatorByName("Hospital", "Treatment"..BedNumber, "TreatmentPos")
@@ -126,9 +144,13 @@ function Run()
 		local NumSickSims = Find("", SickSimFilter, "SickSim", -1)
 		
 		if NumSickSims < 1 then
-			SimSetProduceItemID("", 0, -1)
-			StopMeasure()
-			break
+			if PlayerOrdered then
+				Sleep(5)
+			else
+				SimSetProduceItemID("", 0, -1)
+				StopMeasure()
+				break
+			end
 		else
 			
 			if not AliasExists("SickSim0") then
