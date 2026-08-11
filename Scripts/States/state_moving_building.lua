@@ -1,3 +1,4 @@
+--@replace
 function Init()
 	local BuildingType = BuildingGetType("")
 	local Level = BuildingGetLevel("")
