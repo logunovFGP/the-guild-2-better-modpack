@@ -7,6 +7,11 @@ function Run(ItemID)
 	local RemainingSimSpace = GetRemainingInventorySpace("", ItemID)
 	local Count = ItemGetProductionAmount(ItemID) 
 
+	if ms_022_gather_TargetMet(ItemID) then
+		ms_022_gather_ReturnItems("", "WorkBuilding")
+		return false
+	end
+
 	if RemainingSpace <= 0 and RemainingSimSpace < Count then
 		-- no space left in the inventory of the building AND the sim 
 		-- message missing
@@ -83,6 +88,36 @@ function Run(ItemID)
 	end
 	
 	return true
+end
+
+function TargetMet(ItemID)
+	if not AliasExists("WorkBuilding") then
+		return false
+	end
+	if not GetInventory("WorkBuilding", INVENTORY_STD, "GatherStd") then
+		return false
+	end
+
+	local keep = GetProperty("GatherStd", "Keep_"..ItemID) or 0
+	if keep <= 0 then
+		keep = GetProperty("GatherStd", "Need_"..ItemID) or 0
+	end
+
+	local counter = 0
+	if GetInventory("WorkBuilding", INVENTORY_SELL, "GatherSell") then
+		counter = GetProperty("GatherSell", "Need_"..ItemID) or 0
+		if counter < 0 then
+			counter = 0
+		end
+	end
+
+	local want = keep + counter
+	if want <= 0 then
+		return false
+	end
+
+	local have = GetItemCount("WorkBuilding", ItemID, INVENTORY_STD) + GetItemCount("WorkBuilding", ItemID, INVENTORY_SELL)
+	return have >= want
 end
 
 function ReturnItems(SimAlias, BuildingAlias)
