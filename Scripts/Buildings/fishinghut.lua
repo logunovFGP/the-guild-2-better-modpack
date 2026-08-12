@@ -110,6 +110,9 @@ function SetupAI(Alias)
 		return
 	end
 
+	fishinghut_SetGood(GL_ITEM_HERRING, -1, 40)	-- Herring [310]
+	fishinghut_SetGood(GL_ITEM_SALMON, -1, 40)	-- Salmon [311]
+
 	fishinghut_SetGood(GL_ITEM_FRIEDHERRING, nil, nil)	-- Fried herring [312]
 	fishinghut_SetGood(GL_ITEM_SMOKEDSALMON, nil, nil)	-- Smoked salmon [315]
 
