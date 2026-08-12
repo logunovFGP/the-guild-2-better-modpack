@@ -76,7 +76,7 @@ function Run()
 						Sleep(10)
 					end
 					
-				elseif InsideType == GL_BUILDING_TYPE_CHURCH_EV or GL_BUILDING_TYPE_CHURCH_CATH then
+				elseif InsideType == GL_BUILDING_TYPE_CHURCH_EV or InsideType == GL_BUILDING_TYPE_CHURCH_CATH then
 					local LocArray = {"walledge1", "entry1", "walledge2"}
 					local randomChoice = Rand(3) + 1
 					if GetLocatorByName("InsideTarget", LocArray[randomChoice], "WaitHere") then
@@ -113,11 +113,11 @@ function Run()
 				local CurrentDistance = GetDistance("", "Destination")
 				if CurrentDistance > 200 and CurrentDistance < 750 then
 					if not f_Follow("", "Destination", GL_MOVESPEED_WALK, fDistance, true) then
-						f_MoveTo("", "InsideTarget", GL_MOVESPEED_WALK, fDistance)
+						f_MoveTo("", "Destination", GL_MOVESPEED_WALK, fDistance)
 					end
 				elseif CurrentDistance >= 750 then
 					if not f_Follow("", "Destination", GL_MOVESPEED_RUN, fDistance, true) then
-						f_MoveTo("", "InsideTarget", GL_MOVESPEED_RUN, fDistance)
+						f_MoveTo("", "Destination", GL_MOVESPEED_RUN, fDistance)
 					end
 				end
 				

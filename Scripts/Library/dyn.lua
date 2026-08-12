@@ -263,7 +263,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 					end
 				else
 					-- exclude types the AI can't properly build
-					if ChooseType == GL_BUILDING_TYPE_FARM or GL_BUILDING_TYPE_FRUITFARM or GL_BUILDING_TYPE_FISHINGHUT then
+					if ChooseType == GL_BUILDING_TYPE_FARM or ChooseType == GL_BUILDING_TYPE_FRUITFARM or ChooseType == GL_BUILDING_TYPE_FISHINGHUT then
 						local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
 						if AvailableCount <= BestCount then
 							BestType = ChooseType
@@ -362,7 +362,7 @@ function FindGoodWorkshopType(SimAlias, CityAlias, BuildNew)
 						end
 					else
 						-- exclude types the AI can't properly build
-						if ChooseType == GL_BUILDING_TYPE_ROBBER or GL_BUILDING_TYPE_DIVEHOUSE then
+						if ChooseType == GL_BUILDING_TYPE_ROBBER or ChooseType == GL_BUILDING_TYPE_DIVEHOUSE then
 							local AvailableCount = CityGetBuildingCount(CityAlias, -1, ChooseType, -1, -1, FILTER_NO_DYNASTY)
 							if AvailableCount <= BestCount then
 								BestType = ChooseType
