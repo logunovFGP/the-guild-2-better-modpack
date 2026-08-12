@@ -93,6 +93,17 @@ function SetNeed(InvAlias, ItemId, Value)
 	end
 end
 
+function SetKeep(ItemId, Value)
+	if (GetProperty("NeedStd", "NeedLock_"..ItemId) or 0) ~= 0 then
+		return
+	end
+	if Value then
+		SetProperty("NeedStd", "Keep_"..ItemId, Value)
+	else
+		RemoveProperty("NeedStd", "Keep_"..ItemId)
+	end
+end
+
 function SetGood(ItemId, Counter, Stock)
 	fishinghut_SetNeed("NeedSell", ItemId, Counter)
 	fishinghut_SetNeed("NeedStd", ItemId, Stock)
@@ -110,8 +121,10 @@ function SetupAI(Alias)
 		return
 	end
 
-	fishinghut_SetGood(GL_ITEM_HERRING, -1, 40)	-- Herring [310]
-	fishinghut_SetGood(GL_ITEM_SALMON, -1, 40)	-- Salmon [311]
+	fishinghut_SetGood(GL_ITEM_HERRING, -1, nil)	-- Herring [310]
+	fishinghut_SetKeep(GL_ITEM_HERRING, 40)
+	fishinghut_SetGood(GL_ITEM_SALMON, -1, nil)	-- Salmon [311]
+	fishinghut_SetKeep(GL_ITEM_SALMON, 40)
 
 	fishinghut_SetGood(GL_ITEM_FRIEDHERRING, nil, nil)	-- Fried herring [312]
 	fishinghut_SetGood(GL_ITEM_SMOKEDSALMON, nil, nil)	-- Smoked salmon [315]
