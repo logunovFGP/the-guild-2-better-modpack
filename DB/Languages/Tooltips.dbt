@@ -55,7 +55,6 @@ Data:
 263	"CHILDREN"	"Children"	"Children are the future of your dynasty. They grow up and inherit your wealth.%n%%n%%char_name% has %children% living children."	""	"player"	|
 264	"WAGE"	"Wage"	"The salary you pay to your employees. Higher wages keep employees happy and productive."	""	""	|
 265	"MARKETPLACE"	"Marketplace"	"Carts deliver finished goods to the marketplace, where they are sold to the populace."	""	""	|
-266	"FAVOR"	"Favor"	"Favor reflects how much a character likes or trusts another. High favor opens doors to alliances, marriages, and political support."	""	""	|
 267	"INDULGENCE"	"Indulgence"	"A church-issued letter that absolves the bearer of their sins."	""	""	|
 294	"GUILD_PATRON_MASTER"	"Patron Guild Master"	"Elected leader of the Patron Guild.%n%%n%Currently held by:%n%%officer:guildmaster:patron%."	""	"guildmaster:patron"	|
 295	"GUILD_ARTISAN_MASTER"	"Artisan Guild Master"	"Elected leader of the Artisan Guild.%n%%n%Currently held by:%n%%officer:guildmaster:artisan%."	""	"guildmaster:artisan"	|
