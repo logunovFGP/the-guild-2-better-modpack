@@ -18,12 +18,14 @@ function Run(ItemID)
 
 		MsgQuick("", "@L_GENERAL_INFORMATION_INVENTORY_INVENTORY_FULL_+3", GetID(""), GetID("WorkBuilding"), ItemGetLabel(ItemID, true))
 
-		while true do
+		local DeliverTries1 = 0
+		while DeliverTries1 < 12 do
 			Sleep(5)
 			ms_022_gather_ReturnItems("", "WorkBuilding")
 			if GetItemCount("",ItemID) <= 0 then
 				break				
 			end
+			DeliverTries1 = DeliverTries1 + 1
 		end
 	elseif RemainingSimSpace <= 0 then
 		ms_022_gather_ReturnItems("", "WorkBuilding")
@@ -34,12 +36,14 @@ function Run(ItemID)
 
 			MsgQuick("", "@L_GENERAL_INFORMATION_INVENTORY_INVENTORY_FULL_+0", GetID(""), ItemGetLabel(ItemID, true))
 			
-			while true do
+			local DeliverTries2 = 0
+			while DeliverTries2 < 12 do
 				Sleep(5)
 				ms_022_gather_ReturnItems("", "WorkBuilding")
 				if GetItemCount("", ItemID) <= 0 then
 					break				
 				end
+				DeliverTries2 = DeliverTries2 + 1
 			end
 		end
 	end
@@ -94,31 +98,15 @@ function TargetMet(ItemID)
 	if not AliasExists("WorkBuilding") then
 		return false
 	end
-	if not GetInventory("WorkBuilding", INVENTORY_STD, "GatherStd") then
-		return false
+
+	local space = GetRemainingInventorySpace("WorkBuilding", ItemID)
+	if space and space <= 0 then
+		return true
 	end
 
-	local keep = GetProperty("GatherStd", "Keep_"..ItemID) or 0
-	if keep <= 0 then
-		keep = GetProperty("GatherStd", "Need_"..ItemID) or 0
-	end
-
-	local counter = 0
-	if GetInventory("WorkBuilding", INVENTORY_SELL, "GatherSell") then
-		counter = GetProperty("GatherSell", "Need_"..ItemID) or 0
-		if counter < 0 then
-			counter = 0
-		end
-	end
-
-	local want = keep + counter
-	if want <= 0 then
-		return false
-	end
-
-	local have = GetItemCount("WorkBuilding", ItemID, INVENTORY_STD) + GetItemCount("WorkBuilding", ItemID, INVENTORY_SELL)
-	return have >= want
+	return false
 end
+
 
 function ReturnItems(SimAlias, BuildingAlias)
 
