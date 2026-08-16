@@ -29,7 +29,7 @@ function Run()
 	end
 	
 	while true do -- check carts
-		local CurrentCarts = GetProperty("", "TradersCartCount")
+		local CurrentCarts = GetProperty("", "TradersCartCount") or 0
 		if state_tradercontrol_CanBuyNewCart(CurrentCarts) then
 			CurrentCarts = state_tradercontrol_BuyNewCart(CurrentCarts)
 		else
@@ -105,6 +105,7 @@ function CheckCart(CurrentCart)
 end
 
 function BuyNewCart(CartCount)
+	CartCount = CartCount or 0
 	local CityLevel = CityGetLevel("MyCity")
 
 	local NewCartType = EN_CT_MIDDLE
@@ -134,6 +135,7 @@ function BuyNewCart(CartCount)
 end
 
 function CanBuyNewCart(CartCount)
+	CartCount = CartCount or 0
 	if not BuildingGetCity("", "MyCity") then
 		return false
 	end
