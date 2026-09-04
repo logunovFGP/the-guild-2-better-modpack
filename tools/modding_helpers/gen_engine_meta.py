@@ -78,6 +78,10 @@ NOTES = {
         "**engine quote markers, not per cents**: escaping those breaks the row. Only",
         "escape a per cent that directly follows a digit.",
         "A `\"` may never appear inside the text; use `>word<`, which renders quoted.",
+        "An **unbalanced** quote silently breaks the row: the text system cannot parse",
+        "it and the string is lost. Three Spanish rows shipped that way -- 18235, 18616",
+        "and 18871 -- two of them also had every word gap padded to the three-space",
+        "field separator. Check `line.count(chr(34)) == 4` after editing any table.",
         "Talent symbol codes for `$S[]`, which render in the on-screen-help impact",
         "tooltips but **not** in the measure info panel: 2016 Dexterity, 2017",
         "Constitution, 2018 Fighting, 2019 Craftsmanship, 2020 Shadow Arts, 2021",
@@ -246,6 +250,22 @@ UNDOCUMENTED = [
     ('IncrementXPQuiet', ['pSim', 'Amount'], None, [
         "**Not in the API dump.** Reconstructed from 28 call sites.",
         "Grants experience without the floating feedback the noisy variant shows.",
+    ]),
+    ('FindNode', ['Path'], None, [
+        "**Not in the API dump.** Reconstructed from 198 call sites.",
+        "Reaches into the live GUI tree, e.g. `FindNode(\"\\GUI\\HudRoot\")` or",
+        "`\"\\application\\game\\Hud\"` -- note the doubled backslashes.",
+        "The returned node supports `GetChildCnt()`, `GetChildAt(i)`, `GetName()`,",
+        "`FindChildDepth(name)`, `GetParent()`, and `GetValueInt/String(property)` with",
+        "`SetValueInt/String(property, value)`. Hud/Debug/HudRootAnalyser.lua is the",
+        "worked example.",
+        "This is the only practical way to change a panel: the .gui files under GUI/ are",
+        "**binary serialised**, not text, so their properties -- ABS_WIDTH, ABS_HEIGHT,",
+        "TEXTAREAWIDTH, TEXTAREAHEIGHT, SHOW_VERTICAL_SCROLLBAR, RESIZE, WINDOW_MARGIN*",
+        "-- can be read out of the file as names but not safely edited there.",
+        "Panels are registered in Scripts/Hud/GameHud.lua with",
+        "`this:AddPanel(name, class, guifile, visible)`; the measure info window is",
+        "HelpMeasures / Helppanels/measures.gui.",
     ]),
 ]
 

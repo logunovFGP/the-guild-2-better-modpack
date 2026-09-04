@@ -140,6 +140,17 @@ LogMessage("@HUD_REFORGED #W my marker here")
 It appears in `logfile.log` as `[HUD_REFORGED] my marker here`. The log also records
 `[Script] Executing Measures/<name>.lua on <sim>`, useful for watching measures fire during play.
 
+Reading the log from PowerShell — there is no `grep` on Windows:
+
+```powershell
+Select-String -Path "$env:GUILD2\logfile.log" -Pattern 'HUD_REFORGED'
+Get-Content "$env:GUILD2\logfile.log" -Tail 40
+Get-Content "$env:GUILD2\logfile.log" -Wait -Tail 20    # follow it live
+```
+
+Set `$env:GUILD2` to your game folder once per session, or substitute the full path.
+`Select-String` is the closest equivalent to `grep`; `sls` is its alias.
+
 To confirm the junction is actually feeding the engine, add a uniquely-named marker to
 `Scripts/GameState/StartScreen.lua` in `Init()`, restart, and search the log for it. A hit
 proves the engine read your working tree, since that string exists nowhere else.
@@ -150,6 +161,9 @@ proves the engine read your working tree, since that string exists nowhere else.
   change did not apply — a stale timestamp means the game never actually started.
 - **`git checkout` swaps live game content.** Quit the game before switching branches.
 - **Keep CRLF line endings** in `.lua` files, matching the rest of the tree.
+- **An unbalanced `"` in a `.dbt` row silently loses that string.** The text system
+  cannot parse the row and shows nothing. Three Spanish rows shipped that way. After
+  editing a table, check every data row has exactly four quotes.
 - The repo is large (~1.2 GB of history, no LFS). A shallow clone helps if you do not need history.
 
 ### Contributing
