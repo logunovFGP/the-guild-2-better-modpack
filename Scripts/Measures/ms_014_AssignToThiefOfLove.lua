@@ -27,7 +27,7 @@ function Run()
 		end	
 	end
 
-	local zielloc = 20 + Rand(50)
+	local zielloc = 20 + Rand(30) -- must stay under the tightest return threshold (60) or she ping-pongs
 	if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN, zielloc) then
 		StopMeasure()
 	end
@@ -142,7 +142,7 @@ function Run()
 						local Distance = GetDistance("", "Destination")
 						if Distance > 60 then
 							Sleep(1)
-							f_MoveTo("","Destination",GL_MOVESPEED_WALK)
+							f_MoveTo("","Destination",GL_MOVESPEED_WALK, zielloc)
 							Sleep(1)
 						end
 					else
@@ -190,7 +190,7 @@ function Run()
 
 						local Distance = GetDistance("", "Destination")
 						if Distance > 80 then
-							f_MoveTo("", "Destination", GL_MOVESPEED_WALK)
+							f_MoveTo("", "Destination", GL_MOVESPEED_WALK, zielloc)
 							Sleep(1)
 						end
 					end
