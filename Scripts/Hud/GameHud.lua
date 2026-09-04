@@ -253,23 +253,34 @@ end
 -- poke the live nodes. Property names come from that file: ABS_HEIGHT, ABS_WIDTH,
 -- TEXTAREAHEIGHT, TEXTAREAWIDTH, SHOW_VERTICAL_SCROLLBAR, RESIZE.
 --
+-- Round one told us the panels are NOT named after their AddPanel name -- all
+-- eleven help windows show up as plain "Container" among HudRoot's 137 children.
+-- So this dumps every child's dimensions to identify it by shape, and tests
+-- whether the properties are writable at all on the one candidate the AddPanel
+-- order predicts (34th live AddPanel call, so child 37).
+--
 -- Every step is wrapped: a wrong node name has to land in the log, never break
--- HudInit. Node API taken from Hud/Debug/HudRootAnalyser.lua.
--- Grep the run with:  @HELPPANEL
+-- HudInit. Node API from Hud/Debug/HudRootAnalyser.lua. Grep for @HELPPANEL.
 -- -----------------------
-local function ReportNode(Node, Path, Depth)
-	local Name = Node:GetName() or "<no-name>"
-	local Line = "@HELPPANEL " .. Path .. "/" .. Name
-	local Props = {"ABS_WIDTH", "ABS_HEIGHT", "TEXTAREAWIDTH", "TEXTAREAHEIGHT",
-					"SHOW_VERTICAL_SCROLLBAR", "SHOW_HORIZONTAL_SCROLLBAR", "RESIZE"}
-	for i = 1, #Props do
-		local ok, value = pcall(function() return Node:GetValueInt(Props[i]) end)
+local PROPS = {"ABS_X", "ABS_Y", "ABS_WIDTH", "ABS_HEIGHT",
+				"TEXTAREAWIDTH", "TEXTAREAHEIGHT",
+				"SHOW_VERTICAL_SCROLLBAR", "SHOW_HORIZONTAL_SCROLLBAR", "RESIZE"}
+
+local function Describe(Node)
+	local Text = ""
+	for i = 1, #PROPS do
+		local ok, value = pcall(function() return Node:GetValueInt(PROPS[i]) end)
 		if ok and value ~= nil then
-			Line = Line .. "  " .. Props[i] .. "=" .. tostring(value)
+			Text = Text .. " " .. PROPS[i] .. "=" .. tostring(value)
 		end
 	end
-	LogMessage(Line)
+	local ok, kids = pcall(function() return Node:GetChildCnt() end)
+	return Text .. " kids=" .. tostring(ok and kids or "?")
+end
 
+local function Dump(Node, Path, Depth)
+	local Name = Node:GetName() or "<no-name>"
+	LogMessage("@HELPPANEL " .. Path .. "/" .. Name .. Describe(Node))
 	if Depth <= 0 then
 		return
 	end
@@ -280,25 +291,22 @@ local function ReportNode(Node, Path, Depth)
 	for i = 0, count - 1 do
 		local got, child = pcall(function() return Node:GetChildAt(i) end)
 		if got and child then
-			pcall(function() ReportNode(child, Path .. "/" .. Name, Depth - 1) end)
+			pcall(function() Dump(child, Path .. "/" .. Name, Depth - 1) end)
 		end
 	end
 end
 
-local function Grow(Node, Property, Factor, Minimum)
-	local ok, before = pcall(function() return Node:GetValueInt(Property) end)
-	if not ok or not before or before <= 0 then
+local function Poke(Node, Property, Value)
+	local okBefore, before = pcall(function() return Node:GetValueInt(Property) end)
+	if not okBefore then
+		LogMessage("@HELPPANEL " .. Property .. " not readable on this node")
 		return
 	end
-	local wanted = math.floor(before * Factor)
-	if wanted < Minimum then
-		wanted = Minimum
-	end
-	pcall(function() Node:SetValueInt(Property, wanted) end)
+	pcall(function() Node:SetValueInt(Property, Value) end)
 	local _, after = pcall(function() return Node:GetValueInt(Property) end)
-	LogMessage("@HELPPANEL set " .. (Node:GetName() or "?") .. "." .. Property ..
-				" " .. tostring(before) .. " -> asked " .. tostring(wanted) ..
-				", reads back " .. tostring(after))
+	LogMessage("@HELPPANEL WRITE " .. Property .. ": was " .. tostring(before) ..
+				", asked " .. tostring(Value) .. ", now " .. tostring(after) ..
+				(tostring(before) == tostring(after) and "   <== IGNORED" or "   <== TOOK"))
 end
 
 function TuneMeasureHelpPanel()
@@ -308,51 +316,38 @@ function TuneMeasureHelpPanel()
 			LogMessage("@HELPPANEL HudRoot not found")
 			return
 		end
-
 		local count = Root:GetChildCnt() or 0
 		LogMessage("@HELPPANEL HudRoot has " .. tostring(count) .. " children")
 
-		local Panel = nil
+		-- one line per child, so the measure panel can be picked out by its size
 		for i = 0, count - 1 do
 			local got, child = pcall(function() return Root:GetChildAt(i) end)
 			if got and child then
-				local Name = child:GetName() or "<no-name>"
-				local _, NodeName = pcall(function() return child:GetValueString("NODE_NAME") end)
-				LogMessage("@HELPPANEL child " .. i .. " = " .. Name ..
-							" node_name=" .. tostring(NodeName))
-				if string.find(string.lower(Name), "measure", 1, true)
-						or string.find(string.lower(tostring(NodeName)), "measure", 1, true) then
-					Panel = child
-					LogMessage("@HELPPANEL candidate at index " .. i)
-				end
+				LogMessage("@HELPPANEL child " .. i .. " " ..
+							tostring(child:GetName() or "<no-name>") .. Describe(child))
 			end
 		end
 
-		if not Panel then
-			LogMessage("@HELPPANEL no child looked like the measure panel; " ..
-						"read the child list above and tell me which index it is")
+		-- AddPanel order puts HelpMeasures at child 37; unverified, so prove it
+		local got, Panel = pcall(function() return Root:GetChildAt(37) end)
+		if not got or not Panel then
+			LogMessage("@HELPPANEL child 37 unreachable")
 			return
 		end
+		LogMessage("@HELPPANEL --- candidate 37 subtree ---")
+		Dump(Panel, "", 3)
 
-		LogMessage("@HELPPANEL --- tree before ---")
-		ReportNode(Panel, "", 3)
-
-		-- Half again as tall, and turn the vertical scrollbar on wherever it exists.
-		Grow(Panel, "ABS_HEIGHT", 1.5, 0)
-		Grow(Panel, "TEXTAREAHEIGHT", 1.5, 0)
-		pcall(function() Panel:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
-		local pcount = Panel:GetChildCnt() or 0
-		for i = 0, pcount - 1 do
-			local got, child = pcall(function() return Panel:GetChildAt(i) end)
-			if got and child then
-				Grow(child, "ABS_HEIGHT", 1.5, 0)
-				Grow(child, "TEXTAREAHEIGHT", 1.5, 0)
-				pcall(function() child:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
-			end
+		LogMessage("@HELPPANEL --- writability test on child 37 ---")
+		local _, h = pcall(function() return Panel:GetValueInt("ABS_HEIGHT") end)
+		if h and h > 0 then
+			Poke(Panel, "ABS_HEIGHT", math.floor(h * 1.5))
 		end
-
-		LogMessage("@HELPPANEL --- tree after ---")
-		ReportNode(Panel, "", 3)
+		local _, t = pcall(function() return Panel:GetValueInt("TEXTAREAHEIGHT") end)
+		if t and t > 0 then
+			Poke(Panel, "TEXTAREAHEIGHT", math.floor(t * 1.5))
+		end
+		Poke(Panel, "SHOW_VERTICAL_SCROLLBAR", 1)
+		Poke(Panel, "RESIZE", 1)
 	end)
 
 	if not ok then
