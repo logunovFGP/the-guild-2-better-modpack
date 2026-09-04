@@ -1,3 +1,9 @@
+-- Income: Rand(SimGetLevel * 20) + 25, capped at 0.5% of a dynasty victim's purse --
+-- driven by her level, not a talent. The theft is CheckSkill("", 3, VictimSkill)
+-- against the victim's Empathy; a non-dynasty victim defends with Rand(6)+1. On
+-- failure, detection is Rand(70 + ShadowArts * 15) < Difficulty, where Difficulty is
+-- floor(ScenarioGetDifficulty() ^ 0.54) and a victim of Patrician or above uses
+-- Difficulty + 2.
 function Run()
 
 	local TimeOut
@@ -165,7 +171,9 @@ function Run()
 							AddImpact("VictimSim", "HaveBeenPickpocketed", 1, 1)
 							local Difficulty = math.floor(math.pow(ScenarioGetDifficulty(),0.54))
 							local Badluck = Rand(70 + (GetSkillValue("",SHADOW_ARTS)*15))
-							if (GetNobilityTitle("VictimSim") > 3 and Badluck < (2+Difficulty)) 
+							-- Patrician and above notice her twice as often -- that is where the
+							-- Nobility passive lands. constants_GL_TITLE_FIRST_NOBLE is 7.
+							if (GetNobilityTitle("VictimSim") > 6 and Badluck < (2+Difficulty)) 
 									or Badluck < (Difficulty) then
 								CommitAction("pickpocket", "", "VictimSim", "VictimSim")
 								feedback_OverheadComment("VictimSim",
@@ -245,5 +253,6 @@ function CleanUp()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 end
 

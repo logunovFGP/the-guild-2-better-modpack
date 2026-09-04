@@ -238,6 +238,7 @@ end
 -- GetOSHData
 -- -----------------------
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID, "cost")
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:

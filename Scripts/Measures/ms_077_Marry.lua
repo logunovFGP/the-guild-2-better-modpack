@@ -290,3 +290,7 @@ function CleanUp()
 	SetState("", STATE_DUEL, false)
 	SetState("Destination", STATE_DUEL, false)
 end
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
+end

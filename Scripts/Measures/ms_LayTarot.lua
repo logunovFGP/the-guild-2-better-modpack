@@ -1,3 +1,6 @@
+-- Income is paid in behavior_SimGetKurios.lua, not here: 5 coins by passer-by rank,
+-- then 10, 20, 40, 80, plus the building RogueBonus as a percentage, plus
+-- Rand(10) * Charisma -- which is where most of the money is. Customer cooldown 2 h.
 function Run()
 
 	RemoveProperty("", "JugglerAssign")
@@ -72,6 +75,7 @@ function CleanUp()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 	--can be used again in:
 	--OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end

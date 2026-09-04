@@ -1,3 +1,6 @@
+-- Income by guest rank: 2 for ranks 0-1 and 5 for rank 2, where Charisma is
+-- irrelevant, then 10, 20 and 30 times Charisma for ranks 3, 4 and 5. Radius 500,
+-- 10 XP per dance.
 -- -----------------------
 -- Run
 -- -----------------------
@@ -185,6 +188,7 @@ function CleanUp()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID, "cost")
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 	--active time:

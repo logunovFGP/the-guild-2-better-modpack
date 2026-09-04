@@ -67,3 +67,7 @@ function Cleanup()
 	StopAnimation("")
 	CarryObject("", "", false)
 end
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
+end

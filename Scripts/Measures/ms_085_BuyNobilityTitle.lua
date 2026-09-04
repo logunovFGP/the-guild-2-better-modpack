@@ -128,7 +128,7 @@ function Run()
 				StopMeasure()
 				return
 			else
-				f_MoveTo("", "councilbuilding")
+				f_MoveTo("", "councilbuilding", GL_MOVESPEED_RUN)
 			end
 		end
 		

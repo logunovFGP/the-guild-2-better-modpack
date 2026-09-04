@@ -121,6 +121,12 @@ link. `mods\modlist.txt` should read `Reforged = 1`.
 2. Quit the game, relaunch via `GuildIILauncher.exe`
 3. Check `logfile.log` in the game root
 
+`tools\ReloadScriptTg2r.exe` can hot-reload `*.lua` in a running game instead, which
+needs `[DEBUG]` with `AID = 1` and `ScriptDebugger = 1` in `configs\Reforged\config.ini`,
+and the exe must sit in a direct subfolder of the game. **Database edits are not
+hot-reloadable** — any `.dbt` change needs a full restart; reaching the main menu is
+enough.
+
 Reaching the main menu is enough to run the startup scripts — no save needs loading.
 
 ### Debugging
@@ -159,6 +165,95 @@ git push -u fork my-change
 
 Then open the merge request against `fajeth-modpack/megamodpack-reforged:modern`.
 
+### Scripting language: Lua 5.1
+
+Everything under `Scripts\` is Lua. The engine embeds **Lua 5.1** for its backend
+game scripting, so that is the dialect every measure, library and AI script must be
+written in.
+
+**Syntax rule: stick to standard 5.1.** Anything from a later version fails to parse
+and the script simply does not load. The usual offenders:
+
+| Do not use | From | Write instead |
+|---|---|---|
+| `//` integer division | 5.3 | `math.floor(a / b)` |
+| `&` `\|` `~` `<<` `>>` bitwise operators | 5.3 | arithmetic, or a lookup table |
+| `goto` / `::label::` | 5.2 | a flag and an `if`, or restructure the loop |
+| integer/float distinction, `math.type` | 5.3 | there is one number type |
+| `table.unpack`, `table.pack` | 5.2 | `unpack(t)` |
+| `\z` escape in long strings | 5.2 | concatenate |
+| `#!` shebang tolerance, `_ENV` | 5.2 | `setfenv` |
+
+`%` and `math.fmod` behave as in 5.1. No script in this repo uses `os`, `io`,
+`require`, `dofile` or `loadfile` — treat them as unavailable rather than testing it
+in a live game. The engine adds its own global functions on top of the standard
+library; those are documented in `ScriptDocumentation.html` and generated into
+`meta/engine.d.lua`.
+
+#### Installing Lua 5.1 (optional, for local syntax checking)
+
+You do not need Lua installed to play or to edit scripts — the game brings its own
+interpreter. Install it only to syntax-check a file before launching, which is much
+faster than restarting the game to find a typo.
+
+**Windows, via winget:**
+
+```powershell
+winget install DEVCOM.Lua
+```
+
+**Windows, via Scoop or Chocolatey:**
+
+```powershell
+scoop install lua
+choco install lua51
+```
+
+**Windows, prebuilt binaries:** download `lua-5.1.5_Win64_bin.zip` from
+<https://luabinaries.sourceforge.net/download.html>, unzip somewhere permanent and add
+that folder to `PATH`.
+
+A `[Environment]::SetEnvironmentVariable("Path", ..., "User")` edit does **not** reach
+shells that are already open — start a new one, or call the exe by full path until you do.
+
+Verify you got 5.1 and not 5.4; a 5.4 parser accepts `//` and would defeat the point:
+
+```powershell
+lua -v
+```
+
+Expected: `Lua 5.1.5  Copyright (C) 1994-2012 Lua.org, PUC-Rio`. The LuaBinaries zip
+ships `lua5.1.exe` and `luac5.1.exe`; copy or symlink one to `lua.exe` if you want the
+short name.
+
+Then check a script without launching the game:
+
+```powershell
+luac5.1 -p Scripts\Measures\ms_011_AssignToLaborOfLove.lua
+```
+
+`-p` parses and reports errors without writing any output, exiting non-zero on a
+failure. It catches syntax errors only, not unknown engine functions; for those use the
+editor setup below. The generated declaration file is checked the same way:
+
+```powershell
+luac5.1 -p meta\engine.d.lua
+```
+
+#### Editor completion for the engine API
+
+`.luarc.json` in the repo root points the
+[lua-language-server](https://github.com/LuaLS/lua-language-server) at
+`meta/engine.d.lua`, a declaration file generated from `ScriptDocumentation.html`:
+
+```powershell
+python tools\modding_helpers\gen_engine_meta.py
+```
+
+That gives completion, parameter hints and a warning on misspelled engine calls in any
+editor with the Lua extension installed. `runtime.version` is set to `Lua 5.1`.
+`meta\` sits outside `Scripts\`, so the engine never loads it.
+
 ## Usage
 
 ### Configuration
@@ -178,6 +273,24 @@ If you encounter issues after installation:
 
 2. **Language issues**
    - Make sure you've copied the correct language files from the Translations folder
+
+### Known baseline log noise
+
+These lines appear in `logfile.log` on a clean run and are **not** caused by the mod's
+scripts. Recorded so they are not re-investigated:
+
+- `[HUD] Error at HudInit::LoadPanels`
+- `[subsystem] Shader Error : Failed to find shader BUILDING_LIGHT2` and `BUILDING_GLOW2`
+- `[HUD] Panel with the name KontorPanel already exists`, followed by two groups of
+  `Substitutioncommand %1i` / `%1t` errors. That string is in **no shipped table** — all
+  twelve language files, the vanilla English table and the vanilla `Kontor.dbt` were
+  searched — so it is generated engine- or GUI-side and cannot be fixed from the mod.
+- `[StartMeasure] <sim>: Canceled 'UseLaborOfLove'(60) because of priority
+  'UseLaborOfLove'(60)`, repeating dozens of times per session. A measure cancelling
+  itself at equal priority; worth a look on its own.
+- Unescaped literal `%` is widespread in the **vanilla** English text table (dozens of
+  rows, e.g. `_ADMINSET_TIP_REPAIR_+0` and several `_ABILITIES_*`). Each logs a
+  substitution error when it renders. Only rows the mod owns have been fixed.
 
 ## Stability and AI Development Notes
 

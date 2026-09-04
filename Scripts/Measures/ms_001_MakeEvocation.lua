@@ -108,7 +108,7 @@ function Run()
 	
 	-- do the visual stuff here
 	GetLocatorByName("Building", "Ritual1", "Evocation1")
-	f_MoveTo("", "Evocation1")
+	f_MoveTo("", "Evocation1", GL_MOVESPEED_RUN)
 	PlayAnimation("", "cogitate")
 	GetLocatorByName("Building", "Ritual2", "Evocation2")
 	f_MoveTo("", "Evocation2")

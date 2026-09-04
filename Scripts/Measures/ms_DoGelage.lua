@@ -73,7 +73,7 @@ function Run()
 		return
 	end
 	if GetLocatorByName("Building", "Propel", "StandPosition") then
-		f_MoveTo("","StandPosition")
+		f_MoveTo("", "StandPosition", GL_MOVESPEED_RUN)
 	end
 	local	Alias
 	for g=0, numFound-1 do
@@ -184,6 +184,7 @@ function GetADrink()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end
 

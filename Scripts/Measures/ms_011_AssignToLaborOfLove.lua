@@ -1,3 +1,6 @@
+-- Income: attracting a man is Rand(101) > 50 - Charisma, so about 50% at Charisma 0
+-- and 65% at 15. Radius 1000, opposite sex, 16+, not already FullOfLove. A man she
+-- fails to charm ignores her 4 hours, one she wins over 6.
 function Run()
 
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_DIVEHOUSE, "WorkBuilding") then
@@ -16,14 +19,19 @@ function Run()
 		f_ExitCurrentBuilding("")
 	end
 
-	-- The player assigns an AREA for her to work in. The engine persists that
-	-- assignment across saves, unlike a script alias, so prefer it over whatever
-	-- Destination we were dispatched with -- otherwise a re-dispatch anchored on
-	-- the work building silently moves her post to the building itself.
-	if BuildingGetAISetting("WorkBuilding", "Enable") == 0
+	-- A player order arrives with the clicked spot already in Destination, and that
+	-- must win: overwriting it here is what made her work where she stood. Only fall
+	-- back to the persisted assigned area when we were handed nothing -- that covers
+	-- the AI re-dispatch from idlelib_CocotteIdle, which anchors on the work building.
+	-- Same guard as the identical block inside the loop below.
+	if not AliasExists("Destination")
+			and BuildingGetAISetting("WorkBuilding", "Enable") == 0
 			and SimGetAssignedAreaID("") ~= SimGetWorkingPlaceID("") then
 		SimGetAssignedArea("", "Destination")
 	end
+
+	LogMessage("@TALENT ms_011 entered, destination "..(AliasExists("Destination")
+			and GetName("Destination") or "NONE").." leash from "..GetName(""))
 
 	if not AliasExists("Destination") then
 		StopMeasure()
@@ -162,4 +170,5 @@ function CleanUp()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 end

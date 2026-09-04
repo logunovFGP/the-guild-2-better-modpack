@@ -211,3 +211,7 @@ function CleanUp()
 	MoveSetActivity("", "")
 	f_EndUseLocator("", "ChiefPos", GL_STANCE_STAND)
 end
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
+end

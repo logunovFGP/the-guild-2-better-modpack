@@ -16,7 +16,7 @@ function Run()
 			return
 		end
 		
-		if not f_MoveTo("", "MovePos") then
+		if not f_MoveTo("", "MovePos", GL_MOVESPEED_RUN) then
 			return
 		end
 	end

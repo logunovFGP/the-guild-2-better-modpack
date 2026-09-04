@@ -1,3 +1,6 @@
+-- Income: (25 + 25 * Charisma) * (RogueBonus + 1). A dynasty customer is charged a
+-- flat 500 from his own purse and refuses if he cannot pay. If she is also a thief
+-- of love, an extra 25..45 * Charisma by his rank.
 function Run()
 	
 	if not AliasExists("Destination") then
@@ -168,6 +171,7 @@ function CleanUp()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 	OSHSetMeasureCost("@L_INTERFACE_HEADER_+6", 500)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2", Gametime2Total(mdata_GetTimeOut(MeasureID)))

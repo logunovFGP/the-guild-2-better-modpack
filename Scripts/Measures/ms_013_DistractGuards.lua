@@ -17,7 +17,7 @@ function Run()
 		StopMeasure()
 	end
 	
-	if not f_MoveTo("", "Destination") then
+	if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN) then
 		StopMeasure()
 	end
 	

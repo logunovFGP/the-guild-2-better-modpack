@@ -94,3 +94,7 @@ function Run()
 	StopAction("rob", "Owner")
 end
 
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
+end

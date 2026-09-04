@@ -1,6 +1,7 @@
 Include ("Library/Speech.lua")
 Include ("Library/GamePlayFormulas.lua")
 Include ("Library/feedback.lua")
+Include ("Library/constants.lua")
 Include ("Library/chr.lua")
 Include ("Library/bld.lua")
 Include ("Library/diseases.lua")

@@ -22,7 +22,7 @@ Data:
 91   90   1   "~"   1554   "~"   "~"   "~"   "~"   "~"   "~"   |
 100   100   1   "~"   119   6   "~"   "~"   "~"   "~"   "~"   |
 101   100   "~"   "~"   376   1   "~"   "~"   "~"   "~"   "~"   |
-110   110   "~"   "~"   427   1   "~"   (4)   "MEASUREINIT_SELECTION"   "~"   "~"   |
+110   110   1   0   427   1   "hud/cursors/Cursor_moveto.tga"   (4)   "MEASUREINIT_SELECTION"   0   0   |
 120   120   0   429   428   6   ""   (1)   "MEASUREINIT_SELECTION"   0   0   |
 121   120   0   429   428   1   ""   (1)   "MEASUREINIT_SELECTION"   0   0   |
 130   130   0   0   1539   1   ""   (4)   ""   0   0   |

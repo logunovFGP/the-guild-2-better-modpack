@@ -42,7 +42,7 @@ function Run()
 	
 		-- do the visual stuff here
 		GetLocatorByName("Building", "Telescope", "MovePos")
-		f_MoveTo("", "MovePos")
+		f_MoveTo("", "MovePos", GL_MOVESPEED_RUN)
 		PlayAnimation("", "manipulate_middle_twohand")
 		PlayAnimation("", "cogitate")
 		

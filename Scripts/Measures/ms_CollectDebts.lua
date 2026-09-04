@@ -421,3 +421,7 @@ function CleanUp()
 		SimLock("Destination", 0.4)
 	end	
 end
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
+end

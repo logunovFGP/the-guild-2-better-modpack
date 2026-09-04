@@ -1,0 +1,4 @@
+{
+  "workspace.library": ["meta"],
+  "runtime.version": "Lua 5.1"
+}

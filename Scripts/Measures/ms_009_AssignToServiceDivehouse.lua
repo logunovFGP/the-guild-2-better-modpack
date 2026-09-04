@@ -1,3 +1,7 @@
+-- No talent at all. Sets ServiceActive on the building; idlelib then keeps each guest
+-- 2 rounds longer and adds a random bonus per round -- up to 2 coins at ranks 0-2, 4
+-- at ranks 3-4, 9 at rank 5. Base spend without service is a flat 5/5/10/15/20 by
+-- rank. 5 XP per cycle.
 -- -----------------------
 -- Run
 -- -----------------------

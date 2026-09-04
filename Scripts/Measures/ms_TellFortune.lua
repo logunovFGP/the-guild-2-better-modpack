@@ -1,3 +1,6 @@
+-- The same trade as ms_LayTarot at double the base -- 10/20/40/80/160 by passer-by
+-- rank, same RogueBonus and Rand(10) * Charisma terms. Paid in
+-- behavior_SimGetKurios.lua. Customer cooldown 6 h.
 function Run()
 
 	RemoveProperty("", "JugglerAssign")
@@ -79,6 +82,7 @@ function CleanUp()
 end
 
 function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 	--can be used again in:
 	OSHSetMeasureRepeat("@L_ONSCREENHELP_7_MEASURES_TIMEINFOS_+2",Gametime2Total(mdata_GetTimeOut(MeasureID)))
 end

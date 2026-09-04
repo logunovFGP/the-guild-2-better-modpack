@@ -1,3 +1,6 @@
+-- Income: (Rand(50) + SimGetLevel * 50 + 50) * (RogueBonus + 1). Against a party
+-- member the take is capped at 5% of that character's money. Driven by character
+-- level, not a talent.
 -------------------------------------------------------------------------------
 ----
 ----	OVERVIEW "ms_HushMoney"
@@ -171,3 +174,7 @@ function CleanUp()
 	--StopAction("pickpocket","")
 end
 
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
+end

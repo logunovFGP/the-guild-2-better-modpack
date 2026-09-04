@@ -1,3 +1,7 @@
+-- Alms are paid in behavior_DonateJuggler.lua: 2 coins by passer-by rank, then 4, 8,
+-- 16, 32, plus the building RogueBonus as a percentage, plus Rand(4) * Charisma. A
+-- Charisma-versus-Empathy check can win a second donation of (Charisma + rank) * 3
+-- plus a random of the same.
 function Run()
 
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_JUGGLER, "Juggler") then
@@ -117,4 +121,8 @@ function CleanUp()
 	CarryObject("", "", false)
 	CarryObject("", "", true)
 	StopAnimation("")
+end
+
+function GetOSHData(MeasureID)
+	mdata_ShowTalentOSH(MeasureID)
 end
