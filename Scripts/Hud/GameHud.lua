@@ -263,15 +263,28 @@ end
 -- which identifies the cohort exactly. Every one of them shows a description that
 -- can overflow, so every one of them wants the same treatment.
 --
--- RESIZE and SHOW_VERTICAL_SCROLLBAR are settled and did not work: both read
--- back changed on all 11 panels and the tooltip stayed clipped mid-sentence with
--- no scrollbar, so the engine reads them when the panel is built and never
--- again. ABS_HEIGHT is worth one more try only because the earlier attempts
--- failed for a reason that is now gone -- they stretched the multiplayer lobby
--- and the character help panel, which was the wrong panel, not the wrong
--- property. This run also logs the geometry of each panel and its first
--- children, because a clipped paragraph may be clipped by a text child rather
--- than by the panel.
+-- RESIZE and SHOW_VERTICAL_SCROLLBAR do nothing: both read back changed on all
+-- 11 panels and the tooltip stayed clipped mid-sentence with no scrollbar, so
+-- the engine consults them when it builds a panel and never again.
+--
+-- ABS_HEIGHT is different -- it is honoured, and the panel visibly grew. Two
+-- things that took a run to see:
+--
+--   * the bordered frame is a SIBLING of the panel, not the panel itself. On
+--     panel 43 the child cl_WinContainer reads ABS_HEIGHT=394, exactly the
+--     panel's own height, and it keeps that height when the panel grows -- so
+--     growing only the panel exposes the backdrop below the border and reveals
+--     no extra text. Panel, frame and text node each hold their own height.
+--   * the description text lives in a child named Label. On the measures family
+--     it is 217x402, and 217 is what cuts the sentence off. Confirmed against a
+--     screenshot: the border box measures 495x448 where the panel reads 434x394,
+--     a consistent 1.14 scale, and Label at that scale is 458x247 against a
+--     471x240 text block.
+--
+-- Break bones is panel 43 or 45 -- identical twins, which is the measures /
+-- items / upgrades family sharing one layout. No need to tell them apart: every
+-- panel in the cohort shows a description that can overflow, so all 11 get the
+-- same treatment.
 --
 -- Observed: 11 of 137 children match, indices 39..49, one contiguous block,
 -- and both writes read back changed. So the texture is a sound fingerprint and
@@ -326,8 +339,10 @@ local function IsHelpPanel(Node, Depth)
 end
 
 -- Reads whichever of these exist; a missing property reads back nil and is
--- skipped, so the list can be optimistic.
-local GEO = { "ABS_HEIGHT", "ABS_WIDTH", "HEIGHT", "WIDTH", "ABS_YPOS" }
+-- skipped, so the list can be optimistic. HEIGHT and WIDTH always read 0 and
+-- ABS_YPOS always reads 0, so ABS_HEIGHT and ABS_WIDTH are the only two that
+-- carry anything.
+local GEO = { "ABS_HEIGHT", "ABS_WIDTH" }
 
 local function Geo(Node)
 	local out = ""
@@ -343,21 +358,53 @@ end
 local function SetInt(Node, Property, Value)
 	local okBefore, before = pcall(function() return Node:GetValueInt(Property) end)
 	if not okBefore or before == nil then
-		LogMessage("@HELPPANEL " .. Property .. " is not readable, left alone")
 		return
 	end
 	pcall(function() Node:SetValueInt(Property, Value) end)
 	local _, after = pcall(function() return Node:GetValueInt(Property) end)
-	LogMessage("@HELPPANEL " .. (Node:GetName() or "?") .. "." .. Property ..
+	LogMessage("@HELPPANEL   " .. (Node:GetName() or "?") .. "." .. Property ..
 				": " .. tostring(before) .. " -> " .. tostring(after) ..
 				(tostring(before) == tostring(after) and "  IGNORED" or "  TOOK"))
 end
 
--- How much taller to make a help panel. A blunt number on purpose: this run is
--- to learn whether a post-construction geometry write is honoured at all, not to
--- find the right height.
-local HEIGHT_BONUS = 240
-local CHILDREN_LOGGED = 6
+-- Six lines of headroom at the ~19px line height these panels render at. Break
+-- bones, the worst overflow found, loses about two lines, so this covers it with
+-- room to spare while keeping the empty gap under a taller window modest. There
+-- is no way to ask the engine how tall the wrapped text came out, so a fixed
+-- number is the only option -- it is a ceiling, not a fit.
+-- ponytail: fixed headroom, measure the text instead if a description ever
+-- outgrows it
+local HEIGHT_BONUS = 120
+
+-- A node has to be at least this tall, relative to its panel, to be grown. At
+-- 0.4 this picks up the two that matter -- the full-height bordered frame and
+-- the description Label -- and leaves icons, headers and the 38px button strip
+-- alone. Growing those would move content, not reveal it.
+local GROW_SHARE = 0.4
+local GROW_DEPTH = 2
+
+-- Grows this node and its descendants, but only the tall ones. The panel, its
+-- bordered frame and its text node are siblings holding their own heights, not a
+-- chain that inherits, so all three have to be set individually -- growing only
+-- the panel leaves the frame at its old size and just exposes the backdrop
+-- underneath it.
+local function Grow(Node, MinHeight, Depth)
+	local ok, height = pcall(function() return Node:GetValueInt("ABS_HEIGHT") end)
+	if ok and height and height >= MinHeight then
+		SetInt(Node, "ABS_HEIGHT", height + HEIGHT_BONUS)
+	end
+	if Depth <= 0 then
+		return
+	end
+	local kids = 0
+	pcall(function() kids = Node:GetChildCnt() or 0 end)
+	for k = 0, kids - 1 do
+		local got, Kid = pcall(function() return Node:GetChildAt(k) end)
+		if got and Kid then
+			Grow(Kid, MinHeight, Depth - 1)
+		end
+	end
+end
 
 function TuneMeasureHelpPanel()
 	local ok, err = pcall(function()
@@ -391,24 +438,10 @@ function TuneMeasureHelpPanel()
 		for i = 1, #found do
 			local got, Panel = pcall(function() return Root:GetChildAt(found[i]) end)
 			if got and Panel then
-				LogMessage("@HELPPANEL panel " .. found[i] .. Geo(Panel))
-
-				-- The text is clipped, so the clipping element may be a child
-				-- rather than the panel. Log the first few so the next step does
-				-- not have to guess which node owns the height.
-				local kids = 0
-				pcall(function() kids = Panel:GetChildCnt() or 0 end)
-				for k = 0, math.min(kids, CHILDREN_LOGGED) - 1 do
-					local gotKid, Kid = pcall(function() return Panel:GetChildAt(k) end)
-					if gotKid and Kid then
-						LogMessage("@HELPPANEL   " .. found[i] .. "." .. k .. " " ..
-									(Kid:GetName() or "?") .. Geo(Kid))
-					end
-				end
-
-				local _, before = pcall(function() return Panel:GetValueInt("ABS_HEIGHT") end)
-				if before ~= nil then
-					SetInt(Panel, "ABS_HEIGHT", before + HEIGHT_BONUS)
+				local gotHeight, height = pcall(function() return Panel:GetValueInt("ABS_HEIGHT") end)
+				if gotHeight and height and height > 0 then
+					LogMessage("@HELPPANEL panel " .. found[i] .. Geo(Panel))
+					Grow(Panel, math.floor(height * GROW_SHARE), GROW_DEPTH)
 				end
 			end
 		end
