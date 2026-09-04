@@ -263,11 +263,15 @@ end
 -- which identifies the cohort exactly. Every one of them shows a description that
 -- can overflow, so every one of them wants the same treatment.
 --
--- Deliberately NOT touching ABS_HEIGHT any more: guessing a height stretched the
--- multiplayer lobby in round two and the character help panel in round three.
--- This sets two flags and nothing else, on the theory that RESIZE makes a window
--- fit its content -- which, if true, fixes the clipping for all of them without a
--- single hard-coded number.
+-- RESIZE and SHOW_VERTICAL_SCROLLBAR are settled and did not work: both read
+-- back changed on all 11 panels and the tooltip stayed clipped mid-sentence with
+-- no scrollbar, so the engine reads them when the panel is built and never
+-- again. ABS_HEIGHT is worth one more try only because the earlier attempts
+-- failed for a reason that is now gone -- they stretched the multiplayer lobby
+-- and the character help panel, which was the wrong panel, not the wrong
+-- property. This run also logs the geometry of each panel and its first
+-- children, because a clipped paragraph may be clipped by a text child rather
+-- than by the panel.
 --
 -- Observed: 11 of 137 children match, indices 39..49, one contiguous block,
 -- and both writes read back changed. So the texture is a sound fingerprint and
