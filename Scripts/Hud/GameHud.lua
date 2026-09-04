@@ -313,9 +313,25 @@ local function IsHelpPanel(Node, Depth)
 	return false
 end
 
-local function SetFlag(Node, Property, Value)
+-- Reads whichever of these exist; a missing property reads back nil and is
+-- skipped, so the list can be optimistic.
+local GEO = { "ABS_HEIGHT", "ABS_WIDTH", "HEIGHT", "WIDTH", "ABS_YPOS" }
+
+local function Geo(Node)
+	local out = ""
+	for i = 1, #GEO do
+		local ok, value = pcall(function() return Node:GetValueInt(GEO[i]) end)
+		if ok and value ~= nil then
+			out = out .. " " .. GEO[i] .. "=" .. tostring(value)
+		end
+	end
+	return out
+end
+
+local function SetInt(Node, Property, Value)
 	local okBefore, before = pcall(function() return Node:GetValueInt(Property) end)
 	if not okBefore or before == nil then
+		LogMessage("@HELPPANEL " .. Property .. " is not readable, left alone")
 		return
 	end
 	pcall(function() Node:SetValueInt(Property, Value) end)
@@ -325,9 +341,15 @@ local function SetFlag(Node, Property, Value)
 				(tostring(before) == tostring(after) and "  IGNORED" or "  TOOK"))
 end
 
+-- How much taller to make a help panel. A blunt number on purpose: this run is
+-- to learn whether a post-construction geometry write is honoured at all, not to
+-- find the right height.
+local HEIGHT_BONUS = 240
+local CHILDREN_LOGGED = 6
+
 function TuneMeasureHelpPanel()
 	local ok, err = pcall(function()
-		local Root = FindNode("\\GUI\\HudRoot")
+		local Root = FindNode("\GUI\HudRoot")
 		if not Root then
 			LogMessage("@HELPPANEL HudRoot not found")
 			return
@@ -348,11 +370,6 @@ function TuneMeasureHelpPanel()
 
 		LogMessage("@HELPPANEL " .. #found .. " of " .. tostring(count) ..
 					" children carry the help-panel texture; expected 11")
-		local list = ""
-		for i = 1, #found do
-			list = list .. " " .. found[i]
-		end
-		LogMessage("@HELPPANEL indices:" .. list)
 
 		if #found == 0 or #found > SANITY_LIMIT then
 			LogMessage("@HELPPANEL count outside the sane range, changing nothing")
@@ -362,8 +379,25 @@ function TuneMeasureHelpPanel()
 		for i = 1, #found do
 			local got, Panel = pcall(function() return Root:GetChildAt(found[i]) end)
 			if got and Panel then
-				SetFlag(Panel, "RESIZE", 1)
-				SetFlag(Panel, "SHOW_VERTICAL_SCROLLBAR", 1)
+				LogMessage("@HELPPANEL panel " .. found[i] .. Geo(Panel))
+
+				-- The text is clipped, so the clipping element may be a child
+				-- rather than the panel. Log the first few so the next step does
+				-- not have to guess which node owns the height.
+				local kids = 0
+				pcall(function() kids = Panel:GetChildCnt() or 0 end)
+				for k = 0, math.min(kids, CHILDREN_LOGGED) - 1 do
+					local gotKid, Kid = pcall(function() return Panel:GetChildAt(k) end)
+					if gotKid and Kid then
+						LogMessage("@HELPPANEL   " .. found[i] .. "." .. k .. " " ..
+									(Kid:GetName() or "?") .. Geo(Kid))
+					end
+				end
+
+				local _, before = pcall(function() return Panel:GetValueInt("ABS_HEIGHT") end)
+				if before ~= nil then
+					SetInt(Panel, "ABS_HEIGHT", before + HEIGHT_BONUS)
+				end
 			end
 		end
 	end)
