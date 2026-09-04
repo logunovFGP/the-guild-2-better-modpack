@@ -239,8 +239,123 @@ function Init()
 
 	-- minimap_Refresh()
 
+	gamehud_TuneMeasureHelpPanel()
+
 end
 
 function CleanUp() 	
 end
 
+-- -----------------------
+-- Measure info panel: give it room for a long description.
+--
+-- Helppanels/measures.gui is a binary serialised file, so rather than patch it we
+-- poke the live nodes. Property names come from that file: ABS_HEIGHT, ABS_WIDTH,
+-- TEXTAREAHEIGHT, TEXTAREAWIDTH, SHOW_VERTICAL_SCROLLBAR, RESIZE.
+--
+-- Every step is wrapped: a wrong node name has to land in the log, never break
+-- HudInit. Node API taken from Hud/Debug/HudRootAnalyser.lua.
+-- Grep the run with:  @HELPPANEL
+-- -----------------------
+local function ReportNode(Node, Path, Depth)
+	local Name = Node:GetName() or "<no-name>"
+	local Line = "@HELPPANEL " .. Path .. "/" .. Name
+	local Props = {"ABS_WIDTH", "ABS_HEIGHT", "TEXTAREAWIDTH", "TEXTAREAHEIGHT",
+					"SHOW_VERTICAL_SCROLLBAR", "SHOW_HORIZONTAL_SCROLLBAR", "RESIZE"}
+	for i = 1, #Props do
+		local ok, value = pcall(function() return Node:GetValueInt(Props[i]) end)
+		if ok and value ~= nil then
+			Line = Line .. "  " .. Props[i] .. "=" .. tostring(value)
+		end
+	end
+	LogMessage(Line)
+
+	if Depth <= 0 then
+		return
+	end
+	local ok, count = pcall(function() return Node:GetChildCnt() end)
+	if not ok or not count then
+		return
+	end
+	for i = 0, count - 1 do
+		local got, child = pcall(function() return Node:GetChildAt(i) end)
+		if got and child then
+			pcall(function() ReportNode(child, Path .. "/" .. Name, Depth - 1) end)
+		end
+	end
+end
+
+local function Grow(Node, Property, Factor, Minimum)
+	local ok, before = pcall(function() return Node:GetValueInt(Property) end)
+	if not ok or not before or before <= 0 then
+		return
+	end
+	local wanted = math.floor(before * Factor)
+	if wanted < Minimum then
+		wanted = Minimum
+	end
+	pcall(function() Node:SetValueInt(Property, wanted) end)
+	local _, after = pcall(function() return Node:GetValueInt(Property) end)
+	LogMessage("@HELPPANEL set " .. (Node:GetName() or "?") .. "." .. Property ..
+				" " .. tostring(before) .. " -> asked " .. tostring(wanted) ..
+				", reads back " .. tostring(after))
+end
+
+function TuneMeasureHelpPanel()
+	local ok, err = pcall(function()
+		local Root = FindNode("\\GUI\\HudRoot")
+		if not Root then
+			LogMessage("@HELPPANEL HudRoot not found")
+			return
+		end
+
+		local count = Root:GetChildCnt() or 0
+		LogMessage("@HELPPANEL HudRoot has " .. tostring(count) .. " children")
+
+		local Panel = nil
+		for i = 0, count - 1 do
+			local got, child = pcall(function() return Root:GetChildAt(i) end)
+			if got and child then
+				local Name = child:GetName() or "<no-name>"
+				local _, NodeName = pcall(function() return child:GetValueString("NODE_NAME") end)
+				LogMessage("@HELPPANEL child " .. i .. " = " .. Name ..
+							" node_name=" .. tostring(NodeName))
+				if string.find(string.lower(Name), "measure", 1, true)
+						or string.find(string.lower(tostring(NodeName)), "measure", 1, true) then
+					Panel = child
+					LogMessage("@HELPPANEL candidate at index " .. i)
+				end
+			end
+		end
+
+		if not Panel then
+			LogMessage("@HELPPANEL no child looked like the measure panel; " ..
+						"read the child list above and tell me which index it is")
+			return
+		end
+
+		LogMessage("@HELPPANEL --- tree before ---")
+		ReportNode(Panel, "", 3)
+
+		-- Half again as tall, and turn the vertical scrollbar on wherever it exists.
+		Grow(Panel, "ABS_HEIGHT", 1.5, 0)
+		Grow(Panel, "TEXTAREAHEIGHT", 1.5, 0)
+		pcall(function() Panel:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
+		local pcount = Panel:GetChildCnt() or 0
+		for i = 0, pcount - 1 do
+			local got, child = pcall(function() return Panel:GetChildAt(i) end)
+			if got and child then
+				Grow(child, "ABS_HEIGHT", 1.5, 0)
+				Grow(child, "TEXTAREAHEIGHT", 1.5, 0)
+				pcall(function() child:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
+			end
+		end
+
+		LogMessage("@HELPPANEL --- tree after ---")
+		ReportNode(Panel, "", 3)
+	end)
+
+	if not ok then
+		LogMessage("@HELPPANEL error: " .. tostring(err))
+	end
+end
