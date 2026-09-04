@@ -247,26 +247,35 @@ function CleanUp()
 end
 
 -- -----------------------
--- Measure info panel: give it room for a long description.
+-- On-screen help panels: let them size to their content.
 --
--- Helppanels/measures.gui is a binary serialised file, so rather than patch it we
--- poke the live nodes. Round two proved the writes take: ABS_HEIGHT 422 -> 633,
--- SHOW_VERTICAL_SCROLLBAR 0 -> 1 and RESIZE 0 -> 1 all read back changed. What it
--- got wrong was the target -- child 37 turned out to be the multiplayer lobby
--- (NameList / PingList / PingBtn), because the AddPanel order does not map onto
--- HudRoot's child order and none of the eleven help windows is named after its
--- panel; they are all plain "Container".
+-- Three rounds of probing established:
+--   * runtime property writes take -- ABS_HEIGHT, SHOW_VERTICAL_SCROLLBAR and
+--     RESIZE all read back changed
+--   * the panels cannot be told apart at HudInit. None is named after its
+--     AddPanel name (all are plain "Container"), the AddPanel order does not map
+--     onto HudRoot's child order, and "@LProduction" matches 13 children. Worse,
+--     measures.gui, items.gui and upgrades.gui share every extractable string --
+--     they are the same layout and only differ once populated.
 --
--- So find it by content instead. measures.gui carries a label whose TEXT is
--- "@LProduction", which no other help panel has, and GetValueString reads that
--- straight off the live node. Nothing is written until a child matches.
+-- So stop trying to single out the measure window. All thirteen Helppanels/*.gui
+-- files share the texture "Hud/sheets/onscreenhelp/bg.tga" and nothing else does,
+-- which identifies the cohort exactly. Every one of them shows a description that
+-- can overflow, so every one of them wants the same treatment.
+--
+-- Deliberately NOT touching ABS_HEIGHT any more: guessing a height stretched the
+-- multiplayer lobby in round two and the character help panel in round three.
+-- This sets two flags and nothing else, on the theory that RESIZE makes a window
+-- fit its content -- which, if true, fixes the clipping for all of them without a
+-- single hard-coded number.
 --
 -- Every step is wrapped: a wrong node name has to land in the log, never break
 -- HudInit. Node API from Hud/Debug/HudRootAnalyser.lua. Grep for @HELPPANEL.
 -- -----------------------
-local FINGERPRINT = "Production"
+local COHORT_TEXTURE = "onscreenhelp/bg"
+local SANITY_LIMIT = 20
 
-local function Text(Node, Property)
+local function Str(Node, Property)
 	local ok, value = pcall(function() return Node:GetValueString(Property) end)
 	if ok and value then
 		return tostring(value)
@@ -274,9 +283,8 @@ local function Text(Node, Property)
 	return ""
 end
 
-local function Matches(Node, Depth)
-	if string.find(Text(Node, "TEXT"), FINGERPRINT, 1, true)
-			or string.find(Text(Node, "NODE_NAME"), FINGERPRINT, 1, true) then
+local function IsHelpPanel(Node, Depth)
+	if string.find(Str(Node, "TEXTURE_FILENAME"), COHORT_TEXTURE, 1, true) then
 		return true
 	end
 	if Depth <= 0 then
@@ -290,7 +298,7 @@ local function Matches(Node, Depth)
 		local got, child = pcall(function() return Node:GetChildAt(i) end)
 		if got and child then
 			local found = false
-			pcall(function() found = Matches(child, Depth - 1) end)
+			pcall(function() found = IsHelpPanel(child, Depth - 1) end)
 			if found then
 				return true
 			end
@@ -299,37 +307,16 @@ local function Matches(Node, Depth)
 	return false
 end
 
-local function Dump(Node, Path, Depth)
-	local Name = Node:GetName() or "<no-name>"
-	local ok, w = pcall(function() return Node:GetValueInt("ABS_WIDTH") end)
-	local _, h = pcall(function() return Node:GetValueInt("ABS_HEIGHT") end)
-	local _, kids = pcall(function() return Node:GetChildCnt() end)
-	LogMessage("@HELPPANEL " .. Path .. "/" .. Name ..
-				" w=" .. tostring(ok and w) .. " h=" .. tostring(h) ..
-				" kids=" .. tostring(kids) ..
-				" text=" .. Text(Node, "TEXT"))
-	if Depth <= 0 or not kids then
-		return
-	end
-	for i = 0, kids - 1 do
-		local got, child = pcall(function() return Node:GetChildAt(i) end)
-		if got and child then
-			pcall(function() Dump(child, Path .. "/" .. Name, Depth - 1) end)
-		end
-	end
-end
-
-local function Grow(Node, Property, Factor)
+local function SetFlag(Node, Property, Value)
 	local okBefore, before = pcall(function() return Node:GetValueInt(Property) end)
-	if not okBefore or not before or before <= 0 then
+	if not okBefore or before == nil then
 		return
 	end
-	local wanted = math.floor(before * Factor)
-	pcall(function() Node:SetValueInt(Property, wanted) end)
+	pcall(function() Node:SetValueInt(Property, Value) end)
 	local _, after = pcall(function() return Node:GetValueInt(Property) end)
-	LogMessage("@HELPPANEL WRITE " .. (Node:GetName() or "?") .. "." .. Property ..
-				": was " .. tostring(before) .. ", now " .. tostring(after) ..
-				(tostring(before) == tostring(after) and "   <== IGNORED" or "   <== TOOK"))
+	LogMessage("@HELPPANEL " .. (Node:GetName() or "?") .. "." .. Property ..
+				": " .. tostring(before) .. " -> " .. tostring(after) ..
+				(tostring(before) == tostring(after) and "  IGNORED" or "  TOOK"))
 end
 
 function TuneMeasureHelpPanel()
@@ -340,56 +327,39 @@ function TuneMeasureHelpPanel()
 			return
 		end
 		local count = Root:GetChildCnt() or 0
-		LogMessage("@HELPPANEL scanning " .. tostring(count) .. " children for a '" ..
-					FINGERPRINT .. "' label")
 
-		local Panel, Index = nil, -1
+		local found = {}
 		for i = 0, count - 1 do
 			local got, child = pcall(function() return Root:GetChildAt(i) end)
 			if got and child then
 				local hit = false
-				pcall(function() hit = Matches(child, 4) end)
+				pcall(function() hit = IsHelpPanel(child, 4) end)
 				if hit then
-					LogMessage("@HELPPANEL MATCH at child " .. i)
-					if not Panel then
-						Panel, Index = child, i
-					end
+					found[#found + 1] = i
 				end
 			end
 		end
 
-		if not Panel then
-			LogMessage("@HELPPANEL no match. Dumping the size-shortlisted candidates so " ..
-						"the right one can be picked by eye.")
-			local shortlist = {39, 41, 43, 45, 46, 107}
-			for i = 1, #shortlist do
-				local got, child = pcall(function() return Root:GetChildAt(shortlist[i]) end)
-				if got and child then
-					LogMessage("@HELPPANEL --- candidate " .. shortlist[i] .. " ---")
-					pcall(function() Dump(child, "", 3) end)
-				end
-			end
+		LogMessage("@HELPPANEL " .. #found .. " of " .. tostring(count) ..
+					" children carry the help-panel texture; expected 13")
+		local list = ""
+		for i = 1, #found do
+			list = list .. " " .. found[i]
+		end
+		LogMessage("@HELPPANEL indices:" .. list)
+
+		if #found == 0 or #found > SANITY_LIMIT then
+			LogMessage("@HELPPANEL count outside the sane range, changing nothing")
 			return
 		end
 
-		LogMessage("@HELPPANEL --- child " .. Index .. " before ---")
-		Dump(Panel, "", 3)
-
-		Grow(Panel, "ABS_HEIGHT", 1.5)
-		pcall(function() Panel:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
-		pcall(function() Panel:SetValueInt("RESIZE", 1) end)
-		local kids = Panel:GetChildCnt() or 0
-		for i = 0, kids - 1 do
-			local got, child = pcall(function() return Panel:GetChildAt(i) end)
-			if got and child then
-				Grow(child, "ABS_HEIGHT", 1.5)
-				Grow(child, "TEXTAREAHEIGHT", 1.5)
-				pcall(function() child:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
+		for i = 1, #found do
+			local got, Panel = pcall(function() return Root:GetChildAt(found[i]) end)
+			if got and Panel then
+				SetFlag(Panel, "RESIZE", 1)
+				SetFlag(Panel, "SHOW_VERTICAL_SCROLLBAR", 1)
 			end
 		end
-
-		LogMessage("@HELPPANEL --- child " .. Index .. " after ---")
-		Dump(Panel, "", 3)
 	end)
 
 	if not ok then
