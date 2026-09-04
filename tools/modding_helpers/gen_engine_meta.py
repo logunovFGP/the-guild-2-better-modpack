@@ -307,6 +307,14 @@ UNDOCUMENTED = [
         "to ask how tall wrapped text came out, so a fixed headroom is the only option.",
         "Break bones is panel 43 or 45: identical twins, the measures / items / upgrades",
         "family sharing one layout.",
+        "",
+        "None of this needs rediscovering: `Scripts/Library/guilayout.lua` wraps it as",
+        "`guilayout_GrowHelpPanels()`, `guilayout_GrowPanel(node, px)` and",
+        "`guilayout_FindPanelsByTexture(root, texture)`, and",
+        "`tools/modding_helpers/check_guilayout.lua` exercises the rules offline against",
+        "node trees dumped from a running game. Grow the frame and text nodes BY NAME, not",
+        "by height: a height-share rule stretched a 313px portrait on the character panel",
+        "and still missed a 226px Label on a taller one.",
     ]),
 ]
 

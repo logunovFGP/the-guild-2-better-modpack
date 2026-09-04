@@ -271,6 +271,50 @@ That gives completion, parameter hints and a warning on misspelled engine calls 
 editor with the Lua extension installed. `runtime.version` is set to `Lua 5.1`.
 `meta\` sits outside `Scripts\`, so the engine never loads it.
 
+#### Resizing a GUI panel
+
+The `.gui` files under `GUI/` are binary serialised, so a window's size cannot be edited
+there. It can be changed on the live node tree instead, which is what
+`Scripts/Library/guilayout.lua` does -- it is what stops long action descriptions being
+cut off mid-sentence.
+
+```lua
+guilayout_GrowHelpPanels()                       -- every help window, default headroom
+guilayout_GrowHelpPanels(200)                    -- ... with more
+
+local Panels = guilayout_FindPanelsByTexture(GL_HUDROOT, "onscreenhelp/bg")
+guilayout_GrowPanel(Panels[1], 120)              -- one window
+```
+
+Four things about this engine are worth knowing before trying it on another panel, all
+verified in game and all of them cost a run to learn:
+
+- **`ABS_HEIGHT` and `ABS_WIDTH` are the only geometry properties that carry a value.**
+  `HEIGHT`, `WIDTH` and `ABS_YPOS` read 0 on every node.
+- **`RESIZE` and `SHOW_VERTICAL_SCROLLBAR` do nothing.** Both read back changed and
+  neither has any effect -- no fitting to content, no scrollbar. The engine consults them
+  when it builds a panel and never again. **A property reading back changed proves only
+  that the store accepted it**, which is the trap: it looks exactly like success.
+- **A window is three siblings, each holding its own height.** The panel, the bordered
+  frame (`cl_WinContainer`, the same height as its panel) and the text (`Label` or
+  `Desc`). Growing the panel alone just exposes its backdrop below the border. All three
+  have to be set.
+- **Changes are per-session** and gone on restart, so they must be re-applied at
+  `HudInit` -- and a bad write is undone by quitting.
+
+Finding a specific panel is the hard part: a panel takes `NODE_NAME` from its `.gui`, so
+all thirteen help windows are plain `Container`; the `AddPanel` order does not map onto
+the `HudRoot` child order; and `measures.gui`, `items.gui` and `upgrades.gui` share every
+extractable string. Identify a *cohort* by texture instead of trying to single one out.
+
+```powershell
+lua5.1 tools\modding_helpers\check_guilayout.lua
+```
+
+That runs the layout rules against node trees dumped from a real game, with no engine
+needed -- the node API is four getters and two setters, so a plain table stands in. Set
+`GL_GUILAYOUT_VERBOSE = true` to log every node touched in game.
+
 ## Usage
 
 ### Configuration
