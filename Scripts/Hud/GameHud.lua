@@ -282,6 +282,14 @@ end
 -- Every step is wrapped: a wrong node name has to land in the log, never break
 -- HudInit. Node API from Hud/Debug/HudRootAnalyser.lua. Grep for @HELPPANEL.
 -- -----------------------
+-- Built from string.char rather than written as a literal on purpose. The path
+-- needs one backslash before each segment, and every tool that has edited this
+-- file -- heredocs, shell quoting, my own scripts -- has at some point halved or
+-- doubled a backslash escape and left the syntax valid but the path wrong. That
+-- failure is silent apart from one "HudRoot not found" line. No backslash in the
+-- source, no way to get it wrong.
+local HUDROOT_PATH = string.char(92) .. "GUI" .. string.char(92) .. "HudRoot"
+
 local COHORT_TEXTURE = "onscreenhelp/bg"
 local SANITY_LIMIT = 20
 
@@ -353,7 +361,7 @@ local CHILDREN_LOGGED = 6
 
 function TuneMeasureHelpPanel()
 	local ok, err = pcall(function()
-		local Root = FindNode("\GUI\HudRoot")
+		local Root = FindNode(HUDROOT_PATH)
 		if not Root then
 			LogMessage("@HELPPANEL HudRoot not found")
 			return
