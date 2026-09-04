@@ -4661,5 +4661,25 @@ function IncrementXPQuiet(pSim, Amount) end
 ---Panels are registered in Scripts/Hud/GameHud.lua with
 ---`this:AddPanel(name, class, guifile, visible)`; the measure info window is
 ---HelpMeasures / Helppanels/measures.gui.
+---
+---**Runtime property writes take.** Verified in game: ABS_HEIGHT 422 -> 633,
+---RESIZE 0 -> 1 and SHOW_VERTICAL_SCROLLBAR 0 -> 1 all read back changed. The
+---change is per-session and gone on restart, so a bad write is recoverable but
+---also means nothing persists without re-applying it at HudInit.
+---
+---**Finding a specific panel is the hard part.** HudRoot has 137 children and:
+---a panel is NOT named after its AddPanel name -- it takes NODE_NAME from its
+---.gui, so all thirteen help windows are plain `Container`; the AddPanel order
+---does not map onto the child order (child 37 is the multiplayer lobby,
+---NameList/PingList, and child 39 is the character help panel, SkillBars /
+---Lifecandle / Shield); and a TEXT match on `@LProduction` hits 13 children.
+---measures.gui, items.gui and upgrades.gui share **every** extractable string --
+---same layout, distinguishable only once populated at display time -- so no
+---offline fingerprint for the measure window exists.
+---
+---What does work: all thirteen Helppanels/*.gui carry the texture
+---`Hud/sheets/onscreenhelp/bg.tga` and nothing else does, so
+---`GetValueString("TEXTURE_FILENAME")` on descendants identifies the help-panel
+---cohort exactly. Treat the cohort, do not try to single one out.
 ---@param Path any
 function FindNode(Path) end

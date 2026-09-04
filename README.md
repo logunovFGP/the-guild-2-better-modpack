@@ -161,6 +161,9 @@ proves the engine read your working tree, since that string exists nowhere else.
   change did not apply — a stale timestamp means the game never actually started.
 - **`git checkout` swaps live game content.** Quit the game before switching branches.
 - **Keep CRLF line endings** in `.lua` files, matching the rest of the tree.
+- **Python needs the `G:/` drive form** for game paths, not git-bash's `/g/`. A
+  `/g/...` path makes `os.listdir` and `glob` return nothing silently, so an
+  offline scan of the game files can look like a negative result when it never ran.
 - **An unbalanced `"` in a `.dbt` row silently loses that string.** The text system
   cannot parse the row and shows nothing. Three Spanish rows shipped that way. After
   editing a table, check every data row has exactly four quotes.
