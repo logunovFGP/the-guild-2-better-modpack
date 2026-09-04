@@ -4662,10 +4662,15 @@ function IncrementXPQuiet(pSim, Amount) end
 ---`this:AddPanel(name, class, guifile, visible)`; the measure info window is
 ---HelpMeasures / Helppanels/measures.gui.
 ---
----**Runtime property writes take.** Verified in game: ABS_HEIGHT 422 -> 633,
----RESIZE 0 -> 1 and SHOW_VERTICAL_SCROLLBAR 0 -> 1 all read back changed. The
----change is per-session and gone on restart, so a bad write is recoverable but
----also means nothing persists without re-applying it at HudInit.
+---**Runtime writes take, but reading back a changed value proves nothing.**
+---ABS_HEIGHT, RESIZE and SHOW_VERTICAL_SCROLLBAR all read back changed on all 11
+---panels; only ABS_HEIGHT had any visible effect. RESIZE does not make a window
+---fit its content and SHOW_VERTICAL_SCROLLBAR produces no scrollbar -- the engine
+---consults both when it builds a panel and never again. Geometry is the exception:
+---a panel grown at HudInit is still grown when it is displayed much later, so the
+---write survives into layout. All of it is per-session and gone on restart, which
+---makes a bad write recoverable and also means nothing persists without
+---re-applying it at HudInit.
 ---
 ---**Finding a specific panel is the hard part.** HudRoot has 137 children and:
 ---a panel is NOT named after its AddPanel name -- it takes NODE_NAME from its
@@ -4681,5 +4686,21 @@ function IncrementXPQuiet(pSim, Amount) end
 ---`Hud/sheets/onscreenhelp/bg.tga` and nothing else does, so
 ---`GetValueString("TEXTURE_FILENAME")` on descendants identifies the help-panel
 ---cohort exactly. Treat the cohort, do not try to single one out.
+---
+---**A help window is three siblings, each holding its own height.** Growing the
+---panel alone just exposes its backdrop below the border. On panel 43 the child
+---`cl_WinContainer` reads ABS_HEIGHT equal to the panel's own (394) and keeps it
+---when the panel grows -- that is the bordered frame. The description text is in a
+---child named `Label` (217x402 on the measures family) and its height is what cuts
+---a long description off mid-sentence. To show more text, set ABS_HEIGHT on the
+---panel, the frame and the Label.
+---
+---Useful child names, from a geometry dump of all 11: `cl_WinContainer` (frame,
+---full height), `Label` and `Desc` (text), `Icon` / `cl_Sprite` / `Artefact`
+---(art), `Header` (~27-32px), `Container` (38px button strip). Only ABS_HEIGHT and
+---ABS_WIDTH carry values -- HEIGHT, WIDTH and ABS_YPOS all read 0. There is no way
+---to ask how tall wrapped text came out, so a fixed headroom is the only option.
+---Break bones is panel 43 or 45: identical twins, the measures / items / upgrades
+---family sharing one layout.
 ---@param Path any
 function FindNode(Path) end
