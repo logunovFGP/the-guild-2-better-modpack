@@ -1,0 +1,11 @@
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\dbghelp.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\fmod.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\GuildII.exe
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\MFC71.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\ModLauncher.exe
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\msvcp71.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\msvcr71.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\stlport.5.0.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\stlportd.5.0.dll
+G:\SteamLibrary\steamapps\common\The Guild 2 Renaissance\WMEncoderEN.exe
+TOTAL: 10

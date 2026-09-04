@@ -145,3 +145,28 @@ Logging
 		GetID("dynasty") ) -- variable argument list
 		
 	LogMessage("::TOM::AI ...")
+
+Lua libraries/scripts for building cleaner AI systems
+===================================================
+
+This list focuses on **general-purpose** Lua components that help move from ad-hoc scripts to a structured AI with a centralized state.
+
+## 1) Decision-making frameworks
+
+- BehaviourTree.lua (pure Lua BT; also on LuaRocks as `behaviour_tree`)\
+  Repo: https://github.com/tanema/behaviourtree.lua\  
+  LuaRocks: https://luarocks.org/modules/timanema/behaviour_tree
+- BehaviourTree.lua 2e\  
+  Repo: https://github.com/MaxYari/behaviourtreelua2e
+\n+## 2) Centralized state representation
+\n+- tiny-ecs\  
+  Repo: https://github.com/bakpakin/tiny-ecs\  
+  Docs: https://bakpakin.github.io/tiny-ecs/doc/
+\n+## 3) Movement intelligence\n+\n+- Jumper (A*, JPS, etc.)\  
+  Repo: https://github.com/Yonaba/Jumper\  
+  Examples: https://github.com/Yonaba/Jumper-Examples
+\n+## 4) Serialization\n+\n+- serpent\  
+  Repo: https://github.com/pkulchenko/serpent\  
+  LuaRocks: https://luarocks.org/modules/paulclinger/serpent
+\n+## 5) Curated indexes\n+\n+- Awesome Lua: https://github.com/forhappy/awesome-lua\n+- Awesome LÖVE2D: https://github.com/love2d-community/awesome-love2d
+\n+## Minimal stack for centralized AI state\n+\n+- tiny-ecs -> https://github.com/bakpakin/tiny-ecs\n+- BehaviourTree.lua -> https://github.com/tanema/behaviourtree.lua\n+- Jumper -> https://github.com/Yonaba/Jumper\n+- serpent -> https://github.com/pkulchenko/serpent
