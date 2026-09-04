@@ -16,12 +16,22 @@ function Run()
 		f_ExitCurrentBuilding("")
 	end
 
+	-- The player assigns an AREA for her to work in. The engine persists that
+	-- assignment across saves, unlike a script alias, so prefer it over whatever
+	-- Destination we were dispatched with -- otherwise a re-dispatch anchored on
+	-- the work building silently moves her post to the building itself.
+	if BuildingGetAISetting("WorkBuilding", "Enable") == 0
+			and SimGetAssignedAreaID("") ~= SimGetWorkingPlaceID("") then
+		SimGetAssignedArea("", "Destination")
+	end
+
 	if not AliasExists("Destination") then
 		StopMeasure()
 	end
 	
 	-- Move to Destination
-	local Offset = Rand(350)
+	local Offset = 150 + Rand(200) -- how far off her post she stands
+	local PostLeash = 600 -- how far she may drift before walking back; must exceed Offset
 	f_MoveTo("", "Destination", GL_MOVESPEED_RUN, Offset)
 
 	MeasureSetStopMode(STOP_NOMOVE)
@@ -48,8 +58,14 @@ function Run()
 			CopyAlias("Pos", "Destination")
 		end
 		
-		if GetDistance("", "Destination") > 600 then
-			f_MoveTo("", "Destination", GL_MOVESPEED_WALK)
+		if not AliasExists("Destination")
+				and BuildingGetAISetting("WorkBuilding", "Enable") == 0
+				and SimGetAssignedAreaID("") ~= SimGetWorkingPlaceID("") then
+			SimGetAssignedArea("", "Destination")
+		end
+		
+		if GetDistance("", "Destination") > PostLeash then
+			f_MoveTo("", "Destination", GL_MOVESPEED_WALK, Offset)
 		end
 		
 		if Rand(10) == 0 then
@@ -97,13 +113,16 @@ function Run()
 			local Found = false
 				
 			for i=1, trys do
-				if GetOutdoorLocator("Crowded"..i, 1, "Pos") and AliasExists("Pos") then
-					if not HasProperty("WorkBuilding", "OutdoorPos"..i) then -- check if we already have one employee here
+				local LocName = "Crowded"..i
+				if GetOutdoorLocator(LocName, 1, "Pos") and AliasExists("Pos") then
+					if not HasProperty("WorkBuilding", "OutdoorPos"..LocName) then -- check if we already have one employee here
 						DistanceFound = GetDistance("", "Pos") -- check how far that pos is
 						if DistanceFound < BestDistance then
 							BestDistance = DistanceFound
 							CopyAlias("Pos", "Destination")
-							SetProperty("", "OutdoorPos", i) -- save this for later
+							-- store the locator NAME: it is read back via GetOutdoorLocator,
+							-- which takes a name, and dive_AssignToLaborOfLove stores it the same way
+							SetProperty("", "OutdoorPos", LocName)
 							Found = true
 							
 							if BestDistance < 2000 then -- it's near? great, then don't waste any more time!
