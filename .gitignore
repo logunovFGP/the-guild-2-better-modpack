@@ -20,3 +20,5 @@ Textures/scenes/locations/Tavern_Private_Room/texconv.exe
 Textures/scenes/locations/Tavern_Private_Room/png_to_dds.py
 
 Textures/scenes/locations/Tavern_Private_Room/ConvertToDDS.bat
+
+local.dev.data
