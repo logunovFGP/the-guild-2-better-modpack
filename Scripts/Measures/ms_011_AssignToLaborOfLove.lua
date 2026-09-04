@@ -29,8 +29,6 @@ function Run()
 			and SimGetAssignedAreaID("") ~= SimGetWorkingPlaceID("") then
 		SimGetAssignedArea("", "Destination")
 	end
-
-	LogMessage("@TALENT ms_011 entered, destination "..(AliasExists("Destination")
 			and GetName("Destination") or "NONE").." leash from "..GetName(""))
 
 	if not AliasExists("Destination") then

@@ -106,10 +106,6 @@ function ShowTalentOSH(MeasureID, Slot)
 		Value = GetSkillValue("", Entry[1]) or 0
 	end
 
-	-- ponytail: temporary probe for the first in-game test. Lands in logfile.log
-	-- as [TALENT] lines; a measure whose line never appears is one the panel does
-	-- not call GetOSHData for. Delete this once the row is confirmed.
-	LogMessage("@TALENT measure "..MeasureID.." talent "..Entry[2].." slot "..(Slot or "runtime").." level "..Value)
 
 	if Slot == "cost" then
 		OSHSetMeasureCost(Label, Value)
