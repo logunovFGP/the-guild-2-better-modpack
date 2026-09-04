@@ -250,45 +250,68 @@ end
 -- Measure info panel: give it room for a long description.
 --
 -- Helppanels/measures.gui is a binary serialised file, so rather than patch it we
--- poke the live nodes. Property names come from that file: ABS_HEIGHT, ABS_WIDTH,
--- TEXTAREAHEIGHT, TEXTAREAWIDTH, SHOW_VERTICAL_SCROLLBAR, RESIZE.
+-- poke the live nodes. Round two proved the writes take: ABS_HEIGHT 422 -> 633,
+-- SHOW_VERTICAL_SCROLLBAR 0 -> 1 and RESIZE 0 -> 1 all read back changed. What it
+-- got wrong was the target -- child 37 turned out to be the multiplayer lobby
+-- (NameList / PingList / PingBtn), because the AddPanel order does not map onto
+-- HudRoot's child order and none of the eleven help windows is named after its
+-- panel; they are all plain "Container".
 --
--- Round one told us the panels are NOT named after their AddPanel name -- all
--- eleven help windows show up as plain "Container" among HudRoot's 137 children.
--- So this dumps every child's dimensions to identify it by shape, and tests
--- whether the properties are writable at all on the one candidate the AddPanel
--- order predicts (34th live AddPanel call, so child 37).
+-- So find it by content instead. measures.gui carries a label whose TEXT is
+-- "@LProduction", which no other help panel has, and GetValueString reads that
+-- straight off the live node. Nothing is written until a child matches.
 --
 -- Every step is wrapped: a wrong node name has to land in the log, never break
 -- HudInit. Node API from Hud/Debug/HudRootAnalyser.lua. Grep for @HELPPANEL.
 -- -----------------------
-local PROPS = {"ABS_X", "ABS_Y", "ABS_WIDTH", "ABS_HEIGHT",
-				"TEXTAREAWIDTH", "TEXTAREAHEIGHT",
-				"SHOW_VERTICAL_SCROLLBAR", "SHOW_HORIZONTAL_SCROLLBAR", "RESIZE"}
+local FINGERPRINT = "Production"
 
-local function Describe(Node)
-	local Text = ""
-	for i = 1, #PROPS do
-		local ok, value = pcall(function() return Node:GetValueInt(PROPS[i]) end)
-		if ok and value ~= nil then
-			Text = Text .. " " .. PROPS[i] .. "=" .. tostring(value)
+local function Text(Node, Property)
+	local ok, value = pcall(function() return Node:GetValueString(Property) end)
+	if ok and value then
+		return tostring(value)
+	end
+	return ""
+end
+
+local function Matches(Node, Depth)
+	if string.find(Text(Node, "TEXT"), FINGERPRINT, 1, true)
+			or string.find(Text(Node, "NODE_NAME"), FINGERPRINT, 1, true) then
+		return true
+	end
+	if Depth <= 0 then
+		return false
+	end
+	local ok, count = pcall(function() return Node:GetChildCnt() end)
+	if not ok or not count then
+		return false
+	end
+	for i = 0, count - 1 do
+		local got, child = pcall(function() return Node:GetChildAt(i) end)
+		if got and child then
+			local found = false
+			pcall(function() found = Matches(child, Depth - 1) end)
+			if found then
+				return true
+			end
 		end
 	end
-	local ok, kids = pcall(function() return Node:GetChildCnt() end)
-	return Text .. " kids=" .. tostring(ok and kids or "?")
+	return false
 end
 
 local function Dump(Node, Path, Depth)
 	local Name = Node:GetName() or "<no-name>"
-	LogMessage("@HELPPANEL " .. Path .. "/" .. Name .. Describe(Node))
-	if Depth <= 0 then
+	local ok, w = pcall(function() return Node:GetValueInt("ABS_WIDTH") end)
+	local _, h = pcall(function() return Node:GetValueInt("ABS_HEIGHT") end)
+	local _, kids = pcall(function() return Node:GetChildCnt() end)
+	LogMessage("@HELPPANEL " .. Path .. "/" .. Name ..
+				" w=" .. tostring(ok and w) .. " h=" .. tostring(h) ..
+				" kids=" .. tostring(kids) ..
+				" text=" .. Text(Node, "TEXT"))
+	if Depth <= 0 or not kids then
 		return
 	end
-	local ok, count = pcall(function() return Node:GetChildCnt() end)
-	if not ok or not count then
-		return
-	end
-	for i = 0, count - 1 do
+	for i = 0, kids - 1 do
 		local got, child = pcall(function() return Node:GetChildAt(i) end)
 		if got and child then
 			pcall(function() Dump(child, Path .. "/" .. Name, Depth - 1) end)
@@ -296,16 +319,16 @@ local function Dump(Node, Path, Depth)
 	end
 end
 
-local function Poke(Node, Property, Value)
+local function Grow(Node, Property, Factor)
 	local okBefore, before = pcall(function() return Node:GetValueInt(Property) end)
-	if not okBefore then
-		LogMessage("@HELPPANEL " .. Property .. " not readable on this node")
+	if not okBefore or not before or before <= 0 then
 		return
 	end
-	pcall(function() Node:SetValueInt(Property, Value) end)
+	local wanted = math.floor(before * Factor)
+	pcall(function() Node:SetValueInt(Property, wanted) end)
 	local _, after = pcall(function() return Node:GetValueInt(Property) end)
-	LogMessage("@HELPPANEL WRITE " .. Property .. ": was " .. tostring(before) ..
-				", asked " .. tostring(Value) .. ", now " .. tostring(after) ..
+	LogMessage("@HELPPANEL WRITE " .. (Node:GetName() or "?") .. "." .. Property ..
+				": was " .. tostring(before) .. ", now " .. tostring(after) ..
 				(tostring(before) == tostring(after) and "   <== IGNORED" or "   <== TOOK"))
 end
 
@@ -317,37 +340,56 @@ function TuneMeasureHelpPanel()
 			return
 		end
 		local count = Root:GetChildCnt() or 0
-		LogMessage("@HELPPANEL HudRoot has " .. tostring(count) .. " children")
+		LogMessage("@HELPPANEL scanning " .. tostring(count) .. " children for a '" ..
+					FINGERPRINT .. "' label")
 
-		-- one line per child, so the measure panel can be picked out by its size
+		local Panel, Index = nil, -1
 		for i = 0, count - 1 do
 			local got, child = pcall(function() return Root:GetChildAt(i) end)
 			if got and child then
-				LogMessage("@HELPPANEL child " .. i .. " " ..
-							tostring(child:GetName() or "<no-name>") .. Describe(child))
+				local hit = false
+				pcall(function() hit = Matches(child, 4) end)
+				if hit then
+					LogMessage("@HELPPANEL MATCH at child " .. i)
+					if not Panel then
+						Panel, Index = child, i
+					end
+				end
 			end
 		end
 
-		-- AddPanel order puts HelpMeasures at child 37; unverified, so prove it
-		local got, Panel = pcall(function() return Root:GetChildAt(37) end)
-		if not got or not Panel then
-			LogMessage("@HELPPANEL child 37 unreachable")
+		if not Panel then
+			LogMessage("@HELPPANEL no match. Dumping the size-shortlisted candidates so " ..
+						"the right one can be picked by eye.")
+			local shortlist = {39, 41, 43, 45, 46, 107}
+			for i = 1, #shortlist do
+				local got, child = pcall(function() return Root:GetChildAt(shortlist[i]) end)
+				if got and child then
+					LogMessage("@HELPPANEL --- candidate " .. shortlist[i] .. " ---")
+					pcall(function() Dump(child, "", 3) end)
+				end
+			end
 			return
 		end
-		LogMessage("@HELPPANEL --- candidate 37 subtree ---")
+
+		LogMessage("@HELPPANEL --- child " .. Index .. " before ---")
 		Dump(Panel, "", 3)
 
-		LogMessage("@HELPPANEL --- writability test on child 37 ---")
-		local _, h = pcall(function() return Panel:GetValueInt("ABS_HEIGHT") end)
-		if h and h > 0 then
-			Poke(Panel, "ABS_HEIGHT", math.floor(h * 1.5))
+		Grow(Panel, "ABS_HEIGHT", 1.5)
+		pcall(function() Panel:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
+		pcall(function() Panel:SetValueInt("RESIZE", 1) end)
+		local kids = Panel:GetChildCnt() or 0
+		for i = 0, kids - 1 do
+			local got, child = pcall(function() return Panel:GetChildAt(i) end)
+			if got and child then
+				Grow(child, "ABS_HEIGHT", 1.5)
+				Grow(child, "TEXTAREAHEIGHT", 1.5)
+				pcall(function() child:SetValueInt("SHOW_VERTICAL_SCROLLBAR", 1) end)
+			end
 		end
-		local _, t = pcall(function() return Panel:GetValueInt("TEXTAREAHEIGHT") end)
-		if t and t > 0 then
-			Poke(Panel, "TEXTAREAHEIGHT", math.floor(t * 1.5))
-		end
-		Poke(Panel, "SHOW_VERTICAL_SCROLLBAR", 1)
-		Poke(Panel, "RESIZE", 1)
+
+		LogMessage("@HELPPANEL --- child " .. Index .. " after ---")
+		Dump(Panel, "", 3)
 	end)
 
 	if not ok then
