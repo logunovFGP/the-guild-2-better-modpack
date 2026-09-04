@@ -269,6 +269,12 @@ end
 -- fit its content -- which, if true, fixes the clipping for all of them without a
 -- single hard-coded number.
 --
+-- Observed: 11 of 137 children match, indices 39..49, one contiguous block,
+-- and both writes read back changed. So the texture is a sound fingerprint and
+-- the writes land; two of the thirteen .gui files are simply not HudRoot
+-- children at HudInit. Whether RESIZE actually re-lays-out is a separate
+-- question -- the engine may only read it when the panel is built.
+--
 -- Every step is wrapped: a wrong node name has to land in the log, never break
 -- HudInit. Node API from Hud/Debug/HudRootAnalyser.lua. Grep for @HELPPANEL.
 -- -----------------------
@@ -341,7 +347,7 @@ function TuneMeasureHelpPanel()
 		end
 
 		LogMessage("@HELPPANEL " .. #found .. " of " .. tostring(count) ..
-					" children carry the help-panel texture; expected 13")
+					" children carry the help-panel texture; expected 11")
 		local list = ""
 		for i = 1, #found do
 			list = list .. " " .. found[i]
