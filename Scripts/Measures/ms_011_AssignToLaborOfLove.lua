@@ -33,7 +33,6 @@ function Run()
 			and SimGetAssignedAreaID("") ~= SimGetWorkingPlaceID("") then
 		SimGetAssignedArea("", "Destination")
 	end
-			and GetName("Destination") or "NONE").." leash from "..GetName(""))
 
 	if not AliasExists("Destination") then
 		StopMeasure()
