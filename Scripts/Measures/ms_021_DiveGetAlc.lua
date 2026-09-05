@@ -8,6 +8,14 @@ function AIDecide()
 
 end
 
+-- Percent chance a contraband run is seized, given the owner's Shadow Arts.
+-- 45% for an unskilled owner down to 6% at the skill cap of 15; never zero,
+-- so smuggling always carries some risk.
+function SeizureChance(stealthskill)
+	stealthskill = math.max(0, math.min(stealthskill or 0, 15))
+	return math.max(6, 45 - stealthskill * 3)
+end
+
 function Run()
 	local Money = GetMoney("") 
 	
@@ -18,16 +26,24 @@ function Run()
 
 	local cashskill = 0
 	local secretskill = 0
+	local stealthskill = 0
 	if BuildingGetOwner("", "Besitzer") then
-		cashskill = GetSkillValue("Besitzer", BARGAINING)/100
-		secretskill = GetSkillValue("Besitzer", SECRET_KNOWLEDGE)
+		-- chr_GetSkillValue caps at 15. The raw engine getter does not, and the
+		-- price formula below divides by 100 and doubles: at raw Bargaining 50
+		-- the goods become free, and above it the "price" turns negative and
+		-- chr_SpendMoney would pay the owner to restock.
+		cashskill = chr_GetSkillValue("Besitzer", BARGAINING)/100
+		secretskill = chr_GetSkillValue("Besitzer", SECRET_KNOWLEDGE)
+		stealthskill = chr_GetSkillValue("Besitzer", SHADOW_ARTS)
 	else
 		return
  	end
 
-	local menge = secretskill * 10
-	local kostengrog = 800*(1-cashskill*2)
-	local kostenbrand = 1200*(1-cashskill*2)
+	-- Belt and braces: even if the cap above ever moves, a run never ends up
+	-- free, negative, or hauling an unbounded shipment.
+	local menge = math.max(1, math.min(math.floor(secretskill * 10), 150))
+	local kostengrog = math.max(80, math.floor(800*(1-cashskill*2)))
+	local kostenbrand = math.max(120, math.floor(1200*(1-cashskill*2)))
 	local wahltext = ""
 	local bodytext = ""
 
@@ -79,6 +95,14 @@ function Run()
 	end
 	
 	economy_UpdateBalance("", "WaresBought", 0-price)
+	
+	-- The liquor is contraband, so a run can be intercepted and seized: the
+	-- money is already spent above and the goods never arrive. Shadow Arts is
+	-- what keeps the run quiet, so a skilled owner is rarely caught.
+	if Rand(100) < ms_021_divegetalc_SeizureChance(stealthskill) then
+		MsgQuick("", "@L_MEASURES_DIVEGETALC_FAIL_+2")
+		return
+	end
 	
 	AddItems("", alcId, menge, INVENTORY_STD)
 	MsgQuick("", "@L_MEASURES_DIVEGETALC_SUCCESS_+0")

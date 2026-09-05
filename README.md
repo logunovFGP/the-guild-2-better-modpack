@@ -315,6 +315,27 @@ That runs the layout rules against node trees dumped from a real game, with no e
 needed -- the node API is four getters and two setters, so a plain table stands in. Set
 `GL_GUILAYOUT_VERBOSE = true` to log every node touched in game.
 
+### Other checks
+
+```powershell
+lua5.1 tools\modding_helpers\check_divegetalc.lua
+```
+
+Covers the contraband run in `ms_021_DiveGetAlc.lua`: that seizure risk falls with the
+owner's Shadow Arts but never reaches zero, and that the price and shipment clamps hold.
+The price formula divides a skill by 100 and doubles it, so without a cap a high enough
+Bargaining made the liquor free and then negative -- that bound is asserted here.
+
+### Parse-checking every script
+
+```powershell
+Get-ChildItem Scripts -Filter *.lua -Recurse | ForEach-Object { luac5.1 -p $_.FullName }
+```
+
+Silence means all 987 files parse. Worth running before any commit: a measure with a
+syntax error simply never loads, with no error surfaced in game, and counting `function`
+against `end` by eye does not catch a dangling expression.
+
 ## Usage
 
 ### Configuration
