@@ -22,3 +22,10 @@ Textures/scenes/locations/Tavern_Private_Room/png_to_dds.py
 Textures/scenes/locations/Tavern_Private_Room/ConvertToDDS.bat
 
 local.dev.data
+
+# Claude Code session settings (local)
+.claude/
+
+# Python bytecode from tools/modding_helpers
+__pycache__/
+*.pyc
