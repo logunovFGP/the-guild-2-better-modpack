@@ -7,7 +7,10 @@
 -- ******** THANKS TO KINVER ********
 function Run()
 	if not GetData("AutoDispatch") then
-		RemoveProperty("", "CocotteAssign")
+		-- Player-issued. Record the order (which also clears any previous
+		-- assignment) so CocotteIdle re-assigns her when the show times out,
+		-- instead of leaving her idle until the player notices.
+		SetProperty("", "CocotteAssign", "Dance")
 	end
 	if not SimGetWorkingPlace("","Divehouse") then
 		if IsPartyMember("") then

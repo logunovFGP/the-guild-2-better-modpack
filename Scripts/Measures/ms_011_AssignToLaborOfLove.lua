@@ -3,6 +3,10 @@
 -- fails to charm ignores her 4 hours, one she wins over 6.
 function Run()
 
+	-- Entering this measure supersedes any earlier cocotte order, so a
+	-- previous Dance assignment stops re-dispatching over the top of it.
+	RemoveProperty("", "CocotteAssign")
+
 	if not ai_GetWorkBuilding("", GL_BUILDING_TYPE_DIVEHOUSE, "WorkBuilding") then
 		StopMeasure() 
 	end 

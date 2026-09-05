@@ -356,6 +356,18 @@ function CocotteIdle(Cocotte)
 		end
 	end
 
+	if GetProperty(Cocotte, "CocotteAssign") == "Dance"
+			and Lvl >= 2
+			and not HasProperty("Divehouse", "DanceShow")
+			and not HasProperty("Divehouse", "GoToDance") then
+		SetProperty("Divehouse", "GoToDance", 1)
+		MeasureCreate("Measure")
+		MeasureAddData("Measure", "TimeOut", Rand(3)+3)
+		MeasureAddData("Measure", "AutoDispatch", 1)
+		MeasureStart("Measure", Cocotte, "Divehouse", "AssignToDanceDivehouse")
+		return
+	end
+
 	if BuildingGetAISetting("Divehouse", "Enable") > 0 then
 		-- offer services if not already offered
 		if not HasProperty("Divehouse", "ServiceActive") and not HasProperty("Divehouse", "GoToService") then
