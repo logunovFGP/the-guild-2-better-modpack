@@ -132,6 +132,36 @@ function GoInsideBuilding(SimAlias, CityObject, BuildingClass, BuildingType, Bui
 	return f_WeakMoveTo(SimAlias, BuildingAlias)
 end
 
+-- Hostile measures (Measures.dbt type 3, "Aggressive" - the red ones) do not
+-- queue behind whatever the victim happens to be doing. BlockChar is an
+-- exclusive lock and knows nothing about interrupt values, so a target could
+-- stay untouchable simply by starting a chat: the attacker waited, the chat
+-- outlasted the wait, and the victim walked off unharmed.
+--
+-- The Aggressive type also carries errands and stealth work, and those still
+-- wait their turn - an ambush or a pickpocket that shoves the victim out of a
+-- conversation first is not much of an ambush.
+AI_FORCE_TARGET_EXCEPTIONS = {
+	["OrderASpying"] = true,	["OrderAShadowing"] = true,	["ScoutAHouse"] = true,
+	["OrderCollectEvidence"] = true,	["PickpocketPeople"] = true,	["WaylayForBooty"] = true,
+	["EscortCharacterOrTransport"] = true,	["PatrolTheTown"] = true,	["AssistGathering"] = true,
+	["GetCured"] = true,	["RepairCart"] = true,	["SendCartAndUnload"] = true,
+	["OfferBuildingProtection"] = true,	["AssignToThiefOfLove"] = true,
+	["AssignToPoisonEnemy"] = true,	["BribeCharacter"] = true,	["Danegeld"] = true,
+	["HushMoney"] = true,	["HidePirateShip"] = true,
+}
+
+function ForcesTheTarget(FirstPerson)
+	local MeasureID = GetCurrentMeasureID(FirstPerson)
+	if not MeasureID or MeasureID == 0 then
+		return false
+	end
+	if tonumber(GetDatabaseValue("Measures", MeasureID, "type")) ~= 3 then
+		return false
+	end
+	return not AI_FORCE_TARGET_EXCEPTIONS[GetCurrentMeasureName(FirstPerson)]
+end
+
 function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDistance, CommandFunction, bForceNoErrorOnBlock, TargetStopMovingDistance)
 	if not TargetPerson or not GetID(TargetPerson) then
 		return
@@ -181,6 +211,18 @@ function StartInteraction(FirstPerson, TargetPerson, ReactionDistance, ActionDis
 			success = SendCommandNoWait(TargetPerson, CommandFunction)
 		else
 			success = BlockChar(TargetPerson)
+		end
+
+		-- see ForcesTheTarget above: a red action ends what the target is running
+		-- and goes ahead. If the target is only the passive half of somebody
+		-- else's measure the lock stays taken, so proceed without it - every one
+		-- of these measures already guards its own re-entry with a property.
+		if not success and not CommandFunction and IsType(TargetPerson, "Sim")
+			and not GetState(TargetPerson, STATE_CUTSCENE)
+			and ai_ForcesTheTarget(FirstPerson) then
+			SimStopMeasure(TargetPerson)
+			BlockChar(TargetPerson)
+			success = true
 		end
 
 		if not success then
@@ -358,6 +400,11 @@ end
 
 function BuyItem(SimAlias, Item, ItemCount)
 	ItemCount = ItemCount or 1
+	-- the house's own store first: what the feud cart brought home is handed over on
+	-- the spot (aitwp_DrawFromStock) instead of a walk to market
+	if aitwp_DrawFromStock(SimAlias, Item, ItemCount) then
+		return true
+	end
 	local PlaceAlias = "__AI_CBI_PLACE"
 	local CityAlias = "__AI_CBI_CITY"
 	local Price = ai_CanBuyItem(SimAlias, Item, ItemCount, CityAlias, PlaceAlias)

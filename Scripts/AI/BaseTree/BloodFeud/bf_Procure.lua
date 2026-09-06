@@ -1,42 +1,50 @@
--- The market sweep, by a thug: the party never walks to market for the feud. With
--- 100k or more in the treasury the thug buys the highest-rung artefact the house may
--- use against the player and does not yet hold (aitwp_ProcureList, aitwp_HasStock),
--- within 7% of cash (15% at rung 8). bf_Stock then moves it into the residence and
--- bf_Draw hands it to a party member at home. The cooldown is the thug's.
+-- The feud supply run. A horse cart of the residence - never a party member or a
+-- thug - buys the shopping list (aitwp_ShoppingList: ladder artefacts, forgery
+-- papers, missing equipment; 7% of cash, 15% at rung 8) at the markets and Kontors
+-- and unloads at the residence (Measures/ms_bf_FeudSupply.lua); the use nodes draw
+-- from the store just in time, bf_Equip issues the gear. An idle cart is sent; when every cart is out, another horse
+-- cart is bought, five at most. Treasury >= 100k.
 function Weight()
-	if not AliasExists("MYRM") then
+	if not ReadyToRepeat("dynasty", "AI_BF_Supply") then
 		return 0
 	end
-	if not ReadyToRepeat("MYRM", "AI_BF_Procure") then
+	if GetMoney("dynasty") < 100000 then
 		return 0
 	end
-	local Money = GetMoney("dynasty")
-	if Money < 100000 then
+	if not GetHomeBuilding("dynasty", "home") or BuildingGetType("home") ~= GL_BUILDING_TYPE_RESIDENCE then
 		return 0
 	end
-	local Budget = Money * 0.07
-	if aitwp_Rung("dynasty", "PlayerDyn") >= 8 then
-		Budget = Money * 0.15
+	local Needs = {}
+	if aitwp_ShoppingList("dynasty", "PlayerDyn", Needs) <= 0 then
+		return 0
 	end
-	local Items = {}
-	local N = aitwp_ProcureList("dynasty", "PlayerDyn", Items)
-	for i = N, 1, -1 do
-		if not aitwp_HasStock("dynasty", Items[i]) then
-			local Price = ai_CanBuyItem("MYRM", Items[i])
-			if Price >= 0 and Price <= Budget then
-				SetData("ProcureItem", Items[i])
-				return utility_Trace("dynasty", "bf_Procure", 60)
-			end
-		end
+	local Total, Busy, Idle = aitwp_ResidenceCarts("dynasty", "Cart")
+	if Idle then
+		SetData("CartMode", "send")
+	elseif Total < 5 and GetMoney("dynasty") >= 100000 + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE) then
+		SetData("CartMode", "buy")
+	else
+		return 0
 	end
-	return 0
+	return utility_Trace("dynasty", "bf_Procure", 60)
 end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Procure")
-	SetRepeatTimer("MYRM", "AI_BF_Procure", 6)
-	aitwp_Log("sends a thug to buy " .. GetData("ProcureItem"), "dynasty")
+	SetRepeatTimer("dynasty", "AI_BF_Supply", 2)
+	local Needs = {}
+	local N = aitwp_ShoppingList("dynasty", "PlayerDyn", Needs)
+	local Total, Busy = aitwp_ResidenceCarts("dynasty", "Cart")
+	if GetData("CartMode") == "buy" then
+		local Bought = BuildingBuyCart("home", EN_CT_HORSE, true, "Cart")
+		aitwp_LogCart("dynasty", "buy", "Cart", Total + 1, Busy, Needs, N, Bought)
+		if not Bought or not AliasExists("Cart") then
+			return
+		end
+		Total = Total + 1
+	end
 	MeasureCreate("Measure")
-	MeasureAddData("Measure", "ItemToBuy", GetData("ProcureItem"))
-	MeasureStart("Measure", "MYRM", nil, "AIBuyItem")
+	local Ok = MeasureStart("Measure", "Cart", nil, "FeudSupply", true)
+	aitwp_Log("sends a cart for " .. N .. " goods", "dynasty")
+	aitwp_LogCart("dynasty", "send", "Cart", Total, Busy + 1, Needs, N, Ok)
 end

@@ -451,8 +451,8 @@ built-in sample.
 
 Line types (all prefixed `[Script] `): `::TWP::LOADED`, `::TWP::ENV`, `::TWP::SNAPSHOT`
 and `::TWP::MEMBER` (daily), `::TWP::GOAL` (each goal choice) are always on;
-`::TWP::W`, `::TWP::PICK`, `::TWP::ENEMY`, `::TWP::BLD`, `::TWP::BELIEVER` and the
-`::TWP::AI::` trace need `Log = 1`. The exact fields are in the docstring of
+`::TWP::W`, `::TWP::PICK`, `::TWP::ENEMY`, `::TWP::BLD`, `::TWP::BELIEVER`, `::TWP::MARKET`,
+`::TWP::CART`, `::TWP::HANDOVER` and the `::TWP::AI::` trace need `Log = 1`. The exact fields are in the docstring of
 `ai_telemetry.py`. Without `Log = 1` a sample pre-change session showed 78% of AI
 measure starts idle - that is the number to beat.
 
@@ -503,7 +503,7 @@ Behaviour the dynasty AI now follows, and where each rule lives:
 | Three children: a young couple gets 30 days for their own, then adopts (`AI_NaturalTryUntil`). | `Dynasty/Reproduce/AdoptOrphan.lua` |
 | Enemy lists come from relations, daily: blood target, trade rival, declared foes, dynasties disliked (favour < 30), capped at 5. No more random re-roll on load. | `aitwp_RefreshEnemies` from `Priorities.lua` |
 | One coloured AI dynasty per human player is that player's **blood enemy** (`AI_BloodEnemy` on the player, `AI_BloodEnemyOf` on the AI; deterministic, re-assigned when it dies). Its goal is Conflict for life; the player outranks every other enemy. | `aitwp_EnsureBloodEnemies`, `utility_ChooseGoal`, `aitwp_GetBestEnemy` |
-| The blood enemy runs the `BloodFeud` subtree (root weight 60): provoke duels by insult - never with martial arts and dexterity both under 5 or under 80% health, always against non-rogues, rogues on a daily 1-in-4 roll; forge evidence (Hexerdokument, bought at the market) against the player's most valuable character, fixed until charged; charge; razzia with a thug at evidence >= 35; ambush characters and employees outdoors away from town with every idle thug; keep 2 + title thugs; equip members, thugs and employees by title and treasury. | `Scripts/AI/BaseTree/BloodFeud.lua` and `BloodFeud/bf_*.lua`; helpers in `aitwp.lua` |
+| The blood enemy runs the `BloodFeud` subtree (root weight 60): provoke duels by insult - never with martial arts and dexterity both under 5 or under 80% health, always against non-rogues, rogues on a daily 1-in-4 roll; forge evidence (Hexerdokument, bought at the market) against the player's most valuable character, fixed until charged; charge; razzia with a thug at evidence >= 35; send every free thug to attack characters and employees outdoors away from town; keep 2 + title thugs; buy its tools and equipment by residence horse cart and issue them from the store, nobody walks to market. | `Scripts/AI/BaseTree/BloodFeud.lua` and `BloodFeud/bf_*.lua`; helpers in `aitwp.lua` |
 | The same duel rule governs accepting: an AI insulted by a player declines a duel it would die in; a blood enemy insulted by its player always takes satisfaction. | `ms_055_InsultCharacter.lua` `AIDecide` |
 
 Property schema: `AI_MainClass` 1-4, `AI_ApprenticeClass` 1-4 on the child, `AI_NaturalTryUntil` game
@@ -532,11 +532,34 @@ gate: every hostile leaf of `Feud/`, `Election/AttackOffice`, `Trial/AttackTrial
 plans call it; against AI victims it always answers yes. Office powers sit on the same
 ladder. Cooldowns are per acting character, not per house.
 
-The blood rival additionally buys through a thug (`bf_Procure`, 7% of cash, 15% at
-rung 8, treasury >= 100k; `bf_Stock`/`bf_Draw` move the items home and to the user),
-acquires a thieves' guild as its hideout whatever its class (`bf_Hideout`), taunts by
-letter, funds its allies, and uses every artefact of the ladder through
-`bf_UseArtefact`/`bf_UseBuildingArtefact`. The snapshot line carries `att=` and `rung=`.
+The blood rival buys by cart, never on foot. `bf_Procure` sends an idle horse cart of the
+residence on a supply run (`Measures/ms_bf_FeudSupply.lua`; 7% of cash, 15% at rung 8;
+treasury >= 100k); when every cart is out it buys another, five at most. The shopping
+list (`aitwp_ShoppingList`) takes the ladder's tools most severe first - lethal, then
+physical, legal, economic, reputation - one of each per run and only while the house
+holds fewer than it can use in a day (adults times uses per day, three at most), so the
+money spreads over tools with separate cooldowns instead of piling one up; then the
+equipment its people lack. The cart calls at the house's own workshops first for the
+production kept back from sale (`AI_Reserve_<item>`, the rival's rung per item and day,
+honoured by the sales cart), then the home town's market or Kontor and its ownerless and
+foreign workshops that sell, then every other town the same way, and unloads at the
+residence. From the store, tools are handed over **just in time**: the use nodes and
+`ai_BuyItem` itself draw one item at the moment of use (`aitwp_DrawFromStock`), one
+active tool per unit, members plus thugs plus two hand-overs per house and day, and
+tools left unused go back to the store daily. Equipment is issued from the store
+(`bf_Equip`). On difficulty 4 and 5 a courier (`aitwp_CourierOrders`) orders as many
+reputation or economic tools as the player's rung exceeds the rival's, paid at base
+price and a half, delivered next day - never lethal tools or papers. Thugs attack with
+the plain Attack order (`bf_ThugAttack`: every thug idle or on its rounds, forced past
+patrol and escort). It acquires a thieves' guild as its hideout whatever its class
+(`bf_Hideout`), taunts by letter, funds its allies, and uses every artefact of the
+ladder through `bf_UseArtefact`/`bf_UseBuildingArtefact`. The root weighs 15 instead of
+60 for up to three hours after an entry where no child fired. Telemetry: the snapshot
+carries `att=` and `rung=`; the rival logs `::TWP::MARKET` (where each item is on sale)
+daily, `::TWP::CART` on every buy, send, arrival and courier order, and `::TWP::HANDOVER`
+per hand-over; `ai_telemetry.py` tabulates them plus the engine's own
+`[StartMeasure] ... Canceled` lines (a started measure that lost to a running one's
+priority).
 
 ### Item catalogue
 

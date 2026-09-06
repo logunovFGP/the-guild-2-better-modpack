@@ -26,6 +26,15 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
   ::TWP::ENEMY t= dyn= goaltarget= cand=<id:favor:foe:shadow;..> pick=
   ::TWP::BLD t= owner= mode= class= cand=<idx:class:level;..> pick=
   ::TWP::BELIEVER t= actor= victim= mode= maxfavor= cand=<dyn:favorfrom:liking:office;..> pick=
+  ::TWP::MARKET t= dyn= items=<name:home:away;..>  daily per blood rival: stock of each ladder item at the
+                                              home market and in every other town's market or Kontor
+  ::TWP::CART t= dyn= action=<buy|send|arrive> cart= carts= busy= need= money= result= items=<name,amount;..>
+                                              the feud supply cart (result= of arrive is the count bought;
+                                              action=courier: carts= delivered, need= ordered, result= rung gap)
+  ::TWP::HANDOVER t= dyn= sim= item= today=<n>/<cap>   a tool handed from the residence store to a unit
+  [StartMeasure] <sim>: Canceled 'A'(p) because of priority 'B'(q)
+                                              engine: a measure start lost to the running one; p, q are
+                                              the interruptvalue column of DB/Measures.dbt
   [Script] Executing Measures/<name>.lua on <sim>    written by the engine itself
 
 Replay: a W line carries every input of utility_Score, so the weight under any other
@@ -51,10 +60,14 @@ BELIEVER = re.compile(r"::TWP::BELIEVER (.*)$")
 TRACE = re.compile(r"::TWP::AI:: (.*)$")
 MEASURE = re.compile(r"Executing Measures/(\S+) on (.*)$")
 ENV = re.compile(r"::TWP::ENV (.*)$")
+MARKET = re.compile(r"::TWP::MARKET (.*)$")
+CART = re.compile(r"::TWP::CART (.*)$")
+HANDOVER = re.compile(r"::TWP::HANDOVER (.*)$")
+CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
 ROOTS = {"Dynasty", "Election", "Feud", "Trial", "Duel", "ToMEconomy", "Priorities", "IncomeForAI", "DoNothing", "BloodFeud"}
-BLOODFEUD = {"bf_Provoke", "bf_ForgeEvidence", "bf_Charge", "bf_Razzia", "bf_Ambush", "bf_Recruit", "bf_Equip",
-             "bf_Taunt", "bf_FundAllies", "bf_Hideout", "bf_Procure", "bf_Stock", "bf_Draw", "bf_UseArtefact",
+BLOODFEUD = {"bf_Provoke", "bf_ForgeEvidence", "bf_Charge", "bf_Razzia", "bf_ThugAttack", "bf_Recruit", "bf_Equip",
+             "bf_Taunt", "bf_FundAllies", "bf_Hideout", "bf_Procure", "bf_UseArtefact",
              "bf_UseBuildingArtefact"}
 DYNASTY = {"AIContractGuildHouse", "ApplyForOffice", "BuildHome", "CollectBankDebts", "CourtLover", "DefendRogue",
            "EducateChildren", "Festivities", "HireMyrmidon", "HomeLevelUp", "ManageParty", "NobilityTitle",
@@ -135,6 +148,7 @@ class Session(object):
         self.measures_by_goal = defaultdict(Counter)
         self.mismatch = 0
         self.errors = Counter()
+        self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
 
     def feed(self, lines):
         dyn_of_sim, goal_of_dyn = {}, {}
@@ -203,6 +217,23 @@ class Session(object):
             m = BELIEVER.search(line)
             if m:
                 self.believer.append(kv(m.group(1)))
+                continue
+            m = CANCEL.search(line)
+            if m:
+                self.cancels["%s(%s) lost to %s(%s)" % (m.group(2), m.group(3), m.group(4), m.group(5))] += 1
+                continue
+            m = MARKET.search(line)
+            if m:
+                fields = kv(m.group(1))
+                self.market[fields.get("dyn")] = fields
+                continue
+            m = CART.search(line)
+            if m:
+                self.carts.append(kv(m.group(1)))
+                continue
+            m = HANDOVER.search(line)
+            if m:
+                self.handovers.append(kv(m.group(1)))
                 continue
             m = TRACE.search(line)
             if m:
@@ -358,6 +389,45 @@ def report(session, path):
         out.append("  believer: %d decisions, %d picked an office holder, %d found nobody"
                    % (len(session.believer), office, sum(1 for b in session.believer if b.get("pick") == "-1")))
 
+    if session.market:
+        out.append("")
+        out.append("market availability, last report per blood rival (item: stock at home / elsewhere):")
+        for dyn, fields in session.market.items():
+            here, away, nowhere = [], [], []
+            for entry in [e for e in fields.get("items", "").split(";") if e]:
+                name, _s, rest = entry.partition(":")
+                home, _s, elsewhere = rest.partition(":")
+                if num(home) > 0:
+                    here.append("%s %d" % (name, num(home)))
+                elif num(elsewhere) > 0:
+                    away.append("%s %d" % (name, num(elsewhere)))
+                else:
+                    nowhere.append(name)
+            out.append("  dyn %s at t=%s: home %s | elsewhere %s | nowhere %s"
+                       % (dyn, fields.get("t"), ", ".join(here) or "-", ", ".join(away) or "-", ", ".join(nowhere) or "-"))
+    if session.carts:
+        out.append("")
+        actions = Counter(c.get("action") for c in session.carts)
+        bought = sum(num(c.get("result")) for c in session.carts if c.get("action") == "arrive")
+        out.append("feud carts: %s; goods brought home %d" % (", ".join("%s %d" % a for a in actions.most_common()), bought))
+        for c in session.carts[-6:]:
+            out.append("  t=%s dyn=%s %s cart=%s carts=%s busy=%s need=%s result=%s items=%s"
+                       % tuple(c.get(k, "?") for k in ("t", "dyn", "action", "cart", "carts", "busy", "need", "result", "items")))
+    if session.handovers:
+        out.append("")
+        items = Counter(h.get("item") for h in session.handovers)
+        at_cap = sum(1 for h in session.handovers if "/" in h.get("today", "") and h["today"].split("/")[0] == h["today"].split("/")[1])
+        out.append("hand-overs from the store: %d (%d reached the day's cap): %s"
+                   % (len(session.handovers), at_cap, ", ".join("%s %d" % i for i in items.most_common(8))))
+    if session.cancels:
+        out.append("")
+        out.append("measure starts cancelled by the engine (lost to a running measure's priority; top 10 of %d):" % sum(session.cancels.values()))
+        for text, count in session.cancels.most_common(10):
+            out.append("  %6d  %s" % (count, text))
+        ours = [(t, c) for t, c in session.cancels.items() if t.startswith(("AttackEnemy(", "FeudSupply(", "AIBuyItem(", "InsultCharacter("))]
+        if ours:
+            out.append("  feud measures among them: " + ", ".join("%s x%d" % tc for tc in sorted(ours, key=lambda tc: -tc[1])))
+
     if session.trace:
         out.append("")
         out.append("AI trace messages (top 10 of %d):" % sum(session.trace.values()))
@@ -387,6 +457,11 @@ SAMPLE = """[Script] ::TWP::LOADED utility.lua
 [Script] ::TWP::ENEMY t=10.00 dyn=1 goaltarget=9 cand=7:20:0:0;9:70:1:1; pick=9
 [Script] ::TWP::BLD t=10.00 owner=9 mode=strongest class=-1 cand=0:6:3;1:1:1;2:2:2; pick=2
 [Script] ::TWP::BELIEVER t=10.00 actor=1 victim=9 mode=office maxfavor=60 cand=7:30:55:2;8:70:10:-1; pick=7
+[Script] ::TWP::MARKET t=12.00 dyn=1 items=HexerdokumentI:0:0;StinkBomb:2:0;Pddv:0:3;
+[Script] ::TWP::CART t=12.10 dyn=1 action=send cart=77 carts=1 busy=1 need=2 money=250000 result=true items=StinkBomb,1;Pddv,1;
+[Script] ::TWP::CART t=14.00 dyn=1 action=arrive cart=77 carts=1 busy=0 need=0 money=248000 result=2 items=
+[StartMeasure] Kell Eylefson: Canceled 'AIBuyItem'(10) because of priority 'OrderCollectEvidence'(80)
+[Script] ::TWP::HANDOVER t=14.50 dyn=1 sim=55 item=StinkBomb today=1/5
 [Script] ::TWP::MEMBER dyn=1 sim=Bero Freudenreich
 [Script] ::TWP::SNAPSHOT t=32 round=0 diff=4 dyn=1 persona=3 money=1500 bld=2 ws=1 members=1 title=2 office=-1 rank=6 enemies=1 P=25 A=62 I=10 goal=Conflict target=9 ticks=24 name=Bero Freudenreich
 """
@@ -406,7 +481,11 @@ def selftest():
     assert session.measures_by_goal["Conflict"]["ms_036_AttackEnemy.lua"] == 2
     assert session.measures_by_goal["not an AI party member"]["ms_003_Walk.lua"] == 1
     assert session.last["1"]["ticks"] == "24" and session.goals[0]["pick"] == "Conflict"
+    assert session.market["1"]["items"].startswith("HexerdokumentI:0:0"), session.market
+    assert len(session.carts) == 2 and session.cancels["AIBuyItem(10) lost to OrderCollectEvidence(80)"] == 1
     text = report(session, "<sample>")
+    assert len(session.handovers) == 1 and "hand-overs from the store: 1" in text, text
+    assert "goods brought home 2" in text and "nowhere HexerdokumentI" in text and "feud measures among them" in text, text
     assert "goal target kept 1/1" in text and "1 picked an office holder" in text, text
     print(text)
     print("\nselftest ok")

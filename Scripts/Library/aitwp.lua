@@ -545,6 +545,13 @@ function BloodDaily(DynAlias)
 			Roll = 1
 		end
 		SetProperty(DynAlias, "AI_BF_DuelRogues", Roll)
+		if GetAliasByID(GetProperty(DynAlias, "AI_BloodEnemyOf"), "TWP_BDP") then
+			aitwp_ReturnUnused(DynAlias)
+			aitwp_ReserveProduction(DynAlias, "TWP_BDP")
+			aitwp_CourierOrders(DynAlias, "TWP_BDP")
+			aitwp_MarketReport(DynAlias, "TWP_BDP")
+			RemoveAlias("TWP_BDP")
+		end
 	end
 end
 
@@ -670,8 +677,8 @@ function EvidenceTarget(DynAlias, PlayerDyn, OutAlias)
 	return true
 end
 
--- The forgery the SIM can use now: a Hexerdokument it holds, else one the market
--- sells and the treasury covers (II before I). nil when neither.
+-- The forgery the SIM can use now: a Hexerdokument it holds or the store can hand over
+-- (II before I). nil when neither; the feud cart brings the papers, nobody walks.
 function ForgeryDocument(SimAlias, DynAlias, PlayerDyn)
 	local Documents = { "HexerdokumentII", "HexerdokumentI" }
 	local Tools = { "forge2", "forge1" }
@@ -681,8 +688,7 @@ function ForgeryDocument(SimAlias, DynAlias, PlayerDyn)
 			if GetItemCount(SimAlias, Item, INVENTORY_STD) > 0 then
 				return Item
 			end
-			local Price = ai_CanBuyItem(SimAlias, Item)
-			if Price >= 0 and GetMoney(DynAlias) >= Price then
+			if aitwp_InStore(DynAlias, Item) and aitwp_CanHandOver(DynAlias, SimAlias) then
 				return Item
 			end
 		end
@@ -774,73 +780,80 @@ function MissingEquipment(Alias, Tier)
 	return nil
 end
 
--- Someone in the house lacking a piece of the tier. Party members and thugs buy at
--- the market ("buyweapon"/"buyarmor"); employees are issued theirs ("issue").
--- Sets OutAlias plus data EquipItem/EquipMode; returns true on success.
+-- Someone in the house lacking a piece of the tier that the residence holds (the
+-- feud cart brought it): party members, thugs and employees alike. Sets OutAlias
+-- and data EquipItem; true on success. Nobody walks to the smithy any more
+-- (session 2: eight armour trips by one member, no armour).
 function FindUnequipped(DynAlias, Tier, OutAlias)
+	if not GetHomeBuilding(DynAlias, "TWP_EqH") then
+		return false
+	end
+	local Found = false
 	local Count = DynastyGetMemberCount(DynAlias)
 	for i = 0, Count - 1 do
-		if DynastyGetMember(DynAlias, i, "TWP_Eq") and dyn_IsIdleMember("TWP_Eq") and SimGetAge("TWP_Eq") >= 16 then
-			local Item, Kind = aitwp_MissingEquipment("TWP_Eq", Tier)
-			if Item and ai_CanBuyItem("TWP_Eq", Item) >= 0 then
+		if not Found and DynastyGetMember(DynAlias, i, "TWP_Eq") and SimGetAge("TWP_Eq") >= 16 then
+			local Item = aitwp_MissingEquipment("TWP_Eq", Tier)
+			if Item and GetItemCount("TWP_EqH", Item, INVENTORY_STD) > 0 then
 				CopyAlias("TWP_Eq", OutAlias)
-				RemoveAlias("TWP_Eq")
 				SetData("EquipItem", Item)
-				SetData("EquipMode", "buy" .. Kind)
-				return true
-			end
-		end
-	end
-	Count = DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MYRMIDON)
-	for i = 0, Count - 1 do
-		if DynastyGetWorker(DynAlias, GL_PROFESSION_MYRMIDON, i, "TWP_Eq") and GetState("TWP_Eq", STATE_IDLE) then
-			local Item, Kind = aitwp_MissingEquipment("TWP_Eq", Tier)
-			if Item and ai_CanBuyItem("TWP_Eq", Item) >= 0 then
-				CopyAlias("TWP_Eq", OutAlias)
-				RemoveAlias("TWP_Eq")
-				SetData("EquipItem", Item)
-				SetData("EquipMode", "buy" .. Kind)
-				return true
+				Found = true
 			end
 		end
 	end
 	Count = DynastyGetWorkerCount(DynAlias, -1)
 	for i = 0, Count - 1 do
-		if DynastyGetWorker(DynAlias, -1, i, "TWP_Eq") and SimGetProfession("TWP_Eq") ~= GL_PROFESSION_MYRMIDON then
+		if not Found and DynastyGetWorker(DynAlias, -1, i, "TWP_Eq") then
 			local Item = aitwp_MissingEquipment("TWP_Eq", Tier)
-			if Item and CanAddItems("TWP_Eq", Item, 1, INVENTORY_EQUIPMENT) then
+			if Item and GetItemCount("TWP_EqH", Item, INVENTORY_STD) > 0 then
 				CopyAlias("TWP_Eq", OutAlias)
-				RemoveAlias("TWP_Eq")
 				SetData("EquipItem", Item)
-				SetData("EquipMode", "issue")
-				return true
+				Found = true
 			end
 		end
 	end
 	RemoveAlias("TWP_Eq")
-	return false
+	RemoveAlias("TWP_EqH")
+	return Found
 end
 
--- Hands the piece over: a market purchase by the sim itself, or an issue from the
--- treasury at base price (paid by a party member) straight into the equipment.
-function Equip(DynAlias, Alias, Item, Mode)
-	if Mode == "buyweapon" then
-		SetProperty(Alias, "AIBuyWeapon", Item)
-		MeasureRun(Alias, nil, "AIBuyWeapon")
-	elseif Mode == "buyarmor" then
-		SetProperty(Alias, "AIBuyArmor", Item)
-		MeasureRun(Alias, nil, "AIBuyArmor")
-	else
-		local Price = ItemGetBasePrice(Item) or 0
-		if GetMoney(DynAlias) < Price + 2000 then
-			return
+-- Puts Item on: a lesser piece of the same ladder makes room (it goes to the spare
+-- inventory), and when the slot is still taken the piece waits in the spare inventory.
+function SwapIn(Alias, Item)
+	if GetRemainingInventorySpace(Alias, Item, INVENTORY_EQUIPMENT) <= 0 then
+		local Slots = { "weapon", "armor", "head" }
+		for s = 1, 3 do
+			local Ladder = TWP_LADDER[Slots[s]]
+			local Idx = 0
+			for i = 1, #Ladder do
+				if Ladder[i] == Item then
+					Idx = i
+				end
+			end
+			for i = 1, Idx - 1 do
+				if GetItemCount(Alias, Ladder[i], INVENTORY_EQUIPMENT) > 0 then
+					RemoveItems(Alias, Ladder[i], 1, INVENTORY_EQUIPMENT)
+					AddItems(Alias, Ladder[i], 1, INVENTORY_STD)
+				end
+			end
 		end
-		if dyn_GetIdleMember(DynAlias, "TWP_Payer") or DynastyGetMember(DynAlias, 0, "TWP_Payer") then
-			chr_SpendMoney("TWP_Payer", Price, "Equipment", true)
-		end
-		RemoveAlias("TWP_Payer")
-		AddItems(Alias, Item, 1, INVENTORY_EQUIPMENT)
 	end
+	if GetRemainingInventorySpace(Alias, Item, INVENTORY_EQUIPMENT) > 0 then
+		AddItems(Alias, Item, 1, INVENTORY_EQUIPMENT)
+	else
+		AddItems(Alias, Item, 1, INVENTORY_STD)
+	end
+end
+
+-- Issues the piece from the residence store; false when the store has none.
+function Equip(DynAlias, Alias, Item)
+	if not GetHomeBuilding(DynAlias, "TWP_EqH") or GetItemCount("TWP_EqH", Item, INVENTORY_STD) <= 0 then
+		RemoveAlias("TWP_EqH")
+		return false
+	end
+	RemoveItems("TWP_EqH", Item, 1, INVENTORY_STD)
+	RemoveAlias("TWP_EqH")
+	aitwp_SwapIn(Alias, Item)
+	return true
 end
 
 -- ---------------------------------------------------------------------------
@@ -963,7 +976,7 @@ TWP_TOOL_LIST = {
 	{ name = "thesis", rung = 4, class = "R", item = "ThesisPaper", target = "near" },
 	{ name = "letter_rome", rung = 4, class = "R", item = "LetterFromRome", target = "best" },
 	{ name = "waylay", rung = 4, class = "P" }, { name = "plunder", rung = 4, class = "E" },
-	{ name = "toad_slime", rung = 4, class = "P", item = "Toadslime", target = "building" }, { name = "ambush", rung = 4, class = "P" },
+	{ name = "toad_slime", rung = 4, class = "P", item = "Toadslime", target = "building" }, { name = "thug_attack", rung = 4, class = "P" },
 	{ name = "fund_allies", rung = 4, class = "D" }, { name = "arrest", rung = 4, class = "O" }, { name = "banish", rung = 4, class = "O" },
 	{ name = "confiscate", rung = 4, class = "O" }, { name = "inquisition", rung = 4, class = "O" }, { name = "break_will", rung = 4, class = "O" },
 	{ name = "forge1", rung = 5, class = "L", item = "HexerdokumentI" }, { name = "sabotage", rung = 5, class = "E" }, { name = "demolish", rung = 5, class = "E" },
@@ -981,6 +994,7 @@ TWP_TOOL_LIST = {
 TWP_TOOLS = {}
 for i = 1, #TWP_TOOL_LIST do
 	TWP_TOOLS[TWP_TOOL_LIST[i].name] = TWP_TOOL_LIST[i]
+	TWP_TOOL_LIST[i].index = i
 end
 -- classes each attitude may use; neutrals and friends use none
 TWP_ATTITUDE_CLASSES = { blood = "REPLOD", feud = "EPLO", enemy = "EPLO", friend = "", neutral = "" }
@@ -1128,7 +1142,7 @@ function ProcureList(DynAlias, PlayerDyn, OutList)
 	local N = 0
 	for i = 1, #TWP_TOOL_LIST do
 		local T = TWP_TOOL_LIST[i]
-		if T.item and T.target and aitwp_Allowed(DynAlias, PlayerDyn, T.name) then
+		if T.item and aitwp_Allowed(DynAlias, PlayerDyn, T.name) then
 			N = N + 1
 			OutList[N] = T.item
 		end
@@ -1136,40 +1150,434 @@ function ProcureList(DynAlias, PlayerDyn, OutList)
 	return N
 end
 
--- true when a party member, a thug or the residence already holds the item
-function HasStock(DynAlias, Item)
-	if GetHomeBuilding(DynAlias, "TWP_HS") and GetItemCount("TWP_HS", Item, INVENTORY_STD) > 0 then
-		RemoveAlias("TWP_HS")
-		return true
+-- true when the residence or a thug holds the item: the store the use nodes draw from
+function InStore(DynAlias, Item)
+	local Found = GetHomeBuilding(DynAlias, "TWP_IS") and GetItemCount("TWP_IS", Item, INVENTORY_STD) > 0
+	RemoveAlias("TWP_IS")
+	local Count = DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MYRMIDON)
+	for i = 0, Count - 1 do
+		if not Found and DynastyGetWorker(DynAlias, GL_PROFESSION_MYRMIDON, i, "TWP_IS") and GetItemCount("TWP_IS", Item, INVENTORY_STD) > 0 then
+			Found = true
+		end
 	end
-	RemoveAlias("TWP_HS")
+	RemoveAlias("TWP_IS")
+	return Found == true
+end
+
+-- true when Item is a tool of the ladder (an artefact or forgery paper)
+function IsTool(Item)
+	for i = 1, #TWP_TOOL_LIST do
+		if TWP_TOOL_LIST[i].item == Item then
+			return true
+		end
+	end
+	return false
+end
+
+-- Hand-overs a house may make per day: its members and thugs plus two. Counted in
+-- AI_HO_Count, stamped with the round (the game day) in AI_HO_Round.
+function HandOverCap(DynAlias)
+	return DynastyGetMemberCount(DynAlias) + DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MYRMIDON) + 2
+end
+
+function HandOversToday(DynAlias)
+	if (GetProperty(DynAlias, "AI_HO_Round") or -1) ~= GetRound() then
+		return 0
+	end
+	return GetProperty(DynAlias, "AI_HO_Count") or 0
+end
+
+-- Ladder tools SimAlias carries: its active feud tools.
+function CarriedTools(SimAlias)
+	local N = 0
+	for i = 1, #TWP_TOOL_LIST do
+		if TWP_TOOL_LIST[i].item then
+			N = N + GetItemCount(SimAlias, TWP_TOOL_LIST[i].item, INVENTORY_STD)
+		end
+	end
+	return N
+end
+
+-- May the store hand SimAlias a tool now? One active tool per unit and the daily cap
+-- per house are the two brakes on inventory spam; tools are drawn just in time.
+function CanHandOver(DynAlias, SimAlias)
+	return aitwp_CarriedTools(SimAlias) < 1 and aitwp_HandOversToday(DynAlias) < aitwp_HandOverCap(DynAlias)
+end
+
+-- The hand-over: Count of Item from the residence store (or a thug still carrying feud
+-- goods) straight into SimAlias's inventory, wherever it stands - the last hop of every
+-- feud purchase. Ladder tools are rationed (aitwp_CanHandOver) and logged:
+-- ::TWP::HANDOVER t= dyn= sim= item= today=<n>/<cap>
+function DrawFromStock(SimAlias, Item, Count)
+	Count = Count or 1
+	if type(Item) == "number" then
+		Item = ItemGetName(Item)
+	end
+	if not GetDynasty(SimAlias, "TWP_DS") then
+		return false
+	end
+	local Tool = aitwp_IsTool(Item)
+	if Tool and not aitwp_CanHandOver("TWP_DS", SimAlias) then
+		RemoveAlias("TWP_DS")
+		return false
+	end
+	local Done = false
+	if GetHomeBuilding("TWP_DS", "TWP_DSH") and GetItemCount("TWP_DSH", Item, INVENTORY_STD) >= Count then
+		RemoveItems("TWP_DSH", Item, Count, INVENTORY_STD)
+		AddItems(SimAlias, Item, Count, INVENTORY_STD)
+		Done = true
+	end
+	RemoveAlias("TWP_DSH")
+	local Thugs = DynastyGetWorkerCount("TWP_DS", GL_PROFESSION_MYRMIDON)
+	for i = 0, Thugs - 1 do
+		if not Done and DynastyGetWorker("TWP_DS", GL_PROFESSION_MYRMIDON, i, "TWP_DST")
+				and GetID("TWP_DST") ~= GetID(SimAlias) and GetItemCount("TWP_DST", Item, INVENTORY_STD) >= Count then
+			RemoveItems("TWP_DST", Item, Count, INVENTORY_STD)
+			AddItems(SimAlias, Item, Count, INVENTORY_STD)
+			Done = true
+		end
+	end
+	RemoveAlias("TWP_DST")
+	if Done and Tool then
+		local Today = aitwp_HandOversToday("TWP_DS") + Count
+		SetProperty("TWP_DS", "AI_HO_Round", GetRound())
+		SetProperty("TWP_DS", "AI_HO_Count", Today)
+		if utility_LogEnabled() then
+			LogMessage("::TWP::HANDOVER t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID("TWP_DS")
+				.. " sim=" .. GetID(SimAlias) .. " item=" .. Item .. " today=" .. Today .. "/" .. aitwp_HandOverCap("TWP_DS"))
+		end
+	end
+	RemoveAlias("TWP_DS")
+	return Done
+end
+
+-- Adds the piece Alias lacks to the parallel lists Names/Counts (no pairs() here).
+function NoteMissing(Alias, Tier, Names, Counts)
+	local Item = aitwp_MissingEquipment(Alias, Tier)
+	if not Item then
+		return
+	end
+	for i = 1, #Names do
+		if Names[i] == Item then
+			Counts[i] = Counts[i] + 1
+			return
+		end
+	end
+	Names[#Names + 1] = Item
+	Counts[#Counts + 1] = 1
+end
+
+-- How badly a tool hurts: lethal 5, physical or control 4, legal 3, economic 2,
+-- reputation 1. The cart buys in this order, ties to the higher rung.
+function Severity(T)
+	if T.lethal then
+		return 5
+	end
+	if T.class == "P" then
+		return 4
+	elseif T.class == "L" then
+		return 3
+	elseif T.class == "E" then
+		return 2
+	end
+	return 1
+end
+
+-- The ladder tools with an item the house may use against PlayerDyn, most severe
+-- first, into OutTools. Returns the count.
+function ProcureTools(DynAlias, PlayerDyn, OutTools)
+	local N = 0
+	for i = 1, #TWP_TOOL_LIST do
+		local T = TWP_TOOL_LIST[i]
+		if T.item and aitwp_Allowed(DynAlias, PlayerDyn, T.name) then
+			N = N + 1
+			OutTools[N] = T
+		end
+	end
+	table.sort(OutTools, function(a, b)
+		local Sa, Sb = aitwp_Severity(a), aitwp_Severity(b)
+		if Sa ~= Sb then
+			return Sa > Sb
+		end
+		if a.rung ~= b.rung then
+			return a.rung > b.rung
+		end
+		return a.index < b.index
+	end)
+	return N
+end
+
+-- Items of Item the house holds anywhere: residence store, party members, thugs.
+function StockCount(DynAlias, Item)
+	local Total = 0
+	if GetHomeBuilding(DynAlias, "TWP_SC") then
+		Total = Total + GetItemCount("TWP_SC", Item, INVENTORY_STD)
+	end
 	local Count = DynastyGetMemberCount(DynAlias)
 	for i = 0, Count - 1 do
-		if DynastyGetMember(DynAlias, i, "TWP_HS") and GetItemCount("TWP_HS", Item, INVENTORY_STD) > 0 then
-			RemoveAlias("TWP_HS")
-			return true
+		if DynastyGetMember(DynAlias, i, "TWP_SC") then
+			Total = Total + GetItemCount("TWP_SC", Item, INVENTORY_STD)
 		end
 	end
 	Count = DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MYRMIDON)
 	for i = 0, Count - 1 do
-		if DynastyGetWorker(DynAlias, GL_PROFESSION_MYRMIDON, i, "TWP_HS") and GetItemCount("TWP_HS", Item, INVENTORY_STD) > 0 then
-			RemoveAlias("TWP_HS")
-			return true
+		if DynastyGetWorker(DynAlias, GL_PROFESSION_MYRMIDON, i, "TWP_SC") then
+			Total = Total + GetItemCount("TWP_SC", Item, INVENTORY_STD)
 		end
 	end
-	RemoveAlias("TWP_HS")
-	return false
+	RemoveAlias("TWP_SC")
+	return Total
 end
 
--- true when Alias carries any artefact of the ladder
-function CarriesArtefact(Alias)
-	for i = 1, #TWP_TOOL_LIST do
-		local Item = TWP_TOOL_LIST[i].item
-		if Item and GetItemCount(Alias, Item, INVENTORY_STD) > 0 then
-			return true
+-- What the house can use of one tool in a day: its adults times the tool's uses per
+-- day (daily, 1 unless set), 3 at most. Holding more is oversupply: not bought.
+function StockCap(DynAlias, T)
+	local Users = 0
+	local Count = DynastyGetMemberCount(DynAlias)
+	for i = 0, Count - 1 do
+		if DynastyGetMember(DynAlias, i, "TWP_Cap") and SimGetAge("TWP_Cap") >= 16 then
+			Users = Users + 1
 		end
 	end
-	return false
+	RemoveAlias("TWP_Cap")
+	return math.min(3, math.max(1, Users) * (T.daily or 1))
+end
+
+-- The feud cart's shopping list, {item id, amount} entries into OutNeeds. Tools most
+-- severe first, one of each per run and only while the house holds fewer than it can
+-- use in a day (aitwp_StockCap), so the money spreads over tools with separate
+-- cooldowns instead of piling one up; then the equipment its people lack (3 of a kind
+-- at most, less what the store holds). Budget 7% of cash, 15% at rung 8, at base
+-- prices. Returns the entry count.
+function ShoppingList(DynAlias, PlayerDyn, OutNeeds)
+	local Money = GetMoney(DynAlias)
+	local Budget = Money * 0.07
+	if aitwp_Rung(DynAlias, PlayerDyn) >= 8 then
+		Budget = Money * 0.15
+	end
+	local Names, Counts, Tools = {}, {}, {}
+	local N = aitwp_ProcureTools(DynAlias, PlayerDyn, Tools)
+	for i = 1, N do
+		if aitwp_StockCount(DynAlias, Tools[i].item) < aitwp_StockCap(DynAlias, Tools[i]) then
+			Names[#Names + 1] = Tools[i].item
+			Counts[#Counts + 1] = 1
+		end
+	end
+	local Gear0 = #Names
+	local Tier = aitwp_EquipmentTier(DynAlias)
+	if Tier then
+		local Count = DynastyGetMemberCount(DynAlias)
+		for i = 0, Count - 1 do
+			if DynastyGetMember(DynAlias, i, "TWP_SL") and SimGetAge("TWP_SL") >= 16 then
+				aitwp_NoteMissing("TWP_SL", Tier, Names, Counts)
+			end
+		end
+		Count = DynastyGetWorkerCount(DynAlias, -1)
+		for i = 0, Count - 1 do
+			if DynastyGetWorker(DynAlias, -1, i, "TWP_SL") then
+				aitwp_NoteMissing("TWP_SL", Tier, Names, Counts)
+			end
+		end
+		RemoveAlias("TWP_SL")
+	end
+	local HasHome = GetHomeBuilding(DynAlias, "TWP_SLH")
+	local Total, Out = 0, 0
+	for i = 1, #Names do
+		local Amount = math.min(Counts[i], 3)
+		if i > Gear0 and HasHome then
+			Amount = Amount - GetItemCount("TWP_SLH", Names[i], INVENTORY_STD)
+		end
+		local Price = (ItemGetBasePrice(Names[i]) or 0) * Amount
+		if Amount > 0 and Total + Price <= Budget then
+			Out = Out + 1
+			OutNeeds[Out] = { ItemGetID(Names[i]), Amount }
+			Total = Total + Price
+		end
+	end
+	RemoveAlias("TWP_SLH")
+	return Out
+end
+
+-- A thug fit to take an order: idle, or on the rounds the engine counts as idle
+-- (patrol, escort, evidence run) - the test dyn_GetIdleMyrmidon uses. A bare
+-- STATE_IDLE test skipped every patrolling thug (session 2: seven orders, none run).
+function IdleThug(Alias)
+	if GetState(Alias, STATE_IDLE) then
+		return true
+	end
+	local M = GetCurrentMeasureName(Alias)
+	return M == "PatrolTheTown" or M == "EscortCharacterOrTransport" or M == "OrderCollectEvidence"
+end
+
+-- Carts of the residence: total, how many are on a supply run, and whether an idle
+-- one was put into OutAlias.
+function ResidenceCarts(DynAlias, OutAlias)
+	if not GetHomeBuilding(DynAlias, "TWP_RC") then
+		return 0, 0, false
+	end
+	local Total = BuildingGetCartCount("TWP_RC")
+	local Busy, Found = 0, false
+	for i = 0, Total - 1 do
+		if BuildingGetCart("TWP_RC", i, "TWP_RCC") then
+			if GetCurrentMeasureName("TWP_RCC") == "FeudSupply" then
+				Busy = Busy + 1
+			elseif not Found then
+				CopyAlias("TWP_RCC", OutAlias)
+				Found = true
+			end
+		end
+	end
+	RemoveAlias("TWP_RCC")
+	RemoveAlias("TWP_RC")
+	return Total, Busy, Found
+end
+
+-- Telemetry, daily for a blood rival: where each ladder item and forgery paper is on
+-- sale - the home town's stock and the total in every other town's market or Kontor.
+-- ::TWP::MARKET t= dyn= items=<name>:<home>:<away>;...
+function MarketReport(DynAlias, PlayerDyn)
+	if not utility_LogEnabled() then
+		return
+	end
+	local Items = {}
+	local N = aitwp_ProcureList(DynAlias, PlayerDyn, Items)
+	local HasHome = GetHomeBuilding(DynAlias, "TWP_MRH") and GetSettlement("TWP_MRH", "TWP_MRC")
+	local Cities = ScenarioGetObjects("Settlement", 20, "TWP_MRS")
+	local Text = ""
+	for i = 1, N do
+		local Home, Away = 0, 0
+		for c = 0, Cities - 1 do
+			local City = "TWP_MRS" .. c
+			local Count = 0
+			if CityGetRandomBuilding(City, -1, GL_BUILDING_TYPE_MARKET, -1, -1, FILTER_IGNORE, "TWP_MRM")
+					or CityGetRandomBuilding(City, -1, GL_BUILDING_TYPE_KONTOR, -1, -1, FILTER_IGNORE, "TWP_MRM") then
+				Count = GetItemCount("TWP_MRM", Items[i], INVENTORY_STD) + GetItemCount("TWP_MRM", Items[i], INVENTORY_SELL)
+			end
+			if HasHome and GetID(City) == GetID("TWP_MRC") then
+				Home = Count
+			else
+				Away = Away + Count
+			end
+		end
+		Text = Text .. Items[i] .. ":" .. Home .. ":" .. Away .. ";"
+	end
+	for c = 0, Cities - 1 do
+		RemoveAlias("TWP_MRS" .. c)
+	end
+	RemoveAlias("TWP_MRM")
+	RemoveAlias("TWP_MRC")
+	RemoveAlias("TWP_MRH")
+	LogMessage("::TWP::MARKET t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID(DynAlias) .. " items=" .. Text)
+end
+
+-- Telemetry for the supply run. CartAlias "" means the running cart itself.
+-- ::TWP::CART t= dyn= action=<buy|send|arrive> cart= carts= busy= need= money= result= items=<name,amount;..>
+function LogCart(DynAlias, Action, CartAlias, Total, Busy, Needs, N, Result)
+	if not utility_LogEnabled() then
+		return
+	end
+	local Text = ""
+	for i = 1, N do
+		Text = Text .. ItemGetName(Needs[i][1]) .. "," .. Needs[i][2] .. ";"
+	end
+	local CartID = -1
+	if CartAlias == "" or (CartAlias and AliasExists(CartAlias)) then
+		CartID = GetID(CartAlias)
+	end
+	LogMessage("::TWP::CART t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID(DynAlias) .. " action=" .. Action
+		.. " cart=" .. CartID .. " carts=" .. Total .. " busy=" .. Busy .. " need=" .. N
+		.. " money=" .. math.floor(GetMoney(DynAlias) or 0) .. " result=" .. tostring(Result) .. " items=" .. Text)
+end
+
+-- Daily: ladder tools left in party members' hands go back to the store (when it has
+-- room), so no unit sits on a tool it did not use; the store hands it out again just
+-- in time.
+function ReturnUnused(DynAlias)
+	if not GetHomeBuilding(DynAlias, "TWP_RU") then
+		return
+	end
+	local Count = DynastyGetMemberCount(DynAlias)
+	for i = 0, Count - 1 do
+		if DynastyGetMember(DynAlias, i, "TWP_RUM") then
+			for t = 1, #TWP_TOOL_LIST do
+				local Item = TWP_TOOL_LIST[t].item
+				if Item then
+					local Held = GetItemCount("TWP_RUM", Item, INVENTORY_STD)
+					if Held > 0 and CanAddItems("TWP_RU", Item, Held, INVENTORY_STD) then
+						RemoveItems("TWP_RUM", Item, Held, INVENTORY_STD)
+						AddItems("TWP_RU", Item, Held, INVENTORY_STD)
+					end
+				end
+			end
+		end
+	end
+	RemoveAlias("TWP_RUM")
+	RemoveAlias("TWP_RU")
+end
+
+-- Daily: the first X of the day of every ladder item the house produces itself are
+-- kept back for the feud (X = the rival's rung, at least 1): AI_Reserve_<item> on the
+-- workshop, honoured by the sales cart (state_twp_autocart), collected free by the
+-- feud cart, which caps the collection per item and day (AI_ReserveDay, AI_ReserveTaken_).
+function ReserveProduction(DynAlias, PlayerDyn)
+	local X = math.max(1, aitwp_Rung(DynAlias, PlayerDyn))
+	local Buildings = DynastyGetBuildingCount2(DynAlias)
+	for i = 0, Buildings - 1 do
+		if DynastyGetBuilding2(DynAlias, i, "TWP_RP") and BuildingGetClass("TWP_RP") == GL_BUILDING_CLASS_WORKSHOP then
+			local Count, Products = economy_GetProducedItems("TWP_RP")
+			for p = 1, Count do
+				local Name = ItemGetName(Products[p])
+				if aitwp_IsTool(Name) then
+					SetProperty("TWP_RP", "AI_Reserve_" .. Name, X)
+				end
+			end
+		end
+	end
+	RemoveAlias("TWP_RP")
+end
+
+-- Daily, difficulty 4 and 5 only: the courier. While the player's rung is above the
+-- rival's, that many reputation and economic tools short of their cap (3 at most) are
+-- ordered at base price and a half, paid now and delivered to the residence at the
+-- next daily tick - never a lethal tool, never a paper. Orders in flight sit in
+-- AI_Courier1..3 as item ids. Logged on the CART channel as action=courier with
+-- carts= delivered today, need= ordered today, result= the rung gap.
+function CourierOrders(DynAlias, PlayerDyn)
+	if ScenarioGetDifficulty() < 4 or not GetHomeBuilding(DynAlias, "TWP_CO") then
+		RemoveAlias("TWP_CO")
+		return
+	end
+	local Delivered = 0
+	for s = 1, 3 do
+		local ID = GetProperty(DynAlias, "AI_Courier" .. s) or 0
+		if ID > 0 then
+			AddItems("TWP_CO", ID, 1, INVENTORY_STD)
+			SetProperty(DynAlias, "AI_Courier" .. s, 0)
+			Delivered = Delivered + 1
+		end
+	end
+	local Gap = aitwp_PlayerRung(PlayerDyn) - aitwp_PlayerRung(DynAlias)
+	local Tools, Needs = {}, {}
+	local N = aitwp_ProcureTools(DynAlias, PlayerDyn, Tools)
+	local Ordered = 0
+	for i = 1, N do
+		local T = Tools[i]
+		if Ordered < math.min(Gap, 3) and (T.class == "R" or T.class == "E")
+				and aitwp_StockCount(DynAlias, T.item) < aitwp_StockCap(DynAlias, T) then
+			local Price = math.floor((ItemGetBasePrice(T.item) or 0) * 1.5)
+			if GetMoney(DynAlias) >= Price + 100000 and (dyn_GetIdleMember(DynAlias, "TWP_COP") or DynastyGetMember(DynAlias, 0, "TWP_COP")) then
+				chr_SpendMoney("TWP_COP", Price, "Equipment", true)
+				Ordered = Ordered + 1
+				SetProperty(DynAlias, "AI_Courier" .. Ordered, ItemGetID(T.item))
+				Needs[Ordered] = { ItemGetID(T.item), 1 }
+			end
+		end
+	end
+	RemoveAlias("TWP_COP")
+	RemoveAlias("TWP_CO")
+	if Delivered > 0 or Ordered > 0 then
+		aitwp_LogCart(DynAlias, "courier", nil, Delivered, 0, Needs, Ordered, Gap)
+	end
 end
 
 -- A living player party member outdoors within Radius of SimAlias, into OutAlias.

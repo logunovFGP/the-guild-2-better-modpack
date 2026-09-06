@@ -497,3 +497,4 @@ Data:
 40053   "ms_DebugManageCommission.lua"   "-"   "DebugManageCommission"   30   "hud/buttons/btn_047_Administrate_Diplomacy.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 40054   "ms_DebugRoad.lua"   "-"   "DebugRoad"   30   "hud/buttons/btn_Meassure_Production.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 40055   "ms_DebugConstants.lua"   "-"   "DebugConstants"   30   "hud/buttons/btn_Meassure_Production.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
+2397   "ms_bf_FeudSupply.lua"   "-"   "FeudSupply"   99   "-"   0   2   0   ""   ""   0   0   0   "none"   0   1   |

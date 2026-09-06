@@ -1,8 +1,7 @@
--- Arm the house. Party members, thugs and employees get the weapon and armour tier
--- the head's nobility title and the treasury allow (aitwp_EquipmentTier). Members
--- and thugs buy at the market through AIBuyWeapon/AIBuyArmor; employees are issued
--- their piece from the treasury at base price, the way the engine equips guards
--- when they are hired.
+-- Arm the house from the residence store: whoever lacks a piece of the tier the
+-- head's title and treasury allow (aitwp_EquipmentTier) is issued it on the spot -
+-- party members, thugs and employees alike. The feud cart (bf_Procure) buys the
+-- pieces; nobody walks to the smithy.
 function Weight()
 	if not ReadyToRepeat("dynasty", "AI_BF_Equip") then
 		return 0
@@ -19,7 +18,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Equip")
-	SetRepeatTimer("dynasty", "AI_BF_Equip", 2)
-	aitwp_Log("equips " .. GetName("Recruit") .. " with " .. GetData("EquipItem") .. " (" .. GetData("EquipMode") .. ")", "dynasty")
-	aitwp_Equip("dynasty", "Recruit", GetData("EquipItem"), GetData("EquipMode"))
+	SetRepeatTimer("dynasty", "AI_BF_Equip", 1)
+	aitwp_Log("issues " .. GetData("EquipItem") .. " to " .. GetName("Recruit"), "dynasty")
+	aitwp_Equip("dynasty", "Recruit", GetData("EquipItem"))
 end

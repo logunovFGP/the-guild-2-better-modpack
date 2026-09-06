@@ -364,8 +364,72 @@ Dyn[11].favor = 50
 check("neutral player: the feud subtree is off", AttitudeFactor("d", "player") == 0)
 check("AI victim: factor 1", AttitudeFactor("d", "ai") == 1)
 
+-- aitwp_ShoppingList / DrawFromStock / IdleThug: the cart supply chain ------------------
+aitwp_ProcureTools, aitwp_Severity, aitwp_StockCount, aitwp_StockCap = ProcureTools, Severity, StockCount, StockCap
+aitwp_InStore, aitwp_EquipmentTier, aitwp_NoteMissing, aitwp_MissingEquipment = InStore, EquipmentTier, NoteMissing, MissingEquipment
+aitwp_IsTool, aitwp_CanHandOver, aitwp_CarriedTools, aitwp_HandOversToday, aitwp_HandOverCap = IsTool, CanHandOver, CarriedTools, HandOversToday, HandOverCap
+STATE_IDLE = 7
+local IdleState, CurMeasure = false, "AttendMass"
+function GetState(Alias, State) return IdleState end
+function GetCurrentMeasureName(Alias) return CurMeasure end
+function SimGetAge(Alias) return 30 end
+function DynastyGetWorkerCount(Alias, Profession) return 0 end
+function DynastyGetWorker(Alias, Profession, Index, Out) return false end
+function GetHomeBuilding(Alias, Out) Aliases[Out] = "home"; return true end
+function ItemGetBasePrice(Item) return 1000 end
+function ItemGetID(Item) return Item end
+function ItemGetName(Item) return Item end
+-- the sim "s" has its own inventory; every other alias reads the shared store Carried
+local Stock, Added = { s = {} }, {}
+function GetItemCount(Alias, Item, Inventory) return (Stock[Alias] or Carried)[Item] or 0 end
+function RemoveItems(Alias, Item, Count, Inv) local T = Stock[Alias] or Carried; T[Item] = (T[Item] or 0) - Count; return Count end
+function AddItems(Alias, Item, Count, Inv) Added[Item] = (Added[Item] or 0) + Count; return Count end
+function GetDynasty(Alias, Out) Aliases[Out] = 7; return true end
+
+check("a thug at mass is not free", IdleThug("k") == false)
+CurMeasure = "PatrolTheTown"
+check("a thug on patrol is free for an order", IdleThug("k") == true)
+IdleState = true
+check("an idle thug is free", IdleThug("k") == true)
+
+Carried = {}
+Props.AI_BloodEnemyOf = 11
+Dyn[11] = { favor = 20, dip = DIP_FOE, player = true }
+Titles[1], Titles[2] = 5, 9
+World.money = 200000
+local Tools = {}
+local N = ProcureTools("d", "player", Tools)
+check("rung 5 blood rival: 18 tools with an item", N == 18)
+check("most severe first: the lethal black widow poison", Tools[1].item == "BlackWidowPoison" and Severity(Tools[1]) == 5)
+check("least severe last: a reputation tool", Severity(Tools[N]) == 1)
+check("two adults can use two of a tool a day", StockCap("d", Tools[1]) == 2)
+local Needs = {}
+N = ShoppingList("d", "player", Needs)
+check("200k, 7% budget, 1000 each: 14 tools, one of each", N == 14 and Needs[1][2] == 1)
+check("the shopping list starts with the most severe tool", Needs[1][1] == "BlackWidowPoison")
+Carried.BlackWidowPoison = 1
+N = ShoppingList("d", "player", Needs)
+check("a tool at its cap is not bought again; the next severe one leads", N == 14 and Needs[1][1] == "WeaponPoison")
+check("nothing on the list is the capped tool", (function() for i = 1, N do if Needs[i][1] == "BlackWidowPoison" then return false end end return true end)())
+World.money = 1000
+check("a poor house buys nothing", ShoppingList("d", "player", {}) == 0)
+World.money = 200000
+
+Carried.StinkBomb = 1
+check("hand-over cap: members and thugs plus two", HandOverCap("d") == 4)
+check("the hand-over takes from the store and counts", DrawFromStock("s", "StinkBomb", 1) == true and Added.StinkBomb == 1 and Carried.StinkBomb == 0 and HandOversToday("d") == 1)
+Stock.s.StinkBomb = 1
+Carried.Voodo = 1
+check("a unit holding a tool gets no second one", DrawFromStock("s", "Voodo", 1) == false)
+Stock.s.StinkBomb = nil
+Props.AI_HO_Count = 4
+check("the day's cap blocks the hand-over", DrawFromStock("s", "Voodo", 1) == false)
+Props.AI_HO_Round = -5
+check("a new day resets the count", HandOversToday("d") == 0 and DrawFromStock("s", "Voodo", 1) == true)
+check("nothing in store: no hand-over", DrawFromStock("s", "Pendel", 1) == false)
+
 if Failures > 0 then
 	io.stderr:write("FAILED: " .. Failures .. " check(s) on utility scoring\n")
 	os.exit(1)
 end
-print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder")
+print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain")

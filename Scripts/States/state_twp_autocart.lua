@@ -35,11 +35,9 @@ function Run()
 		local BuildingType = BuildingGetProto("MyHome")
 		local Count, Items, ProtectedAmounts = economy_GetProducedItems("MyHome")
 		for i = 1, Count do
-			if ProtectedAmounts[i] then
-				Items[i] = { Items[i], ProtectedAmounts[i] }
-			else
-				Items[i] = { Items[i], 0 }
-			end
+			-- the feud reserve (aitwp_ReserveProduction) is kept back from sale as well
+			local Keep = math.max(ProtectedAmounts[i] or 0, GetProperty("MyHome", "AI_Reserve_" .. ItemGetName(Items[i])) or 0)
+			Items[i] = { Items[i], Keep }
 		end
 	
 		-- 3. Calculate expected profit for each item

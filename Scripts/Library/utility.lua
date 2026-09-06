@@ -79,6 +79,10 @@ end
 
 -- First statement of Execute(): the node the engine actually picked.
 function Picked(DynAlias, Tag)
+	-- the BloodFeud root reads AI_BF_Fired to tell an empty entry from a productive one
+	if string.sub(Tag, 1, 3) == "bf_" then
+		SetProperty(DynAlias, "AI_BF_Fired", GetGametime())
+	end
 	if utility_LogEnabled() then
 		LogMessage("::TWP::PICK " .. utility_Stamp(DynAlias) .. " node=" .. Tag)
 	end
