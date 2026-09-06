@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "VictimDynasty", "toad_excrement") then
+		return 0
+	end
 	local	Item = "ToadExcrements"
 	
 	if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("Use"..Item)) > 0 then
@@ -9,7 +13,7 @@ function Weight()
 		return 100
 	end
 	
-	if not DynastyGetRandomBuilding("Victim", GL_BUILDING_CLASS_WORKSHOP, -1, "VicBuilding") then
+	if not aitwp_FindTargetBuilding("Victim", GL_BUILDING_CLASS_WORKSHOP, "strongest", "VicBuilding") then
 		return 0
 	end
 	

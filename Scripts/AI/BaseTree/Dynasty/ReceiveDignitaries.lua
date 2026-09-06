@@ -28,10 +28,13 @@ function Weight()
 		return 0
 	end
 
-	return 35
+	return utility_Score("dynasty", 35, {
+		utility_Priority("dynasty", "Political"),
+	}, "ReceiveDignitaries", "Politics")
 end
 
 function Execute()
+	utility_Picked("dynasty", "ReceiveDignitaries")
 	SetRepeatTimer("dynasty", "AI_ReceiveDignitaries", 48)
 	if ai_GoInsideBuilding("SIM", "SIM", -1, -1, "DIP_Estate") then
 		MeasureRun("SIM", 0, "EmpfangeWuerden", false)

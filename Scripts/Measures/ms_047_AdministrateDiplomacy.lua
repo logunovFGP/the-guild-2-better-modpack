@@ -216,6 +216,9 @@ function Message()
 	
 	-- buttons
 	local result = 0
+	if HasData("InitResult") then
+		result = GetData("InitResult") -- the AI: 0 respect, 1 taunt
+	end
 	if IsGUIDriven() then
 		result = InitData("@P".."@B[0,,@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_NICE_BTN,hud/buttons/btn_MakeACompliment.tga]"..
 					"@B[1,,@L_MEASURE_ADMINISTRATE_DIPLOMACY_MESSAGE_MEAN_BTN,hud/buttons/btn_039_blackmailCharacter.tga]",
@@ -293,6 +296,9 @@ function Gift()
 					"@B[3,"..High..",,hud/items/Item_goldmedhigh.tga]"..
 					"@B[4,"..VeryHigh..",,hud/items/Item_goldveryhigh.tga]",
 					1,"@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_HEAD_+0", "@L_MEASURE_ADMINISTRATE_DIPLOMACY_GIFT_BODY_+0", GetID("Destination"))
+	if HasData("InitResult") and not IsGUIDriven() then
+		GiftResult = GetData("InitResult") -- the AI: 0..4, smallest to largest
+	end
 	
 	if GiftResult == 0 then
 		Amount = VeryLow

@@ -5,13 +5,14 @@
 function Weight()
 	local PartyCount = DynastyGetMemberCount("dynasty")
 	if PartyCount < 2 then
-		return 50
+		return utility_Trace("dynasty", "Dynasty", 50)
 	end
 	if PartyCount < 3 then
-		return 30
+		return utility_Trace("dynasty", "Dynasty", 30)
 	end
-	return 20
+	return utility_Trace("dynasty", "Dynasty", 20)
 end
 
 function Execute()
+	utility_Picked("dynasty", "Dynasty")
 end

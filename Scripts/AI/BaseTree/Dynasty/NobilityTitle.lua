@@ -5,7 +5,10 @@ function Weight()
 	
 	-- If you are available for high offices, get that titles you need
 	if (GetNobilityTitle("SIM") <= 4) and (SimGetOfficeLevel("SIM") > 0) then
-		return 20
+		return utility_Score("dynasty", 20, {
+			utility_Priority("dynasty", "Political"),
+			utility_Trait("dynasty", "ambition"),
+		}, "NobilityTitle", "Politics")
 	end
 	
 	if not ReadyToRepeat("dynasty", "AI_NobilityTitle") then
@@ -37,13 +40,17 @@ function Weight()
 	end
 	
 	if DynastyIsShadow("SIM") or GetMoney("SIM") > (cost+5000) then
-		return 10
+		return utility_Score("dynasty", 10, {
+			utility_Priority("dynasty", "Political"),
+			utility_Trait("dynasty", "ambition"),
+		}, "NobilityTitle", "Politics")
 	end
 
 	return 0
 end
 
 function Execute()
+	utility_Picked("dynasty", "NobilityTitle")
 	local Difficulty = ScenarioGetDifficulty()
 	local Repeat = 48 - Difficulty*6 
 	SetRepeatTimer("dynasty", "AI_NobilityTitle", Repeat)

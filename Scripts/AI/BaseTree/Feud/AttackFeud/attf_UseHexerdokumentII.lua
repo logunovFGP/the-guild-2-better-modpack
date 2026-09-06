@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "Victim", "forge2") then
+		return 0
+	end
 	local	Item = "HexerdokumentII"
 	
 	if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("Use"..Item)) > 0 then

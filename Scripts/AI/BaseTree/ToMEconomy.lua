@@ -4,9 +4,12 @@ function Weight()
 		return 0
 	end
 
-	return 10
+	return utility_Score("dynasty", 10, {
+		utility_Trait("dynasty", "greed"),
+	}, "ToMEconomy", "Economy")
 end
 
 function Execute()
+	utility_Picked("dynasty", "ToMEconomy")
 	aitwp_Log("Enter subtree ToMEconomy", "dynasty", true)
 end

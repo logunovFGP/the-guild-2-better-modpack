@@ -12,10 +12,11 @@ function Weight()
 		return 0
 	end
 	
-	return 50
+	return utility_Score("dynasty", 50, {}, "CourtLover", "Family")
 end
 
 function Execute()
+	utility_Picked("dynasty", "CourtLover")
 	SetRepeatTimer("SIM", "AI_CourtLover", 2)
 	aitwp_CourtLover("SIM")
 end

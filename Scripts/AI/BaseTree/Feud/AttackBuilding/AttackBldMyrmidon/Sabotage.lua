@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "VictimDynasty", "sabotage") then
+		return 0
+	end
 
 	local Hour = math.mod(GetGametime(), 24)
 	if Hour > 8 and Hour < 21 then
@@ -10,7 +14,7 @@ function Weight()
 	end
 	
 	if not AliasExists("RivalBuild") then
-		if not DynastyGetRandomBuilding("VictimDynasty", -1, -1, "RivalBuild") then
+		if not aitwp_FindTargetBuilding("VictimDynasty", -1, "strongest", "RivalBuild") then
 			return 0
 		end
 	end

@@ -6,7 +6,7 @@ function Weight()
 		if DynastyGetMember("dynasty", i, "Member") and dyn_IsIdleMember("Member") then
 			if SimIsAppliedForOffice("Member") then
 				CopyAlias("Member", "ElectionSIM")
-				return 50
+				return utility_Trace("dynasty", "Election", 50)
 			end
 		end
 	end
@@ -16,6 +16,7 @@ function Weight()
 end
 
 function Execute()
+	utility_Picked("dynasty", "Election")
 	CopyAlias("ElectionSIM", "SIM")
 	RemoveAlias("ElectionSIM")
 end

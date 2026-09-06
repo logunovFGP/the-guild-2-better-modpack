@@ -13,7 +13,7 @@ function Weight()
 		return 0
 	end
 	
-	if not (dyn_GetIdleMember("dynasty", "SIM") or DynastyGetMemberRandom("dynasty", "SIM")) then
+	if not aitwp_FindBuilder("dynasty", "SIM") then
 		return 0
 	end
 	
@@ -33,14 +33,15 @@ function Weight()
 
 	-- the richer the dynasty, the more eager it is to expand
 	if Money > 20000 then
-		return 8
+		return utility_Trace("dynasty", "BuildWorkshop", 8)
 	elseif Money > 5000 then
-		return 3
+		return utility_Trace("dynasty", "BuildWorkshop", 3)
 	end
 	return 0
 end
 
 function Execute()
+	utility_Picked("dynasty", "BuildWorkshop")
 	aitwp_Log("Enter subtree ToMEconomy::BuildWorkshop", "SIM", true)
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 96 - Difficulty * 12 -- easy: 4 days, medium: 3 days, hard: 2 days

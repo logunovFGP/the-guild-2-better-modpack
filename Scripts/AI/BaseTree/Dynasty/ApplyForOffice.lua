@@ -24,13 +24,17 @@ function Weight()
 	-- nobility check
 	local MyTitle = GetNobilityTitle("SIM")
 	if MyTitle < 4 then
-		return false
+		return 0
 	end
 	
-	return 20
+	return utility_Score("dynasty", 20, {
+		utility_Priority("dynasty", "Political"),
+		utility_Trait("dynasty", "ambition"),
+	}, "ApplyForOffice", "Politics")
 end
 
 function Execute()
+	utility_Picked("dynasty", "ApplyForOffice")
 	SetRepeatTimer("SIM", "AI_ApplyForOffice", 3)
 	if aitwp_FindOfficeForApplication("SIM", "APPLY_OFFICE") then
 		--LogMessage("::TWP::AI::"..GetName("SIM").." ".. " applying for vacant office seat.")

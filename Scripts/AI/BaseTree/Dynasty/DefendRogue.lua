@@ -8,9 +8,10 @@ function Weight()
 	end
 	-- TODO: Check for dangerous rogues in town
 	
-	return 5
+	return utility_Score("dynasty", 5, {}, "DefendRogue", "Conflict")
 end
 
 function Execute()
+	utility_Picked("dynasty", "DefendRogue")
 	SetRepeatTimer("dynasty", "AI_DefendRogue", 6)
 end

@@ -50,10 +50,13 @@ function Weight()
 		return 0
 	end
 	
-	return 100
+	return utility_Score("dynasty", 100, {
+		utility_Trait("dynasty", "arrogance"),
+	}, "HomeLevelUp", "Politics")
 end
 
 function Execute()
+	utility_Picked("dynasty", "HomeLevelUp")
 	if not AliasExists("home") then
 		GetHomeBuilding("DynMember", "home")
 	end

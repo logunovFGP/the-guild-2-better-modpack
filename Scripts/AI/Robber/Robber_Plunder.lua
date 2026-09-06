@@ -35,8 +35,10 @@ function Check()
 		return false
 	end
 	
-	if not CityGetRandomBuilding("City", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "PLU_BUILD") then
-		return false
+	if not aitwp_PreferPlayerBuilding("dynasty", "plunder", GL_BUILDING_CLASS_WORKSHOP, "PLU_BUILD") then
+		if not CityGetRandomBuilding("City", GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, FILTER_HAS_DYNASTY, "PLU_BUILD") then
+			return false
+		end
 	end
 	
 	if GetState("PLU_BUILD", STATE_BUILDING) then
@@ -44,6 +46,9 @@ function Check()
 	end
 	
 	if not BuildingGetOwner("PLU_BUILD", "VictimOwner") then
+		return false
+	end
+	if not aitwp_Allowed("dynasty", "VictimOwner", "plunder") then
 		return false
 	end
 	

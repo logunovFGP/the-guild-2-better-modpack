@@ -2,12 +2,13 @@ function Weight()
 	local PartyCount = DynastyGetMemberCount("dynasty")
 	local FamilyCount = DynastyGetFamilyMemberCount("dynasty")
 	if PartyCount < 3 and FamilyCount > PartyCount then
-		return 10	
+		return utility_Trace("dynasty", "ManageParty", 10)	
 	end
 	return 0
 end
 
 function Execute()
+	utility_Picked("dynasty", "ManageParty")
 	local PartyCount = DynastyGetMemberCount("dynasty")
 	local FamilyCount = DynastyGetFamilyMemberCount("dynasty")
 	local Choice = -1

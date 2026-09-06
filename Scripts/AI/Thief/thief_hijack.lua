@@ -35,7 +35,10 @@ end
 
 function Check()
 	
-	if not DynastyGetRandomVictim("SIM", 50, "HIJ_VICTIM") then
+	if not (aitwp_PreferPlayerDynasty("dynasty", "kidnap", "HIJ_VICTIM") or DynastyGetRandomVictim("SIM", 50, "HIJ_VICTIM")) then
+		return false
+	end
+	if not aitwp_Allowed("dynasty", "HIJ_VICTIM", "kidnap") then
 		return false
 	end
 	

@@ -7,6 +7,7 @@ function Weight()
 end
 
 function Execute()
+	utility_Picked("dynasty", "d_GoIdle")
 	if Rand(10) < 8 and dyn_GetRandomWorkshopForSim("SIM", "MyWorkshop") then
 		f_MoveToNoWait("SIM", "MyWorkshop")
 	else

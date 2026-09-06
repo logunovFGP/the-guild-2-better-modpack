@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "Victim", "false_gauntlet") then
+		return 0
+	end
 	
 	if ScenarioGetDifficulty() < 2 then
 		return 0
@@ -12,16 +16,10 @@ function Weight()
 		return 0
 	end
 	
-	-- to do: select a high office holder
-	if not DynastyGetRandomVictim("Victim", 60, "VictimDynasty2") then
+	-- the believer is the highest office holder the victim still respects; that favour hit costs votes
+	if not aitwp_FindBeliever("SIM", "Victim", "Victim", 60, "office", "VictimDynasty2", "Victim2") then
 		return 0
 	end
-	
-	local Count = DynastyGetMemberCount("VictimDynasty2")
-	local Victim = Rand(Count)
-	if not (DynastyGetMember("VictimDynasty2", Victim, "Victim2")) then
-		return false
-	end	
 
 	return 20
 end

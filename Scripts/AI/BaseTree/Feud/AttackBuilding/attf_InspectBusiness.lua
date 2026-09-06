@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "VictimDynasty", "inspection") then
+		return 0
+	end
 
 	local Hour = math.mod(GetGametime(), 24)
 	if Hour < 8 or Hour > 16 then

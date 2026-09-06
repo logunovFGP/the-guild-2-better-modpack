@@ -36,12 +36,13 @@ function Weight()
 	local m = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_NO_DYNASTY) or 0
   
   if n > 0 or m > 0 then
-  	return 8
+  	return utility_Trace("dynasty", "BuyWorkshop", 8)
   end
   return 0
 end
 
 function Execute()
+	utility_Picked("dynasty", "BuyWorkshop")
 	aitwp_Log("Execute ToMEconomy::BuyWorkshop", "SIM", true)
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 96 - Difficulty * 12 -- easy: 4 days, medium: 3 days, hard: 2 days

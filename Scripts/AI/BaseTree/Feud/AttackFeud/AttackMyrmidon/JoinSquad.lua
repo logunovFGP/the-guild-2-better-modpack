@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "Victim", "ambush") then
+		return 0
+	end
 
 	if not SimGetWorkingPlace("MYRM", "myrm_place") then
 		return 0

@@ -13,7 +13,7 @@ function Weight()
 
 	local Item = "MediPack"
 	if GetItemCount("", Item, INVENTORY_STD) > 0 then
-		return 90
+		return utility_Trace("dynasty", "SelfHeal", 90)
 	end
 
 	local Price = ai_CanBuyItem("SIM", Item)
@@ -23,9 +23,10 @@ function Weight()
 	if Price > GetMoney("SIM") * 0.25 then
 		return 0
 	end
-	return 60
+	return utility_Trace("dynasty", "SelfHeal", 60)
 end
 
 function Execute()
+	utility_Picked("dynasty", "SelfHeal")
 	MeasureRun("SIM", "SIM", "UseMediPack")
 end

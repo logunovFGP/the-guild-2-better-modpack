@@ -1,61 +1,59 @@
--- Action: Make sure all children are getting education
+-- Education is mandatory. Weight() finds the child and the measure - school for a
+-- child in its school days, the apprenticeship (which sets the class) for a child in
+-- its apprenticeship years, university for a scholar - so a pick is never wasted,
+-- and its weight outranks everything else in Dynasty/. The apprenticeship is steered
+-- into the dynasty's main class, or into rogue while the house lacks its fighter
+-- (aitwp_WantedApprenticeClass); ms_150_AttendApprenticeship reads AI_ApprenticeClass.
 function Weight()
-	local PartyCount = DynastyGetMemberCount("dynasty")
+	if not ReadyToRepeat("dynasty", "AI_Educate") then
+		return 0
+	end
+	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
+		return 0
+	end
+	if not GetSettlement("home", "City") then
+		return 0
+	end
+	if not (CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School")
+			and gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+		return 0
+	end
+	local MyID = GetID("dynasty")
 	local FamilyCount = DynastyGetFamilyMemberCount("dynasty")
-	if FamilyCount > PartyCount then
-		return 10
+	for i = 0, FamilyCount - 1 do
+		if DynastyGetFamilyMember("dynasty", i, "Pupil") and GetDynastyID("Pupil") == MyID and not GetState("Pupil", STATE_DEAD) then
+			local Education = GetProperty("Pupil", "EduLevel") or EDULEVEL_NONE
+			local Behavior = SimGetBehavior("Pupil")
+			local Current = GetCurrentMeasureName("Pupil")
+			if Behavior == "SchoolDays" and Education == EDULEVEL_NONE and Current ~= "AttendSchool" then
+				SetData("EduMeasure", "AttendSchool")
+				return utility_Trace("dynasty", "EducateChildren", 200)
+			end
+			if Behavior == "Apprenticeship" and not HasProperty("Pupil", "is_apprentice") and Current ~= "AttendApprenticeship" then
+				SetData("EduMeasure", "AttendApprenticeship")
+				return utility_Trace("dynasty", "EducateChildren", 200)
+			end
+			if (Behavior == "University" or SimGetAge("Pupil") >= 15) and SimGetClass("Pupil") == GL_CLASS_SCHOLAR
+					and (Education == EDULEVEL_SCHOOL or Education == EDULEVEL_UNIVERSITY1) and Current ~= "AttendUniversity" then
+				SetData("EduMeasure", "AttendUniversity")
+				return utility_Trace("dynasty", "EducateChildren", 200)
+			end
+		end
 	end
 	return 0
 end
 
-----	The script uses the sim-property "EduLevel" which can be:
-----	EDULEVEL_NONE = 0
-----	EDULEVEL_SCHOOL = 1
-----	EDULEVEL_UNIVERSITY1 = 2
-----	EDULEVEL_UNIVERSITY2 = 3
 function Execute()
-	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
+	utility_Picked("dynasty", "EducateChildren")
+	local Measure = GetData("EduMeasure")
+	if not Measure or not AliasExists("Pupil") then
 		return
 	end
-	
-	if not GetSettlement("home", "City") then
-		return
+	-- an hour between school runs: a start the measure refuses must not eat every tick
+	SetRepeatTimer("dynasty", "AI_Educate", 1)
+	if Measure == "AttendApprenticeship" then
+		SetProperty("Pupil", "AI_ApprenticeClass", aitwp_WantedApprenticeClass("dynasty"))
 	end
-	
-	if not (CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School") and (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0)) then
-		return
-	end
-
-	-- send children to school/apprenticeship
-	local FamilyCount = DynastyGetFamilyMemberCount("dynasty")
-	for i=0, FamilyCount-1 do
-		DynastyGetFamilyMember("dynasty", i, "sim")
-		
-		local Education = EDULEVEL_NONE
-		if HasProperty("sim", "EduLevel") then
-			Education = GetProperty("sim", "EduLevel")
-		end
-
-		local Age = SimGetAge("sim")
-		
-		-- check for school
-		if SimGetBehavior("sim") == "SchoolDays" and Education == EDULEVEL_NONE then
-			MeasureRun("sim", "School", "AttendSchool")
-			return
-		end
-		
-		-- check for apprenticeship
-		if SimGetBehavior("sim") == "Apprenticeship" and not HasProperty("sim", "is_apprentice") then
-			MeasureRun("sim", "School", "AttendApprenticeship")
-			return
-		end
-		
-		-- check for university
-		if Age >= 15 and SimGetClass("sim") == 3 and "AttendUniversity" ~= GetCurrentMeasureName("sim") then 
-			if Education == 1 or Education == 2 then
-				MeasureRun("sim", "School", "AttendUniversity")
-				return
-			end
-		end
-	end
+	aitwp_Log(Measure .. " for " .. GetName("Pupil"), "dynasty")
+	MeasureRun("Pupil", "School", Measure)
 end

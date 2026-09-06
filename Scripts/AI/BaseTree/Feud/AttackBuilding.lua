@@ -22,7 +22,7 @@ function Weight()
 	
 	
 	if not AliasExists("RivalBuild") then
-		if not DynastyGetRandomBuilding("VictimDynasty", -1, -1, "RivalBuild") then
+		if not aitwp_FindTargetBuilding("VictimDynasty", -1, "strongest", "RivalBuild") then
 			return 0
 		end
 	end

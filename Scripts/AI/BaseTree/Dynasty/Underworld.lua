@@ -11,9 +11,13 @@ function Weight()
 		return 0
 	end
 
-	return 10 + math.floor(aitwp_GetAgressiveness("dynasty") / 5)
+	return utility_Score("dynasty", 15, {
+		utility_Priority("dynasty", "Agressive"),
+		utility_Trait("dynasty", "sabotage"),
+	}, "Underworld", "Conflict")
 end
 
 function Execute()
+	utility_Picked("dynasty", "Underworld")
 	aitwp_Log("Enter subtree Underworld", "dynasty", true)
 end

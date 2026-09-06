@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "Victim", "break_will") then
+		return 0
+	end
 
 	if GetImpactValue("SIM", "OrderABrainwash")==0 then
 		return 0

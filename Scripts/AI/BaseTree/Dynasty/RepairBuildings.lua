@@ -28,12 +28,13 @@ function Weight()
 	end
 
 	if Worst < 0.5 then
-		return 60
+		return utility_Trace("dynasty", "RepairBuildings", 60)
 	end
-	return 25
+	return utility_Trace("dynasty", "RepairBuildings", 25)
 end
 
 function Execute()
+	utility_Picked("dynasty", "RepairBuildings")
 	SetRepeatTimer("dynasty", "AI_Repair", 6)
 	MeasureRun("REP_Target", 0, "RenovateBuilding", false)
 end

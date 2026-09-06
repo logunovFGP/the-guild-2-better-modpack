@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "Victim", "blackmail") then
+		return 0
+	end
 	if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("BlackmailCharacter")) > 0 then
 		return 0
 	end

@@ -368,3 +368,12 @@ States/state_blackdeath.lua
 States/state_expel.lua
 States/state_miller.lua
 States/state_underattack.lua
+AI/BaseTree/CheckDynasty/Attack/High/di_FinishOff.lua
+AI/BaseTree/CheckDynasty/Attack/Low/di_RobEnemy.lua
+AI/BaseTree/CheckDynasty/Attack/Med/di_RoughUpEnemy.lua
+AI/BaseTree/CheckDynasty/Defend/def_UseProtection.lua
+AI/BaseTree/CheckDynasty/SelfHeal.lua
+AI/BaseTree/CheckGuildHouse/AIBuyTradePermit.lua
+AI/BaseTree/CheckMyrmidon/myrm_BuyArmor.lua
+AI/BaseTree/CheckMyrmidon/myrm_BuyWeapon.lua
+AI/BaseTree/CheckMyrmidon/myrm_FinishOff.lua

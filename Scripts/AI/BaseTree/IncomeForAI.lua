@@ -10,11 +10,12 @@ function Weight()
 	if not ReadyToRepeat("dynasty", "AI_Income") then
 		return 0
 	end
-	return 60
+	return utility_Trace("dynasty", "IncomeForAI", 60)
 end
 
 
 function Execute()
+	utility_Picked("dynasty", "IncomeForAI")
 	SetRepeatTimer("dynasty", "AI_Income", 1)
 	CreateScriptcall("GiveAIMoney", 1, "Library/chr.lua", "GiveMoney", "dynasty")
 end

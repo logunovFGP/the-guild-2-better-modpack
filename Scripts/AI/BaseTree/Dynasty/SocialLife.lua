@@ -8,9 +8,10 @@ function Weight()
 		return 0
 	end
 
-	return 25
+	return utility_Score("dynasty", 25, {}, "SocialLife", "Politics")
 end
 
 function Execute()
+	utility_Picked("dynasty", "SocialLife")
 	aitwp_Log("Enter subtree SocialLife", "dynasty", true)
 end

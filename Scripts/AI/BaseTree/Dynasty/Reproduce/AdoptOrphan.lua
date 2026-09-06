@@ -22,9 +22,17 @@ function Weight()
 
 	if BuildingGetType("Home")==GL_BUILDING_TYPE_RESIDENCE then
 		if SimGetAge("SIM") < 40 and SimGetAge("Spouse") < 40 then
-			-- I have a residence home, so I can make my own children.
-			adoptorphan_SetFailTimers()
-			return 0
+			-- a young couple in a residence gets 30 days for a child of their own first;
+			-- the house wants three children and adopts when they do not come
+			local Until = GetProperty("SIM", "AI_NaturalTryUntil")
+			if not Until then
+				Until = GetGametime() + 720
+				SetProperty("SIM", "AI_NaturalTryUntil", Until)
+			end
+			if GetGametime() < Until then
+				adoptorphan_SetFailTimers()
+				return 0
+			end
 		end
 	end
 	
@@ -55,6 +63,7 @@ end
 function Execute()
 	SetRepeatTimer("dynasty", "AI_Reproduce", 24)
 	MeasureRun("SIM", "WeddingChapel", "AdoptOrphan", false)
+	SetProperty("SIM", "AI_NaturalTryUntil", GetGametime() + 720) -- another 30 days of trying before the next adoption
 end
 
 

@@ -8,13 +8,23 @@
 -------------------------------------------------------------------------------
 
 function AIDecide()
-	if not (GetImpactValue("","Insulter") == 0) and Rand(10) < 10 then
-		return "C"
-	elseif (GetFavorToSim("Destination","") < 30) or (GetFavorToSim("Destination","") > 60) then --TODO: get a better decisor
-		return "A"
-	else
+	-- an AI never accepts a duel it would die in: martial arts and dexterity both
+	-- under 5, or under 80% health (aitwp_IsFitToDuel)
+	if not aitwp_IsFitToDuel("Destination") then
 		return "B"
 	end
+	if not (GetImpactValue("","Insulter") == 0) and Rand(10) < 10 then
+		return "C"
+	end
+	-- a blood enemy always takes satisfaction from its player
+	if GetDynasty("Destination", "AI_DDyn") and GetDynasty("", "AI_IDyn")
+			and (GetProperty("AI_DDyn", "AI_BloodEnemyOf") or 0) == GetID("AI_IDyn") then
+		return "A"
+	end
+	if (GetFavorToSim("Destination","") < 30) or (GetFavorToSim("Destination","") > 60) then --TODO: get a better decisor
+		return "A"
+	end
+	return "B"
 end
 
 

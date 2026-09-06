@@ -28,11 +28,17 @@ function Weight()
 		if HasProperty("Guildhouse", "ContractClass") then
 			if (SimGetClass("SIM")==GetProperty("Guildhouse", "ContractClass")) then
 				if trade_IsAlderman("SIM", "Guildhouse") then
-					return 30
+					return utility_Score("dynasty", 30, {
+						utility_Trait("dynasty", "greed"),
+					}, "AIContractGuildHouse", "Economy")
 				elseif chr_CheckGuildMaster("SIM","Guildhouse") then
-					return 30
+					return utility_Score("dynasty", 30, {
+						utility_Trait("dynasty", "greed"),
+					}, "AIContractGuildHouse", "Economy")
 				else
-					return 20
+					return utility_Score("dynasty", 20, {
+						utility_Trait("dynasty", "greed"),
+					}, "AIContractGuildHouse", "Economy")
 				end
 			end
 		end
@@ -42,6 +48,7 @@ function Weight()
 end
 
 function Execute()
+	utility_Picked("dynasty", "AIContractGuildHouse")
 	SetRepeatTimer("dynasty", "AI_ContractGuildHouse", 4)
 	MeasureCreate("Measure")
 	MeasureRun("SIM", "Guildhouse", "ContractGuildHouse")

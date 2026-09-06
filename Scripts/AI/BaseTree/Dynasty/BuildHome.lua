@@ -16,10 +16,11 @@ function Weight()
 			end
 	end
 	
-	return 5
+	return utility_Trace("dynasty", "BuildHome", 5)
 end
 
 function Execute()
+	utility_Picked("dynasty", "BuildHome")
 	if not DynastyGetMemberRandom("dynasty", "SIM") then
 		return
 	end

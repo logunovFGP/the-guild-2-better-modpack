@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "VictimDynasty", "demolish") then
+		return 0
+	end
 	
 	if ScenarioGetDifficulty() < 3 then
 		return 0

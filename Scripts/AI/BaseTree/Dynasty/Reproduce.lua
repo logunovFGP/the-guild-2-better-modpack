@@ -18,13 +18,14 @@ function Weight()
 				and (ReadyToRepeat("Spouse", "AI_FailedReproduction_Cohabit") or ReadyToRepeat("Spouse", "AI_FailedReproduction_Adopt"))
 				then
 			CopyAlias("Member", "SIM")
-			return 10
+			return utility_Trace("dynasty", "Reproduce", 10)
 		end
 	end
 	return 0
 end
 
 function Execute()
+	utility_Picked("dynasty", "Reproduce")
 	
 end
 

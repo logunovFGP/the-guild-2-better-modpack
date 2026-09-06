@@ -30,8 +30,12 @@ function Weight()
 	
 	for l=0, Count-1 do
 		Alias	= "PPM_BUILD"..l
-		if DynastyGetDiplomacyState(Alias, "SIM") <= DIP_NEUTRAL then
+		if DynastyGetDiplomacyState(Alias, "SIM") <= DIP_NEUTRAL and aitwp_Allowed("dynasty", Alias, "protection_money") then
 			Value = chr_GetBootyCount(Alias)
+			if aitwp_ResolveDynasty(Alias, "PPM_Owner") and DynastyIsPlayer("PPM_Owner") and aitwp_IsHostile(aitwp_Attitude("dynasty", "PPM_Owner")) then
+				Value = Value * 3
+			end
+			RemoveAlias("PPM_Owner")
 			if Value > BestValue then
 				BestValue = Value
 				BestAlias = Alias

@@ -16,10 +16,13 @@ function Weight()
 		return 0
 	end
 
-	return 40
+	return utility_Score("dynasty", 40, {
+		utility_Trait("dynasty", "greed"),
+	}, "CollectBankDebts", "Economy")
 end
 
 function Execute()
+	utility_Picked("dynasty", "CollectBankDebts")
 	SetRepeatTimer("dynasty", "AI_CollectDebts", 8)
 
 	local BankID = GetID("CD_Bank")

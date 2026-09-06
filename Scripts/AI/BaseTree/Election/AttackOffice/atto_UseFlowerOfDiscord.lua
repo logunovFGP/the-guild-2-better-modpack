@@ -1,4 +1,8 @@
 function Weight()
+	-- the ladder: against a human player only with the attitude, title and round for it
+	if not aitwp_Allowed("dynasty", "Victim", "discord") then
+		return 0
+	end
 	
 	local	Item = "FlowerOfDiscord"
 
@@ -6,10 +10,6 @@ function Weight()
 		return 0
 	end
 
-	if Rand(4) > 0 then
-		return 0
-	end
-	
 	if GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("Use"..Item)) > 0 then
 		return 0
 	end
@@ -18,15 +18,10 @@ function Weight()
 		return 0
 	end
 	
-	if not DynastyGetRandomVictim("Victim", 50, "VictimDynasty2") then
+	-- sow discord between the victim and the friend they value most, never one of our own friends
+	if not aitwp_FindBeliever("SIM", "Victim", "Victim", 50, "friend", "VictimDynasty2", "Victim2") then
 		return 0
 	end
-	
-	local Count = DynastyGetMemberCount("VictimDynasty2")
-	local Victim = Rand(Count)
-	if not (DynastyGetMember("VictimDynasty2", Victim, "Victim2")) then
-		return 0
-	end	
 
 	if not AliasExists("Victim2") then
 		return 0
@@ -41,7 +36,7 @@ function Weight()
 		return 0
 	end
 
-	return 100
+	return 25 -- was 100 behind a 1-in-4 dice gate; same expected share, no dice
 end
 
 function Execute()

@@ -19,10 +19,15 @@ function Weight()
 		return 0
 	end
 	
-	return 10
+	return utility_Score("dynasty", 10, {
+		utility_Priority("dynasty", "Agressive"),
+		utility_Trait("dynasty", "bloodlust"),
+		utility_Money("dynasty", 20000),
+	}, "HireMyrmidon", "Conflict")
 end
 
 function Execute()
+	utility_Picked("dynasty", "HireMyrmidon")
 	local Difficulty = ScenarioGetDifficulty()
 	SetRepeatTimer("dynasty", "AI_HireMyrmidon", 2 * (5 - Difficulty))
 	MeasureRun("myrm_home", 0, "HireEmployeeBuildingRandom")

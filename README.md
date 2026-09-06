@@ -397,6 +397,173 @@ owner's Shadow Arts but never reaches zero, and that the price and shipment clam
 The price formula divides a skill by 100 and doubles it, so without a cap a high enough
 Bargaining made the liquor free and then negative -- that bound is asserted here.
 
+```powershell
+lua5.1 tools\modding_helpers\check_ai_decision.lua
+```
+
+Covers `ai_MakeDecision` in `Scripts/Library/AI.lua`, the personality roll behind AI
+bribe and trait decisions: both paths return a real boolean (the one-trait path used to
+return `0`, which Lua treats as true, so every bribe was accepted), the one-trait path is
+a percentage of `AIPersonality.dbt`, and a missing column counts as 0 instead of erroring.
+
+```powershell
+python tools\modding_helpers\check_basetree_weights.py
+```
+
+Every node under `Scripts/AI/BaseTree` must define `Weight()` and `Execute()`, and
+`Weight()` must return a number. The engine selects a child by **weighted random**
+(`AIWeightedRandom.h` in `GuildII.exe`): a weight is a probability share, not a priority,
+`0` means ineligible, and `return false` is undefined behaviour. Four nodes shipped that way.
+
+### AI decision layer: telemetry, utility scoring, goals
+
+The dynasty AI is the weighted-random tree under `Scripts/AI/BaseTree` (see
+`check_basetree_weights.py` above). Three pieces sit on top of it, and one game
+session collects everything needed to tune them.
+
+**Collecting a session.** The game truncates `logfile.log` on every launch, so first
+copy the log of the run you want as a baseline. Then set `Log = 1` under `[AI]` in
+`configs\config.ini` (or `AILog = 1` under `[OPTIONS]`, the section the campaign scripts
+are known to read). Pre-flight: launch to the main menu and check `logfile.log` for
+`::TWP::LOADED` (the library is in) and `::TWP::ENV` (which stdlib exists); if `LOADED`
+is missing, fix the Include before playing. Then load a save on difficulty Hard that is
+past the AI truce (a few rounds in): `Feud/AttackBuilding` and the gauntlet nodes gate
+on difficulty >= 2, and `aitwp_InitEnemies` assigns no enemies before the truce ends, so
+a fresh easy game never exercises the Conflict paths. The first `::TWP::SNAPSHOT` lines
+report `round=` and `diff=`, so a wrong save shows within the first game day. Play at
+least three game days, then run
+
+```powershell
+python tools\modding_helpersi_telemetry.py
+```
+
+It reads `$env:GUILD2\logfile.log` (or a path you pass) and prints: whether
+`utility.lua` loaded and what the engine's Lua stdlib offers; each dynasty's daily
+snapshot (money, buildings, offices, enemies, priorities, goal, evaluations per day)
+with the change over the session; how often the tree ticks; goal choices per persona;
+measure starts per goal; the target decisions; and, for every level of the tree, the
+observed pick share next to the share **predicted under six tuning variants**
+(current, wide, narrow, stronger goals, no goals, the old constants). Every
+`::TWP::W` line carries the raw inputs of `utility_Score`, so the roulette is replayed
+offline for any `UTILITY_LO/HI` or goal factor - the tuning question is answered from
+the one log instead of one run per value. `--selftest` exercises the parser on a
+built-in sample.
+
+Line types (all prefixed `[Script] `): `::TWP::LOADED`, `::TWP::ENV`, `::TWP::SNAPSHOT`
+and `::TWP::MEMBER` (daily), `::TWP::GOAL` (each goal choice) are always on;
+`::TWP::W`, `::TWP::PICK`, `::TWP::ENEMY`, `::TWP::BLD`, `::TWP::BELIEVER` and the
+`::TWP::AI::` trace need `Log = 1`. The exact fields are in the docstring of
+`ai_telemetry.py`. Without `Log = 1` a sample pre-change session showed 78% of AI
+measure starts idle - that is the number to beat.
+
+**Utility scoring** (`Scripts/Library/utility.lua`). A node keeps its tuned base weight
+and multiplies it by considerations in 0..1, each mapped onto a 0.5..1.5 factor, then
+by the goal factor; the tag names the node in the trace:
+
+```lua
+return utility_Score("dynasty", 20, {
+	utility_Priority("dynasty", "Political"),   -- AITWP_* priority as 0..1
+	utility_Trait("dynasty", "ambition"),        -- AIPersonality.dbt column as 0..1
+	{ value = utility_Money("dynasty", 20000), curve = "quad" },
+}, "ApplyForOffice", "Politics")
+```
+
+Curves: `linear` (default), `quad`, `sqrt`, `invert`. A node that stays a constant
+wraps it as `return utility_Trace("dynasty", "BuildHome", 5)` and every node starts
+`Execute()` with `utility_Picked("dynasty", "<Tag>")`, so the whole sibling set of a
+level is on record. Never call `Rand` inside a consideration: the tree runs in
+lockstep on every multiplayer peer, and nothing in the telemetry may touch game state.
+
+**Goal blackboard.** `utility_ChooseGoal`, called daily from `Priorities.lua`, writes
+`AI_Goal`, `AI_GoalTarget` and `AI_GoalUntil` on the dynasty and logs its inputs and
+scores. Nodes that name a goal get x3 when it is the current goal, x0.3 otherwise, x1
+when none is set; a goal lasts 72 game hours (`UTILITY_GOAL_HOURS`).
+
+Targets in the Feud, Election and economy subtrees are chosen by score, not dice:
+`aitwp_GetBestEnemy`, `aitwp_FindTargetBuilding` and `aitwp_FindBeliever` in
+`Scripts/Library/aitwp.lua`, each logging its full candidate list so another ranking
+rule can be tried against the same session. Ties fall to the lowest index so every
+peer agrees.
+
+```powershell
+lua5.1 tools\modding_helpers\check_utility.lua
+```
+
+covers the curves, the goal argmax, both target rankings and every telemetry line
+format without the engine.
+
+### House rules and the blood feud
+
+Behaviour the dynasty AI now follows, and where each rule lives:
+
+| rule | where |
+|---|---|
+| Every child is educated: school, then the apprenticeship, university for scholars. Mandatory, weight 200 in `Dynasty/`, feasibility-checked in `Weight()` so no pick is wasted. | `Scripts/AI/BaseTree/Dynasty/EducateChildren.lua` |
+| A house has a main class (`AI_MainClass`, its founder's) that its children are apprenticed into and its workshops are built for; rogue businesses only for a rogue house. It always keeps one rogue as its fighter (two as a blood enemy). | `aitwp_MainClass`, `aitwp_WantedApprenticeClass`, `aitwp_FindBuilder`; `ms_150_AttendApprenticeship.lua` reads `AI_ApprenticeClass`; `BuildWorkshop/Rogue.lua` |
+| Three children: a young couple gets 30 days for their own, then adopts (`AI_NaturalTryUntil`). | `Dynasty/Reproduce/AdoptOrphan.lua` |
+| Enemy lists come from relations, daily: blood target, trade rival, declared foes, dynasties disliked (favour < 30), capped at 5. No more random re-roll on load. | `aitwp_RefreshEnemies` from `Priorities.lua` |
+| One coloured AI dynasty per human player is that player's **blood enemy** (`AI_BloodEnemy` on the player, `AI_BloodEnemyOf` on the AI; deterministic, re-assigned when it dies). Its goal is Conflict for life; the player outranks every other enemy. | `aitwp_EnsureBloodEnemies`, `utility_ChooseGoal`, `aitwp_GetBestEnemy` |
+| The blood enemy runs the `BloodFeud` subtree (root weight 60): provoke duels by insult - never with martial arts and dexterity both under 5 or under 80% health, always against non-rogues, rogues on a daily 1-in-4 roll; forge evidence (Hexerdokument, bought at the market) against the player's most valuable character, fixed until charged; charge; razzia with a thug at evidence >= 35; ambush characters and employees outdoors away from town with every idle thug; keep 2 + title thugs; equip members, thugs and employees by title and treasury. | `Scripts/AI/BaseTree/BloodFeud.lua` and `BloodFeud/bf_*.lua`; helpers in `aitwp.lua` |
+| The same duel rule governs accepting: an AI insulted by a player declines a duel it would die in; a blood enemy insulted by its player always takes satisfaction. | `ms_055_InsultCharacter.lua` `AIDecide` |
+
+Property schema: `AI_MainClass` 1-4, `AI_ApprenticeClass` 1-4 on the child, `AI_NaturalTryUntil` game
+hours, `AI_BloodEnemy` / `AI_BloodEnemyOf` dynasty ids, `AI_EvidenceTarget` sim id, `AI_BF_DuelRogues` 0/1.
+The assignment is logged once as `::TWP::BLOODENEMY player=<id> enemy=<id> name=<dynasty>`; the
+`BloodFeud/` level appears in the replay tables of `ai_telemetry.py`.
+
+### Attitudes and the ladder of tools
+
+Every AI dynasty holds an **attitude** towards each human player (`aitwp_Attitude`):
+`blood` (its assigned rival), `feud` (a declared feud), `enemy` (in its enemy list or
+favour under 30), `friend` (favour 70+, friend-for-now: a courtesy now and then, never
+an alliance - `aitwp_PlayerPolicy` breaks one daily) or `neutral` (nothing). The blood
+rival is one coloured dynasty per player, re-assigned from the coloured ones when it
+dies and from the shadows only once every coloured one is gone.
+
+Tools against a player unlock on a **ladder** (`TWP_TOOL_LIST` in `aitwp.lua`): rung 0
+Serf/Commoner (title 1) ... rung 8 Prince (title 13+), and a rung also needs that many
+rounds played, so the whole arsenal is open by round 8. Each tool has a class - R
+reputation, E economic, P physical, L legal, O office power, D diplomatic recruitment -
+and an attitude may use only its classes: blood everything, feud and enemy E/P/L/O
+(no reputation attacks, no recruiting), lethal tools only in a declared feud, shadows
+never lethal and never above rung 4. `aitwp_Allowed(dyn, victim, tool)` is the single
+gate: every hostile leaf of `Feud/`, `Election/AttackOffice`, `Trial/AttackTrial`,
+`Duel/AttackDuel`, the `BloodFeud/` nodes and the thieves' and robbers' building
+plans call it; against AI victims it always answers yes. Office powers sit on the same
+ladder. Cooldowns are per acting character, not per house.
+
+The blood rival additionally buys through a thug (`bf_Procure`, 7% of cash, 15% at
+rung 8, treasury >= 100k; `bf_Stock`/`bf_Draw` move the items home and to the user),
+acquires a thieves' guild as its hideout whatever its class (`bf_Hideout`), taunts by
+letter, funds its allies, and uses every artefact of the ladder through
+`bf_UseArtefact`/`bf_UseBuildingArtefact`. The snapshot line carries `att=` and `rung=`.
+
+### Item catalogue
+
+[docs/ITEMS.md](docs/ITEMS.md) lists every item with its producer, the market that stocks it (and
+from which town level) and its in-game effect. Regenerate after touching `DB/Items.dbt`,
+`DB/BuildingToItems.dbt`, `DB/ItemsToMarket.dbt` or the item texts:
+
+```powershell
+python tools\modding_helpers\gen_items_md.py
+```
+
+### AI analysis tools
+
+Everything the first session review needed, kept as tools so no session has to
+reinvent them (all under `tools\modding_helpers`, all read-only):
+
+| tool | question it answers |
+|---|---|
+| `python ai_telemetry.py [log]` | Session summary and the weighted-random replay under six tuning variants (see above). `--selftest` runs it on a built-in sample. |
+| `python ai_focus.py [log] [--dynasty ID\|name] [--family Barker]` | Who lists a dynasty as an enemy and what they did about it; enemy-list churn per save load; per-subtree conversion of root picks into leaf measures; hostile measure starts by actor. Defaults to the human player (the one id in enemy lists with no AI snapshot). |
+| `python check_unresolved_calls.py [paths] [--overlay DIR]` | Static: every call in the tree and the libraries resolves to a native, a builtin, a same-file function or `<file>_<Function>` in the repo or the vanilla `Scripts` overlay. Exit 1 otherwise - an unresolved call in `Weight()` is a node that silently weighs 0. |
+| `python basetree_stats.py [--list CATEGORY]` | Shape of the tree: constant vs. `utility_Score` vs. `utility_Trace` weights, and hazards inside `Weight()` (writes to the shared `SIM` alias, non-local assignments, `Rand`, use of personality inputs). Tracks the conversion. |
+| `python check_basetree_weights.py` | Every node has `Weight()`/`Execute()` and never returns a boolean weight. |
+
+The two log tools need a session recorded with `Log = 1` (see the telemetry section);
+the two static tools run on the working tree. Python on Windows needs `G:/...` paths.
+
 ### Parse-checking every script
 
 ```powershell

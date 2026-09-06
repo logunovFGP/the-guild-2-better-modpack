@@ -27,6 +27,17 @@ function Run()
 	if IsStateDriven() then
 		--random choice
 		choice = Rand(4) + 1
+		-- the AI dynasty steers its children into a class (AI/BaseTree/Dynasty/EducateChildren.lua)
+		local Wanted = GetProperty("", "AI_ApprenticeClass") or 0
+		if Wanted == GL_CLASS_PATRON then
+			choice = 2
+		elseif Wanted == GL_CLASS_ARTISAN then
+			choice = 1
+		elseif Wanted == GL_CLASS_SCHOLAR then
+			choice = 3
+		elseif Wanted == GL_CLASS_CHISELER then
+			choice = 4
+		end
 		
 		if GetNobilityTitle("") > 7 then
 			choice = choice + 4

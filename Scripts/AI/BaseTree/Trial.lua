@@ -5,7 +5,7 @@ function Weight()
 		if DynastyGetMember("dynasty", i, "Member") and dyn_IsIdleMember("Member") then
 			if GetImpactValue("Member", "TrialTimer") >= 1 and ImpactGetMaxTimeleft("Member", "TrialTimer") <= 14 then
 				CopyAlias("Member", "TrialSIM")
-				return 50
+				return utility_Trace("dynasty", "Trial", 50)
 			end
 		end
 	end
@@ -15,6 +15,7 @@ function Weight()
 end
 
 function Execute()
+	utility_Picked("dynasty", "Trial")
 	CopyAlias("TrialSIM", "SIM")
 	RemoveAlias("TrialSIM")
 end

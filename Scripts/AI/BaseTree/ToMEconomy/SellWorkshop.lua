@@ -17,14 +17,15 @@ function Weight()
 		return 0
 	end
 
-	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, -1, "sd_Workshop") then
+	if not aitwp_FindTargetBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, "weakest", "sd_Workshop") then
 		return 0
 	end
 
-	return 2
+	return utility_Trace("dynasty", "SellWorkshop", 2)
 end
 
 function Execute()
+	utility_Picked("dynasty", "SellWorkshop")
 	SetRepeatTimer("dynasty", "BasicAI_SellShop", 12)
 	BuildingSetForSale("sd_Workshop", true)
 	SetState("sd_Workshop", STATE_SELLFLAG, true)

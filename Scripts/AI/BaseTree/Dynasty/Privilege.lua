@@ -36,10 +36,14 @@ function Weight()
 		return 0
 	end
 	
-	return 3
+	return utility_Score("dynasty", 3, {
+		utility_Priority("dynasty", "Political"),
+		utility_Trait("dynasty", "ambition"),
+	}, "Privilege", "Politics")
 end
 
 function Execute()
+	utility_Picked("dynasty", "Privilege")
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 12 - Difficulty * 2
 	SetRepeatTimer("SIM", "AI_Privilege", Timer)

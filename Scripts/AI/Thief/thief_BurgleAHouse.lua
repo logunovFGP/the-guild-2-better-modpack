@@ -13,15 +13,23 @@ function Weight()
 	local i = 0
 	local found = false
 	local DynID = GetDynastyID("dynasty")
-
-	while true do
+	-- a hostile player's house first, attitude and ladder permitting (aitwp_Allowed)
+	for j = 0, Count - 1 do
+		if not found and not GetImpactValue("Build"..j,"buildingburgledtoday") and BuildingGetOwner("Build"..j,"BuildingOwner")
+				and DynastyIsPlayer("BuildingOwner") and aitwp_IsHostile(aitwp_Attitude("dynasty", "BuildingOwner"))
+				and aitwp_Allowed("dynasty", "BuildingOwner", "burglary") then
+			i = j
+			found = true
+		end
+	end
+	while not found do
 
 		if i==Count then
 			break
 		end
 
 		if not GetImpactValue("Build"..i,"buildingburgledtoday") then	
-			if BuildingGetOwner("Build"..i,"BuildingOwner") then
+			if BuildingGetOwner("Build"..i,"BuildingOwner") and aitwp_Allowed("dynasty", "BuildingOwner", "burglary") then
 				if DynastyGetDiplomacyState("SIM", "BuildingOwner")<=DIP_NEUTRAL then
 					found = true
 					break

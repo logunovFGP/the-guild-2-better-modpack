@@ -15,10 +15,11 @@ function Weight()
 		return 0
 	end
 	
-	return 60
+	return utility_Trace("dynasty", "Workshop", 60)
 end
 
 function Execute()
+	utility_Picked("dynasty", "Workshop")
 	SetRepeatTimer("SIM", "AI_CheckWorkshop", 3)
 	aitwp_Log("Enter subtree ToMEconomy::Workshop", "SIM", true)
 end
