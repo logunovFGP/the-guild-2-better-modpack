@@ -8,14 +8,6 @@ function AIDecide()
 
 end
 
--- Percent chance a contraband run is seized, given the owner's Shadow Arts.
--- 45% for an unskilled owner down to 6% at the skill cap of 15; never zero,
--- so smuggling always carries some risk.
-function SeizureChance(stealthskill)
-	stealthskill = math.max(0, math.min(stealthskill or 0, 15))
-	return math.max(6, 45 - stealthskill * 3)
-end
-
 function Run()
 	local Money = GetMoney("") 
 	
@@ -96,14 +88,16 @@ function Run()
 	
 	economy_UpdateBalance("", "WaresBought", 0-price)
 	
-	-- The liquor is contraband, so a run can be intercepted and seized: the
-	-- money is already spent above and the goods never arrive. Shadow Arts is
-	-- what keeps the run quiet, so a skilled owner is rarely caught.
-	if Rand(100) < ms_021_divegetalc_SeizureChance(stealthskill) then
-		MsgQuick("", "@L_MEASURES_DIVEGETALC_FAIL_+2")
-		return
-	end
 	
+	-- Smuggling contraband is a crime. Being noticed does not stop the delivery;
+	-- it leaves a witness holding evidence, which is what a rival can act on.
+	-- The action row (Action.dbt 63) sets observerskill = 0 so the engine adds no
+	-- second hidden roll on top of this one. Victim and location are the building:
+	-- the delivery happens there, so an owner who leaves town is not safe.
+	if gameplayformulas_ContrabandIsNoticed(stealthskill) then
+		CommitAction("smugglealcohol", "Besitzer", "", "")
+	end
+
 	AddItems("", alcId, menge, INVENTORY_STD)
 	MsgQuick("", "@L_MEASURES_DIVEGETALC_SUCCESS_+0")
 end

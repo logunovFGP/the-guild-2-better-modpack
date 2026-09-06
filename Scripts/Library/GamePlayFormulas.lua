@@ -1264,3 +1264,28 @@ function CheckPublicBuilding(city,building)
 	end
 	return {0, 0}
 end
+
+-- Chance of being noticed handling contraband, from the owner's Shadow Arts.
+--
+-- Linear: 75% at Shadow Arts 1 down to 10% at 10, flat outside that range. The
+-- roll is made here rather than left to the engine: an action row's observerskill
+-- does gate detection, but on a curve we cannot see or shape, so those rows set
+-- observerskill = 0 and this decides instead.
+--
+-- Retail selling passes a divisor because it fires per drink sold rather than
+-- once per delivery -- a guest runs several purchase rounds and a busy divehouse
+-- turns over a hundred-odd sales a day, so an undivided chance would be caught
+-- within the hour.
+function ContrabandCaughtChance(ShadowArts, Divisor)
+	ShadowArts = math.max(1, math.min(ShadowArts or 1, 10))
+	local Chance = 75 - (65 * (ShadowArts - 1)) / 9
+	if Divisor and Divisor > 1 then
+		Chance = Chance / Divisor
+	end
+	return Chance
+end
+
+-- Rolls that chance. Kept beside it so callers cannot disagree about the units.
+function ContrabandIsNoticed(ShadowArts, Divisor)
+	return (Rand(10000) / 100) < gameplayformulas_ContrabandCaughtChance(ShadowArts, Divisor)
+end

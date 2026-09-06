@@ -1998,6 +1998,24 @@ function GoToDivehouse()
 			local ItemCount, TotalPrice = economy_BuyItems("Destination", "", ItemId, NumItems)
 			
 			if ItemCount and ItemCount > 0 then
+				-- Pirate's Grog and Skull Brandy are contraband; the two beers are not.
+				-- Selling one is a crime, but only the street outside can witness it:
+				-- sims inside the building are never picked as observers, so the guest
+				-- being served can never report it. Divided by 100 because this fires
+				-- per drink, not per delivery.
+				if Choice == "PiratenGrog" or Choice == "Schadelbrand" then
+					if BuildingGetOwner("Destination", "ContrabandSeller") then
+						local SellerStealth = chr_GetSkillValue("ContrabandSeller", SHADOW_ARTS)
+						if gameplayformulas_ContrabandIsNoticed(SellerStealth, 100) then
+							if Choice == "Schadelbrand" then
+								CommitAction("sellbrandy", "ContrabandSeller", "Destination", "Destination")
+							else
+								CommitAction("sellgrog", "ContrabandSeller", "Destination", "Destination")
+							end
+						end
+					end
+				end
+
 				if HasProperty("Destination","ServiceActive") then
 					local TavernLevel = BuildingGetLevel("Destination")
 					local TavernAttractivity = GetImpactValue("Destination", "Attractivity")	
