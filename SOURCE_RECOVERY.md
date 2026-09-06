@@ -284,3 +284,40 @@ compiler chose (accept `0x50`-`0x57`, not just `push esi`), and a stack cleanup 
 reload can sit between the registrar call and the name push. Requiring `push esi` and
 adjacency found 972 of 1048 names, and made the 76 it missed look like evidence of a
 second mechanism that did not exist.
+
+### Recovered signatures for the undocumented 351
+`meta/engine.undocumented.d.lua` gives them arity, parameter types and optionality,
+recovered from the typed argument-fetch calls each native makes. The fetch shape is
+positional:
+
+```
+push 0xce7c14   ; type descriptor
+push 0x01       ; 1 = required, 0 = optional
+push 0x00
+push 0x01       ; parameter index
+push esi
+call 0x006373c0 ; typed fetcher
+```
+
+The fetcher-to-type map was derived, not assumed: every documented native was matched
+against the parameter position each fetch reads, and the type the dump declares there
+was tallied. `0x6373c0` came out Alias in 95% of 556 samples, `0x637320` boolean in 94%,
+`0x637230` number in 100%, `0x637370` string.
+
+Accuracy, measured by running the recovery against 60 documented natives: arity correct
+53/60; across 111 parameter positions, 7 genuine type disagreements (6%) and 9 more where
+the dump says `any` and the recovery is more specific; optional flags agree 97/107.
+
+Two deliberate omissions. No `@return`, because the strongest return-pusher candidate
+(`0x81e290`, +45 lift) also correlates 85% with Alias *parameters* -- too ambiguous to
+publish. And 95 stubs are `(...)` rather than `()`: the `CC_*` character-creation family
+uses a shorter fetch shape (`push index; push reg; call 0x81ddf0`) carrying no type
+descriptor, so their parameters are unreadable this way, and declaring them as taking
+none would make the language server reject correct calls.
+
+Method note, again: the first attempt walked bytes backwards from each call to find its
+pushes. x86 instruction lengths vary, so it guessed boundaries and produced confident
+nonsense -- `GetDistance`, which takes two Aliases, came out as one Alias and one string.
+Disassembling through rizin gives exact boundaries. Two rizin quirks cost time: `#`
+starts a comment so `?e ###marker` fails to parse, and a script passed with `-i` is
+rejected outright if it was written with CRLF endings.

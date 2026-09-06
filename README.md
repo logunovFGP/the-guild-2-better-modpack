@@ -328,6 +328,20 @@ It walks the engine's Lua registration calls and writes `meta\engine.bindings.ts
 `BuildingIsWorkingTime`, `BlackBoardAddPamphlet` and the whole `CC_*` character-creation
 family among them. Treat the TSV as ground truth and the dump as commentary.
 
+It also writes `meta\engine.undocumented.d.lua`, giving those 351 completion and
+parameter hints. There are deliberately no descriptions: nothing in the binary says
+what they mean. What is recovered is mechanical -- native address, the `.cpp` file and
+line, arity, each parameter's type, and which are optional -- by decoding the typed
+argument-fetch calls each native makes.
+
+Running the same recovery against 60 *documented* natives and comparing with the dump
+measures how far to trust it: arity correct 53/60; across 111 parameter positions,
+7 genuine type disagreements (6%) plus 9 more where the dump says `any` and the
+recovery is the more specific of the two; optional flags agree 97/107. No `@return`
+is emitted, because the likeliest return-pusher also correlates with Alias parameters.
+95 stubs are `(...)` rather than `()` -- their parameters could not be read, and
+declaring them as taking none would make the language server reject correct calls.
+
 #### Resizing a GUI panel
 
 The `.gui` files under `GUI/` are binary serialised, so a window's size cannot be edited

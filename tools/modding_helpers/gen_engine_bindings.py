@@ -43,11 +43,26 @@ library functions that the documentation dump lists as if they were engine API.
 import os
 import re
 import struct
+import subprocess
 import sys
 
 DEFAULT_EXE = r"G:/SteamLibrary/steamapps/common/The Guild 2 Renaissance/GuildII.exe"
 DECLARATIONS = os.path.join("meta", "engine.d.lua")
 TARGET = os.path.join("meta", "engine.bindings.tsv")
+STUBS = os.path.join("meta", "engine.undocumented.d.lua")
+
+# Argument fetchers, and the Lua type each one produces. Derived by taking every
+# documented native, matching each fetch call against the parameter position it
+# reads, and tallying the type the dump declares there: 0x6373c0 came out Alias in
+# 95% of 556 samples, 0x637320 boolean in 94%, 0x637230 number in 100%.
+ARG_FETCHERS = {
+    0x6373C0: "Alias", 0x81E290: "Alias",
+    0x637320: "boolean",
+    0x637230: "number", 0x6372D0: "number", 0x637280: "number", 0x81DCD0: "number",
+    0x637370: "string",
+}
+# Entry macro. Its arguments carry the .cpp file and line the binding lives on.
+PROLOGUE = 0x637560
 
 # PE32, fixed image base, no ASLR: file offset + 0x400000 == virtual address.
 # (paddr, size, vaddr) for .text, .rdata, .data
@@ -129,6 +144,150 @@ def walk(image):
     return found
 
 
+def function_end(image, va, cap=0x2000):
+    """Length of the function at va. MSVC pads with int3, so a ret followed by
+    0xCC is the last byte."""
+    start = va_to_offset(va)
+    i = start
+    while i < start + cap:
+        if image[i] == 0xC3 and image[i + 1] == 0xCC:
+            return i + 1 - start
+        if image[i] == 0xC2 and image[i + 3] == 0xCC:
+            return i + 3 - start
+        i += 1
+    return cap
+
+
+def disassemble(addresses, exe, chunk=60):
+    """rizin's view of every push/call in the given functions.
+
+    Byte-walking backwards from a call to find its pushes does not work -- x86
+    instruction lengths vary, so the walk guesses boundaries and silently returns
+    wrong operands (it read GetDistance, which takes two Aliases, as one Alias and
+    one string). rizin gives exact boundaries. Chunked because a single -c string
+    for a thousand functions exceeds the command-line limit, and -i script files
+    are not usable: rizin rejects a script written with CRLF endings.
+    """
+    line = re.compile(r"0x([0-9a-f]{8})\s+(push|call)\s+(.*)")
+    out = []
+    for i in range(0, len(addresses), chunk):
+        commands = ";".join("af @ 0x%x;pdf @ 0x%x~push,call" % (a, a)
+                            for a in addresses[i:i + chunk])
+        try:
+            result = subprocess.run(
+                ["rizin", "-q", "-e", "scr.color=0", "-c", commands, exe],
+                capture_output=True, text=True, timeout=600)
+        except (OSError, subprocess.SubprocessError):
+            return None
+        for text in result.stdout.splitlines():
+            found = line.search(text)
+            if found:
+                out.append((int(found.group(1), 16), found.group(2), found.group(3)))
+    return out
+
+
+def _target(operand):
+    found = re.search(r"fcn\.([0-9a-f]{8})|^(0x[0-9a-f]+)", operand.strip())
+    return int(found.group(1) or found.group(2), 16) if found else None
+
+
+def _literal(operand):
+    found = re.match(r"^(0x[0-9a-f]+)", operand.strip())
+    return int(found.group(1), 16) if found else None
+
+
+def recover_signature(image, instructions, va):
+    """(source file, line), {index: (type, required)} for one native.
+
+    Both shapes are positional, counting back from the call:
+
+        push <type descriptor>   push <flag>
+        push <required>          push <line>
+        push <0>                 push <"...\\Foo.cpp">
+        push <parameter index>   push <reg>
+        push <reg>               call PROLOGUE
+        call <fetcher>
+    """
+    low, high = va, va + function_end(image, va)
+    body = [x for x in instructions if low <= x[0] < high]
+    params, source = {}, None
+    for i, (_, mnemonic, operand) in enumerate(body):
+        if mnemonic != "call":
+            continue
+        called = _target(operand)
+        if called == PROLOGUE and i >= 4:
+            name = body[i - 2][2]
+            if "SourceCode" in name:
+                tail = name.split(";")[-1].strip().strip('"')
+                leaf = tail.replace(chr(92), "/").split("/")[-1]
+                source = (leaf, _literal(body[i - 3][2]))
+        elif called in ARG_FETCHERS and i >= 5:
+            index = _literal(body[i - 2][2])
+            required = _literal(body[i - 4][2])
+            if index is not None and 1 <= index <= 12:
+                params.setdefault(index, (ARG_FETCHERS[called], required))
+    return source, params
+
+
+def write_stubs(image, instructions, bindings, undocumented):
+    """LuaLS stubs for natives the documentation dump never mentions."""
+    out = [
+        "---@meta",
+        "",
+        "-- Engine functions that ARE registered by GuildII.exe but do not appear in",
+        "-- ScriptDocumentation.html. Generated by",
+        "-- tools/modding_helpers/gen_engine_bindings.py; do not edit by hand.",
+        "--",
+        "-- There are no descriptions here on purpose. Nothing in the binary says what",
+        "-- these functions mean, and inventing prose would be worse than silence.",
+        "-- What IS recovered is mechanical: the native address, the .cpp file and line",
+        "-- the binding sits on, how many parameters it reads, each parameter's type,",
+        "-- and which are optional.",
+        "--",
+        "-- Accuracy, measured by running the same recovery against 60 documented natives",
+        "-- and comparing with the dump: arity correct 53/60; of 111 parameter positions,",
+        "-- 7 genuine type disagreements (6%), and a further 9 where the dump says 'any'",
+        "-- and this is more specific; optional flags agree 97/107.",
+        "--",
+        "-- No @return anywhere: the likeliest return-pusher also correlates with Alias",
+        "-- PARAMETERS, so return types cannot be established this way.",
+        "--",
+        "-- Where no parameter could be read the stub is `(...)`, NOT `()`. Those natives",
+        "-- (the CC_* character-creation family and others) use a shorter fetch shape",
+        "-- carrying no type descriptor. Declaring them as taking nothing would make the",
+        "-- language server flag correct calls as errors, so they accept anything instead.",
+        "",
+        "---@class Alias",
+        "",
+    ]
+    written = 0
+    for name in undocumented:
+        va = bindings[name]
+        source, params = recover_signature(image, instructions, va)
+        arity = max(params) if params else 0
+        where = "%s:%s" % source if source and source[1] else (source[0] if source else "")
+        out.append("---Undocumented. Native at 0x%08x%s"
+                   % (va, (", " + where) if where else ""))
+        if not arity:
+            out.append("---Parameters not recoverable; accepts anything rather than")
+            out.append("---claiming it takes none.")
+            out.append("---@param ... any")
+            out.append("function %s(...) end" % name)
+            out.append("")
+            written += 1
+            continue
+        for i in range(1, arity + 1):
+            kind, required = params.get(i, ("any", None))
+            out.append("---@param p%d%s %s" % (i, "?" if required == 0 else "", kind))
+        out.append("function %s(%s) end"
+                   % (name, ", ".join("p%d" % i for i in range(1, arity + 1))))
+        out.append("")
+        written += 1
+    with open(STUBS, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("\n".join(out))
+    return written
+
+
 def declared_names(path):
     try:
         with open(path, encoding="utf-8") as handle:
@@ -181,6 +340,13 @@ def main():
     print("wrote %s" % TARGET)
 
     if undocumented:
+        print("\nrecovering signatures for the undocumented set (needs rizin)...")
+        instructions = disassemble([bindings[n] for n in undocumented], exe)
+        if instructions is None:
+            print("  rizin not runnable; skipped %s" % STUBS)
+        else:
+            written = write_stubs(image, instructions, bindings, undocumented)
+            print("  wrote %s (%d stubs)" % (STUBS, written))
         print("\nfirst 20 undocumented natives:")
         for name in undocumented[:20]:
             print("  %-34s 0x%08x" % (name, bindings[name]))
