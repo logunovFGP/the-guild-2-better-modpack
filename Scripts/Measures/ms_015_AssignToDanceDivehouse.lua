@@ -5,6 +5,35 @@
 -- Run
 -- -----------------------
 -- ******** THANKS TO KINVER ********
+-- One dancer per building, and only this building's own dancer.
+--
+-- The previous test scanned a 2000-unit radius for any sim carrying DanceSim,
+-- which had two faults: a dancer in a neighbouring divehouse blocked this one,
+-- and it never asked whether the dancer belonged here at all. The employee path
+-- below copies whatever building she is standing in over the "Divehouse" alias,
+-- so without an ownership test she could take the floor in a rival's house.
+function MayDanceHere()
+	-- Someone already has the floor in this building.
+	if HasProperty("Divehouse", "DanceShow") then
+		return false
+	end
+
+	-- The owning dynasty may always perform in its own house.
+	if BuildingGetOwner("Divehouse", "DanceBoss") then
+		if GetDynastyID("") == GetDynastyID("DanceBoss") then
+			return true
+		end
+	end
+
+	-- Otherwise she must be employed HERE: her working place has to be this
+	-- very building, not merely some divehouse she walked into.
+	if not SimGetWorkingPlace("", "DanceWork") then
+		return false
+	end
+
+	return GetID("DanceWork") == GetID("Divehouse")
+end
+
 function Run()
 	if not GetData("AutoDispatch") then
 		-- Player-issued. Record the order (which also clears any previous
@@ -54,10 +83,7 @@ function Run()
 	end
 
 
-	local Filter = "__F((Object.GetObjectsByRadius(Sim) == 2000) AND (Object.Property.DanceSim==1))"
-	local count = Find("", Filter, "Alias", -1)
-
-	if count ~= 0 then
+	if not ms_015_assigntodancedivehouse_MayDanceHere() then
 		StopMeasure()
 	else
 		SetProperty("Divehouse", "DanceShow",1)
