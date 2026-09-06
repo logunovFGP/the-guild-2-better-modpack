@@ -65,9 +65,14 @@ function Run()
 	PlayAnimation("", "preach")
 	ResetProcessProgress("")
 	StopAction( "preach", "")
-	
-	-- priest goes back to church
-	f_MoveTo("", "church")
+
+	-- Employees and AI sims head back to church, which keeps the streets busy.
+	-- A player-controlled main character stays put and is free right away.
+	if not DynastyIsPlayer("") then
+		f_MoveTo("", "church", GL_MOVESPEED_RUN)
+	end
+
+	StopMeasure()
 end
 
 function CleanUp()
