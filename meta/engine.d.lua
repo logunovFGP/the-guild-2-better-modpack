@@ -5,6 +5,28 @@
 -- Types and text are faithful to the dump, including its errors;
 -- notes on top come from NOTES/FILE_NOTES in the generator.
 
+--
+-- Observer scripts (DB/Action.dbt `observerscript`) receive the OBSERVER as the
+-- empty alias and the actor as `Actor`; see bs_Pox.lua. A .lua newly added to
+-- Scripts/Measures/Behaviour IS invoked -- an earlier note claiming otherwise was a
+-- symptom of the BOM described under CommitAction.
+-- `observerskill` is a DB/Skills.dbt id and gates detection on the ACTOR's skill.
+-- An earlier measurement here (100% detected at shadow_arts 5 against 38% at 13) is
+-- withdrawn: it counted runs with no witness in range as clean.
+-- `one_time_event = 1` means one reaction per observer per action; with 0 a single
+-- commit is re-observed for hours of game time.
+-- **Sims inside a building are never chosen as observers** -- 297 observations with
+-- 24 guests in the room produced no indoor witness, so anything sold indoors is
+-- unobservable by this mechanism.
+--
+-- DB tables are plain text. Text.dbt is UTF-16LE with a BOM (`id | label | english`).
+-- **Action.dbt and MemoryEvent.dbt are plain ASCII with NO BOM.** A UTF-8 BOM makes
+-- the parser miss `Table Description:` on line 1 and discard the entire table without
+-- a word in the log. Check the first three bytes: 546162 good, efbbbf dead.
+-- They are override tables where `~` inherits the base value; the key column is not
+-- always `id` -- Action.dbt is keyed by `name`. Engine Lua must be CRLF.
+-- logfile.log is truncated on every launch, so a stale mtime means the run never
+-- happened -- check it before concluding a change had no effect.
 -- Text tables. DB/Languages/Text.dbt is UTF-16LE **with a BOM**, CRLF, rows shaped
 -- `<id>   "<label>"   "<text>"   |` -- three spaces between fields everywhere
 -- except #russian, which uses tabs. Columns are id, label and the language name;
@@ -952,6 +974,23 @@ function CitySimBreakout(pCity, pSim) end
 function ClearStateImpact(StateImpact) end
 
 ---This function commits an action. The action can create evidences and controls the observer if nessesary. The action are defined in the database.
+---**Measured over ~200 smuggling runs, Sep 2026.** Declares a Boolean return,
+---but it returns `true` even when the action produces no observer at all, so the
+---return value proves nothing beyond the call not crashing.
+---Argument shape that works is `(name, actor, victim, location)`; ms_061 is the
+---reference. **Observation is centred on the LOCATION, not the actor** -- 297 of
+---297 observers fell inside `observerrange` of the building passed as location
+---while the actor stood up to 16175 units away, so an owner leaving town does not
+---escape a crime committed at his building.
+---It also returns `true` for a name with no row anywhere, so the return value
+---cannot tell a loaded action from a typo.
+---**Mod-added actions work; there is no id ceiling.** The engine keys its action
+---table on the `name` column (`std::map<cl_String, cl_ActionData>`, loader at
+---0x7d3a60), so `id` never enters the lookup. An earlier note here claimed rows
+---past base id 56 were never observed; that was a UTF-8 BOM accidentally written
+---into DB/Action.dbt, which makes the parser discard the whole table silently.
+---Not fire-and-forget either: it starts a durable action that observers scan while
+---it runs, ended by `StopAction`; state_contaminated.lua is the reference idiom.
 ---@param ActionName string database name of the action
 ---@param pActor Alias the object what started the action (guildobject)
 ---@param pVictim? Alias the victim of the action (can be a sim or a building --> (owner) ) (sim)
@@ -1878,6 +1917,10 @@ function GetNobilityTitleLabel(Title) end
 function GetOfficeTypeHolder(pSettlement, OfficeType, Result) end
 
 ---Get's outdoor-locator from the terrain by it's name. If there is more than one locator buy that name, the locator are returned with the name + the index number. eg. if ret_Position is "Pos", and 3 locators are found, the locators are returned as "Pos0", "Pos1", "Pos2". The first found locator is also returned as "Pos".
+---Takes a locator **name**, not an index -- `GetOutdoorLocator("Crowded7", ...)`.
+---Passing the loop counter instead silently finds nothing and callers fall through
+---to their fallback. `chr_CityFindCrowdedPlace` stores the name; ms_011's own
+---inline search stored the integer, and the two disagreed for years.
 ---@param LocatorName string Name of the locator
 ---@param MaxCount any Max count of the locators that should be returned (-1 for all)
 ---@param ret_Position Alias The positions on success. (position)
@@ -3833,6 +3876,15 @@ function SimFindSquad(pSim, ret_Squad) end
 function SimGetAge(pSim) end
 
 ---Get the alignment from a sim. The alignment begins at 0 (good) and ends with 100 (evil)
+---0-100, where **0 is good and 100 is evil**; `f_GetAlignmentVariant` buckets it
+---into nine tiers from HALO_WEARER to WALKING_NIGHTMARE.
+---It is not cosmetic. `Trial.lua:795` adds **+2 evidence** against an accused above
+---80 and subtracts 2 below 15; `WeddingCeremony.lua:330` turns guests hostile at
+---**>= 70**; `bs_Fire.lua:81` means only sims at **<= 45** help put out fires.
+---MemoryEvent.dbt's `alignmentmodifier` is how far an act pushes the actor toward
+---evil (MURDER 20, attack 12, THEFT 8, acceptbribe 1), and its `alignment` column
+---is the weight that evidence contributes to `GetEvidenceAlignmentSum`, which
+---gates blackmail (needs >= 3) and detention (> 0).
 ---@param pSim Alias sim (sim)
 ---@return number # the alignment from 0 to 100 (0:good ... 100:evil)
 function SimGetAlignment(pSim) end
