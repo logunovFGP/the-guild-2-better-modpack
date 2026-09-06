@@ -155,6 +155,40 @@ To confirm the junction is actually feeding the engine, add a uniquely-named mar
 `Scripts/GameState/StartScreen.lua` in `Init()`, restart, and search the log for it. A hit
 proves the engine read your working tree, since that string exists nowhere else.
 
+### Database tables (`.dbt`)
+
+`DB\*.dbt` are the engine's data tables: plain text, whitespace separated, one row per
+line, each terminated by `|`. A mod ships **override** copies that the engine merges
+over the base tables in the game folder.
+
+```
+//Table File, Version 1.02 (c) 2004 4head studios
+
+Table Description:
+"id" INT -1 |"name" STRING 0 |"observerrange" INT 0 |
+
+Data:
+21   "pickpocket"   300   |
+```
+
+- `~` in a cell means **inherit the base table's value**, so only cells you actually
+  change need a real one.
+- Rows absent from the base table are **added**, so a mod can introduce new actions,
+  measures and memory events rather than only retuning existing ones.
+- The key column is not always `id`. `Action.dbt` is keyed by **`name`** -- the engine
+  builds a `std::map<cl_String, cl_ActionData>` from that column, so action ids have no
+  ceiling and no bearing on lookup.
+- Database edits are **not hot-reloadable**; restart as far as the main menu.
+
+Encoding is unforgiving. Most tables are ASCII with CRLF; the `DB\Languages\**\Text.dbt`
+files are UTF-16LE with a BOM and must stay that way. Never write a `.dbt` through a
+text-mode `encoding=`; round-trip the bytes instead:
+
+```python
+raw = open(path, "rb").read()
+open(path, "wb").write(raw.replace(old, new))
+```
+
 ### Gotchas
 
 - **`logfile.log` is truncated on every launch.** Check its modified time before concluding a
@@ -167,6 +201,16 @@ proves the engine read your working tree, since that string exists nowhere else.
 - **An unbalanced `"` in a `.dbt` row silently loses that string.** The text system
   cannot parse the row and shows nothing. Three Spanish rows shipped that way. After
   editing a table, check every data row has exactly four quotes.
+- **A UTF-8 BOM at the top of a `.dbt` silently deletes the entire table.** The parser
+  expects `Table Description:` on line 1; with a BOM that line reads
+  `\xEF\xBB\xBFTable Description:`, fails to match, and the whole file is discarded --
+  every override row and every added row with it, and nothing in the log. This cost an
+  entire evening: `Action.dbt` acquired one from a script that rewrote it with
+  `encoding="utf-8-sig"`, after which a new crime action silently did nothing while
+  action id, observer range, observation window, committer type and observer-script
+  location were each eliminated as suspects in turn. Check the first three bytes:
+  `546162` (`Tab`) is a healthy table, `efbbbf` is a dead one. Language `Text.dbt`
+  files are the exception -- UTF-16LE, and they keep their `fffe` BOM.
 - The repo is large (~1.2 GB of history, no LFS). A shallow clone helps if you do not need history.
 
 ### Contributing
@@ -270,6 +314,19 @@ python tools\modding_helpers\gen_engine_meta.py
 That gives completion, parameter hints and a warning on misspelled engine calls in any
 editor with the Lua extension installed. `runtime.version` is set to `Lua 5.1`.
 `meta\` sits outside `Scripts\`, so the engine never loads it.
+
+The dump is incomplete, so a second tool reads the API straight out of the binary:
+
+```powershell
+python tools\modding_helpers\gen_engine_bindings.py
+```
+
+It walks the engine's Lua registration calls and writes `meta\engine.bindings.tsv`
+(name, native address, whether the dump documents it). The current build registers
+**1048** functions; `ScriptDocumentation.html` describes 764, of which 697 match. So
+**351 engine calls are real but undocumented** -- `BuildingGetRoom`,
+`BuildingIsWorkingTime`, `BlackBoardAddPamphlet` and the whole `CC_*` character-creation
+family among them. Treat the TSV as ground truth and the dump as commentary.
 
 #### Resizing a GUI panel
 
