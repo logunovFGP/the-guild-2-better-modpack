@@ -28,7 +28,18 @@ function Weight()
 				if T.lethal then
 					W = 150
 				end
-				return utility_Trace("dynasty", "bf_UseArtefact", W)
+				-- scored: the tool's severity and how well the victim fits it - value for a
+				-- paper or letter, weakness for a poison or spell, neutral for a throw
+				local Fit = 0.5
+				if T.target == "best" then
+					Fit = utility_Norm(aitwp_PlayerTargetScore("Victim", "best") or 0, 20, 200)
+				elseif T.target == "weak" then
+					Fit = 1 - GetHPRelative("Victim")
+				end
+				return utility_Score("dynasty", W, {
+					{ value = utility_Norm(aitwp_Severity(T), 1, 5), curve = "linear" },
+					{ value = Fit, curve = "linear", lo = 0.8 },
+				}, "bf_UseArtefact")
 			end
 		end
 	end

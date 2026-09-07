@@ -12,9 +12,10 @@ function Weight()
 		return 0
 	end
 
-	local Count = DynastyGetMemberCount("VictimDynasty")
-	
-	if not DynastyGetMember("VictimDynasty", Rand(Count), "WAR_SIM") then
+	-- the weakest fighter of the victim's house caught outdoors, rogues last - a squad
+	-- cannot reach anyone indoors, and a random member often was
+	if not aitwp_FindPlayerTarget("VictimDynasty", "duel", "WAR_SIM")
+			and not aitwp_FindPlayerTarget("VictimDynasty", "rogue", "WAR_SIM") then
 		return 0
 	end
 	

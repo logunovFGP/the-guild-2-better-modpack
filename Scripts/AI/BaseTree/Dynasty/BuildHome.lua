@@ -1,5 +1,5 @@
 function Weight()
-	if DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
+	if aitwp_OwnBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
 		-- residence exists already
 		return 0
 	end
@@ -64,8 +64,8 @@ function Execute()
 	end
 	
 	-- buy a new residence if possible, empty houses first
-	if not CityGetRandomBuilding("MyCity", nil, GL_BUILDING_TYPE_RESIDENCE, MinResLvL, -1, FILTER_NO_DYNASTY, "Residence") then
-		CityGetRandomBuilding("MyCity", nil, GL_BUILDING_TYPE_RESIDENCE, MinResLvL, -1, FILTER_IS_BUYABLE, "Residence")
+	if not CityGetNearestBuilding("MyCity", "SIM", -1, GL_BUILDING_TYPE_RESIDENCE, MinResLvL, -1, FILTER_NO_DYNASTY, "Residence") then
+		CityGetNearestBuilding("MyCity", "SIM", -1, GL_BUILDING_TYPE_RESIDENCE, MinResLvL, -1, FILTER_IS_BUYABLE, "Residence")
 	end
 	
 	if AliasExists("Residence") then
@@ -74,7 +74,7 @@ function Execute()
 	end
 	
 	-- Still no residence? Then build a new one, but only for important people
-	if HighSociety > 0 or DynastyGetRandomBuilding("SIM", 2, GL_BUILDING_TYPE_MINE, "MyMine") then
+	if HighSociety > 0 or aitwp_OwnBuilding("SIM", 2, GL_BUILDING_TYPE_MINE, "MyMine") then
 		
 		local Proto = ScenarioFindBuildingProto(nil, GL_BUILDING_TYPE_RESIDENCE, MinResLvL, -1)
 		if Proto ~= -1 then

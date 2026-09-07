@@ -16,7 +16,20 @@ function Weight()
 	if not aitwp_FindPlayerTarget("PlayerDyn", "outside", "Victim") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_ThugAttack", 120)
+	-- scored: a weak victim, many free thugs, an aggressive house
+	local Free = 0
+	local Count = DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON)
+	for i = 0, Count - 1 do
+		if DynastyGetWorker("dynasty", GL_PROFESSION_MYRMIDON, i, "TWP_TA") and aitwp_IdleThug("TWP_TA") then
+			Free = Free + 1
+		end
+	end
+	RemoveAlias("TWP_TA")
+	return utility_Score("dynasty", 120, {
+		{ value = 1 - GetHPRelative("Victim"), curve = "linear", lo = 0.8 },
+		{ value = utility_Norm(Free, 1, 3), curve = "sqrt" },
+		utility_Priority("dynasty", "Agressive"),
+	}, "bf_ThugAttack")
 end
 
 function Execute()

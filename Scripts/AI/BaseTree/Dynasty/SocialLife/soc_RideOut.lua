@@ -21,10 +21,10 @@ function Weight()
 	end
 
 	local HomeID = GetID("RIDE_Home")
-	for i = 1, CityCount do
-		local Alias = "RIDE_City"..Rand(CityCount)
+	for i = 0, CityCount - 1 do
+		local Alias = "RIDE_City" .. i
 		if AliasExists(Alias) and GetID(Alias) ~= HomeID then
-			if CityGetRandomBuilding(Alias, GL_BUILDING_CLASS_MARKET, -1, -1, -1, FILTER_IGNORE, "RIDE_Spot") then
+			if CityGetNearestBuilding(Alias, "SIM", GL_BUILDING_CLASS_MARKET, -1, -1, -1, FILTER_IGNORE, "RIDE_Spot") then
 				if GetDistance("SIM", "RIDE_Spot") >= 16000 then
 					return 5
 				end

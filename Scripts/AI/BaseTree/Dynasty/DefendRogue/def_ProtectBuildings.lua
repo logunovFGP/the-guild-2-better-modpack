@@ -15,7 +15,8 @@ function Weight()
 		return 0
 	end
 	
-	if not DynastyGetRandomBuilding("SIM", 2, -1, "ProtectMe") then
+	-- every workshop gets its turn at the hourly check, not always the biggest one
+	if not aitwp_OwnBuildingByTurn("SIM", 2, -1, "ProtectMe", "Protect") then
 		return 0
 	end
 	

@@ -1,6 +1,6 @@
 function Weight()
-	if not DynastyGetRandomBuilding("SIM", 2, GL_BUILDING_TYPE_CHURCH_EV, "Church") then
-		if not DynastyGetRandomBuilding("SIM", 2, GL_BUILDING_TYPE_CHURCH_CATH, "Church") then
+	if not aitwp_OwnBuilding("SIM", 2, GL_BUILDING_TYPE_CHURCH_EV, "Church") then
+		if not aitwp_OwnBuilding("SIM", 2, GL_BUILDING_TYPE_CHURCH_CATH, "Church") then
 			return 0
 		end
 	end

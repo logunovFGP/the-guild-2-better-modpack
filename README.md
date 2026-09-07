@@ -449,10 +449,13 @@ offline for any `UTILITY_LO/HI` or goal factor - the tuning question is answered
 the one log instead of one run per value. `--selftest` exercises the parser on a
 built-in sample.
 
-Line types (all prefixed `[Script] `): `::TWP::LOADED`, `::TWP::ENV`, `::TWP::SNAPSHOT`
-and `::TWP::MEMBER` (daily), `::TWP::GOAL` (each goal choice) are always on;
-`::TWP::W`, `::TWP::PICK`, `::TWP::ENEMY`, `::TWP::BLD`, `::TWP::BELIEVER`, `::TWP::MARKET`,
-`::TWP::CART`, `::TWP::HANDOVER` and the `::TWP::AI::` trace need `Log = 1`. The exact fields are in the docstring of
+Line types (all prefixed `[Script] `): `::TWP::LOADED` and `::TWP::ENV` (the load probes)
+are always on; everything else - `::TWP::SNAPSHOT` and `::TWP::MEMBER` (daily), `::TWP::GOAL`,
+`::TWP::W`, `::TWP::PICK`, `::TWP::ENEMY`, `::TWP::BLD`, `::TWP::BELIEVER`, `::TWP::BLOODENEMY`,
+`::TWP::MARKET`, `::TWP::CART`, `::TWP::HANDOVER` and the `::TWP::AI::` trace - goes through
+`utility_Emit` behind one switch, `UTILITY_LOG` in `Scripts/Library/utility.lua`: `nil`
+follows `Log = 1` under `[AI]` (or `AILog = 1` under `[OPTIONS]`), `false` silences all
+of it, `true` forces it on. Decisions never read the switch. The exact fields are in the docstring of
 `ai_telemetry.py`. Without `Log = 1` a sample pre-change session showed 78% of AI
 measure starts idle - that is the number to beat.
 
@@ -553,13 +556,38 @@ price and a half, delivered next day - never lethal tools or papers. Thugs attac
 the plain Attack order (`bf_ThugAttack`: every thug idle or on its rounds, forced past
 patrol and escort). It acquires a thieves' guild as its hideout whatever its class
 (`bf_Hideout`), taunts by letter, funds its allies, and uses every artefact of the
-ladder through `bf_UseArtefact`/`bf_UseBuildingArtefact`. The root weighs 15 instead of
-60 for up to three hours after an entry where no child fired. Telemetry: the snapshot
+ladder through `bf_UseArtefact`/`bf_UseBuildingArtefact`. Every leaf is scored, not
+constant: the thug attack by the victim's health and the thugs free, provocation by the
+duelist's edge in martial arts and dexterity, forgery by the victim's value and the
+paper's weight, charge and razzia by the evidence, artefacts by severity and how the
+victim fits the tool, the supply run by treasury and list length, equipment by tier,
+recruiting by the thug shortfall, and the house's aggressive priority throughout. The
+root weighs 15 instead of 60 for up to three hours after an entry where no child fired. Telemetry: the snapshot
 carries `att=` and `rung=`; the rival logs `::TWP::MARKET` (where each item is on sale)
 daily, `::TWP::CART` on every buy, send, arrival and courier order, and `::TWP::HANDOVER`
 per hand-over; `ai_telemetry.py` tabulates them plus the engine's own
 `[StartMeasure] ... Canceled` lines (a started measure that lost to a running one's
 priority).
+
+### AI backlog
+
+Measured on the session-2 log after the feud work: 233 nodes; the eleven high-mass roots
+and every BloodFeud leaf are scored with considerations, the rest keep constant weights.
+The 40 random target pickers are gone: "one of ours" picks use `aitwp_OwnBuilding` (the
+highest-level building of the kind; the hourly protection and debt rounds take turns over
+the buildings through `aitwp_OwnBuildingByTurn`), repairs and demolition use `aitwp_MostDamagedBuilding`
+(a full scan, not five dice rolls), inspection uses `aitwp_FindTargetBuilding` with its
+town filter, public buildings are the nearest to the acting sim (`CityGetNearestBuilding`),
+burglary takes the richest eligible house and honours the ladder, the ride-out scans towns
+in a fixed order, privileges and the flower of discord use the scored enemy and believer
+finders, and the myrmidon war leaf attacks the weakest fighter caught outdoors. What
+remains random is dice by design: probability gates (a 1-in-4 roll), a residence level
++0/+1, which of several equal city servants or idle thugs is sent, which privilege to use.
+
+Known, not scheduled: 111 nodes write the shared alias `SIM` inside `Weight()`, which
+only works because every sibling picks the first idle member; a node choosing
+differently would break its siblings silently, and differing evaluation order is an
+out-of-sync vector. The fix is node-private aliases resolved in `Execute()`.
 
 ### Item catalogue
 

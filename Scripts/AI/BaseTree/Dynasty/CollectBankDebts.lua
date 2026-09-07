@@ -3,7 +3,7 @@ function Weight()
 		return 0
 	end
 
-	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_BANKHOUSE, "CD_Bank") then
+	if not aitwp_OwnBuildingByTurn("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_BANKHOUSE, "CD_Bank", "Bank") then
 		return 0
 	end
 

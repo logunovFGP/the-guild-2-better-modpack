@@ -7,16 +7,8 @@ function Weight()
 		return 0
 	end
 
-	local Worst = 1.0
-	for i = 1, 5 do
-		if DynastyGetRandomBuilding("dynasty", -1, -1, "REP_Try") then
-			local HP = GetHPRelative("REP_Try")
-			if HP and HP < Worst then
-				Worst = HP
-				CopyAlias("REP_Try", "REP_Target")
-			end
-		end
-	end
+	-- the most damaged of all our buildings, not the worst of five dice rolls
+	local Worst = aitwp_MostDamagedBuilding("dynasty", "REP_Target")
 
 	if Worst > 0.85 or not AliasExists("REP_Target") then
 		return 0

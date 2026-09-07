@@ -8,14 +8,19 @@ function Weight()
 	if not ReadyToRepeat("dynasty", "AI_Educate") then
 		return 0
 	end
-	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
+	if not aitwp_OwnBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
 		return 0
 	end
 	if not GetSettlement("home", "City") then
 		return 0
 	end
-	if not (CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School")
-			and gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
+	-- the school nearest to a member of the house (the native wants a sim as reference)
+	if not (dyn_GetIdleMember("dynasty", "TWP_Ref") or DynastyGetMember("dynasty", 0, "TWP_Ref")) then
+		return 0
+	end
+	local School = CityGetNearestBuilding("City", "TWP_Ref", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "School")
+	RemoveAlias("TWP_Ref")
+	if not (School and gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1] > 0) then
 		return 0
 	end
 	local MyID = GetID("dynasty")

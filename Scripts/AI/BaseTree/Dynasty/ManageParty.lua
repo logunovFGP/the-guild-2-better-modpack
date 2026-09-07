@@ -2,7 +2,11 @@ function Weight()
 	local PartyCount = DynastyGetMemberCount("dynasty")
 	local FamilyCount = DynastyGetFamilyMemberCount("dynasty")
 	if PartyCount < 3 and FamilyCount > PartyCount then
-		return utility_Trace("dynasty", "ManageParty", 10)	
+		-- scored: the smaller the party the more urgent a new member (x2 for a house
+		-- of one); serves the Family goal
+		return utility_Score("dynasty", 10, {
+			{ value = utility_Norm(3 - PartyCount, 0, 2), curve = "linear", lo = 1, hi = 2 },
+		}, "ManageParty", "Family")
 	end
 	return 0
 end
@@ -28,7 +32,7 @@ function Execute()
 	if Choice >= 0 then
 		DynastyGetFamilyMember("dynasty", Choice, "SIM")
 		DynastyAddMember("dynasty", "SIM")
-		if DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
+		if aitwp_OwnBuilding("dynasty", GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, "home") then
 			SetHomeBuilding("SIM", "home")
 		end
 	end

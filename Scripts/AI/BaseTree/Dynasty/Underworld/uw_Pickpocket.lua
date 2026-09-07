@@ -12,7 +12,7 @@ function Weight()
 		return 0
 	end
 
-	if not CityGetRandomBuilding("UW_City", GL_BUILDING_CLASS_MARKET, -1, -1, -1, FILTER_IGNORE, "UW_Spot") then
+	if not CityGetNearestBuilding("UW_City", "SIM", GL_BUILDING_CLASS_MARKET, -1, -1, -1, FILTER_IGNORE, "UW_Spot") then
 		return 0
 	end
 

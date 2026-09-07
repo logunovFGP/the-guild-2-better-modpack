@@ -16,7 +16,7 @@ function Weight()
 		return 0
 	end
 	
-	if not CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
+	if not CityGetNearestBuilding("City", "SIM", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 		return 0
 	end
 

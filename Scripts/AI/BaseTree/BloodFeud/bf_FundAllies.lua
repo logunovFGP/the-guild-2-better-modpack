@@ -14,7 +14,10 @@ function Weight()
 	if not aitwp_FindAllyMember("dynasty", "AllyMember") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_FundAllies", 20)
+	-- scored: a rich house funds its allies more readily
+	return utility_Score("dynasty", 20, {
+		{ value = utility_Norm(GetMoney("dynasty"), 200000, 2000000), curve = "sqrt" },
+	}, "bf_FundAllies")
 end
 
 function Execute()

@@ -15,7 +15,7 @@ function Weight()
 		return 0
 	end
 
-	if not DynastyGetRandomBuilding("SIM", -1, GL_BUILDING_TYPE_TAVERN, "SOC_Bath") then
+	if not aitwp_OwnBuilding("SIM", -1, GL_BUILDING_TYPE_TAVERN, "SOC_Bath") then
 		if not CityGetNearestBuilding("SOC_City", "SIM", -1, GL_BUILDING_TYPE_TAVERN, 2, -1, FILTER_HAS_DYNASTY, "SOC_Bath") then
 			if not CityGetNearestBuilding("SOC_City", "SIM", -1, GL_BUILDING_TYPE_TAVERN, 3, -1, FILTER_HAS_DYNASTY, "SOC_Bath") then
 				return 0

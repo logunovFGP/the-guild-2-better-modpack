@@ -12,7 +12,17 @@ function Weight()
 		return 0
 	end
 	SetData("ForgeItem", Item)
-	return utility_Trace("dynasty", "bf_ForgeEvidence", 150)
+	-- scored: the more valuable the victim and the heavier the paper (II forges two
+	-- pieces), the more it is worth; an intriguing house forges more readily
+	local Heavy = 0.5
+	if Item == "HexerdokumentII" then
+		Heavy = 1
+	end
+	return utility_Score("dynasty", 150, {
+		{ value = utility_Norm(aitwp_PlayerTargetScore("Victim", "best") or 0, 20, 200), curve = "linear" },
+		{ value = Heavy, curve = "linear" },
+		utility_Priority("dynasty", "Intrigue"),
+	}, "bf_ForgeEvidence")
 end
 
 function Execute()

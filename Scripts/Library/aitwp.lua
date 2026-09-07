@@ -204,7 +204,7 @@ function GetBestEnemy(DynAlias)
 	end
 	RemoveAlias("TWP_Enemy")
 	if utility_LogEnabled() then
-		LogMessage("::TWP::ENEMY " .. utility_Stamp(DynAlias) .. " goaltarget=" .. GoalTarget .. " cand=" .. Cands .. " pick=" .. BestID)
+		utility_Emit("::TWP::ENEMY " .. utility_Stamp(DynAlias) .. " goaltarget=" .. GoalTarget .. " cand=" .. Cands .. " pick=" .. BestID)
 	end
 	return BestID
 end
@@ -215,7 +215,8 @@ end
 -- Mode "strongest" takes the highest level (workshops first) - the target that
 -- hurts most; "weakest" the lowest - the one to give up in a forced sale.
 -- Ties fall to the lower index, so every peer picks the same building.
-function FindTargetBuilding(OwnerAlias, Class, Mode, OutAlias)
+-- Settlement (optional): only buildings in that town (a sim, building or town alias).
+function FindTargetBuilding(OwnerAlias, Class, Mode, OutAlias, Settlement)
 	local Owner = OwnerAlias
 	local Count = DynastyGetBuildingCount2(Owner) or 0
 	-- a sim alias may not enumerate; fall back to the sim's dynasty
@@ -230,7 +231,8 @@ function FindTargetBuilding(OwnerAlias, Class, Mode, OutAlias)
 			local BClass = BuildingGetClass("TWP_Bld")
 			local Level = BuildingGetLevel("TWP_Bld")
 			Cands = Cands .. i .. ":" .. BClass .. ":" .. Level .. ";"
-			if BClass ~= GL_BUILDING_CLASS_RESOURCE and (Class == -1 or BClass == Class) then
+			if BClass ~= GL_BUILDING_CLASS_RESOURCE and (Class == -1 or BClass == Class)
+					and (Settlement == nil or GetSettlementID("TWP_Bld") == GetSettlementID(Settlement)) then
 				local Score = Level * 10
 				if BClass == GL_BUILDING_CLASS_WORKSHOP then
 					Score = Score + 5
@@ -246,7 +248,7 @@ function FindTargetBuilding(OwnerAlias, Class, Mode, OutAlias)
 	end
 	RemoveAlias("TWP_Bld")
 	if utility_LogEnabled() then
-		LogMessage("::TWP::BLD t=" .. string.format("%.2f", GetGametime()) .. " owner=" .. GetID(Owner)
+		utility_Emit("::TWP::BLD t=" .. string.format("%.2f", GetGametime()) .. " owner=" .. GetID(Owner)
 			.. " mode=" .. Mode .. " class=" .. Class .. " cand=" .. Cands .. " pick=" .. Best)
 	end
 	local Found = false
@@ -255,6 +257,88 @@ function FindTargetBuilding(OwnerAlias, Class, Mode, OutAlias)
 	end
 	RemoveAlias("TWP_Owner")
 	return Found
+end
+
+
+-- The house's own building of Class and Type (-1 for any) into OutAlias: the highest
+-- level, ties to the lower index. The deterministic stand-in for DynastyGetRandomBuilding
+-- wherever a node needs "one of ours" - Alias may be the dynasty or one of its sims.
+function OwnBuilding(Alias, Class, Type, OutAlias)
+	if not aitwp_ResolveDynasty(Alias, "TWP_OB") then
+		return false
+	end
+	local Best, BestLevel = -1, -1
+	local Count = DynastyGetBuildingCount2("TWP_OB") or 0
+	for i = 0, Count - 1 do
+		if DynastyGetBuilding2("TWP_OB", i, "TWP_OBB")
+				and (Class == -1 or BuildingGetClass("TWP_OBB") == Class)
+				and (Type == -1 or BuildingGetType("TWP_OBB") == Type) then
+			local Level = BuildingGetLevel("TWP_OBB") or 0
+			if Level > BestLevel then
+				Best, BestLevel = i, Level
+			end
+		end
+	end
+	RemoveAlias("TWP_OBB")
+	local Found = false
+	if Best >= 0 then
+		Found = DynastyGetBuilding2("TWP_OB", Best, OutAlias)
+	end
+	RemoveAlias("TWP_OB")
+	return Found
+end
+
+-- Like OwnBuilding, but for a chore that must visit every building of the kind over
+-- time (hourly protection, debt collection): the buildings take turns, the counter
+-- AI_Turn_<Key> on the dynasty says whose turn it is. Deterministic, no dice.
+function OwnBuildingByTurn(Alias, Class, Type, OutAlias, Key)
+	if not aitwp_ResolveDynasty(Alias, "TWP_OT") then
+		return false
+	end
+	local Matches, N = {}, 0
+	local Count = DynastyGetBuildingCount2("TWP_OT") or 0
+	for i = 0, Count - 1 do
+		if DynastyGetBuilding2("TWP_OT", i, "TWP_OTB")
+				and (Class == -1 or BuildingGetClass("TWP_OTB") == Class)
+				and (Type == -1 or BuildingGetType("TWP_OTB") == Type) then
+			N = N + 1
+			Matches[N] = i
+		end
+	end
+	RemoveAlias("TWP_OTB")
+	local Found = false
+	if N > 0 then
+		local Turn = GetProperty("TWP_OT", "AI_Turn_" .. Key) or 0
+		Found = DynastyGetBuilding2("TWP_OT", Matches[math.mod(Turn, N) + 1], OutAlias)
+		SetProperty("TWP_OT", "AI_Turn_" .. Key, Turn + 1)
+	end
+	RemoveAlias("TWP_OT")
+	return Found
+end
+
+-- The most damaged building of Alias's dynasty into OutAlias; returns its relative
+-- health (1 when it has no buildings). A full scan, not five dice rolls.
+function MostDamagedBuilding(Alias, OutAlias)
+	local Worst = 1.0
+	if not aitwp_ResolveDynasty(Alias, "TWP_MD") then
+		return Worst
+	end
+	local Best = -1
+	local Count = DynastyGetBuildingCount2("TWP_MD") or 0
+	for i = 0, Count - 1 do
+		if DynastyGetBuilding2("TWP_MD", i, "TWP_MDB") then
+			local HP = GetHPRelative("TWP_MDB")
+			if HP and HP < Worst then
+				Worst, Best = HP, i
+			end
+		end
+	end
+	RemoveAlias("TWP_MDB")
+	if Best >= 0 then
+		DynastyGetBuilding2("TWP_MD", Best, OutAlias)
+	end
+	RemoveAlias("TWP_MD")
+	return Worst
 end
 
 ---
@@ -308,7 +392,7 @@ function FindBeliever(ActorAlias, VictimAlias, FavorFrom, MaxFavor, Mode, OutDyn
 		RemoveAlias("TWP_Cand" .. i)
 	end
 	if utility_LogEnabled() then
-		LogMessage("::TWP::BELIEVER t=" .. string.format("%.2f", GetGametime()) .. " actor=" .. MyID .. " victim=" .. VictimID
+		utility_Emit("::TWP::BELIEVER t=" .. string.format("%.2f", GetGametime()) .. " actor=" .. MyID .. " victim=" .. VictimID
 			.. " mode=" .. Mode .. " maxfavor=" .. MaxFavor .. " cand=" .. Cands .. " pick=" .. PickID)
 	end
 	return BestDyn >= 0 and AliasExists(OutSim)
@@ -326,7 +410,7 @@ function Snapshot(DynAlias)
 			Title = math.max(Title, GetNobilityTitle("TWP_Snap") or 0)
 			Office = math.max(Office, SimGetOfficeLevel("TWP_Snap") or -1)
 			-- lets the parser map the engine's "Executing Measures ... on <sim>" lines to a dynasty
-			LogMessage("::TWP::MEMBER dyn=" .. DynID .. " sim=" .. GetName("TWP_Snap"))
+			utility_Emit("::TWP::MEMBER dyn=" .. DynID .. " sim=" .. GetName("TWP_Snap"))
 		end
 	end
 	RemoveAlias("TWP_Snap")
@@ -337,7 +421,7 @@ function Snapshot(DynAlias)
 		Ladder = aitwp_Rung(DynAlias, "TWP_SnapP")
 		RemoveAlias("TWP_SnapP")
 	end
-	LogMessage("::TWP::SNAPSHOT t=" .. math.floor(GetGametime()) .. " round=" .. GetRound()
+	utility_Emit("::TWP::SNAPSHOT t=" .. math.floor(GetGametime()) .. " round=" .. GetRound()
 		.. " att=" .. Att .. " rung=" .. Ladder
 		.. " diff=" .. ScenarioGetDifficulty()
 		.. " dyn=" .. GetID(DynAlias) .. " persona=" .. (GetProperty(DynAlias, "AI_PERSONA") or -1)
@@ -525,7 +609,7 @@ function EnsureBloodEnemies()
 					local Cand = "TWP_BE" .. Best
 					SetProperty(Player, "AI_BloodEnemy", GetID(Cand))
 					SetProperty(Cand, "AI_BloodEnemyOf", PlayerID)
-					LogMessage("::TWP::BLOODENEMY player=" .. PlayerID .. " enemy=" .. GetID(Cand) .. " name=" .. GetName(Cand))
+					utility_Emit("::TWP::BLOODENEMY player=" .. PlayerID .. " enemy=" .. GetID(Cand) .. " name=" .. GetName(Cand))
 				end
 			end
 		end
@@ -1243,7 +1327,7 @@ function DrawFromStock(SimAlias, Item, Count)
 		SetProperty("TWP_DS", "AI_HO_Round", GetRound())
 		SetProperty("TWP_DS", "AI_HO_Count", Today)
 		if utility_LogEnabled() then
-			LogMessage("::TWP::HANDOVER t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID("TWP_DS")
+			utility_Emit("::TWP::HANDOVER t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID("TWP_DS")
 				.. " sim=" .. GetID(SimAlias) .. " item=" .. Item .. " today=" .. Today .. "/" .. aitwp_HandOverCap("TWP_DS"))
 		end
 	end
@@ -1467,7 +1551,7 @@ function MarketReport(DynAlias, PlayerDyn)
 	RemoveAlias("TWP_MRM")
 	RemoveAlias("TWP_MRC")
 	RemoveAlias("TWP_MRH")
-	LogMessage("::TWP::MARKET t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID(DynAlias) .. " items=" .. Text)
+	utility_Emit("::TWP::MARKET t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID(DynAlias) .. " items=" .. Text)
 end
 
 -- Telemetry for the supply run. CartAlias "" means the running cart itself.
@@ -1484,7 +1568,7 @@ function LogCart(DynAlias, Action, CartAlias, Total, Busy, Needs, N, Result)
 	if CartAlias == "" or (CartAlias and AliasExists(CartAlias)) then
 		CartID = GetID(CartAlias)
 	end
-	LogMessage("::TWP::CART t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID(DynAlias) .. " action=" .. Action
+	utility_Emit("::TWP::CART t=" .. string.format("%.2f", GetGametime()) .. " dyn=" .. GetID(DynAlias) .. " action=" .. Action
 		.. " cart=" .. CartID .. " carts=" .. Total .. " busy=" .. Busy .. " need=" .. N
 		.. " money=" .. math.floor(GetMoney(DynAlias) or 0) .. " result=" .. tostring(Result) .. " items=" .. Text)
 end
@@ -1733,7 +1817,7 @@ function Log(Message, Actor, ShowMsg)
 	if Actor and Actor ~= "" and AliasExists(Actor) then
 		Who = GetName(Actor) .. " "
 	end
-	LogMessage("::TWP::AI:: " .. Who .. Message)
+	utility_Emit("::TWP::AI:: " .. Who .. Message)
 end
 
 function GetPoliticalAmbititon(DynAlias)

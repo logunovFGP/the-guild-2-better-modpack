@@ -19,8 +19,9 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
   ::TWP::GOAL t= dyn= P= A= ambition= greed= bloodlust= enemies= members= ws= wanted=
               politics= economy= family= conflict= pick= target=
                                               each time a goal is (re)chosen
-  -- the rest only with Log = 1 under [AI] in configs/config.ini --
-  ::TWP::W t= dyn= node= base= c=<x:curve;..> g=<aligned|other|none> w=
+  -- every line except LOADED and ENV goes through utility_Emit, gated by UTILITY_LOG
+  -- (nil follows Log = 1 under [AI] in configs/config.ini; false silences, true forces) --
+  ::TWP::W t= dyn= node= base= c=<x:curve[:lo:hi];..> g=<aligned|other|none> w=
                                               every Weight() of an instrumented node
   ::TWP::PICK t= dyn= node=                   the node the engine executed
   ::TWP::ENEMY t= dyn= goaltarget= cand=<id:favor:foe:shadow;..> pick=
@@ -118,8 +119,10 @@ def curve(x, kind):
 def replay(base, considerations, goal_state, variant):
     lo, hi, aligned, other = variant
     weight = base
-    for x, kind in considerations:
-        weight *= lo + (hi - lo) * curve(x, kind)
+    for x, kind, band in considerations:
+        # a consideration with its own lo/hi band keeps it under every variant
+        clo, chi = band if band else (lo, hi)
+        weight *= clo + (chi - clo) * curve(x, kind)
     if goal_state == "aligned":
         weight *= aligned
     elif goal_state == "other":
@@ -195,8 +198,9 @@ class Session(object):
                 cons = []
                 for part in fields.get("c", "").split(";"):
                     if part:
-                        x, _sep, kind = part.partition(":")
-                        cons.append((num(x), kind or "linear"))
+                        bits = part.split(":")
+                        band = (num(bits[2]), num(bits[3])) if len(bits) >= 4 else None
+                        cons.append((num(bits[0]), bits[1] if len(bits) > 1 and bits[1] else "linear", band))
                 base, g, w = num(fields.get("base")), fields.get("g", "none"), num(fields.get("w"))
                 if abs(replay(base, cons, g, VARIANTS["current"]) - w) > 0.01:
                     self.mismatch += 1
@@ -258,7 +262,7 @@ class Session(object):
                     continue
                 evaluations += 1
                 for v, params in VARIANTS.items():
-                    weights = {node: replay(base, cons, g, params) for node, base, cons, g, _w in entries}
+                    weights = {node: replay(base, cons, g, params) for node, base, cons, g, _w in entries}  # cons carry their bands
                     total = sum(weights.values())
                     if total > 0:
                         for node, w in weights.items():
@@ -451,6 +455,7 @@ SAMPLE = """[Script] ::TWP::LOADED utility.lua
 [Script] Executing Measures/ms_036_AttackEnemy.lua on Bero Freudenreich
 [Script] ::TWP::W t=11.00 dyn=1 node=Dynasty base=50 c= g=none w=50
 [Script] ::TWP::W t=11.00 dyn=1 node=DoNothing base=5 c= g=none w=5
+[Script] ::TWP::W t=11.00 dyn=1 node=IncomeForAI base=60 c=0.50:linear:1:3 g=none w=120.00
 [Script] ::TWP::PICK t=11.00 dyn=1 node=Dynasty
 [Script] Executing Measures/ms_036_AttackEnemy.lua on Bero Freudenreich
 [Script] Executing Measures/ms_003_Walk.lua on Player Guy
@@ -474,8 +479,9 @@ def selftest():
     assert session.loaded and _evals == 2, _evals
     assert abs(root["current"]["Feud"] - 0.3401) < 0.001, root["current"]
     assert abs(root["flat (old)"]["Feud"] - 0.1765) < 0.001, root["flat (old)"]
-    assert abs(root["current"]["Dynasty"] - 0.5999) < 0.001, root["current"]
-    assert session.mismatch == 0
+    assert abs(root["current"]["Dynasty"] - 0.2882) < 0.001, root["current"]
+    assert abs(root["current"]["IncomeForAI"] - 0.3429) < 0.001, "the 1..3 band must give 60 -> 120 at x=0.5"
+    assert session.mismatch == 0, "a custom lo/hi band did not replay"
     assert session.picks["Feud"] == 1 and session.picks["Dynasty"] == 1
     assert abs(session.root_cadence() - 1.0) < 1e-9
     assert session.measures_by_goal["Conflict"]["ms_036_AttackEnemy.lua"] == 2

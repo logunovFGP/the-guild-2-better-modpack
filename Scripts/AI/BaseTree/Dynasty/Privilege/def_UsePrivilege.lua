@@ -23,13 +23,16 @@ function GetVictim(maxfavor)
 		return false
 	end
 
-	if not DynastyGetRandomVictim("dynasty", maxfavor, "VictimDynasty") then
+	-- the scored enemy (goal target, blood rival, then favour) within the favour bound,
+	-- and its most valuable member
+	local EnemyID = aitwp_GetBestEnemy("dynasty")
+	if not EnemyID or EnemyID <= 0 or not GetAliasByID(EnemyID, "VictimDynasty") or not AliasExists("VictimDynasty") then
 		return false
 	end
-
-	local Count = DynastyGetMemberCount("VictimDynasty")
-	local Victim = Rand(Count)
-	if not (DynastyGetMember("VictimDynasty", Victim, "Victim")) then
+	if GetFavorToDynasty("dynasty", "VictimDynasty") > maxfavor then
+		return false
+	end
+	if not aitwp_FindPlayerTarget("VictimDynasty", "best", "Victim") then
 		return false
 	end
 

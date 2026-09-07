@@ -25,7 +25,9 @@ function Weight()
 	if Entered > Fired and GetGametime() - Entered < 3 then
 		W = 15
 	end
-	return utility_Score("dynasty", W, {}, "BloodFeud")
+	return utility_Score("dynasty", W, {
+		utility_Priority("dynasty", "Agressive"),
+	}, "BloodFeud")
 end
 
 function Execute()

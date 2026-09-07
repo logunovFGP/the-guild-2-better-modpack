@@ -18,7 +18,7 @@ function Weight()
 	
 	-- find a tavern
 	
-	if not DynastyGetRandomBuilding("SIM", -1, GL_BUILDING_TYPE_TAVERN, "Tavern") then
+	if not aitwp_OwnBuilding("SIM", -1, GL_BUILDING_TYPE_TAVERN, "Tavern") then
 		if not CityGetNearestBuilding("MyCity", "SIM", -1, GL_BUILDING_TYPE_TAVERN, 2, -1, FILTER_HAS_DYNASTY, "Tavern") then
 			if not CityGetNearestBuilding("MyCity", "SIM", -1, GL_BUILDING_TYPE_TAVERN, 3, -1, FILTER_HAS_DYNASTY, "Tavern") then
 				return 0

@@ -22,15 +22,11 @@ function Weight()
 		return 0
 	end
 	
-	if not DynastyGetRandomVictim("Victim", 50, "VictimDynasty2") then
+	-- the second party: within the favour bound the old dice roll used, the dynasty
+	-- the victim likes most - the rift that hurts most - and its best-placed member
+	if not aitwp_FindBeliever("dynasty", "Victim", "Victim", 50, "friend", "VictimDynasty2", "Victim2") then
 		return 0
 	end
-	
-	local Count = DynastyGetMemberCount("VictimDynasty2")
-	local Victim = Rand(Count)
-	if not (DynastyGetMember("VictimDynasty2", Victim, "Victim2")) then
-		return 0
-	end	
 
 	if not AliasExists("Victim2") then
 		return 0

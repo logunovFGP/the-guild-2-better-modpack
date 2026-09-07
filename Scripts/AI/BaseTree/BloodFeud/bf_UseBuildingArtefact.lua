@@ -12,7 +12,10 @@ function Weight()
 				and aitwp_Allowed("dynasty", "PlayerDyn", Tools[i])
 				and aitwp_FindTargetBuilding("PlayerDyn", GL_BUILDING_CLASS_WORKSHOP, "strongest", "RaidTarget") then
 			SetData("BuildingItem", Items[i])
-			return utility_Trace("dynasty", "bf_UseBuildingArtefact", 100)
+			-- scored: the bigger the workshop hit, the better
+			return utility_Score("dynasty", 100, {
+				{ value = utility_Norm(BuildingGetLevel("RaidTarget"), 1, 3), curve = "linear" },
+			}, "bf_UseBuildingArtefact")
 		end
 	end
 	return 0

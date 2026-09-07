@@ -14,7 +14,10 @@ function Weight()
 	if not aitwp_FindPlayerTarget("PlayerDyn", "best", "Victim") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Taunt", 30)
+	-- scored: the letter bites as hard as the writer's rhetoric
+	return utility_Score("dynasty", 30, {
+		{ value = utility_Norm(GetSkillValue("SIM", RHETORIC), 0, 10), curve = "linear" },
+	}, "bf_Taunt")
 end
 
 function Execute()

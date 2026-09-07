@@ -12,13 +12,24 @@ function Weight()
 		return 0
 	end
 	if aitwp_FindPlayerTarget("PlayerDyn", "duel", "Victim") and ReadyToRepeat("Victim", "Get_Insult") then
-		return utility_Trace("dynasty", "bf_Provoke", 100)
+		return bf_provoke_Scored()
 	end
 	if (GetProperty("dynasty", "AI_BF_DuelRogues") or 0) == 1
 			and aitwp_FindPlayerTarget("PlayerDyn", "rogue", "Victim") and ReadyToRepeat("Victim", "Get_Insult") then
-		return utility_Trace("dynasty", "bf_Provoke", 100)
+		return bf_provoke_Scored()
 	end
 	return 0
+end
+
+-- Scored: the duelist's edge in martial arts and dexterity over the victim (-5 to
+-- +10 talent points spans the whole factor) and an aggressive house.
+function Scored()
+	local Edge = GetSkillValue("Duelist", FIGHTING) + GetSkillValue("Duelist", DEXTERITY) / 2
+		- GetSkillValue("Victim", FIGHTING) - GetSkillValue("Victim", DEXTERITY) / 2
+	return utility_Score("dynasty", 100, {
+		{ value = utility_Norm(Edge, -5, 10), curve = "linear" },
+		utility_Priority("dynasty", "Agressive"),
+	}, "bf_Provoke")
 end
 
 function Execute()

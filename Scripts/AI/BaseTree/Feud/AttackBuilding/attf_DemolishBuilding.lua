@@ -16,19 +16,15 @@ function Weight()
 		return 0
 	end
 
-	local NumVictimBuildings = DynastyGetBuildingCount("Victim",-1,-1)
-	for i=0,NumVictimBuildings do
-		if not DynastyGetRandomBuilding("Victim",-1,-1,"db_House") then
-			return 0
-		end
-		
-		if AliasExists("RivalBuild") then
-			CopyAlias("RivalBuild", "db_House")
-		end
-		
-		if GetHPRelative("db_House") < 0.3 then
-			return 20
-		end
+	-- the victim's most damaged building (or the building already under attack)
+	RemoveAlias("db_House")
+	if AliasExists("RivalBuild") then
+		CopyAlias("RivalBuild", "db_House")
+	else
+		aitwp_MostDamagedBuilding("Victim", "db_House")
+	end
+	if AliasExists("db_House") and GetHPRelative("db_House") < 0.3 then
+		return 20
 	end
 	return 0
 	

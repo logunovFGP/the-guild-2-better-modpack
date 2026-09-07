@@ -8,7 +8,12 @@ function Weight()
 		return 0
 	end
 
-	return utility_Score("dynasty", 25, {}, "SocialLife", "Politics")
+	-- scored: flirting, gifts, bribes and feasts follow the political priority and
+	-- need money; serves the Politics goal
+	return utility_Score("dynasty", 25, {
+		utility_Priority("dynasty", "Political"),
+		{ value = utility_Money("dynasty", 20000), curve = "sqrt" },
+	}, "SocialLife", "Politics")
 end
 
 function Execute()

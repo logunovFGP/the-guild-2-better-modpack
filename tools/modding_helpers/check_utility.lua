@@ -63,7 +63,7 @@ dofile("Scripts/Library/utility.lua")
 -- the engine reaches library functions as <file>_<Name>; mirror that for the
 -- functions utility.lua and aitwp.lua call on it
 utility_Clamp01, utility_Norm, utility_Curve, utility_GoalFactor = Clamp01, Norm, Curve, GoalFactor
-utility_LogEnabled, utility_Stamp, utility_Tick, utility_TakeTicks = LogEnabled, Stamp, Tick, TakeTicks
+utility_LogEnabled, utility_Stamp, utility_Tick, utility_TakeTicks, utility_Emit = LogEnabled, Stamp, Tick, TakeTicks, Emit
 
 check("load marker is logged at include time", has(Logged[1], "::TWP::LOADED utility.lua"))
 check("environment probe is logged at include time", has(Logged[2], "::TWP::ENV lua=Lua 5.1"))
@@ -127,11 +127,30 @@ Score("d", 20, { 0.5, { value = 0.25, curve = "quad" } }, "ApplyForOffice", "Pol
 check("W line carries node, base, inputs, goal state and weight",
 	has(lastLog(), "::TWP::W t=1000.00 dyn=1 node=ApplyForOffice base=20 c=0.50:linear;0.25:quad g=aligned w="))
 check("W line weight is the returned weight", has(lastLog(), "w=" .. string.format("%.2f", 20 * 1.0 * (0.5 + 0.0625) * 3)))
+check("a custom band is logged with the input", near(Score("d", 10, { { value = 0.5, curve = "linear", lo = 1, hi = 3 } }, "Band"), 20)
+	and has(lastLog(), "c=0.50:linear:1:3 "))
 Trace("d", "BuildHome", 5)
 check("Trace logs a W line with no inputs", has(lastLog(), "node=BuildHome base=5 c= g=none w=5"))
 Picked("d", "Dynasty")
 check("PICK line", has(lastLog(), "::TWP::PICK t=1000.00 dyn=1 node=Dynasty"))
 UTILITY_LogEnabled = false
+
+-- the single switch --------------------------------------------------------------------
+UTILITY_LOG = false
+UTILITY_LogEnabled = true
+Logged = {}
+Score("d", 20, {}, "Switched")
+Trace("d", "Switched", 5)
+check("UTILITY_LOG = false silences every line even with the config flag on", #Logged == 0)
+UTILITY_LOG = nil
+UTILITY_LogEnabled = false
+Trace("d", "Quiet", 5)
+check("switch unset: the config flag decides, off logs nothing", #Logged == 0)
+UTILITY_LOG = true
+Trace("d", "Forced", 5)
+check("UTILITY_LOG = true forces lines on", has(lastLog(), "node=Forced"))
+UTILITY_LOG = nil
+UTILITY_LogEnabled = true
 
 -- ChooseGoal -----------------------------------------------------------------------
 Props = { AITWP_Political = 10, AITWP_Agressive = 80 }
@@ -140,7 +159,7 @@ Logged = {}
 check("enemies plus aggression choose Conflict", ChooseGoal("d") == "Conflict")
 check("Conflict records the best enemy as target", Props.AI_GoalTarget == 42)
 check("goal runs for UTILITY_GOAL_HOURS", Props.AI_GoalUntil == Now + UTILITY_GOAL_HOURS)
-check("GOAL line is logged even with Log off", has(lastLog(), "::TWP::GOAL t=1000.00 dyn=1 P=10 A=80 ambition=80"))
+check("GOAL line is logged when the switch is on", has(lastLog(), "::TWP::GOAL t=1000.00 dyn=1 P=10 A=80 ambition=80"))
 check("GOAL line carries scores and the pick", has(lastLog(), "politics=50 economy=20 family=0 conflict=110 pick=Conflict target=42"))
 
 World.enemies = 0
@@ -428,8 +447,31 @@ Props.AI_HO_Round = -5
 check("a new day resets the count", HandOversToday("d") == 0 and DrawFromStock("s", "Voodo", 1) == true)
 check("nothing in store: no hand-over", DrawFromStock("s", "Pendel", 1) == false)
 
+-- aitwp_OwnBuilding / MostDamagedBuilding / FindTargetBuilding in one town -----------------
+aitwp_OwnBuilding, aitwp_MostDamagedBuilding, aitwp_FindTargetBuilding = OwnBuilding, MostDamagedBuilding, FindTargetBuilding
+Buildings = {
+	[0] = { class = GL_BUILDING_CLASS_RESOURCE, level = 3, type = 5, hp = 0.9, town = 1 },
+	[1] = { class = GL_BUILDING_CLASS_WORKSHOP, level = 1, type = 7, hp = 0.4, town = 1 },
+	[2] = { class = GL_BUILDING_CLASS_LIVINGROOM, level = 2, type = 9, hp = 1.0, town = 2 },
+	[3] = { class = GL_BUILDING_CLASS_WORKSHOP, level = 4, type = 7, hp = 0.7, town = 2 },
+}
+function DynastyGetBuildingCount2(Alias) return 4 end
+function DynastyGetBuilding2(Alias, Index, Out) if Buildings[Index] == nil then return false end Aliases[Out] = Index; return true end
+function BuildingGetClass(Alias) return Buildings[Aliases[Alias]].class end
+function BuildingGetLevel(Alias) return Buildings[Aliases[Alias]].level end
+function BuildingGetType(Alias) return Buildings[Aliases[Alias]].type end
+function GetHPRelative(Alias) return Buildings[Aliases[Alias]].hp end
+function GetSettlementID(Alias) if Alias == "town" then return 1 end return Buildings[Aliases[Alias]].town end
+Aliases.d = 7
+check("own building: the highest-level workshop", OwnBuilding("d", GL_BUILDING_CLASS_WORKSHOP, -1, "Out") and Aliases.Out == 3)
+check("own building by type: the level-4 one of two", OwnBuilding("d", -1, 7, "Out") and Aliases.Out == 3)
+check("own building: none of that type", OwnBuilding("d", -1, 99, "Out") == false)
+check("the most damaged building and its health", near(MostDamagedBuilding("d", "Out"), 0.4) and Aliases.Out == 1)
+check("strongest workshop in one town only", FindTargetBuilding("d", GL_BUILDING_CLASS_WORKSHOP, "strongest", "Out", "town") and Aliases.Out == 1)
+check("strongest workshop anywhere", FindTargetBuilding("d", GL_BUILDING_CLASS_WORKSHOP, "strongest", "Out") and Aliases.Out == 3)
+
 if Failures > 0 then
 	io.stderr:write("FAILED: " .. Failures .. " check(s) on utility scoring\n")
 	os.exit(1)
 end
-print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain")
+print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, scored pickers")

@@ -15,7 +15,8 @@ function Weight()
 		return 0
 	end
 	local Needs = {}
-	if aitwp_ShoppingList("dynasty", "PlayerDyn", Needs) <= 0 then
+	local N = aitwp_ShoppingList("dynasty", "PlayerDyn", Needs)
+	if N <= 0 then
 		return 0
 	end
 	local Total, Busy, Idle = aitwp_ResidenceCarts("dynasty", "Cart")
@@ -26,7 +27,11 @@ function Weight()
 	else
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Procure", 60)
+	-- scored: a fuller treasury and a longer list make the run more worthwhile
+	return utility_Score("dynasty", 60, {
+		{ value = utility_Norm(GetMoney("dynasty"), 100000, 1000000), curve = "sqrt" },
+		{ value = utility_Norm(N, 1, 6), curve = "linear" },
+	}, "bf_Procure")
 end
 
 function Execute()

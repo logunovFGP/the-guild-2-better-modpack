@@ -6,7 +6,13 @@ function Weight()
 		if DynastyGetMember("dynasty", i, "Member") and dyn_IsIdleMember("Member") then
 			if SimIsAppliedForOffice("Member") then
 				CopyAlias("Member", "ElectionSIM")
-				return utility_Trace("dynasty", "Election", 50)
+				-- scored: the daily political priority and the house's ambition decide how
+				-- hard it campaigns. No goal factor: the application is a commitment already
+				-- made, and a house on another goal must still fight the election it entered
+				return utility_Score("dynasty", 50, {
+					utility_Priority("dynasty", "Political"),
+					utility_Trait("dynasty", "ambition"),
+				}, "Election")
 			end
 		end
 	end

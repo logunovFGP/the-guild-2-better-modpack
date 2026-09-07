@@ -16,7 +16,7 @@ function Weight()
 	
 	if GetSettlement("SIM", "City") then
 		if (gameplayformulas_CheckPublicBuilding("City", GL_BUILDING_TYPE_GUILDHOUSE)[1]>0) then
-			if CityGetRandomBuilding("City", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
+			if CityGetNearestBuilding("City", "SIM", -1, GL_BUILDING_TYPE_GUILDHOUSE, -1, -1, FILTER_IGNORE, "Guildhouse") then
 				if chr_CheckGuildMaster("SIM","Guildhouse") then
 					Price = (Title * Title) * 30
 					if trade_IsAlderman("", "Guildhouse") then

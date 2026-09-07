@@ -8,7 +8,7 @@ function Weight()
 		return 0
 	end
 	
-	if not CityGetRandomBuilding("BlackBoardCity",-1,41,-1,-1,FILTER_IGNORE,"BlackBoard") then
+	if not CityGetNearestBuilding("BlackBoardCity", "SIM", -1, 41, -1, -1, FILTER_IGNORE, "BlackBoard") then
 		return 0
 	end
 	

@@ -1,5 +1,5 @@
 function Weight()
-	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, "UW_Guild") then
+	if not aitwp_OwnBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, "UW_Guild") then
 		return 0
 	end
 

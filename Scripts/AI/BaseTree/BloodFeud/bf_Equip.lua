@@ -13,7 +13,16 @@ function Weight()
 	if not aitwp_FindUnequipped("dynasty", Tier, "Recruit") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Equip", 90)
+	-- scored: the higher the tier being issued, the more it matters
+	local TierIdx = 1
+	for i = 1, #TWP_EQUIPMENT do
+		if TWP_EQUIPMENT[i] == Tier then
+			TierIdx = i
+		end
+	end
+	return utility_Score("dynasty", 90, {
+		{ value = utility_Norm(TierIdx, 1, 3), curve = "linear" },
+	}, "bf_Equip")
 end
 
 function Execute()

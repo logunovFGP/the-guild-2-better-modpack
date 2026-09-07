@@ -16,7 +16,7 @@ function Weight()
 		return 0
 	end
 
-	if not DynastyGetRandomBuilding("dynasty", -1, GL_BUILDING_TYPE_ESTATE, "DIP_Estate") then
+	if not aitwp_OwnBuilding("dynasty", -1, GL_BUILDING_TYPE_ESTATE, "DIP_Estate") then
 		return 0
 	end
 

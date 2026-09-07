@@ -3,7 +3,7 @@ function Weight()
 		return 0
 	end
 
-	if not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_CATH, "SOC_OwnChurch") and not DynastyGetRandomBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_EV, "SOC_OwnChurch") then
+	if not aitwp_OwnBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_CATH, "SOC_OwnChurch") and not aitwp_OwnBuilding("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_CHURCH_EV, "SOC_OwnChurch") then
 		return 0
 	end
 

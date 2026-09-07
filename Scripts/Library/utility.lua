@@ -23,8 +23,10 @@
 -- Telemetry: with Log = 1 under [AI] in configs/config.ini every instrumented
 -- Weight() logs its inputs (::TWP::W) and every Execute() its pick (::TWP::PICK), so
 -- tools/modding_helpers/ai_telemetry.py can replay the roulette under any other
--- UTILITY_* setting from one session. Goal choices (::TWP::GOAL) are always logged.
+-- UTILITY_* setting from one session. Goal choices (::TWP::GOAL) are on the same switch.
 -- Nothing in the telemetry touches game state, so peers may differ in the setting.
+--
+-- Every line is emitted through utility_Emit, gated by UTILITY_LOG (see below).
 --
 -- Deterministic: no Rand, numeric loops only, so it is safe for lockstep multiplayer.
 -- Functions are reached as utility_<Name> in game (the engine prefixes library
@@ -38,7 +40,16 @@ UTILITY_GOAL_HOURS = 72
 
 -- telemetry --------------------------------------------------------------------
 
+-- The single switch for every ::TWP:: line (decision logic never depends on it).
+-- nil: follow the config flag (Log under [AI] in configs/config.ini, AILog under
+-- [OPTIONS] in UserConfig.ini). true or false: force it, from here or any script.
+-- Only the two load probes at the end of this file stay on: they prove the include.
+UTILITY_LOG = nil
+
 function LogEnabled()
+	if UTILITY_LOG ~= nil then
+		return UTILITY_LOG
+	end
 	if UTILITY_LogEnabled == nil then
 		-- Log = 1 under [AI] in configs/config.ini; AILog = 1 under [OPTIONS] works too,
 		-- that being the section the campaign scripts are known to read.
@@ -46,6 +57,13 @@ function LogEnabled()
 			or (GetSettingNumber("OPTIONS", "AILog", 0) or 0) > 0
 	end
 	return UTILITY_LogEnabled
+end
+
+-- Every telemetry line goes through here: one place to silence or redirect them.
+function Emit(Text)
+	if utility_LogEnabled() then
+		LogMessage(Text)
+	end
 end
 
 function Stamp(DynAlias)
@@ -71,9 +89,7 @@ end
 -- Weight() of a node that is not utility-scored: log it and hand it back unchanged,
 -- so the whole sibling set of a level is on record and the roulette can be replayed.
 function Trace(DynAlias, Tag, Weight)
-	if utility_LogEnabled() then
-		LogMessage("::TWP::W " .. utility_Stamp(DynAlias) .. " node=" .. Tag .. " base=" .. Weight .. " c= g=none w=" .. Weight)
-	end
+	utility_Emit("::TWP::W " .. utility_Stamp(DynAlias) .. " node=" .. Tag .. " base=" .. Weight .. " c= g=none w=" .. Weight)
 	return Weight
 end
 
@@ -83,9 +99,7 @@ function Picked(DynAlias, Tag)
 	if string.sub(Tag, 1, 3) == "bf_" then
 		SetProperty(DynAlias, "AI_BF_Fired", GetGametime())
 	end
-	if utility_LogEnabled() then
-		LogMessage("::TWP::PICK " .. utility_Stamp(DynAlias) .. " node=" .. Tag)
-	end
+	utility_Emit("::TWP::PICK " .. utility_Stamp(DynAlias) .. " node=" .. Tag)
 end
 
 -- scoring ----------------------------------------------------------------------
@@ -127,7 +141,8 @@ end
 
 -- Base weight times one factor per consideration, times the goal factor when Goal
 -- is given. A consideration is a number in 0..1 or a table
--- { value = 0..1, curve = "linear"|"quad"|"sqrt"|"invert", lo, hi }.
+-- { value = 0..1, curve = "linear"|"quad"|"sqrt"|"invert", lo, hi }. A custom lo/hi band
+-- is logged as x:curve:lo:hi so the offline replay reproduces the weight.
 -- Tag names the node in the trace; with a Tag the inputs are logged so any other
 -- UTILITY_* setting can be replayed offline from the same session.
 function Score(DynAlias, Base, Considerations, Tag, Goal)
@@ -151,6 +166,10 @@ function Score(DynAlias, Base, Considerations, Tag, Goal)
 			Inputs = Inputs .. ";"
 		end
 		Inputs = Inputs .. string.format("%.2f", x) .. ":" .. Kind
+		if Lo ~= UTILITY_LO or Hi ~= UTILITY_HI then
+			-- a custom band is part of the input: the replay must see it
+			Inputs = Inputs .. ":" .. string.format("%g", Lo) .. ":" .. string.format("%g", Hi)
+		end
 	end
 	local GoalState = "none"
 	if Goal then
@@ -162,8 +181,8 @@ function Score(DynAlias, Base, Considerations, Tag, Goal)
 		end
 		Result = Result * Factor
 	end
-	if Tag and utility_LogEnabled() then
-		LogMessage("::TWP::W " .. utility_Stamp(DynAlias) .. " node=" .. Tag .. " base=" .. Base
+	if Tag then
+		utility_Emit("::TWP::W " .. utility_Stamp(DynAlias) .. " node=" .. Tag .. " base=" .. Base
 			.. " c=" .. Inputs .. " g=" .. GoalState .. " w=" .. string.format("%.2f", Result))
 	end
 	return Result
@@ -219,7 +238,7 @@ function ChooseGoal(DynAlias)
 		SetProperty(DynAlias, "AI_Goal", "Conflict")
 		SetProperty(DynAlias, "AI_GoalTarget", Blood)
 		SetProperty(DynAlias, "AI_GoalUntil", Now + UTILITY_GOAL_HOURS)
-		LogMessage("::TWP::GOAL " .. utility_Stamp(DynAlias) .. " blood=1 pick=Conflict target=" .. Blood)
+		utility_Emit("::TWP::GOAL " .. utility_Stamp(DynAlias) .. " blood=1 pick=Conflict target=" .. Blood)
 		return "Conflict"
 	end
 	local Current = GetProperty(DynAlias, "AI_Goal")
@@ -263,7 +282,7 @@ function ChooseGoal(DynAlias)
 	SetProperty(DynAlias, "AI_Goal", Goal)
 	SetProperty(DynAlias, "AI_GoalTarget", Target)
 	SetProperty(DynAlias, "AI_GoalUntil", Now + UTILITY_GOAL_HOURS)
-	LogMessage("::TWP::GOAL " .. utility_Stamp(DynAlias) .. " P=" .. Political .. " A=" .. Agressive
+	utility_Emit("::TWP::GOAL " .. utility_Stamp(DynAlias) .. " P=" .. Political .. " A=" .. Agressive
 		.. " ambition=" .. Ambition .. " greed=" .. Greed .. " bloodlust=" .. Bloodlust
 		.. " enemies=" .. EnemyCount .. " members=" .. Members .. " ws=" .. Workshops .. " wanted=" .. WantedWorkshops
 		.. " politics=" .. Politics .. " economy=" .. Economy .. " family=" .. Family .. " conflict=" .. Conflict

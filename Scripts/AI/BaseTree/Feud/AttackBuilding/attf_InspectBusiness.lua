@@ -34,19 +34,13 @@ function Weight()
 		return 0
 	end
 	
-	for trys=0,5 do
-		
-		if AliasExists("RivalBuild") then
-			CopyAlias("RivalBuild", "ib_Target")
-			return 50
-		end
-		
-		if DynastyGetRandomBuilding("VictimDynasty",2,-1,"ib_Target") then
-			if GetSettlementID("ib_Target") == GetSettlementID("SIM") then
-				return 50
-			end
-		end
-
+	if AliasExists("RivalBuild") then
+		CopyAlias("RivalBuild", "ib_Target")
+		return 50
+	end
+	-- the victim's strongest workshop in this town, not a random one that may be elsewhere
+	if aitwp_FindTargetBuilding("VictimDynasty", 2, "strongest", "ib_Target", "SIM") then
+		return 50
 	end
 
 	return 0

@@ -16,7 +16,11 @@ function Weight()
 	if Value < 1 then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Charge", 100 + Value)
+	-- scored: the evidence in hand (a full case at 100) and the political priority
+	return utility_Score("dynasty", 100, {
+		{ value = utility_Norm(Value, 0, 100), curve = "sqrt" },
+		utility_Priority("dynasty", "Political"),
+	}, "bf_Charge")
 end
 
 function Execute()

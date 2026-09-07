@@ -15,7 +15,11 @@ function Weight()
 	if DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= 2 + GetNobilityTitle("SIM") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Recruit", 80)
+	-- scored: the shortfall against 2 + title thugs, and the treasury
+	return utility_Score("dynasty", 80, {
+		{ value = utility_Norm(2 + GetNobilityTitle("SIM") - DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON), 0, 3), curve = "sqrt" },
+		{ value = utility_Norm(GetMoney("dynasty"), 3000, 100000), curve = "sqrt" },
+	}, "bf_Recruit")
 end
 
 function Execute()

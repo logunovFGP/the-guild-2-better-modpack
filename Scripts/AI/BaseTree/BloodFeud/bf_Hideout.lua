@@ -19,13 +19,17 @@ function Weight()
 	if not GetHomeBuilding("dynasty", "home") or not GetSettlement("home", "City") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Hideout", 50)
+	-- scored: the treasury and how far up the ladder the feud already is
+	return utility_Score("dynasty", 50, {
+		{ value = utility_Norm(GetMoney("dynasty"), 30000, 300000), curve = "sqrt" },
+		{ value = utility_Norm(aitwp_Rung("dynasty", "PlayerDyn"), 2, 8), curve = "linear" },
+	}, "bf_Hideout")
 end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Hideout")
 	SetRepeatTimer("dynasty", "AI_BF_Hideout", 72)
-	if CityGetRandomBuilding("City", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, -1, -1, FILTER_IS_BUYABLE, "ForSale") then
+	if CityGetNearestBuilding("City", "SIM", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, -1, -1, FILTER_IS_BUYABLE, "ForSale") then
 		aitwp_Log("buys a hideout: " .. GetName("ForSale"), "dynasty")
 		MeasureRun("ForSale", "SIM", "BuyBuilding", true)
 	else

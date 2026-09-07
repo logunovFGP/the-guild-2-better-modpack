@@ -17,7 +17,11 @@ function Weight()
 	if not aitwp_FindTargetBuilding("PlayerDyn", -1, "strongest", "RaidTarget") then
 		return 0
 	end
-	return utility_Trace("dynasty", "bf_Razzia", 150)
+	-- scored: how far past the 35 threshold the evidence is, and an aggressive house
+	return utility_Score("dynasty", 150, {
+		{ value = utility_Norm(GetDynastyEvidenceValues("dynasty", "PlayerDyn"), 35, 100), curve = "linear" },
+		utility_Priority("dynasty", "Agressive"),
+	}, "bf_Razzia")
 end
 
 function Execute()
