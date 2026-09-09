@@ -202,7 +202,10 @@ class Session(object):
                         band = (num(bits[2]), num(bits[3])) if len(bits) >= 4 else None
                         cons.append((num(bits[0]), bits[1] if len(bits) > 1 and bits[1] else "linear", band))
                 base, g, w = num(fields.get("base")), fields.get("g", "none"), num(fields.get("w"))
-                if abs(replay(base, cons, g, VARIANTS["current"]) - w) > 0.01:
+                # Inputs are logged through %.2f, so x carries up to 0.005 of rounding;
+                # a quad curve on a wide band turns that into ~1% of the weight. Compare
+                # in proportion, or every IncomeForAI and Trial line reads as a mismatch.
+                if abs(replay(base, cons, g, VARIANTS["current"]) - w) > max(0.01, 0.02 * w):
                     self.mismatch += 1
                 self.groups[(fields.get("dyn"), fields.get("t"), level)].append((node, base, cons, g, w))
                 continue
@@ -357,7 +360,7 @@ def report(session, path):
             out.append("  %-22s %6d %7.1f%% " % (node, session.picks[node], observed)
                        + " ".join("%10.1f%%" % (100.0 * shares[v].get(node, 0.0)) for v in VARIANTS))
     if session.mismatch:
-        out.append("WARNING: %d W lines do not replay to their logged w under the current variant (custom lo/hi?)" % session.mismatch)
+        out.append("WARNING: %d W lines are more than 2%% off their logged w under the current variant (a wrong band, curve or goal factor - input rounding stays inside this)" % session.mismatch)
 
     if session.measures:
         total = sum(session.measures.values())
@@ -499,6 +502,11 @@ def selftest():
 
 
 def main(argv):
+    # Dynasty names carry umlauts; a cp1251/cp866 console kills the whole report on print.
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except AttributeError:
+        pass
     if len(argv) > 1 and argv[1] == "--selftest":
         return selftest()
     path = argv[1] if len(argv) > 1 else default_log_path()

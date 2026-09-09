@@ -571,6 +571,9 @@ priority).
 
 ### AI backlog
 
+The architecture, the strategy chosen for each area of the game, and the naming rules are
+in [docs/AI_ARCHITECTURE.md](docs/AI_ARCHITECTURE.md). Decide from that table; log changes to it there.
+
 Measured on the session-2 log after the feud work: 233 nodes; the eleven high-mass roots
 and every BloodFeud leaf are scored with considerations, the rest keep constant weights.
 The 40 random target pickers are gone: "one of ours" picks use `aitwp_OwnBuilding` (the
@@ -588,6 +591,69 @@ Known, not scheduled: 111 nodes write the shared alias `SIM` inside `Weight()`, 
 only works because every sibling picks the first idle member; a node choosing
 differently would break its siblings silently, and differing evaluation order is an
 out-of-sync vector. The fix is node-private aliases resolved in `Execute()`.
+
+Session-3 log (rounds 42-43, 55 game hours, 25 dynasties) found two type confusions at
+engine boundaries, both fixed:
+
+* `GetHomeBuilding` is documented for sims and carts (`meta/engine.d.lua`: `pObject` is
+  `cl_Sim/cl_Cart`). Fourteen sites passed a dynasty alias, so the residence never
+  resolved and everything hanging off the store stayed dark: Procure, Recruit, Hideout,
+  Equip, the shopping list, the cart run, the courier, and the market report, which
+  counted every town as "elsewhere". `aitwp_Residence` now tries the native and falls back
+  to `aitwp_OwnBuilding` - the living-room lookup BuildHome and EducateChildren already use.
+* `Thief.lua` stored a *dynasty* id in `HijackingOrder` (`DynastyGetRandomVictim` returns a
+  dynasty; the randomly picked `HIJ_SIM` was thrown away), and nothing ever cleared the
+  property. One stale order pinned every thief-den worker to "Hijack": 28 re-issued orders
+  in 55 hours, zero abductions, zero burglaries, and squads that brawled with whoever they
+  met. The sim is stored now, and the order retires when the target is jailed, dead or gone.
+
+### Picking a fight
+
+A house no longer sends whoever is standing about. `aitwp_WinChance` reads the engine's own
+duel maths forwards - `anims_fight_sim` rolls `1+Rand(50)+FIGHTING*5` against
+`1+Rand(50)+DEXTERITY*5` and takes the defender's armour off what lands, so
+`aitwp_HitChance` is that roll in closed form and `aitwp_SidePower` is a side's HP times the
+damage it actually puts through. Power counts numbers twice, once in output and once in
+staying power, so two equals beat one of the same four to one; the bar is
+`TWP_ATTACK_WIN_CHANCE = 0.75`. It is a rough estimate on purpose - it cannot see crits,
+artefacts or who wanders past - so attacks still go wrong; what it rules out is the fight
+nobody could have won.
+
+The party is everyone the house can spare, not only thugs: `aitwp_GatherFighters` walks
+myrmidons, robbers, thieves and mercenaries, so a robber camp or a vagabond camp puts
+marauders and hired blades into the same party (`TWP_ATTACK_PARTY_MAX = 6`). The defence is
+`aitwp_DefenceOf`: the victim, the bodyguards walking with them (`CityBodyguard` /
+`KIbodyguard`), and anyone of their house inside `TWP_ESCORT_RADIUS`.
+
+Where a fight may happen is `aitwp_MayAttackHere`: outside town always; inside a settlement
+only against someone the watch already wants (`aitwp_IsWanted`, the `CityGetPenalty` test
+`ms_FightArrest` uses) or when a member holds the `CommandCityGuard` office privilege in
+that town and can have the watch looking elsewhere - the same privilege the engine's own
+filters gate guard orders on, handed out by `ps_hauptmann`, `ps_marschall`, `ps_obrist`
+and `ps_weibel` through `chr_SetOfficeImpactList`. It is asked twice - once in `Weight()`,
+once inside `ms_036_AttackEnemy` on arrival, because an order can stand hours before the
+party catches up and the victim is often back on the market by then. That second gate covers
+every AI-ordered attack, the thief den's hijack squads included; the player's own attacks are
+untouched.
+
+Still open:
+
+- [ ] Real town extents. `TWP_TOWN_RADIUS = 8000` plus `TWP_TOWN_RADIUS_PER_LEVEL = 1200`
+      per settlement level is a knob, not a boundary - the engine states none and every map
+      lays towns out differently. Measure a few and calibrate.
+Two things that look like the `HireMyrmidon` starvation and are not, checked so the next
+session does not chase them again:
+
+* `atto_DetainCharacter` and `attf_DetainCharacter` gate on
+  `GetImpactValue(SIM, "DetainCharacter")`. There is no such row in `DB/Impacts.dbt`, but the
+  office system adds it as an object-dependent impact: `TakeOffice` calls
+  `chr_SetOfficeImpactList`, which is `AddObjectDependendImpact("", GetID(Office), name, 1)`.
+  The gate works; it just needs a Hauptmann, Marschall or Obrist, and no AI held one.
+* Engine `GL_` constants are available at library load time - `Scripts/Library/diseases.lua`
+  builds its whole `Disease` table from `GL_FAVOR_MOD_*` that way and has always worked. A
+  scan for module-level uses across `Scripts/**` finds no other case. The party list in
+  `aitwp_GatherFighters` is still built inside the function, which costs nothing and keeps
+  `check_utility.lua` able to stub the professions after the `dofile`.
 
 ### Item catalogue
 
@@ -608,6 +674,7 @@ reinvent them (all under `tools\modding_helpers`, all read-only):
 |---|---|
 | `python ai_telemetry.py [log]` | Session summary and the weighted-random replay under six tuning variants (see above). `--selftest` runs it on a built-in sample. |
 | `python ai_focus.py [log] [--dynasty ID\|name] [--family Barker]` | Who lists a dynasty as an enemy and what they did about it; enemy-list churn per save load; per-subtree conversion of root picks into leaf measures; hostile measure starts by actor. Defaults to the human player (the one id in enemy lists with no AI snapshot). |
+| `python gen_engine_signatures.py [GuildII.exe]` | Arity and parameter class of every engine binding, walked out of the code with rizin (needs it on PATH). Writes `meta/engine.signatures.tsv` and reports where the binary disagrees with `meta/engine.d.lua` - it does, for 108 of them, and the binary wins. Use it before calling a native the tree does not already call: the docs are a scrape and the dump is wrong in places, so a plausible-looking argument list can fail silently. |
 | `python check_unresolved_calls.py [paths] [--overlay DIR]` | Static: every call in the tree and the libraries resolves to a native, a builtin, a same-file function or `<file>_<Function>` in the repo or the vanilla `Scripts` overlay. Exit 1 otherwise - an unresolved call in `Weight()` is a node that silently weighs 0. |
 | `python basetree_stats.py [--list CATEGORY]` | Shape of the tree: constant vs. `utility_Score` vs. `utility_Trace` weights, and hazards inside `Weight()` (writes to the shared `SIM` alias, non-local assignments, `Rand`, use of personality inputs). Tracks the conversion. |
 | `python check_basetree_weights.py` | Every node has `Weight()`/`Execute()` and never returns a boolean weight. |

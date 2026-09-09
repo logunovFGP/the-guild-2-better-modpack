@@ -7,7 +7,7 @@ function Weight()
 		return 0
 	end
 	
-	if not GetHomeBuilding("dynasty", "myrm_home") then
+	if not aitwp_Residence("dynasty", "myrm_home") then
 		return 0
 	end
 	

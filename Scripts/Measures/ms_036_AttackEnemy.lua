@@ -58,6 +58,17 @@ function Run()
 		end
 	end
 	
+	-- The order can be hours old by the time we arrive: a thug sent after someone out on
+	-- the road catches up in the middle of a market. Ask again where we are actually
+	-- standing, for AI attackers only - what the player starts is the player's business.
+	if IsType("Destination", "Sim") and DynastyIsAI("") and GetDynasty("", "AttackerDyn")
+			and not aitwp_MayAttackHere("AttackerDyn", "Destination") then
+		RemoveAlias("AttackerDyn")
+		StopMeasure("")
+		return
+	end
+	RemoveAlias("AttackerDyn")
+
 	gameplayformulas_SimAttackWithRangeWeapon("", "Destination")
 	local iBattleID = BattleJoin("", "Destination", false)
 	Sleep(2) -- required to be at least 1, better 2, otherwise attackers will abort attack within a second after attack

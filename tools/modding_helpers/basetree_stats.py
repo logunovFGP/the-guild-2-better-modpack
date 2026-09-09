@@ -14,6 +14,16 @@ runs before one Execute(), so the last writer wins), assignments to non-local na
 (globals leak between nodes and peers), calls to Rand (dice in a decision), and use of
 personality or priority inputs. --list prints the files of one category, e.g.
 --list constant to see what is left to convert.
+
+Two of the categories are defects rather than statistics, and exit 1 on either:
+  shared alias resolved in Weight(), not stashed
+      two siblings in one folder resolve the same alias to different objects, and
+      the loser's target is what the winner acts on. Fix with blackboard_Stash /
+      blackboard_Claim. Identical calls are not flagged: they find the same object.
+  unregistered blackboard key
+      a property named AI_* or AITWP_* that is not in BLACKBOARD_KEYS, so a typo
+      reads nil forever and the node quietly weighs 0. Repeat-timer names are a
+      separate namespace and are not counted.
 """
 import os
 import re
@@ -25,6 +35,15 @@ WEIGHT = re.compile(r"function Weight\(\)(.*?)\r?\nend", re.S)
 RETURN = re.compile(r"return\s+([^\r\n]*)")
 GLOBAL_ASSIGN = re.compile(r"\n\s*(?!local\b)(?!if\b|for\b|while\b|return\b|end\b|else|elseif|--)[A-Za-z_][A-Za-z_0-9]*\s*=[^=]")
 INPUTS = re.compile(r"utility_Trait|utility_Priority|utility_Money|CheckPersonalityWeight|aitwp_Get(?:PoliticalAmbititon|Agressiveness|Intrigue)|MakeDecision")
+# A node resolving a shared alias to its own target inside Weight(). The engine runs
+# every sibling's Weight() before the winner's Execute(), so the winner acts on
+# whatever the last sibling wrote unless it files the target with blackboard_Stash.
+RESOLVE = re.compile(r'((?:FindPlayerTarget|EvidenceTarget|NearbyPlayerSim|GetBestEnemy|FindTargetBuilding)\s*\([^)]*"([A-Z][A-Za-z0-9_]*)"\s*\))')
+BLACKBOARD = os.path.abspath(os.path.join(HERE, "..", "..", "Scripts", "Library", "blackboard.lua"))
+# only a property call names a blackboard key; "AI_BF_Supply" and friends are
+# repeat-timer names, a separate namespace with its own lifetime
+AI_KEY = re.compile(r'(?:Get|Set|Has|Remove)Property\s*\([^,]+,\s*"(AI_[A-Za-z0-9_]*|AITWP_[A-Za-z0-9_]*)"'
+                    r'|blackboard_(?:Recall|Remember|Forget)\s*\([^,]+,\s*"(AI_[A-Za-z0-9_]*|AITWP_[A-Za-z0-9_]*)"')
 
 
 def strip(src):
@@ -46,10 +65,28 @@ def classify(body):
     return "computed"
 
 
+def registered_keys():
+    """Every key declared in BLACKBOARD_KEYS, plus which of them take an index."""
+    exact, prefixes = set(), set()
+    if not os.path.exists(BLACKBOARD):
+        return exact, prefixes
+    for line in open(BLACKBOARD, encoding="utf-8", errors="replace"):
+        m = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*\{", line)
+        if m and "owner" in line:
+            exact.add(m.group(1))
+            if "prefix = true" in line:
+                prefixes.add(m.group(1))
+    return exact, prefixes
+
+
 def main(argv):
     wanted = argv[argv.index("--list") + 1] if "--list" in argv and argv.index("--list") + 1 < len(argv) else None
     categories, hazards = {}, {"writes SIM in Weight()": [], "non-local assignment in Weight()": [],
-                               "Rand() in Weight()": [], "uses personality/priority inputs": []}
+                               "Rand() in Weight()": [], "uses personality/priority inputs": [],
+                               "shared alias resolved in Weight(), not stashed": [],
+                               "unregistered blackboard key": []}
+    exact, prefixes = registered_keys()
+    resolved = {}
     nodes = 0
     for folder, _dirs, files in os.walk(ROOT):
         for name in files:
@@ -72,6 +109,28 @@ def main(argv):
                 hazards["Rand() in Weight()"].append(rel)
             if INPUTS.search(body):
                 hazards["uses personality/priority inputs"].append(rel)
+            folder_key = os.path.dirname(rel)
+            for call, alias in set(RESOLVE.findall(body)):
+                norm = re.sub(r"\s+", "", call)
+                resolved.setdefault((folder_key, alias), []).append((rel, norm, "blackboard_Stash" in src))
+            for pair in set(AI_KEY.findall(src)):
+                key = pair[0] or pair[1]
+                if key in exact:
+                    continue
+                stem = re.sub(r"[0-9]+$", "", key)
+                if stem in prefixes or key.rstrip("_") + "_" in exact:
+                    continue
+                hazards["unregistered blackboard key"].append("%s  (%s)" % (rel, key))
+
+    # a hazard only when siblings in one folder resolve the same alias differently:
+    # identical calls land on the same object, so the last writer changes nothing
+    for (_folder, _alias), owners in resolved.items():
+        # more than one node, and they ask for different things: one node using an
+        # OR-fallback into its own alias is fine
+        if len(set(rel for rel, _n, _s in owners)) > 1 and len(set(n for _r, n, _s in owners)) > 1:
+            for rel, _norm, stashed in owners:
+                if not stashed and rel not in hazards["shared alias resolved in Weight(), not stashed"]:
+                    hazards["shared alias resolved in Weight(), not stashed"].append(rel)
 
     if wanted:
         for rel in sorted(categories.get(wanted, []) + hazards.get(wanted, [])):
@@ -85,6 +144,16 @@ def main(argv):
     for label, files in hazards.items():
         print("  %-38s %4d" % (label, len(files)))
     print("\n--list <category> prints the files, e.g. --list constant or --list \"Rand() in Weight()\"")
+    # These two are not statistics, they are defects: a sibling can take the target, or
+    # a key reads nil for the rest of the game. Both fail silently in play, so fail here.
+    blocking = (hazards["shared alias resolved in Weight(), not stashed"]
+                + hazards["unregistered blackboard key"])
+    if blocking:
+        print("")
+        print("%d blocking hazard(s):" % len(blocking))
+        for rel in sorted(blocking):
+            print("  " + rel)
+        return 1
     return 0
 
 

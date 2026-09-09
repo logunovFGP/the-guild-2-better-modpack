@@ -385,11 +385,23 @@ check("AI victim: factor 1", AttitudeFactor("d", "ai") == 1)
 
 -- aitwp_ShoppingList / DrawFromStock / IdleThug: the cart supply chain ------------------
 aitwp_ProcureTools, aitwp_Severity, aitwp_StockCount, aitwp_StockCap = ProcureTools, Severity, StockCount, StockCap
+aitwp_Residence = Residence
+GL_BUILDING_TYPE_RESIDENCE = 9
+-- until the building table below exists, every home the stub hands back is a residence
+function BuildingGetType(Alias) return GL_BUILDING_TYPE_RESIDENCE end
 aitwp_InStore, aitwp_EquipmentTier, aitwp_NoteMissing, aitwp_MissingEquipment = InStore, EquipmentTier, NoteMissing, MissingEquipment
 aitwp_IsTool, aitwp_CanHandOver, aitwp_CarriedTools, aitwp_HandOversToday, aitwp_HandOverCap = IsTool, CanHandOver, CarriedTools, HandOversToday, HandOverCap
 STATE_IDLE = 7
+STATE_DYING = 98
+STATE_UNCONSCIOUS = 97
 local IdleState, CurMeasure = false, "AttendMass"
-function GetState(Alias, State) return IdleState end
+local Downed = {}
+function GetState(Alias, State)
+	if State == STATE_IDLE then
+		return IdleState
+	end
+	return Downed[Alias] or false
+end
 function GetCurrentMeasureName(Alias) return CurMeasure end
 function SimGetAge(Alias) return 30 end
 function DynastyGetWorkerCount(Alias, Profession) return 0 end
@@ -405,11 +417,18 @@ function RemoveItems(Alias, Item, Count, Inv) local T = Stock[Alias] or Carried;
 function AddItems(Alias, Item, Count, Inv) Added[Item] = (Added[Item] or 0) + Count; return Count end
 function GetDynasty(Alias, Out) Aliases[Out] = 7; return true end
 
-check("a thug at mass is not free", IdleThug("k") == false)
+check("a thug at mass is not free", IsFreeForOrders("k") == false)
 CurMeasure = "PatrolTheTown"
-check("a thug on patrol is free for an order", IdleThug("k") == true)
+check("a thug on patrol is free for an order", IsFreeForOrders("k") == true)
+CurMeasure = "PickpocketPeople"
+check("a thief on its rounds is free for an order", IsFreeForOrders("k") == true)
+Downed.k = true
+check("a thug lying unconscious takes no orders", IsFreeForOrders("k") == false)
+Downed.k = nil
 IdleState = true
-check("an idle thug is free", IdleThug("k") == true)
+check("an idle thug is free", IsFreeForOrders("k") == true)
+IdleState = false
+CurMeasure = "AttendMass"
 
 Carried = {}
 Props.AI_BloodEnemyOf = 11
@@ -469,6 +488,156 @@ check("own building: none of that type", OwnBuilding("d", -1, 99, "Out") == fals
 check("the most damaged building and its health", near(MostDamagedBuilding("d", "Out"), 0.4) and Aliases.Out == 1)
 check("strongest workshop in one town only", FindTargetBuilding("d", GL_BUILDING_CLASS_WORKSHOP, "strongest", "Out", "town") and Aliases.Out == 1)
 check("strongest workshop anywhere", FindTargetBuilding("d", GL_BUILDING_CLASS_WORKSHOP, "strongest", "Out") and Aliases.Out == 3)
+
+-- aitwp_Residence: the store lookup every supply node hangs off ---------------------------
+Buildings.home = { class = GL_BUILDING_CLASS_LIVINGROOM, level = 1, type = GL_BUILDING_TYPE_RESIDENCE, hp = 1.0, town = 1 }
+local HomeLookupAnswers = true
+function GetHomeBuilding(Alias, Out)
+	if not HomeLookupAnswers then
+		return false
+	end
+	Aliases[Out] = "home"
+	return true
+end
+check("residence: the engine lookup when it answers", Residence("d", "Out") and Aliases.Out == "home")
+HomeLookupAnswers = false
+check("residence: the living room when a dynasty alias gets no answer", Residence("d", "Out") and Aliases.Out == 2)
+HomeLookupAnswers = true
+
+-- the attack rules: HitChance / WinChance / GatherFighters / MayAttackHere ----------------
+aitwp_HitChance, aitwp_FightStats, aitwp_AddFighter = HitChance, FightStats, AddFighter
+aitwp_SidePower, aitwp_WinChance, aitwp_DefenceOf = SidePower, WinChance, DefenceOf
+aitwp_GatherFighters, aitwp_ClearFighters = GatherFighters, ClearFighters
+aitwp_IsFreeForOrders, aitwp_TownRadius = IsFreeForOrders, TownRadius
+aitwp_IsOutsideTown, aitwp_IsWanted, aitwp_CommandsGuards = IsOutsideTown, IsWanted, CommandsGuards
+GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER, GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY = 1, 2, 3, 4
+PENALTY_UNKNOWN = 0
+
+-- one sheet per alias, so a side can be built out of unlike fighters
+local Sheets = {}
+local function sheet(Name, Damage, Armor, Dex, Hp, Fight)
+	Sheets[Name] = { damage = Damage, armor = Armor, dex = Dex, hp = Hp, fighting = Fight }
+	Aliases[Name] = Name
+	return Name
+end
+function ai_GetPower(Alias) local S = Sheets[Alias] or {} return S.damage or 0, S.armor or 0 end
+function GetHP(Alias) local S = Sheets[Alias] or {} return S.hp or 0 end
+function GetSkillValue(Alias, Skill)
+	local S = Sheets[Alias] or {}
+	if Skill == FIGHTING then return S.fighting or 0 end
+	if Skill == DEXTERITY then return S.dex or 0 end
+	return 0
+end
+
+check("an even swing lands half the time", near(HitChance(3, 3), 0.5))
+check("ten points of fighting over dexterity always lands", HitChance(13, 3) == 1)
+check("ten points under never lands", HitChance(3, 13) == 0)
+
+sheet("a1", 20, 0, 3, 100, 3)
+sheet("a2", 20, 0, 3, 100, 3)
+sheet("d1", 20, 0, 3, 100, 3)
+local One, Two, Solo = {}, {}, {}
+AddFighter(One, "a1")
+AddFighter(Two, "a1")
+AddFighter(Two, "a2")
+AddFighter(Solo, "d1")
+check("an even fight is even", near(WinChance(One, Solo), 0.5))
+check("two of a kind beat one four to one", near(WinChance(Two, Solo), 0.8))
+check("two of a kind clear the three-in-four bar", WinChance(Two, Solo) >= TWP_ATTACK_WIN_CHANCE)
+check("one of a kind does not", WinChance(One, Solo) < TWP_ATTACK_WIN_CHANCE)
+
+-- a hurt thug against a fit, armoured swordsman is the fight that was killing them
+sheet("hurt", 12, 0, 2, 30, 2)
+sheet("knight", 40, 50, 6, 100, 8)
+local Hurt, Knight = {}, {}
+AddFighter(Hurt, "hurt")
+AddFighter(Knight, "knight")
+check("a hurt thug stays home against a knight", WinChance(Hurt, Knight) < TWP_ATTACK_WIN_CHANCE)
+check("armour cuts the damage that gets through", SidePower(Hurt, Knight) < SidePower(Hurt, Solo))
+check("the dead count for nothing", select(4, FightStats("nobody")) == 0)
+
+-- the roster: thugs, and the camps' marauders, thieves and mercenaries
+local Roster = { [GL_PROFESSION_MYRMIDON] = 1, [GL_PROFESSION_ROBBER] = 2, [GL_PROFESSION_MERCENARY] = 1 }
+function DynastyGetWorkerCount(Alias, Profession) return Roster[Profession] or 0 end
+function DynastyGetWorker(Alias, Profession, Index, Out)
+	if (Roster[Profession] or 0) <= Index then
+		return false
+	end
+	sheet(Out, 20, 0, 3, 100, 3)
+	return true
+end
+IdleState = true
+local Party = {}
+check("the party is drawn from every camp the house owns", GatherFighters("d", "TWP_G", Party, 6) == 4)
+check("and every one of them counts", Party.n == 4)
+check("the cap holds the party down", GatherFighters("d", "TWP_G", {}, 2) == 2)
+IdleState = false
+
+-- where the fight may happen
+local Inside, Wanted, OfficeCity, Privilege = false, false, 0, 0
+function SimIsInside(Alias) return Inside end
+function GetNearestSettlement(Alias, Out) Aliases[Out] = 1; return true end
+function GetDistance(A, B) return 100 end
+function CityGetLevel(Alias) return 3 end
+function CityGetPenalty(City, Sim, Type, Fugitive, Out) return Wanted end
+function GetImpactValue(Alias, Name) if Name == TWP_GUARD_PRIVILEGE then return Privilege end return 0 end
+function SimGetCityOfOffice(Alias, Out) Aliases[Out] = OfficeCity; return OfficeCity ~= 0 end
+function DynastyGetMemberCount(Alias) return 1 end
+function DynastyGetMember(Alias, Index, Out) Aliases[Out] = "member"; return true end
+
+check("the town edge grows with the town", TownRadius("town") == TWP_TOWN_RADIUS + 3 * TWP_TOWN_RADIUS_PER_LEVEL)
+check("close to a town is not outside it", IsOutsideTown("v") == false)
+check("no attack in town on someone the watch protects", MayAttackHere("d", "v") == false)
+Wanted = true
+check("a felon is fair game in town", MayAttackHere("d", "v") == true)
+Wanted = false
+OfficeCity, Privilege = 1, 1
+Aliases.town = 1
+check("the office that commands the watch buys the same licence", MayAttackHere("d", "v") == true)
+Privilege = 0
+check("an office without that privilege does not", MayAttackHere("d", "v") == false)
+Inside = true
+check("indoors is never outside town", IsOutsideTown("v") == false)
+
+-- the blackboard: key registry and the Weight() -> Execute() handoff ----------------------
+dofile("Scripts/Library/blackboard.lua")
+blackboard_Stem, blackboard_Known = Stem, Known
+blackboard_Recall, blackboard_Remember, blackboard_Forget = Recall, Remember, Forget
+blackboard_Stash, blackboard_Claim, blackboard_Drop = Stash, Claim, Drop
+local Store = {}
+function SetData(Key, Value) Store[Key] = Value end
+function GetData(Key) return Store[Key] end
+function GetAliasByID(ID, Out) if ID == 0 then return false end Aliases[Out] = ID; return true end
+Props = {}
+function GetProperty(Alias, Name) return Props[Name] end
+function SetProperty(Alias, Name, Value) Props[Name] = Value end
+function HasProperty(Alias, Name) return Props[Name] ~= nil end
+function RemoveProperty(Alias, Name) Props[Name] = nil end
+
+check("a missing key falls back to its declared default", Recall("d", "AITWP_Agressive") == 50)
+Remember("d", "AITWP_Agressive", 90)
+check("a written key reads back", Recall("d", "AITWP_Agressive") == 90)
+Forget("d", "AITWP_Agressive")
+check("a forgotten key returns to its default", Recall("d", "AITWP_Agressive") == 50)
+check("an indexed key matches its registered stem", Stem("AI_Courier2") == "AI_Courier")
+check("a non-prefix key does not match by stem", Stem("AI_Goal7") == nil)
+Logged = {}
+check("an unregistered key reads nil", Recall("d", "AI_Typpo") == nil)
+check("and says so instead of failing silently", has(lastLog(), "::TWP::BB unregistered key AI_Typpo"))
+Logged = {}
+Recall("d", "AI_Typpo")
+check("but only once per key", #Logged == 0)
+
+-- the handoff: what a sibling writes afterwards must not reach the winner
+Aliases.MyTarget = 4242
+check("stashing a live alias succeeds", Stash("bf_Mine", "MyTarget") == true)
+Aliases.MyTarget = 99                    -- a sibling resolves the shared alias to its own target
+check("the claim returns the node's own target, not the sibling's",
+	Claim("bf_Mine", "Out") and Aliases.Out == 4242)
+check("a claim for a node that never stashed fails", Claim("bf_Other", "Out2") == false)
+RemoveAlias("Gone")
+check("stashing a missing alias reports it", Stash("bf_Gone", "Gone") == false)
+check("and its claim fails rather than acting on nothing", Claim("bf_Gone", "Out3") == false)
 
 if Failures > 0 then
 	io.stderr:write("FAILED: " .. Failures .. " check(s) on utility scoring\n")

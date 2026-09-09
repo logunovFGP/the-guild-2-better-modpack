@@ -11,7 +11,7 @@ function Weight()
 	if GetMoney("dynasty") < 100000 then
 		return 0
 	end
-	if not GetHomeBuilding("dynasty", "home") or BuildingGetType("home") ~= GL_BUILDING_TYPE_RESIDENCE then
+	if not aitwp_Residence("dynasty", "home") or BuildingGetType("home") ~= GL_BUILDING_TYPE_RESIDENCE then
 		return 0
 	end
 	local Needs = {}

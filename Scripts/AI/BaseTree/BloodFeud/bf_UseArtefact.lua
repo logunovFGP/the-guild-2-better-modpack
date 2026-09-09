@@ -36,6 +36,9 @@ function Weight()
 				elseif T.target == "weak" then
 					Fit = 1 - GetHPRelative("Victim")
 				end
+				-- siblings share the alias "Victim" and the engine runs every Weight() before
+				-- the winner's Execute(); file it under this node so no sibling can take it
+				blackboard_Stash("bf_UseArtefact", "Victim")
 				return utility_Score("dynasty", W, {
 					{ value = utility_Norm(aitwp_Severity(T), 1, 5), curve = "linear" },
 					{ value = Fit, curve = "linear", lo = 0.8 },
@@ -48,14 +51,18 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_UseArtefact")
+	if not blackboard_Claim("bf_UseArtefact", "BF_ArtefactVictim") then
+		return
+	end
 	local Item = GetData("ArtefactItem")
 	if GetItemCount("SIM", Item, INVENTORY_STD) == 0 and not aitwp_DrawFromStock("SIM", Item, 1) then
 		return
 	end
-	aitwp_Log("uses " .. Item .. " on " .. GetName("Victim"), "dynasty")
+	aitwp_Log("uses " .. Item .. " on " .. GetName("BF_ArtefactVictim"), "dynasty")
 	if GetData("ArtefactTarget") == "near" then
 		MeasureRun("SIM", nil, "Use" .. Item)
 	else
-		MeasureRun("SIM", "Victim", "Use" .. Item)
+		MeasureRun("SIM", "BF_ArtefactVictim", "Use" .. Item)
 	end
+	blackboard_Drop("BF_ArtefactVictim")
 end

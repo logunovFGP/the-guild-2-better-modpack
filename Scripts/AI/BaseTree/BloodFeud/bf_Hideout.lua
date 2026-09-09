@@ -16,7 +16,7 @@ function Weight()
 	if GetMoney("dynasty") < 30000 then
 		return 0
 	end
-	if not GetHomeBuilding("dynasty", "home") or not GetSettlement("home", "City") then
+	if not aitwp_Residence("dynasty", "home") or not GetSettlement("home", "City") then
 		return 0
 	end
 	-- scored: the treasury and how far up the ladder the feud already is

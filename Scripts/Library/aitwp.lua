@@ -260,6 +260,18 @@ function FindTargetBuilding(OwnerAlias, Class, Mode, OutAlias, Settlement)
 end
 
 
+-- The house's residence, from a dynasty alias or one of its sims. GetHomeBuilding is
+-- documented for sims and carts only (engine.d.lua: pObject is cl_Sim/cl_Cart), so a
+-- dynasty alias cannot be relied on there and every store, cart, market and courier
+-- lookup below goes through here instead. The fallback is the best living room, which
+-- is what aitwp_OwnBuilding already resolves for BuildHome and EducateChildren.
+function Residence(Alias, OutAlias)
+	if GetHomeBuilding(Alias, OutAlias) and BuildingGetType(OutAlias) == GL_BUILDING_TYPE_RESIDENCE then
+		return true
+	end
+	return aitwp_OwnBuilding(Alias, GL_BUILDING_CLASS_LIVINGROOM, GL_BUILDING_TYPE_RESIDENCE, OutAlias)
+end
+
 -- The house's own building of Class and Type (-1 for any) into OutAlias: the highest
 -- level, ties to the lower index. The deterministic stand-in for DynastyGetRandomBuilding
 -- wherever a node needs "one of ours" - Alias may be the dynasty or one of its sims.
@@ -671,9 +683,17 @@ function FindFitDuelist(DynAlias, OutAlias)
 	return DynastyGetMember(DynAlias, Best, OutAlias)
 end
 
--- Outdoors and further than TWP_TOWN_RADIUS from the nearest settlement: on the
--- road, in the fields, at the mine - where a party of thugs can reach someone.
-TWP_TOWN_RADIUS = 6000
+-- A rough outer edge for a settlement, not its boundary: the engine states none, towns
+-- grow with their level, and every map lays them out differently. Both numbers are
+-- knobs - too small and thugs brawl on the market, too large and they never engage.
+TWP_TOWN_RADIUS = 8000
+TWP_TOWN_RADIUS_PER_LEVEL = 1200
+function TownRadius(CityAlias)
+	return TWP_TOWN_RADIUS + TWP_TOWN_RADIUS_PER_LEVEL * math.max(0, CityGetLevel(CityAlias) or 0)
+end
+
+-- Outdoors and past that edge: on the road, in the fields, at the mine - where a party
+-- of thugs can reach someone without the town watching.
 function IsOutsideTown(Alias)
 	if SimIsInside(Alias) then
 		return false
@@ -681,9 +701,64 @@ function IsOutsideTown(Alias)
 	if not GetNearestSettlement(Alias, "TWP_Town") then
 		return true
 	end
-	local Far = GetDistance(Alias, "TWP_Town") > TWP_TOWN_RADIUS
+	local Far = GetDistance(Alias, "TWP_Town") > aitwp_TownRadius("TWP_Town")
 	RemoveAlias("TWP_Town")
 	return Far
+end
+
+-- Someone the town guard already wants. Attacking a felon is not what brings the watch
+-- down on a house - the same test ms_FightArrest uses to spot one.
+function IsWanted(Alias)
+	if not GetNearestSettlement(Alias, "TWP_WC") then
+		return false
+	end
+	local Wanted = false
+	if CityGetPenalty("TWP_WC", Alias, PENALTY_UNKNOWN, true, "TWP_WP") then
+		Wanted = true
+	end
+	RemoveAlias("TWP_WP")
+	RemoveAlias("TWP_WC")
+	return Wanted
+end
+
+-- A member of the house holding, in that town, the office privilege the game itself uses
+-- for this. ps_hauptmann, ps_marschall, ps_obrist and ps_weibel hand out "CommandCityGuard"
+-- through chr_SetOfficeImpactList, and the engine's own filters gate every guard order on
+-- it (Filter.dbt: CanUseCityGuard, CanDetainCharacterCityGuard). Whoever holds it can have
+-- the watch looking the other way.
+TWP_GUARD_PRIVILEGE = "CommandCityGuard"
+function CommandsGuards(DynAlias, CityAlias)
+	local Found = false
+	local Count = DynastyGetMemberCount(DynAlias)
+	for i = 0, Count - 1 do
+		if not Found and DynastyGetMember(DynAlias, i, "TWP_GO")
+				and (GetImpactValue("TWP_GO", TWP_GUARD_PRIVILEGE) or 0) > 0
+				and SimGetCityOfOffice("TWP_GO", "TWP_GOC")
+				and GetID("TWP_GOC") == GetID(CityAlias) then
+			Found = true
+		end
+	end
+	RemoveAlias("TWP_GOC")
+	RemoveAlias("TWP_GO")
+	return Found
+end
+
+-- May this house start a fight where the victim is standing? Out of town, always.
+-- Inside a settlement only when the watch has no reason to step in: the victim is
+-- already wanted, or the house holds the office that commands the watch there.
+function MayAttackHere(DynAlias, VictimAlias)
+	if aitwp_IsOutsideTown(VictimAlias) then
+		return true
+	end
+	if aitwp_IsWanted(VictimAlias) then
+		return true
+	end
+	if not GetNearestSettlement(VictimAlias, "TWP_MAC") then
+		return false
+	end
+	local Ok = aitwp_CommandsGuards(DynAlias, "TWP_MAC")
+	RemoveAlias("TWP_MAC")
+	return Ok
 end
 
 -- Scores one player sim for FindPlayerTarget; nil means not eligible for the mode.
@@ -869,7 +944,7 @@ end
 -- and data EquipItem; true on success. Nobody walks to the smithy any more
 -- (session 2: eight armour trips by one member, no armour).
 function FindUnequipped(DynAlias, Tier, OutAlias)
-	if not GetHomeBuilding(DynAlias, "TWP_EqH") then
+	if not aitwp_Residence(DynAlias, "TWP_EqH") then
 		return false
 	end
 	local Found = false
@@ -930,7 +1005,7 @@ end
 
 -- Issues the piece from the residence store; false when the store has none.
 function Equip(DynAlias, Alias, Item)
-	if not GetHomeBuilding(DynAlias, "TWP_EqH") or GetItemCount("TWP_EqH", Item, INVENTORY_STD) <= 0 then
+	if not aitwp_Residence(DynAlias, "TWP_EqH") or GetItemCount("TWP_EqH", Item, INVENTORY_STD) <= 0 then
 		RemoveAlias("TWP_EqH")
 		return false
 	end
@@ -1236,7 +1311,7 @@ end
 
 -- true when the residence or a thug holds the item: the store the use nodes draw from
 function InStore(DynAlias, Item)
-	local Found = GetHomeBuilding(DynAlias, "TWP_IS") and GetItemCount("TWP_IS", Item, INVENTORY_STD) > 0
+	local Found = aitwp_Residence(DynAlias, "TWP_IS") and GetItemCount("TWP_IS", Item, INVENTORY_STD) > 0
 	RemoveAlias("TWP_IS")
 	local Count = DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MYRMIDON)
 	for i = 0, Count - 1 do
@@ -1306,7 +1381,7 @@ function DrawFromStock(SimAlias, Item, Count)
 		return false
 	end
 	local Done = false
-	if GetHomeBuilding("TWP_DS", "TWP_DSH") and GetItemCount("TWP_DSH", Item, INVENTORY_STD) >= Count then
+	if aitwp_Residence("TWP_DS", "TWP_DSH") and GetItemCount("TWP_DSH", Item, INVENTORY_STD) >= Count then
 		RemoveItems("TWP_DSH", Item, Count, INVENTORY_STD)
 		AddItems(SimAlias, Item, Count, INVENTORY_STD)
 		Done = true
@@ -1394,7 +1469,7 @@ end
 -- Items of Item the house holds anywhere: residence store, party members, thugs.
 function StockCount(DynAlias, Item)
 	local Total = 0
-	if GetHomeBuilding(DynAlias, "TWP_SC") then
+	if aitwp_Residence(DynAlias, "TWP_SC") then
 		Total = Total + GetItemCount("TWP_SC", Item, INVENTORY_STD)
 	end
 	local Count = DynastyGetMemberCount(DynAlias)
@@ -1464,7 +1539,7 @@ function ShoppingList(DynAlias, PlayerDyn, OutNeeds)
 		end
 		RemoveAlias("TWP_SL")
 	end
-	local HasHome = GetHomeBuilding(DynAlias, "TWP_SLH")
+	local HasHome = aitwp_Residence(DynAlias, "TWP_SLH")
 	local Total, Out = 0, 0
 	for i = 1, #Names do
 		local Amount = math.min(Counts[i], 3)
@@ -1482,21 +1557,192 @@ function ShoppingList(DynAlias, PlayerDyn, OutNeeds)
 	return Out
 end
 
--- A thug fit to take an order: idle, or on the rounds the engine counts as idle
--- (patrol, escort, evidence run) - the test dyn_GetIdleMyrmidon uses. A bare
--- STATE_IDLE test skipped every patrolling thug (session 2: seven orders, none run).
-function IdleThug(Alias)
+-- Rounds a hired hand can be pulled off without losing anything: the watch, the escort,
+-- the evidence errand, and the underworld's own patrols. A bare STATE_IDLE test skipped
+-- every patrolling thug (session 2: seven orders, none run).
+TWP_FREE_MEASURES = {
+	"PatrolTheTown", "EscortCharacterOrTransport", "OrderCollectEvidence",
+	"PickpocketPeople", "ScoutAHouse", "BurgleAHouse", "Linger",
+}
+function IsFreeForOrders(Alias)
+	if GetState(Alias, STATE_DEAD) or GetState(Alias, STATE_DYING) or GetState(Alias, STATE_UNCONSCIOUS) then
+		return false
+	end
 	if GetState(Alias, STATE_IDLE) then
 		return true
 	end
 	local M = GetCurrentMeasureName(Alias)
-	return M == "PatrolTheTown" or M == "EscortCharacterOrTransport" or M == "OrderCollectEvidence"
+	for i = 1, #TWP_FREE_MEASURES do
+		if M == TWP_FREE_MEASURES[i] then
+			return true
+		end
+	end
+	return false
 end
+
+-- Fighting ------------------------------------------------------------------------
+-- The engine settles a swing in anims_fight_sim: the attacker rolls 1+Rand(50)+FIGHTING*5,
+-- the defender 1+Rand(50)+DEXTERITY*5, and the swing misses when the defence wins; what
+-- lands then loses the defender's armour as a percentage. Everything below is that model
+-- read forwards, so a house can tell a fight it wins from one it walks into.
+
+-- Chance one swing lands. The difference of two Rand(50) rolls is triangular over
+-- -49..49, so this is that distribution in closed form.
+function HitChance(Fighting, Dexterity)
+	local Edge = ((Fighting or 0) - (Dexterity or 0)) * 5
+	if Edge >= 50 then
+		return 1
+	end
+	if Edge <= -50 then
+		return 0
+	end
+	if Edge >= 0 then
+		local Miss = (50 - Edge) / 50
+		return 1 - Miss * Miss * 0.5
+	end
+	local Hit = (50 + Edge) / 50
+	return Hit * Hit * 0.5
+end
+
+-- One fighter's numbers: damage per landed swing (weapon, level and FIGHTING, through
+-- ai_GetPower), armour as the percentage it takes off an incoming hit, dexterity, HP
+-- left and FIGHTING. Anyone down or dying counts for nothing on either side.
+function FightStats(Alias)
+	if GetState(Alias, STATE_DEAD) or GetState(Alias, STATE_DYING) or GetState(Alias, STATE_UNCONSCIOUS) then
+		return 0, 0, 0, 0, 0
+	end
+	local Damage, Armor = ai_GetPower(Alias)
+	local HP = GetHP(Alias) or 0
+	if HP < 0 then
+		HP = 0
+	end
+	return Damage or 0, math.min(90, Armor or 0), GetSkillValue(Alias, DEXTERITY) or 0, HP,
+		GetSkillValue(Alias, FIGHTING) or 0
+end
+
+-- Sides are plain tables so a caller can build one from members, workers, an escort
+-- count or a squad without agreeing on an alias scheme first.
+function AddFighter(Side, Alias)
+	local Damage, Armor, Dex, HP, Fighting = aitwp_FightStats(Alias)
+	if HP <= 0 then
+		return Side
+	end
+	Side.n = (Side.n or 0) + 1
+	Side.hp = (Side.hp or 0) + HP
+	Side.damage = (Side.damage or 0) + Damage
+	Side.armor = (Side.armor or 0) + Armor
+	Side.dex = (Side.dex or 0) + Dex
+	Side.fighting = (Side.fighting or 0) + Fighting
+	return Side
+end
+
+-- Damage a side puts out per round against the other, times the HP it has to spend
+-- doing it. Two equals beat one of the same four to one, not two to one - numbers
+-- count twice, once in the output and once in the staying power.
+function SidePower(Side, Other)
+	if (Side.n or 0) < 1 or (Side.hp or 0) <= 0 then
+		return 0
+	end
+	local TheirDex, TheirArmor = 0, 0
+	if (Other.n or 0) > 0 then
+		TheirDex = (Other.dex or 0) / Other.n
+		TheirArmor = (Other.armor or 0) / Other.n
+	end
+	local Through = 1 - TheirArmor * 0.01
+	if Through < 0.1 then
+		Through = 0.1
+	end
+	return Side.hp * (Side.damage or 0) * aitwp_HitChance((Side.fighting or 0) / Side.n, TheirDex) * Through
+end
+
+-- Rough chance Side walks away from Other. Rough on purpose: it cannot see crits,
+-- artefacts, or who wanders past and joins in, so a house that clears the bar still
+-- loses sometimes. What it rules out is the fight nobody could have won.
+function WinChance(Side, Other)
+	local Mine = aitwp_SidePower(Side, Other)
+	local Theirs = aitwp_SidePower(Other, Side)
+	if Mine <= 0 then
+		return 0
+	end
+	if Theirs <= 0 then
+		return 1
+	end
+	return Mine / (Mine + Theirs)
+end
+
+-- Everyone the house can put on the road: thugs off the residence, and the marauders,
+-- thieves and mercenaries of any camp it owns. Writes them into <Prefix>1..n, adds their
+-- numbers to Side and returns n.
+TWP_ATTACK_PARTY_MAX = 6
+function GatherFighters(DynAlias, Prefix, Side, Max)
+	-- built here, not at load time: the GL_PROFESSION_ constants are the engine's, and a
+	-- table filled before it has defined them is four nils and no party at all
+	local Professions = { GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER, GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY }
+	local Found = 0
+	for p = 1, #Professions do
+		local Profession = Professions[p]
+		local Count = DynastyGetWorkerCount(DynAlias, Profession) or 0
+		for i = 0, Count - 1 do
+			if Found < Max and DynastyGetWorker(DynAlias, Profession, i, Prefix .. (Found + 1))
+					and aitwp_IsFreeForOrders(Prefix .. (Found + 1)) then
+				Found = Found + 1
+				aitwp_AddFighter(Side, Prefix .. Found)
+			end
+		end
+	end
+	RemoveAlias(Prefix .. (Found + 1))
+	return Found
+end
+
+function ClearFighters(Prefix, Count)
+	for i = 1, Count do
+		RemoveAlias(Prefix .. i)
+	end
+end
+
+-- What the victim has around them: their own sheet, the bodyguards walking with them
+-- (the escort measure counts itself on the sim it follows), and anyone of their house
+-- close enough to join before it is over. Guards stand in at the victim's own strength,
+-- because the estimate cannot read their sheets and under-counting an escort is exactly
+-- what got single thugs killed.
+TWP_ESCORT_RADIUS = 3000
+TWP_DEFENCE_MAX = 8
+function DefenceOf(PlayerDyn, VictimAlias, Side)
+	aitwp_AddFighter(Side, VictimAlias)
+	local Escorts = (GetProperty(VictimAlias, "CityBodyguard") or 0) + (GetProperty(VictimAlias, "KIbodyguard") or 0)
+	for i = 1, Escorts do
+		if (Side.n or 0) < TWP_DEFENCE_MAX then
+			aitwp_AddFighter(Side, VictimAlias)
+		end
+	end
+	local VictimID = GetID(VictimAlias)
+	local Count = DynastyGetMemberCount(PlayerDyn) or 0
+	for i = 0, Count - 1 do
+		if (Side.n or 0) < TWP_DEFENCE_MAX and DynastyGetMember(PlayerDyn, i, "TWP_Def")
+				and GetID("TWP_Def") ~= VictimID
+				and GetDistance("TWP_Def", VictimAlias) <= TWP_ESCORT_RADIUS then
+			aitwp_AddFighter(Side, "TWP_Def")
+		end
+	end
+	Count = DynastyGetWorkerCount(PlayerDyn, -1) or 0
+	for i = 0, Count - 1 do
+		if (Side.n or 0) < TWP_DEFENCE_MAX and DynastyGetWorker(PlayerDyn, -1, i, "TWP_Def")
+				and GetID("TWP_Def") ~= VictimID
+				and GetDistance("TWP_Def", VictimAlias) <= TWP_ESCORT_RADIUS then
+			aitwp_AddFighter(Side, "TWP_Def")
+		end
+	end
+	RemoveAlias("TWP_Def")
+	return Side
+end
+
+-- The house attacks when it reckons it wins three fights in four.
+TWP_ATTACK_WIN_CHANCE = 0.75
 
 -- Carts of the residence: total, how many are on a supply run, and whether an idle
 -- one was put into OutAlias.
 function ResidenceCarts(DynAlias, OutAlias)
-	if not GetHomeBuilding(DynAlias, "TWP_RC") then
+	if not aitwp_Residence(DynAlias, "TWP_RC") then
 		return 0, 0, false
 	end
 	local Total = BuildingGetCartCount("TWP_RC")
@@ -1525,7 +1771,7 @@ function MarketReport(DynAlias, PlayerDyn)
 	end
 	local Items = {}
 	local N = aitwp_ProcureList(DynAlias, PlayerDyn, Items)
-	local HasHome = GetHomeBuilding(DynAlias, "TWP_MRH") and GetSettlement("TWP_MRH", "TWP_MRC")
+	local HasHome = aitwp_Residence(DynAlias, "TWP_MRH") and GetSettlement("TWP_MRH", "TWP_MRC")
 	local Cities = ScenarioGetObjects("Settlement", 20, "TWP_MRS")
 	local Text = ""
 	for i = 1, N do
@@ -1577,7 +1823,7 @@ end
 -- room), so no unit sits on a tool it did not use; the store hands it out again just
 -- in time.
 function ReturnUnused(DynAlias)
-	if not GetHomeBuilding(DynAlias, "TWP_RU") then
+	if not aitwp_Residence(DynAlias, "TWP_RU") then
 		return
 	end
 	local Count = DynastyGetMemberCount(DynAlias)
@@ -1627,7 +1873,7 @@ end
 -- AI_Courier1..3 as item ids. Logged on the CART channel as action=courier with
 -- carts= delivered today, need= ordered today, result= the rung gap.
 function CourierOrders(DynAlias, PlayerDyn)
-	if ScenarioGetDifficulty() < 4 or not GetHomeBuilding(DynAlias, "TWP_CO") then
+	if ScenarioGetDifficulty() < 4 or not aitwp_Residence(DynAlias, "TWP_CO") then
 		RemoveAlias("TWP_CO")
 		return
 	end
