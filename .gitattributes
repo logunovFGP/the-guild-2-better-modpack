@@ -1,1 +1,88 @@
-*.dbt   -text diff
+# Line endings and per-path behaviour for THIS REPOSITORY -- a committed contract,
+# not core.autocrlf, which is per-machine and cannot be reviewed or enforced.
+# Verify with:  git ls-files --eol      (i/ = index blob, w/ = working tree, attr/ = this file)
+# After editing: git add --renormalize . && git status && commit that ALONE.
+#
+# ONE LINE PER EXTENSION. a brace group like  *.[cmd,bat]  with curly brackets matches NOTHING here -- wildmatch has no brace
+# expansion (it IS required in .editorconfig; keep the two files in step).
+#
+# Decided 2026-09-10 from `git ls-files --eol` over 6955 files: 1004 Lua blobs LF and
+# 228 CRLF in the index while every one is CRLF on disk only because of autocrlf; two
+# Python files CRLF on disk for the same reason; one .dbt with mixed endings and 39 that
+# are UTF-16. See docs/AI_ARCHITECTURE.md §5 and the README "Database tables" section.
+
+# ---- baseline: LF in the index for anything git detects as text
+*                    text=auto
+
+# ---- read by the game engine from disk, shipped CRLF by the base game: CRLF in the
+#      working tree on EVERY platform, so a Linux CI checkout packages what Windows runs
+*.lua                text eol=crlf
+*.txt                text eol=crlf
+*.ini                text eol=crlf
+*.cmd                text eol=crlf
+*.bat                text eol=crlf
+
+# ---- database tables: the exact bytes ARE the content. DB/Languages/**/Text.dbt and
+#      Names_*.dbt are UTF-16LE with a BOM; #french/Tables.dbt has mixed endings as
+#      upstream shipped it; 27 core tables are LF and the engine runs them as they are.
+#      Never `text` these -- an explicit text attribute would convert the UTF-16 files
+#      and corrupt them. `diff` keeps the ASCII ones reviewable as text.
+*.dbt                -text diff
+
+# ---- tooling and docs, run or read on the dev box: LF everywhere, Windows included
+*.py                 text eol=lf diff=python
+*.sh                 text eol=lf diff=bash
+*.md                 text eol=lf diff=markdown
+*.json               text eol=lf
+LICENSE              text eol=lf
+.gitattributes       text eol=lf
+.gitignore           text eol=lf
+.editorconfig        text eol=lf
+
+# ---- the engine's own API dump: 1 MB of HTML with a NUL in it, so git already treats
+#      it as binary (trap 5). Generated, never hand-edited; say so rather than let a
+#      future cleanup "fix" it.
+ScriptDocumentation.html   -text
+
+# ---- game asset formats: binary (= -text -diff -merge). Git sniffs the NUL byte and
+#      gets every one of these right already; the lines are documentation, and they
+#      protect a future variant that happens to be printable ASCII. `*.git` is the
+#      world-editor map format under Worlds/Editor-Files, not anything of git's.
+*.ogg                binary
+*.mp3                binary
+*.wav                binary
+*.tga                binary
+*.dds                binary
+*.bmp                binary
+*.png                binary
+*.jpg                binary
+*.nif                binary
+*.kf                 binary
+*.kfm                binary
+*.cmf                binary
+*.cm2                binary
+*.gui                binary
+*.gso                binary
+*.sco                binary
+*.wld                binary
+*.bse                binary
+*.dat                binary
+*.git                binary
+*.exe                binary
+*.dll                binary
+
+# ---- keep development scaffolding out of `git archive`. Here, and ONLY here, a
+#      directory is `dir/` -- `dir/**` would leave an empty directory in the tarball.
+/.gitattributes      export-ignore
+/.editorconfig       export-ignore
+/tools/              export-ignore
+/meta/               export-ignore
+/docs/               export-ignore
+
+# ---- 3ds Max ASCII scene export shipped with a world: bytes are the content
+*.ASE                -text
+*.ase                -text
+
+# ---- generated tables and the one markdown file with the other extension
+*.tsv                text eol=lf
+*.mkd                text eol=lf diff=markdown

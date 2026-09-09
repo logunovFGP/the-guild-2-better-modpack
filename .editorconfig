@@ -1,0 +1,32 @@
+# What the editor types while you work. .gitattributes governs storage and checkout;
+# this governs the keystroke, so a Windows editor stops re-typing CRLF into a file git
+# keeps normalizing. The two files must agree extension for extension -- change both in
+# the same commit. Brace expansion is VALID here and INVALID in .gitattributes.
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = false
+
+# read by the game engine from disk; shipped CRLF by the base game
+[*.{lua,txt,ini,cmd,bat}]
+end_of_line = crlf
+
+# database tables: bytes are the content. Do not add a final newline, do not touch
+# endings, and Text.dbt / Names_*.dbt are UTF-16LE, not UTF-8.
+[*.dbt]
+end_of_line = unset
+insert_final_newline = false
+charset = unset
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+[*.lua]
+indent_style = tab
+
+[*.md]
+trim_trailing_whitespace = false
