@@ -61,15 +61,43 @@ def natives(repo):
 
 
 def prefixed_functions(roots):
-    names = set()
+    """Every <basename>_<Function> the engine can address, plus who owns each basename.
+
+    Library files and the object scripts the engine binds by basename (Buildings and
+    the like: cl_GuildObject::RunScriptUnscheduled formats %s_%s) all register
+    <basename>_<Function> globals, and a Library file whose basename is already taken
+    is skipped without a word (Library/blackboard.lua never loaded: Buildings/BlackBoard.lua
+    owned the prefix). Tree nodes, measures and cutscenes are run by path and may share
+    names with each other, so only Library-involved duplicates are a defect here.
+    owners maps basename -> {relative path (lower) -> set of roots that have it}, so a
+    vanilla file overlaid by the mod at the same relative path is one owner, not two.
+    """
+    names, owners = set(), {}
     for root in roots:
         if not os.path.isdir(root):
             continue
         for path in lua_files(root):
-            prefix = os.path.splitext(os.path.basename(path))[0].lower() + "_"
+            base = os.path.splitext(os.path.basename(path))[0].lower()
+            rel = os.path.relpath(path, root).replace(os.sep, "/").lower()
+            owners.setdefault(base, {}).setdefault(rel, set()).add(root)
             for fn in FUNCTION_DEF.findall(read(path)):
-                names.add(prefix + fn)
-    return names
+                names.add(base + "_" + fn)
+    return names, owners
+
+
+def basename_collisions(owners, mod_root):
+    """A Library file whose basename any other script also uses, where at least one of
+    the paths is the mod's own addition - the one shape that silently drops a library.
+    Same-name pairs that involve no Library file are noted, not failed: nodes, measures
+    and cutscenes are run by path and have coexisted that way in vanilla for years."""
+    fail, note = [], []
+    for base, rels in sorted(owners.items()):
+        if len(rels) < 2:
+            continue
+        mod_only = [r for r, roots in rels.items() if roots == {mod_root}]
+        involves_library = any(r.startswith("library/") for r in rels)
+        (fail if (mod_only and involves_library) else note).append((base, sorted(rels)))
+    return fail, note
 
 
 def strip(src):
@@ -106,7 +134,13 @@ def main(argv):
         roots.append(overlay)
     else:
         print("warning: vanilla overlay not found at %s; vanilla-only libraries (trade.lua) will show as unresolved" % overlay)
-    known |= prefixed_functions(roots)
+    prefixed, owners = prefixed_functions(roots)
+    known |= prefixed
+    collide, vanilla_dups = basename_collisions(owners, roots[0])
+    for base, rels in collide:
+        print("COLLISION %-24s %s  <- the engine loads ONE of these and says nothing" % (base, "  vs  ".join(rels)))
+    if vanilla_dups:
+        print("note: %d basename(s) shared by path-run scripts (nodes, measures, cutscenes); not a Library collision" % len(vanilla_dups))
 
     problems = {}
     scanned = 0
@@ -118,10 +152,13 @@ def main(argv):
     print("scanned %d files against %d known names (natives + prefixed script functions)" % (scanned, len(known)))
     for name, files in sorted(problems.items(), key=lambda kv: -len(kv[1])):
         print("UNRESOLVED %-32s in %d file(s): %s" % (name, len(files), ", ".join(files[:4]) + (" ..." if len(files) > 4 else "")))
-    if problems:
-        print("FAILED: %d unresolved name(s)" % len(problems), file=sys.stderr)
+    if problems or collide:
+        if problems:
+            print("FAILED: %d unresolved name(s)" % len(problems), file=sys.stderr)
+        if collide:
+            print("FAILED: %d script basename collision(s) - rename the mod's file" % len(collide), file=sys.stderr)
         return 1
-    print("ok: every call resolves")
+    print("ok: every call resolves, no script basename collisions")
     return 0
 
 

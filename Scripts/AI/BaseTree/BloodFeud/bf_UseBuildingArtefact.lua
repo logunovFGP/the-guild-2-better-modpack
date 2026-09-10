@@ -15,7 +15,7 @@ function Weight()
 			-- scored: the bigger the workshop hit, the better
 			-- bf_Razzia and bf_UseBuildingArtefact both resolve "RaidTarget", with different
 			-- filters, so the winner would raid the other one's building; file it per node
-			blackboard_Stash("bf_UseBuildingArtefact", "RaidTarget")
+			aiboard_Stash("bf_UseBuildingArtefact", "RaidTarget")
 			return utility_Score("dynasty", 100, {
 				{ value = utility_Norm(BuildingGetLevel("RaidTarget"), 1, 3), curve = "linear" },
 			}, "bf_UseBuildingArtefact")
@@ -26,7 +26,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_UseBuildingArtefact")
-	if not blackboard_Claim("bf_UseBuildingArtefact", "BF_BldTarget") then
+	if not aiboard_Claim("bf_UseBuildingArtefact", "BF_BldTarget") then
 		return
 	end
 	local Item = GetData("BuildingItem")
@@ -35,5 +35,5 @@ function Execute()
 	end
 	aitwp_Log("uses " .. Item .. " on " .. GetName("BF_BldTarget"), "dynasty")
 	MeasureRun("SIM", "BF_BldTarget", "Use" .. Item)
-	blackboard_Drop("BF_BldTarget")
+	aiboard_Drop("BF_BldTarget")
 end

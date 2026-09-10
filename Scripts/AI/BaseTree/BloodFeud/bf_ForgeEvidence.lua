@@ -20,7 +20,7 @@ function Weight()
 	end
 	-- siblings share the alias "Victim" and the engine runs every Weight() before the
 	-- winner's Execute(); file it under this node so no sibling can take it
-	blackboard_Stash("bf_ForgeEvidence", "Victim")
+	aiboard_Stash("bf_ForgeEvidence", "Victim")
 	return utility_Score("dynasty", 150, {
 		{ value = utility_Norm(aitwp_PlayerTargetScore("Victim", "best") or 0, 20, 200), curve = "linear" },
 		{ value = Heavy, curve = "linear" },
@@ -30,7 +30,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_ForgeEvidence")
-	if not blackboard_Claim("bf_ForgeEvidence", "BF_ForgeVictim") then
+	if not aiboard_Claim("bf_ForgeEvidence", "BF_ForgeVictim") then
 		return
 	end
 	local Item = GetData("ForgeItem")
@@ -39,5 +39,5 @@ function Execute()
 	end
 	aitwp_Log("forges evidence against " .. GetName("BF_ForgeVictim") .. " with " .. Item, "dynasty")
 	MeasureRun("SIM", "BF_ForgeVictim", "Use" .. Item)
-	blackboard_Drop("BF_ForgeVictim")
+	aiboard_Drop("BF_ForgeVictim")
 end

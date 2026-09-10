@@ -35,7 +35,7 @@ function Weight()
 	end
 	-- siblings share the alias "Victim" and the engine runs every Weight() before the
 	-- winner's Execute(); file the target the win chance was measured against
-	blackboard_Stash("bf_ThugAttack", "Victim")
+	aiboard_Stash("bf_ThugAttack", "Victim")
 	SetData("ThugWinChance", Chance)
 
 	-- scored: the surer the fight, the bigger the party, the more aggressive the house
@@ -48,7 +48,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_ThugAttack")
-	if not blackboard_Claim("bf_ThugAttack", "TWP_TAV") then
+	if not aiboard_Claim("bf_ThugAttack", "TWP_TAV") then
 		return
 	end
 	SetRepeatTimer("dynasty", "AI_BF_Attack", 3)
@@ -61,5 +61,5 @@ function Execute()
 	aitwp_ClearFighters("Thug", Sent)
 	aitwp_Log("sends " .. Sent .. " at " .. GetName("TWP_TAV") .. " (win "
 		.. string.format("%.2f", GetData("ThugWinChance") or 0) .. "; " .. Results .. ")", "dynasty")
-	blackboard_Drop("TWP_TAV")
+	aiboard_Drop("TWP_TAV")
 end

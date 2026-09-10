@@ -38,7 +38,7 @@ function Weight()
 				end
 				-- siblings share the alias "Victim" and the engine runs every Weight() before
 				-- the winner's Execute(); file it under this node so no sibling can take it
-				blackboard_Stash("bf_UseArtefact", "Victim")
+				aiboard_Stash("bf_UseArtefact", "Victim")
 				return utility_Score("dynasty", W, {
 					{ value = utility_Norm(aitwp_Severity(T), 1, 5), curve = "linear" },
 					{ value = Fit, curve = "linear", lo = 0.8 },
@@ -51,7 +51,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_UseArtefact")
-	if not blackboard_Claim("bf_UseArtefact", "BF_ArtefactVictim") then
+	if not aiboard_Claim("bf_UseArtefact", "BF_ArtefactVictim") then
 		return
 	end
 	local Item = GetData("ArtefactItem")
@@ -64,5 +64,5 @@ function Execute()
 	else
 		MeasureRun("SIM", "BF_ArtefactVictim", "Use" .. Item)
 	end
-	blackboard_Drop("BF_ArtefactVictim")
+	aiboard_Drop("BF_ArtefactVictim")
 end

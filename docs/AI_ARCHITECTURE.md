@@ -1,7 +1,7 @@
 # AI architecture: what we use, where, and what to call it
 
 The decision record for the dynasty AI. Read it before changing anything under
-`Scripts/AI`, `Scripts/Library/utility.lua`, `aitwp.lua` or `blackboard.lua`, and
+`Scripts/AI`, `Scripts/Library/utility.lua`, `aitwp.lua` or `aiboard.lua`, and
 before proposing a technique: the choice for each area of the game is made here.
 Change this file when the choice changes, not the other way round.
 
@@ -31,7 +31,7 @@ engine round-robin tick
        ├─ feasibility ladder (attitude, rung, class)      aitwp.lua         §2.3
        ├─ scored target pickers                           aitwp.lua         §2.4
        ├─ combat estimate, legality                       aitwp.lua         §2.5
-       ├─ state + Weight->Execute handoff                 blackboard.lua    §2.6
+       ├─ state + Weight->Execute handoff                 aiboard.lua       §2.6
        └─ telemetry on every decision                     utility.lua       §2.8
   └─ Execute() -> a Measure                                Scripts/Measures  the action layer
        └─ per-sim States and Behaviours (FSM)              Scripts/States    engine/vanilla
@@ -58,6 +58,18 @@ Library files are lower-case and the engine exposes their functions as
 `<file>_<Name>`, so `Scripts/Library/aitwp.lua`'s `function WinChance()` is called
 as `aitwp_WinChance`. Functions inside a library are PascalCase. Knobs are
 `UPPER_SNAKE` globals declared next to the code that reads them.
+
+**A library's basename must not match any other script file's**, in any folder of the
+mod *or* the base game. Library files and the object scripts the engine binds by
+basename (Buildings among them; the exe formats `%s_%s` for
+`cl_GuildObject::RunScriptUnscheduled`) all register `<basename>_<Function>` globals, and
+a library whose name is taken is skipped without a word - `Library/blackboard.lua` never
+loaded because `Buildings/BlackBoard.lua`, the town notice board, owned the `blackboard_`
+prefix. Tree nodes, measures and cutscenes are run by path and may share names with
+each other. Check with `find Scripts -iname '<name>.lua'` against both trees before
+naming one; `check_unresolved_calls.py` fails on a Library collision. The team met the same
+rule for AI nodes in August 2025 (README, "Stability and AI Development Notes"); this is it
+biting a library, and the checker is what turns a remembered rule into an enforced one.
 
 ### 2.1 Utility scoring - `utility.lua`, prefix `utility_`
 
@@ -137,21 +149,21 @@ nobody could have won. `aitwp_MayAttackHere` is asked twice - in `Weight()` and 
 inside `ms_036_AttackEnemy` on arrival, for AI attackers only - because an order can
 stand hours before the party catches up.
 
-### 2.6 Blackboard - `blackboard.lua`, prefix `blackboard_`
+### 2.6 Blackboard - `aiboard.lua`, prefix `aiboard_`
 
 Two mechanisms, one file.
 
 **Keys.** `BLACKBOARD_KEYS` is every `AI_*` / `AITWP_*` property the AI keeps on a
-dynasty or sim, with owner and default. `blackboard_Recall(alias, key)` returns the
+dynasty or sim, with owner and default. `aiboard_Recall(alias, key)` returns the
 declared default instead of nil; an unregistered key logs `::TWP::BB unregistered
-key` once. `blackboard_Remember`, `blackboard_Forget` complete the set.
+key` once. `aiboard_Remember`, `aiboard_Forget` complete the set.
 `basetree_stats.py` exits 1 on an unregistered key.
 
 **Weight -> Execute handoff.** The engine runs every sibling's `Weight()` before the
 winner's `Execute()`, so an alias resolved in `Weight()` belongs to whichever
 sibling ran last. Any node that resolves a target in `Weight()` and needs it in
-`Execute()` files it: `blackboard_Stash("bf_Node", "Victim")` in `Weight()`,
-`blackboard_Claim("bf_Node", "BF_MyVictim")` in `Execute()`, `blackboard_Drop` at the
+`Execute()` files it: `aiboard_Stash("bf_Node", "Victim")` in `Weight()`,
+`aiboard_Claim("bf_Node", "BF_MyVictim")` in `Execute()`, `aiboard_Drop` at the
 end. `basetree_stats.py` exits 1 on a shared alias two siblings resolve differently
 without stashing. The eight BloodFeud leaves that had this bug are the worked example.
 
@@ -253,8 +265,8 @@ both. Every non-trivial helper leaves one check behind in `check_utility.lua`.
 | **Whether a fight is worth starting** | Prediction (§2.5), not planning | done, 0.75 bar to tune |
 | **Multi-step schemes**: procure -> deliver -> equip / hand over -> strike; forge -> charge; recruit -> gather -> attack | **HTN**, thin: abstract tasks with ordered methods and preconditions; the leaves stay as they are and become the primitives; utility still scores *within* the chosen chain | **next** - see below |
 | **Shared AI state** | Blackboard (§2.6) | done; migrate remaining bare `GetProperty("AI_…")` reads opportunistically |
-| **Economy / businesses** (upcoming) | Utility for *what* to build, buy, produce, price; scored pickers for *which one of ours*; the existing `AI_Reserve_` / turnover properties become registered blackboard keys | not started |
-| **Where** to build, camp, expand; which town to work | **Influence maps** over settlements and roads, replacing `TWP_TOWN_RADIUS` and per-town dice | later; `TownRadius` is the placeholder |
+| **Economy / businesses** | Utility for *what* to build, buy, produce, price; scored pickers for *which one of ours*; the existing `AI_Reserve_` / turnover properties become registered blackboard keys. **First task, from the maintainer:** `ToMEconomy/BuyWorkshop.lua` almost never fires - a constant-60 sibling against its constant 8, a cooldown shared with `BuildWorkshop`, and a home-city-only view. Second: the Rogue businesses, the weak set under AI control. | next after the feud verifies |
+| **Where** to build, camp, expand; which town to work | **Influence maps** over settlements and roads, replacing `TWP_TOWN_RADIUS` and per-town dice. The engine's pathgrid already carries per-cell weights from the terrain materials (`EnableDrawPath`/`IllustratorsEnabled` show them) - that grid is the natural substrate, not a new one. | when the fork's random-world mode lands (announced for later in 2026); `TownRadius` is the placeholder until then |
 | **Politics, elections, trials** | Utility (already scored: Election, Trial, ApplyForOffice) | done |
 | **Diplomacy, grudges, who is the enemy** | Blackboard + attitude ladder + `aitwp_GetBestEnemy` | done |
 | **Per-sim moment-to-moment** | Engine FSM + needs (§2.9) | vanilla, leave |
@@ -285,7 +297,10 @@ the engine owns the entities; a second store would be a second truth.
 1. `python tools/modding_helpers/basetree_stats.py` - exit 0, or fix the hazard.
 2. Calling a native the tree does not already call? `meta/engine.signatures.tsv`
    first (`gen_engine_signatures.py` rebuilds it from the exe with rizin). The doc
-   dump disagrees with the binary for 108 bindings; the binary wins.
+   dump disagrees with the binary for 108 bindings; the binary wins. Using a `GL_*`
+   or `MUSIC_*` constant the tree does not already use? Our checker cannot see
+   constants - `GL_CLASS_FIGHTER` is documented and does not exist - so confirm it in
+   SecondAID's lint or in an existing call site before trusting it.
 3. New decision -> new telemetry line in the same change, and a parser for it in
    `ai_telemetry.py` if it is more than free text.
 4. New key -> `BLACKBOARD_KEYS`. New target resolved in `Weight()` -> stash it.
@@ -312,3 +327,13 @@ the engine owns the entities; a second store would be a second truth.
 - **2026-09-10** Blackboard formalised; eight BloodFeud leaves were acting on a
   sibling's target; `basetree_stats.py` gates both hazard classes. HTN scoped to the
   supply chain only. Needs system confirmed live and complementary, not redundant.
+- **2026-09-10** `blackboard.lua` never loaded in play: `Scripts/Buildings/BlackBoard.lua`
+  owned the `blackboard_` prefix; libraries and basename-bound object scripts share the
+  `<basename>_` globals. Renamed to `aiboard.lua` (prefix `aiboard_`);
+  `check_unresolved_calls.py` now fails on a Library basename any other script uses.
+  Found by the missing `::TWP::LOADED` marker.
+- **2026-09-10** Maintainer direction recorded (README, AI backlog): work in this repository
+  only; Rogue businesses are the weak set; first concrete task is `BuyWorkshop` never
+  firing. Community engine facts recorded: hierarchical pathfinding and its debug overlay,
+  the 4 GB address ceiling, SecondAID as the constants-aware lint we lack, the fork's
+  random-world mode as the trigger for influence maps.

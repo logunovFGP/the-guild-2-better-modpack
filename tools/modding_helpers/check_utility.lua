@@ -600,10 +600,10 @@ Inside = true
 check("indoors is never outside town", IsOutsideTown("v") == false)
 
 -- the blackboard: key registry and the Weight() -> Execute() handoff ----------------------
-dofile("Scripts/Library/blackboard.lua")
-blackboard_Stem, blackboard_Known = Stem, Known
-blackboard_Recall, blackboard_Remember, blackboard_Forget = Recall, Remember, Forget
-blackboard_Stash, blackboard_Claim, blackboard_Drop = Stash, Claim, Drop
+dofile("Scripts/Library/aiboard.lua")
+aiboard_Stem, aiboard_Known = Stem, Known
+aiboard_Recall, aiboard_Remember, aiboard_Forget = Recall, Remember, Forget
+aiboard_Stash, aiboard_Claim, aiboard_Drop = Stash, Claim, Drop
 local Store = {}
 function SetData(Key, Value) Store[Key] = Value end
 function GetData(Key) return Store[Key] end

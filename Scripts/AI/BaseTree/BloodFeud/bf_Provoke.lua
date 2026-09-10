@@ -28,7 +28,7 @@ function Scored()
 		- GetSkillValue("Victim", FIGHTING) - GetSkillValue("Victim", DEXTERITY) / 2
 	-- siblings share the alias "Victim" and the engine runs every Weight() before the
 	-- winner's Execute(); file it under this node so no sibling can take it
-	blackboard_Stash("bf_Provoke", "Victim")
+	aiboard_Stash("bf_Provoke", "Victim")
 	return utility_Score("dynasty", 100, {
 		{ value = utility_Norm(Edge, -5, 10), curve = "linear" },
 		utility_Priority("dynasty", "Agressive"),
@@ -37,12 +37,12 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Provoke")
-	if not blackboard_Claim("bf_Provoke", "BF_DuelVictim") then
+	if not aiboard_Claim("bf_Provoke", "BF_DuelVictim") then
 		return
 	end
 	SetRepeatTimer("BF_DuelVictim", "Get_Insult", 72)
 	SetRepeatTimer("Duelist", "AI_Insult", 24)
 	aitwp_Log("provokes " .. GetName("BF_DuelVictim") .. " with " .. GetName("Duelist"), "dynasty")
 	MeasureRun("Duelist", "BF_DuelVictim", "InsultCharacter", false)
-	blackboard_Drop("BF_DuelVictim")
+	aiboard_Drop("BF_DuelVictim")
 end

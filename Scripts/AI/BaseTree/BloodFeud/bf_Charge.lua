@@ -19,7 +19,7 @@ function Weight()
 	-- scored: the evidence in hand (a full case at 100) and the political priority
 	-- siblings share the alias "Victim" and the engine runs every Weight() before the
 	-- winner's Execute(); file it under this node so no sibling can take it
-	blackboard_Stash("bf_Charge", "Victim")
+	aiboard_Stash("bf_Charge", "Victim")
 	return utility_Score("dynasty", 100, {
 		{ value = utility_Norm(Value, 0, 100), curve = "sqrt" },
 		utility_Priority("dynasty", "Political"),
@@ -28,12 +28,12 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Charge")
-	if not blackboard_Claim("bf_Charge", "BF_ChargeVictim") then
+	if not aiboard_Claim("bf_Charge", "BF_ChargeVictim") then
 		return
 	end
 	SetRepeatTimer("Accuser", "AI_ChargeCharacter", 48)
 	RemoveProperty("dynasty", "AI_EvidenceTarget")
 	aitwp_Log("charges " .. GetName("BF_ChargeVictim") .. " through " .. GetName("Accuser"), "dynasty")
 	MeasureRun("Accuser", "BF_ChargeVictim", "ChargeCharacter")
-	blackboard_Drop("BF_ChargeVictim")
+	aiboard_Drop("BF_ChargeVictim")
 end

@@ -155,6 +155,21 @@ To confirm the junction is actually feeding the engine, add a uniquely-named mar
 `Scripts/GameState/StartScreen.lua` in `Init()`, restart, and search the log for it. A hit
 proves the engine read your working tree, since that string exists nowhere else.
 
+**Seeing what the pathfinder does.** Pathfinding is hierarchical: the pathgrid carries most
+of a route and the engine falls back to plain A* from the nearest grid node to the
+destination. `Alt+B` draws the grid (`CheatsEnabled = 1` under `[GAME]` may be needed) and
+these two keys, also under `[GAME]` in `config.ini`, draw the nodes and the computed path of
+whatever is selected, live:
+
+```ini
+[GAME]
+EnableDrawPath = 1
+IllustratorsEnabled = 1
+```
+
+Lines inside the grid are the actual paths; their colours are the path weights, which come
+from the pathfinding materials underneath, averaged along the path. (Discord, Pawel, 2026-09.)
+
 ### Database tables (`.dbt`)
 
 `DB\*.dbt` are the engine's data tables: plain text, whitespace separated, one row per
@@ -574,6 +589,39 @@ priority).
 The architecture, the strategy chosen for each area of the game, and the naming rules are
 in [docs/AI_ARCHITECTURE.md](docs/AI_ARCHITECTURE.md). Decide from that table; log changes to it there.
 
+**Direction from the maintainer (ThreeOfMe, Discord, 2026-09).** The TWP AI BaseTree was
+merged into Reforged last year; this repository is the only one to work in. Most businesses
+run acceptably under AI control; the **Rogue** ones are the weak set. Dynasty AI is judged
+decent with room to improve. First concrete issue offered:
+
+- [ ] **Colored AI builds workshops but very rarely buys the ones on sale.** Repro: new game,
+      hard difficulty, note the buildings on sale at start; colored houses should start buying
+      within a few rounds. Node: `Scripts/AI/BaseTree/ToMEconomy/BuyWorkshop.lua`. What the
+      code says (2026-09-10): its sibling `Workshop.lua` returns a constant **60** while
+      `BuyWorkshop` and `BuildWorkshop` return a constant **8**, so under the engine's roulette
+      Buy gets ~6% of the level even when eligible - observed **1 of 82** ToMEconomy picks in a
+      two-day log (Workshop 77, Build 4); Buy and Build **share the `BasicAI_NewWorkshop`
+      cooldown**, so whichever fires locks the other out; and Buy only sees the idle member's
+      **home city**, filtered by that member's class and religion (`CityGetBuildingCountForCharacter`
+      with `FILTER_IS_BUYABLE` / `FILTER_NO_DYNASTY`), with a flat weight that ignores price,
+      money and how good the deal is. Three levers, none of them the filter itself.
+
+**Mistyped or nonexistent globals** (ThreeOfMe's list, checked against this tree 2026-09-10).
+A name that does not exist evaluates to `nil` and the branch quietly never runs:
+
+| name | in this tree | note |
+|---|---|---|
+| `GL_CLASS_FIGHTER` | 2 uses, one live: `Trial/AttackTrial/TODO_ThreatCharacter.lua:31` | our own `meta/engine.d.lua:3949` lists it as class 4 - the doc dump is wrong; real classes are PATRON, ARTISAN, SCHOLAR, CHISELER, NONE |
+| `MUSIC_GAME_LOST`, `MUSIC_GAME_WON` | 33 + 12 uses, all `Scripts/Campaign/_Missions/*` | `f_StartHighPriorMusic(nil)` - campaign mission music never plays; vanilla |
+| `GL_WALKSPEED_RUN` (-> `GL_MOVESPEED_RUN`) | 0 | not present here |
+| `GL_BUILDING_TYPE_BANK` (-> `GL_BUILDING_TYPE_BANKHOUSE`) | 0 | not present here |
+
+`check_unresolved_calls.py` cannot catch these: it resolves *function* calls against the exe's
+binding registrations, and constants are registered by another path the tool does not read.
+SecondAID's lint does have them. A `gen_engine_constants.py` that recovers `GL_*`/`MUSIC_*`/
+`STATE_*` from the exe the way `gen_engine_bindings.py` recovers functions would close the gap.
+- [ ] Recover engine constants from the exe and let the checker flag an unknown `GL_*`.
+
 Measured on the session-2 log after the feud work: 233 nodes; the eleven high-mass roots
 and every BloodFeud leaf are scored with considerations, the rest keep constant weights.
 The 40 random target pickers are gone: "one of ours" picks use `aitwp_OwnBuilding` (the
@@ -676,6 +724,7 @@ reinvent them (all under `tools\modding_helpers`, all read-only):
 | `python ai_focus.py [log] [--dynasty ID\|name] [--family Barker]` | Who lists a dynasty as an enemy and what they did about it; enemy-list churn per save load; per-subtree conversion of root picks into leaf measures; hostile measure starts by actor. Defaults to the human player (the one id in enemy lists with no AI snapshot). |
 | `python gen_engine_signatures.py [GuildII.exe]` | Arity and parameter class of every engine binding, walked out of the code with rizin (needs it on PATH). Writes `meta/engine.signatures.tsv` and reports where the binary disagrees with `meta/engine.d.lua` - it does, for 108 of them, and the binary wins. Use it before calling a native the tree does not already call: the docs are a scrape and the dump is wrong in places, so a plausible-looking argument list can fail silently. |
 | `python check_unresolved_calls.py [paths] [--overlay DIR]` | Static: every call in the tree and the libraries resolves to a native, a builtin, a same-file function or `<file>_<Function>` in the repo or the vanilla `Scripts` overlay. Exit 1 otherwise - an unresolved call in `Weight()` is a node that silently weighs 0. |
+| [SecondAID](https://github.com/pawelktk/SecondAID) (external, GPL-3) | Live debugger and editor over the game's AID protocol: breakpoints, stepping, script reload, and watches that take **expressions**, not only variables, evaluated at each step (a `LogMessage(...)` watch is legal). Its lint is `luacheck` with a config the editor builds by scanning the game for the `<basename>_Function` convention and the engine's globals - the one static check we lack, because it knows the **constants**. No standalone generator is exposed, so use the tool itself. Windows: drop `SecondAID-GUI.exe` and `luacheck.exe` next to `GuildII.exe`. It does not read logs; `ai_telemetry.py` does. |
 | `python basetree_stats.py [--list CATEGORY]` | Shape of the tree: constant vs. `utility_Score` vs. `utility_Trace` weights, and hazards inside `Weight()` (writes to the shared `SIM` alias, non-local assignments, `Rand`, use of personality inputs). Tracks the conversion. |
 | `python check_basetree_weights.py` | Every node has `Weight()`/`Execute()` and never returns a boolean weight. |
 
@@ -701,6 +750,22 @@ You can edit the game's configuration files manually:
 - `userconfig.ini` - User-specific settings
 
 ## Troubleshooting
+
+### Engine facts worth knowing
+
+- **Address space.** `GuildII.exe` is large-address-aware, so it can use the full 32-bit
+  space: **4 GB**, not the 2 GB of a plain 32-bit process. Nothing short of rewriting large
+  parts of the engine (a 64-bit helper over IPC, or memory-mapped files behind pointer
+  wrappers, both with real performance costs) lifts that. At current map sizes the game is
+  not RAM-constrained and takes a long time to exhaust the space even with the known leaks.
+- **DXVK** lowers RAM use - no DirectX 9 managed pool, textures offloaded - and is what the
+  game runs on under Wine/Proton. It does not raise the 4 GB ceiling; that is the pointer
+  width, not the renderer. (Discord, Pawel, 2026-09.)
+- **One namespace per script basename.** The engine binds object scripts and libraries by
+  file basename and addresses functions as `<basename>_<Function>`; a second file with a
+  taken name is skipped silently. The team hit this in August 2025 (AI script files must have
+  unique names, see Stability notes) and again on 2026-09-10 (`Library/blackboard.lua` vs
+  `Buildings/BlackBoard.lua`). `check_unresolved_calls.py` now fails on a Library collision.
 
 If you encounter issues after installation:
 
@@ -729,6 +794,12 @@ scripts. Recorded so they are not re-investigated:
 - Unescaped literal `%` is widespread in the **vanilla** English text table (dozens of
   rows, e.g. `_ADMINSET_TIP_REPAIR_+0` and several `_ABILITIES_*`). Each logs a
   substitution error when it renders. Only rows the mod owns have been fixed.
+- `[Movement] cl_PathSession::SetupNextGrid - ... PathGrid->FindPath failed` paired with
+  `cl_PathSession::ResumeProcessing - SetupNextGrid after Transition failed`, and
+  `cl_PathGrid::SingleStepPath - EN_PATHSTATE_ERROR_UNREACHABLE because m_iClosedNodes ...
+  exeeds m_iMaxClosedList Size`. Dozens per session. This is the hierarchical pathfinder's
+  fallback firing (grid route failed, plain A* took over) and A* hitting its closed-list cap;
+  present in vanilla, unrelated to any script. `EnableDrawPath` above shows the route it took.
 
 ## Stability and AI Development Notes
 
@@ -742,7 +813,7 @@ By fixing this and related issues, Reforged is now one of the most stable versio
 
 Active development happens on the `modern` branch. `master` is kept as an older reference point and lags behind it. Published builds are cut from `modern`, so that is the branch to base work on. We do not run long test cycles on every change. If you encounter issues, report them. If a version is stable for your setup, stay with it unless you intentionally want later changes.
 
-There is no formal roadmap or big-picture plan at the moment. Development stays focused on bugfixes and occasional QoL features, which remains the core philosophy of Reforged.
+There is no formal roadmap for this modpack. The fork's engine team has, however, announced (Discord, 2026-09) a new single- and multiplayer mode on randomly generated landforms, with tools to lay roads of every type, paint world materials including no-entry zones, raise/lower/flatten/smooth/noise terrain, create building areas, city walls, rivers, water tiles, vegetation, decorations and public buildings such as markets and counting houses - later in the year, once its front end is designed. For this modpack's AI that is the point at which "where to build and expand" stops being a placeholder (see `docs/AI_ARCHITECTURE.md` section 4). Otherwise the previous statement stands: Development stays focused on bugfixes and occasional QoL features, which remains the core philosophy of Reforged.
 
 ## Updates
 
@@ -750,6 +821,24 @@ Stay updated with the latest changes:
 
 - Visit our [GitLab repository](https://gitlab.com/fajeth-modpack/megamodpack-reforged) regularly
 - Check the commit history for recent changes and improvements
+
+## Related projects and references
+
+- [SecondAID](https://github.com/pawelktk/SecondAID) - script editor and live debugger for The
+  Guild 2 over the AID protocol, with a `luacheck` lint tuned to the engine's globals and the
+  `<basename>_Function` convention. See "AI analysis tools".
+- [guild2-engine-rewrite](https://github.com/pawelktk/guild2-engine-rewrite) - experimental C++
+  patching layer that overrides and extends the engine, adding Lua bindings such as
+  `BuildingSetAISetting` and `RunLua`. GPL-3.
+- [guild2-performance-patch](https://github.com/pawelktk/guild2-performance-patch) - a `d3d9.dll`
+  proxy that optimises the engine's A* pathfinding (allocation, prefetching, caching), reported
+  up to ~70% faster late game, configurable through an INI.
+- [Script Doku (online)](https://zokradonh.github.io/Guild2ScriptDoc/ScriptDocumentation.html) -
+  browsable copy of the engine's own ~759-function script API dump, the same one shipped as
+  `ScriptDocumentation.html` and scraped into `meta/engine.d.lua`. Where it disagrees with the
+  binary, `meta/engine.signatures.tsv` (walked out of the exe) wins - it does for 108 bindings.
+- tg2ren-twp - the TWP AI BaseTree this modpack's AI came from; merged here in 2025, so all
+  AI work happens in this repository.
 
 ## Credits
 

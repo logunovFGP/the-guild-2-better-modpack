@@ -1,5 +1,12 @@
 -- The AI blackboard: the state the BaseTree decides from, and the handoff from a
--- node's Weight() to its Execute(). Reached as blackboard_<Name> in game.
+-- node's Weight() to its Execute(). Reached as aiboard_<Name> in game.
+--
+-- Named aiboard, not blackboard. Library files and the object scripts the engine binds
+-- by basename (Buildings among them) all register <basename>_<Function> globals, and
+-- Scripts/Buildings/BlackBoard.lua - the town notice board - already owned blackboard_.
+-- A library whose basename is taken is skipped without a word: three game starts on
+-- 2026-09-10, no load marker. The team met the same rule for AI nodes in August 2025
+-- (README, Stability notes); check_unresolved_calls.py fails on such a name now.
 --
 -- Two failures are what this file exists to stop, both of them silent.
 --
@@ -12,7 +19,7 @@
 -- alias written during Weight() belongs to whichever sibling happened to run last.
 -- Six BloodFeud leaves each resolved a different victim into the shared alias
 -- "Victim" that way: the winner scored one target and acted on another.
--- blackboard_Stash and blackboard_Claim carry a target across that gap by id, filed
+-- aiboard_Stash and aiboard_Claim carry a target across that gap by id, filed
 -- under the node's own name, so a sibling cannot take it.
 --
 -- Deterministic: no Rand, no iteration over the key table, so it is safe for
@@ -76,14 +83,14 @@ end
 -- An unregistered key is a typo, or one somebody forgot to declare. Say so once -
 -- the whole point is that this stops being silent - then carry on.
 function Known(Key, Where)
-	local Found = blackboard_Stem(Key)
+	local Found = aiboard_Stem(Key)
 	if Found then
 		return Found
 	end
 	if not Warned[Key] then
 		Warned[Key] = true
 		LogMessage("::TWP::BB unregistered key " .. tostring(Key) .. " in " .. tostring(Where)
-			.. " - add it to BLACKBOARD_KEYS in Scripts/Library/blackboard.lua")
+			.. " - add it to BLACKBOARD_KEYS in Scripts/Library/aiboard.lua")
 	end
 	return nil
 end
@@ -91,7 +98,7 @@ end
 -- Read a key, falling back to its declared default rather than nil, so no caller has
 -- to write "or 0" and none silently treats "missing" as zero by accident.
 function Recall(Alias, Key)
-	local Found = blackboard_Known(Key, "Recall")
+	local Found = aiboard_Known(Key, "Recall")
 	local Value = GetProperty(Alias, Key)
 	if Value ~= nil then
 		return Value
@@ -103,12 +110,12 @@ function Recall(Alias, Key)
 end
 
 function Remember(Alias, Key, Value)
-	blackboard_Known(Key, "Remember")
+	aiboard_Known(Key, "Remember")
 	SetProperty(Alias, Key, Value)
 end
 
 function Forget(Alias, Key)
-	blackboard_Known(Key, "Forget")
+	aiboard_Known(Key, "Forget")
 	if HasProperty(Alias, Key) then
 		RemoveProperty(Alias, Key)
 	end
@@ -140,4 +147,4 @@ function Drop(OutAlias)
 	RemoveAlias(OutAlias)
 end
 
-LogMessage("::TWP::LOADED blackboard.lua")
+LogMessage("::TWP::LOADED aiboard.lua")

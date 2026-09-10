@@ -20,7 +20,7 @@ function Weight()
 	-- scored: how far past the 35 threshold the evidence is, and an aggressive house
 	-- bf_Razzia and bf_UseBuildingArtefact both resolve "RaidTarget", with different
 	-- filters, so the winner would raid the other one's building; file it per node
-	blackboard_Stash("bf_Razzia", "RaidTarget")
+	aiboard_Stash("bf_Razzia", "RaidTarget")
 	return utility_Score("dynasty", 150, {
 		{ value = utility_Norm(GetDynastyEvidenceValues("dynasty", "PlayerDyn"), 35, 100), curve = "linear" },
 		utility_Priority("dynasty", "Agressive"),
@@ -29,12 +29,12 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Razzia")
-	if not blackboard_Claim("bf_Razzia", "BF_RazziaTarget") then
+	if not aiboard_Claim("bf_Razzia", "BF_RazziaTarget") then
 		return
 	end
 	SetRepeatTimer("MYRM", "AI_BF_Razzia", 24)
 	aitwp_Log("raids " .. GetName("BF_RazziaTarget"), "dynasty")
 	MeasureCreate("Measure")
 	MeasureStart("Measure", "MYRM", "BF_RazziaTarget", "Razzia")
-	blackboard_Drop("BF_RazziaTarget")
+	aiboard_Drop("BF_RazziaTarget")
 end

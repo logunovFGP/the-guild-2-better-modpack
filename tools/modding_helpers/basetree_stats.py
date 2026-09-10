@@ -18,8 +18,8 @@ personality or priority inputs. --list prints the files of one category, e.g.
 Two of the categories are defects rather than statistics, and exit 1 on either:
   shared alias resolved in Weight(), not stashed
       two siblings in one folder resolve the same alias to different objects, and
-      the loser's target is what the winner acts on. Fix with blackboard_Stash /
-      blackboard_Claim. Identical calls are not flagged: they find the same object.
+      the loser's target is what the winner acts on. Fix with aiboard_Stash /
+      aiboard_Claim. Identical calls are not flagged: they find the same object.
   unregistered blackboard key
       a property named AI_* or AITWP_* that is not in BLACKBOARD_KEYS, so a typo
       reads nil forever and the node quietly weighs 0. Repeat-timer names are a
@@ -37,13 +37,13 @@ GLOBAL_ASSIGN = re.compile(r"\n\s*(?!local\b)(?!if\b|for\b|while\b|return\b|end\
 INPUTS = re.compile(r"utility_Trait|utility_Priority|utility_Money|CheckPersonalityWeight|aitwp_Get(?:PoliticalAmbititon|Agressiveness|Intrigue)|MakeDecision")
 # A node resolving a shared alias to its own target inside Weight(). The engine runs
 # every sibling's Weight() before the winner's Execute(), so the winner acts on
-# whatever the last sibling wrote unless it files the target with blackboard_Stash.
+# whatever the last sibling wrote unless it files the target with aiboard_Stash.
 RESOLVE = re.compile(r'((?:FindPlayerTarget|EvidenceTarget|NearbyPlayerSim|GetBestEnemy|FindTargetBuilding)\s*\([^)]*"([A-Z][A-Za-z0-9_]*)"\s*\))')
-BLACKBOARD = os.path.abspath(os.path.join(HERE, "..", "..", "Scripts", "Library", "blackboard.lua"))
+BLACKBOARD = os.path.abspath(os.path.join(HERE, "..", "..", "Scripts", "Library", "aiboard.lua"))
 # only a property call names a blackboard key; "AI_BF_Supply" and friends are
 # repeat-timer names, a separate namespace with its own lifetime
 AI_KEY = re.compile(r'(?:Get|Set|Has|Remove)Property\s*\([^,]+,\s*"(AI_[A-Za-z0-9_]*|AITWP_[A-Za-z0-9_]*)"'
-                    r'|blackboard_(?:Recall|Remember|Forget)\s*\([^,]+,\s*"(AI_[A-Za-z0-9_]*|AITWP_[A-Za-z0-9_]*)"')
+                    r'|aiboard_(?:Recall|Remember|Forget)\s*\([^,]+,\s*"(AI_[A-Za-z0-9_]*|AITWP_[A-Za-z0-9_]*)"')
 
 
 def strip(src):
@@ -112,7 +112,7 @@ def main(argv):
             folder_key = os.path.dirname(rel)
             for call, alias in set(RESOLVE.findall(body)):
                 norm = re.sub(r"\s+", "", call)
-                resolved.setdefault((folder_key, alias), []).append((rel, norm, "blackboard_Stash" in src))
+                resolved.setdefault((folder_key, alias), []).append((rel, norm, "aiboard_Stash" in src))
             for pair in set(AI_KEY.findall(src)):
                 key = pair[0] or pair[1]
                 if key in exact:

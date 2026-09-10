@@ -17,7 +17,7 @@ function Weight()
 	-- scored: the letter bites as hard as the writer's rhetoric
 	-- siblings share the alias "Victim" and the engine runs every Weight() before the
 	-- winner's Execute(); file it under this node so no sibling can take it
-	blackboard_Stash("bf_Taunt", "Victim")
+	aiboard_Stash("bf_Taunt", "Victim")
 	return utility_Score("dynasty", 30, {
 		{ value = utility_Norm(GetSkillValue("SIM", RHETORIC), 0, 10), curve = "linear" },
 	}, "bf_Taunt")
@@ -25,7 +25,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Taunt")
-	if not blackboard_Claim("bf_Taunt", "BF_TauntVictim") then
+	if not aiboard_Claim("bf_Taunt", "BF_TauntVictim") then
 		return
 	end
 	SetRepeatTimer("SIM", "AI_BF_Taunt", 48)
@@ -34,5 +34,5 @@ function Execute()
 	MeasureAddData("Measure", "Choice", 2, false)
 	MeasureAddData("Measure", "InitResult", 1, false)
 	MeasureStart("Measure", "SIM", "BF_TauntVictim", "AdministrateDiplomacy")
-	blackboard_Drop("BF_TauntVictim")
+	aiboard_Drop("BF_TauntVictim")
 end
