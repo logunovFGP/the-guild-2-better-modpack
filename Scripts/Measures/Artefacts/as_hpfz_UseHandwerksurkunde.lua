@@ -42,6 +42,8 @@ function Run()
 		f_MoveTo("", "StandPosition")
 	end
 
+	MeasureSetNotRestartable()
+
 	local Alias
 	for loop_var=0, numFound-1 do
 		Alias = "Worker"..loop_var
@@ -89,6 +91,8 @@ function Run()
 		Sleep(0.7)
 		chr_GainXP("", GetData("BaseXP"))
 	end
+
+	StopMeasure()	-- ends the "Listen" commands of the paused workers, otherwise the measure never finishes
 end
 
 function CleanUp()
