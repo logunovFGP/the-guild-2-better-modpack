@@ -126,7 +126,7 @@ function Run()
 	end
 	
 	GetLocatorByName("BlackBoard","entry1","MovePos")
-	f_MoveTo("","MovePos",GL_MOVESPEED_WALK)
+	f_MoveTo("", "MovePos", GL_MOVESPEED_RUN)
 	AlignTo("","BlackBoard")
 	Sleep(1)
 	PlayAnimation("","manipulate_middle_up_r")

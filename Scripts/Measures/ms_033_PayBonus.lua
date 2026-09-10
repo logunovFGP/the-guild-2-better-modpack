@@ -97,7 +97,7 @@ function Run()
 
 	-- move player character to propel position
 	if GetLocatorByName("Building", "Propel", "StandPosition") then
-		f_MoveTo("", "StandPosition")
+		f_MoveTo("", "StandPosition", GL_MOVESPEED_RUN)
 	end
 	
 	local	Alias
