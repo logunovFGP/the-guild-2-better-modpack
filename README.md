@@ -231,15 +231,22 @@ open(path, "wb").write(raw.replace(old, new))
 ### Contributing
 
 Non-members cannot push to the upstream project, so merge requests come from a personal fork.
-Keep `origin` pointed at upstream for pulling, and push to your fork:
+Keep a remote pointed at the upstream project to pull from (`upstream` in this clone), and push to your fork:
 
 ```bash
 git remote add fork git@gitlab.com:<you>/megamodpack-reforged.git
-git checkout -b my-change modern
+git fetch upstream
+git checkout -b my-change upstream/modern
 git push -u fork my-change
 ```
 
 Then open the merge request against `fajeth-modpack/megamodpack-reforged:modern`.
+
+**One change per merge request.** The maintainer has asked for this directly: "Please do keep
+the PR organised, it's better to have one thing at a time in case there's an issue with
+something else" (ThreeOfMe, 2026-09). Branch per topic, each cut fresh from `upstream/modern`,
+so a problem in one does not hold up the rest. A long-running integration branch is fine to
+keep on your own fork - it is just never what gets proposed upstream.
 
 ### Scripting language: Lua 5.1
 
