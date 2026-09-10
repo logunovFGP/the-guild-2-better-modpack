@@ -25,6 +25,17 @@ function PingHour()
 			MeasureRun("", nil, "LetAbducteeFree", false)
 		end
 	end
+
+	-- Retire the order once the target sits in the cell, is dead, or no longer
+	-- resolves. Nothing else clears it, and while it stands GetWorkerTask hands every
+	-- thief "Hijack": one stale order starves burglary, scouting and ransom for good.
+	if HijackTargetID then
+		local Caught = BuildingGetPrisoner("", "Prisoner") and GetID("Prisoner") == HijackTargetID
+		if Caught or not GetAliasByID(HijackTargetID, "HijackCheck") or GetState("HijackCheck", STATE_DEAD) then
+			RemoveProperty("", "HijackingOrder")
+		end
+		RemoveAlias("HijackCheck")
+	end
 end
 
 -- Measures: PickpocketPeople, ScoutAHouse, BurgleAHouse, Hijack, DemandRansom, (LetAbducteeFree--building measure)
@@ -208,6 +219,9 @@ function FindHijackVictim(BldAlias, RetAlias)
 		return false
 	end
 	
-	CopyAlias("HIJ_VICTIM", RetAlias)
+	-- the sim, not the dynasty: DynastyGetRandomVictim hands back a dynasty, but every
+	-- consumer of HijackingOrder treats it as a character id - GetAliasByID wants a
+	-- simobject, and PingHour compares it against the prisoner.
+	CopyAlias("HIJ_SIM", RetAlias)
 	return true
 end
