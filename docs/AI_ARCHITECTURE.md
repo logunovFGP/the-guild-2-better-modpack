@@ -304,10 +304,14 @@ the engine owns the entities; a second store would be a second truth.
 3. New decision -> new telemetry line in the same change, and a parser for it in
    `ai_telemetry.py` if it is more than free text.
 4. New key -> `BLACKBOARD_KEYS`. New target resolved in `Weight()` -> stash it.
-5. Non-trivial logic -> one check in `check_utility.lua`, negative-tested once.
-6. `lua5.1 tools/modding_helpers/check_utility.lua` and
+5. New library -> one `Include ("Library/<name>.lua")` in `Scripts/Library/stdafx.lua`.
+   That list is the only loader; the engine never picks a library up by filename, and our
+   `stdafx.lua` replaces the vanilla one wholesale, so a vanilla library it drops is gone
+   too. `check_unresolved_calls.py` fails on a called library that no Include line loads.
+6. Non-trivial logic -> one check in `check_utility.lua`, negative-tested once.
+7. `lua5.1 tools/modding_helpers/check_utility.lua` and
    `python tools/modding_helpers/check_unresolved_calls.py` green.
-7. Lua is CRLF. The first Write/Edit on a file is gated; present the facts and retry.
+8. Lua is CRLF. The first Write/Edit on a file is gated; present the facts and retry.
 
 ---
 
@@ -337,3 +341,13 @@ the engine owns the entities; a second store would be a second truth.
   firing. Community engine facts recorded: hierarchical pathfinding and its debug overlay,
   the 4 GB address ceiling, SecondAID as the constants-aware lint we lack, the fork's
   random-world mode as the trigger for influence maps.
+- **2026-09-14** The rename was only half the cause: `aiboard.lua` was never in
+  `stdafx.lua`, under either name (`git log -S` on that file is empty for `blackboard` and
+  `aiboard` alike), so the library still did not load and the eight leaves that call
+  `aiboard_Stash` in `Weight()` errored and weighed 0. A library is loaded by its `Include`
+  line, never by its filename; the basename rule decides whether that line *works*. Same
+  sweep: `trade.lua` is vanilla-only and our `stdafx.lua` replaces vanilla's, which Includes
+  it - so `trade_IsAlderman`, called in `Weight()` by `Dynasty/AIContractGuildHouse` and
+  `Election/FavorAll/fvo_UseAldermanChain`, was nil in both. Inherited from upstream: our
+  only `stdafx.lua` commit (`6779cd0b`) added `utility.lua` and nothing else.
+  `check_unresolved_calls.py` now fails on a called library with no Include line.

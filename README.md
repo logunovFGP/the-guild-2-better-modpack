@@ -730,7 +730,7 @@ reinvent them (all under `tools\modding_helpers`, all read-only):
 | `python ai_telemetry.py [log]` | Session summary and the weighted-random replay under six tuning variants (see above). `--selftest` runs it on a built-in sample. |
 | `python ai_focus.py [log] [--dynasty ID\|name] [--family Barker]` | Who lists a dynasty as an enemy and what they did about it; enemy-list churn per save load; per-subtree conversion of root picks into leaf measures; hostile measure starts by actor. Defaults to the human player (the one id in enemy lists with no AI snapshot). |
 | `python gen_engine_signatures.py [GuildII.exe]` | Arity and parameter class of every engine binding, walked out of the code with rizin (needs it on PATH). Writes `meta/engine.signatures.tsv` and reports where the binary disagrees with `meta/engine.d.lua` - it does, for 108 of them, and the binary wins. Use it before calling a native the tree does not already call: the docs are a scrape and the dump is wrong in places, so a plausible-looking argument list can fail silently. |
-| `python check_unresolved_calls.py [paths] [--overlay DIR]` | Static: every call in the tree and the libraries resolves to a native, a builtin, a same-file function or `<file>_<Function>` in the repo or the vanilla `Scripts` overlay. Exit 1 otherwise - an unresolved call in `Weight()` is a node that silently weighs 0. |
+| `python check_unresolved_calls.py [paths] [--overlay DIR]` | Static: every call in the tree and the libraries resolves to a native, a builtin, a same-file function or `<file>_<Function>` in the repo or the vanilla `Scripts` overlay, **and every library it calls has an `Include` line in `Scripts/Library/stdafx.lua`** - resolving to a file on disk is not the same as being loaded. Exit 1 otherwise - an unresolved or unloaded call in `Weight()` is a node that silently weighs 0. |
 | [SecondAID](https://github.com/pawelktk/SecondAID) (external, GPL-3) | Live debugger and editor over the game's AID protocol: breakpoints, stepping, script reload, and watches that take **expressions**, not only variables, evaluated at each step (a `LogMessage(...)` watch is legal). Its lint is `luacheck` with a config the editor builds by scanning the game for the `<basename>_Function` convention and the engine's globals - the one static check we lack, because it knows the **constants**. No standalone generator is exposed, so use the tool itself. Windows: drop `SecondAID-GUI.exe` and `luacheck.exe` next to `GuildII.exe`. It does not read logs; `ai_telemetry.py` does. |
 | `python basetree_stats.py [--list CATEGORY]` | Shape of the tree: constant vs. `utility_Score` vs. `utility_Trace` weights, and hazards inside `Weight()` (writes to the shared `SIM` alias, non-local assignments, `Rand`, use of personality inputs). Tracks the conversion. |
 | `python check_basetree_weights.py` | Every node has `Weight()`/`Execute()` and never returns a boolean weight. |
@@ -773,6 +773,13 @@ You can edit the game's configuration files manually:
   taken name is skipped silently. The team hit this in August 2025 (AI script files must have
   unique names, see Stability notes) and again on 2026-09-10 (`Library/blackboard.lua` vs
   `Buildings/BlackBoard.lua`). `check_unresolved_calls.py` now fails on a Library collision.
+- **A library loads from its `Include` line, not from its filename.** `Scripts/Library/stdafx.lua`
+  is the whole loader, and our copy replaces the vanilla one wholesale - so a new library
+  without an `Include` never loads, and a *vanilla* library our list drops (vanilla's has it)
+  is gone too, however many scripts call it. Both shapes were live here until 2026-09-14:
+  `aiboard.lua` had no line under either name, and `trade.lua` had none, leaving
+  `trade_IsAlderman` nil in two upstream nodes' `Weight()`. `check_unresolved_calls.py` now
+  fails on a called library that no Include line loads.
 
 If you encounter issues after installation:
 
