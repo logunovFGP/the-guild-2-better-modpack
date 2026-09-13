@@ -1158,6 +1158,17 @@ end
 -- classes each attitude may use; neutrals and friends use none
 TWP_ATTITUDE_CLASSES = { blood = "REPLOD", feud = "EPLO", enemy = "EPLO", friend = "", neutral = "" }
 
+-- What the BloodFeud leaves demand before they will fire. One copy each, because the
+-- HTN methods in aihtn.lua gate on the same numbers: two literals drift apart in
+-- silence, and the planner would then promise a step the leaf refuses.
+-- Raising one makes that leaf rarer and its HTN method fail more often (the ::TWP::HTN
+-- line names it); lowering one makes a poorer house try it.
+TWP_BF_SUPPLY = 100000          -- bf_Procure: treasury before a cart goes shopping
+TWP_BF_FUND = 200000            -- bf_FundAllies: treasury before money goes to an ally
+TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild is bought
+TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
+TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
+
 -- May DynAlias use Tool against whoever VictimAlias belongs to? Against AI dynasties
 -- always (the ladder is about human players). Against a player: the attitude's classes,
 -- the player's rung (title and round), and no lethal tool without a declared feud;
@@ -1361,6 +1372,33 @@ end
 -- per house are the two brakes on inventory spam; tools are drawn just in time.
 function CanHandOver(DynAlias, SimAlias)
 	return aitwp_CarriedTools(SimAlias) < 1 and aitwp_HandOversToday(DynAlias) < aitwp_HandOverCap(DynAlias)
+end
+
+-- Every ladder artefact the house could use on the player right now, most severe rung
+-- first: allowed by the ladder, off its own measure cooldown, and either in SimAlias's
+-- hands or in the store with a hand-over to spare. Out[1..n] holds the TWP_TOOL_LIST
+-- rows themselves - the caller needs target, lethal and aitwp_Severity off them.
+-- Rows of every target are returned, building ones included; bf_UseArtefact skips those
+-- and bf_UseBuildingArtefact takes them, so one pass answers for both leaves and for
+-- the HTN preconditions that count them.
+-- Walked backwards because TWP_TOOL_LIST is ordered by ascending rung with ties by
+-- index: that is the severity order the leaf has always used, and sorting would reorder
+-- the six rung-5 poisons.
+function ReadyArtefacts(DynAlias, PlayerDyn, SimAlias, Out)
+	local N = 0
+	for i = #TWP_TOOL_LIST, 1, -1 do
+		local T = TWP_TOOL_LIST[i]
+		-- the forgery papers carry an item but no target: they are bf_ForgeEvidence's
+		if T.item and T.target
+				and GetRepeatTimerLeft(SimAlias, GetMeasureRepeatName2("Use" .. T.item)) <= 0
+				and aitwp_Allowed(DynAlias, PlayerDyn, T.name)
+				and (GetItemCount(SimAlias, T.item, INVENTORY_STD) > 0
+					or (aitwp_InStore(DynAlias, T.item) and aitwp_CanHandOver(DynAlias, SimAlias))) then
+			N = N + 1
+			Out[N] = T
+		end
+	end
+	return N
 end
 
 -- The hand-over: Count of Item from the residence store (or a thug still carrying feud

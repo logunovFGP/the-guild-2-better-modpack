@@ -17,6 +17,11 @@ function Weight()
 	end
 	RemoveAlias("MYRM")
 	dyn_GetIdleMyrmidon("dynasty", "MYRM")
+	-- no HTN method applies, so every child weighs 0 and the tick is not worth
+	-- spending; the ::TWP::HTN line names the precondition that fell first
+	if aihtn_Step("dynasty") == "-" then
+		return 0
+	end
 	-- an entry that found every child at 0 wastes the tick (session 2: 85 of 110). After
 	-- one, weigh 15 for up to three hours or until a child fires (utility_Picked keeps
 	-- AI_BF_Fired for every bf_ node).

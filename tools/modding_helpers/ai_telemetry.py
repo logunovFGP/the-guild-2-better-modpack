@@ -64,6 +64,7 @@ ENV = re.compile(r"::TWP::ENV (.*)$")
 MARKET = re.compile(r"::TWP::MARKET (.*)$")
 CART = re.compile(r"::TWP::CART (.*)$")
 HANDOVER = re.compile(r"::TWP::HANDOVER (.*)$")
+HTN = re.compile(r"::TWP::HTN (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
 ROOTS = {"Dynasty", "Election", "Feud", "Trial", "Duel", "ToMEconomy", "Priorities", "IncomeForAI", "DoNothing", "BloodFeud"}
@@ -87,6 +88,12 @@ VARIANTS = OrderedDict([
     ("no goals", (0.5, 1.5, 1.0, 1.0)),
     ("flat (old)", (1.0, 1.0, 1.0, 1.0)),
 ])
+
+
+# utility.lua multiplies the leaf aihtn_Step named by UTILITY_HTN_FACTOR, so the
+# replay has to know it or every planned bf_ line reads as a mismatch. Not a tuning
+# variant: the planner either points at a leaf or it does not.
+HTN_FACTOR = 3.0
 
 
 def default_log_path():
@@ -116,7 +123,7 @@ def curve(x, kind):
     return x
 
 
-def replay(base, considerations, goal_state, variant):
+def replay(base, considerations, goal_state, variant, htn="-"):
     lo, hi, aligned, other = variant
     weight = base
     for x, kind, band in considerations:
@@ -127,6 +134,8 @@ def replay(base, considerations, goal_state, variant):
         weight *= aligned
     elif goal_state == "other":
         weight *= other
+    if htn == "step":
+        weight *= HTN_FACTOR
     return weight
 
 
@@ -152,6 +161,8 @@ class Session(object):
         self.mismatch = 0
         self.errors = Counter()
         self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
+        self.htn = []                            # one entry per ::TWP::HTN line
+        self.pick_seq = defaultdict(list)        # dyn -> picked nodes, in order
 
     def feed(self, lines):
         dyn_of_sim, goal_of_dyn = {}, {}
@@ -202,16 +213,20 @@ class Session(object):
                         band = (num(bits[2]), num(bits[3])) if len(bits) >= 4 else None
                         cons.append((num(bits[0]), bits[1] if len(bits) > 1 and bits[1] else "linear", band))
                 base, g, w = num(fields.get("base")), fields.get("g", "none"), num(fields.get("w"))
+                h = fields.get("h", "-")          # only bf_ lines carry it
                 # Inputs are logged through %.2f, so x carries up to 0.005 of rounding;
                 # a quad curve on a wide band turns that into ~1% of the weight. Compare
                 # in proportion, or every IncomeForAI and Trial line reads as a mismatch.
-                if abs(replay(base, cons, g, VARIANTS["current"]) - w) > max(0.01, 0.02 * w):
+                if abs(replay(base, cons, g, VARIANTS["current"], h) - w) > max(0.01, 0.02 * w):
                     self.mismatch += 1
-                self.groups[(fields.get("dyn"), fields.get("t"), level)].append((node, base, cons, g, w))
+                self.groups[(fields.get("dyn"), fields.get("t"), level)].append((node, base, cons, g, h, w))
                 continue
             m = PICK.search(line)
             if m:
-                self.picks[kv(m.group(1)).get("node", "?")] += 1
+                fields = kv(m.group(1))
+                node = fields.get("node", "?")
+                self.picks[node] += 1
+                self.pick_seq[fields.get("dyn")].append(node)
                 continue
             m = ENEMY.search(line)
             if m:
@@ -242,6 +257,10 @@ class Session(object):
             if m:
                 self.handovers.append(kv(m.group(1)))
                 continue
+            m = HTN.search(line)
+            if m:
+                self.htn.append(kv(m.group(1)))
+                continue
             m = TRACE.search(line)
             if m:
                 self.trace[" ".join(m.group(1).split()[2:])[:70]] += 1
@@ -265,7 +284,7 @@ class Session(object):
                     continue
                 evaluations += 1
                 for v, params in VARIANTS.items():
-                    weights = {node: replay(base, cons, g, params) for node, base, cons, g, _w in entries}  # cons carry their bands
+                    weights = {node: replay(base, cons, g, params, h) for node, base, cons, g, h, _w in entries}  # cons carry their bands
                     total = sum(weights.values())
                     if total > 0:
                         for node, w in weights.items():
@@ -273,6 +292,19 @@ class Session(object):
             result[name] = (evaluations, {v: {n: s / evaluations for n, s in shares.items()}
                                           for v, shares in per_variant.items()} if evaluations else {})
         return result
+
+    def barren_entries(self):
+        """BloodFeud entries where no bf_ leaf was picked next: the tick the subtree
+        spent finding every child at 0. Session 2 (before the planner): 85 of 110."""
+        barren = total = 0
+        for nodes in self.pick_seq.values():
+            for i, node in enumerate(nodes):
+                if node != "BloodFeud":
+                    continue
+                total += 1
+                if i + 1 >= len(nodes) or not nodes[i + 1].startswith("bf_"):
+                    barren += 1
+        return barren, total
 
     def root_cadence(self):
         by_dyn = defaultdict(set)
@@ -426,6 +458,28 @@ def report(session, path):
         at_cap = sum(1 for h in session.handovers if "/" in h.get("today", "") and h["today"].split("/")[0] == h["today"].split("/")[1])
         out.append("hand-overs from the store: %d (%d reached the day's cap): %s"
                    % (len(session.handovers), at_cap, ", ".join("%s %d" % i for i in items.most_common(8))))
+    if session.htn:
+        out.append("")
+        stalled = [h for h in session.htn if h.get("step", "-") == "-"]
+        out.append("HTN plans: %d, %d with no applicable method (%s)"
+                   % (len(session.htn), len(stalled),
+                      ", ".join("%s %d" % m for m in Counter(h.get("method") for h in session.htn).most_common(6))))
+        reasons = Counter()
+        for h in session.htn:
+            for reason in h.get("fail", "-").split(";"):
+                if reason and reason != "-":
+                    reasons[reason] += 1
+        if reasons:
+            out.append("  why a method did not apply (top 10 of %d):" % sum(reasons.values()))
+            for reason, count in reasons.most_common(10):
+                out.append("    %6d  %s" % (count, reason))
+        for h in session.htn[-4:]:
+            out.append("  t=%s dyn=%s method=%s step=%s chain=%s"
+                       % tuple(h.get(k, "?") for k in ("t", "dyn", "method", "step", "chain")))
+    barren, entries = session.barren_entries()
+    if entries:
+        out.append("  BloodFeud entries that fired no leaf: %d of %d (%.0f%%); before the planner, 85 of 110"
+                   % (barren, entries, 100.0 * barren / entries))
     if session.cancels:
         out.append("")
         out.append("measure starts cancelled by the engine (lost to a running measure's priority; top 10 of %d):" % sum(session.cancels.values()))
@@ -470,6 +524,13 @@ SAMPLE = """[Script] ::TWP::LOADED utility.lua
 [Script] ::TWP::CART t=14.00 dyn=1 action=arrive cart=77 carts=1 busy=0 need=0 money=248000 result=2 items=
 [StartMeasure] Kell Eylefson: Canceled 'AIBuyItem'(10) because of priority 'OrderCollectEvidence'(80)
 [Script] ::TWP::HANDOVER t=14.50 dyn=1 sim=55 item=StinkBomb today=1/5
+[Script] ::TWP::HTN t=12.00 dyn=1 task=Feud method=artefact step=bf_Procure chain=bf_Procure>bf_UseArtefact fail=HaveItem.ready:ReadyArtefacts>=1
+[Script] ::TWP::HTN t=13.00 dyn=1 task=Feud method=- step=- chain=- fail=HaveItem.ready:ReadyArtefacts>=1;HaveItem.procure:Money>=supply
+[Script] ::TWP::W t=15.00 dyn=1 node=bf_Procure base=60 c=0.50:linear g=none h=step w=180.00
+[Script] ::TWP::W t=15.00 dyn=1 node=bf_Taunt base=30 c=0.50:linear g=none h=- w=30.00
+[Script] ::TWP::PICK t=15.00 dyn=1 node=BloodFeud
+[Script] ::TWP::PICK t=15.00 dyn=1 node=bf_Procure
+[Script] ::TWP::PICK t=16.00 dyn=1 node=BloodFeud
 [Script] ::TWP::MEMBER dyn=1 sim=Bero Freudenreich
 [Script] ::TWP::SNAPSHOT t=32 round=0 diff=4 dyn=1 persona=3 money=1500 bld=2 ws=1 members=1 title=2 office=-1 rank=6 enemies=1 P=25 A=62 I=10 goal=Conflict target=9 ticks=24 name=Bero Freudenreich
 """
@@ -492,6 +553,13 @@ def selftest():
     assert session.last["1"]["ticks"] == "24" and session.goals[0]["pick"] == "Conflict"
     assert session.market["1"]["items"].startswith("HexerdokumentI:0:0"), session.market
     assert len(session.carts) == 2 and session.cancels["AIBuyItem(10) lost to OrderCollectEvidence(80)"] == 1
+    assert len(session.htn) == 2 and session.htn[0]["method"] == "artefact", session.htn
+    assert session.htn[1]["step"] == "-" and "Money>=supply" in session.htn[1]["fail"]
+    # h=step must multiply in the replay, or the planned leaf reads as a mismatch
+    assert session.mismatch == 0, "h=step did not replay"
+    _bf_evals, bf = session.predicted()["BloodFeud/"]
+    assert abs(bf["current"]["bf_Procure"] - 0.857) < 0.001, bf["current"]
+    assert session.barren_entries() == (1, 2), session.barren_entries()
     text = report(session, "<sample>")
     assert len(session.handovers) == 1 and "hand-overs from the store: 1" in text, text
     assert "goods brought home 2" in text and "nowhere HexerdokumentI" in text and "feud measures among them" in text, text

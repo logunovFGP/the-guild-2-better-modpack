@@ -11,7 +11,7 @@ function Weight()
 	if not ReadyToRepeat("MYRM", "AI_BF_Razzia") then
 		return 0
 	end
-	if GetDynastyEvidenceValues("dynasty", "PlayerDyn") < 35 then
+	if GetDynastyEvidenceValues("dynasty", "PlayerDyn") < TWP_BF_RAZZIA_EVIDENCE then
 		return 0
 	end
 	if not aitwp_FindTargetBuilding("PlayerDyn", -1, "strongest", "RaidTarget") then
@@ -22,7 +22,7 @@ function Weight()
 	-- filters, so the winner would raid the other one's building; file it per node
 	aiboard_Stash("bf_Razzia", "RaidTarget")
 	return utility_Score("dynasty", 150, {
-		{ value = utility_Norm(GetDynastyEvidenceValues("dynasty", "PlayerDyn"), 35, 100), curve = "linear" },
+		{ value = utility_Norm(GetDynastyEvidenceValues("dynasty", "PlayerDyn"), TWP_BF_RAZZIA_EVIDENCE, 100), curve = "linear" },
 		utility_Priority("dynasty", "Agressive"),
 	}, "bf_Razzia")
 end

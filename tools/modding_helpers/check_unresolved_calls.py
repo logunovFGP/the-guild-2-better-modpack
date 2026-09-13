@@ -25,7 +25,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
-DEFAULT_PATHS = ["Scripts/AI/BaseTree", "Scripts/Library/utility.lua", "Scripts/Library/aitwp.lua"]
+DEFAULT_PATHS = ["Scripts/AI/BaseTree", "Scripts/Library/utility.lua", "Scripts/Library/aitwp.lua",
+                 "Scripts/Library/aiboard.lua", "Scripts/Library/aihtn.lua"]
 BUILTINS = set("tostring tonumber type pairs ipairs unpack pcall error assert next select rawget rawset "
                "setmetatable getmetatable print require dofile loadstring".split())
 KEYWORDS = set("function if while for return end else elseif and or not local do then repeat until break "

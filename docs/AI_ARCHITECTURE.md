@@ -32,6 +32,7 @@ engine round-robin tick
        ├─ scored target pickers                           aitwp.lua         §2.4
        ├─ combat estimate, legality                       aitwp.lua         §2.5
        ├─ state + Weight->Execute handoff                 aiboard.lua       §2.6
+       ├─ HTN over the feud chain (which leaf, and why)   aihtn.lua         §2.7
        └─ telemetry on every decision                     utility.lua       §2.8
   └─ Execute() -> a Measure                                Scripts/Measures  the action layer
        └─ per-sim States and Behaviours (FSM)              Scripts/States    engine/vanilla
@@ -170,15 +171,53 @@ without stashing. The eight BloodFeud leaves that had this bug are the worked ex
 Repeat-timer names (`ReadyToRepeat(x, "AI_BF_Supply")`) are **not** blackboard keys:
 a separate namespace with its own lifetime, and the checker ignores them.
 
-### 2.7 Supply chain - `aitwp.lua`, procedural today, HTN candidate
+### 2.7 Supply chain - `aitwp.lua`, and the HTN over it - `aihtn.lua`, prefix `aihtn_`
 
-`aitwp_ShoppingList` -> `bf_Procure` -> `ms_bf_FeudSupply` (cart) -> `aitwp_InStore`
-/ `aitwp_DrawFromStock` / `aitwp_CanHandOver` -> `bf_UseArtefact`. Plus
-`aitwp_EquipmentTier` -> `aitwp_FindUnequipped` -> `bf_Equip`, `aitwp_CourierOrders`
-on difficulty 4-5, `aitwp_ReturnUnused` daily, `aitwp_MarketReport` for telemetry.
-All of it hangs off `aitwp_Residence(dyn, out)` - native `GetHomeBuilding` first,
-`aitwp_OwnBuilding` living-room fallback, because the native is documented for sims
-and carts only. See §4 for what this becomes.
+The chain itself is procedural: `aitwp_ShoppingList` -> `bf_Procure` ->
+`ms_bf_FeudSupply` (cart) -> `aitwp_InStore` / `aitwp_DrawFromStock` /
+`aitwp_CanHandOver` -> `bf_UseArtefact`. Plus `aitwp_EquipmentTier` ->
+`aitwp_FindUnequipped` -> `bf_Equip`, `aitwp_CourierOrders` on difficulty 4-5,
+`aitwp_ReturnUnused` daily, `aitwp_MarketReport` for telemetry. All of it hangs off
+`aitwp_Residence(dyn, out)` - native `GetHomeBuilding` first, `aitwp_OwnBuilding`
+living-room fallback, because the native is documented for sims and carts only.
+
+`aihtn.lua` plans over that chain. `AIHTN_TASKS` holds three tasks - `Feud` (eleven
+methods, one per leaf or pair), `HaveItem`, `HaveEvidence` - each a list of methods
+`{ name, when = { predicates }, steps = { subtasks } }` in preference order. A
+predicate is `{ "Name", fn }`; `Name` is what the log prints when `fn` returns false.
+A step names another task or a leaf. `aihtn_Plan` takes the first method whose every
+predicate holds, decomposing compounds left to right, and returns the method name;
+`aihtn_Step` runs it for `Feud` and files the first leaf of the chain in
+`AI_HTN_Step`. `BloodFeud.lua` weighs 0 when that is `"-"`, and `utility_Score`
+multiplies the named leaf by `UTILITY_HTN_FACTOR` (x3), logged as `h=step` on the
+`W` line - `bf_` nodes only, so no other line moved.
+
+**Soundness**: every predicate on the way to a step is a *necessary* condition of that
+leaf's own `Weight()`, so "no method applies" proves every child weighs 0 and the root
+may skip the tick. The converse is not claimed - leaves keep incidental gates (a target
+in reach, the win chance) - which is why `BloodFeud.lua` keeps its own dampener.
+A leaf gate that changes must change its method's `when`; no checker sees that, so the
+five treasury thresholds are `TWP_BF_*` knobs read by both, and what artefacts are
+usable at all is one `aitwp_ReadyArtefacts` call shared by planner and leaf.
+
+Two compound tasks, not the four first sketched: `HaveFighters` would have put the
+attack's preconditions in front of `bf_Recruit`, which does not have them - unsound,
+and it would stop a house hiring below rung 4. A `HaveEvidence.procure` method would be
+dead by construction, its predicates having already failed under `Feud.artefact`.
+
+### 2.7.1 What it prints
+
+One `::TWP::HTN` line per changed step, then throttled to `AIHTN_LOG_HOURS` (1):
+
+```
+::TWP::HTN t=1234.00 dyn=17 task=Feud method=artefact step=bf_Procure chain=bf_Procure>bf_UseArtefact fail=HaveItem.ready:ReadyArtefacts>=1
+::TWP::HTN t=1235.00 dyn=17 task=Feud method=- step=- chain=- fail=HaveItem.ready:ReadyArtefacts>=1;HaveItem.procure:Money>=supply;...
+```
+
+`fail=` is every method that did not apply, as `<task>.<method>:<predicate>` - the
+precondition that fell first, for each. That is the payoff: the class of silent chain
+death the residence bug was, turned into a log line. `ai_telemetry.py` counts the
+reasons and the BloodFeud entries that fired no leaf (85 of 110 before the planner).
 
 ### 2.8 Telemetry - `utility.lua`, one switch
 
@@ -187,7 +226,7 @@ and carts only. See §4 for what this becomes.
 
 `W` weight · `PICK` · `GOAL` · `ENEMY` · `BLD` · `BELIEVER` · `SNAPSHOT` (daily, per
 dynasty) · `MEMBER` · `CART` · `HANDOVER` · `MARKET` · `AI` (free text from
-`aitwp_Log`) · `BB` (blackboard) · `LOADED` / `ENV` (include probes).
+`aitwp_Log`) · `BB` (blackboard) · `HTN` (§2.7.1) · `LOADED` / `ENV` (include probes).
 
 Readers: `tools/modding_helpers/ai_telemetry.py` (replay and shares),
 `ai_focus.py` (one dynasty's story). If a new decision has no line, it did not
@@ -237,7 +276,8 @@ is stashed. `RemoveAlias` what you create, in the same function.
 declared in `BLACKBOARD_KEYS` before first use. Indexed keys end in `_` or a stem
 (`AI_Reserve_`, `AI_Courier`) and are declared `prefix = true`.
 
-**Knobs.** `TWP_<NAME>` in `aitwp.lua`, `UTILITY_<NAME>` in `utility.lua`, declared
+**Knobs.** `TWP_<NAME>` in `aitwp.lua`, `UTILITY_<NAME>` in `utility.lua`,
+`AIHTN_<NAME>` in `aihtn.lua`, declared
 beside the code that reads them with the comment saying what moving them does.
 
 **Telemetry.** `::TWP::<CHANNEL>` then `key=value` pairs, one line per decision,
@@ -263,7 +303,7 @@ both. Every non-trivial helper leaves one check behind in `check_utility.lua`.
 | **Whether a hostile act is allowed at all** | Feasibility ladder (§2.3) - a filter, not a score | done |
 | **Who / what to hit** | Scored pickers (§2.4), deterministic | done |
 | **Whether a fight is worth starting** | Prediction (§2.5), not planning | done, 0.75 bar to tune |
-| **Multi-step schemes**: procure -> deliver -> equip / hand over -> strike; forge -> charge; recruit -> gather -> attack | **HTN**, thin: abstract tasks with ordered methods and preconditions; the leaves stay as they are and become the primitives; utility still scores *within* the chosen chain | **next** - see below |
+| **Multi-step schemes**: procure -> deliver -> equip / hand over -> strike; forge -> charge | **HTN**, thin (§2.7): ordered methods with preconditions over the BloodFeud leaves, which stay as they are and become the primitives; utility still scores *within* the chosen chain | done; the feud only. Widening it to the economy waits for that subtree to be scored at all |
 | **Shared AI state** | Blackboard (§2.6) | done; migrate remaining bare `GetProperty("AI_…")` reads opportunistically |
 | **Economy / businesses** | Utility for *what* to build, buy, produce, price; scored pickers for *which one of ours*; the existing `AI_Reserve_` / turnover properties become registered blackboard keys. **First task, from the maintainer:** `ToMEconomy/BuyWorkshop.lua` almost never fires - a constant-60 sibling against its constant 8, a cooldown shared with `BuildWorkshop`, and a home-city-only view. Second: the Rogue businesses, the weak set under AI control. | next after the feud verifies |
 | **Where** to build, camp, expand; which town to work | **Influence maps** over settlements and roads, replacing `TWP_TOWN_RADIUS` and per-town dice. The engine's pathgrid already carries per-cell weights from the terrain materials (`EnableDrawPath`/`IllustratorsEnabled` show them) - that grid is the natural substrate, not a new one. | when the fork's random-world mode lands (announced for later in 2026); `TownRadius` is the placeholder until then |
@@ -272,15 +312,12 @@ both. Every non-trivial helper leaves one check behind in `check_utility.lua`.
 | **Per-sim moment-to-moment** | Engine FSM + needs (§2.9) | vanilla, leave |
 | **Multiplayer determinism** | No `Rand` in `Weight()`; ties to the lower index; if a decision must roll, roll from a seeded stream and log it (`AI_RESEARCH.md` phase 2) | 23 nodes still roll in `Weight()`, dice-by-design, not blocking |
 
-**HTN, the plan.** New `Scripts/Library/aihtn.lua` (prefix `aihtn_`): a table of ~4
-abstract tasks (`Harm`, `HaveItem`, `HaveFighters`, `HaveEvidence`), each with 2-3
-ordered methods `{ when = precondition, do = subtasks }`, primitives naming existing
-leaves. One decomposition per entry into `BloodFeud.lua`. Preconditions are the
-supply helpers that already exist and already return booleans (`aitwp_Residence`,
-`InStore`, `StockCount`, `CanHandOver`, `EquipmentTier`). Payoff is a `::TWP::HTN`
-line naming the task, the method, and *which precondition failed* when none applied
-- the class of silent chain death the residence bug was, made into a log line. ~150
-lines plus the table. It narrows the candidates; it does not replace the scorer.
+**HTN, as built.** `Scripts/Library/aihtn.lua` (prefix `aihtn_`), §2.7: three tasks,
+one decomposition per entry into `BloodFeud.lua`, preconditions that are the supply
+helpers already returning booleans. It narrows the candidates; it does not replace the
+scorer. Two departures from the sketch, both forced by the soundness rule: three tasks
+rather than four (`HaveFighters` would have made `bf_Recruit` unreachable below rung 4),
+and `"do"` is a Lua keyword, so a method's subtasks are `steps`.
 
 **Not used, and why.** *Behavior Trees*: priority order must be hand-maintained across
 233 nodes, and the measure system already sequences. *GOAP*: A* over preconditions
@@ -351,3 +388,12 @@ the engine owns the entities; a second store would be a second truth.
   `Election/FavorAll/fvo_UseAldermanChain`, was nil in both. Inherited from upstream: our
   only `stdafx.lua` commit (`6779cd0b`) added `utility.lua` and nothing else.
   `check_unresolved_calls.py` now fails on a called library with no Include line.
+- **2026-09-14** HTN over the feud chain (§2.7): `aihtn.lua`, three tasks, eleven
+  methods, one call from `BloodFeud.lua`. `::TWP::HTN` names the method taken and, for
+  every method that did not apply, the precondition that fell first. Two departures from
+  the 2026-09-10 sketch, both forced by the soundness rule that a method's preconditions
+  must be a subset of its leaf's own gates: `HaveFighters` dropped, because it would have
+  put the attack's rung and cooldown in front of `bf_Recruit`, which has neither; and
+  `HaveEvidence.procure` dropped as dead by construction. To keep the table and the leaves
+  from drifting, the five treasury thresholds became `TWP_BF_*` knobs read by both, and
+  artefact availability became one `aitwp_ReadyArtefacts` call shared by planner and leaf.

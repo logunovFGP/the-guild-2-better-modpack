@@ -8,7 +8,7 @@ function Weight()
 	if not ReadyToRepeat("dynasty", "AI_BF_Supply") then
 		return 0
 	end
-	if GetMoney("dynasty") < 100000 then
+	if GetMoney("dynasty") < TWP_BF_SUPPLY then
 		return 0
 	end
 	if not aitwp_Residence("dynasty", "home") or BuildingGetType("home") ~= GL_BUILDING_TYPE_RESIDENCE then
@@ -22,14 +22,14 @@ function Weight()
 	local Total, Busy, Idle = aitwp_ResidenceCarts("dynasty", "Cart")
 	if Idle then
 		SetData("CartMode", "send")
-	elseif Total < 5 and GetMoney("dynasty") >= 100000 + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE) then
+	elseif Total < 5 and GetMoney("dynasty") >= TWP_BF_SUPPLY + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE) then
 		SetData("CartMode", "buy")
 	else
 		return 0
 	end
 	-- scored: a fuller treasury and a longer list make the run more worthwhile
 	return utility_Score("dynasty", 60, {
-		{ value = utility_Norm(GetMoney("dynasty"), 100000, 1000000), curve = "sqrt" },
+		{ value = utility_Norm(GetMoney("dynasty"), TWP_BF_SUPPLY, 1000000), curve = "sqrt" },
 		{ value = utility_Norm(N, 1, 6), curve = "linear" },
 	}, "bf_Procure")
 end

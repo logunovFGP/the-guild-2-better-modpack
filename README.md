@@ -474,7 +474,8 @@ built-in sample.
 Line types (all prefixed `[Script] `): `::TWP::LOADED` and `::TWP::ENV` (the load probes)
 are always on; everything else - `::TWP::SNAPSHOT` and `::TWP::MEMBER` (daily), `::TWP::GOAL`,
 `::TWP::W`, `::TWP::PICK`, `::TWP::ENEMY`, `::TWP::BLD`, `::TWP::BELIEVER`, `::TWP::BLOODENEMY`,
-`::TWP::MARKET`, `::TWP::CART`, `::TWP::HANDOVER` and the `::TWP::AI::` trace - goes through
+`::TWP::MARKET`, `::TWP::CART`, `::TWP::HANDOVER`, `::TWP::HTN` (which feud chain the
+house is on and which precondition stopped the others) and the `::TWP::AI::` trace - goes through
 `utility_Emit` behind one switch, `UTILITY_LOG` in `Scripts/Library/utility.lua`: `nil`
 follows `Log = 1` under `[AI]` (or `AILog = 1` under `[OPTIONS]`), `false` silences all
 of it, `true` forces it on. Decisions never read the switch. The exact fields are in the docstring of
@@ -612,6 +613,15 @@ decent with room to improve. First concrete issue offered:
       **home city**, filtered by that member's class and religion (`CityGetBuildingCountForCharacter`
       with `FILTER_IS_BUYABLE` / `FILTER_NO_DYNASTY`), with a flat weight that ignores price,
       money and how good the deal is. Three levers, none of them the filter itself.
+
+- [ ] **Drop the BloodFeud entry dampener if the HTN made it dead weight.** `BloodFeud.lua`
+      drops its weight to 15 for three hours after an entry that fired no leaf (session 2:
+      85 of 110 entries). The HTN gate now returns 0 outright when no method applies, which
+      should cover most of that. `ai_telemetry.py` prints the barren-entry count; if it is
+      near zero, delete the dampener and `AI_BF_Entered` with it.
+- [ ] **`trade.lua` was missing from the mod's `stdafx.lua` upstream too.** Fixed here on
+      2026-09-14; the same one-line fix belongs in an upstream MR once a session log
+      confirms the `trade_IsAlderman` errors.
 
 **Mistyped or nonexistent globals** (ThreeOfMe's list, checked against this tree 2026-09-10).
 A name that does not exist evaluates to `nil` and the branch quietly never runs:

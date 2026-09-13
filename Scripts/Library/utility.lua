@@ -35,6 +35,9 @@
 UTILITY_LO = 0.5
 UTILITY_HI = 1.5
 UTILITY_GOAL_ALIGNED = 3
+-- what the leaf aihtn_Step named is worth over its siblings; 1 disables the
+-- planner's pull without touching the table or the HTN telemetry
+UTILITY_HTN_FACTOR = 3
 UTILITY_GOAL_OTHER = 0.3
 UTILITY_GOAL_HOURS = 72
 
@@ -181,9 +184,19 @@ function Score(DynAlias, Base, Considerations, Tag, Goal)
 		end
 		Result = Result * Factor
 	end
+	-- the HTN plans the blood feud and nothing else, so only its leaves pay for the
+	-- property read and only their W lines carry h=; every other line is unchanged
+	local HtnState = ""
+	if Tag and string.sub(Tag, 1, 3) == "bf_" then
+		HtnState = " h=-"
+		if Tag == GetProperty(DynAlias, "AI_HTN_Step") then
+			Result = Result * UTILITY_HTN_FACTOR
+			HtnState = " h=step"
+		end
+	end
 	if Tag then
 		utility_Emit("::TWP::W " .. utility_Stamp(DynAlias) .. " node=" .. Tag .. " base=" .. Base
-			.. " c=" .. Inputs .. " g=" .. GoalState .. " w=" .. string.format("%.2f", Result))
+			.. " c=" .. Inputs .. " g=" .. GoalState .. HtnState .. " w=" .. string.format("%.2f", Result))
 	end
 	return Result
 end

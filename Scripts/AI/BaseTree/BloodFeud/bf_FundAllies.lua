@@ -8,7 +8,7 @@ function Weight()
 	if not ReadyToRepeat("dynasty", "AI_BF_Fund") then
 		return 0
 	end
-	if GetMoney("dynasty") < 200000 then
+	if GetMoney("dynasty") < TWP_BF_FUND then
 		return 0
 	end
 	if not aitwp_FindAllyMember("dynasty", "AllyMember") then
@@ -16,7 +16,7 @@ function Weight()
 	end
 	-- scored: a rich house funds its allies more readily
 	return utility_Score("dynasty", 20, {
-		{ value = utility_Norm(GetMoney("dynasty"), 200000, 2000000), curve = "sqrt" },
+		{ value = utility_Norm(GetMoney("dynasty"), TWP_BF_FUND, 2000000), curve = "sqrt" },
 	}, "bf_FundAllies")
 end
 

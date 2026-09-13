@@ -13,7 +13,7 @@ function Weight()
 	if DynastyGetBuildingCount("dynasty", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF) > 0 then
 		return 0
 	end
-	if GetMoney("dynasty") < 30000 then
+	if GetMoney("dynasty") < TWP_BF_HIDEOUT then
 		return 0
 	end
 	if not aitwp_Residence("dynasty", "home") or not GetSettlement("home", "City") then
@@ -21,7 +21,7 @@ function Weight()
 	end
 	-- scored: the treasury and how far up the ladder the feud already is
 	return utility_Score("dynasty", 50, {
-		{ value = utility_Norm(GetMoney("dynasty"), 30000, 300000), curve = "sqrt" },
+		{ value = utility_Norm(GetMoney("dynasty"), TWP_BF_HIDEOUT, 300000), curve = "sqrt" },
 		{ value = utility_Norm(aitwp_Rung("dynasty", "PlayerDyn"), 2, 8), curve = "linear" },
 	}, "bf_Hideout")
 end

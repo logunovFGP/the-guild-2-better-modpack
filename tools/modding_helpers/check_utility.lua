@@ -639,8 +639,159 @@ RemoveAlias("Gone")
 check("stashing a missing alias reports it", Stash("bf_Gone", "Gone") == false)
 check("and its claim fails rather than acting on nothing", Claim("bf_Gone", "Out3") == false)
 
+
+-- the HTN: decomposition, the reason it gives, and the pull it puts on one leaf -----------
+dofile("Scripts/Library/aihtn.lua")
+aihtn_Plan, aihtn_Step, aihtn_CountArtefacts = Plan, Step, CountArtefacts
+UTILITY_LOG = true                       -- the HTN line is telemetry; assert on it
+check("load marker is logged at include time", has(lastLog(), "::TWP::LOADED aihtn.lua"))
+
+-- Every knob the library reads must exist: a misspelled one is nil inside a closure and
+-- surfaces as "compare number with nil" mid-game, the failure class this file exists to
+-- end. Comments and strings are stripped first so alias names do not count as knobs.
+local NL, Q = string.char(10), string.char(34)
+local Src = io.open("Scripts/Library/aihtn.lua"):read("*a")
+Src = string.gsub(Src, "%-%-[^" .. NL .. "]*", "")
+Src = string.gsub(Src, Q .. "[^" .. Q .. NL .. "]*" .. Q, "")
+local Unknown = nil
+for Name in string.gmatch(Src, "[A-Za-z_][A-Za-z0-9_]*") do
+	if string.find(Name, "^AIHTN_") or string.find(Name, "^TWP_") or string.find(Name, "^UTILITY_") then
+		if _G[Name] == nil and not Unknown then
+			Unknown = Name
+		end
+	end
+end
+check("every AIHTN_/TWP_/UTILITY_ knob the library reads is defined", Unknown == nil)
+
+-- The real table, structurally: a step naming a leaf that does not exist would plan a
+-- chain the engine can never run, and a space in any name breaks the analyzer's kv().
+local RealTasks = AIHTN_TASKS
+local BadStep, BadName = nil, nil
+local TaskNames = { "Feud", "HaveItem", "HaveEvidence" }
+for t = 1, #TaskNames do
+	local Methods = RealTasks[TaskNames[t]]
+	for m = 1, #Methods do
+		if string.find(Methods[m].name, "%s") then
+			BadName = Methods[m].name
+		end
+		for w = 1, #Methods[m].when do
+			if string.find(Methods[m].when[w][1], "%s") then
+				BadName = Methods[m].when[w][1]
+			end
+		end
+		for st = 1, #Methods[m].steps do
+			local StepName = Methods[m].steps[st]
+			if not RealTasks[StepName] then
+				local Leaf = io.open("Scripts/AI/BaseTree/BloodFeud/" .. StepName .. ".lua")
+				if Leaf then
+					Leaf:close()
+				else
+					BadStep = StepName
+				end
+			end
+		end
+	end
+end
+check("every step names a task or a BloodFeud leaf that exists", BadStep == nil)
+check("no method or predicate name carries a space", BadName == nil)
+
+-- the decomposer, against an injected table: the real predicates need the engine
+local Gate = { m1 = false, sub = true }
+AIHTN_TASKS = {
+	Feud = {
+		{ name = "m1", when = { { "P1", function() return Gate.m1 end } }, steps = { "bf_A" } },
+		{ name = "m2", when = {}, steps = { "Sub", "bf_B" } },
+	},
+	Sub = {
+		{ name = "ready", when = { { "SubReady", function() return Gate.sub end } }, steps = {} },
+		{ name = "make", when = {}, steps = { "bf_C" } },
+	},
+}
+local Chain, Fail = {}, {}
+check("the first method whose preconditions hold wins", Plan("d", "p", "Feud", Chain, Fail) == "m2")
+check("a satisfied compound adds no step and the parent carries on", #Chain == 1 and Chain[1] == "bf_B")
+check("the method that did not apply names the precondition that fell", Fail[1] == "Feud.m1:P1")
+Gate.m1 = true
+Chain, Fail = {}, {}
+check("and once it holds, that method is taken instead", Plan("d", "p", "Feud", Chain, Fail) == "m1")
+check("with no reason recorded, because none was needed", #Fail == 0 and Chain[1] == "bf_A")
+Gate.m1, Gate.sub = false, false
+Chain, Fail = {}, {}
+Plan("d", "p", "Feud", Chain, Fail)
+check("an unsatisfied compound decomposes to its own next method",
+	#Chain == 2 and Chain[1] == "bf_C" and Chain[2] == "bf_B")
+check("and its reason is recorded under the subtask", Fail[2] == "Sub.ready:SubReady")
+
+-- a method that fails half way must not leave its steps behind for the next one
+AIHTN_TASKS = {
+	Feud = {
+		{ name = "m1", when = {}, steps = { "bf_A", "Dead" } },
+		{ name = "m2", when = {}, steps = { "bf_B" } },
+	},
+	Dead = { { name = "never", when = { { "Never", function() return false end } }, steps = {} } },
+}
+Chain, Fail = {}, {}
+check("a method that fails part-way falls through", Plan("d", "p", "Feud", Chain, Fail) == "m2")
+check("and leaves no half-built chain behind", #Chain == 1 and Chain[1] == "bf_B")
+
+AIHTN_TASKS = {
+	Feud = { { name = "only", when = { { "Nope", function() return false end } }, steps = { "bf_A" } } },
+}
+Chain, Fail = {}, {}
+check("no applicable method returns nil", Plan("d", "p", "Feud", Chain, Fail) == nil)
+check("and the chain stays empty", #Chain == 0 and Fail[1] == "Feud.only:Nope")
+Props = {}
+check("so Step reports no step at all", Step("d") == "-")
+check("and files it, so utility_Score gives nothing the x3", Props.AI_HTN_Step == "-")
+
+-- the line: one per changed step, then throttled to AIHTN_LOG_HOURS
+AIHTN_TASKS = { Feud = { { name = "go", when = {}, steps = { "bf_Procure" } } } }
+Props = {}
+Logged = {}
+check("a plan reports the step it chose", Step("d") == "bf_Procure")
+check("the HTN line is stamped like every other channel",
+	has(lastLog(), "::TWP::HTN t=" .. string.format("%.2f", Now) .. " dyn="))
+check("and names task, method, step, chain and the reasons",
+	has(lastLog(), "task=Feud method=go step=bf_Procure chain=bf_Procure fail=-"))
+local Tokens = 0
+for _Word in string.gmatch(lastLog(), "%S+") do
+	Tokens = Tokens + 1
+end
+check("and splits into exactly the 8 fields the analyzer reads", Tokens == 8)
+Logged = {}
+Step("d")
+check("an unchanged step does not repeat the line", #Logged == 0)
+Now = Now + AIHTN_LOG_HOURS
+Step("d")
+check("until the throttle lapses", #Logged == 1)
+AIHTN_TASKS = { Feud = { { name = "go", when = {}, steps = { "bf_Taunt" } } } }
+Logged = {}
+Step("d")
+check("a changed step is logged at once, throttle or not", #Logged == 1 and has(lastLog(), "step=bf_Taunt"))
+UTILITY_LOG = false
+Props = {}
+Logged = {}
+Step("d")
+check("and nothing is emitted while the log is off", #Logged == 0)
+UTILITY_LOG = true
+
+-- the focus effect: the planned leaf outweighs its siblings, nothing else moves
+Props = {}
+Props.AI_HTN_Step = "bf_Procure"
+Logged = {}
+check("the leaf the plan named is worth UTILITY_HTN_FACTOR", near(Score("d", 10, {}, "bf_Procure"), 30))
+check("and its W line says so", has(lastLog(), "h=step"))
+check("a sibling off the plan is untouched", near(Score("d", 10, {}, "bf_Taunt"), 10))
+check("and says that too", has(lastLog(), "h=-"))
+Logged = {}
+check("a node outside the feud is not scaled", near(Score("d", 10, {}, "ApplyForOffice"), 10))
+check("and its line carries no h= at all, so no existing replay moves",
+	lastLog() ~= nil and string.find(lastLog(), "h=", 1, true) == nil)
+AIHTN_TASKS = RealTasks
+UTILITY_LOG = nil
+
 if Failures > 0 then
 	io.stderr:write("FAILED: " .. Failures .. " check(s) on utility scoring\n")
 	os.exit(1)
 end
-print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, scored pickers")
+print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, scored pickers, HTN")

@@ -3,7 +3,7 @@ function Weight()
 	if not ReadyToRepeat("dynasty", "AI_BF_Recruit") then
 		return 0
 	end
-	if GetMoney("dynasty") < 3000 then
+	if GetMoney("dynasty") < TWP_BF_RECRUIT then
 		return 0
 	end
 	if not aitwp_Residence("dynasty", "bf_home") or BuildingGetType("bf_home") ~= GL_BUILDING_TYPE_RESIDENCE then
@@ -18,7 +18,7 @@ function Weight()
 	-- scored: the shortfall against 2 + title thugs, and the treasury
 	return utility_Score("dynasty", 80, {
 		{ value = utility_Norm(2 + GetNobilityTitle("SIM") - DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON), 0, 3), curve = "sqrt" },
-		{ value = utility_Norm(GetMoney("dynasty"), 3000, 100000), curve = "sqrt" },
+		{ value = utility_Norm(GetMoney("dynasty"), TWP_BF_RECRUIT, 100000), curve = "sqrt" },
 	}, "bf_Recruit")
 end
 

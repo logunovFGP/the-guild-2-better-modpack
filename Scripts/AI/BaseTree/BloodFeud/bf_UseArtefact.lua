@@ -5,14 +5,15 @@
 -- the SIM's inventory; when the SIM holds none, the residence store hands one over
 -- just in time (aitwp_DrawFromStock, rationed). The sorcerer documents belong to
 -- bf_ForgeEvidence. Highest rung first; the item's own repeat timer is the cooldown.
+-- What is usable at all is aitwp_ReadyArtefacts's answer, shared with the HTN
+-- preconditions so the planner and this leaf cannot disagree about the store.
 function Weight()
-	for i = #TWP_TOOL_LIST, 1, -1 do
-		local T = TWP_TOOL_LIST[i]
-		if T.item and T.target and T.target ~= "building" and T.item ~= "HexerdokumentI" and T.item ~= "HexerdokumentII"
-				and GetRepeatTimerLeft("SIM", GetMeasureRepeatName2("Use" .. T.item)) <= 0
-				and aitwp_Allowed("dynasty", "PlayerDyn", T.name)
-				and (GetItemCount("SIM", T.item, INVENTORY_STD) > 0
-					or (aitwp_InStore("dynasty", T.item) and aitwp_CanHandOver("dynasty", "SIM"))) then
+	local Ready = {}
+	local N = aitwp_ReadyArtefacts("dynasty", "PlayerDyn", "SIM", Ready)
+	for i = 1, N do
+		local T = Ready[i]
+		-- the toads are bf_UseBuildingArtefact's; one call answers for both leaves
+		if T.target ~= "building" then
 			local Found = false
 			if T.target == "best" then
 				Found = aitwp_EvidenceTarget("dynasty", "PlayerDyn", "Victim")
