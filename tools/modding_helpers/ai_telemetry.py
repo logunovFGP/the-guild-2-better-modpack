@@ -524,8 +524,8 @@ SAMPLE = """[Script] ::TWP::LOADED utility.lua
 [Script] ::TWP::CART t=14.00 dyn=1 action=arrive cart=77 carts=1 busy=0 need=0 money=248000 result=2 items=
 [StartMeasure] Kell Eylefson: Canceled 'AIBuyItem'(10) because of priority 'OrderCollectEvidence'(80)
 [Script] ::TWP::HANDOVER t=14.50 dyn=1 sim=55 item=StinkBomb today=1/5
-[Script] ::TWP::HTN t=12.00 dyn=1 task=Feud method=artefact step=bf_Procure chain=bf_Procure>bf_UseArtefact fail=HaveItem.ready:ReadyArtefacts>=1
-[Script] ::TWP::HTN t=13.00 dyn=1 task=Feud method=- step=- chain=- fail=HaveItem.ready:ReadyArtefacts>=1;HaveItem.procure:Money>=supply
+[Script] ::TWP::HTN t=12.00 dyn=1 task=Feud method=charge step=bf_ForgeEvidence chain=bf_ForgeEvidence>bf_Charge fail=Feud.artefact:ReadyArtefacts>=1
+[Script] ::TWP::HTN t=13.00 dyn=1 task=Feud method=- step=- chain=- fail=Feud.artefact:ReadyArtefacts>=1;Feud.restock:Money>=supply
 [Script] ::TWP::W t=15.00 dyn=1 node=bf_Procure base=60 c=0.50:linear g=none h=step w=180.00
 [Script] ::TWP::W t=15.00 dyn=1 node=bf_Taunt base=30 c=0.50:linear g=none h=- w=30.00
 [Script] ::TWP::PICK t=15.00 dyn=1 node=BloodFeud
@@ -553,7 +553,7 @@ def selftest():
     assert session.last["1"]["ticks"] == "24" and session.goals[0]["pick"] == "Conflict"
     assert session.market["1"]["items"].startswith("HexerdokumentI:0:0"), session.market
     assert len(session.carts) == 2 and session.cancels["AIBuyItem(10) lost to OrderCollectEvidence(80)"] == 1
-    assert len(session.htn) == 2 and session.htn[0]["method"] == "artefact", session.htn
+    assert len(session.htn) == 2 and session.htn[0]["method"] == "charge", session.htn
     assert session.htn[1]["step"] == "-" and "Money>=supply" in session.htn[1]["fail"]
     # h=step must multiply in the replay, or the planned leaf reads as a mismatch
     assert session.mismatch == 0, "h=step did not replay"

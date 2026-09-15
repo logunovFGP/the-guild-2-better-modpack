@@ -667,7 +667,7 @@ check("every AIHTN_/TWP_/UTILITY_ knob the library reads is defined", Unknown ==
 -- chain the engine can never run, and a space in any name breaks the analyzer's kv().
 local RealTasks = AIHTN_TASKS
 local BadStep, BadName = nil, nil
-local TaskNames = { "Feud", "HaveItem", "HaveEvidence" }
+local TaskNames = { "Feud", "HaveEvidence" }
 for t = 1, #TaskNames do
 	local Methods = RealTasks[TaskNames[t]]
 	for m = 1, #Methods do

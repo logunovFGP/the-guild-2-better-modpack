@@ -8,8 +8,8 @@
 --
 -- A task decomposes into an ordered list of methods; the first method whose every
 -- precondition holds wins, and its steps are the chain. A step names either another task
--- or a leaf, so "artefact" reads "have an item, then use it" and expands to
--- bf_Procure > bf_UseArtefact while the store is empty, and to bf_UseArtefact once it is
+-- or a leaf, so "charge" reads "have a case, then bring it" and expands to
+-- bf_ForgeEvidence > bf_Charge while the evidence is thin, and to bf_Charge once it is
 -- not. BloodFeud.lua asks for the first step, weighs 0 when there is none, and
 -- utility.lua gives that one leaf UTILITY_HTN_FACTOR. The leaves are untouched: they
 -- stay the primitives and keep their own gates, and the scorer still chooses within the
@@ -50,7 +50,9 @@ end
 AIHTN_TASKS = {
 	-- Everything the blood rival can be doing to the player, best first.
 	Feud = {
-		{ name = "artefact", when = {}, steps = { "HaveItem", "bf_UseArtefact" } },
+		{ name = "artefact", when = {
+			{ "ReadyArtefacts>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "character", R) >= 1 end },
+		}, steps = { "bf_UseArtefact" } },
 		{ name = "building", when = {
 			{ "BuildingArtefact>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "building", R) >= 1 end },
 		}, steps = { "bf_UseBuildingArtefact" } },
@@ -115,14 +117,12 @@ AIHTN_TASKS = {
 			{ "Money>=hideout", function(d) return Rich(d, TWP_BF_HIDEOUT) end },
 			{ "ResidenceTown", function(d) return aitwp_Residence(d, "TWP_HTN") and GetSettlement("TWP_HTN", "TWP_HTN2") end },
 		}, steps = { "bf_Hideout" } },
-	},
-
-	-- A usable artefact in hand or in the store, or the cart run that fetches one.
-	HaveItem = {
-		{ name = "ready", when = {
-			{ "ReadyArtefacts>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "character", R) >= 1 end },
-		}, steps = {} },
-		{ name = "procure", when = {
+		-- Last on purpose. Shopping is what the house does when it has nothing better,
+		-- and it is the one method whose leaf does not act on the player at all. Putting
+		-- it first (it was, briefly) made every rich house plan a cart run while it had
+		-- evidence in hand and thugs to spare. bf_Procure still competes on its own
+		-- weight every tick; this only decides who gets UTILITY_HTN_FACTOR.
+		{ name = "restock", when = {
 			{ "Ready(AI_BF_Supply)", function(d) return Ready(d, "AI_BF_Supply") end },
 			{ "Money>=supply", function(d) return Rich(d, TWP_BF_SUPPLY) end },
 			{ "Residence", function(d)

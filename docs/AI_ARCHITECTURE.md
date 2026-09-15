@@ -181,8 +181,8 @@ The chain itself is procedural: `aitwp_ShoppingList` -> `bf_Procure` ->
 `aitwp_Residence(dyn, out)` - native `GetHomeBuilding` first, `aitwp_OwnBuilding`
 living-room fallback, because the native is documented for sims and carts only.
 
-`aihtn.lua` plans over that chain. `AIHTN_TASKS` holds three tasks - `Feud` (eleven
-methods, one per leaf or pair), `HaveItem`, `HaveEvidence` - each a list of methods
+`aihtn.lua` plans over that chain. `AIHTN_TASKS` holds two tasks - `Feud` (twelve
+methods, one per leaf) and `HaveEvidence` - each a list of methods
 `{ name, when = { predicates }, steps = { subtasks } }` in preference order. A
 predicate is `{ "Name", fn }`; `Name` is what the log prints when `fn` returns false.
 A step names another task or a leaf. `aihtn_Plan` takes the first method whose every
@@ -200,18 +200,27 @@ A leaf gate that changes must change its method's `when`; no checker sees that, 
 five treasury thresholds are `TWP_BF_*` knobs read by both, and what artefacts are
 usable at all is one `aitwp_ReadyArtefacts` call shared by planner and leaf.
 
-Two compound tasks, not the four first sketched: `HaveFighters` would have put the
+**Method order is preference order**, and it is load-bearing: `aihtn_Plan` stops at the
+first method that applies. `artefact` means *use what you have*, so it carries
+`ReadyArtefacts>=1`; `restock` (the cart run) is deliberately **last**, being the one
+method whose leaf does not act on the player at all. An earlier draft had an
+unconditional `artefact` decompose through a `HaveItem` task into `bf_Procure`, which
+made every solvent house plan a shopping trip while it held evidence and thugs - the
+x3 went to the cart every tick. `bf_Procure` still competes on its own weight; the
+planner only decides who gets the multiplier.
+
+One compound task, not the four first sketched. `HaveFighters` would have put the
 attack's preconditions in front of `bf_Recruit`, which does not have them - unsound,
-and it would stop a house hiring below rung 4. A `HaveEvidence.procure` method would be
-dead by construction, its predicates having already failed under `Feud.artefact`.
+and it would stop a house hiring below rung 4. `HaveItem` disappeared with the
+reordering: it existed only to prepend `bf_Procure` to the artefact chain.
 
 ### 2.7.1 What it prints
 
 One `::TWP::HTN` line per changed step, then throttled to `AIHTN_LOG_HOURS` (1):
 
 ```
-::TWP::HTN t=1234.00 dyn=17 task=Feud method=artefact step=bf_Procure chain=bf_Procure>bf_UseArtefact fail=HaveItem.ready:ReadyArtefacts>=1
-::TWP::HTN t=1235.00 dyn=17 task=Feud method=- step=- chain=- fail=HaveItem.ready:ReadyArtefacts>=1;HaveItem.procure:Money>=supply;...
+::TWP::HTN t=1234.00 dyn=17 task=Feud method=charge step=bf_ForgeEvidence chain=bf_ForgeEvidence>bf_Charge fail=Feud.artefact:ReadyArtefacts>=1;Feud.building:BuildingArtefact>=1
+::TWP::HTN t=1235.00 dyn=17 task=Feud method=- step=- chain=- fail=Feud.artefact:ReadyArtefacts>=1;...;Feud.restock:ShoppingList>0
 ```
 
 `fail=` is every method that did not apply, as `<task>.<method>:<predicate>` - the
@@ -315,9 +324,9 @@ both. Every non-trivial helper leaves one check behind in `check_utility.lua`.
 **HTN, as built.** `Scripts/Library/aihtn.lua` (prefix `aihtn_`), §2.7: three tasks,
 one decomposition per entry into `BloodFeud.lua`, preconditions that are the supply
 helpers already returning booleans. It narrows the candidates; it does not replace the
-scorer. Two departures from the sketch, both forced by the soundness rule: three tasks
-rather than four (`HaveFighters` would have made `bf_Recruit` unreachable below rung 4),
-and `"do"` is a Lua keyword, so a method's subtasks are `steps`.
+scorer. Two tasks rather than four: `HaveFighters` would have made `bf_Recruit`
+unreachable below rung 4, and `HaveItem` fell out when procuring became the last
+method instead of the first. `"do"` is a Lua keyword, so a method's subtasks are `steps`.
 
 **Not used, and why.** *Behavior Trees*: priority order must be hand-maintained across
 233 nodes, and the measure system already sequences. *GOAP*: A* over preconditions
@@ -397,3 +406,11 @@ the engine owns the entities; a second store would be a second truth.
   `HaveEvidence.procure` dropped as dead by construction. To keep the table and the leaves
   from drifting, the five treasury thresholds became `TWP_BF_*` knobs read by both, and
   artefact availability became one `aitwp_ReadyArtefacts` call shared by planner and leaf.
+- **2026-09-15** Review of the above: `Feud.artefact` had no preconditions and stood
+  first, so it applied whenever a cart could be sent and the x3 landed on `bf_Procure`
+  nearly every tick - a solvent house planned a shopping trip while holding evidence,
+  thugs and a target. No leaf was starved (the roulette still reached all thirteen) but
+  the weighting was not what was intended and `method=` never varied. `artefact` now
+  requires `ReadyArtefacts>=1` and procuring is a `restock` method placed last; the
+  `HaveItem` task went with it. Method order is preference order - keep the methods that
+  act on the player above the one that only buys.
