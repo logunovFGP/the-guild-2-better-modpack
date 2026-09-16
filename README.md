@@ -248,6 +248,36 @@ something else" (ThreeOfMe, 2026-09). Branch per topic, each cut fresh from `ups
 so a problem in one does not hold up the rest. A long-running integration branch is fine to
 keep on your own fork - it is just never what gets proposed upstream.
 
+**Two kinds of branch, cut from two different places.** Mixing them is what produces a merge
+request carrying six unrelated commits, or a feature branch that cannot see this fork's own
+tooling:
+
+| | cut from | merged back into | for |
+|---|---|---|---|
+| `contrib/NN-topic` | `upstream/modern` | proposed upstream as a merge request | one fix, for the maintainer |
+| feature branch | `origin/modern` | `origin/modern` | work that builds on this fork |
+
+`origin/modern` is this fork's trunk: it carries every upstream release plus the AI libraries,
+the checkers and the docs, and it is what new work branches from. A `contrib/` branch must not,
+because upstream has none of that - and because this fork's `.gitignore` is not there either,
+so `git add -A` on one quietly commits `__pycache__` and session files. Stage paths explicitly
+on a `contrib/` branch.
+
+Take a new upstream release into the fork with a merge, not a rebase - `origin/modern` is
+published, and its history is shared:
+
+```bash
+git fetch upstream
+git checkout modern
+git merge upstream/modern
+```
+
+Expect exactly one conflict class: `DB/Languages/*.dbt`. `.gitattributes` marks `*.dbt` as
+`-text`, so git refuses to merge a language table at all, even when the two sides edit rows a
+thousand apart - one changed string upstream is enough. Resolve with
+`tools/modding_helpers/merge_dbt.py` (see "AI analysis tools"); it is a line merge over the
+decoded UTF-16, so a genuine overlap still conflicts and shows markers.
+
 ### Scripting language: Lua 5.1
 
 Everything under `Scripts\` is Lua. The engine embeds **Lua 5.1** for its backend
@@ -744,6 +774,7 @@ reinvent them (all under `tools\modding_helpers`, all read-only):
 | [SecondAID](https://github.com/pawelktk/SecondAID) (external, GPL-3) | Live debugger and editor over the game's AID protocol: breakpoints, stepping, script reload, and watches that take **expressions**, not only variables, evaluated at each step (a `LogMessage(...)` watch is legal). Its lint is `luacheck` with a config the editor builds by scanning the game for the `<basename>_Function` convention and the engine's globals - the one static check we lack, because it knows the **constants**. No standalone generator is exposed, so use the tool itself. Windows: drop `SecondAID-GUI.exe` and `luacheck.exe` next to `GuildII.exe`. It does not read logs; `ai_telemetry.py` does. |
 | `python basetree_stats.py [--list CATEGORY]` | Shape of the tree: constant vs. `utility_Score` vs. `utility_Trace` weights, and hazards inside `Weight()` (writes to the shared `SIM` alias, non-local assignments, `Rand`, use of personality inputs). Tracks the conversion. |
 | `python check_basetree_weights.py` | Every node has `Weight()`/`Execute()` and never returns a boolean weight. |
+| `python merge_dbt.py <base> <ours> <theirs> [-o OUT]` | Three-way merge for a UTF-16 `.dbt` table. `.gitattributes` marks `*.dbt` as `-text`, so git calls every language table binary and refuses to merge two commits that touch one - however far apart the rows. Decodes the three sides, runs git's own line merge, re-encodes with BOM and CRLF. Exit 1 and normal `<<<<<<<` markers when the rows really do overlap. Use it when a merge or rebase stops on `DB/Languages/*.dbt`. |
 
 The two log tools need a session recorded with `Log = 1` (see the telemetry section);
 the two static tools run on the working tree. Python on Windows needs `G:/...` paths.
