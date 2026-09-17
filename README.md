@@ -644,11 +644,19 @@ decent with room to improve. First concrete issue offered:
       with `FILTER_IS_BUYABLE` / `FILTER_NO_DYNASTY`), with a flat weight that ignores price,
       money and how good the deal is. Three levers, none of them the filter itself.
 
-- [ ] **Drop the BloodFeud entry dampener if the HTN made it dead weight.** `BloodFeud.lua`
-      drops its weight to 15 for three hours after an entry that fired no leaf (session 2:
-      85 of 110 entries). The HTN gate now returns 0 outright when no method applies, which
-      should cover most of that. `ai_telemetry.py` prints the barren-entry count; if it is
-      near zero, delete the dampener and `AI_BF_Entered` with it.
+- [x] **~~Drop the BloodFeud entry dampener~~ - measured, and it must stay.** Session 4
+      (2026-09-17, one game day, round 42) put barren entries at **18 of 30 (60%)** against
+      85 of 110 (77%) before the planner. The gate only returns 0 when *no* method applies,
+      which happened once in 24 plans; the rest of the time a method applied and its leaf
+      still weighed 0. Keep `AI_BF_Entered` and the `W = 15` dampener until the predicate
+      gap below is closed, then re-measure.
+- [ ] **HTN methods omit the target check their leaf performs.** Same session: `bf_Provoke`
+      was named as the step **22 times, emitted a weight twice, and was picked once**. The
+      `Feud.duel` method checks `Allowed(duel)` and `FitDuelist`; the leaf additionally needs
+      `aitwp_FindPlayerTarget(..., "duel"/"rogue", ...)` and the per-victim `Get_Insult`
+      cooldown. Six of the twelve methods have this shape - `artefact`, `building`, `attack`,
+      `razzia`, `duel`, `taunt` - every one of them a method whose leaf resolves a target.
+      Sound but useless: the x3 lands on a node that weighs 0 and the gate cannot skip.
 - [ ] **`trade.lua` was missing from the mod's `stdafx.lua` upstream too.** Fixed here on
       2026-09-14; the same one-line fix belongs in an upstream MR once a session log
       confirms the `trade_IsAlderman` errors.

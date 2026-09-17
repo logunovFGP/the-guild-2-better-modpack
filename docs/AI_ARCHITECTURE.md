@@ -200,6 +200,17 @@ A leaf gate that changes must change its method's `when`; no checker sees that, 
 five treasury thresholds are `TWP_BF_*` knobs read by both, and what artefacts are
 usable at all is one `aitwp_ReadyArtefacts` call shared by planner and leaf.
 
+**Necessary is not enough - a method must also be predictive.** Soundness only bounds
+what a method may omit; a method that omits too much is sound and useless. Session 4
+(2026-09-17) measured it: `Feud.duel` checked `Allowed(duel)` and `FitDuelist` but not
+the target, so `bf_Provoke` was named the step **22 times, weighed twice, picked once** -
+the x3 on a node that could not fire, and a root that could not skip the tick. Six of the
+twelve methods had the same shape, and every one of them was a method whose leaf resolves
+a target. The rule that follows: **if the leaf resolves a target, the method resolves it
+too.** `aihtn_Targetable` does it for the artefact rows; `attack` carries the win-chance
+bar, `razzia` and `building` their building lookup, `duel` both of `bf_Provoke`'s paths
+plus the victim's `Get_Insult` cooldown, `taunt` its letter target.
+
 **Method order is preference order**, and it is load-bearing: `aihtn_Plan` stops at the
 first method that applies. `artefact` means *use what you have*, so it carries
 `ReadyArtefacts>=1`; `restock` (the cart run) is deliberately **last**, being the one
@@ -414,3 +425,9 @@ the engine owns the entities; a second store would be a second truth.
   requires `ReadyArtefacts>=1` and procuring is a `restock` method placed last; the
   `HaveItem` task went with it. Method order is preference order - keep the methods that
   act on the player above the one that only buys.
+- **2026-09-17** First play session with the HTN (one game day, round 42). Both libraries
+  load, no nil calls, zero replay mismatches - but `bf_Provoke` was planned 22 times and
+  picked once, because six methods omitted the target lookup their leaf performs. Fixed by
+  adding it to all six. The dampener in `BloodFeud.lua` stays: barren entries came in at
+  18 of 30, not the near-zero the gate was supposed to buy, because a method applying is
+  not the same as its leaf firing. Re-measure after the next session.

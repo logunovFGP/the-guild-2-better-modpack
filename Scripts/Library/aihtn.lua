@@ -61,11 +61,18 @@ AIHTN_TASKS = {
 			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
 			{ "Ready(AI_BF_Attack)", function(d) return Ready(d, "AI_BF_Attack") end },
 			{ "Target(outside)", function(d, p) return aitwp_FindPlayerTarget(p, "outside", "TWP_HTN") end },
-			{ "Fighters>=1", function(d)
+			-- the victim is in TWP_HTN from the predicate above; the leaf refuses the
+			-- fight below TWP_ATTACK_WIN_CHANCE, so the plan must refuse it too
+			{ "WinChance>=bar", function(d, p)
 				local Side = {}
 				local N = aitwp_GatherFighters(d, "TWP_HTNF", Side, TWP_ATTACK_PARTY_MAX)
 				aitwp_ClearFighters("TWP_HTNF", N)
-				return N >= 1
+				if N < 1 then
+					return false
+				end
+				local Defence = {}
+				aitwp_DefenceOf(p, "TWP_HTN", Defence)
+				return aitwp_WinChance(Side, Defence) >= TWP_ATTACK_WIN_CHANCE
 			end },
 		}, steps = { "bf_ThugAttack" } },
 		{ name = "razzia", when = {
@@ -73,15 +80,26 @@ AIHTN_TASKS = {
 			{ "Allowed(razzia)", function(d, p) return aitwp_Allowed(d, p, "razzia") end },
 			{ "Ready(AI_BF_Razzia)", function() return Ready("MYRM", "AI_BF_Razzia") end },
 			{ "Evidence>=threshold", function(d, p) return GetDynastyEvidenceValues(d, p) >= TWP_BF_RAZZIA_EVIDENCE end },
+			{ "RaidTarget", function(d, p) return aitwp_FindTargetBuilding(p, -1, "strongest", "TWP_HTN") end },
 		}, steps = { "bf_Razzia" } },
 		{ name = "duel", when = {
 			{ "Allowed(duel)", function(d, p) return aitwp_Allowed(d, p, "duel") end },
-			{ "FitDuelist", function(d) return aitwp_FindFitDuelist(d, "TWP_HTN") end },
+			{ "FitDuelist", function(d) return aitwp_FindFitDuelist(d, "TWP_HTN2") end },
+			-- both of bf_Provoke's paths: a non-rogue, or a rogue on the daily roll, and
+			-- either way off the victim's own Get_Insult cooldown
+			{ "InsultableTarget", function(d, p)
+				if aitwp_FindPlayerTarget(p, "duel", "TWP_HTN") and ReadyToRepeat("TWP_HTN", "Get_Insult") then
+					return true
+				end
+				return (GetProperty(d, "AI_BF_DuelRogues") or 0) == 1
+					and aitwp_FindPlayerTarget(p, "rogue", "TWP_HTN") and ReadyToRepeat("TWP_HTN", "Get_Insult")
+			end },
 		}, steps = { "bf_Provoke" } },
 		{ name = "taunt", when = {
 			{ "Allowed(taunt_letter)", function(d, p) return aitwp_Allowed(d, p, "taunt_letter") end },
 			{ "NotFoe", function(d, p) return DynastyGetDiplomacyState(d, p) ~= DIP_FOE end },
 			{ "Ready(AI_BF_Taunt)", function() return Ready("SIM", "AI_BF_Taunt") end },
+			{ "Target(best)", function(d, p) return aitwp_FindPlayerTarget(p, "best", "TWP_HTN") end },
 		}, steps = { "bf_Taunt" } },
 		-- bf_Recruit is a method of its own, not a subtask of the attack: its gates are
 		-- none of the attack's, so hanging it under one would stop the house hiring
@@ -158,11 +176,29 @@ function CountArtefacts(DynAlias, PlayerDyn, Kind, Out)
 	local N = aitwp_ReadyArtefacts(DynAlias, PlayerDyn, "SIM", Out)
 	local Hits = 0
 	for i = 1, N do
-		if (Kind == "building") == (Out[i].target == "building") then
+		if (Kind == "building") == (Out[i].target == "building")
+				and aihtn_Targetable(DynAlias, PlayerDyn, Out[i]) then
 			Hits = Hits + 1
 		end
 	end
+	RemoveAlias("TWP_HTNT")
 	return Hits
+end
+
+-- Can this tool row actually reach anyone right now? The same lookup bf_UseArtefact
+-- and bf_UseBuildingArtefact do in their own Weight(). Counting a row without it was
+-- the 2026-09-17 defect: the plan named a step whose leaf then found no target and
+-- weighed 0, so the x3 went to a node that could not fire.
+function Targetable(DynAlias, PlayerDyn, T)
+	if T.target == "building" then
+		return aitwp_FindTargetBuilding(PlayerDyn, GL_BUILDING_CLASS_WORKSHOP, "strongest", "TWP_HTNT")
+	elseif T.target == "best" then
+		return aitwp_EvidenceTarget(DynAlias, PlayerDyn, "TWP_HTNT")
+	elseif T.target == "weak" then
+		return aitwp_FindPlayerTarget(PlayerDyn, "duel", "TWP_HTNT")
+			or aitwp_FindPlayerTarget(PlayerDyn, "rogue", "TWP_HTNT")
+	end
+	return aitwp_NearbyPlayerSim("SIM", PlayerDyn, 800, "TWP_HTNT")
 end
 
 -- Decompose Task. Appends the primitive leaf tags to Chain and, for every method that
@@ -187,6 +223,7 @@ function Plan(DynAlias, PlayerDyn, Task, Chain, Fail)
 		end
 		RemoveAlias("TWP_HTN")
 		RemoveAlias("TWP_HTN2")
+		RemoveAlias("TWP_HTNT")
 		if Ok then
 			local Mark = #Chain
 			for s = 1, #M.steps do
