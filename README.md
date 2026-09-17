@@ -657,6 +657,14 @@ decent with room to improve. First concrete issue offered:
       cooldown. Six of the twelve methods have this shape - `artefact`, `building`, `attack`,
       `razzia`, `duel`, `taunt` - every one of them a method whose leaf resolves a target.
       Sound but useless: the x3 lands on a node that weighs 0 and the gate cannot skip.
+- [ ] **29 nodes resolve an alias in `Weight()` and read it again in `Execute()`.**
+      Every sibling's `Weight()` runs in between, so the value holds only while no sibling
+      writes the same alias. `bf_Procure` bought a cart from one of these (fixed 2026-09-17);
+      the rest are inherited - `attf_ScoldSomeone` and `fvt_PraiseSomeone` on `Church`,
+      `War.lua` on `WAR_SIM`, `SellWorkshop` on `sd_Workshop`, the toad nodes on
+      `VicBuilding`. `basetree_stats.py` lists them under *alias resolved in Weight(), read
+      in Execute()*; it reports rather than blocks until the count is zero. Fix by
+      re-resolving in `Execute()` or with `aiboard_Stash`.
 - [ ] **`trade.lua` was missing from the mod's `stdafx.lua` upstream too.** Fixed here on
       2026-09-14; the same one-line fix belongs in an upstream MR once a session log
       confirms the `trade_IsAlderman` errors.

@@ -149,7 +149,7 @@ AIHTN_TASKS = {
 			{ "ShoppingList>0", function(d, p) local Needs = {} return aitwp_ShoppingList(d, p, Needs) > 0 end },
 			{ "Cart", function(d)
 				local Total, _Busy, Idle = aitwp_ResidenceCarts(d, "TWP_HTN")
-				return Idle or (Total < 5 and GetMoney(d) >= TWP_BF_SUPPLY + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE))
+				return Idle or (Total < TWP_BF_CARTS and GetMoney(d) >= TWP_BF_SUPPLY + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE))
 			end },
 		}, steps = { "bf_Procure" } },
 	},

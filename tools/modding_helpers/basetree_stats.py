@@ -24,6 +24,14 @@ Two of the categories are defects rather than statistics, and exit 1 on either:
       a property named AI_* or AITWP_* that is not in BLACKBOARD_KEYS, so a typo
       reads nil forever and the node quietly weighs 0. Repeat-timer names are a
       separate namespace and are not counted.
+
+A third is reported but does not yet block, because 29 inherited nodes already do it:
+  alias resolved in Weight(), read in Execute()
+      the node resolves a target in Weight() and reads that alias again in
+      Execute(), with every sibling's Weight() in between. Safe only while no
+      sibling writes the same alias - bf_Procure bought a cart from one of these.
+      Fix by re-resolving in Execute(), or with aiboard_Stash. Make it blocking
+      once the count reaches zero.
 """
 import os
 import re
@@ -32,13 +40,18 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "Scripts", "AI", "BaseTree"))
 WEIGHT = re.compile(r"function Weight\(\)(.*?)\r?\nend", re.S)
+EXECUTE = re.compile(r"function Execute\(\)(.*?)\r?\nend", re.S)
+ALIAS_USE = re.compile(r'"([A-Za-z][A-Za-z0-9_]*)"')
 RETURN = re.compile(r"return\s+([^\r\n]*)")
 GLOBAL_ASSIGN = re.compile(r"\n\s*(?!local\b)(?!if\b|for\b|while\b|return\b|end\b|else|elseif|--)[A-Za-z_][A-Za-z_0-9]*\s*=[^=]")
 INPUTS = re.compile(r"utility_Trait|utility_Priority|utility_Money|CheckPersonalityWeight|aitwp_Get(?:PoliticalAmbititon|Agressiveness|Intrigue)|MakeDecision")
 # A node resolving a shared alias to its own target inside Weight(). The engine runs
 # every sibling's Weight() before the winner's Execute(), so the winner acts on
 # whatever the last sibling wrote unless it files the target with aiboard_Stash.
-RESOLVE = re.compile(r'((?:FindPlayerTarget|EvidenceTarget|NearbyPlayerSim|GetBestEnemy|FindTargetBuilding)\s*\([^)]*"([A-Z][A-Za-z0-9_]*)"\s*\))')
+# Residence and OwnBuilding join the finders after 2026-09-17: bf_Procure resolved the
+# residence into "home" in Weight() and bought a cart with it in Execute(), twelve
+# siblings later. Same hazard class, invisible to the old list.
+RESOLVE = re.compile(r'((?:FindPlayerTarget|EvidenceTarget|NearbyPlayerSim|GetBestEnemy|FindTargetBuilding|Residence|OwnBuilding)\s*\([^)]*"([A-Za-z][A-Za-z0-9_]*)"\s*\))')
 BLACKBOARD = os.path.abspath(os.path.join(HERE, "..", "..", "Scripts", "Library", "aiboard.lua"))
 # only a property call names a blackboard key; "AI_BF_Supply" and friends are
 # repeat-timer names, a separate namespace with its own lifetime
@@ -84,6 +97,7 @@ def main(argv):
     categories, hazards = {}, {"writes SIM in Weight()": [], "non-local assignment in Weight()": [],
                                "Rand() in Weight()": [], "uses personality/priority inputs": [],
                                "shared alias resolved in Weight(), not stashed": [],
+                               "alias resolved in Weight(), read in Execute()": [],
                                "unregistered blackboard key": []}
     exact, prefixes = registered_keys()
     resolved = {}
@@ -113,6 +127,18 @@ def main(argv):
             for call, alias in set(RESOLVE.findall(body)):
                 norm = re.sub(r"\s+", "", call)
                 resolved.setdefault((folder_key, alias), []).append((rel, norm, "aiboard_Stash" in src))
+            # An alias a node resolves in Weight() and then reads in Execute(). Every
+            # sibling's Weight() runs in between, so the value is only safe by luck.
+            # bf_Procure did this with the residence and bought a cart from a stale
+            # alias for weeks; aiboard_Stash, or re-resolve in Execute().
+            ex = EXECUTE.search(src)
+            if ex and "aiboard_Stash" not in src:
+                used = set(ALIAS_USE.findall(ex.group(1)))
+                for _call, alias in set(RESOLVE.findall(body)):
+                    if alias in used:
+                        if rel not in hazards["alias resolved in Weight(), read in Execute()"]:
+                            hazards["alias resolved in Weight(), read in Execute()"].append(
+                                "%s  (%s)" % (rel, alias))
             for pair in set(AI_KEY.findall(src)):
                 key = pair[0] or pair[1]
                 if key in exact:
@@ -146,6 +172,10 @@ def main(argv):
     print("\n--list <category> prints the files, e.g. --list constant or --list \"Rand() in Weight()\"")
     # These two are not statistics, they are defects: a sibling can take the target, or
     # a key reads nil for the rest of the game. Both fail silently in play, so fail here.
+    # "alias resolved in Weight(), read in Execute()" is reported, not blocking: 29 nodes
+    # in the inherited tree already do it (see the README backlog). Blocking on a
+    # backlog that large only gets the check switched off. Make it blocking once the
+    # count reaches zero.
     blocking = (hazards["shared alias resolved in Weight(), not stashed"]
                 + hazards["unregistered blackboard key"])
     if blocking:

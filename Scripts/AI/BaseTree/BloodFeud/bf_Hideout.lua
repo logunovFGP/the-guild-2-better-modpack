@@ -29,7 +29,9 @@ end
 function Execute()
 	utility_Picked("dynasty", "bf_Hideout")
 	SetRepeatTimer("dynasty", "AI_BF_Hideout", 72)
-	if CityGetNearestBuilding("City", "SIM", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, -1, -1, FILTER_IS_BUYABLE, "ForSale") then
+	-- re-resolved: "City" was set in Weight(), before every sibling ran
+	if aitwp_Residence("dynasty", "home") and GetSettlement("home", "City")
+			and CityGetNearestBuilding("City", "SIM", GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_TYPE_THIEF, -1, -1, FILTER_IS_BUYABLE, "ForSale") then
 		aitwp_Log("buys a hideout: " .. GetName("ForSale"), "dynasty")
 		MeasureRun("ForSale", "SIM", "BuyBuilding", true)
 	else

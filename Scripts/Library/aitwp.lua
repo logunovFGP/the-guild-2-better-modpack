@@ -1168,6 +1168,7 @@ TWP_BF_FUND = 200000            -- bf_FundAllies: treasury before money goes to 
 TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild is bought
 TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
 TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
+TWP_BF_CARTS = 5                -- bf_Procure: carts the residence may run for the feud
 
 -- May DynAlias use Tool against whoever VictimAlias belongs to? Against AI dynasties
 -- always (the ladder is about human players). Against a player: the attitude's classes,
