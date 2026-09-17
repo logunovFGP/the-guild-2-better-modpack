@@ -1,5 +1,11 @@
+-- What buying a workshop on the market is worth against its siblings. Workshop, the
+-- routine visit, is a constant 60; raising this makes the AI shop more and manage less.
+TOM_BUY_WORKSHOP_BASE = 45
+
 function Weight()
-	if not ReadyToRepeat("dynasty", "BasicAI_NewWorkshop") then
+	-- its own timer: this shared BasicAI_NewWorkshop with BuildWorkshop, so whichever
+	-- fired first locked the other out for the whole cooldown
+	if not ReadyToRepeat("dynasty", "AI_BuyWorkshop") then
 		return 0
 	end
 
@@ -34,11 +40,21 @@ function Weight()
 	
 	local n = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_IS_BUYABLE) or 0
 	local m = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_NO_DYNASTY) or 0
-  
-  if n > 0 or m > 0 then
-  	return utility_Trace("dynasty", "BuyWorkshop", 8)
-  end
-  return 0
+	local OnSale = n + m
+	if OnSale < 1 then
+		return 0
+	end
+	-- scored: the more there are on the market and the fuller the treasury, the more
+	-- worth buying one. It was a flat 8 against Workshop's constant 60, which is ~11%
+	-- of the level when eligible and measured 1 pick in 34 (session 4, 2026-09-17) -
+	-- "builds workshops but very rarely buys the ones on sale", the maintainer's report.
+	return utility_Score("dynasty", TOM_BUY_WORKSHOP_BASE, {
+		{ value = utility_Norm(OnSale, 1, 5), curve = "sqrt" },
+		utility_Money("dynasty", 50000),
+		-- no goal argument: ToMEconomy.lua already carries the Economy x3 at the root, and
+		-- naming it here too would apply x0.3 to this leaf alone under any other goal - 20
+		-- of the 25 dynasties in session 4 - which is most of what it is trying to fix
+	}, "BuyWorkshop")
 end
 
 function Execute()
@@ -46,7 +62,7 @@ function Execute()
 	aitwp_Log("Execute ToMEconomy::BuyWorkshop", "SIM", true)
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 96 - Difficulty * 12 -- easy: 4 days, medium: 3 days, hard: 2 days
-	SetRepeatTimer("dynasty", "BasicAI_NewWorkshop", Timer)
+	SetRepeatTimer("dynasty", "AI_BuyWorkshop", Timer)
 
 	ai_BuyRandomWorkshop("SIM")
 end
