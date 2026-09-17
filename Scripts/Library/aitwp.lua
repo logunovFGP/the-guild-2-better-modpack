@@ -747,6 +747,13 @@ end
 -- Inside a settlement only when the watch has no reason to step in: the victim is
 -- already wanted, or the house holds the office that commands the watch there.
 function MayAttackHere(DynAlias, VictimAlias)
+	-- Indoors is indoors, whoever the victim is. A party cannot reach someone through a
+	-- wall, and the order stands while they stay in. IsOutsideTown below already implies
+	-- this, but the wanted and commands-guards paths said yes without ever asking, so an
+	-- attack could be ordered on a player character sitting inside a building.
+	if SimIsInside(VictimAlias) then
+		return false
+	end
 	if aitwp_IsOutsideTown(VictimAlias) then
 		return true
 	end
