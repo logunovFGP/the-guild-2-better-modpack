@@ -9,6 +9,9 @@ local function ImprovedRun()
 			return true
 		elseif MeasureName == "AttackEnemy" then
 			return true
+		elseif MeasureName == "Attack" then
+			-- see Run(): re-issuing Attack cancels the running one at the same priority
+			return true
 		elseif MeasureName == "SquadWaylayMember" then
 			SetProperty("", "DontLeave", 1)
 			return true
@@ -303,6 +306,13 @@ function Run()
 	elseif MeasureName == "PickpocketPeople" then
 		return ""
 	elseif MeasureName == "AttackEnemy" then
+		return ""
+	elseif MeasureName == "Attack" then
+		-- Already swinging. Every `return "Attack"` below would cancel the running
+		-- Attack at the same priority (99) and start another, which is the attack
+		-- icon blinking on and off: session 4 (2026-09-17) logged 29 of these
+		-- self-cancellations across 16 actors, five in a row for one of them.
+		-- BattleIsFighting above only covers melee already joined, not the walk to it.
 		return ""
 	elseif MeasureName == "SquadWaylayMember" then
 		SetProperty("", "DontLeave", 1)
