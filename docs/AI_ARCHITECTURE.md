@@ -177,7 +177,12 @@ The chain itself is procedural: `aitwp_ShoppingList` -> `bf_Procure` ->
 `ms_bf_FeudSupply` (cart) -> `aitwp_InStore` / `aitwp_DrawFromStock` /
 `aitwp_CanHandOver` -> `bf_UseArtefact`. Plus `aitwp_EquipmentTier` ->
 `aitwp_FindUnequipped` -> `bf_Equip`, `aitwp_CourierOrders` on difficulty 4-5,
-`aitwp_ReturnUnused` daily, `aitwp_MarketReport` for telemetry. All of it hangs off
+`aitwp_ReturnUnused` daily, `aitwp_MarketReport` for telemetry. The cart shops in each
+town at the market or Kontor, then the workshops, then the **resource buildings in the
+surroundings** - farms, mills, fruitfarms, rangerhuts, fishing huts - ownerless or
+foreign, never its own dynasty's. `aitwp_SellerStock` counts the same places for the
+`MARKET` line, so what the telemetry calls unavailable is what the cart could not buy.
+All of it hangs off
 `aitwp_Residence(dyn, out)` - native `GetHomeBuilding` first, `aitwp_OwnBuilding`
 living-room fallback, because the native is documented for sims and carts only.
 

@@ -1176,6 +1176,10 @@ TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild 
 TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
 TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
 TWP_BF_CARTS = 5                -- bf_Procure: carts the residence may run for the feud
+-- Game hours between feud supply runs. Lowered from 2 to 1 on 2026-09-17 so a single
+-- game day of testing exercises the cart often enough to see it shop; put it back up
+-- once scouting is confirmed, or the carts spend the whole day on the road.
+TWP_BF_SUPPLY_HOURS = 1
 
 -- May DynAlias use Tool against whoever VictimAlias belongs to? Against AI dynasties
 -- always (the ladder is about human players). Against a player: the attitude's classes,
@@ -1811,6 +1815,26 @@ end
 -- Telemetry, daily for a blood rival: where each ladder item and forgery paper is on
 -- sale - the home town's stock and the total in every other town's market or Kontor.
 -- ::TWP::MARKET t= dyn= items=<name>:<home>:<away>;...
+-- How much of Item the sellers of one town hold: its workshops and the resource
+-- buildings around it, ownerless or foreign, in stock or on offer. The market stall
+-- is counted separately by the caller.
+function SellerStock(CityAlias, Item)
+	local Classes = { GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_CLASS_RESOURCE }
+	local Filters = { FILTER_NO_DYNASTY, FILTER_HAS_DYNASTY }
+	local Stock = 0
+	for c = 1, 2 do
+		for f = 1, 2 do
+			local Count = CityGetBuildings(CityAlias, Classes[c], -1, -1, -1, Filters[f], "TWP_SS")
+			for i = 0, Count - 1 do
+				Stock = Stock + GetItemCount("TWP_SS" .. i, Item, INVENTORY_STD)
+					+ GetItemCount("TWP_SS" .. i, Item, INVENTORY_SELL)
+				RemoveAlias("TWP_SS" .. i)
+			end
+		end
+	end
+	return Stock
+end
+
 function MarketReport(DynAlias, PlayerDyn)
 	if not utility_LogEnabled() then
 		return
@@ -1829,6 +1853,10 @@ function MarketReport(DynAlias, PlayerDyn)
 					or CityGetRandomBuilding(City, -1, GL_BUILDING_TYPE_KONTOR, -1, -1, FILTER_IGNORE, "TWP_MRM") then
 				Count = GetItemCount("TWP_MRM", Items[i], INVENTORY_STD) + GetItemCount("TWP_MRM", Items[i], INVENTORY_SELL)
 			end
+			-- the same places ms_bf_FeudSupply actually shops: workshops and the resource
+			-- buildings in the surroundings, not only the market stall. Counting the stall
+			-- alone reported items as findable "nowhere" while a workshop held them.
+			Count = Count + aitwp_SellerStock(City, Items[i])
 			if HasHome and GetID(City) == GetID("TWP_MRC") then
 				Home = Count
 			else

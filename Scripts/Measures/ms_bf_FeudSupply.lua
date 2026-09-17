@@ -1,7 +1,7 @@
 -- The feud supply run, on a residence cart (BloodFeud/bf_Procure starts it). Stops in
 -- order: the house's own workshops for the reserve kept back from sale, the home
--- town's market or Kontor and its ownerless and foreign workshops that sell, then every
--- other town the same way. One of each tool per run (aitwp_ShoppingList); unload at
+-- town's market or Kontor, its ownerless and foreign workshops that sell and the
+-- resource buildings in its surroundings, then every other town the same way. One of each tool per run (aitwp_ShoppingList); unload at
 -- the residence. Nobody of the house walks to market for the feud. Ends with a
 -- ::TWP::CART action=arrive line, result= the count brought home.
 function Run()
@@ -83,14 +83,21 @@ function BuyInTown(CityAlias, N, Needs)
 		N, Needs = ms_bf_feudsupply_BuyAt("Shop", N, Needs)
 		RemoveAlias("Shop")
 	end
+	-- Workshops first, then the resource buildings in the surroundings - farms, mills,
+	-- fruitfarms, rangerhuts, fishing huts. Only the workshop class was scanned before,
+	-- so anything a town produced but did not stock at the market read as unavailable:
+	-- session 4 reported Voodo, BlackWidowPoison and Mixture as findable "nowhere".
+	local Classes = { GL_BUILDING_CLASS_WORKSHOP, GL_BUILDING_CLASS_RESOURCE }
 	local Filters = { FILTER_NO_DYNASTY, FILTER_HAS_DYNASTY }
-	for f = 1, 2 do
-		local Count = CityGetBuildings(CityAlias, GL_BUILDING_CLASS_WORKSHOP, -1, -1, -1, Filters[f], "Seller")
-		for i = 0, Count - 1 do
-			if N > 0 and GetDynastyID("Seller" .. i) ~= GetDynastyID("") then
-				N, Needs = ms_bf_feudsupply_BuyAt("Seller" .. i, N, Needs)
+	for c = 1, 2 do
+		for f = 1, 2 do
+			local Count = CityGetBuildings(CityAlias, Classes[c], -1, -1, -1, Filters[f], "Seller")
+			for i = 0, Count - 1 do
+				if N > 0 and GetDynastyID("Seller" .. i) ~= GetDynastyID("") then
+					N, Needs = ms_bf_feudsupply_BuyAt("Seller" .. i, N, Needs)
+				end
+				RemoveAlias("Seller" .. i)
 			end
-			RemoveAlias("Seller" .. i)
 		end
 	end
 	return N, Needs

@@ -36,7 +36,7 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "bf_Procure")
-	SetRepeatTimer("dynasty", "AI_BF_Supply", 2)
+	SetRepeatTimer("dynasty", "AI_BF_Supply", TWP_BF_SUPPLY_HOURS)
 	local Needs = {}
 	local N = aitwp_ShoppingList("dynasty", "PlayerDyn", Needs)
 	local Total, Busy = aitwp_ResidenceCarts("dynasty", "Cart")
