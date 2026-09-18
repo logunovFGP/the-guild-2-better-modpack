@@ -1550,7 +1550,15 @@ function MyrmidonIdle(MyrmAlias)
 		elseif Decision < 10 and BuildingHasUpgrade("WorkingPlace", "Commode") then -- 8, 9
 			-- gather evidence
 			--LogMessage("::TOM::AI Myrmidon ".. GetName(MyrmAlias).." gathering evidence...")
-			if GetSettlement("WorkingPlace", "City") and chr_CityFindCrowdedPlace("City", MyrmAlias, "GatherDestination") then
+			-- aitwp_ClaimOrder, or the sweep interrupts itself: a myrmidon already collecting
+			-- comes back round this loop, orders again, and the engine cancels the running
+			-- measure at equal priority. 92 of those on 2026-09-18, and no evidence ever
+			-- reached anybody - the blood feud needs a member holding some before it can
+			-- charge or raid, so two whole branches of the feud were dead on this one line.
+			-- Claimed before the walk, not after: f_MoveTo blocks, and by the time it
+			-- returns another idle cycle has had its chance to order the same thing.
+			if GetSettlement("WorkingPlace", "City") and chr_CityFindCrowdedPlace("City", MyrmAlias, "GatherDestination")
+					and aitwp_ClaimOrder(MyrmAlias, "OrderCollectEvidence") then
 				f_ExitCurrentBuilding(MyrmAlias)
 				f_MoveTo(MyrmAlias, "GatherDestination", GL_MOVESPEED_RUN, 500)
 				MeasureRun(MyrmAlias, 0, "OrderCollectEvidence")

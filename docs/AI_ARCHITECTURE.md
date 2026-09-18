@@ -208,7 +208,11 @@ multiplies the named leaf by `UTILITY_HTN_FACTOR` (x3), logged as `h=step` on th
 **Soundness**: every predicate on the way to a step is a *necessary* condition of that
 leaf's own `Weight()`, so "no method applies" proves every child weighs 0 and the root
 may skip the tick. The converse is not claimed - leaves keep incidental gates (a target
-in reach, the win chance) - which is why `BloodFeud.lua` keeps its own dampener.
+in reach, the win chance) - so the root can still spend a tick and fire nothing. That
+used to be covered by a `W = 15` dampener in `BloodFeud.lua`; the gate made it
+unnecessary (barren entries 0 of 17 on 2026-09-18) and it was deleted, because by then
+every trigger it had left was a healthy entry being punished for the gap between the
+root picking and the leaf firing.
 A leaf gate that changes must change its method's `when`; no checker sees that, so the
 five treasury thresholds are `TWP_BF_*` knobs read by both, and what artefacts are
 usable at all is one `aitwp_ReadyArtefacts` call shared by planner and leaf.
@@ -462,3 +466,20 @@ the engine owns the entities; a second store would be a second truth.
   the rung, carried tools and hand-over budget behind the artefact count, and the fighter
   counts and chance behind the win-chance bar. A reason that names a predicate is not
   enough once the predicate is arithmetic - it has to carry the value.
+- **2026-09-18, later** Four fixes off that session, each of them the general form rather
+  than the instance. The `BloodFeud` dampener deleted (see §2.7). One re-order guard,
+  `aitwp_ClaimOrder`, in place of the per-site one: the blinking attack icon and the
+  myrmidons who never finished an evidence sweep were the same defect wearing two measure
+  names, and the second cost the feud `Feud.charge` and `Feud.razzia` for a whole day,
+  because nobody ever held evidence. It tests the running measure *and* a per-tick stamp,
+  since `GetCurrentMeasureName` does not update until the measure begins; the stamp is
+  whole hundredths of a game hour, because a property does not hand a float back unchanged
+  - the `==` version of this guard was a no-op for a session and nothing said so. The feud
+  cart buys through `BuildingBuyCart`, whose recovered signature in
+  `meta/engine.signatures.tsv` is `building,number,bool,string`; every vanilla call happens
+  to buy a ship, which is the only reason three attempts went to `ScenarioCreateCart`
+  instead, and that one places a cart in the scenario without attaching it to the building.
+  Success is read from `BuildingGetCartCount` now, not from what the native returned, and a
+  refused purchase backs off for `TWP_BF_CART_RETRY` hours instead of retrying hourly for a
+  day. The rule of thumb from all four: **the guard belongs at the one place every caller
+  goes through, and a native return value is a claim, not a fact - check the container.**

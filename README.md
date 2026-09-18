@@ -644,12 +644,15 @@ decent with room to improve. First concrete issue offered:
       with `FILTER_IS_BUYABLE` / `FILTER_NO_DYNASTY`), with a flat weight that ignores price,
       money and how good the deal is. Three levers, none of them the filter itself.
 
-- [x] **~~Drop the BloodFeud entry dampener~~ - measured, and it must stay.** Session 4
-      (2026-09-17, one game day, round 42) put barren entries at **18 of 30 (60%)** against
-      85 of 110 (77%) before the planner. The gate only returns 0 when *no* method applies,
-      which happened once in 24 plans; the rest of the time a method applied and its leaf
-      still weighed 0. Keep `AI_BF_Entered` and the `W = 15` dampener until the predicate
-      gap below is closed, then re-measure.
+- [x] **~~Drop the BloodFeud entry dampener~~ - done 2026-09-18, once it had earned it.**
+      Session 4 said keep it: barren entries were **18 of 30 (60%)**, against 85 of 110 (77%)
+      before the planner. Session 6, after the methods learned to resolve their targets, put
+      them at **0 of 17**. With nothing left to catch, the condition `Entered > Fired` was
+      true only in the ordinary window between entering the subtree and the leaf firing -
+      **26 of 101 evaluations**, each cutting a healthy subtree from ~41 to ~11 against a
+      level totalling ~166. A guard whose every remaining trigger is a false positive is not
+      a guard. `AI_BF_Entered`, `AI_BF_Fired` and the `bf_` special case in `utility_Picked`
+      went with it, so the generic scorer no longer knows about one subtree.
 - [ ] **HTN methods omit the target check their leaf performs.** Same session: `bf_Provoke`
       was named as the step **22 times, emitted a weight twice, and was picked once**. The
       `Feud.duel` method checks `Allowed(duel)` and `FitDuelist`; the leaf additionally needs

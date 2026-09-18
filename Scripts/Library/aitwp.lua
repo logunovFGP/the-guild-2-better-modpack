@@ -1184,10 +1184,16 @@ TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild 
 TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
 TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
 TWP_BF_CARTS = 5                -- bf_Procure: carts the residence may run for the feud
--- Game hours between feud supply runs. Lowered from 2 to 1 on 2026-09-17 so a single
--- game day of testing exercises the cart often enough to see it shop; put it back up
--- once scouting is confirmed, or the carts spend the whole day on the road.
-TWP_BF_SUPPLY_HOURS = 1
+-- Game hours between feud supply runs. Back to the shipping 2 on 2026-09-18: the test
+-- value of 1 had done its job (bf_Procure fired 14 times in one game day, and 2 still
+-- leaves about seven runs a day to watch) and a knob left at a test value is a knob that
+-- ships at one. ai_telemetry.py --findings fails the moment either of these drifts.
+TWP_BF_SUPPLY_HOURS = 2
+
+-- After a failed cart purchase, how long before the house tries again. Without it the
+-- node retried every supply cycle and logged eleven identical failures in a day: an
+-- agent that cannot tell a refused action from an unlucky one will spend the game on it.
+TWP_BF_CART_RETRY = 6
 -- What the house will fund its blood enemy for. Buying at the enemy's own counter hands
 -- them the price, so it is only worth it when the goods hurt them more than the coin
 -- helps. Severity is aitwp_Severity: 5 lethal, 4 physical, 3 legal (the forged
@@ -1835,49 +1841,92 @@ end
 -- The house attacks when it reckons it wins three fights in four.
 TWP_ATTACK_WIN_CHANCE = 0.75
 
--- Carts of the residence: total, how many are on a supply run, and whether an idle
--- one was put into OutAlias.
--- A new horse cart standing at the residence. bld_BuyCart does the same job for a
--- building's own script, where "" is that building - called from an AI tree node ""
--- is the dynasty, which has no position on the map, so GetOutdoorMovePosition fails
--- and the purchase returns nil. Session 5 logged eleven of those. Name the residence.
+-- May Alias be told to run Measure right now, and claim the right to do it?
+--
+-- The engine cancels a running measure when the same measure is started again at equal
+-- priority, so a re-order is never a harmless no-op: it throws the work away and starts
+-- over. Two unrelated-looking symptoms came from this one shape - the attack icon
+-- blinking on and off (22 cancels on 2026-09-18, in same-tick bursts) and the myrmidons
+-- never finishing an evidence sweep (92 cancels in the same session, which is why the
+-- blood feud never found an accuser and Feud.charge and Feud.razzia stayed dead all day).
+--
+-- Two tests, because one is not enough. GetCurrentMeasureName catches a re-order in a
+-- later tick, but it still names the previous measure for the rest of the tick the order
+-- was given in, so several events in one tick each see "not busy" and each order again.
+-- The stamp catches those. It is whole hundredths of a game hour rather than the float:
+-- a property does not hand a float back unchanged, and an == against one never matched,
+-- which is how the first version of this guard came to be a no-op nobody noticed.
+--
+-- Side effect on purpose: returning true claims the tick, the way aiboard_Claim does.
+function ClaimOrder(Alias, Measure)
+	if GetCurrentMeasureName(Alias) == Measure then
+		aitwp_LogOrder(Alias, Measure, "busy")
+		return false
+	end
+	local Tick = math.floor(GetGametime() * 100)
+	local Key = "AI_Ordered_" .. Measure
+	if (GetProperty(Alias, Key) or -1) >= Tick then
+		aitwp_LogOrder(Alias, Measure, "sametick")
+		return false
+	end
+	SetProperty(Alias, Key, Tick)
+	aitwp_LogOrder(Alias, Measure, "ordered")
+	return true
+end
+
+-- ::TWP::ORDER t= sim= measure= action=<ordered|busy|sametick>. Without it the guard is
+-- unfalsifiable: a session with no cancels reads the same whether the guard is holding
+-- or whether nothing ever asked.
+function LogOrder(Alias, Measure, Action)
+	utility_Emit("::TWP::ORDER t=" .. string.format("%.2f", GetGametime())
+		.. " sim=" .. GetID(Alias) .. " measure=" .. Measure .. " action=" .. Action)
+end
+
+-- A new horse cart standing at the residence, bought by the residence itself.
 function BuyResidenceCart(DynAlias, OutAlias)
 	if not aitwp_Residence(DynAlias, "TWP_BRC") then
 		return false
 	end
-	-- Created into an alias of our own and copied out, the form bld_BuyCart and
-	-- Buildings/fishinghut.lua use. Session 6 had both natives return true and OutAlias
-	-- still unbound eleven times running, so which step falls is logged now instead of
-	-- guessed a fourth time: ::TWP::CARTBUY names each one.
-	local Pos = GetOutdoorMovePosition(nil, "TWP_BRC", "TWP_BRCPos")
-	local Made = false
-	if Pos then
-		if ScenarioCreateCart(EN_CT_HORSE, "TWP_BRC", "TWP_BRCPos", "TWP_BRCCart") then
-			Made = true
-		end
+	-- BuildingBuyCart, not ScenarioCreateCart. The recovered signature in
+	-- meta/engine.signatures.tsv reads building,number,bool,string - the building buys a
+	-- vehicle of a type and gets it back in an alias, which is what state_marinecontrol.lua
+	-- calls to replace a boat. Every vanilla call happens to buy a ship, and that is the
+	-- only reason this went to ScenarioCreateCart first: that one places a cart in the
+	-- scenario and never attached it to the residence, so BuildingGetCartCount did not
+	-- grow, the node saw no new cart, and the run repeated every hour for a whole day.
+	--
+	-- The count is the truth, not the out alias. Three fixes in a row believed a native
+	-- that returned true; this one asks the residence whether it actually owns another
+	-- cart now, and takes the answer from BuildingGetCart if the alias came back empty.
+	local Before = BuildingGetCartCount("TWP_BRC") or 0
+	local Bought = false
+	if BuildingBuyCart("TWP_BRC", EN_CT_HORSE, false, "TWP_BRCCart") then
+		Bought = true
 	end
-	local Bound = false
-	if Made and AliasExists("TWP_BRCCart") then
-		Bound = true
-	end
+	local After = BuildingGetCartCount("TWP_BRC") or 0
 	local Ok = false
-	if Bound then
-		-- not "if CopyAlias(...) then": the copy is judged by the alias it leaves, never
-		-- by what it returns
-		CopyAlias("TWP_BRCCart", OutAlias)
-		if AliasExists(OutAlias) then
-			Ok = true
+	if After > Before then
+		if not AliasExists("TWP_BRCCart") then
+			BuildingGetCart("TWP_BRC", After - 1, "TWP_BRCCart")
+		end
+		if AliasExists("TWP_BRCCart") then
+			CopyAlias("TWP_BRCCart", OutAlias)
+			if AliasExists(OutAlias) then
+				Ok = true
+			end
 		end
 	end
 	utility_Emit("::TWP::CARTBUY t=" .. string.format("%.2f", GetGametime())
-		.. " dyn=" .. GetID(DynAlias) .. " pos=" .. tostring(Pos and true or false)
-		.. " made=" .. tostring(Made) .. " bound=" .. tostring(Bound) .. " ok=" .. tostring(Ok))
+		.. " dyn=" .. GetID(DynAlias) .. " bought=" .. tostring(Bought)
+		.. " carts=" .. Before .. "to" .. After .. " ok=" .. tostring(Ok))
 	RemoveAlias("TWP_BRC")
 	RemoveAlias("TWP_BRCPos")
 	RemoveAlias("TWP_BRCCart")
 	return Ok
 end
 
+-- Carts of the residence: total, how many are on a supply run, and whether an idle
+-- one was put into OutAlias.
 function ResidenceCarts(DynAlias, OutAlias)
 	if not aitwp_Residence(DynAlias, "TWP_RC") then
 		return 0, 0, false

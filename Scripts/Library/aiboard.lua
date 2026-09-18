@@ -46,11 +46,10 @@ BLACKBOARD_KEYS = {
 	-- blood feud bookkeeping
 	AI_EvidenceTarget = { owner = "aitwp_EvidenceTarget", default = 0 },
 	AI_BF_DuelRogues = { owner = "bf_Provoke", default = 0 },
-	AI_BF_Entered = { owner = "BloodFeud", default = 0 },
-	AI_BF_Fired = { owner = "BloodFeud", default = 0 },
+	AI_BF_CartFailed = { owner = "bf_Procure", default = 0 },
 	AI_HTN_Step = { owner = "aihtn_Step", default = "-" },
 	AI_HTN_At = { owner = "aihtn_Step", default = nil },
-	AI_AttackOrdered = { owner = "bs_IllegalDetection", default = -1 },
+	AI_Ordered_ = { owner = "aitwp_ClaimOrder", default = -1, prefix = true },
 	AI_Courier = { owner = "aitwp_CourierOrders", default = 0, prefix = true },
 	-- economy bookkeeping
 	AI_DynMoney = { owner = "ai_DynastyMoney", default = 0 },

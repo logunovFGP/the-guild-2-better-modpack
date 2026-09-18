@@ -22,21 +22,21 @@ function Weight()
 	if aihtn_Step("dynasty") == "-" then
 		return 0
 	end
-	-- an entry that found every child at 0 wastes the tick (session 2: 85 of 110). After
-	-- one, weigh 15 for up to three hours or until a child fires (utility_Picked keeps
-	-- AI_BF_Fired for every bf_ node).
-	local W = 60
-	local Entered, Fired = GetProperty("dynasty", "AI_BF_Entered") or 0, GetProperty("dynasty", "AI_BF_Fired") or 0
-	if Entered > Fired and GetGametime() - Entered < 3 then
-		W = 15
-	end
-	return utility_Score("dynasty", W, {
+	-- The W = 15 dampener that used to sit here is gone (2026-09-18). It weighed the
+	-- subtree down for three hours after an entry that fired no leaf, back when 85 of 110
+	-- entries were barren. The planner gate above ended that: 0 of 17 on 2026-09-18. What
+	-- the dampener still caught was the ordinary window between entering the subtree and
+	-- the leaf firing, when AI_BF_Entered is newer than AI_BF_Fired by construction - 26
+	-- of 101 evaluations, each one cutting a healthy subtree from ~41 to ~11 against a
+	-- level totalling ~166. A guard whose every remaining trigger is a false positive is
+	-- not a guard. The gate decides now, on whether a method applies, which is the
+	-- question the dampener was always a proxy for.
+	return utility_Score("dynasty", 60, {
 		utility_Priority("dynasty", "Agressive"),
 	}, "BloodFeud")
 end
 
 function Execute()
 	utility_Picked("dynasty", "BloodFeud")
-	SetProperty("dynasty", "AI_BF_Entered", GetGametime())
 	aitwp_Log("Enter subtree BloodFeud", "dynasty")
 end

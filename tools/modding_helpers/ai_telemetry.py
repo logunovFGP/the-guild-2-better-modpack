@@ -44,8 +44,8 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
                                               that did not apply, the precondition that fell first
   ::TWP::WHY t= dyn= <fight mine= theirs= chance= bar= | tools rung= carried= handovers=>
                                               the numbers behind an HTN predicate the fail= reason can only name
-  ::TWP::ATTACK t= sim= tick= action=<ordered|suppressed>   the per-tick Attack re-order guard
-  ::TWP::CARTBUY t= dyn= pos= made= bound= ok=   which step of the feud cart purchase fell
+  ::TWP::ORDER t= sim= measure= action=<ordered|busy|sametick>   aitwp_ClaimOrder, the shared re-order guard
+  ::TWP::CARTBUY t= dyn= bought= carts=<before>to<after> ok=   the feud cart purchase, judged on the count
   ::TWP::BLOODENEMY player= enemy= action=<chosen|kept> name=<free text, last>
                                               who each human player's blood rival is, on every sweep
   ::TWP::BB unregistered key <key> in <where>   a blackboard key nobody declared: it reads nil forever
@@ -83,7 +83,7 @@ CART = re.compile(r"::TWP::CART (.*)$")
 HANDOVER = re.compile(r"::TWP::HANDOVER (.*)$")
 HTN = re.compile(r"::TWP::HTN (.*)$")
 WHY = re.compile(r"::TWP::WHY (.*)$")
-ATTACK = re.compile(r"::TWP::ATTACK (.*)$")
+ORDER = re.compile(r"::TWP::ORDER (.*)$")
 CARTBUY = re.compile(r"::TWP::CARTBUY (.*)$")
 BLOODENEMY = re.compile(r"::TWP::BLOODENEMY (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
@@ -184,7 +184,7 @@ class Session(object):
         self.errors = Counter()
         self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
         self.htn = []                            # one entry per ::TWP::HTN line
-        self.why, self.attack, self.cartbuy = [], [], []
+        self.why, self.orders, self.cartbuy = [], [], []
         self.rivals, self.blackboard = [], Counter()
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
@@ -305,9 +305,9 @@ class Session(object):
             if m:
                 self.why.append(kv(m.group(1)))
                 continue
-            m = ATTACK.search(line)
+            m = ORDER.search(line)
             if m:
-                self.attack.append(kv(m.group(1)))
+                self.orders.append(kv(m.group(1)))
                 continue
             m = CARTBUY.search(line)
             if m:
@@ -522,19 +522,20 @@ def check_self_cancel(s):
         runs = s.self_cancel_runs[measure]
         if measure == "Attack":
             level = "WARN"
-            pointer = ("Scripts/Measures/Behaviour/bs_IllegalDetection.lua, the OrderAttack guard in Run(). "
-                       "Several crime events reach Run() in one tick while GetCurrentMeasureName still names "
-                       "the old measure, so each one re-orders Attack and cancels the running one: that is "
-                       "the attack icon blinking. Guarded per sim per tick on 2026-09-17, and the stamp was "
-                       "made an integer on 2026-09-18 because a property does not hand a float back "
-                       "unchanged. If the ::TWP::ATTACK lines show no action=suppressed while these keep "
-                       "coming, the guard is a no-op again.")
+            pointer = ("Scripts/Measures/Behaviour/bs_IllegalDetection.lua orders Attack through "
+                       "aitwp_ClaimOrder since 2026-09-18. Several crime events reach Run() in one tick "
+                       "while GetCurrentMeasureName still names the old measure, so each one re-orders "
+                       "Attack and cancels the running one: the attack icon blinking. Cross-check the "
+                       "::TWP::ORDER lines for this measure - cancels with no action=busy or "
+                       "action=sametick beside them mean the guard is a no-op again.")
         elif measure == "OrderCollectEvidence":
             level = "WARN"
-            pointer = ("Scripts/Measures/ms_211_OrderCollectEvidence.lua and its order sites. The same shape "
-                       "as the Attack flicker, and it costs the feud its evidence: HaveEvidence.ready needs "
-                       "aitwp_FindAccuser to find a member actually holding some, and Feud.razzia needs "
-                       "TWP_BF_RAZZIA_EVIDENCE of it. Not guarded yet.")
+            pointer = ("Scripts/Library/idlelib.lua, the myrmidon idle cycle, which orders this through "
+                       "aitwp_ClaimOrder since 2026-09-18 - a myrmidon already collecting used to come back "
+                       "round the loop and cancel its own sweep. It costs the feud its evidence when it "
+                       "happens: HaveEvidence.ready needs aitwp_FindAccuser to find a member actually "
+                       "holding some, and Feud.razzia needs TWP_BF_RAZZIA_EVIDENCE of it, so 92 of these on "
+                       "2026-09-18 left two whole branches of the feud dead all day.")
         elif measure in VANILLA_SELF_CANCEL:
             level = "NOTE"
             pointer = ("Vanilla, and it has always done this: the idle library re-issues the measure while it "
@@ -551,24 +552,29 @@ def check_self_cancel(s):
                       % (measure, count, runs), pointer)
 
 
-def check_attack_guard(s):
-    if not s.attack:
-        return
-    suppressed = sum(1 for a in s.attack if a.get("action") == "suppressed")
-    ordered = len(s.attack) - suppressed
-    if s.self_cancel["Attack"] and not suppressed:
-        yield Finding("ERROR", "attack-guard-dead",
-                      "%d Attack orders, none suppressed, and the engine still cancelled %d"
-                      % (ordered, s.self_cancel["Attack"]),
-                      "The per-tick guard in Scripts/Measures/Behaviour/bs_IllegalDetection.lua is not "
-                      "holding. It compares GetProperty against a stamp; if that comparison is false every "
-                      "time, the property is not handing back what was written to it. Log the read-back "
-                      "instead of guessing at the stamp again.")
-    else:
-        yield Finding("NOTE", "attack-guard",
-                      "Attack ordered %d times, %d re-orders suppressed inside the same tick"
-                      % (ordered, suppressed),
-                      "Scripts/Measures/Behaviour/bs_IllegalDetection.lua, OrderAttack. Working as intended.")
+def check_order_guard(s):
+    per_measure = defaultdict(Counter)
+    for order in s.orders:
+        per_measure[order.get("measure", "?")][order.get("action", "?")] += 1
+    for measure, actions in sorted(per_measure.items(), key=lambda pair: -sum(pair[1].values())):
+        blocked = actions["busy"] + actions["sametick"]
+        cancelled = s.self_cancel.get(measure, 0)
+        if cancelled and not blocked:
+            yield Finding("ERROR", "order-guard-dead",
+                          "%s: %d orders, none blocked, and the engine still cancelled %d"
+                          % (measure, actions["ordered"], cancelled),
+                          "aitwp_ClaimOrder in Scripts/Library/aitwp.lua is not holding for this measure. It "
+                          "tests GetCurrentMeasureName and then a per-tick stamp; if neither ever blocks "
+                          "while the engine keeps cancelling, the property is not handing back what was "
+                          "written to it - that exact failure made the first version of this guard a silent "
+                          "no-op for a whole session. Log the read-back rather than guessing at the stamp.")
+        else:
+            yield Finding("NOTE", "order-guard",
+                          "%s: %d ordered, %d refused as already running, %d refused inside one tick"
+                          % (measure, actions["ordered"], actions["busy"], actions["sametick"]),
+                          "aitwp_ClaimOrder in Scripts/Library/aitwp.lua, the shared re-order guard, called "
+                          "from Scripts/Measures/Behaviour/bs_IllegalDetection.lua for Attack and from "
+                          "Scripts/Library/idlelib.lua for OrderCollectEvidence. Working as intended.")
 
 
 def check_barren(s):
@@ -579,10 +585,12 @@ def check_barren(s):
     yield Finding("WARN" if share > 20 else "NOTE", "bloodfeud-barren",
                   "%d of %d BloodFeud entries fired no leaf (%.0f%%); 85/110 before the planner, 18/30 "
                   "after the gate, 0/17 on 2026-09-18" % (barren, total, share),
-                  "Scripts/AI/BaseTree/BloodFeud.lua - the aihtn_Step gate and the W = 15 dampener. A "
-                  "barren entry means a method applied and its leaf still weighed 0, so that method is "
-                  "missing one of the leaf's own gates: Scripts/Library/aihtn.lua, AIHTN_TASKS. While this "
-                  "stays above 20 percent the dampener has to stay too.")
+                  "Scripts/AI/BaseTree/BloodFeud.lua - the aihtn_Step gate is the only thing standing "
+                  "between the subtree and a wasted tick now; the W = 15 dampener was deleted on "
+                  "2026-09-18 once this reached zero, because every trigger it had left was the ordinary "
+                  "window between entering and the leaf firing. A barren entry means a method applied and "
+                  "its leaf still weighed 0, so that method is missing one of the leaf's own gates: "
+                  "Scripts/Library/aihtn.lua, AIHTN_TASKS.")
 
 
 def check_htn_methods(s):
@@ -643,12 +651,14 @@ def check_carts(s):
     for c in s.cartbuy[-2:]:
         if c.get("ok") != "true":
             yield Finding("NOTE", "cart-buy-step",
-                          "CARTBUY pos=%s made=%s bound=%s ok=%s"
-                          % tuple(c.get(k, "?") for k in ("pos", "made", "bound", "ok")),
-                          "pos=false: GetOutdoorMovePosition found no spot by the residence. made=false: "
-                          "ScenarioCreateCart refused. bound=false: the native returned true and left the "
-                          "alias unset, which is where session 6 stopped. ok=false: the CopyAlias out did "
-                          "not take. All of it in aitwp_BuyResidenceCart, Scripts/Library/aitwp.lua.")
+                          "CARTBUY bought=%s carts=%s ok=%s"
+                          % tuple(c.get(k, "?") for k in ("bought", "carts", "ok")),
+                          "aitwp_BuyResidenceCart in Scripts/Library/aitwp.lua. bought= is what "
+                          "BuildingBuyCart returned and carts= is what the residence owned before and "
+                          "after - the count is the truth and the return value is not, which is how three "
+                          "fixes in a row believed a native that reported success and attached nothing. "
+                          "bought=true with an unchanged count means the cart exists but not on this "
+                          "building; check the residence cart cap before blaming the call.")
     sent = sum(1 for c in s.carts if c.get("action") == "send")
     home = sum(num(c.get("result")) for c in s.carts if c.get("action") == "arrive")
     if sent and not home:
@@ -757,8 +767,8 @@ def check_test_knobs(_session):
                           "it back before the branch goes out." % (rel, what))
 
 
-CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel, check_attack_guard,
-          check_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
+CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
+          check_order_guard, check_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
           check_handovers, check_buyworkshop, check_blood_rival, check_idle, check_test_knobs)
 
 

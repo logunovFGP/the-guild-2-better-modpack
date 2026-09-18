@@ -22,7 +22,12 @@ function Weight()
 	local Total, Busy, Idle = aitwp_ResidenceCarts("dynasty", "Cart")
 	if Idle then
 		SetData("CartMode", "send")
-	elseif Total < TWP_BF_CARTS and GetMoney("dynasty") >= TWP_BF_SUPPLY + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE) then
+	-- The last clause is a backoff, not a cooldown: a purchase the engine refuses will be
+	-- refused again a minute later, and without this the node asked once an hour all day
+	-- and logged eleven identical failures. Telling a refused action from an unlucky one is
+	-- the difference between an agent that recovers and one that spends the game retrying.
+	elseif Total < TWP_BF_CARTS and GetMoney("dynasty") >= TWP_BF_SUPPLY + gameplayformulas_CalcCartBuyPrice(EN_CT_HORSE)
+			and GetGametime() - (GetProperty("dynasty", "AI_BF_CartFailed") or -999) >= TWP_BF_CART_RETRY then
 		SetData("CartMode", "buy")
 	else
 		return 0
@@ -41,11 +46,15 @@ function Execute()
 	local N = aitwp_ShoppingList("dynasty", "PlayerDyn", Needs)
 	local Total, Busy = aitwp_ResidenceCarts("dynasty", "Cart")
 	if GetData("CartMode") == "buy" then
-		-- Not BuildingBuyCart (the ship path) and not bld_BuyCart either: that one reads
-		-- "" as the building it runs on, which from here is the dynasty. See the helper.
+		-- BuildingBuyCart, through the helper: bld_BuyCart cannot be used from here because
+		-- it reads the empty alias as the building it runs on, which from an AI node is the
+		-- dynasty. The helper checks BuildingGetCartCount rather than the native return.
 		local Bought = aitwp_BuyResidenceCart("dynasty", "Cart")
-		aitwp_LogCart("dynasty", "buy", "Cart", Total + 1, Busy, Needs, N, Bought)
+		-- Total, not Total + 1: the old line counted the cart before knowing whether it
+		-- existed, which made every failed purchase read as a successful one in the log.
+		aitwp_LogCart("dynasty", "buy", "Cart", Total, Busy, Needs, N, Bought)
 		if not Bought or not AliasExists("Cart") then
+			SetProperty("dynasty", "AI_BF_CartFailed", GetGametime())
 			return
 		end
 		Total = Total + 1

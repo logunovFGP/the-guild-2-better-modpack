@@ -504,6 +504,26 @@ HomeLookupAnswers = false
 check("residence: the living room when a dynasty alias gets no answer", Residence("d", "Out") and Aliases.Out == 2)
 HomeLookupAnswers = true
 
+-- aitwp_ClaimOrder: one order per sim per measure per tick --------------------------------
+-- The engine cancels a running measure when the same one is started again at equal
+-- priority, so every one of these is a fight or a sweep thrown away and restarted.
+aitwp_ClaimOrder, aitwp_LogOrder = ClaimOrder, LogOrder
+CurMeasure = "Idle"
+check("claim order: the first ask in a tick takes it", ClaimOrder("s", "Attack") == true)
+-- the regression that made the first version of this guard a silent no-op for a whole
+-- session: a property does not hand a float back unchanged, so the stamp must be integral
+check("claim order: the stamp is whole hundredths, never the raw gametime",
+	Props["AI_Ordered_Attack"] == math.floor(GetGametime() * 100))
+check("claim order: the second ask in the same tick does not", ClaimOrder("s", "Attack") == false)
+check("claim order: a different measure is a separate claim", ClaimOrder("s", "Razzia") == true)
+Now = Now + 1
+check("claim order: a later tick may order again", ClaimOrder("s", "Attack") == true)
+Now = Now + 1
+CurMeasure = "Attack"
+check("claim order: never while that measure is the one already running",
+	ClaimOrder("s", "Attack") == false)
+CurMeasure = "PatrolTheTown"
+
 -- the attack rules: HitChance / WinChance / GatherFighters / MayAttackHere ----------------
 aitwp_HitChance, aitwp_FightStats, aitwp_AddFighter = HitChance, FightStats, AddFighter
 aitwp_SidePower, aitwp_WinChance, aitwp_DefenceOf = SidePower, WinChance, DefenceOf
@@ -832,4 +852,4 @@ if Failures > 0 then
 	io.stderr:write("FAILED: " .. Failures .. " check(s) on utility scoring\n")
 	os.exit(1)
 end
-print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, scored pickers, HTN")
+print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, order guard, scored pickers, HTN")

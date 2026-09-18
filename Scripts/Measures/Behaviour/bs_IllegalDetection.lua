@@ -247,25 +247,15 @@ end
 
 
 function Run()
-	-- One Attack order per sim per tick. Several crime events can reach this function
-	-- in the same tick; the measure is not "current" yet when the next one arrives, so
-	-- the MeasureName == "Attack" test above cannot see the order just issued, and the
-	-- engine cancels the running Attack with the new one at equal priority. That is the
-	-- icon blinking: session 5 still had 22, twelve of them on consecutive log lines.
+	-- Several crime events can reach this function in the same tick, and the engine
+	-- cancels a running Attack when a second one is ordered at equal priority: the icon
+	-- blinks and the fight restarts. aitwp_ClaimOrder is the shared guard - the myrmidons
+	-- re-ordering OrderCollectEvidence on themselves was the same bug wearing a different
+	-- measure name, so the rule lives in one place and both sites ask it.
 	local function OrderAttack()
-		-- Whole hundredths of a game hour, not the float itself: session 6 still logged
-		-- all 22 cancels in same-tick bursts with this guard in, so what the property
-		-- gives back is not the float that went in and == never matched. An integer
-		-- survives the round trip, and >= holds even if the store rounds down.
-		local Tick = math.floor(GetGametime() * 100)
-		if (GetProperty("", "AI_AttackOrdered") or -1) >= Tick then
-			utility_Emit("::TWP::ATTACK t=" .. string.format("%.2f", GetGametime())
-				.. " sim=" .. GetID("") .. " tick=" .. Tick .. " action=suppressed")
+		if not aitwp_ClaimOrder("", "Attack") then
 			return ""
 		end
-		SetProperty("", "AI_AttackOrdered", Tick)
-		utility_Emit("::TWP::ATTACK t=" .. string.format("%.2f", GetGametime())
-			.. " sim=" .. GetID("") .. " tick=" .. Tick .. " action=ordered")
 		return "Attack"
 	end
 
