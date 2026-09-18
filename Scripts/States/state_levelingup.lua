@@ -28,10 +28,22 @@ function Run()
 	if not Proto then
 		return
 	end
+	local OldProto = BuildingGetProto("")
+	local NewTime = tonumber(GetDatabaseValue("Buildings", Proto, "buildtime"))
+	local OldTime = tonumber(GetDatabaseValue("Buildings", OldProto, "buildtime"))
+	if not NewTime or not OldTime then
+		-- No such Buildings.dbt row: ScenarioFindBuildingProto returns -1 when nothing
+		-- matches, and the cell then reads back as a string. Release the state instead
+		-- of aborting below and leaving the LevelingUp impact stuck on the building.
+		LogMessage("State_levelingup: no buildtime for proto "..tostring(Proto).." (from "..tostring(OldProto)..")")
+		RemoveProperty("", "LevelUpProto")
+		SetState("", STATE_LEVELINGUP, false)
+		return
+	end
+
 	AddImpact("", "LevelingUp", 1, -1)
 	
-	local OldProto = BuildingGetProto("")
-	local TotalTime = GetDatabaseValue("Buildings", Proto, "buildtime") - GetDatabaseValue("Buildings", OldProto, "buildtime") + 1
+	local TotalTime = NewTime - OldTime + 1
 	if TotalTime < 1 then
 		TotalTime = 1
 	end

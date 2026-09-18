@@ -1179,7 +1179,7 @@ function ForceLevelUp(BldAlias)
 	
 	local Proto = ScenarioFindBuildingProto(2, BuildType, BuildLevel+1, SubLevel)
 	
-	if Proto and chr_SpendMoney("MyBoss", Cost, "BuildingLevelUp") then
+	if Proto and Proto ~= -1 and chr_SpendMoney("MyBoss", Cost, "BuildingLevelUp") then
 		local RepeatTime = 148 - 12*ScenarioGetDifficulty()
 		SetRepeatTimer(BldAlias, "ai_ForceLevelUp", RepeatTime)
 		SetProperty(BldAlias, "LevelUpProto", Proto)
