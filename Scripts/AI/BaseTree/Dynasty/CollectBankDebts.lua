@@ -30,8 +30,15 @@ function Execute()
 	for i = 0, Count - 1 do
 		local Alias = "CD_Sim"..i
 		if HasProperty(Alias, "StolenSum") and HasProperty(Alias, "CreditBank") and GetProperty(Alias, "CreditBank") == BankID and not GetState(Alias, STATE_DEAD) then
+			LogMessage("@BANK AICollect bank=" .. BankID .. " target=" .. GetName(Alias) ..
+					" stolen=" .. GetProperty(Alias, "StolenSum"))
 			MeasureRun("SIM", Alias, "CollectDebts", false)
 			return
 		end
 	end
+
+	-- StolenCount claimed a defaulter and the sweep found none: the count has drifted
+	-- away from the sims, which is what the CollectDebts "more time" branch used to do
+	LogMessage("@BANK AICollect bank=" .. BankID .. " no debtor found, StolenCount=" ..
+			tostring(GetProperty("CD_Bank", "StolenCount")))
 end

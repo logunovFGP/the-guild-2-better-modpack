@@ -102,13 +102,20 @@ function IsCreditorSim(Alias)
 		bankID = GetProperty(Alias,"CreditBank")  -- the bankID from the creditors bank
 		GetDynasty("","MyDyn")
 		for i=0, DynastyGetBuildingCount2("MyDyn")-1 do  -- loop through all your buildings
-			DynastyGetBuilding2("MyDyn",i,"Bank") -- save the building in "Bank"
-			if BuildingGetType("Bank")==GL_BUILDING_TYPE_BANKHOUSE then -- check if it is really a bankhouse
-				if GetID("Bank") == bankID then  -- check if your bank is the creditors bank
-					IsCreditor = true
+			-- guard the fetch: a failed one leaves the previous building in "Bank"
+			-- and would list a debtor of somebody else's bank
+			if DynastyGetBuilding2("MyDyn",i,"Bank") then -- save the building in "Bank"
+				if BuildingGetType("Bank")==GL_BUILDING_TYPE_BANKHOUSE then -- check if it is really a bankhouse
+					if GetID("Bank") == bankID then  -- check if your bank is the creditors bank
+						IsCreditor = true
+					end
 				end
 			end
 		end
+		-- only fires for a sim that really owes somebody: no line at all in the log
+		-- means no defaulter exists, mine=false means the bank match is what fails
+		LogMessage("@BANK debtor " .. GetName(Alias) .. " bank=" .. tostring(bankID) ..
+				" mine=" .. tostring(IsCreditor))
 	end
 	return IsCreditor
 end

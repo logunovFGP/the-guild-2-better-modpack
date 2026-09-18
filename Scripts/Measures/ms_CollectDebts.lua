@@ -5,9 +5,14 @@
 function Run()
 	
 	if not AliasExists("Destination") then
+		LogMessage("@BANK CollectDebts abort reason=no_destination")
 		StopMeasure()
 		return
 	end
+
+	LogMessage("@BANK CollectDebts start actor=" .. GetName("") .. " target=" .. GetName("Destination") ..
+			" stolen=" .. tostring(GetProperty("Destination","StolenSum")) ..
+			" bank=" .. tostring(GetProperty("Destination","CreditBank")))
 
 	local Choice = MsgNews("","Destination","@P@B[1,@L_MEASURE_COLLECTDEBTS_BUTTON_+0,]"..
 			"@B[2,@L_MEASURE_COLLECTDEBTS_BUTTON_+1,]",ms_collectdebts_AIDecide,"politics",1,
@@ -15,6 +20,7 @@ function Run()
 			"@L_MEASURE_COLLECTDEBTS_BUTTON_BODY_+0",GetID("Destination"))
 			
 	if Choice == 2 or Choice =="C" then
+		LogMessage("@BANK CollectDebts abort reason=cancelled choice=" .. tostring(Choice))
 		StopMeasure()
 	end
 	
@@ -31,6 +37,7 @@ function Run()
 	local InteractionDistance=112
 
 	if not ai_StartInteraction("", "Destination", 1000, InteractionDistance) then
+		LogMessage("@BANK CollectDebts abort reason=no_interaction target=" .. GetName("Destination"))
 		StopMeasure()
 		return
 	end
@@ -40,7 +47,11 @@ function Run()
 	local BankID = GetProperty("Destination","CreditBank")
 	GetAliasByID(BankID,"Bank")
 	if not AliasExists("Bank") then
+		-- the fallback credits a different building's account than the one that lent
+		-- the money, so it is worth knowing when it happens
 		SimGetWorkingPlace("","Bank")
+		LogMessage("@BANK CollectDebts bank=" .. tostring(BankID) .. " unresolved, fell back to workplace=" ..
+				tostring(GetID("Bank")))
 	end
 	BuildingGetOwner("Bank","MyBoss")
 	
@@ -76,6 +87,8 @@ function Run()
 	
 	-- Decide whether the destination wants to pay or not
 	local PayChance = Rand(10)
+	LogMessage("@BANK CollectDebts target=" .. GetName("Destination") .. " payroll=" .. PayChance ..
+			" stolen=" .. tostring(StolenSum) .. " bonus=" .. Bonus .. " (pays up if <3)")
 	if PayChance <3 then -- 30%
 		PlayAnimationNoWait("Destination","nod")
 		MsgSay("Destination","@L_MEASURE_COLLECTDEBTS_DESTINATION_PAYNOW")
@@ -166,8 +179,11 @@ function Run()
 			"@B[2,@L_MEASURE_COLLECTDEBTS_BEG_BUTTON_+1,]"..
 			"@B[3,@L_MEASURE_COLLECTDEBTS_BEG_BUTTON_+2,]",
 			ms_collectdebts_AIEnforce, "@L_MEASURE_COLLECTDEBTS_BEG_REACTION_+0",GetID("Destination"))
-			
-		if Interact == 1 then 
+
+		-- 1 = more time, 2 = write it off, 3 or cancel = take it by force
+		LogMessage("@BANK CollectDebts target=" .. GetName("Destination") .. " interact=" .. tostring(Interact))
+
+		if Interact == 1 then
 			StopAnimation("Destination")
 			MoveSetStance("Destination",GL_STANCE_STAND)
 			camera_CutscenePlayerLock("cutscene", "")
@@ -192,6 +208,11 @@ function Run()
 				SetProperty("Destination","ReturnTime",36)
 			end
 			RemoveProperty("Destination","StolenSum")
+			-- he carries an open credit again, so he leaves the bank's defaulter
+			-- count too - the only exit of this measure that used to forget it, which
+			-- left StolenCount drifting up until the AI collector chased nobody
+			local StolenCount = GetProperty("Bank","StolenCount") or 1
+			SetProperty("Bank","StolenCount",(StolenCount-1))
 			-- create scriptcall, hopefully he will pay it back now
 			CreateScriptcall("OrderCredit_End",12,"Measures/ms_OrderCredit.lua","ReturnCredit","Destination","MyBoss")
 		elseif Interact == 2 then

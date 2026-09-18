@@ -240,19 +240,24 @@ function ReturnCredit()
 	
 	local Choice = 25
 	local ReturnBank = 0
+	-- every exit below used to be silent, so a loan that never matured looked exactly
+	-- like a loan that was repaid: nothing in the log either way
 	if not HasProperty("","CreditBank") then
+		LogMessage("@BANK ReturnCredit skipped " .. GetName("") .. " reason=no_creditbank")
 		StopMeasure()
 		return
 	else
 		ReturnBank = GetProperty("","CreditBank")
 	end
-	
+
 	if not GetAliasByID(ReturnBank, "Bank") then
+		LogMessage("@BANK ReturnCredit skipped " .. GetName("") .. " reason=bank_gone bank=" .. tostring(ReturnBank))
 		StopMeasure()
 		return
 	end
-	
+
 	if not HasProperty("","CreditSum") or not HasProperty("","CreditInterest") then
+		LogMessage("@BANK ReturnCredit skipped " .. GetName("") .. " reason=no_creditsum bank=" .. tostring(ReturnBank))
 		StopMeasure()
 		return
 	end
@@ -290,11 +295,18 @@ function ReturnCredit()
 	
 	if DynastyIsAI("MyBoss") then
 		Choice = 10
-	elseif BuildingGetAISetting("Bank", "Produce_Selection")>0 then
-		Choice = 0
 	end
-	
-	if Rand(100)>=Choice then
+
+	-- Choice is the percentage that keeps the money, and this branch is the only
+	-- place in the mod that ever sets StolenSum. A bank whose production was on
+	-- automatic used to drop Choice to 0, so that bank could never produce a
+	-- defaulter and both the debtor list and CollectDebts stayed empty forever.
+	local Roll = Rand(100)
+	LogMessage("@BANK ReturnCredit " .. GetName("") .. " bank=" .. GetID("Bank") ..
+			" sum=" .. CreditSum .. " choice=" .. Choice .. " roll=" .. Roll ..
+			" keep=" .. tostring(Roll < Choice))
+
+	if Roll>=Choice then
 		-- Return
 		RemoveProperty("","CreditBank")
 		RemoveProperty("","CreditSum")
@@ -330,6 +342,9 @@ function ReturnCredit()
 		end
 		SetProperty("","OldSum", CreditSum)
 		SetProperty("","StolenSum",ReturnCredit)
+		-- the one event the debtor list and CollectDebts both wait for
+		LogMessage("@BANK Defaulter " .. GetName("") .. " sim=" .. GetID("") ..
+				" bank=" .. GetID("Bank") .. " stolen=" .. ReturnCredit)
 		if HasProperty("Bank","StolenCount") then
 			local StolenCount = GetProperty("Bank","StolenCount")
 			SetProperty("Bank","StolenCount",(StolenCount+1))

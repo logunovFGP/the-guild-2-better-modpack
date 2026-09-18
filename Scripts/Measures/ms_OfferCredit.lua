@@ -152,7 +152,10 @@ function Run()
 							MsgNewsNoWait("MyBoss", "CreditSim0", "", "building", -1, "@L_MEASURE_OfferCredit_HEAD_+0", "@L_MEASURE_OfferCredit_BODY_+0", GetID("CreditSim0"), GetID("BankBuilding"), Sum, InterestText)
 						end
 
-						LogMessage("@BANK loan taken")
+						-- names both ends and the sum, so this pairs with the
+						-- "@BANK ReturnCredit" line the scriptcall writes 24h later
+						LogMessage("@BANK LoanGranted " .. GetName("CreditSim0") .. " sim=" .. GetID("CreditSim0") ..
+								" bank=" .. GetID("BankBuilding") .. " sum=" .. Sum .. " due=24h")
 
 						MoveSetActivity("CreditSim0", "")
 						SetProperty("BankBuilding", "BankAccount", (Account-Sum))
