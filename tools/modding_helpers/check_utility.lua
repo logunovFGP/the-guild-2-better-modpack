@@ -490,6 +490,24 @@ check("the most damaged building and its health", near(MostDamagedBuilding("d", 
 check("strongest workshop in one town only", FindTargetBuilding("d", GL_BUILDING_CLASS_WORKSHOP, "strongest", "Out", "town") and Aliases.Out == 1)
 check("strongest workshop anywhere", FindTargetBuilding("d", GL_BUILDING_CLASS_WORKSHOP, "strongest", "Out") and Aliases.Out == 3)
 
+-- aitwp_HasNightTrade: which houses are allowed to be awake at 2am ------------------------
+-- The engine exposes no opening hours, so this list is the decision, not a reading.
+aitwp_NightTrades, aitwp_HasNightTrade = NightTrades, HasNightTrade
+GL_BUILDING_TYPE_CRYPT, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE = 40, 41, 42
+GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_ROBBER = 43, 44
+check("night trade: a house of workshops and a resource sleeps", HasNightTrade("d") == false)
+Buildings[4] = { class = GL_BUILDING_CLASS_WORKSHOP, level = 1, type = GL_BUILDING_TYPE_THIEF, hp = 1.0, town = 1 }
+function DynastyGetBuildingCount2(Alias) return 5 end
+check("night trade: a thieves' guild keeps the house up", HasNightTrade("d"))
+Buildings[4].type = GL_BUILDING_TYPE_CRYPT
+check("night trade: so does a crypt", HasNightTrade("d"))
+Buildings[4].type = GL_BUILDING_TYPE_TAVERN
+check("night trade: and a tavern", HasNightTrade("d"))
+Buildings[4].type = 7
+check("night trade: another workshop does not", HasNightTrade("d") == false)
+Buildings[4] = nil
+function DynastyGetBuildingCount2(Alias) return 4 end
+
 -- aitwp_Residence: the store lookup every supply node hangs off ---------------------------
 Buildings.home = { class = GL_BUILDING_CLASS_LIVINGROOM, level = 1, type = GL_BUILDING_TYPE_RESIDENCE, hp = 1.0, town = 1 }
 local HomeLookupAnswers = true

@@ -421,8 +421,17 @@ function GoHome()
 	end
 	
 	if BuildingGetType("HomeBuilding") == GL_BUILDING_TYPE_RESIDENCE then
-		MeasureRun("", nil, "GoToSleep")
-		return
+		-- Only if a bed is actually free. Ordering GoToSleep into a full house is what
+		-- made the night of 2026-09-18: the measure ends at once, ms_DynastyIdle runs
+		-- again and orders it again. Carlton Earnshaw went round that 170 times between
+		-- 23:00 and dawn and GoToSleep was 15% of every measure start in the session.
+		-- The other caller of GoToSleep in this file already asks (the IgnoreID branch).
+		-- Without a bed the sim falls through to the wait below and rests at home, which
+		-- is what standing in the doorway was meant to be.
+		if GetFreeLocatorByName("HomeBuilding", "Bed", 1, 3, "SleepPosition") then
+			MeasureRun("", nil, "GoToSleep")
+			return
+		end
 	end
 	
 	Sleep(Rand(60)+120)

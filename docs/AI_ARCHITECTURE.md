@@ -509,6 +509,26 @@ the engine owns the entities; a second store would be a second truth.
   dynasties" because its denominator counted only dynasties that had reached a daily
   snapshot. **A check that cries wolf is worse than no check: it sends the next session to
   the wrong file with full confidence.**
+- **2026-09-18, the night** The `GoToSleep` loop reported from a screenshot - whole AI
+  families standing in the street from 23:00 to dawn - was two faults, and the first
+  reading of it was wrong. Reporting it as "a guard belongs at the bed check" would have
+  suppressed the symptom and left the night deader than it found it.
+  The loop itself: `idlelib_GoHome` ordered `GoToSleep` whenever home was a residence,
+  **without asking whether a bed was free**, while the other caller of `GoToSleep` in the
+  same file already asked. Into a full house the measure ends at once, `ms_DynastyIdle`
+  runs again and orders it again: Carlton Earnshaw went round it 170 times in one night and
+  `GoToSleep` was 15% of every measure start in the session. It asks now, and a sim with no
+  bed falls through to the wait and rests at home.
+  The real fault underneath: **the night was closed to everyone**. `ms_DynastyIdle` put
+  every dynasty member to bed from 23:00 to 04:00, coloured or not, and `ToMEconomy` was
+  gated 06-18 flat, so a house owning a crypt or a thieves' guild could not manage it in
+  the hours it actually trades. The engine tells Lua nothing about opening hours - no
+  column in `DB/Buildings.dbt`, no native - so every hour gate in the tree is a hardcoded
+  decision. `aitwp_NightTrades` is ours, written down in one place: **crypt, thieves'
+  guild, divehouse, tavern, robber camp**. A coloured, non-shadow house owning one of them
+  is not sent to bed and its economy subtree stays open after dark. Shadows and ordinary
+  townsfolk still sleep - the night belongs to the trades that work it, not to everybody.
+  The scan sits second in the hour test so it only runs in the five hours it can matter.
 - **2026-09-18, the raids** Three feud behaviours over one force-composition pass
   (`aitwp_WarCandidates` / `WarCommit` / `SquadAttack` in `aitwp.lua`, HTN methods
   `assassinate`, `raidbuilding`, `workersraid`): **assassination_attempt** against a player

@@ -1909,6 +1909,32 @@ function BuildingDefence(BldAlias, Side)
 	return Side
 end
 
+-- The trades that work after dark.
+--
+-- The engine tells Lua nothing about opening hours - no column in DB/Buildings.dbt, no
+-- native - so every hour gate in the tree is a hardcoded decision, and this is ours: the
+-- crypt, the thieves' guild, the divehouse, the tavern and the robber camp keep a night
+-- shift. A bakery does not. A house that owns one of these has somewhere to be at 2am and
+-- should not be in bed, which is what the whole night of 2026-09-18 was.
+--
+-- Built per call, never at load: GL_BUILDING_TYPE_ constants are the engine's.
+function NightTrades()
+	return { GL_BUILDING_TYPE_CRYPT, GL_BUILDING_TYPE_THIEF, GL_BUILDING_TYPE_DIVEHOUSE,
+		GL_BUILDING_TYPE_TAVERN, GL_BUILDING_TYPE_ROBBER }
+end
+
+function HasNightTrade(DynAlias)
+	local Types = aitwp_NightTrades()
+	for i = 1, #Types do
+		if aitwp_OwnBuilding(DynAlias, -1, Types[i], "TWP_NT") then
+			RemoveAlias("TWP_NT")
+			return true
+		end
+	end
+	RemoveAlias("TWP_NT")
+	return false
+end
+
 -- Can any child of ToMEconomy act at all?
 --
 -- The subtree was picked 262 times on 2026-09-18 and its children were scored 28 times:

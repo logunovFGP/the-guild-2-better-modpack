@@ -53,8 +53,22 @@ function Run()
 	end
 	
 	--Sleep at night?
+	-- ...unless this is a coloured AI house that keeps a night trade. The crypt, the
+	-- thieves' guild, the divehouse, the tavern and the robber camp do not close at
+	-- midnight, and on 2026-09-18 this branch put whole AI families to bed from 23:00 to
+	-- dawn - into houses with no free bed, so they stood in the street restarting
+	-- GoToSleep instead. Shadows and ordinary townsfolk still sleep: the night belongs to
+	-- the trades that work it, not to everybody.
+	-- a function, and second in the test, so the building scan only runs in the five hours
+	-- it can matter: ms_DynastyIdle ran 3445 times in one session and this is per sim
+	local function WorksAtNight()
+		local Ok = GetDynasty("", "NightDyn") and DynastyIsAI("NightDyn")
+			and not DynastyIsShadow("NightDyn") and aitwp_HasNightTrade("NightDyn")
+		RemoveAlias("NightDyn")
+		return Ok
+	end
 	local currentGameTime = math.mod(GetGametime(),24)
-	if (currentGameTime >23 or currentGameTime < 4) then
+	if (currentGameTime >23 or currentGameTime < 4) and not WorksAtNight() then
 		-- if married, get some action
 		if Rand(10) > 7 and SimGetSpouse("", "Spouse") and GetDynasty("", "MyDyn") and DynastyIsAI("MyDyn") then
 			idlelib_GoHome()

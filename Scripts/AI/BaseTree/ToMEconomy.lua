@@ -1,6 +1,9 @@
 function Weight()
 	local Hour = math.mod(GetGametime(), 24)
-	if (Hour < 6) or (18 <= Hour) then
+	-- Business hours, unless the house keeps a night trade: a crypt, a thieves' guild, a
+	-- divehouse, a tavern or a robber camp is open when the bakers are asleep, and a flat
+	-- 06-18 gate on the whole subtree is what stopped its owner managing it.
+	if ((Hour < 6) or (18 <= Hour)) and not aitwp_HasNightTrade("dynasty") then
 		return 0
 	end
 
