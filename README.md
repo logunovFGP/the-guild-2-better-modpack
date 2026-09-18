@@ -666,7 +666,9 @@ decent with room to improve. First concrete issue offered:
       `Feud.duel` method checks `Allowed(duel)` and `FitDuelist`; the leaf additionally needs
       `aitwp_FindPlayerTarget(..., "duel"/"rogue", ...)` and the per-victim `Get_Insult`
       cooldown. Six of the twelve methods have this shape - `artefact`, `building`, `attack`,
-      `razzia`, `duel`, `taunt` - every one of them a method whose leaf resolves a target.
+      `razzia`, `taunt` - every one of them a method whose leaf resolves a target.
+      `duel` was fixed on 2026-09-19 (target first, then duellist, then the odds bar);
+      the other five still have the shape.
       Sound but useless: the x3 lands on a node that weighs 0 and the gate cannot skip.
 - [ ] **29 nodes resolve an alias in `Weight()` and read it again in `Execute()`.**
       Every sibling's `Weight()` runs in between, so the value holds only while no sibling
@@ -676,6 +678,17 @@ decent with room to improve. First concrete issue offered:
       `VicBuilding`. `basetree_stats.py` lists them under *alias resolved in Weight(), read
       in Execute()*; it reports rather than blocks until the count is zero. Fix by
       re-resolving in `Execute()` or with `aiboard_Stash`.
+- [ ] **A duel wipes the feud that caused it.** `Duel.lua` `EndDuel` sets `DIP_NAP` and
+      resets sim favour to 50 whenever the pair were below neutral - win, lose or draw, and
+      whoever provoked it. On 2026-09-19 that took dyn 593561 from `DIP_FOE` at favour 18
+      back to `DIP_NAP` at 50, undoing days of taunting in one cutscene. `bf_DeclareFoe`
+      now walks it back down a band a day, so the feud self-heals within two days rather
+      than never; the companion fix - skip the reset when the challenger holds
+      `AI_BloodEnemyOf` on the other - is three lines in inherited `Cutscenes/Duel.lua` and
+      is deliberately not taken yet, because it costs an upstream-merge conflict and the
+      self-healing path is the one the maintainer asked for. `Duel.lua` also has no
+      `CleanUp`, so every duel logs one
+      `failed Calling CleanUp in scriptfile Cutscenes\Duel.lua` - vanilla, harmless, noisy.
 - [ ] **`trade.lua` was missing from the mod's `stdafx.lua` upstream too.** Fixed here on
       2026-09-14; the same one-line fix belongs in an upstream MR once a session log
       confirms the `trade_IsAlderman` errors.

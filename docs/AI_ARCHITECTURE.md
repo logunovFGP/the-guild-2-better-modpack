@@ -397,6 +397,56 @@ the engine owns the entities; a second store would be a second truth.
 
 ## 6. Decisions, dated
 
+- **2026-09-19** Duelling given a model. `Cutscenes/Duel.lua` is three rounds, the hit test
+  is a bare `AttackerAttackSkill >= DefenderDefendSkill` (FIGHTING vs DEXTERITY, no roll,
+  `Duel.lua:457`), damage is `50 + 18*F` on average with no weapon or armour term, and the
+  provoking house always shoots **second**. So `aitwp_WinChance` - the melee model, with
+  armour and `Rand(50)` rolls - does not apply, and HP decides only how many hits are
+  needed against a ceiling of three. New `aitwp_DuelOdds` walks the six half-turns exactly
+  over a 4x4 absorbing grid and returns win/lose/**draw**; draw is the usual outcome and a
+  win-chance-only number would misread it. `bf_Provoke` now picks the victim first, the
+  duellist against that victim, and refuses below `TWP_DUEL_BAR`; it previously scored the
+  talent gap and never gated on it, insulting with a duellist five points worse at w=102.
+  `aitwp_IsFitToDuel` takes the opponent and asks for enough FIGHTING to drop *that* HP in
+  three rounds, replacing `FIGHTING >= 5 or DEXTERITY >= 5` - which admitted pure dodgers,
+  who cannot win a duel at all. `Duel.lua` `AIDecideToBetray` was a coin flip; cheating
+  buys one pace of ground that no formula reads, and being caught gives the opponent four
+  points of defence that persist all three rounds (written back at `Duel.lua:417`, not
+  round one as the comment claims) plus a doctor who will not treat you. `duel_WillBetray`
+  now answers per sim from `Cheat()`, where the sim is known, and only above SHADOW_ARTS 6
+  - the top of the second's `1 + Rand(6)` roll, so the one case it cannot be caught.
+- **2026-09-19** The duellists themselves now play. `AIDecideAction` rolled 30 quick / 30
+  aimed / 25 insult / 15 evade every turn, so an AI with a winning margin still threw away
+  15% of its shots on evades. `duel_BestAction` picks instead, off the one number that
+  decides a duel: aimed at margin >= 0 (quick would cost two points of attack skill for
+  ever, and attack skill is also the damage), quick at -1 and -2 where its net +2 is exactly
+  the gap, insult at -3 where nothing else reaches, and evade when the shots left cannot
+  carry the damage - a draw is healed at half, a loss is not. Measured on the odds model:
+  F8/D6 against F6/D6 457hp goes from **0.58 to 0.94**. Because both sides are now competent,
+  `aitwp_DuelHitChance` collapsed to one ladder and `TWP_DUEL_P_QUICK`/`_AIMED`/`_INSULT`
+  went with it. The consequence to know: duels are now close to deterministic - an even
+  match is a certain loss for whoever shoots second, which is always the house that
+  provoked. The interest moves from the exchange to the choice of fight, which is where
+  `TWP_DUEL_BAR` lives.
+
+  Cheating is unchanged because there is nothing to change: `Betray` is read in exactly one
+  place (`Walk`, as the `fRange` of `f_MoveTo`), so an undetected cheat stops the duellist
+  100 units short of their mark and no formula in the duel reads a position. The Dark Arts
+  check the UI advertises is real - `CheckSkill(Actor, 6, 1 + Rand(6))` - but it only
+  decides whether the penalty lands, never a reward.
+- **2026-09-19** The blood feud could not declare itself. `attf_ChangeStatus` was the only
+  node in the tree able to lower a diplomatic state, and it hangs under `Feud/AttackFeud`,
+  whose `Weight()` wants the victim outdoors within 10000 - dyn 593561 entered `Feud` 166
+  times in one session and `AttackFeud` never produced a weight line. A duel had meanwhile
+  reset that pair from `DIP_FOE` to `DIP_NAP` and favour 18 to 50 (`Duel.lua` `EndDuel`
+  resets any state below neutral, win lose or draw), and `bf_Taunt` refuses to run *at*
+  `DIP_FOE` - so peace was the state in which the house's favourite move stayed legal and
+  nothing could leave it. New leaf `bf_DeclareFoe` steps one band a day on the shared
+  `DIP_<victim>` timer (`TWP_BF_FOE_HOURS`), ordered before `taunt` in `AIHTN_TASKS.Feud`.
+  It does not consult `ai_DynastyGetBestDiplomacyState`: that function will not walk a
+  business rival below `DIP_NEUTRAL` from `DIP_NAP` at all, and for everyone else favour
+  11..29 with threat >= 2 matches no branch and falls out as `nil`. A house handed a blood
+  enemy has already decided.
 - **2026-09-06** Utility scoring over the engine's selector; roulette kept because the
   engine owns it; telemetry from day one (`6779cd0b`, `bccca92b`).
 - **2026-09-07** Blood rival supply chain: cart, store, just-in-time hand-over,

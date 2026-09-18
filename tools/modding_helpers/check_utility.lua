@@ -32,6 +32,8 @@ GL_BUILDING_CLASS_RESOURCE = 6
 GL_BUILDING_CLASS_LIVINGROOM = 2
 DIP_FOE = 1
 DIP_NEUTRAL = 2
+DIP_NAP = 3
+DIP_ALLIANCE = 4
 STATE_DEAD = 99
 
 local Props = {}
@@ -264,18 +266,73 @@ check("the fallback alias is cleaned up", Aliases.TWP_Owner == nil)
 function GetDynasty(Alias, Out) return false end
 check("no buildings: false", FindTargetBuilding("d", -1, "strongest", "Out") == false)
 
--- aitwp_IsFitToDuel: the duel rule ------------------------------------------------------
+-- aitwp duelling: the model of Cutscenes/Duel.lua ---------------------------------------
+aitwp_DuelDamage, aitwp_DuelHitsNeeded = DuelDamage, DuelHitsNeeded
+aitwp_DuelHitChance, aitwp_DuelOdds = DuelHitChance, DuelOdds
 FIGHTING, DEXTERITY = 1, 2
-local Skills, HP = { 3, 3 }, 1.0
-function GetSkillValue(Alias, Skill) return Skills[Skill] or 0 end
-function GetHPRelative(Alias) return HP end
-check("martial arts and dexterity both under 5: no duel", IsFitToDuel("s") == false)
-Skills[1] = 5
-check("martial arts 5 is enough", IsFitToDuel("s") == true)
-Skills[1], Skills[2] = 2, 6
-check("dexterity 5 or more is enough on its own", IsFitToDuel("s") == true)
-HP = 0.79
-check("under 80% health: no duel whatever the talents", IsFitToDuel("s") == false)
+local Sheet = { s = { 3, 3, hp = 400, rel = 1.0 }, v = { 3, 3, hp = 400, rel = 1.0 } }
+function GetSkillValue(Alias, Skill) return (Sheet[Alias] or {})[Skill] or 0 end
+function GetHPRelative(Alias) return (Sheet[Alias] or {}).rel or 1 end
+function GetHP(Alias) return (Sheet[Alias] or {}).hp or 0 end
+
+-- damage is Duel.lua:337 with the roll at its mean: 50 + 12*F + (1+Rand(11))*F
+check("no martial arts still does the flat 50", near(DuelDamage(0), 50))
+check("martial arts 5 does 140", near(DuelDamage(5), 140))
+check("martial arts 10 does 230", near(DuelDamage(10), 230))
+
+-- the number this whole change exists for: three rounds is the ceiling
+check("457 HP takes four hits at martial arts 5, so it cannot be done", DuelHitsNeeded(5, 457) == 4)
+check("martial arts 6 brings it to three", DuelHitsNeeded(6, 457) == 3)
+check("martial arts 10 brings it to two", DuelHitsNeeded(10, 457) == 2)
+check("a corpse still counts as one hit, never zero", DuelHitsNeeded(5, 0) == 1)
+
+-- the fitness floor is now the opponent, not a flat 5 on either talent
+Sheet.v.hp = 457
+Sheet.s[1], Sheet.s[2] = 0, 10
+check("a pure dodger is not fit to duel: it can never land the four hits",
+	IsFitToDuel("s", "v") == false)
+Sheet.s[1], Sheet.s[2] = 6, 0
+check("martial arts 6 against 457 HP is fit, dexterity or no dexterity",
+	IsFitToDuel("s", "v") == true)
+Sheet.s.rel = 0.79
+check("under 80% health is still refused whatever the talents", IsFitToDuel("s", "v") == false)
+Sheet.s.rel = 1.0
+Sheet.v.hp = 400
+
+-- the hit test is a bare >= (Duel.lua:457), so the chance is a step, not a curve. Both
+-- sides pick their action now (duel_BestAction), so there is one ladder, not two.
+check("a clear margin always lands", near(DuelHitChance(0, 10), 1))
+check("one point short, the quick shot still lands", near(DuelHitChance(-1, 10), 1))
+check("two short is still the quick shot's reach", near(DuelHitChance(-2, 10), 1))
+check("three short, only the insult, and only if its check passes", near(DuelHitChance(-3, 10), 0.5))
+check("four short, nothing reaches this turn", near(DuelHitChance(-4, 10), 0))
+check("the misfire is max(0, 10-F) percent", near(DuelHitChance(0, 5), 0.95))
+check("martial arts 10 never misfires", near(DuelHitChance(0, 10), 1))
+check("no martial arts misfires one turn in ten", near(DuelHitChance(0, 0), 0.9))
+
+-- the odds themselves
+Sheet.s = { 10, 10, hp = 400, rel = 1.0 }
+Sheet.v = { 10, 10, hp = 400, rel = 1.0 }
+local Win, Lose, Draw = DuelOdds("s", "v")
+check("win, lose and draw are a distribution", near(Win + Lose + Draw, 1))
+check("evenly matched, the one who shoots first wins more - and that is never us", Lose > Win)
+-- a duellist who cannot kill inside three rounds has no win, only a loss or a draw
+Sheet.s = { 5, 10, hp = 400, rel = 1.0 }
+Sheet.v = { 10, 2, hp = 457, rel = 1.0 }
+Win, Lose, Draw = DuelOdds("s", "v")
+check("four hits needed in three rounds is a win chance of exactly zero", near(Win, 0))
+check("and it is still a real distribution", near(Win + Lose + Draw, 1))
+-- and the other way round: outgun them and the odds say so
+Sheet.s = { 12, 12, hp = 600, rel = 1.0 }
+Sheet.v = { 1, 1, hp = 200, rel = 1.0 }
+Win, Lose, Draw = DuelOdds("s", "v")
+check("outgunned on every axis, the odds favour us", Win > Lose)
+-- and no draw: competent duellists land every shot they can reach, so an advantage this
+-- wide is decided on the first exchange. The draws live where neither side can carry
+-- the damage inside three rounds, which is the common case at 400+ HP.
+check("an overwhelming advantage is a certain win, not a draw", near(Win, 1))
+Sheet.s = { 3, 3, hp = 400, rel = 1.0 }
+Sheet.v = { 3, 3, hp = 400, rel = 1.0 }
 
 -- aitwp_HasAtLeast / MissingEquipment: equipment ladders --------------------------------
 aitwp_HasAtLeast = HasAtLeast
@@ -1011,8 +1068,29 @@ check("and its line carries no h= at all, so no existing replay moves",
 AIHTN_TASKS = RealTasks
 UTILITY_LOG = nil
 
+aitwp_DipLadder, aitwp_NextFoeStep = DipLadder, NextFoeStep
+-- the diplomatic step: one band down per call, and nil once there is nowhere left.
+-- Deliberately not the 0..3 the engine uses, so the test proves the code reads the order
+-- of aitwp_DipLadder and not the numbers, which is the whole point of that table.
+Dyn[11] = { favor = 20, dip = DIP_ALLIANCE, player = true }
+Aliases.p = 11
+check("an alliance with a blood enemy steps down to NAP", NextFoeStep("d", "p") == 2)
+Dyn[11].dip = DIP_NAP
+check("NAP steps down to neutral", NextFoeStep("d", "p") == 1)
+Dyn[11].dip = DIP_NEUTRAL
+check("neutral steps down to foe", NextFoeStep("d", "p") == 0)
+Dyn[11].dip = DIP_FOE
+check("and foe has nowhere left to go", NextFoeStep("d", "p") == nil)
+check("the ladder is the four bands, hostile first",
+	#DipLadder() == 4 and DipLadder()[1] == DIP_FOE and DipLadder()[4] == DIP_ALLIANCE)
+-- the step is the InitResult ms_047_AdministrateDiplomacy branches on: 0 feud, 1 neutral,
+-- 2 NAP. A step that fell outside 0..2 would be silently ignored by that measure.
+Dyn[11].dip = DIP_ALLIANCE
+local Step = NextFoeStep("d", "p")
+check("the step is a legal InitResult", Step >= 0 and Step <= 2)
+
 if Failures > 0 then
 	io.stderr:write("FAILED: " .. Failures .. " check(s) on utility scoring\n")
 	os.exit(1)
 end
-print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, order guard, scored pickers, HTN")
+print("ok: utility scoring, goal blackboard, telemetry, scored targets, attitude ladder, supply chain, order guard, scored pickers, HTN, diplomatic step")

@@ -354,7 +354,7 @@ function Round1Action()
 		
 		--if message has canceled or time out, let AI decide
 		if AttackerDecision == "C" then
-			AttackerDecision = duel_AIDecideAction()
+			AttackerDecision = duel_BestAction(Attacker)
 		end
 		
 		--camera_DialogCam(Attacker,0,0)
@@ -718,6 +718,15 @@ end
 
 function Cheat(SimAlias)
 	local MsgTimeOut = 0 + GetData("MsgTimeOut")
+	-- An AI answers here rather than through the AIFunc below. The AIFunc is handed no
+	-- sim - it is called for both duellists and cannot tell which - so a stat-based
+	-- answer is only possible on this side, where SimAlias is known. Both Cheat threads
+	-- run at once, so this must stay a local decision and not a shared SetData.
+	if DynastyIsAI(SimAlias) then
+		SetData("Cheat" .. SimAlias, duel_WillBetray(SimAlias))
+		CutsceneSendEventTrigger("owner", "Cheated")
+		return
+	end
 	local Cheat = MsgSayInteraction(SimAlias, SimAlias, "duel_place",
 				"@B[A,@L_DUELL_4_FIGHT_BETRAY_MENU_+2]"..
 				"@B[B,@L_DUELL_4_FIGHT_BETRAY_MENU_+3]",
@@ -729,9 +738,42 @@ function Cheat(SimAlias)
 	CutsceneSendEventTrigger("owner", "Cheated")
 end
 
+-- Does this sim step off nine paces instead of ten? "A" yes, "B" no.
+--
+-- What cheating buys: one pace. InitiateDuel sets Betray to 100 and f_MoveTo stops them
+-- short, and nothing in the duel reads distance - not the hit test (Duel.lua:457), not
+-- the damage (Duel.lua:337), not the misfire. The upside is scenery.
+--
+-- What being caught costs: Round1Init hands the *other* side four points of defence
+-- (DefensiveMalus -4, subtracted at Duel.lua:411) and that value is written back with the
+-- rest of the skills at Duel.lua:417, so it holds for all three rounds - not just round
+-- one as the comment there claims. Four points is the whole margin for most duellists,
+-- because the hit test is a bare >=. On top of that CheatSuccess makes the doctor refuse
+-- to treat the cheat afterwards.
+--
+-- So the only stat at which cheating is not a straight loss is one where it cannot be
+-- caught at all. The second rolls 1 + Rand(6), so that means clearing 6, the top of the
+-- range, not the average - a master of shadow arts and nobody else. A coin flip, which is
+-- what this was, handed four points away half the time for a pace of ground.
+function WillBetray(SimAlias)
+	-- "or 0" is not decoration: a nil here would error inside the cutscene thread, and a
+	-- duel that dies half way leaves both duellists STATE_LOCKED on the field.
+	if (GetSkillValue(SimAlias, SHADOW_ARTS) or 0) > 6 then
+		return "A"
+	end
+	return "B"
+end
+
 function Action(SimAlias)
 	local MsgTimeOut = 0 + GetData("MsgTimeOut")
 	local Round = 0 + GetData("Round")
+	-- as in Cheat(): the AIFunc is handed no sim and is called for both duellists, so an
+	-- AI answers here, where SimAlias is known and its skills can be read
+	if DynastyIsAI(SimAlias) then
+		SetData("Action" .. SimAlias, duel_BestAction(SimAlias))
+		CutsceneSendEventTrigger("owner", "ActionRound")
+		return
+	end
 	local Action = MsgSayInteraction(SimAlias,SimAlias,"duel_place",
 				"@B[A,@L_DUELL_4_FIGHT_TURN_MENU_+2]"..
 				"@B[B,@L_DUELL_4_FIGHT_TURN_MENU_+3]"..
@@ -743,6 +785,60 @@ function Action(SimAlias)
 				Round,GetID(SimAlias))
 	SetData("Action"..SimAlias, Action)
 	CutsceneSendEventTrigger("owner", "ActionRound")
+end
+
+-- The turn a duellist should take. "A" quick shot, "B" aimed, "D" insult, "E" evade.
+--
+-- Everything turns on one number. The hit test at Duel.lua:457 is a bare
+-- AttackerAttackSkill >= DefenderDefendSkill, so the only question each turn is whether
+-- the margin clears zero, and each action moves it by a known amount - permanently, since
+-- the modified values are written back at Duel.lua:417:
+--
+--   aimed  "B"  no change              lands at margin >= 0
+--   quick  "A"  mine -2, theirs -4     lands at margin >= -2, and leaves +2 for later
+--   insult "D"  theirs -3 on a check   lands at margin >= -3 if the check passes
+--   evade  "E"  my defence +4          fires nothing, but may put their shot out of reach
+--
+-- So: take the cheapest action that lands, and when none can, spend the turn on whichever
+-- number is still worth moving. Aimed is preferred over quick at a clear margin because
+-- quick costs two points of attack skill for ever, and attack skill is also the damage
+-- (Duel.lua:337) - there is no gain in overshooting a test that is already passed.
+function BestAction(SimAlias)
+	local Mine, Theirs, TheirAlias = "Challenger", "Challenged", "challenged"
+	if GetID(SimAlias) ~= GetID("challenger") then
+		Mine, Theirs, TheirAlias = "Challenged", "Challenger", "challenger"
+	end
+	local MyAttack = GetData(Mine .. "AttackSkill") or 0
+	local MyDefend = GetData(Mine .. "DefendSkill") or 0
+	local TheirAttack = GetData(Theirs .. "AttackSkill") or 0
+	local TheirDefend = GetData(Theirs .. "DefendSkill") or 0
+
+	-- Can the shots that are left still carry the damage? aitwp_DuelHitsNeeded reads the
+	-- opponent's HP as it stands, so hits already landed are counted. If the answer is no
+	-- the duel is only a question of surviving it: a draw is healed by the doctor at half
+	-- the damage taken, a loss is not healed at all.
+	local RoundsLeft = TWP_DUEL_ROUNDS - (GetData("Round") or 1) + 1
+	if aitwp_DuelHitsNeeded(MyAttack, GetHP(TheirAlias) or 0) > RoundsLeft then
+		return "E"
+	end
+
+	local Margin = MyAttack - TheirDefend
+	if Margin >= 0 then
+		return "B"
+	end
+	if Margin >= -2 then
+		return "A"
+	end
+	if Margin >= -3 then
+		return "D"
+	end
+	-- out of reach this turn whatever we do. Deny their shot if it would land, otherwise
+	-- start closing the gap: the quick shot's -4 to their defence is permanent, so two of
+	-- them turn a margin of -4 into a hit by the third round.
+	if TheirAttack - MyDefend >= 0 then
+		return "E"
+	end
+	return "A"
 end
 
 ----------------------------------------------------
@@ -813,24 +909,20 @@ end
 ----------------------------------------------------
 
 function AIDecideToBetray()
-	if Rand(100) < 50 then
-		return "A"
-	else
-		return "B"
-	end
+	-- Reached only when a human ran out of time on the prompt. This function is given
+	-- no sim and is called for both duellists, so it cannot read anyone's shadow arts;
+	-- duel_WillBetray does that for the AI, from Cheat() where the sim is known. With
+	-- nothing to read, the answer that cannot cost four points of defence is no.
+	return "B"
 end
 
 function AIDecideAction()
-	local choice = Rand(100)
-	if choice < 30 then
-		return "A"
-	elseif choice < 60 then
-		return "B"
-	elseif choice < 85 then
-		return "D"
-	else
-		return "E"
-	end
+	-- Reached only when a human ran out of time on the prompt. Blind - no sim is passed and
+	-- it serves both duellists - so it returns the one action with no downside: the aimed
+	-- shot always fires, costs no attack skill, and gives the other side nothing.
+	-- duel_BestAction does the real thinking, from Action() and from Round1Action, where
+	-- the duellist is known.
+	return "B"
 end
 
 

@@ -173,9 +173,12 @@ AIHTN_TASKS = {
 			{ "Evidence>=threshold", function(d, p) return GetDynastyEvidenceValues(d, p) >= TWP_BF_RAZZIA_EVIDENCE end },
 			{ "RaidTarget", function(d, p) return aitwp_FindTargetBuilding(p, -1, "strongest", "TWP_HTN") end },
 		}, steps = { "bf_Razzia" } },
+		-- Victim before duellist, in that order, because both the leaf and fitness itself
+		-- depend on the target: aitwp_IsFitToDuel asks whether this FIGHTING can drop this
+		-- HP inside three rounds. The old method had the duellist first and no target check
+		-- at all, which is why bf_Provoke was named as the step 22 times and weighed twice.
 		{ name = "duel", when = {
 			{ "Allowed(duel)", function(d, p) return aitwp_Allowed(d, p, "duel") end },
-			{ "FitDuelist", function(d) return aitwp_FindFitDuelist(d, "TWP_HTN2") end },
 			-- both of bf_Provoke's paths: a non-rogue, or a rogue on the daily roll, and
 			-- either way off the victim's own Get_Insult cooldown
 			{ "InsultableTarget", function(d, p)
@@ -184,8 +187,20 @@ AIHTN_TASKS = {
 				end
 				return (GetProperty(d, "AI_BF_DuelRogues") or 0) == 1
 					and aitwp_FindPlayerTarget(p, "rogue", "TWP_HTN") and ReadyToRepeat("TWP_HTN", "Get_Insult")
-			end },
+			 end },
+			{ "FitDuelist", function(d) return aitwp_FindFitDuelist(d, "TWP_HTN", "TWP_HTN2") end },
+			{ "Odds>=bar", function() return (aitwp_DuelOdds("TWP_HTN2", "TWP_HTN")) >= TWP_DUEL_BAR end },
 		}, steps = { "bf_Provoke" } },
+		-- Before the taunt, deliberately. The taunt is the one leaf that needs peace
+		-- (bf_Taunt refuses at DIP_FOE), so a house that could do both would sit at NAP
+		-- writing letters for ever - which is exactly what dyn 593561 did all of
+		-- 2026-09-19 after a duel handed it back a non-aggression pact.
+		{ name = "declarefoe", when = {
+			{ "Allowed(declare_foe)", function(d, p) return aitwp_Allowed(d, p, "declare_foe") end },
+			{ "Target(best)", function(d, p) return aitwp_FindPlayerTarget(p, "best", "TWP_HTN") end },
+			{ "Ready(DIP)", function(d) return Ready(d, "DIP_" .. GetDynastyID("TWP_HTN")) end },
+			{ "AboveFoe", function(d, p) return aitwp_NextFoeStep(d, p) ~= nil end },
+		}, steps = { "bf_DeclareFoe" } },
 		{ name = "taunt", when = {
 			{ "Allowed(taunt_letter)", function(d, p) return aitwp_Allowed(d, p, "taunt_letter") end },
 			{ "NotFoe", function(d, p) return DynastyGetDiplomacyState(d, p) ~= DIP_FOE end },

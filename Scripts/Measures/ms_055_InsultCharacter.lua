@@ -8,9 +8,11 @@
 -------------------------------------------------------------------------------
 
 function AIDecide()
-	-- an AI never accepts a duel it would die in: martial arts and dexterity both
-	-- under 5, or under 80% health (aitwp_IsFitToDuel)
-	if not aitwp_IsFitToDuel("Destination") then
+	-- an AI never accepts a duel it cannot win: under 80% health, or without the
+	-- FIGHTING to drop the insulter inside the three rounds a duel has. "" is the
+	-- insulter here and "Destination" the one deciding, so this reads the right way
+	-- round: fitness is measured against the opponent, not in the abstract.
+	if not aitwp_IsFitToDuel("Destination", "") then
 		return "B"
 	end
 	if not (GetImpactValue("","Insulter") == 0) and Rand(10) < 10 then

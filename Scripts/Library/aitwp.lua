@@ -659,23 +659,180 @@ function BloodDaily(DynAlias)
 	end
 end
 
--- The duel rule: never provoke or accept with martial arts and dexterity both under
--- 5, or under 80% health - that duel is a death.
-function IsFitToDuel(Alias)
-	if GetHPRelative(Alias) < 0.8 then
-		return false
-	end
-	return GetSkillValue(Alias, FIGHTING) >= 5 or GetSkillValue(Alias, DEXTERITY) >= 5
+-- Duelling ----------------------------------------------------------------------------
+--
+-- The pistol duel in Cutscenes/Duel.lua is not the melee aitwp_WinChance models, and
+-- reusing that here would be confidently wrong. Three rounds, both sides fire once a
+-- round, and:
+--
+--   hit      Duel.lua:457, AttackerAttackSkill >= DefenderDefendSkill. A bare comparison
+--            of the attacker's FIGHTING against the defender's DEXTERITY. No roll.
+--   damage   Duel.lua:337, 50 + 12*F + (1+Rand(11))*F. No weapon, no armour, no level.
+--   misfire  Duel.lua:345, Rand(100) < 10 - F, so max(0, 10-F) percent.
+--   order    the insulted party is the challenger and fires first (ms_055 hands the
+--            aliases over that way round), and the death check runs between halves - so
+--            the house that provokes always shoots second and loses every tie.
+--
+-- HP therefore never touches whether a shot lands. It only sets how many hits are needed,
+-- and three is all there is: a duellist who cannot take the other down inside three
+-- rounds can draw at best, whatever their talents.
+TWP_DUEL_ROUNDS = 3
+TWP_DUEL_DAMAGE_BASE = 50
+-- 12 flat plus the 1+Rand(11) roll, mean 18. The mean and not the floor: using the worst
+-- roll would refuse duels the house wins five times in six.
+TWP_DUEL_DAMAGE_PER_SKILL = 18
+-- The insult action's CheckSkill of RHETORIC against the other's EMPATHY. CheckSkill's
+-- curve is the engine's and undocumented; a coin is the honest placeholder, and it only
+-- moves the one margin where that insult is the sole path to a hit.
+TWP_DUEL_P_RHETORIC = 0.5
+-- What bf_Provoke wants before it calls someone out. Above a half because the duel ends
+-- the feud whatever happens (Duel.lua EndDuel resets any state below neutral), so a coin
+-- flip trades a campaign for a chance.
+TWP_DUEL_BAR = 0.55
+-- Health to duel at all. Unchanged; it was never the part that was wrong.
+TWP_DUEL_FIT_HP = 0.8
+
+-- Mean damage one hit does, from the shooter's FIGHTING alone.
+function DuelDamage(Fighting)
+	return TWP_DUEL_DAMAGE_BASE + TWP_DUEL_DAMAGE_PER_SKILL * (Fighting or 0)
 end
 
--- An idle adult party member fit to duel: rogues first, then the best fighter.
-function FindFitDuelist(DynAlias, OutAlias)
+-- Hits to put a target of this HP down. At least one, so a dead target is not a free win.
+function DuelHitsNeeded(Fighting, TargetHP)
+	local Hits = math.ceil((TargetHP or 0) / aitwp_DuelDamage(Fighting))
+	if Hits < 1 then
+		return 1
+	end
+	return Hits
+end
+
+-- Chance one turn produces a hit. Margin is the shooter's FIGHTING less the target's
+-- DEXTERITY, which is the entire hit test; Fighting is the shooter's own, for the misfire.
+--
+-- Both sides are assumed to pick their action rather than roll it. A human does, and since
+-- 2026-09-19 so does the AI: duel_BestAction takes the aimed shot at a clear margin, the
+-- quick shot when its net +2 is exactly the gap, and the insult at -3 where nothing else
+-- reaches. So the step below is that ladder read as a probability.
+--
+-- Conservative where it is wrong: a duellist four or more points short is scored at zero
+-- for the whole duel, when in truth two quick shots would close the gap by the third
+-- round. Both sides are understated by the same rule, and a house that under-rates itself
+-- picks fewer fights rather than more.
+function DuelHitChance(Margin, Fighting)
+	local Misfire = 10 - (Fighting or 0)
+	if Misfire < 0 then
+		Misfire = 0
+	end
+	local Works = 1 - Misfire * 0.01
+	local Chance = 0
+	if Margin >= -2 then
+		Chance = 1
+	elseif Margin >= -3 then
+		Chance = TWP_DUEL_P_RHETORIC
+	end
+	return Chance * Works
+end
+
+-- Win, lose and draw for Self provoking Victim, as three probabilities that sum to one.
+--
+-- Exact for the model above rather than sampled: six half-turns, the victim first, over a
+-- grid of (hits we have landed, hits they have landed) that absorbs the moment either
+-- side reaches the hits it needs. At most four by four states, no Rand, so it is legal in
+-- Weight() and gives the same answer every tick.
+--
+-- Draw is not a rounding bucket, it is the usual outcome: against 450 HP a duellist needs
+-- FIGHTING 6 to kill inside three rounds at all, and the doctor heals half the damage
+-- afterwards. A house that only counted a win chance would read a near-certain draw as a
+-- near-certain loss and never duel.
+function DuelOdds(SelfAlias, VictimAlias)
+	local MyF = GetSkillValue(SelfAlias, FIGHTING) or 0
+	local MyD = GetSkillValue(SelfAlias, DEXTERITY) or 0
+	local TheirF = GetSkillValue(VictimAlias, FIGHTING) or 0
+	local TheirD = GetSkillValue(VictimAlias, DEXTERITY) or 0
+
+	local KillThem = aitwp_DuelHitsNeeded(MyF, GetHP(VictimAlias) or 0)
+	local KillMe = aitwp_DuelHitsNeeded(TheirF, GetHP(SelfAlias) or 0)
+	local MyHit = aitwp_DuelHitChance(MyF - TheirD, MyF)
+	local TheirHit = aitwp_DuelHitChance(TheirF - MyD, TheirF)
+	-- more hits than there are rounds is not a long fight, it is an impossible one
+	if KillThem > TWP_DUEL_ROUNDS then
+		MyHit = 0
+	end
+	if KillMe > TWP_DUEL_ROUNDS then
+		TheirHit = 0
+	end
+
+	local P = {}
+	for a = 0, KillThem do
+		P[a] = {}
+		for b = 0, KillMe do
+			P[a][b] = 0
+		end
+	end
+	P[0][0] = 1
+	local Win, Lose = 0, 0
+
+	-- One half-turn. Mine says the hit counts towards killing them.
+	local function Volley(Chance, Mine)
+		local Q = {}
+		for a = 0, KillThem do
+			Q[a] = {}
+			for b = 0, KillMe do
+				Q[a][b] = 0
+			end
+		end
+		for a = 0, KillThem - 1 do
+			for b = 0, KillMe - 1 do
+				local Mass = P[a][b]
+				if Mass > 0 then
+					if Mine and a + 1 >= KillThem then
+						Win = Win + Mass * Chance
+					elseif not Mine and b + 1 >= KillMe then
+						Lose = Lose + Mass * Chance
+					elseif Mine then
+						Q[a + 1][b] = Q[a + 1][b] + Mass * Chance
+					else
+						Q[a][b + 1] = Q[a][b + 1] + Mass * Chance
+					end
+					Q[a][b] = Q[a][b] + Mass * (1 - Chance)
+				end
+			end
+		end
+		P = Q
+	end
+
+	for r = 1, TWP_DUEL_ROUNDS do
+		Volley(TheirHit, false)
+		Volley(MyHit, true)
+	end
+	return Win, Lose, 1 - Win - Lose
+end
+
+-- Fit to duel this particular opponent. The health floor is unchanged; the talent test is
+-- not. It used to pass on FIGHTING 5 *or* DEXTERITY 5, which let a pure dodger be picked
+-- as champion - and a dodger cannot win a duel, because FIGHTING alone decides both
+-- whether the shot lands and how hard it hits. The floor is now the opponent's HP read
+-- backwards: enough FIGHTING to put them down inside the three rounds that exist.
+function IsFitToDuel(Alias, VictimAlias)
+	if GetHPRelative(Alias) < TWP_DUEL_FIT_HP then
+		return false
+	end
+	return aitwp_DuelHitsNeeded(GetSkillValue(Alias, FIGHTING) or 0, GetHP(VictimAlias) or 0)
+		<= TWP_DUEL_ROUNDS
+end
+
+-- The best duellist the house can send against this victim: rogues first as before - they
+-- carry the family's fights and no workshop misses them - then by the margin the odds give.
+function FindFitDuelist(DynAlias, VictimAlias, OutAlias)
 	local Best, BestScore = -1, nil
 	local Count = DynastyGetMemberCount(DynAlias)
 	for i = 0, Count - 1 do
 		if DynastyGetMember(DynAlias, i, "TWP_Duel") and dyn_IsIdleMember("TWP_Duel") and SimGetAge("TWP_Duel") >= 16
-				and ReadyToRepeat("TWP_Duel", "AI_Insult") and aitwp_IsFitToDuel("TWP_Duel") then
-			local Score = GetSkillValue("TWP_Duel", FIGHTING) + GetSkillValue("TWP_Duel", DEXTERITY) / 2
+				and ReadyToRepeat("TWP_Duel", "AI_Insult") and aitwp_IsFitToDuel("TWP_Duel", VictimAlias) then
+			local Win, Lose = aitwp_DuelOdds("TWP_Duel", VictimAlias)
+			-- odds run -1..1, so the rogue bonus still sorts every rogue above every
+			-- non-rogue, exactly as the old +100 on a talent sum did
+			local Score = Win - Lose
 			if SimGetClass("TWP_Duel") == GL_CLASS_CHISELER then
 				Score = Score + 100
 			end
@@ -1091,6 +1248,35 @@ function IsHostile(Att)
 	return Att == "blood" or Att == "feud" or Att == "enemy"
 end
 
+-- The diplomacy bands, friendliest last. Built per call, never at load: DIP_ are engine
+-- constants and a table filled before the engine defines them is a list of nils - the
+-- same trap WarPools was written around. Their values are the 0..3 the status dialog in
+-- ms_047_AdministrateDiplomacy indexes its buttons by, which is also the InitResult that
+-- measure expects, but the order is what this file relies on, not the numbers.
+function DipLadder()
+	return { DIP_FOE, DIP_NEUTRAL, DIP_NAP, DIP_ALLIANCE }
+end
+
+-- One band down from where the house stands with this player, as ms_047's InitResult
+-- (0 foe, 1 neutral, 2 NAP); nil when it is already at DIP_FOE and has nowhere to go.
+--
+-- The blood feud does not ask ai_DynastyGetBestDiplomacyState. That function answers a
+-- different question - whether two businesses should get along - and answers it badly
+-- for a feud: from DIP_NAP it will not walk a business rival below DIP_NEUTRAL at all,
+-- and for everyone else favour 11..29 with a threat of 2 or more matches no branch and
+-- falls out the bottom as nil. A house that has been handed a blood enemy has already
+-- decided; all that is left is which band it is standing on today.
+function NextFoeStep(DynAlias, PlayerAlias)
+	local Bands = aitwp_DipLadder()
+	local State = DynastyGetDiplomacyState(DynAlias, PlayerAlias)
+	for i = 2, #Bands do
+		if Bands[i] == State then
+			return i - 2
+		end
+	end
+	return nil
+end
+
 -- Player title needed for each rung 0..8. A rung also needs that many rounds played,
 -- so everything is open by round 8; a shadow dynasty never climbs above rung 4.
 TWP_TITLE_RUNGS = { 1, 3, 5, 7, 8, 9, 10, 11, 13 }
@@ -1183,6 +1369,11 @@ TWP_BF_FUND = 200000            -- bf_FundAllies: treasury before money goes to 
 TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild is bought
 TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
 TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
+-- Game hours between one band of diplomatic decline. 22 on purpose: it is the timer
+-- attf_ChangeStatus already keeps under the key DIP_<victim dynasty>, and bf_DeclareFoe
+-- shares that key rather than opening a second one, so the two nodes can never step the
+-- same pair of houses twice in one window.
+TWP_BF_FOE_HOURS = 22
 -- Game hours between one house's spying orders. The node had no cooldown at all, and the
 -- crash it was disabled for in 2025 reads as spies piling up on one victim.
 TWP_SPY_HOURS = 12
