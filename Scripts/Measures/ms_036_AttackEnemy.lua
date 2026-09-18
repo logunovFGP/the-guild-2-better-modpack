@@ -1,12 +1,28 @@
+-- ::TWP::ATTACK t= sim= target= result=<joined|peaceful|noflee|unreachable|mayattack>
+-- Six of the exits below are a silent StopMeasure, and a caller that re-orders on a timer
+-- cannot tell "the fight started" from "we refused". ms_SquadHijackMember spun this measure
+-- 136 times on one sim across the 2026-09-19 session without ever reaching BattleJoin, and
+-- nothing in the log said which exit it took - the vanilla unreachable one or the
+-- aitwp_MayAttackHere guard we added on 2026-09-10. One line per outcome ends that.
+local function Outcome(Result)
+	local Target = -1
+	if AliasExists("Destination") then
+		Target = GetID("Destination")
+	end
+	utility_Emit("::TWP::ATTACK t=" .. string.format("%.2f", GetGametime())
+		.. " sim=" .. GetID("") .. " target=" .. Target .. " result=" .. Result)
+end
+
 function Run()
 
 	MeasureSetNotRestartable()
-	
+
 	-- ms_092_SingForPeacefulness.lua active
 	if (GetImpactValue("", "Peaceful") ~= 0) then
-		StopMeasure("") 
+		Outcome("peaceful")
+		StopMeasure("")
 		return
-	end	
+	end
 	
 	-- sight distance   
 	local DistanceToJoinBattle = gameplayformulas_CalcSightRange("Destination")
@@ -18,6 +34,7 @@ function Run()
 
 	-- i am a building no need to move
 	if IsType("", "Building") then
+		Outcome("joined")
 		BattleJoin("","Destination", false)
 		Sleep(1)
 		return
@@ -32,6 +49,7 @@ function Run()
 		
 		if GetFleePosition("", "Destination", 1000, "AttackPos") then
 			if not f_MoveTo("", "AttackPos", GL_MOVESPEED_RUN) then
+				Outcome("noflee")
 				StopMeasure("")
 				return
 			end
@@ -42,17 +60,20 @@ function Run()
 	elseif IsType("Destination", "Ship") then
 		local radius = 3200
 		if not ai_StartInteraction("", "Destination", radius, radius, nil, true) then
+			Outcome("unreachable")
 			StopMeasure("")
 			return
 		end
 	elseif IsType("Destination", "Cart") then
 		local radius = GetRadius("Destination")*2
 		if not ai_StartInteraction("", "Destination", radius, radius, nil, true) then
+			Outcome("unreachable")
 			StopMeasure("")
 			return
 		end
 	else
 		if not ai_StartInteraction("", "Destination", DistanceToJoinBattle, DistanceToJoinBattle, nil, true) then
+			Outcome("unreachable")
 			StopMeasure("")
 			return
 		end
@@ -63,12 +84,14 @@ function Run()
 	-- standing, for AI attackers only - what the player starts is the player's business.
 	if IsType("Destination", "Sim") and DynastyIsAI("") and GetDynasty("", "AttackerDyn")
 			and not aitwp_MayAttackHere("AttackerDyn", "Destination") then
+		Outcome("mayattack")
 		RemoveAlias("AttackerDyn")
 		StopMeasure("")
 		return
 	end
 	RemoveAlias("AttackerDyn")
 
+	Outcome("joined")
 	gameplayformulas_SimAttackWithRangeWeapon("", "Destination")
 	local iBattleID = BattleJoin("", "Destination", false)
 	Sleep(2) -- required to be at least 1, better 2, otherwise attackers will abort attack within a second after attack

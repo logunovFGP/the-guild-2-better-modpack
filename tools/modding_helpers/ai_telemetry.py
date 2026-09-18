@@ -95,6 +95,7 @@ CARTBUY = re.compile(r"::TWP::CARTBUY (.*)$")
 BLOODENEMY = re.compile(r"::TWP::BLOODENEMY (.*)$")
 WAR = re.compile(r"::TWP::WAR (.*)$")
 SPY = re.compile(r"::TWP::SPY (.*)$")
+ATTACK = re.compile(r"::TWP::ATTACK (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -217,6 +218,7 @@ class Session(object):
         self.htn = []                            # one entry per ::TWP::HTN line
         self.why, self.orders, self.cartbuy = [], [], []
         self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
+        self.attacks = []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -351,6 +353,10 @@ class Session(object):
             m = WAR.search(line)
             if m:
                 self.raids.append(kv(m.group(1)))
+                continue
+            m = ATTACK.search(line)
+            if m:
+                self.attacks.append(kv(m.group(1)))
                 continue
             m = SPY.search(line)
             if m:
@@ -936,6 +942,58 @@ def check_spying(s):
                       "starved of - if those two start applying, this is why.")
 
 
+# Attacks that ended before the fight did. A couple is ordinary - the target walked
+# indoors, the escort got there first. A sim that refuses this many times running is the
+# 2026-09-19 shape: a caller looping on a measure that will not start.
+#
+# There is deliberately no general "measure spin" check here. It was written and thrown
+# away the same hour: from the engine's `Executing Measures` lines a spin is genuinely
+# indistinguishable from an idle sim, because ms_DynastyIdle and
+# ms_048_HireEmployeeBuildingRandom legitimately repeat in runs of 40-105 by one sim.
+# Both volume and unbroken-run-length flagged ten measures on a healthy log. The signal
+# is not repetition, it is repetition *without completion* - which needs the measure to
+# say whether it completed, and only AttackEnemy does that so far.
+ATTACK_REFUSALS = 10
+
+
+def check_attacks(s):
+    """Where AttackEnemy ended up, and who never got a fight.
+
+    ms_SquadHijackMember spun this measure 136 times on one sim across the 2026-09-19
+    session and never reached BattleJoin; nothing in the log said so, because all six
+    of the measure's failure exits were a silent StopMeasure.
+    """
+    if not s.attacks:
+        return
+    outcomes = Counter(a.get("result") for a in s.attacks)
+    refused = defaultdict(Counter)
+    for a in s.attacks:
+        if a.get("result") != "joined":
+            refused[a.get("sim")][a.get("result")] += 1
+    worst = sorted(refused.items(), key=lambda kv_: -sum(kv_[1].values()))
+    for sim, reasons in worst[:3]:
+        total = sum(reasons.values())
+        if total < ATTACK_REFUSALS:
+            break
+        yield Finding("WARN", "attack-refused",
+                      "sim %s started AttackEnemy %d times and never joined a fight (%s)"
+                      % (sim, total, ", ".join("%s %d" % (r, n) for r, n in reasons.most_common())),
+                      "Scripts/Measures/ms_036_AttackEnemy.lua - result=mayattack is our own "
+                      "aitwp_MayAttackHere guard in Scripts/Library/aitwp.lua refusing the fight "
+                      "(added 2026-09-10; it says no inside a settlement unless the victim is wanted "
+                      "or the house commands the watch), result=unreachable is the vanilla "
+                      "ai_StartInteraction giving up. Then find the caller's loop: "
+                      "Scripts/Measures/Squad/ms_SquadHijackMember.lua discarded Attack()'s return "
+                      "value, so its `while true` could not break while the measure kept refusing - "
+                      "fixed 2026-09-19. If this is back, another caller has the same shape.")
+    if outcomes:
+        yield Finding("NOTE", "attack-outcomes",
+                      "AttackEnemy: %s" % ", ".join("%s %d" % (r, n) for r, n in outcomes.most_common()),
+                      "Scripts/Measures/ms_036_AttackEnemy.lua emits ::TWP::ATTACK at every exit since "
+                      "2026-09-19. joined is the only one that reaches BattleJoin; everything else is "
+                      "a StopMeasure the caller has to cope with.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -989,7 +1047,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_blood_rival, check_idle, check_test_knobs)
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_blood_rival, check_idle, check_test_knobs)
 
 
 def findings(session):
@@ -1428,6 +1486,16 @@ def selftest():
                   for i in range(1, 6)]
                + ["[Script] ::TWP::SPY t=100.00 action=order spy=99 victim=2 ok=true evidence=-1"])
     assert "spy-never-ended" in [f.code for f in findings(stuck)], findings(stuck)
+    # AttackEnemy: refusing over and over is the hijack spin, a couple is ordinary
+    spin = Session()
+    spin.feed(["[Script] ::TWP::ATTACK t=%.2f sim=7 target=9 result=mayattack" % (1000 + i * 0.03)
+               for i in range(12)])
+    codes_spin = [f.code for f in findings(spin)]
+    assert "attack-refused" in codes_spin and "attack-outcomes" in codes_spin, findings(spin)
+    calm = Session()
+    calm.feed(["[Script] ::TWP::ATTACK t=1.00 sim=7 target=9 result=unreachable",
+               "[Script] ::TWP::ATTACK t=2.00 sim=7 target=9 result=joined"])
+    assert "attack-refused" not in [f.code for f in findings(calm)], findings(calm)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()

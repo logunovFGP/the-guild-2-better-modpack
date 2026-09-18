@@ -62,8 +62,17 @@ function Check()
 			return
 		end
 
-		ms_squadhijackmember_Attack()
-		
+		-- Honour the result. Attack() returns false when AttackEnemy refuses to start,
+		-- and discarding it made Run()'s `while true` unbreakable: the victim is only
+		-- ever knocked out by the fight, so a member that cannot engage followed and
+		-- re-ordered every two game minutes for as long as the squad lived. One sim did
+		-- that 136 times across the 2026-09-19 session, never once reaching BattleJoin.
+		-- A member that cannot engage leaves the loop; the squad either finds another
+		-- way or disbands, which is what the engine's own exits already assume.
+		if not ms_squadhijackmember_Attack() then
+			return false
+		end
+
 		return true
 	end
 	
