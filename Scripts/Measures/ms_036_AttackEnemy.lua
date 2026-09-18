@@ -82,7 +82,15 @@ function Run()
 	-- The order can be hours old by the time we arrive: a thug sent after someone out on
 	-- the road catches up in the middle of a market. Ask again where we are actually
 	-- standing, for AI attackers only - what the player starts is the player's business.
-	if IsType("Destination", "Sim") and DynastyIsAI("") and GetDynasty("", "AttackerDyn")
+	--
+	-- Only for a fighter this house actually sent (aitwp_OnRaidOrder, stamped by
+	-- aitwp_SquadAttack). Without that test this refused the engine's own AttackEnemy
+	-- filter as well, and the engine simply re-selects: one sim logged 17 refusals in a
+	-- 40 minute smoke test on 2026-09-19 and 136 across the session before it, one every
+	-- two game minutes, never once joining a fight. A fresh decision by the engine is not
+	-- a stale order, and refusing it does not stop it - it only makes it repeat for ever.
+	if IsType("Destination", "Sim") and DynastyIsAI("") and aitwp_OnRaidOrder("")
+			and GetDynasty("", "AttackerDyn")
 			and not aitwp_MayAttackHere("AttackerDyn", "Destination") then
 		Outcome("mayattack")
 		RemoveAlias("AttackerDyn")

@@ -41,7 +41,7 @@ function GetProperty(Alias, Name) return Props[Name] end
 function SetProperty(Alias, Name, Value) Props[Name] = Value end
 function HasProperty(Alias, Name) return Props[Name] ~= nil end
 
-local Now = 1000
+Now = 1000
 function GetGametime() return Now end
 function GetID(Alias) return 1 end
 function GetSettingNumber(Group, Name, Default) return Default end
@@ -621,6 +621,7 @@ aitwp_HitChance, aitwp_FightStats, aitwp_AddFighter = HitChance, FightStats, Add
 aitwp_SidePower, aitwp_WinChance, aitwp_DefenceOf = SidePower, WinChance, DefenceOf
 aitwp_ClearFighters, aitwp_NeedHands = ClearFighters, NeedHands
 aitwp_IsFreeForOrders, aitwp_TownRadius = IsFreeForOrders, TownRadius
+aitwp_OnRaidOrder = OnRaidOrder
 aitwp_IsOutsideTown, aitwp_IsWanted, aitwp_CommandsGuards = IsOutsideTown, IsWanted, CommandsGuards
 GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER, GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY = 1, 2, 3, 4
 PENALTY_UNKNOWN = 0
@@ -881,6 +882,21 @@ check("need hands: the shipped bar keeps the best logged target at two hands",
 	NeedHands(1, 0.36, TWP_ATTACK_WIN_CHANCE) == 2)
 
 -- where the fight may happen
+-- the raid stamp: aitwp_MayAttackHere only judges a fighter this house sent. Without it
+-- the guard also refused the engine's own AttackEnemy filter, which re-selects every two
+-- game minutes, so the refusal repeated for ever instead of settling anything.
+local WasNow = Now
+Props.AI_RaidOrder = nil
+check("raid stamp: an unsent fighter is not on a raid order", OnRaidOrder("raider") == false)
+SetProperty("raider", "AI_RaidOrder", Now)
+check("raid stamp: freshly sent counts", OnRaidOrder("raider") == true)
+Now = WasNow + TWP_RAID_ORDER_HOURS - 1
+check("raid stamp: still counts inside the window", OnRaidOrder("raider") == true)
+Now = WasNow + TWP_RAID_ORDER_HOURS + 1
+check("raid stamp: expires by itself, so nothing has to clear it", OnRaidOrder("raider") == false)
+Now = WasNow
+Props.AI_RaidOrder = nil
+
 local Inside, Wanted, OfficeCity, Privilege = false, false, 0, 0
 function SimIsInside(Alias) return Inside end
 function GetNearestSettlement(Alias, Out) Aliases[Out] = 1; return true end

@@ -2409,9 +2409,31 @@ function SquadAttack(Prefix, Count, TargetAlias, LeaderMeasure, MemberMeasure)
 	for i = 2, Count do
 		SquadAddMember("TWP_Squad", -1, Prefix .. i)
 	end
+	-- Stamp everyone we send. ms_036_AttackEnemy's aitwp_MayAttackHere check exists for an
+	-- order that has gone stale in transit - a thug sent after someone on the road who
+	-- catches up in the middle of a market - so it belongs to attacks this house ordered,
+	-- and only while the raid it belongs to could still be running. Without the stamp it
+	-- also refused the engine's own AttackEnemy filter, which re-selects every two game
+	-- minutes and produced 17 refusals for one sim inside a 40 minute smoke test on
+	-- 2026-09-19, and 136 across the session before it.
+	for i = 1, Count do
+		SetProperty(Prefix .. i, "AI_RaidOrder", GetGametime())
+	end
 	local Joined = SquadGetMemberCount("TWP_Squad", true) or 0
 	RemoveAlias("TWP_Squad")
 	return Joined > 0
+end
+
+-- Is this fighter carrying out a raid this house ordered, rather than picking its own
+-- fight? Self-expiring, so nothing has to clear the stamp when a squad disbands: a raid
+-- that has not resolved in TWP_RAID_ORDER_HOURS is over however it ended.
+TWP_RAID_ORDER_HOURS = 6
+function OnRaidOrder(Alias)
+	local When = GetProperty(Alias, "AI_RaidOrder")
+	if not When then
+		return false
+	end
+	return (GetGametime() - When) < TWP_RAID_ORDER_HOURS
 end
 
 -- ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=

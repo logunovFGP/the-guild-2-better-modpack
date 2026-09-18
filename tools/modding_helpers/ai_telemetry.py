@@ -525,10 +525,11 @@ HTN_NOTES = {
         "that is indoors (SimIsInside), under 16, or the wrong class - a player who spends the day inside "
         "buildings cannot be provoked at all. 189 of 189 on 2026-09-18."),
     "Feud.assassinate": ("WARN",
-        "Scripts/AI/BaseTree/BloodFeud/bf_Assassinate.lua. The bar is TWP_ATTACK_WIN_CHANCE = 0.75 and the "
-        "party is aitwp_WarCandidates - half the thugs, a third of any other pool, plus the family rogues - "
-        "committed one at a time by aitwp_WarCommit until it clears. The ::TWP::WHY lines carry party=, "
-        "theirs= and chance=; the gate is Patron or round 10 (aitwp_RaidAllowed)."),
+        "Scripts/AI/BaseTree/BloodFeud/bf_Assassinate.lua. The bar is TWP_ATTACK_WIN_CHANCE, 0.65 since "
+        "2026-09-19, and the party is every free hand aitwp_WarCandidates offers, committed one at a "
+        "time by aitwp_WarCommit until it clears - the per-pool shares that capped it at five are gone. "
+        "The ::TWP::WHY raid= lines carry pool=, party=, theirs=, chance= and need=; the gate is Patron "
+        "or round 10 (aitwp_RaidAllowed)."),
     "Feud.kidnap": ("NOTE",
         "Scripts/AI/BaseTree/BloodFeud/bf_Kidnap.lua. Two numbers have to clear, not one: the fight "
         "(aitwp_WinChance) and the snatch (aitwp_KidnapChance, bar TWP_KIDNAP_BAR). It also needs a "

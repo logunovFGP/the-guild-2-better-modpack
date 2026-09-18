@@ -62,13 +62,16 @@ function Check()
 			return
 		end
 
-		-- Honour the result. Attack() returns false when AttackEnemy refuses to start,
-		-- and discarding it made Run()'s `while true` unbreakable: the victim is only
-		-- ever knocked out by the fight, so a member that cannot engage followed and
-		-- re-ordered every two game minutes for as long as the squad lived. One sim did
-		-- that 136 times across the 2026-09-19 session, never once reaching BattleJoin.
-		-- A member that cannot engage leaves the loop; the squad either finds another
-		-- way or disbands, which is what the engine's own exits already assume.
+		-- Honour the result rather than discarding it, so a member that genuinely cannot
+		-- start the measure leaves Run()'s `while true` instead of following the victim
+		-- for ever.
+		--
+		-- Narrower than it first looked. MeasureRun's fourth argument is `force`, not
+		-- "wait", so it answers whether the measure STARTED - an AttackEnemy that starts
+		-- and then bails out still returns true, and this test cannot see that. The 136
+		-- restarts on 2026-09-19 were the engine's own AttackEnemy filter re-selecting
+		-- after aitwp_MayAttackHere refused, which is fixed where that guard lives:
+		-- ms_036_AttackEnemy applies it only to fighters this house actually sent.
 		if not ms_squadhijackmember_Attack() then
 			return false
 		end
