@@ -904,6 +904,16 @@ def check_buyworkshop(s):
                       "run and put it back.")
 
 
+def war_party_max():
+    """TWP_WAR_PARTY_MAX read out of the Lua, so the message cannot quote a stale cap."""
+    try:
+        blob, _libs = lua_sources(repo_root())
+        m = re.search(r"TWP_WAR_PARTY_MAX\s*=\s*(\d+)", blob)
+        return float(m.group(1)) if m else 8.0
+    except Exception:
+        return 8.0
+
+
 def check_raids(s):
     if not s.raids:
         # Nothing was ever decided. The refusals say how far off it was, which is the
@@ -914,12 +924,27 @@ def check_raids(s):
             if "need" in row and "party" in row:
                 wanted[row.get("subject", "?")].append((num(row["need"]), num(row["party"]),
                                                         num(row.get("pool", 0))))
+        cap = war_party_max()
         for raid, rows in sorted(wanted.items()):
-            best = min(rows, key=lambda r: r[0] - r[1])
-            yield Finding("WARN", "raid-never-decided",
-                          "%s was considered %d times and never once went; closest was %g hands "
-                          "short (needed %g, had %g, pool %g)"
-                          % (raid, len(rows), best[0] - best[1], best[0], best[1], best[2]),
+            # need=-1 is aitwp_NeedHands saying there was nobody to measure, so those rows
+            # carry no gap at all - reporting one as "-1 hands short" is a number that
+            # reads like a finding and is an artefact. Say which of the two walls it hit.
+            empty = [r for r in rows if r[2] <= 0]
+            measured = [r for r in rows if r[0] > 0]
+            if not measured:
+                text = ("%s was considered %d times and never once went: the house had no "
+                        "hirelings to send at all in %d of them" % (raid, len(rows), len(empty)))
+            else:
+                best = min(measured, key=lambda r: r[0] - r[1])
+                gap = "needed %g, had %g" % (best[0], best[1])
+                if best[0] > cap:
+                    gap += ", and %g is past TWP_WAR_PARTY_MAX = %g, so no party this house "
+                    gap += "can field clears that target"
+                    gap = gap % (best[0], cap)
+                text = ("%s was considered %d times and never once went; %d of those had nobody "
+                        "to send, and the best of the rest %s"
+                        % (raid, len(rows), len(empty), gap))
+            yield Finding("WARN", "raid-never-decided", text,
                           "Scripts/Library/aitwp.lua - aitwp_WarCandidates offers the party and "
                           "aitwp_WarCommit commits it one hand at a time until it clears "
                           "TWP_ATTACK_WIN_CHANCE. pool= is what the house had before "
@@ -1919,6 +1944,22 @@ def selftest():
     assert "neutral" in printed_dry and "ran out of Bandage, Medicine" in printed_dry, printed_dry
     assert [f.level for f in findings(dry) if f.code == "hospital-stock" and "neutral" in f.text] == ["WARN"], printed_dry
     assert [f.level for f in findings(dry) if f.code == "hospital-stock" and "owned" in f.text] == ["NOTE"], printed_dry
+    # raids that never went: an empty house and an unreachable target read differently
+    norai = Session()
+    norai.feed(["[Script] ::TWP::WHY t=1.00 dyn=7 raid=assassination_attempt pool=0 party=0 "
+                "theirs=1 chance=0.00 bar=0.65 need=-1"] * 3
+               + ["[Script] ::TWP::WHY t=2.00 dyn=7 raid=assassination_attempt pool=1 party=1 "
+                  "theirs=1 chance=0.01 bar=0.65 need=12"])
+    printed_raid = format_findings(findings(norai))
+    assert "raid-never-decided" in [f.code for f in findings(norai)], findings(norai)
+    assert "3 of those had nobody to send" in printed_raid, printed_raid
+    assert "past TWP_WAR_PARTY_MAX" in printed_raid, printed_raid
+    # need=-1 must never be reported as a gap of its own
+    assert "-1 hands" not in printed_raid and "needed -1" not in printed_raid, printed_raid
+    empty_only = Session()
+    empty_only.feed(["[Script] ::TWP::WHY t=1.00 dyn=7 raid=workers_raid pool=0 party=0 "
+                     "theirs=1 chance=0.00 bar=0.65 need=-1"] * 2)
+    assert "no hirelings to send at all" in format_findings(findings(empty_only)),         format_findings(findings(empty_only))
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()

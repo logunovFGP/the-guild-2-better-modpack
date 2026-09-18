@@ -35,11 +35,19 @@ function Emit(SimAlias, Cost, Outcome)
 		if GetDynasty(SimAlias, "TWP_HealDyn") then
 			House = math.floor(GetMoney("TWP_HealDyn") or 0)
 		end
+		-- 2026-09-19 answered the first half: purse and housepurse came back identical
+		-- (425867 both), so GetMoney on a member is reporting the house's money, not what
+		-- the member carries - and SpendMoney still refused. A player's own character with
+		-- 286536 paid 102 in the same run, so the charge is not broken for everyone.
+		-- shadow= is the remaining suspect: a shadow dynasty is a background placeholder
+		-- and its money may not be spendable at all, which would make the refusal correct
+		-- and the gate wrong - PaysForTreatment should not bill a house that cannot pay.
 		Extra = " dyn=" .. GetDynastyID(SimAlias) .. " housepurse=" .. House
 			.. " dynsim=" .. tostring(IsDynastySim(SimAlias))
 			.. " party=" .. tostring(IsPartyMember(SimAlias))
 			.. " isplayer=" .. tostring(DynastyIsPlayer(SimAlias))
 			.. " isai=" .. tostring(DynastyIsAI(SimAlias))
+			.. " shadow=" .. tostring(DynastyIsShadow(SimAlias))
 		RemoveAlias("TWP_HealDyn")
 	end
 	utility_Emit("::TWP::HEAL t=" .. string.format("%.2f", GetGametime())
