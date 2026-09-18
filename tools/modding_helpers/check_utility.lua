@@ -483,6 +483,19 @@ CurMeasure = "PatrolTheTown"
 check("a thug on patrol is free for an order", IsFreeForOrders("k") == true)
 CurMeasure = "PickpocketPeople"
 check("a thief on its rounds is free for an order", IsFreeForOrders("k") == true)
+-- but a fighter already on a raid is not offered to the next one. STATE_FIGHTING covers
+-- the swing, not the walk to it, and an ambush lies up for hours before anything happens -
+-- so on states alone the second raid to evaluate would dismantle the first.
+CurMeasure = "SquadWarMember"
+check("a thug already on a raid is not free", IsFreeForOrders("k") == false)
+CurMeasure = "SquadHijackMember"
+check("nor one on a hijack", IsFreeForOrders("k") == false)
+CurMeasure = "bf_AmbushMember"
+check("nor one lying up in an ambush", IsFreeForOrders("k") == false)
+CurMeasure = "AttackEnemy"
+check("nor one already swinging", IsFreeForOrders("k") == false)
+CurMeasure = "SupplyWorkshop"
+check("a chore that is not a commitment stays free", IsFreeForOrders("k") == true)
 Downed.k = true
 check("a thug lying unconscious takes no orders", IsFreeForOrders("k") == false)
 Downed.k = nil

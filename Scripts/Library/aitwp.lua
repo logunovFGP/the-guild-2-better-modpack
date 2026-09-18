@@ -1869,6 +1869,15 @@ end
 -- supported exit - the same event as the sim wandering off. A wounded thug needs no guard
 -- either, because aitwp_AddFighter reads live HP, so aitwp_WarCommit prices the
 -- interruption and reaches for the next hand.
+-- Measures that are a commitment this house has already made, which no state can show.
+-- STATE_FIGHTING covers the swing and not the walk to it, and ms_bf_Ambush lies up for
+-- TWP_AMBUSH_HOURS before anything happens at all - so on states alone a party sent this
+-- tick reads as free the next one, and the second raid to evaluate dismantles the first.
+-- The old whitelist had this property for free by never listing a squad measure; a
+-- blacklist has to say it out loud. Every Squad* row in DB/Measures.dbt is a group
+-- undertaking (war, razzia, hijack, waylay, danegeld, wait), so the prefix is the rule,
+-- and bf_Ambush is ours and does not carry it.
+TWP_COMMITTED_MEASURES = { "bf_Ambush", "bf_AmbushMember", "Attack", "AttackEnemy" }
 function IsFreeForOrders(Alias)
 	-- built per call: STATE_ are engine constants, and a table filled at load time is a
 	-- list of nils, under which nobody is ever busy
@@ -1876,6 +1885,15 @@ function IsFreeForOrders(Alias)
 		STATE_CAPTURED, STATE_HIJACKED, STATE_PILLORY, STATE_FIGHTING, STATE_CUTSCENE }
 	for i = 1, #Busy do
 		if GetState(Alias, Busy[i]) then
+			return false
+		end
+	end
+	local M = GetCurrentMeasureName(Alias)
+	if M and string.sub(M, 1, 5) == "Squad" then
+		return false
+	end
+	for i = 1, #TWP_COMMITTED_MEASURES do
+		if M == TWP_COMMITTED_MEASURES[i] then
 			return false
 		end
 	end
