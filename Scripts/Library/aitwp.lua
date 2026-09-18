@@ -2204,12 +2204,21 @@ end
 function EconomyReady(DynAlias)
 	local Count = DynastyGetMemberCount(DynAlias) or 0
 	for i = 0, Count - 1 do
+		-- All three of Workshop's own gates, in its order: idle, off the timer, and
+		-- owning a workshop to go and check. The third was missing until 2026-09-19 and
+		-- it is the one that bites, because for a shadow dynasty Workshop is the ONLY
+		-- child that can fire - BuildWorkshop, BuyWorkshop and SellWorkshop all refuse a
+		-- shadow outright. Without it the gate was necessary but not predictive and 35 of
+		-- 46 entries in that session were shadow houses walking straight through it.
 		if DynastyGetMember(DynAlias, i, "TWP_ER") and dyn_IsIdleMember("TWP_ER")
-				and ReadyToRepeat("TWP_ER", "AI_CheckWorkshop") then
+				and ReadyToRepeat("TWP_ER", "AI_CheckWorkshop")
+				and dyn_GetRandomWorkshopForSim("TWP_ER", "TWP_ERW") then
+			RemoveAlias("TWP_ERW")
 			RemoveAlias("TWP_ER")
 			return true
 		end
 	end
+	RemoveAlias("TWP_ERW")
 	RemoveAlias("TWP_ER")
 	-- The other three children refuse a shadow dynasty outright, so their timers say
 	-- nothing about whether a shadow house has work - and a timer that was never set reads

@@ -665,6 +665,8 @@ aitwp_EconomyReady = EconomyReady
 local Timers, IdleMembers = {}, true
 function ReadyToRepeat(Alias, Name) return Timers[Name] ~= false end
 function dyn_IsIdleMember(Alias) return IdleMembers end
+local OwnsWorkshop = true
+function dyn_GetRandomWorkshopForSim(SimAlias, Out) return OwnsWorkshop end
 function DynastyGetMember(Alias, Index, Out) Aliases[Out] = Index return true end
 function DynastyGetMemberCount(Alias) return 3 end
 
@@ -701,8 +703,14 @@ check("economy ready: the same timers still admit a real house", EconomyReady("d
 Shadow = true
 IdleMembers = true
 Timers.AI_CheckWorkshop = true
-check("economy ready: a shadow house with an idle member still gets Workshop",
+check("economy ready: a shadow house with an idle member and a workshop gets Workshop",
 	EconomyReady("d"))
+-- the third of Workshop's gates. A member who owns no workshop cannot make that node
+-- fire, and for a shadow house Workshop is the only child that can fire at all.
+OwnsWorkshop = false
+check("economy ready: an idle member with no workshop is not enough",
+	EconomyReady("d") == false)
+OwnsWorkshop = true
 DynastyIsShadow = RealIsShadow
 
 IdleMembers = true
