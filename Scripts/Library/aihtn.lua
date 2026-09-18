@@ -56,6 +56,23 @@ function Why(DynAlias, Text)
 		.. " dyn=" .. GetID(DynAlias) .. " " .. Text)
 end
 
+-- The leaf's own arithmetic, as a precondition: compose the war party, commit it against
+-- the defence the caller built, and answer whether anybody at all clears the bar. This is
+-- what the three raid leaves run in their own Weight(), so it is a necessary condition of
+-- each - the soundness rule in docs/AI_ARCHITECTURE.md 2.7. The ::TWP::WHY line carries the
+-- numbers, because "WarParty>=1" on its own never says how far off it was.
+local function WarClears(DynAlias, Defence, Raid)
+	local Candidates = aitwp_WarCandidates(DynAlias, "TWP_HTNW")
+	local Side = {}
+	local Sent, Chance = aitwp_WarCommit("TWP_HTNW", Candidates, Defence, TWP_ATTACK_WIN_CHANCE, Side)
+	aitwp_ClearFighters("TWP_HTNW", Candidates)
+	if Sent < 1 then
+		aihtn_Why(DynAlias, Raid .. " party=" .. Candidates .. " theirs=" .. (Defence.n or 0)
+			.. " chance=" .. string.format("%.2f", Chance) .. " bar=" .. TWP_ATTACK_WIN_CHANCE)
+	end
+	return Sent >= 1
+end
+
 AIHTN_TASKS = {
 	-- Everything the blood rival can be doing to the player, best first.
 	Feud = {
@@ -74,30 +91,41 @@ AIHTN_TASKS = {
 			{ "BuildingArtefact>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "building", R) >= 1 end },
 		}, steps = { "bf_UseBuildingArtefact" } },
 		{ name = "charge", when = {}, steps = { "HaveEvidence", "bf_Charge" } },
-		{ name = "attack", when = {
+		{ name = "assassinate", when = {
+			{ "Raid(assassination)", function(d, p) return aitwp_RaidAllowed(p, "assassination_attempt") end },
 			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
-			{ "Ready(AI_BF_Attack)", function(d) return Ready(d, "AI_BF_Attack") end },
+			{ "Ready(AI_BF_Assassinate)", function(d) return Ready(d, "AI_BF_Assassinate") end },
 			{ "Target(outside)", function(d, p) return aitwp_FindPlayerTarget(p, "outside", "TWP_HTN") end },
-			-- the victim is in TWP_HTN from the predicate above; the leaf refuses the
-			-- fight below TWP_ATTACK_WIN_CHANCE, so the plan must refuse it too
-			{ "WinChance>=bar", function(d, p)
-				local Side = {}
-				local N = aitwp_GatherFighters(d, "TWP_HTNF", Side, TWP_ATTACK_PARTY_MAX)
-				aitwp_ClearFighters("TWP_HTNF", N)
-				if N < 1 then
-					return false
-				end
+			-- the victim is in TWP_HTN from the predicate above, and the leaf refuses any
+			-- fight its war party cannot carry, so the plan has to refuse it too
+			{ "WarParty>=1", function(d, p)
 				local Defence = {}
 				aitwp_DefenceOf(p, "TWP_HTN", Defence)
-				local Chance = aitwp_WinChance(Side, Defence)
-				if Chance < TWP_ATTACK_WIN_CHANCE then
-					aihtn_Why(d, "fight mine=" .. N .. " theirs=" .. (Defence.n or 0)
-						.. " chance=" .. string.format("%.2f", Chance)
-						.. " bar=" .. TWP_ATTACK_WIN_CHANCE)
-				end
-				return Chance >= TWP_ATTACK_WIN_CHANCE
+				return WarClears(d, Defence, "assassination_attempt")
 			end },
-		}, steps = { "bf_ThugAttack" } },
+		}, steps = { "bf_Assassinate" } },
+		{ name = "raidbuilding", when = {
+			{ "Raid(building)", function(d, p) return aitwp_RaidAllowed(p, "raid_building") end },
+			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
+			{ "Ready(AI_BF_RaidBuilding)", function(d) return Ready(d, "AI_BF_RaidBuilding") end },
+			{ "OutsideBuilding", function(d, p) return aitwp_FindOutsideBuilding(p, "TWP_HTN") end },
+			{ "WarParty>=1", function(d, p)
+				local Defence = {}
+				aitwp_BuildingDefence("TWP_HTN", Defence)
+				return WarClears(d, Defence, "raid_building")
+			end },
+		}, steps = { "bf_RaidBuilding" } },
+		{ name = "workersraid", when = {
+			{ "Raid(workers)", function(d, p) return aitwp_RaidAllowed(p, "workers_raid") end },
+			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
+			{ "Ready(AI_BF_WorkersRaid)", function(d) return Ready(d, "AI_BF_WorkersRaid") end },
+			{ "WorkerOutside", function(d, p) return aitwp_FindWorkerTarget(p, "TWP_HTN") end },
+			{ "WarParty>=1", function(d, p)
+				local Defence = {}
+				aitwp_DefenceOf(p, "TWP_HTN", Defence)
+				return WarClears(d, Defence, "workers_raid")
+			end },
+		}, steps = { "bf_WorkersRaid" } },
 		{ name = "razzia", when = {
 			{ "Myrmidon", function() return AliasExists("MYRM") end },
 			{ "Allowed(razzia)", function(d, p) return aitwp_Allowed(d, p, "razzia") end },

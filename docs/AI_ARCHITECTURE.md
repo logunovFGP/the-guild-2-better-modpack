@@ -90,7 +90,7 @@ to `UTILITY_LO..UTILITY_HI` = 0.5..1.5, so a consideration at 0.5 leaves the bas
 alone and the extremes move it by half. **The band cannot veto.** A 0.5 floor is
 why one thug still attacked six people. When a consideration must be able to kill
 the score, give it `lo = 0`, or gate with an explicit early `return 0` above the
-score - `bf_ThugAttack` does the latter for its win chance.
+score - `bf_Assassinate` does the latter for its win chance.
 
 ### 2.2 Goal blackboard - `utility.lua`
 
@@ -224,7 +224,7 @@ the target, so `bf_Provoke` was named the step **22 times, weighed twice, picked
 the x3 on a node that could not fire, and a root that could not skip the tick. Six of the
 twelve methods had the same shape, and every one of them was a method whose leaf resolves
 a target. The rule that follows: **if the leaf resolves a target, the method resolves it
-too.** `aihtn_Targetable` does it for the artefact rows; `attack` carries the win-chance
+too.** `aihtn_Targetable` does it for the artefact rows; the three raids carry the win-chance
 bar, `razzia` and `building` their building lookup, `duel` both of `bf_Provoke`'s paths
 plus the victim's `Get_Insult` cooldown, `taunt` its letter target.
 
@@ -483,3 +483,22 @@ the engine owns the entities; a second store would be a second truth.
   refused purchase backs off for `TWP_BF_CART_RETRY` hours instead of retrying hourly for a
   day. The rule of thumb from all four: **the guard belongs at the one place every caller
   goes through, and a native return value is a claim, not a fact - check the container.**
+- **2026-09-18, the raids** Three feud behaviours over one force-composition pass
+  (`aitwp_WarCandidates` / `WarCommit` / `SquadAttack` in `aitwp.lua`, HTN methods
+  `assassinate`, `raidbuilding`, `workersraid`): **assassination_attempt** against a player
+  character caught outdoors, **workers_raid** against the miners and gatherers who walk out
+  of town, **raid_building** against a mine or hut beyond the walls. The house spends half
+  its thugs and at most a third of any other pool, and commits them **one at a time until
+  the estimate clears the bar, then stops** - sending everyone wins the same fight and costs
+  a day of work from people who were never needed. The pools are everyone who carries a
+  dagger: marauders, mercenaries, thieves, beggars and the family's own rogues. Beggars have
+  no `GL_PROFESSION_` constant anywhere, so `TWP_PROFESSION_BEGGAR` is the row id from
+  `DB/Professions.dbt` (53 `bettler`) rather than an invented name that would read `nil`.
+  The head of the house rides out `TWP_WAR_LEADER_CHANCE` percent of the time and never at a
+  certain win - his sword adds nothing to a fight already won and a dynasty can lose him.
+  All three group through the engine's own squad (`SquadCreate`/`SquadAddMember`) instead of
+  N separate `AttackEnemy` orders, which is what made the old `bf_ThugAttack` trickle in and
+  be beaten in detail; `workers_raid` uses `SquadWaylay`, whose ambush gives up and goes
+  home when nobody comes, which is what should happen in the hours a mine is idle. Gates
+  from `DB/NobilityTitle.dbt`: Patron (title 7, rung 3) **or** round 10 for the first two,
+  Baron (title 10, rung 6) **and** round 10 for the building raid. One day's cooldown each.

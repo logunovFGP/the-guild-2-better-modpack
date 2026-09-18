@@ -49,6 +49,9 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
   ::TWP::BLOODENEMY player= enemy= action=<chosen|kept> name=<free text, last>
                                               who each human player's blood rival is, on every sweep
   ::TWP::BB unregistered key <key> in <where>   a blackboard key nobody declared: it reads nil forever
+  ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=
+                                              one per decided raid: assassination_attempt, workers_raid
+                                              or raid_building, and whether the squad actually formed
   [StartMeasure] <sim>: Canceled 'A'(p) because of priority 'B'(q)
                                               engine: a measure start lost to the running one; p, q are
                                               the interruptvalue column of DB/Measures.dbt
@@ -86,11 +89,12 @@ WHY = re.compile(r"::TWP::WHY (.*)$")
 ORDER = re.compile(r"::TWP::ORDER (.*)$")
 CARTBUY = re.compile(r"::TWP::CARTBUY (.*)$")
 BLOODENEMY = re.compile(r"::TWP::BLOODENEMY (.*)$")
+WAR = re.compile(r"::TWP::WAR (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
 ROOTS = {"Dynasty", "Election", "Feud", "Trial", "Duel", "ToMEconomy", "Priorities", "IncomeForAI", "DoNothing", "BloodFeud"}
-BLOODFEUD = {"bf_Provoke", "bf_ForgeEvidence", "bf_Charge", "bf_Razzia", "bf_ThugAttack", "bf_Recruit", "bf_Equip",
+BLOODFEUD = {"bf_Provoke", "bf_ForgeEvidence", "bf_Charge", "bf_Razzia", "bf_Assassinate", "bf_WorkersRaid", "bf_RaidBuilding", "bf_Recruit", "bf_Equip",
              "bf_Taunt", "bf_FundAllies", "bf_Hideout", "bf_Procure", "bf_UseArtefact",
              "bf_UseBuildingArtefact"}
 DYNASTY = {"AIContractGuildHouse", "ApplyForOffice", "BuildHome", "CollectBankDebts", "CourtLover", "DefendRogue",
@@ -185,7 +189,7 @@ class Session(object):
         self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
         self.htn = []                            # one entry per ::TWP::HTN line
         self.why, self.orders, self.cartbuy = [], [], []
-        self.rivals, self.blackboard = [], Counter()
+        self.rivals, self.blackboard, self.raids = [], Counter(), []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -317,6 +321,10 @@ class Session(object):
             if m:
                 self.rivals.append(kv(m.group(1)))
                 continue
+            m = WAR.search(line)
+            if m:
+                self.raids.append(kv(m.group(1)))
+                continue
             m = BB.search(line)
             if m:
                 self.blackboard[m.group(1).strip()[:90]] += 1
@@ -432,10 +440,19 @@ HTN_NOTES = {
         "The duel modes of aitwp_PlayerTargetScore (Scripts/Library/aitwp.lua) return nil for a target "
         "that is indoors (SimIsInside), under 16, or the wrong class - a player who spends the day inside "
         "buildings cannot be provoked at all. 189 of 189 on 2026-09-18."),
-    "Feud.attack": ("WARN",
-        "The bar is TWP_ATTACK_WIN_CHANCE = 0.75 in Scripts/Library/aitwp.lua, and aitwp_GatherFighters "
-        "counts hired thugs only - never party members - so a house without a gang can never clear it. "
-        "The ::TWP::WHY fight lines carry mine=, theirs= and chance=."),
+    "Feud.assassinate": ("WARN",
+        "Scripts/AI/BaseTree/BloodFeud/bf_Assassinate.lua. The bar is TWP_ATTACK_WIN_CHANCE = 0.75 and the "
+        "party is aitwp_WarCandidates - half the thugs, a third of any other pool, plus the family rogues - "
+        "committed one at a time by aitwp_WarCommit until it clears. The ::TWP::WHY lines carry party=, "
+        "theirs= and chance=; the gate is Patron or round 10 (aitwp_RaidAllowed)."),
+    "Feud.workersraid": ("NOTE",
+        "Scripts/AI/BaseTree/BloodFeud/bf_WorkersRaid.lua. Needs a player worker outside the town radius at "
+        "that moment (aitwp_FindWorkerTarget), so it fails all the hours the mines and huts are idle - that "
+        "is expected, not a defect. Same gate as the assassination."),
+    "Feud.raidbuilding": ("NOTE",
+        "Scripts/AI/BaseTree/BloodFeud/bf_RaidBuilding.lua. The strictest gate in the tree: the player a "
+        "high noble (Baron, rung 6) AND round 10, both. aitwp_FindOutsideBuilding wants a player building "
+        "beyond the town radius, which many maps simply do not give the player."),
     "Feud.artefact": ("WARN",
         "aitwp_ReadyArtefacts wants the tool allowed at the player's rung (the ladder in aitwp_Allowed), "
         "off its Use<item> cooldown, and either in hand or handed over from the store. The ::TWP::WHY "
@@ -716,6 +733,25 @@ def check_buyworkshop(s):
                       "run and put it back.")
 
 
+def check_raids(s):
+    if not s.raids:
+        return
+    per_raid = defaultdict(Counter)
+    for raid in s.raids:
+        per_raid[raid.get("raid", "?")][raid.get("sent", "?")] += 1
+    for raid, results in sorted(per_raid.items()):
+        failed = sum(count for sent, count in results.items() if sent != "true")
+        yield Finding("WARN" if failed else "NOTE", "raid",
+                      "%s decided %d times, %d of them never formed a squad"
+                      % (raid, sum(results.values()), failed),
+                      "aitwp_SquadAttack in Scripts/Library/aitwp.lua creates the squad round the first "
+                      "fighter and adds the rest; sent=false means SquadGet found no squad after "
+                      "SquadCreate, so the leader measure name is wrong for that raid or the fighter could "
+                      "not lead one. The leaves are Scripts/AI/BaseTree/BloodFeud/bf_Assassinate.lua, "
+                      "bf_WorkersRaid.lua and bf_RaidBuilding.lua; each ::TWP::WAR line carries party=, "
+                      "leader= and chance=.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -769,7 +805,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_blood_rival, check_idle, check_test_knobs)
+          check_handovers, check_buyworkshop, check_raids, check_blood_rival, check_idle, check_test_knobs)
 
 
 def findings(session):

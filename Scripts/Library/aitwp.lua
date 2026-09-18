@@ -1841,6 +1841,263 @@ end
 -- The house attacks when it reckons it wins three fights in four.
 TWP_ATTACK_WIN_CHANCE = 0.75
 
+-- A player worker caught out of town: the miners, lumberjacks and gatherers who walk to a
+-- resource and back with no city guard standing next to them. Weakest fighter first, so an
+-- ambush picks the one it can actually take.
+function FindWorkerTarget(PlayerDyn, OutAlias)
+	local Best, BestScore = -1, nil
+	local Count = DynastyGetWorkerCount(PlayerDyn, -1) or 0
+	for i = 0, Count - 1 do
+		if DynastyGetWorker(PlayerDyn, -1, i, "TWP_WT")
+				and not GetState("TWP_WT", STATE_DEAD) and aitwp_IsOutsideTown("TWP_WT") then
+			local Score = -(GetSkillValue("TWP_WT", FIGHTING) or 0)
+			if BestScore == nil or Score > BestScore then
+				Best, BestScore = i, Score
+			end
+		end
+	end
+	RemoveAlias("TWP_WT")
+	if Best < 0 then
+		return false
+	end
+	return DynastyGetWorker(PlayerDyn, -1, Best, OutAlias)
+end
+
+-- A building is not a sim, so aitwp_IsOutsideTown cannot answer for one: it asks
+-- SimIsInside first. This is the same distance test without that question.
+function IsOutsideSettlement(BldAlias)
+	if not GetNearestSettlement(BldAlias, "TWP_OS") then
+		return true
+	end
+	local Far = GetDistance(BldAlias, "TWP_OS") > aitwp_TownRadius("TWP_OS")
+	RemoveAlias("TWP_OS")
+	return Far
+end
+
+-- A player building beyond the town: the mines, huts and farms no watch patrols. Richest
+-- first. Unlike aitwp_FindTargetBuilding this keeps the resource buildings - out here they
+-- are the whole point.
+function FindOutsideBuilding(PlayerDyn, OutAlias)
+	local Best, BestScore = -1, nil
+	local Count = DynastyGetBuildingCount2(PlayerDyn) or 0
+	for i = 0, Count - 1 do
+		if DynastyGetBuilding2(PlayerDyn, i, "TWP_OB") and aitwp_IsOutsideSettlement("TWP_OB") then
+			local Score = (BuildingGetLevel("TWP_OB") or 0) * 10
+			if BestScore == nil or Score > BestScore then
+				Best, BestScore = i, Score
+			end
+		end
+	end
+	RemoveAlias("TWP_OB")
+	if Best < 0 then
+		return false
+	end
+	return DynastyGetBuilding2(PlayerDyn, Best, OutAlias)
+end
+
+-- What stands between a raid and a building: the people working in it. A building has no
+-- sheet of its own, so aitwp_DefenceOf cannot be pointed at one. An empty mine defends
+-- itself with nobody, and the estimate says so.
+function BuildingDefence(BldAlias, Side)
+	local Count = BuildingGetWorkerCount(BldAlias) or 0
+	for i = 0, Count - 1 do
+		if (Side.n or 0) < TWP_DEFENCE_MAX and BuildingGetWorker(BldAlias, i, "TWP_BD") then
+			aitwp_AddFighter(Side, "TWP_BD")
+		end
+	end
+	RemoveAlias("TWP_BD")
+	return Side
+end
+
+-- The war party --------------------------------------------------------------------------
+--
+-- One force-composition pass behind all three raids (assassination_attempt, workers_raid,
+-- raid_building). The house does not empty itself into a fight: it spends half its thugs
+-- and at most a third of any other pool, commits them one at a time until the estimate
+-- clears the bar, and stops there - the rest stay at work. Committing incrementally rather
+-- than sending everyone is what keeps a house that wins its raids from losing its economy
+-- to them.
+--
+-- Everyone in the pools carries a dagger by default, which is the whole reason a beggar or
+-- a lumberjack's guard is worth bringing. None of them are soldiers.
+
+-- Half the thugs, because the other half hold the buildings. Rounded up on the odd one, so
+-- a house with a single thug can still act - flooring it would quietly take away the one
+-- raid a small house can mount.
+TWP_WAR_THUG_SHARE = 0.5
+-- Any other pool: never more than a third at a single attack, floored. A pool of two
+-- therefore sends nobody, which is deliberate - two of anything is not a war party.
+TWP_WAR_WORKER_SHARE = 0.33
+TWP_WAR_PARTY_MAX = 8
+-- Chance the head of the house rides out with them, in percent. Never when the party wins
+-- outright: there is nothing left to gain and a dynasty to lose.
+TWP_WAR_LEADER_CHANCE = 30
+-- Game hours between raids of one kind: a raid is a day's undertaking.
+TWP_WAR_COOLDOWN = 24
+
+-- Beggars have no GL_PROFESSION_ constant in this tree or in vanilla, and our checker
+-- cannot see engine constants - an invented one reads nil and the branch never runs, the
+-- way GL_CLASS_FIGHTER does. This is the row id from DB/Professions.dbt (53 "bettler"),
+-- named here rather than left as a literal in the middle of a loop.
+TWP_PROFESSION_BEGGAR = 53
+
+-- The gates. TWP_TITLE_RUNGS indexes DB/NobilityTitle.dbt: rung 3 is Patrizier (title 7),
+-- which the English UI calls Patron; rung 6 is Baron (title 10), the high noble a building
+-- raid waits for.
+TWP_WAR_RUNG_PATRON = 3
+TWP_WAR_RUNG_BARON = 6
+TWP_WAR_ROUND = 10
+
+-- Built per call, never at load time: the GL_PROFESSION_ constants belong to the engine and
+-- a table filled before it has defined them is a list of nils and no party at all.
+-- aitwp_GatherFighters learned this once already; do not hoist it.
+function WarPools()
+	return {
+		{ GL_PROFESSION_MYRMIDON, TWP_WAR_THUG_SHARE },
+		{ GL_PROFESSION_ROBBER, TWP_WAR_WORKER_SHARE },
+		{ GL_PROFESSION_MERCENARY, TWP_WAR_WORKER_SHARE },
+		{ GL_PROFESSION_THIEF, TWP_WAR_WORKER_SHARE },
+		{ TWP_PROFESSION_BEGGAR, TWP_WAR_WORKER_SHARE },
+	}
+end
+
+-- How many of a pool of Count the house will risk at once.
+function WarShare(Count, Share)
+	if Count < 1 then
+		return 0
+	end
+	if Share >= 0.5 then
+		return math.floor(Count * Share + 0.5)
+	end
+	return math.floor(Count * Share)
+end
+
+-- The head of the house: member 0, the one a dynasty cannot afford to lose.
+function IsHouseHead(DynAlias, Alias)
+	if not DynastyGetMember(DynAlias, 0, "TWP_HEAD") then
+		return false
+	end
+	local Same = GetID("TWP_HEAD") == GetID(Alias)
+	RemoveAlias("TWP_HEAD")
+	return Same
+end
+
+-- Everyone the house may put on the road, written into <Prefix>1..n and returned as n.
+-- Hirelings in pool order first, then the family's own rogues - they carry a dagger and no
+-- workshop misses them - and never the head of the house, who is aitwp_WarLeader's separate
+-- decision. Free for orders only: a thug at mass is not a soldier.
+function WarCandidates(DynAlias, Prefix)
+	local Pools = aitwp_WarPools()
+	local Found = 0
+	for p = 1, #Pools do
+		local Profession, Share = Pools[p][1], Pools[p][2]
+		local Count = DynastyGetWorkerCount(DynAlias, Profession) or 0
+		local Cap = aitwp_WarShare(Count, Share)
+		local Taken = 0
+		for i = 0, Count - 1 do
+			if Taken < Cap and Found < TWP_WAR_PARTY_MAX
+					and DynastyGetWorker(DynAlias, Profession, i, Prefix .. (Found + 1))
+					and aitwp_IsFreeForOrders(Prefix .. (Found + 1)) then
+				Found, Taken = Found + 1, Taken + 1
+			end
+		end
+	end
+	local Members = DynastyGetMemberCount(DynAlias) or 0
+	for i = 0, Members - 1 do
+		if Found < TWP_WAR_PARTY_MAX and DynastyGetMember(DynAlias, i, Prefix .. (Found + 1))
+				and SimGetClass(Prefix .. (Found + 1)) == GL_CLASS_CHISELER
+				and not aitwp_IsHouseHead(DynAlias, Prefix .. (Found + 1))
+				and dyn_IsIdleMember(Prefix .. (Found + 1)) then
+			Found = Found + 1
+		end
+	end
+	RemoveAlias(Prefix .. (Found + 1))
+	return Found
+end
+
+-- Commit candidates one at a time until the estimate clears Bar, and stop there. Returns
+-- how many are committed (0 when the whole pool never clears it) and the chance they clear
+-- it with. Side is filled with the committed fighters; Defence is the other side, already
+-- built by the caller from the victim and their escort.
+--
+-- Incremental on purpose: "send everyone" wins the same fight and costs the house a day of
+-- work from people who were never needed.
+function WarCommit(Prefix, Candidates, Defence, Bar, Side)
+	for i = 1, Candidates do
+		aitwp_AddFighter(Side, Prefix .. i)
+		local Chance = aitwp_WinChance(Side, Defence)
+		if Chance >= Bar then
+			return i, Chance
+		end
+	end
+	return 0, aitwp_WinChance(Side, Defence)
+end
+
+-- Does the head of the house ride out? TWP_WAR_LEADER_CHANCE percent of the time, and never
+-- when the party already wins outright - safety first, and a certain win is the one case
+-- where his sword adds nothing. Rand is legal here because this is only ever called from
+-- Execute(): the decision is made once and not re-rolled every tick.
+function WarLeader(DynAlias, Chance, OutAlias)
+	if Chance >= 1 then
+		return false
+	end
+	if Rand(100) >= TWP_WAR_LEADER_CHANCE then
+		return false
+	end
+	if not DynastyGetMember(DynAlias, 0, OutAlias) or not AliasExists(OutAlias) then
+		return false
+	end
+	if GetState(OutAlias, STATE_DEAD) or not dyn_IsIdleMember(OutAlias) then
+		RemoveAlias(OutAlias)
+		return false
+	end
+	return true
+end
+
+-- Group them and send them at once. The squad is the engine's own: the leader creates it
+-- around a target with a member measure and the rest join, so they move and strike together
+-- instead of trickling in and being beaten one at a time - which is what N separate
+-- AttackEnemy orders actually did. Returns true when the squad exists and somebody is in it.
+function SquadAttack(Prefix, Count, TargetAlias, LeaderMeasure, MemberMeasure)
+	if Count < 1 then
+		return false
+	end
+	SquadCreate(Prefix .. 1, LeaderMeasure, TargetAlias, MemberMeasure, MemberMeasure)
+	if not SquadGet(Prefix .. 1, "TWP_Squad") then
+		return false
+	end
+	for i = 2, Count do
+		SquadAddMember("TWP_Squad", -1, Prefix .. i)
+	end
+	local Joined = SquadGetMemberCount("TWP_Squad", true) or 0
+	RemoveAlias("TWP_Squad")
+	return Joined > 0
+end
+
+-- ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=
+-- One line per decided raid. Without it a raid that never happened and a raid that happened
+-- and lost read exactly the same in the log.
+function LogWar(DynAlias, Raid, TargetAlias, Party, Leader, Chance, Sent)
+	local Target = -1
+	if AliasExists(TargetAlias) then
+		Target = GetID(TargetAlias)
+	end
+	utility_Emit("::TWP::WAR t=" .. string.format("%.2f", GetGametime())
+		.. " dyn=" .. GetID(DynAlias) .. " raid=" .. Raid .. " target=" .. Target
+		.. " party=" .. Party .. " leader=" .. tostring(Leader)
+		.. " chance=" .. string.format("%.2f", Chance) .. " sent=" .. tostring(Sent))
+end
+
+-- What the player has to be before the house dares. Patron, or ten rounds in - a house that
+-- waits for a title the player never takes never acts at all. The building raid wants both,
+-- and a high noble: it is the loudest thing the feud does.
+function RaidAllowed(PlayerDyn, Raid)
+	if Raid == "raid_building" then
+		return aitwp_PlayerRung(PlayerDyn) >= TWP_WAR_RUNG_BARON and GetRound() >= TWP_WAR_ROUND
+	end
+	return aitwp_PlayerRung(PlayerDyn) >= TWP_WAR_RUNG_PATRON or GetRound() >= TWP_WAR_ROUND
+end
+
 -- May Alias be told to run Measure right now, and claim the right to do it?
 --
 -- The engine cancels a running measure when the same measure is started again at equal

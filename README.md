@@ -606,8 +606,12 @@ tools left unused go back to the store daily. Equipment is issued from the store
 (`bf_Equip`). On difficulty 4 and 5 a courier (`aitwp_CourierOrders`) orders as many
 reputation or economic tools as the player's rung exceeds the rival's, paid at base
 price and a half, delivered next day - never lethal tools or papers. Thugs attack with
-the plain Attack order (`bf_ThugAttack`: every thug idle or on its rounds, forced past
-patrol and escort). It acquires a thieves' guild as its hideout whatever its class
+one squad, not one order each (`bf_Assassinate`, `bf_WorkersRaid`, `bf_RaidBuilding`: half
+the thugs and a third of any other pool - marauders, mercenaries, thieves, beggars and the
+family's own rogues, everyone who carries a dagger - committed one at a time until the
+estimate clears three fights in four and no further, grouped with the engine's squad system
+so they arrive together, and the head of the house riding out 30% of the time but never on a
+certain win). It acquires a thieves' guild as its hideout whatever its class
 (`bf_Hideout`), taunts by letter, funds its allies, and uses every artefact of the
 ladder through `bf_UseArtefact`/`bf_UseBuildingArtefact`. Every leaf is scored, not
 constant: the thug attack by the victim's health and the thugs free, provocation by the

@@ -566,6 +566,72 @@ check("two of a kind beat one four to one", near(WinChance(Two, Solo), 0.8))
 check("two of a kind clear the three-in-four bar", WinChance(Two, Solo) >= TWP_ATTACK_WIN_CHANCE)
 check("one of a kind does not", WinChance(One, Solo) < TWP_ATTACK_WIN_CHANCE)
 
+-- the war party: composition caps, incremental commitment, the leader roll -----------------
+aitwp_WarPools, aitwp_WarShare, aitwp_WarCandidates = WarPools, WarShare, WarCandidates
+aitwp_IsHouseHead, aitwp_WarCommit, aitwp_RaidAllowed = IsHouseHead, WarCommit, RaidAllowed
+GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER = 1, 2
+GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY = 3, 4
+GL_CLASS_CHISELER = 4
+
+-- half the thugs, rounded up so a house with one thug can still act
+check("war share: one thug is still one", WarShare(1, TWP_WAR_THUG_SHARE) == 1)
+check("war share: three thugs send two", WarShare(3, TWP_WAR_THUG_SHARE) == 2)
+check("war share: four thugs send two", WarShare(4, TWP_WAR_THUG_SHARE) == 2)
+-- a third of any other pool, floored: two of anything is not a war party
+check("war share: two workers send nobody", WarShare(2, TWP_WAR_WORKER_SHARE) == 0)
+check("war share: ten workers send three", WarShare(10, TWP_WAR_WORKER_SHARE) == 3)
+check("war share: an empty pool sends nobody", WarShare(0, TWP_WAR_WORKER_SHARE) == 0)
+
+-- commitment stops at the bar instead of emptying the house into the fight
+sheet("w1", 20, 0, 3, 100, 3)
+sheet("w2", 20, 0, 3, 100, 3)
+sheet("w3", 20, 0, 3, 100, 3)
+sheet("w4", 20, 0, 3, 100, 3)
+Aliases.w1, Aliases.w2, Aliases.w3, Aliases.w4 = "w1", "w2", "w3", "w4"
+local Lone = {}
+AddFighter(Lone, "d1")
+local Party = {}
+local Sent, Chance = WarCommit("w", 4, Lone, TWP_ATTACK_WIN_CHANCE, Party)
+check("war commit: stops at two, the first party that clears the bar", Sent == 2)
+check("war commit: and reports the chance it stopped at", Chance >= TWP_ATTACK_WIN_CHANCE)
+sheet("giant", 400, 90, 9, 400, 12)
+local Hopeless, Huge = {}, {}
+AddFighter(Huge, "giant")
+local None = WarCommit("w", 4, Huge, TWP_ATTACK_WIN_CHANCE, Hopeless)
+check("war commit: nobody goes when the whole house cannot clear it", None == 0)
+
+-- the raid gates: Patron (rung 3) or round 10, and the building raid wants both
+Titles = { 7 }
+Round = 1
+check("raid: Patron alone opens the assassination", RaidAllowed("player", "assassination_attempt"))
+check("raid: Patron alone does not open a building raid", RaidAllowed("player", "raid_building") == false)
+Titles = { 1 }
+Round = 10
+check("raid: round ten alone opens the workers raid", RaidAllowed("player", "workers_raid"))
+check("raid: round ten alone does not open a building raid", RaidAllowed("player", "raid_building") == false)
+Titles = { 10 }
+Round = 10
+check("raid: Baron and round ten open the building raid", RaidAllowed("player", "raid_building"))
+Titles = { 10 }
+Round = 9
+check("raid: Baron without the round does not", RaidAllowed("player", "raid_building") == false)
+Titles = { 1 }
+Round = 1
+check("raid: a serf in round one is raided by nobody", RaidAllowed("player", "assassination_attempt") == false)
+
+-- the leader roll: 30 percent, and never when the party already wins outright
+aitwp_WarLeader = WarLeader
+local RealRand, RollValue = Rand, 0
+function Rand(Range) return RollValue end
+function DynastyGetMember(Alias, Index, Out) Aliases[Out] = "boss"; return true end
+function dyn_IsIdleMember(Alias) return true end
+RollValue = 0
+check("war leader: never rides out on a certain win", WarLeader("d", 1, "Boss") == false)
+check("war leader: rides out on a made roll", WarLeader("d", 0.8, "Boss") == true)
+RollValue = TWP_WAR_LEADER_CHANCE
+check("war leader: stays home on a missed roll", WarLeader("d", 0.8, "Boss") == false)
+Rand = RealRand
+
 -- a hurt thug against a fit, armoured swordsman is the fight that was killing them
 sheet("hurt", 12, 0, 2, 30, 2)
 sheet("knight", 40, 50, 6, 100, 8)
