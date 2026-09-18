@@ -21,10 +21,31 @@ end
 -- from a town where nobody fell ill: the engine prints no "Executing Measures" line for
 -- a production measure, so this file leaves no trace at all otherwise.
 function Emit(SimAlias, Cost, Outcome)
+	local Extra = ""
+	-- A refusal with money in the purse is the interesting one, and it happened: on
+	-- 2026-09-19 a sim was turned away at cost=461 holding purse=424750. GetMoney and
+	-- SpendMoney both take a guildobject and are meant to be the same pot, so when the
+	-- charge fails anyway the question is which pot each one really reads - the character
+	-- panel shows that sim carrying 0 coins against assets of 474515, so GetMoney on a
+	-- house member is very likely answering for the house. Log the house's own purse
+	-- beside it, and the four flags that decide who is billed. Equal numbers would mean
+	-- the bill belongs to the dynasty alias rather than the member.
+	if Outcome == "nomoney" then
+		local House = -1
+		if GetDynasty(SimAlias, "TWP_HealDyn") then
+			House = math.floor(GetMoney("TWP_HealDyn") or 0)
+		end
+		Extra = " dyn=" .. GetDynastyID(SimAlias) .. " housepurse=" .. House
+			.. " dynsim=" .. tostring(IsDynastySim(SimAlias))
+			.. " party=" .. tostring(IsPartyMember(SimAlias))
+			.. " isplayer=" .. tostring(DynastyIsPlayer(SimAlias))
+			.. " isai=" .. tostring(DynastyIsAI(SimAlias))
+		RemoveAlias("TWP_HealDyn")
+	end
 	utility_Emit("::TWP::HEAL t=" .. string.format("%.2f", GetGametime())
 		.. " sim=" .. GetID(SimAlias) .. " hospital=" .. GetID("Hospital")
 		.. " cost=" .. math.floor(Cost or 0) .. " purse=" .. math.floor(GetMoney(SimAlias) or 0)
-		.. " outcome=" .. Outcome)
+		.. " outcome=" .. Outcome .. Extra)
 end
 
 function ManageMedicine(checker, treatment, property) 
