@@ -15,7 +15,11 @@ function Weight()
 		return 0
 	end	
 	
-	return utility_Trace("dynasty", "ChargeCharacter", GetEvidenceValues("SIM", "Victim"))
+	-- or 0: utility_Trace concatenates the weight into its log line, so a nil from the
+	-- native would error in Weight() and the node would weigh 0 with nothing said. It also
+	-- returned that nil straight to the selector before this was traced, which is
+	-- undefined for the roulette. No evidence is a weight of nothing either way.
+	return utility_Trace("dynasty", "ChargeCharacter", GetEvidenceValues("SIM", "Victim") or 0)
 end
 
 function Execute()
