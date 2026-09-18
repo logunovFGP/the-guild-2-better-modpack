@@ -276,6 +276,10 @@ economy_CalcCurrentResourceNeeds = CalcCurrentResourceNeeds
 economy_GetItemIngredients, economy_GetProtoIngredientUsers = GetItemIngredients, GetProtoIngredientUsers
 economy_BuildingCanProduceItem, economy_GetLiveProducts = BuildingCanProduceItem, GetLiveProducts
 economy_FilterNeedsByLiveRecipes = FilterNeedsByLiveRecipes
+economy_ProbeValue, economy_ProbeItemIdSpaces = ProbeValue, ProbeItemIdSpaces
+-- The id probe is a runtime exploration aid, not behaviour under test, and it would take
+-- Logged[1] away from every filter assertion below. Silenced here, exercised at the end.
+ECONOMY_IDPROBE_DONE = 1
 economy_StorageGetProducts = StorageGetProducts
 
 economy_StorageGetResources, economy_StorageSaveResources = StorageGetResources, StorageSaveResources
@@ -536,6 +540,44 @@ check("level up did not add an ingredient of the recipe still locked", Seen[133]
 check("level up produced the ten live resources", StoredCount == 10)
 check("the configured minimum stayed on Charcoal 203",
 	Seen[203] ~= nil and StoredMins[Seen[203]] == 99)
+
+-- the id probe -------------------------------------------------------------------------
+-- Shape only, deliberately. The stubs above answer ItemGetID and BuildingCanProduce with
+-- `tonumber(Value) or NameToId[Value]`, which accepts every form; the whole reason the
+-- probe exists is that no harness can say which form the real engine resolves. What can
+-- be checked here is that the line carries every field and stays parseable, because
+-- kv() in ai_telemetry.py splits on whitespace and would silently drop a value with a
+-- space in it.
+ECONOMY_IDPROBE_DONE = nil
+local ProbeBld = Hospital(WithMixture)
+Logged = {}
+economy_ProbeItemIdSpaces(ProbeBld, 392)
+local Probe = Logged[1]
+check("id probe: emits one line", Probe ~= nil and string.find(Probe, "::TWP::IDPROBE", 1, true) == 1)
+check("id probe: fires only once a session", ECONOMY_IDPROBE_DONE == 1)
+Logged = {}
+economy_ProbeItemIdSpaces(ProbeBld, 392)
+check("id probe: and is silent the second time", Logged[1] == nil)
+local Fields = { "bld=", "proto=", "listid=", "getname=", "id_byname=", "id_bynumstr=",
+	"id_bynum=", "prod1=", "canprod_num=", "canprod_numstr=", "canprod_name=" }
+for i = 1, table.getn(Fields) do
+	check("id probe: carries " .. Fields[i], string.find(Probe, Fields[i], 1, true) ~= nil)
+end
+check("id probe: every value is typed", string.find(Probe, "listid=number:", 1, true) ~= nil)
+-- a name with a space in it must not split the line into two keys
+check("id probe: a nil answer still reads as one token",
+	economy_ProbeValue(nil) == "nil:-")
+check("id probe: a spaced name is collapsed",
+	economy_ProbeValue("Toad Excrements") == "string:Toad_Excrements")
+-- kv() keeps only tokens containing "=", so a value with a space in it would be dropped
+-- silently rather than noisily: assert every token past the tag still carries one
+local Loose = 0
+for Token in string.gfind(string.gsub(Probe, "^::TWP::IDPROBE%s+", ""), "%S+") do
+	if string.find(Token, "=", 1, true) == nil then
+		Loose = Loose + 1
+	end
+end
+check("id probe: every token is a key=value pair", Loose == 0)
 
 if Failures > 0 then
 	io.stderr:write(Failures .. " check(s) failed\n")

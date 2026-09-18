@@ -780,7 +780,65 @@ end
 -- Mixture needs it, on every hospital, including the ones that never bought the 1000
 -- gold Mixture upgrade. An entry that no product of this proto references at all is
 -- deliberate - the divehouse drinks, the alchemist's own herbs - and is always kept.
+-- <type>:<value> for one engine return, with nothing in it that kv() in ai_telemetry.py
+-- would split on. The type is the whole point: "963" and 963 are different table keys, so
+-- two id lists that print identically can still never match.
+function ProbeValue(Value)
+	local Kind = type(Value)
+	if Value == nil then
+		return "nil:-"
+	end
+	return Kind .. ":" .. string.gsub(tostring(Value), "%s", "_")
+end
+
+-- Once per session: what the engine actually returns for the two id spaces this filter
+-- compares, and which argument form BuildingCanProduce accepts.
+--
+-- Why reading the metadata cannot settle it. meta/engine.signatures.tsv gives
+-- BuildingCanProduce building,string and ItemGetID string - but that column records the
+-- accessor the binding calls, not a requirement. ItemGetName is declared string too and
+-- every caller in this tree passes it a number, because lua_tostring converts a number in
+-- place. So a numeric argument cannot raise a type error, and that silence says nothing
+-- about whether the engine then resolves "963" as item 963.
+--
+-- What rides on it. economy_GetResourceNeeds builds its ids with
+-- ItemGetID(<numeric string from gfind>) - vanilla, unchanged - while
+-- economy_GetProtoIngredientUsers keys its table from GetDatabaseValue("Items", id,
+-- "prodN"). Disagree in type or value and Users[ItemId] never hits, Matched stays 0, and
+-- the filter silently drops nothing: the supply-filter-dead ERROR, reported rather than
+-- guessed at. These lines are what turn that ERROR into a diagnosis.
+ECONOMY_IDPROBE_DONE = nil
+function ProbeItemIdSpaces(BldAlias, BldId)
+	if ECONOMY_IDPROBE_DONE or not utility_LogEnabled() then
+		return
+	end
+	local ProductCount, Products = helpfuncs_StringToIdList(
+		GetDatabaseValue("BuildingToItems", BldId, "produceditems") or "")
+	if ProductCount < 1 then
+		return                          -- produces nothing; the next building will answer
+	end
+	ECONOMY_IDPROBE_DONE = 1
+	local P = Products[1]
+	local Name = ItemGetName(P)
+	utility_Emit("::TWP::IDPROBE t=" .. string.format("%.2f", GetGametime())
+		.. " bld=" .. GetID(BldAlias) .. " proto=" .. BldId
+		-- the id as helpfuncs_StringToIdList makes it, and the name the engine gives back
+		.. " listid=" .. economy_ProbeValue(P)
+		.. " getname=" .. economy_ProbeValue(Name)
+		-- three ItemGetID forms: by name, by the numeric string vanilla passes, by number
+		.. " id_byname=" .. economy_ProbeValue(ItemGetID(Name))
+		.. " id_bynumstr=" .. economy_ProbeValue(ItemGetID(tostring(P)))
+		.. " id_bynum=" .. economy_ProbeValue(ItemGetID(P))
+		-- the other side of the comparison, read straight from the recipe column
+		.. " prod1=" .. economy_ProbeValue(GetDatabaseValue("Items", P, "prod1"))
+		-- and which argument form the engine accepts for a product it certainly makes
+		.. " canprod_num=" .. economy_ProbeValue(BuildingCanProduce(BldAlias, P))
+		.. " canprod_numstr=" .. economy_ProbeValue(BuildingCanProduce(BldAlias, tostring(P)))
+		.. " canprod_name=" .. economy_ProbeValue(BuildingCanProduce(BldAlias, Name)))
+end
+
 function FilterNeedsByLiveRecipes(BldAlias, BldId, Count, Items, Multiplier, UsageCount)
+	economy_ProbeItemIdSpaces(BldAlias, BldId)
 	local Users, UserCounts = economy_GetProtoIngredientUsers(BldId)
 	local LiveCount, Live, Unlocked = economy_GetLiveProducts(BldAlias)
 

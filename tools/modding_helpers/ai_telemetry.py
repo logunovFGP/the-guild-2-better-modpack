@@ -65,6 +65,13 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
                                               nothing ever clears these, so a plot keeps wanting what a
                                               previous level, owner or occupant wanted
   ::TWP::UNLOAD t= cart= dest= via=<UnloadAll|autocart> items=<id:name:count;..>
+  ::TWP::IDPROBE t= bld= proto= listid= getname= id_byname= id_bynumstr= id_bynum= prod1=
+                 canprod_num= canprod_numstr= canprod_name=   each value <luatype>:<text>
+                                              once per session: what the engine really returns for
+                                              the two id spaces economy_FilterNeedsByLiveRecipes
+                                              compares, and which argument form BuildingCanProduce
+                                              accepts. engine.signatures.tsv cannot say - it records
+                                              the accessor, and lua_tostring converts in place
                                               everything a cart put into a building; the autocart strips its
                                               EmptySlot dummies around each transfer, and in that window the
                                               engine can load goods of its own
@@ -112,6 +119,7 @@ HEAL = re.compile(r"::TWP::HEAL (.*)$")
 SUPPLY = re.compile(r"::TWP::SUPPLY (.*)$")
 NEEDSTALE = re.compile(r"::TWP::NEEDSTALE (.*)$")
 UNLOAD = re.compile(r"::TWP::UNLOAD (.*)$")
+IDPROBE = re.compile(r"::TWP::IDPROBE (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -237,6 +245,7 @@ class Session(object):
         self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
         self.attacks, self.heals = [], []
         self.supply, self.stale_needs, self.unloads = [], [], []
+        self.idprobe = []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -395,6 +404,10 @@ class Session(object):
             m = UNLOAD.search(line)
             if m:
                 self.unloads.append(kv(m.group(1)))
+                continue
+            m = IDPROBE.search(line)
+            if m:
+                self.idprobe.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1193,6 +1206,73 @@ def check_stray_goods(s):
                       "Need_ - look at the engine's own management next.")
 
 
+def check_idprobe(s):
+    """The one-shot ::TWP::IDPROBE line, read as a verdict rather than left to the eye.
+
+    It exists because the metadata cannot answer the question. meta/engine.signatures.tsv
+    records the accessor a binding calls, not a requirement: BuildingCanProduce and
+    ItemGetID both read `string`, and so does ItemGetName, whose every caller in the tree
+    passes a number - lua_tostring converts in place, so a numeric argument can never
+    raise a type error. That silence proves nothing; only a running game does.
+    """
+    if not s.idprobe:
+        return
+    row = s.idprobe[0]
+
+    def part(key, which):
+        kind, _, text = row.get(key, "nil:-").partition(":")   # each value is <type>:<text>
+        return kind if which == "type" else text
+
+    listid, byname = part("listid", "text"), part("id_byname", "text")
+    numstr, bynum = part("id_bynumstr", "text"), part("id_bynum", "text")
+    prod1_type, prod1 = part("prod1", "type"), part("prod1", "text")
+
+    # 1. does ItemGetID resolve the numeric string vanilla actually hands it?
+    if numstr != listid:
+        yield Finding("ERROR", "idprobe-numstr-lost",
+                      'ItemGetID("%s") returned %s, not the id %s - every resource need is built '
+                      'this way' % (listid, row.get("id_bynumstr"), listid),
+                      "Scripts/Library/economy.lua, economy_GetResourceNeeds builds its ids with "
+                      "ItemGetID(<numeric string from gfind>). If that does not round-trip, the "
+                      "whole auto-supply needs list is wrong and always has been. Switch that loop "
+                      "to helpfuncs_StringToIdList, which converts by arithmetic and cannot depend "
+                      "on what the engine chooses to resolve.")
+    # 2. do the two id spaces the filter compares agree in TYPE as well as value? "963" and
+    #    963 are different table keys, so a type split makes Users[ItemId] miss every time
+    if prod1_type not in ("number", "nil"):
+        yield Finding("ERROR", "idprobe-prod-type",
+                      "GetDatabaseValue(Items, %s, prod1) came back as %s (%s), not a number"
+                      % (listid, prod1_type, prod1),
+                      "Scripts/Library/economy.lua, economy_GetProtoIngredientUsers keys its table "
+                      "by these values while economy_GetResourceNeeds keys by ItemGetID. A string "
+                      "key never equals a number key in Lua, so Matched stays 0 and the filter "
+                      "silently drops nothing - which is the supply-filter-dead ERROR wearing its "
+                      "other face. Normalise both through helpfuncs_StringToIdList.")
+    # 3. which argument form does BuildingCanProduce actually accept?
+    forms = [(f, part("canprod_" + f, "text")) for f in ("num", "numstr", "name")]
+    good = [f for f, v in forms if v not in ("false", "nil", "-", "")]
+    if not good:
+        yield Finding("ERROR", "idprobe-canproduce-none",
+                      "BuildingCanProduce said no to all three forms for %s (%s), a product this "
+                      "building certainly makes"
+                      % (byname or listid, ", ".join("%s=%s" % f for f in forms)),
+                      "Scripts/Library/economy.lua, economy_BuildingCanProduceItem asks by number "
+                      "then by name and takes a yes from either. If neither works, "
+                      "economy_GetLiveProducts returns nothing and every resource is dropped - "
+                      "check the building alias reaching it.")
+    else:
+        yield Finding("NOTE", "idprobe",
+                      "engine id forms: ItemGetID by name=%s, by numeric string=%s, by number=%s; "
+                      "Items.prod1 is a %s; BuildingCanProduce accepts %s"
+                      % (byname, numstr, bynum, prod1_type, "+".join(good)),
+                      "Scripts/Library/economy.lua, economy_ProbeItemIdSpaces - one line per "
+                      "session. It settles what meta/engine.signatures.tsv cannot: that column "
+                      "names the accessor a binding calls, not a requirement, and lua_tostring "
+                      "converts a number in place so no form can raise a type error. If only one "
+                      "of the three canprod_ forms works, economy_BuildingCanProduceItem can drop "
+                      "the other and the hedge becomes a fact.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -1246,7 +1326,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_idprobe,
           check_blood_rival, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -1739,6 +1819,36 @@ def selftest():
     plain.feed(["[Script] ::TWP::UNLOAD t=3.00 cart=8 dest=4 via=UnloadAll items=120:Lavender:9;"])
     codes_plain = [f.code for f in findings(plain)]
     assert "cart-unloads" in codes_plain and "stray-goods-delivered" not in codes_plain, findings(plain)
+    # the id probe: the healthy answer names which forms work, the sick ones are ERRORs
+    ok = Session()
+    ok.feed(["[Script] ::TWP::IDPROBE t=1.00 bld=7 proto=392 listid=number:360 "
+             "getname=string:Bandage id_byname=number:360 id_bynumstr=number:360 "
+             "id_bynum=number:360 prod1=number:201 canprod_num=boolean:true "
+             "canprod_numstr=boolean:false canprod_name=boolean:true"])
+    codes_ok = [f.code for f in findings(ok)]
+    assert "idprobe" in codes_ok and not [c for c in codes_ok if c.startswith("idprobe-")], findings(ok)
+    assert "accepts num+name" in format_findings(findings(ok)), format_findings(findings(ok))
+    # a numeric string that does not round-trip breaks every resource need in the game
+    lost = Session()
+    lost.feed(["[Script] ::TWP::IDPROBE t=1.00 bld=7 proto=392 listid=number:360 "
+               "getname=string:Bandage id_byname=number:360 id_bynumstr=nil:- "
+               "id_bynum=number:360 prod1=number:201 canprod_num=boolean:true "
+               "canprod_numstr=boolean:false canprod_name=boolean:true"])
+    assert "idprobe-numstr-lost" in [f.code for f in findings(lost)], findings(lost)
+    # a string where a number was expected is a table key that can never match
+    typed = Session()
+    typed.feed(["[Script] ::TWP::IDPROBE t=1.00 bld=7 proto=392 listid=number:360 "
+                "getname=string:Bandage id_byname=number:360 id_bynumstr=number:360 "
+                "id_bynum=number:360 prod1=string:201 canprod_num=boolean:true "
+                "canprod_numstr=boolean:false canprod_name=boolean:true"])
+    assert "idprobe-prod-type" in [f.code for f in findings(typed)], findings(typed)
+    # and no form working at all means the live-product filter is blind
+    blind = Session()
+    blind.feed(["[Script] ::TWP::IDPROBE t=1.00 bld=7 proto=392 listid=number:360 "
+                "getname=string:Bandage id_byname=number:360 id_bynumstr=number:360 "
+                "id_bynum=number:360 prod1=number:201 canprod_num=boolean:false "
+                "canprod_numstr=boolean:false canprod_name=nil:-"])
+    assert "idprobe-canproduce-none" in [f.code for f in findings(blind)], findings(blind)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()
