@@ -1829,6 +1829,24 @@ TWP_ATTACK_WIN_CHANCE = 0.75
 
 -- Carts of the residence: total, how many are on a supply run, and whether an idle
 -- one was put into OutAlias.
+-- A new horse cart standing at the residence. bld_BuyCart does the same job for a
+-- building's own script, where "" is that building - called from an AI tree node ""
+-- is the dynasty, which has no position on the map, so GetOutdoorMovePosition fails
+-- and the purchase returns nil. Session 5 logged eleven of those. Name the residence.
+function BuyResidenceCart(DynAlias, OutAlias)
+	if not aitwp_Residence(DynAlias, "TWP_BRC") then
+		return false
+	end
+	local Ok = false
+	if GetOutdoorMovePosition(nil, "TWP_BRC", "TWP_BRCPos")
+			and ScenarioCreateCart(EN_CT_HORSE, "TWP_BRC", "TWP_BRCPos", OutAlias) then
+		Ok = AliasExists(OutAlias)
+	end
+	RemoveAlias("TWP_BRC")
+	RemoveAlias("TWP_BRCPos")
+	return Ok
+end
+
 function ResidenceCarts(DynAlias, OutAlias)
 	if not aitwp_Residence(DynAlias, "TWP_RC") then
 		return 0, 0, false

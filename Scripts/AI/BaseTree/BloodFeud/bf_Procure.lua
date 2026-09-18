@@ -41,12 +41,9 @@ function Execute()
 	local N = aitwp_ShoppingList("dynasty", "PlayerDyn", Needs)
 	local Total, Busy = aitwp_ResidenceCarts("dynasty", "Cart")
 	if GetData("CartMode") == "buy" then
-		-- bld_BuyCart, not BuildingBuyCart: the latter is the ship path (harbours and
-		-- pirate nests buy EN_CT_CORSAIR with it) and returns false for a land cart at a
-		-- residence, which is why session 4 logged six failed buys and never grew the fleet.
-		-- The residence is re-resolved here: "home" was set in Weight(), twelve siblings ago.
-		local Bought = aitwp_Residence("dynasty", "home")
-			and bld_BuyCart("home", "Cart", EN_CT_HORSE)
+		-- Not BuildingBuyCart (the ship path) and not bld_BuyCart either: that one reads
+		-- "" as the building it runs on, which from here is the dynasty. See the helper.
+		local Bought = aitwp_BuyResidenceCart("dynasty", "Cart")
 		aitwp_LogCart("dynasty", "buy", "Cart", Total + 1, Busy, Needs, N, Bought)
 		if not Bought or not AliasExists("Cart") then
 			return

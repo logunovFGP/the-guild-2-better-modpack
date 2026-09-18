@@ -50,6 +50,7 @@ BLACKBOARD_KEYS = {
 	AI_BF_Fired = { owner = "BloodFeud", default = 0 },
 	AI_HTN_Step = { owner = "aihtn_Step", default = "-" },
 	AI_HTN_At = { owner = "aihtn_Step", default = nil },
+	AI_AttackOrdered = { owner = "bs_IllegalDetection", default = -1 },
 	AI_Courier = { owner = "aitwp_CourierOrders", default = 0, prefix = true },
 	-- economy bookkeeping
 	AI_DynMoney = { owner = "ai_DynastyMoney", default = 0 },

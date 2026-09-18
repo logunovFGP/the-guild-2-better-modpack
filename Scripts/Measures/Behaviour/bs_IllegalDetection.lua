@@ -247,6 +247,19 @@ end
 
 
 function Run()
+	-- One Attack order per sim per tick. Several crime events can reach this function
+	-- in the same tick; the measure is not "current" yet when the next one arrives, so
+	-- the MeasureName == "Attack" test above cannot see the order just issued, and the
+	-- engine cancels the running Attack with the new one at equal priority. That is the
+	-- icon blinking: session 5 still had 22, twelve of them on consecutive log lines.
+	local function OrderAttack()
+		if (GetProperty("", "AI_AttackOrdered") or -1) == GetGametime() then
+			return ""
+		end
+		SetProperty("", "AI_AttackOrdered", GetGametime())
+		return "Attack"
+	end
+
 
 	-- return ImprovedRun() -- TODO enable this (or copy the code) when the new code was properly tested
 
@@ -308,7 +321,7 @@ function Run()
 	elseif MeasureName == "AttackEnemy" then
 		return ""
 	elseif MeasureName == "Attack" then
-		-- Already swinging. Every `return "Attack"` below would cancel the running
+		-- Already swinging. Every Attack order below would cancel the running
 		-- Attack at the same priority (99) and start another, which is the attack
 		-- icon blinking on and off: session 4 (2026-09-17) logged 29 of these
 		-- self-cancellations across 16 actors, five in a row for one of them.
@@ -357,7 +370,7 @@ function Run()
 	if not (bIsGuard) then
 		if BattleGetNextEnemy("Owner", "Actor", "nextEnemy") then
 			CopyAlias("nextEnemy", "Destination")
-			return "Attack"
+			return OrderAttack()
 		end
 	end
 
@@ -377,14 +390,14 @@ function Run()
 				dyn_SetDiplomacyState("", "Actor", DIP_NEUTRAL)
 			end
 			CopyAlias("Actor", "Destination")
-			return "Attack"
+			return OrderAttack()
 		end
 		
 		-- attack if i am allied with victim
 		if bCanActAgainstActor and DynastyGetDiplomacyState("", "Victim") == DIP_ALLIANCE then
 			if DynastyGetDiplomacyState("", "Actor") <= DIP_NEUTRAL then
 				CopyAlias("Actor", "Destination")
-				return "Attack"
+				return OrderAttack()
 			end
 		end
 	end
@@ -399,7 +412,7 @@ function Run()
 				local iRobberProtHouseDynID = GetProperty("VictimObject", "RobberProtected")
 				if (iRobberID == iRobberProtHouseDynID) and bCanActAgainstActor then
 					CopyAlias("Actor", "Destination")
-					return "Attack"
+					return OrderAttack()
 				end
 			end			
 		end
@@ -409,11 +422,11 @@ function Run()
 			local	ActorID = GetDynastyID("Actor")
 			if ActorID < 1 then
 				CopyAlias("Actor", "Destination")
-				return "Attack"
+				return OrderAttack()
 			-- check if I am a servant of the attacker, attack if not
 			elseif bCanActAgainstActor and ActorID ~= SimGetServantDynastyId("") then
 				CopyAlias("Actor", "Destination")
-				return "Attack"
+				return OrderAttack()
 			else
 				if HasProperty("", "Guarding") then
 					return ""
@@ -432,14 +445,14 @@ function Run()
 				dyn_SetDiplomacyState("", "Actor", DIP_NEUTRAL)
 			end
 			CopyAlias("Actor", "Destination")
-			return "Attack"
+			return OrderAttack()
 		end
 		
 		-- attack if i am allied with victim
 		if AliasExists("Victim") and bCanActAgainstActor and DynastyGetDiplomacyState("", "Victim") == DIP_ALLIANCE then
 			if DynastyGetDiplomacyState("", "Actor") <= DIP_NEUTRAL then
 				CopyAlias("Actor", "Destination")
-				return "Attack"
+				return OrderAttack()
 			end
 		end
 	end

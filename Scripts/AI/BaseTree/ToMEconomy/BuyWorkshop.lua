@@ -2,6 +2,12 @@
 -- routine visit, is a constant 60; raising this makes the AI shop more and manage less.
 TOM_BUY_WORKSHOP_BASE = 45
 
+-- Game hours between purchases, before the difficulty scaling below (easy 4 days, hard
+-- 2). At difficulty 4 that is 48 hours, so a one-day test run evaluates this node once
+-- and proves nothing about the weight: session 5 logged exactly one. Drop it to a few
+-- hours to watch the AI shop, then put it back - it is a balance number, not a knob.
+TOM_BUY_WORKSHOP_HOURS = 96
+
 function Weight()
 	-- its own timer: this shared BasicAI_NewWorkshop with BuildWorkshop, so whichever
 	-- fired first locked the other out for the whole cooldown
@@ -61,7 +67,7 @@ function Execute()
 	utility_Picked("dynasty", "BuyWorkshop")
 	aitwp_Log("Execute ToMEconomy::BuyWorkshop", "SIM", true)
 	local Difficulty = ScenarioGetDifficulty()
-	local Timer = 96 - Difficulty * 12 -- easy: 4 days, medium: 3 days, hard: 2 days
+	local Timer = TOM_BUY_WORKSHOP_HOURS - Difficulty * 12 -- easy: 4 days, hard: 2 days
 	SetRepeatTimer("dynasty", "AI_BuyWorkshop", Timer)
 
 	ai_BuyRandomWorkshop("SIM")
