@@ -64,6 +64,7 @@ dofile("Scripts/Library/utility.lua")
 -- functions utility.lua and aitwp.lua call on it
 utility_Clamp01, utility_Norm, utility_Curve, utility_GoalFactor = Clamp01, Norm, Curve, GoalFactor
 utility_LogEnabled, utility_Stamp, utility_Tick, utility_TakeTicks, utility_Emit = LogEnabled, Stamp, Tick, TakeTicks, Emit
+utility_Why = Why
 
 check("load marker is logged at include time", has(Logged[1], "::TWP::LOADED utility.lua"))
 check("environment probe is logged at include time", has(Logged[2], "::TWP::ENV lua=Lua 5.1"))
@@ -566,6 +567,34 @@ check("two of a kind beat one four to one", near(WinChance(Two, Solo), 0.8))
 check("two of a kind clear the three-in-four bar", WinChance(Two, Solo) >= TWP_ATTACK_WIN_CHANCE)
 check("one of a kind does not", WinChance(One, Solo) < TWP_ATTACK_WIN_CHANCE)
 
+-- aitwp_EconomyReady: does any child of ToMEconomy have anything to do? ------------------
+-- 89% of that subtree's entries scored no child at all until this gate went in.
+aitwp_EconomyReady = EconomyReady
+local Timers, IdleMembers = {}, true
+function ReadyToRepeat(Alias, Name) return Timers[Name] ~= false end
+function dyn_IsIdleMember(Alias) return IdleMembers end
+function DynastyGetMember(Alias, Index, Out) Aliases[Out] = Index return true end
+function DynastyGetMemberCount(Alias) return 3 end
+
+Timers.AI_CheckWorkshop = true
+check("economy ready: a member off the check timer is enough", EconomyReady("d"))
+Timers.AI_CheckWorkshop = false
+Timers.BasicAI_NewWorkshop, Timers.AI_BuyWorkshop, Timers.BasicAI_SellShop = false, false, false
+check("economy ready: every child on cooldown means nothing to do", EconomyReady("d") == false)
+Timers.AI_BuyWorkshop = true
+check("economy ready: one free dynasty timer is enough", EconomyReady("d"))
+Timers.AI_BuyWorkshop = false
+Timers.BasicAI_SellShop = true
+check("economy ready: selling a shop counts too", EconomyReady("d"))
+Timers.BasicAI_SellShop = false
+IdleMembers = false
+Timers.AI_CheckWorkshop = true
+check("economy ready: a timer nobody idle can use is not enough", EconomyReady("d") == false)
+IdleMembers = true
+-- hand the real ones back before the blocks below use them
+Timers = {}
+function dyn_IsIdleMember(Alias) return true end
+
 -- the war party: composition caps, incremental commitment, the leader roll -----------------
 aitwp_WarPools, aitwp_WarShare, aitwp_WarCandidates = WarPools, WarShare, WarCandidates
 aitwp_IsHouseHead, aitwp_WarCommit, aitwp_RaidAllowed = IsHouseHead, WarCommit, RaidAllowed
@@ -816,7 +845,7 @@ check("the same coin for a forgery does not", WorthBuyingFromEnemy("Hexerdokumen
 TWP_ENEMY_SHOP_PRICE = {}
 -- the HTN: decomposition, the reason it gives, and the pull it puts on one leaf -----------
 dofile("Scripts/Library/aihtn.lua")
-aihtn_Plan, aihtn_Step, aihtn_CountArtefacts, aihtn_Why = Plan, Step, CountArtefacts, Why
+aihtn_Plan, aihtn_Step, aihtn_CountArtefacts = Plan, Step, CountArtefacts
 UTILITY_LOG = true                       -- the HTN line is telemetry; assert on it
 check("load marker is logged at include time", has(lastLog(), "::TWP::LOADED aihtn.lua"))
 

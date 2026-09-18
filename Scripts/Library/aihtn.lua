@@ -47,15 +47,6 @@ local function Rich(DynAlias, Least)
 	return GetMoney(DynAlias) >= Least
 end
 
--- Why an aggressive method could not apply, in the numbers the ::TWP::HTN reason cannot
--- carry: it names the predicate, not the value that missed. One line per failing
--- evaluation, no throttle - grep ::TWP::WHY in the session log. Session 6 had every
--- aggressive method fail all day and the reasons alone could not say how far off it was.
-function Why(DynAlias, Text)
-	utility_Emit("::TWP::WHY t=" .. string.format("%.2f", GetGametime())
-		.. " dyn=" .. GetID(DynAlias) .. " " .. Text)
-end
-
 -- The leaf's own arithmetic, as a precondition: compose the war party, commit it against
 -- the defence the caller built, and answer whether anybody at all clears the bar. This is
 -- what the three raid leaves run in their own Weight(), so it is a necessary condition of
@@ -67,7 +58,7 @@ local function WarClears(DynAlias, Defence, Raid)
 	local Sent, Chance = aitwp_WarCommit("TWP_HTNW", Candidates, Defence, TWP_ATTACK_WIN_CHANCE, Side)
 	aitwp_ClearFighters("TWP_HTNW", Candidates)
 	if Sent < 1 then
-		aihtn_Why(DynAlias, Raid .. " party=" .. Candidates .. " theirs=" .. (Defence.n or 0)
+		utility_Why(DynAlias, Raid .. " party=" .. Candidates .. " theirs=" .. (Defence.n or 0)
 			.. " chance=" .. string.format("%.2f", Chance) .. " bar=" .. TWP_ATTACK_WIN_CHANCE)
 	end
 	return Sent >= 1
@@ -82,7 +73,7 @@ local function KidnapClears(DynAlias, Raid)
 	aitwp_ClearFighters("TWP_HTNK", Hands)
 	local Odds = aitwp_KidnapChance(DynAlias, "TWP_HTN", Hands)
 	if Odds < TWP_KIDNAP_BAR then
-		aihtn_Why(DynAlias, Raid .. " odds=" .. string.format("%.2f", Odds)
+		utility_Why(DynAlias, Raid .. " odds=" .. string.format("%.2f", Odds)
 			.. " bar=" .. TWP_KIDNAP_BAR .. " hands=" .. Hands)
 	end
 	return Odds >= TWP_KIDNAP_BAR
@@ -97,7 +88,7 @@ AIHTN_TASKS = {
 				if aihtn_CountArtefacts(d, p, "character", R) >= 1 then
 					return true
 				end
-				aihtn_Why(d, "tools rung=" .. aitwp_Rung(d, p) .. " carried=" .. aitwp_CarriedTools("SIM")
+				utility_Why(d, "tools rung=" .. aitwp_Rung(d, p) .. " carried=" .. aitwp_CarriedTools("SIM")
 					.. " handovers=" .. aitwp_HandOversToday(d) .. "/" .. aitwp_HandOverCap(d))
 				return false
 			end },

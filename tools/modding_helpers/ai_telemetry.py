@@ -581,25 +581,37 @@ def check_self_cancel(s):
 
 
 def check_order_guard(s):
+    # The guard's job is to stop one sim being told to start the same measure twice in one
+    # tick. That - not "no order was ever blocked" - is what proves it dead. The engine
+    # starts Attack from its own combat reactions too, without passing through any Lua, so
+    # a self-cancel with no order beside it is not evidence against the guard: on
+    # 2026-09-18 that inference cried ERROR at a guard that was working perfectly.
     per_measure = defaultdict(Counter)
+    repeats, seen = Counter(), defaultdict(set)
     for order in s.orders:
-        per_measure[order.get("measure", "?")][order.get("action", "?")] += 1
+        measure = order.get("measure", "?")
+        per_measure[measure][order.get("action", "?")] += 1
+        if order.get("action") == "ordered":
+            key = (order.get("sim"), order.get("t"))
+            if key in seen[measure]:
+                repeats[measure] += 1
+            seen[measure].add(key)
     for measure, actions in sorted(per_measure.items(), key=lambda pair: -sum(pair[1].values())):
-        blocked = actions["busy"] + actions["sametick"]
         cancelled = s.self_cancel.get(measure, 0)
-        if cancelled and not blocked:
+        if repeats[measure]:
             yield Finding("ERROR", "order-guard-dead",
-                          "%s: %d orders, none blocked, and the engine still cancelled %d"
-                          % (measure, actions["ordered"], cancelled),
-                          "aitwp_ClaimOrder in Scripts/Library/aitwp.lua is not holding for this measure. It "
-                          "tests GetCurrentMeasureName and then a per-tick stamp; if neither ever blocks "
-                          "while the engine keeps cancelling, the property is not handing back what was "
-                          "written to it - that exact failure made the first version of this guard a silent "
-                          "no-op for a whole session. Log the read-back rather than guessing at the stamp.")
+                          "%s: %d orders repeated a sim inside one tick (engine cancels: %d)"
+                          % (measure, repeats[measure], cancelled),
+                          "aitwp_ClaimOrder in Scripts/Library/aitwp.lua is not holding for this measure: the "
+                          "same sim was told to start it twice at one timestamp, which is exactly what the "
+                          "per-tick stamp exists to stop. If the stamp is integral and still misses, the "
+                          "property is not handing back what was written - that failure made the first "
+                          "version of this guard a silent no-op for a whole session.")
         else:
             yield Finding("NOTE", "order-guard",
-                          "%s: %d ordered, %d refused as already running, %d refused inside one tick"
-                          % (measure, actions["ordered"], actions["busy"], actions["sametick"]),
+                          "%s: %d ordered, %d refused as already running, %d refused inside one tick, "
+                          "no sim ordered twice in a tick (engine cancels: %d)"
+                          % (measure, actions["ordered"], actions["busy"], actions["sametick"], cancelled),
                           "aitwp_ClaimOrder in Scripts/Library/aitwp.lua, the shared re-order guard, called "
                           "from Scripts/Measures/Behaviour/bs_IllegalDetection.lua for Attack and from "
                           "Scripts/Library/idlelib.lua for OrderCollectEvidence. Working as intended.")
@@ -619,6 +631,26 @@ def check_barren(s):
                   "window between entering and the leaf firing. A barren entry means a method applied and "
                   "its leaf still weighed 0, so that method is missing one of the leaf's own gates: "
                   "Scripts/Library/aihtn.lua, AIHTN_TASKS.")
+
+
+def check_economy_barren(s):
+    """ToMEconomy picks whose children were never scored: the tick the subtree spent
+    finding every child at 0. 234 of 262 on 2026-09-18, and 637 of 637 in September."""
+    entered = sum(nodes.count("ToMEconomy") for nodes in s.pick_seq.values())
+    if not entered:
+        return
+    # the ToMEconomy/ level is index 2 of LEVELS; one W group per entry that reached a child
+    scored = len(set((dyn, t) for (dyn, t, level) in s.groups if level == 2))
+    barren = max(0, entered - scored)
+    share = 100.0 * barren / entered
+    yield Finding("WARN" if share > 20 else "NOTE", "economy-barren",
+                  "%d of %d ToMEconomy entries never scored a child (%.0f%%); 234 of 262 on 2026-09-18"
+                  % (barren, entered, share),
+                  "Scripts/AI/BaseTree/ToMEconomy.lua - the aitwp_EconomyReady gate added 2026-09-18, the "
+                  "same shape as the aihtn_Step gate on BloodFeud. All four children open on a cooldown "
+                  "(AI_CheckWorkshop per member, BasicAI_NewWorkshop, AI_BuyWorkshop, BasicAI_SellShop) and "
+                  "the root could not see any of them. If this climbs again, a fifth child has been added "
+                  "whose gate aitwp_EconomyReady does not know about.")
 
 
 def check_htn_methods(s):
@@ -815,7 +847,7 @@ def check_test_knobs(_session):
 
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
-          check_order_guard, check_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
+          check_order_guard, check_barren, check_economy_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
           check_handovers, check_buyworkshop, check_raids, check_blood_rival, check_idle, check_test_knobs)
 
 
@@ -1177,6 +1209,18 @@ def selftest():
     blank = Session()
     blank.feed([])
     assert findings(blank)[0].code == "no-telemetry", findings(blank)
+    # The order guard: a sim ordered twice at one timestamp is the failure. A repeat in a
+    # later tick is not, and neither is an engine cancel with no order beside it - the
+    # first version of this check called both of those ERROR and libelled a working guard.
+    across = Session()
+    across.feed(["[Script] ::TWP::ORDER t=10.00 sim=1 measure=Attack action=ordered",
+                 "[Script] ::TWP::ORDER t=10.50 sim=1 measure=Attack action=ordered",
+                 "[StartMeasure] A: Canceled 'Attack'(99) because of priority 'Attack'(99)"])
+    assert "order-guard-dead" not in [f.code for f in findings(across)], findings(across)
+    within = Session()
+    within.feed(["[Script] ::TWP::ORDER t=10.00 sim=1 measure=Attack action=ordered",
+                 "[Script] ::TWP::ORDER t=10.00 sim=1 measure=Attack action=ordered"])
+    assert "order-guard-dead" in [f.code for f in findings(within)], findings(within)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()

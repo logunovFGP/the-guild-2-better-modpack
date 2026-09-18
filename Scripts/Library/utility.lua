@@ -96,6 +96,15 @@ function Trace(DynAlias, Tag, Weight)
 	return Weight
 end
 
+-- Why a node or a method weighed 0, in the numbers the name of a gate cannot carry.
+-- ::TWP::WHY t= dyn= <free text, no spaces in a value>. Lives here rather than in aihtn
+-- because the HTN is not the only thing that has to explain itself - a BaseTree node with
+-- eight early returns is just as silent about which one fired.
+function Why(DynAlias, Text)
+	utility_Emit("::TWP::WHY t=" .. string.format("%.2f", GetGametime())
+		.. " dyn=" .. GetID(DynAlias) .. " " .. Text)
+end
+
 -- First statement of Execute(): the node the engine actually picked.
 function Picked(DynAlias, Tag)
 	utility_Emit("::TWP::PICK " .. utility_Stamp(DynAlias) .. " node=" .. Tag)

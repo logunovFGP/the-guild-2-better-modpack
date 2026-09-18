@@ -11,37 +11,46 @@ TOM_BUY_WORKSHOP_BASE = 45
 -- shipping - it is a balance number, not a knob.
 TOM_BUY_WORKSHOP_HOURS = 13
 
+-- Which gate stopped it, as one ::TWP::WHY line. Lowering TOM_BUY_WORKSHOP_HOURS to 13 on
+-- 2026-09-18 made the cooldown negative at difficulty 4 - always ready - and the node was
+-- still scored exactly once in 28 evaluations, so the cooldown was never what held it back.
+-- Eight early returns and no way to tell them apart is how that went unnoticed for a month.
+local function Blocked(Gate)
+	utility_Why("dynasty", "buyworkshop " .. Gate)
+	return 0
+end
+
 function Weight()
 	-- its own timer: this shared BasicAI_NewWorkshop with BuildWorkshop, so whichever
 	-- fired first locked the other out for the whole cooldown
 	if not ReadyToRepeat("dynasty", "AI_BuyWorkshop") then
-		return 0
+		return Blocked("cooldown")
 	end
 
 	-- shadow dynasties don't build new workshops
 	if DynastyIsShadow("dynasty") then
-		return 0
+		return Blocked("shadow")
 	end
 	
 	-- Missing a title? Then the new workshop will have to wait.
 	if not CanBuildWorkshop("dynasty") then
-		return 0
+		return Blocked("title")
 	end
 
 	if not (dyn_GetIdleMember("dynasty", "SIM") or DynastyGetMemberRandom("dynasty", "SIM")) then
-		return 0
+		return Blocked("nomember")
 	end
 	
 	if not AliasExists("SIM") then
-		return 0
+		return Blocked("nomember")
 	end
 	
 	if not GetHomeBuilding("SIM", "home") then
-		return 0
+		return Blocked("nohome")
 	end
 	
 	if not BuildingGetCity("home", "HomeCity") then
-		return 0
+		return Blocked("nocity")
 	end
 	
 	local simclass = SimGetClass("SIM")
@@ -51,7 +60,7 @@ function Weight()
 	local m = CityGetBuildingCountForCharacter("HomeCity", simclass, simrel, FILTER_NO_DYNASTY) or 0
 	local OnSale = n + m
 	if OnSale < 1 then
-		return 0
+		return Blocked("noneonsale")
 	end
 	-- scored: the more there are on the market and the fuller the treasury, the more
 	-- worth buying one. It was a flat 8 against Workshop's constant 60, which is ~11%

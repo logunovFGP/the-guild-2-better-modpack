@@ -1909,6 +1909,45 @@ function BuildingDefence(BldAlias, Side)
 	return Side
 end
 
+-- Can any child of ToMEconomy act at all?
+--
+-- The subtree was picked 262 times on 2026-09-18 and its children were scored 28 times:
+-- 89% of entries found every child at 0 and threw the tick away. Session 4 measured the
+-- same thing months earlier - 637 picks, 0 measure starts - so this is not a regression,
+-- it is a subtree that has never known whether it had anything to do. Exactly the shape
+-- BloodFeud had before aihtn_Step gated it (barren entries 85/110 -> 0/17).
+--
+-- Each child opens with one of these four, so all four false means every child returns 0:
+--   Workshop      an idle member off its own AI_CheckWorkshop timer
+--   BuildWorkshop BasicAI_NewWorkshop
+--   BuyWorkshop   AI_BuyWorkshop
+--   SellWorkshop  BasicAI_SellShop
+-- The member loop is deliberately weaker than Workshop's own gate, which asks
+-- dyn_GetIdleMember for one particular member: if no member is both idle and off the
+-- timer, that call cannot return one either. Weaker in that direction is sound - the gate
+-- may let a barren tick through, it may never block a productive one.
+function EconomyReady(DynAlias)
+	local Count = DynastyGetMemberCount(DynAlias) or 0
+	for i = 0, Count - 1 do
+		if DynastyGetMember(DynAlias, i, "TWP_ER") and dyn_IsIdleMember("TWP_ER")
+				and ReadyToRepeat("TWP_ER", "AI_CheckWorkshop") then
+			RemoveAlias("TWP_ER")
+			return true
+		end
+	end
+	RemoveAlias("TWP_ER")
+	if ReadyToRepeat(DynAlias, "BasicAI_NewWorkshop") then
+		return true
+	end
+	if ReadyToRepeat(DynAlias, "AI_BuyWorkshop") then
+		return true
+	end
+	if ReadyToRepeat(DynAlias, "BasicAI_SellShop") then
+		return true
+	end
+	return false
+end
+
 -- The war party --------------------------------------------------------------------------
 --
 -- One force-composition pass behind all three raids (assassination_attempt, workers_raid,

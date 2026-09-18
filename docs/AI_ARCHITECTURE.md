@@ -483,6 +483,32 @@ the engine owns the entities; a second store would be a second truth.
   refused purchase backs off for `TWP_BF_CART_RETRY` hours instead of retrying hourly for a
   day. The rule of thumb from all four: **the guard belongs at the one place every caller
   goes through, and a native return value is a claim, not a fact - check the container.**
+- **2026-09-18, the economy gate** The first play session with the raids in found the
+  raids correctly refusing (`party=0` - the rival has no free fighters) and the cart purchase
+  working at last (`CARTBUY bought=true carts=2to3 ok=true`). What it also found, in
+  `ai_focus.py`'s subtree conversion, is that **`ToMEconomy` has converted 0% of its root
+  picks into a measure in every session we have logged** - 637 picks in September, 262 on
+  2026-09-18, zero starts both times. Its children were scored in 28 of 262 entries: all
+  four open on a cooldown (`AI_CheckWorkshop` per member, `BasicAI_NewWorkshop`,
+  `AI_BuyWorkshop`, `BasicAI_SellShop`) and the root could see none of them. `aitwp_EconomyReady`
+  is the same shape as the `aihtn_Step` gate on `BloodFeud`, and deliberately *weaker* than
+  `Workshop`'s own member test: a gate may let a barren tick through, it may never block a
+  productive one. `check_economy_barren` measures it the way `barren_entries` measures the
+  feud.
+  `BuyWorkshop` now names the gate that stopped it (`::TWP::WHY buyworkshop <gate>`): with
+  `TOM_BUY_WORKSHOP_HOURS` at 13 the cooldown is negative at difficulty 4 - always ready -
+  and it was still scored once in 28 evaluations, so the cooldown was never what held it
+  back. Eight early returns and no way to tell them apart hid that for a month. `Why` moved
+  from `aihtn.lua` to `utility.lua` so any node can use it without a second copy of the
+  channel format.
+  Two checker defects fixed in the same pass: `check_order_guard` called ERROR on
+  "no order was blocked while the engine cancelled", which libelled a guard that was
+  working - the engine starts Attack from its own combat reactions without passing through
+  any Lua. The real failure is one sim ordered twice at one timestamp, and that is what it
+  tests now, with a fixture for each case. `ai_focus.py` printed "listed by 10 of 9 AI
+  dynasties" because its denominator counted only dynasties that had reached a daily
+  snapshot. **A check that cries wolf is worse than no check: it sends the next session to
+  the wrong file with full confidence.**
 - **2026-09-18, the raids** Three feud behaviours over one force-composition pass
   (`aitwp_WarCandidates` / `WarCommit` / `SquadAttack` in `aitwp.lua`, HTN methods
   `assassinate`, `raidbuilding`, `workersraid`): **assassination_attempt** against a player

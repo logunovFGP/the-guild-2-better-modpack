@@ -205,8 +205,17 @@ def report(s, focus, family, repo):
 
     out.append("")
     listers = sorted(s.listed_by[focus].items(), key=lambda kv_: -kv_[1])
-    out.append("listed as an enemy by %d of %d AI dynasties; picked as THE enemy %d times in %d decisions where listed"
-               % (len(listers), len(s.names), sum(s.picked_by[focus].values()), sum(s.listed_by[focus].values())))
+    # every dynasty seen at all, not just the ones that have reached their daily snapshot:
+    # SNAPSHOT fires once per dynasty per game day, so a session shorter than a day names
+    # almost nobody and the old denominator printed "listed by 10 of 9 AI dynasties"
+    known = set(s.names) | set(s.picks)
+    for listed in s.listed_by.values():
+        known |= set(listed)
+    unnamed = len(known) - len(s.names)
+    out.append("listed as an enemy by %d of %d AI dynasties%s; picked as THE enemy %d times in %d decisions where listed"
+               % (len(listers), len(known),
+                  (" (%d have not reached a daily snapshot yet)" % unnamed) if unnamed > 0 else "",
+                  sum(s.picked_by[focus].values()), sum(s.listed_by[focus].values())))
     if listers:
         out.append("  %-22s %-7s %-9s %8s %12s %18s  %s" % ("dynasty", "persona", "goal", "listed", "Feud picks", "Feud W mean/aligned", "hostile measures by its members"))
     for dyn, listed in listers:
