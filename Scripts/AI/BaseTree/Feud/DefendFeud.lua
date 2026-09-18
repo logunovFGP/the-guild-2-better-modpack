@@ -9,9 +9,10 @@ function Weight()
 		return 0
 	end
 	
-	return 20
+	return utility_Trace("dynasty", "DefendFeud", 20)
 end
 
 function Execute()
+	utility_Picked("dynasty", "DefendFeud")
 	SetRepeatTimer("SIM", "AI_DefendFeud", 3)
 end

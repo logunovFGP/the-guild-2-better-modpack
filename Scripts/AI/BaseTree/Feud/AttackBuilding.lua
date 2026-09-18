@@ -36,10 +36,11 @@ function Weight()
 		return 3
 	end
 	
-	return 20
+	return utility_Trace("dynasty", "AttackBuilding", 20)
 end
 
 function Execute()
+	utility_Picked("dynasty", "AttackBuilding")
 	local Difficulty = ScenarioGetDifficulty()
 	local Timer = 24 - Difficulty*4
 	SetRepeatTimer("SIM", "AI_AttackRival", Timer)	

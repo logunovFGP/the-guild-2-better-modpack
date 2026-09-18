@@ -15,10 +15,11 @@ function Weight()
 		return 0
 	end	
 	
-	return GetEvidenceValues("SIM", "Victim")
+	return utility_Trace("dynasty", "ChargeCharacter", GetEvidenceValues("SIM", "Victim"))
 end
 
 function Execute()
+	utility_Picked("dynasty", "ChargeCharacter")
 	if AliasExists("Victim") then
 		SetRepeatTimer("dynasty", "AI_ChargeCharacter", 48)
 		MeasureRun("SIM", "Victim", "ChargeCharacter")

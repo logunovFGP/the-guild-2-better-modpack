@@ -103,7 +103,13 @@ DYNASTY = {"AIContractGuildHouse", "ApplyForOffice", "BuildHome", "CollectBankDe
            "Privilege", "ReceiveDignitaries", "RepairBuildings", "Reproduce", "SelfHeal", "SocialLife",
            "Underworld", "d_GoIdle", "PlayerFriend"}
 ECONOMY = {"BuildWorkshop", "BuyWorkshop", "SellWorkshop", "Workshop"}
-LEVELS = [("root", ROOTS), ("Dynasty/", DYNASTY), ("ToMEconomy/", ECONOMY), ("BloodFeud/", BLOODFEUD)]
+# traced 2026-09-18: 42 files under Feud/ emitted nothing at all, so a subtree taking
+# 21% of every root pick and converting 3% of them could be measured and never diagnosed
+FEUD = {"AttackBuilding", "AttackFeud", "ChargeCharacter", "DefendFeud", "OrderASpying"}
+LEVELS = [("root", ROOTS), ("Dynasty/", DYNASTY), ("ToMEconomy/", ECONOMY), ("BloodFeud/", BLOODFEUD),
+          ("Feud/", FEUD)]
+_seen = Counter(n for _name, nodes in LEVELS for n in nodes)
+assert not [n for n, c in _seen.items() if c > 1], "a node name in two levels makes level_of ambiguous"
 COLUMNS = ["money", "bld", "ws", "members", "title", "office", "rank", "enemies", "P", "A", "I", "ticks"]
 
 # name -> (UTILITY_LO, UTILITY_HI, UTILITY_GOAL_ALIGNED, UTILITY_GOAL_OTHER)
@@ -633,24 +639,42 @@ def check_barren(s):
                   "Scripts/Library/aihtn.lua, AIHTN_TASKS.")
 
 
-def check_economy_barren(s):
-    """ToMEconomy picks whose children were never scored: the tick the subtree spent
-    finding every child at 0. 234 of 262 on 2026-09-18, and 637 of 637 in September."""
-    entered = sum(nodes.count("ToMEconomy") for nodes in s.pick_seq.values())
-    if not entered:
-        return
-    # the ToMEconomy/ level is index 2 of LEVELS; one W group per entry that reached a child
-    scored = len(set((dyn, t) for (dyn, t, level) in s.groups if level == 2))
-    barren = max(0, entered - scored)
-    share = 100.0 * barren / entered
-    yield Finding("WARN" if share > 20 else "NOTE", "economy-barren",
-                  "%d of %d ToMEconomy entries never scored a child (%.0f%%); 234 of 262 on 2026-09-18"
-                  % (barren, entered, share),
-                  "Scripts/AI/BaseTree/ToMEconomy.lua - the aitwp_EconomyReady gate added 2026-09-18, the "
-                  "same shape as the aihtn_Step gate on BloodFeud. All four children open on a cooldown "
-                  "(AI_CheckWorkshop per member, BasicAI_NewWorkshop, AI_BuyWorkshop, BasicAI_SellShop) and "
-                  "the root could not see any of them. If this climbs again, a fifth child has been added "
-                  "whose gate aitwp_EconomyReady does not know about.")
+# subtree -> (LEVELS index, what the last measurement said)
+BARREN_SUBTREES = (("ToMEconomy", 2, "234 of 262 on 2026-09-18"),
+                   ("Feud", 4, "1118 picks converted 36 measures on 2026-09-18, 3.2%"))
+
+
+def check_subtree_barren(s):
+    """Root picks of a subtree whose children were never scored: the tick it spent finding
+    every child at 0. The BloodFeud version of this is barren_entries; these two have the
+    same disease and, until the children were traced, no way to show it."""
+    for name, level, note in BARREN_SUBTREES:
+        entered = sum(nodes.count(name) for nodes in s.pick_seq.values())
+        if not entered:
+            continue
+        scored = len(set((dyn, t) for (dyn, t, lvl) in s.groups if lvl == level))
+        if not scored:
+            # not 100% barren - the children emitted nothing at all, so this log predates
+            # their tracing. Saying "100%" here would be the same cried wolf as
+            # order-guard-dead: a number that looks like a finding and is an artefact.
+            yield Finding("NOTE", "subtree-untraced",
+                          "%s was entered %d times and none of its children emitted a weight - this log "
+                          "predates their tracing, so it cannot be measured" % (name, entered),
+                          "Scripts/AI/BaseTree/%s - the children need utility_Trace in Weight() and "
+                          "utility_Picked in Execute() before any of this is visible. Four of Feud's "
+                          "were traced on 2026-09-18; the other 38 files under Feud/ still are not." % name)
+            continue
+        barren = max(0, entered - scored)
+        share = 100.0 * barren / entered
+        yield Finding("WARN" if share > 20 else "NOTE", "subtree-barren",
+                      "%d of %d %s entries never scored a child (%.0f%%); %s"
+                      % (barren, entered, name, share, note),
+                      "Scripts/AI/BaseTree/%s.lua - the root cannot see its children's gates, so it "
+                      "wins the roulette and then finds every child at 0. ToMEconomy got "
+                      "aitwp_EconomyReady on 2026-09-18, the same shape as the aihtn_Step gate on "
+                      "BloodFeud; Feud has no such gate yet and its 42 files under Feud/ were silent "
+                      "until four of them were traced. If this is high for Feud, read the Feud/ level "
+                      "table below for which child is starving." % name)
 
 
 def check_htn_methods(s):
@@ -847,7 +871,7 @@ def check_test_knobs(_session):
 
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
-          check_order_guard, check_barren, check_economy_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
+          check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
           check_handovers, check_buyworkshop, check_raids, check_blood_rival, check_idle, check_test_knobs)
 
 

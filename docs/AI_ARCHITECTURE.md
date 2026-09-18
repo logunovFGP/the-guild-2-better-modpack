@@ -529,6 +529,21 @@ the engine owns the entities; a second store would be a second truth.
   is not sent to bed and its economy subtree stays open after dark. Shadows and ordinary
   townsfolk still sleep - the night belongs to the trades that work it, not to everybody.
   The scan sits second in the hour test so it only runs in the five hours it can matter.
+- **2026-09-18, the Feud subtree gets a voice** `ai_focus.py` put `Feud` at 1118 root
+  picks and 36 measure starts - 21% of every AI decision converting 3% - and **not one of
+  the 42 files under `Feud/` emitted anything**, so the number could be measured and never
+  diagnosed. Another session would have returned the same 3% and no reason for it.
+  The four live children (`AttackBuilding`, `AttackFeud`, `ChargeCharacter`, `DefendFeud`)
+  now go through `utility_Trace` and `utility_Picked`; `utility_Trace` returns its weight
+  unchanged, so no decision moves. The fifth, `OrderASpying`, is hard-disabled upstream
+  (`return 0 -- disabled for now since spying tends to lead to crashes`) and was left
+  alone. `Feud/` is a level in `ai_telemetry.py` now, with a collision assert so a node
+  name in two levels cannot make `level_of` ambiguous.
+  `check_subtree_barren` measures ToMEconomy and Feud the way `barren_entries` measures
+  BloodFeud - and distinguishes **untraced** from **barren**: a log recorded before the
+  children were traced has no child weights at all, and reporting that as "100% barren"
+  would have been the same cried wolf as `order-guard-dead`. A number that looks like a
+  finding and is an artefact of the build is worse than no number.
 - **2026-09-18, the raids** Three feud behaviours over one force-composition pass
   (`aitwp_WarCandidates` / `WarCommit` / `SquadAttack` in `aitwp.lua`, HTN methods
   `assassinate`, `raidbuilding`, `workersraid`): **assassination_attempt** against a player
