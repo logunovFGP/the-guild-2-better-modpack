@@ -666,6 +666,29 @@ IdleMembers = false
 Timers.AI_CheckWorkshop = true
 check("economy ready: a timer nobody idle can use is not enough", EconomyReady("d") == false)
 IdleMembers = true
+
+-- The shadow case, which is 89% of this subtree's traffic and the reason the gate did
+-- nothing for a whole session. BuildWorkshop, BuyWorkshop and SellWorkshop all refuse a
+-- shadow dynasty, so they never reach an Execute() that would set their timer, so the
+-- timer reads ready for ever and the gate waved every shadow house through.
+local RealIsShadow = DynastyIsShadow
+local Shadow = false
+function DynastyIsShadow(Alias) return Shadow end
+Timers = {}
+IdleMembers = false
+Shadow = true
+check("economy ready: a shadow house is not sent in on timers no child of its will read",
+	EconomyReady("d") == false)
+Shadow = false
+check("economy ready: the same timers still admit a real house", EconomyReady("d"))
+Shadow = true
+IdleMembers = true
+Timers.AI_CheckWorkshop = true
+check("economy ready: a shadow house with an idle member still gets Workshop",
+	EconomyReady("d"))
+DynastyIsShadow = RealIsShadow
+
+IdleMembers = true
 -- hand the real ones back before the blocks below use them
 Timers = {}
 function dyn_IsIdleMember(Alias) return true end

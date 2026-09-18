@@ -2179,14 +2179,27 @@ function EconomyReady(DynAlias)
 		end
 	end
 	RemoveAlias("TWP_ER")
-	if ReadyToRepeat(DynAlias, "BasicAI_NewWorkshop") then
-		return true
-	end
-	if ReadyToRepeat(DynAlias, "AI_BuyWorkshop") then
-		return true
-	end
-	if ReadyToRepeat(DynAlias, "BasicAI_SellShop") then
-		return true
+	-- The other three children refuse a shadow dynasty outright, so their timers say
+	-- nothing about whether a shadow house has work - and a timer that was never set reads
+	-- *ready*, for ever, because those nodes return 0 long before their Execute() could set
+	-- one. That is why this gate did nothing: ToMEconomy was 234/262 barren before it and
+	-- 780/873 after, and 779 of those 873 entries were shadow houses, which the ::TWP::WHY
+	-- table now names in one line (buyworkshop shadow 779). Necessary was not enough; a
+	-- precondition has to be predictive too, which is the rule AIHTN_TASKS already obeys.
+	--
+	-- Only these three are shadow-only. The member loop above stays, because Workshop has
+	-- no such check and shadow houses do run it - 66 times across 17 houses that session -
+	-- so gating the whole subtree on DynastyIsShadow would throw away real work.
+	if not DynastyIsShadow(DynAlias) then
+		if ReadyToRepeat(DynAlias, "BasicAI_NewWorkshop") then
+			return true
+		end
+		if ReadyToRepeat(DynAlias, "AI_BuyWorkshop") then
+			return true
+		end
+		if ReadyToRepeat(DynAlias, "BasicAI_SellShop") then
+			return true
+		end
 	end
 	return false
 end
