@@ -748,12 +748,16 @@ def check_subtree_barren(s):
             # not 100% barren - the children emitted nothing at all, so this log predates
             # their tracing. Saying "100%" here would be the same cried wolf as
             # order-guard-dead: a number that looks like a finding and is an artefact.
-            yield Finding("NOTE", "subtree-untraced",
-                          "%s was entered %d times and none of its children emitted a weight - this log "
-                          "predates their tracing, so it cannot be measured" % (name, entered),
-                          "Scripts/AI/BaseTree/%s - the children need utility_Trace in Weight() and "
-                          "utility_Picked in Execute() before any of this is visible. Four of Feud's "
-                          "were traced on 2026-09-18; the other 38 files under Feud/ still are not." % name)
+            yield Finding("WARN", "subtree-untraced",
+                          "%s was entered %d times and not one child emitted a weight" % (name, entered),
+                          "Scripts/AI/BaseTree/%s - two readings, and they need telling apart before "
+                          "anything is concluded. Either the children carry no utility_Trace or "
+                          "utility_Score yet, in which case this cannot be measured at all; or they do "
+                          "and every one returned 0 before reaching it, in which case the subtree is "
+                          "100%% barren and this is the worst reading there is, not a missing one. Grep "
+                          "the child .lua files for utility_Trace and utility_Score to tell which - on "
+                          "2026-09-19 all four of ToMEconomy's emitted, so its 8 of 8 was real. A "
+                          "::TWP::WHY line from a child is itself proof the child ran and refused." % name)
             continue
         barren = max(0, entered - scored)
         share = 100.0 * barren / entered
