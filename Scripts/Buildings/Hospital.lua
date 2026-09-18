@@ -64,6 +64,38 @@ function CheckForStuckedMedics(Alias)
 	end
 end
 
+-- ::TWP::HOSP t= bld= owned= level= <Medicine>=<instock>:<need%>
+-- Once a game day per hospital, owned or not. The unowned ones are the question: they do
+-- get their stock targets, because hospital_SetupAI is called from Setup() and OnLevelUp()
+-- and tests only the level and the inventories - but bld_CheckCarts and bld_HandlePingHour
+-- both open with `if not BuildingGetOwner then return end`, so nothing sends a cart to
+-- fill those targets and nothing runs their hourly upkeep. Whether that actually leaves
+-- them dry is a question about stock over time, which no amount of reading settles.
+-- need is bld_GetNeedForMedicine, on which 100 means none left at all.
+function LogStock(Alias)
+	if not utility_LogEnabled() then
+		return
+	end
+	local Owned = false
+	if BuildingGetOwner(Alias, "TWP_HospBoss") then
+		Owned = true
+		RemoveAlias("TWP_HospBoss")
+	end
+	local Meds = { "Bandage", "Medicine", "PainKiller" }
+	local Line = ""
+	for i = 1, 3 do
+		local Stock = GetItemCount(Alias, Meds[i])
+		if HasProperty(Alias, Meds[i] .. "s") then
+			Stock = Stock + GetProperty(Alias, Meds[i] .. "s")
+		end
+		Line = Line .. " " .. Meds[i] .. "=" .. Stock
+			.. ":" .. bld_GetNeedForMedicine(Alias, Meds[i])
+	end
+	utility_Emit("::TWP::HOSP t=" .. string.format("%.2f", GetGametime())
+		.. " bld=" .. GetID(Alias) .. " owned=" .. tostring(Owned)
+		.. " level=" .. BuildingGetLevel(Alias) .. Line)
+end
+
 function PingHour()
 
 	local Hour = math.mod(GetGametime(), 24)
@@ -71,6 +103,10 @@ function PingHour()
 	--	hospital_UpdateBalance("")
 	elseif Hour == 3 then
 		hospital_CheckForStuckedMedics("")
+	elseif Hour == 5 then
+		-- before bld_HandlePingHour, which returns immediately without an owner and would
+		-- take every neutral hospital out of the sample this line exists to collect
+		hospital_LogStock("")
 	end
 
 	bld_HandlePingHour("", true)

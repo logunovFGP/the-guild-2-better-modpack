@@ -120,6 +120,7 @@ SUPPLY = re.compile(r"::TWP::SUPPLY (.*)$")
 NEEDSTALE = re.compile(r"::TWP::NEEDSTALE (.*)$")
 UNLOAD = re.compile(r"::TWP::UNLOAD (.*)$")
 IDPROBE = re.compile(r"::TWP::IDPROBE (.*)$")
+HOSP = re.compile(r"::TWP::HOSP (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -245,7 +246,7 @@ class Session(object):
         self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
         self.attacks, self.heals = [], []
         self.supply, self.stale_needs, self.unloads = [], [], []
-        self.idprobe = []
+        self.idprobe, self.hospitals = [], []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -408,6 +409,10 @@ class Session(object):
             m = IDPROBE.search(line)
             if m:
                 self.idprobe.append(kv(m.group(1)))
+                continue
+            m = HOSP.search(line)
+            if m:
+                self.hospitals.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1278,6 +1283,54 @@ def check_idprobe(s):
                       "the other and the hedge becomes a fact.")
 
 
+# bld_GetNeedForMedicine returns 100 when a medicine is gone entirely; anything at or
+# above this is "low enough that the next patient needing it is turned away".
+MEDICINE_NEED_DRY = 100
+
+
+def check_hospital_stock(s):
+    """Whether hospitals hold medicine, split by who owns them.
+
+    An unowned hospital gets stock targets from hospital_SetupAI like any other, but
+    bld_CheckCarts and bld_HandlePingHour both return immediately without an owner - so
+    nothing fills those targets and nothing runs its hourly upkeep. That predicts neutral
+    hospitals running dry and staying dry, which is a claim about stock over time and has
+    to be measured rather than argued.
+    """
+    if not s.hospitals:
+        return
+    by_owner = defaultdict(list)
+    for row in s.hospitals:
+        by_owner[row.get("owned", "?")].append(row)
+    meds = ("Bandage", "Medicine", "PainKiller")
+    for owned in sorted(by_owner):
+        rows = by_owner[owned]
+        dry, worst = [], []
+        for med in meds:
+            # value is "<instock>:<need>"
+            needs = [num(r.get(med, "0:0").split(":")[-1]) for r in rows if med in r]
+            stocks = [num(r.get(med, "0:0").split(":")[0]) for r in rows if med in r]
+            if not needs:
+                continue
+            if min(stocks) <= 0:
+                dry.append(med)
+            worst.append("%s %g-%g" % (med, min(stocks), max(stocks)))
+        label = "owned" if owned == "true" else "neutral"
+        level = "WARN" if (dry and label == "neutral") else "NOTE"
+        yield Finding(level, "hospital-stock",
+                      "%d %s hospital readings: stock range %s%s"
+                      % (len(rows), label, ", ".join(worst),
+                         ("; ran out of " + ", ".join(dry)) if dry else ""),
+                      "Scripts/Buildings/Hospital.lua, hospital_LogStock - one line per hospital "
+                      "per game day. A neutral hospital at zero is the case to watch: "
+                      "hospital_SetupAI gives it stock targets from Setup() and OnLevelUp() with no "
+                      "owner test, but bld_CheckCarts and bld_HandlePingHour in "
+                      "Scripts/Library/bld.lua both return immediately without an owner, so no cart "
+                      "is ever sent to fill them. An owned hospital at zero is a different problem - "
+                      "read the supply-filtered and cart findings first. The second number per "
+                      "medicine is bld_GetNeedForMedicine, where 100 means none left.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -1331,7 +1384,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_idprobe,
           check_blood_rival, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -1854,6 +1907,18 @@ def selftest():
                 "id_bynum=number:360 prod1=number:201 canprod_num=boolean:false "
                 "canprod_numstr=boolean:false canprod_name=nil:-"])
     assert "idprobe-canproduce-none" in [f.code for f in findings(blind)], findings(blind)
+    # hospital stock: a neutral hospital at zero is the finding, an owned one is a NOTE
+    dry = Session()
+    dry.feed(["[Script] ::TWP::HOSP t=5.00 bld=1 owned=false level=2 Bandage=0:100 "
+              "Medicine=0:100 PainKiller=2:75",
+              "[Script] ::TWP::HOSP t=5.00 bld=2 owned=true level=3 Bandage=14:0 "
+              "Medicine=9:0 PainKiller=8:0"])
+    found_dry = {f.code: f for f in findings(dry)}
+    assert "hospital-stock" in found_dry, findings(dry)
+    printed_dry = format_findings(findings(dry))
+    assert "neutral" in printed_dry and "ran out of Bandage, Medicine" in printed_dry, printed_dry
+    assert [f.level for f in findings(dry) if f.code == "hospital-stock" and "neutral" in f.text] == ["WARN"], printed_dry
+    assert [f.level for f in findings(dry) if f.code == "hospital-stock" and "owned" in f.text] == ["NOTE"], printed_dry
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()
