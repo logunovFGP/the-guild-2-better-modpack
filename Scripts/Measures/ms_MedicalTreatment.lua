@@ -279,37 +279,40 @@ function Run()
 					
 				end
 
-				if CanHeal ~= false then
-
-					if gameplayformulas_PaysForTreatment("SickSim0") then
-						if chr_SpendMoney("SickSim0", v.Cost, "Offering") then
-							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
-						else
-							-- Turned away for want of coin. Two things went wrong here and
-							-- both are in these five lines.
-							--
-							-- PropertiesEnd(true, ...) took the branch that does NOT set
-							-- IgnoreHospital, so nothing remembered the refusal: the sim
-							-- left, ai_VisitDoc came round an hour later, the ranking in
-							-- idlelib_VisitDoc picked the same hospital and they queued
-							-- again. Every other unsuccessful outcome sets that 12 hour
-							-- cooldown further down; only this one skipped it, and the
-							-- false branch that sets it was never called from anywhere.
-							--
-							-- And `return` left Run() entirely, not just this patient, so
-							-- one empty purse stopped the doctor working the whole queue
-							-- until the measure was picked again.
-							ms_medicaltreatment_Emit("SickSim0", v.Cost, "nomoney")
-							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-							ms_medicaltreatment_PropertiesEnd(false,"SickSim0")
-							break
-						end
-					else
-							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
+				-- Settle the bill BEFORE the treatment block, so a refusal simply skips it.
+				-- It used to sit inside and leave with `break`, which walked out of the whole
+				-- `while true` queue loop and, worse, skipped the two lines at the end of an
+				-- iteration that clear STATE_DUEL - including SetState("", ...) on the DOCTOR.
+				-- A doctor left in STATE_DUEL cannot be given a new order and cannot be
+				-- cancelled, so one refused patient froze the hospital with everyone else still
+				-- queued: reported from play on 2026-09-19. PropertiesEnd only ever cleared the
+				-- patient's half.
+				--
+				-- Falling through instead means `cured` stays false, so the end of the iteration
+				-- sets IgnoreHospital for twelve hours, releases both sims and takes the next
+				-- patient - which is what "refused" should have meant all along.
+				local Paid = true
+				if CanHeal ~= false and gameplayformulas_PaysForTreatment("SickSim0") then
+					Paid = chr_SpendMoney("SickSim0", v.Cost, "Offering")
+					if not Paid then
+						ms_medicaltreatment_Emit("SickSim0", v.Cost, "nomoney")
+						MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
 					end
+				end
+				
+				if CanHeal ~= false and Paid then
+					-- one call, not one per branch: it was duplicated in both before
+					ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 					ms_medicaltreatment_Emit("SickSim0", v.Cost, "healed")
 
 					chr_CreditMoney("Hospital", v.Cost, "Offering")
+					-- Show the fee the way a sale shows one. economy.lua does exactly this
+					-- after CreditMoney on a workshop counter, so treatment income stops
+					-- being the one earner in the game with nothing to see: over the
+					-- hospital because that is the account credited, and over the doctor
+					-- because that is who the player is watching.
+					feedback_OverheadMoney("Hospital", v.Cost)
+					feedback_OverheadMoney("", v.Cost)
 					economy_UpdateBalance("Hospital", "Service", v.Cost)
 					SetProperty("Hospital", "BalanceOffering", (GetProperty("Hospital", "BalanceOffering") or 0) + v.Cost)
 					local TotalIncome = 0
