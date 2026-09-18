@@ -372,7 +372,9 @@ the engine owns the entities; a second store would be a second truth.
    constants - `GL_CLASS_FIGHTER` is documented and does not exist - so confirm it in
    SecondAID's lint or in an existing call site before trusting it.
 3. New decision -> new telemetry line in the same change, and a parser for it in
-   `ai_telemetry.py` if it is more than free text.
+   `ai_telemetry.py` if it is more than free text. Chased a defect down through a log?
+   It goes into `CHECKS` in that file as a named check with a literal pointer, so the
+   next session reads `--findings` instead of starting the forensics over.
 4. New key -> `BLACKBOARD_KEYS`. New target resolved in `Weight()` -> stash it.
 5. New library -> one `Include ("Library/<name>.lua")` in `Scripts/Library/stdafx.lua`.
    That list is the only loader; the engine never picks a library up by filename, and our

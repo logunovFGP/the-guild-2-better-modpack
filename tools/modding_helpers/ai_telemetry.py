@@ -3,7 +3,13 @@ weighted-random selection under alternative tuning from that same session - no
 second run needed.
 
     python tools/modding_helpers/ai_telemetry.py [path/to/logfile.log]
+    python tools/modding_helpers/ai_telemetry.py [path/to/logfile.log] --findings
     python tools/modding_helpers/ai_telemetry.py --selftest
+
+--findings prints only the checks: one ERROR / WARN / NOTE line each, with a literal
+pointer to the file to open. They are everything six play sessions taught us, so the
+next log does not have to be read from scratch - see the findings section below, and
+add to CHECKS whenever a session teaches us something new.
 
 Without a path it reads $GUILD2/logfile.log, falling back to the Steam install.
 The game truncates the log on every launch, so copy a run you want to keep.
@@ -33,6 +39,13 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
                                               the feud supply cart (result= of arrive is the count bought;
                                               action=courier: carts= delivered, need= ordered, result= rung gap)
   ::TWP::HANDOVER t= dyn= sim= item= today=<n>/<cap>   a tool handed from the residence store to a unit
+  ::TWP::HTN t= dyn= task= method= step= chain= fail=<Task.method:Predicate;..>
+                                              one per feud plan: the method taken and, for every method
+                                              that did not apply, the precondition that fell first
+  ::TWP::WHY t= dyn= <fight mine= theirs= chance= bar= | tools rung= carried= handovers=>
+                                              the numbers behind an HTN predicate the fail= reason can only name
+  ::TWP::ATTACK t= sim= tick= action=<ordered|suppressed>   the per-tick Attack re-order guard
+  ::TWP::CARTBUY t= dyn= pos= made= bound= ok=   which step of the feud cart purchase fell
   [StartMeasure] <sim>: Canceled 'A'(p) because of priority 'B'(q)
                                               engine: a measure start lost to the running one; p, q are
                                               the interruptvalue column of DB/Measures.dbt
@@ -48,7 +61,8 @@ import os
 import re
 import sys
 import tempfile
-from collections import Counter, OrderedDict, defaultdict
+import textwrap
+from collections import Counter, OrderedDict, defaultdict, namedtuple
 
 SNAPSHOT = re.compile(r"::TWP::SNAPSHOT (.*?) name=(.*)$")
 MEMBER = re.compile(r"::TWP::MEMBER dyn=(\S+) sim=(.*)$")
@@ -65,6 +79,9 @@ MARKET = re.compile(r"::TWP::MARKET (.*)$")
 CART = re.compile(r"::TWP::CART (.*)$")
 HANDOVER = re.compile(r"::TWP::HANDOVER (.*)$")
 HTN = re.compile(r"::TWP::HTN (.*)$")
+WHY = re.compile(r"::TWP::WHY (.*)$")
+ATTACK = re.compile(r"::TWP::ATTACK (.*)$")
+CARTBUY = re.compile(r"::TWP::CARTBUY (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
 ROOTS = {"Dynasty", "Election", "Feud", "Trial", "Duel", "ToMEconomy", "Priorities", "IncomeForAI", "DoNothing", "BloodFeud"}
@@ -162,11 +179,16 @@ class Session(object):
         self.errors = Counter()
         self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
         self.htn = []                            # one entry per ::TWP::HTN line
+        self.why, self.attack, self.cartbuy = [], [], []
+        self.libs = set()                        # the library names that printed LOADED
+        self.self_cancel = Counter()             # measure -> starts that cancelled themselves
+        self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
         self.pick_seq = defaultdict(list)        # dyn -> picked nodes, in order
 
     def feed(self, lines):
         dyn_of_sim, goal_of_dyn = {}, {}
-        for line in lines:
+        last_self_cancel = (None, -2)
+        for index, line in enumerate(lines):
             line = line.rstrip("\r\n")
             if "attempt to " in line:
                 # a Lua runtime error; a node that errors in Weight() silently weighs 0
@@ -174,6 +196,9 @@ class Session(object):
                 continue
             if "::TWP::LOADED" in line:
                 self.loaded = True
+                parts = line.split("::TWP::LOADED", 1)[1].split()
+                if parts:
+                    self.libs.add(parts[0])
                 continue
             m = ENV.search(line)
             if m:
@@ -243,6 +268,15 @@ class Session(object):
             m = CANCEL.search(line)
             if m:
                 self.cancels["%s(%s) lost to %s(%s)" % (m.group(2), m.group(3), m.group(4), m.group(5))] += 1
+                # A measure re-ordered while it is still running cancels itself at equal
+                # priority - that is the icon blinking, not two measures competing. A run
+                # of them on consecutive log lines is one tick's worth of re-orders.
+                if m.group(2) == m.group(4) and m.group(3) == m.group(5):
+                    who = (m.group(1), m.group(2))
+                    self.self_cancel[m.group(2)] += 1
+                    if last_self_cancel == (who, index - 1):
+                        self.self_cancel_runs[m.group(2)] += 1
+                    last_self_cancel = (who, index)
                 continue
             m = MARKET.search(line)
             if m:
@@ -260,6 +294,18 @@ class Session(object):
             m = HTN.search(line)
             if m:
                 self.htn.append(kv(m.group(1)))
+                continue
+            m = WHY.search(line)
+            if m:
+                self.why.append(kv(m.group(1)))
+                continue
+            m = ATTACK.search(line)
+            if m:
+                self.attack.append(kv(m.group(1)))
+                continue
+            m = CARTBUY.search(line)
+            if m:
+                self.cartbuy.append(kv(m.group(1)))
                 continue
             m = TRACE.search(line)
             if m:
@@ -329,6 +375,386 @@ def delta(a, b):
     return "%s (%+d)" % (b, d) if d else b
 
 
+# --------------------------------------------------------------------------- findings
+# Six play sessions of forensics, written down as checks that run themselves. In: the
+# log. Out: ERROR (something is broken right now), WARN (the AI is not doing what the
+# design says it should), NOTE (expected behaviour, but the answer to a question that
+# keeps coming back). Printed at the top of the report, or alone with --findings.
+#
+# Every pointer is a literal string naming the file to open, and where a thing was
+# fixed it says so with the date - a finding that should be impossible then reads
+# "inspect this", not "known issue". Pointers are never computed from the log: one
+# that is goes stale without anyone noticing.
+#
+# Adding a check: write a generator that takes the Session and yields Finding(...),
+# then put it in CHECKS. One line of text, one actionable sentence of pointer.
+Finding = namedtuple("Finding", "level code text pointer")
+
+SEVERITY = {"ERROR": 0, "WARN": 1, "NOTE": 2}
+
+# A vanilla GUI error, once per start, nothing to do with the AI.
+KNOWN_NOISE = "FindPanelsByTexture"
+
+# Measures vanilla has always re-ordered on top of themselves. Counted, never blamed.
+VANILLA_SELF_CANCEL = ("UseLaborOfLove", "Flirt", "BribeCharacter", "MakeACompliment", "PickpocketPeople")
+
+# The libraries that print a LOADED probe. utility.lua prints its own unconditionally,
+# so a log with none of these came from a game that never loaded the mod at all.
+EXPECTED_LIBS = ("utility.lua", "aiboard.lua", "aihtn.lua")
+
+STDAFX = ("Scripts/Library/stdafx.lua - a library loads only from its Include line there, never from "
+          "its filename. aiboard.lua and trade.lua were missing from it and eight BloodFeud leaves "
+          "errored in Weight() and weighed 0; fixed 2026-09-14. If this is back, an Include line was "
+          "lost - check_unresolved_calls.py fails on that too.")
+
+# Methods of AIHTN_TASKS whose failure has already been chased down once. Anything not
+# listed gets the generic pointer in check_htn_methods.
+HTN_NOTES = {
+    "Feud.taunt": ("NOTE",
+        "Expected against a blood rival, not a defect: the taunt letter needs NotFoe and a blood rival "
+        "is already DIP_FOE. Scripts/Library/aihtn.lua, method taunt; the same gate is in "
+        "Scripts/AI/BaseTree/BloodFeud/bf_Taunt.lua."),
+    "Feud.duel": ("NOTE",
+        "The duel modes of aitwp_PlayerTargetScore (Scripts/Library/aitwp.lua) return nil for a target "
+        "that is indoors (SimIsInside), under 16, or the wrong class - a player who spends the day inside "
+        "buildings cannot be provoked at all. 189 of 189 on 2026-09-18."),
+    "Feud.attack": ("WARN",
+        "The bar is TWP_ATTACK_WIN_CHANCE = 0.75 in Scripts/Library/aitwp.lua, and aitwp_GatherFighters "
+        "counts hired thugs only - never party members - so a house without a gang can never clear it. "
+        "The ::TWP::WHY fight lines carry mine=, theirs= and chance=."),
+    "Feud.artefact": ("WARN",
+        "aitwp_ReadyArtefacts wants the tool allowed at the player's rung (the ladder in aitwp_Allowed), "
+        "off its Use<item> cooldown, and either in hand or handed over from the store. The ::TWP::WHY "
+        "tools lines carry rung=, carried= and handovers=."),
+    "Feud.building": ("NOTE",
+        "The same aitwp_ReadyArtefacts pass as Feud.artefact, counting only the rows whose target is a "
+        "building. A house with no building artefact allowed at the player's rung is the normal case "
+        "early on; it stops being normal once the ::TWP::WHY tools rung climbs."),
+    "Feud.razzia": ("NOTE",
+        "Needs an idle myrmidon and TWP_BF_RAZZIA_EVIDENCE of evidence against the player. Evidence comes "
+        "from ms_211_OrderCollectEvidence, which self-cancels - see the self-cancel finding."),
+    "HaveEvidence.ready": ("NOTE",
+        "No party member holds evidence against the player: aitwp_FindAccuser in Scripts/Library/aitwp.lua. "
+        "Evidence is gathered by ms_211_OrderCollectEvidence and decays."),
+    "HaveEvidence.forge": ("NOTE",
+        "No Hexerdokument in hand or in the store: aitwp_ForgeryDocument. The feud cart buys them, so read "
+        "the cart findings and the market nowhere column first."),
+}
+
+# The one check that reads the tree instead of the log: knobs lowered for a test run
+# and easy to ship by accident.
+TEST_KNOBS = (
+    ("Scripts/Library/aitwp.lua", "TWP_BF_SUPPLY_HOURS", "2",
+     "game hours between feud supply runs; 1 is the testing value, so one game day exercises the cart"),
+    ("Scripts/AI/BaseTree/ToMEconomy/BuyWorkshop.lua", "TOM_BUY_WORKSHOP_HOURS", "96",
+     "game hours between workshop purchases, before the difficulty scaling below it"),
+)
+
+
+def check_telemetry(s):
+    if not s.libs and not s.groups and not s.last:
+        yield Finding("ERROR", "no-telemetry", "not one ::TWP:: line in this file",
+                      "Either the wrong file - the game truncates logfile.log on every launch, so copy a "
+                      "run worth keeping - or mods/Reforged does not point at this checkout. " + STDAFX)
+        return
+    missing = [lib for lib in EXPECTED_LIBS if lib not in s.libs]
+    if s.libs and missing:
+        yield Finding("ERROR", "library-not-loaded", "no LOADED probe for " + ", ".join(missing), STDAFX)
+    if s.libs and not s.groups:
+        yield Finding("NOTE", "detail-log-off", "libraries loaded, but no W or PICK lines in the file",
+                      "Log = 1 under [AI] in configs/config.ini, or AILog = 1 under [OPTIONS] in "
+                      "userconfig.ini. Without it every weight below is blind.")
+
+
+def check_runtime_errors(s):
+    for text, count in s.errors.most_common(8):
+        if KNOWN_NOISE in text:
+            yield Finding("NOTE", "vanilla-noise", "%s x%d" % (text[:80], count),
+                          "Pre-existing vanilla GUI error, unrelated to the AI; expected once per start.")
+            continue
+        ours = False
+        for name in ("aiboard_", "aihtn_", "aitwp_", "utility_", "trade_"):
+            if name in text:
+                ours = True
+        yield Finding("ERROR", "lua-error", "%s x%d" % (text[:95], count),
+                      STDAFX if ours else
+                      "A node that errors in Weight() weighs 0 and says nothing else, so this is never "
+                      "cosmetic. Find the file named in the message, then run check_unresolved_calls.py - "
+                      "it resolves every call in the tree against the exe bindings.")
+
+
+def check_replay(s):
+    if s.mismatch:
+        yield Finding("ERROR", "replay-mismatch",
+                      "%d W lines did not replay to their own logged w=" % s.mismatch,
+                      "utility_Score in Scripts/Library/utility.lua and VARIANTS['current'] in this file "
+                      "have drifted apart, so every predicted share below is wrong. The usual cause is a "
+                      "new multiplier in Score that replay() does not model - the HTN x3 was one.")
+
+
+def check_self_cancel(s):
+    for measure, count in s.self_cancel.most_common(6):
+        if count < 3:
+            continue
+        runs = s.self_cancel_runs[measure]
+        if measure == "Attack":
+            level = "WARN"
+            pointer = ("Scripts/Measures/Behaviour/bs_IllegalDetection.lua, the OrderAttack guard in Run(). "
+                       "Several crime events reach Run() in one tick while GetCurrentMeasureName still names "
+                       "the old measure, so each one re-orders Attack and cancels the running one: that is "
+                       "the attack icon blinking. Guarded per sim per tick on 2026-09-17, and the stamp was "
+                       "made an integer on 2026-09-18 because a property does not hand a float back "
+                       "unchanged. If the ::TWP::ATTACK lines show no action=suppressed while these keep "
+                       "coming, the guard is a no-op again.")
+        elif measure == "OrderCollectEvidence":
+            level = "WARN"
+            pointer = ("Scripts/Measures/ms_211_OrderCollectEvidence.lua and its order sites. The same shape "
+                       "as the Attack flicker, and it costs the feud its evidence: HaveEvidence.ready needs "
+                       "aitwp_FindAccuser to find a member actually holding some, and Feud.razzia needs "
+                       "TWP_BF_RAZZIA_EVIDENCE of it. Not guarded yet.")
+        elif measure in VANILLA_SELF_CANCEL:
+            level = "NOTE"
+            pointer = ("Vanilla, and it has always done this: the idle library re-issues the measure while it "
+                       "runs. Nothing of ours orders it. Noise unless the count changes by an order of "
+                       "magnitude between sessions.")
+        else:
+            level = "NOTE"
+            pointer = ("A measure re-ordered while it still runs cancels itself at equal priority. Vanilla "
+                       "does this in several places; it only matters where the restart is visible or throws "
+                       "work away. Guard the order site the way OrderAttack in "
+                       "Scripts/Measures/Behaviour/bs_IllegalDetection.lua does.")
+        yield Finding(level, "self-cancel",
+                      "%s cancelled its own start %d times, %d of them on the very next log line"
+                      % (measure, count, runs), pointer)
+
+
+def check_attack_guard(s):
+    if not s.attack:
+        return
+    suppressed = sum(1 for a in s.attack if a.get("action") == "suppressed")
+    ordered = len(s.attack) - suppressed
+    if s.self_cancel["Attack"] and not suppressed:
+        yield Finding("ERROR", "attack-guard-dead",
+                      "%d Attack orders, none suppressed, and the engine still cancelled %d"
+                      % (ordered, s.self_cancel["Attack"]),
+                      "The per-tick guard in Scripts/Measures/Behaviour/bs_IllegalDetection.lua is not "
+                      "holding. It compares GetProperty against a stamp; if that comparison is false every "
+                      "time, the property is not handing back what was written to it. Log the read-back "
+                      "instead of guessing at the stamp again.")
+    else:
+        yield Finding("NOTE", "attack-guard",
+                      "Attack ordered %d times, %d re-orders suppressed inside the same tick"
+                      % (ordered, suppressed),
+                      "Scripts/Measures/Behaviour/bs_IllegalDetection.lua, OrderAttack. Working as intended.")
+
+
+def check_barren(s):
+    barren, total = s.barren_entries()
+    if not total:
+        return
+    share = 100.0 * barren / total
+    yield Finding("WARN" if share > 20 else "NOTE", "bloodfeud-barren",
+                  "%d of %d BloodFeud entries fired no leaf (%.0f%%); 85/110 before the planner, 18/30 "
+                  "after the gate, 0/17 on 2026-09-18" % (barren, total, share),
+                  "Scripts/AI/BaseTree/BloodFeud.lua - the aihtn_Step gate and the W = 15 dampener. A "
+                  "barren entry means a method applied and its leaf still weighed 0, so that method is "
+                  "missing one of the leaf's own gates: Scripts/Library/aihtn.lua, AIHTN_TASKS. While this "
+                  "stays above 20 percent the dampener has to stay too.")
+
+
+def check_htn_methods(s):
+    if not s.htn:
+        return
+    plans = len(s.htn)
+    chosen = Counter(h.get("method") for h in s.htn)
+    by_method = defaultdict(Counter)
+    for h in s.htn:
+        for reason in h.get("fail", "-").split(";"):
+            if reason and reason != "-" and ":" in reason:
+                method, _sep, predicate = reason.partition(":")
+                by_method[method][predicate] += 1
+    for method in sorted(by_method, key=lambda m: -sum(by_method[m].values())):
+        if chosen.get(method.split(".")[-1], 0):
+            continue
+        hits = sum(by_method[method].values())
+        if hits < plans:
+            continue
+        predicate, count = by_method[method].most_common(1)[0]
+        level, pointer = HTN_NOTES.get(method, ("WARN",
+            "Scripts/Library/aihtn.lua, AIHTN_TASKS - this method's when= list and the leaf it promises. A "
+            "method that never applies is either correctly gated out by the scenario or gated on something "
+            "its leaf does not actually need."))
+        yield Finding(level, "htn-method-never-applied",
+                      "%s applied in none of %d plans; %s fell %d times" % (method, plans, predicate, count),
+                      pointer)
+
+
+def check_htn_promise(s):
+    planned = Counter(h.get("step") for h in s.htn if h.get("step", "-") != "-")
+    for step, count in planned.most_common():
+        picked = s.picks.get(step, 0)
+        if count >= 5 and picked * 4 < count:
+            yield Finding("WARN", "htn-step-unpicked",
+                          "%s was planned %d times and picked %d: the x3 landed on a leaf weighing 0"
+                          % (step, count, picked),
+                          "Scripts/Library/aihtn.lua, AIHTN_TASKS - the method promising this leaf is "
+                          "missing a gate the leaf has, almost always the target lookup. Six methods had "
+                          "exactly this on 2026-09-17 (bf_Provoke planned 22, picked 1). The rule: a "
+                          "precondition must be a necessary condition of the leaf's own Weight(), and "
+                          "necessary is not enough - the method has to be predictive as well.")
+
+
+def check_carts(s):
+    buys = [c for c in s.carts if c.get("action") == "buy"]
+    failed = [c for c in buys if c.get("result") != "true"]
+    if failed:
+        yield Finding("WARN", "cart-buy-failed",
+                      "%d of %d feud cart purchases came back result=%s"
+                      % (len(failed), len(buys), failed[-1].get("result")),
+                      "aitwp_BuyResidenceCart in Scripts/Library/aitwp.lua, called from "
+                      "Scripts/AI/BaseTree/BloodFeud/bf_Procure.lua. Three wrong root causes so far: "
+                      "BuildingBuyCart is the ship native; bld_BuyCart reads the empty alias as the "
+                      "building it runs on, which from an AI node is the dynasty; and then both natives "
+                      "returned true and left the out alias unbound. Read the ::TWP::CARTBUY line before "
+                      "touching anything - it names the step that fell.")
+    for c in s.cartbuy[-2:]:
+        if c.get("ok") != "true":
+            yield Finding("NOTE", "cart-buy-step",
+                          "CARTBUY pos=%s made=%s bound=%s ok=%s"
+                          % tuple(c.get(k, "?") for k in ("pos", "made", "bound", "ok")),
+                          "pos=false: GetOutdoorMovePosition found no spot by the residence. made=false: "
+                          "ScenarioCreateCart refused. bound=false: the native returned true and left the "
+                          "alias unset, which is where session 6 stopped. ok=false: the CopyAlias out did "
+                          "not take. All of it in aitwp_BuyResidenceCart, Scripts/Library/aitwp.lua.")
+    sent = sum(1 for c in s.carts if c.get("action") == "send")
+    home = sum(num(c.get("result")) for c in s.carts if c.get("action") == "arrive")
+    if sent and not home:
+        yield Finding("WARN", "cart-brings-nothing",
+                      "%d supply runs left and nothing came home" % sent,
+                      "Scripts/Measures/ms_bf_FeudSupply.lua - BuyInTown walks the workshop and resource "
+                      "building classes with and without a dynasty, and BuyAt filters a rival's counter "
+                      "through aitwp_WorthBuyingFromEnemy. An empty run means either nothing is for sale "
+                      "(see the market nowhere column) or that filter is eating the whole list.")
+
+
+def check_market(s):
+    for dyn, fields in s.market.items():
+        nowhere = []
+        for entry in [e for e in fields.get("items", "").split(";") if e]:
+            name, _sep, rest = entry.partition(":")
+            home, _sep2, elsewhere = rest.partition(":")
+            if num(home) <= 0 and num(elsewhere) <= 0:
+                nowhere.append(name)
+        if len(nowhere) >= 4:
+            yield Finding("NOTE", "market-nowhere",
+                          "dyn %s: %d ladder items are on sale nowhere (%s)"
+                          % (dyn, len(nowhere), ", ".join(nowhere[:6])),
+                          "aitwp_ShoppingList in Scripts/Library/aitwp.lua keeps asking for these and the "
+                          "cart keeps coming home without them. Either no workshop in the world makes them "
+                          "yet, or the scan in Scripts/Measures/ms_bf_FeudSupply.lua does not reach the "
+                          "building class that does.")
+
+
+def check_handovers(s):
+    if s.htn and not s.handovers:
+        yield Finding("NOTE", "no-handover",
+                      "no tool ever left the residence store this session",
+                      "aitwp_CanHandOver in Scripts/Library/aitwp.lua: the unit must carry no tool already "
+                      "and the house must be under its daily cap. With stock at home and no hand-over the "
+                      "block is usually aitwp_Allowed - the ladder will not release a tool above the "
+                      "player's rung. The ::TWP::WHY tools lines carry that rung.")
+    at_cap = [h for h in s.handovers if "/" in h.get("today", "") and
+              h["today"].split("/")[0] == h["today"].split("/")[1]]
+    if len(at_cap) >= 3:
+        yield Finding("NOTE", "handover-cap",
+                      "%d hand-overs hit the day's cap" % len(at_cap),
+                      "aitwp_HandOverCap in Scripts/Library/aitwp.lua is members + myrmidons + 2. The house "
+                      "is rationing tools; raising the cap makes the feud hit harder on the same stock.")
+
+
+def check_buyworkshop(s):
+    seen = sum(1 for entries in s.groups.values() for entry in entries if entry[0] == "BuyWorkshop")
+    if 0 < seen <= 3:
+        yield Finding("NOTE", "buyworkshop-rare",
+                      "BuyWorkshop was scored %d times all session - too few to judge its weight" % seen,
+                      "TOM_BUY_WORKSHOP_HOURS in Scripts/AI/BaseTree/ToMEconomy/BuyWorkshop.lua. The timer "
+                      "is HOURS - difficulty*12, so the shipping 96 is a 48 game hour cooldown at "
+                      "difficulty 4 and one game day evaluates the node about once. Lower it for a test "
+                      "run and put it back.")
+
+
+def check_blood_rival(s):
+    if not s.groups:
+        return
+    if not s.htn:
+        yield Finding("NOTE", "no-blood-rival",
+                      "no dynasty ran the blood feud this session",
+                      "aitwp_EnsureBloodEnemies, called daily from Scripts/AI/BaseTree/Priorities.lua, "
+                      "gives every human player exactly one coloured AI dynasty as a blood rival and writes "
+                      "AI_BloodEnemyOf. No HTN line at all means it never ran or never matched.")
+        return
+    dyns = sorted(set(h.get("dyn") for h in s.htn))
+    if len(dyns) == 1:
+        yield Finding("NOTE", "one-blood-rival",
+                      "the blood feud ran for exactly one dynasty (%s) - by design, one per human player"
+                      % dyns[0],
+                      "Scripts/AI/BaseTree/BloodFeud.lua returns 0 without AI_BloodEnemyOf, so 'the AI "
+                      "never attacked me' is a question about this one dynasty. The other houses run the "
+                      "old Feud subtree under Scripts/AI/BaseTree/Feud, whose leaves are unscored constants "
+                      "and do not target the player's own characters.")
+
+
+def check_idle(s):
+    total = sum(s.measures.values())
+    idle = s.measures.get("ms_DynastyIdle.lua", 0) + s.measures.get("Behaviour/std_Idle.lua", 0)
+    if total and idle * 2 > total:
+        yield Finding("NOTE", "mostly-idle",
+                      "%.0f%% of measure starts were idling (%d of %d)" % (100.0 * idle / total, idle, total),
+                      "Expected while most party members have nothing assigned, but if it climbs, look at "
+                      "the root weights: an AI that idles is an AI whose subtree children all weighed 0. "
+                      "Scripts/AI/BaseTree, and basetree_stats.py --list zero-only.")
+
+
+def check_test_knobs(_session):
+    root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+    for rel, knob, ship, what in TEST_KNOBS:
+        path = os.path.join(root, *rel.split("/"))
+        try:
+            with open(path, encoding="utf-8", errors="replace") as handle:
+                source = handle.read()
+        except IOError:
+            continue
+        found = re.search(r"^%s\s*=\s*(\S+)" % knob, source, re.M)
+        if found and found.group(1) != ship:
+            yield Finding("NOTE", "test-knob", "%s = %s in the tree, ships at %s"
+                          % (knob, found.group(1), ship),
+                          "%s - %s. This is the one check that reads the checkout rather than the log. Put "
+                          "it back before the branch goes out." % (rel, what))
+
+
+CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel, check_attack_guard,
+          check_barren, check_htn_methods, check_htn_promise, check_carts, check_market,
+          check_handovers, check_buyworkshop, check_blood_rival, check_idle, check_test_knobs)
+
+
+def findings(session):
+    found = []
+    for check in CHECKS:
+        found += list(check(session))
+    found.sort(key=lambda f: SEVERITY.get(f.level, 3))
+    return found
+
+
+def format_findings(found):
+    counts = Counter(f.level for f in found)
+    parts = ["%d %s" % (counts[level], level.lower()) for level in ("ERROR", "WARN", "NOTE") if counts[level]]
+    out = ["findings: %s" % (", ".join(parts) or "nothing to report")]
+    for f in found:
+        out.append("  %-5s %-26s %s" % (f.level, f.code, f.text))
+        out += textwrap.wrap(f.pointer, width=104, initial_indent=" " * 8 + "-> ", subsequent_indent=" " * 11)
+    return "\n".join(out)
+
+
 def report(session, path):
     out = []
     out.append("%s" % path)
@@ -343,6 +769,8 @@ def report(session, path):
         out.append("Lua runtime errors: %d (a node that errors in Weight() weighs 0 without a trace)" % sum(session.errors.values()))
         for text, count in session.errors.most_common(5):
             out.append("  %5d  %s" % (count, text))
+    out.append("")
+    out.append(format_findings(findings(session)))
 
     if session.first:
         widths = {c: max(len(c), 11) for c in COLUMNS}
@@ -501,6 +929,8 @@ def report(session, path):
 
 
 SAMPLE = """[Script] ::TWP::LOADED utility.lua
+[Script] ::TWP::LOADED aiboard.lua
+[Script] ::TWP::LOADED aihtn.lua
 [Script] ::TWP::ENV lua=Lua 5.1 table.sort=true pairs=function
 [Script] ::TWP::MEMBER dyn=1 sim=Bero Freudenreich
 [Script] ::TWP::SNAPSHOT t=8 round=0 diff=4 dyn=1 persona=3 money=1000 bld=2 ws=1 members=1 title=2 office=-1 rank=5 enemies=1 P=20 A=60 I=10 goal=- target=0 ticks=0 name=Bero Freudenreich
@@ -562,6 +992,18 @@ def selftest():
     assert session.barren_entries() == (1, 2), session.barren_entries()
     text = report(session, "<sample>")
     assert len(session.handovers) == 1 and "hand-overs from the store: 1" in text, text
+    # the findings layer: the checks are the point of the tool, so they are tested like code
+    codes = [f.code for f in findings(session)]
+    assert "library-not-loaded" not in codes, codes
+    assert "htn-method-never-applied" in codes and "one-blood-rival" in codes, codes
+    assert "bloodfeud-barren" in codes and "market-nowhere" not in codes, codes
+    assert [f.level for f in findings(session)] == sorted(
+        (f.level for f in findings(session)), key=lambda l: SEVERITY[l]), "findings must sort worst first"
+    printed = format_findings(findings(session))
+    assert "Scripts/AI/BaseTree/BloodFeud.lua" in printed and printed.startswith("findings:"), printed
+    blank = Session()
+    blank.feed([])
+    assert findings(blank)[0].code == "no-telemetry", findings(blank)
     assert "goods brought home 2" in text and "nowhere HexerdokumentI" in text and "feud measures among them" in text, text
     assert "goal target kept 1/1" in text and "1 picked an office holder" in text, text
     print(text)
@@ -577,11 +1019,17 @@ def main(argv):
         pass
     if len(argv) > 1 and argv[1] == "--selftest":
         return selftest()
-    path = argv[1] if len(argv) > 1 else default_log_path()
+    args = [a for a in argv[1:] if a != "--findings"]
+    only_findings = len(args) < len(argv) - 1
+    path = args[0] if args else default_log_path()
     session = Session()
     with open(path, encoding="utf-8", errors="replace") as handle:
         session.feed(handle)
-    print(report(session, path))
+    if only_findings:
+        print(path)
+        print(format_findings(findings(session)))
+    else:
+        print(report(session, path))
     return 0
 
 
