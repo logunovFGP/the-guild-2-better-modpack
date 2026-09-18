@@ -1207,6 +1207,11 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 		economy_CalculateSalesRanking(BldAlias)
 	end
 	
+	-- at 2am: name the needs nobody owns any more
+	if math.mod(GetGametime(), 24) == 2 then
+		bld_LogStaleNeeds(BldAlias)
+	end
+
 	-- at 1am: subtract current wages from balance
 	if math.mod(GetGametime(), 24) == 1 then
 		local Wages = economy_CalculateWages(BldAlias)
@@ -1335,6 +1340,47 @@ function AbilityBoosts(BldAlias, BossAlias)
 	end
 end
 
+-- Every Need_<itemid> on this building's inventories that the building can neither
+-- produce nor legitimately consume. Nothing ever clears these properties: not a level
+-- up, and not bld_HandleNewOwner, which drops MgmStor_* and leaves Need_* behind. A plot
+-- therefore keeps wanting what a previous occupant, level or owner wanted, and the cart
+-- keeps buying it. Reported, never deleted - until a line names something, deleting them
+-- is a guess.
+--
+-- This engine has no property enumeration, hence the sweep over the id range, the same
+-- one bld_GetKnownItemID already walks. Once per building per game day.
+function LogStaleNeeds(BldAlias)
+	if not utility_LogEnabled() then
+		return
+	end
+	local BldId = BuildingGetProto(BldAlias)
+	local Legit = {}
+	local Known = (GetDatabaseValue("BuildingToItems", BldId, "requireditems") or "")
+		.. " " .. (GetDatabaseValue("BuildingToItems", BldId, "produceditems") or "")
+	for Id in string.gfind(Known, "%d+") do
+		Legit[ItemGetID(Id)] = 1
+	end
+
+	local Inventories = { INVENTORY_STD, INVENTORY_SELL }
+	local Stale = ""
+	for k = 1, 2 do
+		if GetInventory(BldAlias, Inventories[k], "StaleInv") then
+			for ItemId = 1, 999 do
+				if not Legit[ItemId] and HasProperty("StaleInv", "Need_"..ItemId) then
+					local Value = GetProperty("StaleInv", "Need_"..ItemId) or 0
+					local Name = ItemGetName(ItemId)
+					if Value > 0 and Name and Name ~= "" then
+						Stale = Stale .. ItemId .. ":" .. Name .. ":inv" .. k .. ":" .. Value .. ";"
+					end
+				end
+			end
+		end
+	end
+	if Stale ~= "" then
+		utility_Emit("::TWP::NEEDSTALE t=" .. string.format("%.2f", GetGametime())
+			.. " bld=" .. GetID(BldAlias) .. " proto=" .. BldId .. " need=" .. Stale)
+	end
+end
 function HandleSetup(BldAlias)
 	-- Check every worker (only once) for illness and equipment 
 	if not HasProperty(BldAlias, "CheckDefaultWorkers") then
@@ -1342,6 +1388,7 @@ function HandleSetup(BldAlias)
 		SetProperty(BldAlias, "CheckDefaultWorkers", 1)
 	end
 	economy_CalculateSalesRanking(BldAlias)
+	bld_LogStaleNeeds(BldAlias)
 end
 
 function HandleOnLevelUp(BldAlias)
@@ -1353,6 +1400,7 @@ function HandleOnLevelUp(BldAlias)
 	
 	economy_StorageUpdateOnLevelUp(BldAlias)
 	economy_CalculateSalesRanking(BldAlias)
+	bld_LogStaleNeeds(BldAlias)
 end
 
 function HandleNewOwner(BldAlias, FormerOwner)

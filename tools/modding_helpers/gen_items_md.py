@@ -118,17 +118,56 @@ def main(argv):
 
     items = table("Items.dbt")
     buildings = table("Buildings.dbt")
-    type_name, building_name = {}, {}
+    type_name, building_name, raw_building_name = {}, {}, {}
     for f in sorted(buildings.values(), key=lambda r: int(r[0])):
         if len(f) > 5:
             type_name.setdefault(f[5], base_name(f[2]))
             building_name[f[0]] = base_name(f[2])
+            raw_building_name[f[0]] = f[2]
 
     producers = {}
+    producer_protos = {}
     for f in table("BuildingToItems.dbt").values():
         if len(f) > 2:
             for iid in f[2].split():
                 producers.setdefault(iid, set()).add(base_name(f[1]))
+                producer_protos.setdefault(iid, set()).add(f[0])
+
+    # The manufacturer column is vanilla data and this mod moved several items between
+    # buildings, so it can still name a proto that no longer makes the item - the church
+    # goods are swapped between the two confessions, for one. Nothing in the shipped Lua
+    # reads it, but ms_debug_HotTea.lua regenerates BuildingToItems rows using
+    # "manufacturer == building id" as its does-this-building-make-it-itself test, so a
+    # stale value there quietly adds an ingredient the row should not list. Reported, not
+    # corrected: the column is engine-facing and what it drives in GuildII.exe is untested.
+    # A manufacturer naming a lower level of the SAME building is normal and load-bearing:
+    # that is how a hospital 3 ends up requiring the Salve its level 2 self makes. Only a
+    # manufacturer pointing at a different building is stale. base_name is too coarse here
+    # - it turns Church1a and Church1b, the two confessions, into one "Church" - so levels
+    # are stripped while the a/b branch is kept.
+    def branch(proto):
+        return re.sub(r"\d+", "", raw_building_name.get(proto, ""))
+
+    stale = []
+    for iid, f in sorted(items.items(), key=lambda r: int(r[0])):
+        if len(f) < 13 or f[12] in ("", "0", "~") or iid not in producer_protos:
+            continue
+        actual = sorted(producer_protos[iid], key=int)
+        if f[12] in actual:
+            continue
+        family = branch(f[12])
+        if family and any(branch(a) == family for a in actual):
+            continue
+        stale.append((iid, f[1], f[12], raw_building_name.get(f[12], "?"), actual))
+    if stale:
+        print("note: %d item(s) whose manufacturer names a different building than the one "
+              "that produces them; ms_debug_HotTea.lua uses manufacturer as its "
+              "does-this-building-make-it-itself test, so regenerating those BuildingToItems "
+              "rows adds an ingredient they should not list:" % len(stale))
+        for iid, name, mfr, mfr_name, actual in stale:
+            print("  item %s %s: manufacturer %s (%s), actually produced by %s"
+                  % (iid, name, mfr, mfr_name,
+                     ", ".join("%s (%s)" % (a, raw_building_name.get(a, "?")) for a in actual)))
 
     # ItemsToMarket: id, itemid, name, buildingtype, minlevel, spawn_gamestart -> keyed by item id
     market = {}

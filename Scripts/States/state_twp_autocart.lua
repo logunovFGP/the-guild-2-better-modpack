@@ -89,7 +89,7 @@ function LoadAndSellAtMarket(Profits, ProfitCount, CartSlots, CartSlotSize, City
 	Sleep(3)
 	-- Unload
 	RemoveItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
-	cart_UnloadAll("", "MarketBld", true)
+	cart_UnloadAll("", "MarketBld")
 	AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD) 
 	-- buy required resources
 	if not NeedCount then -- may not be initialized yet
@@ -138,9 +138,11 @@ end
 -- unload at home and fill with dummy items (prevents AI from filling up the slots)
 function UnloadItems(CartSlots, CartSlotSize, HomeAlias)
 	RemoveItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD)
+	local UnloadLog = ""
 	for i = 1, CartSlots do
 		local ItemId, ItemCount = InventoryGetSlotInfo("", CartSlots-i)
 		if ItemId and ItemCount > 0 then
+			UnloadLog = UnloadLog .. ItemId .. ":" .. (ItemGetName(ItemId) or "?") .. ":" .. ItemCount .. ";"
 			if CanAddItems(HomeAlias, ItemId, ItemCount, INVENTORY_STD) then				
 				Transfer("",HomeAlias,INVENTORY_STD,"",INVENTORY_STD, ItemId, ItemCount)
 			else
@@ -149,6 +151,11 @@ function UnloadItems(CartSlots, CartSlotSize, HomeAlias)
 		end 
 	end
 	AddItems("", "EmptySlot", CartSlots*CartSlotSize, INVENTORY_STD) 
+	if UnloadLog ~= "" then
+		utility_Emit("::TWP::UNLOAD t=" .. string.format("%.2f", GetGametime())
+			.. " cart=" .. GetID("") .. " dest=" .. GetID(HomeAlias)
+			.. " via=autocart items=" .. UnloadLog)
+	end
 end
 
 function BuyResources(NeedCount, Needs, CurrentCityAlias, CurrentMarketAlias)

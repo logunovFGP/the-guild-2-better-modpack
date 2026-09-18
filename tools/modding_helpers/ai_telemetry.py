@@ -56,6 +56,18 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
                                               one per decided raid: assassination_attempt, workers_raid,
                                               raid_building, kidnap or kidnap_child; sent= is whether the
                                               squad actually formed, odds= the kidnap chance (-1 elsewhere)
+  ::TWP::SUPPLY t= bld= proto= workers= live= kept=<id:amount;..> dropped=<id:name;..>
+                                              economy_GetResourceNeeds held a resource back: requireditems
+                                              lists every recipe of the building level, and this one feeds
+                                              only a recipe the building has not unlocked or deselected
+  ::TWP::NEEDSTALE t= bld= proto= need=<id:name:inv1|inv2:value;..>
+                                              a Need_<itemid> the building can neither produce nor consume;
+                                              nothing ever clears these, so a plot keeps wanting what a
+                                              previous level, owner or occupant wanted
+  ::TWP::UNLOAD t= cart= dest= via=<UnloadAll|autocart> items=<id:name:count;..>
+                                              everything a cart put into a building; the autocart strips its
+                                              EmptySlot dummies around each transfer, and in that window the
+                                              engine can load goods of its own
   [StartMeasure] <sim>: Canceled 'A'(p) because of priority 'B'(q)
                                               engine: a measure start lost to the running one; p, q are
                                               the interruptvalue column of DB/Measures.dbt
@@ -97,6 +109,9 @@ WAR = re.compile(r"::TWP::WAR (.*)$")
 SPY = re.compile(r"::TWP::SPY (.*)$")
 ATTACK = re.compile(r"::TWP::ATTACK (.*)$")
 HEAL = re.compile(r"::TWP::HEAL (.*)$")
+SUPPLY = re.compile(r"::TWP::SUPPLY (.*)$")
+NEEDSTALE = re.compile(r"::TWP::NEEDSTALE (.*)$")
+UNLOAD = re.compile(r"::TWP::UNLOAD (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -221,6 +236,7 @@ class Session(object):
         self.why, self.orders, self.cartbuy = [], [], []
         self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
         self.attacks, self.heals = [], []
+        self.supply, self.stale_needs, self.unloads = [], [], []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -367,6 +383,18 @@ class Session(object):
             m = SPY.search(line)
             if m:
                 self.spying.append(kv(m.group(1)))
+                continue
+            m = SUPPLY.search(line)
+            if m:
+                self.supply.append(kv(m.group(1)))
+                continue
+            m = NEEDSTALE.search(line)
+            if m:
+                self.stale_needs.append(kv(m.group(1)))
+                continue
+            m = UNLOAD.search(line)
+            if m:
+                self.unloads.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1071,6 +1099,98 @@ def check_healing(s):
                       "returned out of the doctor's whole queue loop, so the refusal was forgotten and "
                       "the patient came back on ai_VisitDoc's one-hour timer. If this is back, either "
                       "the flag flipped again or VisitDoc stopped honouring the property.")
+def check_supply(s):
+    if not s.supply:
+        return
+    malformed, dropped = Counter(), Counter()
+    dead = [r for r in s.supply if num(r.get("matched"), -1) == 0]
+    if dead:
+        yield Finding("ERROR", "supply-filter-dead",
+                      "%d buildings had no requireditems entry match any recipe (protos %s)"
+                      % (len(dead), ", ".join(sorted(set(r.get("proto", "?") for r in dead))[:6])),
+                      "economy_GetProtoIngredientUsers keys ingredients by the numbers in "
+                      "Items.dbt prod1..3, and economy_GetResourceNeeds keys them by "
+                      "ItemGetID(<numeric string>). matched=0 means those two id spaces do not "
+                      "compare equal, so the filter drops nothing and auto-supply is back to "
+                      "buying every recipe of the building level. Normalise both through "
+                      "helpfuncs_StringToIdList in Scripts/Library/economy.lua.")
+    by_reason = Counter()
+    for row in s.supply:
+        for part in row.get("dropped", "").split(";"):
+            if not part:
+                continue
+            # slotN:malformed is a usage list too short, usageN:orphan one too long
+            if part.endswith(":malformed") or part.endswith(":orphan"):
+                malformed[(row.get("proto", "?"), part.split(":")[-1])] += 1
+            else:
+                dropped[part] += 1
+                by_reason[part.split(":")[-1]] += 1
+    if malformed:
+        yield Finding("WARN", "requireditems-malformed",
+                      "requireditems and requireditemusages disagree in length: %s"
+                      % ", ".join("proto %s %s x%d" % (p, kind, n)
+                                  for (p, kind), n in malformed.most_common()),
+                      "DB/BuildingToItems.dbt. economy_GetResourceNeeds reads the two columns as "
+                      "parallel lists. malformed means the usage list is SHORT, so a slot reaches "
+                      "CalcCurrentResourceNeeds as {nil, amount} and gets indexed; orphan means it "
+                      "is LONG, which is harmless but still a wrong row. Count the entries of both "
+                      "columns on that proto; the four rows found on 2026-09-19 were all orphans - "
+                      "an item id had been lost, not a usage gained.")
+    if dropped:
+        yield Finding("NOTE", "supply-filtered",
+                      "%d resources held back from auto-supply (%s): %s"
+                      % (sum(dropped.values()),
+                         ", ".join("%d %s" % (n, kind) for kind, n in by_reason.most_common()),
+                         ", ".join("%s x%d" % (k, n) for k, n in dropped.most_common(6))),
+                      "economy_FilterNeedsByLiveRecipes in Scripts/Library/economy.lua. locked means "
+                      "no recipe that eats it is unlocked - the level 3 hospital listing ToadExcrements "
+                      "for the 1000 gold Mixture upgrade is the case it was written for. deselected "
+                      "means the recipe IS unlocked and the player took it out of the storage panel, so "
+                      "that one follows the panel and comes back when they put it back. A name here "
+                      "that the building does make is the bug, not the drop.")
+
+
+def check_stray_goods(s):
+    # the other half of the same question: goods that arrive in a building nothing asked for
+    stale = Counter()
+    stale_pairs = set()
+    for row in s.stale_needs:
+        for part in row.get("need", "").split(";"):
+            bits = part.split(":")
+            if len(bits) >= 2:
+                stale[":".join(bits[:2])] += 1
+                stale_pairs.add((row.get("bld"), bits[1]))
+    if stale:
+        yield Finding("WARN", "need-stale",
+                      "%d buildings hold Need_ entries for goods they neither make nor use: %s"
+                      % (len(set(r.get("bld") for r in s.stale_needs)),
+                         ", ".join("%s x%d" % (k, n) for k, n in stale.most_common(6))),
+                      "bld_LogStaleNeeds in Scripts/Library/bld.lua. Nothing clears Need_<itemid>: not a "
+                      "level up, and not bld_HandleNewOwner, which drops MgmStor_* and leaves these behind. "
+                      "Whatever is named here is what that building's cart keeps buying.")
+    if not s.unloads:
+        return
+    by_dest = defaultdict(Counter)
+    for row in s.unloads:
+        for part in row.get("items", "").split(";"):
+            bits = part.split(":")
+            if len(bits) >= 3:
+                by_dest[row.get("dest", "?")][bits[1]] += num(bits[2])
+    matched = sorted("%s into bld %s" % (name, bld) for bld, name in stale_pairs
+                     if name in by_dest.get(bld, {}))
+    if matched:
+        yield Finding("ERROR", "stray-goods-delivered",
+                      "a cart delivered goods the building has no use for: %s" % ", ".join(matched[:6]),
+                      "This closes the loop between bld_LogStaleNeeds and cart_UnloadAll: the building "
+                      "asked for it through a stale Need_ property and a cart went and fetched it. Clear "
+                      "the property where the need is written, not in the cart.")
+    else:
+        yield Finding("NOTE", "cart-unloads",
+                      "%d cart unloads into %d buildings, nothing matching a stale need"
+                      % (len(s.unloads), len(by_dest)),
+                      "cart_UnloadAll and state_twp_autocart_UnloadItems. If a good still shows up in a "
+                      "building that cannot use it, it did not come in on a cart and it was not a stale "
+                      "Need_ - look at the engine's own management next.")
 
 
 def check_blood_rival(s):
@@ -1126,7 +1246,8 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_blood_rival, check_idle, check_test_knobs)
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing,
+          check_blood_rival, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
 def findings(session):
@@ -1587,6 +1708,37 @@ def selftest():
     stuck_ok.feed(["[Script] ::TWP::HEAL t=1.00 sim=4 hospital=9 cost=300 purse=12 outcome=nomoney",
                    "[Script] ::TWP::HEAL t=20.00 sim=4 hospital=9 cost=300 purse=12 outcome=nomoney"])
     assert "hospital-refusal-loop" not in [f.code for f in findings(stuck_ok)], findings(stuck_ok)
+    # auto-supply: a drop is a NOTE naming the good, a row whose two columns disagree is a WARN
+    sup = Session()
+    sup.feed(["[Script] ::TWP::SUPPLY t=1.00 bld=7 proto=392 workers=2 live=6 matched=11 "
+              "kept=8:16;120:32; dropped=133:ToadExcrements:locked;204:Fungi:deselected;",
+              "[Script] ::TWP::SUPPLY t=2.00 bld=9 proto=666 workers=1 live=3 matched=5 "
+              "kept=201:6; dropped=slot6:malformed;usage8:orphan;"])
+    codes_sup = [f.code for f in findings(sup)]
+    assert "supply-filtered" in codes_sup and "requireditems-malformed" in codes_sup, findings(sup)
+    assert "supply-filter-dead" not in codes_sup, findings(sup)
+    printed_sup = format_findings(findings(sup))
+    assert "ToadExcrements" in printed_sup, printed_sup
+    # a locked recipe and a deselected one are different problems and must read differently
+    assert "1 locked" in printed_sup and "1 deselected" in printed_sup, printed_sup
+    # both directions of a misaligned row are named, and named apart
+    assert "malformed x1" in printed_sup and "orphan x1" in printed_sup, printed_sup
+    # matched=0 is the filter silently doing nothing, which silence would otherwise hide
+    dead = Session()
+    dead.feed(["[Script] ::TWP::SUPPLY t=1.00 bld=7 proto=392 workers=2 live=6 matched=0 "
+               "kept=8:16; dropped="])
+    assert "supply-filter-dead" in [f.code for f in findings(dead)], findings(dead)
+    # the clay case: a stale need plus a cart that actually delivered it is the whole chain
+    stray = Session()
+    stray.feed(["[Script] ::TWP::NEEDSTALE t=2.00 bld=4 proto=195 need=30:Clay:inv1:2;",
+                "[Script] ::TWP::UNLOAD t=3.00 cart=8 dest=4 via=autocart items=30:Clay:2;"])
+    codes_stray = [f.code for f in findings(stray)]
+    assert "need-stale" in codes_stray and "stray-goods-delivered" in codes_stray, findings(stray)
+    # an unload that matches no stale need must not be blamed
+    plain = Session()
+    plain.feed(["[Script] ::TWP::UNLOAD t=3.00 cart=8 dest=4 via=UnloadAll items=120:Lavender:9;"])
+    codes_plain = [f.code for f in findings(plain)]
+    assert "cart-unloads" in codes_plain and "stray-goods-delivered" not in codes_plain, findings(plain)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()

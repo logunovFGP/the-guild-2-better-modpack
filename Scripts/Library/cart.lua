@@ -86,9 +86,10 @@ function UnloadAll(CartAlias, DestAlias)
 	
 	--do the transfer
 	local	ItemId, ItemCount
+	local UnloadLog = ""
 	
 	for i = 1, Slots do
-		ItemId, ItemCount = InventoryGetSlotInfo("", Slots-i)
+		ItemId, ItemCount = InventoryGetSlotInfo(CartAlias, Slots-i)
 		
 		if ItemId and ItemCount then
 			BuildingGetCity(DestAlias, "BargCity")
@@ -109,12 +110,21 @@ function UnloadAll(CartAlias, DestAlias)
 			if Price and GetHomeBuilding(CartAlias, "CartUnloadAllHomeBuilding") then
 				economy_UpdateBalance("CartUnloadAllHomeBuilding", BalanceSheet, Price)
 			end
+			if ItemTransfered and ItemTransfered > 0 then
+				UnloadLog = UnloadLog .. ItemId .. ":" .. (ItemGetName(ItemId) or "?") .. ":" .. ItemTransfered .. ";"
+			end
 			-- TODO find out transferred money and call economy_UpdateBalance!
 			--economy_UpdateBalance("Business", "Autoroute", math.abs(EstimatedMoney + BargainMoney))
 		end
 		Sleep(0.4)
 	end
 	
+	if UnloadLog ~= "" then
+		utility_Emit("::TWP::UNLOAD t=" .. string.format("%.2f", GetGametime())
+			.. " cart=" .. GetID(CartAlias) .. " dest=" .. GetID(DestAlias)
+			.. " via=UnloadAll items=" .. UnloadLog)
+	end
+
 	if GetImpactValue(CartAlias, "WaitTime") == 0 then
 		AddImpact(CartAlias, "WaitTime", 1, 2)
 	end

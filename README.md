@@ -459,6 +459,23 @@ return `0`, which Lua treats as true, so every bribe was accepted), the one-trai
 a percentage of `AIPersonality.dbt`, and a missing column counts as 0 instead of erroring.
 
 ```powershell
+lua5.1 tools\modding_helpers\check_supply.lua
+```
+
+Covers what an auto-managed building buys: `economy_GetResourceNeeds` and the
+`economy_FilterNeedsByLiveRecipes` filter under it, driven through
+`state_twp_autocart_CalcResourceNeeds`, the call the cart makes before every market run.
+Unlike the other checks this one reads the **real** tables -- `DB/BuildingToItems.dbt`
+from the repo and `DB/Items.dbt` merged over the vanilla install (`$GUILD2`, else the
+Steam path) -- because the bug it guards is a data bug: `requireditems` is a per-level
+union, so a level 3 hospital listed ToadExcrements for `Mixture`, a 1000 gold upgrade it
+may never have bought, and auto-supply dutifully stocked it. Asserted here: a locked or
+deselected recipe takes its ingredients out of the list, unlocking it puts them back, an
+ingredient no recipe references (the divehouse drinks, the alchemist's own herbs) is never
+touched, and a row whose two columns disagree in length drops the idless slots instead of
+handing `CalcCurrentResourceNeeds` a `{nil, amount}` to index.
+
+```powershell
 python tools\modding_helpers\check_basetree_weights.py
 ```
 

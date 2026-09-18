@@ -681,6 +681,164 @@ function IncreaseServiceBasePrice(BldType, ItemId, BasePrice)
 	return BasePrice
 end
 
+-- Items.dbt keeps a recipe in three (nr, prod) pairs. Same walk as
+-- ms_debug_HotTea.lua:PrintRequiredItems, which is what generated the requireditems
+-- column of BuildingToItems.dbt in the first place.
+function GetItemIngredients(ItemId)
+	local Count = 0
+	local Ingredients = {}
+	for j = 1, 3 do
+		local Prod = GetDatabaseValue("Items", ItemId, "prod"..j)
+		if Prod and Prod > 0 then
+			Count = Count + 1
+			Ingredients[Count] = Prod
+		end
+	end
+	return Count, Ingredients
+end
+
+-- Which products of a building proto consume which ingredient, keyed by ingredient id.
+-- Each entry is a plain array with its length kept alongside: never iterated with pairs,
+-- which this engine's Lua may not have (see ::TWP::ENV). Static per proto, built once.
+ECONOMY_RECIPE_USERS = {}
+ECONOMY_RECIPE_USERCOUNTS = {}
+
+function GetProtoIngredientUsers(BldId)
+	if ECONOMY_RECIPE_USERS[BldId] then
+		return ECONOMY_RECIPE_USERS[BldId], ECONOMY_RECIPE_USERCOUNTS[BldId]
+	end
+	local Users, UserCounts = {}, {}
+	local ProductsString = GetDatabaseValue("BuildingToItems", BldId, "produceditems")
+	if ProductsString then
+		-- same conversion GetProducedItems uses, so these ids match GetLiveProducts
+		local ProductCount, Products = helpfuncs_StringToIdList(ProductsString)
+		for p = 1, ProductCount do
+			local ProductId = Products[p]
+			local IngCount, Ingredients = economy_GetItemIngredients(ProductId)
+			for k = 1, IngCount do
+				local Ing = Ingredients[k]
+				if not Users[Ing] then
+					Users[Ing] = {}
+					UserCounts[Ing] = 0
+				end
+				UserCounts[Ing] = UserCounts[Ing] + 1
+				Users[Ing][UserCounts[Ing]] = ProductId
+			end
+		end
+	end
+	ECONOMY_RECIPE_USERS[BldId] = Users
+	ECONOMY_RECIPE_USERCOUNTS[BldId] = UserCounts
+	return Users, UserCounts
+end
+
+-- meta/engine.signatures.tsv declares BuildingCanProduce(building, string), every call
+-- site in this mod passes the numeric id. Ask both ways and take a yes from either.
+function BuildingCanProduceItem(BldAlias, ItemId)
+	if BuildingCanProduce(BldAlias, ItemId) then
+		return 1
+	end
+	local Name = ItemGetName(ItemId)
+	if Name and Name ~= "" and BuildingCanProduce(BldAlias, Name) then
+		return 1
+	end
+	return nil
+end
+
+-- The products this building may actually make right now: unlocked in the engine, and
+-- still selected when the player configured a managed-storage product list. Unlocked is
+-- returned beside Live so a dropped resource can say which of the two filters took it.
+function GetLiveProducts(BldAlias)
+	local Live, Unlocked = {}, {}
+	local LiveCount = 0
+	local Count, Products = economy_GetProducedItems(BldAlias)
+
+	local IsSelected, HasSelection = {}, nil
+	local StoredString = GetProperty(BldAlias, "MgmStor_Products")
+	if StoredString and StoredString ~= "" then
+		HasSelection = 1
+		local SelectedCount, Selected = economy_StorageGetProducts(BldAlias)
+		for i = 1, SelectedCount do
+			IsSelected[Selected[i]] = 1
+		end
+	end
+
+	for i = 1, Count do
+		local ItemId = Products[i]
+		if ItemId and economy_BuildingCanProduceItem(BldAlias, ItemId) then
+			Unlocked[ItemId] = 1
+			if not HasSelection or IsSelected[ItemId] then
+				Live[ItemId] = 1
+				LiveCount = LiveCount + 1
+			end
+		end
+	end
+	return LiveCount, Live, Unlocked
+end
+
+-- Drop the resources that only feed recipes this building cannot make.
+-- requireditems is a per-level union: a level 3 hospital lists toad excrement because
+-- Mixture needs it, on every hospital, including the ones that never bought the 1000
+-- gold Mixture upgrade. An entry that no product of this proto references at all is
+-- deliberate - the divehouse drinks, the alchemist's own herbs - and is always kept.
+function FilterNeedsByLiveRecipes(BldAlias, BldId, Count, Items, Multiplier, UsageCount)
+	local Users, UserCounts = economy_GetProtoIngredientUsers(BldId)
+	local LiveCount, Live, Unlocked = economy_GetLiveProducts(BldAlias)
+
+	local Kept, KeptCount, Matched = {}, 0, 0
+	local KeptLog, DroppedLog = "", ""
+	-- requireditemusages longer than requireditems: Count comes from the items, so the
+	-- surplus never reaches a caller, but the row is still wrong and nothing else says so
+	for i = Count + 1, (UsageCount or Count) do
+		DroppedLog = DroppedLog .. "usage" .. i .. ":orphan;"
+	end
+	for i = 1, Count do
+		local ItemId = Items[i] and Items[i][1]
+		local Keep = 1
+		if not ItemId then
+			-- requireditemusages shorter: this slot reaches callers as { nil, amount } and
+			-- CalcCurrentResourceNeeds indexes [1] on it
+			Keep = nil
+			DroppedLog = DroppedLog .. "slot" .. i .. ":malformed;"
+		elseif Users[ItemId] then
+			Matched = Matched + 1
+			Keep = nil
+			local Deselected = nil
+			for k = 1, UserCounts[ItemId] do
+				local ProductId = Users[ItemId][k]
+				if Live[ProductId] then
+					Keep = 1
+				elseif Unlocked[ProductId] then
+					Deselected = 1
+				end
+			end
+			if not Keep then
+				local Why = "locked"
+				if Deselected then
+					Why = "deselected"
+				end
+				DroppedLog = DroppedLog .. ItemId .. ":" .. (ItemGetName(ItemId) or "?") .. ":" .. Why .. ";"
+			end
+		end
+		if Keep then
+			KeptCount = KeptCount + 1
+			Kept[KeptCount] = Items[i]
+			KeptLog = KeptLog .. ItemId .. ":" .. Items[i][2] .. ";"
+		end
+	end
+
+	if Count > 0 and (DroppedLog ~= "" or Matched == 0) then
+		utility_Emit("::TWP::SUPPLY t=" .. string.format("%.2f", GetGametime())
+			.. " bld=" .. GetID(BldAlias) .. " proto=" .. BldId
+			.. " workers=" .. Multiplier .. " live=" .. LiveCount .. " matched=" .. Matched
+			.. " kept=" .. KeptLog .. " dropped=" .. DroppedLog)
+	end
+	-- a misdetection must never starve a working building
+	if KeptCount <= 0 then
+		return Count, Items
+	end
+	return KeptCount, Kept
+end
+
 function GetResourceNeeds(BldAlias)
 	if (not BldAlias or not AliasExists(BldAlias)) then
 		return 0, {} 
@@ -715,7 +873,8 @@ function GetResourceNeeds(BldAlias)
 		-- multiply base amount by workercount or productivity
 		Items[i] = { Ids[i], Amount * Multiplier }
 	end
-	return Count, Items
+	-- requireditems lists every recipe of this building level, unlocked or not
+	return economy_FilterNeedsByLiveRecipes(BldAlias, BldId, Count, Items, Multiplier, i)
 end
 
 ---
@@ -1186,34 +1345,52 @@ function StorageUpdateOnLevelUp(BldAlias)
 		return
 	end
 
-	-- update resource list if necessary
+	-- Both halves below merge by item id. The old version appended the tail of the new
+	-- default list by position, which assumes every level of a building lists its items in
+	-- the same order; BuildingToItems does not. Hospital 2 to 3 alone duplicated Pinewood
+	-- and Charcoal, lost Fungi and Salve, and moved the configured minimum amounts onto
+	-- whatever item happened to land on their index.
 	local Count, Resources = economy_StorageGetResources(BldAlias)
 	local DefaultCount, DefaultNeeds = economy_GetResourceNeeds(BldAlias)
-	local NewCount = Count
-	if DefaultCount > Count then
-		-- add new items (careful, this requires all items in BuildingToItems to be listed in same order for each building type!)
-		for i = Count + 1, DefaultCount do
-			if DefaultNeeds[i] then
-				Resources[i] = DefaultNeeds[i]
-				NewCount = NewCount + 1
-			end
+	local Known = {}
+	for i = 1, Count do
+		if Resources[i] and Resources[i][1] then
+			Known[Resources[i][1]] = 1
 		end
+	end
+	local NewCount = Count
+	for i = 1, DefaultCount do
+		local ItemId = DefaultNeeds[i] and DefaultNeeds[i][1]
+		if ItemId and not Known[ItemId] then
+			Known[ItemId] = 1
+			NewCount = NewCount + 1
+			Resources[NewCount] = DefaultNeeds[i]
+		end
+	end
+	if NewCount > Count then
 		economy_StorageSaveResources(BldAlias, NewCount, Resources)
 	end
-	
+
 	-- update product list if necessary
 	local ProductCount, Products, ProtAmounts = economy_StorageGetProducts(BldAlias)
 	local DefaultProdCount, DefaultProducts, DefaultProtAmounts = economy_GetProducedItems(BldAlias)
-	local NewProductCount = ProductCount
-	if DefaultProdCount > ProductCount then
-		-- add new items (careful, this requires all items in BuildingToItems to be listed in same order for each building type!)
-		for i = ProductCount + 1, DefaultProdCount do
-			if DefaultProducts[i] then
-				Products[i] = DefaultProducts[i]
-				ProtAmounts[i] = DefaultProtAmounts[i]
-				NewProductCount = NewProductCount + 1
-			end
+	local KnownProduct = {}
+	for i = 1, ProductCount do
+		if Products[i] then
+			KnownProduct[Products[i]] = 1
 		end
+	end
+	local NewProductCount = ProductCount
+	for i = 1, DefaultProdCount do
+		local ItemId = DefaultProducts[i]
+		if ItemId and not KnownProduct[ItemId] then
+			KnownProduct[ItemId] = 1
+			NewProductCount = NewProductCount + 1
+			Products[NewProductCount] = ItemId
+			ProtAmounts[NewProductCount] = DefaultProtAmounts[i]
+		end
+	end
+	if NewProductCount > ProductCount then
 		economy_StorageSaveProducts(BldAlias, NewProductCount, Products, ProtAmounts)
 	end
 end
