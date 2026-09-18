@@ -668,6 +668,13 @@ decent with room to improve. First concrete issue offered:
 - [ ] **`trade.lua` was missing from the mod's `stdafx.lua` upstream too.** Fixed here on
       2026-09-14; the same one-line fix belongs in an upstream MR once a session log
       confirms the `trade_IsAlderman` errors.
+- [ ] **`bld_GetNeedForMedicine` never restocked the good medicine.** `Salve`, `Soap` and
+      `MiracleCure` fell through to its `return 0`, and `bld_SetupAI` then takes another 25
+      off the last two, so a hospital holding one single cure set its inventory need to
+      `Rand(3)` and neither produced nor bought another. Only an empty shelf scored 100, and
+      one batch put it straight back to nothing - AI hospitals had no cure for a severe
+      illness all of the 2026-09-18 session. Banded here; `Scripts/Library/bld.lua` is
+      byte-identical to `upstream/modern` otherwise, so this is an upstream MR candidate.
 
 **Mistyped or nonexistent globals** (ThreeOfMe's list, checked against this tree 2026-09-10).
 A name that does not exist evaluates to `nil` and the branch quietly never runs:

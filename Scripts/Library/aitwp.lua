@@ -1837,13 +1837,36 @@ function BuyResidenceCart(DynAlias, OutAlias)
 	if not aitwp_Residence(DynAlias, "TWP_BRC") then
 		return false
 	end
-	local Ok = false
-	if GetOutdoorMovePosition(nil, "TWP_BRC", "TWP_BRCPos")
-			and ScenarioCreateCart(EN_CT_HORSE, "TWP_BRC", "TWP_BRCPos", OutAlias) then
-		Ok = AliasExists(OutAlias)
+	-- Created into an alias of our own and copied out, the form bld_BuyCart and
+	-- Buildings/fishinghut.lua use. Session 6 had both natives return true and OutAlias
+	-- still unbound eleven times running, so which step falls is logged now instead of
+	-- guessed a fourth time: ::TWP::CARTBUY names each one.
+	local Pos = GetOutdoorMovePosition(nil, "TWP_BRC", "TWP_BRCPos")
+	local Made = false
+	if Pos then
+		if ScenarioCreateCart(EN_CT_HORSE, "TWP_BRC", "TWP_BRCPos", "TWP_BRCCart") then
+			Made = true
+		end
 	end
+	local Bound = false
+	if Made and AliasExists("TWP_BRCCart") then
+		Bound = true
+	end
+	local Ok = false
+	if Bound then
+		-- not "if CopyAlias(...) then": the copy is judged by the alias it leaves, never
+		-- by what it returns
+		CopyAlias("TWP_BRCCart", OutAlias)
+		if AliasExists(OutAlias) then
+			Ok = true
+		end
+	end
+	utility_Emit("::TWP::CARTBUY t=" .. string.format("%.2f", GetGametime())
+		.. " dyn=" .. GetID(DynAlias) .. " pos=" .. tostring(Pos and true or false)
+		.. " made=" .. tostring(Made) .. " bound=" .. tostring(Bound) .. " ok=" .. tostring(Ok))
 	RemoveAlias("TWP_BRC")
 	RemoveAlias("TWP_BRCPos")
+	RemoveAlias("TWP_BRCCart")
 	return Ok
 end
 

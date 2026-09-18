@@ -903,6 +903,33 @@ function GetNeedForMedicine(HospAlias, ItemName)
 		else
 			return 0
 		end
+	elseif ItemName == "Salve" then
+		-- Bandage's bands: the cheap consumable the hospital gets through fastest.
+		if AvailableItems < 5 then
+			return 75
+		elseif AvailableItems < 10 then
+			return 50
+		elseif AvailableItems < 25 then
+			return 25
+		else
+			return 0
+		end
+	elseif ItemName == "Soap" or ItemName == "MiracleCure" then
+		-- Bands 25 higher than the rest, because bld_SetupAI takes 25 off these two
+		-- before it compares. They used to fall through to the 0 below, so an AI
+		-- hospital holding one single MiracleCure set its need to Rand(3) and never
+		-- made another: a play session on 2026-09-18 found AI hospitals with nothing
+		-- for a severe illness all day. Only an empty shelf (the 100 above) restocked
+		-- them, and one batch put them straight back to nothing.
+		if AvailableItems < 3 then
+			return 100
+		elseif AvailableItems < 6 then
+			return 75
+		elseif AvailableItems < 9 then
+			return 50
+		else
+			return 25
+		end
 	else
 		return 0
 	end

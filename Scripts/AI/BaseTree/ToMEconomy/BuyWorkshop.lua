@@ -3,10 +3,13 @@
 TOM_BUY_WORKSHOP_BASE = 45
 
 -- Game hours between purchases, before the difficulty scaling below (easy 4 days, hard
--- 2). At difficulty 4 that is 48 hours, so a one-day test run evaluates this node once
--- and proves nothing about the weight: session 5 logged exactly one. Drop it to a few
--- hours to watch the AI shop, then put it back - it is a balance number, not a knob.
-TOM_BUY_WORKSHOP_HOURS = 96
+-- 2). The shipping value is 96; at difficulty 4 that is 48 hours, so a one-day test run
+-- evaluates this node once and proves nothing about the weight - session 5 logged exactly
+-- one and so did session 6. Lowered to 13 on 2026-09-18 for the test runs: at difficulty
+-- 4 the timer below then comes out negative, so the node is ready on every ToMEconomy
+-- entry and one game day shows how often the AI really buys. Put it back to 96 before
+-- shipping - it is a balance number, not a knob.
+TOM_BUY_WORKSHOP_HOURS = 13
 
 function Weight()
 	-- its own timer: this shared BasicAI_NewWorkshop with BuildWorkshop, so whichever

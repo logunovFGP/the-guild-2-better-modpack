@@ -47,11 +47,28 @@ local function Rich(DynAlias, Least)
 	return GetMoney(DynAlias) >= Least
 end
 
+-- Why an aggressive method could not apply, in the numbers the ::TWP::HTN reason cannot
+-- carry: it names the predicate, not the value that missed. One line per failing
+-- evaluation, no throttle - grep ::TWP::WHY in the session log. Session 6 had every
+-- aggressive method fail all day and the reasons alone could not say how far off it was.
+function Why(DynAlias, Text)
+	utility_Emit("::TWP::WHY t=" .. string.format("%.2f", GetGametime())
+		.. " dyn=" .. GetID(DynAlias) .. " " .. Text)
+end
+
 AIHTN_TASKS = {
 	-- Everything the blood rival can be doing to the player, best first.
 	Feud = {
 		{ name = "artefact", when = {
-			{ "ReadyArtefacts>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "character", R) >= 1 end },
+			{ "ReadyArtefacts>=1", function(d, p)
+				local R = {}
+				if aihtn_CountArtefacts(d, p, "character", R) >= 1 then
+					return true
+				end
+				aihtn_Why(d, "tools rung=" .. aitwp_Rung(d, p) .. " carried=" .. aitwp_CarriedTools("SIM")
+					.. " handovers=" .. aitwp_HandOversToday(d) .. "/" .. aitwp_HandOverCap(d))
+				return false
+			end },
 		}, steps = { "bf_UseArtefact" } },
 		{ name = "building", when = {
 			{ "BuildingArtefact>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "building", R) >= 1 end },
@@ -72,7 +89,13 @@ AIHTN_TASKS = {
 				end
 				local Defence = {}
 				aitwp_DefenceOf(p, "TWP_HTN", Defence)
-				return aitwp_WinChance(Side, Defence) >= TWP_ATTACK_WIN_CHANCE
+				local Chance = aitwp_WinChance(Side, Defence)
+				if Chance < TWP_ATTACK_WIN_CHANCE then
+					aihtn_Why(d, "fight mine=" .. N .. " theirs=" .. (Defence.n or 0)
+						.. " chance=" .. string.format("%.2f", Chance)
+						.. " bar=" .. TWP_ATTACK_WIN_CHANCE)
+				end
+				return Chance >= TWP_ATTACK_WIN_CHANCE
 			end },
 		}, steps = { "bf_ThugAttack" } },
 		{ name = "razzia", when = {

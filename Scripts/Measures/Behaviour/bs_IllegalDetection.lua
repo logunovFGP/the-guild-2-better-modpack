@@ -253,10 +253,19 @@ function Run()
 	-- engine cancels the running Attack with the new one at equal priority. That is the
 	-- icon blinking: session 5 still had 22, twelve of them on consecutive log lines.
 	local function OrderAttack()
-		if (GetProperty("", "AI_AttackOrdered") or -1) == GetGametime() then
+		-- Whole hundredths of a game hour, not the float itself: session 6 still logged
+		-- all 22 cancels in same-tick bursts with this guard in, so what the property
+		-- gives back is not the float that went in and == never matched. An integer
+		-- survives the round trip, and >= holds even if the store rounds down.
+		local Tick = math.floor(GetGametime() * 100)
+		if (GetProperty("", "AI_AttackOrdered") or -1) >= Tick then
+			utility_Emit("::TWP::ATTACK t=" .. string.format("%.2f", GetGametime())
+				.. " sim=" .. GetID("") .. " tick=" .. Tick .. " action=suppressed")
 			return ""
 		end
-		SetProperty("", "AI_AttackOrdered", GetGametime())
+		SetProperty("", "AI_AttackOrdered", Tick)
+		utility_Emit("::TWP::ATTACK t=" .. string.format("%.2f", GetGametime())
+			.. " sim=" .. GetID("") .. " tick=" .. Tick .. " action=ordered")
 		return "Attack"
 	end
 

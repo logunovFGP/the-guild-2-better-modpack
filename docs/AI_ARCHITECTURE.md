@@ -444,3 +444,15 @@ the engine owns the entities; a second store would be a second truth.
   adding it to all six. The dampener in `BloodFeud.lua` stays: barren entries came in at
   18 of 30, not the near-zero the gate was supposed to buy, because a method applying is
   not the same as its leaf firing. Re-measure after the next session.
+- **2026-09-18** Third play session (one game day, round 43). Barren entries 0 of 17, the
+  measurement the dampener was waiting for - but the planner reached only `restock` and
+  `gang` all day, and the player was never confronted. Every aggressive method failed on
+  one precondition each and the `fail=` reason names the predicate without the number that
+  missed it: `Feud.duel:InsultableTarget` 189 of 189 (the duel modes of
+  `aitwp_PlayerTargetScore` require the target *outdoors*, and the player spent the day
+  inside), `Feud.taunt:NotFoe` 189 of 189 (a blood rival is already `DIP_FOE`, so the
+  taunt letter is dead by construction in this scenario), `Feud.artefact:ReadyArtefacts>=1`
+  189 of 189, `Feud.attack:WinChance>=bar` 113 of 113. So `aihtn_Why` emits `::TWP::WHY`:
+  the rung, carried tools and hand-over budget behind the artefact count, and the fighter
+  counts and chance behind the win-chance bar. A reason that names a predicate is not
+  enough once the predicate is arithmetic - it has to carry the value.

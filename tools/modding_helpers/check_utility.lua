@@ -680,7 +680,7 @@ check("the same coin for a forgery does not", WorthBuyingFromEnemy("Hexerdokumen
 TWP_ENEMY_SHOP_PRICE = {}
 -- the HTN: decomposition, the reason it gives, and the pull it puts on one leaf -----------
 dofile("Scripts/Library/aihtn.lua")
-aihtn_Plan, aihtn_Step, aihtn_CountArtefacts = Plan, Step, CountArtefacts
+aihtn_Plan, aihtn_Step, aihtn_CountArtefacts, aihtn_Why = Plan, Step, CountArtefacts, Why
 UTILITY_LOG = true                       -- the HTN line is telemetry; assert on it
 check("load marker is logged at include time", has(lastLog(), "::TWP::LOADED aihtn.lua"))
 
