@@ -19,6 +19,7 @@ function Run()
 	SetProperty("Destination", "SpiedBy"..GetID("")) -- do not remove this property. Do not add a property like "SpiedByDyn"..GetDynastyID("") because that will lead to crashes on all crime actions
 	AddImpact("", "spying", 1, -1) -- probably needed for hardcoded function aswell
 	MeasureSetNotRestartable()
+	aitwp_LogSpy("begin", "", "Destination", true, nil)
 	MsgMeasure("","@L_GENERAL_MEASURES_145_ORDERASPYING_ACTION_+0", GetID("Destination"))
 			
 	
@@ -146,6 +147,9 @@ function CleanUp()
 		RemoveProperty("", "SpiedByCount")
 	end
 	
+	-- the end line proves this order finished, which is the whole reason AI spying was
+	-- switched off for a year and a half
+	aitwp_LogSpy("end", "", "Destination", true, Evidences)
 	if AliasExists("Destination") then
 		RemoveProperty("Destination", "SpiedBy"..GetID(""))
 		if Evidences and Evidences > 0 then

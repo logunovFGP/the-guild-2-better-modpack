@@ -1912,6 +1912,29 @@ function BuildingDefence(BldAlias, Side)
 	return Side
 end
 
+-- ::TWP::SPY t= action=<order|begin|end> spy= victim= ok= evidence=
+--
+-- AI spying was off from 2025-04-23 to 2026-09-18 because orders never ended and the spies
+-- piled up until the game fell over. So the line that matters here is action=end: it says
+-- this one finished, and with how much evidence. An order without an end is the old bug
+-- coming back, and evidence is the thing bf_Charge and bf_Razzia have been starved of -
+-- HaveEvidence.ready:Accuser>=1 failed 174 of 174 plans in the last session.
+--
+-- Emitted for player-ordered spying too. It costs a line and the player's myrmidons have
+-- exactly the same measure underneath.
+function LogSpy(Action, SpyAlias, VictimAlias, Ok, Evidence)
+	local Spy, Victim = -1, -1
+	if SpyAlias and AliasExists(SpyAlias) then
+		Spy = GetID(SpyAlias)
+	end
+	if VictimAlias and AliasExists(VictimAlias) then
+		Victim = GetID(VictimAlias)
+	end
+	utility_Emit("::TWP::SPY t=" .. string.format("%.2f", GetGametime())
+		.. " action=" .. Action .. " spy=" .. Spy .. " victim=" .. Victim
+		.. " ok=" .. tostring(Ok) .. " evidence=" .. (Evidence or -1))
+end
+
 -- The trades that work after dark.
 --
 -- The engine tells Lua nothing about opening hours - no column in DB/Buildings.dbt, no

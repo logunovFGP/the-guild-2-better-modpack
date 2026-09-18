@@ -562,6 +562,16 @@ the engine owns the entities; a second store would be a second truth.
   Worth watching: the evidence chain has been starved all along - `HaveEvidence.ready:
   Accuser>=1` failed 174 of 174 plans and `Feud.razzia:Evidence>=threshold` 50 - and
   spying is the node that gathers evidence. This may be the missing upstream step.
+  Instrumented the same day: `::TWP::SPY t= action=<order|begin|end> spy= victim= ok=
+  evidence=`, emitted from `OrderASpying.lua` when the order goes out and from
+  `ms_145_OrderASpying.lua` at both ends of the measure. **`action=end` is the line that
+  matters**: a begin without an end is precisely the shape the node was switched off for,
+  and `check_spying` says so - more than a couple outstanding and the instruction is to put
+  the `return 0` back. One or two in flight at the end of a session is normal, the measure
+  runs four game hours. `evidence=` is the other half: it is what
+  `HaveEvidence.ready:Accuser>=1` and `Feud.razzia:Evidence>=threshold` have been starved
+  of, so if those start applying, this line is why. Emitted for player-ordered spying too -
+  it is the same measure underneath and it costs a line.
 - **2026-09-18, the raids** Three feud behaviours over one force-composition pass
   (`aitwp_WarCandidates` / `WarCommit` / `SquadAttack` in `aitwp.lua`, HTN methods
   `assassinate`, `raidbuilding`, `workersraid`): **assassination_attempt** against a player

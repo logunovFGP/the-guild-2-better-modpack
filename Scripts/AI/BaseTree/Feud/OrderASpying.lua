@@ -40,6 +40,7 @@ function Execute()
 	SetRepeatTimer("dynasty", "AI_OrderASpying", TWP_SPY_HOURS)
 	MeasureCreate("Measure")
 	MeasureAddData("Measure", "TimeOut", 8, false)
-	MeasureStart("Measure", "MYRM", "Victim", "OrderASpying")
+	local Ok = MeasureStart("Measure", "MYRM", "Victim", "OrderASpying")
+	aitwp_LogSpy("order", "MYRM", "Victim", Ok, nil)
 end
 

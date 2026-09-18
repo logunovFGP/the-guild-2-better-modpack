@@ -49,6 +49,9 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
   ::TWP::BLOODENEMY player= enemy= action=<chosen|kept> name=<free text, last>
                                               who each human player's blood rival is, on every sweep
   ::TWP::BB unregistered key <key> in <where>   a blackboard key nobody declared: it reads nil forever
+  ::TWP::SPY t= action=<order|begin|end> spy= victim= ok= evidence=
+                                              one per spying order and the measure that carries it out;
+                                              action=end is the proof it finished, evidence= what it got
   ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent= odds=
                                               one per decided raid: assassination_attempt, workers_raid,
                                               raid_building, kidnap or kidnap_child; sent= is whether the
@@ -91,6 +94,7 @@ ORDER = re.compile(r"::TWP::ORDER (.*)$")
 CARTBUY = re.compile(r"::TWP::CARTBUY (.*)$")
 BLOODENEMY = re.compile(r"::TWP::BLOODENEMY (.*)$")
 WAR = re.compile(r"::TWP::WAR (.*)$")
+SPY = re.compile(r"::TWP::SPY (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -196,7 +200,7 @@ class Session(object):
         self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
         self.htn = []                            # one entry per ::TWP::HTN line
         self.why, self.orders, self.cartbuy = [], [], []
-        self.rivals, self.blackboard, self.raids = [], Counter(), []
+        self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -331,6 +335,10 @@ class Session(object):
             m = WAR.search(line)
             if m:
                 self.raids.append(kv(m.group(1)))
+                continue
+            m = SPY.search(line)
+            if m:
+                self.spying.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -819,6 +827,41 @@ def check_raids(s):
                       "leader= and chance=.")
 
 
+def check_spying(s):
+    if not s.spying:
+        return
+    per = Counter(x.get("action") for x in s.spying)
+    refused = sum(1 for x in s.spying if x.get("action") == "order" and x.get("ok") != "true")
+    unfinished = per["begin"] - per["end"]
+    evidence = sum(num(x.get("evidence")) for x in s.spying
+                   if x.get("action") == "end" and num(x.get("evidence")) > 0)
+    if refused:
+        yield Finding("WARN", "spy-order-refused",
+                      "%d of %d spy orders were refused by MeasureStart" % (refused, per["order"]),
+                      "Scripts/AI/BaseTree/Feud/OrderASpying.lua - the myrmidon in MYRM could not be "
+                      "given the measure. Usually it stopped being idle between Weight() and Execute(), "
+                      "which is the alias hazard the whole tree has: every sibling's Weight() runs "
+                      "before the winner's Execute().")
+    # a 4-hour measure, so one or two still running at the end of a session is normal
+    if unfinished > 2:
+        yield Finding("WARN", "spy-never-ended",
+                      "%d spy orders began and never ended" % unfinished,
+                      "This is the shape AI spying was switched off for on 2025-04-23: "
+                      "ms_145_OrderASpying looped `while true` with an exit only the AI ever set, so "
+                      "orders ran forever, the myrmidons were never freed and they piled up until the "
+                      "game fell over. GHOSTau fixed it on 2026-06-12 (89582daa) and it was re-enabled "
+                      "on 2026-09-18. More than a couple outstanding means that fix is not holding - "
+                      "put the return 0 back in Scripts/AI/BaseTree/Feud/OrderASpying.lua and say so.")
+    else:
+        yield Finding("NOTE", "spying",
+                      "%d spy orders, %d began, %d ended, %.0f evidence gathered"
+                      % (per["order"], per["begin"], per["end"], evidence),
+                      "Scripts/AI/BaseTree/Feud/OrderASpying.lua, re-enabled 2026-09-18 with the "
+                      "TWP_SPY_HOURS cooldown its crash history argued for. Evidence is what "
+                      "HaveEvidence.ready:Accuser>=1 and Feud.razzia:Evidence>=threshold have been "
+                      "starved of - if those two start applying, this is why.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -872,7 +915,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_blood_rival, check_idle, check_test_knobs)
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_blood_rival, check_idle, check_test_knobs)
 
 
 def findings(session):
@@ -1245,6 +1288,19 @@ def selftest():
     within.feed(["[Script] ::TWP::ORDER t=10.00 sim=1 measure=Attack action=ordered",
                  "[Script] ::TWP::ORDER t=10.00 sim=1 measure=Attack action=ordered"])
     assert "order-guard-dead" in [f.code for f in findings(within)], findings(within)
+    # spying: an order that never ends is the bug it was disabled for, and a couple still
+    # running at the end of a session is not - the measure lasts four game hours
+    spy = Session()
+    spy.feed(["[Script] ::TWP::SPY t=1.00 action=order spy=1 victim=2 ok=true evidence=-1",
+              "[Script] ::TWP::SPY t=1.00 action=begin spy=1 victim=2 ok=true evidence=-1",
+              "[Script] ::TWP::SPY t=5.00 action=end spy=1 victim=2 ok=true evidence=3"])
+    codes_spy = [f.code for f in findings(spy)]
+    assert "spying" in codes_spy and "spy-never-ended" not in codes_spy, findings(spy)
+    assert "3 evidence gathered" in format_findings(findings(spy)), format_findings(findings(spy))
+    stuck = Session()
+    stuck.feed(["[Script] ::TWP::SPY t=%d.00 action=begin spy=%d victim=2 ok=true evidence=-1" % (i, i)
+                for i in range(1, 6)])
+    assert "spy-never-ended" in [f.code for f in findings(stuck)], findings(stuck)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()
