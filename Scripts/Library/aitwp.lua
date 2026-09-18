@@ -1183,6 +1183,9 @@ TWP_BF_FUND = 200000            -- bf_FundAllies: treasury before money goes to 
 TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild is bought
 TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
 TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
+-- Game hours between one house's spying orders. The node had no cooldown at all, and the
+-- crash it was disabled for in 2025 reads as spies piling up on one victim.
+TWP_SPY_HOURS = 12
 TWP_BF_CARTS = 5                -- bf_Procure: carts the residence may run for the feud
 -- Game hours between feud supply runs. Back to the shipping 2 on 2026-09-18: the test
 -- value of 1 had done its job (bf_Procure fired 14 times in one game day, and 2 still

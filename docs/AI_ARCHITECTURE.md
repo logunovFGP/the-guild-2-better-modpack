@@ -544,6 +544,24 @@ the engine owns the entities; a second store would be a second truth.
   children were traced has no child weights at all, and reporting that as "100% barren"
   would have been the same cried wolf as `order-guard-dead`. A number that looks like a
   finding and is an artefact of the build is worse than no number.
+- **2026-09-18, AI spying back on** `Feud/OrderASpying.lua` ended in
+  `return 0 -- disabled for now since spying tends to lead to crashes in some cases`.
+  Dated it: **2025-04-23**, ThreeOfMe, *"revert spying fix and disable AI spying to
+  hopefully prevent CTD"* - a guess, by its own wording - and the line rode into
+  naonauno's BaseTree import on **2025-08-16**, ten months before this branch.
+  The measure has been fixed since the disable: `ms_145_OrderASpying` looped `while true`
+  with an exit only the AI ever set, so an order ran forever and never freed the myrmidon
+  (GHOSTau, **2026-06-12**, `89582daa`). Re-enabled at a traced 20.
+  The crash history before the disable is all one shape - *reduce spies to a maximum of
+  one per dynasty and victim*, *prevent multiple spies on same sim*, *Fixed crash on
+  criminal actions (Spies)* - **spies accumulating**, and this node had no cooldown at all
+  where every other child of `Feud` has one. `TWP_SPY_HOURS` is that cooldown; it is the
+  part the history actually argues for, and it is cheaper than finding out again.
+  `SpiedByDyn` stays commented out: a native that crashes is a different hazard from a
+  measure that never ended, and nothing here touches it.
+  Worth watching: the evidence chain has been starved all along - `HaveEvidence.ready:
+  Accuser>=1` failed 174 of 174 plans and `Feud.razzia:Evidence>=threshold` 50 - and
+  spying is the node that gathers evidence. This may be the missing upstream step.
 - **2026-09-18, the raids** Three feud behaviours over one force-composition pass
   (`aitwp_WarCandidates` / `WarCommit` / `SquadAttack` in `aitwp.lua`, HTN methods
   `assassinate`, `raidbuilding`, `workersraid`): **assassination_attempt** against a player
