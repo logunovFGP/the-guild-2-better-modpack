@@ -142,6 +142,22 @@ def kv(text):
     return dict(part.split("=", 1) for part in text.split() if "=" in part)
 
 
+def why_parts(text):
+    """A ::TWP::WHY payload as a dict, keeping the bare words kv() throws away.
+
+    The subject (`buyworkshop`, `tools`, a raid name) and the gate that fell (`shadow`,
+    `noneonsale`) are positional, so kv() dropped both: self.why was parsed and never
+    read, and every WHY distribution in six sessions came out of a hand-written grep.
+    Emitters should prefer key=value - aitwp_Why callers are being moved over - but the
+    positional form has to keep working for logs already on disk.
+    """
+    bare = [part for part in text.split() if "=" not in part]
+    row = kv(text)
+    row["subject"] = bare[0] if bare else "-"
+    row["gate"] = bare[1] if len(bare) > 1 else ""
+    return row
+
+
 def num(value, default=0.0):
     try:
         return float(value)
@@ -318,7 +334,7 @@ class Session(object):
                 continue
             m = WHY.search(line)
             if m:
-                self.why.append(kv(m.group(1)))
+                self.why.append(why_parts(m.group(1)))
                 continue
             m = ORDER.search(line)
             if m:
@@ -563,13 +579,26 @@ def check_self_cancel(s):
             continue
         runs = s.self_cancel_runs[measure]
         if measure == "Attack":
-            level = "WARN"
-            pointer = ("Scripts/Measures/Behaviour/bs_IllegalDetection.lua orders Attack through "
-                       "aitwp_ClaimOrder since 2026-09-18. Several crime events reach Run() in one tick "
-                       "while GetCurrentMeasureName still names the old measure, so each one re-orders "
-                       "Attack and cancels the running one: the attack icon blinking. Cross-check the "
-                       "::TWP::ORDER lines for this measure - cancels with no action=busy or "
-                       "action=sametick beside them mean the guard is a no-op again.")
+            # Settled on 2026-09-19 and no longer a WARN: this is the victim, not the
+            # attackers. Every multi-order tick in that log was exactly N orders to N
+            # different sims followed by N-1 cancels on one other sim, and that sim was
+            # the AggressorMembers entry of the matching BattleStatistic block while the
+            # ordering sims were its VictimMembers (3/2, 4/3, 2/1, 5/4, 7/6, 2/1). The
+            # engine restarts a defender's Attack once per attacker who joins; it cancels
+            # itself at equal priority 99 each time. Bounded by the number of attackers,
+            # and nothing Lua orders. Only the order-guard finding can say anything about
+            # our own guard, so leave the conclusion there.
+            level = "NOTE"
+            pointer = ("Expected, and not ours: the cancels land on the sim being attacked, not on the "
+                       "attackers. N witnesses order Attack on one criminal in a tick and the engine "
+                       "restarts that criminal's own defensive Attack once per attacker, cancelling the "
+                       "running one at equal priority 99 - so N orders always read as N-1 cancels on a "
+                       "single name. Confirm with the [STATEMACHINE] BattleStatistic block at that "
+                       "gametime: the cancelling name is AggressorMembers, the ::TWP::ORDER sims are "
+                       "VictimMembers. It stops being expected if the cancels ever land on a sim that "
+                       "the ::TWP::ORDER lines name, which would mean aitwp_ClaimOrder in "
+                       "Scripts/Library/aitwp.lua let one sim order twice - the order-guard finding "
+                       "tests exactly that.")
         elif measure == "OrderCollectEvidence":
             level = "WARN"
             pointer = ("Scripts/Library/idlelib.lua, the myrmidon idle cycle, which orders this through "
@@ -678,11 +707,15 @@ def check_subtree_barren(s):
                       "%d of %d %s entries never scored a child (%.0f%%); %s"
                       % (barren, entered, name, share, note),
                       "Scripts/AI/BaseTree/%s.lua - the root cannot see its children's gates, so it "
-                      "wins the roulette and then finds every child at 0. ToMEconomy got "
-                      "aitwp_EconomyReady on 2026-09-18, the same shape as the aihtn_Step gate on "
-                      "BloodFeud; Feud has no such gate yet and its 42 files under Feud/ were silent "
-                      "until four of them were traced. If this is high for Feud, read the Feud/ level "
-                      "table below for which child is starving." % name)
+                      "wins the roulette and then finds every child at 0. Count the DIRECT children "
+                      "only: Feud/ holds 5 .lua files and ToMEconomy/ 4, and both are traced but for "
+                      "one - the 42 and 32 you get from a recursive find are grandchildren, which "
+                      "cannot run until their parent is picked and so cannot explain a barren entry. "
+                      "This number is measured, not an artefact. ToMEconomy got aitwp_EconomyReady on "
+                      "2026-09-18 and it did not help: 89%% before and 89%% after, because "
+                      "DynastyIsShadow houses pass the gate on repeat timers they never set and then "
+                      "every child rejects them for being shadow. Read the level table below for which "
+                      "child is starving." % name)
 
 
 def check_htn_methods(s):
@@ -827,12 +860,50 @@ def check_raids(s):
                       "leader= and chance=.")
 
 
+# How long a spy may still be out before it counts as leaked, used only when nothing in
+# the log finished and there is no observed run to measure against. This is the TimeOut
+# the order carries in Scripts/AI/BaseTree/Feud/OrderASpying.lua, not TWP_SPY_HOURS -
+# that one is the cooldown between orders, which is a different number.
+SPY_RUN_HOURS = 8.0
+
+
+def spy_outstanding(rows):
+    """Split unmatched spy begins into (leaked, in flight, the window used).
+
+    A session always ends mid-flight, so a begin without an end is not the bug on its
+    own. The 2026-09-19 log ended with ten unmatched begins and every one was younger
+    than the median completed run; the check called that the abort signal twice on a
+    healthy session, which is the cried wolf this findings layer exists to avoid. Pair
+    each spy's begins with its own ends in order, then only a begin older than the
+    longest run the log actually shows is a spy that never came back.
+    """
+    begins, ends, last = defaultdict(list), defaultdict(list), 0.0
+    for x in rows:
+        when = num(x.get("t"))
+        last = max(last, when)
+        if x.get("action") == "begin":
+            begins[x.get("spy")].append(when)
+        elif x.get("action") == "end":
+            ends[x.get("spy")].append(when)
+    runs = []
+    for spy, started in begins.items():
+        for i, when in enumerate(started):
+            if i < len(ends[spy]):
+                runs.append(ends[spy][i] - when)
+    window = max(runs) if runs else SPY_RUN_HOURS
+    leaked, inflight = [], []
+    for spy, started in begins.items():
+        for when in started[len(ends[spy]):]:
+            (leaked if last - when > window else inflight).append((spy, when))
+    return leaked, inflight, window
+
+
 def check_spying(s):
     if not s.spying:
         return
     per = Counter(x.get("action") for x in s.spying)
     refused = sum(1 for x in s.spying if x.get("action") == "order" and x.get("ok") != "true")
-    unfinished = per["begin"] - per["end"]
+    leaked, inflight, window = spy_outstanding(s.spying)
     evidence = sum(num(x.get("evidence")) for x in s.spying
                    if x.get("action") == "end" and num(x.get("evidence")) > 0)
     if refused:
@@ -842,10 +913,12 @@ def check_spying(s):
                       "given the measure. Usually it stopped being idle between Weight() and Execute(), "
                       "which is the alias hazard the whole tree has: every sibling's Weight() runs "
                       "before the winner's Execute().")
-    # a 4-hour measure, so one or two still running at the end of a session is normal
-    if unfinished > 2:
+    # in flight at the last log line is not a leak, however many there are - see
+    # spy_outstanding. Only a spy out longer than any run that finished is overdue.
+    if leaked:
         yield Finding("WARN", "spy-never-ended",
-                      "%d spy orders began and never ended" % unfinished,
+                      "%d spy orders were still out at the last log line, longer than the "
+                      "%.1f game hours the slowest completed run took" % (len(leaked), window),
                       "This is the shape AI spying was switched off for on 2025-04-23: "
                       "ms_145_OrderASpying looped `while true` with an exit only the AI ever set, so "
                       "orders ran forever, the myrmidons were never freed and they piled up until the "
@@ -854,8 +927,9 @@ def check_spying(s):
                       "put the return 0 back in Scripts/AI/BaseTree/Feud/OrderASpying.lua and say so.")
     else:
         yield Finding("NOTE", "spying",
-                      "%d spy orders, %d began, %d ended, %.0f evidence gathered"
-                      % (per["order"], per["begin"], per["end"], evidence),
+                      "%d spy orders, %d began, %d ended, %d still out (all inside the %.1f h "
+                      "a run takes), %.0f evidence gathered"
+                      % (per["order"], per["begin"], per["end"], len(inflight), window, evidence),
                       "Scripts/AI/BaseTree/Feud/OrderASpying.lua, re-enabled 2026-09-18 with the "
                       "TWP_SPY_HOURS cooldown its crash history argued for. Evidence is what "
                       "HaveEvidence.ready:Accuser>=1 and Feud.razzia:Evidence>=threshold have been "
@@ -1027,6 +1101,43 @@ def check_pointers():
     return problems, (len(paths), len(symbols), len(knobs), len(channels))
 
 
+def why_table(rows):
+    """What each node said when it refused, grouped by subject.
+
+    The WHY channel exists to answer 'why did this node weigh 0' and until 2026-09-19
+    nothing read it - the lines were parsed into self.why and left there. A gate that
+    fires 779 times out of 873 is the finding; without this block you only see it by
+    grepping, which is how the ToMEconomy shadow leak went two sessions unnoticed.
+    """
+    if not rows:
+        return []
+    by_subject = defaultdict(list)
+    for row in rows:
+        by_subject[row.get("subject", "-")].append(row)
+    out = ["", "why nodes refused (::TWP::WHY, %d lines):" % len(rows)]
+    for subject, group in sorted(by_subject.items(), key=lambda kv_: -len(kv_[1])):
+        gates = Counter(r["gate"] for r in group if r.get("gate"))
+        if gates:
+            detail = ", ".join("%s %d" % (g, n) for g, n in gates.most_common(6))
+        else:
+            # no positional gate, so summarise the numbers instead: a small value set
+            # reads as counts, a wide one as its range
+            bits = []
+            for key in sorted(set(k for r in group for k in r)):
+                if key in ("t", "dyn", "subject", "gate"):
+                    continue
+                values = [r[key] for r in group if key in r]
+                distinct = sorted(set(values))
+                if len(distinct) <= 4:
+                    bits.append("%s %s" % (key, "/".join(distinct)))
+                else:
+                    numeric = sorted(num(v) for v in values)
+                    bits.append("%s %g..%g" % (key, numeric[0], numeric[-1]))
+            detail = ", ".join(bits) or "-"
+        out.append("  %-24s %5d  %s" % (subject, len(group), detail))
+    return out
+
+
 def report(session, path):
     out = []
     out.append("%s" % path)
@@ -1043,6 +1154,7 @@ def report(session, path):
             out.append("  %5d  %s" % (count, text))
     out.append("")
     out.append(format_findings(findings(session)))
+    out.extend(why_table(session.why))
 
     if session.first:
         widths = {c: max(len(c), 11) for c in COLUMNS}
@@ -1297,9 +1409,24 @@ def selftest():
     codes_spy = [f.code for f in findings(spy)]
     assert "spying" in codes_spy and "spy-never-ended" not in codes_spy, findings(spy)
     assert "3 evidence gathered" in format_findings(findings(spy)), format_findings(findings(spy))
+    # in flight, not leaked: ten begins in the last few hours of a session whose completed
+    # runs take ~4 h. This is the 2026-09-19 log, which tripped the abort signal twice.
+    flight = Session()
+    flight.feed(["[Script] ::TWP::SPY t=1.00 action=begin spy=0 victim=2 ok=true evidence=-1",
+                 "[Script] ::TWP::SPY t=5.00 action=end spy=0 victim=2 ok=true evidence=1"]
+                + ["[Script] ::TWP::SPY t=%.2f action=begin spy=%d victim=2 ok=true evidence=-1"
+                   % (28.0 + i * 0.3, i) for i in range(1, 11)]
+                + ["[Script] ::TWP::SPY t=31.00 action=order spy=99 victim=2 ok=true evidence=-1"])
+    codes_flight = [f.code for f in findings(flight)]
+    assert "spy-never-ended" not in codes_flight, findings(flight)
+    assert "10 still out" in format_findings(findings(flight)), format_findings(findings(flight))
+    # leaked: begun and still out long after every finished run came home
     stuck = Session()
-    stuck.feed(["[Script] ::TWP::SPY t=%d.00 action=begin spy=%d victim=2 ok=true evidence=-1" % (i, i)
-                for i in range(1, 6)])
+    stuck.feed(["[Script] ::TWP::SPY t=1.00 action=begin spy=0 victim=2 ok=true evidence=-1",
+                "[Script] ::TWP::SPY t=5.00 action=end spy=0 victim=2 ok=true evidence=1"]
+               + ["[Script] ::TWP::SPY t=%d.00 action=begin spy=%d victim=2 ok=true evidence=-1" % (i, i)
+                  for i in range(1, 6)]
+               + ["[Script] ::TWP::SPY t=100.00 action=order spy=99 victim=2 ok=true evidence=-1"])
     assert "spy-never-ended" in [f.code for f in findings(stuck)], findings(stuck)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
