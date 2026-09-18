@@ -16,6 +16,17 @@ end
     return self
 end
 				
+-- ::TWP::HEAL t= sim= hospital= cost= purse= outcome=<healed|nomoney|nomats>
+-- One line per patient seen. Without it the next log cannot tell a queue that drained
+-- from a town where nobody fell ill: the engine prints no "Executing Measures" line for
+-- a production measure, so this file leaves no trace at all otherwise.
+function Emit(SimAlias, Cost, Outcome)
+	utility_Emit("::TWP::HEAL t=" .. string.format("%.2f", GetGametime())
+		.. " sim=" .. GetID(SimAlias) .. " hospital=" .. GetID("Hospital")
+		.. " cost=" .. math.floor(Cost or 0) .. " purse=" .. math.floor(GetMoney(SimAlias) or 0)
+		.. " outcome=" .. Outcome)
+end
+
 function ManageMedicine(checker, treatment, property) 
 
 	switch(checker): caseof(
@@ -229,6 +240,7 @@ function Run()
 					v.MedsAmount = GetProperty("Hospital",v.Med.."s")
 					CanHeal = 3
 				else
+					ms_medicaltreatment_Emit("SickSim0", v.Cost, "nomats")
 					MsgSayNoWait("","@L_MEDICUS_TREATMENT_DOC_NOMATS",ItemGetLabel(v.Med,false))
 					Sleep(2)
 
@@ -248,18 +260,33 @@ function Run()
 
 				if CanHeal ~= false then
 
-					if DynastyIsPlayer("SickSim0") or (IsDynastySim("SickSim0") and IsPartyMember("SickSim0")) then 
+					if gameplayformulas_PaysForTreatment("SickSim0") then
 						if chr_SpendMoney("SickSim0", v.Cost, "Offering") then
 							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 						else
-							local Money = GetMoney("SickSim0")
+							-- Turned away for want of coin. Two things went wrong here and
+							-- both are in these five lines.
+							--
+							-- PropertiesEnd(true, ...) took the branch that does NOT set
+							-- IgnoreHospital, so nothing remembered the refusal: the sim
+							-- left, ai_VisitDoc came round an hour later, the ranking in
+							-- idlelib_VisitDoc picked the same hospital and they queued
+							-- again. Every other unsuccessful outcome sets that 12 hour
+							-- cooldown further down; only this one skipped it, and the
+							-- false branch that sets it was never called from anywhere.
+							--
+							-- And `return` left Run() entirely, not just this patient, so
+							-- one empty purse stopped the doctor working the whole queue
+							-- until the measure was picked again.
+							ms_medicaltreatment_Emit("SickSim0", v.Cost, "nomoney")
 							MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")
-							ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
-							return
+							ms_medicaltreatment_PropertiesEnd(false,"SickSim0")
+							break
 						end
 					else
 							ms_medicaltreatment_ManageMedicine(CanHeal, v.Med, v.MedsAmount)
 					end
+					ms_medicaltreatment_Emit("SickSim0", v.Cost, "healed")
 
 					chr_CreditMoney("Hospital", v.Cost, "Offering")
 					economy_UpdateBalance("Hospital", "Service", v.Cost)
@@ -356,13 +383,18 @@ function Run()
 	end
 end
 
+-- checker: did the visit achieve anything. Both halves used to be in one branch, so the
+-- only caller - the no-money refusal - had to choose between sending the sim on its way
+-- and remembering that this hospital turned it away. It chose the first and the patient
+-- came straight back. Releasing the sim is unconditional now; the cooldown is the part
+-- that depends on the outcome.
 function PropertiesEnd(checker,sim)
 	Sleep(2)
+	MoveSetActivity(sim)
 	if checker == false then
 		SetProperty(sim, "IgnoreHospital", GetID("Hospital"))
 		SetProperty(sim, "IgnoreHospitalTime", GetGametime()+12)
 	else
-		MoveSetActivity(sim)
 		AddImpact(sim, "Resist", 1, 6)
 	end
 

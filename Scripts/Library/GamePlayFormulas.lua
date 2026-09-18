@@ -566,9 +566,19 @@ function GetMaxFavByDiffForAttack()
 	end
 end
 
+-- Who the hospital actually bills. This is the counter's own rule, lifted out of
+-- ms_MedicalTreatment.lua so the gate that decides whether to set out and the charge at
+-- the bedside cannot disagree - they did, and the disagreement is what filled the waiting
+-- room. CheckMoneyForTreatment asked IsPartyMember and waved everyone else through as
+-- "can pay"; the counter asked this, charged a dynasty sim who was not a party member,
+-- and turned them away. Change one, change both, because there is only one now.
+function PaysForTreatment(SimAlias)
+	return DynastyIsPlayer(SimAlias) or (IsDynastySim(SimAlias) and IsPartyMember(SimAlias))
+end
+
 function CheckMoneyForTreatment(SimAlias)
 
-	if not IsPartyMember(SimAlias) then
+	if not gameplayformulas_PaysForTreatment(SimAlias) then
 		return 1
 	end
 

@@ -96,6 +96,7 @@ BLOODENEMY = re.compile(r"::TWP::BLOODENEMY (.*)$")
 WAR = re.compile(r"::TWP::WAR (.*)$")
 SPY = re.compile(r"::TWP::SPY (.*)$")
 ATTACK = re.compile(r"::TWP::ATTACK (.*)$")
+HEAL = re.compile(r"::TWP::HEAL (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -218,7 +219,7 @@ class Session(object):
         self.htn = []                            # one entry per ::TWP::HTN line
         self.why, self.orders, self.cartbuy = [], [], []
         self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
-        self.attacks = []
+        self.attacks, self.heals = [], []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -357,6 +358,10 @@ class Session(object):
             m = ATTACK.search(line)
             if m:
                 self.attacks.append(kv(m.group(1)))
+                continue
+            m = HEAL.search(line)
+            if m:
+                self.heals.append(kv(m.group(1)))
                 continue
             m = SPY.search(line)
             if m:
@@ -994,6 +999,58 @@ def check_attacks(s):
                       "a StopMeasure the caller has to cope with.")
 
 
+# A sim turned away by the same hospital twice inside this many game hours means the
+# IgnoreHospital cooldown set in ms_MedicalTreatment.PropertiesEnd is not holding - that
+# is the value it writes, GetGametime() + 12.
+HOSPITAL_COOLDOWN_HOURS = 12.0
+
+
+def check_healing(s):
+    """Who the hospital saw, and whether a refusal stuck.
+
+    The 2026-09-19 session had 77 ms_AttendDoctor starts dominated by repeat visitors -
+    one sim seven times in 34 game hours - because the no-money refusal was the one
+    unsuccessful outcome that never set IgnoreHospital, and ai_VisitDoc comes round every
+    game hour. Nothing could see it: a production measure writes no Executing Measures
+    line, so the hospital left no trace in the log at all.
+    """
+    if not s.heals:
+        return
+    outcomes = Counter(h.get("outcome") for h in s.heals)
+    yield Finding("NOTE", "healing",
+                  "hospital saw %d patients: %s"
+                  % (len(s.heals), ", ".join("%s %d" % (o, n) for o, n in outcomes.most_common())),
+                  "Scripts/Measures/ms_MedicalTreatment.lua emits ::TWP::HEAL per patient since "
+                  "2026-09-19. nomats is the hospital out of the medicine that disease needs - "
+                  "bld_GetNeedForMedicine in Scripts/Library/bld.lua is what should have restocked "
+                  "it; nomoney is the patient's own purse, and who pays is "
+                  "gameplayformulas_PaysForTreatment.")
+    # a refusal has to stick, or the patient is back within the hour
+    seen = defaultdict(list)
+    for h in s.heals:
+        if h.get("outcome") != "healed":
+            seen[(h.get("sim"), h.get("hospital"))].append(num(h.get("t")))
+    repeats = []
+    for (sim, hospital), times in seen.items():
+        times.sort()
+        for earlier, later in zip(times, times[1:]):
+            if later - earlier < HOSPITAL_COOLDOWN_HOURS:
+                repeats.append((sim, hospital, later - earlier))
+                break
+    if repeats:
+        sim, hospital, gap = min(repeats, key=lambda r: r[2])
+        yield Finding("WARN", "hospital-refusal-loop",
+                      "%d sims were turned away twice by the same hospital inside %.0f game hours "
+                      "(soonest: sim %s at hospital %s, %.1f h apart)"
+                      % (len(repeats), HOSPITAL_COOLDOWN_HOURS, sim, hospital, gap),
+                      "Scripts/Measures/ms_MedicalTreatment.lua - PropertiesEnd(false, sim) sets "
+                      "IgnoreHospital and IgnoreHospitalTime, and idlelib_VisitDoc skips a hospital "
+                      "named there. Before 2026-09-19 the no-money path called PropertiesEnd(true) and "
+                      "returned out of the doctor's whole queue loop, so the refusal was forgotten and "
+                      "the patient came back on ai_VisitDoc's one-hour timer. If this is back, either "
+                      "the flag flipped again or VisitDoc stopped honouring the property.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -1047,7 +1104,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_blood_rival, check_idle, check_test_knobs)
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_blood_rival, check_idle, check_test_knobs)
 
 
 def findings(session):
@@ -1496,6 +1553,18 @@ def selftest():
     calm.feed(["[Script] ::TWP::ATTACK t=1.00 sim=7 target=9 result=unreachable",
                "[Script] ::TWP::ATTACK t=2.00 sim=7 target=9 result=joined"])
     assert "attack-refused" not in [f.code for f in findings(calm)], findings(calm)
+    # the hospital: a refusal that did not stick brings the same patient back inside 12h
+    heal = Session()
+    heal.feed(["[Script] ::TWP::HEAL t=1.00 sim=4 hospital=9 cost=300 purse=12 outcome=nomoney",
+               "[Script] ::TWP::HEAL t=2.00 sim=4 hospital=9 cost=300 purse=12 outcome=nomoney",
+               "[Script] ::TWP::HEAL t=3.00 sim=5 hospital=9 cost=80 purse=999 outcome=healed"])
+    codes_heal = [f.code for f in findings(heal)]
+    assert "hospital-refusal-loop" in codes_heal and "healing" in codes_heal, findings(heal)
+    assert "nomoney 2, healed 1" in format_findings(findings(heal)), format_findings(findings(heal))
+    stuck_ok = Session()
+    stuck_ok.feed(["[Script] ::TWP::HEAL t=1.00 sim=4 hospital=9 cost=300 purse=12 outcome=nomoney",
+                   "[Script] ::TWP::HEAL t=20.00 sim=4 hospital=9 cost=300 purse=12 outcome=nomoney"])
+    assert "hospital-refusal-loop" not in [f.code for f in findings(stuck_ok)], findings(stuck_ok)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()
