@@ -621,8 +621,16 @@ function EnsureBloodEnemies()
 					local Cand = "TWP_BE" .. Best
 					SetProperty(Player, "AI_BloodEnemy", GetID(Cand))
 					SetProperty(Cand, "AI_BloodEnemyOf", PlayerID)
-					utility_Emit("::TWP::BLOODENEMY player=" .. PlayerID .. " enemy=" .. GetID(Cand) .. " name=" .. GetName(Cand))
+					utility_Emit("::TWP::BLOODENEMY player=" .. PlayerID .. " enemy=" .. GetID(Cand)
+						.. " action=chosen name=" .. GetName(Cand))
 				end
+			else
+				-- Said on every sweep, not only when the pairing changes. A session that opens
+				-- with the rival already chosen used to leave no line at all, and who the rival
+				-- was had to be worked out from the HTN lines - which is the kind of forensics
+				-- the telemetry exists to make unnecessary.
+				utility_Emit("::TWP::BLOODENEMY player=" .. PlayerID .. " enemy=" .. Current
+					.. " action=kept name=" .. GetName("TWP_BEcur"))
 			end
 		end
 	end

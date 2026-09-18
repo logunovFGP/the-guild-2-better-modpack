@@ -46,6 +46,9 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
                                               the numbers behind an HTN predicate the fail= reason can only name
   ::TWP::ATTACK t= sim= tick= action=<ordered|suppressed>   the per-tick Attack re-order guard
   ::TWP::CARTBUY t= dyn= pos= made= bound= ok=   which step of the feud cart purchase fell
+  ::TWP::BLOODENEMY player= enemy= action=<chosen|kept> name=<free text, last>
+                                              who each human player's blood rival is, on every sweep
+  ::TWP::BB unregistered key <key> in <where>   a blackboard key nobody declared: it reads nil forever
   [StartMeasure] <sim>: Canceled 'A'(p) because of priority 'B'(q)
                                               engine: a measure start lost to the running one; p, q are
                                               the interruptvalue column of DB/Measures.dbt
@@ -82,6 +85,8 @@ HTN = re.compile(r"::TWP::HTN (.*)$")
 WHY = re.compile(r"::TWP::WHY (.*)$")
 ATTACK = re.compile(r"::TWP::ATTACK (.*)$")
 CARTBUY = re.compile(r"::TWP::CARTBUY (.*)$")
+BLOODENEMY = re.compile(r"::TWP::BLOODENEMY (.*)$")
+BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
 ROOTS = {"Dynasty", "Election", "Feud", "Trial", "Duel", "ToMEconomy", "Priorities", "IncomeForAI", "DoNothing", "BloodFeud"}
@@ -180,6 +185,7 @@ class Session(object):
         self.market, self.carts, self.cancels, self.handovers = {}, [], Counter(), []
         self.htn = []                            # one entry per ::TWP::HTN line
         self.why, self.attack, self.cartbuy = [], [], []
+        self.rivals, self.blackboard = [], Counter()
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -306,6 +312,14 @@ class Session(object):
             m = CARTBUY.search(line)
             if m:
                 self.cartbuy.append(kv(m.group(1)))
+                continue
+            m = BLOODENEMY.search(line)
+            if m:
+                self.rivals.append(kv(m.group(1)))
+                continue
+            m = BB.search(line)
+            if m:
+                self.blackboard[m.group(1).strip()[:90]] += 1
                 continue
             m = TRACE.search(line)
             if m:
@@ -481,6 +495,15 @@ def check_runtime_errors(s):
                       "A node that errors in Weight() weighs 0 and says nothing else, so this is never "
                       "cosmetic. Find the file named in the message, then run check_unresolved_calls.py - "
                       "it resolves every call in the tree against the exe bindings.")
+
+
+def check_blackboard(s):
+    for text, count in s.blackboard.most_common(6):
+        yield Finding("ERROR", "unregistered-key", "%s x%d" % (text, count),
+                      "Scripts/Library/aiboard.lua, BLACKBOARD_KEYS - a property the tree reads but never "
+                      "declared. It reads nil forever, so the node that depends on it quietly weighs 0. "
+                      "basetree_stats.py fails on this statically and exits 1, so a key showing up only "
+                      "here is one built at runtime from pieces rather than written as a literal.")
 
 
 def check_replay(s):
@@ -695,9 +718,11 @@ def check_blood_rival(s):
         return
     dyns = sorted(set(h.get("dyn") for h in s.htn))
     if len(dyns) == 1:
+        named = [r for r in s.rivals if r.get("enemy") == dyns[0]]
+        who = (" = %s, player %s" % (named[-1].get("name", "?"), named[-1].get("player", "?"))) if named else ""
         yield Finding("NOTE", "one-blood-rival",
-                      "the blood feud ran for exactly one dynasty (%s) - by design, one per human player"
-                      % dyns[0],
+                      "the blood feud ran for exactly one dynasty (%s%s) - by design, one per human player"
+                      % (dyns[0], who),
                       "Scripts/AI/BaseTree/BloodFeud.lua returns 0 without AI_BloodEnemyOf, so 'the AI "
                       "never attacked me' is a question about this one dynasty. The other houses run the "
                       "old Feud subtree under Scripts/AI/BaseTree/Feud, whose leaves are unscored constants "
@@ -733,7 +758,7 @@ def check_test_knobs(_session):
 
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel, check_attack_guard,
-          check_barren, check_htn_methods, check_htn_promise, check_carts, check_market,
+          check_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
           check_handovers, check_buyworkshop, check_blood_rival, check_idle, check_test_knobs)
 
 
@@ -753,6 +778,97 @@ def format_findings(found):
         out.append("  %-5s %-26s %s" % (f.level, f.code, f.text))
         out += textwrap.wrap(f.pointer, width=104, initial_indent=" " * 8 + "-> ", subsequent_indent=" " * 11)
     return "\n".join(out)
+
+
+# ------------------------------------------------------------------ pointer enforcement
+# The findings above are worth exactly what their pointers are worth, and a pointer is a
+# string: nothing stops one naming a file that moved or a function that was renamed, and
+# it fails silently - the check still prints, it just sends you somewhere that is not
+# there any more. A README line asking people to keep them honest is not enforcement.
+# This is. It runs inside --selftest, the pass every change to this file already has to
+# survive, and it fails the build.
+#
+# Four mechanical rules:
+#   1. every repo path a pointer names exists on disk
+#   2. every <library>_<Function> a pointer names is defined in that library (skipped
+#      for a library that lives only in the vanilla tree, which is not in this checkout)
+#   3. every TWP_ / TOM_ / UTILITY_ / AIHTN_ knob a pointer names still appears in the
+#      Lua - a renamed knob vanishes from the tree, so this catches the rename
+#   4. every ::TWP:: channel the Lua emits has a parser here. A channel nothing reads is
+#      a channel the next session greps by hand, which is the failure this file exists
+#      to end: telemetry added without a reader is telemetry added without a check.
+#
+# What it cannot enforce, stated plainly rather than pretended: that a defect chased
+# down through a log actually became a check. Nothing mechanical can tell that a session
+# taught us something. Rule 4 covers it only when the lesson came with a new log line,
+# which so far it always has.
+POINTER_PATH = re.compile(r"\b(?:Scripts|tools|docs)/[A-Za-z0-9_./]+\.(?:lua|py|md)\b")
+POINTER_SYMBOL = re.compile(r"\b(aitwp|aihtn|aiboard|utility|bld|dyn|trade)_([A-Za-z]\w*)")
+POINTER_KNOB = re.compile(r"\b(?:TWP|TOM|UTILITY|AIHTN)_[A-Z][A-Z0-9_]+\b")
+LUA_CHANNEL = re.compile(r"::TWP::([A-Z]+)")
+# Bounds of the findings section in this file: everything a Finding can print lives
+# between these two literals.
+POINTER_REGION = ("Finding = namedtuple(", "# ------------------------------------------------------------------ pointer")
+
+
+def repo_root():
+    return os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+
+
+def lua_sources(root):
+    """Every .lua file in the checkout, as one string plus the set of library basenames."""
+    blob, libraries = [], {}
+    for folder, _dirs, files in os.walk(os.path.join(root, "Scripts")):
+        for name in files:
+            if not name.endswith(".lua"):
+                continue
+            path = os.path.join(folder, name)
+            with open(path, encoding="utf-8", errors="replace") as handle:
+                text = handle.read()
+            blob.append(text)
+            if os.path.basename(folder).lower() == "library":
+                libraries[name[:-4].lower()] = text
+    return "\n".join(blob), libraries
+
+
+def check_pointers():
+    """Every pointer in this file resolves. Returns a list of problems; empty is good."""
+    root = repo_root()
+    with open(os.path.abspath(__file__), encoding="utf-8") as handle:
+        source = handle.read()
+    region = source[source.index(POINTER_REGION[0]):source.index(POINTER_REGION[1])]
+    blob, libraries = lua_sources(root)
+    problems = []
+
+    paths = sorted(set(POINTER_PATH.findall(region)))
+    for rel in paths:
+        if not os.path.exists(os.path.join(root, *rel.split("/"))):
+            problems.append("pointer names %s, which is not in the tree" % rel)
+
+    symbols = sorted(set(POINTER_SYMBOL.findall(region)))
+    for prefix, function in symbols:
+        library = libraries.get(prefix)
+        if library is None:
+            continue                      # vanilla-only library, not in this checkout
+        if not re.search(r"^function %s\(" % re.escape(function), library, re.M):
+            problems.append("pointer names %s_%s, which %s.lua does not define" % (prefix, function, prefix))
+
+    knobs = sorted(set(POINTER_KNOB.findall(region)))
+    for knob in knobs:
+        # on a word boundary: TWP_ATTACK_WIN_CHANC is a substring of the real knob and a
+        # plain "in blob" test waves the typo through
+        if not re.search(r"\b%s\b" % re.escape(knob), blob):
+            problems.append("pointer names the knob %s, which no longer appears in the Lua" % knob)
+
+    channels = sorted(set(LUA_CHANNEL.findall(blob)))
+    for channel in channels:
+        # a parser, not a mention: the channel has to be compiled into a regex or tested
+        # for by name, or it is only spelled out in a comment somewhere
+        if not re.search(r'(?:re\.compile\(r"|")::TWP::%s\b' % re.escape(channel), source):
+            problems.append("the Lua emits ::TWP::%s and nothing here reads it - a channel without a "
+                            "parser is a channel the next session greps by hand" % channel)
+
+    return problems, (len(paths), len(symbols), len(knobs), len(channels))
 
 
 def report(session, path):
@@ -1004,6 +1120,11 @@ def selftest():
     blank = Session()
     blank.feed([])
     assert findings(blank)[0].code == "no-telemetry", findings(blank)
+    # and the pointers themselves: a check that sends you to a file that moved is worse
+    # than no check, because it reads as authoritative
+    problems, counts = check_pointers()
+    assert not problems, "stale pointers -- " + "; ".join(problems)
+    print("pointers: %d paths, %d symbols, %d knobs, %d telemetry channels - all resolve" % counts)
     assert "goods brought home 2" in text and "nowhere HexerdokumentI" in text and "feud measures among them" in text, text
     assert "goal target kept 1/1" in text and "1 picked an office holder" in text, text
     print(text)
