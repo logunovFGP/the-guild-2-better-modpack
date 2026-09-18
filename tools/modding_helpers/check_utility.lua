@@ -475,7 +475,10 @@ function RemoveItems(Alias, Item, Count, Inv) local T = Stock[Alias] or Carried;
 function AddItems(Alias, Item, Count, Inv) Added[Item] = (Added[Item] or 0) + Count; return Count end
 function GetDynasty(Alias, Out) Aliases[Out] = 7; return true end
 
-check("a thug at mass is not free", IsFreeForOrders("k") == false)
+-- Inverted on 2026-09-19: the rule is a blacklist of engine states now, not a whitelist
+-- of measure names. A thug at mass IS free - interrupting it costs the house nothing and
+-- the whitelist is why a party of k hands almost never existed in one tick.
+check("a thug at mass is free: a measure name no longer decides", IsFreeForOrders("k") == true)
 CurMeasure = "PatrolTheTown"
 check("a thug on patrol is free for an order", IsFreeForOrders("k") == true)
 CurMeasure = "PickpocketPeople"
@@ -600,10 +603,10 @@ check("claim order: never while that measure is the one already running",
 	ClaimOrder("s", "Attack") == false)
 CurMeasure = "PatrolTheTown"
 
--- the attack rules: HitChance / WinChance / GatherFighters / MayAttackHere ----------------
+-- the attack rules: HitChance / WinChance / NeedHands / MayAttackHere --------------------
 aitwp_HitChance, aitwp_FightStats, aitwp_AddFighter = HitChance, FightStats, AddFighter
 aitwp_SidePower, aitwp_WinChance, aitwp_DefenceOf = SidePower, WinChance, DefenceOf
-aitwp_GatherFighters, aitwp_ClearFighters = GatherFighters, ClearFighters
+aitwp_ClearFighters, aitwp_NeedHands = ClearFighters, NeedHands
 aitwp_IsFreeForOrders, aitwp_TownRadius = IsFreeForOrders, TownRadius
 aitwp_IsOutsideTown, aitwp_IsWanted, aitwp_CommandsGuards = IsOutsideTown, IsWanted, CommandsGuards
 GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER, GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY = 1, 2, 3, 4
@@ -693,21 +696,42 @@ IdleMembers = true
 Timers = {}
 function dyn_IsIdleMember(Alias) return true end
 
--- the war party: composition caps, incremental commitment, the leader roll -----------------
-aitwp_WarPools, aitwp_WarShare, aitwp_WarCandidates = WarPools, WarShare, WarCandidates
+-- the war party: who is offered, incremental commitment, the leader roll -------------------
+aitwp_WarPools, aitwp_WarCandidates = WarPools, WarCandidates
 aitwp_IsHouseHead, aitwp_WarCommit, aitwp_RaidAllowed = IsHouseHead, WarCommit, RaidAllowed
 GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER = 1, 2
 GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY = 3, 4
 GL_CLASS_CHISELER = 4
 
--- half the thugs, rounded up so a house with one thug can still act
-check("war share: one thug is still one", WarShare(1, TWP_WAR_THUG_SHARE) == 1)
-check("war share: three thugs send two", WarShare(3, TWP_WAR_THUG_SHARE) == 2)
-check("war share: four thugs send two", WarShare(4, TWP_WAR_THUG_SHARE) == 2)
--- a third of any other pool, floored: two of anything is not a war party
-check("war share: two workers send nobody", WarShare(2, TWP_WAR_WORKER_SHARE) == 0)
-check("war share: ten workers send three", WarShare(10, TWP_WAR_WORKER_SHARE) == 3)
-check("war share: an empty pool sends nobody", WarShare(0, TWP_WAR_WORKER_SHARE) == 0)
+-- Every free hand is offered; WarCommit is what stops the house emptying itself. The two
+-- thug case is the bug: the old ceil(n/2) share returned 1, and one hand cleared nothing.
+local Pool2 = { [GL_PROFESSION_MYRMIDON] = 2 }
+function DynastyGetWorkerCount(Alias, Profession) return Pool2[Profession] or 0 end
+function DynastyGetWorker(Alias, Profession, Index, Out)
+	if (Pool2[Profession] or 0) <= Index then
+		return false
+	end
+	sheet(Out, 20, 0, 3, 100, 3)
+	Aliases[Out] = Out
+	return true
+end
+local RealMemberCount = DynastyGetMemberCount
+function DynastyGetMemberCount(Alias) return 0 end
+IdleState = true
+local Offered, Held = WarCandidates("d", "TWP_C")
+check("war candidates: a house with two thugs offers both", Offered == 2)
+check("war candidates: and reports the pool it drew them from", Held == 2)
+Pool2 = { [GL_PROFESSION_MYRMIDON] = 3, [TWP_PROFESSION_BEGGAR] = 2 }
+Offered, Held = WarCandidates("d", "TWP_C")
+check("war candidates: two beggars are two hands, not none", Offered == 5)
+Pool2 = { [GL_PROFESSION_MYRMIDON] = 20 }
+Offered = WarCandidates("d", "TWP_C")
+check("war candidates: the party max is the only ceiling", Offered == TWP_WAR_PARTY_MAX)
+Pool2 = {}
+Offered, Held = WarCandidates("d", "TWP_C")
+check("war candidates: an empty house offers nobody and says so", Offered == 0 and Held == 0)
+IdleState = false
+DynastyGetMemberCount = RealMemberCount
 
 -- commitment stops at the bar instead of emptying the house into the fight
 sheet("w1", 20, 0, 3, 100, 3)
@@ -829,12 +853,19 @@ function DynastyGetWorker(Alias, Profession, Index, Out)
 	sheet(Out, 20, 0, 3, 100, 3)
 	return true
 end
-IdleState = true
-local Party = {}
-check("the party is drawn from every camp the house owns", GatherFighters("d", "TWP_G", Party, 6) == 4)
-check("and every one of them counts", Party.n == 4)
-check("the cap holds the party down", GatherFighters("d", "TWP_G", {}, 2) == 2)
-IdleState = false
+-- NeedHands: the n-squared reading of SidePower that the bar rests on. These four pin
+-- the whole argument for TWP_ATTACK_WIN_CHANCE = 0.65 and fail the moment anyone moves
+-- the bar without redoing the arithmetic.
+check("need hands: a 7% chance needs seven of them at the old 0.75 bar", NeedHands(1, 0.07, 0.75) == 7)
+check("need hands: the best logged target needed three at 0.75", NeedHands(1, 0.36, 0.75) == 3)
+check("need hands: and only two at 0.65, which is why the bar moved", NeedHands(1, 0.36, 0.65) == 2)
+check("need hands: nobody to measure reads -1", NeedHands(0, 0, 0.65) == -1)
+check("need hands: an already-winning party needs no more", NeedHands(2, 1, 0.65) == 2)
+-- and the knob itself, not just the arithmetic: the whole reason 0.65 was chosen is that
+-- the best target the 2026-09-19 log offered becomes a two-hand job. Raise the bar and
+-- this goes red, which is the point - moving it is a decision, not a tweak.
+check("need hands: the shipped bar keeps the best logged target at two hands",
+	NeedHands(1, 0.36, TWP_ATTACK_WIN_CHANCE) == 2)
 
 -- where the fight may happen
 local Inside, Wanted, OfficeCity, Privilege = false, false, 0, 0

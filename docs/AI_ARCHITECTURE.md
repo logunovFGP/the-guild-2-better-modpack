@@ -140,7 +140,7 @@ percentage; these read that forwards.
 | `aitwp_HitChance(fighting, dex)` | that roll in closed form |
 | `aitwp_FightStats(sim)` | damage, armour %, dex, HP, fighting (via `ai_GetPower`) |
 | `aitwp_AddFighter(side, sim)` / `aitwp_SidePower` / `aitwp_WinChance(side, other)` | sides are plain tables; power is HP x damage through, so numbers count twice |
-| `aitwp_GatherFighters(dyn, prefix, side, max)` | thugs, robbers, thieves, mercenaries the house can spare |
+| `aitwp_NeedHands(party, chance, bar)` | hands that would clear `bar`, read off the n-squared power model; telemetry only |
 | `aitwp_DefenceOf(player, victim, side)` | victim + bodyguards + house members within `TWP_ESCORT_RADIUS` |
 | `aitwp_MayAttackHere(dyn, victim)` | outside town, or wanted, or the house holds `CommandCityGuard` there |
 | `aitwp_IsOutsideTown` / `aitwp_TownRadius` / `aitwp_IsWanted` / `aitwp_CommandsGuards` | its parts |

@@ -155,7 +155,8 @@ def why_parts(text):
     """
     bare = [part for part in text.split() if "=" not in part]
     row = kv(text)
-    row["subject"] = bare[0] if bare else "-"
+    # raid= is the migrated form; the positional word is what everything else still writes
+    row["subject"] = bare[0] if bare else row.get("raid", "-")
     row["gate"] = bare[1] if len(bare) > 1 else ""
     return row
 
@@ -854,6 +855,27 @@ def check_buyworkshop(s):
 
 def check_raids(s):
     if not s.raids:
+        # Nothing was ever decided. The refusals say how far off it was, which is the
+        # difference between a quiet feud and one that cannot arithmetically happen: the
+        # party was capped at 5 by a share rule while the logged targets wanted 7.
+        wanted = defaultdict(list)
+        for row in s.why:
+            if "need" in row and "party" in row:
+                wanted[row.get("subject", "?")].append((num(row["need"]), num(row["party"]),
+                                                        num(row.get("pool", 0))))
+        for raid, rows in sorted(wanted.items()):
+            best = min(rows, key=lambda r: r[0] - r[1])
+            yield Finding("WARN", "raid-never-decided",
+                          "%s was considered %d times and never once went; closest was %g hands "
+                          "short (needed %g, had %g, pool %g)"
+                          % (raid, len(rows), best[0] - best[1], best[0], best[1], best[2]),
+                          "Scripts/Library/aitwp.lua - aitwp_WarCandidates offers the party and "
+                          "aitwp_WarCommit commits it one hand at a time until it clears "
+                          "TWP_ATTACK_WIN_CHANCE. pool= is what the house had before "
+                          "aitwp_IsFreeForOrders ruled anyone out, so pool=0 is a recruiting problem "
+                          "and a big pool with a small party is an availability one. need= is "
+                          "aitwp_NeedHands read off the n-squared power model; if it sits above "
+                          "TWP_WAR_PARTY_MAX the bar cannot be reached against that target at all.")
         return
     per_raid = defaultdict(Counter)
     for raid in s.raids:
@@ -1239,7 +1261,7 @@ def why_table(rows):
             # reads as counts, a wide one as its range
             bits = []
             for key in sorted(set(k for r in group for k in r)):
-                if key in ("t", "dyn", "subject", "gate"):
+                if key in ("t", "dyn", "subject", "gate", "raid"):
                     continue
                 values = [r[key] for r in group if key in r]
                 distinct = sorted(set(values))

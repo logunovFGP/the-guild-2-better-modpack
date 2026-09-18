@@ -757,13 +757,16 @@ duel maths forwards - `anims_fight_sim` rolls `1+Rand(50)+FIGHTING*5` against
 `aitwp_HitChance` is that roll in closed form and `aitwp_SidePower` is a side's HP times the
 damage it actually puts through. Power counts numbers twice, once in output and once in
 staying power, so two equals beat one of the same four to one; the bar is
-`TWP_ATTACK_WIN_CHANCE = 0.75`. It is a rough estimate on purpose - it cannot see crits,
+`TWP_ATTACK_WIN_CHANCE = 0.65`. It is a rough estimate on purpose - it cannot see crits,
 artefacts or who wanders past - so attacks still go wrong; what it rules out is the fight
 nobody could have won.
 
-The party is everyone the house can spare, not only thugs: `aitwp_GatherFighters` walks
-myrmidons, robbers, thieves and mercenaries, so a robber camp or a vagabond camp puts
-marauders and hired blades into the same party (`TWP_ATTACK_PARTY_MAX = 6`). The defence is
+The party is everyone the house can spare, not only thugs: `aitwp_WarCandidates` walks
+myrmidons, robbers, mercenaries, thieves and beggars, so a robber camp or a vagabond camp
+puts marauders and hired blades into the same party, capped only by `TWP_WAR_PARTY_MAX = 8`
+- `aitwp_WarCommit` stops at the bar long before that. There was a per-pool share on top of
+that until 2026-09-19; it capped the thug pool at 5 against targets needing 7, so no raid
+could ever fire. The defence is
 `aitwp_DefenceOf`: the victim, the bodyguards walking with them (`CityBodyguard` /
 `KIbodyguard`), and anyone of their house inside `TWP_ESCORT_RADIUS`.
 
@@ -794,7 +797,7 @@ session does not chase them again:
 * Engine `GL_` constants are available at library load time - `Scripts/Library/diseases.lua`
   builds its whole `Disease` table from `GL_FAVOR_MOD_*` that way and has always worked. A
   scan for module-level uses across `Scripts/**` finds no other case. The party list in
-  `aitwp_GatherFighters` is still built inside the function, which costs nothing and keeps
+  `aitwp_WarPools` is still built inside the function, which costs nothing and keeps
   `check_utility.lua` able to stub the professions after the `dofile`.
 
 ### Item catalogue

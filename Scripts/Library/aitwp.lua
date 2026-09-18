@@ -1853,27 +1853,33 @@ function ShoppingList(DynAlias, PlayerDyn, OutNeeds)
 	return Out
 end
 
--- Rounds a hired hand can be pulled off without losing anything: the watch, the escort,
--- the evidence errand, and the underworld's own patrols. A bare STATE_IDLE test skipped
--- every patrolling thug (session 2: seven orders, none run).
-TWP_FREE_MEASURES = {
-	"PatrolTheTown", "EscortCharacterOrTransport", "OrderCollectEvidence",
-	"PickpocketPeople", "ScoutAHouse", "BurgleAHouse", "Linger",
-}
+-- A hired hand is free unless the engine has taken them: down, held, already swinging, or
+-- off the map. Adding a state here makes the house raid less often; removing one makes it
+-- interrupt more.
+--
+-- This was a whitelist of seven measure names until 2026-09-19, and that is why the raids
+-- never happened. A party needs k hands free in the *same tick*, so under a whitelist the
+-- odds are p^k - and p was small, because the list covered only what idlelib_MyrmidonIdle
+-- hands out. A thug asleep, at mass, eating, or walking under anything else read as busy.
+-- The blood rival spent that session hiring (HireMyrmidon 15 times, bf_Recruit 5) and
+-- still reported party=0 in 142 of 250 samples.
+--
+-- Interrupting needs no compensating code: 260 measures under Scripts/Measures define
+-- CleanUp(), ms_050_EscortCharacterOrTransport among them, and cancellation is the
+-- supported exit - the same event as the sim wandering off. A wounded thug needs no guard
+-- either, because aitwp_AddFighter reads live HP, so aitwp_WarCommit prices the
+-- interruption and reaches for the next hand.
 function IsFreeForOrders(Alias)
-	if GetState(Alias, STATE_DEAD) or GetState(Alias, STATE_DYING) or GetState(Alias, STATE_UNCONSCIOUS) then
-		return false
-	end
-	if GetState(Alias, STATE_IDLE) then
-		return true
-	end
-	local M = GetCurrentMeasureName(Alias)
-	for i = 1, #TWP_FREE_MEASURES do
-		if M == TWP_FREE_MEASURES[i] then
-			return true
+	-- built per call: STATE_ are engine constants, and a table filled at load time is a
+	-- list of nils, under which nobody is ever busy
+	local Busy = { STATE_DEAD, STATE_DYING, STATE_UNCONSCIOUS, STATE_IMPRISONED,
+		STATE_CAPTURED, STATE_HIJACKED, STATE_PILLORY, STATE_FIGHTING, STATE_CUTSCENE }
+	for i = 1, #Busy do
+		if GetState(Alias, Busy[i]) then
+			return false
 		end
 	end
-	return false
+	return true
 end
 
 -- Fighting ------------------------------------------------------------------------
@@ -1966,29 +1972,9 @@ function WinChance(Side, Other)
 	return Mine / (Mine + Theirs)
 end
 
--- Everyone the house can put on the road: thugs off the residence, and the marauders,
--- thieves and mercenaries of any camp it owns. Writes them into <Prefix>1..n, adds their
--- numbers to Side and returns n.
-TWP_ATTACK_PARTY_MAX = 6
-function GatherFighters(DynAlias, Prefix, Side, Max)
-	-- built here, not at load time: the GL_PROFESSION_ constants are the engine's, and a
-	-- table filled before it has defined them is four nils and no party at all
-	local Professions = { GL_PROFESSION_MYRMIDON, GL_PROFESSION_ROBBER, GL_PROFESSION_THIEF, GL_PROFESSION_MERCENARY }
-	local Found = 0
-	for p = 1, #Professions do
-		local Profession = Professions[p]
-		local Count = DynastyGetWorkerCount(DynAlias, Profession) or 0
-		for i = 0, Count - 1 do
-			if Found < Max and DynastyGetWorker(DynAlias, Profession, i, Prefix .. (Found + 1))
-					and aitwp_IsFreeForOrders(Prefix .. (Found + 1)) then
-				Found = Found + 1
-				aitwp_AddFighter(Side, Prefix .. Found)
-			end
-		end
-	end
-	RemoveAlias(Prefix .. (Found + 1))
-	return Found
-end
+-- aitwp_GatherFighters and TWP_ATTACK_PARTY_MAX were deleted on 2026-09-19. Nothing called
+-- them: a second, diverging copy of party composition with no beggars and its own cap, and
+-- the only other caller of IsFreeForOrders. aitwp_WarCandidates is the one pass now.
 
 function ClearFighters(Prefix, Count)
 	for i = 1, Count do
@@ -2032,8 +2018,36 @@ function DefenceOf(PlayerDyn, VictimAlias, Side)
 	return Side
 end
 
--- The house attacks when it reckons it wins three fights in four.
-TWP_ATTACK_WIN_CHANCE = 0.75
+-- The house attacks when it reckons it wins two fights in three.
+--
+-- It was 0.75, which no party could reach. aitwp_SidePower is exactly quadratic in party
+-- size (hp and damage each scale with n, and HitChance takes fighting/n, so it is flat), so
+-- clearing bar b from a one-hand chance c needs ceil(sqrt((b/(1-b))/(c/(1-c)))) hands. The
+-- four targets in the 2026-09-19 log needed 3, 5, 7 and 7 at 0.75 - against a thug pool the
+-- residence hire caps at 10 (ms_048_HireEmployeeBuildingRandom) and the old half-share then
+-- capped at 5. 0.65 is the step that turns the best of those from a three-hand job into a
+-- two-hand one, which is what the house could actually field. Below it you buy one hand on
+-- the hardest target and pay for it in losses.
+--
+-- One bar for every raid, not one each: 0.65 and 0.60 give identical party sizes on three
+-- of those four targets, and a per-raid bar would have to be threaded through
+-- aihtn_WarClears or WarParty>=1 stops being a necessary condition of the leaf's Weight().
+-- The kidnaps already express their stakes separately, in TWP_KIDNAP_BAR.
+TWP_ATTACK_WIN_CHANCE = 0.65
+
+-- How many hands of the same quality clear Bar, read off that n-squared model. Telemetry
+-- only - it makes chance=0.07 legible - so its error is cosmetic: it under-estimates when
+-- the hands after the thugs are weaker, which is the order WarCandidates offers them in.
+-- -1 when there was nobody to measure.
+function NeedHands(Party, Chance, Bar)
+	if Party < 1 or Chance <= 0 then
+		return -1
+	end
+	if Chance >= 1 then
+		return Party
+	end
+	return math.ceil(Party * math.sqrt((Bar / (1 - Bar)) / (Chance / (1 - Chance))))
+end
 
 -- A player worker caught out of town: the miners, lumberjacks and gatherers who walk to a
 -- resource and back with no city guard standing next to them. Weakest fighter first, so an
@@ -2207,22 +2221,22 @@ end
 -- The war party --------------------------------------------------------------------------
 --
 -- One force-composition pass behind all three raids (assassination_attempt, workers_raid,
--- raid_building). The house does not empty itself into a fight: it spends half its thugs
--- and at most a third of any other pool, commits them one at a time until the estimate
--- clears the bar, and stops there - the rest stay at work. Committing incrementally rather
--- than sending everyone is what keeps a house that wins its raids from losing its economy
--- to them.
+-- raid_building). The house does not empty itself into a fight: aitwp_WarCommit adds one
+-- fighter at a time and stops the moment the estimate clears the bar, so the rest stay at
+-- work. That is what keeps a house that wins its raids from losing its economy to them.
+--
+-- It used to be guarded twice - a per-pool share on top of the incremental commit - and the
+-- redundant half is what broke the feature. ceil(n/2) thugs from a pool the residence hire
+-- caps at 10 offers at most 5 candidates, while the logged targets needed up to 7, so
+-- bf_Assassinate could not fire on the day it shipped. The shares went on 2026-09-19;
+-- TWP_WAR_PARTY_MAX is the only ceiling now.
 --
 -- Everyone in the pools carries a dagger by default, which is the whole reason a beggar or
 -- a lumberjack's guard is worth bringing. None of them are soldiers.
 
--- Half the thugs, because the other half hold the buildings. Rounded up on the odd one, so
--- a house with a single thug can still act - flooring it would quietly take away the one
--- raid a small house can mount.
-TWP_WAR_THUG_SHARE = 0.5
--- Any other pool: never more than a third at a single attack, floored. A pool of two
--- therefore sends nobody, which is deliberate - two of anything is not a war party.
-TWP_WAR_WORKER_SHARE = 0.33
+-- The most the house will ever put on one road at once, and since 2026-09-19 the only cap
+-- there is: WarCommit stops at the bar long before this, so raising it lets a house answer
+-- a harder target rather than sending more at an easy one.
 TWP_WAR_PARTY_MAX = 8
 -- Chance the head of the house rides out with them, in percent. Never when the party wins
 -- outright: there is nothing left to gain and a dynasty to lose.
@@ -2266,27 +2280,16 @@ TWP_KIDNAP_PER_HAND = 0.05
 TWP_KIDNAP_BAR = 0.6
 
 -- Built per call, never at load time: the GL_PROFESSION_ constants belong to the engine and
--- a table filled before it has defined them is a list of nils and no party at all.
--- aitwp_GatherFighters learned this once already; do not hoist it.
+-- a table filled before it has defined them is a list of nils and no party at all. The
+-- deleted aitwp_GatherFighters learned this once already; do not hoist it.
 function WarPools()
 	return {
-		{ GL_PROFESSION_MYRMIDON, TWP_WAR_THUG_SHARE },
-		{ GL_PROFESSION_ROBBER, TWP_WAR_WORKER_SHARE },
-		{ GL_PROFESSION_MERCENARY, TWP_WAR_WORKER_SHARE },
-		{ GL_PROFESSION_THIEF, TWP_WAR_WORKER_SHARE },
-		{ TWP_PROFESSION_BEGGAR, TWP_WAR_WORKER_SHARE },
+		GL_PROFESSION_MYRMIDON,
+		GL_PROFESSION_ROBBER,
+		GL_PROFESSION_MERCENARY,
+		GL_PROFESSION_THIEF,
+		TWP_PROFESSION_BEGGAR,
 	}
-end
-
--- How many of a pool of Count the house will risk at once.
-function WarShare(Count, Share)
-	if Count < 1 then
-		return 0
-	end
-	if Share >= 0.5 then
-		return math.floor(Count * Share + 0.5)
-	end
-	return math.floor(Count * Share)
 end
 
 -- The head of the house: member 0, the one a dynasty cannot afford to lose.
@@ -2299,23 +2302,25 @@ function IsHouseHead(DynAlias, Alias)
 	return Same
 end
 
--- Everyone the house may put on the road, written into <Prefix>1..n and returned as n.
+-- Everyone the house may put on the road, written into <Prefix>1..n. Returns how many are
+-- offered and, second, how many hands the pools held before the free-for-orders test - the
+-- second is telemetry only, and it is the difference between "this house has nobody" and
+-- "this house has five and all of them are busy".
+--
 -- Hirelings in pool order first, then the family's own rogues - they carry a dagger and no
 -- workshop misses them - and never the head of the house, who is aitwp_WarLeader's separate
--- decision. Free for orders only: a thug at mass is not a soldier.
+-- decision.
 function WarCandidates(DynAlias, Prefix)
 	local Pools = aitwp_WarPools()
-	local Found = 0
+	local Found, Pool = 0, 0
 	for p = 1, #Pools do
-		local Profession, Share = Pools[p][1], Pools[p][2]
-		local Count = DynastyGetWorkerCount(DynAlias, Profession) or 0
-		local Cap = aitwp_WarShare(Count, Share)
-		local Taken = 0
+		local Count = DynastyGetWorkerCount(DynAlias, Pools[p]) or 0
+		Pool = Pool + Count
 		for i = 0, Count - 1 do
-			if Taken < Cap and Found < TWP_WAR_PARTY_MAX
-					and DynastyGetWorker(DynAlias, Profession, i, Prefix .. (Found + 1))
+			if Found < TWP_WAR_PARTY_MAX
+					and DynastyGetWorker(DynAlias, Pools[p], i, Prefix .. (Found + 1))
 					and aitwp_IsFreeForOrders(Prefix .. (Found + 1)) then
-				Found, Taken = Found + 1, Taken + 1
+				Found = Found + 1
 			end
 		end
 	end
@@ -2329,7 +2334,7 @@ function WarCandidates(DynAlias, Prefix)
 		end
 	end
 	RemoveAlias(Prefix .. (Found + 1))
-	return Found
+	return Found, Pool
 end
 
 -- Commit candidates one at a time until the estimate clears Bar, and stop there. Returns

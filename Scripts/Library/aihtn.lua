@@ -53,13 +53,19 @@ end
 -- each - the soundness rule in docs/AI_ARCHITECTURE.md 2.7. The ::TWP::WHY line carries the
 -- numbers, because "WarParty>=1" on its own never says how far off it was.
 local function WarClears(DynAlias, Defence, Raid)
-	local Candidates = aitwp_WarCandidates(DynAlias, "TWP_HTNW")
+	local Candidates, Pool = aitwp_WarCandidates(DynAlias, "TWP_HTNW")
 	local Side = {}
 	local Sent, Chance = aitwp_WarCommit("TWP_HTNW", Candidates, Defence, TWP_ATTACK_WIN_CHANCE, Side)
 	aitwp_ClearFighters("TWP_HTNW", Candidates)
 	if Sent < 1 then
-		utility_Why(DynAlias, Raid .. " party=" .. Candidates .. " theirs=" .. (Defence.n or 0)
-			.. " chance=" .. string.format("%.2f", Chance) .. " bar=" .. TWP_ATTACK_WIN_CHANCE)
+		-- raid= because the name used to be positional and kv() in ai_telemetry.py keeps
+		-- only tokens containing '=', so every one of these lines reached the analyser with
+		-- its subject missing. pool= separates "no hirelings" from "all of them busy";
+		-- need= turns chance=0.07 into the number of hands that would have cleared it.
+		utility_Why(DynAlias, "raid=" .. Raid .. " pool=" .. Pool .. " party=" .. Candidates
+			.. " theirs=" .. (Defence.n or 0)
+			.. " chance=" .. string.format("%.2f", Chance) .. " bar=" .. TWP_ATTACK_WIN_CHANCE
+			.. " need=" .. aitwp_NeedHands(Candidates, Chance, TWP_ATTACK_WIN_CHANCE))
 	end
 	return Sent >= 1
 end
@@ -69,12 +75,12 @@ end
 -- number it ends up committing, which only makes the odds better - so a method this turns
 -- down is one the leaf would turn down too.
 local function KidnapClears(DynAlias, Raid)
-	local Hands = aitwp_WarCandidates(DynAlias, "TWP_HTNK")
+	local Hands, Pool = aitwp_WarCandidates(DynAlias, "TWP_HTNK")
 	aitwp_ClearFighters("TWP_HTNK", Hands)
 	local Odds = aitwp_KidnapChance(DynAlias, "TWP_HTN", Hands)
 	if Odds < TWP_KIDNAP_BAR then
-		utility_Why(DynAlias, Raid .. " odds=" .. string.format("%.2f", Odds)
-			.. " bar=" .. TWP_KIDNAP_BAR .. " hands=" .. Hands)
+		utility_Why(DynAlias, "raid=" .. Raid .. " pool=" .. Pool .. " odds="
+			.. string.format("%.2f", Odds) .. " bar=" .. TWP_KIDNAP_BAR .. " hands=" .. Hands)
 	end
 	return Odds >= TWP_KIDNAP_BAR
 end
