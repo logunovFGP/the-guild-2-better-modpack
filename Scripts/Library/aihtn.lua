@@ -73,6 +73,21 @@ local function WarClears(DynAlias, Defence, Raid)
 	return Sent >= 1
 end
 
+-- The second number the two kidnap leaves refuse on: winning the brawl is not the same as
+-- getting the body away. Computed with every hand the house could raise rather than the
+-- number it ends up committing, which only makes the odds better - so a method this turns
+-- down is one the leaf would turn down too.
+local function KidnapClears(DynAlias, Raid)
+	local Hands = aitwp_WarCandidates(DynAlias, "TWP_HTNK")
+	aitwp_ClearFighters("TWP_HTNK", Hands)
+	local Odds = aitwp_KidnapChance(DynAlias, "TWP_HTN", Hands)
+	if Odds < TWP_KIDNAP_BAR then
+		aihtn_Why(DynAlias, Raid .. " odds=" .. string.format("%.2f", Odds)
+			.. " bar=" .. TWP_KIDNAP_BAR .. " hands=" .. Hands)
+	end
+	return Odds >= TWP_KIDNAP_BAR
+end
+
 AIHTN_TASKS = {
 	-- Everything the blood rival can be doing to the player, best first.
 	Feud = {
@@ -91,6 +106,23 @@ AIHTN_TASKS = {
 			{ "BuildingArtefact>=1", function(d, p) local R = {} return aihtn_CountArtefacts(d, p, "building", R) >= 1 end },
 		}, steps = { "bf_UseBuildingArtefact" } },
 		{ name = "charge", when = {}, steps = { "HaveEvidence", "bf_Charge" } },
+		{ name = "kidnapchild", when = {
+			{ "Raid(kidnap_child)", function(d, p) return aitwp_RaidAllowed(p, "kidnap_child") end },
+			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
+			{ "Ready(AI_BF_KidnapChild)", function(d) return Ready(d, "AI_BF_KidnapChild") end },
+			{ "ThievesDen", function(d)
+				local Den = aitwp_HasThievesDen(d, "TWP_HTN2")
+				RemoveAlias("TWP_HTN2")
+				return Den
+			end },
+			{ "Target(child)", function(d, p) return aitwp_FindReachableTarget(d, p, "child", "TWP_HTN") end },
+			{ "WarParty>=1", function(d, p)
+				local Defence = {}
+				aitwp_DefenceOf(p, "TWP_HTN", Defence)
+				return WarClears(d, Defence, "kidnap_child")
+			end },
+			{ "KidnapOdds>=bar", function(d) return KidnapClears(d, "kidnap_child") end },
+		}, steps = { "bf_KidnapChild" } },
 		{ name = "assassinate", when = {
 			{ "Raid(assassination)", function(d, p) return aitwp_RaidAllowed(p, "assassination_attempt") end },
 			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
@@ -104,6 +136,23 @@ AIHTN_TASKS = {
 				return WarClears(d, Defence, "assassination_attempt")
 			end },
 		}, steps = { "bf_Assassinate" } },
+		{ name = "kidnap", when = {
+			{ "Raid(kidnap)", function(d, p) return aitwp_RaidAllowed(p, "kidnap") end },
+			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },
+			{ "Ready(AI_BF_Kidnap)", function(d) return Ready(d, "AI_BF_Kidnap") end },
+			{ "ThievesDen", function(d)
+				local Den = aitwp_HasThievesDen(d, "TWP_HTN2")
+				RemoveAlias("TWP_HTN2")
+				return Den
+			end },
+			{ "Target(adult)", function(d, p) return aitwp_FindReachableTarget(d, p, "adult", "TWP_HTN") end },
+			{ "WarParty>=1", function(d, p)
+				local Defence = {}
+				aitwp_DefenceOf(p, "TWP_HTN", Defence)
+				return WarClears(d, Defence, "kidnap")
+			end },
+			{ "KidnapOdds>=bar", function(d) return KidnapClears(d, "kidnap") end },
+		}, steps = { "bf_Kidnap" } },
 		{ name = "raidbuilding", when = {
 			{ "Raid(building)", function(d, p) return aitwp_RaidAllowed(p, "raid_building") end },
 			{ "Allowed(thug_attack)", function(d, p) return aitwp_Allowed(d, p, "thug_attack") end },

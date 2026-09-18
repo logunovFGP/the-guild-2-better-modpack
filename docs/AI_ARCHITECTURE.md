@@ -502,3 +502,25 @@ the engine owns the entities; a second store would be a second truth.
   home when nobody comes, which is what should happen in the hours a mine is idle. Gates
   from `DB/NobilityTitle.dbt`: Patron (title 7, rung 3) **or** round 10 for the first two,
   Baron (title 10, rung 6) **and** round 10 for the building raid. One day's cooldown each.
+- **2026-09-18, the ambush and the kidnaps** Two corrections and two more behaviours.
+  `workers_raid` was shipped on `SquadWaylay`, which is **the robber camp's own job**:
+  `ms_SquadWaylayMember.lua` wants a `GL_BUILDING_TYPE_ROBBER` work building and
+  `StopMeasure()`s without one, so a party of thugs, beggars and rogues off a residence could
+  never have run it. Replaced with our own `Squad/ms_bf_Ambush.lua` pair - hold the meeting
+  place, wait `TWP_AMBUSH_HOURS`, take anyone of the marked house who comes within
+  `TWP_AMBUSH_RADIUS`, otherwise go home. Both rows are registered in `DB/Measures.dbt`,
+  which is **UTF-8**, not the UTF-16 that `Text.dbt` is - a new measure needs a row there or
+  it cannot be started at all.
+  Then **kidnap** and **kidnap_child** on the same war party, through the engine's
+  `SquadHijackCharacter`. Two numbers have to clear, not one: `aitwp_WinChance` for the
+  brawl and `aitwp_KidnapChance` for the snatch, because winning the fight and losing the
+  body in the crowd is a failure. Both need a thieves' guild of the house's own for the cell
+  (`ms_SquadHijackMember.lua` stops without one, and `bf_Hideout` is what buys it), which
+  ties the two nodes together. **The office path**: `aitwp_FindReachableTarget` goes through
+  `aitwp_MayAttackHere`, which allows a target inside a town only to a house holding an
+  office with `CommandCityGuard`, and `aitwp_KidnapChance` drops `TWP_KIDNAP_WATCH` when the
+  watch is not the house's own - so taking the captaincy is what moves a blood rival off the
+  roads and onto the market square. There is **no native that orders the city guard to a
+  spot**, so "move the guards away first" is modelled as the watch not intervening rather
+  than as guards physically walking off. Gates: Buerger (rung 2) or round 5 for the kidnap,
+  Patron for the child and no round that opens it instead.

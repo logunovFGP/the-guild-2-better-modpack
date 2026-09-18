@@ -49,9 +49,10 @@ Line shapes written by Scripts/Library/utility.lua and aitwp.lua (each after "[S
   ::TWP::BLOODENEMY player= enemy= action=<chosen|kept> name=<free text, last>
                                               who each human player's blood rival is, on every sweep
   ::TWP::BB unregistered key <key> in <where>   a blackboard key nobody declared: it reads nil forever
-  ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=
-                                              one per decided raid: assassination_attempt, workers_raid
-                                              or raid_building, and whether the squad actually formed
+  ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent= odds=
+                                              one per decided raid: assassination_attempt, workers_raid,
+                                              raid_building, kidnap or kidnap_child; sent= is whether the
+                                              squad actually formed, odds= the kidnap chance (-1 elsewhere)
   [StartMeasure] <sim>: Canceled 'A'(p) because of priority 'B'(q)
                                               engine: a measure start lost to the running one; p, q are
                                               the interruptvalue column of DB/Measures.dbt
@@ -94,7 +95,7 @@ BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
 ROOTS = {"Dynasty", "Election", "Feud", "Trial", "Duel", "ToMEconomy", "Priorities", "IncomeForAI", "DoNothing", "BloodFeud"}
-BLOODFEUD = {"bf_Provoke", "bf_ForgeEvidence", "bf_Charge", "bf_Razzia", "bf_Assassinate", "bf_WorkersRaid", "bf_RaidBuilding", "bf_Recruit", "bf_Equip",
+BLOODFEUD = {"bf_Provoke", "bf_ForgeEvidence", "bf_Charge", "bf_Razzia", "bf_Assassinate", "bf_WorkersRaid", "bf_RaidBuilding", "bf_Kidnap", "bf_KidnapChild", "bf_Recruit", "bf_Equip",
              "bf_Taunt", "bf_FundAllies", "bf_Hideout", "bf_Procure", "bf_UseArtefact",
              "bf_UseBuildingArtefact"}
 DYNASTY = {"AIContractGuildHouse", "ApplyForOffice", "BuildHome", "CollectBankDebts", "CourtLover", "DefendRogue",
@@ -445,6 +446,16 @@ HTN_NOTES = {
         "party is aitwp_WarCandidates - half the thugs, a third of any other pool, plus the family rogues - "
         "committed one at a time by aitwp_WarCommit until it clears. The ::TWP::WHY lines carry party=, "
         "theirs= and chance=; the gate is Patron or round 10 (aitwp_RaidAllowed)."),
+    "Feud.kidnap": ("NOTE",
+        "Scripts/AI/BaseTree/BloodFeud/bf_Kidnap.lua. Two numbers have to clear, not one: the fight "
+        "(aitwp_WinChance) and the snatch (aitwp_KidnapChance, bar TWP_KIDNAP_BAR). It also needs a "
+        "thieves' guild of the house's own for the cell - ms_SquadHijackMember.lua stops dead without one "
+        "and bf_Hideout is what buys it. Inside a town only when the house holds an office with "
+        "CommandCityGuard; the ::TWP::WHY kidnap lines carry odds=, bar= and hands=."),
+    "Feud.kidnapchild": ("NOTE",
+        "Scripts/AI/BaseTree/BloodFeud/bf_KidnapChild.lua. Same as the kidnap but the target must be under "
+        "sixteen (aitwp_FindReachableTarget mode child), and the gate is Patron with no round that opens "
+        "it instead. A house with no player child in reach fails here every tick, which is normal."),
     "Feud.workersraid": ("NOTE",
         "Scripts/AI/BaseTree/BloodFeud/bf_WorkersRaid.lua. Needs a player worker outside the town radius at "
         "that moment (aitwp_FindWorkerTarget), so it fails all the hours the mines and huts are idle - that "

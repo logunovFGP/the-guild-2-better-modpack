@@ -1935,6 +1935,12 @@ TWP_WAR_LEADER_CHANCE = 30
 -- Game hours between raids of one kind: a raid is a day's undertaking.
 TWP_WAR_COOLDOWN = 24
 
+-- How long an ambush lies up before it gives the morning away, and how close the target
+-- has to come. Our own measures (Squad/ms_bf_Ambush.lua), because SquadWaylay belongs to
+-- the robber camp and stops without one - a residence party could never have run it.
+TWP_AMBUSH_HOURS = 4
+TWP_AMBUSH_RADIUS = 1500
+
 -- Beggars have no GL_PROFESSION_ constant in this tree or in vanilla, and our checker
 -- cannot see engine constants - an invented one reads nil and the branch never runs, the
 -- way GL_CLASS_FIGHTER does. This is the row id from DB/Professions.dbt (53 "bettler"),
@@ -1947,6 +1953,22 @@ TWP_PROFESSION_BEGGAR = 53
 TWP_WAR_RUNG_PATRON = 3
 TWP_WAR_RUNG_BARON = 6
 TWP_WAR_ROUND = 10
+-- The kidnap opens earlier than the raids: Buerger (title 5, rung 2) or five rounds in. It
+-- takes a man off the street rather than putting a squad on the road, so it is the first
+-- thing a house does to a player who is getting somewhere. Taking a child waits for Patron.
+TWP_WAR_RUNG_CITIZEN = 2
+TWP_WAR_ROUND_EARLY = 5
+
+-- The odds a kidnapping comes off. Not the odds of winning the fight: the party has to take
+-- the victim off the street and get them to a cell, and the two come apart badly in a town.
+-- Escorts make it harder, a watch that is not yours makes it much harder, and more hands
+-- make it quicker. Kept separate from aitwp_WinChance on purpose - a snatch that wins the
+-- brawl and loses the body in the crowd has failed.
+TWP_KIDNAP_BASE = 0.85
+TWP_KIDNAP_PER_ESCORT = 0.15
+TWP_KIDNAP_WATCH = 0.35
+TWP_KIDNAP_PER_HAND = 0.05
+TWP_KIDNAP_BAR = 0.6
 
 -- Built per call, never at load time: the GL_PROFESSION_ constants belong to the engine and
 -- a table filled before it has defined them is a list of nils and no party at all.
@@ -2077,7 +2099,7 @@ end
 -- ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=
 -- One line per decided raid. Without it a raid that never happened and a raid that happened
 -- and lost read exactly the same in the log.
-function LogWar(DynAlias, Raid, TargetAlias, Party, Leader, Chance, Sent)
+function LogWar(DynAlias, Raid, TargetAlias, Party, Leader, Chance, Sent, Odds)
 	local Target = -1
 	if AliasExists(TargetAlias) then
 		Target = GetID(TargetAlias)
@@ -2085,7 +2107,76 @@ function LogWar(DynAlias, Raid, TargetAlias, Party, Leader, Chance, Sent)
 	utility_Emit("::TWP::WAR t=" .. string.format("%.2f", GetGametime())
 		.. " dyn=" .. GetID(DynAlias) .. " raid=" .. Raid .. " target=" .. Target
 		.. " party=" .. Party .. " leader=" .. tostring(Leader)
-		.. " chance=" .. string.format("%.2f", Chance) .. " sent=" .. tostring(Sent))
+		.. " chance=" .. string.format("%.2f", Chance) .. " sent=" .. tostring(Sent)
+		.. " odds=" .. string.format("%.2f", Odds or -1))
+end
+
+-- Somewhere to hold them. ms_SquadHijackMember.lua stops dead without a thieves' guild of
+-- the house's own, so this is the precondition a kidnap cannot do without; bf_Hideout is the
+-- node that buys one.
+function HasThievesDen(DynAlias, OutAlias)
+	if aitwp_OwnBuilding(DynAlias, -1, GL_BUILDING_TYPE_THIEF, OutAlias) then
+		return true
+	end
+	return false
+end
+
+-- See TWP_KIDNAP_BASE. Party is how many hands are on it.
+function KidnapChance(DynAlias, VictimAlias, Party)
+	local Chance = TWP_KIDNAP_BASE
+	local Escorts = (GetProperty(VictimAlias, "CityBodyguard") or 0)
+		+ (GetProperty(VictimAlias, "KIbodyguard") or 0)
+	Chance = Chance - Escorts * TWP_KIDNAP_PER_ESCORT
+	if not aitwp_IsOutsideTown(VictimAlias) then
+		local Ours = false
+		if GetNearestSettlement(VictimAlias, "TWP_KC") then
+			Ours = aitwp_CommandsGuards(DynAlias, "TWP_KC")
+			RemoveAlias("TWP_KC")
+		end
+		-- The office path. A blood rival who takes the captaincy commands the watch, and
+		-- the watch then has business elsewhere while this happens - which is as close to
+		-- "move the guards away first" as the engine lets a script get: there is no native
+		-- that orders the city guard to a spot. Without the office, the watch is the single
+		-- biggest reason a snatch inside the walls fails.
+		if not Ours then
+			Chance = Chance - TWP_KIDNAP_WATCH
+		end
+	end
+	Chance = Chance + math.min(Party, 4) * TWP_KIDNAP_PER_HAND
+	if Chance < 0 then
+		return 0
+	end
+	if Chance > 1 then
+		return 1
+	end
+	return Chance
+end
+
+-- A player target the house may actually start something with where they stand: outdoors,
+-- and either out of town, already wanted, or in a town whose watch this house commands
+-- (aitwp_MayAttackHere). That last is the office path - a blood rival who takes the
+-- captaincy stops being confined to the roads. Mode "child" wants one under sixteen; any
+-- other mode wants an adult, weakest fighter first.
+function FindReachableTarget(DynAlias, PlayerDyn, Mode, OutAlias)
+	local Best, BestScore = -1, nil
+	local Count = DynastyGetMemberCount(PlayerDyn) or 0
+	for i = 0, Count - 1 do
+		if DynastyGetMember(PlayerDyn, i, "TWP_RT") and not GetState("TWP_RT", STATE_DEAD)
+				and aitwp_MayAttackHere(DynAlias, "TWP_RT") then
+			local Child = (SimGetAge("TWP_RT") or 0) < 16
+			if Child == (Mode == "child") then
+				local Score = -(GetSkillValue("TWP_RT", FIGHTING) or 0)
+				if BestScore == nil or Score > BestScore then
+					Best, BestScore = i, Score
+				end
+			end
+		end
+	end
+	RemoveAlias("TWP_RT")
+	if Best < 0 then
+		return false
+	end
+	return DynastyGetMember(PlayerDyn, Best, OutAlias)
 end
 
 -- What the player has to be before the house dares. Patron, or ten rounds in - a house that
@@ -2094,6 +2185,12 @@ end
 function RaidAllowed(PlayerDyn, Raid)
 	if Raid == "raid_building" then
 		return aitwp_PlayerRung(PlayerDyn) >= TWP_WAR_RUNG_BARON and GetRound() >= TWP_WAR_ROUND
+	end
+	if Raid == "kidnap_child" then
+		return aitwp_PlayerRung(PlayerDyn) >= TWP_WAR_RUNG_PATRON
+	end
+	if Raid == "kidnap" then
+		return aitwp_PlayerRung(PlayerDyn) >= TWP_WAR_RUNG_CITIZEN or GetRound() >= TWP_WAR_ROUND_EARLY
 	end
 	return aitwp_PlayerRung(PlayerDyn) >= TWP_WAR_RUNG_PATRON or GetRound() >= TWP_WAR_ROUND
 end

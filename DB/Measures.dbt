@@ -498,3 +498,5 @@ Data:
 40054   "ms_DebugRoad.lua"   "-"   "DebugRoad"   30   "hud/buttons/btn_Meassure_Production.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 40055   "ms_DebugConstants.lua"   "-"   "DebugConstants"   30   "hud/buttons/btn_Meassure_Production.tga"   0   2   0   ""   ""   3   0   0   "none"   0   0   |
 2397   "ms_bf_FeudSupply.lua"   "-"   "FeudSupply"   99   "-"   0   2   0   ""   ""   0   0   0   "none"   0   1   |
+2398   "Squad\ms_bf_Ambush.lua"   "-"   "bf_Ambush"   80   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |
+2399   "Squad\ms_bf_AmbushMember.lua"   "-"   "bf_AmbushMember"   80   "-"   0   11   0   ""   ""   0   0   0   "none"   0   0   |

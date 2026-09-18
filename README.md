@@ -611,7 +611,11 @@ the thugs and a third of any other pool - marauders, mercenaries, thieves, begga
 family's own rogues, everyone who carries a dagger - committed one at a time until the
 estimate clears three fights in four and no further, grouped with the engine's squad system
 so they arrive together, and the head of the house riding out 30% of the time but never on a
-certain win). It acquires a thieves' guild as its hideout whatever its class
+certain win). The same party kidnaps (`bf_Kidnap`, `bf_KidnapChild`) into a thieves' guild
+of its own, where a second number - the odds of getting the body away, not of winning the
+brawl - has to clear as well, and where holding an office with `CommandCityGuard` is what
+lets it happen inside the walls at all. `workers_raid` ambushes on its own measures
+(`Squad/ms_bf_Ambush.lua`): wait at the spot, take whoever comes, go home when nobody does. It acquires a thieves' guild as its hideout whatever its class
 (`bf_Hideout`), taunts by letter, funds its allies, and uses every artefact of the
 ladder through `bf_UseArtefact`/`bf_UseBuildingArtefact`. Every leaf is scored, not
 constant: the thug attack by the victim's health and the thugs free, provocation by the

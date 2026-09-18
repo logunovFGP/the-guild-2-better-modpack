@@ -1,9 +1,11 @@
 -- workers_raid. The same war party, pointed at the people the player sends out of town: the
 -- miners, lumberjacks and gatherers who walk to a resource and back with nobody near them.
 --
--- The squad lies in wait at the spot rather than chasing. SquadWaylay is the engine's own
--- ambush and it gives up and goes home when nobody comes, which is exactly what should
--- happen in the hours the worker is indoors.
+-- The squad lies in wait at the spot rather than chasing, on our own ambush measures
+-- (Squad/ms_bf_Ambush.lua). Not SquadWaylay: that is the robber camp's own job and stops
+-- dead without one, so a party of thugs, beggars and rogues off a residence could never
+-- have run it. The ambush holds for TWP_AMBUSH_HOURS and then goes home, which is what
+-- should happen in the hours the mine is idle.
 --
 -- Weaker target, same arithmetic: the estimate still has to clear three fights in four,
 -- because a gatherer with two guards is not the soft touch it looks like.
@@ -56,7 +58,7 @@ function Execute()
 	if Sent >= 1 and aitwp_WarLeader("dynasty", Chance, "War" .. (Sent + 1)) then
 		Sent, Leader = Sent + 1, true
 	end
-	local Ok = aitwp_SquadAttack("War", Sent, "TWP_WRV", "SquadWaylayForBooty", "SquadWaylayMember")
+	local Ok = aitwp_SquadAttack("War", Sent, "TWP_WRV", "bf_Ambush", "bf_AmbushMember")
 	aitwp_LogWar("dynasty", "workers_raid", "TWP_WRV", Sent, Leader, Chance, Ok)
 	if Candidates > Sent then
 		Sent = Candidates

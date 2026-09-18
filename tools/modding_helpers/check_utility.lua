@@ -632,6 +632,56 @@ RollValue = TWP_WAR_LEADER_CHANCE
 check("war leader: stays home on a missed roll", WarLeader("d", 0.8, "Boss") == false)
 Rand = RealRand
 
+-- the kidnap: a second number, because winning the brawl is not getting the body away -----
+aitwp_KidnapChance, aitwp_MayAttackHere = KidnapChance, MayAttackHere
+local Outside, Ours = true, false
+function GetNearestSettlement(Alias, Out) Aliases[Out] = "town" return true end
+aitwp_IsOutsideTown = function(Alias) return Outside end
+aitwp_CommandsGuards = function(DynAlias, CityAlias) return Ours end
+Props.CityBodyguard, Props.KIbodyguard = 0, 0
+
+check("kidnap: an unescorted victim out of town is the base plus one hand",
+	near(KidnapChance("d", "v", 1), TWP_KIDNAP_BASE + TWP_KIDNAP_PER_HAND))
+Props.CityBodyguard = 2
+check("kidnap: two bodyguards cost two escorts' worth",
+	near(KidnapChance("d", "v", 1), TWP_KIDNAP_BASE + TWP_KIDNAP_PER_HAND - 2 * TWP_KIDNAP_PER_ESCORT))
+Props.CityBodyguard = 0
+Outside = false
+check("kidnap: inside a town the watch takes its cut",
+	near(KidnapChance("d", "v", 1), TWP_KIDNAP_BASE + TWP_KIDNAP_PER_HAND - TWP_KIDNAP_WATCH))
+Ours = true
+check("kidnap: unless the watch is the house's own - the office path",
+	near(KidnapChance("d", "v", 1), TWP_KIDNAP_BASE + TWP_KIDNAP_PER_HAND))
+check("kidnap: more hands never push it past certainty", KidnapChance("d", "v", 99) <= 1)
+Props.CityBodyguard = 20
+check("kidnap: and a wall of bodyguards never pushes it below nothing", KidnapChance("d", "v", 1) >= 0)
+Props.CityBodyguard = 0
+Outside, Ours = true, false
+
+-- the kidnap gates: earlier than the raids, and the child waits for Patron alone.
+-- The leader-roll block above left DynastyGetMember answering "boss"; the ladder needs the
+-- index back before PlayerRung can read a title off it.
+function DynastyGetMember(Alias, Index, Out) Aliases[Out] = Index return true end
+function DynastyGetMemberCount(Alias) return #Titles end
+Titles = { 5 }
+Round = 1
+check("kidnap: a burgher is already worth taking", RaidAllowed("player", "kidnap"))
+check("kidnap: but their child is not, below Patron", RaidAllowed("player", "kidnap_child") == false)
+Titles = { 1 }
+Round = 5
+check("kidnap: round five opens it with no title at all", RaidAllowed("player", "kidnap"))
+check("kidnap: no round opens taking a child", RaidAllowed("player", "kidnap_child") == false)
+Titles = { 7 }
+Round = 1
+check("kidnap: Patron opens the child in round one", RaidAllowed("player", "kidnap_child"))
+Titles = { 1 }
+Round = 1
+check("kidnap: a serf in round one is left alone", RaidAllowed("player", "kidnap") == false)
+-- hand the real ones back: the MayAttackHere checks further down use them, and a stub left
+-- lying about is a test that passes for the wrong reason
+aitwp_IsOutsideTown, aitwp_CommandsGuards = IsOutsideTown, CommandsGuards
+function GetNearestSettlement(Alias, Out) Aliases[Out] = 1 return true end
+
 -- a hurt thug against a fit, armoured swordsman is the fight that was killing them
 sheet("hurt", 12, 0, 2, 30, 2)
 sheet("knight", 40, 50, 6, 100, 8)
