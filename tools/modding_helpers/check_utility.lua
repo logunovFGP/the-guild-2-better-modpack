@@ -640,6 +640,44 @@ check("stashing a missing alias reports it", Stash("bf_Gone", "Gone") == false)
 check("and its claim fails rather than acting on nothing", Claim("bf_Gone", "Out3") == false)
 
 
+
+-- buying at the blood rival's own counter: damage done vs coin handed over ---------------
+-- ItemGetPriceBuy is the seller's own asking price; base price is the fallback.
+TWP_ENEMY_SHOP_PRICE = {}          -- item -> what this seller charges, nil = cannot answer
+function ItemGetPriceBuy(Item, _Seller) return TWP_ENEMY_SHOP_PRICE[Item] end
+Aliases.Shop = 1
+
+check("a lethal poison is worth funding them for",
+	WorthBuyingFromEnemy("BlackWidowPoison", "Shop") == true)
+check("a forged document is, too - the case it exists for",
+	WorthBuyingFromEnemy("HexerdokumentI", "Shop") == true)
+check("a reputation trinket is not: severity 1 buys nothing",
+	WorthBuyingFromEnemy("ThesisPaper", "Shop") == false)
+check("nor toad excrement, economic and below the bar",
+	WorthBuyingFromEnemy("ToadExcrements", "Shop") == false)
+check("equipment is never bought there, it does the rival no harm",
+	WorthBuyingFromEnemy("Longsword", "Shop") == false)
+check("an item that is not a tool at all is refused",
+	WorthBuyingFromEnemy("NotAThing", "Shop") == false)
+
+-- the seller's own asking price decides, not the catalogue
+TWP_ENEMY_SHOP_PRICE["WeaponPoison"] = 99999
+check("a shop charging far over the odds is walked past",
+	WorthBuyingFromEnemy("WeaponPoison", "Shop") == false)
+TWP_ENEMY_SHOP_PRICE["WeaponPoison"] = 10
+check("and the same item at a fair price is taken",
+	WorthBuyingFromEnemy("WeaponPoison", "Shop") == true)
+TWP_ENEMY_SHOP_PRICE["WeaponPoison"] = nil
+check("with no seller price to read, the base price decides",
+	WorthBuyingFromEnemy("WeaponPoison", "Shop") == true)
+
+-- the cap scales with the damage: the same price passes for a lethal tool and fails for a
+-- forgery, which is the whole point of weighing one against the other
+TWP_ENEMY_SHOP_PRICE["BlackWidowPoison"] = TWP_BF_ENEMY_GOLD * 5
+TWP_ENEMY_SHOP_PRICE["HexerdokumentI"] = TWP_BF_ENEMY_GOLD * 5
+check("a lethal tool justifies its own cap", WorthBuyingFromEnemy("BlackWidowPoison", "Shop") == true)
+check("the same coin for a forgery does not", WorthBuyingFromEnemy("HexerdokumentI", "Shop") == false)
+TWP_ENEMY_SHOP_PRICE = {}
 -- the HTN: decomposition, the reason it gives, and the pull it puts on one leaf -----------
 dofile("Scripts/Library/aihtn.lua")
 aihtn_Plan, aihtn_Step, aihtn_CountArtefacts = Plan, Step, CountArtefacts

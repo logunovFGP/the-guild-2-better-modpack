@@ -103,10 +103,34 @@ function BuyInTown(CityAlias, N, Needs)
 	return N, Needs
 end
 
--- Buys what the list still wants at one seller, when it has any of it on offer.
+-- Buys what the list still wants at one seller, when it has any of it on offer. At the
+-- blood enemy's own shop, only the part of the list that is worth funding them for.
 function BuyAt(Seller, N, Needs)
 	if N <= 0 then
 		return N, Needs
+	end
+	-- At a counter the blood enemy owns, offer the list only what is worth funding them
+	-- for (aitwp_WorthBuyingFromEnemy). The rest is held back and put on the list again
+	-- afterwards, so the next seller in the town can still supply it.
+	local Held = {}
+	if AliasExists("PlayerDyn") and GetDynastyID(Seller) > 0
+			and GetDynastyID(Seller) == GetID("PlayerDyn") then
+		local Offer = {}
+		for i = 1, N do
+			if aitwp_WorthBuyingFromEnemy(Needs[i][1], Seller) then
+				Offer[#Offer + 1] = Needs[i]
+			else
+				Held[#Held + 1] = Needs[i]
+			end
+		end
+		if #Held > 0 then
+			aitwp_Log("skips " .. #Held .. " of " .. N .. " at the rival's "
+				.. GetName(Seller) .. ": not worth the coin", "Dyn")
+		end
+		Needs, N = Offer, #Offer
+		if N <= 0 then
+			return #Held, Held
+		end
 	end
 	local Any = false
 	for i = 1, N do
@@ -116,6 +140,10 @@ function BuyAt(Seller, N, Needs)
 	end
 	if Any and (IsInLoadingRange("", Seller) or f_MoveTo("", Seller, GL_MOVESPEED_RUN)) then
 		N, Needs = cart_LoadItems("", Seller, N, Needs)
+	end
+	for i = 1, #Held do
+		N = N + 1
+		Needs[N] = Held[i]
 	end
 	return N, Needs
 end

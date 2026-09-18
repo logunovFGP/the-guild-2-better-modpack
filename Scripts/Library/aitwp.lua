@@ -1180,6 +1180,13 @@ TWP_BF_CARTS = 5                -- bf_Procure: carts the residence may run for t
 -- game day of testing exercises the cart often enough to see it shop; put it back up
 -- once scouting is confirmed, or the carts spend the whole day on the road.
 TWP_BF_SUPPLY_HOURS = 1
+-- What the house will fund its blood enemy for. Buying at the enemy's own counter hands
+-- them the price, so it is only worth it when the goods hurt them more than the coin
+-- helps. Severity is aitwp_Severity: 5 lethal, 4 physical, 3 legal (the forged
+-- documents), 2 economic, 1 the rest. The gold cap scales with the damage, so a lethal
+-- poison may cost more than a forgery before it stops being a bargain.
+TWP_BF_ENEMY_SEVERITY = 3
+TWP_BF_ENEMY_GOLD = 500
 
 -- May DynAlias use Tool against whoever VictimAlias belongs to? Against AI dynasties
 -- always (the ladder is about human players). Against a player: the attitude's classes,
@@ -1478,6 +1485,37 @@ end
 
 -- How badly a tool hurts: lethal 5, physical or control 4, legal 3, economic 2,
 -- reputation 1. The cart buys in this order, ties to the higher rung.
+-- May the cart buy this item at a shop the blood enemy owns? The market is public and
+-- the goods are real, but the price funds the house they will be used against, so the
+-- trade only pays when the damage justifies the gift. Equipment and anything that is
+-- not a ladder tool is never bought there: a breastplate does the enemy no harm at
+-- all, and the cart can get one anywhere else.
+function WorthBuyingFromEnemy(ItemID, SellerAlias)
+	local Name = ItemGetName(ItemID)
+	for i = 1, #TWP_TOOL_LIST do
+		local T = TWP_TOOL_LIST[i]
+		if T.item == Name then
+			local Damage = aitwp_Severity(T)
+			if Damage < TWP_BF_ENEMY_SEVERITY then
+				return false
+			end
+			-- What the rival actually collects is the price at their own counter, not the
+			-- catalogue value: a shop sets its own. ItemGetPriceBuy is the same call
+			-- f_Transfer reads when the seller is a market; base price is the fallback
+			-- when it cannot answer for a workshop, which is what f_Transfer itself uses.
+			local Paid = 0
+			if SellerAlias and AliasExists(SellerAlias) then
+				Paid = ItemGetPriceBuy(ItemID, SellerAlias) or 0
+			end
+			if Paid <= 0 then
+				Paid = ItemGetBasePrice(Name) or 0
+			end
+			return Paid <= TWP_BF_ENEMY_GOLD * Damage
+		end
+	end
+	return false
+end
+
 function Severity(T)
 	if T.lethal then
 		return 5

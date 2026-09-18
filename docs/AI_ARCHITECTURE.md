@@ -180,7 +180,15 @@ The chain itself is procedural: `aitwp_ShoppingList` -> `bf_Procure` ->
 `aitwp_ReturnUnused` daily, `aitwp_MarketReport` for telemetry. The cart shops in each
 town at the market or Kontor, then the workshops, then the **resource buildings in the
 surroundings** - farms, mills, fruitfarms, rangerhuts, fishing huts - ownerless or
-foreign, never its own dynasty's. `aitwp_SellerStock` counts the same places for the
+foreign, never its own dynasty's - including shops the blood enemy owns, since the
+market is public and the goods are real. There the list is filtered by
+`aitwp_WorthBuyingFromEnemy`: the price funds the house the goods will be used
+against, so the trade only pays when the damage outweighs the gift.
+`TWP_BF_ENEMY_SEVERITY` (3, a forged document) is the floor and
+`TWP_BF_ENEMY_GOLD` x severity the ceiling, read from `ItemGetPriceBuy` at that
+seller rather than the catalogue value - a shop sets its own price, and that is what
+the rival actually collects. Equipment is never bought there: it does them no harm.
+`aitwp_SellerStock` counts the same places for the
 `MARKET` line, so what the telemetry calls unavailable is what the cart could not buy.
 All of it hangs off
 `aitwp_Residence(dyn, out)` - native `GetHomeBuilding` first, `aitwp_OwnBuilding`
