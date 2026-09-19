@@ -2,6 +2,7 @@ function Run()
 
 	if GetMoney("") < 400 then
 		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0","@L_MEASURES_HIRERANDOM_NOMONEY_+0")
+		aitwp_LogHireEnd("", "under400", -1, GetMoney(""))
 		StopMeasure()
 	end
 
@@ -9,6 +10,7 @@ function Run()
 	-- is why a player who owns one can hire without limit while a residence stops dead.
 	if BuildingGetType("") == GL_BUILDING_TYPE_RESIDENCE and DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= TWP_MAX_THUGS then
 		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURES_HIRERANDOM_NOTHUGS_+0")
+		aitwp_LogHireEnd("", "maxthugs", -1, -1)
 		StopMeasure()
 	end
 	
@@ -39,6 +41,7 @@ function Run()
 	-- added by FH:
 	-- prevents game from freezing
 	if auswahl == "C" then
+		aitwp_LogHireEnd("", "aborted", -1, -1)
 		return
 	end
 	
@@ -52,10 +55,12 @@ function Run()
 	local arbeiter = FindWorker("", "RandWorker", DesiredLevel)
 	if arbeiter ~= "" then
 		chr_OutputHireError("RandWorker", "", arbeiter)
+		aitwp_LogHireEnd("", "noworker_" .. arbeiter, DesiredLevel, -1)
 		StopMeasure()
 	end
 	
 	if not AliasExists("RandWorker") then
+		aitwp_LogHireEnd("", "noalias", DesiredLevel, -1)
 		StopMeasure()
 	end
 	
@@ -97,6 +102,7 @@ function DecideYou()
 	if BuildingGetOwner("", "BOwner") then
 		if GetMoney("BOwner") < handsels then
 			MsgQuick("", "@L_GENERAL_MEASURES_FAILURES_+14", handsels, GetID("RandWorker"))
+			aitwp_LogHireEnd("", "ownerpoor", levels, handsels)
 			StopMeasure()
 		end
 	end
@@ -123,6 +129,7 @@ function DecideYou()
 					
 	if result == "C" then
 		AddImpact("RandWorker", "NoRandomHire", 1, 4)
+		aitwp_LogHireEnd("", "refused", levels, handsels)
 		return
 	end
 
@@ -132,21 +139,31 @@ function DecideYou()
 	local	Error = SimHire("RandWorker", "", true)
 	if Error~="" then
 		chr_OutputHireError("RandWorker", "", Error)
+		aitwp_LogHireEnd("", "simhire_" .. Error, levels, handsels)
 		return
 	else
+		aitwp_LogHireEnd("", "hired", levels, handsels)
 		economy_UpdateBalance("", "Wages", 0-handsels)
 	  PlaySound3D("", "Effects/moneybag_to_hand+0.wav", 1.0)
 	end
 end
 
 function DecideFirst()
-	if BuildingGetLevel("") == 1 then
-		return "B"
-	elseif BuildingGetLevel("") == 2 then
-		return "N"
-	else
+	-- Run() blanks Button2 and Button3 on exactly this test - FindWorker returns "" when a
+	-- worker of that level can be found and an error string when it cannot - and then this
+	-- function ignored the answer and picked purely from the building level. A level 3
+	-- residence therefore asked for a level 5 worker whether or not one existed, and the
+	-- error came back at the FindWorker in Run(), where the only report is a MsgQuick: a
+	-- popup for the player, silence for an AI. Walk down to a level that can be filled.
+	-- A separate alias, because "worker" and "RandWorker" are both live in Run() by now.
+	local Level = BuildingGetLevel("")
+	if Level >= 3 and FindWorker("", "twp_DecideFirst", 5) == "" then
 		return "M"
 	end
+	if Level >= 2 and FindWorker("", "twp_DecideFirst", 3) == "" then
+		return "N"
+	end
+	return "B"
 end
 
 function CheckSoeldner(Alias, Worker)

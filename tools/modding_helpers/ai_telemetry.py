@@ -123,6 +123,7 @@ IDPROBE = re.compile(r"::TWP::IDPROBE (.*)$")
 HOSP = re.compile(r"::TWP::HOSP (.*)$")
 HIRE = re.compile(r"::TWP::HIRE (.*)$")
 HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
+HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
 # The engine's own completion signal for anything that walks, and the missing half of
 # the spin check below: a measure start is not evidence of progress, but a start
 # followed by this line is evidence of the opposite.
@@ -255,6 +256,7 @@ class Session(object):
         self.supply, self.stale_needs, self.unloads = [], [], []
         self.idprobe, self.hospitals, self.hires = [], [], []
         self.hijacks = []
+        self.hire_ends = []
         self.unreached = []                      # (sim, the measure it was last running)
         self.tspan = [None, None]                # first and last gametime any channel stamped
         self.libs = set()                        # the library names that printed LOADED
@@ -446,6 +448,10 @@ class Session(object):
             m = HIJACK.search(line)
             if m:
                 self.hijacks.append(kv(m.group(1)))
+                continue
+            m = HIREEND.search(line)
+            if m:
+                self.hire_ends.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1397,7 +1403,7 @@ def check_hiring(s):
     pool=0, with no hire reporting a failure. The counts before each attempt say whether
     the number ever moves.
     """
-    if not s.hires:
+    if not s.hires and not s.hire_ends:
         return
     per_dyn = defaultdict(list)
     for row in s.hires:
@@ -1407,15 +1413,35 @@ def check_hiring(s):
         thugs = [num(r.get("thugs", -1)) for r in rows]
         if len(rows) >= 3 and max(thugs) <= 0:
             stuck.append((dyn, len(rows), rows[-1].get("slots", "?")))
-    yield Finding("NOTE", "hiring",
-                  "%d hire decisions across %d houses; thug counts seen %s"
-                  % (len(s.hires), len(per_dyn),
-                     "/".join(str(int(v)) for v in sorted(set(
+    if s.hires:
+        yield Finding("NOTE", "hiring",
+                      "%d hire decisions across %d houses; thug counts seen %s"
+                      % (len(s.hires), len(per_dyn),
+                         "/".join(str(int(v)) for v in sorted(set(
                          num(r.get("thugs", -1)) for r in s.hires))[:8])),
-                  "Scripts/Library/aitwp.lua, aitwp_LogHire - emitted by "
-                  "Scripts/AI/BaseTree/Dynasty/HireMyrmidon.lua and "
-                  "Scripts/AI/BaseTree/BloodFeud/bf_Recruit.lua before each attempt. Both now "
-                  "wait TWP_HIRE_HOURS and stop at TWP_MAX_THUGS.")
+                      "Scripts/Library/aitwp.lua, aitwp_LogHire - emitted by "
+                      "Scripts/AI/BaseTree/Dynasty/HireMyrmidon.lua and "
+                      "Scripts/AI/BaseTree/BloodFeud/bf_Recruit.lua before each attempt. Both now "
+                      "wait TWP_HIRE_HOURS and stop at TWP_MAX_THUGS.")
+    if s.hire_ends:
+        stages = Counter(r.get("stage", "?") for r in s.hire_ends)
+        hired = stages.get("hired", 0)
+        wants = Counter(r.get("want", "?") for r in s.hire_ends
+                        if str(r.get("stage", "")).startswith("noworker"))
+        yield Finding("NOTE" if hired else "WARN",
+                      "hire-outcomes",
+                      "%d hire attempts finished: %s%s"
+                      % (len(s.hire_ends),
+                         ", ".join("%s %d" % (k, v) for k, v in stages.most_common(8)),
+                         ("; levels asked for and not found: "
+                          + "/".join(sorted(wants))) if wants else ""),
+                      "Scripts/Measures/ms_048_HireEmployeeBuildingRandom.lua, every exit, via "
+                      "aitwp_LogHireEnd. noworker_<err> is FindWorker refusing the level "
+                      "ms_048_hireemployeebuildingrandom_DecideFirst asked for; since 2026-09-19 "
+                      "DecideFirst walks down to a level it can actually fill, so a want= of 5 or "
+                      "3 still showing here means the walk-down itself is not working. ownerpoor "
+                      "is the building owner short of SimGetHandsel, which is a different problem "
+                      "from under400 - that one reads the dynasty.")
     if stuck:
         dyn, tries, slots = max(stuck, key=lambda r: r[1])
         yield Finding("WARN", "hiring-never-lands",
@@ -1572,8 +1598,10 @@ def check_stuck_walk(s):
                          or "no measure start seen"),
                       "The measure keeps being re-picked because the walk never finishes, so "
                       "the sim gets nothing done all session. Scripts/Library/idlelib.lua "
-                      "chooses the idle destination and Scripts/Measures/ms_010_GoToSleep.lua "
-                      "the bed; both are ours. Before blaming either, check whether the "
+                      "chooses the idle destination and is ours; "
+                      "Scripts/Measures/ms_010_GoToSleep.lua walks the sim to its own "
+                      "HomeBuilding and is inherited, untouched by us. Before blaming either, "
+                      "check whether the "
                       "building is mid-evacuation or mid-level-up - the engine cannot path "
                       "into one, and that is not a script defect.")
 
@@ -2157,18 +2185,35 @@ def selftest():
                 "[Script] ::TWP::HIJACK t=1.20 bld=9 sim=13 victim=55 hands=3 joined=true"])
     codes_hj = [f.code for f in findings(party)]
     assert "lone-kidnap" not in codes_hj and "hijack" in codes_hj, findings(party)
+    # hire outcomes: every exit of ms_048 was a popup and nothing else, so a house that
+    # tried and failed read exactly like one that never tried. want= must survive into
+    # the text, or the finding cannot say which level could not be filled.
+    hend = Session()
+    hend.feed([
+        '[Script] ::TWP::HIREEND t=1.00 bld=9 stage=noworker_NoWorker want=5 cost=-1 purse=8000',
+        '[Script] ::TWP::HIREEND t=3.00 bld=9 stage=ownerpoor want=3 cost=9000 purse=800'])
+    text_he = format_findings(findings(hend))
+    assert "hire-outcomes" in [f.code for f in findings(hend)], findings(hend)
+    assert "noworker_NoWorker 1" in text_he, text_he
+    assert "not found: 5" in text_he, text_he
+    ok_hire = Session()
+    ok_hire.feed(
+        ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
+    levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
+    assert levels_he == ["NOTE"], findings(ok_hire)
+
     # stuck-walk: the engine reports the failed walk, we only have to scale it. 20 failures
     # in 5 game hours on one sim is 4.0/h and fires; the same 20 spread over 20 sims does
     # not, which is the healthy 2026-09-06 shape and the reason the old spin check died.
-    stuck = Session()
-    stuck.feed(["[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5"]
+    walker = Session()
+    walker.feed(["[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5"]
                + ["[Script] Executing Measures/ms_010_GoToSleep.lua on Uta Barker",
                   "[Subsystem] cl_MoveTask::Process - Uta Barker has not reached Target "
                   "(Errorcode 102)"] * 20
                + ["[Script] ::TWP::W t=15.00 dyn=1 node=Dynasty base=5 c= g=none w=5"])
-    codes_sw = [f.code for f in findings(stuck)]
-    assert "stuck-walk" in codes_sw and "unreachable-target" in codes_sw, findings(stuck)
-    text_sw = format_findings(findings(stuck))
+    codes_sw = [f.code for f in findings(walker)]
+    assert "stuck-walk" in codes_sw and "unreachable-target" in codes_sw, findings(walker)
+    text_sw = format_findings(findings(walker))
     # the pointer names the same file, so a bare filename test passes even with the
     # attribution gutted; the count is what only attribution can produce
     assert "last running ms_010_GoToSleep.lua x20" in text_sw, text_sw

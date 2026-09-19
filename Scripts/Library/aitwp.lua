@@ -2628,6 +2628,21 @@ function LogHire(DynAlias, BldAlias, Node)
 		.. " beggars=" .. (DynastyGetWorkerCount(DynAlias, TWP_PROFESSION_BEGGAR) or -1))
 end
 
+-- ::TWP::HIREEND t= bld= stage= want= cost= purse=. aitwp_LogHire says a house decided
+-- to hire; this says what happened next, and nothing did before 2026-09-19. Every exit
+-- in ms_048_HireEmployeeBuildingRandom is a MsgQuick or a MsgBoxNoWait - a popup for a
+-- human and silence for an AI - so a house that tried three times and gained nobody
+-- looked exactly like a house that never tried.
+function LogHireEnd(BldAlias, Stage, Want, Cost)
+	local Purse = -1
+	if BuildingGetOwner(BldAlias, "TWP_HireOwner") then
+		Purse = GetMoney("TWP_HireOwner") or -1
+	end
+	utility_Emit("::TWP::HIREEND t=" .. string.format("%.2f", GetGametime())
+		.. " bld=" .. GetID(BldAlias) .. " stage=" .. Stage
+		.. " want=" .. (Want or -1) .. " cost=" .. (Cost or -1) .. " purse=" .. Purse)
+end
+
 -- ::TWP::ORDER t= sim= measure= action=<ordered|busy|sametick>. Without it the guard is
 -- unfalsifiable: a session with no cancels reads the same whether the guard is holding
 -- or whether nothing ever asked.
