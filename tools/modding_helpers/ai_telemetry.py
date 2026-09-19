@@ -122,6 +122,7 @@ UNLOAD = re.compile(r"::TWP::UNLOAD (.*)$")
 IDPROBE = re.compile(r"::TWP::IDPROBE (.*)$")
 HOSP = re.compile(r"::TWP::HOSP (.*)$")
 HIRE = re.compile(r"::TWP::HIRE (.*)$")
+HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -248,6 +249,7 @@ class Session(object):
         self.attacks, self.heals = [], []
         self.supply, self.stale_needs, self.unloads = [], [], []
         self.idprobe, self.hospitals, self.hires = [], [], []
+        self.hijacks = []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -418,6 +420,10 @@ class Session(object):
             m = HIRE.search(line)
             if m:
                 self.hires.append(kv(m.group(1)))
+                continue
+            m = HIJACK.search(line)
+            if m:
+                self.hijacks.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1453,9 +1459,46 @@ def check_test_knobs(_session):
                           "it back before the branch goes out." % (rel, what))
 
 
+def check_hijack(s):
+    """Does a kidnapping go in as a party, or as one thief at a time?
+
+    Every thief on duty is handed "Hijack" while the guild's order stands, and until
+    2026-09-19 each one opened its own squad, so four thieves meant four separate
+    one-man kidnappings. The player watched a single thief walk into a party of three.
+    hands= is the squad size at the moment that thief was committed.
+    """
+    if not s.hijacks:
+        return
+    joined = sum(1 for r in s.hijacks if r.get("joined") == "true")
+    hands = [int(num(r.get("hands", -1))) for r in s.hijacks]
+    yield Finding("NOTE", "hijack",
+                  "%d thieves committed to a kidnapping, %d of them joining a colleague; "
+                  "squad size seen %s"
+                  % (len(s.hijacks), joined,
+                     "/".join(str(v) for v in sorted(set(hands))[:8])),
+                  "Scripts/Buildings/Thief.lua, thief_LogHijack - one line per thief checking "
+                  "in while a HijackingOrder stands. The order itself is laid down in "
+                  "thief_GetWorkerTask on a Rand(10) roll at night and now expires after "
+                  "THIEF_HIJACK_ORDER_HOURS, because an order whose target does not resolve "
+                  "used to stand for ever and starve pickpocketing, scouting and burglary.")
+    lone = [r for r in s.hijacks if int(num(r.get("hands", -1))) == 1]
+    if len(lone) > 1 and joined == 0:
+        victims = len(set(r.get("victim", "?") for r in lone))
+        yield Finding("WARN", "lone-kidnap",
+                      "%d thieves each went after a victim alone and none joined a colleague "
+                      "(%d distinct victims)" % (len(lone), victims),
+                      "Scripts/Buildings/Thief.lua, the Hijack branch of thief_CheckInForWork. "
+                      "It walks the guild's own workers looking for one whose squad already "
+                      "carries this victim and joins that, the same test "
+                      "Scripts/AI/Thief/thief_JoinSquad.lua makes; it only opens a new squad "
+                      "when there is none. More than one lone hand and no join at all means "
+                      "either the workers check in too far apart for the first squad to still "
+                      "exist, or SquadGet is not finding it.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_hiring, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_hiring, check_hijack, check_idprobe,
           check_blood_rival, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -2020,6 +2063,18 @@ def selftest():
                "[Script] ::TWP::HIRE t=5.00 dyn=7 node=HireMyrmidon bld=9 slots=true "
                "thugs=2 robbers=0 mercs=0 thieves=0 beggars=0"])
     assert "hiring-never-lands" not in [f.code for f in findings(grew)], findings(grew)
+    # hijack: the user watched one thief walk into a party of three. Two lone hands and
+    # no join is that shape; the same two joining one squad is the fix working.
+    alone = Session()
+    alone.feed(["[Script] ::TWP::HIJACK t=1.00 bld=9 sim=11 victim=55 hands=1 joined=false",
+                "[Script] ::TWP::HIJACK t=2.00 bld=9 sim=12 victim=55 hands=1 joined=false"])
+    assert "lone-kidnap" in [f.code for f in findings(alone)], findings(alone)
+    party = Session()
+    party.feed(["[Script] ::TWP::HIJACK t=1.00 bld=9 sim=11 victim=55 hands=1 joined=false",
+                "[Script] ::TWP::HIJACK t=1.10 bld=9 sim=12 victim=55 hands=2 joined=true",
+                "[Script] ::TWP::HIJACK t=1.20 bld=9 sim=13 victim=55 hands=3 joined=true"])
+    codes_hj = [f.code for f in findings(party)]
+    assert "lone-kidnap" not in codes_hj and "hijack" in codes_hj, findings(party)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()

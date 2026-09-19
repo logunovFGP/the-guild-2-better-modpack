@@ -1,3 +1,9 @@
+-- Game hours a standing HijackingOrder may go unfulfilled before the guild gives up.
+-- Without a deadline an order that can never be met is immortal: PingHour only retires
+-- one whose target is caught, dead or unresolvable, and while it stands GetWorkerTask
+-- hands every thief "Hijack" and the guild stops pickpocketing, scouting and burgling.
+THIEF_HIJACK_ORDER_HOURS = 24
+
 function Run()
 end
 
@@ -31,8 +37,15 @@ function PingHour()
 	-- thief "Hijack": one stale order starves burglary, scouting and ransom for good.
 	if HijackTargetID then
 		local Caught = BuildingGetPrisoner("", "Prisoner") and GetID("Prisoner") == HijackTargetID
-		if Caught or not GetAliasByID(HijackTargetID, "HijackCheck") or GetState("HijackCheck", STATE_DEAD) then
+		-- An order laid down before FindHijackVictim returned the sim rather than the
+		-- dynasty holds a dynasty id, which GetAliasByID resolves and which is never
+		-- STATE_DEAD, so none of the tests below can ever retire it. An unstamped order
+		-- is one of those: let it expire immediately.
+		local Since = GetProperty("", "HijackingOrderSince")
+		local Stale = (not Since) or (GetGametime() - Since) > THIEF_HIJACK_ORDER_HOURS
+		if Caught or Stale or not GetAliasByID(HijackTargetID, "HijackCheck") or GetState("HijackCheck", STATE_DEAD) then
 			RemoveProperty("", "HijackingOrder")
+			RemoveProperty("", "HijackingOrderSince")
 		end
 		RemoveAlias("HijackCheck")
 	end
@@ -83,6 +96,8 @@ function GetWorkerTask(BldAlias, WorkerAlias)
 			if thief_FindHijackVictim(BldAlias, "HijackVictim") then
 				HijackTargetID = GetID("HijackVictim")
 				SetProperty(BldAlias, "HijackingOrder", HijackTargetID)
+				-- whole hours, because a property does not hand a float back unchanged
+				SetProperty(BldAlias, "HijackingOrderSince", math.floor(GetGametime()))
 			end
 		end
 	end
@@ -125,7 +140,25 @@ function CheckInForWork(BldAlias, SimAlias)
 		end
 	elseif "Hijack" == Task then
 		GetAliasByID(Detail, "HijackVictim")
-		SquadCreate(SimAlias, "SquadHijackCharacter", "HijackVictim", "SquadHijackMember", "SquadHijackMember")
+		-- Every thief on duty is handed "Hijack" while the order stands, and each one used
+		-- to open its own squad: four one-man kidnappings walking one after another into a
+		-- party of three. Join the colleague already carrying this victim, the test
+		-- Scripts/AI/Thief/thief_JoinSquad.lua makes, plus the victim so a waylay or a
+		-- previous target's squad is not mistaken for this one.
+		local Joined = false
+		for i = 0, BuildingGetWorkerCount(BldAlias) - 1 do
+			if BuildingGetWorker(BldAlias, i, "SquadMate") and GetID("SquadMate") ~= GetID(SimAlias)
+				and SquadGet("SquadMate", "HijackSquad")
+				and GetProperty("HijackSquad", "Victim") == Detail then
+				SquadAddMember("HijackSquad", -1, SimAlias)
+				Joined = true
+				break
+			end
+		end
+		if not Joined then
+			SquadCreate(SimAlias, "SquadHijackCharacter", "HijackVictim", "SquadHijackMember", "SquadHijackMember")
+		end
+		thief_LogHijack(BldAlias, SimAlias, Detail, Joined)
 		return Task
 	elseif "DemandRansom" == Task then
 		if BuildingGetPrisoner(BldAlias, "Victim") and ReadyToRepeat(SimAlias, GetMeasureRepeatName2("DemandRansom")) then
@@ -224,4 +257,20 @@ function FindHijackVictim(BldAlias, RetAlias)
 	-- simobject, and PingHour compares it against the prisoner.
 	CopyAlias("HIJ_SIM", RetAlias)
 	return true
+end
+
+-- ::TWP::HIJACK t= bld= sim= victim= hands= joined=<true|false>. hands=1 on a squad that
+-- goes on to fight is the defect this was written for: a guild handing four thieves the
+-- same order and sending them in one at a time. Nothing else in the log can tell a party
+-- of four from four parties of one - the engine drives SquadHijackCharacter itself and
+-- writes no line of its own.
+function LogHijack(BldAlias, SimAlias, VictimID, Joined)
+	local Hands = -1
+	if SquadGet(SimAlias, "TWP_LogSquad") then
+		Hands = SquadGetMemberCount("TWP_LogSquad", true) or -1
+	end
+	utility_Emit("::TWP::HIJACK t=" .. string.format("%.2f", GetGametime())
+		.. " bld=" .. GetID(BldAlias) .. " sim=" .. GetID(SimAlias)
+		.. " victim=" .. (VictimID or -1) .. " hands=" .. Hands
+		.. " joined=" .. tostring(Joined and true or false))
 end
