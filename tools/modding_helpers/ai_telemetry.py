@@ -123,6 +123,11 @@ IDPROBE = re.compile(r"::TWP::IDPROBE (.*)$")
 HOSP = re.compile(r"::TWP::HOSP (.*)$")
 HIRE = re.compile(r"::TWP::HIRE (.*)$")
 HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
+# The engine's own completion signal for anything that walks, and the missing half of
+# the spin check below: a measure start is not evidence of progress, but a start
+# followed by this line is evidence of the opposite.
+UNREACHED = re.compile(r"cl_MoveTask::Process - (.+?) has not reached Target")
+STAMP = re.compile(r"::TWP::\w+ t=([\d.]+)")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -250,6 +255,8 @@ class Session(object):
         self.supply, self.stale_needs, self.unloads = [], [], []
         self.idprobe, self.hospitals, self.hires = [], [], []
         self.hijacks = []
+        self.unreached = []                      # (sim, the measure it was last running)
+        self.tspan = [None, None]                # first and last gametime any channel stamped
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -258,8 +265,23 @@ class Session(object):
     def feed(self, lines):
         dyn_of_sim, goal_of_dyn = {}, {}
         last_self_cancel = (None, -2)
+        last_measure = {}                        # sim -> the measure it most recently started
         for index, line in enumerate(lines):
             line = line.rstrip("\r\n")
+            if "cl_MoveTask::Process" in line:
+                m = UNREACHED.search(line)
+                if m:
+                    sim = m.group(1).strip()
+                    self.unreached.append((sim, last_measure.get(sim, "-")))
+                    continue
+            if "::TWP::" in line:
+                m = STAMP.search(line)
+                if m:
+                    t = float(m.group(1))
+                    if t > 0:
+                        lo, hi = self.tspan
+                        self.tspan = [t if lo is None else min(lo, t),
+                                      t if hi is None else max(hi, t)]
             if "attempt to " in line:
                 # a Lua runtime error; a node that errors in Weight() silently weighs 0
                 self.errors[line.split("]", 1)[-1].strip()[:120]] += 1
@@ -436,6 +458,7 @@ class Session(object):
             m = MEASURE.search(line)
             if m:
                 name, sim = m.group(1), m.group(2).strip()
+                last_measure[sim] = name
                 self.measures[name] += 1
                 dyn = dyn_of_sim.get(sim)
                 goal = goal_of_dyn.get(dyn, "AI, goal unknown") if dyn else "not an AI party member"
@@ -1496,10 +1519,69 @@ def check_hijack(s):
                       "exist, or SquadGet is not finding it.")
 
 
+# A sim that cannot reach where a measure sends it. This is the spin check the note above
+# says could not be written, and the missing piece was never in our telemetry: the engine
+# already reports non-completion for anything that walks, as
+# "cl_MoveTask::Process - <sim> has not reached Target". Repetition alone flagged ten
+# measures on a healthy log; repetition *plus* the engine saying the walk failed is the
+# real signal, so this check counts only the failures and never the starts.
+#
+# Scaled per game hour, because the observed logs span 7.5 to 49 hours and a raw count
+# reads a long healthy session as worse than a short broken one. Measured: 2026-09-06
+# spread 1297 failures over 219 sims, worst 1.0/h; 2026-09-19 put 327 of 440 on five
+# characters of one family, worst 12.5/h. The shape, not the volume, is the finding.
+STUCK_WALK_PER_HOUR = 4.0
+STUCK_WALK_MIN = 10
+
+
+def check_stuck_walk(s):
+    """Is anyone being sent somewhere they cannot get to, over and over?"""
+    if not s.unreached:
+        return
+    lo, hi = s.tspan
+    hours = (hi - lo) if (lo is not None and hi is not None and hi > lo) else 0.0
+    per_sim = defaultdict(list)
+    for sim, measure in s.unreached:
+        per_sim[sim].append(measure)
+    worst = sorted(per_sim.items(), key=lambda kv_: -len(kv_[1]))
+    top = sum(len(v) for _k, v in worst[:5])
+    yield Finding("NOTE", "unreachable-target",
+                  "%d walks ended without reaching the target, across %d sims%s; "
+                  "the top five carry %d%% of them (%s)"
+                  % (len(s.unreached), len(per_sim),
+                     (" over %.1f game hours" % hours) if hours else "",
+                     100 * top // max(1, len(s.unreached)),
+                     ", ".join("%s %d" % (k, len(v)) for k, v in worst[:5])),
+                  "The engine writes this itself, from cl_MoveTask; no script emits it. A "
+                  "thin spread over a hundred sims is ordinary town congestion. A tall "
+                  "spike on a few names is a destination that cannot be walked to - read "
+                  "the measure beside the name, and check the [Movement] "
+                  "EN_PATHSTATE_ERROR_UNREACHABLE lines for the same tick.")
+    if not hours:
+        return
+    stuck = [(sim, walks) for sim, walks in worst
+             if len(walks) >= STUCK_WALK_MIN and len(walks) / hours >= STUCK_WALK_PER_HOUR]
+    if stuck:
+        sim, walks = stuck[0]
+        measures = Counter(m for m in walks if m and m != "-")
+        yield Finding("WARN", "stuck-walk",
+                      "%d sims failed to reach a target more than %.0f times a game hour "
+                      "(worst: %s, %d failures in %.1f h, last running %s)"
+                      % (len(stuck), STUCK_WALK_PER_HOUR, sim, len(walks), hours,
+                         ", ".join("%s x%d" % (k, v) for k, v in measures.most_common(3))
+                         or "no measure start seen"),
+                      "The measure keeps being re-picked because the walk never finishes, so "
+                      "the sim gets nothing done all session. Scripts/Library/idlelib.lua "
+                      "chooses the idle destination and Scripts/Measures/ms_010_GoToSleep.lua "
+                      "the bed; both are ours. Before blaming either, check whether the "
+                      "building is mid-evacuation or mid-level-up - the engine cannot path "
+                      "into one, and that is not a script defect.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
           check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_hiring, check_hijack, check_idprobe,
-          check_blood_rival, check_idle, check_test_knobs, check_supply, check_stray_goods)
+          check_blood_rival, check_stuck_walk, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
 def findings(session):
@@ -2075,6 +2157,27 @@ def selftest():
                 "[Script] ::TWP::HIJACK t=1.20 bld=9 sim=13 victim=55 hands=3 joined=true"])
     codes_hj = [f.code for f in findings(party)]
     assert "lone-kidnap" not in codes_hj and "hijack" in codes_hj, findings(party)
+    # stuck-walk: the engine reports the failed walk, we only have to scale it. 20 failures
+    # in 5 game hours on one sim is 4.0/h and fires; the same 20 spread over 20 sims does
+    # not, which is the healthy 2026-09-06 shape and the reason the old spin check died.
+    stuck = Session()
+    stuck.feed(["[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5"]
+               + ["[Script] Executing Measures/ms_010_GoToSleep.lua on Uta Barker",
+                  "[Subsystem] cl_MoveTask::Process - Uta Barker has not reached Target "
+                  "(Errorcode 102)"] * 20
+               + ["[Script] ::TWP::W t=15.00 dyn=1 node=Dynasty base=5 c= g=none w=5"])
+    codes_sw = [f.code for f in findings(stuck)]
+    assert "stuck-walk" in codes_sw and "unreachable-target" in codes_sw, findings(stuck)
+    text_sw = format_findings(findings(stuck))
+    # the pointer names the same file, so a bare filename test passes even with the
+    # attribution gutted; the count is what only attribution can produce
+    assert "last running ms_010_GoToSleep.lua x20" in text_sw, text_sw
+    spread = Session()
+    spread.feed(["[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5"]
+                + ["[Subsystem] cl_MoveTask::Process - Sim%d has not reached Target "
+                   "(Errorcode 102)" % i for i in range(20)]
+                + ["[Script] ::TWP::W t=15.00 dyn=1 node=Dynasty base=5 c= g=none w=5"])
+    assert "stuck-walk" not in [f.code for f in findings(spread)], findings(spread)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()
