@@ -5,8 +5,9 @@ function Run()
 		StopMeasure()
 	end
 
-	-- check for maximum of 10 thugs for dynasty
-	if BuildingGetType("") == GL_BUILDING_TYPE_RESIDENCE and DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= 10 then
+	-- TWP_MAX_THUGS, not a hard-coded 10. An ESTATE was never capped here at all, which
+	-- is why a player who owns one can hire without limit while a residence stops dead.
+	if BuildingGetType("") == GL_BUILDING_TYPE_RESIDENCE and DynastyGetWorkerCount("dynasty", GL_PROFESSION_MYRMIDON) >= TWP_MAX_THUGS then
 		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0", "@L_MEASURES_HIRERANDOM_NOTHUGS_+0")
 		StopMeasure()
 	end

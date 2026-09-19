@@ -1368,6 +1368,21 @@ TWP_BF_SUPPLY = 100000          -- bf_Procure: treasury before a cart goes shopp
 TWP_BF_FUND = 200000            -- bf_FundAllies: treasury before money goes to an ally
 TWP_BF_HIDEOUT = 30000          -- bf_Hideout: treasury before a thieves' guild is bought
 TWP_BF_RECRUIT = 3000           -- bf_Recruit: treasury before another thug is hired
+-- Game hours between one house hiring one more hand, for both the ordinary HireMyrmidon
+-- and the feud's own bf_Recruit. It was 2*(5-difficulty) on one and a flat 6 on the other,
+-- so an easy game let a house hire every eight hours and the feud every six - far slower
+-- than a player, who can stand at the residence and hire until the slots run out.
+TWP_HIRE_HOURS = 2
+-- Thugs one house may keep. ms_048_HireEmployeeBuildingRandom hard-coded 10 for a
+-- RESIDENCE and left an ESTATE uncapped, which is the asymmetry that makes a player feel
+-- unlimited: buy an estate and the ceiling disappears. This applies the same number to
+-- both, and to the feud's own ceiling, which was the far tighter of the two at
+-- 2 + the head's nobility title.
+--
+-- Raising it costs wages, and wages are charged hourly in bld_HandlePingHour whether the
+-- thug is doing anything or not - a house that hires to the ceiling and then cannot pay
+-- is a worse failure than a house with too few thugs, so this is a knob and not a removal.
+TWP_MAX_THUGS = 30
 TWP_BF_RAZZIA_EVIDENCE = 35     -- bf_Razzia: the Razzia measure's own evidence threshold
 -- Game hours between one band of diplomatic decline. 22 on purpose: it is the timer
 -- attf_ChangeStatus already keeps under the key DIP_<victim dynasty>, and bf_DeclareFoe
@@ -2593,6 +2608,24 @@ function ClaimOrder(Alias, Measure, Hours)
 	SetProperty(Alias, Key, Now)
 	aitwp_LogOrder(Alias, Measure, "ordered")
 	return true
+end
+
+-- ::TWP::HIRE t= dyn= node= bld= slots= thugs= robbers= mercs= thieves= beggars=
+-- Every time a house decides to hire, with the hands it already has, counted the same way
+-- aitwp_WarCandidates counts them. This is the line that settles why the raids report
+-- pool=0: the 2026-09-19 session had one house pick HireMyrmidon ten times and still show
+-- nothing in any pool, and no hire ever reported a failure. Either the count never rises,
+-- in which case the hire is not producing a myrmidon, or it rises and something else empties
+-- it. Nothing short of the numbers before each attempt can tell those apart.
+function LogHire(DynAlias, BldAlias, Node)
+	utility_Emit("::TWP::HIRE t=" .. string.format("%.2f", GetGametime())
+		.. " dyn=" .. GetID(DynAlias) .. " node=" .. Node .. " bld=" .. GetID(BldAlias)
+		.. " slots=" .. tostring(BuildingCanHireNewWorker(BldAlias))
+		.. " thugs=" .. (DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MYRMIDON) or -1)
+		.. " robbers=" .. (DynastyGetWorkerCount(DynAlias, GL_PROFESSION_ROBBER) or -1)
+		.. " mercs=" .. (DynastyGetWorkerCount(DynAlias, GL_PROFESSION_MERCENARY) or -1)
+		.. " thieves=" .. (DynastyGetWorkerCount(DynAlias, GL_PROFESSION_THIEF) or -1)
+		.. " beggars=" .. (DynastyGetWorkerCount(DynAlias, TWP_PROFESSION_BEGGAR) or -1))
 end
 
 -- ::TWP::ORDER t= sim= measure= action=<ordered|busy|sametick>. Without it the guard is

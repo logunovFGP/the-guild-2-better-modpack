@@ -28,8 +28,8 @@ end
 
 function Execute()
 	utility_Picked("dynasty", "HireMyrmidon")
-	local Difficulty = ScenarioGetDifficulty()
-	SetRepeatTimer("dynasty", "AI_HireMyrmidon", 2 * (5 - Difficulty))
+	SetRepeatTimer("dynasty", "AI_HireMyrmidon", TWP_HIRE_HOURS)
+	aitwp_LogHire("dynasty", "myrm_home", "HireMyrmidon")
 	MeasureRun("myrm_home", 0, "HireEmployeeBuildingRandom")
 end
 

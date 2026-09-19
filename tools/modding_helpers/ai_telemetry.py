@@ -121,6 +121,7 @@ NEEDSTALE = re.compile(r"::TWP::NEEDSTALE (.*)$")
 UNLOAD = re.compile(r"::TWP::UNLOAD (.*)$")
 IDPROBE = re.compile(r"::TWP::IDPROBE (.*)$")
 HOSP = re.compile(r"::TWP::HOSP (.*)$")
+HIRE = re.compile(r"::TWP::HIRE (.*)$")
 BB = re.compile(r"::TWP::BB (.*)$")
 CANCEL = re.compile(r"\[StartMeasure\] (.*?): Canceled '(\w+)'\((\d+)\) because of priority '(\w+)'\((\d+)\)")
 
@@ -246,7 +247,7 @@ class Session(object):
         self.rivals, self.blackboard, self.raids, self.spying = [], Counter(), [], []
         self.attacks, self.heals = [], []
         self.supply, self.stale_needs, self.unloads = [], [], []
-        self.idprobe, self.hospitals = [], []
+        self.idprobe, self.hospitals, self.hires = [], [], []
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -413,6 +414,10 @@ class Session(object):
             m = HOSP.search(line)
             if m:
                 self.hospitals.append(kv(m.group(1)))
+                continue
+            m = HIRE.search(line)
+            if m:
+                self.hires.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1356,6 +1361,47 @@ def check_hospital_stock(s):
                       "medicine is bld_GetNeedForMedicine, where 100 means none left.")
 
 
+def check_hiring(s):
+    """Does deciding to hire ever produce a hireling?
+
+    A house picked HireMyrmidon ten times on 2026-09-19 and every raid still reported
+    pool=0, with no hire reporting a failure. The counts before each attempt say whether
+    the number ever moves.
+    """
+    if not s.hires:
+        return
+    per_dyn = defaultdict(list)
+    for row in s.hires:
+        per_dyn[row.get("dyn", "?")].append(row)
+    stuck = []
+    for dyn, rows in per_dyn.items():
+        thugs = [num(r.get("thugs", -1)) for r in rows]
+        if len(rows) >= 3 and max(thugs) <= 0:
+            stuck.append((dyn, len(rows), rows[-1].get("slots", "?")))
+    yield Finding("NOTE", "hiring",
+                  "%d hire decisions across %d houses; thug counts seen %s"
+                  % (len(s.hires), len(per_dyn),
+                     "/".join(str(int(v)) for v in sorted(set(
+                         num(r.get("thugs", -1)) for r in s.hires))[:8])),
+                  "Scripts/Library/aitwp.lua, aitwp_LogHire - emitted by "
+                  "Scripts/AI/BaseTree/Dynasty/HireMyrmidon.lua and "
+                  "Scripts/AI/BaseTree/BloodFeud/bf_Recruit.lua before each attempt. Both now "
+                  "wait TWP_HIRE_HOURS and stop at TWP_MAX_THUGS.")
+    if stuck:
+        dyn, tries, slots = max(stuck, key=lambda r: r[1])
+        yield Finding("WARN", "hiring-never-lands",
+                      "%d houses decided to hire repeatedly and never gained a thug "
+                      "(worst: dyn %s, %d attempts, slots=%s at the last one)"
+                      % (len(stuck), dyn, tries, slots),
+                      "Scripts/Measures/ms_048_HireEmployeeBuildingRandom.lua is what both nodes "
+                      "run. It gives up silently in several places - under 400 coins, at "
+                      "TWP_MAX_THUGS, when FindWorker returns an error for the level "
+                      "DecideFirst picked from the BUILDING level, and when the owner cannot "
+                      "cover SimGetHandsel. slots= is BuildingCanHireNewWorker, so slots=false "
+                      "means the building has no free worker place and the ceiling is the "
+                      "building, not the knob.")
+
+
 def check_blood_rival(s):
     if not s.groups:
         return
@@ -1409,7 +1455,7 @@ def check_test_knobs(_session):
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_hiring, check_idprobe,
           check_blood_rival, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -1960,6 +2006,20 @@ def selftest():
     empty_only.feed(["[Script] ::TWP::WHY t=1.00 dyn=7 raid=workers_raid pool=0 party=0 "
                      "theirs=1 chance=0.00 bar=0.65 need=-1"] * 2)
     assert "no hirelings to send at all" in format_findings(findings(empty_only)),         format_findings(findings(empty_only))
+    # hiring: deciding to hire and never gaining a hand is the pool=0 shape
+    nohire = Session()
+    nohire.feed(["[Script] ::TWP::HIRE t=%d.00 dyn=7 node=HireMyrmidon bld=9 slots=true "
+                 "thugs=0 robbers=0 mercs=0 thieves=0 beggars=0" % i for i in range(1, 5)])
+    codes_hire = [f.code for f in findings(nohire)]
+    assert "hiring-never-lands" in codes_hire and "hiring" in codes_hire, findings(nohire)
+    grew = Session()
+    grew.feed(["[Script] ::TWP::HIRE t=1.00 dyn=7 node=HireMyrmidon bld=9 slots=true "
+               "thugs=0 robbers=0 mercs=0 thieves=0 beggars=0",
+               "[Script] ::TWP::HIRE t=3.00 dyn=7 node=HireMyrmidon bld=9 slots=true "
+               "thugs=1 robbers=0 mercs=0 thieves=0 beggars=0",
+               "[Script] ::TWP::HIRE t=5.00 dyn=7 node=HireMyrmidon bld=9 slots=true "
+               "thugs=2 robbers=0 mercs=0 thieves=0 beggars=0"])
+    assert "hiring-never-lands" not in [f.code for f in findings(grew)], findings(grew)
     # and the pointers themselves: a check that sends you to a file that moved is worse
     # than no check, because it reads as authoritative
     problems, counts = check_pointers()
