@@ -616,6 +616,29 @@ check("claim order: never while that measure is the one already running",
 	ClaimOrder("s", "Attack") == false)
 CurMeasure = "PatrolTheTown"
 
+-- a claim that has to outlast a walk. idlelib takes the evidence claim BEFORE f_MoveTo,
+-- which blocks far longer than a tick, so on the next tick the sim is still not in the
+-- measure and the default guard would wave a second order through - 17 self-cancels on
+-- 2026-09-19 with the guard reporting nothing refused.
+CurMeasure = "Idle"
+Now = Now + 10
+check("claim window: the first ask takes it", ClaimOrder("m", "OrderCollectEvidence", 1) == true)
+Now = Now + 0.5
+check("claim window: a later tick inside the window is still refused",
+	ClaimOrder("m", "OrderCollectEvidence", 1) == false)
+Now = Now + 0.6
+check("claim window: past the window it may order again",
+	ClaimOrder("m", "OrderCollectEvidence", 1) == true)
+check("claim window: the stamp stays whole hundredths",
+	Props["AI_Ordered_OrderCollectEvidence"] == math.floor(GetGametime() * 100))
+-- and the default is unchanged for the crime witnesses it was written for
+Now = Now + 10
+check("claim window: no window still means one tick", ClaimOrder("m", "Attack") == true)
+Now = Now + 0.5
+check("claim window: and a later tick may order again without one",
+	ClaimOrder("m", "Attack") == true)
+CurMeasure = "PatrolTheTown"
+
 -- the attack rules: HitChance / WinChance / NeedHands / MayAttackHere --------------------
 aitwp_HitChance, aitwp_FightStats, aitwp_AddFighter = HitChance, FightStats, AddFighter
 aitwp_SidePower, aitwp_WinChance, aitwp_DefenceOf = SidePower, WinChance, DefenceOf

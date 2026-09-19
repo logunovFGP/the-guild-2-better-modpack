@@ -302,6 +302,23 @@ function Run()
 				local Paid = true
 				if CanHeal ~= false and gameplayformulas_PaysForTreatment("SickSim0") then
 					Paid = chr_SpendMoney("SickSim0", v.Cost, "Offering")
+					-- Then the house, which is how every other bill in the game is
+					-- settled: ms_149_AttendSchool, ms_150_AttendApprenticeship,
+					-- ms_151_AttendUniversity, ms_033_PayBonus and ms_148_RepairCart all
+					-- charge the Dynasty alias and never the member. The hospital was the
+					-- outlier, and it showed: on 2026-09-19 a member of an AI house was
+					-- refused at cost=461 while ::TWP::HEAL recorded purse=425867 and
+					-- housepurse=425867 - the same number, because GetMoney on a member
+					-- reports the house - and SpendMoney on that member still said no. A
+					-- player's own character paid 102 out of 286536 in the same run, so
+					-- the charge works for some sims and not others. Asking the house
+					-- second settles the bill whatever the reason, and a house that
+					-- genuinely cannot pay still refuses, now with the twelve hour
+					-- cooldown behind it.
+					if not Paid and GetDynasty("SickSim0", "TWP_Payer") then
+						Paid = chr_SpendMoney("TWP_Payer", v.Cost, "Offering")
+						RemoveAlias("TWP_Payer")
+					end
 					if not Paid then
 						ms_medicaltreatment_Emit("SickSim0", v.Cost, "nomoney")
 						MsgSay("", "@L_MEDICUS_TREATMENT_DOC_NOMONEY")

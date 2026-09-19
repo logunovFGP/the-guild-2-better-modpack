@@ -2561,18 +2561,36 @@ end
 -- which is how the first version of this guard came to be a no-op nobody noticed.
 --
 -- Side effect on purpose: returning true claims the tick, the way aiboard_Claim does.
-function ClaimOrder(Alias, Measure)
+-- Hours is how long the claim holds. Left out it is one tick, which is right where the
+-- risk is several events reaching one Run() in the same instant - bs_IllegalDetection and
+-- its crime witnesses. It is not enough where the caller walks the sim somewhere before
+-- starting the measure: f_MoveTo blocks for far longer than a tick, the sim is not yet in
+-- the measure so the busy test cannot see it, and the next idle cycle claims it again. One
+-- myrmidon cancelled his own evidence sweep 17 times that way on 2026-09-19, with the
+-- guard reporting 20 ordered and 0 refused, because every order was in a different tick.
+TWP_CLAIM_TICK = 0.01
+-- How long a myrmidon's evidence claim holds, in game hours. It has to cover the walk to
+-- the crowded place plus the sweep itself; shorter and the idle cycle re-orders mid-walk,
+-- which is the 17 self-cancels. Raising it only makes a myrmidon sweep less often.
+TWP_EVIDENCE_CLAIM_HOURS = 1
+function ClaimOrder(Alias, Measure, Hours)
 	if GetCurrentMeasureName(Alias) == Measure then
 		aitwp_LogOrder(Alias, Measure, "busy")
 		return false
 	end
-	local Tick = math.floor(GetGametime() * 100)
+	-- Everything stays in whole hundredths of a game hour. A property does not hand a
+	-- float back unchanged, and storing the raw gametime made the first version of this
+	-- guard a silent no-op for an entire session; check_utility asserts the stamp is
+	-- integral for exactly that reason, and it caught this being reintroduced.
+	local Now = math.floor(GetGametime() * 100)
+	local Window = math.floor((Hours or TWP_CLAIM_TICK) * 100)
 	local Key = "AI_Ordered_" .. Measure
-	if (GetProperty(Alias, Key) or -1) >= Tick then
+	local Last = GetProperty(Alias, Key)
+	if Last and (Now - Last) < Window then
 		aitwp_LogOrder(Alias, Measure, "sametick")
 		return false
 	end
-	SetProperty(Alias, Key, Tick)
+	SetProperty(Alias, Key, Now)
 	aitwp_LogOrder(Alias, Measure, "ordered")
 	return true
 end

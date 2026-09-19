@@ -1566,8 +1566,13 @@ function MyrmidonIdle(MyrmAlias)
 			-- charge or raid, so two whole branches of the feud were dead on this one line.
 			-- Claimed before the walk, not after: f_MoveTo blocks, and by the time it
 			-- returns another idle cycle has had its chance to order the same thing.
+			-- The claim has to outlast that walk, which is why it takes an hour rather
+			-- than the default tick: while walking the sim is not in the measure, so the
+			-- busy test cannot see it, and every re-order lands in a fresh tick. One
+			-- myrmidon cancelled his own sweep 17 times on 2026-09-19 while the guard
+			-- reported 20 ordered and nothing refused.
 			if GetSettlement("WorkingPlace", "City") and chr_CityFindCrowdedPlace("City", MyrmAlias, "GatherDestination")
-					and aitwp_ClaimOrder(MyrmAlias, "OrderCollectEvidence") then
+					and aitwp_ClaimOrder(MyrmAlias, "OrderCollectEvidence", TWP_EVIDENCE_CLAIM_HOURS) then
 				f_ExitCurrentBuilding(MyrmAlias)
 				f_MoveTo(MyrmAlias, "GatherDestination", GL_MOVESPEED_RUN, 500)
 				MeasureRun(MyrmAlias, 0, "OrderCollectEvidence")
