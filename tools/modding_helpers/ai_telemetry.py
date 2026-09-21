@@ -124,6 +124,10 @@ HOSP = re.compile(r"::TWP::HOSP (.*)$")
 HIRE = re.compile(r"::TWP::HIRE (.*)$")
 HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
 HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
+# The trial system talks, and nothing here listened until 2026-09-21: [TRIAL] was the
+# single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
+TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
+TRIAL_WAIT = re.compile(r"\[TRIAL\] Waiting with (.+?)\s*$")
 # The engine's own completion signal for anything that walks, and the missing half of
 # the spin check below: a measure start is not evidence of progress, but a start
 # followed by this line is evidence of the opposite.
@@ -257,8 +261,11 @@ class Session(object):
         self.idprobe, self.hospitals, self.hires = [], [], []
         self.hijacks = []
         self.hire_ends = []
+        self.trial_judge = Counter()             # "found" / "does not exist"
+        self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.unreached = []                      # (sim, the measure it was last running)
         self.tspan = [None, None]                # first and last gametime any channel stamped
+        self.channels_seen = set()               # bare ::TWP:: names this log actually carries
         self.libs = set()                        # the library names that printed LOADED
         self.self_cancel = Counter()             # measure -> starts that cancelled themselves
         self.self_cancel_runs = Counter()        # of those, the ones on the very next log line
@@ -270,6 +277,15 @@ class Session(object):
         last_measure = {}                        # sim -> the measure it most recently started
         for index, line in enumerate(lines):
             line = line.rstrip("\r\n")
+            if "[TRIAL]" in line:
+                m = TRIAL_JUDGE.search(line)
+                if m:
+                    self.trial_judge[m.group(1)] += 1
+                    continue
+                m = TRIAL_WAIT.search(line)
+                if m:
+                    self.trial_wait[m.group(1).strip()] += 1
+                    continue
             if "cl_MoveTask::Process" in line:
                 m = UNREACHED.search(line)
                 if m:
@@ -277,6 +293,9 @@ class Session(object):
                     self.unreached.append((sim, last_measure.get(sim, "-")))
                     continue
             if "::TWP::" in line:
+                # bare prefix, so ::TWP::AI:: counts as AI - a space-suffixed test
+                # called that channel silent when it had fired 6395 times
+                self.channels_seen.update(LUA_CHANNEL.findall(line))
                 m = STAMP.search(line)
                 if m:
                     t = float(m.group(1))
@@ -1606,10 +1625,105 @@ def check_stuck_walk(s):
                       "into one, and that is not a script defect.")
 
 
+# A trial that cannot find its judge. The player was fined 500 coins for a magistrate who
+# was DEAD - still holding the office, still summoned, still failing to appear - and the
+# log had been saying so 200 times a session in a subsystem no parser read.
+#
+# The share is the finding, not the count: some trials legitimately run while the
+# magistrate is between buildings. Measured 2026-09-21 over 37.5 game hours: 200 missing
+# against 82 found, 71%, spread over 11 sims in 11 families and NOT ONE of them the
+# player's - so this stalls AI houses, and the fine the player saw is its visible corner.
+TRIAL_NO_JUDGE_SHARE = 40
+TRIAL_WAIT_REPEATS = 20
+
+
+def check_trials(s):
+    """Do trials find a judge, and does anyone wait for one that never comes?"""
+    found = s.trial_judge.get("found", 0)
+    missing = s.trial_judge.get("does not exist", 0)
+    if not (found or missing or s.trial_wait):
+        return
+    total = found + missing
+    share = (100.0 * missing / total) if total else 0.0
+    stuck = [(sim, n) for sim, n in s.trial_wait.most_common() if n >= TRIAL_WAIT_REPEATS]
+    families = len(set(sim.split()[-1] for sim in s.trial_wait if sim.split()))
+    yield Finding("NOTE", "trials",
+                  "%d trial judge lookups: %d found, %d missing (%.0f%%); %d sims waited, "
+                  "across %d families"
+                  % (total, found, missing, share, len(s.trial_wait), families),
+                  "Scripts/Measures/Behaviour/behavior_pretrial.lua writes both lines; "
+                  "Scripts/AI/BaseTree/Trial.lua is the node that enters. Until 2026-09-21 "
+                  "nothing here read them and [TRIAL] was the largest unparsed subsystem in "
+                  "the log.")
+    if total and share >= TRIAL_NO_JUDGE_SHARE:
+        yield Finding("WARN", "trial-no-judge",
+                      "%.0f%% of trials found no judge (%d of %d)" % (share, missing, total),
+                      "The office holder can be DEAD and still hold the office: "
+                      "Scripts/States/state_dead.lua is the only place that gives it up, via "
+                      "CityRemoveFromOffice, and a death away from a settlement may never "
+                      "reach it. Check whether the judge lookup in "
+                      "Scripts/Measures/Behaviour/behavior_pretrial.lua tests STATE_DEAD at "
+                      "all before reporting the holder missing - 'does not exist' is what a "
+                      "dead magistrate looks like from here.")
+    # Only a consequence, never a signal. Measured 2026-09-21: on 2026-09-06, where the
+    # judge was found 132 times out of 132, sims still waited at 5.5 times a game hour -
+    # exactly the rate of the broken sessions. Waiting long is ordinary court business,
+    # so firing on it alone sends the next session to the wrong file with confidence.
+    if stuck and total and share >= TRIAL_NO_JUDGE_SHARE:
+        sim, n = stuck[0]
+        yield Finding("WARN", "trial-queue-stuck",
+                      "%d sims waited on a trial more than %d times (worst: %s x%d)"
+                      % (len(stuck), TRIAL_WAIT_REPEATS, sim, n),
+                      "Nothing retires a queued trial whose judge is gone, so the same sims "
+                      "are summoned for ever. Scripts/AI/BaseTree/Trial.lua picks the node "
+                      "and Scripts/Measures/Behaviour/behavior_pretrial.lua runs it. This "
+                      "only prints when trial-no-judge is already firing, because on its own "
+                      "it is not evidence: a healthy court waits at the same rate.")
+
+
+# A channel that is emitted by the Lua and has never produced a line. The pointer rule
+# already fails the build when a channel has no parser; this is the other half - a parser
+# for something that never speaks is a blind spot that reads like coverage. Found
+# 2026-09-21: four channels silent across two whole sessions.
+#
+# Matches the channel in EVERY form it is written, not "::TWP::NAME ": AI emits
+# "::TWP::AI::" with a different separator and a space-suffixed test called it silent
+# when it had fired 6395 times. That near-miss is why this compares bare prefixes.
+CHANNEL_SILENT_MIN_HOURS = 6.0
+
+
+def check_silent_channels(s):
+    """Channels the Lua emits that said nothing at all this session."""
+    lo, hi = s.tspan
+    hours = (hi - lo) if (lo is not None and hi is not None and hi > lo) else 0.0
+    if hours < CHANNEL_SILENT_MIN_HOURS:
+        return                                   # too short a run to call anything dead
+    try:
+        blob, _libs = lua_sources(repo_root())
+    except (IOError, OSError):
+        return
+    emitted = sorted(set(LUA_CHANNEL.findall(blob)))
+    silent = [c for c in emitted if c not in s.channels_seen]
+    if not silent:
+        return
+    yield Finding("NOTE", "channel-silent",
+                  "%d of %d emitted channels produced no line in %.1f game hours: %s"
+                  % (len(silent), len(emitted), hours, ", ".join(silent)),
+                  "Each is a ::TWP:: channel the Lua can write and did not. Some are "
+                  "honest - HIJACK needs a thieves' guild to hold a kidnap order that "
+                  "session. Others mean the path is unreachable: SUPPLY has never fired in "
+                  "any session logged, which makes every auto-supply finding an argument "
+                  "from silence. Grep the emitting function and ask what gates it. This is "
+                  "the counterpart to check_pointers, which fails the build for a channel "
+                  "with no PARSER but cannot see a channel with no OUTPUT. Reading an OLD "
+                  "log lists every channel added since it was taken, which is an artefact "
+                  "and not a finding - judge this on the current session only.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
           check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_hiring, check_hijack, check_idprobe,
-          check_blood_rival, check_stuck_walk, check_idle, check_test_knobs, check_supply, check_stray_goods)
+          check_blood_rival, check_stuck_walk, check_trials, check_silent_channels, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
 def findings(session):
@@ -2201,6 +2315,57 @@ def selftest():
         ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
     levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
     assert levels_he == ["NOTE"], findings(ok_hire)
+
+    # trials: the player was fined for a DEAD magistrate, and the log had been saying so
+    # 200 times a session in a subsystem no parser read. The share is the finding.
+    trial = Session()
+    trial.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']
+               + ['[TRIAL] Judge does not exist.'] * 20
+               + ['[TRIAL] Judge found.'] * 5
+               + ['[TRIAL] Waiting with Emilie Nowak'] * 25
+               + ['[Script] ::TWP::W t=25.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    codes_tr = [f.code for f in findings(trial)]
+    text_tr = format_findings(findings(trial))
+    assert "trial-no-judge" in codes_tr and "trial-queue-stuck" in codes_tr, findings(trial)
+    assert "80% of trials found no judge" in text_tr, text_tr
+    assert "Emilie Nowak x25" in text_tr, text_tr
+    # a healthy court: a judge is usually found and nobody waits in a loop
+    court = Session()
+    court.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']
+               + ['[TRIAL] Judge found.'] * 20
+               + ['[TRIAL] Judge does not exist.'] * 2
+               + ['[TRIAL] Waiting with Emilie Nowak'] * 3
+               + ['[Script] ::TWP::W t=25.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    codes_ct = [f.code for f in findings(court)]
+    assert "trial-no-judge" not in codes_ct, findings(court)
+    assert "trial-queue-stuck" not in codes_ct, findings(court)
+    # a court with a judge but long queues must stay SILENT: that is the 2026-09-06 shape,
+    # 132 of 132 judges found and sims still waiting 267 times
+    patient = Session()
+    patient.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']
+                 + ['[TRIAL] Judge found.'] * 40
+                 + ['[TRIAL] Waiting with Michael Besant'] * 100
+                 + ['[Script] ::TWP::W t=50.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    assert "trial-queue-stuck" not in [f.code for f in findings(patient)], findings(patient)
+    assert "trials" in codes_ct, findings(court)
+    # channel-silent reads the checkout, so it needs a long-enough span to mean anything
+    short = Session()
+    short.feed(['[Script] ::TWP::W t=1.00 dyn=1 node=Dynasty base=5 c= g=none w=5',
+                '[Script] ::TWP::W t=3.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    assert "channel-silent" not in [f.code for f in findings(short)], findings(short)
+    # and it must FIRE on a long run - with a positive case that proves the capture works.
+    # Asserting only the absence let a gutted channels_seen pass on 2026-09-21.
+    longrun = Session()
+    longrun.feed(['[Script] ::TWP::W t=1.00 dyn=1 node=Dynasty base=5 c= g=none w=5',
+                  '[Script] ::TWP::AI:: Someone AI::Feud Current enemy ID = 2',
+                  '[Script] ::TWP::W t=40.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    text_cs = format_findings(findings(longrun))
+    assert "channel-silent" in [f.code for f in findings(longrun)], findings(longrun)
+    seen_n = re.search(r'(\d+) of (\d+) emitted channels', text_cs)
+    assert seen_n, text_cs
+    # W and AI were emitted, so they must not be counted silent; equal counts means the
+    # capture is dead and every channel reads as silent
+    assert int(seen_n.group(1)) < int(seen_n.group(2)), text_cs
 
     # stuck-walk: the engine reports the failed walk, we only have to scale it. 20 failures
     # in 5 game hours on one sim is 4.0/h and fires; the same 20 spread over 20 sims does
