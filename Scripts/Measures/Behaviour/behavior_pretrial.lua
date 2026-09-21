@@ -7,6 +7,11 @@
 ----	
 -------------------------------------------------------------------------------
 
+-- Rounds of the wait loop a summoned sim tolerates with no reachable judge before it
+-- gives up and goes back to being idle. Matches the 8 the entry guard below already
+-- uses; one round is a Sleep(10).
+TRIAL_LOST_JUDGE_ROUNDS = 8
+
 function Run()
 	LogMessage("@TRIAL #W Executing pre-trial behaviour with " .. GetName("Owner"))
 	
@@ -37,15 +42,8 @@ function Run()
 		local waited = GetProperty("Owner", "PretrialWait")
 		if waited == nil then waited = 0 end
 		waited = waited + 1
-		if waited >= 8 then
-			RemoveProperty("Owner", "PretrialWait")
-			local trialprops = {"DefendTrial","TrialOpponent","TrialJudge","TrialAssessor1","TrialAssessor2"}
-			for i = 1, 5 do
-				if HasProperty("Owner", trialprops[i]) then
-					RemoveProperty("Owner", trialprops[i])
-				end
-			end
-			SimSetBehavior("Owner", "Idle")
+		if waited >= TRIAL_LOST_JUDGE_ROUNDS then
+			behavior_pretrial_ReleaseFromTrial()
 		else
 			SetProperty("Owner", "PretrialWait", waited)
 			Sleep(2)
@@ -74,8 +72,30 @@ function Run()
 		RemoveProperty("", "HaveCutscene")
 	end
 	
+	local Lost = 0
 	while true do
 		LogMessage("@TRIAL #W Waiting with " .. GetName("Owner"))
+
+		-- This loop had no exit. The give-up counter above only covers "no trial pending
+		-- when I arrived"; nothing covered "a trial is pending and the judge has since
+		-- gone". A judge who dies is removed from the world, GetAliasByID stops resolving
+		-- the id the cutscene recorded, ActionsForActor logs "Judge does not exist" and
+		-- returns - and everyone summoned to that trial waits every ten ticks until the
+		-- save is reloaded. One sim did 205 rounds of it on 2026-09-20.
+		-- A false judge also covers the cutscene itself going away, because
+		-- GetDataFromCutscene returns false when CutsceneGetData fails - which is the
+		-- "no alias object with the name Trial found" the engine logged 400 times.
+		local Judge = behavior_pretrial_GetDataFromCutscene("Trial", "judge")
+		if Judge and Judge ~= 0 and GetAliasByID(Judge, "JudgeAlias") then
+			Lost = 0
+		else
+			Lost = Lost + 1
+			if Lost >= TRIAL_LOST_JUDGE_ROUNDS then
+				LogMessage("@TRIAL #W No judge for " .. Lost .. " rounds, releasing " .. GetName("Owner"))
+				behavior_pretrial_ReleaseFromTrial()
+				return
+			end
+		end
 
 		for i = 1, 5 do
 			if (GetID("") == list[i]) then
@@ -86,6 +106,20 @@ function Run()
 		Sleep(10)
 	end
 
+end
+
+-- Drop every trace of a trial this sim can no longer take part in and let it be idle
+-- again. Lifted verbatim out of the give-up branch in Run() so the wait loop can use the
+-- same exit; it had none of its own.
+function ReleaseFromTrial()
+	RemoveProperty("Owner", "PretrialWait")
+	local trialprops = {"DefendTrial","TrialOpponent","TrialJudge","TrialAssessor1","TrialAssessor2"}
+	for i = 1, 5 do
+		if HasProperty("Owner", trialprops[i]) then
+			RemoveProperty("Owner", trialprops[i])
+		end
+	end
+	SimSetBehavior("Owner", "Idle")
 end
 
 function GetDataFromCutscene(CutsceneAlias, Data)

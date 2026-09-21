@@ -205,9 +205,23 @@ function Run()
 		---------------------  
 
 		if (SimGetOfficeID("") ~= -1) then
-			GetHomeBuilding("", "home")
-			BuildingGetCity("home", "homecity")				
-			CityRemoveFromOffice("homecity", "")
+			-- Every call in this chain returns a value and none of them was tested. A sim who
+			-- dies without a resolvable home building leaves "homecity" unbound, and
+			-- CityRemoveFromOffice then removes nobody from nothing - so the office is held by
+			-- a corpse for the rest of the game. That is what the trial subsystem has been
+			-- reporting: "Judge does not exist" 200 times in 37.5 hours on 2026-09-20, against
+			-- 0 of 132 lookups on 2026-09-06. The city is the only thing needed here, so fall
+			-- back to the one the sim is standing in when the home is gone.
+			local HaveCity = false
+			if GetHomeBuilding("", "home") then
+				HaveCity = BuildingGetCity("home", "homecity")
+			end
+			if not HaveCity then
+				HaveCity = GetNearestSettlement("", "homecity")
+			end
+			if HaveCity then
+				CityRemoveFromOffice("homecity", "")
+			end
 		end
 				
 			-- Spawn the priest at the graveyard

@@ -128,6 +128,10 @@ HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
 # single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
 TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
 TRIAL_WAIT = re.compile(r"\[TRIAL\] Waiting with (.+?)\s*$")
+# behaviour_pretrial says so when it gives up on a vanished judge - the 2026-09-21 fix
+# for the loop that had no exit. Without reading it the fix is unfalsifiable: a log
+# with no stuck sims looks the same whether the release fired or nobody was summoned.
+TRIAL_RELEASE = re.compile(r"\[TRIAL\] No judge for \d+ rounds, releasing")
 # The engine's own completion signal for anything that walks, and the missing half of
 # the spin check below: a measure start is not evidence of progress, but a start
 # followed by this line is evidence of the opposite.
@@ -263,6 +267,7 @@ class Session(object):
         self.hire_ends = []
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
+        self.trial_released = 0                  # gave up on a judge that never came
         self.unreached = []                      # (sim, the measure it was last running)
         self.tspan = [None, None]                # first and last gametime any channel stamped
         self.channels_seen = set()               # bare ::TWP:: names this log actually carries
@@ -285,6 +290,9 @@ class Session(object):
                 m = TRIAL_WAIT.search(line)
                 if m:
                     self.trial_wait[m.group(1).strip()] += 1
+                    continue
+                if TRIAL_RELEASE.search(line):
+                    self.trial_released += 1
                     continue
             if "cl_MoveTask::Process" in line:
                 m = UNREACHED.search(line)
@@ -1649,12 +1657,15 @@ def check_trials(s):
     families = len(set(sim.split()[-1] for sim in s.trial_wait if sim.split()))
     yield Finding("NOTE", "trials",
                   "%d trial judge lookups: %d found, %d missing (%.0f%%); %d sims waited, "
-                  "across %d families"
-                  % (total, found, missing, share, len(s.trial_wait), families),
-                  "Scripts/Measures/Behaviour/behavior_pretrial.lua writes both lines; "
+                  "across %d families; %d released after the judge never came"
+                  % (total, found, missing, share, len(s.trial_wait), families,
+                     s.trial_released),
+                  "Scripts/Measures/Behaviour/behavior_pretrial.lua writes all three lines; "
                   "Scripts/AI/BaseTree/Trial.lua is the node that enters. Until 2026-09-21 "
                   "nothing here read them and [TRIAL] was the largest unparsed subsystem in "
-                  "the log.")
+                  "the log. released>0 is the 2026-09-21 exit firing: the wait loop had none "
+                  "and a sim summoned to a trial whose judge had died waited for ever. If "
+                  "trial-no-judge is high and released is 0, that exit is not being reached.")
     if total and share >= TRIAL_NO_JUDGE_SHARE:
         yield Finding("WARN", "trial-no-judge",
                       "%.0f%% of trials found no judge (%d of %d)" % (share, missing, total),
@@ -2329,6 +2340,17 @@ def selftest():
     assert "trial-no-judge" in codes_tr and "trial-queue-stuck" in codes_tr, findings(trial)
     assert "80% of trials found no judge" in text_tr, text_tr
     assert "Emilie Nowak x25" in text_tr, text_tr
+    assert "0 released after the judge never came" in text_tr, text_tr
+    # and the release line must be counted when behaviour_pretrial gives up, or the
+    # 2026-09-21 exit is unfalsifiable from the log
+    freed = Session()
+    freed.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']
+               + ['[TRIAL] Judge does not exist.'] * 20
+               + ['[TRIAL] Judge found.'] * 5
+               + ['[TRIAL] No judge for 8 rounds, releasing Emilie Nowak'] * 3
+               + ['[Script] ::TWP::W t=25.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    text_fr = format_findings(findings(freed))
+    assert "3 released after the judge never came" in text_fr, text_fr
     # a healthy court: a judge is usually found and nobody waits in a loop
     court = Session()
     court.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']
