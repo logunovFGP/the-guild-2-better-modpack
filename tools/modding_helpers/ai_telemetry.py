@@ -863,7 +863,13 @@ def check_subtree_barren(s):
                       "2026-09-18 and it did not help: 89%% before and 89%% after, because "
                       "DynastyIsShadow houses pass the gate on repeat timers they never set and then "
                       "every child rejects them for being shadow. Read the level table below for which "
-                      "child is starving." % name)
+                      "child is starving. FIRST, THOUGH, GREP THE CHILDREN FOR A BARE CONSTANT "
+                      "RETURN: on 2026-09-21 most of Feud's 87%% was shadow dynasties scoring 3 in "
+                      "AttackBuilding and 5 in AttackFeud through a plain `return 3` that called no "
+                      "utility_Trace and so emitted no ::TWP::W. 18 of 26 dynasties were shadow, so "
+                      "the subtree was working and this number was measuring the telemetry rather "
+                      "than the AI. A weight returned without utility_Trace is invisible here and "
+                      "reads as barren - that cost a gate that turned out to be a no-op." % name)
 
 
 def check_htn_methods(s):
