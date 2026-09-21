@@ -126,6 +126,7 @@ HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
 HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
 RAID = re.compile(r"::TWP::RAID (.*)$")
 SPEND = re.compile(r"::TWP::SPEND (.*)$")
+ASSIGN = re.compile(r"::TWP::ASSIGN (.*)$")
 # The trial system talks, and nothing here listened until 2026-09-21: [TRIAL] was the
 # single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
 TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
@@ -269,6 +270,7 @@ class Session(object):
         self.hire_ends = []
         self.raid_steps = []
         self.spends = []
+        self.assigns = []
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.trial_released = 0                  # gave up on a judge that never came
@@ -491,6 +493,10 @@ class Session(object):
             m = SPEND.search(line)
             if m:
                 self.spends.append(kv(m.group(1)))
+                continue
+            m = ASSIGN.search(line)
+            if m:
+                self.assigns.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1843,9 +1849,59 @@ def check_spending(s):
                       "settles the ledger hourly and may simply be slower than the spending.")
 
 
+# Giving a building back to a member of the right class. Reported from play twice: when a
+# dynasty's only Rogue dies the engine hands the thieves' guild to a sibling of the wrong
+# class, and "Assign Owner" then does nothing. Vanilla's measure reported only a MsgQuick,
+# so there was no way to tell a class rule from an engine refusal.
+def check_assign(s):
+    """Does reassigning a building to another member work, and if not, why not?"""
+    if not s.assigns:
+        return
+    ok = [r for r in s.assigns if r.get("result") == "true"]
+    bad = [r for r in s.assigns if r.get("result") != "true"]
+    hows = Counter(r.get("how", "?") for r in ok)
+    yield Finding("NOTE", "assign-owner",
+                  "%d building reassignments: %d succeeded (%s), %d refused"
+                  % (len(s.assigns), len(ok),
+                     ", ".join("%s %d" % (h, n) for h, n in hows.most_common()) or "-",
+                     len(bad)),
+                  "Scripts/Measures/ms_035_AssignCharacterToBuilding.lua, via aitwp_LogAssign. "
+                  "how=plain is vanilla's two-argument BuildingSetOwner; how=force is the third "
+                  "argument meta/engine.signatures.tsv recovers from the binary and "
+                  "meta/engine.d.lua does not document. A single how=force line settles what "
+                  "every caller in both trees has been guessing at.")
+    blocked = [r for r in bad if r.get("canown") == "false"]
+    if blocked:
+        r = blocked[0]
+        yield Finding("NOTE", "assign-wrong-class",
+                      "%d refusals were the class rule, not a defect (bld %s wants class %s, "
+                      "sim is %s)" % (len(blocked), r.get("bld", "?"),
+                                      r.get("bldclass", "?"), r.get("simclass", "?")),
+                      "BuildingCanBeOwnedBy said no, so the engine is right and the member "
+                      "genuinely cannot hold that building. The real problem is upstream: "
+                      "nothing in Lua chooses the heir, so a dead owner's buildings are "
+                      "reassigned by the engine with no class test at all. The three measures "
+                      "that assign deliberately - ms_071_BuyBuilding, ms_238_TakeOverBid and "
+                      "ms_043_CaptureBuilding - each carry their own copy of that test.")
+    unexplained = [r for r in bad if r.get("canown") == "true"]
+    if unexplained:
+        r = unexplained[0]
+        yield Finding("WARN", "assign-refused",
+                      "%d reassignments were refused although the member may own the building "
+                      "(bld %s, previous owner %s)"
+                      % (len(unexplained), r.get("bld", "?"), r.get("old", "?")),
+                      "BuildingCanBeOwnedBy says yes and the measure's own filter let the "
+                      "button appear, so neither class nor the filter explains this. old= is "
+                      "the previous owner: if it is not -1, the engine is refusing to TRANSFER "
+                      "rather than to assign, and the third argument of BuildingSetOwner is "
+                      "the next thing to read - the only call that demonstrably works, "
+                      "Scripts/Measures/Debug/Construct.lua, assigns a building it just "
+                      "spawned and which has no previous owner.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_assign, check_idprobe,
           check_blood_rival, check_stuck_walk, check_trials, check_silent_channels, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -2438,6 +2494,27 @@ def selftest():
         ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
     levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
     assert levels_he == ["NOTE"], findings(ok_hire)
+
+    # assign-owner: the three outcomes have to stay apart. A class refusal is the engine
+    # being right; a refusal with canown=true is the one worth waking someone for.
+    asn = Session()
+    asn.feed(['[Script] ::TWP::ASSIGN t=1.00 bld=9 sim=11 old=-1 bldclass=4 simclass=4 canown=true result=true how=plain'])
+    assert "assign-owner" in [f.code for f in findings(asn)], findings(asn)
+    assert "assign-refused" not in [f.code for f in findings(asn)], findings(asn)
+    wrongclass = Session()
+    wrongclass.feed(['[Script] ::TWP::ASSIGN t=1.00 bld=9 sim=11 old=12 bldclass=4 simclass=2 canown=false result=false how=force'])
+    codes_wc = [f.code for f in findings(wrongclass)]
+    assert "assign-wrong-class" in codes_wc, findings(wrongclass)
+    assert "assign-refused" not in codes_wc, findings(wrongclass)
+    refused = Session()
+    refused.feed(['[Script] ::TWP::ASSIGN t=1.00 bld=9 sim=11 old=12 bldclass=4 simclass=4 canown=true result=false how=force'])
+    text_rf = format_findings(findings(refused))
+    assert "assign-refused" in [f.code for f in findings(refused)], findings(refused)
+    assert "previous owner 12" in text_rf, text_rf
+    # and the one that settles the undocumented third argument
+    forced = Session()
+    forced.feed(['[Script] ::TWP::ASSIGN t=1.00 bld=9 sim=11 old=12 bldclass=4 simclass=4 canown=true result=true how=force'])
+    assert "force 1" in format_findings(findings(forced)), format_findings(findings(forced))
 
     # spending: AI houses paying through the ledger is the fix working; a flood of refusals
     # is the risk that was accepted when it was turned on.

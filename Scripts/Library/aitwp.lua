@@ -2524,6 +2524,21 @@ function LogSpend(SimAlias, Amount, Reason, Route, Purse)
 		.. " reason=" .. string.gsub(tostring(Reason or "-"), "%s", "_"))
 end
 
+-- ::TWP::ASSIGN t= bld= sim= old= bldclass= simclass= canown= result= how=<plain|force>.
+-- The player could not give a building back to a member of the right class after the engine
+-- handed it to the wrong one, and the vanilla measure reported nothing but a MsgQuick. If
+-- result=false with canown=true, ownership is being refused for a reason neither class nor
+-- the filter explains; if canown=false the class rule is the wall and the engine is right.
+function LogAssign(SimAlias, BldAlias, OldOwner, Ok, How)
+	utility_Emit("::TWP::ASSIGN t=" .. string.format("%.2f", GetGametime())
+		.. " bld=" .. GetID(BldAlias) .. " sim=" .. GetID(SimAlias)
+		.. " old=" .. (OldOwner or -1)
+		.. " bldclass=" .. (BuildingGetCharacterClass(BldAlias) or -1)
+		.. " simclass=" .. (SimGetClass(SimAlias) or -1)
+		.. " canown=" .. tostring(BuildingCanBeOwnedBy(BldAlias, SimAlias) and true or false)
+		.. " result=" .. tostring(Ok and true or false) .. " how=" .. How)
+end
+
 -- ::TWP::RAID t= obj= role=<leader|member> outcome=. The other half of ::TWP::WAR, which
 -- says only that a squad object resolved with members in it - nothing about whether any
 -- measure started, anyone moved, or the order survived the tick. None of the three squad
