@@ -2524,15 +2524,18 @@ function LogSpend(SimAlias, Amount, Reason, Route, Purse)
 		.. " reason=" .. string.gsub(tostring(Reason or "-"), "%s", "_"))
 end
 
--- ::TWP::RAID t= sim= role=<leader|member> outcome=. The other half of ::TWP::WAR, which
+-- ::TWP::RAID t= obj= role=<leader|member> outcome=. The other half of ::TWP::WAR, which
 -- says only that a squad object resolved with members in it - nothing about whether any
 -- measure started, anyone moved, or the order survived the tick. None of the three squad
 -- measures emitted anything, so grepping the log for them could not tell a working raid
 -- from a collapsed one: on 2026-09-20 two raids reported sent=true and the session ended
 -- 1.4 hours later, inside TWP_AMBUSH_HOURS, with nothing to read either way.
+-- obj=, not sim=: ms_bf_Ambush runs ON THE SQUAD and passes "" meaning the squad, while
+-- ms_bf_AmbushMember passes "" meaning the member. One field carrying two kinds of id is
+-- how a reader ends up grepping for a sim that never existed, so the name says neither.
 function LogRaid(Alias, Role, Outcome)
 	utility_Emit("::TWP::RAID t=" .. string.format("%.2f", GetGametime())
-		.. " sim=" .. GetID(Alias) .. " role=" .. Role .. " outcome=" .. Outcome)
+		.. " obj=" .. GetID(Alias) .. " role=" .. Role .. " outcome=" .. Outcome)
 end
 
 -- ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=

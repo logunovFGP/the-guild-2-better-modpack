@@ -2457,23 +2457,23 @@ def selftest():
     # raids: a healthy ambush that expires is NOT a collapse - a mine nobody walks to is a
     # wasted morning. Only the exits before the meeting place is set are the defect.
     ambush = Session()
-    ambush.feed(['[Script] ::TWP::RAID t=1.00 sim=11 role=leader outcome=laid',
-                 '[Script] ::TWP::RAID t=1.10 sim=12 role=member outcome=nobodycame',
-                 '[Script] ::TWP::RAID t=1.20 sim=13 role=leader outcome=timeout'])
+    ambush.feed(['[Script] ::TWP::RAID t=1.00 obj=11 role=leader outcome=laid',
+                 '[Script] ::TWP::RAID t=1.10 obj=12 role=member outcome=nobodycame',
+                 '[Script] ::TWP::RAID t=1.20 obj=13 role=leader outcome=timeout'])
     codes_am = [f.code for f in findings(ambush)]
     assert "raid-steps" in codes_am, findings(ambush)
     assert "raid-collapsed" not in codes_am, findings(ambush)
     assert "raid-no-contact" in codes_am, findings(ambush)
     collapsed = Session()
-    collapsed.feed(['[Script] ::TWP::RAID t=1.00 sim=11 role=member outcome=nosquad',
-                    '[Script] ::TWP::RAID t=1.05 sim=12 role=member outcome=nomeeting',
-                    '[Script] ::TWP::RAID t=1.10 sim=13 role=leader outcome=noleader'])
+    collapsed.feed(['[Script] ::TWP::RAID t=1.00 obj=11 role=member outcome=nosquad',
+                    '[Script] ::TWP::RAID t=1.05 obj=12 role=member outcome=nomeeting',
+                    '[Script] ::TWP::RAID t=1.10 obj=13 role=leader outcome=noleader'])
     text_co = format_findings(findings(collapsed))
     assert "raid-collapsed" in [f.code for f in findings(collapsed)], findings(collapsed)
     assert "3 raid steps ended before the ambush was even set" in text_co, text_co
     hit = Session()
-    hit.feed(['[Script] ::TWP::RAID t=1.00 sim=11 role=leader outcome=laid',
-              '[Script] ::TWP::RAID t=1.10 sim=12 role=member outcome=struck'])
+    hit.feed(['[Script] ::TWP::RAID t=1.00 obj=11 role=leader outcome=laid',
+              '[Script] ::TWP::RAID t=1.10 obj=12 role=member outcome=struck'])
     assert "raid-no-contact" not in [f.code for f in findings(hit)], findings(hit)
 
     # trials: the player was fined for a DEAD magistrate, and the log had been saying so

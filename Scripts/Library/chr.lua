@@ -769,7 +769,11 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 		aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, "poor", Purse)
 		return false
 	end
-	SetProperty("CrdAlias", "AI_DynMoney", Ledger - MoneyToSpend)
+	-- Floored on the way in, as chr_GiveMoney already floors on the way out. A property does
+	-- not hand a float back unchanged in this engine, and turning the debit path on doubled
+	-- the traffic through this one - a caller computing a price with a division would
+	-- otherwise drift the ledger a fraction at a time with nothing to show for it.
+	SetProperty("CrdAlias", "AI_DynMoney", math.floor(Ledger - MoneyToSpend))
 	aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, "ledger", Purse)
 	return true
 end
