@@ -125,6 +125,7 @@ HIRE = re.compile(r"::TWP::HIRE (.*)$")
 HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
 HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
 RAID = re.compile(r"::TWP::RAID (.*)$")
+SPEND = re.compile(r"::TWP::SPEND (.*)$")
 # The trial system talks, and nothing here listened until 2026-09-21: [TRIAL] was the
 # single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
 TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
@@ -267,6 +268,7 @@ class Session(object):
         self.hijacks = []
         self.hire_ends = []
         self.raid_steps = []
+        self.spends = []
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.trial_released = 0                  # gave up on a judge that never came
@@ -485,6 +487,10 @@ class Session(object):
             m = RAID.search(line)
             if m:
                 self.raid_steps.append(kv(m.group(1)))
+                continue
+            m = SPEND.search(line)
+            if m:
+                self.spends.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1799,9 +1805,47 @@ def check_raid_steps(s):
                       "session that ran well past the ambush window.")
 
 
+# chr_SpendMoney started actually debiting AI houses on 2026-09-21. Before that its AI
+# branch was commented out and every debit fell through to an engine call that does not work
+# on AI dynasties, so a house was credited through the AI_DynMoney ledger and never charged:
+# 332 settlements in one session, all "received", none "spent". This is the check that says
+# whether turning it on bankrupted anyone.
+SPEND_POOR_SHARE = 25
+
+
+def check_spending(s):
+    """Do AI houses pay their bills now, and can they still afford to?"""
+    if not s.spends:
+        return
+    routes = Counter(r.get("route", "?") for r in s.spends)
+    poor = routes.get("poor", 0)
+    share = 100.0 * poor / len(s.spends)
+    yield Finding("NOTE", "spending",
+                  "%d debits: %s" % (len(s.spends),
+                                     ", ".join("%s %d" % (r, n) for r, n in routes.most_common())),
+                  "Scripts/Library/chr.lua, chr_SpendMoney, via aitwp_LogSpend. route=ledger "
+                  "is an AI house paying through AI_DynMoney, route=engine a player or a "
+                  "GUI-driven dynasty going straight to the engine, route=poor a refusal. "
+                  "Before 2026-09-21 none of this happened at all and every AI debit silently "
+                  "succeeded without moving any money.")
+    if share >= SPEND_POOR_SHARE:
+        worst = Counter(r.get("reason", "-") for r in s.spends if r.get("route") == "poor")
+        yield Finding("WARN", "spending-broke",
+                      "%.0f%% of debits were refused for want of money (%d of %d); most "
+                      "refused reason: %s"
+                      % (share, poor, len(s.spends),
+                         ", ".join("%s %d" % (k, n) for k, n in worst.most_common(3))),
+                      "This is the risk that was accepted when the debit path was turned on: "
+                      "AI houses had been spending for free and may not survive paying. purse= "
+                      "on each line is GetMoney plus the unsettled ledger. If purse is large "
+                      "and the refusal still fires, the arithmetic is wrong, not the economy; "
+                      "if purse is genuinely small, chr_GiveMoney in Scripts/Library/chr.lua "
+                      "settles the ledger hourly and may simply be slower than the spending.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_idprobe,
           check_blood_rival, check_stuck_walk, check_trials, check_silent_channels, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -2394,6 +2438,21 @@ def selftest():
         ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
     levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
     assert levels_he == ["NOTE"], findings(ok_hire)
+
+    # spending: AI houses paying through the ledger is the fix working; a flood of refusals
+    # is the risk that was accepted when it was turned on.
+    paid = Session()
+    paid.feed(['[Script] ::TWP::SPEND t=1.00 sim=11 dyn=7 amount=100 route=ledger purse=9000 reason=Offering',
+               '[Script] ::TWP::SPEND t=2.00 sim=12 dyn=7 amount=50 route=engine purse=400 reason=Offering'])
+    codes_sp = [f.code for f in findings(paid)]
+    assert "spending" in codes_sp, findings(paid)
+    assert "spending-broke" not in codes_sp, findings(paid)
+    broke = Session()
+    broke.feed(['[Script] ::TWP::SPEND t=%d.00 sim=11 dyn=7 amount=900 route=poor purse=10 reason=LaborHansel' % i for i in range(1, 5)]
+               + ['[Script] ::TWP::SPEND t=9.00 sim=12 dyn=7 amount=5 route=ledger purse=900 reason=Offering'])
+    text_sp = format_findings(findings(broke))
+    assert "spending-broke" in [f.code for f in findings(broke)], findings(broke)
+    assert "LaborHansel 4" in text_sp, text_sp
 
     # raids: a healthy ambush that expires is NOT a collapse - a mine nobody walks to is a
     # wasted morning. Only the exits before the meeting place is set are the defect.

@@ -30,7 +30,12 @@ function Emit(SimAlias, Cost, Outcome)
 	-- house member is very likely answering for the house. Log the house's own purse
 	-- beside it, and the four flags that decide who is billed. Equal numbers would mean
 	-- the bill belongs to the dynasty alias rather than the member.
-	if Outcome == "nomoney" then
+	-- Widened from nomoney to every PAID outcome on 2026-09-21. The 2026-09-20 log showed
+	-- both refusals carrying shadow=true and a house with 735220 coins unable to pay 166 -
+	-- but a success carried none of these fields, so there was no way to ask the obvious
+	-- follow-up: does any AI house member ever pay successfully, or only players? With
+	-- chr_SpendMoney now actually debiting AI houses, that comparison is the whole test.
+	if Outcome == "nomoney" or Outcome == "healed" then
 		local House = -1
 		if GetDynasty(SimAlias, "TWP_HealDyn") then
 			House = math.floor(GetMoney("TWP_HealDyn") or 0)

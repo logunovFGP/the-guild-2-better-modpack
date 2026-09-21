@@ -2469,6 +2469,23 @@ function OnRaidOrder(Alias)
 	return (GetGametime() - When) < TWP_RAID_ORDER_HOURS
 end
 
+-- ::TWP::SPEND t= sim= dyn= amount= route=<engine|ledger|poor> purse= reason=. chr_SpendMoney
+-- began actually debiting AI houses on 2026-09-21 after years of silently succeeding, so
+-- the next log has to show what that changed: route=poor is a house that genuinely cannot
+-- pay, and a flood of them means the ledger is being drained faster than GiveMoney settles
+-- it. reason= goes last because it is free text from the caller and kv() splits on spaces.
+function LogSpend(SimAlias, Amount, Reason, Route, Purse)
+	local Dyn = -1
+	if GetDynasty(SimAlias, "TWP_SpendDyn") then
+		Dyn = GetID("TWP_SpendDyn")
+	end
+	utility_Emit("::TWP::SPEND t=" .. string.format("%.2f", GetGametime())
+		.. " sim=" .. GetID(SimAlias) .. " dyn=" .. Dyn
+		.. " amount=" .. (Amount or -1) .. " route=" .. Route
+		.. " purse=" .. math.floor(Purse or -1)
+		.. " reason=" .. string.gsub(tostring(Reason or "-"), "%s", "_"))
+end
+
 -- ::TWP::RAID t= sim= role=<leader|member> outcome=. The other half of ::TWP::WAR, which
 -- says only that a squad object resolved with members in it - nothing about whether any
 -- measure started, anyone moved, or the order survived the tick. None of the three squad

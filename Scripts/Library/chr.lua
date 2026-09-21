@@ -747,41 +747,31 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 		return true
 	end
 	
-	-- check if AI
-	--if not DynastyIsAI(SimAlias) then
+	-- Mirror of chr_CreditMoney below, and until 2026-09-21 this branch was commented out
+	-- while that one was live. Every debit fell through to the engine call that the header
+	-- of Scripts/AI/BaseTree/IncomeForAI.lua says "fails to credit/spend money on AI
+	-- dynasties" - so an AI house was credited through the AI_DynMoney ledger and never
+	-- debited at all. One 37-hour session settled 332 ::AITWP::GiveMoney lines and every
+	-- single one was "received"; the negative branch of the ledger had never run.
+	if not GetDynasty(SimAlias, "CrdAlias") then
 		return SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
-	--end
-	
-	-- counter hardcoded AI cheat OBSOLETE WITH NEW SETTINGS 
---	local Diff = ScenarioGetDifficulty()
---	local Multiplier = 10/(8-Diff)
+	end
+	if DynastyIsPlayer("CrdAlias") or IsGUIDriven() then
+		return SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
+	end
 
---	local CorrectedAmount = math.floor(MoneyToSpend * Multiplier)
---	Reason = "misc" -- AI does not spend money for some other reasons (i.e. social interactions)
---	return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
-	
-	-- debugging
---	local MoneyBefore = GetMoney(SimAlias)
---	local Result = SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
---	if Result and (MoneyBefore - MoneyToSpend) ~= GetMoney(SimAlias) then
---		local Msg = "Amount was not spent by AI: "..MoneyToSpend.." for "..Reason .. ". Spent value: " .. math.abs((GetMoney(SimAlias) - MoneyBefore))
---		MsgBoxNoWait("All", SimAlias, "SpendMoney failed assertion", Msg)
---		LogMessage("AIToM::SpendMoney:: "..Msg)
---	end
-	
-	-- workaround for AI not spending the money
---	if not GetDynasty(SimAlias, "CrdAlias") then
---		return SpendMoney(SimAlias, CorrectedAmount, Reason, Force)
---	end
---	
---	local MoneyBefore = GetMoney(SimAlias)
---	if MoneyBefore < MoneyToSpend and not Force then
---		return false
---	end
---	-- save to property for later transfer
---	local Current = GetProperty("CrdAlias", "AI_DynMoney") or 0
---	SetProperty("CrdAlias", "AI_DynMoney", Current - MoneyToSpend)
---	return Result
+	-- What the house can actually pay is the engine purse PLUS whatever the ledger is
+	-- holding for it until the next hourly settle. Pricing against GetMoney alone would
+	-- refuse a house that has just earned and not yet been paid.
+	local Ledger = GetProperty("CrdAlias", "AI_DynMoney") or 0
+	local Purse = (GetMoney(SimAlias) or 0) + Ledger
+	if Purse < MoneyToSpend and not Force then
+		aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, "poor", Purse)
+		return false
+	end
+	SetProperty("CrdAlias", "AI_DynMoney", Ledger - MoneyToSpend)
+	aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, "ledger", Purse)
+	return true
 end
 
 function CreditMoney(Alias, Amount, Purpose)
@@ -826,11 +816,15 @@ function GiveMoney(Target)
 	if Current > 0 then
 		CreditMoney(Target, Current, "Income")
 		LogMessage("::AITWP::GiveMoney "..GetName(Target).." received "..Current)
-	elseif Current < 0 then -- should currently not happen since SpendMoney is handled directly
+	elseif Current < 0 then
+		-- Live for the first time on 2026-09-21: the comment here used to read "should
+		-- currently not happen since SpendMoney is handled directly", which was true and was
+		-- the bug. It settled through a difficulty multiplier of 10/(8-Diff) - 2.5x at
+		-- difficulty 4, and a division by zero at 8. Face value instead, because credits
+		-- settle at face value four lines up and the whole defect being fixed here is the two
+		-- sides disagreeing. If AI houses turn out to need the handicap back, it belongs on
+		-- BOTH directions and as a named knob, not hidden in the debit path.
 		LogMessage("::AITWP::GiveMoney "..GetName(Target).." spent "..Current)
-		local Diff = ScenarioGetDifficulty()
-		local Multiplier = 10/(8-Diff)
-		Current = math.floor(Current * Multiplier)
 		SpendMoney(Target, math.abs(Current), "misc")
 	end
 	CurrentMoney = GetMoney("FirstMember")
