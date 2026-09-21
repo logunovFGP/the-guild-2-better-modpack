@@ -723,6 +723,16 @@ function MultiAnim(Actor1, Anim1, Actor2, Anim2, Distance, ReturnAfter, Seconds)
 	return 0
 end
 
+-- Does a debit an AI house cannot cover actually FAIL, or is it recorded and waved through?
+-- Off, and deliberately. Turning the ledger on for real (2026-09-21) made a quarter of all
+-- debits refuse, and a refusal is not accounting - it aborts the measure, so half a town
+-- stopped acting. Before the ledger every AI debit silently succeeded, so refusing is a
+-- behaviour change and it went out in the same commit as the instrument that was supposed
+-- to measure it first. The ledger still records every debit; only the veto is off. Turn
+-- this on once ::TWP::SPEND shows route=wouldrefuse is rare and chr_GiveMoney is settling
+-- fast enough to keep purses positive. Nil reads as false, which is the safe direction.
+TWP_SPEND_ENFORCE = false
+
 function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	
 	if not AliasExists(SimAlias) then
@@ -746,6 +756,12 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	if GetDynastyID(SimAlias) < 1 then
 		return true
 	end
+
+	-- Nothing is always affordable. 42 of the 66 refusals on 2026-09-21 were amount=0 -
+	-- a house with a negative ledger could not even pay zero, because -1736 < 0 is true.
+	if MoneyToSpend <= 0 then
+		return true
+	end
 	
 	-- Mirror of chr_CreditMoney below, and until 2026-09-21 this branch was commented out
 	-- while that one was live. Every debit fell through to the engine call that the header
@@ -765,7 +781,8 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	-- refuse a house that has just earned and not yet been paid.
 	local Ledger = GetProperty("CrdAlias", "AI_DynMoney") or 0
 	local Purse = (GetMoney(SimAlias) or 0) + Ledger
-	if Purse < MoneyToSpend and not Force then
+	local Short = (Purse < MoneyToSpend) and not Force
+	if Short and TWP_SPEND_ENFORCE then
 		aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, "poor", Purse)
 		return false
 	end
@@ -774,7 +791,11 @@ function SpendMoney(SimAlias, MoneyToSpend, Reason, Force)
 	-- the traffic through this one - a caller computing a price with a division would
 	-- otherwise drift the ledger a fraction at a time with nothing to show for it.
 	SetProperty("CrdAlias", "AI_DynMoney", math.floor(Ledger - MoneyToSpend))
-	aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, "ledger", Purse)
+	local Route = "ledger"
+	if Short then
+		Route = "wouldrefuse"
+	end
+	aitwp_LogSpend(SimAlias, MoneyToSpend, Reason, Route, Purse)
 	return true
 end
 

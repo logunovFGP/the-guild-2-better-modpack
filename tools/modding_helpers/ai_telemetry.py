@@ -1816,7 +1816,12 @@ def check_raid_steps(s):
 # on AI dynasties, so a house was credited through the AI_DynMoney ledger and never charged:
 # 332 settlements in one session, all "received", none "spent". This is the check that says
 # whether turning it on bankrupted anyone.
+# route=poor is an ACTUAL refusal and aborts the caller; route=wouldrefuse is the same
+# shortfall recorded while TWP_SPEND_ENFORCE is off, so the measure still runs. They have
+# to be counted apart: on 2026-09-21 enforcement went out by mistake, a quarter of debits
+# refused, and half a town stopped acting.
 SPEND_POOR_SHARE = 25
+SPEND_SHORT_SHARE = 25
 
 
 def check_spending(s):
@@ -1825,7 +1830,10 @@ def check_spending(s):
         return
     routes = Counter(r.get("route", "?") for r in s.spends)
     poor = routes.get("poor", 0)
+    short = routes.get("wouldrefuse", 0)
     share = 100.0 * poor / len(s.spends)
+    short_share = 100.0 * short / len(s.spends)
+    negative = sum(1 for r in s.spends if num(r.get("purse", 0)) < 0)
     yield Finding("NOTE", "spending",
                   "%d debits: %s" % (len(s.spends),
                                      ", ".join("%s %d" % (r, n) for r, n in routes.most_common())),
@@ -1834,6 +1842,27 @@ def check_spending(s):
                   "GUI-driven dynasty going straight to the engine, route=poor a refusal. "
                   "Before 2026-09-21 none of this happened at all and every AI debit silently "
                   "succeeded without moving any money.")
+    if negative:
+        yield Finding("WARN", "spending-negative-purse",
+                      "%d debits were priced against a NEGATIVE purse (worst %d)"
+                      % (negative,
+                         min(int(num(r.get("purse", 0))) for r in s.spends)),
+                      "Purse is GetMoney plus the unsettled AI_DynMoney ledger, so below "
+                      "zero means the house has spent more since the last settle than it "
+                      "holds. chr_GiveMoney in Scripts/Library/chr.lua settles hourly off "
+                      "the AI_Income timer; if a house spends faster than that runs, the "
+                      "ledger dives and never recovers. Watch whether the same dyn= "
+                      "repeats - one house diving is a spender, all of them is the settle "
+                      "not running.")
+    if short_share >= SPEND_SHORT_SHARE:
+        yield Finding("NOTE", "spending-would-refuse",
+                      "%.0f%% of debits could not be covered (%d of %d) but were allowed "
+                      "through, because TWP_SPEND_ENFORCE is off"
+                      % (short_share, short, len(s.spends)),
+                      "This is the number that decides whether enforcement can be turned "
+                      "on in Scripts/Library/chr.lua. While it is high, switching it on "
+                      "aborts that share of every paid measure - which is exactly what "
+                      "happened on 2026-09-21 when it shipped on by accident.")
     if share >= SPEND_POOR_SHARE:
         worst = Counter(r.get("reason", "-") for r in s.spends if r.get("route") == "poor")
         yield Finding("WARN", "spending-broke",
@@ -2494,6 +2523,24 @@ def selftest():
         ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
     levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
     assert levels_he == ["NOTE"], findings(ok_hire)
+
+    # the 2026-09-21 regression, as a fixture: a recorded shortfall must NOT read as a
+    # refusal, and a negative purse is its own finding
+    shortfall = Session()
+    shortfall.feed(['[Script] ::TWP::SPEND t=%d.00 sim=1 dyn=7 amount=500 route=wouldrefuse purse=-1736 reason=WaresBought' % i for i in range(1, 4)]
+                   + ['[Script] ::TWP::SPEND t=9.00 sim=1 dyn=7 amount=5 route=ledger purse=900 reason=x'])
+    codes_sf = [f.code for f in findings(shortfall)]
+    text_sf = format_findings(findings(shortfall))
+    assert "spending-would-refuse" in codes_sf, findings(shortfall)
+    assert "spending-broke" not in codes_sf, findings(shortfall)
+    assert "spending-negative-purse" in codes_sf, findings(shortfall)
+    assert "worst -1736" in text_sf, text_sf
+    # a healthy run trips none of the three
+    solvent = Session()
+    solvent.feed(['[Script] ::TWP::SPEND t=1.00 sim=1 dyn=7 amount=5 route=ledger purse=900 reason=x'])
+    codes_so = [f.code for f in findings(solvent)]
+    assert "spending" in codes_so, findings(solvent)
+    assert not [c for c in codes_so if c.startswith("spending-")], findings(solvent)
 
     # assign-owner: the three outcomes have to stay apart. A class refusal is the engine
     # being right; a refusal with canown=true is the one worth waking someone for.
