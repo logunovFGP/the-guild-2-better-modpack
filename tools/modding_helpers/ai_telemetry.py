@@ -124,6 +124,7 @@ HOSP = re.compile(r"::TWP::HOSP (.*)$")
 HIRE = re.compile(r"::TWP::HIRE (.*)$")
 HIJACK = re.compile(r"::TWP::HIJACK (.*)$")
 HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
+RAID = re.compile(r"::TWP::RAID (.*)$")
 # The trial system talks, and nothing here listened until 2026-09-21: [TRIAL] was the
 # single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
 TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
@@ -265,6 +266,7 @@ class Session(object):
         self.idprobe, self.hospitals, self.hires = [], [], []
         self.hijacks = []
         self.hire_ends = []
+        self.raid_steps = []
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.trial_released = 0                  # gave up on a judge that never came
@@ -479,6 +481,10 @@ class Session(object):
             m = HIREEND.search(line)
             if m:
                 self.hire_ends.append(kv(m.group(1)))
+                continue
+            m = RAID.search(line)
+            if m:
+                self.raid_steps.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1165,8 +1171,10 @@ def check_attacks(s):
 
 
 # A sim turned away by the same hospital twice inside this many game hours means the
-# IgnoreHospital cooldown set in ms_MedicalTreatment.PropertiesEnd is not holding - that
-# is the value it writes, GetGametime() + 12.
+# IgnoreHospital cooldown is not holding. It is written in the per-patient epilogue of
+# ms_MedicalTreatment, as GetGametime() + 12. It used to be written in PropertiesEnd,
+# which this comment named until 2026-09-21 - by then that function had had no callers
+# for seven months and has now been deleted.
 HOSPITAL_COOLDOWN_HOURS = 12.0
 
 
@@ -1208,12 +1216,18 @@ def check_healing(s):
                       "%d sims were turned away twice by the same hospital inside %.0f game hours "
                       "(soonest: sim %s at hospital %s, %.1f h apart)"
                       % (len(repeats), HOSPITAL_COOLDOWN_HOURS, sim, hospital, gap),
-                      "Scripts/Measures/ms_MedicalTreatment.lua - PropertiesEnd(false, sim) sets "
-                      "IgnoreHospital and IgnoreHospitalTime, and idlelib_VisitDoc skips a hospital "
-                      "named there. Before 2026-09-19 the no-money path called PropertiesEnd(true) and "
-                      "returned out of the doctor's whole queue loop, so the refusal was forgotten and "
-                      "the patient came back on ai_VisitDoc's one-hour timer. If this is back, either "
-                      "the flag flipped again or VisitDoc stopped honouring the property.")
+                      "Both halves are proven, so suspect a THIRD thing before either. The WRITE "
+                      "side is the per-patient epilogue of Scripts/Measures/ms_MedicalTreatment.lua, "
+                      "which every unsuccessful outcome reaches - nomats and nomoney both set the "
+                      "property correctly, checked 2026-09-21. The READ side was the hole and is "
+                      "fixed: idlelib_VisitDoc kept the whole test inside its "
+                      "not-AliasExists(Destination) branch, so ms_AttendDoctor - which passes a "
+                      "HospitalID bound to the building the sim is standing in - skipped it and "
+                      "never expired the property either. The cooldown is now resolved for every "
+                      "caller and a refused destination is dropped so the ranking picks elsewhere. "
+                      "If this fires again, read the doctor's own patient filter: it selects on "
+                      "WaitingForTreatment and has never consulted IgnoreHospital, so a sim already "
+                      "in the room is served and refused regardless of the flag.")
 def check_supply(s):
     if not s.supply:
         return
@@ -1735,9 +1749,59 @@ def check_silent_channels(s):
                   "not a finding - judge this on the current session only.")
 
 
+# What a sent raid actually did. ::TWP::WAR says only that a squad object resolved with
+# members in it, measured in the same tick as SquadCreate - nothing about whether a measure
+# started, anyone walked, or the order survived. The three squad measures emitted nothing at
+# all until 2026-09-21, so on 2026-09-20 two raids reported sent=true and there was no way
+# to tell a working ambush from a collapsed one. The session also ended 1.4 game hours after
+# they went out, inside TWP_AMBUSH_HOURS, so even a perfect raid would have shown nothing.
+RAID_GOOD = ("laid", "struck", "nobodycame", "timeout")
+
+
+def check_raid_steps(s):
+    """Did the party that was sent get anywhere?"""
+    if not s.raid_steps:
+        return
+    outcomes = Counter(r.get("outcome", "?") for r in s.raid_steps)
+    struck = outcomes.get("struck", 0)
+    broken = sum(n for o, n in outcomes.items() if o not in RAID_GOOD)
+    yield Finding("NOTE", "raid-steps",
+                  "%d raid steps: %s" % (len(s.raid_steps),
+                                         ", ".join("%s %d" % (o, n)
+                                                   for o, n in outcomes.most_common(8))),
+                  "Scripts/Library/aitwp.lua, aitwp_LogRaid - emitted at every exit of "
+                  "Scripts/Measures/Squad/ms_bf_Ambush.lua and ms_bf_AmbushMember.lua. Read "
+                  "it beside ::TWP::WAR: WAR says a squad was formed, this says what became "
+                  "of it. laid means the leader set the meeting place, struck means a member "
+                  "reached the victim, nobodycame and timeout are the ambush expiring "
+                  "honestly - a mine nobody walks to is a wasted morning, not a defect.")
+    if broken:
+        bad = [(o, n) for o, n in outcomes.most_common() if o not in RAID_GOOD]
+        yield Finding("WARN", "raid-collapsed",
+                      "%d raid steps ended before the ambush was even set: %s"
+                      % (broken, ", ".join("%s %d" % (o, n) for o, n in bad)),
+                      "noleader and nodest are the leader measure failing at "
+                      "Scripts/Measures/Squad/ms_bf_Ambush.lua before it can set the meeting "
+                      "place; nosquad and nomeeting are a member arriving before the leader "
+                      "ran, which is the same-tick shape - aitwp_SquadAttack adds every "
+                      "member in the tick it calls SquadCreate, where vanilla joins them a "
+                      "tick later via Scripts/AI/BaseTree/Feud/AttackFeud/AttackMyrmidon/"
+                      "JoinSquad.lua. deserted means the squad emptied under the leader, "
+                      "which aitwp_IsFreeForOrders should now prevent by honouring the "
+                      "AI_RaidOrder stamp.")
+    if s.raid_steps and not struck:
+        yield Finding("NOTE", "raid-no-contact",
+                      "%d raid steps and not one reached the victim" % len(s.raid_steps),
+                      "Not a defect on its own: the ambush waits TWP_AMBUSH_HOURS for the "
+                      "target to come within TWP_AMBUSH_RADIUS and a session can simply end "
+                      "first, which is what happened on 2026-09-20 - the log stopped 1.4 "
+                      "hours after the raid against a 4-hour wait. Judge this only on a "
+                      "session that ran well past the ambush window.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_healing, check_hospital_stock, check_hiring, check_hijack, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_idprobe,
           check_blood_rival, check_stuck_walk, check_trials, check_silent_channels, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -2330,6 +2394,28 @@ def selftest():
         ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
     levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
     assert levels_he == ["NOTE"], findings(ok_hire)
+
+    # raids: a healthy ambush that expires is NOT a collapse - a mine nobody walks to is a
+    # wasted morning. Only the exits before the meeting place is set are the defect.
+    ambush = Session()
+    ambush.feed(['[Script] ::TWP::RAID t=1.00 sim=11 role=leader outcome=laid',
+                 '[Script] ::TWP::RAID t=1.10 sim=12 role=member outcome=nobodycame',
+                 '[Script] ::TWP::RAID t=1.20 sim=13 role=leader outcome=timeout'])
+    codes_am = [f.code for f in findings(ambush)]
+    assert "raid-steps" in codes_am, findings(ambush)
+    assert "raid-collapsed" not in codes_am, findings(ambush)
+    assert "raid-no-contact" in codes_am, findings(ambush)
+    collapsed = Session()
+    collapsed.feed(['[Script] ::TWP::RAID t=1.00 sim=11 role=member outcome=nosquad',
+                    '[Script] ::TWP::RAID t=1.05 sim=12 role=member outcome=nomeeting',
+                    '[Script] ::TWP::RAID t=1.10 sim=13 role=leader outcome=noleader'])
+    text_co = format_findings(findings(collapsed))
+    assert "raid-collapsed" in [f.code for f in findings(collapsed)], findings(collapsed)
+    assert "3 raid steps ended before the ambush was even set" in text_co, text_co
+    hit = Session()
+    hit.feed(['[Script] ::TWP::RAID t=1.00 sim=11 role=leader outcome=laid',
+              '[Script] ::TWP::RAID t=1.10 sim=12 role=member outcome=struck'])
+    assert "raid-no-contact" not in [f.code for f in findings(hit)], findings(hit)
 
     # trials: the player was fined for a DEAD magistrate, and the log had been saying so
     # 200 times a session in a subsystem no parser read. The share is the finding.

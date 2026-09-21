@@ -9,18 +9,23 @@
 function Run()
 	SquadSetMeetingPlace("", "Destination")
 	if not SquadGetLeader("", "Leader") then
+		aitwp_LogRaid("", "leader", "noleader")
 		return
 	end
 	if not AliasExists("Destination") then
+		aitwp_LogRaid("", "leader", "nodest")
 		return
 	end
 	SetProperty("", "Victim", GetID("Destination"))
 	SetProperty("", "AmbushUntil", GetGametime() + TWP_AMBUSH_HOURS)
+	aitwp_LogRaid("", "leader", "laid")
 	while true do
 		if GetGametime() > (GetProperty("", "AmbushUntil") or 0) then
+			aitwp_LogRaid("", "leader", "timeout")
 			break
 		end
 		if (SquadGetMemberCount("", true) or 0) == 0 then
+			aitwp_LogRaid("", "leader", "deserted")
 			break
 		end
 		Sleep(1)

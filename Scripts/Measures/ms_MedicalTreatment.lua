@@ -205,10 +205,6 @@ function Run()
 				return
 			end
 
-			--if not GetState("SickSim0", STATE_SICK) then
-				--ms_medicaltreatment_PropertiesEnd(true,"SickSim0")
-			--end
-			
 			SetData("Blocked", 0)
 			if not SendCommandNoWait("SickSim0", "BlockMe") then
 				LogMessage("Hospital: Cant block SickSim0")
@@ -432,29 +428,13 @@ function Run()
 	end
 end
 
--- checker: did the visit achieve anything. Both halves used to be in one branch, so the
--- only caller - the no-money refusal - had to choose between sending the sim on its way
--- and remembering that this hospital turned it away. It chose the first and the patient
--- came straight back. Releasing the sim is unconditional now; the cooldown is the part
--- that depends on the outcome.
-function PropertiesEnd(checker,sim)
-	Sleep(2)
-	MoveSetActivity(sim)
-	if checker == false then
-		SetProperty(sim, "IgnoreHospital", GetID("Hospital"))
-		SetProperty(sim, "IgnoreHospitalTime", GetGametime()+12)
-	else
-		AddImpact(sim, "Resist", 1, 6)
-	end
-
-	if HasProperty(sim, "WaitingForTreatment") then
-		RemoveProperty(sim, "WaitingForTreatment")
-	end
-
-	SetData("Blocked", 1)
-	SetState(sim, STATE_DUEL, false)
-end
-
+-- ms_medicaltreatment_PropertiesEnd lived here and is gone. Its two halves - releasing the
+-- sim and remembering the refusal - were inlined into the per-patient epilogue on
+-- 2026-02-06, and from then on nothing called it: the only reference left was the
+-- commented-out line above. Deleted 2026-09-21 along with the analyzer pointer that still
+-- told readers "PropertiesEnd(false, sim) sets IgnoreHospital", which was directions to a
+-- function that no longer ran. The cooldown is written in the epilogue and READ in
+-- idlelib_VisitDoc; the read side was the actual hole.
 
 function BlockMe()
 	while GetData("Blocked")==0 do

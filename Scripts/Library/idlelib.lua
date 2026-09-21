@@ -1662,22 +1662,36 @@ function VisitDoc(HospitalID)
 		end
 	end
 
+	-- The cooldown test used to live entirely inside the "not AliasExists" branch below, so a
+	-- caller that passes a HospitalID skipped it and the property was neither read nor
+	-- expired. ms_AttendDoctor passes one, bound to the hospital the sim is standing in - the
+	-- one that just refused it - and that is the AI's own doctor visit. So a refused patient
+	-- walked straight back to the same counter: the ai_VisitDoc timer at the top of this
+	-- function is 1 game hour, and 1.0 h is exactly the gap between the two refusals of sim
+	-- 624705 on 2026-09-20. Resolve it first, for every caller.
+	local IgnoreID
+	if HasProperty("", "IgnoreHospital") then
+		local Time = GetProperty("", "IgnoreHospitalTime")
+		if Time < GetGametime() then
+			RemoveProperty("", "IgnoreHospital")
+			RemoveProperty("", "IgnoreHospitalTime")
+		else
+			IgnoreID = GetProperty("", "IgnoreHospital")
+		end
+	end
+
+	-- Drop a pre-bound destination that is the refusing hospital instead of obeying it, so
+	-- the ranking below picks a different one. The sim is still ill; another hospital beats
+	-- going home, and the test further down still stops it choosing the same building again.
+	if IgnoreID and AliasExists("Destination") and IgnoreID == GetID("Destination") then
+		RemoveAlias("Destination")
+	end
+
 	if not AliasExists("Destination") then	
 		economy_GetRandomBuildingByRanking("City", "Destination", 0, GL_BUILDING_TYPE_HOSPITAL, MinLevel)
 		if not AliasExists("Destination") then
 			return
 		end
-		
-		local IgnoreID
-		if HasProperty("", "IgnoreHospital") then
-			local Time = GetProperty("", "IgnoreHospitalTime")
-			if Time < GetGametime() then
-				RemoveProperty("", "IgnoreHospital")
-				RemoveProperty("", "IgnoreHospitalTime")
-			else
-				IgnoreID = GetProperty("", "IgnoreHospital")
-			end
-		end 
 		
 		if IgnoreID and IgnoreID == GetID("Destination") then
 			-- go home and sleep

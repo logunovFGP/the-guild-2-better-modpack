@@ -7,9 +7,11 @@ function Run()
 	Sleep(0.5)
 	MeasureSetNotRestartable()
 	if not SquadGet("", "Squad") then
+		aitwp_LogRaid("", "member", "nosquad")
 		return
 	end
 	if not SquadGetMeetingPlace("Squad", "Destination") then
+		aitwp_LogRaid("", "member", "nomeeting")
 		return
 	end
 	f_MoveTo("", "Destination", GL_MOVESPEED_RUN, TWP_AMBUSH_RADIUS)
@@ -21,12 +23,14 @@ function Run()
 		if VictimID > 0 and GetAliasByID(VictimID, "Victim") and AliasExists("Victim")
 				and not GetState("Victim", STATE_DEAD)
 				and GetDistance("", "Victim") <= TWP_AMBUSH_RADIUS then
+			aitwp_LogRaid("", "member", "struck")
 			MeasureRun("", "Victim", "AttackEnemy", true)
 			return
 		end
 		Sleep(0.5)
 	end
 	-- nobody came
+	aitwp_LogRaid("", "member", "nobodycame")
 	if GetHomeBuilding("", "AmbushHome") then
 		f_MoveTo("", "AmbushHome", GL_MOVESPEED_RUN, 300)
 	end

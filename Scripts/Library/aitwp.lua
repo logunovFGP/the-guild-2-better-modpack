@@ -1912,6 +1912,15 @@ function IsFreeForOrders(Alias)
 			return false
 		end
 	end
+	-- The measure-name tests above cannot see a hand between orders. aitwp_SquadAttack
+	-- stamps AI_RaidOrder on every fighter it commits, and on 2026-09-20 two raids went out
+	-- 0.09 game hours apart with the same party and the same target: the second re-picked
+	-- the first one's hands, because a member whose measure had not started yet - or had
+	-- returned early - carries no Squad name to match. The comment above
+	-- TWP_COMMITTED_MEASURES predicted exactly this. The stamp is the only thing that knows.
+	if aitwp_OnRaidOrder(Alias) then
+		return false
+	end
 	return true
 end
 
@@ -2458,6 +2467,17 @@ function OnRaidOrder(Alias)
 		return false
 	end
 	return (GetGametime() - When) < TWP_RAID_ORDER_HOURS
+end
+
+-- ::TWP::RAID t= sim= role=<leader|member> outcome=. The other half of ::TWP::WAR, which
+-- says only that a squad object resolved with members in it - nothing about whether any
+-- measure started, anyone moved, or the order survived the tick. None of the three squad
+-- measures emitted anything, so grepping the log for them could not tell a working raid
+-- from a collapsed one: on 2026-09-20 two raids reported sent=true and the session ended
+-- 1.4 hours later, inside TWP_AMBUSH_HOURS, with nothing to read either way.
+function LogRaid(Alias, Role, Outcome)
+	utility_Emit("::TWP::RAID t=" .. string.format("%.2f", GetGametime())
+		.. " sim=" .. GetID(Alias) .. " role=" .. Role .. " outcome=" .. Outcome)
 end
 
 -- ::TWP::WAR t= dyn= raid= target= party= leader= chance= sent=
