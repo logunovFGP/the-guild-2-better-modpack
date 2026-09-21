@@ -475,6 +475,12 @@ function RemoveItems(Alias, Item, Count, Inv) local T = Stock[Alias] or Carried;
 function AddItems(Alias, Item, Count, Inv) Added[Item] = (Added[Item] or 0) + Count; return Count end
 function GetDynasty(Alias, Out) Aliases[Out] = 7; return true end
 
+-- The library is dofile'd, so its functions land unprefixed and any PREFIXED name it calls
+-- has to be stubbed here by hand. IsFreeForOrders started calling aitwp_OnRaidOrder on
+-- 2026-09-21 and this file went red with 'attempt to call a nil value' until it was given
+-- one. Props is the shared property table these stubs read.
+aitwp_OnRaidOrder = function(Alias) return Props.AI_RaidOrder == true end
+
 -- Inverted on 2026-09-19: the rule is a blacklist of engine states now, not a whitelist
 -- of measure names. A thug at mass IS free - interrupting it costs the house nothing and
 -- the whitelist is why a party of k hands almost never existed in one tick.
@@ -496,6 +502,15 @@ CurMeasure = "AttackEnemy"
 check("nor one already swinging", IsFreeForOrders("k") == false)
 CurMeasure = "SupplyWorkshop"
 check("a chore that is not a commitment stays free", IsFreeForOrders("k") == true)
+-- The stamp, not the measure name. Two raids went out 0.09 game hours apart on 2026-09-20
+-- with the same party and the same target, because a hand BETWEEN orders - its measure not
+-- started yet, or returned early - carries no Squad name to match on. aitwp_SquadAttack
+-- stamps AI_RaidOrder on everyone it commits and this is the only test that can see it.
+Props.AI_RaidOrder = true
+check("a hand stamped with a raid order is not offered to the next raid",
+	IsFreeForOrders("k") == false)
+Props.AI_RaidOrder = nil
+check("and is free again once the stamp has expired", IsFreeForOrders("k") == true)
 Downed.k = true
 check("a thug lying unconscious takes no orders", IsFreeForOrders("k") == false)
 Downed.k = nil
