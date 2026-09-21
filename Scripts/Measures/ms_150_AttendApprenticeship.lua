@@ -76,6 +76,18 @@ function Run()
 		
 	end
 	
+	-- MsgBox hands back the BUTTON CODE, and a cancel is the string "C", not a number.
+	-- The dispatch below ends in a bare else that exists for choices 7 and 8, and in Lua a
+	-- string is never == to a number - so every string fell through it, took App3, and hit
+	-- "if choice < 5" at the bottom: "attempt to compare string with number", one aborted
+	-- measure per session. ms_149_AttendSchool is the same measure with the same MsgBox and
+	-- does not appear in the error log, because its terminal else is StopMeasure().
+	-- Guarding the type is narrower than copying that: 7 and 8 stay legitimate here.
+	if type(choice) ~= "number" then
+		StopMeasure()
+		return
+	end
+
 	if (choice == 1) then
 		-- TODO make apprenticeship in actual businesses
 		Appmoney = App1

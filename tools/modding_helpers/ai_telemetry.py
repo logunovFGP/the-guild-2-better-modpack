@@ -1720,15 +1720,19 @@ def check_silent_channels(s):
     yield Finding("NOTE", "channel-silent",
                   "%d of %d emitted channels produced no line in %.1f game hours: %s"
                   % (len(silent), len(emitted), hours, ", ".join(silent)),
-                  "Each is a ::TWP:: channel the Lua can write and did not. Some are "
-                  "honest - HIJACK needs a thieves' guild to hold a kidnap order that "
-                  "session. Others mean the path is unreachable: SUPPLY has never fired in "
-                  "any session logged, which makes every auto-supply finding an argument "
-                  "from silence. Grep the emitting function and ask what gates it. This is "
-                  "the counterpart to check_pointers, which fails the build for a channel "
-                  "with no PARSER but cannot see a channel with no OUTPUT. Reading an OLD "
-                  "log lists every channel added since it was taken, which is an artefact "
-                  "and not a finding - judge this on the current session only.")
+                  "Each is a ::TWP:: channel the Lua can write and did not, and silence means "
+                  "three different things - grep the emitting function before concluding "
+                  "anything. BB is aiboard reporting an UNREGISTERED key, so silence there "
+                  "is the healthy answer, not a gap. HIJACK needs a thieves' guild to be "
+                  "holding a kidnap order that session. And a channel can be gated so "
+                  "tightly it reads as dead when it is not: SUPPLY only emits when a "
+                  "resource is DROPPED or nothing matched (economy.lua, the Count > 0 and "
+                  "DroppedLog test), which is once in 37.5 game hours - it was called dead "
+                  "on 2026-09-21 on two logs and the third refuted it. This is the "
+                  "counterpart to check_pointers, which fails the build for a channel with "
+                  "no PARSER but cannot see a channel with no OUTPUT. Reading an OLD log "
+                  "lists every channel added since it was taken, which is an artefact and "
+                  "not a finding - judge this on the current session only.")
 
 
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
