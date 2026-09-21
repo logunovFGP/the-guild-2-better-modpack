@@ -9,12 +9,16 @@ function Weight()
 		return 0
 	end
 
-	-- Nothing below can act if all five children are on cooldown, and this root is 31% of
-	-- every decision the tree makes. See aitwp_FeudReady for why a never-set timer makes
-	-- this PASS rather than fail - the opposite of the EconomyReady mistake.
-	if not aitwp_FeudReady("dynasty", "SIM") then
-		return 0
-	end
+	-- An aitwp_FeudReady gate stood here for one session and was removed on 2026-09-21 as a
+	-- measured no-op: ::TWP::WHY feud allcooldown fired 0 times across 385 picks. It asked
+	-- whether all five children were on cooldown, but a child only SETS its repeat timer when
+	-- it executes, and in a subtree this quiet they almost never do - so the timers stayed
+	-- unset, an unset timer reads ready, and the gate always passed. Safe direction, useless
+	-- gate: the other half of the EconomyReady bug rather than the opposite of it.
+	--
+	-- It was also built on a number that was wrong. The 83-87% "barren" was mostly shadow
+	-- houses scoring 3 and 5 in AttackBuilding and AttackFeud through a bare return that
+	-- emitted no ::TWP::W. Those are traced now; read the real figure before gating anything.
 
 	GetAliasByID(CurrentEnemy, "VictimDynasty")
 	if not AliasExists("") then

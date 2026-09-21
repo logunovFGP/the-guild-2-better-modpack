@@ -1912,7 +1912,20 @@ def check_assign(s):
                       "reassigned by the engine with no class test at all. The three measures "
                       "that assign deliberately - ms_071_BuyBuilding, ms_238_TakeOverBid and "
                       "ms_043_CaptureBuilding - each carry their own copy of that test.")
-    unexplained = [r for r in bad if r.get("canown") == "true"]
+    theft = [r for r in bad if r.get("how") == "notmine"]
+    if theft:
+        yield Finding("NOTE", "assign-not-yours",
+                      "%d attempts to assign a building belonging to another dynasty were "
+                      "refused" % len(theft),
+                      "Working as intended, and worth watching. Filter 122 admits any "
+                      "building a class-matching member is standing in - vanilla's did too "
+                      "- and the only thing that ever stopped a rival's shop being taken "
+                      "was the engine refusing the transfer. Since ms_035 retries with "
+                      "BuildingSetOwner's third argument to defeat exactly that refusal, "
+                      "the ownership test now lives in the measure. If this count is high "
+                      "the button is being offered where it can never work, which is a UI "
+                      "annoyance rather than a risk.")
+    unexplained = [r for r in bad if r.get("canown") == "true" and r.get("how") != "notmine"]
     if unexplained:
         r = unexplained[0]
         yield Finding("WARN", "assign-refused",
@@ -2562,6 +2575,12 @@ def selftest():
     forced = Session()
     forced.feed(['[Script] ::TWP::ASSIGN t=1.00 bld=9 sim=11 old=12 bldclass=4 simclass=4 canown=true result=true how=force'])
     assert "force 1" in format_findings(findings(forced)), format_findings(findings(forced))
+    # a rival's building must read as a correct refusal, never as assign-refused
+    notmine = Session()
+    notmine.feed(['[Script] ::TWP::ASSIGN t=1.00 bld=9 sim=11 old=12 bldclass=4 simclass=4 canown=true result=false how=notmine'])
+    codes_nm = [f.code for f in findings(notmine)]
+    assert "assign-not-yours" in codes_nm, findings(notmine)
+    assert "assign-refused" not in codes_nm, findings(notmine)
 
     # spending: AI houses paying through the ledger is the fix working; a flood of refusals
     # is the risk that was accepted when it was turned on.

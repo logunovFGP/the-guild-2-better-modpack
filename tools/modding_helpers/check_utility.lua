@@ -697,31 +697,6 @@ check("two of a kind beat one four to one", near(WinChance(Two, Solo), 0.8))
 check("two of a kind clear the three-in-four bar", WinChance(Two, Solo) >= TWP_ATTACK_WIN_CHANCE)
 check("one of a kind does not", WinChance(One, Solo) < TWP_ATTACK_WIN_CHANCE)
 
--- aitwp_FeudReady: can any child of Feud act, or are all five on cooldown? --------------
--- 83% of that subtree's entries scored no child on 2026-09-20, against a root that takes
--- 31% of every decision the tree makes.
-local FeudTimers = {}
-function ReadyToRepeat(Alias, Name) return FeudTimers[Name] ~= false end
-for i = 1, #TWP_FEUD_TIMERS do FeudTimers[TWP_FEUD_TIMERS[i][2]] = false end
-UTILITY_LogEnabled = true
-Logged = {}
-check("feud ready: every child on cooldown means the subtree cannot act",
-	FeudReady("d", "s") == false)
-check("and it says which gate stopped it, so the next log can refute this",
-	has(lastLog(), "::TWP::WHY") and has(lastLog(), "feud allcooldown"))
-FeudTimers.AI_OrderASpying = true
-check("one ready child is enough to enter", FeudReady("d", "s") == true)
-FeudTimers.AI_OrderASpying = false
-FeudTimers.AI_AttackRival = true
-check("and it reads the sim timers too, not only the dynasty ones",
-	FeudReady("d", "s") == true)
--- The direction that matters: a house that has NEVER feuded has no timers set at all, and
--- an unset timer reads ready. It must pass, not be silenced. This is the inverse of the
--- EconomyReady bug below, where an unset timer wrongly let shadow houses through.
-FeudTimers = {}
-check("a house that has never feuded is never silenced by this gate",
-	FeudReady("d", "s") == true)
-
 -- aitwp_EconomyReady: does any child of ToMEconomy have anything to do? ------------------
 -- 89% of that subtree's entries scored no child at all until this gate went in.
 aitwp_EconomyReady = EconomyReady

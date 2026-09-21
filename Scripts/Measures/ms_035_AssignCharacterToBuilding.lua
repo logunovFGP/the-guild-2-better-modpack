@@ -25,10 +25,25 @@ function Run()
 	f_MoveTo("", "Destination", GL_MOVESPEED_RUN)
 
 	local Old = -1
+	local Mine = true
 	if BuildingGetOwner("Destination", "TWP_OldOwner") then
 		Old = GetID("TWP_OldOwner")
+		Mine = GetDynastyID("TWP_OldOwner") == GetDynastyID("")
 	end
 	RemoveAlias("TWP_OldOwner")
+
+	-- Only an unowned building or one this dynasty already holds. Vanilla never needed this
+	-- test because its filter admitted rivals' buildings too and the engine simply refused
+	-- the transfer - the refusal WAS the guard. The force fallback below exists to defeat a
+	-- refusal, so without this it would defeat that one too: walk a class-matching member
+	-- into a rival shop, press the button, take it. Filter 122 was already this permissive in
+	-- vanilla; dropping NOT(IsBuildingOwnedByMe) added OUR OWN buildings to the set, not
+	-- other houses'. The hole is the forcing, so the guard belongs next to it.
+	if not Mine then
+		aitwp_LogAssign("", "Destination", Old, false, "notmine")
+		MsgQuick("", "@L_GENERAL_MEASURES_035_ASSIGNCHARACTERTOBUILDING_FAILURES_+0", GetID(""), GetID("Destination"))
+		return
+	end
 
 	local Ok = BuildingSetOwner("Destination", "")
 	local How = "plain"

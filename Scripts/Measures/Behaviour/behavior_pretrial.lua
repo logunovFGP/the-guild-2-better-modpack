@@ -72,7 +72,6 @@ function Run()
 		RemoveProperty("", "HaveCutscene")
 	end
 	
-	local Lost = 0
 	while true do
 		LogMessage("@TRIAL #W Waiting with " .. GetName("Owner"))
 
@@ -85,13 +84,21 @@ function Run()
 		-- A false judge also covers the cutscene itself going away, because
 		-- GetDataFromCutscene returns false when CutsceneGetData fails - which is the
 		-- "no alias object with the name Trial found" the engine logged 400 times.
+		-- A PROPERTY, not a local. The first version of this counted in a local and never
+		-- fired: on 2026-09-21 one sim logged 16 waits and was never released, because the
+		-- engine restarts the behaviour and every restart reset the count to zero while the
+		-- missing judge persisted. The give-up counter at the top of Run() uses PretrialWait
+		-- as a property for exactly this reason and I did not copy the one thing that made it
+		-- work.
 		local Judge = behavior_pretrial_GetDataFromCutscene("Trial", "judge")
 		if Judge and Judge ~= 0 and GetAliasByID(Judge, "JudgeAlias") then
-			Lost = 0
+			RemoveProperty("Owner", "TrialNoJudge")
 		else
-			Lost = Lost + 1
+			local Lost = (GetProperty("Owner", "TrialNoJudge") or 0) + 1
+			SetProperty("Owner", "TrialNoJudge", Lost)
 			if Lost >= TRIAL_LOST_JUDGE_ROUNDS then
 				LogMessage("@TRIAL #W No judge for " .. Lost .. " rounds, releasing " .. GetName("Owner"))
+				RemoveProperty("Owner", "TrialNoJudge")
 				behavior_pretrial_ReleaseFromTrial()
 				return
 			end
@@ -113,6 +120,7 @@ end
 -- same exit; it had none of its own.
 function ReleaseFromTrial()
 	RemoveProperty("Owner", "PretrialWait")
+	RemoveProperty("Owner", "TrialNoJudge")
 	local trialprops = {"DefendTrial","TrialOpponent","TrialJudge","TrialAssessor1","TrialAssessor2"}
 	for i = 1, 5 do
 		if HasProperty("Owner", trialprops[i]) then

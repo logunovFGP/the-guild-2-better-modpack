@@ -2469,49 +2469,13 @@ function OnRaidOrder(Alias)
 	return (GetGametime() - When) < TWP_RAID_ORDER_HOURS
 end
 
--- Can the Feud subtree act at all? Every one of its five children opens with its own
--- ReadyToRepeat, so when all five are on cooldown the subtree cannot do anything and the
--- root still wins the roulette and finds every child at 0. That was 3151 of 3786 entries
--- on 2026-09-20, 83%, against a root that is 31% of every decision the tree makes - about
--- a quarter of the whole AI budget spent arriving somewhere nothing can happen.
---
--- The soundness direction is the OPPOSITE of the aitwp_EconomyReady bug and that is the
--- whole reason this is safe. There, a timer that had never been set read READY and let
--- shadow houses through a gate meant to stop them - a false pass, and the gate did
--- nothing. Here a never-set timer also reads ready, which makes this gate PASS: a house
--- that has never feuded is never wrongly silenced. The only thing it can skip is a house
--- measured to be on cooldown on all five at once. Wrong in the harmless direction.
---
--- SIM is whichever idle member the root bound; the children bind their own and may pick a
--- different one. That can only make this more permissive, never less.
-TWP_FEUD_TIMERS = {
-	{ "sim", "AI_AttackRival" },
-	{ "sim", "AI_AttackFeud" },
-	{ "sim", "AI_DefendFeud" },
-	{ "dyn", "AI_ChargeCharacter" },
-	{ "dyn", "AI_OrderASpying" },
-}
-
-function FeudReady(DynAlias, SimAlias)
-	for i = 1, #TWP_FEUD_TIMERS do
-		local Row = TWP_FEUD_TIMERS[i]
-		local Alias = SimAlias
-		if Row[1] == "dyn" then
-			Alias = DynAlias
-		end
-		if ReadyToRepeat(Alias, Row[2]) then
-			return true
-		end
-	end
-	utility_Why(DynAlias, "feud allcooldown timers=" .. #TWP_FEUD_TIMERS)
-	return false
-end
-
--- ::TWP::SPEND t= sim= dyn= amount= route=<engine|ledger|poor> purse= reason=. chr_SpendMoney
--- began actually debiting AI houses on 2026-09-21 after years of silently succeeding, so
--- the next log has to show what that changed: route=poor is a house that genuinely cannot
--- pay, and a flood of them means the ledger is being drained faster than GiveMoney settles
--- it. reason= goes last because it is free text from the caller and kv() splits on spaces.
+-- ::TWP::SPEND t= sim= dyn= amount= route=<engine|ledger|wouldrefuse|poor> purse= reason=.
+-- chr_SpendMoney began recording AI debits in the AI_DynMoney ledger on 2026-09-21 after
+-- years of silently succeeding without moving money. route=poor is an ACTUAL refusal, which
+-- aborts the caller; route=wouldrefuse is the same shortfall recorded while
+-- TWP_SPEND_ENFORCE is off, so the measure still runs. The distinction matters: enforcing it
+-- shipped by accident for one session and stopped half a town acting. reason= goes last
+-- because it is free text from the caller and kv() splits on spaces.
 function LogSpend(SimAlias, Amount, Reason, Route, Purse)
 	local Dyn = -1
 	if GetDynasty(SimAlias, "TWP_SpendDyn") then

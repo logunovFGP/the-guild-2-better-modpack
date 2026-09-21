@@ -40,8 +40,11 @@ function Weight()
 	end
 	
 	if DynastyIsShadow("SIM") then
-		-- reduces aggressiveness of shadow dynasties
-		return 5
+		-- reduces aggressiveness of shadow dynasties. Traced, not bare: this returns a real
+		-- weight and used to emit no ::TWP::W at all, so every shadow house scoring here
+		-- counted as "no child scored" and inflated subtree-barren. 18 of 26 dynasties are
+		-- shadow, which is most of the 87% that number reported on 2026-09-21.
+		return utility_Trace("dynasty", "AttackFeud", 5)
 	end
 	
 	return utility_Trace("dynasty", "AttackFeud", 30)
