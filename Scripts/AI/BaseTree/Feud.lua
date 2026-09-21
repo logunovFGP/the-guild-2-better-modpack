@@ -9,6 +9,13 @@ function Weight()
 		return 0
 	end
 
+	-- Nothing below can act if all five children are on cooldown, and this root is 31% of
+	-- every decision the tree makes. See aitwp_FeudReady for why a never-set timer makes
+	-- this PASS rather than fail - the opposite of the EconomyReady mistake.
+	if not aitwp_FeudReady("dynasty", "SIM") then
+		return 0
+	end
+
 	GetAliasByID(CurrentEnemy, "VictimDynasty")
 	if not AliasExists("") then
 		return 0
