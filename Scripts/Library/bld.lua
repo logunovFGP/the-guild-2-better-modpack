@@ -1214,6 +1214,25 @@ function LogOwnerClass(BldAlias)
 		.. " canown=" .. tostring(BuildingCanBeOwnedBy(BldAlias, "TWP_OwnCheck") and true or false))
 end
 
+-- ::TWP::DEADWORK t= bld= slot= sim= workers=. A worker slot still held by a DEAD sim. The
+-- death path never released the job until 2026-09-22 - Fire() had one caller in either
+-- tree, the player's own Fire Employee - so every employee who died is still occupying its
+-- place, which the player sees as a skull in the Production panel. Existing saves keep
+-- theirs: the fix only releases the NEXT one, so this names the ones already stuck.
+function LogDeadWorkers(BldAlias)
+	local Count = BuildingGetWorkerCount(BldAlias) or 0
+	for i = 0, Count - 1 do
+		if BuildingGetWorker(BldAlias, i, "TWP_DeadCheck") then
+			if GetState("TWP_DeadCheck", STATE_DEAD) then
+				utility_Emit("::TWP::DEADWORK t=" .. string.format("%.2f", GetGametime())
+					.. " bld=" .. GetID(BldAlias) .. " slot=" .. i
+					.. " sim=" .. GetID("TWP_DeadCheck") .. " workers=" .. Count)
+			end
+		end
+	end
+	RemoveAlias("TWP_DeadCheck")
+end
+
 function HandlePingHour(BldAlias, ForceLevelUp)
 	if not BuildingGetOwner(BldAlias, "MyBoss") then
 		return
@@ -1221,6 +1240,7 @@ function HandlePingHour(BldAlias, ForceLevelUp)
 	-- once a day is plenty: this is a permanent state, not an event
 	if math.mod(math.floor(GetGametime()), 24) == 7 then
 		bld_LogOwnerClass(BldAlias)
+		bld_LogDeadWorkers(BldAlias)
 	end
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses(BldAlias)

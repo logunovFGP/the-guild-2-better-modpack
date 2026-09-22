@@ -204,6 +204,21 @@ function Run()
 		------ Lay out ------
 		---------------------  
 
+		-- Release the job as well as the office. Nothing did: state_dead reads
+		-- SimGetWorkingPlace only to decide whom to notify, and Fire() - the documented call
+		-- for exactly this, "fires the sim from his current job" - has one caller in either
+		-- tree, the player's own Fire Employee action. So a dead employee keeps its worker
+		-- slot for ever, which the player sees as a skull sitting in the Production panel.
+		-- Only three steps of ms_049_FireEmployee apply to a death: the rest is a marriage
+		-- blockade and a "you are fired" message to the boss, neither of which belongs on a
+		-- corpse. Clearing the produce id matters because the slot shown IS the production one.
+		if SimGetWorkingPlace("", "TWP_DeadJob") then
+			chr_CalculateBuildingBonus("", "TWP_DeadJob", "fire")
+			SimSetProduceItemID("", -1, -1)
+			Fire("")
+			RemoveAlias("TWP_DeadJob")
+		end
+
 		if (SimGetOfficeID("") ~= -1) then
 			-- Every call in this chain returns a value and none of them was tested. A sim who
 			-- dies without a resolvable home building leaves "homecity" unbound, and

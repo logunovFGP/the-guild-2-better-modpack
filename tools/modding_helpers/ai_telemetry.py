@@ -128,6 +128,7 @@ RAID = re.compile(r"::TWP::RAID (.*)$")
 SPEND = re.compile(r"::TWP::SPEND (.*)$")
 ASSIGN = re.compile(r"::TWP::ASSIGN (.*)$")
 BLDOWN = re.compile(r"::TWP::BLDOWN (.*)$")
+DEADWORK = re.compile(r"::TWP::DEADWORK (.*)$")
 # The trial system talks, and nothing here listened until 2026-09-21: [TRIAL] was the
 # single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
 TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
@@ -276,6 +277,7 @@ class Session(object):
         self.spends = []
         self.assigns = []
         self.misowned = []
+        self.deadworkers = []
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.trial_released = 0                  # gave up on a judge that never came
@@ -511,6 +513,10 @@ class Session(object):
             m = BLDOWN.search(line)
             if m:
                 self.misowned.append(kv(m.group(1)))
+                continue
+            m = DEADWORK.search(line)
+            if m:
+                self.deadworkers.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1991,9 +1997,32 @@ def check_misowned(s):
                   "upstream at inheritance, which has no Lua hook.")
 
 
+# A worker slot still held by a dead sim. Nothing released a job on death until 2026-09-22:
+# Fire(), the documented call for it, had exactly one caller in either tree - the player's
+# own Fire Employee action.
+def check_dead_workers(s):
+    """Are dead employees still occupying their places?"""
+    if not s.deadworkers:
+        return
+    per = {}
+    for r in s.deadworkers:
+        per[(r.get("bld", "?"), r.get("slot", "?"))] = r
+    blds = sorted(set(k[0] for k in per))
+    yield Finding("WARN", "dead-worker",
+                  "%d worker slots across %d buildings are held by a dead sim (worst building "
+                  "%s)" % (len(per), len(blds),
+                           Counter(k[0] for k in per).most_common(1)[0][0]),
+                  "Scripts/Library/bld.lua, bld_LogDeadWorkers, once a day per building. "
+                  "Scripts/States/state_dead.lua now calls Fire() so the NEXT death releases "
+                  "its job, but an existing save keeps every slot already stuck - those have "
+                  "to be freed by hand with the player's own Fire Employee action, or they "
+                  "hold the place for ever. If this count keeps RISING after 2026-09-22 the "
+                  "release is not being reached; if it is flat, it is the backlog.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_assign, check_misowned, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_assign, check_misowned, check_dead_workers, check_idprobe,
           check_blood_rival, check_stuck_walk, check_trials, check_silent_channels, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -2604,6 +2633,16 @@ def selftest():
     codes_so = [f.code for f in findings(solvent)]
     assert "spending" in codes_so, findings(solvent)
     assert not [c for c in codes_so if c.startswith("spending-")], findings(solvent)
+
+    # dead workers: deduplicate by (building, slot) so a daily line is not a new finding,
+    # and the same sim in two slots of two buildings is two
+    dw = Session()
+    dw.feed(['[Script] ::TWP::DEADWORK t=1.00 bld=9 slot=3 sim=55 workers=6',
+             '[Script] ::TWP::DEADWORK t=25.00 bld=9 slot=3 sim=55 workers=6',
+             '[Script] ::TWP::DEADWORK t=25.00 bld=12 slot=0 sim=77 workers=4'])
+    text_dw = format_findings(findings(dw))
+    assert "dead-worker" in [f.code for f in findings(dw)], findings(dw)
+    assert "2 worker slots across 2 buildings" in text_dw, text_dw
 
     # misowned: the footprint of the engine's classless inheritance. canown=false is the
     # building whose Assign-owner button will not appear, which is what the player reported.
