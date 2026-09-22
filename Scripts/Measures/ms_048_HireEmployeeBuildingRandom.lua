@@ -1,8 +1,19 @@
 function Run()
 
-	if GetMoney("") < 400 then
+	-- The pot that PAYS, not the one the measure happens to run on. Every charge below
+	-- goes to "BOwner" - the handsel at DecideYou, and the three upgrade surcharges - but
+	-- this gate read GetMoney("") where "" is the BUILDING, which holds its own till. The
+	-- blood rival failed here 17 times out of 18 while its owner held 4,650,499 coins, so
+	-- its thug pool never passed 2 and every raid came up one hand short of the bar. Same
+	-- shape as GetMoney(member) reporting the house: the alias decides which purse answers.
+	local Purse = GetMoney("") or 0
+	if BuildingGetOwner("", "TWP_HirePurse") then
+		Purse = GetMoney("TWP_HirePurse") or Purse
+		RemoveAlias("TWP_HirePurse")
+	end
+	if Purse < 400 then
 		MsgBoxNoWait("dynasty","", "@L_GENERAL_ERROR_HEAD_+0","@L_MEASURES_HIRERANDOM_NOMONEY_+0")
-		aitwp_LogHireEnd("", "under400", -1, GetMoney(""))
+		aitwp_LogHireEnd("", "under400", -1, Purse)
 		StopMeasure()
 	end
 

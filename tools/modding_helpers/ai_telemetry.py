@@ -1876,13 +1876,16 @@ def check_spending(s):
                       "%d debits were priced against a NEGATIVE purse (worst %d)"
                       % (negative,
                          min(int(num(r.get("purse", 0))) for r in s.spends)),
-                      "Purse is GetMoney plus the unsettled AI_DynMoney ledger, so below "
-                      "zero means the house has spent more since the last settle than it "
-                      "holds. chr_GiveMoney in Scripts/Library/chr.lua settles hourly off "
-                      "the AI_Income timer; if a house spends faster than that runs, the "
-                      "ledger dives and never recovers. Watch whether the same dyn= "
-                      "repeats - one house diving is a spender, all of them is the settle "
-                      "not running.")
+                      "purse is GetMoney PLUS the unsettled ledger, and ledger= is that half "
+                      "on its own - read them together, because the sum alone cannot tell a "
+                      "house genuinely in debt from one hour of unsettled spending. "
+                      "ledger near 0 with purse deeply negative is a house that really is "
+                      "broke, which is the expected consequence of debits landing after "
+                      "years of being free, not a defect. A large negative LEDGER is the "
+                      "other case: chr_GiveMoney is not settling. Do not count "
+                      "::AITWP::GiveMoney lines to judge that - it writes nothing at all "
+                      "when the ledger is zero, so counting them undercounts settles and "
+                      "was how this was misread on 2026-09-22.")
     if short_share >= SPEND_SHORT_SHARE:
         yield Finding("NOTE", "spending-would-refuse",
                       "%.0f%% of debits could not be covered (%d of %d) but were allowed "
@@ -2615,6 +2618,14 @@ def selftest():
         ['[Script] ::TWP::HIREEND t=1.00 bld=9 stage=hired want=3 cost=900 purse=8000'])
     levels_he = [f.level for f in findings(ok_hire) if f.code == "hire-outcomes"]
     assert levels_he == ["NOTE"], findings(ok_hire)
+
+    # debt vs backlog: same negative purse, different cause, and the check must not
+    # conflate them. ledger~0 = really broke; ledger deeply negative = not settling.
+    indebt = Session()
+    indebt.feed(['[Script] ::TWP::SPEND t=1.00 sim=1 dyn=7 amount=50 route=ledger purse=-38611 ledger=-12 reason=x'])
+    text_id = format_findings(findings(indebt))
+    assert "spending-negative-purse" in [f.code for f in findings(indebt)], findings(indebt)
+    assert "worst -38611" in text_id, text_id
 
     # the 2026-09-21 regression, as a fixture: a recorded shortfall must NOT read as a
     # refusal, and a negative purse is its own finding

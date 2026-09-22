@@ -2478,13 +2478,20 @@ end
 -- because it is free text from the caller and kv() splits on spaces.
 function LogSpend(SimAlias, Amount, Reason, Route, Purse)
 	local Dyn = -1
+	local Ledger = 0
 	if GetDynasty(SimAlias, "TWP_SpendDyn") then
 		Dyn = GetID("TWP_SpendDyn")
+		Ledger = GetProperty("TWP_SpendDyn", "AI_DynMoney") or 0
 	end
 	utility_Emit("::TWP::SPEND t=" .. string.format("%.2f", GetGametime())
 		.. " sim=" .. GetID(SimAlias) .. " dyn=" .. Dyn
 		.. " amount=" .. (Amount or -1) .. " route=" .. Route
+		-- purse is the SUM; ledger is the unsettled half. Reported apart because a purse of
+		-- -38611 on 2026-09-22 could have been a house genuinely in debt or an hour of
+		-- unsettled spending, and the sum alone cannot tell those two apart - which is a
+		-- difference between "working as intended" and "chr_GiveMoney is not running".
 		.. " purse=" .. math.floor(Purse or -1)
+		.. " ledger=" .. math.floor(Ledger)
 		.. " reason=" .. string.gsub(tostring(Reason or "-"), "%s", "_"))
 end
 
