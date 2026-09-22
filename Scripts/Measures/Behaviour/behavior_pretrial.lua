@@ -96,7 +96,14 @@ function Run()
 		else
 			local Lost = (GetProperty("Owner", "TrialNoJudge") or 0) + 1
 			SetProperty("Owner", "TrialNoJudge", Lost)
-			if Lost >= TRIAL_LOST_JUDGE_ROUNDS then
+			-- Read with a fallback. This is the ONLY behaviour script in the tree carrying a
+			-- file-scope global, and 61 waits went by on 2026-09-22 with no release, so whether
+			-- the chunk body even runs for a behaviour is not something to bet on: a nil here
+			-- makes "Lost >= nil" a Lua error, and the measure would die silently every round.
+			local Rounds = TRIAL_LOST_JUDGE_ROUNDS or 8
+			LogMessage("@TRIAL #W No judge, round " .. Lost .. " of " .. Rounds
+				.. " for " .. GetName("Owner"))
+			if Lost >= Rounds then
 				LogMessage("@TRIAL #W No judge for " .. Lost .. " rounds, releasing " .. GetName("Owner"))
 				RemoveProperty("Owner", "TrialNoJudge")
 				behavior_pretrial_ReleaseFromTrial()

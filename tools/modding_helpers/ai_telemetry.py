@@ -135,6 +135,9 @@ TRIAL_WAIT = re.compile(r"\[TRIAL\] Waiting with (.+?)\s*$")
 # for the loop that had no exit. Without reading it the fix is unfalsifiable: a log
 # with no stuck sims looks the same whether the release fired or nobody was summoned.
 TRIAL_RELEASE = re.compile(r"\[TRIAL\] No judge for \d+ rounds, releasing")
+# and the per-round counter, added 2026-09-22 because the release still did not fire and
+# there was no way to tell "never reached the loop" from "counter never climbs".
+TRIAL_ROUND = re.compile(r"\[TRIAL\] No judge, round (\d+) of (\d+)")
 # The engine's own completion signal for anything that walks, and the missing half of
 # the spin check below: a measure start is not evidence of progress, but a start
 # followed by this line is evidence of the opposite.
@@ -274,6 +277,7 @@ class Session(object):
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.trial_released = 0                  # gave up on a judge that never came
+        self.trial_rounds = []                   # the counter, per round, to see if it climbs
         self.unreached = []                      # (sim, the measure it was last running)
         self.tspan = [None, None]                # first and last gametime any channel stamped
         self.channels_seen = set()               # bare ::TWP:: names this log actually carries
@@ -299,6 +303,10 @@ class Session(object):
                     continue
                 if TRIAL_RELEASE.search(line):
                     self.trial_released += 1
+                    continue
+                m = TRIAL_ROUND.search(line)
+                if m:
+                    self.trial_rounds.append(int(m.group(1)))
                     continue
             if "cl_MoveTask::Process" in line:
                 m = UNREACHED.search(line)
@@ -1691,9 +1699,10 @@ def check_trials(s):
     families = len(set(sim.split()[-1] for sim in s.trial_wait if sim.split()))
     yield Finding("NOTE", "trials",
                   "%d trial judge lookups: %d found, %d missing (%.0f%%); %d sims waited, "
-                  "across %d families; %d released after the judge never came"
+                  "across %d families; %d released after the judge never came; counter reached %s"
                   % (total, found, missing, share, len(s.trial_wait), families,
-                     s.trial_released),
+                     s.trial_released,
+                     max(s.trial_rounds) if s.trial_rounds else "never logged"),
                   "Scripts/Measures/Behaviour/behavior_pretrial.lua writes all three lines; "
                   "Scripts/AI/BaseTree/Trial.lua is the node that enters. Until 2026-09-21 "
                   "nothing here read them and [TRIAL] was the largest unparsed subsystem in "
@@ -2641,7 +2650,16 @@ def selftest():
     assert "80% of trials found no judge" in text_tr, text_tr
     assert "Emilie Nowak x25" in text_tr, text_tr
     assert "0 released after the judge never came" in text_tr, text_tr
-    # and the release line must be counted when behaviour_pretrial gives up, or the
+    assert "counter reached never logged" in text_tr, text_tr
+    # the per-round counter: if it never climbs the loop is not being re-entered,
+    # which is a different defect from the release threshold being too high
+    climbing = Session()
+    climbing.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']
+                  + ['[TRIAL] No judge, round %d of 8 for Hinrich Mahler' % n for n in (1, 2, 3)]
+                  + ['[TRIAL] Judge does not exist.'] * 3
+                  + ['[Script] ::TWP::W t=25.00 dyn=1 node=Dynasty base=5 c= g=none w=5'])
+    text_cl = format_findings(findings(climbing))
+    assert "counter reached 3" in text_cl, text_cl
     # 2026-09-21 exit is unfalsifiable from the log
     freed = Session()
     freed.feed(['[Script] ::TWP::W t=10.00 dyn=1 node=Dynasty base=5 c= g=none w=5']

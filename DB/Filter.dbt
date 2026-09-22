@@ -7,7 +7,7 @@ Data:
 28   "~"   "__F(NOT(Object.GetState(sick)))"   |
 83   "TakeOverBid"   "__F(NOT(Object.BelongsToMe())AND(Object.Type == Building)AND(Object.HasDynasty())AND NOT(Object.IsBuyable()))"   |
 121   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND(Object.HasDynasty()))"   |
-122   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.CanBuildingBeOwnedByMe()))"   |
+122   "~"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.CanBuildingBeOwnedByMe()))"   |
 127   "~"   "__F((Object.CanBeCourted())AND NOT(Object.GetState(animal)) AND NOT (Object.GetState(npcfighter)) AND NOT (Object.HasProperty(Guarding)))"   |
 128   "~"   "__F((Object.CanBeControlled())AND(Object.HasCourtLover())OR(Object.HasLiaison()))"   |
 129   "~"   "__F((Object.CanBeControlled())AND(Object.MinAge(16))AND NOT(Object.HasCourtLover())AND NOT(Object.HasLiaison()))"   |
