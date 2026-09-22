@@ -127,6 +127,7 @@ HIREEND = re.compile(r"::TWP::HIREEND (.*)$")
 RAID = re.compile(r"::TWP::RAID (.*)$")
 SPEND = re.compile(r"::TWP::SPEND (.*)$")
 ASSIGN = re.compile(r"::TWP::ASSIGN (.*)$")
+BLDOWN = re.compile(r"::TWP::BLDOWN (.*)$")
 # The trial system talks, and nothing here listened until 2026-09-21: [TRIAL] was the
 # single largest unread subsystem in the log, 1889 lines of 10081 unparsed.
 TRIAL_JUDGE = re.compile(r"\[TRIAL\] Judge (found|does not exist)")
@@ -274,6 +275,7 @@ class Session(object):
         self.raid_steps = []
         self.spends = []
         self.assigns = []
+        self.misowned = []
         self.trial_judge = Counter()             # "found" / "does not exist"
         self.trial_wait = Counter()              # sim -> times left waiting on a trial
         self.trial_released = 0                  # gave up on a judge that never came
@@ -505,6 +507,10 @@ class Session(object):
             m = ASSIGN.search(line)
             if m:
                 self.assigns.append(kv(m.group(1)))
+                continue
+            m = BLDOWN.search(line)
+            if m:
+                self.misowned.append(kv(m.group(1)))
                 continue
             m = BB.search(line)
             if m:
@@ -1958,9 +1964,36 @@ def check_assign(s):
                       "spawned and which has no previous owner.")
 
 
+# Buildings whose owner is the wrong class for them. Nothing in Lua chooses an heir - the
+# engine reassigns a dead owner's buildings with no class test - so this is the footprint of
+# that bug, and it is otherwise invisible without clicking every building in the game.
+def check_misowned(s):
+    """Which buildings are held by a member who cannot legally own them?"""
+    if not s.misowned:
+        return
+    per_bld = {}
+    for r in s.misowned:
+        per_bld[r.get("bld", "?")] = r
+    stuck = [r for r in per_bld.values() if r.get("canown") == "false"]
+    yield Finding("WARN", "misowned-building",
+                  "%d buildings are held by an owner of the wrong class; %d of them cannot be "
+                  "reassigned to that owner at all (needs class %s, owner is %s)"
+                  % (len(per_bld), len(stuck),
+                     "/".join(sorted(set(r.get("need", "?") for r in per_bld.values())))[:20],
+                     "/".join(sorted(set(r.get("has", "?") for r in per_bld.values())))[:20]),
+                  "Scripts/Library/bld.lua, bld_LogOwnerClass, once a day per building. Class "
+                  "ids: 1 patron, 2 artisan, 3 scholar, 4 rogue. canown= is "
+                  "BuildingCanBeOwnedBy for the CURRENT owner, and it is the same engine call "
+                  "filter 122 uses to decide whether to draw the Assign-owner button - so "
+                  "canown=false is exactly the building where that button will not appear. "
+                  "Reassigning needs a member of class need=; if the dynasty has none, the "
+                  "building cannot be recovered by the player at all and the real fix is "
+                  "upstream at inheritance, which has no Lua hook.")
+
+
 CHECKS = (check_telemetry, check_runtime_errors, check_replay, check_self_cancel,
           check_order_guard, check_barren, check_subtree_barren, check_blackboard, check_htn_methods, check_htn_promise, check_carts, check_market,
-          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_assign, check_idprobe,
+          check_handovers, check_buyworkshop, check_raids, check_spying, check_attacks, check_raid_steps, check_healing, check_hospital_stock, check_hiring, check_hijack, check_spending, check_assign, check_misowned, check_idprobe,
           check_blood_rival, check_stuck_walk, check_trials, check_silent_channels, check_idle, check_test_knobs, check_supply, check_stray_goods)
 
 
@@ -2571,6 +2604,18 @@ def selftest():
     codes_so = [f.code for f in findings(solvent)]
     assert "spending" in codes_so, findings(solvent)
     assert not [c for c in codes_so if c.startswith("spending-")], findings(solvent)
+
+    # misowned: the footprint of the engine's classless inheritance. canown=false is the
+    # building whose Assign-owner button will not appear, which is what the player reported.
+    mis = Session()
+    mis.feed(['[Script] ::TWP::BLDOWN t=1.00 bld=9 type=38 need=4 has=1 owner=11 canown=false',
+              '[Script] ::TWP::BLDOWN t=25.00 bld=9 type=38 need=4 has=1 owner=11 canown=false',
+              '[Script] ::TWP::BLDOWN t=1.00 bld=12 type=7 need=2 has=3 owner=14 canown=true'])
+    text_mi = format_findings(findings(mis))
+    assert "misowned-building" in [f.code for f in findings(mis)], findings(mis)
+    # deduplicated by building, so a daily line does not inflate the count
+    assert "2 buildings are held" in text_mi, text_mi
+    assert "1 of them cannot be reassigned" in text_mi, text_mi
 
     # assign-owner: the three outcomes have to stay apart. A class refusal is the engine
     # being right; a refusal with canown=true is the one worth waking someone for.

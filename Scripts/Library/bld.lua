@@ -1188,9 +1188,39 @@ function ForceLevelUp(BldAlias)
 	end
 end
 
+-- ::TWP::BLDOWN t= bld= type= need= has= owner= canown=. One line a day per building whose
+-- owner is the WRONG CLASS for it. Nothing in Lua chooses an heir - the engine reassigns a
+-- dead owner's buildings with no class test at all - and the player has now hit the result
+-- twice: a thieves' guild inherited by a non-Rogue sibling, after which "Assign owner" is
+-- offered on healthy buildings and withheld on the broken ones, because the filter's
+-- CanBuildingBeOwnedByMe refuses. Without this the broken set is invisible: it can only be
+-- found by clicking every building in the game.
+function LogOwnerClass(BldAlias)
+	if not BuildingGetOwner(BldAlias, "TWP_OwnCheck") then
+		return
+	end
+	local Need = BuildingGetCharacterClass(BldAlias)
+	if (not Need) or Need == GL_CLASS_NONE then
+		return
+	end
+	local Has = SimGetClass("TWP_OwnCheck")
+	if Has == Need then
+		return
+	end
+	utility_Emit("::TWP::BLDOWN t=" .. string.format("%.2f", GetGametime())
+		.. " bld=" .. GetID(BldAlias) .. " type=" .. (BuildingGetType(BldAlias) or -1)
+		.. " need=" .. Need .. " has=" .. (Has or -1)
+		.. " owner=" .. GetID("TWP_OwnCheck")
+		.. " canown=" .. tostring(BuildingCanBeOwnedBy(BldAlias, "TWP_OwnCheck") and true or false))
+end
+
 function HandlePingHour(BldAlias, ForceLevelUp)
 	if not BuildingGetOwner(BldAlias, "MyBoss") then
 		return
+	end
+	-- once a day is plenty: this is a permanent state, not an event
+	if math.mod(math.floor(GetGametime()), 24) == 7 then
+		bld_LogOwnerClass(BldAlias)
 	end
 	-- Check every worker every hour for bonuses from employer's abilities
 	chr_CheckWorkerBonuses(BldAlias)
