@@ -36,7 +36,7 @@ function Run()
 	if GetInsideBuilding("", "CurrentBuilding") then
 		f_ExitCurrentBuilding("")
 	end
-	if not f_MoveTo("", "Destination", GL_MOVESPEED_WALK, 500) then
+	if not f_MoveTo("", "Destination", GL_MOVESPEED_RUN, 500) then
 		StopMeasure()
 	end
 	AlignTo("", "Destination")
