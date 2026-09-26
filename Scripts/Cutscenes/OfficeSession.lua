@@ -211,28 +211,49 @@ function BeginCouncilMeeting()
 	-- case for imperial city
 	if (CityGetLevel("settlement") == 6) then
 		
-		for i=0, SimCnt-1 do
+		local OfficeSimCnt = ListSize("SimOfficeList")
+		local KingSimID = nil
+		local LeftSimID = nil
+		local LeftKey = nil
+		local RightSimID = nil
+		local RightKey = nil
+		for i=0, OfficeSimCnt-1 do
 			ListGetElement("SimOfficeList", i, "Sim")
-			local simOfficeLevel = SimGetOfficeLevel("Sim")
-			local simOfficeIndex = SimGetOfficeIndex("Sim")
-			if (simOfficeLevel == 6) then
-				if (simOfficeIndex == 0) then
-					SetData("KingTask", 1)
-					SetData("CardinalID", GetID("Sim"))
-					CutsceneCallThread("", "SpecialSimAttend", "Sim", "LeftAssessorChairPos")
-					ListRemove("SimOfficeList", "Sim")
-				else
-					SetData("KingTask", 1)
-					SetData("FeldherrID", GetID("Sim"))
-					CutsceneCallThread("", "SpecialSimAttend", "Sim", "RightAssessorChairPos")
-					ListRemove("SimOfficeList", "Sim")
+			if SimGetOffice("Sim", "SpecialOffice") then
+				if OfficeIsKing("SpecialOffice") and not KingSimID then
+					KingSimID = GetID("Sim")
+				elseif OfficeIsEpic("SpecialOffice") then
+					local Key = SimGetOfficeIndex("Sim") - SimGetOfficeLevel("Sim") * 1000
+					if not LeftKey or Key < LeftKey then
+						RightSimID = LeftSimID
+						RightKey = LeftKey
+						LeftSimID = GetID("Sim")
+						LeftKey = Key
+					elseif not RightKey or Key < RightKey then
+						RightSimID = GetID("Sim")
+						RightKey = Key
+					end
 				end
-			elseif (simOfficeLevel == 7) then -- the king
-				SetData("KingID", GetID("Sim"))
-				CutsceneCallThread("", "SpecialSimAttend", "Sim", "JudgeChairPos")
-				SetData("KingTask", 1)
-				ListRemove("SimOfficeList", "Sim")
 			end
+		end
+
+		if KingSimID and GetAliasByID(KingSimID, "Sim") then
+			SetData("KingID", KingSimID)
+			CutsceneCallThread("", "SpecialSimAttend", "Sim", "JudgeChairPos")
+			SetData("KingTask", 1)
+			ListRemove("SimOfficeList", "Sim")
+		end
+		if LeftSimID and GetAliasByID(LeftSimID, "Sim") then
+			SetData("KingTask", 1)
+			SetData("CardinalID", LeftSimID)
+			CutsceneCallThread("", "SpecialSimAttend", "Sim", "LeftAssessorChairPos")
+			ListRemove("SimOfficeList", "Sim")
+		end
+		if RightSimID and GetAliasByID(RightSimID, "Sim") then
+			SetData("KingTask", 1)
+			SetData("FeldherrID", RightSimID)
+			CutsceneCallThread("", "SpecialSimAttend", "Sim", "RightAssessorChairPos")
+			ListRemove("SimOfficeList", "Sim")
 		end
 
 		-- if the king is there, then he is the chairman
@@ -1147,7 +1168,11 @@ function VoterAttend(Id)
 			else
 				CutsceneSendEventTrigger("owner", "Reached")
 			end
-		end		
+		else
+			CutsceneSendEventTrigger("owner", "Reached")
+		end
+	else
+		CutsceneSendEventTrigger("owner", "Reached")
 	end
 end
 
@@ -1172,7 +1197,11 @@ function ApplicantAttend(Id)
 			else
 				CutsceneSendEventTrigger("owner", "Reached")
 			end
-		end		
+		else
+			CutsceneSendEventTrigger("owner", "Reached")
+		end
+	else
+		CutsceneSendEventTrigger("owner", "Reached")
 	end
 end
 

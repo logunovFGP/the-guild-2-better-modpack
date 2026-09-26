@@ -147,7 +147,7 @@ function CheckPleasurePalace()
 		return false
 	end
 
-	if SimGetOfficeLevel("") ~= 7 then
+	if not (SimGetOffice("", "HeritageOffice") and OfficeIsKing("HeritageOffice")) then
 		return false
 	end
 

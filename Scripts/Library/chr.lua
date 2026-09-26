@@ -1234,7 +1234,7 @@ function GetKing()
 	local ID = 0
 	
 	for i=0, Count-1 do
-		if CityGetOffice("Cities"..i, 7, 0, "OFFICE") then -- king office
+		if CityGetKingOffice("Cities"..i, "OFFICE") then -- king office
 			if OfficeGetHolder("OFFICE", "OfficeHolder") then
 				ID = GetID("OfficeHolder")
 				break

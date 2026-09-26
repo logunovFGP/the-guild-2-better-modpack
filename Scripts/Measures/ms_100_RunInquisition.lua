@@ -35,7 +35,7 @@ function Run()
 	CopyAlias("Owner", "Inquisitor")
 	
 	--get the office holder
-	CityGetOffice("OwnCity", 6, 0, "Office")
+	CityGetOfficeByPrivilege("OwnCity", "CommandInquisitor", "Office")
 	OfficeGetHolder("Office", "MrInquisition")
 	
 	local TitleNumber = GetNobilityTitle("MrInquisition")

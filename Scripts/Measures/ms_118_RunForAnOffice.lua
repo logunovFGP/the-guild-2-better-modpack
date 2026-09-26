@@ -105,7 +105,7 @@ function Run()
 		end
 		
 		if DynastyIsAI("") then
-			if OfficeGetApplicantCount("destination") == 4 then
+			if OfficeGetApplicantCount("destination") >= OfficeGetMaxApplicants("destination") then
 			
 				if HasProperty("", "WaitBench") then
 					f_EndUseLocator("", "SitPos", GL_STANCE_STAND)
