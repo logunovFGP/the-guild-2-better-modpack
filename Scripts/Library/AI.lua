@@ -1014,35 +1014,39 @@ end
 -- MakeDecision - this is for AI functions.
 -- -----------------------
 function MakeDecision(DynastyAlias, Trait1, Mod1, Trait2, Mod2)
-	-- Trait must match the columns in AIPersonality.dbt. Trait2 is optional if AI has to weight their traits against each other
+	-- Trait must match the columns in AIPersonality.dbt; the values there are percentages.
+	-- One trait:  true with a probability of (Trait1 + Mod1) percent.
+	-- Two traits: rolls Rand(Trait1) against Rand(Trait2) and returns true if the first wins,
+	--             so the AI weighs one trait against the other (e.g. ambition vs greed).
+	-- Always returns a real boolean. The previous version returned the number 0 on the
+	-- one-trait path, which is truthy in Lua, so bribes were always accepted.
 	
 	if not HasProperty(DynastyAlias, "AI_PERSONA") then
 		ai_ChoosePersonality(DynastyAlias)
 	end
 	
 	local PersonalityID = GetProperty(DynastyAlias, "AI_PERSONA")
-	local CheckValue = 0
 	
-	-- get the needed trait
-	local Trait1Val = 0
-	Trait1Val = GetDatabaseValue("AIPersonality", PersonalityID, Trait1) + Mod1 or 0
-	local CheckTrait1 = Rand(Trait1Val)
+	-- a missing column or modifier counts as 0 instead of erroring on the addition
+	local Trait1Val = (GetDatabaseValue("AIPersonality", PersonalityID, Trait1) or 0) + (Mod1 or 0)
+	Trait1Val = math.max(0, math.min(100, Trait1Val))
 	
-	local Trait2Val = 0
-	if Trait2 ~= nil then
-		Trait2Val = GetDatabaseValue("AIPersonality", PersonalityID, Trait2) + Mod2 or 0
-		local CheckTrait2 = Rand(Trait2Val)
-		-- compare
-		if CheckTrait1 >= CheckTrait2 then
-			return true
-		else
-			return false
-		end
+	if Trait2 == nil then
+		return Rand(100) < Trait1Val
 	end
 	
-	-- random check
-	--local CheckValue = Rand(TraitValue) 
-	return CheckValue
+	local Trait2Val = (GetDatabaseValue("AIPersonality", PersonalityID, Trait2) or 0) + (Mod2 or 0)
+	Trait2Val = math.max(0, math.min(100, Trait2Val))
+	
+	local CheckTrait1 = 0
+	if Trait1Val > 0 then
+		CheckTrait1 = Rand(Trait1Val)
+	end
+	local CheckTrait2 = 0
+	if Trait2Val > 0 then
+		CheckTrait2 = Rand(Trait2Val)
+	end
+	return CheckTrait1 >= CheckTrait2
 end
 
 -------------------------------------------------------
