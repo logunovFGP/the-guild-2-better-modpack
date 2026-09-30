@@ -58,13 +58,6 @@ function Run()
 		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+3")
 		StopMeasure()
 	end
-	
-	if not GetImpactValue("","RunForAnOffice") then
-		if OfficeGetLevel("destination")>1 then
-			MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+5")
-			StopMeasure()
-		end
-	end
 
 	if not GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos") then
 		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+0", GetID("city"))
