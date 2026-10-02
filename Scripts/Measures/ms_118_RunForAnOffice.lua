@@ -58,13 +58,6 @@ function Run()
 		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+3")
 		StopMeasure()
 	end
-	
-	if not GetImpactValue("","RunForAnOffice") then
-		if OfficeGetLevel("destination")>1 then
-			MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+5")
-			StopMeasure()
-		end
-	end
 
 	if not GetLocatorByName("councilbuilding", "ApproachUsherPos", "destpos") then
 		MsgQuick("", "@L_PRIVILEGES_118_RUNFORANOFFICE_FAILURES_+0", GetID("city"))
@@ -105,7 +98,7 @@ function Run()
 		end
 		
 		if DynastyIsAI("") then
-			if OfficeGetApplicantCount("destination") == 4 then
+			if OfficeGetApplicantCount("destination") >= OfficeGetMaxApplicants("destination") then
 			
 				if HasProperty("", "WaitBench") then
 					f_EndUseLocator("", "SitPos", GL_STANCE_STAND)

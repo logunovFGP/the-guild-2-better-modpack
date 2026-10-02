@@ -145,7 +145,7 @@ end
 
 function CheckForKing()
 
-	if not CityGetOffice("", 7, 0, "OFFICE") then
+	if not CityGetKingOffice("", "OFFICE") then
 		return
 	end
 	

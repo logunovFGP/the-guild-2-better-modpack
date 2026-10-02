@@ -986,32 +986,16 @@ end
 -------------------------
 
 function GetTotalOfficeIncome(city)
-	local citylvl = CityGetLevel(city)
 	local highestlvl = CityGetHighestOfficeLevel(city)
 	local officecount = 0
 	local costs = 0
-	local id = 1
-	local OfficeNameLabel = ""
-	local officelabel = ""
 
-	for o=1, highestlvl do
+	for o=0, highestlvl do
 		officecount = CityGetOfficeCountAtLevel(city, o)
 		for i=0, officecount-1 do
 			if CityGetOffice(city, o, i, "office") then
 				if OfficeGetHolder("office", "holder") then
-					OfficeNameLabel = OfficeGetTextLabel("office")
-					local a,b = string.find(OfficeNameLabel, "_CHARACTERS_3_OFFICES_NAME_")
-					officelabel = string.sub(OfficeNameLabel, b+1 , string.len(OfficeNameLabel)-3)
-
-					id = 1
-					while id<37 do
-						if (GetDatabaseValue("Offices", id, "title") == officelabel) then
-							costs = costs + GetDatabaseValue("Offices", id, "income")
-							break
-						else
-							id = id + 1
-						end
-					end
+					costs = costs + OfficeGetIncome("office")
 				end
 			end
 		end
