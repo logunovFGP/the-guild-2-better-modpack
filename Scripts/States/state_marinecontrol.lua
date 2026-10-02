@@ -183,13 +183,17 @@ function BuyNewShip()
 		end
 	end
 	
+	local Boarded = 0 -- the tally that provoked the warship, kept for the message below
+
 	if HasData("ForceWarShip") then
 		NewShipType = EN_CT_WARSHIP
+		Boarded = GetProperty("","Plundered")
 		SetProperty("","Plundered",0)
 	else
 		if not TradeshipNeeded then
 			if WarshipNeeded then
 				NewShipType = EN_CT_WARSHIP
+				Boarded = GetProperty("","Plundered")
 				SetProperty("","Plundered",0)
 			end
 		end
@@ -206,6 +210,13 @@ function BuyNewShip()
 		AddImpact("Boat","ShipMenMod",0.5,-1)
 		AddImpact("Boat","ShipCannonMod",0.5,-1)
 		AddImpact("Boat","ShipHitpointMod",0.5,-1)
+
+		-- the sea answer to piracy: an escort, not a halt. Only reported once the
+		-- ship actually exists, and from here it covers both ways in - the warship
+		-- bought in place of a trader, and the one forced past the ship limit.
+		MsgNewsNoWait("All", "", "", "default", -1,
+			"@L_KONTOR_TOOMANYPIRATES_HEAD_+0",
+			"@L_KONTOR_TOOMANYPIRATES_BODY_+0", GetID("Settlement"), Boarded)
 	end
 	if (GetOutdoorMovePosition("Boat", "", "GoodPos")) then
 		SimBeamMeUp("Boat", "GoodPos")

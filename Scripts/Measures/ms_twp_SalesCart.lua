@@ -193,6 +193,9 @@ LogMessage("@TWP TargetCount : " .. TargetCount )
 				while GetState("", STATE_ACTIVE_ESCORT) or (not CartGetOperator("", "Operator")) or GetState("Operator", STATE_DRIVERATTACKED) do
 					Sleep(10) -- wait until movement is available again
 				end
+				-- and drive on: unloading out of range does nothing, so the cart went home full
+				LogMessage("@CARTROUTE resumed cart=" .. GetName("") .. " station=" .. GetName(ChosenTarget) .. " waited=?")
+				f_MoveTo("", ChosenTarget, GL_MOVESPEED_RUN)
 			end
 			
 			Sleep(3)

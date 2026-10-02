@@ -1283,3 +1283,51 @@ end
 function ContrabandIsNoticed(ShadowArts, Divisor)
 	return (Rand(10000) / 100) < gameplayformulas_ContrabandCaughtChance(ShadowArts, Divisor)
 end
+
+-- Quacksalve: the favour a scammed buyer loses toward the seller's family, per miracle
+-- cure sold. It starts at 5 + difficulty and rhetoric talks it down a tenth per point, never
+-- below 4 - difficulty: on Very easy even a master orator pays 4, on Very difficult
+-- a good enough one pays nothing. Difficulty is ScenarioGetDifficulty(), 0..4.
+-- Kept in whole numbers until the division so ceil cannot land one high on 4.0000001.
+function QuackFavorLoss(Rhetoric, Difficulty)
+	local Talked = math.ceil((5 + Difficulty) * (10 - Rhetoric) / 10)
+	return math.max(4 - Difficulty, Talked)
+end
+
+-- Chance in percent that a scammed buyer posts a lampoon against the seller's house.
+function QuackPamphletChance(Difficulty)
+	return 7 * Difficulty
+end
+
+-- Quacksalve: character level starts to help from level 5, one point per level
+-- after 4, so a level 10 quack carries +6. Employees have levels too.
+function QuackLevelBonus(Level)
+	return math.max(0, (Level or 0) - 4)
+end
+
+-- What the quack brings against the buyer's Empathy: Rhetoric plus the level bonus.
+function QuackPitch(Rhetoric, Level)
+	return Rhetoric + gameplayformulas_QuackLevelBonus(Level)
+end
+
+-- Price of one miracle cure. Roll is Rand(41) and BargainRoll is Rand(6) in game, passed
+-- in so the formula stays testable: each Bargaining point earns 8 plus 0..5 coins, so a
+-- good haggler earns more and now and then lands a big sale.
+-- Averages: Rhetoric 5 / Bargaining 5 / level 5 about 165 (the old 20 * Rhetoric +
+-- Rand(101) paid about 150), a novice about 80, a maxed seller about 327.
+function QuackPrice(Rhetoric, Bargaining, Level, Roll, BargainRoll)
+	return 30 + 10 * Rhetoric + Bargaining * (8 + (BargainRoll or 0))
+		+ 12 * gameplayformulas_QuackLevelBonus(Level) + (Roll or 0)
+end
+
+-- The Actions tab of the Manage Building panel stores each rule on the building as
+-- MActRule_<measure id>_<field>, one more than the value so that unset and 0 differ
+-- (Library/lib_ManageActions.lua). Fields: enabled, maxw, minp, prio. Returns the
+-- value, or Default when the player never touched it.
+function MActRule(BldAlias, MeasureName, Field, Default)
+	local Key = "MActRule_" .. MeasureGetID(MeasureName) .. "_" .. Field
+	if HasProperty(BldAlias, Key) then
+		return GetProperty(BldAlias, Key) - 1
+	end
+	return Default
+end

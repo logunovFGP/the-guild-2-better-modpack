@@ -68,3 +68,23 @@ Decision Log:
 - [ ] Add reusable AI library references to `Scripts/AI/BaseTree/readme.mkd`.
   - Status: implemented, awaiting user confirmation
   - Touched: `Scripts/AI/BaseTree/readme.mkd`
+
+- [ ] Quacksalve: every miracle cure sold costs the buyer's favour toward the seller's family, and may earn a lampoon.
+  - Status: implemented, awaiting user confirmation
+  - Rule: loss = max(4 - difficulty, ceil((5 + difficulty) * (1 - rhetoric/10))) favour per sale (chr_ModifyFavor, buyer toward seller; not guild fame);
+    the buyer pins a lampoon against the seller with 7 * difficulty % chance. A hired quack's
+    employer answers for it. One `@QUACK sale ...` / `@QUACK refused ...` log line per buyer.
+  - Sale: flat 10% lucky sale, else buyer Empathy vs seller Rhetoric + level bonus (max(0, level - 4)), the chr_SkillCheck roll.
+  - Price: 30 + 10 * Rhetoric + Bargaining * (8 + Rand(6)) + 12 * level bonus + Rand(41); was 20 * Rhetoric + Rand(101).
+  - Touched: `Scripts/Library/GamePlayFormulas.lua`, `Scripts/Measures/Behaviour/behavior_ListenQuacksalver.lua`,
+    `tools/modding_helpers/check_quacksalve.lua`; icons `Textures/Hud/{Buttons,MouseIcons,MouseIcons_highlighted}/btn_Quacksalver.tga`
+    (originals kept beside them as `btn_Quacksalver_old.tga`)
+
+- [ ] Bank Actions tab: Grant credits and Collect debts, driven by the tab like the hospital.
+  - Status: implemented, awaiting user confirmation
+  - `Scripts/Library/lib_ManageActions.lua` is the vanilla file plus `mact_RegisterMods` (bank def);
+    `bank_SetOfferCredit.lua` reads the tab via `gameplayformulas_MActRule`; new `bank_SetCollectDebts.lua`
+    (a player bank never collected: only the AI dynasty tree ran CollectDebts).
+  - Debt policy per bank (`DebtPolicy`, set from the bank account dialog, button 9): ask each time, always
+    more time, always abate, always demand, or decide by purse; a hand-ordered collection always asks.
+  - Actions-tab wording: the priority button now reads as the current setting in all 12 tables.

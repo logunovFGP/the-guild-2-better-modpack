@@ -14,7 +14,37 @@ function Run()
 			" stolen=" .. tostring(GetProperty("Destination","StolenSum")) ..
 			" bank=" .. tostring(GetProperty("Destination","CreditBank")))
 
-	local Choice = MsgNews("","Destination","@P@B[1,@L_MEASURE_COLLECTDEBTS_BUTTON_+0,]"..
+	-- resolved before the first question now: the bank's debt policy lives on it
+	local StolenSum = GetProperty("Destination","StolenSum")
+	local Bonus = GetSkillValue("",BARGAINING)*50
+	local BankID = GetProperty("Destination","CreditBank")
+	GetAliasByID(BankID,"Bank")
+	if not AliasExists("Bank") then
+		-- the fallback credits a different building's account than the one that lent
+		-- the money, so it is worth knowing when it happens
+		SimGetWorkingPlace("","Bank")
+		LogMessage("@BANK CollectDebts bank=" .. tostring(BankID) .. " unresolved, fell back to workplace=" ..
+				tostring(GetID("Bank")))
+	end
+	BuildingGetOwner("Bank","MyBoss")
+
+	-- The bank's debt policy (bank account dialog, Debt collection) answers for a clerk
+	-- collecting on his own: 0 ask, 1 more time, 2 abate, 3 demand, 4 decide by purse.
+	-- A collection the player ordered by hand always asks.
+	local Policy = 0
+	if IsStateDriven() and AliasExists("Bank") then
+		Policy = GetProperty("Bank", "DebtPolicy") or 0
+	end
+	LogMessage("@BANK CollectDebts policy=" .. Policy .. " statedriven=" .. tostring(IsStateDriven()))
+
+	-- counted as on duty, like the credit clerk, so the Actions tab shows and caps it
+	if not IsDynastySim("") then
+		SetData("IsProductionMeasure", 0)
+		SimSetProduceItemID("", -GetCurrentMeasureID(""), -1)
+		SetData("IsProductionMeasure", 1)
+	end
+
+	local Choice = (Policy > 0) and 1 or MsgNews("","Destination","@P@B[1,@L_MEASURE_COLLECTDEBTS_BUTTON_+0,]"..
 			"@B[2,@L_MEASURE_COLLECTDEBTS_BUTTON_+1,]",ms_collectdebts_AIDecide,"politics",1,
 			"@L_MEASURE_COLLECTDEBTS_BUTTON_HEAD_+0",
 			"@L_MEASURE_COLLECTDEBTS_BUTTON_BODY_+0",GetID("Destination"))
@@ -42,18 +72,6 @@ function Run()
 		return
 	end
 	
-	local StolenSum = GetProperty("Destination","StolenSum")
-	local Bonus = GetSkillValue("",BARGAINING)*50
-	local BankID = GetProperty("Destination","CreditBank")
-	GetAliasByID(BankID,"Bank")
-	if not AliasExists("Bank") then
-		-- the fallback credits a different building's account than the one that lent
-		-- the money, so it is worth knowing when it happens
-		SimGetWorkingPlace("","Bank")
-		LogMessage("@BANK CollectDebts bank=" .. tostring(BankID) .. " unresolved, fell back to workplace=" ..
-				tostring(GetID("Bank")))
-	end
-	BuildingGetOwner("Bank","MyBoss")
 	
 	CreateCutscene("default","cutscene")
 	CutsceneAddSim("cutscene","")
@@ -175,7 +193,7 @@ function Run()
 		-- 2. leave him the money (means you gain favor but you lose the money)
 		-- 3. demand the money with physical force (means you lose the favor but gain the money right now)
 		-- AI will choose randomly
-		local Interact = MsgSayInteraction("","","","@P@B[1,@L_MEASURE_COLLECTDEBTS_BEG_BUTTON_+0,]"..
+		local Interact = ms_collectdebts_PolicyAnswer(Policy) or MsgSayInteraction("","","","@P@B[1,@L_MEASURE_COLLECTDEBTS_BEG_BUTTON_+0,]"..
 			"@B[2,@L_MEASURE_COLLECTDEBTS_BEG_BUTTON_+1,]"..
 			"@B[3,@L_MEASURE_COLLECTDEBTS_BEG_BUTTON_+2,]",
 			ms_collectdebts_AIEnforce, "@L_MEASURE_COLLECTDEBTS_BEG_REACTION_+0",GetID("Destination"))
@@ -429,7 +447,29 @@ function AIEnforce()
 	return 3
 end
 
+-- The begging debtor under the bank's policy: nil means ask the player.
+function PolicyAnswer(Policy)
+	if Policy >= 1 and Policy <= 3 then
+		return Policy
+	elseif Policy == 4 then
+		return ms_collectdebts_AutoEnforce()
+	end
+	return nil
+end
+
+-- Policy 4, decide: press a debtor who can pay, give more time to one who cannot.
+-- ponytail: purse against debt only, blind to favour and standing; widen it if it reads wrong
+function AutoEnforce()
+	if GetMoney("Destination") >= (GetProperty("Destination", "StolenSum") or 0) then
+		return 3
+	end
+	return 1
+end
+
 function CleanUp()
+	if not IsDynastySim("") then
+		SimSetProduceItemID("", 0, -1)
+	end
 	DestroyCutscene("cutscene")
 	
 	ReleaseAvoidanceGroup("")

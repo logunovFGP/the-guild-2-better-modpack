@@ -608,9 +608,6 @@ Finding = namedtuple("Finding", "level code text pointer")
 
 SEVERITY = {"ERROR": 0, "WARN": 1, "NOTE": 2}
 
-# A vanilla GUI error, once per start, nothing to do with the AI.
-KNOWN_NOISE = "FindPanelsByTexture"
-
 # Measures vanilla has always re-ordered on top of themselves. Counted, never blamed.
 VANILLA_SELF_CANCEL = ("UseLaborOfLove", "Flirt", "BribeCharacter", "MakeACompliment", "PickpocketPeople")
 
@@ -704,10 +701,6 @@ def check_telemetry(s):
 
 def check_runtime_errors(s):
     for text, count in s.errors.most_common(8):
-        if KNOWN_NOISE in text:
-            yield Finding("NOTE", "vanilla-noise", "%s x%d" % (text[:80], count),
-                          "Pre-existing vanilla GUI error, unrelated to the AI; expected once per start.")
-            continue
         ours = False
         for name in ("aiboard_", "aihtn_", "aitwp_", "utility_", "trade_"):
             if name in text:

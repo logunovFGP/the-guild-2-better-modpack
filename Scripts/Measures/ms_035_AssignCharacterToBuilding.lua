@@ -19,7 +19,17 @@ TWP_ASSIGN_FORCE = true
 function Run()
 	GetInsideBuilding("", "Destination")
 	if not AliasExists("Destination") then
-		return
+		-- A Vagabond Camp is wagons in a field, and vanilla reaches it by radius, not by
+		-- being inside (its filter 525). The camp's own button row, filter 7300, does the
+		-- same, so this has to find the building the same way.
+		if Find("", "__F((Object.GetObjectsByRadius(Building)==700)AND(Object.IsType(102))AND(Object.BelongsToMe()))", "TWP_Camp", -1) > 0 then
+			CopyAlias("TWP_Camp0", "Destination")
+			LogMessage("@ASSIGN via=radius sim=" .. GetName("") .. " bld=" .. GetName("Destination"))
+		else
+			-- this exit used to be silent, so a missing button and a failed click looked alike
+			LogMessage("@ASSIGN nobuilding sim=" .. GetName("") .. " class=" .. tostring(SimGetClass("")))
+			return
+		end
 	end
 
 	f_MoveTo("", "Destination", GL_MOVESPEED_RUN)

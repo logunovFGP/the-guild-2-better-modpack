@@ -335,6 +335,20 @@ function Run()
 			local Action, Type, Count
 			NumberOfTries = 0
 			repeat
+				-- Robbed on the way: the move above ended short of the station. Wait for the
+				-- driver to be back on the box, then drive on - the recovery ms_twp_SupplyWorkshop
+				-- makes. Without it a loaded cart stood on the road for ever, re-running its
+				-- station actions out of range; an empty one only got away because Unload of
+				-- nothing counts as done.
+				if AliasExists(Station) and not IsInLoadingRange("", Station) then
+					local Waited = 0
+					while (GetState("", STATE_ACTIVE_ESCORT) or (not CartGetOperator("", "Operator")) or GetState("Operator", STATE_DRIVERATTACKED)) and Waited < 60 do
+						Sleep(10)
+						Waited = Waited + 1
+					end
+					LogMessage("@CARTROUTE resumed cart=" .. GetName("") .. " station=" .. GetName(Station) .. " waited=" .. (Waited * 10) .. "s")
+					f_MoveTo("", Station, GL_MOVESPEED_RUN)
+				end
 				isDone = true -- any action that isn't done will set this to false
 				restockEmpty = false -- overrides false isDone for restock action 
 				for i = 1, Stations[s][2] do

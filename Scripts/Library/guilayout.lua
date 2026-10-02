@@ -249,14 +249,14 @@ function GrowHelpPanels(Bonus)
 	local Grown = 0
 	local ok, err = pcall(function()
 		Bonus = Bonus or GL_HELP_PANEL_HEADROOM
-		local Panels = FindPanelsByTexture(GL_HUDROOT, GL_HELP_PANEL_TEXTURE)
+		local Panels = guilayout_FindPanelsByTexture(GL_HUDROOT, GL_HELP_PANEL_TEXTURE)
 		if #Panels == 0 or #Panels > SANITY_LIMIT then
 			LogMessage("@GUILAYOUT help panels: " .. #Panels ..
 						" matched, outside the sane range, changing nothing")
 			return
 		end
 		for i = 1, #Panels do
-			Grown = Grown + GrowPanel(Panels[i], Bonus)
+			Grown = Grown + guilayout_GrowPanel(Panels[i], Bonus)
 		end
 		LogMessage("@GUILAYOUT help panels: " .. #Panels .. " matched, " .. Grown ..
 					" nodes grown by " .. Bonus .. "px")

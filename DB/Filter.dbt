@@ -7,7 +7,7 @@ Data:
 28   "~"   "__F(NOT(Object.GetState(sick)))"   |
 83   "TakeOverBid"   "__F(NOT(Object.BelongsToMe())AND(Object.Type == Building)AND(Object.HasDynasty())AND NOT(Object.IsBuyable()))"   |
 121   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(4))AND(Object.HasDynasty()))"   |
-122   "~"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.CanBuildingBeOwnedByMe()))"   |
+122   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.BelongsToMe())AND(Object.CanBuildingBeOwnedByMe()))"   |
 127   "~"   "__F((Object.CanBeCourted())AND NOT(Object.GetState(animal)) AND NOT (Object.GetState(npcfighter)) AND NOT (Object.HasProperty(Guarding)))"   |
 128   "~"   "__F((Object.CanBeControlled())AND(Object.HasCourtLover())OR(Object.HasLiaison()))"   |
 129   "~"   "__F((Object.CanBeControlled())AND(Object.MinAge(16))AND NOT(Object.HasCourtLover())AND NOT(Object.HasLiaison()))"   |
@@ -20,7 +20,7 @@ Data:
 216   "~"   "__F((Object.MinAge(16))AND(Object.CheckCutscene())AND(Object.HasDifferentSex())AND NOT(Object.BelongsToMe())OR(Object.IsMySpouse()))"   |
 219   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsType(23)))"   |
 230   "~"   "__F((Object.BelongsToMe())AND(Object.IsClass(3))AND(Object.MinAge(12))AND(Object.Property.EduLevel>0)AND(Object.Property.EduLevel<3))"   |
-245   "~"   "__F((Object.CanBeControlled())AND(Object.CanWorkHere())AND(Object.BelongsToMe())AND(Object.GetProfession()==11)AND(Object.GetInsideBuilding())AND(Object.GetReligion()>=0)"   |
+245   "~"   "__F((Object.CanBeControlled())AND(Object.CanWorkHere())AND(Object.BelongsToMe())AND(Object.GetProfession()==11)AND(Object.GetInsideBuilding())AND(Object.GetReligion()>=0))"   |
 259   "~"   "__F((Object.CanBeControlled())AND(Object.GetOwnedBuildings())OR(Object.GetWorkBuilding())AND(Object.IsType(100)))"   |
 269   "~"   "__F((Object.CanBeControlled())AND(Object.CompareHPRelative()<99)AND(Object.GetObjectsByRadius(Building)==1000)AND(Object.BelongsToMe())AND(Object.IsType(100))OR(Object.IsType(21))AND(Object.HasUpgrade(Campfire)))"   |
 274   "~"   "__F((Object.CanBeControlled())AND(Object.HasFullLoverProgress())AND NOT(Object.HasLiaison())AND(Object.HasMinNobilityTitle(6)))"   |
@@ -33,6 +33,7 @@ Data:
 310   "~"   "__F(NOT(Object.BelongsToMe())AND(Object.HasDynasty())AND(Object.MinAge(16))AND(Object.ActionAdmissible())AND(Object.CheckCutscene()))"   |
 311   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND NOT(Object.IsType(11))AND NOT(Object.IsType(21))AND NOT(Object.IsType(36))AND NOT(Object.IsType(100))AND NOT(Object.IsType(101))AND NOT(Object.IsType(102)))"   |
 312   "~"   "__F((Object.CanBeControlled())AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.IsClass(2))AND NOT(Object.IsType(11))AND NOT(Object.IsType(21))AND NOT(Object.IsType(36))AND NOT(Object.IsType(100))AND NOT(Object.IsType(101)))"   |
+383   "~"   "__F((Object.CanBeControlled())AND(Object.BelongsToMe())AND(Object.IsClass(3))AND(Object.MinAge(16))AND(Object.GetInsideBuilding())AND(Object.IsBuildingOwnedByMe())AND(Object.GetReligion()>=0))"   |
 315   "~"   "__F((Object.CanBeControlled()))"   |
 317   "~"   "__F((Object.CanBeControlled()))"   |
 320   "~"   "__F(NOT(Object.IsHostile())AND NOT(Object.GetState(animal))AND NOT(Object.GetProfession()>0))"   |
@@ -77,3 +78,4 @@ Data:
 7152   "ShowDebugSelfLetterEvenDrunk"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe())AND(Object.HasProperty(ShowAdditionalDebugMeasures)))"   |
 7153   "CanWriteLetterActor"   "__F((Object.IsDynastySim)AND(Object.BelongsToMe()))"   |
 7203   "CanAldermanFreezeTrade"   "__F((Object.CanBeControlled())AND NOT(Object.HudIsInCutscene())AND(Object.GetInsideBuilding())AND(Object.IsType(26))AND(Object.PlayerHasOfficeImpact('AldermanFreezeTrade')))"   |
+7300   "CanBeAssignedToCamp"   "__F((Object.CanBeControlled())AND(Object.GetObjectsByRadius(Building)==700)AND(Object.IsType(102))AND(Object.BelongsToMe())AND(Object.CanBuildingBeOwnedByMe()))"   |

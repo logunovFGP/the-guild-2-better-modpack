@@ -40,6 +40,15 @@ FindNode = function() return Rooted end
 
 dofile("Scripts/Library/guilayout.lua")
 
+-- In game a library's functions exist only as guilayout_<Name>. Mirror that and
+-- drop the bare names, so an unprefixed call inside the library fails here the way
+-- it did in game: on 2026-09-23 GrowHelpPanels called FindPanelsByTexture bare, the
+-- pcall turned the error into one log line, and every help panel stayed short.
+for _, Fn in ipairs({ "FindPanelsByTexture", "GrowPanel", "GrowHelpPanels" }) do
+	_G["guilayout_" .. Fn] = _G[Fn]
+	_G[Fn] = nil
+end
+
 local Failures = 0
 local function Check(Label, Got, Want)
 	if Got ~= Want then
@@ -61,7 +70,7 @@ local Panel43 = Node("Container", 394, "", {
 	Node("cl_Sprite", 61), Node("cl_Sprite", 42), Icon43, Label43, Frame43, Strip43
 })
 
-Check("panel 43 nodes grown", GrowPanel(Panel43, 120), 3)
+Check("panel 43 nodes grown", guilayout_GrowPanel(Panel43, 120), 3)
 Check("panel 43 panel height", Panel43.height, 514)
 Check("panel 43 frame height", Frame43.height, 514)
 Check("panel 43 text height", Label43.height, 337)
@@ -81,7 +90,7 @@ local Panel39 = Node("Container", 477, "", {
 	Content39, Node("Label", 128), Caption39, Bars39, Node("DynastyIcon", 51), Node("Container", 38)
 })
 
-GrowPanel(Panel39, 120)
+guilayout_GrowPanel(Panel39, 120)
 Check("panel 39 tall art untouched", Portrait.height, 313)
 Check("panel 39 skill bars untouched", Bars39.height, 324)
 Check("panel 39 one-line caption untouched", Caption39.height, 19)
@@ -97,7 +106,7 @@ local Panel42 = Node("Container", 596, "", {
 	Node("Container", 596, BG), Node("LResource", 22), Node("ItemContainer", 153), Label42, Desc42
 })
 
-GrowPanel(Panel42, 120)
+guilayout_GrowPanel(Panel42, 120)
 Check("panel 42 text grown", Label42.height, 346)
 Check("panel 42 second text grown", Desc42.height, 329)
 
@@ -110,18 +119,30 @@ Rooted = Node("HudRoot", 0, "", {
 	Node("Container", 300, "", { Node("Inner", 300, "Hud/sheets/other.tga") }),
 	Node("Container", 200, BG)
 })
-Check("cohort matched", #FindPanelsByTexture("ignored", "onscreenhelp/bg"), 2)
+Check("cohort matched", #guilayout_FindPanelsByTexture("ignored", "onscreenhelp/bg"), 2)
+
+-- The positive case: a found cohort must actually be grown, with no error swallowed.
+-- Both older cases expect 0, which is also what a crashing call returns.
+local Logged = {}
+LogMessage = function(Text) Logged[#Logged + 1] = Text end
+local GrownNow = guilayout_GrowHelpPanels(120)
+local Errored = false
+for _, Text in ipairs(Logged) do
+	if string.find(Text, "error", 1, true) then Errored = true end
+end
+Check("help panels grow without an error", Errored, false)
+Check("a found cohort is grown", GrownNow > 0, true)
 
 -- Nothing matches: refuse rather than guess, and change nothing.
 Rooted = Node("HudRoot", 0, "", { Node("Container", 400) })
-Check("empty cohort grows nothing", GrowHelpPanels(120), 0)
+Check("empty cohort grows nothing", guilayout_GrowHelpPanels(120), 0)
 
 -- A missing root must not raise out of HudInit.
 Rooted = nil
-Check("missing root grows nothing", GrowHelpPanels(120), 0)
+Check("missing root grows nothing", guilayout_GrowHelpPanels(120), 0)
 
 if Failures == 0 then
-	print("OK: 14 checks on guilayout")
+	print("OK: 17 checks on guilayout")
 else
 	print(Failures .. " failure(s)")
 	os.exit(1)

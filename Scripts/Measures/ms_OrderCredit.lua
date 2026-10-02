@@ -46,7 +46,7 @@ function Run()
 	local Credit
 
 	if HasProperty("Bank", "BankAccount") then
-		Strings.Buttons 	= "@B[4,@L_MEASURE_ORDERCREDIT_STUFF_+3]@B[5,@L_MEASURE_ORDERCREDIT_STUFF_+5]@B[7,@L_MEASURE_ORDERCREDIT_STUFF_+6]@B[8,@L_MEASURE_ORDERCREDIT_STUFF_+7]"
+		Strings.Buttons 	= "@B[4,@L_MEASURE_ORDERCREDIT_STUFF_+3]@B[5,@L_MEASURE_ORDERCREDIT_STUFF_+5]@B[7,@L_MEASURE_ORDERCREDIT_STUFF_+6]@B[8,@L_MEASURE_ORDERCREDIT_STUFF_+7]@B[9,@L_MEASURE_ORDERCREDIT_STUFF_+8]"
 		Strings.Body	 	= "@L_MEASURE_ORDERCREDIT_BODY_+1"
 		Account 			= GetProperty("Bank", "BankAccount")
 	else
@@ -218,6 +218,25 @@ function Run()
 	           balance.Return,
 	           balance.ReturnCollect,
 	           balanceReturnFactor)
+
+	elseif Credit == 9 then
+		-- what a clerk collecting a debt on his own does when the debtor begs (ms_CollectDebts)
+		local Policy = GetProperty("Bank", "DebtPolicy") or 0
+		local Chosen = MsgNews("","","@P"..
+						"@B[0,@L_MEASURE_ORDERCREDIT_DEBTPOLICY_BUTTON_+0]"..
+						"@B[1,@L_MEASURE_ORDERCREDIT_DEBTPOLICY_BUTTON_+1]"..
+						"@B[2,@L_MEASURE_ORDERCREDIT_DEBTPOLICY_BUTTON_+2]"..
+						"@B[3,@L_MEASURE_ORDERCREDIT_DEBTPOLICY_BUTTON_+3]"..
+						"@B[4,@L_MEASURE_ORDERCREDIT_DEBTPOLICY_BUTTON_+4]"..
+						"@B[5,@L_MEASURE_ORDERCREDIT_STUFF_+4]",0,"intrigue",-1,
+						"_MEASURE_ORDERCREDIT_DEBTPOLICY_HEAD_+0",
+						"_MEASURE_ORDERCREDIT_DEBTPOLICY_BODY_+0",
+						"@L_MEASURE_ORDERCREDIT_DEBTPOLICY_BUTTON_+" .. Policy)
+		if type(Chosen) == "number" and Chosen >= 0 and Chosen <= 4 then
+			SetProperty("Bank", "DebtPolicy", Chosen)
+			LogMessage("@BANK DebtPolicy bank=" .. GetID("Bank") .. " policy=" .. Chosen)
+		end
+		StopMeasure()
 	end		
 	
 	if Money.Invest > 0 then

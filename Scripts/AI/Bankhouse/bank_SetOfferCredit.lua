@@ -8,8 +8,12 @@ function Weight()
 		return 0
 	end
 	
-	local Producer = BuildingGetProducerCount("MyBank", PT_MEASURE, "OfferCredit")
-	if Producer >0 then
+	-- the bank's Actions tab: on/off, how many clerks at once (one when never set, as it
+	-- always was), how many customers must wait, and whether it outranks goods
+	if gameplayformulas_MActRule("MyBank", "OfferCredit", "enabled", 1) == 0 then
+		return 0
+	end
+	if BuildingGetProducerCount("MyBank", PT_MEASURE, "OfferCredit") >= gameplayformulas_MActRule("MyBank", "OfferCredit", "maxw", 1) then
 		return 0
 	end
 	
@@ -36,10 +40,13 @@ function Weight()
 	
 	local CreditSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForCredit)))"
 	local NumCreditSims = Find("SIM", CreditSimFilter,"CreditSim", -1)
-	if NumCreditSims < 1 then
+	if NumCreditSims < math.max(1, gameplayformulas_MActRule("MyBank", "OfferCredit", "minp", 1)) then
 		return 0
 	end
 	
+	if gameplayformulas_MActRule("MyBank", "OfferCredit", "prio", 1) == 0 then
+		return 20
+	end
 	return 100
 end
 

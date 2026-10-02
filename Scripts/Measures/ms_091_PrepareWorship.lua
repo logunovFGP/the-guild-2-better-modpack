@@ -11,7 +11,9 @@ function Run()
 		if not GetInsideBuilding("", "CurrentBuilding") then
 			StopMeasure()
 		end
-		if BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_CATH or BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_EV then
+		-- only in a church the family owns: filter 383 never checked, so any Scholar could preach anywhere
+		if (BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_CATH or BuildingGetType("CurrentBuilding") == GL_BUILDING_TYPE_CHURCH_EV)
+				and GetDynastyID("CurrentBuilding") == GetDynastyID("") then
 			CopyAlias("CurrentBuilding", "church")
 		else
 			StopMeasure()

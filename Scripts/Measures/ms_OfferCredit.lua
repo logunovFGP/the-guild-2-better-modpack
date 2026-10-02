@@ -34,6 +34,14 @@ function Run()
 	SetData("IsProductionMeasure", 1)
 
 	while true do
+		-- the Actions tab can switch this duty off, or cap it, while the clerk sits here;
+		-- a clerk the player ordered by hand keeps going
+		if IsStateDriven() and (gameplayformulas_MActRule("BankBuilding", "OfferCredit", "enabled", 1) == 0
+				or BuildingGetProducerCount("BankBuilding", PT_MEASURE, "OfferCredit") > gameplayformulas_MActRule("BankBuilding", "OfferCredit", "maxw", 99)) then
+			LogMessage("@BANK OfferCredit stopped by the Actions tab clerk=" .. GetName(""))
+			StopMeasure()
+			return
+		end
 		local CreditSimFilter = "__F((Object.GetObjectsByRadius(Sim) == 10000) AND (Object.HasProperty(WaitForCredit)))"
 		local NumCreditSims = Find("", CreditSimFilter, "CreditSim", -1)
 

@@ -16,6 +16,9 @@ function Run()
 		return
 	end
 
+	local PlunderWarn = 4	-- raided carts after which the town complains
+	local PlunderStop = 8	-- raided carts after which it suspends the route
+
 	if not HasProperty("", "TradersPlundered") then
 		SetProperty("","TradersPlundered",0)
 	end
@@ -43,26 +46,38 @@ function Run()
 		end			
 		
 		local MainPlunderCount = GetProperty("", "TradersPlundered")
-		if MainPlunderCount > 8 then -- Too many robberies occured, stop trade for some time
+		if MainPlunderCount > PlunderStop then -- Too many robberies occured, stop trade for some time
 			local Time = Rand(12) + 24
-			AddImpact("", "TradingRoutePlundered", 1, Time) 
+			AddImpact("", "TradingRoutePlundered", 1, Time)
 			MainPlunderCount = 0
 			SetProperty("", "TradersPlundered", 0)
-			SetProperty("", "TradersRobberMessageSaid", 0)			
+			SetProperty("", "TradersRobberMessageSaid", 0)
 
-			-- msg to all players;
-			MsgNewsNoWait("All", "", "", "default", -1, 
-				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
-				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("MyCity")) 
-			
-		elseif MainPlunderCount > 4 and GetProperty("","TradersRobberMessageSaid") ~= 1 then
-			MsgNewsNoWait("All", "", "", "default", -1, 
-				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0", 
-				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("MyCity")) 
+			-- msg to all players; the pause lasts Time hours and nothing else - further
+			-- raids neither prolong nor shorten it, and the tally is cleared right here
+			MsgNewsNoWait("All", "", "", "default", -1,
+				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+1",
+				"@L_KONTOR_TOOMANYROBBERIES_BODY_+1", GetID("MyCity"), Time)
+
+		elseif MainPlunderCount > PlunderWarn and GetProperty("","TradersRobberMessageSaid") ~= 1 then
+			MsgNewsNoWait("All", "", "", "default", -1,
+				"@L_KONTOR_TOOMANYROBBERIES_HEAD_+0",
+				"@L_KONTOR_TOOMANYROBBERIES_BODY_+0", GetID("MyCity"), PlunderStop + 1 - MainPlunderCount)
 			SetProperty("", "TradersRobberMessageSaid", 1)
 		end
-		
-		
+
+		-- The impact runs itself out, so watch it instead of timing the pause twice.
+		-- The flag is a property, so a save taken mid-pause still reports the end of it.
+		if GetImpactValue("", "TradingRoutePlundered") > 0 then
+			SetProperty("", "TradeSuspended", 1)
+		elseif HasProperty("", "TradeSuspended") then
+			RemoveProperty("", "TradeSuspended")
+			MsgNewsNoWait("All", "", "", "default", -1,
+				"@L_KONTOR_TOOMANYROBBERIES_RESUMED_HEAD_+0",
+				"@L_KONTOR_TOOMANYROBBERIES_RESUMED_BODY_+0", GetID("MyCity"), PlunderStop + 1)
+		end
+
+
 		local CurrentRound = GetRound()
 		if not HasProperty("", "LastTimeRobbed") then
 			SetProperty("", "LastTimeRobbed", CurrentRound)

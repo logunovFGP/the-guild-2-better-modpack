@@ -327,8 +327,10 @@ function Attack()
 			if AliasExists("Mayor") then
 				CommitAction("attackcart", "", "Mayor", "") 
 				GetSettlement("Mayor", "MayorTown")
-				MsgNewsNoWait("Mayor", "", "", "military", -1, 
-									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+0",
+				-- the mayor is hearing about someone else's cart, not being attacked,
+				-- so this is the _+1 headline, not the victim's own
+				MsgNewsNoWait("Mayor", "", "", "military", -1,
+									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_HEAD_+1",
 									"@L_ROBBER_135_WAYLAYFORBOOTY_VICTIM_BODY_+1", GetID("Mayor"), GetID("MayorTown"))
 			else
 				CommitAction("attackcart", "", "Victim", "Victim")
